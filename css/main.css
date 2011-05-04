@@ -676,6 +676,11 @@ nav.main li a {
   border-bottom: 1px solid #cccccc;
   border-right: 1px solid #cccccc;
 }
+.main-criteria.shrunk {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
 .main-criteria > header {
   background-color: #4d4d4d;
   background-image: -moz-linear-gradient(top, #4d4d4d, black);
@@ -709,7 +714,8 @@ nav.lock {
 
 a.lock,
 a.unlock,
-a.minimize {
+a.minimize,
+a.maximize {
   display: -moz-inline-stack;
   display: inline-block;
   *display: inline;
@@ -722,18 +728,24 @@ a.minimize {
   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3), 0 2px 4px black, 0 0 2px rgba(0, 0, 0, 0.4);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3), 0 2px 4px black, 0 0 2px rgba(0, 0, 0, 0.4);
   border: 1px solid black;
-  color: #7f7f7f;
-  cursor: not-allowed;
+  color: white;
   font-size: 11px;
   padding: 7px;
   text-decoration: none;
 }
 
-a.minimize {
-  color: white;
+a.lock {
+  color: #7f7f7f;
+  cursor: not-allowed;
+}
+
+a.minimize,
+a.maximize {
   cursor: pointer;
   font-weight: bold;
   text-shadow: 1px 1px 1px black;
+  text-align: center;
+  min-width: 10px;
 }
 
 a.unlock {

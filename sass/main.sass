@@ -158,6 +158,8 @@ nav.main
   border-left: 1px solid #cccccc
   border-bottom: 1px solid #cccccc
   border-right: 1px solid #cccccc  
+  &.shrunk
+    +border-radius(5px)
   // Section headers
   > header
     +gradient(#4d4d4d, #000000)
@@ -180,22 +182,28 @@ nav.lock
   
 a.lock,
 a.unlock,
-a.minimize
+a.minimize,
+a.maximize
   +inline-block
   +border-radius(3px)
   +box-shadow(( inset 0 1px 0 rgba( 255, 255, 255, 0.3 ), 0 1px 0 rgba( 255, 255, 255, 0.3 ), 0 2px 4px rgba( 0, 0, 0, 1.0 ), 0 0 2px rgba( 0, 0, 0, 0.4 )))
   border: 1px solid #000000
-  color: #7F7F7F
-  cursor: not-allowed
+  color: #ffffff
   font-size: 11px
   padding: 7px
   text-decoration: none
+  
+a.lock
+  color: #7F7F7F
+  cursor: not-allowed
 
-a.minimize
-  color: #ffffff
+a.minimize,
+a.maximize
   cursor: pointer
   font-weight: bold
   text-shadow: 1px 1px 1px rgba( 0, 0, 0, 1.0 )
+  text-align: center
+  min-width: 10px
 
 a.unlock
   display: none

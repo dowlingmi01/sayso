@@ -96,11 +96,51 @@ yepnope({
   ]
 });
 
+/**
+ * IMPROVE THIS
+ *
+ * This is just some naked DOM interaction that ought to be improved.
+ */
+
+$('nav.lock').delegate( 'a.minimize, a.maximize', 'click', function(e) {
+
+  e.preventDefault();
+  
+  var $this = $(this),
+      $section = $this.closest('section.main-criteria'),
+      $header = $section.find('header'),
+      $container = $section.find('.section-container'),
+      type = ( $this.hasClass( 'minimize' )) ? "minimize" : "maximize";        
+       
+  $header.animate({    
+    marginBottom : ( type === "minimize" ) ? "0" : "15px"
+  });
+  
+  if( type === "minimize" ) {
+    
+    $this.text('+')
+         .removeClass('minimize')
+         .addClass('maximize');
+  
+    $container.slideUp();
+  
+  } else {
+    
+    $this.text('-')
+         .removeClass('maximize')
+         .addClass('minimize');
+  
+    $container.slideDown();
+    
+  }
+         
+});
+
 /** DEVELOPMENT ONLY 
  *
  * Bind our submit function to instead display our JSON on the console, and bind the key
  * sequence of "clear" to empty out our local storage object.
-*/
+ */
 
 $('#do-ze-build').click(function(e) {
   

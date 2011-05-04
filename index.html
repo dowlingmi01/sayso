@@ -9,10 +9,8 @@
   <title>Say.So Survey Administration</title>
   <meta name="description" content="">
   <meta name="author" content="Joshua Cody">
-  <!--[if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
   <link rel="stylesheet" href="css/main.css">
+  <script src="js/modernizr.min.js"></script>
 </head>
 <body>
   <header>
@@ -38,19 +36,19 @@
           <ul>
             <li>
               <label for="study-name">Study Name</label>
-              <input type="text" name="study-name" id="study-name">
+              <input type="text" name="study-name" id="study-name" data-store-key="basic-name">
             </li>
             <li>
               <label for="study-id">Study ID</label>
-              <input type="text" name="study-id" id="study-id">
+              <input type="text" name="study-id" id="study-id" data-store-key="basic-id">
             </li>
             <li>
               <label for="study-sample-size">Sample Size (N)</label>
-              <input type="text" name="study-sample-size" id="study-sample-size">
+              <input type="text" name="study-sample-size" id="study-sample-size" data-store-key="basic-size">
             </li>
             <li>
               <label for="study-min-threshold">Min. Threshold</label>
-              <input type="text" name="study-min-threshold" id="study-min-threshold">
+              <input type="text" name="study-min-threshold" id="study-min-threshold" data-store-key="basic-minimum">
             </li>
           </ul>
         </fieldset><div class="padded-column-5">
@@ -59,11 +57,11 @@
           <ul>
             <li>
               <label for="study-start-date">Begin</label>
-              <input type="date" name="study-start-date" id="study-start-date">
+              <input type="date" name="study-start-date" id="study-start-date" data-store-key="basic-begindate">
             </li>
             <li>
               <label for="study-end-date">End</label>
-              <input type="date" name="study-end-date" id="study-end-date">
+              <input type="date" name="study-end-date" id="study-end-date" data-store-key="basic-enddate">
             </li>
           </ul>
         </fieldset>
@@ -93,7 +91,7 @@
             <ul class="cell-parameters">
               <li class="padded-column-8 first">
                 <label for="cell-description">CELL Description</label>
-                <input type="text" name="cell-description" id="cell-description">
+                <input type="text" name="cell-description" id="cell-description" data-store-key="cells-n1-description">
               </li><li class="padded-column-2 last">
                 <fieldset class="cell-type">
                   <legend>Type of Cell</legend>         
@@ -108,29 +106,21 @@
                 </fieldset>
               </li>
               <li class="quota-select first">
-                <label for="cell-number">Cell #</label>
-                <select name="" id="cell-number">
-                  <option value="n1">n1</option>
-                  <option value="n2">n2</option>
-                  <option value="n3">n3</option>
-                </select>
-              </li>
-              <li class="quota-select">
                 <label for="cell-size">Size</label>
-                <select name="cell-size" id="cell-size">
+                <select name="cell-size" id="cell-size" data-store-key="cells-n1-size">
                   <option value="1000"></option>
                 </select>
               </li>
               <li class="quota-select">
                 <label for="cell-gender">M/F</label>
-                <select name="cell-gender" id="cell-gender">
+                <select name="cell-gender" id="cell-gender" data-store-key="cells-n1-gender">
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                 </select>
               </li>
               <li class="quota-select">
                 <label for="cell-age">Age</label>
-                <select name="cell-age" id="cell-age">
+                <select name="cell-age" id="cell-age" data-store-key="cells-n1-age">
                   <option value="0-18">0-18</option>
                   <option value="19-25">19-25</option>
                   <option value="26-35">26-35</option>
@@ -139,7 +129,7 @@
               </li>
               <li class="quota-select">
                 <label for="cell-size-percent">Cell %</label>
-                <select name="cell-size-percent" id="cell-size-percent">
+                <select name="cell-size-percent" id="cell-size-percent" data-store-key="cells-n1-percent">
                   <option value="50">50%</option>
                 </select>
               </li>
@@ -166,7 +156,7 @@
               </li>
             </ul>
             <div class="button-holder">
-              <button class="add-cell styled-button">Add This Cell</button>
+              <button class="add-cell styled-button">Add This Quota</button>
             </div>
           </fieldset>
           <ul class="cell-lists">
@@ -491,6 +481,7 @@
   </footer>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
   <script>!window.jQuery && document.write('<script src="js/jquery-1.5.1.min.js"><\/script>')</script>
+  <script src="js/main.js"></script>
   <!--[if lt IE 7 ]>
     <script src="js/libs/dd_belatedpng.js"></script>
     <script>DD_belatedPNG.fix('img, .png_bg'); // Fix any <img> or .png_bg bg-images. Also, please read goo.gl/mZiyb </script>

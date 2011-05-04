@@ -36,6 +36,7 @@
           <ul>
             <li>
               <label for="study-name">Study Name</label>
+<<<<<<< HEAD
               <input type="text" name="study-name" id="study-name" data-store-key="basic-name">
             </li>
             <li>
@@ -49,6 +50,21 @@
             <li>
               <label for="study-min-threshold">Min. Threshold</label>
               <input type="text" name="study-min-threshold" id="study-min-threshold" data-store-key="basic-minimum">
+=======
+              <input type="text" name="study-name" id="study-name" data-store-key="sayso-basic-name">
+            </li>
+            <li>
+              <label for="study-id">Study ID</label>
+              <input type="text" name="study-id" id="study-id" data-store-key="sayso-basic-id">
+            </li>
+            <li>
+              <label for="study-sample-size">Sample Size (N)</label>
+              <input type="text" name="study-sample-size" id="study-sample-size" data-store-key="sayso-basic-size">
+            </li>
+            <li>
+              <label for="study-min-threshold">Min. Threshold</label>
+              <input type="text" name="study-min-threshold" id="study-min-threshold" data-store-key="sayso-basic-minimum">
+>>>>>>> local-storage
             </li>
           </ul>
         </fieldset><div class="padded-column-5">
@@ -57,20 +73,34 @@
           <ul>
             <li>
               <label for="study-start-date">Begin</label>
+<<<<<<< HEAD
               <input type="date" name="study-start-date" id="study-start-date" data-store-key="basic-begindate">
             </li>
             <li>
               <label for="study-end-date">End</label>
               <input type="date" name="study-end-date" id="study-end-date" data-store-key="basic-enddate">
+=======
+              <input type="date" name="study-start-date" id="study-start-date" data-store-key="sayso-basic-begindate">
+            </li>
+            <li>
+              <label for="study-end-date">End</label>
+              <input type="date" name="study-end-date" id="study-end-date" data-store-key="sayso-basic-enddate">
+>>>>>>> local-storage
             </li>
           </ul>
         </fieldset>
         <fieldset>
           <legend>Is this going to be a survey?</legend>          
           <div class="radios-labeled">
+<<<<<<< HEAD
             <input type="radio" name="study-is-survey" id="study-is-survey-1" value="yes" checked>
             <label for="study-is-survey-1">Yes</label> 
             <input type="radio" name="study-is-survey" id="study-is-survey-2" value="no">
+=======
+            <input type="radio" name="study-is-survey" id="study-is-survey-1" value="yes"  data-store-key="sayso-basic-issurvey" checked>
+            <label for="study-is-survey-1">Yes</label> 
+            <input type="radio" name="study-is-survey" id="study-is-survey-2" value="no" data-store-key="sayso-basic-issurvey">
+>>>>>>> local-storage
             <label for="study-is-survey-2">No</label>
           </div>
         </fieldset>
@@ -91,36 +121,60 @@
             <ul class="cell-parameters">
               <li class="padded-column-8 first">
                 <label for="cell-description">CELL Description</label>
+<<<<<<< HEAD
                 <input type="text" name="cell-description" id="cell-description" data-store-key="cells-n1-description">
+=======
+                <input type="text" name="cell-description" id="cell-description" data-store-key="sayso-cells-n1-quota-description">
+>>>>>>> local-storage
               </li><li class="padded-column-2 last">
                 <fieldset class="cell-type">
                   <legend>Type of Cell</legend>         
                   <div class="radios-labeled">         
+<<<<<<< HEAD
                     <input type="radio" name="cell-type" id="cell-type-1" value="Control">
                     <label for="cell-type-1">Control</label>                  
                   </div>
                   <div>
                     <input type="radio" name="cell-type" id="cell-type-2" value="Test">
+=======
+                    <input type="radio" name="cell-type" id="cell-type-1" value="Control" data-store-key="sayso-cells-n1-quota-type">
+                    <label for="cell-type-1">Control</label>                  
+                  </div>
+                  <div>
+                    <input type="radio" name="cell-type" id="cell-type-2" value="Test" data-store-key="sayso-cells-n1-quota-type">
+>>>>>>> local-storage
                     <label for="cell-type-2">Test</label>
                   </div>
                 </fieldset>
               </li>
               <li class="quota-select first">
                 <label for="cell-size">Size</label>
+<<<<<<< HEAD
                 <select name="cell-size" id="cell-size" data-store-key="cells-n1-size">
+=======
+                <select name="cell-size" id="cell-size" data-store-key="sayso-cells-n1-quota-size">
+>>>>>>> local-storage
                   <option value="1000"></option>
                 </select>
               </li>
               <li class="quota-select">
                 <label for="cell-gender">M/F</label>
+<<<<<<< HEAD
                 <select name="cell-gender" id="cell-gender" data-store-key="cells-n1-gender">
+=======
+                <select name="cell-gender" id="cell-gender" data-store-key="sayso-cells-n1-quota-gender">
+>>>>>>> local-storage
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                 </select>
               </li>
               <li class="quota-select">
                 <label for="cell-age">Age</label>
+<<<<<<< HEAD
                 <select name="cell-age" id="cell-age" data-store-key="cells-n1-age">
+=======
+                <select name="cell-age" id="cell-age" data-store-key="sayso-cells-n1-quota-age">
+>>>>>>> local-storage
                   <option value="0-18">0-18</option>
                   <option value="19-25">19-25</option>
                   <option value="26-35">26-35</option>
@@ -129,7 +183,11 @@
               </li>
               <li class="quota-select">
                 <label for="cell-size-percent">Cell %</label>
+<<<<<<< HEAD
                 <select name="cell-size-percent" id="cell-size-percent" data-store-key="cells-n1-percent">
+=======
+                <select name="cell-size-percent" id="cell-size-percent" data-store-key="sayso-cells-n1-quota-percent">
+>>>>>>> local-storage
                   <option value="50">50%</option>
                 </select>
               </li>
@@ -137,6 +195,7 @@
                 <fieldset class="ethnicity">
                   <legend>Ethnicity</legend>                  
                   <div class="ethnicities-list radios-labeled">
+<<<<<<< HEAD
                     <input type="radio" name="ethnicity" id="ethnicity-1" value="All">
                     <label for="ethnicity-1">All</label>                  
                     <input type="radio" name="ethnicity" id="ethnicity-2" value="White">
@@ -150,6 +209,21 @@
                     <input type="radio" name="ethnicity" id="ethnicity-6" value="Native American">
                     <label for="ethnicity-6">Native American</label>                  
                     <input type="radio" name="ethnicity" id="ethnicity-7" value="Hawaiian or Pacific Islander">
+=======
+                    <input type="radio" name="ethnicity" id="ethnicity-1" value="All" data-store-key="sayso-cells-n1-quota-ethnicity">
+                    <label for="ethnicity-1">All</label>                  
+                    <input type="radio" name="ethnicity" id="ethnicity-2" value="White" data-store-key="sayso-cells-n1-quota-ethnicity">
+                    <label for="ethnicity-2">White</label>                  
+                    <input type="radio" name="ethnicity" id="ethnicity-3" value="African American" data-store-key="sayso-cells-n1-quota-ethnicity">
+                    <label for="ethnicity-3">African American</label>                  
+                    <input type="radio" name="ethnicity" id="ethnicity-4" value="Asian" data-store-key="sayso-cells-n1-quota-ethnicity">
+                    <label for="ethnicity-4">Asian</label>                  
+                    <input type="radio" name="ethnicity" id="ethnicity-5" value="Latino" data-store-key="sayso-cells-n1-quota-ethnicity">
+                    <label for="ethnicity-5">Latino</label>                  
+                    <input type="radio" name="ethnicity" id="ethnicity-6" value="Native American" data-store-key="sayso-cells-n1-quota-ethnicity">
+                    <label for="ethnicity-6">Native American</label>                  
+                    <input type="radio" name="ethnicity" id="ethnicity-7" value="Hawaiian or Pacific Islander" data-store-key="sayso-cells-n1-quota-ethnicity">
+>>>>>>> local-storage
                     <label for="ethnicity-7">Hawaiian or Pacific Islander</label>
                   </div>
                 </fieldset>                
@@ -178,18 +252,30 @@
               <ul>
                 <li>
                   <label for="browswing-include-exclude"></label>
+<<<<<<< HEAD
                   <select name="include-exclude" id="browsing-include-exclude">
+=======
+                  <select name="include-exclude" id="browsing-include-exclude" data-store-key="sayso-cells-n1-qualifier-browse-include">
+>>>>>>> local-storage
                     <option value="Inclue">Include users</option>
                     <option value="Exclude">Exclude users</option>
                   </select>
                 </li>
                 <li>
                   <label for="browswing-domain-name">who have visited</label>
+<<<<<<< HEAD
                   <input type="text" name="browswing-domain-name" id="browswing-domain-name">
                 </li>
                 <li>
                   <label for="browsing-timeframe">in the</label>
                   <select name="browsing-timeframe" id="browsing-timeframe">
+=======
+                  <input type="text" name="browswing-domain-name" id="browswing-domain-name" data-store-key="sayso-cells-n1-qualifier-browse-site">
+                </li>
+                <li>
+                  <label for="browsing-timeframe">in the</label>
+                  <select name="browsing-timeframe" id="browsing-timeframe" data-store-key="sayso-cells-n1-qualifier-browse-timeframe">
+>>>>>>> local-storage
                     <option value="">Last 24 hours</option>
                     <option value="">Last 1 week</option>
                     <option value="">Last 1 month</option>
@@ -210,18 +296,30 @@
               <ul>
                 <li>
                   <label for="browswing-engine-include-exclude"></label>
+<<<<<<< HEAD
                   <select name="browsing-engine-include-exclude" id="browsing-engine-include-exclude">
+=======
+                  <select name="browsing-engine-include-exclude" id="browsing-engine-include-exclude" data-store-key="sayso-cells-n1-qualifier-search-include">
+>>>>>>> local-storage
                     <option value="Inclue">Include users</option>
                     <option value="Exclude">Exclude users</option>
                   </select>
                 </li>
                 <li>
                   <label for="browswing-engine-domain-name">who have searched for</label>
+<<<<<<< HEAD
                   <input type="text" name="browswing-engine-domain-name" id="browswing-engine-domain-name">
                 </li>
                 <li>
                   <label for="browsing-engine-timeframe">On</label>
                   <select name="browsing-engine-timeframe" id="browsing-engine-timeframe">
+=======
+                  <input type="text" name="browswing-engine-domain-name" id="browswing-engine-domain-name" data-store-key="sayso-cells-n1-qualifier-browse-engine">
+                </li>
+                <li>
+                  <label for="browsing-engine-timeframe">On</label>
+                  <select name="browsing-engine-timeframe" id="browsing-engine-timeframe" data-store-key="sayso-cells-n1-qualifier-browse-timeframe">
+>>>>>>> local-storage
                     <option value="">All</option>
                     <option value="">Google</option>
                     <option value="">Bing</option>
@@ -242,6 +340,7 @@
             <fieldset>
               <legend class="hide-visual">Deliver If</legend>
               <div>
+<<<<<<< HEAD
                 <input type="radio" name="deliver-if" id="deliver-if-1" value="saw targed ad (test)">
                 <label for="deliver-if-1">Saw a targeted ad (test)</label>            
               </div>
@@ -251,6 +350,17 @@
               </div>
               <div>
                 <input type="radio" name="deliver-if" id="deliver-if-3" value="visited targeted site">
+=======
+                <input type="radio" name="deliver-if" id="deliver-if-1" value="saw targed ad (test)" data-store-key="sayso-cells-n1-qualifier-condition">
+                <label for="deliver-if-1">Saw a targeted ad (test)</label>            
+              </div>
+              <div>
+                <input type="radio" name="deliver-if" id="deliver-if-2" value="didn't see targeted at but visited similar site (control)" data-store-key="sayso-cells-n1-qualifier-condition">
+                <label for="deliver-if-2">Visited a similar site (control)</label>            
+              </div>
+              <div>
+                <input type="radio" name="deliver-if" id="deliver-if-3" value="visited targeted site" data-store-key="sayso-cells-n1-qualifier-condition">
+>>>>>>> local-storage
                 <label for="deliver-if-3">Visited a targeted site</label>
               </div>
             </fieldset>
@@ -312,20 +422,36 @@
           </header>
           <fieldset class="under-full">
             <label for="pairs-label">Label It</label>
+<<<<<<< HEAD
             <input type="text" name="pairs-label" id="pairs-label">
             <label for="pairs-ad-tag">Paste Ad Tag Here</label>
             <textarea name="pairs-ad-tag" id="pairs-ad-tag" cols="30" rows="10"></textarea>
             <label for="pairs-domains">Domains:</label>
             <input type="text" name="pairs-domains" id="pairs-domains" class="pairs-domains">
+=======
+            <input type="text" name="pairs-label" id="pairs-label" data-store-key="sayso-tagdomain-1-label">
+            <label for="pairs-ad-tag">Paste Ad Tag Here</label>
+            <textarea name="pairs-ad-tag" id="pairs-ad-tag" cols="30" rows="10" data-store-key="sayso-tagdomain-1-tag"></textarea>
+            <label for="pairs-domains">Domains:</label>
+            <input type="text" name="pairs-domains" id="pairs-domains" class="pairs-domains" data-store-key="sayso-tagdomain-1-domain">
+>>>>>>> local-storage
             <button class="add">Add Domain</button>
             <fieldset>   
               <legend>Cells</legend>           
               <div class="radios-labeled">
+<<<<<<< HEAD
                 <input type="radio" name="pairs-cell" id="pairs-cell-1" value="n1">
                 <label for="pairs-cell-1" class="radio">n1</label>              
                 <input type="radio" name="pairs-cell" id="pairs-cell-2" value="n2">
                 <label for="pairs-cell-2" class="radio">n2</label>              
                 <input type="radio" name="pairs-cell" id="pairs-cell-3" value="n3">
+=======
+                <input type="radio" name="pairs-cell" id="pairs-cell-1" value="n1" data-store-key="sayso-tagdomain-1-cell">
+                <label for="pairs-cell-1" class="radio">n1</label>              
+                <input type="radio" name="pairs-cell" id="pairs-cell-2" value="n2" data-store-key="sayso-tagdomain-1-cell">
+                <label for="pairs-cell-2" class="radio">n2</label>              
+                <input type="radio" name="pairs-cell" id="pairs-cell-3" value="n3" data-store-key="sayso-tagdomain-1-cell">
+>>>>>>> local-storage
                 <label for="pairs-cell-3" class="radio">n3</label>
               </div>
             </fieldset>
@@ -373,6 +499,7 @@
             <fieldset>
               <legend>Choose which type of survey you'll use</legend>              
               <div class="radios-labeled">
+<<<<<<< HEAD
               <input type="radio" name="type-survey" id="type-survey-1" value="No Survey">
               <label for="type-survey-1">No Survey</label>              
               </div>
@@ -382,11 +509,26 @@
               </div>
               <div>
               <input type="radio" name="type-survey" id="type-survey-3" value="Custom Survey">
+=======
+              <input type="radio" name="type-survey" id="type-survey-1" value="No Survey" data-store-key="sayso-surveyinfo-type">
+              <label for="type-survey-1">No Survey</label>              
+              </div>
+              <div>
+              <input type="radio" name="type-survey" id="type-survey-2" value="Standard Survey" data-store-key="sayso-surveyinfo-type">
+              <label for="type-survey-2">Standard Survey</label>              
+              </div>
+              <div>
+              <input type="radio" name="type-survey" id="type-survey-3" value="Custom Survey" data-store-key="sayso-surveyinfo-type">
+>>>>>>> local-storage
               <label for="type-survey-3">Custom Survey</label>
               </div>
             </fieldset>
             <label for="type-iframe" class="paste-iframe-label">Paste iFrame Content Here</label>
+<<<<<<< HEAD
             <textarea name="type-iframe" id="type-iframe" cols="30" rows="10"></textarea>
+=======
+            <textarea name="type-iframe" id="type-iframe" cols="30" rows="10" data-store-key="sayso-surveyinfo-tag"></textarea>
+>>>>>>> local-storage
           </fieldset>
         </section><!-- end #survey-type --><section class="secondary-criteria survey-qualifiers padded-column-5 last" id="survey-qualifiers">
           <header class="under-full">
@@ -396,13 +538,21 @@
           <fieldset class="under-full">
             <legend class="hide-visual">When and where to deliver surveys</legend>
             <label for="delivery-domain">Deliver if a user visits</label>
+<<<<<<< HEAD
             <select name="delivery-domain" id="delivery-domain">
+=======
+            <select name="delivery-domain" id="delivery-domain" data-store-key="sayso-surveyinfo-criteria-1-domain">
+>>>>>>> local-storage
               <option value="Facebook.com">Facebook.com</option>
               <option value="CNN.com">CNN.com</option>
               <option value="ESPN.com">ESPN.com</option>
             </select>
             <label for="delivery-timeframe">within</label>
+<<<<<<< HEAD
             <select name="delivery-timeframe" id="delivery-timeframe">
+=======
+            <select name="delivery-timeframe" id="delivery-timeframe" data-store-key="sayso-surveyinfo-criteria-1-timeframe">
+>>>>>>> local-storage
               <option value="1 hour">1 hour</option>
               <option value="1 day">1 day</option>
               <option value="1 week">1 week</option>              
@@ -431,11 +581,19 @@
           <fieldset class="under-full">
             <legend>Record Click-Track</legend>
             <div class="radios-labeled">
+<<<<<<< HEAD
               <input type="radio" name="record-click-track" id="record-click-track-1" value="Yes">
               <label for="record-click-track-1">Yes</label>            
             </div>
             <div>
               <input type="radio" name="record-click-track" id="record-click-track-2" value="No">
+=======
+              <input type="radio" name="record-click-track" id="record-click-track-1" value="Yes" data-store-key="sayso-metrics-clicktrack">
+              <label for="record-click-track-1">Yes</label>            
+            </div>
+            <div>
+              <input type="radio" name="record-click-track" id="record-click-track-2" value="No" data-store-key="sayso-metrics-clicktrack">
+>>>>>>> local-storage
               <label for="record-click-track-2">No</label>
             </div>
           </fieldset>
@@ -446,6 +604,7 @@
           <fieldset class="under-full">
             <legend>Search Engines</legend>            
             <div class="radios-labeled">
+<<<<<<< HEAD
               <input type="radio" name="record-serach-engines" id="record-serach-engines-1" value="All">            
               <label for="record-serach-engines-1">All</label>
             </div>
@@ -467,13 +626,40 @@
             </div>
           </fieldset>
         </section><section class="secondary-criteria padded-column-3 last">
+=======
+              <input type="radio" name="record-serach-engines" id="record-serach-engines-1" value="All" data-store-key="sayso-metrics-searchengines">            
+              <label for="record-serach-engines-1">All</label>
+            </div>
+            <div>
+              <input type="radio" name="record-serach-engines" id="record-serach-engines-2" value="None" data-store-key="sayso-metrics-searchengines">
+              <label for="record-serach-engines-2">None</label>
+            </div>
+            <div>
+              <input type="radio" name="record-serach-engines" id="record-serach-engines-3" value="Google" data-store-key="sayso-metrics-searchengines">            
+              <label for="record-serach-engines-3">Google</label>
+            </div>
+            <div>
+              <input type="radio" name="record-serach-engines" id="record-serach-engines-4" value="Yahoo!" data-store-key="sayso-metrics-searchengines">
+              <label for="record-serach-engines-4">Yahoo!</label>            
+            </div>
+            <div>
+              <input type="radio" name="record-serach-engines" id="record-serach-engines-5" value="Bing" data-store-key="sayso-metrics-searchengines">
+              <label for="record-serach-engines-5">Bing</label>
+            </div>
+          </fieldset>
+        </section><section class="secondary-criteria padded-column-3 last" data-store-key="sayso-metrics-searchengines">
+>>>>>>> local-storage
           <header class="under-full">
             <h3>Social</h3>
           </header>
         </section>
       </section>
       <div class="button-holder">
+<<<<<<< HEAD
         <input type="submit" value="Build My Say.So" class="styled-button main-submit">
+=======
+        <input type="submit" value="Build My Say.So" class="styled-button main-submit" id="do-ze-build">
+>>>>>>> local-storage
       </div>
     </form>
   </div>

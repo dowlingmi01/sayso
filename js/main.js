@@ -5,6 +5,8 @@ var storeLocalData = {
     fieldsToWatch: null
   },
   
+  // an empty object that we're going to temporarily write to with each DOM change so we
+  // can stringify the whole thing and stick it in local storage
   studyInfo : {
     
   },
@@ -21,10 +23,12 @@ var storeLocalData = {
   
   bindTheDom : function() {
     
+    // alias this so we can refer to it in our upcoming function
     var that = this;
     
     $(this.config.fieldsToWatch).change(function(){
       
+      // get the value we've updated to and the selector we're going to use as a key
       var dataKey = $(this).attr(that.config.dataSelector),
           dataValue = $(this).val();
           
@@ -92,6 +96,12 @@ yepnope({
   ]
 });
 
+/** DEVELOPMENT ONLY 
+ *
+ * Bind our submit function to instead display our JSON on the console, and bind the key
+ * sequence of "clear" to empty out our local storage object.
+*/
+
 $('#do-ze-build').click(function(e) {
   
   e.preventDefault();
@@ -108,8 +118,7 @@ $(document).ready(function(){
 	  keys.push( e.keyCode );
 	  
 	  if( keys.toString().indexOf( clear ) >= 0 ){
-	    
-	    
+	    	    
 	    localStorage.removeItem('sayso');
 	    keys = [];
 	    

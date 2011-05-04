@@ -1,0 +1,114 @@
+$column_count: 12 !default
+$column_width: 60px !default
+$gutter_width: 20px !default
+$single_gutter_width: $gutter_width / 2
+
+// CONTAINER MIXIN
+// 
+// Containers are elements that have no margin or padding, but they extend half-way into
+// the gutters surrounding their grids. These are good for, you know, containing stuff,
+// and they don't mess with nested columns.
+
+@mixin container($n: $column_count)
+  width: $n * ($column_width + $gutter_width)
+
+// ULTRA FLEXIBLE COLUMN
+//
+// This is experimental for now, but the idea is that this mixin would allow for a single
+// declaration that could provide a padded column, a regular margin column, or a bordered
+// column. A big need is the ability to pass a value in the mixin call that would yield
+// to the default value in a list. i.e. $margin: 0 yield 20px yield
+  
+@mixin flex-column( $n, $margin: 0 $single_gutter_width 0 $single_gutter_width, $padding: 0 $single_gutter_width 0 $single_gutter_width, $border_width: 0 )
+  @if nth($margin, 2) == "default"
+    $margin: nth($margin, 1) $single_gutter_width nth($margin, 3) $single_gutter_width
+  @if nth($padding, 2) == "default"
+    $padding: nth($padding, 1) $single_gutter_width nth($padding, 3) $single_gutter_width
+  $total_padding: nth($padding, 2) + nth($padding, 4)
+  $box_width: $column_width - $total_padding
+  +inline-block(top)  
+  margin: nth($margin, 1) nth($margin, 2) nth($margin, 3) nth($margin, 4)
+  padding: nth($padding, 1) nth($padding, 2) nth($padding, 3) nth($padding, 4)
+  width: $n * $box_width + ($n - 1) * $gutter_width - $border_width
+
+// STANDARD COLUMN MIXIN
+// 
+// : ---------------------- : ---------------------- : 
+// : |      1 COLUMN      | : |      1 COLUMN      | :
+// : ---------------------- : ---------------------- :
+//
+// Columns are standard grid elements that have no padding or border. They have a left
+// and right margin of 1/2 the standard gutter width.
+
+@mixin column( $n, $margin: 0 $single_gutter_width 0 $single_gutter_width )
+  @if nth($margin, 2) == "default"
+    $margin: nth($margin, 1) $single_gutter_width nth($margin, 3) $single_gutter_width
+  +inline-block(top)
+  margin: nth($margin, 1) nth($margin, 2) nth($margin, 3) nth($margin, 4)
+  @if $n == $column_count
+    width: $n * ($column_width + $gutter_width) - $gutter_width
+  @else
+    width: ($n * $column_width) + (($n - 1) * $gutter_width)
+
+// PADDED COLUMN MIXIN
+//    
+// : ---------------------- : ---------------------- : 
+// : | |    1 COLUMN    | | : | |    1 COLUMN    | | :
+// : ---------------------- : ---------------------- :
+//
+// Padded columns are standard columns with inner padding applied. That means we need to
+// subtract the applied 
+    
+@mixin padded-column( $n, $margin: 0 $single_gutter_width 0 $single_gutter_width, $padding: 0 $single_gutter_width 0 $single_gutter_width )
+  @if nth($margin, 2) == "default"
+    $margin: nth($margin, 1) $single_gutter_width nth($margin, 3) $single_gutter_width
+  @if nth($padding, 2) == "default"
+    $padding: nth($padding, 1) $single_gutter_width nth($padding, 3) $single_gutter_width
+  +inline-block(top)    
+  margin: nth($margin, 1) $single_gutter_width nth($margin, 3) nth($margin, 4)
+  @if $n == $column_count
+    width: #{$n * ($column_width + $gutter_width) - ($gutter_width * 2)}px
+  @else
+    width: ($n * $column_width) + (($n - 1) * $gutter_width) - (nth($padding, 2) + nth($padding, 4))
+  padding: nth($padding, 1) nth($padding, 2) nth($padding, 3) nth($padding, 4)
+  
+// BORDER COLUMN MIXIN
+// 
+// : ====================== : ====================== : 
+// : ||     1 COLUMN     || : ||     1 COLUMN     || :
+// : ====================== : ====================== :
+//
+// Bordered columns are standard columns with an additional border, so we must subtract
+// the width of the border from the width of the column to allow for the border's width.
+
+@mixin border-column($n, $border_width: 2px)
+  
+@mixin push_left($distance)
+  margin-left: $distance
+  
+@mixin push_right($distance)
+  margin-right: $distance
+
+// GENERATE CSS CLASSES
+//   
+// CSS classes will be generated for each column with default values applied. Classes are
+// generated for margin-columns, padded-columns, and border-columns. It isn't possible to 
+// generate classes for flexible columns.
+  
+@for $n from 1 to $column_count + 1
+  .column-#{$n}
+    +column($n)
+    
+  // assumes a 1/2 gutter-width padding
+  .padded-column-#{$n}
+    +padded-column($n)
+  
+  // assumes a 1px border  
+  .border-column-#{$n}
+    +border-column($n)
+    
+.first
+  margin-left: 0
+  
+.last
+  margin-right: 0

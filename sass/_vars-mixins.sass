@@ -1,0 +1,80 @@
+// VARIABLES & MIXINS
+
+$dark-gray: #303030
+$gray: #88878C
+$green: #BDCBBA
+$blue: #1A8FBB
+
+@mixin griddle-bg($width: 960px, $columns: 12, $gutter: 30px)
+  background: url('http://griddle.it/#{$width}-#{$columns}-#{$gutter}') repeat-y center top
+
+@mixin border-radius($radius)
+  -webkit-border-radius: $radius
+  -moz-border-radius: $radius
+  border-radius: $radius
+  
+@mixin border-radius-top-left($radius)
+  -webkit-border-top-left-radius: $radius
+  -moz-border-radius-topleft: $radius
+  border-top-left-radius: $radius
+
+@mixin border-radius-top-right($radius)
+  -webkit-border-top-right-radius: $radius
+  -moz-border-radius-topright: $radius
+  border-top-right-radius: $radius
+  
+@mixin border-radius-bottom-right($radius)
+  -webkit-border-bottom-right-radius: $radius
+  -moz-border-radius-bottomright: $radius
+  border-bottom-right-radius: $radius
+  
+@mixin inline-block($align: bottom)
+  display: -moz-inline-stack
+  display: inline-block
+  *display: inline
+  vertical-align: $align
+  zoom: 1
+  
+@mixin box-shadow($params)
+  -webkit-box-shadow: $params
+  -moz-box-shadow: $params
+  box-shadow: $params
+  
+@mixin gradient($baseColor, $toColor)
+  background-color: $baseColor
+  background-image: -moz-linear-gradient(top, $baseColor, $toColor)
+  background-image: -webkit-gradient(linear,left top,left bottom, color-stop(0, $baseColor),color-stop(1, $toColor))
+  background-image: linear-gradient(top,$baseColor, $toColor)
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#{$baseColor}', EndColorStr='#{$toColor}') /* IE6â��IE9 */
+  
+@mixin image-replacement($url, $color: transparent, $repeat: no-repeat)
+  background: $color url('$url') $repeat
+  direction: ltr
+  display: block
+  overflow: hidden
+  text-indent: -9999px
+  
+@mixin hide-all
+  display: none
+  visibility: hidden
+
+/* Hide only visually, but have it available for screenreaders: by Jon Neal.
+   www.webaim.org/techniques/css/invisiblecontent/  &  j.mp/visuallyhidden 
+   Extend to allow the element to be focusable when navigated to via the keyboard
+   drupal.org/node/897638 */
+@mixin hide-visual
+  border: 0
+  clip: rect(0 0 0 0)
+  height: 1px
+  margin: -1px
+  overflow: hidden
+  padding: 0
+  position: absolute
+  width: 1px
+  &:active, &:focus
+    clip: auto
+    height: auto
+    margin: 0
+    overflow: visible
+    position: static
+    width: auto

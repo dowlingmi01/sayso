@@ -1,0 +1,369 @@
+@import "vars-mixins.sass", "reset.sass", "grid.sass"
+
+// OFT-OVERLOOKED, BUT REMEMBER TO CHANGE THESE IF NEEDED
+  
+/* Colors for form validity http://www.whatwg.org/specs/web-apps/current-work/multipage/links.html */
+input:invalid, textarea:invalid
+  border-radius: 1px
+  -moz-box-shadow: 0px 0px 5px red
+  -webkit-box-shadow: 0px 0px 5px red
+  box-shadow: 0px 0px 5px red
+
+.no-boxshadow input:invalid, .no-boxshadow textarea:invalid
+  background-color: #f0dddd
+
+/* Vendor-specific pseudo-class declarations have to be separated */
+::-moz-selection
+  background: #FF5E99
+  color: #FFFFFF
+  text-shadow: none
+  
+::selection
+  background: #FF5E99
+  color: #FFFFFF
+  text-shadow: none
+  
+/* Font normalization inspired by YUI Library's fonts.css
+   developer.yahoo.com/yui/ 
+   #444444 looks better than black
+   twitter.com/H_FJ/statuses/11800719859 */
+
+body
+  color: #444444
+  font: 12px/1.231 "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif
+  *font-size:small /* Hack retained to preserve specificity */
+  
+select, input, textarea, button
+  font: 99% sans-serif
+  
+/* Webkit tap highlight
+   j.mp/webkit-tap-highlight-color */
+a:link
+  -webkit-tap-highlight-color: #FF5E99
+   
+// DOCUMENT STYLES
+
+/* Default element styles */
+
+html
+  background: #f2f2f2
+
+body
+  +container(10)
+  background: #FFFFFF
+  border: 1px solid #cccccc
+  margin: 0 auto
+  padding: 10px 0
+  
+h1
+  +hide-visual
+
+h2
+  font-size: 16px
+  
+h3
+  font-size: 14px
+  
+h4  
+  border-bottom: 1px dotted #cccccc
+  font-size: 12px
+  margin: 0 0 10px 0
+  padding: 0 0 5px 0
+  
+li
+  list-style-type: none
+
+label
+  display: block
+  font-weight: bold
+  margin: 0 0 5px 0
+  
+input[type="text"]
+  width: 99%
+  
+input:not([type="radio"])
+  display: block
+  
+input[type="radio"]  
+  position: relative
+  top: 4px
+  
+input[type="radio"] + label
+  +inline-block
+  
+input,
+select,
+textarea
+  margin: 0 0 10px 0
+  
+.hide-visual
+  +hide-visual
+  
+.radios-labeled
+  -webkit-margin-collapse: separate
+  margin: 5px 0 0 0
+  
+.button-holder
+  font-weight: bold
+  text-align: center
+  p
+    border-top: 1px dotted #cccccc
+    margin: 20px 0 -5px 0
+    padding: 20px 0 0 0
+
+.styled-button
+  +border-radius(5px)
+  +box-shadow(( inset 0 1px 0 rgba( 255, 255, 255, 1.0 ), 0 2px 4px rgba( 0, 0, 0, 0.2 ), 0 0 4px rgba( 0, 0, 0, 0.2 ) ))
+  +gradient(#f2f2f2, #d9d9d9)
+  +inline-block
+  border: 1px solid #a6a6a6
+  color: #444444
+  font-weight: bold
+  margin: 20px 10px 20px 0
+  padding: 5px 10px
+  text-shadow: 1px 1px 1px #ffffff
+  width: 120px
+
+// Main Navigation
+
+nav.main
+  +box-shadow(inset 0 1px 0 rgba(255, 255, 255, 1.0))
+  +gradient(#f2f2f2, #d1d1d1)
+  border-bottom: 1px solid #b2b2b2
+  border-top: 1px solid #b2b2b2
+  margin: 10px 0 20px 0
+  position: relative
+  p
+    position: absolute
+    right: 15px
+    top: 11px
+  li
+    +padded-column(1)
+    padding-bottom: 10px
+    padding-top: 10px
+    text-align: center
+    a
+      color: #444444
+      font-size: 14px
+      font-weight: bold
+      text-decoration: none
+
+// Top-level, main critera for the largest of the containers
+  
+.main-criteria
+  +border-radius-top-right(5px)
+  +border-radius-top-left(5px)
+  +flex-column(10, $padding: 0 0 20px 0, $margin: 0 "default" 20px "default", $border_width: 2px)
+  -webkit-background-clip: border-box
+  border-left: 1px solid #cccccc
+  border-bottom: 1px solid #cccccc
+  border-right: 1px solid #cccccc  
+  // Section headers
+  > header
+    +gradient(#4d4d4d, #000000)
+    +border-radius-top-right(5px)
+    +border-radius-top-left(5px)
+    +box-shadow(inset 0 1px 0 rgba(255, 255, 255, 0.3))
+    -webkit-background-clip: padding-box
+    border-bottom: 2px solid #000000
+    border-top: 1px solid #000000
+    color: #ffffff
+    padding: 10px 15px
+    margin: 0 0 15px 0
+    position: relative
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, .5)  
+
+nav.lock
+  position: absolute
+  top: 5px
+  right: 15px
+  
+a.lock,
+a.unlock,
+a.minimize
+  +inline-block
+  +border-radius(3px)
+  +box-shadow(( inset 0 1px 0 rgba( 255, 255, 255, 0.3 ), 0 1px 0 rgba( 255, 255, 255, 0.3 ), 0 2px 4px rgba( 0, 0, 0, 1.0 ), 0 0 2px rgba( 0, 0, 0, 0.4 )))
+  border: 1px solid #000000
+  color: #7F7F7F
+  cursor: not-allowed
+  font-size: 11px
+  padding: 7px
+  text-decoration: none
+
+a.minimize
+  color: #ffffff
+  cursor: pointer
+  font-weight: bold
+  text-shadow: 1px 1px 1px rgba( 0, 0, 0, 1.0 )
+
+a.unlock
+  display: none
+
+// Ad Effectivenss Study Styles
+    
+.study-base
+  fieldset.padded-column-5
+    +push_left(-1px)
+  div.padded-column-5
+    +push_left(9px)
+    +push_right(0)
+
+// Top-level criteria for second-level containers
+
+.secondary-criteria.full
+  +flex-column(10, $padding: 0 0 0 0, $margin: 0 0 20px 0, $border_width: 2px)
+
+.secondary-criteria
+  > header
+    +box-shadow(inset 0 1px 0 rgba(255, 255, 255, 1.0))
+    background: #f2f2f2
+    border-bottom: 1px solid #d1d1d1
+    border-top: 1px solid #d1d1d1
+    margin: 0 0 15px
+    padding: 10px 15px
+    position: relative
+    p
+      color: #808080
+      font-weight: bold
+      font-size: 10px
+      position: absolute
+      right: 15px
+      top: 12px
+      text-transform: uppercase
+      
+header.under-full
+  border: 1px solid #d1d1d1
+  p
+    position: static
+    margin: 5px 0 0 0
+    
+fieldset.under-full,
+ul.under-full
+  padding: 0 0 0 15px
+
+// Cell Quota styles
+
+fieldset.cell-type    
+  legend
+    font-weight: bold    
+  label
+    font-weight: normal
+
+.cell-parameters
+  +push_left(-2px)
+    
+li.quota-select
+  +inline-block
+  margin: 0 10px 0 0
+  &.first
+    margin: 0 10px
+  select
+    width: 100px
+    
+.ethnicity
+  margin: 0 0 0 10px
+  legend
+    font-weight: bold
+    
+.ethnicities-list
+  -webkit-margin-collapse: eparate
+  margin: 5px 0 0 0
+  label
+    font-weight: normal
+    margin: 0 10px 5px 0
+  
+// Behavioral, Search, and Timing Qualifiers
+
+.online-browsing
+  +push_left(-2px)
+  
+.delivery-qualifiers
+  legend
+    font-weight: bold
+  label
+    font-weight: normal
+  
+
+ul.cell-lists  
+  border-bottom: 1px dotted #cccccc
+  border-top: 1px dotted #cccccc
+  padding: 15px 0
+  .completed-parameter
+    margin: 0 10px    
+  
+.completed-parameter
+  +border-radius(10px)
+  +inline-block
+  background: #f2f2f2
+  border: 1px solid #cccccc
+  font-size: 10px
+  padding: 5px 10px
+  
+.online-browsing, .search-engines
+  .completed-parameter
+    margin: 5px 0
+
+.cell-list
+  border-bottom: 1px dotted #cccccc
+  border-top: 1px dotted #cccccc
+  display: block
+  padding: 15px 0
+  tr:nth-child(even)
+    background: #f2f2f2
+  tr
+    padding: 0 10px
+  td
+    padding: 10px
+  th
+    font-weight: bold
+    padding: 0 0 10px 10px
+    text-align: left
+    min-width: 80px
+
+section.tag-domain-pairs, 
+section.behavior-online, 
+section.survey-type
+  +push_left(-2px)
+  
+section.tag-domain-pairs
+  input:not([type="radio"])
+    width: 225px
+  input.pairs-domains
+    +inline-block
+  button.add
+    margin: 0 0 0 5px
+    position: relative
+    top: -10px
+  legend
+    font-weight: bold
+  ul.cell-list
+    margin: 10px 0
+  label.radio
+    margin: 0 10px 5px 0
+  
+section.survey-qualifiers
+  fieldset 
+    font-weight: bold
+    margin: 0 0 20px 0  
+  .button-holder
+    text-align: left
+    
+.paste-iframe-label
+  margin: 20px 0 10px 0
+
+input.main-submit
+  +inline-block
+  +gradient(#61d8f4, #40759d)
+  color: #ffffff
+  font-size: 16px
+  padding: 10px 20px
+  text-shadow: 1px 1px 1px #416987
+  width: auto
+
+// PRINT STYLES
+
+/* Inlined to avoid required HTTP connection: 
+   http://phpied.com/delay-loading-your-print-css/ */
+@media print
+  @import "print.sass"

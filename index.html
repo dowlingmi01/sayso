@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Say.So Survey Administration</title>
+  <meta name="description" content="">
+  <meta name="author" content="Joshua Cody">
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <header>
+    <h1>Say.So</h1>
+    <img src="img/say-so.png" alt="Say.So Logo" width="230" height="60">
+    <nav class="main">
+      <ul>
+        <li><a href="#">Build</a></li>
+        <li><a href="#">Reports</a></li>
+      </ul>
+      <p>Logged in as <strong>SaySoAdmin</strong>. <a href="#">Log Out</a></p>
+    </nav>
+  </header>
+  <div id="main" role="main">
+    <form action="" class="main-survey">
+      <section class="main-criteria study-base" id="study-base">
+        <header>
+          <h2>Ad Effectiveness Study</h2>
+          <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
+        </header>        
+        <fieldset class="padded-column-5">
+          <legend class="hide-visual">Basic details about the survey</legend>
+          <ul>
+            <li>
+              <label for="study-name">Study Name</label>
+              <input type="text" name="study-name" id="study-name">
+            </li>
+            <li>
+              <label for="study-id">Study ID</label>
+              <input type="text" name="study-id" id="study-id">
+            </li>
+            <li>
+              <label for="study-sample-size">Sample Size (N)</label>
+              <input type="text" name="study-sample-size" id="study-sample-size">
+            </li>
+            <li>
+              <label for="study-min-threshold">Min. Threshold</label>
+              <input type="text" name="study-min-threshold" id="study-min-threshold">
+            </li>
+          </ul>
+        </fieldset><div class="padded-column-5">
+        <fieldset>
+          <legend class="hide-visual">Start and end dates for the survey</legend>
+          <ul>
+            <li>
+              <label for="study-start-date">Begin</label>
+              <input type="date" name="study-start-date" id="study-start-date">
+            </li>
+            <li>
+              <label for="study-end-date">End</label>
+              <input type="date" name="study-end-date" id="study-end-date">
+            </li>
+          </ul>
+        </fieldset>
+        <fieldset>
+          <legend>Is this going to be a survey?</legend>          
+          <div class="radios-labeled">
+            <input type="radio" name="study-is-survey" id="study-is-survey-1" value="yes" checked>
+            <label for="study-is-survey-1">Yes</label> 
+            <input type="radio" name="study-is-survey" id="study-is-survey-2" value="no">
+            <label for="study-is-survey-2">No</label>
+          </div>
+        </fieldset>
+        </div>
+      </section><!-- end #study-base -->
+      <section class="main-criteria" id="build-cells">
+        <header>
+          <h2>Build Study Cells</h2>
+          <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
+        </header>
+        <section class="secondary-criteria build-cells full" id="cell-quota">
+          <header>
+            <h3>Cell Quota</h3>
+            <p>Who would you like to survey?</p>
+          </header>
+          <fieldset>
+            <legend class="hide-visual">Enter a description of a response cell</legend>
+            <ul class="cell-parameters">
+              <li class="padded-column-8 first">
+                <label for="cell-description">CELL Description</label>
+                <input type="text" name="cell-description" id="cell-description">
+              </li><li class="padded-column-2 last">
+                <fieldset class="cell-type">
+                  <legend>Type of Cell</legend>         
+                  <div class="radios-labeled">         
+                    <input type="radio" name="cell-type" id="cell-type-1" value="Control">
+                    <label for="cell-type-1">Control</label>                  
+                  </div>
+                  <div>
+                    <input type="radio" name="cell-type" id="cell-type-2" value="Test">
+                    <label for="cell-type-2">Test</label>
+                  </div>
+                </fieldset>
+              </li>
+              <li class="quota-select first">
+                <label for="cell-number">Cell #</label>
+                <select name="" id="cell-number">
+                  <option value="n1">n1</option>
+                  <option value="n2">n2</option>
+                  <option value="n3">n3</option>
+                </select>
+              </li>
+              <li class="quota-select">
+                <label for="cell-size">Size</label>
+                <select name="cell-size" id="cell-size">
+                  <option value="1000"></option>
+                </select>
+              </li>
+              <li class="quota-select">
+                <label for="cell-gender">M/F</label>
+                <select name="cell-gender" id="cell-gender">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </li>
+              <li class="quota-select">
+                <label for="cell-age">Age</label>
+                <select name="cell-age" id="cell-age">
+                  <option value="0-18">0-18</option>
+                  <option value="19-25">19-25</option>
+                  <option value="26-35">26-35</option>
+                  <option value="36+">36+</option>
+                </select>
+              </li>
+              <li class="quota-select">
+                <label for="cell-size-percent">Cell %</label>
+                <select name="cell-size-percent" id="cell-size-percent">
+                  <option value="50">50%</option>
+                </select>
+              </li>
+              <li>
+                <fieldset class="ethnicity">
+                  <legend>Ethnicity</legend>                  
+                  <div class="ethnicities-list radios-labeled">
+                    <input type="radio" name="ethnicity" id="ethnicity-1" value="All">
+                    <label for="ethnicity-1">All</label>                  
+                    <input type="radio" name="ethnicity" id="ethnicity-2" value="White">
+                    <label for="ethnicity-2">White</label>                  
+                    <input type="radio" name="ethnicity" id="ethnicity-3" value="African American">
+                    <label for="ethnicity-3">African American</label>                  
+                    <input type="radio" name="ethnicity" id="ethnicity-4" value="Asian">
+                    <label for="ethnicity-4">Asian</label>                  
+                    <input type="radio" name="ethnicity" id="ethnicity-5" value="Latino">
+                    <label for="ethnicity-5">Latino</label>                  
+                    <input type="radio" name="ethnicity" id="ethnicity-6" value="Native American">
+                    <label for="ethnicity-6">Native American</label>                  
+                    <input type="radio" name="ethnicity" id="ethnicity-7" value="Hawaiian or Pacific Islander">
+                    <label for="ethnicity-7">Hawaiian or Pacific Islander</label>
+                  </div>
+                </fieldset>                
+              </li>
+            </ul>
+            <div class="button-holder">
+              <button class="add-cell styled-button">Add This Cell</button>
+            </div>
+          </fieldset>
+          <ul class="cell-lists">
+            <li class="completed-parameter">TEST 50% ALL Men 18-34 <a href="#" class="delete">Delete</a></li>
+            <li class="completed-parameter">TEST 50% ALL Women 18-34 <a href="#" class="delete">Delete</a></li>
+          </ul>
+        </section><!-- end #build-cells -->
+        <section class="secondary-criteria behavioral-qualifiers build-cells full" id="behavioral-qualifiers">
+          <header>
+            <h3>Behavioral & Delivery Qualifiers</h3>
+            <p>Who should receive surveys, and when?</p>
+          </header>
+          <section class="tertiary-criteria padded-column-3 first online-browsing" id="online-browsing">
+            <header>
+              <h4>Online Browsing</h4>
+            </header>
+            <fieldset>
+              <legend class="hide-visual">Online browsing qualifiers</legend>
+              <ul>
+                <li>
+                  <label for="browswing-include-exclude"></label>
+                  <select name="include-exclude" id="browsing-include-exclude">
+                    <option value="Inclue">Include users</option>
+                    <option value="Exclude">Exclude users</option>
+                  </select>
+                </li>
+                <li>
+                  <label for="browswing-domain-name">who have visited</label>
+                  <input type="text" name="browswing-domain-name" id="browswing-domain-name">
+                </li>
+                <li>
+                  <label for="browsing-timeframe">in the</label>
+                  <select name="browsing-timeframe" id="browsing-timeframe">
+                    <option value="">Last 24 hours</option>
+                    <option value="">Last 1 week</option>
+                    <option value="">Last 1 month</option>
+                  </select>
+                </li>
+              </ul>                                          
+            </fieldset>
+            <ul>
+              <li class="completed-parameter">INCLUDE Facebook.com in Last 24 Hours <a href="#" class="delete">Delete</a></li>
+              <li class="completed-parameter">EXCLUDE Nike.com in Last 3 Months <a href="#" class="delete">Delete</a></li>
+            </ul>   
+          </section><section class="tertiary-criteria search-engines padded-column-3" id="search-engines">
+            <header>
+              <h4>Search Actions</h4>
+            </header>
+            <fieldset>
+              <legend class="hide-visual">Online browsing qualifiers</legend>
+              <ul>
+                <li>
+                  <label for="browswing-engine-include-exclude"></label>
+                  <select name="browsing-engine-include-exclude" id="browsing-engine-include-exclude">
+                    <option value="Inclue">Include users</option>
+                    <option value="Exclude">Exclude users</option>
+                  </select>
+                </li>
+                <li>
+                  <label for="browswing-engine-domain-name">who have searched for</label>
+                  <input type="text" name="browswing-engine-domain-name" id="browswing-engine-domain-name">
+                </li>
+                <li>
+                  <label for="browsing-engine-timeframe">On</label>
+                  <select name="browsing-engine-timeframe" id="browsing-engine-timeframe">
+                    <option value="">All</option>
+                    <option value="">Google</option>
+                    <option value="">Bing</option>
+                    <option value="">Yahoo</option>
+                  </select>
+                </li>
+              </ul>                                          
+            </fieldset>
+            <ul>
+              <li class="completed-parameter">INCLUDE smartphones on Yahoo <a href="#" class="delete">Delete</a></li>
+              <li class="completed-parameter">EXCLUDE droid on Bing <a href="#" class="delete">Delete</a></li>
+              <li class="completed-parameter">INCLUDE iphone on ALL <a href="#" class="delete">Delete</a></li>
+            </ul>
+          </section><section class="tertiary-criteria delivery-qualifiers padded-column-4 last" id="delivery-qualifiers">
+            <header>
+              <h4>Deliver If</h4>
+            </header>
+            <fieldset>
+              <legend class="hide-visual">Deliver If</legend>
+              <div>
+                <input type="radio" name="deliver-if" id="deliver-if-1" value="saw targed ad (test)">
+                <label for="deliver-if-1">Saw a targeted ad (test)</label>            
+              </div>
+              <div>
+                <input type="radio" name="deliver-if" id="deliver-if-2" value="didn't see targeted at but visited similar site (control)">
+                <label for="deliver-if-2">Visited a similar site (control)</label>            
+              </div>
+              <div>
+                <input type="radio" name="deliver-if" id="deliver-if-3" value="visited targeted site">
+                <label for="deliver-if-3">Visited a targeted site</label>
+              </div>
+            </fieldset>
+        </section>
+        <div class="button-holder">
+          <p>Once you've set your cell quotas and qualifiers, go ahead and build a cell. Or if you need to start over, reset the input.</p>
+          <button class="build-cell styled-button">Build Cell</button>
+          <button class="reset-input styled-button">Reset Input</button>
+        </div>
+        <table class="cell-list">
+          <thead>
+            <tr>
+              <th>Cell #</th>
+              <th>Cell Size</th>
+              <th>Cell Group</th>
+              <th>Cell Description</th>
+              <th>Cell Actions</th>
+            </tr>
+          </thead>
+          <tr>
+            <td>n1</td>
+            <td>300</td>
+            <td>Test</td>
+            <td>
+              <p>PRE - matched gamer sample w/ no exposure to the Toyota ads</p>                  
+            </td>
+            <td><a href="#">View</a> <a href="#">Edit</a> <a href="#">Delete</a></td>
+          </tr>
+          <tr>
+            <td>n2</td>
+            <td>500</td>
+            <td>Test</td>
+            <td>
+              <p>PRE - matched gamer sample w/ no exposure to the Toyota ads</p>                  
+            </td>
+            <td><a href="#">View</a> <a href="#">Edit</a> <a href="#">Delete</a></td>
+          </tr>
+          <tr>
+            <td>n3</td>
+            <td>200</td>
+            <td>Control</td>
+            <td>
+              <p>PRE - matched gamer sample w/ no exposure to the Toyota ads</p>                  
+            </td>
+            <td><a href="#">View</a> <a href="#">Edit</a> <a href="#">Delete</a></td>
+          </tr>
+        </table>
+      </section><!-- end #build-cells -->
+      </section><!-- end #behavioral-qualifiers -->
+      <section class="main-criteria" id="ad-tags">
+        <header>
+          <h2>Ad Tags</h2>
+          <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
+        </header>
+        <section class="secondary-criteria tag-domain-pairs first padded-column-5" id="tag-domain-pairs">
+          <header class="under-full">
+            <h3>Tag-Domain Pairs</h3>
+            <p>Which tags should be tested on which set?</p>
+          </header>
+          <fieldset class="under-full">
+            <label for="pairs-label">Label It</label>
+            <input type="text" name="pairs-label" id="pairs-label">
+            <label for="pairs-ad-tag">Paste Ad Tag Here</label>
+            <textarea name="pairs-ad-tag" id="pairs-ad-tag" cols="30" rows="10"></textarea>
+            <label for="pairs-domains">Domains:</label>
+            <input type="text" name="pairs-domains" id="pairs-domains" class="pairs-domains">
+            <button class="add">Add Domain</button>
+            <fieldset>   
+              <legend>Cells</legend>           
+              <div class="radios-labeled">
+                <input type="radio" name="pairs-cell" id="pairs-cell-1" value="n1">
+                <label for="pairs-cell-1" class="radio">n1</label>              
+                <input type="radio" name="pairs-cell" id="pairs-cell-2" value="n2">
+                <label for="pairs-cell-2" class="radio">n2</label>              
+                <input type="radio" name="pairs-cell" id="pairs-cell-3" value="n3">
+                <label for="pairs-cell-3" class="radio">n3</label>
+              </div>
+            </fieldset>
+            <ul class="cell-list">
+              <li class="completed-parameter">Facebook.com <a href="#" class="delete">Delete</a></li>
+              <li class="completed-parameter">UGO.com <a href="#" class="delete">Delete</a></li>
+            </ul>            
+            <div class="button-holder">
+            <button class="add-pair styled-button">Add Tag-Domain Pair</button>
+            </div>
+          </fieldset>
+        </section><!-- end #tag-domain-pairs --><section class="secondary-criteria study-list padded-column-5 last" id="study-list">
+          <header class="under-full">
+            <h3>Study List</h3>
+            <p>Currently active studies</p>
+          </header>
+          <ul class="under-full study-list">
+            <li>
+              <ul>
+                <li>Pepsi Challenge - Search • August 2011</li>
+                <li><a href="#" class="edit">Editing</a> <a href="#" class="delete">Delete</a></li>
+              </ul>
+            </li>
+            <li>
+              <ul>
+                <li>Pepsi Challenge - Social • August 2011</li>
+                <li><a href="#" class="edit">Editing</a> <a href="#" class="delete">Delete</a></li>
+              </ul>
+            </li>
+          </ul>
+        </section><!-- end #study-list -->
+      </section><!-- end #ad-tags -->
+      <section class="main-criteria" id="survey">
+        <header>
+          <h2>Survey</h2>
+          <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
+        </header>
+        <section class="secondary-criteria survey-type padded-column-5 first" id="survey-type">
+          <header class="under-full">
+            <h3>Survey Type</h3>
+            <p>Standard Ad Effectiveness Survey or Customized?</p>
+          </header>
+          <fieldset class="under-full">
+            <legend class="hide-visual">Survey Type</legend>
+            <fieldset>
+              <legend>Choose which type of survey you'll use</legend>              
+              <div class="radios-labeled">
+              <input type="radio" name="type-survey" id="type-survey-1" value="No Survey">
+              <label for="type-survey-1">No Survey</label>              
+              </div>
+              <div>
+              <input type="radio" name="type-survey" id="type-survey-2" value="Standard Survey">
+              <label for="type-survey-2">Standard Survey</label>              
+              </div>
+              <div>
+              <input type="radio" name="type-survey" id="type-survey-3" value="Custom Survey">
+              <label for="type-survey-3">Custom Survey</label>
+              </div>
+            </fieldset>
+            <label for="type-iframe" class="paste-iframe-label">Paste iFrame Content Here</label>
+            <textarea name="type-iframe" id="type-iframe" cols="30" rows="10"></textarea>
+          </fieldset>
+        </section><!-- end #survey-type --><section class="secondary-criteria survey-qualifiers padded-column-5 last" id="survey-qualifiers">
+          <header class="under-full">
+            <h3>Delivery Criteria</h3>
+            <p>When should the survey be delivered?</p>
+          </header>
+          <fieldset class="under-full">
+            <legend class="hide-visual">When and where to deliver surveys</legend>
+            <label for="delivery-domain">Deliver if a user visits</label>
+            <select name="delivery-domain" id="delivery-domain">
+              <option value="Facebook.com">Facebook.com</option>
+              <option value="CNN.com">CNN.com</option>
+              <option value="ESPN.com">ESPN.com</option>
+            </select>
+            <label for="delivery-timeframe">within</label>
+            <select name="delivery-timeframe" id="delivery-timeframe">
+              <option value="1 hour">1 hour</option>
+              <option value="1 day">1 day</option>
+              <option value="1 week">1 week</option>              
+              <option value="1 month">1 month</option>
+            </select>
+            <p>of seeing targeted ad(s).</p>
+            <div class="button-holder">
+              <button class="styled-button">Add Criteria</button>
+            </div>
+          </fieldset>
+          <ul class="cell-lists">
+            <li class="completed-parameter">Facebook after 1 day <a href="#">Delete</a></li>
+            <li class="completed-parameter">Google after 1 hour <a href="#">Delete</a></li>
+          </ul>
+        </section><!-- end #survey-qualifiers -->
+      </section><!-- end #survey -->
+      <section class="main-criteria">
+        <header>
+          <h2>Behavioral Metrics to Record</h2>
+          <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
+        </header>
+        <section class="secondary-criteria padded-column-3 first behavior-online">
+          <header class="under-full">
+            <h3>Online</h3>
+          </header>
+          <fieldset class="under-full">
+            <legend>Record Click-Track</legend>
+            <div class="radios-labeled">
+              <input type="radio" name="record-click-track" id="record-click-track-1" value="Yes">
+              <label for="record-click-track-1">Yes</label>            
+            </div>
+            <div>
+              <input type="radio" name="record-click-track" id="record-click-track-2" value="No">
+              <label for="record-click-track-2">No</label>
+            </div>
+          </fieldset>
+        </section><section class="secondary-criteria padded-column-4">
+          <header class="under-full">
+            <h3>Search</h3>
+          </header>
+          <fieldset class="under-full">
+            <legend>Search Engines</legend>            
+            <div class="radios-labeled">
+              <input type="radio" name="record-serach-engines" id="record-serach-engines-1" value="All">            
+              <label for="record-serach-engines-1">All</label>
+            </div>
+            <div>
+              <input type="radio" name="record-serach-engines" id="record-serach-engines-2" value="None">
+              <label for="record-serach-engines-2">None</label>
+            </div>
+            <div>
+              <input type="radio" name="record-serach-engines" id="record-serach-engines-3" value="Google">            
+              <label for="record-serach-engines-3">Google</label>
+            </div>
+            <div>
+              <input type="radio" name="record-serach-engines" id="record-serach-engines-4" value="Yahoo!">
+              <label for="record-serach-engines-4">Yahoo!</label>            
+            </div>
+            <div>
+              <input type="radio" name="record-serach-engines" id="record-serach-engines-5" value="Bing">
+              <label for="record-serach-engines-5">Bing</label>
+            </div>
+          </fieldset>
+        </section><section class="secondary-criteria padded-column-3 last">
+          <header class="under-full">
+            <h3>Social</h3>
+          </header>
+        </section>
+      </section>
+      <div class="button-holder">
+        <input type="submit" value="Build My Say.So" class="styled-button main-submit">
+      </div>
+    </form>
+  </div>
+  <footer>
+  </footer>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+  <script>!window.jQuery && document.write('<script src="js/jquery-1.5.1.min.js"><\/script>')</script>
+  <!--[if lt IE 7 ]>
+    <script src="js/libs/dd_belatedpng.js"></script>
+    <script>DD_belatedPNG.fix('img, .png_bg'); // Fix any <img> or .png_bg bg-images. Also, please read goo.gl/mZiyb </script>
+  <![endif]-->
+</body>
+</html>

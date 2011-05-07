@@ -34,7 +34,7 @@ saySo.storeLocalData = {
     // alias this so we can refer to it in our upcoming function
     var that = this;        
     
-    $(this.config.fieldsToWatch).change(function(){
+    $('form').delegate( this.config.fieldsToWatch, 'change', function(){
       
       // get the value we've updated to and the selector we're going to use as a key
       var dataKey = $(this).attr(that.config.dataSelector),
@@ -68,11 +68,13 @@ saySo.storeLocalData = {
                   container[currentKey] = {};
       
     }    
-    
+
+    // check if a value was passed to this method, and if so, use it as a setter, else
+    // act as a getter for a key's value
     if( value ){
     
       // set our object container's last item to the value that was passed
-      container[allKeys[ keyLength - 1 ]] = value;    
+      container[allKeys[ keyLength - 1 ]] = value;
   
       // stringify the JSON, then insert it into local storage
       stringifiedJson = JSON.stringify(this.studyInfo[allKeys[0]]);
@@ -80,7 +82,7 @@ saySo.storeLocalData = {
     
     } else {
       
-      return container;
+      return container[allKeys[ keyLength - 1 ]];
       
     }
         
@@ -99,47 +101,67 @@ saySo.storeLocalData = {
 
 saySo.dataInteractions = {
   
+  // set up our basic DOM bindings for interacting with our data
   bindInteractions : function(){
     
-    // ugh, this is all heavily dom-dependent, but i can't think of a way to do it better
-    // handle interactions where a criteria is being added
+    // alias our current context so we can refer to it within function scopes
     var that = this;
     
     $('button.add-fieldset-data').click(function( e ){
       
       e.preventDefault();
       
+      // when this button is clicked, there's going to be a related list of items written
+      // to and a form that's refreshed. we are going to go ahead and cache jquery 
+      // objects for both of those.
       var $this = $(this),
           relatedFieldsetSelector = $this.attr( 'data-for-fieldset' ),
           relatedListSelector = $this.attr( 'data-for-list' ),
           cellKey = $this.attr( 'data-store-key' ),
           $fieldsetFriend = $('#' + relatedFieldsetSelector),
           $listFriend = $('#' + relatedListSelector),
-          cellData = saySo.storeLocalData.updateData( cellKey );
+          cellData = saySo.storeLocalData.updateData( cellKey ),
+          items = [];
       
+      // we need to push each piece of cellData to an array in order to iterate over it
+      // and get the length so we can make sure to just get the last item and stick it
+      // in the DOM. whew.      
+      for(n in cellData){
+        items.push(cellData[n]);        
+      }
+      
+      that.addDomDataPoint( $listFriend, $fieldsetFriend, items );
       that.refreshFieldset( $fieldsetFriend );
-      that.addDomDataPoint( $listFriend, cellData );
-      
+            
     });
     
-    $('a.delete').click(function( e ){
+    // when delete is clicked, an indicator should be deleted from the DOM and the data 
+    // should be removed from the data object
+    $('ul.cell-list').delegate('.delete', 'click', function( e ){
       
       e.preventDefault();
       
-      that.removeDomDataPoint( $(this) );
-      
+      that.removeDomDataPoint( $(this) );      
     });
     
   },
   
+  // this is a pure-dom function. just clear out the fieldset, and load up a new fieldset
   refreshFieldset : function( $fieldset ){    
-        
+    
+    // handle our templates    
     var templateName = $fieldset.attr( 'data-template' ),
         parsedTemplateName = this.parseTemplateName( templateName ),
-        emptyFieldset = saySo.templates.goBuildMeATemplate( saySo.templates[parsedTemplateName] ),
+        
+    // handle the counter.
+        counter = parseInt( $fieldset.attr( 'data-counter' ), 10 ),
+        counterObj = { nextCounter : counter += 1 },
+        emptyFieldset = saySo.templates.goBuildMeATemplate( saySo.templates[parsedTemplateName], counterObj ),
         $emptyFieldset = $(emptyFieldset),
         $prevEl = $fieldset.prev();
     
+    // just eye candy here. animate the current fieldset out, and animate the new
+    // fieldset in.
     $fieldset.animate({
       opacity : 0
     }, function(){
@@ -158,8 +180,10 @@ saySo.dataInteractions = {
     
   },
   
+  // convert a CSS hyphen-style naming convention into a javascript camelCase convention
+  // so neither of the two seems out of place
   parseTemplateName : function( templateName ){
-    
+
     var templateWords = templateName.split("-");
     
     for ( w in templateWords ) {
@@ -173,16 +197,28 @@ saySo.dataInteractions = {
     
   },
   
-  addDomDataPoint : function( $list, cellData ){
+  // because the data addition is already handled in saySo.storeLocalData.updateData on a
+  // field's change event, all this does is reflect that change in the list of qualifiers
+  // in the DOM
+  addDomDataPoint : function( $list, $fieldset, items ){    
     
     var templateName = $list.attr('data-template'),
         parsedTemplateName = this.parseTemplateName( templateName ),
-        newHtml = saySo.templates.goBuildMeATemplate( saySo.templates[parsedTemplateName], cellData );
+        counter = parseInt( $fieldset.attr( 'data-counter' ), 10 ),
+        cellsLength = items.length,
+        newHtml;
+    
+    // extend our item with a counter property that we can use to build our deletion
+    items[cellsLength - 1].thisCounter = counter;
         
+    newHtml = saySo.templates.goBuildMeATemplate( saySo.templates[parsedTemplateName], items[cellsLength - 1] );
+    
     $(newHtml).appendTo($list);
     
   },
   
+  // this needs to update the list of qualifiers in the DOM as well as modify the data
+  // model to remove the unwanted item
   removeDomDataPoint : function( $clickedEl ){
     
     $clickedEl.closest('li').fadeOut(function(){ 
@@ -190,7 +226,11 @@ saySo.dataInteractions = {
     });
     
     // actually remove the data
+    // THIS DOES NOT WORK RIGHT NOW
+    var cellKey = $clickedEl.attr('data-store-key'),
+        cellData = saySo.storeLocalData.updateData( cellKey );        
     
+    delete cellData;
   }
   
 };

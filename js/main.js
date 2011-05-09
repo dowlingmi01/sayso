@@ -1,3 +1,7 @@
+if(typeof console === "undefined") {
+  console = { log: function(){} };
+}
+
 /**
  * STORE ALL LOCAL DATA
  *
@@ -17,13 +21,21 @@ saySo.storeLocalData = {
   // can stringify the whole thing and stick it in local storage
   studyInfo : {
     
+    sayso : {}
+    
   },
   
   init : function( config ){
     
     if ( config && typeof( config ) === 'object' ) {
-      $.extend(this.config, config);
+      $.extend( this.config, config );
     }
+    
+    // on page load, let's go ahead and take our local storage object, parse it out, and
+    // store it in the empty studyInfo object to make sure we have the latest
+    var localData = (localStorage.sayso) ? JSON.parse(localStorage.sayso) : null;
+    
+    $.extend( this.studyInfo.sayso, localData );
     
     this.bindTheDom();    
     
@@ -46,6 +58,9 @@ saySo.storeLocalData = {
     
   },
   
+  // updateData and deleteData could probably be improved, including an abstraction of
+  // the accessor portions of the methods. just trying to get a proof of concept working.
+  
   updateData : function( key, value ){
     
     // go ahead and split up our key we're receiving,
@@ -59,7 +74,7 @@ saySo.storeLocalData = {
       
       // store the key we're currently working with      
       var currentKey = allKeys[i];
-      
+            
       // does our object container have the current key as a key? if so, then leave it
       // alone. if not, add it. and make sure to re-set our container variable so on
       // the next iteration, we're looking within the current container.
@@ -73,7 +88,9 @@ saySo.storeLocalData = {
     // act as a getter for a key's value
     if( value ){
     
-      // set our object container's last item to the value that was passed
+      // set our object container's last item to the value that was passed, ie allKeys
+      // could be foo-bar-baz-name, then we would set our current container's `name`
+      // property to our value
       container[allKeys[ keyLength - 1 ]] = value;
   
       // stringify the JSON, then insert it into local storage
@@ -85,7 +102,41 @@ saySo.storeLocalData = {
       return container[allKeys[ keyLength - 1 ]];
       
     }
-        
+    
+  },
+    
+  deleteData : function( key ){
+    
+    // go ahead and split up our key we're receiving,
+    // then store our length
+    var allKeys = key.split("-"),
+        keyLength = allKeys.length,
+        stringifiedJson,
+        container = this.studyInfo,
+        isSuccessful;
+
+    for ( var i = 0; i < keyLength - 1; i++ ) {
+
+      // store the key we're currently working with      
+      var currentKey = allKeys[i];
+
+      // does our object container have the current key as a key? if so, then leave it
+      // alone. if not, add it. and make sure to re-set our container variable so on
+      // the next iteration, we're looking within the current container.
+      container = Object.hasOwnProperty.call( container, currentKey ) ? 
+                  container[currentKey] :
+                  container[currentKey] = {};
+
+    }    
+    
+    isSuccessful = delete container[allKeys[ keyLength - 1 ]];
+    
+    // stringify the JSON, then insert it into local storage
+    stringifiedJson = JSON.stringify(this.studyInfo[allKeys[0]]);
+    localStorage[allKeys[0]] = stringifiedJson;
+    
+    return isSuccessful;        
+    
   }
   
 };
@@ -122,7 +173,7 @@ saySo.dataInteractions = {
           $listFriend = $('#' + relatedListSelector),
           cellData = saySo.storeLocalData.updateData( cellKey ),
           items = [];
-      
+            
       // we need to push each piece of cellData to an array in order to iterate over it
       // and get the length so we can make sure to just get the last item and stick it
       // in the DOM. whew.      
@@ -137,7 +188,7 @@ saySo.dataInteractions = {
     
     // when delete is clicked, an indicator should be deleted from the DOM and the data 
     // should be removed from the data object
-    $('ul.cell-list').delegate('.delete', 'click', function( e ){
+    $('ul.cell-lists').delegate('.delete', 'click', function( e ){
       
       e.preventDefault();
       
@@ -165,6 +216,7 @@ saySo.dataInteractions = {
     $fieldset.animate({
       opacity : 0
     }, function(){
+      
       $fieldset.remove();
       
       $emptyFieldset.css({
@@ -176,6 +228,7 @@ saySo.dataInteractions = {
       $emptyFieldset.animate({
         opacity : 1
       });
+      
     });    
     
   },
@@ -219,18 +272,25 @@ saySo.dataInteractions = {
   
   // this needs to update the list of qualifiers in the DOM as well as modify the data
   // model to remove the unwanted item
-  removeDomDataPoint : function( $clickedEl ){
-    
-    $clickedEl.closest('li').fadeOut(function(){ 
-      $(this).remove(); 
-    });
+  removeDomDataPoint : function( $clickedEl ){        
     
     // actually remove the data
     // THIS DOES NOT WORK RIGHT NOW
     var cellKey = $clickedEl.attr('data-store-key'),
-        cellData = saySo.storeLocalData.updateData( cellKey );        
+        response = saySo.storeLocalData.deleteData( cellKey );        
     
-    delete cellData;
+    // if our deletion is successful, then we'll go ahead and fade out the list indicator
+    if( response === true ){
+      
+      $clickedEl.closest('li').fadeOut(function(){ 
+        $(this).remove(); 
+      });
+      
+    } else {
+      
+      console.log( "Something went wrong. The item wasn't deleted." );
+      
+    }
   }
   
 };
@@ -257,7 +317,7 @@ $('nav.lock').delegate( 'a.minimize, a.maximize', 'click', function(e) {
   
   var $this = $(this),
       $section = $this.closest('section.main-criteria'),
-      $header = $section.find('header'),
+      $header = $section.find('header'), 
       $container = $section.find('.section-container'),
       type = ( $this.hasClass( 'minimize' )) ? "minimize" : "maximize";        
        

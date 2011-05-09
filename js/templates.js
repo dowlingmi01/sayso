@@ -12,22 +12,22 @@ saySo.templates = {
   },
   
   // list of quotas
-  quotas : "<li class='completed-parameter'>TEST {{percent}}% {{ethnicity}} {{gender}}s, {{age}} <a href='#' class='delete'>Delete</a></li>",
+  quotas : "<li class='completed-parameter'>TEST {{percent}}% {{ethnicity}} {{gender}}s, {{age}} <a href='#' class='delete' data-store-key='sayso-cells-n1-quota-{{thisCounter}}'>Delete</a></li>",
   
   // list of browsing qualifiers
-  browsingQualifiers : "<li class='completed-parameter'>{{include}} {{site}} in the last {{timeframe}} <a href='#' class='delete''>Delete</a></li>",
+  browsingQualifiers : "<li class='completed-parameter'>{{include}} {{site}} in the last {{timeframe}} <a href='#' class='delete'' data-store-key='sayso-cells-n1-qualifier-browse-{{thisCounter}}'>Delete</a></li>",
   
   // list of search qualifiers
-  searchQualifiers : "<li class='completed-parameter'>{{include}} {{term}} on {{which}} in the last {{timeframe}} <a href='#' class='delete'>Delete</a></li>",
+  searchQualifiers : "<li class='completed-parameter'>{{include}} {{term}} on {{which}} in the last {{timeframe}} <a href='#' class='delete' data-store-key='sayso-cells-n1-qualifier-search-{{thisCounter}}'>Delete</a></li>",
   
   // list of tag-domain pairs
   tagDomainPairs : "<li class='completed-parameter'>Facebook.com <a href='#' class='delete''>Delete</a></li>",
   
   // list of delivery criteria
-  deliveryCriteria : "<li class='completed-parameter'>{{domain}} within {{timeframe}} <a href='#'>Delete</a></li>",
+  deliveryCriteria : "<li class='completed-parameter'>{{domain}} within {{timeframe}} <a href='#' class='delete' data-store-key='sayso-surveyinfo-deliverIf-{{thisCounter}}'>Delete</a></li>",
   
   // list of domains for tag-domain-pairs
-  domains : "<li class='completed-parameter'>{{name}} <a href='#' data-store-key='sayso-tagdomain-1-domain-{{thisCounter}}' class='delete'>Delete</a></li>",
+  domains : "<li class='completed-parameter'>{{name}} <a href='#' data-store-key='sayso-tagdomain-1-domain-{{thisCounter}}' class='delete' class='delete'>Delete</a></li>",
   
   // fieldset for adding a quota
   quotaFieldset : "<fieldset id='fieldset-cell-quota'\

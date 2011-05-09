@@ -858,12 +858,12 @@ li.quota-select select {
   font-weight: normal;
 }
 
-ul.cell-lists {
+.cell-lists {
   border-bottom: 1px dotted #cccccc;
   border-top: 1px dotted #cccccc;
   padding: 15px 0 5px 0;
 }
-ul.cell-lists .completed-parameter {
+.cell-lists .completed-parameter {
   margin: 0 10px 10px;
 }
 
@@ -886,22 +886,20 @@ ul.cell-lists .completed-parameter {
   margin: 5px 0;
 }
 
-.cell-list {
-  border-bottom: 1px dotted #cccccc;
-  border-top: 1px dotted #cccccc;
+table.cell-lists {
   display: block;
   padding: 15px 0;
 }
-.cell-list tr:nth-child(even) {
+table.cell-lists tr:nth-child(even) {
   background: #f2f2f2;
 }
-.cell-list tr {
+table.cell-lists tr {
   padding: 0 10px;
 }
-.cell-list td {
+table.cell-lists td {
   padding: 10px;
 }
-.cell-list th {
+table.cell-lists th {
   font-weight: bold;
   padding: 0 0 10px 10px;
   text-align: left;

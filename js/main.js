@@ -268,6 +268,8 @@ saySo.dataInteractions = {
     
     $(newHtml).appendTo($list);
     
+    $list.removeClass('empty');
+    
   },
   
   // this needs to update the list of qualifiers in the DOM as well as modify the data
@@ -277,7 +279,8 @@ saySo.dataInteractions = {
     // actually remove the data
     // THIS DOES NOT WORK RIGHT NOW
     var cellKey = $clickedEl.attr('data-store-key'),
-        response = saySo.storeLocalData.deleteData( cellKey );        
+        response = saySo.storeLocalData.deleteData( cellKey ),
+        $parent = $clickedEl.closest('ul');        
     
     // if our deletion is successful, then we'll go ahead and fade out the list indicator
     if( response === true ){
@@ -285,6 +288,10 @@ saySo.dataInteractions = {
       $clickedEl.closest('li').fadeOut(function(){ 
         $(this).remove(); 
       });
+      
+      if ( $parent.children().length === 0 ) {
+        $parent.addClass('empty');
+      }
       
     } else {
       

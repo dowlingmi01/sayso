@@ -861,10 +861,13 @@ li.quota-select select {
 .cell-lists {
   border-bottom: 1px dotted #cccccc;
   border-top: 1px dotted #cccccc;
-  padding: 15px 0 5px 0;
+  padding: 10px 0;
+}
+.cell-lists.empty {
+  border: none;
 }
 .cell-lists .completed-parameter {
-  margin: 0 10px 10px;
+  margin: 5px;
 }
 
 .completed-parameter {
@@ -937,11 +940,28 @@ section.tag-domain-pairs label.radio {
   margin: 0 10px 5px 0;
 }
 
+section.study-list ul.study-list.under-full {
+  padding: 0;
+}
+section.study-list ul.study-list.under-full > li {
+  padding: 10px 100px 10px 10px;
+  position: relative;
+  width: 250px;
+}
+section.study-list ul.study-list.under-full nav {
+  position: absolute;
+  right: 5px;
+  top: 8px;
+}
+section.study-list ul.study-list.under-full li:nth-child(even) {
+  background: #f2f2f2;
+}
+
 section.survey-qualifiers fieldset {
   font-weight: bold;
-  margin: 0 0 20px 0;
 }
 section.survey-qualifiers .button-holder {
+  margin: 0 0 0 13px;
   text-align: left;
 }
 

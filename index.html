@@ -25,7 +25,7 @@
     </nav>
   </header>
   <div id="main" role="main">
-    <form action="" class="main-survey">
+    <form action="/" class="main-survey" method="post">
       <section class="main-criteria study-base" id="study-base">
         <header>
           <h2>Ad Effectiveness Study</h2>
@@ -82,7 +82,7 @@
                      data-store-key="sayso-basic-issurvey">
               <label for="study-is-survey-2">No</label>
             </div>
-          </fieldset>
+          </fieldset></div><!-- end .padded-column-5 -->
         </div><!-- end .section-container  -->
       </section><!-- end #study-base -->
       <section class="main-criteria" id="build-cells">
@@ -137,6 +137,7 @@
                   </select>
                 </li>
                 <li class="quota-select">
+                  <label for="cell-age">Age</label>
                   <select name="cell-age" id="cell-age" 
                           data-store-key="sayso-cells-n1-quota-1-age">
                     <option value="Choose an age" disabled>Choose</option>
@@ -354,6 +355,7 @@
               <td><a href="#">View</a> <a href="#">Edit</a> <a href="#">Delete</a></td>
             </tr>
           </table>
+            </section><!-- end #behavioral-qualifiers -->
         </div><!-- end .section-container  -->      
       </section><!-- end #build-cells -->
       <section class="main-criteria" id="ad-tags">

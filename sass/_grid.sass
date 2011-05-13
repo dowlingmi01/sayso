@@ -67,7 +67,7 @@ $single_gutter_width: $gutter_width / 2
   +inline-block(top)    
   margin: nth($margin, 1) $single_gutter_width nth($margin, 3) nth($margin, 4)
   @if $n == $column_count
-    width: #{$n * ($column_width + $gutter_width) - ($gutter_width * 2)}px
+    width: #{$n * ($column_width + $gutter_width) - ($gutter_width * 2)}
   @else
     width: ($n * $column_width) + (($n - 1) * $gutter_width) - (nth($padding, 2) + nth($padding, 4))
   padding: nth($padding, 1) nth($padding, 2) nth($padding, 3) nth($padding, 4)

@@ -312,48 +312,43 @@ yepnope({
   ]
 });
 
-/**
- * IMPROVE THIS
- *
- * This is just some naked DOM interaction that ought to be improved.
- */
-
-$('nav.lock').delegate( 'a.minimize, a.maximize', 'click', function(e) {
-
-  e.preventDefault();
-  
-  var $this = $(this),
-      $section = $this.closest('section.main-criteria'),
-      $header = $section.find('header'), 
-      $container = $section.find('.section-container'),
-      type = ( $this.hasClass( 'minimize' )) ? "minimize" : "maximize";        
-       
-  $header.animate({    
-    marginBottom : ( type === "minimize" ) ? "0" : "15px"
-  });
-  
-  if( type === "minimize" ) {
-    
-    $this.text('+')
-         .removeClass('minimize')
-         .addClass('maximize');
-  
-    $container.slideUp();
-  
-  } else {
-    
-    $this.text('-')
-         .removeClass('maximize')
-         .addClass('minimize');
-  
-    $container.slideDown();
-    
-  }
-         
-});
-
 $(document).ready(function(){
   
+  // Minimize/maximize sections
+  $('nav.lock').delegate( 'a.minimize, a.maximize', 'click', function(e) {
+
+    e.preventDefault();
+
+    var $this = $(this),
+        $section = $this.closest('section.main-criteria'),
+        $header = $section.find('header'),
+        $container = $section.find('.section-container'),
+        type = ( $this.hasClass( 'minimize' )) ? "minimize" : "maximize";
+
+    $header.animate({
+      marginBottom : ( type === "minimize" ) ? "0" : "15px"
+    });
+
+    if( type === "minimize" ) {
+
+      $this.text('+')
+           .removeClass('minimize')
+           .addClass('maximize');
+
+      $container.slideUp();
+
+    } else {
+
+      $this.text('-')
+           .removeClass('maximize')
+           .addClass('minimize');
+
+      $container.slideDown();
+
+    }
+
+  });
+
   // is local storage available? if so, initialize it.
   if ( Modernizr.localstorage ) {
 

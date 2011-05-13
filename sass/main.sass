@@ -81,20 +81,24 @@ label
 input[type="text"]
   width: 99%
   
-input:not([type="radio"])
+input:not([type="radio"][type="checkbox"])
   display: block
   
 input[type="radio"]  
   position: relative
   top: 4px
-  
+
+input[type="checkbox"] + label,
 input[type="radio"] + label
   +inline-block
   
-input,
+input:not([type="checkbox"]),
 select,
 textarea
   margin: 0 0 10px 0
+
+input[type="checkbox"]
+  margin: 0 0 6px 0
   
 .hide-visual
   +hide-visual

@@ -273,8 +273,19 @@ saySo.storeLocalData = {
       // get the value we've updated to and the selector we're going to use as a key
       var dataKey = $(this).attr(that.config.dataSelector),
           dataValue = $(this).val();
-      
-      that.updateData( dataKey, dataValue );
+
+      // Checkbox data should be updated if checked, deleted if not checked
+      if ($(this).attr('type') === 'checkbox') {
+        if ($(this).attr('checked')) {
+          that.updateData(dataKey, dataValue);
+        } else {
+          that.deleteData(dataKey);
+        }
+      }
+      // Other input types may simply be updated
+      else {
+        that.updateData( dataKey, dataValue );
+      }
       
     });
     
@@ -584,15 +595,10 @@ $(document).ready(function(){
     alert('Hey! Update your browser.');
 
   }
-  
-  saySo.dataInteractions.bindInteractions();
-  
-  /** DEVELOPMENT ONLY 
-   *
-   * Bind our submit function to instead display our JSON on the console, and bind the key
-   * sequence of "clear" to empty out our local storage object.
-   */
 
+  saySo.dataInteractions.bindInteractions();
+
+  // When "Build My Survey" button is clicked, JSON-decode and dump current localStorage object to console
   $('#do-ze-build').click(function(e) {
 
     e.preventDefault();
@@ -600,20 +606,17 @@ $(document).ready(function(){
     console.log(JSON.parse(localStorage.sayso));
 
   });
+
+  // When "Build Cell" button is clicked...
+  $('.build-cell').click(function(e) {
+    e.preventDefault();
+    /** @todo Implementation */
+  });
+
+  // When "Reset Input" button is clicked...
+  $('.reset-input').click(function(e) {
+    e.preventDefault();
+    /** @todo Implementation */
+  });
   
-  var keys = [],
-      clear = '67,76,69,65,82';
-  
-	$(document).keydown(function(e) {
-	  keys.push( e.keyCode );
-	  
-	  if( keys.toString().indexOf( clear ) >= 0 ){
-	    	    
-	    localStorage.removeItem('sayso');
-	    keys = [];
-	    
-	    console.log("Console cleared.");
-	    
-	  }
-	});
 });

@@ -15,10 +15,10 @@ saySo.templates = {
   },
 
   // list of quotas
-  quotas : "<li class='completed-parameter'>TEST {{percent}}% {{ethnicity}} {{gender}}s, {{age}} <a href='#' class='delete' data-store-key='sayso-cells-n1-quota-{{thisCounter}}'>Delete</a></li>",
+  quotas : "<li class='completed-parameter'>{{description}} ({{type}} {{percent}}% {{ethnicity}} {{gender}}s, {{age}}) <a href='#' class='delete' data-store-key='sayso-cells-n1-quota-{{thisCounter}}'>Delete</a></li>",
 
   // list of browsing qualifiers
-  browsingQualifiers : "<li class='completed-parameter'>{{include}} {{site}} in the last {{timeframe}} <a href='#' class='delete'' data-store-key='sayso-cells-n1-qualifier-browse-{{thisCounter}}'>Delete</a></li>",
+  browsingQualifiers : "<li class='completed-parameter'>{{include}} {{site}} in the last {{timeframe}} <a href='#' class='delete' data-store-key='sayso-cells-n1-qualifier-browse-{{thisCounter}}'>Delete</a></li>",
 
   // list of search qualifiers
   searchQualifiers : "<li class='completed-parameter'>{{include}} {{term}} on {{which}} in the last {{timeframe}} <a href='#' class='delete' data-store-key='sayso-cells-n1-qualifier-search-{{thisCounter}}'>Delete</a></li>",
@@ -61,7 +61,7 @@ saySo.templates = {
         <label for='cell-size'>Quota Size</label>\
         <select name='cell-size' id='cell-size'\
                 data-store-key='sayso-cells-n1-quota-{{nextCounter}}-size'>\
-          <option value='1000'></option>\
+          <option value='1000'>1000</option>\
         </select>\
       </li>\
       <li class='quota-select'>\
@@ -258,19 +258,21 @@ saySo.storeLocalData = {
     var localData = (localStorage.sayso) ? JSON.parse(localStorage.sayso) : null;
     
     $.extend( this.studyInfo.sayso, localData );
-    
-    this.bindTheDom();    
+
+    this
+      .initFieldValues()
+      .bindFieldChanges();
     
   },
   
-  bindTheDom : function() {
+  bindFieldChanges : function() {
     
-    // alias this so we can refer to it in our upcoming function
+    // Alias this so we can refer to it in our upcoming function
     var that = this;        
     
-    $('form').delegate( this.config.fieldsToWatch, 'change', function(){
+    $('form').delegate(this.config.fieldsToWatch, 'change', function() {
       
-      // get the value we've updated to and the selector we're going to use as a key
+      // Get key-value pair
       var dataKey = $(this).attr(that.config.dataSelector),
           dataValue = $(this).val();
 
@@ -284,13 +286,53 @@ saySo.storeLocalData = {
       }
       // Other input types may simply be updated
       else {
-        that.updateData( dataKey, dataValue );
+        that.updateData(dataKey, dataValue);
       }
       
     });
+
+    // Provide fluent interface
+    return this;
     
   },
-  
+
+  // Initializes local data with values from form fields
+  initFieldValues : function() {
+
+    // Alias this so we can refer to it in our upcoming function
+    var that = this;
+
+    // For each of the form fields from which we get values
+    $('form').find(this.config.fieldsToWatch).each(function(){
+
+      // Get key-value pair
+      var dataKey = $(this).attr(that.config.dataSelector),
+          dataValue = $(this).val();
+
+      // If the data key is unavailable, return
+      if (dataKey === undefined) {
+        return this;
+      }
+
+      // Checkbox data should be updated if checked, deleted if not checked
+      if ($(this).attr('type') === 'checkbox') {
+        if ($(this).attr('checked')) {
+          that.updateData(dataKey, dataValue);
+        } else {
+          that.deleteData(dataKey);
+        }
+      }
+      // Other input types may simply be updated
+      else {
+        that.updateData(dataKey, dataValue);
+      }
+
+    });
+
+    return this;
+
+  },
+
   // updateData and deleteData could probably be improved, including an abstraction of
   // the accessor portions of the methods. just trying to get a proof of concept working.
   
@@ -413,7 +455,7 @@ saySo.dataInteractions = {
       for(n in cellData){
         items.push(cellData[n]);        
       }
-      
+
       that.addDomDataPoint( $listFriend, $fieldsetFriend, items );
       that.refreshFieldset( $fieldsetFriend );
             
@@ -430,7 +472,7 @@ saySo.dataInteractions = {
     
   },
   
-  // this is a pure-dom function. just clear out the fieldset, and load up a new fieldset
+  // Replaces old field set with new one
   refreshFieldset : function( $fieldset ){    
     
     // handle our templates    
@@ -438,7 +480,7 @@ saySo.dataInteractions = {
         parsedTemplateName = this.parseTemplateName( templateName ),
         
     // handle the counter.
-        counter = parseInt( $fieldset.attr( 'data-counter' ), 10 ),
+        counter = parseInt( $fieldset.attr( 'data-counter' ) ),
         counterObj = { nextCounter : counter += 1 },
         emptyFieldset = saySo.templates.goBuildMeATemplate( saySo.templates[parsedTemplateName], counterObj ),
         $emptyFieldset = $(emptyFieldset),
@@ -446,24 +488,20 @@ saySo.dataInteractions = {
     
     // just eye candy here. animate the current fieldset out, and animate the new
     // fieldset in.
-    $fieldset.animate({
-      opacity : 0
-    }, function(){
+    $fieldset.animate({ opacity : 0 }, function() {
       
       $fieldset.remove();
       
-      $emptyFieldset.css({
-        opacity : 0
+      $emptyFieldset.css({ opacity : 0 });
+      
+      $emptyFieldset.insertAfter($prevEl);
+
+      $emptyFieldset.animate({ opacity : 1 }, function() {
+        saySo.storeLocalData.initFieldValues();
       });
       
-      $emptyFieldset.insertAfter($prevEl);            
-      
-      $emptyFieldset.animate({
-        opacity : 1
-      });
-      
-    });    
-    
+    });
+
   },
   
   // convert a CSS hyphen-style naming convention into a javascript camelCase convention
@@ -487,7 +525,7 @@ saySo.dataInteractions = {
   // field's change event, all this does is reflect that change in the list of qualifiers
   // in the DOM
   addDomDataPoint : function( $list, $fieldset, items ){    
-    
+
     var templateName = $list.attr('data-template'),
         parsedTemplateName = this.parseTemplateName( templateName ),
         counter = parseInt( $fieldset.attr( 'data-counter' ), 10 ),

@@ -645,21 +645,35 @@ $(document).ready(function(){
 
   // When "Build My Survey" button is clicked, JSON-decode and dump current localStorage object to console
   $('#do-ze-build').click(function(e) {
-
     e.preventDefault();
-
     console.log(JSON.parse(localStorage.sayso));
-
   });
 
-  // When "Build Cell" button is clicked...
+  // When "Clear Local Data" button is clicked, confirm and delete local data, and refresh the page
+  $('#clear-local-data').click(function(e) {
+    e.preventDefault();
+    if (confirm('Are you sure you want to clear local data?')) {
+      delete localStorage.sayso;
+      location.reload();
+    }
+  });
+
+  // When "Build Cell" button is clicked
   $('.build-cell').click(function(e) {
     e.preventDefault();
-    /** @todo Implementation */
+    /** @todo Add to table.cell-lists a row with details of current cell */
+    /** @todo Reset relevant form fields and increment cell number for them */
+    /** @todo Push form data for new form fields via saySo.storeLocalData.initFieldValues() to ensure "cells" exist? */
   });
 
   // When "Reset Input" button is clicked...
   $('.reset-input').click(function(e) {
+    e.preventDefault();
+    /** @todo Implementation */
+  });
+
+  // When "Lock" buttons are clicked...
+  $('nav.lock .lock').click(function(e) {
     e.preventDefault();
     /** @todo Implementation */
   });

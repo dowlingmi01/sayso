@@ -21,7 +21,7 @@ saySo.templates = {
   browsingQualifiers : "<li class='completed-parameter'>{{include}} visits to {{site}} in the last {{timeframe}} <a href='#' class='delete' data-store-key='sayso-cells-n1-qualifier-browse-{{thisCounter}}'>Delete</a></li>",
 
   // list of search qualifiers
-  searchQualifiers : "<li class='completed-parameter'>{{include}} searches for \"{{term}}\" on {{which}} in the last {{timeframe}} <a href='#' class='delete' data-store-key='sayso-cells-n1-qualifier-search-{{thisCounter}}'>Delete</a></li>",
+  searchQualifiers : "<li class='completed-parameter'>{{include}} searches for \"{{term}}\" on {{#which}}{{#bing}}{{bing}}, {{/bing}}{{#google}}{{google}}, {{/google}}{{#yahoo}}{{yahoo}}, {{/yahoo}}{{/which}} in the last {{timeframe}} <a href='#' class='delete' data-store-key='sayso-cells-n1-qualifier-search-{{thisCounter}}'>Delete</a></li>",
 
   // list of tag-domain pairs
   tagDomainPairs : "<li class='completed-parameter'>Facebook.com <a href='#' class='delete''>Delete</a></li>",
@@ -133,15 +133,22 @@ saySo.templates = {
                data-store-key='sayso-cells-n1-qualifier-search-{{nextCounter}}-term'>\
       </li>\
       <li>\
-        <label for='engine-which'>on</label>\
-        <select name='engine-which' id='engine-which' \
-                data-store-key='sayso-cells-n1-qualifier-search-{{nextCounter}}-which'>\
-          <option value='choose' disabled>Search Engine</option>\
-          <option value='All'>All</option>\
-          <option value='Google'>Google</option>\
-          <option value='Bing'>Bing</option>\
-          <option value='Yahoo'>Yahoo</option>\
-        </select>\
+        <label>on</label>\
+        <div>\
+          <input type='checkbox' name='engine-bing' id='engine-bing'\
+                 value='Bing' data-store-key='sayso-cells-n1-qualifier-search-{{nextCounter}}-which-bing'>\
+          <label for='engine-bing'>Bing</label>\
+        </div>\
+        <div>\
+          <input type='checkbox' name='engine-google' id='engine-google'\
+                 value='Google' data-store-key='sayso-cells-n1-qualifier-search-{{nextCounter}}-which-google'>\
+          <label for='engine-google'>Google</label>\
+        </div>\
+        <div>\
+          <input type='checkbox' name='engine-yahoo' id='engine-yahoo'\
+                 value='Yahoo!' data-store-key='sayso-cells-n1-qualifier-search-{{nextCounter}}-which-yahoo'>\
+          <label for='engine-yahoo'>Yahoo!</label>\
+        </div>\
       </li>\
       <li>\
         <label for='engine-timeframe'>in the last</label>\
@@ -443,7 +450,7 @@ saySo.dataInteractions = {
       var $this = $(this),
           relatedFieldsetSelector = $this.attr( 'data-for-fieldset' ),
           relatedListSelector = $this.attr( 'data-for-list' ),
-          cellKey = $this.attr( 'data-store-key' ),
+          cellKey = $this.attr(saySo.storeLocalData.config.dataSelector),
           $fieldsetFriend = $('#' + relatedFieldsetSelector),
           $listFriend = $('#' + relatedListSelector),
           cellData = saySo.storeLocalData.updateData( cellKey ),

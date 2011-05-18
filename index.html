@@ -258,15 +258,22 @@
                            data-store-key="sayso-cells-n1-qualifier-search-1-term">
                   </li>
                   <li>
-                    <label for="engine-which">on</label>
-                    <select name="engine-which" id="engine-which" 
-                            data-store-key="sayso-cells-n1-qualifier-search-1-which">
-                      <option value="choose" disabled>Search Engine</option>
-                      <option value="All">All</option>
-                      <option value="Google">Google</option>
-                      <option value="Bing">Bing</option>
-                      <option value="Yahoo">Yahoo</option>
-                    </select>
+                    <label>on</label>
+                    <div>
+                      <input type="checkbox" name="engine-bing" id="engine-bing"
+                             value="Bing" data-store-key="sayso-cells-n1-qualifier-search-1-which-bing">
+                      <label for="engine-bing">Bing</label>
+                    </div>
+                    <div>
+                      <input type="checkbox" name="engine-google" id="engine-google"
+                             value="Google" data-store-key="sayso-cells-n1-qualifier-search-1-which-google">
+                      <label for="engine-google">Google</label>
+                    </div>
+                    <div>
+                      <input type="checkbox" name="engine-yahoo" id="engine-yahoo"
+                             value="Yahoo!" data-store-key="sayso-cells-n1-qualifier-search-1-which-yahoo">
+                      <label for="engine-yahoo">Yahoo!</label>
+                    </div>
                   </li>
                   <li>
                     <label for="engine-timeframe">in the last</label>
@@ -537,11 +544,11 @@
             <fieldset class="under-full">
               <legend>Record Search Behavior</legend>
               <div>
-                <div>
-                  <input type="checkbox" name="record-search-engines-bing" id="record-search-engines-bing" value="Bing"
-                         data-store-key="sayso-metrics-searchengines-bing">
-                  <label for="record-search-engines-bing">Bing</label>
-                </div>
+                <input type="checkbox" name="record-search-engines-bing" id="record-search-engines-bing" value="Bing"
+                       data-store-key="sayso-metrics-searchengines-bing">
+                <label for="record-search-engines-bing">Bing</label>
+              </div>
+              <div>
                 <input type="checkbox" name="record-search-engines-google" id="record-search-engines-google"
                        value="Google" data-store-key="sayso-metrics-searchengines-google">
                 <label for="record-search-engines-google">Google</label>

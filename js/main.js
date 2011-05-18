@@ -123,8 +123,8 @@ saySo.templates = {
         <select name='engine-include-exclude' id='engine-include-exclude' \
                 data-store-key='sayso-cells-n1-qualifier-search-{{nextCounter}}-include'>\
           <option value='choose' disabled>Include?</option>\
-          <option value='Include'>Include users</option>\
-          <option value='Exclude'>Exclude users</option>\
+          <option value='Include'>Include panelists</option>\
+          <option value='Exclude'>Exclude panelists</option>\
         </select>\
       </li>\
       <li>\
@@ -167,8 +167,8 @@ saySo.templates = {
         <select name='include-exclude' id='browsing-include-exclude' \
                 data-store-key='sayso-cells-n1-qualifier-browse-{{nextCounter}}-include'>\
           <option value='Choose' disabled>Include?</option>\
-          <option value='Include'>Include users</option>\
-          <option value='Exclude'>Exclude users</option>\
+          <option value='Include'>Include panelists</option>\
+          <option value='Exclude'>Exclude panelists</option>\
         </select>\
       </li>\
       <li>\
@@ -194,7 +194,7 @@ saySo.templates = {
             data-template='criteria-fieldset'\
             data-counter='{{nextCounter}}'>\
     <legend class='hide-visual'>When and where to deliver surveys</legend>\
-    <label for='delivery-domain'>Deliver if a user visits</label>\
+    <label for='delivery-domain'>Deliver survey to those that visit</label>\
     <select name='delivery-domain' id='delivery-domain' \
             data-store-key='sayso-surveyinfo-deliverIf-{{nextCounter}}-domain'>\
       <option value='choose' disabled>Choose</option>\

@@ -94,7 +94,7 @@
           <section class="secondary-criteria build-cells full" id="cell-quota">
             <header>
               <h3>Cell Quota</h3>
-              <p>Who would you like to survey?</p>
+              <p>Who will qualify for the study?</p>
             </header>
             <fieldset id="fieldset-cell-quota"
                       data-template="quota-fieldset"
@@ -187,7 +187,7 @@
           <section class="secondary-criteria behavioral-qualifiers build-cells full" id="behavioral-qualifiers">
             <header>
               <h3>Behavioral & Delivery Qualifiers</h3>
-              <p>Who should receive surveys, and when?</p>
+              <p>What behavioral qualifiers apply?</p>
             </header>
             <section class="tertiary-criteria padded-column-3 first online-browsing" id="online-browsing">
               <header>
@@ -203,8 +203,8 @@
                     <select name="include-exclude" id="browsing-include-exclude" 
                             data-store-key="sayso-cells-n1-qualifier-browse-1-include">
                       <option value="Choose" disabled>Include?</option>
-                      <option value="Include">Include users</option>
-                      <option value="Exclude">Exclude users</option>
+                      <option value="Include">Include panelists</option>
+                      <option value="Exclude">Exclude panelists</option>
                     </select>
                   </li>
                   <li>
@@ -248,8 +248,8 @@
                     <select name="engine-include-exclude" id="engine-include-exclude" 
                             data-store-key="sayso-cells-n1-qualifier-search-1-include">
                       <option value="choose" disabled>Include?</option>
-                      <option value="Include">Include users</option>
-                      <option value="Exclude">Exclude users</option>
+                      <option value="Include">Include panelists</option>
+                      <option value="Exclude">Exclude panelists</option>
                     </select>
                   </li>
                   <li>
@@ -367,7 +367,7 @@
           <section class="secondary-criteria tag-domain-pairs first padded-column-5" id="tag-domain-pairs">
             <header class="under-full">
               <h3>Tag-Domain Pairs</h3>
-              <p>Which tags should be tested on which set?</p>
+              <p>What ad tags should be tested on which domains?</p>
             </header>
             <fieldset class="under-full" id="fieldset-tag-domain-pair">
               <label for="pairs-label">Label It</label>
@@ -413,7 +413,7 @@
           </section><!-- end #tag-domain-pairs --><section class="secondary-criteria study-list padded-column-5 last" id="study-list">
             <header class="under-full">
               <h3>Study List</h3>
-              <p>Currently active studies</p>
+              <p>Active tag-domain pairs for this study</p>
             </header>
             <ul class="under-full study-list">
               <li>
@@ -474,7 +474,7 @@
                       data-template="criteria-fieldset"
                       data-counter="1">
               <legend class="hide-visual">When and where to deliver surveys</legend>
-              <label for="delivery-domain">Deliver if a user visits</label>
+              <label for="delivery-domain">Deliver survey to those that visit</label>
 
               <select name="delivery-domain" id="delivery-domain" 
                       data-store-key="sayso-surveyinfo-deliverIf-1-domain">
@@ -518,7 +518,7 @@
               <h3>Online</h3>
             </header>
             <fieldset class="under-full">
-              <legend>Record Click-Track</legend>
+              <legend>Record Full Click-Track</legend>
               <div class="radios-labeled">
                 <input type="radio" name="record-click-track" id="record-click-track-1" value="Yes" 
                        data-store-key="sayso-metrics-clicktrack">
@@ -535,7 +535,7 @@
               <h3>Search</h3>
             </header>
             <fieldset class="under-full">
-              <legend>Search Engines</legend>            
+              <legend>Record Search Behavior</legend>
               <div>
                 <div>
                   <input type="checkbox" name="record-search-engines-bing" id="record-search-engines-bing" value="Bing"
@@ -558,7 +558,7 @@
               <h3>Social</h3>
             </header>
             <fieldset class="under-full">
-              <legend>Record Social Activities</legend>
+              <legend>Record Social Behavior</legend>
               <div class="radios-labeled">
                 <input data-store-key="sayso-metrics-social-facebookLike" id="record-social-facebookLike"
                   name="record-social-facebookLike" type="checkbox" value="facebookLike" />

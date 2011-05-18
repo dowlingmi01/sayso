@@ -18,10 +18,10 @@ saySo.templates = {
   quotas : "<li class='completed-parameter'>{{description}} ({{type}} {{percent}}% {{ethnicity}} {{gender}}s, {{age}}) <a href='#' class='delete' data-store-key='sayso-cells-n1-quota-{{thisCounter}}'>Delete</a></li>",
 
   // list of browsing qualifiers
-  browsingQualifiers : "<li class='completed-parameter'>{{include}} {{site}} in the last {{timeframe}} <a href='#' class='delete' data-store-key='sayso-cells-n1-qualifier-browse-{{thisCounter}}'>Delete</a></li>",
+  browsingQualifiers : "<li class='completed-parameter'>{{include}} visits to {{site}} in the last {{timeframe}} <a href='#' class='delete' data-store-key='sayso-cells-n1-qualifier-browse-{{thisCounter}}'>Delete</a></li>",
 
   // list of search qualifiers
-  searchQualifiers : "<li class='completed-parameter'>{{include}} {{term}} on {{which}} in the last {{timeframe}} <a href='#' class='delete' data-store-key='sayso-cells-n1-qualifier-search-{{thisCounter}}'>Delete</a></li>",
+  searchQualifiers : "<li class='completed-parameter'>{{include}} searches for \"{{term}}\" on {{which}} in the last {{timeframe}} <a href='#' class='delete' data-store-key='sayso-cells-n1-qualifier-search-{{thisCounter}}'>Delete</a></li>",
 
   // list of tag-domain pairs
   tagDomainPairs : "<li class='completed-parameter'>Facebook.com <a href='#' class='delete''>Delete</a></li>",
@@ -133,10 +133,10 @@ saySo.templates = {
                data-store-key='sayso-cells-n1-qualifier-search-{{nextCounter}}-term'>\
       </li>\
       <li>\
-        <label for='engine-which'>On</label>\
+        <label for='engine-which'>on</label>\
         <select name='engine-which' id='engine-which' \
                 data-store-key='sayso-cells-n1-qualifier-search-{{nextCounter}}-which'>\
-          <option value='choose'>Search Engine</option>\
+          <option value='choose' disabled>Search Engine</option>\
           <option value='All'>All</option>\
           <option value='Google'>Google</option>\
           <option value='Bing'>Bing</option>\
@@ -144,13 +144,13 @@ saySo.templates = {
         </select>\
       </li>\
       <li>\
-        <label for='engine-timeframe'>in the</label>\
+        <label for='engine-timeframe'>in the last</label>\
         <select name='engine-timeframe' id='engine-timeframe' \
                 data-store-key='sayso-cells-n1-qualifier-search-{{nextCounter}}-timeframe'>\
-          <option value='choose'>Timeframe</option>\
-          <option value='Last 1 day'>Last 1 day</option>\
-          <option value='Last 1 week'>Last 1 week</option>\
-          <option value='Last 1 month'>Last 1 month</option>\
+          <option value='choose' disabled>Timeframe</option>\
+          <option value='1 day'>1 day</option>\
+          <option value='1 week'>1 week</option>\
+          <option value='1 month'>1 month</option>\
         </select>\
       </li>\
     </ul>\
@@ -181,9 +181,9 @@ saySo.templates = {
         <select name='browsing-timeframe' id='browsing-timeframe' \
                 data-store-key='sayso-cells-n1-qualifier-browse-{{nextCounter}}-timeframe'>\
           <option value='Choose' disabled>Timeframe</option>\
-          <option value='Last 1 day'>Last 1 day</option>\
-          <option value='Last 1 week'>Last 1 week</option>\
-          <option value='Last 1 month'>Last 1 month</option>\
+          <option value='1 day'>1 day</option>\
+          <option value='1 week'>1 week</option>\
+          <option value='1 month'>1 month</option>\
         </select>\
       </li>\
     </ul>\

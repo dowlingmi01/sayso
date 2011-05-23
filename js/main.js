@@ -674,10 +674,25 @@ $(document).ready(function(){
       if (matches) {
         $(this).attr('data-store-key', matches[1] + matches[2] + '-1-' + matches[4]);
       }
-      /** @todo Reset field value to default */
+      // Reset field value to default
+      switch ($(this).attr('type')) {
+        case 'checkbox':
+        case 'radio':
+          $(this).removeAttr('checked');
+          break;
+        case 'text':
+          $(this).val('');
+          break;
+        default:
+          if ($(this).filter('select').length > 0) {
+            $(this).children(':not(:first)').removeAttr('selected');
+          }
+      }
     });
-    /** @todo Empty quota and qualifier lists */
-    /** @todo Push form data via saySo.storeLocalData.initFieldValues() ? */
+    // Empty quota and qualifier lists
+    $('#list-cell-quota, #list-browsing-qualifier, #list-search-qualifier').empty();
+    // Save form data for new fields so that data storage algorithm doesn't fail
+    saySo.storeLocalData.initFieldValues();
   });
 
   // When "Reset Input" button is clicked...

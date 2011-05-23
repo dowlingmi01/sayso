@@ -722,10 +722,6 @@ li.quota-select {
   vertical-align: bottom;
   zoom: 1;
   margin: 0 10px 0 0; }
-  li.quota-select.first {
-    margin: 0 10px; }
-  li.quota-select select {
-    width: 100px; }
 
 .ethnicity {
   margin: 0 0 0 10px; }

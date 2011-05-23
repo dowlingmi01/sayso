@@ -695,6 +695,17 @@ $(document).ready(function(){
     saySo.storeLocalData.initFieldValues();
   });
 
+  // Display survey embed field only when custom is selected
+  $('input[name="type-survey"]').change(function() {
+    if ($('#type-survey-3').attr('checked')) {
+      $('#type-iframe').show();
+      $('label[for="type-iframe"]').show();
+    } else {
+      $('#type-iframe').hide();
+      $('label[for="type-iframe"]').hide();
+    }
+  });
+
   // When "Reset Input" button is clicked...
   $('.reset-input').click(function(e) {
     e.preventDefault();

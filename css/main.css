@@ -788,6 +788,13 @@ section.tag-domain-pairs,
 section.behavior-online,
 section.survey-type {
   margin-left: -2px; }
+  section.tag-domain-pairs label[for="type-iframe"],
+  section.tag-domain-pairs #type-iframe,
+  section.behavior-online label[for="type-iframe"],
+  section.behavior-online #type-iframe,
+  section.survey-type label[for="type-iframe"],
+  section.survey-type #type-iframe {
+    display: none; }
 
 section.tag-domain-pairs input:not([type="radio"]) {
   width: 225px; }

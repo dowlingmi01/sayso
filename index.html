@@ -336,7 +336,7 @@
                 <th>Cell #</th>
                 <th>Cell Size</th>
                 <th>Cell Type</th>
-                <th>Cell Description</th>
+                <th class="description">Cell Description</th>
                 <th>Cell Actions</th>
               </tr>
             </thead>
@@ -357,7 +357,7 @@
               <h3>Tag-Domain Pairs</h3>
               <p>What ad tags should be tested on which domains?</p>
             </header>
-            <fieldset class="under-full" id="fieldset-tag-domain-pair">
+            <fieldset class="under-full" id="fieldset-tag-domain-pair" data-template="tag-domain-fieldset" data-counter="1">
               <label for="pairs-label">Label It</label>
               <input type="text" name="pairs-label" id="pairs-label" 
                      data-store-key="sayso-tagdomain-1-label">
@@ -375,26 +375,23 @@
                       data-for-fieldset="fieldset-domains"
                       data-for-list="list-domains"
                       data-store-key="sayso-tagdomain-1-domain">Add Domain</button>
-              <fieldset>   
-                <legend>Cells</legend>           
+              <fieldset id="fieldset-tag-domain-pair-cells">
+                <legend>Cells</legend>
                 <div class="radios-labeled">
-                  <input type="radio" name="pairs-cell" id="pairs-cell-1" value="n1" 
-                         data-store-key="sayso-tagdomain-1-cell">
-                  <label for="pairs-cell-1" class="radio">n1</label>              
-                  <input type="radio" name="pairs-cell" id="pairs-cell-2" value="n2" 
-                         data-store-key="sayso-tagdomain-1-cell">
-                  <label for="pairs-cell-2" class="radio">n2</label>              
-                  <input type="radio" name="pairs-cell" id="pairs-cell-3" value="n3" 
-                         data-store-key="sayso-tagdomain-1-cell">
-                  <label for="pairs-cell-3" class="radio">n3</label>
+                  <div class="template">
+                    <input type="checkbox" name="pairs-cell-{{number}}" id="pairs-cell-{{number}}" value="{{id}}"
+                      data-store-key="sayso-tagdomain-{{tagDomainNumber}}-cell-{{number}}">
+                    <label for="pairs-cell-{{number}}">{{id}}</label>
+                  </div>
                 </div>
               </fieldset>
               <ul class="cell-lists empty" id="list-domains"
                   data-template="domains">
-              </ul>                          
+              </ul>
             </fieldset>
             <div class="button-holder">
-              <button class="add-fieldset-data add-pair styled-button" 
+              <button class="add-fieldset-data add-pair styled-button"
+                      data-store-key="sayso-tagdomain"
                       data-for-fieldset="fieldset-tag-domain-pair"
                       data-for-list="list-tag-domain-pair">Add Tag-Domain Pair</button>
             </div>
@@ -403,17 +400,7 @@
               <h3>Study List</h3>
               <p>Active tag-domain pairs for this study</p>
             </header>
-            <ul class="under-full study-list">
-              <li>
-                <ul>
-                  <li>Pepsi Challenge<br>Search • August 2011<nav><a href="#" class="edit">Edit</a> <a href="#" class="delete">Delete</a></nav></li>
-                </ul>
-              </li>
-              <li>
-                <ul>
-                  <li>Pepsi Challenge<br>Social • August 2011<nav><a href="#" class="edit">Edit</a> <a href="#" class="delete">Delete</a></nav></li>
-                </ul>
-              </li>
+            <ul class="under-full study-list" id="list-tag-domain-pair" data-template="tag-domain-pairs">
             </ul>
           </section><!-- end #study-list -->
         </div><!-- end .section-container -->

@@ -783,6 +783,8 @@ table.cell-lists {
     padding: 0 0 10px 10px;
     text-align: left;
     min-width: 80px; }
+  table.cell-lists .description {
+    width: 370px; }
 
 section.tag-domain-pairs,
 section.behavior-online,
@@ -796,7 +798,7 @@ section.survey-type {
   section.survey-type #type-iframe {
     display: none; }
 
-section.tag-domain-pairs input:not([type="radio"]) {
+section.tag-domain-pairs input:not([type="checkbox"]) {
   width: 225px; }
 section.tag-domain-pairs input.pairs-domains {
   display: -moz-inline-stack;
@@ -812,7 +814,7 @@ section.tag-domain-pairs legend {
   font-weight: bold; }
 section.tag-domain-pairs ul.cell-list {
   margin: 10px 0; }
-section.tag-domain-pairs label.radio {
+section.tag-domain-pairs .radios-labeled label {
   margin: 0 10px 5px 0; }
 
 section.study-list ul.study-list.under-full {
@@ -853,6 +855,9 @@ input.main-submit {
   padding: 10px 20px;
   text-shadow: 1px 1px 1px #416987;
   width: auto; }
+
+.template {
+  display: none; }
 
 /* Inlined to avoid required HTTP connection:
  * http://phpied.com/delay-loading-your-print-css/ */

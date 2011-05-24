@@ -328,6 +328,8 @@ table.cell-lists
     padding: 0 0 10px 10px
     text-align: left
     min-width: 80px
+  .description
+    width: 370px
 
 section.tag-domain-pairs, 
 section.behavior-online, 
@@ -338,7 +340,7 @@ section.survey-type
     display: none
   
 section.tag-domain-pairs
-  input:not([type="radio"])
+  input:not([type="checkbox"])
     width: 225px
   input.pairs-domains
     +inline-block
@@ -350,7 +352,7 @@ section.tag-domain-pairs
     font-weight: bold
   ul.cell-list
     margin: 10px 0
-  label.radio
+  .radios-labeled label
     margin: 0 10px 5px 0
 
 section.study-list
@@ -385,6 +387,9 @@ input.main-submit
   padding: 10px 20px
   text-shadow: 1px 1px 1px #416987
   width: auto
+
+.template
+  display: none
 
 // PRINT STYLES
 

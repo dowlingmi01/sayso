@@ -23,14 +23,23 @@ saySo.templates = {
   // list of search qualifiers
   searchQualifiers : "<li class='completed-parameter'>{{include}} searches for \"{{term}}\" on {{#which}}{{#bing}}{{bing}}, {{/bing}}{{#google}}{{google}}, {{/google}}{{#yahoo}}{{yahoo}}, {{/yahoo}}{{/which}} in the last {{timeframe}} <a href='#' class='delete' data-store-key='sayso-cells-n1-qualifier-search-{{thisCounter}}'>Delete</a></li>",
 
-  // list of tag-domain pairs
-  tagDomainPairs : "<li class='completed-parameter'>Facebook.com <a href='#' class='delete''>Delete</a></li>",
-
   // list of delivery criteria
   deliveryCriteria : "<li class='completed-parameter'>{{domain}} within {{timeframe}} <a href='#' class='delete' data-store-key='sayso-surveyinfo-deliverIf-{{thisCounter}}'>Delete</a></li>",
 
   // list of domains for tag-domain-pairs
-  domains : "<li class='completed-parameter'>{{name}} <a href='#' data-store-key='sayso-tagdomain-1-domain-{{thisCounter}}' class='delete' class='delete'>Delete</a></li>",
+  domains : '<li class="completed-parameter">\
+    {{name}}\
+    <a href="#" data-store-key="sayso-tagdomain-{{tagDomainNumber}}-domain-{{thisCounter}}" class="delete">Delete</a>\
+  </li>',
+
+  // list of tag-domain pairs
+  tagDomainPairs : '<li>\
+    {{label}}\
+    <nav>\
+      <a href="#" class="edit">Edit</a>\
+      <a href="#" class="delete">Delete</a>\
+    </nav>\
+  </li>',
 
   // fieldset for adding a quota
   quotaFieldset : '<fieldset id="fieldset-cell-quota"\
@@ -199,14 +208,54 @@ saySo.templates = {
             data-template="domain-fieldset"\
             data-counter="{{nextCounter}}">\
     <input type="text" name="pairs-domains" id="pairs-domains" class="pairs-domains"\
-           data-store-key="sayso-tagdomain-1-domain-{{nextCounter}}-name">\
+           data-store-key="sayso-tagdomain-{{tagDomainNumber}}-domain-{{nextCounter}}-name">\
+  </fieldset>',
+
+  tagDomainFieldset : '<fieldset class="under-full" id="fieldset-tag-domain-pair" data-template="tag-domain-fieldset"\
+      data-counter="{{nextCounter}}">\
+    <label for="pairs-label">Label It</label>\
+    <input type="text" name="pairs-label" id="pairs-label"\
+           data-store-key="sayso-tagdomain-{{nextCounter}}-label">\
+    <label for="pairs-ad-tag">Paste Ad Tag Here</label>\
+    <textarea name="pairs-ad-tag" id="pairs-ad-tag" cols="30" rows="10"\
+              data-store-key="sayso-tagdomain-{{nextCounter}}-tag"></textarea>\
+    <label for="pairs-domains">Domains:</label>\
+    <fieldset id="fieldset-domains" \
+              data-template="domain-fieldset"\
+              data-counter="1">\
+      <input type="text" name="pairs-domains" id="pairs-domains" class="pairs-domains"\
+             data-store-key="sayso-tagdomain-{{nextCounter}}-domain-1-name">\
+    </fieldset>\
+    <button class="add-fieldset-data"\
+            data-for-fieldset="fieldset-domains"\
+            data-for-list="list-domains"\
+            data-store-key="sayso-tagdomain-{{nextCounter}}-domain">Add Domain</button>\
+    <fieldset>\
+      <legend>Cells</legend>\
+      <div class="radios-labeled">\
+        <div class="template">\
+          <input type="checkbox" name="pairs-cell-&#123;&#123;number&#125;&#125;"\
+            id="pairs-cell-&#123;&#123;number&#125;&#125;" value="&#123;&#123;id&#125;&#125;"\
+            data-store-key="sayso-tagdomain-&#123;&#123;tagDomainNumber&#125;&#125;-cell-&#123;&#123;number&#125;&#125;">\
+          <label for="pairs-cell-&#123;&#123;number&#125;&#125;">&#123;&#123;id&#125;&#125;</label>\
+        </div>\
+        {{#cells}}\
+          <input id="pairs-cell-{{number}}" type="checkbox" name="pairs-cell-{{number}}" value="{{id}}"\
+            data-store-key="sayso-tagdomain-{{nextCounter}}-cell-{{number}}">\
+          <label for="pairs-cell-{{number}}">{{id}}</label>\
+        {{/cells}}\
+      </div>\
+    </fieldset>\
+    <ul class="cell-lists empty" id="list-domains"\
+        data-template="domains">\
+    </ul>\
   </fieldset>',
 
   cellTableRow : '<tr>\
     <td>n{{number}}</td>\
     <td>{{size}}</td>\
     <td>{{type}}</td>\
-    <td>{{description}}</td>\
+    <td class="description">{{description}}</td>\
     <td>\
       <a href="#" class="view">View</a>\
       <a href="#" class="edit">Edit</a>\
@@ -298,6 +347,11 @@ saySo.storeLocalData = {
     // For each of the form fields from which we get values
     $('form').find(this.config.fieldsToWatch).each(function(){
 
+      // Skip template element
+      if ($(this).parents('.template').length) {
+        return;
+      }
+
       // Get key-value pair
       var dataKey = $(this).attr(that.config.dataSelector),
           dataValue = $(this).val();
@@ -346,7 +400,7 @@ saySo.storeLocalData = {
       // does our object container have the current key as a key? if so, then leave it
       // alone. if not, add it. and make sure to re-set our container variable so on
       // the next iteration, we're looking within the current container.
-      container = Object.hasOwnProperty.call( container, currentKey ) ? 
+      container = container.hasOwnProperty(currentKey) ?
                   container[currentKey] :
                   container[currentKey] = {};
       
@@ -426,7 +480,7 @@ saySo.dataInteractions = {
     // alias our current context so we can refer to it within function scopes
     var that = this;
     
-    $('button.add-fieldset-data').click(function( e ){
+    $('button.add-fieldset-data').live('click', function(e) {
       
       e.preventDefault();
       
@@ -474,11 +528,31 @@ saySo.dataInteractions = {
         
     // handle the counter.
         counter = parseInt( $fieldset.attr( 'data-counter' ) ),
-        counterObj = { nextCounter : counter += 1 },
-        emptyFieldset = saySo.templates.goBuildMeATemplate( saySo.templates[parsedTemplateName], counterObj ),
+        templateData = { nextCounter : counter += 1 };
+
+    switch ($fieldset.attr('id')) {
+      // For tag-domain pairs field set, add cell data and tag-domain pair number
+      case 'fieldset-tag-domain-pair':
+        templateData.cells = [];
+        var cellNumber = $('#cell-description').attr('data-store-key').match(/-n(\d+)-/)[1];
+        for (var i = 1; i < parseInt(cellNumber); i++) {
+          templateData.cells.push({
+            number : i,
+            id : 'n' + i,
+            tagDomainNumber: $fieldset.attr('data-counter')
+          });
+        }
+        break;
+      // For domain field set, add tag-domain pair number
+      case 'fieldset-domains':
+        templateData.tagDomainNumber = $('#fieldset-tag-domain-pair').attr('data-counter');
+        break;
+    }
+
+    var emptyFieldset = saySo.templates.goBuildMeATemplate( saySo.templates[parsedTemplateName], templateData ),
         $emptyFieldset = $(emptyFieldset),
         $prevEl = $fieldset.prev();
-    
+
     // just eye candy here. animate the current fieldset out, and animate the new
     // fieldset in.
     $fieldset.animate({ opacity : 0 }, function() {
@@ -527,7 +601,14 @@ saySo.dataInteractions = {
     
     // extend our item with a counter property that we can use to build our deletion
     items[cellsLength - 1].thisCounter = counter;
-        
+
+    switch ($fieldset.attr('id')) {
+      // For domain field set, add tag-domain pair number
+      case 'fieldset-domains':
+        items[cellsLength - 1].tagDomainNumber = $('#fieldset-tag-domain-pair').attr('data-counter');
+        break;
+    }
+
     newHtml = saySo.templates.goBuildMeATemplate( saySo.templates[parsedTemplateName], items[cellsLength - 1] );
     
     $(newHtml).appendTo($list);
@@ -689,6 +770,17 @@ $(document).ready(function(){
           }
       }
     });
+    // Add cell to tag-domain pairs cells selector list
+    $('#fieldset-tag-domain-pair-cells .template').parent().append(
+      saySo.templates.goBuildMeATemplate(
+        $('#fieldset-tag-domain-pair-cells .template').html(),
+        {
+          number : cellNumber,
+          id : 'n' + cellNumber,
+          tagDomainNumber : $('#fieldset-tag-domain-pair').attr('data-counter')
+        }
+      )
+    );
     // Empty quota and qualifier lists
     $('#list-cell-quota, #list-browsing-qualifier, #list-search-qualifier').empty();
     // Save form data for new fields so that data storage algorithm doesn't fail

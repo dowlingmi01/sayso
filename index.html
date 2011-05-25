@@ -26,6 +26,196 @@
   </header>
   <div id="main" role="main">
     <form action="/" class="main-survey" method="post">
+      <section class="main-criteria" id="ad-tags">
+        <header>
+          <h2>Ad Tags</h2>
+          <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
+        </header>
+        <div class="section-container">
+          <section class="secondary-criteria tag-domain-pairs first padded-column-5" id="tag-domain-pairs">
+            <header class="under-full">
+              <h3>Tag-Domain Pairs</h3>
+              <p>What ad tags should be tested on which domains?</p>
+            </header>
+            <fieldset class="under-full" id="fieldset-tag-domain-pair" data-template="tag-domain-fieldset" data-counter="1">
+              <label for="pairs-label">Label It</label>
+              <input type="text" name="pairs-label" id="pairs-label"
+                     data-store-key="sayso-tagdomain-1-label">
+              <label for="pairs-ad-tag">Paste Ad Tag Here</label>
+              <textarea name="pairs-ad-tag" id="pairs-ad-tag" cols="30" rows="10"
+                        data-store-key="sayso-tagdomain-1-tag"></textarea>
+              <label for="pairs-domains">Domains:</label>
+              <fieldset id="fieldset-domains"
+                        data-template="domain-fieldset"
+                        data-counter="1">
+                <input type="text" name="pairs-domains" id="pairs-domains" class="pairs-domains"
+                       data-store-key="sayso-tagdomain-1-domain-1-name">
+              </fieldset>
+              <button class="add-fieldset-data"
+                      data-for-fieldset="fieldset-domains"
+                      data-for-list="list-domains"
+                      data-store-key="sayso-tagdomain-1-domain">Add Domain</button>
+              <ul class="cell-lists empty" id="list-domains"
+                  data-template="domains">
+              </ul>
+            </fieldset>
+            <div class="button-holder">
+              <button class="add-fieldset-data add-pair styled-button"
+                      data-store-key="sayso-tagdomain"
+                      data-for-fieldset="fieldset-tag-domain-pair"
+                      data-for-list="list-tag-domain-pair">Add Tag-Domain Pair</button>
+            </div>
+          </section><!-- end #tag-domain-pairs --><section class="secondary-criteria study-list padded-column-5 last" id="study-list">
+            <header class="under-full">
+              <h3>Study List</h3>
+              <p>Active tag-domain pairs for this study</p>
+            </header>
+            <ul class="under-full study-list" id="list-tag-domain-pair" data-template="tag-domain-pairs">
+            </ul>
+          </section><!-- end #study-list -->
+        </div><!-- end .section-container -->
+      </section><!-- end #ad-tags -->
+      <section class="main-criteria" id="behavioral-metrics">
+        <header>
+          <h2>Behavioral Metrics to Record</h2>
+          <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
+        </header>
+        <div class="section-container">
+          <section class="secondary-criteria padded-column-3 first behavior-online">
+            <header class="under-full">
+              <h3>Online</h3>
+              <p>Record Full Click-Track</p>
+            </header>
+            <fieldset class="under-full">
+              <div>
+                <input type="radio" name="record-click-track" id="record-click-track-1" value="Yes"
+                       data-store-key="sayso-metrics-clicktrack">
+                <label for="record-click-track-1">Yes</label>
+              </div>
+              <div>
+                <input type="radio" name="record-click-track" id="record-click-track-2" value="No"
+                       data-store-key="sayso-metrics-clicktrack">
+                <label for="record-click-track-2">No</label>
+              </div>
+            </fieldset>
+          </section><section class="secondary-criteria padded-column-4">
+            <header class="under-full">
+              <h3>Search</h3>
+              <p>Record Search Behavior</p>
+            </header>
+            <fieldset class="under-full">
+              <div>
+                <input type="checkbox" name="record-search-engines-bing" id="record-search-engines-bing" value="Bing"
+                       data-store-key="sayso-metrics-searchengines-bing">
+                <label for="record-search-engines-bing">Bing</label>
+              </div>
+              <div>
+                <input type="checkbox" name="record-search-engines-google" id="record-search-engines-google"
+                       value="Google" data-store-key="sayso-metrics-searchengines-google">
+                <label for="record-search-engines-google">Google</label>
+              </div>
+              <div>
+                <input type="checkbox" name="record-search-engines-yahoo" id="record-search-engines-yahoo"
+                       value="Yahoo!" data-store-key="sayso-metrics-searchengines-yahoo">
+                <label for="record-search-engines-yahoo">Yahoo!</label>
+              </div>
+            </fieldset>
+          </section><section class="secondary-criteria padded-column-3 last"
+                             data-store-key="sayso-metrics-searchengines">
+            <header class="under-full">
+              <h3>Social</h3>
+              <p>Record Social Behavior</p>
+            </header>
+            <fieldset class="under-full">
+              <div>
+                <input data-store-key="sayso-metrics-social-facebookLike" id="record-social-facebookLike"
+                  name="record-social-facebookLike" type="checkbox" value="facebookLike" />
+                <label for="record-social-facebookLike">Facebook Likes</label>
+              </div>
+              <div>
+                <input data-store-key="sayso-metrics-social-tweet" id="record-social-tweet"
+                  name="record-social-tweet" type="checkbox" value="tweet" />
+                <label for="record-social-tweet">Tweets</label>
+              </div>
+            </fieldset>
+          </section>
+        </div><!-- end .section-container -->
+      </section><!-- end #behavioral-metrics  -->
+      <section class="main-criteria" id="survey">
+        <header>
+          <h2>Survey</h2>
+          <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
+        </header>
+        <div class="section-container">
+          <section class="secondary-criteria survey-type padded-column-5 first" id="survey-type">
+            <header class="under-full">
+              <h3>Survey Type</h3>
+              <p>Standard Ad Effectiveness Survey or Customized?</p>
+            </header>
+            <fieldset class="under-full">
+              <legend class="hide-visual">Survey Type</legend>
+              <fieldset>
+                <legend>Choose which type of survey you'll use</legend>
+                <div class="radios-labeled">
+                <input type="radio" name="type-survey" id="type-survey-1" value="No Survey"
+                       data-store-key="sayso-surveyinfo-type">
+                <label for="type-survey-1">No Survey</label>
+                </div>
+                <div>
+                <input type="radio" name="type-survey" id="type-survey-2" value="Standard Survey"
+                       data-store-key="sayso-surveyinfo-type">
+                <label for="type-survey-2">Standard Survey</label>
+                </div>
+                <div>
+                <input type="radio" name="type-survey" id="type-survey-3" value="Custom Survey"
+                       data-store-key="sayso-surveyinfo-type">
+                <label for="type-survey-3">Custom Survey</label>
+                </div>
+              </fieldset>
+              <label for="type-iframe" class="paste-iframe-label">Paste iFrame Content Here</label>
+              <textarea name="type-iframe" id="type-iframe" cols="30" rows="10"
+                        data-store-key="sayso-surveyinfo-tag"></textarea>
+            </fieldset>
+          </section><!-- end #survey-type --><section class="secondary-criteria survey-qualifiers padded-column-5 last" id="survey-qualifiers">
+            <header class="under-full">
+              <h3>Delivery Criteria</h3>
+              <p>When should the survey be delivered?</p>
+            </header>
+            <fieldset class="under-full" id="fieldset-survey-delivery-criteria"
+                      data-template="criteria-fieldset"
+                      data-counter="1">
+              <legend class="hide-visual">When and where to deliver surveys</legend>
+              <label for="delivery-domain">Deliver survey to those that visit</label>
+              <select name="delivery-domain" id="delivery-domain"
+                      data-store-key="sayso-surveyinfo-deliverIf-1-domain">
+                <option value="" selected>Choose</option>
+                <option value="Facebook.com">Facebook.com</option>
+                <option value="CNN.com">CNN.com</option>
+                <option value="ESPN.com">ESPN.com</option>
+              </select>
+              <label for="delivery-timeframe">within</label>
+              <select name="delivery-timeframe" id="delivery-timeframe"
+                      data-store-key="sayso-surveyinfo-deliverIf-1-timeframe">
+                <option value="" selected>Timeframe</option>
+                <option value="1 hour">1 hour</option>
+                <option value="1 day">1 day</option>
+                <option value="1 week">1 week</option>
+                <option value="1 month">1 month</option>
+              </select>
+              <p>of seeing targeted ad(s).</p>
+            </fieldset>
+            <div class="button-holder">
+              <button class="add-fieldset-data styled-button"
+                      data-for-fieldset="fieldset-survey-delivery-criteria"
+                      data-for-list="list-survey-delivery-criteria"
+                      data-store-key="sayso-surveyinfo-deliverIf">Add Criteria</button>
+            </div>
+            <ul class="cell-lists empty" id="list-survey-delivery-criteria"
+                data-template="delivery-criteria">
+            </ul>
+          </section><!-- end #survey-qualifiers -->
+        </div><!-- end .section-container  -->
+      </section><!-- end #survey -->
       <section class="main-criteria study-base" id="study-base">
         <header>
           <h2>Ad Effectiveness Study</h2>
@@ -120,6 +310,20 @@
               <div class="padded-column-2" style="display: inline-block">
                 <label for="cell-size">Cell Size</label>
                 <input name="cell-size" id="cell-size" data-store-key="sayso-cells-n1-size">
+              </div>
+              <div class="padded-column-10 first last">
+                <fieldset id="fieldset-cell-adtags">
+                  <legend>Ad Tags</legend>
+                  <div class="radios-labeled">
+                    <div class="template">
+                      <input type="checkbox" name="cell-adtag-{{number}}" id="cell-adtag-{{number}}"
+                        value="{{number}}" data-store-key="sayso-cells-{{cellId}}-adtag-{{number}}">
+                      <label for="cell-adtag-{{number}}">{{label}}</label>
+                    </div>
+                  </div>
+                </fieldset>
+                <ul class="cell-lists empty" id="cell-adtag" data-template="cell-adtag">
+                </ul>
               </div>
             </fieldset>
           </section>
@@ -346,206 +550,6 @@
             </section><!-- end #behavioral-qualifiers -->
         </div><!-- end .section-container  -->      
       </section><!-- end #build-cells -->
-      <section class="main-criteria" id="ad-tags">
-        <header>
-          <h2>Ad Tags</h2>
-          <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
-        </header>
-        <div class="section-container">
-          <section class="secondary-criteria tag-domain-pairs first padded-column-5" id="tag-domain-pairs">
-            <header class="under-full">
-              <h3>Tag-Domain Pairs</h3>
-              <p>What ad tags should be tested on which domains?</p>
-            </header>
-            <fieldset class="under-full" id="fieldset-tag-domain-pair" data-template="tag-domain-fieldset" data-counter="1">
-              <label for="pairs-label">Label It</label>
-              <input type="text" name="pairs-label" id="pairs-label" 
-                     data-store-key="sayso-tagdomain-1-label">
-              <label for="pairs-ad-tag">Paste Ad Tag Here</label>
-              <textarea name="pairs-ad-tag" id="pairs-ad-tag" cols="30" rows="10" 
-                        data-store-key="sayso-tagdomain-1-tag"></textarea>
-              <label for="pairs-domains">Domains:</label>
-              <fieldset id="fieldset-domains" 
-                        data-template="domain-fieldset"
-                        data-counter="1">
-                <input type="text" name="pairs-domains" id="pairs-domains" class="pairs-domains" 
-                       data-store-key="sayso-tagdomain-1-domain-1-name">
-              </fieldset>
-              <button class="add-fieldset-data"
-                      data-for-fieldset="fieldset-domains"
-                      data-for-list="list-domains"
-                      data-store-key="sayso-tagdomain-1-domain">Add Domain</button>
-              <fieldset id="fieldset-tag-domain-pair-cells">
-                <legend>Cells</legend>
-                <div class="radios-labeled">
-                  <div class="template">
-                    <input type="checkbox" name="pairs-cell-{{number}}" id="pairs-cell-{{number}}" value="{{id}}"
-                      data-store-key="sayso-tagdomain-{{tagDomainNumber}}-cell-{{number}}">
-                    <label for="pairs-cell-{{number}}">{{id}}</label>
-                  </div>
-                </div>
-              </fieldset>
-              <ul class="cell-lists empty" id="list-domains"
-                  data-template="domains">
-              </ul>
-            </fieldset>
-            <div class="button-holder">
-              <button class="add-fieldset-data add-pair styled-button"
-                      data-store-key="sayso-tagdomain"
-                      data-for-fieldset="fieldset-tag-domain-pair"
-                      data-for-list="list-tag-domain-pair">Add Tag-Domain Pair</button>
-            </div>
-          </section><!-- end #tag-domain-pairs --><section class="secondary-criteria study-list padded-column-5 last" id="study-list">
-            <header class="under-full">
-              <h3>Study List</h3>
-              <p>Active tag-domain pairs for this study</p>
-            </header>
-            <ul class="under-full study-list" id="list-tag-domain-pair" data-template="tag-domain-pairs">
-            </ul>
-          </section><!-- end #study-list -->
-        </div><!-- end .section-container -->
-      </section><!-- end #ad-tags -->
-      <section class="main-criteria" id="survey">
-        <header>
-          <h2>Survey</h2>
-          <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
-        </header>
-        <div class="section-container">
-          <section class="secondary-criteria survey-type padded-column-5 first" id="survey-type">
-            <header class="under-full">
-              <h3>Survey Type</h3>
-              <p>Standard Ad Effectiveness Survey or Customized?</p>
-            </header>          
-            <fieldset class="under-full">
-              <legend class="hide-visual">Survey Type</legend>
-              <fieldset>
-                <legend>Choose which type of survey you'll use</legend>              
-                <div class="radios-labeled">
-                <input type="radio" name="type-survey" id="type-survey-1" value="No Survey" 
-                       data-store-key="sayso-surveyinfo-type">
-                <label for="type-survey-1">No Survey</label>              
-                </div>
-                <div>
-                <input type="radio" name="type-survey" id="type-survey-2" value="Standard Survey" 
-                       data-store-key="sayso-surveyinfo-type">
-                <label for="type-survey-2">Standard Survey</label>              
-                </div>
-                <div>
-                <input type="radio" name="type-survey" id="type-survey-3" value="Custom Survey" 
-                       data-store-key="sayso-surveyinfo-type">
-                <label for="type-survey-3">Custom Survey</label>
-                </div>
-              </fieldset>
-              <label for="type-iframe" class="paste-iframe-label">Paste iFrame Content Here</label>
-              <textarea name="type-iframe" id="type-iframe" cols="30" rows="10" 
-                        data-store-key="sayso-surveyinfo-tag"></textarea>
-            </fieldset>
-          </section><!-- end #survey-type --><section class="secondary-criteria survey-qualifiers padded-column-5 last" id="survey-qualifiers">
-            <header class="under-full">
-              <h3>Delivery Criteria</h3>
-              <p>When should the survey be delivered?</p>
-            </header>
-            <fieldset class="under-full" id="fieldset-survey-delivery-criteria"
-                      data-template="criteria-fieldset"
-                      data-counter="1">
-              <legend class="hide-visual">When and where to deliver surveys</legend>
-              <label for="delivery-domain">Deliver survey to those that visit</label>
-              <select name="delivery-domain" id="delivery-domain"
-                      data-store-key="sayso-surveyinfo-deliverIf-1-domain">
-                <option value="" selected>Choose</option>
-                <option value="Facebook.com">Facebook.com</option>
-                <option value="CNN.com">CNN.com</option>
-                <option value="ESPN.com">ESPN.com</option>
-              </select>
-              <label for="delivery-timeframe">within</label>
-              <select name="delivery-timeframe" id="delivery-timeframe"
-                      data-store-key="sayso-surveyinfo-deliverIf-1-timeframe">
-                <option value="" selected>Timeframe</option>
-                <option value="1 hour">1 hour</option>
-                <option value="1 day">1 day</option>
-                <option value="1 week">1 week</option>              
-                <option value="1 month">1 month</option>
-              </select>
-              <p>of seeing targeted ad(s).</p>              
-            </fieldset>
-            <div class="button-holder">
-              <button class="add-fieldset-data styled-button" 
-                      data-for-fieldset="fieldset-survey-delivery-criteria"
-                      data-for-list="list-survey-delivery-criteria"
-                      data-store-key="sayso-surveyinfo-deliverIf">Add Criteria</button>
-            </div>
-            <ul class="cell-lists empty" id="list-survey-delivery-criteria"
-                data-template="delivery-criteria">
-            </ul>
-          </section><!-- end #survey-qualifiers -->
-        </div><!-- end .section-container  -->
-      </section><!-- end #survey -->
-      <section class="main-criteria" id="behavioral-metrics">
-        <header>
-          <h2>Behavioral Metrics to Record</h2>
-          <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
-        </header>
-        <div class="section-container">
-          <section class="secondary-criteria padded-column-3 first behavior-online">
-            <header class="under-full">
-              <h3>Online</h3>
-              <p>Record Full Click-Track</p>
-            </header>
-            <fieldset class="under-full">
-              <div>
-                <input type="radio" name="record-click-track" id="record-click-track-1" value="Yes" 
-                       data-store-key="sayso-metrics-clicktrack">
-                <label for="record-click-track-1">Yes</label>            
-              </div>
-              <div>
-                <input type="radio" name="record-click-track" id="record-click-track-2" value="No" 
-                       data-store-key="sayso-metrics-clicktrack">
-                <label for="record-click-track-2">No</label>
-              </div>
-            </fieldset>
-          </section><section class="secondary-criteria padded-column-4">
-            <header class="under-full">
-              <h3>Search</h3>
-              <p>Record Search Behavior</p>
-            </header>
-            <fieldset class="under-full">
-              <div>
-                <input type="checkbox" name="record-search-engines-bing" id="record-search-engines-bing" value="Bing"
-                       data-store-key="sayso-metrics-searchengines-bing">
-                <label for="record-search-engines-bing">Bing</label>
-              </div>
-              <div>
-                <input type="checkbox" name="record-search-engines-google" id="record-search-engines-google"
-                       value="Google" data-store-key="sayso-metrics-searchengines-google">
-                <label for="record-search-engines-google">Google</label>
-              </div>
-              <div>
-                <input type="checkbox" name="record-search-engines-yahoo" id="record-search-engines-yahoo"
-                       value="Yahoo!" data-store-key="sayso-metrics-searchengines-yahoo">
-                <label for="record-search-engines-yahoo">Yahoo!</label>
-              </div>
-            </fieldset>
-          </section><section class="secondary-criteria padded-column-3 last" 
-                             data-store-key="sayso-metrics-searchengines">
-            <header class="under-full">
-              <h3>Social</h3>
-              <p>Record Social Behavior</p>
-            </header>
-            <fieldset class="under-full">
-              <div>
-                <input data-store-key="sayso-metrics-social-facebookLike" id="record-social-facebookLike"
-                  name="record-social-facebookLike" type="checkbox" value="facebookLike" />
-                <label for="record-social-facebookLike">Facebook Likes</label>
-              </div>
-              <div>
-                <input data-store-key="sayso-metrics-social-tweet" id="record-social-tweet"
-                  name="record-social-tweet" type="checkbox" value="tweet" />
-                <label for="record-social-tweet">Tweets</label>
-              </div>
-            </fieldset>
-          </section>
-        </div><!-- end .section-container -->
-      </section><!-- end #behavioral-metrics  -->
       <div class="button-holder">
         <input type="submit" value="Build My Survey" class="styled-button main-submit" id="do-ze-build">
         <input type="submit" value="Clear Local Data" class="styled-button main-submit" id="clear-local-data">

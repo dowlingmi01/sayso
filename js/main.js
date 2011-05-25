@@ -230,22 +230,6 @@ saySo.templates = {
             data-for-fieldset="fieldset-domains"\
             data-for-list="list-domains"\
             data-store-key="sayso-tagdomain-{{nextCounter}}-domain">Add Domain</button>\
-    <fieldset>\
-      <legend>Cells</legend>\
-      <div class="radios-labeled">\
-        <div class="template">\
-          <input type="checkbox" name="pairs-cell-&#123;&#123;number&#125;&#125;"\
-            id="pairs-cell-&#123;&#123;number&#125;&#125;" value="&#123;&#123;id&#125;&#125;"\
-            data-store-key="sayso-tagdomain-&#123;&#123;tagDomainNumber&#125;&#125;-cell-&#123;&#123;number&#125;&#125;">\
-          <label for="pairs-cell-&#123;&#123;number&#125;&#125;">&#123;&#123;id&#125;&#125;</label>\
-        </div>\
-        {{#cells}}\
-          <input id="pairs-cell-{{number}}" type="checkbox" name="pairs-cell-{{number}}" value="{{id}}"\
-            data-store-key="sayso-tagdomain-{{nextCounter}}-cell-{{number}}">\
-          <label for="pairs-cell-{{number}}">{{id}}</label>\
-        {{/cells}}\
-      </div>\
-    </fieldset>\
     <ul class="cell-lists empty" id="list-domains"\
         data-template="domains">\
     </ul>\
@@ -445,7 +429,7 @@ saySo.storeLocalData = {
       // does our object container have the current key as a key? if so, then leave it
       // alone. if not, add it. and make sure to re-set our container variable so on
       // the next iteration, we're looking within the current container.
-      container = Object.hasOwnProperty.call( container, currentKey ) ? 
+      container = container.hasOwnProperty(currentKey) ?
                   container[currentKey] :
                   container[currentKey] = {};
 
@@ -495,7 +479,7 @@ saySo.dataInteractions = {
           $listFriend = $('#' + relatedListSelector),
           cellData = saySo.storeLocalData.updateData( cellKey ),
           items = [];
-            
+
       // we need to push each piece of cellData to an array in order to iterate over it
       // and get the length so we can make sure to just get the last item and stick it
       // in the DOM. whew.      
@@ -505,16 +489,14 @@ saySo.dataInteractions = {
 
       that.addDomDataPoint( $listFriend, $fieldsetFriend, items );
       that.refreshFieldset( $fieldsetFriend );
-            
+
     });
     
     // when delete is clicked, an indicator should be deleted from the DOM and the data 
     // should be removed from the data object
-    $('ul.cell-lists').delegate('.delete', 'click', function( e ){
-      
+    $('.cell-lists .delete').live('click', function(e) {
       e.preventDefault();
-      
-      that.removeDomDataPoint( $(this) );      
+      that.removeDomDataPoint($(this));
     });
     
   },
@@ -531,17 +513,19 @@ saySo.dataInteractions = {
         templateData = { nextCounter : counter += 1 };
 
     switch ($fieldset.attr('id')) {
-      // For tag-domain pairs field set, add cell data and tag-domain pair number
+      // For tag-domain pairs field set
       case 'fieldset-tag-domain-pair':
-        templateData.cells = [];
-        var cellNumber = $('#cell-description').attr('data-store-key').match(/-n(\d+)-/)[1];
-        for (var i = 1; i < parseInt(cellNumber); i++) {
-          templateData.cells.push({
-            number : i,
-            id : 'n' + i,
-            tagDomainNumber: $fieldset.attr('data-counter')
-          });
-        }
+        // Add ad tag to selector list for cell
+        $('#fieldset-cell-adtags .template').parent().append(
+          saySo.templates.goBuildMeATemplate(
+            $('#fieldset-cell-adtags .template').html(),
+            {
+              number : $fieldset.attr('data-counter'),
+              label : $('#pairs-label').val(),
+              cellId : 'n' + $('#cell-description').attr('data-store-key').match(/-n(\d+)-/)[1]
+            }
+          )
+        );
         break;
       // For domain field set, add tag-domain pair number
       case 'fieldset-domains':
@@ -770,17 +754,6 @@ $(document).ready(function(){
           }
       }
     });
-    // Add cell to tag-domain pairs cells selector list
-    $('#fieldset-tag-domain-pair-cells .template').parent().append(
-      saySo.templates.goBuildMeATemplate(
-        $('#fieldset-tag-domain-pair-cells .template').html(),
-        {
-          number : cellNumber,
-          id : 'n' + cellNumber,
-          tagDomainNumber : $('#fieldset-tag-domain-pair').attr('data-counter')
-        }
-      )
-    );
     // Empty quota and qualifier lists
     $('#list-cell-quota, #list-browsing-qualifier, #list-search-qualifier').empty();
     // Save form data for new fields so that data storage algorithm doesn't fail

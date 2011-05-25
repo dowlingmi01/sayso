@@ -786,6 +786,11 @@ table.cell-lists {
   table.cell-lists .description {
     width: 370px; }
 
+#fieldset-cell-adtags label {
+  font-weight: normal; }
+#fieldset-cell-adtags legend {
+  font-weight: bold; }
+
 section.tag-domain-pairs,
 section.behavior-online,
 section.survey-type {

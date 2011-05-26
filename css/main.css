@@ -864,6 +864,25 @@ input.main-submit {
 .template {
   display: none; }
 
+#dialogCellView .wrap,
+#dialogCellView .entry,
+#dialogCellView label,
+#dialogCellView .value {
+  float: left; }
+#dialogCellView .wrap,
+#dialogCellView .entry {
+  width: 774px; }
+#dialogCellView .entry {
+  clear: left;
+  margin-bottom: 0.7em; }
+#dialogCellView label {
+  cursor: auto;
+  margin-right: 10px;
+  text-align: right;
+  width: 250px; }
+#dialogCellView .value {
+  width: 514px; }
+
 /* Inlined to avoid required HTTP connection:
  * http://phpied.com/delay-loading-your-print-css/ */
 @media print {

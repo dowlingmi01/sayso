@@ -246,11 +246,74 @@ saySo.templates = {
     <td>{{type}}</td>\
     <td class="description">{{description}}</td>\
     <td>\
-      <a href="#" class="view">View</a>\
-      <a href="#" class="edit">Edit</a>\
-      <a href="#" class="delete">Delete</a>\
+      <a href="/cell/n{{number}}/view" class="view">View</a>\
+      <a href="/cell/n{{number}}/edit" class="edit">Edit</a>\
+      <a href="/cell/n{{number}}/delete" class="delete">Delete</a>\
     </td>\
-  </tr>'
+  </tr>',
+
+  dialogCellView : '\
+  <div class="wrap">\
+    <div class="entry">\
+      <label>Cell Description</label>\
+      <div class="value">{{description}}</div>\
+    </div>\
+    <div class="entry">\
+      <label>Type of Cell</label>\
+      <div class="value">{{type}}</div>\
+    </div>\
+    <div class="entry">\
+      <label>Cell Size</label>\
+      <div class="value">{{size}}</div>\
+    </div>\
+    <div class="entry">\
+      <label>Ad Tags</label>\
+      <div class="value">\
+        <ul>\
+          {{#adTag}}\
+            <li>{{.}}</li>\
+          {{/adTag}}\
+        </ul>\
+      </div>\
+    </div>\
+    <div class="entry">\
+      <label>Cell Quotas</label>\
+      <div class="value">\
+        <ul>\
+          {{#quota}}\
+            <li>{{percent}}% {{ethnicity}} {{gender}}s, {{age}}</li>\
+          {{/quota}}\
+        </ul>\
+      </div>\
+    </div>\
+    {{#qualifier}}\
+    <div class="entry">\
+      <label>Online Browsing</label>\
+      <div class="value">\
+        <ul>\
+          {{#browse}}\
+            <li>{{include}} visits to {{site}} in the last {{timeframe}}</li>\
+          {{/browse}}\
+        </ul>\
+      </div>\
+    </div>\
+    <div class="entry">\
+      <label>Search Actions</label>\
+      <div class="value">\
+        <ul>\
+          {{#search}}\
+            <li>{{include}} searches for "{{term}}" on {{#which}}{{.}}, {{/which}}in the last {{timeframe}}</li>\
+          {{/search}}\
+        </ul>\
+      </div>\
+    </div>\
+    <div class="entry">\
+      <label>Deliver survey to those that</label>\
+      <div class="value">{{condition}}</div>\
+    </div>\
+    {{/qualifier}}\
+  </div>\
+  '
 
 };
 
@@ -637,14 +700,12 @@ saySo.dataInteractions = {
 };
 
 // does this browser support input type of date? if not, load up a jquery UI solution
-yepnope({
+yepnope([{
   test : Modernizr.inputtypes && Modernizr.inputtypes.date,
   nope : [
-    'js/jquery-ui-1.8.12.custom.min.js',
-    'css/jquery-ui-css/jquery-ui-1.8.12.custom.css',
     'js/datepicker.js'
   ]
-});
+}]);
 
 $(document).ready(function(){
   
@@ -786,6 +847,68 @@ $(document).ready(function(){
   $('nav.lock .lock').click(function(e) {
     e.preventDefault();
     /** @todo Implementation */
+  });
+
+  // Construct cell "View" dialog
+  var $dialogCellView = $('<div id="dialogCellView"></div>')
+    .dialog({
+      autoOpen: false,
+      modal: true,
+      resizable: false,
+      title: 'View Cell',
+      width: 800
+    });
+
+  // When cell "View" is clicked
+  $('table.cell-lists a.view').live('click', function(e) {
+    e.preventDefault();
+    var cellId = $(this).attr('href').match(/(n\d+)/)[1];
+    var cellData = saySo.storeLocalData.studyInfo.sayso.cells[cellId];
+    var templateData = {
+      description: cellData.description,
+      type: cellData.type,
+      size: cellData.size,
+      adTag: [],
+      quota: [],
+      qualifier: {
+        browse: [],
+        search: [],
+        condition: cellData.qualifier.condition
+      }
+    };
+    for (var i in cellData.adtag) {
+      templateData.adTag.push(saySo.storeLocalData.studyInfo.sayso.tagdomain[i].label);
+    }
+    for (var i in cellData.quota) {
+      if (!cellData.quota[i].percent) {
+        continue;
+      }
+      templateData.quota.push(cellData.quota[i]);
+    }
+    for (var i in cellData.qualifier.browse) {
+      if (!cellData.qualifier.browse[i].include) {
+        continue;
+      }
+      templateData.qualifier.browse.push(cellData.qualifier.browse[i]);
+    }
+    for (var i in cellData.qualifier.search) {
+      if (!cellData.qualifier.search[i].include) {
+        continue;
+      }
+      var searchData = {
+        include: cellData.qualifier.search[i].include,
+        term: cellData.qualifier.search[i].term,
+        timeframe: cellData.qualifier.search[i].timeframe,
+        which: []
+      };
+      for (var j in cellData.qualifier.search[i].which) {
+        searchData.which.push(cellData.qualifier.search[i].which[j]);
+      }
+      templateData.qualifier.search.push(searchData);
+    }
+    $dialogCellView
+      .html(saySo.templates.goBuildMeATemplate(saySo.templates.dialogCellView, templateData))
+      .dialog('open');
   });
   
 });

@@ -15,13 +15,13 @@ saySo.templates = {
   },
 
   // list of quotas
-  quotas : "<li class='completed-parameter'>{{type}} {{percent}}% {{ethnicity}} {{gender}}s, {{age}} <a href='#' class='delete' data-store-key='sayso-cells-n1-quota-{{thisCounter}}'>Delete</a></li>",
+  quotas : "<li class='completed-parameter'>{{type}} {{percent}}% {{ethnicity}} {{gender}}s, {{age}} <a href='#' class='delete' data-store-key='sayso-cells-n{{cellNumber}}-quota-{{thisCounter}}'>Delete</a></li>",
 
   // list of browsing qualifiers
-  browsingQualifiers : "<li class='completed-parameter'>{{include}} visits to {{site}} in the last {{timeframe}} <a href='#' class='delete' data-store-key='sayso-cells-n1-qualifier-browse-{{thisCounter}}'>Delete</a></li>",
+  browsingQualifiers : "<li class='completed-parameter'>{{include}} visits to {{site}} in the last {{timeframe}} <a href='#' class='delete' data-store-key='sayso-cells-n{{cellNumber}}-qualifier-browse-{{thisCounter}}'>Delete</a></li>",
 
   // list of search qualifiers
-  searchQualifiers : "<li class='completed-parameter'>{{include}} searches for \"{{term}}\" on {{#which}}{{#bing}}{{bing}}, {{/bing}}{{#google}}{{google}}, {{/google}}{{#yahoo}}{{yahoo}}, {{/yahoo}}{{/which}} in the last {{timeframe}} <a href='#' class='delete' data-store-key='sayso-cells-n1-qualifier-search-{{thisCounter}}'>Delete</a></li>",
+  searchQualifiers : "<li class='completed-parameter'>{{include}} searches for \"{{term}}\" on {{#which}}{{#bing}}{{bing}}, {{/bing}}{{#google}}{{google}}, {{/google}}{{#yahoo}}{{yahoo}}, {{/yahoo}}{{/which}} in the last {{timeframe}} <a href='#' class='delete' data-store-key='sayso-cells-n{{cellNumber}}-qualifier-search-{{thisCounter}}'>Delete</a></li>",
 
   // list of delivery criteria
   deliveryCriteria : "<li class='completed-parameter'>{{domain}} within {{timeframe}} <a href='#' class='delete' data-store-key='sayso-surveyinfo-deliverIf-{{thisCounter}}'>Delete</a></li>",
@@ -51,7 +51,7 @@ saySo.templates = {
           <li class="quota-select first">\
             <label for="cell-gender">M/F</label>\
             <select name="cell-gender" id="cell-gender"\
-                    data-store-key="sayso-cells-n1-quota-{{nextCounter}}-gender">\
+                    data-store-key="sayso-cells-n{{cellNumber}}-quota-{{nextCounter}}-gender">\
               <option value="" selected>Choose</option>\
               <option value="Male">Male</option>\
               <option value="Female">Female</option>\
@@ -60,7 +60,7 @@ saySo.templates = {
           <li class="quota-select">\
             <label for="cell-age">Age</label>\
             <select name="cell-age" id="cell-age"\
-                    data-store-key="sayso-cells-n1-quota-{{nextCounter}}-age">\
+                    data-store-key="sayso-cells-n{{cellNumber}}-quota-{{nextCounter}}-age">\
               <option value="" selected>Choose</option>\
               <option value="13-17">13-17</option>\
               <option value="18-24">18-24</option>\
@@ -76,7 +76,7 @@ saySo.templates = {
           <li class="quota-select">\
             <label for="cell-size-percent">Cell %</label>\
             <select name="cell-size-percent" id="cell-size-percent"\
-                    data-store-key="sayso-cells-n1-quota-{{nextCounter}}-percent">\
+                    data-store-key="sayso-cells-n{{cellNumber}}-quota-{{nextCounter}}-percent">\
               <option value="" selected>Choose</option>\
               <option value="25">25%</option>\
               <option value="50">50%</option>\
@@ -87,7 +87,7 @@ saySo.templates = {
           <li class="quota-select">\
             <label for="cell-ethnicity">Ethnicity</label>\
             <select name="cell-ethnicity" id="cell-ethnicity"\
-                    data-store-key="sayso-cells-n1-quota-{{nextCounter}}-ethnicity">\
+                    data-store-key="sayso-cells-n{{cellNumber}}-quota-{{nextCounter}}-ethnicity">\
               <option value="" selected>Choose</option>\
               <option value="All">All</option>\
               <option value="White">White</option>\
@@ -111,7 +111,7 @@ saySo.templates = {
       <li>\
         <label for="engine-include-exclude"></label>\
         <select name="engine-include-exclude" id="engine-include-exclude"\
-                data-store-key="sayso-cells-n1-qualifier-search-{{nextCounter}}-include">\
+                data-store-key="sayso-cells-n{{cellNumber}}-qualifier-search-{{nextCounter}}-include">\
           <option value="" selected>Include/Exclude</option>\
           <option value="Include">Include panelists</option>\
           <option value="Exclude">Exclude panelists</option>\
@@ -120,30 +120,30 @@ saySo.templates = {
       <li>\
         <label for="engine-domain-name">who have searched for</label>\
         <input type="text" name="engine-domain-name" id="engine-domain-name"\
-               data-store-key="sayso-cells-n1-qualifier-search-{{nextCounter}}-term">\
+               data-store-key="sayso-cells-n{{cellNumber}}-qualifier-search-{{nextCounter}}-term">\
       </li>\
       <li>\
         <label>on</label>\
         <div>\
           <input type="checkbox" name="engine-bing" id="engine-bing"\
-                 value="Bing" data-store-key="sayso-cells-n1-qualifier-search-{{nextCounter}}-which-bing">\
+                 value="Bing" data-store-key="sayso-cells-n{{cellNumber}}-qualifier-search-{{nextCounter}}-which-bing">\
           <label for="engine-bing">Bing</label>\
         </div>\
         <div>\
           <input type="checkbox" name="engine-google" id="engine-google"\
-                 value="Google" data-store-key="sayso-cells-n1-qualifier-search-{{nextCounter}}-which-google">\
+                 value="Google" data-store-key="sayso-cells-n{{cellNumber}}-qualifier-search-{{nextCounter}}-which-google">\
           <label for="engine-google">Google</label>\
         </div>\
         <div>\
           <input type="checkbox" name="engine-yahoo" id="engine-yahoo"\
-                 value="Yahoo!" data-store-key="sayso-cells-n1-qualifier-search-{{nextCounter}}-which-yahoo">\
+                 value="Yahoo!" data-store-key="sayso-cells-n{{cellNumber}}-qualifier-search-{{nextCounter}}-which-yahoo">\
           <label for="engine-yahoo">Yahoo!</label>\
         </div>\
       </li>\
       <li>\
         <label for="engine-timeframe">in the last</label>\
         <select name="engine-timeframe" id="engine-timeframe"\
-                data-store-key="sayso-cells-n1-qualifier-search-{{nextCounter}}-timeframe">\
+                data-store-key="sayso-cells-n{{cellNumber}}-qualifier-search-{{nextCounter}}-timeframe">\
           <option value="" selected>Timeframe</option>\
           <option value="1 day">1 day</option>\
           <option value="1 week">1 week</option>\
@@ -160,7 +160,7 @@ saySo.templates = {
     <ul>\
       <li>\
         <select name="include-exclude" id="browsing-include-exclude"\
-                data-store-key="sayso-cells-n1-qualifier-browse-{{nextCounter}}-include">\
+                data-store-key="sayso-cells-n{{cellNumber}}-qualifier-browse-{{nextCounter}}-include">\
           <option value="" selected>Include/Exclude</option>\
           <option value="Include">Include panelists</option>\
           <option value="Exclude">Exclude panelists</option>\
@@ -169,12 +169,12 @@ saySo.templates = {
       <li>\
         <label for="browsing-domain-name">who have visited</label>\
         <input type="text" name="browsing-domain-name" id="browsing-domain-name"\
-               data-store-key="sayso-cells-n1-qualifier-browse-{{nextCounter}}-site">\
+               data-store-key="sayso-cells-n{{cellNumber}}-qualifier-browse-{{nextCounter}}-site">\
       </li>\
       <li>\
         <label for="browsing-timeframe">in the last</label>\
         <select name="browsing-timeframe" id="browsing-timeframe"\
-                data-store-key="sayso-cells-n1-qualifier-browse-{{nextCounter}}-timeframe">\
+                data-store-key="sayso-cells-n{{cellNumber}}-qualifier-browse-{{nextCounter}}-timeframe">\
           <option value="" selected>Timeframe</option>\
           <option value="1 day">1 day</option>\
           <option value="1 week">1 week</option>\
@@ -590,7 +590,7 @@ saySo.dataInteractions = {
             {
               number : $fieldset.attr('data-counter'),
               label : $('#pairs-label').val(),
-              cellId : 'n' + $('#cell-description').attr('data-store-key').match(/-n(\d+)-/)[1]
+              cellId : $('#cell-description').attr('data-store-key').match(/-(n\d+)-/)[1]
             }
           )
         );
@@ -598,6 +598,18 @@ saySo.dataInteractions = {
       // For domain field set, add tag-domain pair number
       case 'fieldset-domains':
         templateData.tagDomainNumber = $('#fieldset-tag-domain-pair').attr('data-counter');
+        break;
+    }
+
+    switch (parsedTemplateName) {
+      case 'quotas':
+      case 'browsingQualifiers':
+      case 'searchQualifiers':
+      case 'quotaFieldset':
+      case 'searchFieldset':
+      case 'browseFieldset':
+        // Add cell number to template data
+        templateData.cellNumber = $('#cell-description').attr('data-store-key').match(/-n(\d+)-/)[1];
         break;
     }
 
@@ -630,7 +642,7 @@ saySo.dataInteractions = {
     var templateWords = templateName.split("-");
     
     for ( w in templateWords ) {
-      if ( parseInt(w, 10) !== 0 ) {
+      if ( parseInt(w) !== 0 ) {
         templateWords[w] = templateWords[w].charAt(0).toUpperCase() + templateWords[w].slice(1);
       }            
       
@@ -647,7 +659,7 @@ saySo.dataInteractions = {
 
     var templateName = $list.attr('data-template'),
         parsedTemplateName = this.parseTemplateName( templateName ),
-        counter = parseInt( $fieldset.attr( 'data-counter' ), 10 ),
+        counter = parseInt( $fieldset.attr( 'data-counter' ) ),
         cellsLength = items.length,
         newHtml;
     
@@ -658,6 +670,18 @@ saySo.dataInteractions = {
       // For domain field set, add tag-domain pair number
       case 'fieldset-domains':
         items[cellsLength - 1].tagDomainNumber = $('#fieldset-tag-domain-pair').attr('data-counter');
+        break;
+    }
+
+    switch (parsedTemplateName) {
+      case 'quotas':
+      case 'browsingQualifiers':
+      case 'searchQualifiers':
+      case 'quotaFieldset':
+      case 'searchFieldset':
+      case 'browseFieldset':
+        // Add cell number to template data
+        items[cellsLength - 1].cellNumber = $('#cell-description').attr('data-store-key').match(/-n(\d+)-/)[1];
         break;
     }
 
@@ -674,7 +698,6 @@ saySo.dataInteractions = {
   removeDomDataPoint : function( $clickedEl ){        
     
     // actually remove the data
-    // THIS DOES NOT WORK RIGHT NOW
     var cellKey = $clickedEl.attr('data-store-key'),
         response = saySo.storeLocalData.deleteData( cellKey ),
         $parent = $clickedEl.closest('ul');        

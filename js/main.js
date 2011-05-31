@@ -319,6 +319,16 @@ saySo.templates = {
   <div class="wrap">\
     Are you sure you want to delete "{{description}}"?\
   </div>\
+  ',
+
+  dialogValidationFailure : '\
+  <div class="wrap">\
+    <ul>\
+      {{#messages}}\
+        <li>{{.}}</li>\
+      {{/messages}}\
+    </ul>\
+  </div>\
   '
 
 };
@@ -362,7 +372,7 @@ saySo.storeLocalData = {
     this
       .initFieldValues()
       .bindFieldChanges();
-    
+
   },
   
   bindFieldChanges : function() {
@@ -371,7 +381,49 @@ saySo.storeLocalData = {
     var that = this;        
     
     $('form').delegate(this.config.fieldsToWatch, 'change', function() {
-      
+
+      switch ($(this).attr('id')) {
+        case 'study-sample-size':
+          // Ensure that sample size is set and parses to a positive integer
+          if (!$(this).val() || !parseInt($(this).val()) || parseInt($(this).val()) <= 0) {
+            var templateData = {
+              messages: [
+                'Sample Size (N) must be a positive integer'
+              ]
+            };
+            $dialogValidationFailure
+              .html(saySo.templates.goBuildMeATemplate(saySo.templates.dialogValidationFailure, templateData))
+              .dialog('open');
+            return;
+          }
+          /** @todo Ensure that total of cell sizes do not exceed sample size */
+          break;
+        case 'cell-size':
+          // Ensure that total of cell sizes do not exceed sample size
+          /** @todo Get data from cell form field if it isn't yet in storeLocalData */
+          var cellSizeTotal = 0;
+          for (key in saySo.storeLocalData.studyInfo.sayso.cells) {
+            cellSizeTotal += parseInt(saySo.storeLocalData.studyInfo.sayso.cells[key].size);
+          }
+          if (cellSizeTotal > saySo.storeLocalData.studyInfo.sayso.basic.size) {
+            /** @todo Display 'Total of cell sizes cannot exceed sample size' in dialog and cancel change */
+          }
+          break;
+        case 'cell-size-percent':
+          // Ensure that cell quota percents do not exceed 100%
+          /** @todo Get data from quota form field if it isn't yet in storeLocalData */
+          var cellQuotaPercentTotal = 0;
+          for (i in saySo.storeLocalData.studyInfo.sayso.cells) {
+            for (j in saySo.storeLocalData.studyInfo.sayso.cells[i].quota) {
+              cellQuotaPercentTotal += parseInt(saySo.storeLocalData.studyInfo.sayso.cells[i].quota[j].percent);
+            }
+          }
+          if (cellQuotaPercentTotal > 100) {
+            /** @todo Display 'Total of quota percents cannot exceed 100%' in dialog and cancel change */
+          }
+          break;
+      }
+
       // Get key-value pair
       var dataKey = $(this).attr(that.config.dataSelector),
           dataValue = $(this).val();
@@ -870,7 +922,7 @@ saySo.dataInteractions = {
       }
     });
   }
-  
+
 };
 
 // does this browser support input type of date? if not, load up a jquery UI solution
@@ -1117,5 +1169,14 @@ $(document).ready(function(){
       .html(saySo.templates.goBuildMeATemplate(saySo.templates.dialogCellDeleteConfirmation, templateData))
       .dialog('open');
   });
+
+  // Construct validation failure message dialog
+  $dialogValidationFailure = $('<div id="dialogValidationFailure"></div>')
+    .dialog({
+      autoOpen: false,
+      modal: true,
+      resizable: false,
+      title: 'Validation Failure'
+    });
 
 });

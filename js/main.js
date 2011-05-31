@@ -718,6 +718,148 @@ saySo.dataInteractions = {
       console.log( "Something went wrong. The item wasn't deleted." );
       
     }
+  },
+
+  // Empties the form of cell data and applies cellNumber to relevant fields
+  emptyFormOfCellData : function(cellNumber) {
+    // Empty quota and qualifier lists
+    $('#list-cell-quota, #list-browsing-qualifier, #list-search-qualifier').empty();
+    // For each form field relevant to a cell
+    $('*[data-store-key^="sayso-cells-n"]').each(function() {
+      var dataStoreKeyOld = $(this).attr('data-store-key');
+      // Set cell number
+      $(this).attr(
+        'data-store-key',
+        dataStoreKeyOld.replace(/-n\d+-/, '-n' + cellNumber + '-')
+      );
+      // Reset quota and qualifier indices to 1
+      var matches = $(this).attr('data-store-key')
+        .match(/^(sayso-cells-n\d+-)(quota|qualifier-(?:browse|search))(-\d+-)(.+)$/);
+      if (matches) {
+        $(this).attr('data-store-key', matches[1] + matches[2] + '-1-' + matches[4]);
+      }
+      // Reset field value to default
+      switch ($(this).attr('type')) {
+        case 'checkbox':
+        case 'radio':
+          $(this).removeAttr('checked');
+          break;
+        case 'text':
+          $(this).val('');
+          break;
+        default:
+          if ($(this).filter('select').length > 0) {
+            $(this).children(':not(:first)').removeAttr('selected');
+          }
+      }
+    });
+  },
+
+  // Loads form with identified cell data
+  loadFormWithCellData : function(cellId) {
+    var cellData = saySo.storeLocalData.studyInfo.sayso.cells[cellId];
+    var cellNumber = parseInt(cellId.substr(1));
+    this.emptyFormOfCellData(cellNumber);
+    // Populate form fields with cell data
+    $('#cell-description').val(cellData.description);
+    $('input[name="cell-type"]').each(function() {
+      if ($(this).attr('value') === cellData.type) {
+        $(this).attr('checked', 'checked');
+      } else {
+        $(this).removeAttr('checked');
+      }
+    });
+    $('#cell-size').val(cellData.size);
+    $('input[name^="cell-adtag"]').each(function() {
+      if (cellData.adtag && cellData.adtag[$(this).attr('value')]) {
+        $(this).attr('checked', 'checked');
+      } else {
+        $(this).removeAttr('checked');
+      }
+    });
+    // Populate quotas
+    var quotaNumber = 1;
+    for (var key in cellData.quota) {
+      if (!cellData.quota[key].age) {
+        continue;
+      }
+      $('#list-cell-quota').append(
+        saySo.templates.goBuildMeATemplate(
+          saySo.templates.quotas,
+          cellData.quota[key]
+        )
+      );
+      quotaNumber++;
+    }
+    // Adjust quota number for relevant fields
+    $('*[data-store-key^="sayso-cells-n' + cellNumber + '-quota"]').each(function() {
+      var dataStoreKeyOld = $(this).attr('data-store-key');
+      $(this).attr(
+        'data-store-key',
+        dataStoreKeyOld.replace(
+          /^sayso-cells-n\d+-quota-(\d+)(.+)$/,
+          'sayso-cells-n' + cellNumber + '-quota-' + quotaNumber + "$2"
+        )
+      );
+    });
+    // Populate online browsing qualifiers
+    var qualifierBrowseNumber = 1;
+    for (var key in cellData.qualifier.browse) {
+      if (!cellData.qualifier.browse[key].include) {
+        continue;
+      }
+      $('#list-browsing-qualifier').append(
+        saySo.templates.goBuildMeATemplate(
+          saySo.templates.browsingQualifiers,
+          cellData.qualifier.browse[key]
+        )
+      );
+      qualifierBrowseNumber++;
+    }
+    // Adjust online browsing qualifier number for relevant fields
+    $('*[data-store-key^="sayso-cells-n' + cellNumber + '-qualifier-browse"]').each(function() {
+      var dataStoreKeyOld = $(this).attr('data-store-key');
+      $(this).attr(
+        'data-store-key',
+        dataStoreKeyOld.replace(
+          /^sayso-cells-n\d+-qualifier-browse-(\d+)(.+)$/,
+          'sayso-cells-n' + cellNumber + '-qualifier-browse-' + qualifierBrowseNumber + "$2"
+        )
+      );
+    });
+    // Populate search action qualifiers
+    var qualifierSearchNumber = 1;
+    for (var key in cellData.qualifier.search) {
+      if (!cellData.qualifier.search[key].include) {
+        continue;
+      }
+      $('#list-search-qualifier').append(
+        saySo.templates.goBuildMeATemplate(
+          saySo.templates.searchQualifiers,
+          cellData.qualifier.search[key]
+        )
+      );
+      qualifierSearchNumber++;
+    }
+    // Adjust search action qualifier number for relevant fields
+    $('*[data-store-key^="sayso-cells-n' + cellNumber + '-qualifier-search"]').each(function() {
+      var dataStoreKeyOld = $(this).attr('data-store-key');
+      $(this).attr(
+        'data-store-key',
+        dataStoreKeyOld.replace(
+          /^sayso-cells-n\d+-qualifier-search-(\d+)(.+)$/,
+          'sayso-cells-n' + cellNumber + '-qualifier-search-' + qualifierSearchNumber + "$2"
+        )
+      );
+    });
+    // Populate condition qualifier
+    $('input[name="deliver-if"]').each(function() {
+      if ($(this).attr('value') === cellData.qualifier.condition) {
+        $(this).attr('checked', 'checked');
+      } else {
+        $(this).removeAttr('checked');
+      }
+    });
   }
   
 };
@@ -793,7 +935,7 @@ $(document).ready(function(){
   $('#clear-local-data').click(function(e) {
     e.preventDefault();
     if (confirm('Are you sure you want to clear local data?')) {
-      delete localStorage.sayso;
+      localStorage.clear();
       location.reload();
     }
   });
@@ -814,37 +956,7 @@ $(document).ready(function(){
         }
       )
     );
-    // For each form field relevant to the cell
-    $('*[data-store-key^="sayso-cells-n' + cellNumber + '"]').each(function() {
-      var dataStoreKeyOld = $(this).attr('data-store-key');
-      // Increment cell number
-      $(this).attr(
-        'data-store-key',
-        dataStoreKeyOld.replace(/-n\d+-/, '-n' + (parseInt(cellNumber) + 1) + '-')
-      );
-      // Reset quota and qualifier indices to 1
-      var matches = $(this).attr('data-store-key')
-        .match(/^(sayso-cells-n\d+-)(quota|qualifier-(?:browse|search))(-\d+-)(.+)$/);
-      if (matches) {
-        $(this).attr('data-store-key', matches[1] + matches[2] + '-1-' + matches[4]);
-      }
-      // Reset field value to default
-      switch ($(this).attr('type')) {
-        case 'checkbox':
-        case 'radio':
-          $(this).removeAttr('checked');
-          break;
-        case 'text':
-          $(this).val('');
-          break;
-        default:
-          if ($(this).filter('select').length > 0) {
-            $(this).children(':not(:first)').removeAttr('selected');
-          }
-      }
-    });
-    // Empty quota and qualifier lists
-    $('#list-cell-quota, #list-browsing-qualifier, #list-search-qualifier').empty();
+    saySo.dataInteractions.emptyFormOfCellData(parseInt(cellNumber) + 1);
     // Save form data for new fields so that data storage algorithm doesn't fail
     saySo.storeLocalData.initFieldValues();
   });
@@ -934,4 +1046,30 @@ $(document).ready(function(){
       .dialog('open');
   });
   
+  // When cell "Edit" is clicked
+  $('table.cell-lists a.edit').live('click', function(e) {
+    e.preventDefault();
+    // Save current cell number
+    localStorage.cellNumberToRestore = $('#cell-description').attr('data-store-key').match(/-n(\d+)-/)[1];
+    // Load referenced cell data into form
+    var cellId = $(this).attr('href').match(/(n\d+)/)[1];
+    saySo.dataInteractions.loadFormWithCellData(cellId);
+    // Hide "Build Cell" and show "Update Cell"
+    $('.build-cell').hide();
+    $('.update-cell').show();
+  });
+
+  // When "Update Cell" is clicked
+  $('.update-cell').click(function(e) {
+    e.preventDefault();
+    // Get cell number to restore to form fields and remove it from local storage
+    var cellNumberToRestore = localStorage.cellNumberToRestore;
+    delete localStorage.cellNumberToRestore;
+    // Reset form fields, restoring old cell number
+    saySo.dataInteractions.emptyFormOfCellData(cellNumberToRestore);
+    // Hide "Update Cell" and show "Build Cell"
+    $('.update-cell').hide();
+    $('.build-cell').show();
+  });
+
 });

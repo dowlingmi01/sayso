@@ -883,6 +883,9 @@ input.main-submit {
 #dialogCellView .value {
   width: 514px; }
 
+button.update-cell {
+  display: none; }
+
 /* Inlined to avoid required HTTP connection:
  * http://phpied.com/delay-loading-your-print-css/ */
 @media print {

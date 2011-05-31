@@ -313,6 +313,12 @@ saySo.templates = {
     </div>\
     {{/qualifier}}\
   </div>\
+  ',
+
+  dialogCellDeleteConfirmation : '\
+  <div class="wrap">\
+    Are you sure you want to delete "{{description}}"?\
+  </div>\
   '
 
 };
@@ -564,6 +570,9 @@ saySo.dataInteractions = {
     // should be removed from the data object
     $('.cell-lists .delete').live('click', function(e) {
       e.preventDefault();
+      if ($(this).attr('href').match(/^\/cell\//)) {
+        return;
+      }
       that.removeDomDataPoint($(this));
     });
     
@@ -1070,6 +1079,43 @@ $(document).ready(function(){
     // Hide "Update Cell" and show "Build Cell"
     $('.update-cell').hide();
     $('.build-cell').show();
+  });
+
+  // Construct cell delete confirmation dialog
+  var $dialogCellDeleteConfirmation = $('<div id="dialogCellDeleteConfirmation"></div>')
+    .dialog({
+      autoOpen: false,
+      modal: true,
+      resizable: false,
+      title: 'Delete Cell?',
+      buttons: {
+        Cancel: function() {
+          $(this).dialog('close');
+        },
+        "Delete Cell": function() {
+          $(this).data('$control').parent().parent().remove();
+          delete saySo.storeLocalData.studyInfo.sayso.cells[$(this).data('cellId')];
+          localStorage.sayso = JSON.stringify(saySo.storeLocalData.studyInfo.sayso);
+          $(this).dialog('close');
+        }
+      }
+    });
+
+  // When cell "Delete" is clicked
+  $('table.cell-lists a.delete').live('click', function(e) {
+    e.preventDefault();
+    var cellId = $(this).attr('href').match(/(n\d+)/)[1];
+    var cellData = saySo.storeLocalData.studyInfo.sayso.cells[cellId];
+    var templateData = {
+      description: cellData.description
+    };
+    $dialogCellDeleteConfirmation
+      .data({
+        cellId: cellId,
+        $control: $(this)
+      })
+      .html(saySo.templates.goBuildMeATemplate(saySo.templates.dialogCellDeleteConfirmation, templateData))
+      .dialog('open');
   });
 
 });

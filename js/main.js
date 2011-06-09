@@ -382,10 +382,14 @@ saySo.storeLocalData = {
     
     $('form').delegate(this.config.fieldsToWatch, 'change', function() {
 
+        var listId = $(this).getId();
+        var listIdKey = 'n' + listId;
+        console.log(listId);
       switch ($(this).attr('id')) {
         case 'study-sample-size':
+            var sampleSize = $(this).val();
           // Ensure that sample size is set and parses to a positive integer
-          if (!$(this).val() || !parseInt($(this).val()) || parseInt($(this).val()) <= 0) {
+          if (!sampleSize || !parseInt(sampleSize) || parseInt(sampleSize) <= 0) {
             var templateData = {
               messages: [
                 'Sample Size (N) must be a positive integer'
@@ -396,30 +400,78 @@ saySo.storeLocalData = {
               .dialog('open');
             return;
           }
-          /** @todo Ensure that total of cell sizes do not exceed sample size */
+          var cellSizeTotal = 0;
+          for (key in saySo.storeLocalData.studyInfo.sayso.cells) {
+              if (saySo.storeLocalData.studyInfo.sayso.cells[key].hasOwnProperty('size')) {
+                  cellSizeTotal += parseInt(saySo.storeLocalData.studyInfo.sayso.cells[key].size);
+              }
+          }
+          if (cellSizeTotal > sampleSize) {
+              var templateData = {
+                  messages: [
+                    'Sample Size (N) cannot be less than total size for all cells'
+                  ]
+                };
+                $dialogValidationFailure
+                  .html(saySo.templates.goBuildMeATemplate(saySo.templates.dialogValidationFailure, templateData))
+                  .dialog('open');
+                $(this).val(cellSizeTotal).change();
+                return;
+          }
           break;
         case 'cell-size':
           // Ensure that total of cell sizes do not exceed sample size
-          /** @todo Get data from cell form field if it isn't yet in storeLocalData */
-          var cellSizeTotal = 0;
-          for (key in saySo.storeLocalData.studyInfo.sayso.cells) {
-            cellSizeTotal += parseInt(saySo.storeLocalData.studyInfo.sayso.cells[key].size);
+          if (!saySo.storeLocalData.studyInfo.sayso.basic.size) {
+              // if no sample size specified, then don't validate
+              return;
           }
+          // gather up the total of all cell sizes not including the current one
+          var cellSizeOthers = 0;
+          for (key in saySo.storeLocalData.studyInfo.sayso.cells) {
+              // skip the current one
+              if (listIdKey && listIdKey == key) {
+                  continue;
+              }
+              if (saySo.storeLocalData.studyInfo.sayso.cells[key].hasOwnProperty('size')) {
+                  cellSizeOthers += parseInt(saySo.storeLocalData.studyInfo.sayso.cells[key].size);
+              }
+          }
+          var cellSizeTotal = cellSizeOthers + parseInt($(this).val());
+          // make sure total of all sizes of cells does not exceed the Sample Size
           if (cellSizeTotal > saySo.storeLocalData.studyInfo.sayso.basic.size) {
-            /** @todo Display 'Total of cell sizes cannot exceed sample size' in dialog and cancel change */
+              var templateData = {
+                  messages: [
+                    'Total size for all cells cannot exceed Sample Size'
+                  ]
+                };
+                $dialogValidationFailure
+                  .html(saySo.templates.goBuildMeATemplate(saySo.templates.dialogValidationFailure, templateData))
+                  .dialog('open');
+                // revert the value to the maximum allowable
+                $(this).val(saySo.storeLocalData.studyInfo.sayso.basic.size - cellSizeOthers).change();
+                return;
           }
           break;
         case 'cell-size-percent':
           // Ensure that cell quota percents do not exceed 100%
-          /** @todo Get data from quota form field if it isn't yet in storeLocalData */
-          var cellQuotaPercentTotal = 0;
-          for (i in saySo.storeLocalData.studyInfo.sayso.cells) {
-            for (j in saySo.storeLocalData.studyInfo.sayso.cells[i].quota) {
-              cellQuotaPercentTotal += parseInt(saySo.storeLocalData.studyInfo.sayso.cells[i].quota[j].percent);
+          var cellQuotaPercentOthers = 0;
+          
+//          for (i in saySo.storeLocalData.studyInfo.sayso.cells) {
+            for (j in saySo.storeLocalData.studyInfo.sayso.cells[listIdKey].quota) {
+                if (saySo.storeLocalData.studyInfo.sayso.cells[listIdKey].quota[j].hasOwnProperty('percent')) {
+                    cellQuotaPercentOthers += parseInt(saySo.storeLocalData.studyInfo.sayso.cells[listIdKey].quota[j].percent);
+                }
             }
-          }
+//          }
+          var cellQuotaPercentTotal = cellQuotaPercentOthers + parseInt($(this).val());
+          console.log(cellQuotaPercentTotal);
           if (cellQuotaPercentTotal > 100) {
-            /** @todo Display 'Total of quota percents cannot exceed 100%' in dialog and cancel change */
+              var templateData = { messages: ['Quotas for this cell cannot exceed 100% (value snapped back to maximum)']};
+                  $dialogValidationFailure
+                      .html(saySo.templates.goBuildMeATemplate(saySo.templates.dialogValidationFailure, templateData))
+                      .dialog('open');
+              $(this).val(100 - cellQuotaPercentOthers); // snap back to max value
+              return;
           }
           break;
       }
@@ -603,7 +655,7 @@ saySo.dataInteractions = {
           cellKey = $this.attr(saySo.storeLocalData.config.dataSelector),
           $fieldsetFriend = $('#' + relatedFieldsetSelector),
           $listFriend = $('#' + relatedListSelector),
-          cellData = saySo.storeLocalData.updateData( cellKey ),
+          cellData = saySo.storeLocalData.updateData( cellKey ), // updateData doubles as getter
           items = [];
 
       // we need to push each piece of cellData to an array in order to iterate over it
@@ -935,6 +987,15 @@ yepnope([{
 
 $(document).ready(function(){
   
+    $.fn.getId = function() {
+        var idMatch = $(this).attr('data-store-key').match(/-n(\d+)/); 
+        if (idMatch && idMatch.length && idMatch[1]) {
+            return parseInt(idMatch[1]);
+        } else {
+            return 0;
+        }
+    }
+    
   // Minimize/maximize sections
   $('nav.lock').delegate( 'a.minimize, a.maximize', 'click', function(e) {
 
@@ -997,6 +1058,9 @@ $(document).ready(function(){
     e.preventDefault();
     if (confirm('Are you sure you want to clear local data?')) {
       localStorage.clear();
+      // reset radios so browsers don't "remember" the last selection
+      $('input[type=radio]').attr('checked',false);
+      $('input[type=text]').val('');
       location.reload();
     }
   });

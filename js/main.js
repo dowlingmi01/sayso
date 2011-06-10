@@ -547,6 +547,7 @@ saySo.storeLocalData = {
   
   updateData : function( key, value ){
     
+    value = value || '';
     // go ahead and split up our key we're receiving,
     // then store our length
     var allKeys = key.split("-"),
@@ -568,25 +569,41 @@ saySo.storeLocalData = {
       
     }    
 
-    // check if a value was passed to this method, and if so, use it as a setter, else
-    // act as a getter for a key's value
-    if( value ){
     
-      // set our object container's last item to the value that was passed, ie allKeys
-      // could be foo-bar-baz-name, then we would set our current container's `name`
-      // property to our value
-      container[allKeys[ keyLength - 1 ]] = value;
+    // set our object container's last item to the value that was passed, ie allKeys
+    // could be foo-bar-baz-name, then we would set our current container's `name`
+    // property to our value
+    container[allKeys[ keyLength - 1 ]] = value;
+      
+    // stringify the JSON, then insert it into local storage
+    stringifiedJson = JSON.stringify(this.studyInfo[allKeys[0]]);
+    localStorage[allKeys[0]] = stringifiedJson;            
+  },
   
-      // stringify the JSON, then insert it into local storage
-      stringifiedJson = JSON.stringify(this.studyInfo[allKeys[0]]);
-      localStorage[allKeys[0]] = stringifiedJson;            
+  getData : function( key ){
     
-    } else {
-      
-      return container[allKeys[ keyLength - 1 ]];
-      
-    }
+    // go ahead and split up our key we're receiving,
+    // then store our length
+    var allKeys = key.split("-"),
+        keyLength = allKeys.length,
+        stringifiedJson,
+        container = this.studyInfo;
     
+    for ( var i = 0; i < keyLength - 1; i++ ) {
+      
+      // store the key we're currently working with      
+      var currentKey = allKeys[i];
+            
+      // does our object container have the current key as a key? if so, then leave it
+      // alone. if not, add it. and make sure to re-set our container variable so on
+      // the next iteration, we're looking within the current container.
+      container = container.hasOwnProperty(currentKey) ?
+                  container[currentKey] :
+                  container[currentKey] = {};
+      
+    }    
+
+    return container[allKeys[ keyLength - 1 ]];
   },
     
   deleteData : function( key ){
@@ -655,7 +672,7 @@ saySo.dataInteractions = {
           cellKey = $this.attr(saySo.storeLocalData.config.dataSelector),
           $fieldsetFriend = $('#' + relatedFieldsetSelector),
           $listFriend = $('#' + relatedListSelector),
-          cellData = saySo.storeLocalData.updateData( cellKey ), // updateData doubles as getter
+          cellData = saySo.storeLocalData.getData( cellKey ),
           items = [];
 
       // we need to push each piece of cellData to an array in order to iterate over it
@@ -835,6 +852,7 @@ saySo.dataInteractions = {
 
   // Empties the form of cell data and applies cellNumber to relevant fields
   emptyFormOfCellData : function(cellNumber) {
+    var _this = this;
     // Empty quota and qualifier lists
     $('#list-cell-quota, #list-browsing-qualifier, #list-search-qualifier').empty();
     // For each form field relevant to a cell
@@ -865,6 +883,7 @@ saySo.dataInteractions = {
             $(this).children(':not(:first)').removeAttr('selected');
           }
       }
+//      saySo.storeLocalData.updateData($(this).attr('data-store-key'), '');
     });
   },
 
@@ -1100,7 +1119,8 @@ $(document).ready(function(){
   // When "Reset Input" button is clicked...
   $('.reset-input').click(function(e) {
     e.preventDefault();
-    /** @todo Implementation */
+    var cellNumber = parseInt($('#cell-description').attr('data-store-key').match(/-n(\d+)-/)[1]);
+    saySo.dataInteractions.emptyFormOfCellData(cellNumber)
   });
 
   // When "Lock" buttons are clicked...

@@ -424,8 +424,6 @@
         }
         sayso.data.cells[cell.id] = cell;
         
-        $('button.build-cell').text('Build Cell');
-        
         sayso.temp.quota = {};
         sayso.temp.qualifier.browse = {};
         sayso.temp.qualifier.search = {};
@@ -444,6 +442,8 @@
         $('#list-cell-quota').empty();
         $('#list-browsing-qualifier').empty();
         $('#list-search-qualifier').empty();
+        
+        $('button.build-cell').text('Build Cell');
     });
 
     $('table.cell-lists a.view').live('click', function (e) {

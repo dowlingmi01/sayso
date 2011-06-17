@@ -582,6 +582,7 @@
         localStorage.setItem('sayso', JSON.stringify(sayso.data));
         
         alert('Survey saved to local storage!');
+        console.log(sayso.data);
     });
     
     $('nav.lock').delegate( 'a.minimize, a.maximize', 'click', function(e) {

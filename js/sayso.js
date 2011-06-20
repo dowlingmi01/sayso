@@ -118,6 +118,12 @@
     
     $('button.add-domain').click(function(e) { 
         e.preventDefault();
+        // since this is the *first* button in the "form", this is the
+        // one that is triggered if the user hits enter/return in any
+        // text field, and since we don't want the form submitted
+        // with enter/return, the only way to prevent it is to ensure
+        // the a mouse click (w/valid coords) is performed for this button
+        if (!e.clientX && !e.clientY) return;
         var domain = $('#pairs-domains');
         if (!domain.val().length) {
             alert('Please enter a domain name');
@@ -142,6 +148,7 @@
     
     $('button.add-pair').click(function(e){
         e.preventDefault();
+        if (e.keyCode == '13') return;
         var label = $('#pairs-label');
         var adtag = $('#pairs-ad-tag');
         if (!label.val().length || !adtag.val().length) {

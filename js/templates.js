@@ -21,7 +21,7 @@ sayso.templates = {
   </li>',
 
   // list of tag-domain pairs
-  tagDomainPairs : '<li data-id="{{id}}"><span>{{label}}</span><nav><a href="#" class="edit">Edit</a>&nbsp;<a href="#" class="delete">Delete</a></nav></li>',
+  tagDomainPairs : '<li data-id="{{id}}"><nav><a href="#" class="edit">Edit</a>&nbsp;<a href="#" class="delete">Delete</a></nav><span>{{label}}</span></li>',
     
   adTag : '<div style="display: inline-block;" data-id="{{id}}"><input type="checkbox" name="cell-adtag-{{id}}" id="cell-adtag-{{id}}" value="{{id}}" data-store-key="sayso-cells-{{cellId}}-adtag-{{id}}"> <label for="cell-adtag-{{id}}">{{label}}</label>&nbsp;&nbsp;</div>',
 

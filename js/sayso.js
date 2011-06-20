@@ -33,6 +33,11 @@
         _container.removeId = function () {
             _container.removeAttr('data-id');
         };
+        _container.removeNow = function () {
+            _container.fadeOut(function() {
+                _container.remove();
+            });
+        }
         // return the container
         return _container;
     };
@@ -132,7 +137,7 @@
         var container = $(this).dataContainer(),
             id = container.getId();
         delete sayso.temp.domain[id];
-        container.remove();
+        container.removeNow();
     });
     
     $('button.add-pair').click(function(e){
@@ -201,7 +206,7 @@
             id = container.getId();
         if (confirm('Are you sure you want to delete ad tag "' + container.find('span').text() + '"?')) {
             delete sayso.data.tagdomain[id];
-            container.remove();
+            container.removeNow();
             // remove the ad tag listed below
             $('#fieldset-cell-adtags div.radios-labeled div[data-id=' + id + ']').remove();
         }
@@ -220,11 +225,15 @@
     
     $('#add-delivery-criteria').click(function(e) {
         e.preventDefault();
+        if (!$('#type-survey-2, #type-survey-3').is(':checked')) {
+            alert('Please select a Survey Type first');
+            return;
+        }
         var domain = $('#delivery-domain'),
             timeframe = $('#delivery-timeframe');
         
         if (!domain.val().length || !timeframe.val().length) {
-            alert('Delivery criteria requires a domain and a time frame');
+            alert('Delivery Criteria requires a domain and a time frame');
             return;
         } 
         var data = {
@@ -243,7 +252,7 @@
         var container = $(this).dataContainer(),
             id = container.getId();
         delete sayso.data.surveyinfo.deliverIf[id];
-        container.remove();
+        container.removeNow();
     });
     
     // ==============================================================
@@ -269,11 +278,21 @@
             gender : gender.val(),
             age : age.val(),
             ethnicity : ethnicity.val(),
-            percent : percent.val()
+            percent : parseInt(percent.val())
             // this may need a prop of 'type'
         };
         data.id = uniqueId();
         sayso.temp.quota[data.id] = data;
+        // validate quota percent
+        var checkPercent = 0;
+        for (var i in sayso.temp.quota) {
+            checkPercent += sayso.temp.quota[i].percent;
+        }
+        if (checkPercent > 100) {
+            alert('Total quotas exceeds 100%');
+            delete sayso.temp.quota[data.id];
+            return;
+        }
         // @todo handle missing data required by templates
         $(tpl('quotas', data)).appendTo('#list-cell-quota');
         gender.val(false); age.val(false); ethnicity.val(false); percent.val(false);
@@ -285,7 +304,7 @@
             id = container.getId();
         if (confirm('Are you sure you want to delete the quota "' + container.find('span').text() + '"?')) {
             delete sayso.temp.quota[id];
-            container.remove();
+            container.removeNow();
         }
     });
     
@@ -322,7 +341,7 @@
             id = container.getId();
         if (confirm('Are you sure you want to delete the browsing qualifier "' + container.find('span').text() + '"?')) {
             delete sayso.temp.qualifier.browse[id];
-            container.remove();
+            container.removeNow();
         }
     });
     
@@ -366,7 +385,7 @@
             id = container.getId();
         if (confirm('Are you sure you want to delete the search qualifier "' + container.find('span').text() + '"?')) {
             delete sayso.temp.qualifier.search[id];
-            container.remove();
+            container.removeNow();
         }
     });
     
@@ -381,6 +400,22 @@
         if (!numProperties(sayso.temp.quota) || (!numProperties(sayso.temp.qualifier.browse) && !numProperties(sayso.temp.qualifier.search))) {
             alert('Study cell must have quota(s) and qualifier(s)');
             return;
+        }
+        // validate cell size does not exceed study sample size
+        if ($('#study-sample-size').val().length && $('#cell-size').val().length) {
+            console.log('validating...');
+            var cellSize = 0;
+            for (var cellId in sayso.data.cells) {
+                cellSize += parseInt(sayso.data.cells[cellId].size);
+                console.log(cellId + ' - ' + parseInt(sayso.data.cells[cellId].size));
+            }
+            console.log('current: ' + parseInt($('#cell-size').val()));
+            cellSize += parseInt($('#cell-size').val());
+            console.log('total: ' + cellSize);
+            if (cellSize > parseInt($('#study-sample-size').val())) {
+                alert('Total of all cell sizes (' + cellSize + ') must not exceed Sample Size (' + $('#study-sample-size').val() + ')');
+                return;
+            }
         }
         // gather up any ad tags the user wants to attach to this cell
         var adtags = {};
@@ -427,9 +462,13 @@
         sayso.temp.quota = {};
         sayso.temp.qualifier.browse = {};
         sayso.temp.qualifier.search = {};
-
+        
+        // this effect doesn't work quite right atm
+//        $('#build-cells div.section-container').fadeOut(function() { 
+            $('#build-cells button.reset-input').click();
+//            $(this).fadeIn(); 
+//        }); 
         // reset the cell area
-        $('#build-cells button.reset-input').click();
     });
     
     $('#build-cells button.reset-input').click(function(e){
@@ -526,6 +565,16 @@
         $('button.build-cell').text('Update Cell');
     });
     
+    $('table.cell-lists a.delete').live('click', function (e) {
+        e.preventDefault();
+        var container = $(this).dataContainer(),
+            id = container.getId();
+        if (confirm('Are you sure you want to delete this cell "' + container.find('td:first').text() + '"?')) {
+            delete sayso.data.cells[id];
+            container.removeNow();
+        }
+    });
+    
     // submit the form
     $('#do-ze-build').click(function (e) {
         e.preventDefault();
@@ -612,9 +661,16 @@
         e.preventDefault();
     });
     
-    // @todo enable deleting row items. rem: you must also remove any references, for instance
-    // cells have ad tags, if you delete an adtag, you must delete that one from all cells
-    // that have it
+    $('#clear-local-data').click(function(e) {
+        e.preventDefault();
+        if (confirm('Are you sure you want to clear local data?')) {
+            localStorage.clear();
+            // reset radios so browsers don't "remember" the last selection
+            $('input[type=radio]').attr('checked',false);
+            $('input[type=text]').val('');
+            location.reload();
+          }
+    });
     
     //    sayso.tagdomain[1].label
     //    sayso.tagdomain[1].tag

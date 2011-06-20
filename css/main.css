@@ -485,6 +485,13 @@ textarea {
 input[type="checkbox"] {
   margin: 0 0 6px 0; }
 
+input[name="type-survey"],
+input[name="deliver-if"] {
+  float: left;
+  margin: 0px 7px;
+  position: relative;
+  top: 1px; }
+
 .hide-visual {
   border: 0;
   clip: rect(0 0 0 0);
@@ -825,13 +832,9 @@ section.tag-domain-pairs .radios-labeled label {
 section.study-list ul.study-list.under-full {
   padding: 0; }
   section.study-list ul.study-list.under-full > li {
-    padding: 10px 100px 10px 10px;
-    position: relative;
-    width: 250px; }
+    padding: 10px 5px 10px 10px; }
   section.study-list ul.study-list.under-full nav {
-    position: absolute;
-    right: 5px;
-    top: 8px; }
+    float: right; }
   section.study-list ul.study-list.under-full li:nth-child(even) {
     background: #f2f2f2; }
 

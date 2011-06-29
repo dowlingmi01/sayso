@@ -570,7 +570,7 @@ nav.main {
     vertical-align: top;
     zoom: 1;
     margin: 0 10px 0 10px;
-    width: 40px;
+    width: 80px;
     padding: 0 10px 0 10px;
     padding-bottom: 10px;
     padding-top: 10px;
@@ -580,6 +580,10 @@ nav.main {
       font-size: 14px;
       font-weight: bold;
       text-decoration: none; }
+  nav.main li:first-child a {
+    color: blue; }
+    nav.main li:first-child a span {
+      text-decoration: underline; }
 
 .main-criteria {
   -webkit-border-top-right-radius: 5px;
@@ -596,10 +600,11 @@ nav.main {
   margin: 0 10px 20px 10px;
   padding: 0 0 20px 0;
   width: 778px;
-  -webkit-background-clip: border-box;
-  border-left: 1px solid #cccccc;
-  border-bottom: 1px solid #cccccc;
-  border-right: 1px solid #cccccc; }
+  -webkit-background-clip: border-box; }
+  .main-criteria border {
+    left: 1px solid #cccccc;
+    bottom: 1px solid #cccccc;
+    right: 1px solid #cccccc; }
   .main-criteria.shrunk {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -799,35 +804,56 @@ table.cell-lists {
   font-weight: bold; }
 
 section.tag-domain-pairs,
+section.domains-avails,
+section.creative,
 section.behavior-online,
 section.survey-type {
   margin-left: -2px; }
   section.tag-domain-pairs label[for="type-iframe"],
   section.tag-domain-pairs #type-iframe,
+  section.domains-avails label[for="type-iframe"],
+  section.domains-avails #type-iframe,
+  section.creative label[for="type-iframe"],
+  section.creative #type-iframe,
   section.behavior-online label[for="type-iframe"],
   section.behavior-online #type-iframe,
   section.survey-type label[for="type-iframe"],
   section.survey-type #type-iframe {
     display: none; }
 
-section.tag-domain-pairs input:not([type="checkbox"]) {
+section.tag-domain-pairs input:not([type="checkbox"]),
+section.creative input:not([type="checkbox"]),
+section.domains-avails input:not([type="checkbox"]) {
   width: 225px; }
-section.tag-domain-pairs input.pairs-domains {
+section.tag-domain-pairs input.pairs-domains,
+section.creative input.pairs-domains,
+section.domains-avails input.pairs-domains {
   display: -moz-inline-stack;
   display: inline-block;
   *display: inline;
   vertical-align: bottom;
   zoom: 1; }
-section.tag-domain-pairs button.add {
+section.tag-domain-pairs button.add,
+section.creative button.add,
+section.domains-avails button.add {
   margin: 0 0 0 5px;
   position: relative;
   top: -10px; }
-section.tag-domain-pairs legend {
+section.tag-domain-pairs legend,
+section.creative legend,
+section.domains-avails legend {
   font-weight: bold; }
-section.tag-domain-pairs ul.cell-list {
+section.tag-domain-pairs ul.cell-list,
+section.creative ul.cell-list,
+section.domains-avails ul.cell-list {
   margin: 10px 0; }
-section.tag-domain-pairs .radios-labeled label {
+section.tag-domain-pairs .radios-labeled label,
+section.creative .radios-labeled label,
+section.domains-avails .radios-labeled label {
   margin: 0 10px 5px 0; }
+
+#domains-creative hr {
+  border-top: 2px solid black; }
 
 section.study-list ul.study-list.under-full {
   padding: 0; }

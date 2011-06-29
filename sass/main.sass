@@ -149,7 +149,7 @@ nav.main
     right: 15px
     top: 11px
   li
-    +padded-column(1)
+    +padded-column(1.5)
     padding-bottom: 10px
     padding-top: 10px
     text-align: center
@@ -158,6 +158,11 @@ nav.main
       font-size: 14px
       font-weight: bold
       text-decoration: none
+  li:first-child
+    a
+      color : blue
+      span
+        text-decoration : underline
 
 // Top-level, main critera for the largest of the containers
   
@@ -166,9 +171,10 @@ nav.main
   +border-radius-top-left(5px)
   +flex-column(10, $padding: 0 0 20px 0, $margin: 0 "default" 20px "default", $border_width: 2px)
   -webkit-background-clip: border-box
-  border-left: 1px solid #cccccc
-  border-bottom: 1px solid #cccccc
-  border-right: 1px solid #cccccc  
+  border
+    left: 1px solid #cccccc
+    bottom: 1px solid #cccccc
+    right: 1px solid #cccccc  
   &.shrunk
     +border-radius(5px)
   // Section headers
@@ -185,6 +191,7 @@ nav.main
     margin: 0 0 15px 0
     position: relative
     text-shadow: 1px 1px 2px rgba(0, 0, 0, .5)  
+
 
 nav.lock
   position: absolute
@@ -347,6 +354,8 @@ table.cell-lists
     font-weight: bold
 
 section.tag-domain-pairs,
+section.domains-avails,
+section.creative,
 section.behavior-online, 
 section.survey-type
   +push_left(-2px)
@@ -354,7 +363,9 @@ section.survey-type
   #type-iframe
     display: none
   
-section.tag-domain-pairs
+section.tag-domain-pairs,
+section.creative,
+section.domains-avails
   input:not([type="checkbox"])
     width: 225px
   input.pairs-domains
@@ -369,6 +380,10 @@ section.tag-domain-pairs
     margin: 10px 0
   .radios-labeled label
     margin: 0 10px 5px 0
+
+#domains-creative
+  hr
+    border-top: 2px solid black  
 
 section.study-list
   ul.study-list.under-full

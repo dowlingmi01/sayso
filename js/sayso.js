@@ -114,7 +114,72 @@
     };
     
     // ==============================================================
-    // Ad Tags
+    // UI Controls
+    
+    // tabs
+    $('nav.main a').click(function(e){
+        e.preventDefault();
+        var _this = $(this),
+            span = _this.find('span');
+        
+        function _updateLinkStyle () {
+            _this.closest('ul')
+                .find('a').css('color','#444444')
+                .find('span').css('text-decoration','none');
+            _this.css('color', 'blue');
+            span.css('text-decoration', 'underline');
+        }
+        
+        switch (span.text()) {
+            case 'ADgregator' :
+                if ($('#ad-tags').is(':hidden')) {
+                    $('#domains-creative').fadeOut(function () {
+                        $('#ad-tags').fadeIn();
+                        _updateLinkStyle();
+                    });
+                }
+                break;
+            case 'ADjuster' :
+                if ($('#domains-creative').is(':hidden')) {
+                    $('#ad-tags').fadeOut(function () {
+                        $('#domains-creative').fadeIn();
+                        _updateLinkStyle();
+                    });
+                }
+                break;
+        }   
+    });
+    
+    // lock/min/max
+    $('nav.lock').delegate( 'a.minimize, a.maximize', 'click', function(e) {
+
+        e.preventDefault();
+        var section = $(this).closest('section.main-criteria'),
+            type = ( $(this).hasClass( 'minimize' )) ? "minimize" : "maximize";
+
+        section.find('header').animate({
+          marginBottom : ( type === "minimize" ) ? "0" : "15px"
+        });
+
+        if( type === "minimize" ) {
+            $(this).text('+')
+               .removeClass('minimize')
+               .addClass('maximize');
+            section.find('.section-container').slideUp();
+        } else {
+            $(this).text('-')
+               .removeClass('maximize')
+               .addClass('minimize');
+            section.find('.section-container').slideDown();
+        }
+      });
+
+    $('nav.lock .lock').click(function(e) {
+        e.preventDefault();
+    });
+    
+    // ==============================================================
+    // Ad Tags (ADgregator)
     
     $('button.add-domain').click(function(e) { 
         e.preventDefault();
@@ -122,7 +187,7 @@
         // one that is triggered if the user hits enter/return in any
         // text field, and since we don't want the form submitted
         // with enter/return, the only way to prevent it is to ensure
-        // the a mouse click (w/valid coords) is performed for this button
+        // a mouse click w/actual coords is performed for this button
         if (!e.clientX && !e.clientY) return;
         var domain = $('#pairs-domains');
         if (!domain.val().length) {
@@ -218,6 +283,18 @@
             $('#fieldset-cell-adtags div.radios-labeled div[data-id=' + id + ']').remove();
         }
     });
+    
+    // ==============================================================
+    // Domains & Creative (ADjuster)
+    
+    $('#domains-avails button.add-tag-domain-pair').click(function (e) {
+        e.preventDefault();
+    });
+    
+    $('#creative button.add-creative').click(function (e) {
+        e.preventDefault();
+    });
+    
     
     // ==============================================================
     // Survey
@@ -641,32 +718,6 @@
         console.log(sayso.data);
     });
     
-    $('nav.lock').delegate( 'a.minimize, a.maximize', 'click', function(e) {
-
-        e.preventDefault();
-        var section = $(this).closest('section.main-criteria'),
-            type = ( $(this).hasClass( 'minimize' )) ? "minimize" : "maximize";
-
-        section.find('header').animate({
-          marginBottom : ( type === "minimize" ) ? "0" : "15px"
-        });
-
-        if( type === "minimize" ) {
-            $(this).text('+')
-               .removeClass('minimize')
-               .addClass('maximize');
-            section.find('.section-container').slideUp();
-        } else {
-            $(this).text('-')
-               .removeClass('maximize')
-               .addClass('minimize');
-            section.find('.section-container').slideDown();
-        }
-      });
-
-    $('nav.lock .lock').click(function(e) {
-        e.preventDefault();
-    });
     
     $('#clear-local-data').click(function(e) {
         e.preventDefault();

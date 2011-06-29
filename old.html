@@ -52,7 +52,7 @@
                 <input type="text" name="pairs-domains" id="pairs-domains" class="pairs-domains"
                        data-store-key="sayso-tagdomain-1-domain-1-name">
               </fieldset>
-              <button class="add-fieldset-data add-domain"
+              <button class="add-fieldset-data"
                       data-for-fieldset="fieldset-domains"
                       data-for-list="list-domains"
                       data-store-key="sayso-tagdomain-1-domain">Add Domain</button>
@@ -162,12 +162,12 @@
                        data-store-key="sayso-surveyinfo-type">
                 <label for="type-survey-1">No Survey</label>
                 </div>
-                <div style="float: clear;">
+                <div>
                 <input type="radio" name="type-survey" id="type-survey-2" value="Standard Survey"
                        data-store-key="sayso-surveyinfo-type">
                 <label for="type-survey-2">Standard Survey</label>
                 </div>
-                <div style="float: clear;">
+                <div>
                 <input type="radio" name="type-survey" id="type-survey-3" value="Custom Survey"
                        data-store-key="sayso-surveyinfo-type">
                 <label for="type-survey-3">Custom Survey</label>
@@ -206,7 +206,7 @@
               <p>of seeing targeted ad(s).</p>
             </fieldset>
             <div class="button-holder">
-              <button id="add-delivery-criteria" class="add-fieldset-data styled-button"
+              <button class="add-fieldset-data styled-button"
                       data-for-fieldset="fieldset-survey-delivery-criteria"
                       data-for-list="list-survey-delivery-criteria"
                       data-store-key="sayso-surveyinfo-deliverIf">Add Criteria</button>
@@ -253,12 +253,12 @@
             <ul>
               <li>
                 <label for="study-start-date">Begin</label>
-                <input class="input-date" name="study-start-date" id="study-start-date" 
+                <input type="date" name="study-start-date" id="study-start-date" 
                        data-store-key="sayso-basic-begindate">
               </li>
               <li>
                 <label for="study-end-date">End</label>
-                <input class="input-date" name="study-end-date" id="study-end-date" 
+                <input type="date" name="study-end-date" id="study-end-date" 
                        data-store-key="sayso-basic-enddate">
               </li>
             </ul>
@@ -316,6 +316,11 @@
                 <fieldset id="fieldset-cell-adtags">
                   <legend>Ad Tags</legend>
                   <div class="radios-labeled">
+                    <div class="template">
+                      <input type="checkbox" name="cell-adtag-{{number}}" id="cell-adtag-{{number}}"
+                        value="{{number}}" data-store-key="sayso-cells-{{cellId}}-adtag-{{number}}">
+                      <label for="cell-adtag-{{number}}">{{label}}</label>
+                    </div>
                   </div>
                 </fieldset>
                 <ul class="cell-lists empty" id="cell-adtag" data-template="cell-adtag">
@@ -389,7 +394,7 @@
               </ul>
             </fieldset>
             <div class="button-holder">
-              <button id="add-quota" class="add-fieldset-data add-cell styled-button" 
+              <button class="add-fieldset-data add-cell styled-button" 
                       data-for-fieldset="fieldset-cell-quota"
                       data-for-list="list-cell-quota" 
                       data-store-key="sayso-cells-n1-quota">Add This Quota</button>
@@ -438,7 +443,7 @@
               </fieldset>
               <div class="button-holder">
                 <!-- Add sayso-cells-n#-qualifier-browse-1 -->
-                <button id="add-browsing-qualifier" class="add-fieldset-data styled-button" 
+                <button class="add-fieldset-data styled-button" 
                         data-for-fieldset="fieldset-browsing-qualifier"
                         data-for-list="list-browsing-qualifier"
                         data-store-key="sayso-cells-n1-qualifier-browse">Add Qualifier</button>
@@ -499,7 +504,7 @@
                 </ul>                                          
               </fieldset>
               <div class="button-holder">
-                <button id="add-search-qualifier" class="add-fieldset-data styled-button" 
+                <button class="add-fieldset-data styled-button" 
                         data-for-fieldset="fieldset-search-qualifier"
                         data-for-list="list-search-qualifier"
                         data-store-key="sayso-cells-n1-qualifier-search">Add Qualifier</button>
@@ -514,17 +519,17 @@
               <fieldset>
                 <legend class="hide-visual">Deliver If</legend>
                 <div>
-                  <input type="radio" name="deliver-if" id="deliver-if-1" value="saw-target-ad" 
+                  <input type="radio" name="deliver-if" id="deliver-if-1" value="saw targed ad (test)" 
                          data-store-key="sayso-cells-n1-qualifier-condition">
                   <label for="deliver-if-1">Saw a targeted ad (test)</label>            
                 </div>
-                <div style="float: clear;">
-                  <input type="radio" name="deliver-if" id="deliver-if-2" value="visited-similar-site" 
+                <div>
+                  <input type="radio" name="deliver-if" id="deliver-if-2" value="didn't see targeted at but visited similar site (control)" 
                          data-store-key="sayso-cells-n1-qualifier-condition">
                   <label for="deliver-if-2">Visited a similar site (control)</label>            
                 </div>
-                <div style="float: clear;">
-                  <input type="radio" name="deliver-if" id="deliver-if-3" value="visited-target-site" 
+                <div>
+                  <input type="radio" name="deliver-if" id="deliver-if-3" value="visited targeted site" 
                          data-store-key="sayso-cells-n1-qualifier-condition">
                   <label for="deliver-if-3">Visited a targeted site</label>
                 </div>
@@ -539,10 +544,10 @@
           <table class="cell-lists">
             <thead>
               <tr>
-                <th class="description">Cell Description</th>
+                <th>Cell #</th>
                 <th>Cell Size</th>
                 <th>Cell Type</th>
-                <th>Cell Id</th>
+                <th class="description">Cell Description</th>
                 <th>Cell Actions</th>
               </tr>
             </thead>
@@ -563,8 +568,7 @@
   <script src="js/jquery-1.5.1.min.js"></script>
   <script src="js/jquery-ui-1.8.13.custom.min.js"></script>
   <script src="js/mustache.js"></script>
-  <script src="js/templates.js"></script>
-  <script src="js/sayso.js"></script>
+  <script src="js/main.js"></script>
   <!--[if lt IE 7 ]>
     <script src="js/libs/dd_belatedpng.js"></script>
     <script>DD_belatedPNG.fix('img, .png_bg'); // Fix any <img> or .png_bg bg-images. Also, please read goo.gl/mZiyb </script>

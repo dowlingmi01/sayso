@@ -1,4 +1,4 @@
-var sayso = {};
+if (typeof sayso === 'undefined') sayso = {};
 
 sayso.templates = {
 

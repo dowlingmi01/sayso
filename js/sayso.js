@@ -1,6 +1,8 @@
 
 (function () {
 
+    if (typeof sayso === 'undefined') sayso = {};
+    
     // ==============================================================
     // functions/helpers
     
@@ -72,13 +74,10 @@
     // ==============================================================
     // sayso data + localstorage
     
-    
-    if (localStorage.getItem('sayso')) {
-        // restore
-        sayso.data = JSON.parse(localStorage.getItem('sayso'));
-    } else {
-        // setup
+    function resetData () {
+        
         sayso.data = {
+            type : 'ADgregator', // or 'ADjuster'
             tagdomain : {}, 
             metrics : { 
                 clicktrack : 'No',
@@ -101,17 +100,39 @@
             },
             cells : {}
         };
+        
+        // temporary object for storing list data 
+        // prior to aggregation into sayso.data
+        sayso.temp = {
+            quota : {},
+            qualifier : {
+                browse : {},
+                search : {}
+            },
+            domain : {}
+        };
     }
     
-    // temporary object for storing list data prior to aggregation into sayso.data
-    sayso.temp = {
-        quota : {},
-        qualifier : {
-            browse : {},
-            search : {}
-        },
-        domain : {}
-    };
+    resetData();
+    
+    if (localStorage.getItem('sayso')) {
+        // restore
+        sayso.data = JSON.parse(localStorage.getItem('sayso'));
+    } 
+    
+    var _changesPending = false;
+    
+    $('input, select').not('[type=submit]').change(function (e) {
+        if ($(this).val().length) _changesPending = true;
+    })
+        
+    function resetForm () {
+        // reset the form
+        $('input[type=checkbox],input[type=radio]').removeAttr('checked');
+        $('input[type=text]').val('');
+        $('select').val(false);
+        _changesPending = false;
+    }
     
     // ==============================================================
     // UI Controls
@@ -130,24 +151,38 @@
             span.css('text-decoration', 'underline');
         }
         
-        switch (span.text()) {
-            case 'ADgregator' :
-                if ($('#ad-tags').is(':hidden')) {
-                    $('#domains-creative').fadeOut(function () {
-                        $('#ad-tags').fadeIn();
-                        _updateLinkStyle();
-                    });
-                }
-                break;
-            case 'ADjuster' :
-                if ($('#domains-creative').is(':hidden')) {
-                    $('#ad-tags').fadeOut(function () {
-                        $('#domains-creative').fadeIn();
-                        _updateLinkStyle();
-                    });
-                }
-                break;
-        }   
+        if (!_changesPending || confirm('There are unsaved changes. Continue anyways?')) {
+            
+            resetForm();
+            resetData();
+            
+            var index = 0;
+            sayso.data.type = span.text();
+            switch (span.text()) {
+                case 'ADgregator' :
+                    index = 0;
+                    if ($('#ad-tags').is(':hidden')) {
+                        $('#domains-creative').fadeOut(function () {
+                            $('#ad-tags').fadeIn();
+                            _updateLinkStyle();
+                        });
+                    }
+                    break;
+                case 'ADjuster' :
+                    index = 1;
+                    if ($('#domains-creative').is(':hidden')) {
+                        $('#ad-tags').fadeOut(function () {
+                            $('#domains-creative').fadeIn();
+                            _updateLinkStyle();
+                        });
+                    }
+                    break;
+            }  
+            $('*[data-text-replace]').each(function () {
+                $(this).text(JSON.parse($(this).attr('data-text-replace'))[index]);
+            });
+        }
+        
     });
     
     // lock/min/max
@@ -714,8 +749,14 @@
         // localStorage
         localStorage.setItem('sayso', JSON.stringify(sayso.data));
         
-        alert('Survey saved to local storage!');
-        console.log(sayso.data);
+        // reset form fields and return "changes pending" to false
+        resetForm();
+        
+        // reset data object for new data
+        resetData();
+        
+        // notify the user
+        alert('Survey saved!');
     });
     
     

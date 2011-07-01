@@ -44,6 +44,10 @@
         return _container;
     };
     
+    $.fn.makeDataContainer = function (id) {
+        $(this).attr('data-id', id);
+    };
+    
     function tpl ( tpl, obj, extra ) {
         if (!extra) extra = {};
         data = $.extend({}, obj, extra);
@@ -79,6 +83,8 @@
         sayso.data = {
             type : 'ADgregator', // or 'ADjuster'
             tagdomain : {}, 
+            domainAvail : {},
+            creative : {},
             metrics : { 
                 clicktrack : 'No',
                 searchengines : {},
@@ -113,15 +119,21 @@
         };
     }
     
+    // initialize the data object
     resetData();
     
-    if (localStorage.getItem('sayso')) {
-        // restore
-        sayso.data = JSON.parse(localStorage.getItem('sayso'));
-    } 
+    // on page load reset local storage
+    localStorage.clear();
     
+    // if data exists in localStorage, restore
+    // NOTE: currently doesn't apply
+//    if (localStorage.getItem('sayso')) {
+//        sayso.data = JSON.parse(localStorage.getItem('sayso'));
+//    } 
+    
+    // setup change tracking to warn if user attempts to 
+    // switch products with unsaved changes
     var _changesPending = false;
-    
     $('input, select').not('[type=submit]').change(function (e) {
         if ($(this).val().length) _changesPending = true;
     })
@@ -129,8 +141,13 @@
     function resetForm () {
         // reset the form
         $('input[type=checkbox],input[type=radio]').removeAttr('checked');
-        $('input[type=text]').val('');
+        $('input[type=text],textarea,input.input-date').val('');
         $('select').val(false);
+        // remove any row data displayed in the dom
+        $('ul.data-list').empty(); 
+        $('table.cell-lists tbody').empty();
+        $('#fieldset-cell-adtags div.radios-labeled').empty();
+        // reset flag, nothing pending (therefore allow navigating away)
         _changesPending = false;
     }
     
@@ -178,6 +195,7 @@
                     }
                     break;
             }  
+            // replace any product-specific text
             $('*[data-text-replace]').each(function () {
                 $(this).text(JSON.parse($(this).attr('data-text-replace'))[index]);
             });
@@ -324,12 +342,112 @@
     
     $('#domains-avails button.add-tag-domain-pair').click(function (e) {
         e.preventDefault();
+        if (!e.clientX && !e.clientY) return; // see above for why
+        var domain = $('#domains-avails-domain'),
+            tag = $('#domains-avails-tag');
+        
+        if (!domain.val().length || !tag.val().length) {
+            alert('Domain and ad tag are required');
+            return;
+        }
+        var data = {
+            // label : '', // why is this missing from the mocks?
+            domain : domain.val(),
+            tag : tag.val()
+        };
+        var container = $(this).dataContainer();
+        if (container.getId()) { // edit existing
+            data.id = container.getId();
+            container.removeId();
+            // replace the list item
+            $('#list-domains-avails li[data-id=' + data.id +']').replaceWith(tpl('tagDomainPairs', data, { label : data.domain }));
+            // also replace the ad tags listed below in cells
+            $('#fieldset-cell-adtags div.radios-labeled div[data-id=' + data.id + ']').replaceWith(tpl('adTag', data, { label : data.domain}));
+        } else { // create new
+            data.id = uniqueId();
+            // display list item
+            $(tpl('tagDomainPairs', data, { label : data.domain })).appendTo('#list-domains-avails');
+            // add this tag to the cell form below to allow adding tags to cells
+            $('#fieldset-cell-adtags div.radios-labeled').append(tpl('adTag', data, { label : data.domain}));
+        }
+        $(this).text('Add');
+        sayso.data.domainAvail[data.id] = data;
+        domain.val(''); tag.val('');
+    });
+    
+    $('#list-domains-avails a.edit').live('click', function(e) {
+        e.preventDefault();
+        var container = $(this).dataContainer(), 
+            id = container.getId(),
+            domainAvail = sayso.data.domainAvail[id];
+        $('#domains-avails').makeDataContainer(id);
+        $('#domains-avails-domain').val(domainAvail.domain);
+        $('#domains-avails-tag').val(domainAvail.tag);
+        $('#domains-avails button.add-tag-domain-pair').text('Update');
+    });
+    
+    $('#list-domains-avails a.delete').live('click', function (e){
+        e.preventDefault();
+        var container = $(this).dataContainer(),
+            id = container.getId();
+        if (confirm('Are you sure you want to delete domain/avail for "' + container.find('span').text() + '"?')) {
+            delete sayso.data.domainAvail[id];
+            container.removeNow();
+            // remove the ad tag listed below
+            $('#fieldset-cell-adtags div.radios-labeled div[data-id=' + id + ']').remove();
+        }
     });
     
     $('#creative button.add-creative').click(function (e) {
         e.preventDefault();
+        var name = $('#creative-name'),
+            creativeUrl = $('#creative-url'),
+            //file = $('#creative-file'),
+            targetUrl = $('#creative-target-url');
+        if (!name.val().length || !creativeUrl.val().length || !targetUrl.val().length) {
+            alert('Name, creative URL and target URL are required');
+            return;
+        }
+        var data = {
+            name : name.val(),
+            creativeUrl : creativeUrl.val(),
+            targetUrl : targetUrl.val()
+        };
+        var container = $(this).dataContainer();
+        if (container.getId()) { // edit existing
+            data.id = container.getId();
+            container.removeId(); // to indicate we are going OUT of editing mode
+            $('#list-creative li[data-id=' + data.id + ']').replaceWith(tpl('creative', data));
+        } else { // create new
+            data.id = uniqueId();
+            $(tpl('creative', data)).appendTo('#list-creative');
+        }
+        $(this).text('Add');
+        sayso.data.creative[data.id] = data;
+        name.val(''); creativeUrl.val(''); targetUrl.val('');
     });
     
+    $('#list-creative a.edit').live('click', function (e) {
+        e.preventDefault();
+        var container = $(this).dataContainer(),
+            id = container.getId(),
+            creative = sayso.data.creative[id];
+        $('#creative').makeDataContainer(id);
+        $('#creative-name').val(creative.name);
+        $('#creative-url').val(creative.creativeUrl);
+        $('#creative-target-url').val(creative.targetUrl);
+        $('#creative button.add-creative').text('Update');
+    });
+    
+    $('#list-creative a.delete').live('click', function (e) {
+        e.preventDefault();
+        var container = $(this).dataContainer(),
+            id = container.getId();
+        if (confirm('Are you sure you want to delete creative for "' + container.find('span.creative-name').text() + '"?')) {
+            delete sayso.data.creative[id];
+            container.removeNow();
+        }
+    });
     
     // ==============================================================
     // Survey
@@ -541,7 +659,14 @@
         $('#fieldset-cell-adtags input[type=checkbox]').each(function() {
             var id = $(this).dataContainer().getId();
             if ($(this).is(':checked')) {
-                adtags[id] = sayso.data.tagdomain[id];
+                switch (sayso.data.type) {
+                    case 'ADgregator' :
+                        adtags[id] = sayso.data.tagdomain[id];
+                        break;
+                    case 'ADjuster' :
+                        adtags[id] = sayso.data.domainAvail[id];
+                        break;
+                }
             } else if (adtags.hasOwnProperty(id)) {
                 delete adtags[id];
             }
@@ -757,6 +882,9 @@
         
         // notify the user
         alert('Survey saved!');
+        
+        // finally, scroll the view back to the top
+        $('html,body').animate({scrollTop:0}, 600);
     });
     
     

@@ -864,6 +864,51 @@ section.study-list ul.study-list.under-full {
   section.study-list ul.study-list.under-full li:nth-child(even) {
     background: #f2f2f2; }
 
+#list-domains-avails li {
+  background-color: #f2f2f2;
+  border: solid 1px lightgrey;
+  padding: 8px;
+  margin-bottom: 8px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px; }
+  #list-domains-avails li nav {
+    float: right; }
+  #list-domains-avails li:hover {
+    background-color: #fafafa; }
+
+#list-creative li {
+  margin-bottom: 8px; }
+  #list-creative li div {
+    background-color: #f2f2f2;
+    border: solid 1px lightgrey;
+    padding: 8px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-left: 10px;
+    width: 222px; }
+    #list-creative li div:hover {
+      background-color: #fafafa; }
+    #list-creative li div span {
+      padding-bottom: 4px; }
+      #list-creative li div span.creative-name {
+        font-weight: bold;
+        display: block; }
+      #list-creative li div span.creative-url {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; }
+    #list-creative li div nav {
+      float: right; }
+  #list-creative li img {
+    float: left;
+    margin-right: 10px;
+    max-width: 70px;
+    min-width: 70px; }
+
 section.survey-qualifiers fieldset {
   font-weight: bold; }
 section.survey-qualifiers .button-holder {

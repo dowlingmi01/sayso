@@ -50,18 +50,19 @@
                 <input type="text" name="pairs-domains" id="pairs-domains" class="pairs-domains">
               </fieldset>
               <button class="add-fieldset-data add-domain">Add Domain</button>
-              <ul class="cell-lists empty" id="list-domains">
+              <ul class="cell-lists empty data-list" id="list-domains">
               </ul>
             </fieldset>
             <div class="button-holder">
               <button class="add-fieldset-data add-pair styled-button">Add Tag-Domain Pair</button>
             </div>
-          </section><!-- end #tag-domain-pairs --><section class="secondary-criteria study-list padded-column-5 last" id="study-list">
+          </section><!-- end #tag-domain-pairs -->
+          <section class="secondary-criteria study-list padded-column-5 last" id="study-list" style="width: 355px;">
             <header class="under-full">
               <h3>Study List</h3>
               <p>Active tag-domain pairs for this study</p>
             </header>
-            <ul class="under-full study-list" id="list-tag-domain-pair">
+            <ul class="under-full study-list data-list" id="list-tag-domain-pair">
             </ul>
           </section><!-- end #study-list -->
         </div><!-- end .section-container -->
@@ -78,17 +79,17 @@
               <h3>Domains and Avails</h3>
               <p style="font-size: .7em;">On which domains &amp; avails would you like to test your creative?</p>
             </header>
-            <fieldset class="under-full" id="fieldset-tag-domain-pair">
-              <label for="pairs-domain">Domain</label>
-              <input type="text" name="pairs-domain" id="pairs-domain">
-              <label for="pairs-ad-tag">Avail (paste DIV ID tag)</label>
-              <textarea name="pairs-ad-tag" id="pairs-ad-tag" cols="30" rows="10" style="width:225px"></textarea>
+            <fieldset class="under-full" id="fieldset-domains-avails">
+              <label for="domains-avails-domain">Domain</label>
+                <input type="text" name="domains-avails-domain" id="domains-avails-domain">
+              <label for="domains-avails-tag">Avail (paste DIV ID tag)</label>
+                <textarea name="domains-avails-tag" id="domains-avails-tag" cols="30" rows="10" style="width:225px"></textarea>
               <button class="add-fieldset-data add-tag-domain-pair styled-button">Add</button>
               <hr />
-              <ul class="cell-lists empty" id="list-tag-domain-pair">
+              <ul class="cell-lists empty data-list" id="list-domains-avails">
               </ul>
             </fieldset>
-          </section><!-- end #tag-domain-pairs -->
+          </section><!-- end #domains-avails -->
           <section class="secondary-criteria creative padded-column-5 last" id="creative" style="width: 350px;">
             <header class="under-full">
               <h3>Creative</h3>
@@ -96,22 +97,23 @@
             </header>
             <fieldset class="under-full" id="fieldset-creative">
               <label for="creative-name">Name</label>
-              <input type="text" name="creative-name" id="creative-name">
-              <label for="creative-ad">AD creative URL or UPLOAD</label>
-              <input type="text" name="creative-ad" id="creative-ad">
-              <label for="creative-weight">Weighting</label>
-              <input type="text" name="creative-weight" id="creative-weight">
+                <input type="text" name="creative-name" id="creative-name">
+              <label for="creative-url">AD creative URL</label>
+                <input type="text" name="creative-url" id="creative-url" value="http://whereamiapp.com/image.php?key=959a6853f043ec34f0167250bfb5293c&id=187&size=100&max">
+              <!--p>OR</p>
+              <label for="creative-file">AD creative UPLOAD</label>
+                <input type="file" name="creative-file" id="creative-file" /-->
+              <!--label for="creative-weight">Weighting</label>
+                <input type="text" name="creative-weight" id="creative-weight"-->
               <label for="creative-target-url">Target URL for AD Creative</label>
-              <input type="text" name="creative-target-url" id="creative-target-url">
+                <input type="text" name="creative-target-url" id="creative-target-url">
               
               <button class="add-fieldset-data add-creative styled-button">Add</button>
               <hr />
-              <ul class="cell-lists empty" id="list-tag-domain-pair">
+              <ul class="cell-lists empty data-list" id="list-creative">
               </ul>
             </fieldset>
-            <ul class="under-full study-list" id="list-tag-domain-pair">
-            </ul>
-          </section><!-- end #study-list -->
+          </section><!-- end #creative -->
         </div><!-- end .section-container -->
       </section><!-- end #domains-creative -->
       
@@ -235,7 +237,7 @@
             <div class="button-holder">
               <button id="add-delivery-criteria" class="add-fieldset-data styled-button">Add Criteria</button>
             </div>
-            <ul class="cell-lists empty" id="list-survey-delivery-criteria">
+            <ul class="cell-lists empty data-list" id="list-survey-delivery-criteria">
             </ul>
           </section><!-- end #survey-qualifiers -->
         </div><!-- end .section-container  -->
@@ -326,11 +328,11 @@
               </div>
               <div class="padded-column-10 first last">
                 <fieldset id="fieldset-cell-adtags">
-                  <legend>Ad Tags</legend>
+                  <legend data-text-replace='["Ad Tags","Domains/Avails"]'>Ad Tags</legend>
                   <div class="radios-labeled">
                   </div>
                 </fieldset>
-                <ul class="cell-lists empty" id="cell-adtag">
+                <ul class="cell-lists empty data-list" id="cell-adtag">
                 </ul>
               </div>
             </fieldset>
@@ -397,7 +399,7 @@
             <div class="button-holder">
               <button id="add-quota" class="add-fieldset-data add-cell styled-button">Add This Quota</button>
             </div>            
-            <ul class="cell-lists empty" id="list-cell-quota">
+            <ul class="cell-lists empty data-list" id="list-cell-quota">
             </ul>
           </section><!-- end #cell-quota -->
           <section class="secondary-criteria behavioral-qualifiers build-cells full" id="behavioral-qualifiers">
@@ -437,7 +439,7 @@
                 <!-- Add sayso-cells-n#-qualifier-browse-1 -->
                 <button id="add-browsing-qualifier" class="add-fieldset-data styled-button">Add Qualifier</button>
               </div>
-              <ul class="cell-lists empty" id="list-browsing-qualifier">
+              <ul class="cell-lists empty data-list" id="list-browsing-qualifier">
               </ul>   
             </section><section class="tertiary-criteria search-engines padded-column-3" id="search-engines">
               <header>
@@ -489,7 +491,7 @@
               <div class="button-holder">
                 <button id="add-search-qualifier" class="add-fieldset-data styled-button" >Add Qualifier</button>
               </div>
-              <ul class="cell-lists empty" id="list-search-qualifier">
+              <ul class="cell-lists empty data-list" id="list-search-qualifier">
               </ul>
             </section><section class="tertiary-criteria delivery-qualifiers padded-column-4 last" id="delivery-qualifiers">
               <header>

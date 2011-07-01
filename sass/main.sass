@@ -226,8 +226,6 @@ a.maximize
 a.unlock
   display: none
 
-
-
 // Ad Effectivenss Study Styles
     
 .study-base
@@ -393,8 +391,51 @@ section.study-list
     nav
       float: right
     li:nth-child(even)
-      background: #f2f2f2      
-      
+      background: #f2f2f2
+            
+#list-domains-avails
+  li
+    background-color : rgb(242,242,242)
+    border : solid 1px lightgrey
+    padding : 8px
+    margin-bottom: 8px
+    +border-radius(10px)
+    nav
+      float: right
+    &:hover
+      background-color: rgb(250,250,250)
+            
+#list-creative
+  li
+    margin-bottom: 8px
+    div
+      background-color : rgb(242,242,242)
+      border : solid 1px lightgrey
+      padding : 8px
+      +border-radius(10px)
+      display : inline-block
+      margin-left : 10px
+      width : 222px
+      &:hover
+        background-color: rgb(250,250,250)
+      span
+        padding-bottom : 4px
+        &.creative-name
+          font-weight : bold
+          display : block
+        &.creative-url
+          display : block
+          white-space: nowrap
+          overflow: hidden
+          text-overflow: ellipsis
+      nav
+        float: right
+    img
+      float: left
+      margin-right: 10px
+      max-width : 70px
+      min-width : 70px
+  
 section.survey-qualifiers
   fieldset 
     font-weight: bold

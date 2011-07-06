@@ -640,7 +640,6 @@
         }
         // validate cell size does not exceed study sample size
         if ($('#study-sample-size').val().length && $('#cell-size').val().length) {
-            console.log('validating...');
             var cellSize = 0;
             for (var cellId in sayso.data.cells) {
                 cellSize += parseInt(sayso.data.cells[cellId].size);

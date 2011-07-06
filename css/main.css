@@ -888,7 +888,8 @@ section.study-list ul.study-list.under-full {
     border-radius: 10px;
     display: inline-block;
     margin-left: 10px;
-    width: 222px; }
+    width: 222px;
+    min-height: 54px; }
     #list-creative li div:hover {
       background-color: #fafafa; }
     #list-creative li div span {
@@ -904,10 +905,24 @@ section.study-list ul.study-list.under-full {
     #list-creative li div nav {
       float: right; }
   #list-creative li img {
+    background-color: #f2f2f2;
+    background-position: center;
+    background-size: 70px;
+    background-repeat: no-repeat;
+    background-image: url(/img/HTML_06.png);
+    background-origin: content-box;
+    background-clip: border-box;
+    background-attachment: scroll;
+    border: solid 1px lightgrey;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
     float: left;
     margin-right: 10px;
     max-width: 70px;
-    min-width: 70px; }
+    min-width: 70px;
+    width: 70px;
+    height: 70px; }
 
 section.survey-qualifiers fieldset {
   font-weight: bold; }

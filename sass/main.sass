@@ -416,6 +416,7 @@ section.study-list
       display : inline-block
       margin-left : 10px
       width : 222px
+      min-height: 54px
       &:hover
         background-color: rgb(250,250,250)
       span
@@ -431,11 +432,23 @@ section.study-list
       nav
         float: right
     img
+      background-color: rgb(242,242,242) 
+      background-position: center 
+      background-size: 70px 
+      background-repeat: no-repeat 
+      background-image: url(/img/HTML_06.png) 
+      background-origin: content-box 
+      background-clip: border-box 
+      background-attachment: scroll
+      border : solid 1px lightgrey
+      +border-radius(10px)
       float: left
       margin-right: 10px
       max-width : 70px
       min-width : 70px
-  
+      width : 70px
+      height : 70px
+      
 section.survey-qualifiers
   fieldset 
     font-weight: bold

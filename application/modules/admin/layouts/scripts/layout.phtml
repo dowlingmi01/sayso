@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Say.So Survey Administration</title>
+  <meta name="description" content="">
+  <meta name="author" content="Joshua Cody">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/smoothness/jquery-ui-1.8.13.custom.css">
+  <script src="/js/modernizr.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Say.So</h1>
+    <img src="img/say-so.png" alt="Say.So Logo" width="230" height="60">
+    <nav class="main">
+      <ul>
+        <li><a href="#" title="Ad Effectiveness"><span>ADgregator</span>&trade;</a></li>
+        <li><a href="#" title="Ad Pre-testing"><span>ADjuster</span>&trade;</a></li>
+        <!--<li><a href="#"><span>Reports</span></a></li>
+      --></ul>
+      <p>Logged in as <strong>SaySoAdmin</strong>. <a href="#">Log Out</a></p>
+    </nav>
+  </header>
+  <div id="main" role="main">
+  
+  <?php echo $this->layout()->content ?>
+  
+  </div>
+  <footer>
+  </footer>
+  <script src="/js/jquery-1.5.1.min.js"></script>
+  <script src="/js/jquery-ui-1.8.13.custom.min.js"></script>
+  <script src="/js/mustache.js"></script>
+  <script src="/js/templates.js"></script>
+  <script src="/js/sayso.js"></script>
+  <!--[if lt IE 7 ]>
+    <script src="/js/libs/dd_belatedpng.js"></script>
+    <script>DD_belatedPNG.fix('img, .png_bg'); // Fix any <img> or .png_bg bg-images. Also, please read goo.gl/mZiyb </script>
+  <![endif]-->
+</body>
+</html>
+  

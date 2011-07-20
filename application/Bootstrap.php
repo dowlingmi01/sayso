@@ -1,4 +1,5 @@
 <?php
+require_once 'App/Bootstrap.php';
 /**
  * Sayso bootstrap
  * - used for initializing/setting up the framework (including 
@@ -7,11 +8,11 @@
  * @author davidbjames
  *
  */
-class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
+class Bootstrap extends App_Bootstrap
 {
-    public function _initPlugins () {
-        $front = Zend_Controller_Front::getInstance(); 
-        $front->registerPlugin(new BootstrapPlugin());
+    public function initApp () {
+        parent::initApp();
+        Zend_Controller_Front::getInstance()->registerPlugin(new BootstrapPlugin());
     }
 }
 
@@ -29,6 +30,15 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
     public function routeShutdown(Zend_Controller_Request_Abstract $request) {
         $currentModule = strtolower($request->getModuleName());
         $layout = Zend_Layout::startMvc();
-        $layout->setLayoutPath(APPLICATION_PATH . '/modules/' . $currentModule . '/layouts/scripts');
+        if ($currentModule === 'default') {
+            $layout->setLayoutPath(APPLICATION_PATH . '/layouts/scripts');
+        } else {
+            $layout->setLayoutPath(APPLICATION_PATH . '/modules/' . $currentModule . '/layouts/scripts');
+        }
+        $layout->getView()->doctype('XHTML1_STRICT');
+        
+        
     }
+    
+   
 }

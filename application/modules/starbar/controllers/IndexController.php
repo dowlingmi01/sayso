@@ -1,6 +1,6 @@
 <?php
 
-class Starbar_IndexController extends Zend_Controller_Action
+class Starbar_IndexController extends Api_AbstractController
 {
 
     public function init()

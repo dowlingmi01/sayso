@@ -29,16 +29,27 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
 {
     public function routeShutdown(Zend_Controller_Request_Abstract $request) {
         $currentModule = strtolower($request->getModuleName());
+        if ($currentModule === 'api') return;
+        
+        Api_UserSession::init();
+        
         $layout = Zend_Layout::startMvc();
+        
         if ($currentModule === 'default') {
             $layout->setLayoutPath(APPLICATION_PATH . '/layouts/scripts');
         } else {
             $layout->setLayoutPath(APPLICATION_PATH . '/modules/' . $currentModule . '/layouts/scripts');
         }
-        $layout->getView()->doctype('XHTML1_STRICT');
+        $view = $layout->getView();
         
-        
+        if (!$this->_request->isXmlHttpRequest()) {
+            $view->doctype('XHTML1_STRICT');
+            $scripts = $view->headScript();
+            $scripts->appendFile('/js/jquery-1.6.1.min.js');
+            $scripts->appendFile('/js/jquery.form.min.js');
+            $scripts->appendFile('/js/pubsub.js');
+            $scripts->appendFile('/js/main.js');
+            
+        }
     }
-    
-   
 }

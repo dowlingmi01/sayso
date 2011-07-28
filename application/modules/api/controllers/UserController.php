@@ -1,6 +1,6 @@
 <?php
 
-class Admin_IndexController extends Api_AbstractController
+class Api_UserController extends Api_AbstractController
 {
 
     public function init()
@@ -10,9 +10,11 @@ class Admin_IndexController extends Api_AbstractController
 
     public function indexAction()
     {
-        // action body
+        
+        return $this->_resultType(new Object(array('foo' => 'bar')));
     }
 
+    
 
 }
 

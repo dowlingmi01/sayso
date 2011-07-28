@@ -1,6 +1,195 @@
-<h3>ADjuster DEV</h3>
-<p><a href="/install/ADjuster/ADjusterDEV.xpi" title="Click to install the ADjusterDEV app in your browser">Install ADjusterDEV in your browser</a></p>
-<h3>SaySo</h3>
-<p><a href="/install/Sayso/Sayso.xpi" title="Click to install the SaySo app in your browser">Install SaySo in your browser</a></p>
-<h3>Starbar</h3>
-<p><a href="/install/StarBar/Starbar.xpi" title="Click to install the StarBar app in your browser">Install StarBar in your browser</a></p>
+<div id="sign-up">
+    <h2>Sign up!</h2>
+    <form id="registration-form" method="POST" action="/index/register-submit">
+        <fieldset>
+            <legend>Username &amp; Password</legend>
+            <div>
+                <label for="username" class="required">Username</label>
+                <input type="text" name="username" id="username" />
+            </div>
+            <div>
+                <label for="password" class="required">Password</label>
+                <input type="password" name="password" id="password" />
+            </div>
+            <div>
+                <label for="password_verify" class="required">Verify Password</label>
+                <input type="password" name="password_verify" id="password_verify" />
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Personal Info</legend>
+            <div>
+                <label for="first_name" class="required">First Name</label>
+                <input type="text" name="first_name" id="first_name" />
+            </div>
+            <div>
+                <label for="last_name" class="required">Last Name</label>
+                <input type="text" name="last_name" id="last_name" />
+            </div>
+            <div>
+                <label for="email" class="required">Email</label>
+                <input type="text" name="email" id="email" />
+            </div>
+            <div>
+                <ul>
+                    <li>
+                        <label for="gender_1" class="required">Male</label>
+                        <input type="radio" name="gender" id="gender_1" value="male" />
+                    </li>
+                    <li>
+                        <label for="gender_2" class="required">Female</label>
+                        <input type="radio" name="gender" id="gender_2" value="female" />
+                    </li>
+                </ul>
+                <div class="custom-error" name="gender" style="display: none;" />
+            </div>
+            <div>
+                <label for="birth_year" class="required">Birth Year</label>
+                <select name="birth_year" id="birth_year">
+                    <option value="">Choose ...</option>
+                    <?php for ($i = 2000; $i > 1930; $i--) : ?>
+                        <option value="<?= $i ?>"><?= $i ?></option>
+                    <?php endfor ?>
+                </select>
+            </div>
+            <div>
+                <label for="ethnicity">Heritage</label>
+                <select name="ethnicity" id="ethnicity">
+                    <option value="">Choose...</option>
+                    <option value="white">White</option>
+                    <option value="african-american">African-American</option>
+                    <option value="asian">Asian</option>
+                    <option value="latino">Latino</option>
+                    <option value="native-american">Native-American</option>
+                    <option value="hawaiin-pacific-islander">Hawaiin-Pacific-Islander</option>
+                </select>
+            </div>
+            <div>
+                <label for="timezone">Time Zone</label>
+                <select name="timezone" id="timezone">
+                    <option value="">Choose...</option>
+                    <?php foreach (TimeZone::getAllOffsets() as $offset => $label) : ?>
+                        <option value="<?= urlencode($offset) ?>"><?= $label ?></option>
+                    <?php endforeach ?>
+                </select>
+                <input type="hidden" name="timezone_type" value="utc" />
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Preferences</legend>
+            <div>
+                <h3>How often do you want to earn by giving your opinion?</h3>
+                <table>
+                    <tr>
+                        <th></th>
+                        <th colspan="2">Bring 'em on!</th>
+                        <th colspan="2">Occasionally</th>
+                        <th colspan="2">Never</th>
+                    </tr>
+                    <tr>
+                        <td>Emails</td>
+                        <td><input type="radio" name="email_frequency" id="email_frequency_1" value="often" /></td>
+                        <td rowspan="2">Earn a lotta Pay.So! :D</td>
+                        <td><input type="radio" name="email_frequency" id="email_frequency_2" value="occasionally" /></td>
+                        <td rowspan="2">Earn a little Pay.So. :|</td>
+                        <td><input type="radio" name="email_frequency" id="email_frequency_3" value="never" /></td>
+                        <td rowspan="2">Earn no Pay.So. :(</td>
+                    </tr>
+                    <tr>
+                        <td>Polls</td>
+                        <td><input type="radio" name="poll_frequency" id="poll_frequency_1" value="often" /></td>
+                        <td><input type="radio" name="poll_frequency" id="poll_frequency_2" value="occasionally" /></td>
+                        <td><input type="radio" name="poll_frequency" id="poll_frequency_3" value="never" /></td>
+                    </tr>
+                </table>
+                <div class="custom-error" name="email_frequency" style="display: none;"></div>
+                <div class="custom-error" name="poll_frequency" style="display: none;"></div>
+                <!--div>
+                    <h4>Emails</h4>
+                    <ul>
+                        <li>
+                            <label for="email_frequency_1">Email me like there's no tomorrow!</label>
+                            <input type="radio" name="email_frequency" id="email_frequency_1" value="often" />
+                            <span>Earn a lotta Pay.So! :D</span>
+                        </li>
+                        <li>
+                            <label for="email_frequency_2">Email me occasionally</label>
+                            <input type="radio" name="email_frequency" id="email_frequency_2" value="occasionally" />
+                            <span>Earn a little Pay.So. :|</span>
+                        </li>
+                        <li>
+                            <label for="email_frequency_3">No emails ever!</label>
+                            <input type="radio" name="email_frequency" id="email_frequency_3" value="never" />
+                            <span>Earn no Pay.So. :(</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Polls</h4>
+                    <ul>
+                        <li>
+                            <label for="poll_frequency_1">Bring on the polls!</label>
+                            <input type="radio" name="poll_frequency" id="poll_frequency_1" value="often" />
+                            <span>Earn a lotta Pay.So! :D</span>
+                        </li>
+                        <li>
+                            <label for="poll_frequency_2">Poll me occasionally</label>
+                            <input type="radio" name="poll_frequency" id="poll_frequency_2" value="occasionally" />
+                            <span>Earn a little Pay.So. :|</span>
+                        </li>
+                        <li>
+                            <label for="poll_frequency_3">No polls ever!</label>
+                            <input type="radio" name="poll_frequency" id="poll_frequency_3" value="never" />
+                            <span>Earn no Pay.So. :(</span>
+                        </li>
+                    </ul>
+                </div-->
+            </div>
+            <div>
+                <h3>On what subjects and industries do you want to weigh in on?</h3>
+                <?php foreach (array('technology', 'food', 'religion', 'news', 'celebrities', 'politics', 'sports', 'household', 'television') as $surveyType) : ?>
+                <div>
+                    <input type="checkbox" name="survey_type[]" value="<?= $surveyType ?>" />
+                    <label><?= ucwords($surveyType) ?></label>
+                </div>
+                <?php endforeach ?>
+                <div class="custom-error" name="survey_type" style="display: none;"></div>
+            </div>
+            
+        </fieldset>
+        <fieldset>
+            <legend>Get Started!</legend>
+            <input type="submit" value="Register Now" />
+        </fieldset>
+    </form>
+</div>
+<div id="get-the-app" style="display: none;">
+    <h2>Get the app!</h2>
+    <ul>
+        <li>
+            <h3>ADjuster DEV</h3>
+            <p>Use this for blah blah...</p>
+            <p><a href="/install/ADjuster/ADjusterDEV.xpi" title="Click to install the ADjusterDEV app in your browser">Install ADjusterDEV in your Firefox browser</a></p>
+        </li>
+        <li>
+            <h3>SaySo</h3>
+            <p>Use this for blah blah...</p>
+            <p><a href="/install/Sayso/Sayso.xpi" title="Click to install the SaySo app in your browser">Install SaySo in your Firefox browser</a></p>
+        </li>
+        <li>
+            <h3>Starbar</h3>
+            <p>Use this for blah blah...</p>
+            <p><a href="/install/StarBar/Starbar.xpi" title="Click to install the StarBar app in your browser">Install StarBar in your Firefox browser</a></p>
+        </li>
+    </ul>
+</div>
+<script type="text/javascript">
+    $(function () {
+        a.forms.ajax($('#registration-form'), '/user/create');
+        $.subscribe('/user/create', function (user) {
+            $('#sign-up').fadeOut('slow', function () {
+                $('#get-the-app').fadeIn('slow');
+            });
+        });
+    });
+</script>

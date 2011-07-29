@@ -191,14 +191,15 @@ CREATE TABLE lookup_poll_frequency (
     id int(10) NOT NULL auto_increment,
     name varchar(100) NOT NULL,
     description varchar(255),
+    extra varchar(255), 
     default_frequency boolean,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO lookup_poll_frequency (id, name, default_frequency) VALUES 
-    (1, 'Often - earn the most Pay.So!', false),
-    (2, 'Occasionally - earn a little Pay.So', true),
-    (3, 'Never - no Pay.So :(', false);
+INSERT INTO lookup_poll_frequency (id, name, description, extra, default_frequency) VALUES 
+    (1, 'often', 'Often - earn the most Pay.So!', 'Earn a lotta Pay.So! :D', false),
+    (2, 'occasionally', 'Occasionally - earn a little Pay.So', 'Earn a little Pay.So. :|', true),
+    (3, 'never', 'Never - no Pay.So :(', 'Earn no Pay.So. :(', false);
 
     
 DROP TABLE IF EXISTS lookup_email_frequency;
@@ -207,14 +208,15 @@ CREATE TABLE lookup_email_frequency (
     id int(10) NOT NULL auto_increment,
     name varchar(100) NOT NULL,
     description varchar(255),
+    extra varchar(255), 
     default_frequency boolean,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO lookup_email_frequency (id, name, default_frequency) VALUES 
-    (1, 'Often - earn the most Pay.So!', false),
-    (2, 'Occasionally - earn a little Pay.So', true),
-    (3, 'Never - no Pay.So :(', false);
+INSERT INTO lookup_email_frequency (id, name, description, extra, default_frequency) VALUES 
+    (1, 'often', 'Often - earn the most Pay.So!', 'Earn a lotta Pay.So! :D', false),
+    (2, 'occasionally', 'Occasionally - earn a little Pay.So', 'Earn a little Pay.So. :|', true),
+    (3, 'never', 'Never - no Pay.So :(', 'Earn no Pay.So. :(', false);
  
     
 DROP TABLE IF EXISTS lookup_search_engines;

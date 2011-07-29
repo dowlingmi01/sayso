@@ -111,6 +111,17 @@ class IndexController extends Api_AbstractController
                 $user->birthdate =     $input->birth_year . '-00-00'; // ensure mysql date field accepts year
                 $user->timezone =      urldecode($input->timezone);
             
+                $preference = new PreferenceGeneral();
+                $preference->poll_frequency_id = $input->poll_frequency;
+                $preference->email_frequency_id = $input->email_frequency;
+                $user->setPreference($preference);
+                
+                $surveyTypes = new PreferenceSurveyTypeCollection();
+                foreach ($input->survey_type as $surveyTypeId) {
+                    $surveyTypes->addItem(new PreferenceSurveyType(array('survey_type_id' => $surveyTypeId)));
+                }
+                $user->setSurveyTypes($surveyTypes);
+                
                 // now setup validation of password verify
                 $validIdentical = new Zend_Validate_Identical($this->password);
                 $validIdentical->setMessage('Passwords do not match', Zend_Validate_Identical::NOT_SAME);
@@ -128,18 +139,13 @@ class IndexController extends Api_AbstractController
                 continue; 
             }
             
-            // @todo add preferences including:
-            // preference_general: poll/email frequencies
-            // preference_survey_type for all survey types
-            
-            
             $user->setEmail($email);
             
             // save
-            //$user->save();
+            $user->save();
             
             // reload from db to ensure we send any default table data back in the response
-            //$user->reload();
+            $user->reload();
             
             // success
             return $this->_resultType($user);
@@ -176,12 +182,12 @@ Array
     [gender] => male
     [ethnicity] => white
     [birth_year] => 1992
-    [email_frequency] => often
-    [poll_frequency] => occasionally
+    [email_frequency] => 1
+    [poll_frequency] => 2
     [survey_type] => Array
         (
-            [0] => religion
-            [1] => politics
+            [0] => 2
+            [1] => 3
         )
 
 )

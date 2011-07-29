@@ -1,3 +1,14 @@
+<?php
+
+$pollFrequencies = new PollFrequencyLookup();
+$pollFrequencies->lookup();
+$emailFrequencies = new EmailFrequencyLookup();
+$emailFrequencies->lookup();
+$surveyTypes = new SurveyTypeLookup();
+$surveyTypes->lookup();
+
+
+?>
 <div id="sign-up">
     <h2>Sign up!</h2>
     <form id="registration-form" method="POST" action="/index/register-submit">
@@ -88,18 +99,17 @@
                     </tr>
                     <tr>
                         <td>Emails</td>
-                        <td><input type="radio" name="email_frequency" id="email_frequency_1" value="often" /></td>
-                        <td rowspan="2">Earn a lotta Pay.So! :D</td>
-                        <td><input type="radio" name="email_frequency" id="email_frequency_2" value="occasionally" /></td>
-                        <td rowspan="2">Earn a little Pay.So. :|</td>
-                        <td><input type="radio" name="email_frequency" id="email_frequency_3" value="never" /></td>
-                        <td rowspan="2">Earn no Pay.So. :(</td>
+                        <?php foreach ($emailFrequencies as $frequency) : ?>
+                            <td><input type="radio" name="email_frequency" value="<?= $frequency->getId() ?>" /></td>
+                            <td rowspan="2"><?= $frequency->extra ?></td>
+                        <?php endforeach ?>
+                        
                     </tr>
                     <tr>
                         <td>Polls</td>
-                        <td><input type="radio" name="poll_frequency" id="poll_frequency_1" value="often" /></td>
-                        <td><input type="radio" name="poll_frequency" id="poll_frequency_2" value="occasionally" /></td>
-                        <td><input type="radio" name="poll_frequency" id="poll_frequency_3" value="never" /></td>
+                        <?php foreach ($pollFrequencies as $frequency) : ?>
+                            <td><input type="radio" name="poll_frequency" value="<?= $frequency->getId() ?>" /></td>
+                        <?php endforeach ?>
                     </tr>
                 </table>
                 <div class="custom-error" name="email_frequency" style="display: none;"></div>
@@ -147,10 +157,10 @@
             </div>
             <div>
                 <h3>On what subjects and industries do you want to weigh in on?</h3>
-                <?php foreach (array('technology', 'food', 'religion', 'news', 'celebrities', 'politics', 'sports', 'household', 'television') as $surveyType) : ?>
+                <?php foreach ($surveyTypes as $surveyType) : ?>
                 <div>
-                    <input type="checkbox" name="survey_type[]" value="<?= $surveyType ?>" />
-                    <label><?= ucwords($surveyType) ?></label>
+                    <input type="checkbox" name="survey_type[]" value="<?= $surveyType->getId() ?>" />
+                    <label><?= ucwords($surveyType->getTitle()) ?></label>
                 </div>
                 <?php endforeach ?>
                 <div class="custom-error" name="survey_type" style="display: none;"></div>

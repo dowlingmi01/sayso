@@ -10,6 +10,16 @@ class User extends Record
     protected $_email;
     
     /**
+     * @var PreferenceGeneral
+     */
+    protected $_generalPreference;
+    
+    /**
+     * @var PreferenceSurveyTypeCollection
+     */
+    protected $_surveyTypes;
+    
+    /**
      * Plain text password as provided by user
      * - stored as a protected property so we
      *   we don't confuse this with the md5'd
@@ -25,9 +35,31 @@ class User extends Record
     
     public function getEmail () {
         if (!$this->_email) {
-            // look it up
+            // @todo look it up
         }
         return $this->_email;
+    }
+    
+    public function setPreference (PreferenceGeneral $pref) {
+        $this->_generalPreference = $pref;
+    }
+    
+    public function getPreference () {
+        if (!$this->_generalPreference) {
+            // @todo look it up
+        }
+        return $this->_generalPreference;
+    }
+    
+    public function setSurveyTypes (PreferenceSurveyTypeCollection $surveyTypes) {
+        $this->_surveyTypes = $surveyTypes;
+    }
+    
+    public function getSurveyTypes () {
+        if (!$this->_surveyTypes) {
+            // @todo look it up
+        }
+        return $this->_surveyTypes;
     }
     
 	/**
@@ -67,8 +99,31 @@ class User extends Record
             $this->primary_email_id = $this->_email->getId();
             parent::save();
         }
+        if ($this->_generalPreference) {
+            $this->_generalPreference->user_id = $this->getId();
+            $this->_generalPreference->save();
+        }
+        if ($this->_surveyTypes) {
+            // first remove all existing survey types
+            Db_Pdo::execute('DELETE FROM preference_survey_type WHERE user_id = ?', $this->getId());
+            // second save all survey types the user wants
+            foreach ($this->_surveyTypes as $surveyType) {
+                /* @var $surveyType PreferenceSurveyType */
+                $surveyType->user_id = $this->getId();
+                $surveyType->save();
+            }
+        }
         // commit all changes
         $this->commitTransaction();
+    }
+    
+    public function exportProperties($parentObject = null) {
+        $props = array(
+            'email' => $this->_email,
+            'preferences' => $this->_generalPreference,
+            'survey_types' => $this->_surveyTypes
+        );
+        return array_merge(parent::exportProperties($parentObject), $props);
     }
 }
 

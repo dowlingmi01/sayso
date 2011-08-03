@@ -10,9 +10,13 @@ class Starbar_IndexController extends Api_AbstractController
 
     public function indexAction()
     {
-        // action body
     }
 
-
+    public function remoteAction () 
+    {
+        $this->_enableRenderer(new Api_Plugin_JsonPRenderer());
+        $this->render();
+        return $this->_resultType(new Object(array('html' => $this->getResponse()->getBody(), 'base_domain' => Api_Registry::getConfig()->baseDomain)));
+    }
 }
 

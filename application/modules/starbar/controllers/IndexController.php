@@ -16,7 +16,7 @@ class Starbar_IndexController extends Api_AbstractController
     {
         $this->_enableRenderer(new Api_Plugin_JsonPRenderer());
         $this->render();
-        return $this->_resultType(new Object(array('html' => $this->getResponse()->getBody(), 'base_domain' => Api_Registry::getConfig()->baseDomain)));
+        return $this->_resultType(new Object(array('html' => $this->getResponse()->getBody())));
     }
 }
 

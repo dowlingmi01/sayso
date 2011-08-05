@@ -7,8 +7,8 @@ setTimeout(function(){
     var themeColor = '#de40b2';
 	
 	//easy trigger var for whether an element is open or closed.
-	var starBarStatusHeight = 'closed';
-	var starBarStatusWidth = 'visOpen';
+	var starBarStatusHeight = 'starbar-closed';
+	var starBarStatusWidth = 'starbar-visOpen';
 	
 	//once we've got the cookie 
 	initStarBar();
@@ -17,21 +17,39 @@ setTimeout(function(){
 	initFrame();
 	
 	//set up all links inside popBox to have hoverColor
-	jQuery('#sayso-starbar .popBox a').addClass('setLinkHover');
+	jQuery('#sayso-starbar .starbar-popBox a').addClass('starbar-setLinkHover');
 													 
 	setThemeColors(themeColor);
 	
+	function fixPlayerClassForBackwardsCompatibility (playerClass) {
+	    // since we have changed the name of the player classes (e.g. starbar-visOpen),
+	    // the current installed Starbar plugins will not work because a cookie 
+	    // is set on every domain recording the visible state of the Starbar 
+	    // and the value of this cookie is the class name that has changed.
+	    // so instead of requiring everyone to delete all their cookies, we
+	    // just correct the problem here (if it exists)
+	    if (playerClass.substring(0,7) !== 'starbar') {
+            var oldClass = playerClass;
+            playerClass = 'starbar-' + playerClass;
+            $('#sayso-starbar #starbar-player-console').addClass(playerClass);
+            $('#sayso-starbar #starbar-player-console').removeClass(oldClass);
+        }
+	    return playerClass;
+	}
+	
 	// set up the full / shrunk / closed states for the bar
-	jQuery('#sayso-starbar #toggleVis').click(function(event){
+	jQuery('#sayso-starbar #starbar-toggleVis').click(function(event){
 		event.preventDefault();
-		var playerClass = jQuery('#sayso-starbar #player-console').attr('class');
+		var playerClass = jQuery('#sayso-starbar #starbar-player-console').attr('class');
+		playerClass = fixPlayerClassForBackwardsCompatibility(playerClass);
 		animateBar(playerClass, 'button');
 		popBoxClose();
 		initFrame();
 	});
-	jQuery('#sayso-starbar #logo').click(function(event){
-		var playerClass = jQuery('#sayso-starbar #player-console').attr('class');
-		if (playerClass != 'visOpen'){
+	jQuery('#sayso-starbar #starbar-logo').click(function(event){
+	    var playerClass = jQuery('#sayso-starbar #starbar-player-console').attr('class');
+	    playerClass = fixPlayerClassForBackwardsCompatibility(playerClass);
+		if (playerClass != 'starbar-visOpen'){
 			// only run if we're not at full visibility
 			animateBar(playerClass, 'logo');
 			popBoxClose();
@@ -46,7 +64,7 @@ setTimeout(function(){
 	});
 	
 	//set up click behavior for menu + popBox reveals
-	jQuery('#sayso-starbar .navLink').click(function(event){																
+	jQuery('#sayso-starbar .starbar-navLink').click(function(event){																
 		event.preventDefault();
 		popBox(jQuery(this));
 		refreshScroll();
@@ -60,8 +78,8 @@ setTimeout(function(){
 	// close popBox if "escape" pressed
 	jQuery(document).keyup(function(e) {
 		if (e.keyCode == 27) {
-			var currentNavActive = jQuery('#sayso-starbar #nav li#nav_active');
-			currentNavActive.children().children('span.navBorder').css('backgroundColor','');
+			var currentNavActive = jQuery('#sayso-starbar #starbar-nav li#starbar-nav_active');
+			currentNavActive.children().children('span.starbar-navBorder').css('backgroundColor','');
 			popBoxClose();
 			initFrame();
 		}  // esc
@@ -70,9 +88,9 @@ setTimeout(function(){
 	
 	// close if you click outside the starbar while in the iframe
 	jQuery(document).click(function(e) {
-		var navActive = jQuery('#sayso-starbar #nav_active');
+		var navActive = jQuery('#sayso-starbar #starbar-nav_active');
 		var navActiveLink = navActive.children('a');
-		var navActiveSpan = navActiveLink.children('span.navBorder');
+		var navActiveSpan = navActiveLink.children('span.starbar-navBorder');
 		navActiveSpan.css('backgroundColor','');
 		popBoxClose();
 		initFrame();
@@ -80,26 +98,28 @@ setTimeout(function(){
 	
 	// close if you click outside the starbar on the main wondow
 //	jQuery(parent.document).click(function(e) {
-//		var navActive = jQuery('#nav_active');
+//		var navActive = jQuery('#starbar-nav_active');
 //		var navActiveLink = navActive.children('a');
-//		var navActiveSpan = navActiveLink.children('span.navBorder');
+//		var navActiveSpan = navActiveLink.children('span.starbar-navBorder');
 //		navActiveSpan.css('backgroundColor','');
 //  	popBoxClose();
 //		initFrame();
 //	});
 	
-	jQuery('#sayso-starbar #player-console').click(function(e) {
+	jQuery('#sayso-starbar #starbar-player-console').click(function(e) {
 	    e.stopPropagation();
 	});
 	
     
     function initStarBar(){	
     	if (jQuery.cookies.get('starBarStatus') == null){
-    		jQuery.cookies.set('starBarStatus','visOpen');
+    		jQuery.cookies.set('starBarStatus','starbar-visOpen');
     	}	
     	
     	// set the open / close state of the bar
-    	animateBar(jQuery.cookies.get('starBarStatus'),'init');
+    	var playerClass = jQuery.cookies.get('starBarStatus');
+    	playerClass = fixPlayerClassForBackwardsCompatibility(playerClass);
+    	animateBar(playerClass,'init');
     	
     	return false;
     }
@@ -109,25 +129,25 @@ setTimeout(function(){
     	var height = 60;
     	var width = '100%';
     	
-    	if (starBarStatusHeight == 'closed'){
+    	if (starBarStatusHeight == 'starbar-closed'){
     		height = 60;
     	}else{
     		height = 530;
     	}	
     		
     	switch (starBarStatusWidth){
-    		case 'visOpen':
+    		case 'starbar-visOpen':
     			width = '100%';
     		break;
-    		case 'visClosed':
+    		case 'starbar-visClosed':
     			width = 110;
     		break;
-    		case 'visStowed':
+    		case 'starbar-visStowed':
     			width = 65;
     		break;
     	}
     	
-    	//alert(jQuery('#player-console').css('width'));
+    	//alert(jQuery('#starbar-player-console').css('width'));
     		
     	//jQuery(parent.document.getElementById('saysoStarBarFrame')).attr('height', height);
     	//jQuery(parent.document.getElementById('saysoStarBarFrame')).delay(500).attr('width', width);	
@@ -139,16 +159,16 @@ setTimeout(function(){
     - see if there's an active box, if it is, close it, remove the active class
     - if activeBox and popBox are the same, break out of the function
     - if no activeBox, fadeIn popbox
-    - make sure the nav span gets the class 'setColorActive'
+    - make sure the nav span gets the class 'starbar-setColorActive'
     */
     
     function popBox(clickedLink){	
     	var itemLink = clickedLink;
     	var itemList = clickedLink.parent();
-    	var itemID = itemList.children('.popBoxContent').attr('id');
+    	var itemID = itemList.children('.starbar-popBoxContent').attr('id');
     		
-    	var currentPopID = jQuery('#sayso-starbar .popBox').attr('id');
-    	var currentNavActive = jQuery('#sayso-starbar #nav_active');
+    	var currentPopID = jQuery('#sayso-starbar .starbar-popBox').attr('id');
+    	var currentNavActive = jQuery('#sayso-starbar #starbar-nav_active');
     			
     	//if the link's parent <li> clicked already had an ID, it was the active one we should just close a box and quit
     	if (itemList.attr('id').length != 0){
@@ -157,7 +177,7 @@ setTimeout(function(){
     		return false;
     	}else{
     		// weird hack to manually delete the background "on" color if a different nav item was clicked
-    		currentNavActive.children().children('span.navBorder').css('backgroundColor','');
+    		currentNavActive.children().children('span.starbar-navBorder').css('backgroundColor','');
     	}
     	
     	// first, close any open popbox
@@ -179,22 +199,22 @@ setTimeout(function(){
     	3. fadeIn the populated popBox and assign it an ID
     	*/
     	var itemList = clickedItem;
-    	var itemID = itemList.children('.popBoxContent').attr('id');
-    	var itemInner = itemList.children('.popBoxContent').html();
-    	var itemLink = itemList.children('a.navLink');
-    	var itemLinkSpan = itemLink.children('span.navBorder');
-    	var popBox = jQuery('#sayso-starbar .popBox');
-    	var popBoxInner = jQuery('#sayso-starbar .popBox .popInner');
+    	var itemID = itemList.children('.starbar-popBoxContent').attr('id');
+    	var itemInner = itemList.children('.starbar-popBoxContent').html();
+    	var itemLink = itemList.children('a.starbar-navLink');
+    	var itemLinkSpan = itemLink.children('span.starbar-navBorder');
+    	var popBox = jQuery('#sayso-starbar .starbar-popBox');
+    	var popBoxInner = jQuery('#sayso-starbar .starbar-popBox .starbar-popInner');
     			
     	popBoxInner.html(itemInner);
-    	itemList.attr('id','nav_active');
-    	itemLinkSpan.addClass('setColorActive');
+    	itemList.attr('id','starbar-nav_active');
+    	itemLinkSpan.addClass('starbar-setColorActive');
     	//itemLinkSpan.css('backgroundColor',themeColor);
     	
     	//itemLinkSpan.css('backgroundColor',themeColor);
     	popBox.attr('id','popBox'+itemID).show();
     	
-    	starBarStatusHeight = 'open';
+    	starBarStatusHeight = 'starbar-open';
     	
     	return false;
     }
@@ -206,20 +226,20 @@ setTimeout(function(){
     	3. closes popbox
     	*/
     	
-    	var popBoxOpened = jQuery('#sayso-starbar .popBox');
-    	var navActive = jQuery('#sayso-starbar #nav_active');
+    	var popBoxOpened = jQuery('#sayso-starbar .starbar-popBox');
+    	var navActive = jQuery('#sayso-starbar #starbar-nav_active');
     	var navActiveLink = navActive.children('a');
-    	var navActiveSpan = navActiveLink.children('span.navBorder');
+    	var navActiveSpan = navActiveLink.children('span.starbar-navBorder');
     		
     	// check to make sure the is opened
     	if (popBoxOpened.attr('id').length != 0){
-    		popBoxOpened.children('.popInner').html('');
+    		popBoxOpened.children('.starbar-popInner').html('');
     		popBoxOpened.attr('id','').hide();
-    		navActiveSpan.removeClass('setColorActive');
+    		navActiveSpan.removeClass('starbar-setColorActive');
     		navActive.attr('id','');
     	}	
     	
-    	starBarStatusH = 'closed';
+    	starBarStatusH = 'starbar-closed';
     		
     	return false;
     }
@@ -232,25 +252,25 @@ setTimeout(function(){
 		}
 		
 		// if it's just a flat color that needs changing...
-		jQuery('#sayso-starbar .setColor').css('backgroundColor', newColor);
-		jQuery('#sayso-starbar .setColorActive').css('backgroundColor',newColor);
-		jQuery('#sayso-starbar .setTextColor').css('color', newColor);
+		jQuery('#sayso-starbar .starbar-setColor').css('backgroundColor', newColor);
+		jQuery('#sayso-starbar .starbar-setColorActive').css('backgroundColor',newColor);
+		jQuery('#sayso-starbar .starbar-setTextColor').css('color', newColor);
 		
 		// now we're going to set up specialized cases for hovers
-		jQuery('#sayso-starbar .setColorHover').parent().hover(
+		jQuery('#sayso-starbar .starbar-setColorHover').parent().hover(
 			function(){
-				jQuery(this).children('.setColorHover').css('backgroundColor', newColor);			
+				jQuery(this).children('.starbar-setColorHover').css('backgroundColor', newColor);			
 			},
 			function(){
-				if (jQuery(this).children().hasClass('setColorActive')){
+				if (jQuery(this).children().hasClass('starbar-setColorActive')){
 					return false;
 				}else{
-					jQuery(this).children('.setColorHover').css('backgroundColor','');
+					jQuery(this).children('.starbar-setColorHover').css('backgroundColor','');
 				}
 			});
 		
 		// set up hover colors for regular links
-		jQuery('#sayso-starbar a.setLinkHover').hover(
+		jQuery('#sayso-starbar a.starbar-setLinkHover').hover(
 			function(){
 				jQuery(this).css('color', newColor);			
 				jQuery(this).css('backgroundColor','none');
@@ -261,16 +281,16 @@ setTimeout(function(){
 			});
 		
 		//set up the hover shadows
-		jQuery('#sayso-starbar .setColorShadow').parent().hover(
+		jQuery('#sayso-starbar .starbar-setColorShadow').parent().hover(
 			function(){
-				jQuery(this).children('.setColorShadow').css({boxShadow: '0 0 5px'+newColor});
-				jQuery(this).children('.setColorShadow').css({'-moz-boxShadow': '0 0 5px'+newColor});
-				jQuery(this).children('.setColorShadow').css({'-webkit-boxShadow': '0 0 5px'+newColor});
+				jQuery(this).children('.starbar-setColorShadow').css({boxShadow: '0 0 5px'+newColor});
+				jQuery(this).children('.starbar-setColorShadow').css({'-moz-boxShadow': '0 0 5px'+newColor});
+				jQuery(this).children('.starbar-setColorShadow').css({'-webkit-boxShadow': '0 0 5px'+newColor});
 			},
 			function(){
-				jQuery(this).children('.setColorShadow').css({boxShadow: '0px 0px 0px'+newColor});
-				jQuery(this).children('.setColorShadow').css({'-moz-boxShadow': '0 0 0px'+newColor});
-				jQuery(this).children('.setColorShadow').css({'-webkit-boxShadow': '0 0 0px'+newColor});
+				jQuery(this).children('.starbar-setColorShadow').css({boxShadow: '0px 0px 0px'+newColor});
+				jQuery(this).children('.starbar-setColorShadow').css({'-moz-boxShadow': '0 0 0px'+newColor});
+				jQuery(this).children('.starbar-setColorShadow').css({'-webkit-boxShadow': '0 0 0px'+newColor});
 			});
 		
 		
@@ -279,125 +299,125 @@ setTimeout(function(){
 
     // changes the theme of the starbar 
     function changeTheme(newTheme){
-    	var themeParent = newTheme.closest('.columnContent');
+    	var themeParent = newTheme.closest('.starbar-columnContent');
     	var newImg = themeParent.children('img');
     	var newTitle = themeParent.children().children('h4').html();
     	var newCount = themeParent.children().children('h5').html();
     	var newColor = newTheme.attr('href');
     	
-    	jQuery('#sayso-starbar .starbar .content img').attr('src',newImg.attr('src'));
-    	jQuery('#sayso-starbar .starbar .content h3').html(newTitle);
-    	jQuery('#sayso-starbar .starbar .content h5').html(newCount);
-    	jQuery('#sayso-starbar .starbar .content h5 span').html('');
+    	jQuery('#sayso-starbar .starbar .starbar-content img').attr('src',newImg.attr('src'));
+    	jQuery('#sayso-starbar .starbar .starbar-content h3').html(newTitle);
+    	jQuery('#sayso-starbar .starbar .starbar-content h5').html(newCount);
+    	jQuery('#sayso-starbar .starbar .starbar-content h5 span').html('');
     	setThemeColors(newColor);
     	return false;
     }
     
-    // animates the player-console bar based on current state
+    // animates the starbar-player-console bar based on current state
 	function animateBar(playerClass, clickPoint){
 		// if we're clicking from a button, determine what state we're in and how to shrink
 		if (clickPoint == 'button'){
 			switch (playerClass){
-				case 'visOpen':
-					jQuery('#sayso-starbar #mainContent').fadeOut('fast');
-					jQuery('#sayso-starbar #toggleVis').attr('class','');
-					jQuery('#sayso-starbar #toggleVis').addClass('close');
-					jQuery('#sayso-starbar #player-console').animate({
+				case 'starbar-visOpen':
+					jQuery('#sayso-starbar #starbar-mainContent').fadeOut('fast');
+					jQuery('#sayso-starbar #starbar-toggleVis').attr('class','');
+					jQuery('#sayso-starbar #starbar-toggleVis').addClass('close');
+					jQuery('#sayso-starbar #starbar-player-console').animate({
 							width: '90'
 						}, 500, function() {
 							// Animation complete.
-							jQuery(this).attr('class','').addClass('visClosed');
-							jQuery('#sayso-starbar #logoBorder').show();
+							jQuery(this).attr('class','').addClass('starbar-visClosed');
+							jQuery('#sayso-starbar #starbar-logoBorder').show();
 							cookieUpdate();
 						});
-					starBarStatusHeight = 'closed';
-					starBarStatusWidth = 'visClosed';
+					starBarStatusHeight = 'starbar-closed';
+					starBarStatusWidth = 'starbar-visClosed';
 				break;
-				case 'visClosed':
-					jQuery('#sayso-starbar #toggleVis').attr('class','');
-					jQuery('#sayso-starbar #toggleVis').addClass('closed');
-					//jQuery('#player-console').addClass('visStowed');
-					jQuery('#sayso-starbar #logoBorder').hide();
-					jQuery('#sayso-starbar #player-console').animate({
+				case 'starbar-visClosed':
+					jQuery('#sayso-starbar #starbar-toggleVis').attr('class','');
+					jQuery('#sayso-starbar #starbar-toggleVis').addClass('starbar-closed');
+					//jQuery('#starbar-player-console').addClass('starbar-visStowed');
+					jQuery('#sayso-starbar #starbar-logoBorder').hide();
+					jQuery('#sayso-starbar #starbar-player-console').animate({
 							width: '45'
 						}, 500, function() {
 							// Animation complete.
-							jQuery(this).attr('class','').addClass('visStowed');
+							jQuery(this).attr('class','').addClass('starbar-visStowed');
 							cookieUpdate();
 					});
-					starBarStatusHeight = 'closed';
-					starBarStatusWidth = 'visStowed';
+					starBarStatusHeight = 'starbar-closed';
+					starBarStatusWidth = 'starbar-visStowed';
 				break;
-				case 'visStowed':
-					jQuery('#sayso-starbar #toggleVis').attr('class','');
-					jQuery('#sayso-starbar #toggleVis').addClass('hide');
-					jQuery('#sayso-starbar #logoBorder').hide();
-					jQuery('#sayso-starbar #player-console').addClass('visOpen');
-					jQuery('#sayso-starbar #player-console').animate({
+				case 'starbar-visStowed':
+					jQuery('#sayso-starbar #starbar-toggleVis').attr('class','');
+					jQuery('#sayso-starbar #starbar-toggleVis').addClass('starbar-hide');
+					jQuery('#sayso-starbar #starbar-logoBorder').hide();
+					jQuery('#sayso-starbar #starbar-player-console').addClass('starbar-visOpen');
+					jQuery('#sayso-starbar #starbar-player-console').animate({
 							width: '100%'
 						}, 500, function() {
 							// Animation complete.
-							jQuery(this).attr('class','').addClass('visOpen');
-							jQuery('#mainContent').fadeIn('fast');			
+							jQuery(this).attr('class','').addClass('starbar-visOpen');
+							jQuery('#starbar-mainContent').fadeIn('fast');			
 							cookieUpdate();
 					});
-					starBarStatusHeight = 'open';
-					starBarStatusWidth = 'visOpen';
+					starBarStatusHeight = 'starbar-open';
+					starBarStatusWidth = 'starbar-visOpen';
 				break;
 			}	// END SWITCH
 						
 		}// end if clickPoint = button
 		else if (clickPoint == 'init'){
-			switch (playerClass){
-				case 'visOpen':				
-					jQuery('#sayso-starbar #player-console').hide();
-					jQuery('#sayso-starbar #toggleVis').attr('class','');
-					jQuery('#sayso-starbar #toggleVis').addClass('hide');
-					jQuery('#sayso-starbar #logoBorder').hide();
-					jQuery('#sayso-starbar #player-console').attr('class','').addClass('visOpen').show();
-					jQuery('#sayso-starbar #mainContent').fadeIn('fast');
-					starBarStatusWidth = 'visOpen';
+			switch (playerClass){ 
+				case 'starbar-visOpen':				
+					jQuery('#sayso-starbar #starbar-player-console').hide();
+					jQuery('#sayso-starbar #starbar-toggleVis').attr('class','');
+					jQuery('#sayso-starbar #starbar-toggleVis').addClass('starbar-hide');
+					jQuery('#sayso-starbar #starbar-logoBorder').hide();
+					jQuery('#sayso-starbar #starbar-player-console').attr('class','').addClass('starbar-visOpen').show();
+					jQuery('#sayso-starbar #starbar-mainContent').fadeIn('fast');
+					starBarStatusWidth = 'starbar-visOpen';
 				break;
-				case 'visClosed':					
-					jQuery('#sayso-starbar #player-console').hide();
-					jQuery('#sayso-starbar #mainContent').fadeOut('fast');
-					jQuery('#sayso-starbar #toggleVis').attr('class','');
-					jQuery('#sayso-starbar #toggleVis').addClass('close');
-					jQuery('#sayso-starbar #player-console').attr('class','').addClass('visClosed').show();
-					jQuery('#sayso-starbar #logoBorder').show();
-					starBarStatusHeight = 'closed';
-					starBarStatusWidth = 'visClosed';
+				case 'starbar-visClosed': 					
+					jQuery('#sayso-starbar #starbar-player-console').hide();
+					jQuery('#sayso-starbar #starbar-mainContent').fadeOut('fast');
+					jQuery('#sayso-starbar #starbar-toggleVis').attr('class','');
+					jQuery('#sayso-starbar #starbar-toggleVis').addClass('close');
+					jQuery('#sayso-starbar #starbar-player-console').attr('class','').addClass('starbar-visClosed').show();
+					jQuery('#sayso-starbar #starbar-logoBorder').show();
+					starBarStatusHeight = 'starbar-closed';
+					starBarStatusWidth = 'starbar-visClosed';
 				break;
-				case 'visStowed':					
-					jQuery('#sayso-starbar #player-console').hide();
-					jQuery('#sayso-starbar #toggleVis').attr('class','');
-					jQuery('#sayso-starbar #toggleVis').addClass('closed');
-					jQuery('#sayso-starbar #logoBorder').hide();
-					jQuery('#sayso-starbar #player-console').attr('class','').addClass('visStowed').show();
-					starBarStatusHeight = 'closed';
-					starBarStatusWidth = 'visStowed';
+				case 'starbar-visStowed':					
+					jQuery('#sayso-starbar #starbar-player-console').hide();
+					jQuery('#sayso-starbar #starbar-toggleVis').attr('class','');
+					jQuery('#sayso-starbar #starbar-toggleVis').addClass('starbar-closed');
+					jQuery('#sayso-starbar #starbar-logoBorder').hide();
+					jQuery('#sayso-starbar #starbar-player-console').attr('class','').addClass('starbar-visStowed').show();
+					starBarStatusHeight = 'starbar-closed';
+					starBarStatusWidth = 'starbar-visStowed';
 				break;
 			}	// END SWITCH
 			
 		}
 		else{
 			// if we clicked the logo, always go into full view if we aren't already there
-			jQuery('#sayso-starbar #toggleVis').attr('class','');
-			jQuery('#sayso-starbar #toggleVis').addClass('hide');
-			jQuery('#sayso-starbar #logoBorder').hide();
-			jQuery('#sayso-starbar #player-console').attr('class','');
-			jQuery('#sayso-starbar #player-console').addClass('visOpen');
-			jQuery('#sayso-starbar #player-console').animate({
+			jQuery('#sayso-starbar #starbar-toggleVis').attr('class','');
+			jQuery('#sayso-starbar #starbar-toggleVis').addClass('starbar-hide');
+			jQuery('#sayso-starbar #starbar-logoBorder').hide();
+			jQuery('#sayso-starbar #starbar-player-console').attr('class','');
+			jQuery('#sayso-starbar #starbar-player-console').addClass('starbar-visOpen');
+			jQuery('#sayso-starbar #starbar-player-console').animate({
 					width: '100%'
 				}, 500, function() {
 					// Animation complete.
 					jQuery(this).attr('class','');
-					jQuery(this).addClass('visOpen');
-					jQuery('#mainContent').fadeIn('fast');
+					jQuery(this).addClass('starbar-visOpen');
+					jQuery('#starbar-mainContent').fadeIn('fast');
 					cookieUpdate();
 				});
-			starBarStatusHeight = 'closed';
-			starBarStatusWidth = 'visOpen';
+			starBarStatusHeight = 'starbar-closed';
+			starBarStatusWidth = 'starbar-visOpen';
 		} // end else
 		
 		return false;
@@ -407,18 +427,18 @@ setTimeout(function(){
 	
 	function refreshScroll(){
 		// set up scrollbars for the popBoxes
-		if (jQuery('#sayso-starbar .popBox .column_left .scrollbar').length != 0){
-			var ScrollbarL = jQuery('.popBox .column_left');
+		if (jQuery('#sayso-starbar .starbar-popBox .starbar-column_left .starbar-scrollbar').length != 0){
+			var ScrollbarL = jQuery('.starbar-popBox .starbar-column_left');
 			ScrollbarL.tinyscrollbar();	
 			ScrollbarL.tinyscrollbar_update();
 		}
-		if (jQuery('#sayso-starbar .popBox .column_right .scrollbar').length != 0){
-			var ScrollbarR = jQuery('.popBox .column_right');
+		if (jQuery('#sayso-starbar .starbar-popBox .starbar-column_right .starbar-scrollbar').length != 0){
+			var ScrollbarR = jQuery('.starbar-popBox .starbar-column_right');
 			ScrollbarR.tinyscrollbar();	
 			ScrollbarR.tinyscrollbar_update();
 		}		
-		if (jQuery('#sayso-starbar .popBox .column_single .scrollbar').length != 0){
-			var ScrollbarS = jQuery('.popBox .column_single');
+		if (jQuery('#sayso-starbar .starbar-popBox .starbar-column_single .starbar-scrollbar').length != 0){
+			var ScrollbarS = jQuery('.starbar-popBox .starbar-column_single');
 			ScrollbarS.tinyscrollbar();	
 			ScrollbarS.tinyscrollbar_update();
 		}		
@@ -428,7 +448,7 @@ setTimeout(function(){
 	// reset the dialog behaviors / set them up
 	function refreshDialog(){
 		// set up popDialogs
-		jQuery('#sayso-starbar a.popDialog').unbind('click').click(function(event){
+		jQuery('#sayso-starbar a.starbar-popDialog').unbind('click').click(function(event){
 			event.preventDefault();
 			var popDialogSrc = jQuery(this).attr('href'),
 			    popDialog = jQuery('#saysoPopBoxDialog');
@@ -441,12 +461,12 @@ setTimeout(function(){
 			popDialog.find('iframe').attr('src',popDialogSrc);
 		});
 			
-		jQuery('#sayso-starbar a.closePop').click(function(event){
+		jQuery('#sayso-starbar a.starbar-closePop').click(function(event){
 			event.preventDefault();
 			popBoxClose();				
 		});
 		
-		jQuery('#sayso-starbar a.changeTheme').click(function(event){
+		jQuery('#sayso-starbar a.starbar-changeTheme').click(function(event){
 			event.preventDefault();
 			changeTheme(jQuery(this));				
 		});
@@ -456,24 +476,24 @@ setTimeout(function(){
 	// set up toggleNav behavior
 	function toggleNav(){
 		// initialize the first item
-		jQuery('#sayso-starbar .toggleElement').hide();
-		jQuery('#sayso-starbar .toggleNav li:nth-child(2)').children('a.toggleLink').addClass('active');
-		jQuery('#sayso-starbar .toggleElement').first().show();
+		jQuery('#sayso-starbar .starbar-toggleElement').hide();
+		jQuery('#sayso-starbar .starbar-toggleNav li:nth-child(2)').children('a.starbar-toggleLink').addClass('active');
+		jQuery('#sayso-starbar .starbar-toggleElement').first().show();
 		
 		
-		jQuery('#sayso-starbar .toggleNav a.toggleLink').click(function(){
+		jQuery('#sayso-starbar .starbar-toggleNav a.starbar-toggleLink').click(function(){
 			var thisToggleID = jQuery(this).parent().attr('class');
-				jQuery('#sayso-starbar .toggleNav a.toggleLink').each(function(){
+				jQuery('#sayso-starbar .starbar-toggleNav a.starbar-toggleLink').each(function(){
 					jQuery(this).removeClass('active');
 				});
 				jQuery(this).addClass('active');
-				jQuery('#sayso-starbar .toggleElement').hide();
+				jQuery('#sayso-starbar .starbar-toggleElement').hide();
 				jQuery('#sayso-starbar #'+thisToggleID).show();																				 
 		});
 	}
 	
 	function cookieUpdate(){		
-		jQuery.cookies.set('starBarStatus', jQuery('#sayso-starbar #player-console').attr('class'));
+		jQuery.cookies.set('starBarStatus', jQuery('#sayso-starbar #starbar-player-console').attr('class'));
 	}
 	
 	function log (message) {
@@ -482,4 +502,4 @@ setTimeout(function(){
 	    }
 	}
 	
-}, 500); // slight delay to ensure other libraries are loaded
+}, 200); // slight delay to ensure other libraries are loaded

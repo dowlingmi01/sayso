@@ -220,9 +220,9 @@ html {
 #sayso-starbar a:hover {
 	text-decoration: underline;
 }
-#sayso-starbar .contain {
+#sayso-starbar .starbar-contain {
 }
-#sayso-starbar #player-console {
+#sayso-starbar #starbar-player-console {
 	background-image: url('../images/bg_bar.png');
 	background-repeat: repeat-x;
 	background-position: 0px bottom;
@@ -237,49 +237,49 @@ html {
 }
 /* define the console / sub-items for various states */
 
-#sayso-starbar #player-console.visOpen {
+#sayso-starbar #starbar-player-console.starbar-visOpen {
 	width: 100%;
 }
-#sayso-starbar #player-console.visStowed{
+#sayso-starbar #starbar-player-console.starbar-visStowed{
 	width: 45px;
 	background: none;
 	background-position: 0px 17px;
 }
-#sayso-starbar #player-console.visClosed{
+#sayso-starbar #starbar-player-console.starbar-visClosed{
 	width: 90px;
 }
 
 
-#sayso-starbar #player-console.visClosed #mainContent {
+#sayso-starbar #starbar-player-console.starbar-visClosed #starbar-mainContent {
 	display: none;
 }
-#sayso-starbar #player-console.visStowed #mainContent {
+#sayso-starbar #starbar-player-console.starbar-visStowed #starbar-mainContent {
 	display: none;
 }
-#sayso-starbar #player-console.visClosed #visControls, #sayso-starbar #player-console.visStowed #visControls {
+#sayso-starbar #starbar-player-console.starbar-visClosed #starbar-visControls, #sayso-starbar #starbar-player-console.starbar-visStowed #starbar-visControls {
 	width: 100%;
 }
-#sayso-starbar #player-console.visClosed .contain, #sayso-starbar #player-console.visStowed .contain {
+#sayso-starbar #starbar-player-console.starbar-visClosed .starbar-contain, #sayso-starbar #starbar-player-console.starbar-visStowed .starbar-contain {
 	width: auto;
 	margin: 0;
 }
-#sayso-starbar #player-console .contain {
+#sayso-starbar #starbar-player-console .starbar-contain {
 	margin: 0 auto;
 	width: 960px;
 }
-#sayso-starbar #player-console .contain #mainContent {
+#sayso-starbar #starbar-player-console .starbar-contain #starbar-mainContent {
 	margin: 0;
 	float: right;
 	position: relative;
 	width: 880px;
 }
-#sayso-starbar #player-console.visClosed .contain #mainContent {
+#sayso-starbar #starbar-player-console.starbar-visClosed .starbar-contain #starbar-mainContent {
 }
-#sayso-starbar #player-console .contain .controls {
+#sayso-starbar #starbar-player-console .starbar-contain .starbar-controls {
 	position: absolute;
 	margin: 17px 0px 0px 0px;
 }
-#sayso-starbar #player-console #toggleVis {
+#sayso-starbar #starbar-player-console #starbar-toggleVis {
 	cursor: pointer;
 	background-repeat: no-repeat;
 	height: 18px;
@@ -288,19 +288,19 @@ html {
 	top: -15px;
 	position: absolute;
 }
-#sayso-starbar #player-console #toggleVis.hide {
+#sayso-starbar #starbar-player-console #starbar-toggleVis.starbar-hide {
 	background-image: url('../images/hide.png');
 	width: 44px;
 }
-#sayso-starbar #player-console #toggleVis.close {
+#sayso-starbar #starbar-player-console #starbar-toggleVis.close {
 	background-image: url('../images/close.png');
 	width: 51px;
 	margin: 0px 0px 0px -4px;
 }
-#sayso-starbar #player-console #toggleVis.closed {
+#sayso-starbar #starbar-player-console #starbar-toggleVis.starbar-closed {
 	background-image: none;
 }
-#sayso-starbar #player-console #logo {
+#sayso-starbar #starbar-player-console #starbar-logo {
 	float: left;
 	cursor: pointer;
 	text-indent: -9999px;
@@ -312,21 +312,21 @@ html {
 	background-position: 8px 0px;
 	position: absolute;
 }
-#sayso-starbar #player-console.visClosed #logo {
+#sayso-starbar #starbar-player-console.starbar-visClosed #starbar-logo {
 	width: 90px;
 }
-#sayso-starbar #player-console.visStowed #logo {
+#sayso-starbar #starbar-player-console.starbar-visStowed #starbar-logo {
 	background-image: url('../images/logo_sm.png');
 	width: 45px;
 	overflow: hidden;
 }
 
-#sayso-starbar #player-console #logo:hover{
+#sayso-starbar #starbar-player-console #starbar-logo:hover{
 	background-position: 8px -41px;
 }
 
 
-#sayso-starbar #player-console #logo #logoBorder {
+#sayso-starbar #starbar-player-console #starbar-logo #starbar-logoBorder {
 	width: 5px;
 	height: 41px;
 	float: right;
@@ -334,10 +334,10 @@ html {
 	border-right: 1px solid #000101;
 	background-color: #333;
 }
-#sayso-starbar #player-console #logo:hover #logoBorder {
+#sayso-starbar #starbar-player-console #starbar-logo:hover #starbar-logoBorder {
 	background-color: #888;
 }
-#sayso-starbar #player-console .starbar {
+#sayso-starbar #starbar-player-console .starbar {
 	float: left;
 	position: relative;
 	z-index: 9999;
@@ -351,7 +351,7 @@ html {
 	-moz-text-shadow: #000 0px 1px 0px;
 	-webkit-text-shadow: #000 0px 1px 0px;
 }
-#sayso-starbar #player-console .starbar .top {
+#sayso-starbar #starbar-player-console .starbar .starbar-top {
 	height: 14px;
 	display: block;
 	width: 100%;
@@ -363,7 +363,7 @@ html {
 	position: relative;
 }
 
-#sayso-starbar #player-console a.icon_change{
+#sayso-starbar #starbar-player-console a.starbar-icon_change{
 	font-size: 10px;
 	text-decoration: none;
 	display: inline-block;
@@ -382,14 +382,14 @@ html {
 	-webkit-text-shadow: none;
 }
 
-#sayso-starbar #player-console .starbar .main {
+#sayso-starbar #starbar-player-console .starbar .starbar-main {
 	height: 35px;
 	display: block;
 	width: 100%;
 	margin: 1px 0px 0px 0px;
 	background-color: #666666;
 }
-#sayso-starbar #player-console .starbar .content {
+#sayso-starbar #starbar-player-console .starbar .starbar-content {
 	top: 8px;
 	position: absolute;
 	padding: 6px 5px 0px 5px;
@@ -399,56 +399,56 @@ html {
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
 }
-#sayso-starbar #player-console .icon {
+#sayso-starbar #starbar-player-console .starbar-icon {
 	float: left;
 	margin: 0 5px;
 	box-shadow: 0px 0px 3px #333333;
 	-moz-box-shadow: 0px 0px 3px #333333;
 	-webkit-box-shadow: 0px 0px 3px #333333;
 }
-#sayso-starbar #player-console .starbar h3 {
+#sayso-starbar #starbar-player-console .starbar h3 {
 	padding: 10px 0px 0px 0px;
 	font-size: 16px;
 	font-weight: bold;
 }
-#sayso-starbar #player-console h5 {
+#sayso-starbar #starbar-player-console h5 {
 	font-weight: normal;
 	font-size: 8.5px;
 }
 
-#sayso-starbar #player-console a{
+#sayso-starbar #starbar-player-console a{
 	outline: none;
 }
 
-#sayso-starbar #player-console .clear{
+#sayso-starbar #starbar-player-console .starbar-clear{
 	clear: both;
 }
 
-#sayso-starbar #player-console .alignLeft{
+#sayso-starbar #starbar-player-console .starbar-alignLeft{
 	float: left;
 }
 
-#sayso-starbar #player-console img.alignLeft{
+#sayso-starbar #starbar-player-console img.starbar-alignLeft{
 	margin: 0px 10px 0px 0px;
 }
 
-#sayso-starbar #player-console img.alignCenter{
+#sayso-starbar #starbar-player-console img.alignCenter{
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-#sayso-starbar #player-console .alignRight{
+#sayso-starbar #starbar-player-console .starbar-alignRight{
 	float: right;
 }
 
-#sayso-starbar #player-console img.alignRight{
+#sayso-starbar #starbar-player-console img.starbar-alignRight{
 	margin: 0px 0px 0px 10px;
 }
 
 /* NAV BUTTONS */
 
-#sayso-starbar #nav {
+#sayso-starbar #starbar-nav {
 	height: 41px;
 	position: absolute;
 	z-index: 2000;
@@ -456,31 +456,31 @@ html {
 	top: 17px;
 	left: 248px;
 }
-#sayso-starbar #nav ul {
+#sayso-starbar #starbar-nav ul {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 	border-right: 1px solid #000000;
 	overflow: auto;
 }
-#sayso-starbar #nav ul li {
+#sayso-starbar #starbar-nav ul li {
 	float: left;
 	margin: 0;
 	padding: 0;
 }
-#sayso-starbar #nav ul li a {
+#sayso-starbar #starbar-nav ul li a {
 	height: 41px;
 	display: inline-block;
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
 	text-indent: 9999px;
 }
-#sayso-starbar #nav ul li a span {
+#sayso-starbar #starbar-nav ul li a span {
 	margin: 1px 0px 0px 1px;
 	height: 5px;
 	display: block;
 }
-#sayso-starbar .nav_news a {
+#sayso-starbar .starbar-nav_news a {
 	width: 80px;
 	background-image: url('../images/nav_news.png');
 }
@@ -492,13 +492,13 @@ html {
 	width: 97px;
 	background-image: url('../images/nav_surveys.png');
 }
-#sayso-starbar .nav_questions a {
+#sayso-starbar .starbar-nav_questions a {
 	width: 113px;
 	background-image: url('../images/nav_questions.png');
 }
 /* POPUP BOXES */
 
-#sayso-starbar #player-console .popBox {
+#sayso-starbar #starbar-player-console .starbar-popBox {
 	position: absolute;
 	left: 248px;
 	z-index: 9998;
@@ -512,7 +512,7 @@ html {
 	-webkit-box-shadow: 0px 0px 5px #333333;
 	display: none;
 }
-#sayso-starbar #player-console .popBox .popInner {
+#sayso-starbar #starbar-player-console .starbar-popBox .starbar-popInner {
 	position: relative;
 	margin: 5px;
 	padding: 10px 0px;
@@ -525,25 +525,25 @@ html {
 	line-height: 15px;
 	color: #404040;
 }
-#sayso-starbar #player-console .popBox .popInner .column_left, #sayso-starbar #player-console .popBox .popInner .column_right {
+#sayso-starbar #starbar-player-console .starbar-popBox .starbar-popInner .starbar-column_left, #sayso-starbar #starbar-player-console .starbar-popBox .starbar-popInner .starbar-column_right {
 	width: 255px;
 }
-#sayso-starbar #player-console .popBox .column_left {
+#sayso-starbar #starbar-player-console .starbar-popBox .starbar-column_left {
 	float: left;
 }
-#sayso-starbar #player-console .popBox .column_right {
+#sayso-starbar #starbar-player-console .starbar-popBox .starbar-column_right {
 	float: right;
 	margin: 0px 10px 0px 0px;
 }
-#sayso-starbar #player-console #nav .popBox {
+#sayso-starbar #starbar-player-console #starbar-nav .starbar-popBox {
 	width: 520px;
 }
 
-#sayso-starbar #player-console .popBoxContent{
+#sayso-starbar #starbar-player-console .starbar-popBoxContent{
 	display: none;
 }
 
-#sayso-starbar #player-console .divider{
+#sayso-starbar #starbar-player-console .starbar-divider{
 	clear: both;
 	height: 1px;
 	width: 100%;
@@ -554,51 +554,51 @@ html {
 
 /* SINGLE COLUMN POPBOX OVERRIDES */
 
-#sayso-starbar #player-console #popBox_starbarChange.popBox .popInner{
+#sayso-starbar #starbar-player-console #popBox_starbarChange.starbar-popBox .starbar-popInner{
 	height: 220px;
 }
 
-#sayso-starbar #player-console #popBox_starbarChange.popBox .popBoxSingle .popBoxScrollbar .viewport{
+#sayso-starbar #starbar-player-console #popBox_starbarChange.starbar-popBox .starbar-popBoxSingle .popBoxScrollbar .starbar-viewport{
 	height: 105px;
 	width: 217px;
 }
 
-#sayso-starbar #player-console #popBox_starbarChange.popBox .popBoxSingle .columnContent{
+#sayso-starbar #starbar-player-console #popBox_starbarChange.starbar-popBox .starbar-popBoxSingle .starbar-columnContent{
 	padding: 5px 10px;
 	width: auto;
 }
 
-#sayso-starbar #player-console .popBox .popBoxSingle h3{
+#sayso-starbar #starbar-player-console .starbar-popBox .starbar-popBoxSingle h3{
 	border: none;
 	margin: 0px 10px;
 }
 
-#sayso-starbar #player-console #popBox_starbarChange.popBox .popBoxSingle .viewport .columnContent{
+#sayso-starbar #starbar-player-console #popBox_starbarChange.starbar-popBox .starbar-popBoxSingle .starbar-viewport .starbar-columnContent{
 	padding: 5px 10px;
 	width: 195px;
 	display: block;
 }
 
 
-#sayso-starbar #player-console #popBox_starbarChange.popBox .popInner .column_single{
+#sayso-starbar #starbar-player-console #popBox_starbarChange.starbar-popBox .starbar-popInner .starbar-column_single{
 	width: 222px;
 }
 
-#sayso-starbar #player-console .popBox .popInner .column_single .columnContent{
+#sayso-starbar #starbar-player-console .starbar-popBox .starbar-popInner .starbar-column_single .starbar-columnContent{
 	padding: 5px 5px 5px 10px;
 }
 
-#sayso-starbar #player-console .popBox .popBoxSingle .popImgContent{
+#sayso-starbar #starbar-player-console .starbar-popBox .starbar-popBoxSingle .popImgContent{
 	width: 145px;
 }
 
-#sayso-starbar #player-console h4{
+#sayso-starbar #starbar-player-console h4{
 	padding: 3px 0px 0px 0px;
 	font-size: 16px;
 	font-weight: bold;
 }
 
-#sayso-starbar #player-console .imgBorder{
+#sayso-starbar #starbar-player-console .starbar-imgBorder{
 	border: 3px solid #fff;	
 	box-shadow: 0px 0px 3px #333333;
 	-moz-box-shadow: 0px 0px 3px #333333;
@@ -607,7 +607,7 @@ html {
 
 /* Top Toggle Nav for $ay.$0 */
 
-#sayso-starbar #player-console .toggleNav{
+#sayso-starbar #starbar-player-console .starbar-toggleNav{
 	background-color: #383838;
 	width: 100%;
 	padding: 0px 5px;
@@ -618,7 +618,7 @@ html {
 	position: absolute;
 }
 
-#sayso-starbar #player-console .toggleNav ul{
+#sayso-starbar #starbar-player-console .starbar-toggleNav ul{
 	list-style: none; 
 	position: relative; 
 	float: left; 
@@ -626,7 +626,7 @@ html {
 	left: 50%;
 }
 
-#sayso-starbar #player-console .toggleNav ul li{
+#sayso-starbar #starbar-player-console .starbar-toggleNav ul li{
 	position: relative; 
 	float: left; 
 	display: block; 
@@ -634,7 +634,7 @@ html {
 	height: 30px;
 }
 
-#sayso-starbar #player-console .popBox .toggleNav ul li a{
+#sayso-starbar #starbar-player-console .starbar-popBox .starbar-toggleNav ul li a{
 	font-size: 12px;
 	color: #e0e0e0;
 	font-weight: bold;
@@ -644,24 +644,24 @@ html {
 	line-height: 30px;
 }
 
-#sayso-starbar #player-console .popBox .toggleNav ul li a.active{
+#sayso-starbar #starbar-player-console .starbar-popBox .starbar-toggleNav ul li a.active{
 	background-image: url('../images/img_toggleActive.png') !important;
 	background-repeat: no-repeat;
 	background-position: center bottom;
 	cursor: pointer;
 }
 
-#sayso-starbar #player-console .popBox .toggleNav ul li a:hover{
+#sayso-starbar #starbar-player-console .starbar-popBox .starbar-toggleNav ul li a:hover{
 	color: #fff;
 }
 
-#sayso-starbar #player-console .popBox .toggleNav ul li.listDivider{
+#sayso-starbar #starbar-player-console .starbar-popBox .starbar-toggleNav ul li.starbar-listDivider{
 	background-color: #000;
 	width: 1px;
 	box-shadow: 0px 0px 1px #666;
 }
 
-#sayso-starbar #player-console .popBox .toggleElement{
+#sayso-starbar #starbar-player-console .starbar-popBox .starbar-toggleElement{
 	padding: 30px 0px 0px 0px;
 }
 
@@ -669,36 +669,36 @@ html {
 
 /* SCROLLBAR HEIGHT OVERRIDES */
 
-#sayso-starbar #player-console #popBox_sayso .popBoxScrollbar .viewport{
+#sayso-starbar #starbar-player-console #popBox_sayso .popBoxScrollbar .starbar-viewport{
 	height: 215px;
 }
 
 /* COLUMN POSITIONING OVERRIDES */
 
-#sayso-starbar #player-console #popBox_starbarChange.popBox{
+#sayso-starbar #starbar-player-console #popBox_starbarChange.starbar-popBox{
 	left: 3px;
 	width: 238px;
 }
 
-#sayso-starbar #player-console #popBox_fanSay.popBox, #sayso-starbar #player-console #popBox_fanFare.popBox, #sayso-starbar #player-console #popBox_saySoCurrency.popBox{
+#sayso-starbar #starbar-player-console #popBox_fanSay.starbar-popBox, #sayso-starbar #starbar-player-console #popBox_fanFare.starbar-popBox, #sayso-starbar #starbar-player-console #popBox_saySoCurrency.starbar-popBox{
 	left: 617px;
 	width: 255px;
 	height: 360px;
 }
 
-#sayso-starbar #player-console #popBox_fanSay.popBox .popInner, #sayso-starbar #player-console #popBox_fanFare.popBox .popInner, #sayso-starbar #player-console #popBox_saySoCurrency.popBox .popInner{
+#sayso-starbar #starbar-player-console #popBox_fanSay.starbar-popBox .starbar-popInner, #sayso-starbar #starbar-player-console #popBox_fanFare.starbar-popBox .starbar-popInner, #sayso-starbar #starbar-player-console #popBox_saySoCurrency.starbar-popBox .starbar-popInner{
 	height: 330px;
 }
 
-#sayso-starbar #player-console #popBox_saySoCurrency.popBox{
+#sayso-starbar #starbar-player-console #popBox_saySoCurrency.starbar-popBox{
 	height: auto;
 }
 
-#sayso-starbar #player-console #popBox_saySoCurrency.popBox .popInner{
+#sayso-starbar #starbar-player-console #popBox_saySoCurrency.starbar-popBox .starbar-popInner{
 	height: 440px;
 }
 
-#sayso-starbar #player-console #popBox_sayso.popBox{
+#sayso-starbar #starbar-player-console #popBox_sayso.starbar-popBox{
 	left: -90px;
 	bottom: 65px;
 }
@@ -706,7 +706,7 @@ html {
 
 /* popbox formatting */
 
-#sayso-starbar #player-console .popBox h3 {
+#sayso-starbar #starbar-player-console .starbar-popBox h3 {
 	font-size: 14px;
 	font-weight: normal;
 	line-height: 18px;
@@ -716,27 +716,27 @@ html {
 	border-bottom: 1px solid #e4e4e4;
 }
 
-#sayso-starbar #player-console .popBox h3 img{
+#sayso-starbar #starbar-player-console .starbar-popBox h3 img{
 	display: inline;
 	vertical-align: middle;
 	margin: 0px 5px 0px 0px;
 }
 
-#sayso-starbar #player-console .popBox .column_right h3{
+#sayso-starbar #starbar-player-console .starbar-popBox .starbar-column_right h3{
 	margin: 0px 0px 5px 0px;
 }
 
-#sayso-starbar #player-console .popBox big{
+#sayso-starbar #starbar-player-console .starbar-popBox big{
 	font-size: 13px;
 	font-weight: bold;
 	margin: 0px 0px 10px 0px;
 }
 
-#sayso-starbar #player-console .popBox p {
+#sayso-starbar #starbar-player-console .starbar-popBox p {
 	margin: 0px 0px 5px 0px;
 	clear: both;
 }
-#sayso-starbar #player-console .popBox a {
+#sayso-starbar #starbar-player-console .starbar-popBox a {
 	background-image: none !important;
 	width: auto;
 	height: auto;
@@ -747,18 +747,18 @@ html {
 	text-indent: 0 !important;
 	display: inline !important;
 }
-#sayso-starbar #player-console .popBox a:hover {
+#sayso-starbar #starbar-player-console .starbar-popBox a:hover {
 	text-decoration: none;
 	color: #24ddc5;
 }
 
-#sayso-starbar #player-console #nav_user{
+#sayso-starbar #starbar-player-console #starbar-nav_user{
 	float: right;
 	width: 260px;
 	overflow: hidden;
 }
 
-#sayso-starbar #player-console .popBox .highlightBG{
+#sayso-starbar #starbar-player-console .starbar-popBox .highlightBG{
 	background-color: #e3e3e3;
 	padding: 5px;
 	display: block;
@@ -766,7 +766,7 @@ html {
 	overflow: hidden;
 }
 
-#sayso-starbar #player-console .popBox .popImgContent{
+#sayso-starbar #starbar-player-console .starbar-popBox .popImgContent{
 	float: right;
 	width: 172px;
 }
@@ -780,7 +780,7 @@ html {
 	box-shadow: 0 0 5px #333333;
 }
 
-#sayso-starbar #player-console .columnContent{
+#sayso-starbar #starbar-player-console .starbar-columnContent{
 	padding: 10px 5px 10px 10px;
 	overflow: hidden;
 	display: block;
@@ -788,21 +788,21 @@ html {
 }
 
 
-#sayso-starbar #player-console .column_right .columnContent{
+#sayso-starbar #starbar-player-console .starbar-column_right .starbar-columnContent{
 	width: 235px;
 	padding: 10px 5px 10px 5px;
 }
 
-#sayso-starbar #player-console .columnContentBG{
+#sayso-starbar #starbar-player-console .starbar-columnContentBG{
 	background-color: #e5e5e5;
 }
 
-#sayso-starbar #player-console .columnContentBorderBottom{
+#sayso-starbar #starbar-player-console .columnContentBorderBottom{
 	border-bottom: 1px solid #c7c7c7;
 	margin: 0px 0px 10px 0px;
 }
 
-#sayso-starbar #player-console .columnContentTriangle{
+#sayso-starbar #starbar-player-console .columnContentTriangle{
 	background-color: #e5e5e5;
 	background-image: url('../images/img_triangleDivider.png');
 	background-repeat: no-repeat;
@@ -810,7 +810,7 @@ html {
 	padding-bottom: 12px;
 }
 
-#sayso-starbar #player-console .columnContentBubble{
+#sayso-starbar #starbar-player-console .starbar-columnContentBubble{
 	padding: 3px;
 	border-radius: 10px;
 	-moz-border-radius: 10px;
@@ -820,12 +820,12 @@ html {
 	text-align: center;
 }
 
-#sayso-starbar #player-console p.qa_answer{
+#sayso-starbar #starbar-player-console p.qa_answer{
 	background-color: #fff;
 	padding: 5px;
 }
 
-#sayso-starbar #player-console p.source{
+#sayso-starbar #starbar-player-console p.starbar-source{
 	padding: 0px 5px;
 	text-align: right;
 	font-size: 10px;
@@ -833,7 +833,7 @@ html {
 	line-height: 12px;
 }
 
-#sayso-starbar #player-console textarea, #sayso-starbar #player-console input.text{
+#sayso-starbar #starbar-player-console textarea, #sayso-starbar #starbar-player-console input.starbar-text{
 	width: 225px;
 	border: 1px solid #c7c7c7;
 	background-color: #fff;
@@ -845,12 +845,12 @@ html {
 	margin: 0px 0px 5px 0px;
 }
 
-#sayso-starbar #player-console input.text{	
+#sayso-starbar #starbar-player-console input.starbar-text{	
 	width: 40%;
 	padding: 5px 2px;
 }
 
-#sayso-starbar #player-console input.button{
+#sayso-starbar #starbar-player-console input.starbar-button{
 	border: 1px solid #ffffff;	
 	box-shadow: 0px 0px 3px #666666;
 	-moz-box-shadow: 0px 0px 3px #666666;
@@ -868,53 +868,53 @@ html {
 	-webkit-border-radius: 4px;
 }
 
-#sayso-starbar #player-console input.button2{
+#sayso-starbar #starbar-player-console input.starbar-button2{
 	background-color: #e5ae07;
 }
 
 
-#sayso-starbar #player-console .popBox table.userPreferences td{
+#sayso-starbar #starbar-player-console .starbar-popBox table.userPreferences td{
 	padding: 3px 0px 3px 5px;
 }
 
-#sayso-starbar #player-console .popBox table.userRank{
+#sayso-starbar #starbar-player-console .starbar-popBox table.starbar-userRank{
 	width: 100%;
 	clear: both;
 	margin: 10px auto;
 }
 
-#sayso-starbar #player-console .popBox table.userRank td{
+#sayso-starbar #starbar-player-console .starbar-popBox table.starbar-userRank td{
 	padding: 3px;
 	vertical-align: middle;
 }
 
-#sayso-starbar #player-console .popBox table.userRank td img{
+#sayso-starbar #starbar-player-console .starbar-popBox table.starbar-userRank td img{
 	height: 20px;
 }
 
-#sayso-starbar #player-console .popBox table.userRank tr.odd td{
+#sayso-starbar #starbar-player-console .starbar-popBox table.starbar-userRank tr.starbar-odd td{
 	background-color: #e5e5e5;
 }
 
-#sayso-starbar #player-console .popBox table.userRank td.rank, #sayso-starbar #player-console .popBox table.userRank td.pic{
+#sayso-starbar #starbar-player-console .starbar-popBox table.starbar-userRank td.starbar-rank, #sayso-starbar #starbar-player-console .starbar-popBox table.starbar-userRank td.starbar-pic{
 	color: #999;
 	padding-left: 10px;
 	width: 10px;
 }
 
-#sayso-starbar #player-console .popBox table.userRank tr#user td{
+#sayso-starbar #starbar-player-console .starbar-popBox table.starbar-userRank tr#user td{
 	background-color: #d9d9d9 !important;
 	font-weight: bold;
 }
 
 
-#sayso-starbar #player-console .popBox table.userRank td.score{
+#sayso-starbar #starbar-player-console .starbar-popBox table.starbar-userRank td.starbar-score{
 	width: 50px;
 	text-align: right;
 	padding-right: 10px;
 }
 
-#sayso-starbar #player-console .popBox .controls{
+#sayso-starbar #starbar-player-console .starbar-popBox .starbar-controls{
 	margin: -10px 0px 10px 0px;
 	background-color: #d9d9d9;
 	border-bottom: 1px solid #bdbdbd;
@@ -925,55 +925,55 @@ html {
 	padding: 1px 10px;
 }
 
-#sayso-starbar #player-console .popBox .controls a{
+#sayso-starbar #starbar-player-console .starbar-popBox .starbar-controls a{
 	text-decoration: none;
 	color: #666;
 }
 
-#sayso-starbar #player-console ul.currency{
+#sayso-starbar #starbar-player-console ul.starbar-currency{
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
-#sayso-starbar #player-console ul.currency li{
+#sayso-starbar #starbar-player-console ul.starbar-currency li{
 	margin: 10px 0px 10px 0px;
 	padding: 0px 0px 0px 32px;
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
 }
 
-#sayso-starbar #player-console ul li.icon_fansay{
+#sayso-starbar #starbar-player-console ul li.icon_fansay{
 	background-image: url('../images/icon_fansay.png');
 	background-position: 6px 0px;
 }
 
-#sayso-starbar #player-console ul li.icon_fanfare{
+#sayso-starbar #starbar-player-console ul li.icon_fanfare{
 	background-image: url('../images/icon_fanfare.png');
 	background-position: 2px 0px;
 }
 
-#sayso-starbar #player-console ul li.icon_sayso{
+#sayso-starbar #starbar-player-console ul li.icon_sayso{
 	background-image: url('../images/icon_sayso.png');
 }
 
 
 /* SPECIAL ELEMENTS -- BAR CHARTS */
 
-#sayso-starbar #player-console .barGraph{
+#sayso-starbar #starbar-player-console .starbar-barGraph{
 	width: 100%;
 	margin: 5px 0px;
 	display: block;
 	clear: both;
 }
 
-#sayso-starbar #player-console .barGraph p{
+#sayso-starbar #starbar-player-console .starbar-barGraph p{
 	color: #333;
 	overflow: hidden;
 	margin: 5px 0px;
 }
 
-#sayso-starbar #player-console .barGraph .barKey{
+#sayso-starbar #starbar-player-console .starbar-barGraph .starbar-barKey{
 	width: 25%;
 	display: inline-block;
 	margin: 0;
@@ -981,7 +981,7 @@ html {
 	float: left;
 }
 
-#sayso-starbar #player-console .barGraph .barContainer{
+#sayso-starbar #starbar-player-console .starbar-barGraph .starbar-barContainer{
 	width: 55%;
 	height: 12px;
 	display: inline-block;
@@ -994,7 +994,7 @@ html {
 	float: left;
 }
 
-#sayso-starbar #player-console .barGraph .barContainer .bar{
+#sayso-starbar #starbar-player-console .starbar-barGraph .starbar-barContainer .starbar-bar{
 	height: 12px;
 	background-color: #999999;
 	display: block;
@@ -1003,7 +1003,7 @@ html {
 	-webkit-border-radius: 8px;
 }
 
-#sayso-starbar #player-console .barGraph .barContainer .barValue{
+#sayso-starbar #starbar-player-console .starbar-barGraph .starbar-barContainer .starbar-barValue{
 	width: 10%;
 	display: inline-block;
 	margin: 0;
@@ -1011,25 +1011,25 @@ html {
 	float: left;
 }
 
-#sayso-starbar #player-console .barGraph .barWinner{
+#sayso-starbar #starbar-player-console .starbar-barGraph .starbar-barWinner{
 	color: #000000;
 }
 
-#sayso-starbar #player-console .barGraph .barWinner .bar{
+#sayso-starbar #starbar-player-console .starbar-barGraph .starbar-barWinner .starbar-bar{
 	background-color: #000;
 }
 
 /* SPECIAL ELEMENTS - ACCORDIONS */
 
-#sayso-starbar #player-console .accordion{
+#sayso-starbar #starbar-player-console .starbar-accordion{
 	padding: 0px 0px 20px 0px;
 }
 
-#sayso-starbar #player-console .accordion div{
+#sayso-starbar #starbar-player-console .starbar-accordion div{
 	font-size: 11px;
 }
 
-#sayso-starbar #player-console .accordion h4, #sayso-starbar #player-console h4.earnValue{
+#sayso-starbar #starbar-player-console .starbar-accordion h4, #sayso-starbar #starbar-player-console h4.earnValue{
 	font-size: 13px;
 	font-weight: normal;
 	background-color: #e0e0e0;
@@ -1039,12 +1039,12 @@ html {
 	margin: 5px 0px;
 }
 
-#sayso-starbar #player-console .accordion h4{
+#sayso-starbar #starbar-player-console .starbar-accordion h4{
 	padding: 3px 5px 3px 18px;
 	margin: 5px 0px 0px 0px;
 }
 
-#sayso-starbar #player-console h4 span.icon_pay{
+#sayso-starbar #starbar-player-console h4 span.icon_pay{
 	float: right;
 	font-size: 10px;
 	color: #666;
@@ -1059,14 +1059,14 @@ html {
 
 /* USER INFO BOX */
 
-#sayso-starbar #player-console #userBox {
+#sayso-starbar #starbar-player-console #starbar-userBox {
 	width: 55px;
 	height: 41px;
 	padding: 0px 5px 0px 10px;
 	float: left;
 	margin: 17px 0px 0px 0px;
 }
-#sayso-starbar #player-console #userBox .content{
+#sayso-starbar #starbar-player-console #starbar-userBox .starbar-content{
 	margin: 0;
 	padding: 6px 0px;
 	font-size: 11px;
@@ -1077,7 +1077,7 @@ html {
 	-moz-text-shadow: 0px 0px 2px #000000;
 	-webkit-text-shadow: 0px 0px 2px #000000;
 }
-#sayso-starbar #player-console #userBox a {
+#sayso-starbar #starbar-player-console #starbar-userBox a {
 	font-weight: normal;
 	color: #bfbfbf;
 	font-size: 10px;
@@ -1085,7 +1085,7 @@ html {
 
 /* FAN BOX */
 
-#sayso-starbar #player-console #fanBox {
+#sayso-starbar #starbar-player-console #starbar-fanBox {
 	width: 130px;
 	height: 41px;
 	float: left;
@@ -1099,7 +1099,7 @@ html {
 	overflow: hidden;
 }
 
-#sayso-starbar #player-console #fanBox a {
+#sayso-starbar #starbar-player-console #starbar-fanBox a {
 	color: #fff;
 	text-decoration: none;
 	display: inline-block;
@@ -1109,21 +1109,21 @@ html {
 	font-weight: bold;
 	color: #fff;
 }
-#sayso-starbar #player-console .fanSay {
+#sayso-starbar #starbar-player-console .starbar-fanSay {
 	width: 55px;
 	text-align: center;
 	float: left;
 	height: 41px;
 }
 
-#sayso-starbar #player-console .fanFare{
+#sayso-starbar #starbar-player-console .starbar-fanFare{
 	width: 70px;
 	text-align: left;
 	float: right;
 	height: 41px;
 }
 
-#sayso-starbar #player-console .fanSay span {
+#sayso-starbar #starbar-player-console .starbar-fanSay span {
 	display: inline-block;
 	background-image: url('../images/icon_fansay.png');
 	background-repeat: no-repeat;
@@ -1133,7 +1133,7 @@ html {
 	margin: 0px 5px -2px 5px;
 }
 
-#sayso-starbar #player-console .fanFare span{
+#sayso-starbar #starbar-player-console .starbar-fanFare span{
 	display: inline-block;
 	background-image: url('../images/icon_fanfare.png');
 	background-repeat: no-repeat;
@@ -1145,7 +1145,7 @@ html {
 
 /* $AY$O SAYSO */
 
-#sayso-starbar #player-console #saysoBox{
+#sayso-starbar #starbar-player-console #saysoBox{
 	width: 56px;
 	height: 41px;
 	margin: 17px 0px 0px 0px;
@@ -1153,7 +1153,7 @@ html {
 	float: left;
 }
 
-#sayso-starbar #player-console #saysoBox .sayso a{
+#sayso-starbar #starbar-player-console #saysoBox .starbar-sayso a{
 	width: 56px;
 	height: 41px;
 	text-align: left;
@@ -1166,13 +1166,13 @@ html {
 
 /* popBox scrollbars */
 
-#sayso-starbar #player-console .popBoxScrollbar .viewport {
+#sayso-starbar #starbar-player-console .popBoxScrollbar .starbar-viewport {
 	width: 225x;
 	height: 185px;
 	overflow: hidden;
 	position: relative;
 }
-#sayso-starbar #player-console .popBoxScrollbar .overview {
+#sayso-starbar #starbar-player-console .popBoxScrollbar .starbar-overview {
 	list-style: none;
 	position: absolute;
 	left: 0;
@@ -1180,18 +1180,18 @@ html {
 	overflow: hidden;
 }
 
-#sayso-starbar #player-console .popBoxScrollbar .thumb .end, #sayso-starbar #player-console .popBoxScrollbar .thumb {
+#sayso-starbar #starbar-player-console .popBoxScrollbar .starbar-thumb .starbar-end, #sayso-starbar #starbar-player-console .popBoxScrollbar .starbar-thumb {
 	background-color: #6f6f6f;
 	border-radius: 2px;
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
 }
-#sayso-starbar #player-console .popBoxScrollbar .scrollbar {
+#sayso-starbar #starbar-player-console .popBoxScrollbar .starbar-scrollbar {
 	position: relative;
 	float: right;
 	width: 5px;
 }
-#sayso-starbar #player-console .popBoxScrollbar .track {
+#sayso-starbar #starbar-player-console .popBoxScrollbar .starbar-track {
 	background-color: #dfdfdf;
 	height: 100%;
 	width:5px;
@@ -1201,7 +1201,7 @@ html {
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
 }
-#sayso-starbar #player-console .popBoxScrollbar .thumb {
+#sayso-starbar #starbar-player-console .popBoxScrollbar .starbar-thumb {
 	height: 20px;
 	width: 5px;
 	cursor: pointer;
@@ -1209,97 +1209,97 @@ html {
 	position: absolute;
 	top: 0;
 }
-#sayso-starbar #player-console .popBoxScrollbar .thumb .end {
+#sayso-starbar #starbar-player-console .popBoxScrollbar .starbar-thumb .starbar-end {
 	overflow: hidden;
 	height: 5px;
 	width: 5px;
 }
-#sayso-starbar #player-console .popBoxScrollbar .disable {
+#sayso-starbar #starbar-player-console .popBoxScrollbar .starbar-disable {
 	display: none;
 }
 
 /* adjust where the triangles appear for each box */
-#sayso-starbar #player-console #popBox_news.triangle-border:before {
+#sayso-starbar #starbar-player-console #popBox_news.triangle-border:before {
 	left: 34px;
 }
-#sayso-starbar #player-console #popBox_news.triangle-border:after {
+#sayso-starbar #starbar-player-console #popBox_news.triangle-border:after {
 	left: 35px;
 }
-#sayso-starbar #player-console #popBox_news .triangle-solid:after {
+#sayso-starbar #starbar-player-console #popBox_news .triangle-solid:after {
 	left: 32px;
 }
-#sayso-starbar #player-console #popBox_polls.triangle-border:before {
+#sayso-starbar #starbar-player-console #popBox_polls.triangle-border:before {
 	left: 112px;
 }
-#sayso-starbar #player-console #popBox_polls.triangle-border:after {
+#sayso-starbar #starbar-player-console #popBox_polls.triangle-border:after {
 	left: 113px;
 }
-#sayso-starbar #player-console #popBox_polls .triangle-solid:after {
+#sayso-starbar #starbar-player-console #popBox_polls .triangle-solid:after {
 	left: 110px;
 }
-#sayso-starbar #player-console #popBox_surveys.triangle-border:before {
+#sayso-starbar #starbar-player-console #popBox_surveys.triangle-border:before {
 	left: 200px;
 }
-#sayso-starbar #player-console #popBox_surveys.triangle-border:after {
+#sayso-starbar #starbar-player-console #popBox_surveys.triangle-border:after {
 	left: 201px;
 }
-#sayso-starbar #player-console #popBox_surveys .triangle-solid:after {
+#sayso-starbar #starbar-player-console #popBox_surveys .triangle-solid:after {
 	left: 198px;
 }
-#sayso-starbar #player-console #popBox_questions.triangle-border:before {
+#sayso-starbar #starbar-player-console #popBox_questions.triangle-border:before {
 	left: 303px;
 }
-#sayso-starbar #player-console #popBox_questions.triangle-border:after {
+#sayso-starbar #starbar-player-console #popBox_questions.triangle-border:after {
 	left: 304px;
 }
-#sayso-starbar #player-console #popBox_questions .triangle-solid:after {
+#sayso-starbar #starbar-player-console #popBox_questions .triangle-solid:after {
 	left: 301px;
 }
-#sayso-starbar #player-console #popBox_userbox.triangle-border:before {
+#sayso-starbar #starbar-player-console #popBox_userbox.triangle-border:before {
 	left: 398px;
 }
-#sayso-starbar #player-console #popBox_userbox.triangle-border:after {
+#sayso-starbar #starbar-player-console #popBox_userbox.triangle-border:after {
 	left: 399px;
 }
-#sayso-starbar #player-console #popBox_userbox .triangle-solid:after {
+#sayso-starbar #starbar-player-console #popBox_userbox .triangle-solid:after {
 	left: 396px;
 }
-#sayso-starbar #player-console #popBox_fanSay.triangle-border:before {
+#sayso-starbar #starbar-player-console #popBox_fanSay.triangle-border:before {
 	left: 95px;
 }
-#sayso-starbar #player-console #popBox_fanSay.triangle-border:after {
+#sayso-starbar #starbar-player-console #popBox_fanSay.triangle-border:after {
 	left: 96px;
 }
-#sayso-starbar #player-console #popBox_fanSay .triangle-solid:after {
+#sayso-starbar #starbar-player-console #popBox_fanSay .triangle-solid:after {
 	left: 93px;
 }
-#sayso-starbar #player-console #popBox_fanFare.triangle-border:before {
+#sayso-starbar #starbar-player-console #popBox_fanFare.triangle-border:before {
 	left: 153px;
 }
-#sayso-starbar #player-console #popBox_fanFare.triangle-border:after {
+#sayso-starbar #starbar-player-console #popBox_fanFare.triangle-border:after {
 	left: 154px;
 }
-#sayso-starbar #player-console #popBox_fanFare .triangle-solid:after {
+#sayso-starbar #starbar-player-console #popBox_fanFare .triangle-solid:after {
 	left: 151px;
 }
-#sayso-starbar #player-console #popBox_saySoCurrency.triangle-border:before {
+#sayso-starbar #starbar-player-console #popBox_saySoCurrency.triangle-border:before {
 	left: 223px;
 }
-#sayso-starbar #player-console #popBox_saySoCurrency.triangle-border:after {
+#sayso-starbar #starbar-player-console #popBox_saySoCurrency.triangle-border:after {
 	left: 224px;
 }
-#sayso-starbar #player-console #popBox_saySoCurrency .triangle-solid:after {
+#sayso-starbar #starbar-player-console #popBox_saySoCurrency .triangle-solid:after {
 	left: 221px;
 }
 /* TRIANGLES */
 
-#sayso-starbar #player-console .triangle-border {
+#sayso-starbar #starbar-player-console .triangle-border {
 	border: 1px solid #000;
 	box-shadow: 0px 0px 5px #333333;
 	-moz-box-shadow: 0px 0px 5px #333333;
 	-webkit-box-shadow: 0px 0px 5px #333333;
 }
-#sayso-starbar #player-console .triangle-border:before {
+#sayso-starbar #starbar-player-console .triangle-border:before {
 	content:"";
 	position:absolute;
 	bottom:-7px; /* value = - border-top-width - border-bottom-width */
@@ -1312,7 +1312,7 @@ html {
 	width:0;
 }
 /* creates the smaller  triangle */
-#sayso-starbar #player-console .triangle-border:after {
+#sayso-starbar #starbar-player-console .triangle-border:after {
 	content:"";
 	position:absolute;
 	bottom: -6px; /* value = - border-top-width - border-bottom-width */
@@ -1324,9 +1324,9 @@ html {
     display:block;
 	width:0;
 }
-#sayso-starbar #player-console .triangle-solid {
+#sayso-starbar #starbar-player-console .triangle-solid {
 }
-#sayso-starbar #player-console .triangle-solid:after {
+#sayso-starbar #starbar-player-console .triangle-solid:after {
 	content:"";
 	position:absolute;
 	bottom:-4px; /* value = - border-top-width - border-bottom-width */
@@ -1340,7 +1340,7 @@ html {
 }
 /* REUSABLE STYLES */
 
-#sayso-starbar #player-console .hidden {
+#sayso-starbar #starbar-player-console .starbar-hidden {
 	display: none;
 }
 

@@ -870,20 +870,31 @@
         // cells
         // (see above)
         
+        var jsonString = JSON.stringify(sayso.data);
+        
         // localStorage
-        localStorage.setItem('sayso', JSON.stringify(sayso.data));
+        localStorage.setItem('sayso', jsonString);
+        
+        $.ajax({
+            url : 'http://' + sayso.baseDomain + '/admin/data/submit',
+            data : { data : jsonString },
+            type : 'POST',
+            success : function (response) {
+                console.log(response);
+            }
+        });
         
         // reset form fields and return "changes pending" to false
-        resetForm();
+        //resetForm();
         
         // reset data object for new data
-        resetData();
+        //resetData();
         
         // notify the user
         alert('Survey saved!');
         
         // finally, scroll the view back to the top
-        $('html,body').animate({scrollTop:0}, 600);
+        //$('html,body').animate({scrollTop:0}, 600);
     });
     
     

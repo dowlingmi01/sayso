@@ -1,6 +1,12 @@
+/**
+ * Starbar
+ */
+
+// init our global objects
 if (!window.sayso) window.sayso = {};
-window.sayso.starbar = {};
-                
+if (!window.sayso.starbar) window.sayso.starbar = {};
+          
+// load after slight delay
 setTimeout(function(){
 													 
 	// global var
@@ -12,9 +18,6 @@ setTimeout(function(){
 	
 	//once we've got the cookie 
 	initStarBar();
-	
-	//resize the frame if we've just loaded the page
-	initFrame();
 	
 	//set up all links inside popBox to have hoverColor
 	$S('#sayso-starbar .starbar-popBox a').addClass('starbar-setLinkHover');
@@ -44,7 +47,6 @@ setTimeout(function(){
 		playerClass = fixPlayerClassForBackwardsCompatibility(playerClass);
 		animateBar(playerClass, 'button');
 		popBoxClose();
-		initFrame();
 	});
 	$S('#sayso-starbar #starbar-logo').click(function(event){
 	    var playerClass = $S('#sayso-starbar #starbar-player-console').attr('class');
@@ -53,7 +55,6 @@ setTimeout(function(){
 			// only run if we're not at full visibility
 			animateBar(playerClass, 'logo');
 			popBoxClose();
-			initFrame();
 		}else{
 			event.preventDefault();
 			popBox($S(this));
@@ -81,7 +82,6 @@ setTimeout(function(){
 			var currentNavActive = $S('#sayso-starbar #starbar-nav li#starbar-nav_active');
 			currentNavActive.children().children('span.starbar-navBorder').css('backgroundColor','');
 			popBoxClose();
-			initFrame();
 		}  // esc
 	});
 	
@@ -93,17 +93,16 @@ setTimeout(function(){
 		var navActiveSpan = navActiveLink.children('span.starbar-navBorder');
 		navActiveSpan.css('backgroundColor','');
 		popBoxClose();
-		initFrame();
 	});
 	
-	// close if you click outside the starbar on the main wondow
+	// close if you click outside the starbar on the main window
+	// @todo now that we are not using an iframe, re-enable this using 'body'
 //	$S(parent.document).click(function(e) {
 //		var navActive = $S('#starbar-nav_active');
 //		var navActiveLink = navActive.children('a');
 //		var navActiveSpan = navActiveLink.children('span.starbar-navBorder');
 //		navActiveSpan.css('backgroundColor','');
 //  	popBoxClose();
-//		initFrame();
 //	});
 	
 	$S('#sayso-starbar #starbar-player-console').click(function(e) {
@@ -112,48 +111,18 @@ setTimeout(function(){
 	
     
     function initStarBar(){	
-    	if (!$S.cookie('starBarStatus')){
-    		$S.cookie('starBarStatus','starbar-visOpen');
+    	if (!window.sayso.starbar.visibleState){
+    	    saveVisibleState('starbar-visOpen');
     	}	
     	
     	// set the open / close state of the bar
-    	var playerClass = $S.cookie('starBarStatus');
+    	var playerClass = window.sayso.starbar.visibleState;
     	playerClass = fixPlayerClassForBackwardsCompatibility(playerClass);
     	animateBar(playerClass,'init');
     	
     	return false;
     }
     
-    /* WHENEVER CALLED, FIGURES OUT IF THE STARBAR HAS VISIBLE POPUPS AND RESIZES THE PARENT FRAME TO SUIT */
-    function initFrame(){	
-    	var height = 60;
-    	var width = '100%';
-    	
-    	if (starBarStatusHeight == 'starbar-closed'){
-    		height = 60;
-    	}else{
-    		height = 530;
-    	}	
-    		
-    	switch (starBarStatusWidth){
-    		case 'starbar-visOpen':
-    			width = '100%';
-    		break;
-    		case 'starbar-visClosed':
-    			width = 110;
-    		break;
-    		case 'starbar-visStowed':
-    			width = 65;
-    		break;
-    	}
-    	
-    	//alert($S('#starbar-player-console').css('width'));
-    		
-    	//$S(parent.document.getElementById('saysoStarBarFrame')).attr('height', height);
-    	//$S(parent.document.getElementById('saysoStarBarFrame')).delay(500).attr('width', width);	
-    	return false;
-    }
-
     /*
     POPBOX
     - see if there's an active box, if it is, close it, remove the active class
@@ -173,7 +142,6 @@ setTimeout(function(){
     	//if the link's parent <li> clicked already had an ID, it was the active one we should just close a box and quit
     	if (itemList.attr('id').length != 0){
     		popBoxClose();
-    		initFrame();
     		return false;
     	}else{
     		// weird hack to manually delete the background "on" color if a different nav item was clicked
@@ -186,8 +154,6 @@ setTimeout(function(){
     	// open the next popBox using the data from the clicked item
     	popBoxOpen(itemList);
     	
-    	
-    	initFrame();
     	
     	return false;	
     }
@@ -328,7 +294,7 @@ setTimeout(function(){
 							// Animation complete.
 							$S(this).attr('class','').addClass('starbar-visClosed');
 							$S('#sayso-starbar #starbar-logoBorder').show();
-							cookieUpdate();
+							saveVisibleState();
 						});
 					starBarStatusHeight = 'starbar-closed';
 					starBarStatusWidth = 'starbar-visClosed';
@@ -343,7 +309,7 @@ setTimeout(function(){
 						}, 500, function() {
 							// Animation complete.
 							$S(this).attr('class','').addClass('starbar-visStowed');
-							cookieUpdate();
+							saveVisibleState();
 					});
 					starBarStatusHeight = 'starbar-closed';
 					starBarStatusWidth = 'starbar-visStowed';
@@ -359,7 +325,7 @@ setTimeout(function(){
 							// Animation complete.
 							$S(this).attr('class','').addClass('starbar-visOpen');
 							$S('#starbar-mainContent').fadeIn('fast');			
-							cookieUpdate();
+							saveVisibleState();
 					});
 					starBarStatusHeight = 'starbar-open';
 					starBarStatusWidth = 'starbar-visOpen';
@@ -414,7 +380,7 @@ setTimeout(function(){
 					$S(this).attr('class','');
 					$S(this).addClass('starbar-visOpen');
 					$S('#starbar-mainContent').fadeIn('fast');
-					cookieUpdate();
+					saveVisibleState();
 				});
 			starBarStatusHeight = 'starbar-closed';
 			starBarStatusWidth = 'starbar-visOpen';
@@ -492,8 +458,11 @@ setTimeout(function(){
 		});
 	}
 	
-	function cookieUpdate(){		
-		$S.cookie('starBarStatus', $S('#sayso-starbar #starbar-player-console').attr('class'));
+	function saveVisibleState (visibleState){	
+	    if (!visibleState) visibleState = $S('#sayso-starbar #starbar-player-console').attr('class');
+	    window.sayso.starbar.visibleState = visibleState;
+	    var app = KOBJ.get_application('a239x14');
+        app.raise_event('change_visible_state', { 'visible_state' : visibleState });
 	}
 	
 	function log (message) {

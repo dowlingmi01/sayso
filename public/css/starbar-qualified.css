@@ -410,10 +410,12 @@ html {
 	padding: 10px 0px 0px 0px;
 	font-size: 16px;
 	font-weight: bold;
+	color: white;
 }
 #sayso-starbar #starbar-player-console h5 {
 	font-weight: normal;
 	font-size: 8.5px;
+	color: white;
 }
 
 #sayso-starbar #starbar-player-console a{

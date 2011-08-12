@@ -1,14 +1,12 @@
 /**
  * Starbar
  */
-
-// init our global objects
-if (!window.sayso) window.sayso = {};
-if (!window.sayso.starbar) window.sayso.starbar = {};
           
 // load after slight delay
 setTimeout(function(){
-													 
+		
+    var kynetxAppId = 'a239x14';
+    
 	// global var
     var themeColor = '#de40b2';
 	
@@ -24,33 +22,15 @@ setTimeout(function(){
 													 
 	setThemeColors(themeColor);
 	
-	function fixPlayerClassForBackwardsCompatibility (playerClass) {
-	    // since we have changed the name of the player classes (e.g. starbar-visOpen),
-	    // the current installed Starbar plugins will not work because a cookie 
-	    // is set on every domain recording the visible state of the Starbar 
-	    // and the value of this cookie is the class name that has changed.
-	    // so instead of requiring everyone to delete all their cookies, we
-	    // just correct the problem here (if it exists)
-	    if (playerClass.substring(0,7) !== 'starbar') {
-            var oldClass = playerClass;
-            playerClass = 'starbar-' + playerClass;
-            $S('#sayso-starbar #starbar-player-console').addClass(playerClass);
-            $S('#sayso-starbar #starbar-player-console').removeClass(oldClass);
-        }
-	    return playerClass;
-	}
-	
 	// set up the full / shrunk / closed states for the bar
 	$S('#sayso-starbar #starbar-toggleVis').click(function(event){
 		event.preventDefault();
 		var playerClass = $S('#sayso-starbar #starbar-player-console').attr('class');
-		playerClass = fixPlayerClassForBackwardsCompatibility(playerClass);
 		animateBar(playerClass, 'button');
 		popBoxClose();
 	});
 	$S('#sayso-starbar #starbar-logo').click(function(event){
 	    var playerClass = $S('#sayso-starbar #starbar-player-console').attr('class');
-	    playerClass = fixPlayerClassForBackwardsCompatibility(playerClass);
 		if (playerClass != 'starbar-visOpen'){
 			// only run if we're not at full visibility
 			animateBar(playerClass, 'logo');
@@ -108,19 +88,15 @@ setTimeout(function(){
 	$S('#sayso-starbar #starbar-player-console').click(function(e) {
 	    e.stopPropagation();
 	});
-	
     
-    function initStarBar(){	
-    	if (!window.sayso.starbar.visibleState){
-    	    saveVisibleState('starbar-visOpen');
+    function initStarBar(method){
+        if (!method) method = 'init';
+    	if (!window.sayso.starbar.state.visibility){
+    	    updateState('starbar-visOpen');
     	}	
-    	
     	// set the open / close state of the bar
-    	var playerClass = window.sayso.starbar.visibleState;
-    	playerClass = fixPlayerClassForBackwardsCompatibility(playerClass);
-    	animateBar(playerClass,'init');
-    	
-    	return false;
+    	var playerClass = window.sayso.starbar.state.visibility;
+    	animateBar(playerClass, method);
     }
     
     /*
@@ -294,7 +270,7 @@ setTimeout(function(){
 							// Animation complete.
 							$S(this).attr('class','').addClass('starbar-visClosed');
 							$S('#sayso-starbar #starbar-logoBorder').show();
-							saveVisibleState();
+							updateState();
 						});
 					starBarStatusHeight = 'starbar-closed';
 					starBarStatusWidth = 'starbar-visClosed';
@@ -309,7 +285,7 @@ setTimeout(function(){
 						}, 500, function() {
 							// Animation complete.
 							$S(this).attr('class','').addClass('starbar-visStowed');
-							saveVisibleState();
+							updateState();
 					});
 					starBarStatusHeight = 'starbar-closed';
 					starBarStatusWidth = 'starbar-visStowed';
@@ -325,7 +301,7 @@ setTimeout(function(){
 							// Animation complete.
 							$S(this).attr('class','').addClass('starbar-visOpen');
 							$S('#starbar-mainContent').fadeIn('fast');			
-							saveVisibleState();
+							updateState();
 					});
 					starBarStatusHeight = 'starbar-open';
 					starBarStatusWidth = 'starbar-visOpen';
@@ -343,7 +319,7 @@ setTimeout(function(){
 					$S('#sayso-starbar #starbar-player-console').attr('class','').addClass('starbar-visOpen').show();
 					$S('#sayso-starbar #starbar-mainContent').fadeIn('fast');
 					starBarStatusWidth = 'starbar-visOpen';
-				break;
+					break;
 				case 'starbar-visClosed': 					
 					$S('#sayso-starbar #starbar-player-console').hide();
 					$S('#sayso-starbar #starbar-mainContent').fadeOut('fast');
@@ -353,7 +329,7 @@ setTimeout(function(){
 					$S('#sayso-starbar #starbar-logoBorder').show();
 					starBarStatusHeight = 'starbar-closed';
 					starBarStatusWidth = 'starbar-visClosed';
-				break;
+					break;
 				case 'starbar-visStowed':					
 					$S('#sayso-starbar #starbar-player-console').hide();
 					$S('#sayso-starbar #starbar-toggleVis').attr('class','');
@@ -362,9 +338,59 @@ setTimeout(function(){
 					$S('#sayso-starbar #starbar-player-console').attr('class','').addClass('starbar-visStowed').show();
 					starBarStatusHeight = 'starbar-closed';
 					starBarStatusWidth = 'starbar-visStowed';
-				break;
+					break;
 			}	// END SWITCH
 			
+		}
+		else if (clickPoint === 'refresh') {
+		    switch (playerClass){
+                case 'starbar-visOpen':
+                    $S('#sayso-starbar #starbar-toggleVis').attr('class','');
+                    $S('#sayso-starbar #starbar-toggleVis').addClass('starbar-hide');
+                    $S('#sayso-starbar #starbar-logoBorder').hide();
+                    $S('#sayso-starbar #starbar-player-console').addClass('starbar-visOpen');
+                    $S('#sayso-starbar #starbar-player-console').animate({
+                            width: '100%'
+                        }, 500, function() {
+                            // Animation complete.
+                            $S(this).attr('class','').addClass('starbar-visOpen');
+                            $S('#starbar-mainContent').fadeIn('fast');          
+                    });
+                    starBarStatusHeight = 'starbar-open';
+                    starBarStatusWidth = 'starbar-visOpen';
+                    break;
+                case 'starbar-visClosed':
+                    $S('#sayso-starbar #starbar-mainContent').fadeOut('fast');
+                    $S('#sayso-starbar #starbar-toggleVis').attr('class','');
+                    $S('#sayso-starbar #starbar-toggleVis').addClass('close');
+                    $S('#sayso-starbar #starbar-player-console').animate({
+                            width: '90'
+                        }, 500, function() {
+                            // Animation complete.
+                            $S(this).attr('class','').addClass('starbar-visClosed');
+                            $S('#sayso-starbar #starbar-logoBorder').show();
+                        });
+                    starBarStatusHeight = 'starbar-closed';
+                    starBarStatusWidth = 'starbar-visClosed';
+                    break;
+                case 'starbar-visStowed':
+                    if (!$S('#starbar-mainContent').is(':hidden')) {
+                        $S('#sayso-starbar #starbar-mainContent').fadeOut('fast');
+                    }
+                    $S('#sayso-starbar #starbar-toggleVis').attr('class','');
+                    $S('#sayso-starbar #starbar-toggleVis').addClass('starbar-closed');
+                    $S('#sayso-starbar #starbar-logoBorder').hide();
+                    $S('#sayso-starbar #starbar-player-console').animate({
+                            width: '45'
+                        }, 500, function() {
+                            // Animation complete.
+                            $S(this).attr('class','').addClass('starbar-visStowed');
+                    });
+                    
+                    starBarStatusHeight = 'starbar-closed';
+                    starBarStatusWidth = 'starbar-visStowed';
+                    break;
+            }   // END SWITCH
 		}
 		else{
 			// if we clicked the logo, always go into full view if we aren't already there
@@ -380,7 +406,7 @@ setTimeout(function(){
 					$S(this).attr('class','');
 					$S(this).addClass('starbar-visOpen');
 					$S('#starbar-mainContent').fadeIn('fast');
-					saveVisibleState();
+					updateState();
 				});
 			starBarStatusHeight = 'starbar-closed';
 			starBarStatusWidth = 'starbar-visOpen';
@@ -458,12 +484,28 @@ setTimeout(function(){
 		});
 	}
 	
-	function saveVisibleState (visibleState){	
-	    if (!visibleState) visibleState = $S('#sayso-starbar #starbar-player-console').attr('class');
-	    window.sayso.starbar.visibleState = visibleState;
-	    var app = KOBJ.get_application('a239x14');
-        app.raise_event('change_visible_state', { 'visible_state' : visibleState });
+	function updateState (visibility){	
+	    if (!visibility) visibility = $S('#sayso-starbar #starbar-player-console').attr('class');
+	    window.sayso.starbar.state.visibility = visibility;
+	    var app = KOBJ.get_application(kynetxAppId);
+        app.raise_event('update_state', { 'visibility' : visibility /* other state changes here */ });
 	}
+	
+	function refreshState () {
+	    window.sayso.starbar.callback = function () { initStarBar('refresh'); };
+	    var app = KOBJ.get_application(kynetxAppId);
+        app.raise_event('refresh_state');
+	}
+	
+	// http://www.thefutureoftheweb.com/blog/detect-browser-window-focus
+	// I augmented this to include honoring existing focus events
+	if (/*@cc_on!@*/false) { // check for Internet Explorer
+        var oldOnFocus = document.onfocusin && typeof document.onfocusin === 'function' ? document.onfocusin : function () {};
+        document.onfocusin = function () { oldOnFocus(); refreshState(); };
+    } else {
+        var oldOnFocus = window.onfocus && typeof window.onfocus === 'function' ? window.onfocus : function () {};
+        window.onfocus = function () { oldOnFocus(); refreshState(); };
+    }
 	
 	function log (message) {
 	    if (console && console.log) {

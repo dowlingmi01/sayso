@@ -1,12 +1,10 @@
 <?php
 
-$pollFrequencies = new PollFrequencyLookup();
-$pollFrequencies->lookup();
-$emailFrequencies = new EmailFrequencyLookup();
-$emailFrequencies->lookup();
-$surveyTypes = new SurveyTypeLookup();
-$surveyTypes->lookup();
-
+$pollFrequencies = new Lookup_Collection_PollFrequency(); $pollFrequencies->lookup();
+$emailFrequencies = new Lookup_Collection_EmailFrequency(); $emailFrequencies->lookup();
+$surveyTypes = new Lookup_Collection_SurveyType(); $surveyTypes->lookup();
+$ethnicBackgrounds = new Lookup_Collection_EthnicBackground(); $ethnicBackgrounds->lookup();
+$genders = new Lookup_Collection_Gender(); $genders->lookup();
 
 ?>
 <div id="get-the-app">
@@ -64,16 +62,15 @@ $surveyTypes->lookup();
             </div>
             <div>
                 <ul>
+                    <?php foreach ($genders as $gender) : 
+                    if ($gender->short_name === 'unspecified') continue; ?>
                     <li>
-                        <label for="gender_1" class="required">Male</label>
-                        <input type="radio" name="gender" id="gender_1" value="male" />
+                        <label for="gender_<?= $gender->getId() ?>" class="required"><?= $gender->getTitle() ?></label>
+                        <input type="radio" name="gender_id" id="gender_<?= $gender->getId() ?>" value="<?= $gender->getId() ?>" />
                     </li>
-                    <li>
-                        <label for="gender_2" class="required">Female</label>
-                        <input type="radio" name="gender" id="gender_2" value="female" />
-                    </li>
+                    <?php endforeach ?>
                 </ul>
-                <div class="custom-error" name="gender" style="display: none;" />
+                <div class="custom-error" name="gender_id" style="display: none;" />
             </div>
             <div>
                 <label for="birth_year" class="required">Birth Year</label>
@@ -86,14 +83,11 @@ $surveyTypes->lookup();
             </div>
             <div>
                 <label for="ethnicity">Heritage</label>
-                <select name="ethnicity" id="ethnicity">
+                <select name="ethnicity_id" id="ethnicity">
                     <option value="">Choose...</option>
-                    <option value="white">White</option>
-                    <option value="african-american">African-American</option>
-                    <option value="asian">Asian</option>
-                    <option value="latino">Latino</option>
-                    <option value="native-american">Native-American</option>
-                    <option value="hawaiin-pacific-islander">Hawaiin-Pacific-Islander</option>
+                    <?php foreach ($ethnicBackgrounds as $ethnicBackground) : ?>
+                    <option value="<?= $ethnicBackground->getId() ?>"><?= $ethnicBackground->getTitle() ?></option>
+                    <?php endforeach ?>
                 </select>
             </div>
             <div>
@@ -121,7 +115,7 @@ $surveyTypes->lookup();
                     <tr>
                         <td>Emails</td>
                         <?php foreach ($emailFrequencies as $frequency) : ?>
-                            <td><input type="radio" name="email_frequency" value="<?= $frequency->getId() ?>" /></td>
+                            <td><input type="radio" name="email_frequency_id" value="<?= $frequency->getId() ?>" /></td>
                             <td rowspan="2"><?= $frequency->extra ?></td>
                         <?php endforeach ?>
                         
@@ -129,12 +123,12 @@ $surveyTypes->lookup();
                     <tr>
                         <td>Polls</td>
                         <?php foreach ($pollFrequencies as $frequency) : ?>
-                            <td><input type="radio" name="poll_frequency" value="<?= $frequency->getId() ?>" /></td>
+                            <td><input type="radio" name="poll_frequency_id" value="<?= $frequency->getId() ?>" /></td>
                         <?php endforeach ?>
                     </tr>
                 </table>
-                <div class="custom-error" name="email_frequency" style="display: none;"></div>
-                <div class="custom-error" name="poll_frequency" style="display: none;"></div>
+                <div class="custom-error" name="email_frequency_id" style="display: none;"></div>
+                <div class="custom-error" name="poll_frequency_id" style="display: none;"></div>
                 <!--div>
                     <h4>Emails</h4>
                     <ul>
@@ -180,11 +174,11 @@ $surveyTypes->lookup();
                 <h3>On what subjects and industries do you want to weigh in on?</h3>
                 <?php foreach ($surveyTypes as $surveyType) : ?>
                 <div>
-                    <input type="checkbox" name="survey_type[]" value="<?= $surveyType->getId() ?>" />
+                    <input type="checkbox" name="survey_type_id[]" value="<?= $surveyType->getId() ?>" />
                     <label><?= ucwords($surveyType->getTitle()) ?></label>
                 </div>
                 <?php endforeach ?>
-                <div class="custom-error" name="survey_type" style="display: none;"></div>
+                <div class="custom-error" name="survey_type_id" style="display: none;"></div>
             </div>
             
         </fieldset>

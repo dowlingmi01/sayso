@@ -16,7 +16,7 @@ class IndexController extends Api_AbstractController
     public function registerSubmitAction () 
     {
         $this->_enableRenderer(new Api_Plugin_JsonRenderer());
-        $this->_createMissingParameters(array('email_frequency', 'poll_frequency', 'survey_type', 'gender'));
+        $this->_createMissingParameters(array('email_frequency_id', 'poll_frequency_id', 'survey_type_id', 'gender_id'));
         
         $validAlpha = new Zend_Validate_Alpha(true);
         
@@ -62,7 +62,7 @@ class IndexController extends Api_AbstractController
                 , Zend_Filter_Input::MESSAGES => 'Password is required'
                 , $validPassword
             )
-            , 'gender' => array(
+            , 'gender_id' => array(
                 new Zend_Validate_NotEmpty()
                 , Zend_Filter_Input::MESSAGES => 'Gender is required'
             )
@@ -71,20 +71,24 @@ class IndexController extends Api_AbstractController
                 , Zend_Filter_Input::MESSAGES => 'Birth year is required'
                 , $yearRange
             )
-            , 'email_frequency' => array(
+            , 'email_frequency_id' => array(
                 new Zend_Validate_NotEmpty()
                 , Zend_Filter_Input::MESSAGES => 'Email frequency is required'
             )
-            , 'poll_frequency' => array(
+            , 'poll_frequency_id' => array(
                 new Zend_Validate_NotEmpty()
                 , Zend_Filter_Input::MESSAGES => 'Poll frequency is required'
             )
-            , 'survey_type' => array(
+            , 'survey_type_id' => array(
                 new Zend_Validate_NotEmpty()
                 , Zend_Filter_Input::MESSAGES => 'Select at least one survey type'
             )
-            , 'ethnicity' => array()
-            , 'timezone' => array()
+            , 'ethnicity_id' => array(
+                Zend_Filter_Input::ALLOW_EMPTY => true
+            )
+            , 'timezone' => array(
+                Zend_Filter_Input::ALLOW_EMPTY => true
+            )
         );
         $input = new Zend_Filter_Input($filters, $validators);
         $input->setData($this->_request->getPost());
@@ -96,7 +100,7 @@ class IndexController extends Api_AbstractController
             // is validated, so we don't have conflicting messages
             if (!$passwordVerifyValidated)
             {
-                $email = new Email();
+                $email = new User_Email();
                 $email->email = $input->email;
                 
                 // create user object with filtered data 
@@ -106,19 +110,19 @@ class IndexController extends Api_AbstractController
                 $user->username =      $input->username;
                 $user->first_name =    $input->first_name;
                 $user->last_name =     $input->last_name;
-                $user->gender =        $input->gender;
-                $user->ethnicity =     $input->ethnicity;
+                $user->gender_id =     $input->gender_id;
+                $user->ethnicity_id =  $input->ethnicity_id;
                 $user->birthdate =     $input->birth_year . '-00-00'; // ensure mysql date field accepts year
                 $user->timezone =      urldecode($input->timezone);
             
-                $preference = new PreferenceGeneral();
-                $preference->poll_frequency_id = $input->poll_frequency;
-                $preference->email_frequency_id = $input->email_frequency;
+                $preference = new Preference_General();
+                $preference->poll_frequency_id = $input->poll_frequency_id;
+                $preference->email_frequency_id = $input->email_frequency_id;
                 $user->setPreference($preference);
                 
-                $surveyTypes = new PreferenceSurveyTypeCollection();
-                foreach ($input->survey_type as $surveyTypeId) {
-                    $surveyTypes->addItem(new PreferenceSurveyType(array('survey_type_id' => $surveyTypeId)));
+                $surveyTypes = new Preference_SurveyTypeCollection();
+                foreach ($input->survey_type_id as $surveyTypeId) {
+                    $surveyTypes->addItem(new Preference_SurveyType(array('survey_type_id' => $surveyTypeId)));
                 }
                 $user->setSurveyTypes($surveyTypes);
                 

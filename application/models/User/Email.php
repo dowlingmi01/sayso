@@ -1,6 +1,6 @@
 <?php
 
-class Email extends Record
+class User_Email extends Record
 {
     protected $_tableName = 'user_email';
 }

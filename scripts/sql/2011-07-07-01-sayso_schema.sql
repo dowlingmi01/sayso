@@ -1,32 +1,10 @@
-DROP TABLE IF EXISTS user_role;
-
-CREATE TABLE user_role (
-    id int(10) NOT NULL,
-    name varchar(32),
-    description varchar(255),
-    parent_id int(10) DEFAULT NULL,
-    ordinal int(3) NOT NULL,
-    created timestamp DEFAULT '0000-00-00 00:00:00',
-    modified timestamp DEFAULT '0000-00-00 00:00:00',
-    PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO 
-    user_role (id, name, description, ordinal, parent_id, created) 
-VALUES 
-    (1, 'guests', 'Guest role (not actually a user)', 10, null, now()), 
-    (2, 'users', 'Basic user role', 20, 1, now()), 
-    (3, 'moderators', 'User role with added privilege of moderation within a site', 30, 2, now()), 
-    (4, 'site_admins', 'Moderator role with added privilege of administering users/moderators within a site', 40, 3, now()), 
-    (5, 'group_admins', 'Administrator role with added privilege of administering site groups', 50, 4, now()), 
-    (6, 'root_admins', 'Administrator with "root" privileges across all sites', 60, 5, now());
+SET foreign_key_checks = 0;
 
 /**
  * User tables
  * 
  */
-
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `user`; /* NOTE: "DROP TABLE IF EXISTS" on an empty DB generates warnings */
 
 CREATE TABLE `user` (
     id int(10) NOT NULL auto_increment,
@@ -35,9 +13,10 @@ CREATE TABLE `user` (
     password_salt varchar(32),
     first_name varchar(64),
     last_name varchar(64),
-    gender enum('male', 'female', 'unspecified') DEFAULT 'unspecified',
-    ethnicity enum('white', 'african-american', 'asian', 'latino', 'native-american', 'hawaiin-pacific-islander', 'unspecified') DEFAULT 'unspecified',
-    birthdate date,
+    gender_id int(10),
+    ethnicity_id int(10) DEFAULT NULL,
+    income_range_id int(10) DEFAULT NULL,
+    birthdate date COMMENT "Use this in relation to lookup_age_range",
     url varchar(100),
     timezone varchar(16),
     primary_email_id int(10),
@@ -47,11 +26,56 @@ CREATE TABLE `user` (
     created timestamp DEFAULT '0000-00-00 00:00:00',
     modified timestamp DEFAULT '0000-00-00 00:00:00',
     PRIMARY KEY (id),
-    CONSTRAINT user_user_role_id FOREIGN KEY (user_role_id) REFERENCES user_role (id) ON DELETE SET NULL ON UPDATE CASCADE
+    CONSTRAINT user_user_role_id FOREIGN KEY (user_role_id) REFERENCES user_role (id) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT user_gender_id FOREIGN KEY (gender_id) REFERENCES lookup_gender (id) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT user_ethnicity_id FOREIGN KEY (ethnicity_id) REFERENCES lookup_ethnicity (id) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT user_income_range_id FOREIGN KEY (income_range_id) REFERENCES lookup_income_range (id) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT user_primary_email_id FOREIGN KEY (primary_email_id) REFERENCES user_email (id) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT user_primary_phone_id FOREIGN KEY (primary_phone_id) REFERENCES user_phone (id) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT user_primary_address_id FOREIGN KEY (primary_address_id) REFERENCES user_address (id) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-   
+  
+DROP TABLE IF EXISTS user_child;
 DROP TABLE IF EXISTS user_social;
+DROP TABLE IF EXISTS user_email;
+DROP TABLE IF EXISTS user_address;
+DROP TABLE IF EXISTS user_phone;
+DROP TABLE IF EXISTS user_avatar;
+DROP TABLE IF EXISTS user_role; 
+DROP TABLE IF EXISTS starbar;
+DROP TABLE IF EXISTS starbar_content;
+DROP TABLE IF EXISTS lookup_gender;
+DROP TABLE IF EXISTS lookup_ethnicity;
+DROP TABLE IF EXISTS lookup_income_range;
+DROP TABLE IF EXISTS lookup_age_range;
+DROP TABLE IF EXISTS lookup_quota_percentile;
+DROP TABLE IF EXISTS lookup_survey_type;
+DROP TABLE IF EXISTS lookup_poll_frequency;
+DROP TABLE IF EXISTS lookup_email_frequency;
+DROP TABLE IF EXISTS lookup_search_engines;
+DROP TABLE IF EXISTS lookup_social_activity_type;
+DROP TABLE IF EXISTS preference_general;
+DROP TABLE IF EXISTS preference_survey_type;
+DROP TABLE IF EXISTS study_domain;
+DROP TABLE IF EXISTS study_tag;
+DROP TABLE IF EXISTS study_tag_domain_map;
+DROP TABLE IF EXISTS study;
+DROP TABLE IF EXISTS study_search_engines_map;
+DROP TABLE IF EXISTS study_social_activity_type_map; 
+DROP TABLE IF EXISTS study_quota;
+
+SET foreign_key_checks = 1;
+
+CREATE TABLE user_child (
+    id int(10) NOT NULL auto_increment,
+    user_id int(10) DEFAULT NULL,
+    name varchar(32) DEFAULT NULL,
+    birthdate date DEFAULT NULL,
+    created timestamp DEFAULT '0000-00-00 00:00:00',
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (id),
+    CONSTRAINT user_child_user_id FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE user_social (
     id int(10) NOT NULL auto_increment,
@@ -66,9 +90,6 @@ CREATE TABLE user_social (
     CONSTRAINT user_social_user_id FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-DROP TABLE IF EXISTS user_email;
-
 CREATE TABLE user_email (
     id int(10) NOT NULL auto_increment,
     user_id int(10) DEFAULT NULL,
@@ -78,9 +99,6 @@ CREATE TABLE user_email (
     PRIMARY KEY (id),
     CONSTRAINT user_email_user_id FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-DROP TABLE IF EXISTS user_address;
 
 CREATE TABLE user_address (
     id int(10) NOT NULL auto_increment,
@@ -96,8 +114,6 @@ CREATE TABLE user_address (
     CONSTRAINT user_address_user_id FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS user_phone;
-
 CREATE TABLE user_phone (
     id int(10) NOT NULL auto_increment,
     user_id int(10) DEFAULT NULL,
@@ -107,8 +123,6 @@ CREATE TABLE user_phone (
     PRIMARY KEY (id),
     CONSTRAINT user_phone_user_id FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS user_avatar;
 
 CREATE TABLE user_avatar (
     id int(10) NOT NULL auto_increment,
@@ -124,25 +138,34 @@ CREATE TABLE user_avatar (
     CONSTRAINT user_avatar_user_id FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE user_role (
+    id int(10) NOT NULL,
+    short_name varchar(32) NOT NULL,
+    label varchar(32),
+    description varchar(255),
+    parent_id int(10) DEFAULT NULL,
+    ordinal int(3) NOT NULL,
+    created timestamp DEFAULT '0000-00-00 00:00:00',
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /**
  * Starbar
  * 
  */
 
-DROP TABLE IF EXISTS starbar;
 
 CREATE TABLE starbar (
     id int(10) NOT NULL auto_increment,
-    name varchar(100) NOT NULL,
+    short_name varchar(100) NOT NULL,
+    label varchar(100),
     description varchar(255),
     user_pseudonym varchar(32), /* single tense i.e. "Little Monster", "Stalker", "Follower" */
     created timestamp DEFAULT '0000-00-00 00:00:00',
     modified timestamp DEFAULT '0000-00-00 00:00:00',
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS starbar_content;
 
 CREATE TABLE starbar_content (
     id int(10) NOT NULL auto_increment,
@@ -158,101 +181,109 @@ CREATE TABLE starbar_content (
     CONSTRAINT starbar_content_starbar_id FOREIGN KEY (starbar_id) REFERENCES starbar (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
 /**
  * Lookup tables
  * 
  */
 
-DROP TABLE IF EXISTS lookup_survey_type;
+CREATE TABLE lookup_gender (
+    id int(10) NOT NULL auto_increment,
+    short_name varchar(32) NOT NULL,
+    label varchar(32),
+    description varchar(255),
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE lookup_ethnicity (
+    id int(10) NOT NULL auto_increment,
+    short_name varchar(32) NOT NULL,
+    label varchar(32),
+    description varchar(255),
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE lookup_income_range (
+    id int(10) NOT NULL auto_increment,
+    income_from int(10),
+    income_to int(10),
+    ordinal int(10),
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    
+CREATE TABLE lookup_age_range (
+    id int(10) NOT NULL auto_increment,
+    age_from int(10),
+    age_to int(10),
+    ordinal int(10),
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE lookup_quota_percentile (
+    id int(10) NOT NULL auto_increment,
+    quota int(10),
+    quarter boolean COMMENT "true for 25,50,75,100",
+    ordinal int(10),
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE lookup_survey_type (
     id int(10) NOT NULL,
-    name varchar(100) NOT NULL,
+    short_name varchar(100) NOT NULL,
+    label varchar(100),
     description varchar(255),
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO lookup_survey_type (id, name) VALUES 
-    (1, 'technology'),
-    (2, 'food'),
-    (3, 'religion'),
-    (4, 'news'),
-    (5, 'celebrities'),
-    (6, 'politics'),
-    (7, 'sports'),
-    (8, 'household'),
-    (9, 'television');
-
-    
-DROP TABLE IF EXISTS lookup_poll_frequency;
 
 CREATE TABLE lookup_poll_frequency (
     id int(10) NOT NULL auto_increment,
-    name varchar(100) NOT NULL,
+    short_name varchar(100) NOT NULL,
+    label varchar(100),
     description varchar(255),
     extra varchar(255), 
     default_frequency boolean,
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO lookup_poll_frequency (id, name, description, extra, default_frequency) VALUES 
-    (1, 'often', 'Often - earn the most Pay.So!', 'Earn a lotta Pay.So! :D', false),
-    (2, 'occasionally', 'Occasionally - earn a little Pay.So', 'Earn a little Pay.So. :|', true),
-    (3, 'never', 'Never - no Pay.So :(', 'Earn no Pay.So. :(', false);
-
-    
-DROP TABLE IF EXISTS lookup_email_frequency;
 
 CREATE TABLE lookup_email_frequency (
     id int(10) NOT NULL auto_increment,
-    name varchar(100) NOT NULL,
+    short_name varchar(100) NOT NULL,
+    label varchar(100),
     description varchar(255),
     extra varchar(255), 
     default_frequency boolean,
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO lookup_email_frequency (id, name, description, extra, default_frequency) VALUES 
-    (1, 'often', 'Often - earn the most Pay.So!', 'Earn a lotta Pay.So! :D', false),
-    (2, 'occasionally', 'Occasionally - earn a little Pay.So', 'Earn a little Pay.So. :|', true),
-    (3, 'never', 'Never - no Pay.So :(', 'Earn no Pay.So. :(', false);
- 
-    
-DROP TABLE IF EXISTS lookup_search_engines;
 
 CREATE TABLE lookup_search_engines (
     id int(10) NOT NULL auto_increment,
-    name varchar(100) NOT NULL,
+    short_name varchar(100) NOT NULL,
+    label varchar(100),
     description varchar(255) DEFAULT NULL,
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO lookup_search_engines (id, name) VALUES 
-    (1, 'bing'),
-    (2, 'google'),
-    (3, 'yahoo!');
-    
-    
-DROP TABLE IF EXISTS lookup_social_activity_type;
-    
 CREATE TABLE lookup_social_activity_type (
     id int(10) NOT NULL auto_increment,
-    name varchar(100) NOT NULL,
+    short_name varchar(100) NOT NULL,
+    label varchar(100),
     description varchar(255) DEFAULT NULL,    
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO lookup_social_activity_type (id, name) VALUES 
-    (1, 'facebook_like'),
-    (2, 'tweet');
 
 /**
  * Preferences
  * 
  */
-
-DROP TABLE IF EXISTS preference_general;
 
 CREATE TABLE preference_general (
     id int(10) NOT NULL auto_increment,
@@ -267,7 +298,6 @@ CREATE TABLE preference_general (
     CONSTRAINT preference_general_email_frequency_id FOREIGN KEY (email_frequency_id) REFERENCES lookup_email_frequency (id) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS preference_survey_type;
 
 CREATE TABLE preference_survey_type (
     id int(10) NOT NULL auto_increment,
@@ -281,25 +311,23 @@ CREATE TABLE preference_survey_type (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /**
- * Admin
+ * Study
  * NOTE: user_id for these tables is the user who setup the study
  */
 
-DROP TABLE IF EXISTS admin_tag_domain;
-
-CREATE TABLE admin_tag_domain (
+CREATE TABLE study_domain (
     id int(10) NOT NULL auto_increment,
     user_id int(10) DEFAULT NULL,
     domain varchar(100) NOT NULL,
     created timestamp DEFAULT '0000-00-00 00:00:00',
     modified timestamp DEFAULT '0000-00-00 00:00:00',
     PRIMARY KEY (id),
-    CONSTRAINT tag_domain_user_id FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE SET NULL ON UPDATE CASCADE
+    UNIQUE KEY domain_unique (domain),
+    CONSTRAINT domain_user_id FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS admin_tag;
 
-CREATE TABLE admin_tag (
+CREATE TABLE study_tag (
     id int(10) NOT NULL auto_increment,
     user_id int(10) DEFAULT NULL,
     name varchar(100) NOT NULL COMMENT "label",
@@ -309,20 +337,16 @@ CREATE TABLE admin_tag (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS admin_tag_domain_map;
 
-CREATE TABLE admin_tag_domain_map ( 
+CREATE TABLE study_tag_domain_map ( 
     tag_id int(10) NOT NULL,
-    tag_domain_id int(10) NOT NULL,
-    UNIQUE KEY tag_domain_map_unique (tag_domain_id, tag_id),
-    CONSTRAINT tag_domain_map_tag_id FOREIGN KEY (tag_id) REFERENCES admin_tag (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT tag_domain_map_tag_domain_id FOREIGN KEY (tag_domain_id) REFERENCES admin_tag_domain (id) ON DELETE CASCADE ON UPDATE CASCADE
+    domain_id int(10) NOT NULL,
+    UNIQUE KEY tag_domain_map_unique (domain_id, tag_id),
+    CONSTRAINT tag_domain_map_tag_id FOREIGN KEY (tag_id) REFERENCES study_tag (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT tag_domain_map_domain_id FOREIGN KEY (domain_id) REFERENCES study_domain (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-DROP TABLE IF EXISTS admin_study;
-
-CREATE TABLE admin_study (
+CREATE TABLE study (
     id int(10) NOT NULL auto_increment,
     user_id int(10) DEFAULT NULL,
     name varchar(100) DEFAULT NULL,
@@ -339,24 +363,31 @@ CREATE TABLE admin_study (
     CONSTRAINT study_user_id FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS admin_search_engines_map;
-
-CREATE TABLE admin_search_engines_map (
-    admin_study_id int(10) NOT NULL,
+CREATE TABLE study_search_engines_map (
+    study_id int(10) NOT NULL,
     lookup_search_engines_id int(10) NOT NULL,
-    UNIQUE KEY map_unique (admin_study_id, lookup_search_engines_id),
-    CONSTRAINT search_engine_map_admin_study FOREIGN KEY (admin_study_id) REFERENCES admin_study (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    UNIQUE KEY map_unique (study_id, lookup_search_engines_id),
+    CONSTRAINT search_engine_map_study FOREIGN KEY (study_id) REFERENCES study (id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT search_engine_map_search_engine FOREIGN KEY (lookup_search_engines_id) REFERENCES lookup_search_engines (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS admin_social_activity_type_map;
-
-CREATE TABLE admin_social_activity_type_map (
-    admin_study_id int(10) NOT NULL,
+CREATE TABLE study_social_activity_type_map (
+    study_id int(10) NOT NULL,
     lookup_social_activity_type_id int(10) NOT NULL,
-    UNIQUE KEY map_unique (admin_study_id, lookup_social_activity_type_id),
-    CONSTRAINT social_activity_map_admin_study FOREIGN KEY (admin_study_id) REFERENCES admin_study (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    UNIQUE KEY map_unique (study_id, lookup_social_activity_type_id),
+    CONSTRAINT social_activity_map_study FOREIGN KEY (study_id) REFERENCES study (id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT social_activity_map_social_activity FOREIGN KEY (lookup_social_activity_type_id) REFERENCES lookup_social_activity_type (id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE study_quota (
+    id int(10) NOT NULL auto_increment,
+    user_id int(10) DEFAULT NULL,
+    percentile_id int(10) NOT NULL,
+    gender_id int(10) NOT NULL,
+    age_range_id int(10) DEFAULT NULL,
+    created timestamp DEFAULT '0000-00-00 00:00:00',
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
  
 /*

@@ -1,6 +1,6 @@
 <?php
 
-class PreferenceGeneral extends Record
+class Preference_General extends Record
 {
     protected $_tableName = 'preference_general';
     
@@ -23,27 +23,27 @@ class PreferenceGeneral extends Record
         return $this->_user;
     }
     
-    public function setPollFrequency (PollFrequency $frequency) {
+    public function setPollFrequency (Lookup_PollFrequency $frequency) {
         $this->_pollFrequency = $frequency;
         $this->poll_frequency_id = $frequency->getId();
     }
     
     public function getPollFrequency () {
         if (!$this->_pollFrequency) {
-            $this->_pollFrequency = new PollFrequency();
+            $this->_pollFrequency = new Lookup_PollFrequency();
             $this->_pollFrequency->loadData($this->poll_frequency_id);
         }
         return $this->_pollFrequency;
     }
     
-    public function setEmailFrequency (EmailFrequency $frequency) {
+    public function setEmailFrequency (Lookup_EmailFrequency $frequency) {
         $this->_emailFrequency = $frequency;
         $this->email_frequency_id = $frequency->getId();
     }
     
     public function getEmailFrequency () {
         if (!$this->_emailFrequency) {
-            $this->_emailFrequency = new EmailFrequency();
+            $this->_emailFrequency = new Lookup_EmailFrequency();
             $this->_emailFrequency->loadData($this->email_frequency_id);
         }
         return $this->_emailFrequency;

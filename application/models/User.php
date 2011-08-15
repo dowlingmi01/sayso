@@ -5,17 +5,17 @@ class User extends Record
     protected $_tableName = 'user';
     
     /**
-     * @var Email
+     * @var User_Email
      */
     protected $_email;
     
     /**
-     * @var PreferenceGeneral
+     * @var Preference_General
      */
     protected $_generalPreference;
     
     /**
-     * @var PreferenceSurveyTypeCollection
+     * @var Preference_SurveyTypeCollection
      */
     protected $_surveyTypes;
     
@@ -29,7 +29,7 @@ class User extends Record
      */
     protected $_plainTextPassword;
     
-    public function setEmail (Email $email) {
+    public function setEmail (User_Email $email) {
         $this->_email = $email;
     }
     
@@ -40,7 +40,7 @@ class User extends Record
         return $this->_email;
     }
     
-    public function setPreference (PreferenceGeneral $pref) {
+    public function setPreference (Preference_General $pref) {
         $this->_generalPreference = $pref;
     }
     
@@ -51,7 +51,7 @@ class User extends Record
         return $this->_generalPreference;
     }
     
-    public function setSurveyTypes (PreferenceSurveyTypeCollection $surveyTypes) {
+    public function setSurveyTypes (Preference_SurveyTypeCollection $surveyTypes) {
         $this->_surveyTypes = $surveyTypes;
     }
     
@@ -119,9 +119,9 @@ class User extends Record
     
     public function exportProperties($parentObject = null) {
         $props = array(
-            'email' => $this->_email,
-            'preferences' => $this->_generalPreference,
-            'survey_types' => $this->_surveyTypes
+            '_email' => $this->_email,
+            '_preferences' => $this->_generalPreference,
+            '_survey_types' => $this->_surveyTypes
         );
         return array_merge(parent::exportProperties($parentObject), $props);
     }

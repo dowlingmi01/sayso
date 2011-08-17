@@ -1,7 +1,7 @@
     <form action="/" class="main-survey" method="post">
       <section class="main-criteria" id="ad-tags">
         <header>
-          <h2>Ad Tags</h2>
+          <h2>Ad Tags (ADgregator)</h2>
           <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
         </header>
         <div class="section-container">
@@ -40,7 +40,7 @@
       
       <section class="main-criteria" id="domains-creative" style="display: none;">
         <header>
-          <h2>Domains &amp; Creative</h2>
+          <h2>Domains &amp; Creative (ADjuster)</h2>
           <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
         </header>
         <div class="section-container">
@@ -87,9 +87,61 @@
         </div><!-- end .section-container -->
       </section><!-- end #domains-creative -->
       
+      <section class="main-criteria study-base" id="study-base">
+        <header>
+          <h2>Study: Basics</h2>
+          <nav class="lock"><a href="" class="lock">Lock</a><a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
+        </header>
+        <div class="section-container">
+          <fieldset class="padded-column-5">
+            <legend class="hide-visual">Basic details about the survey</legend>
+            <ul>
+              <li>
+                <label for="study-name">Study Name</label>
+                <input type="text" name="study-name" id="study-name">
+              </li>
+              <li>
+                <label for="study-id">Study ID</label>
+                <input type="text" name="study-id" id="study-id">
+              </li>
+              <li>
+                <label for="study-sample-size">Sample Size (N)</label>
+                <input type="text" name="study-sample-size" id="study-sample-size">
+              </li>
+              <li>
+                <label for="study-min-threshold">Min. Threshold</label>
+                <input type="text" name="study-min-threshold" id="study-min-threshold">
+              </li>
+            </ul>
+          </fieldset><div class="padded-column-5">
+          <fieldset>
+            <legend class="hide-visual">Start and end dates for the survey</legend>
+            <ul>
+              <li>
+                <label for="study-start-date">Begin</label>
+                <input class="input-date" name="study-start-date" id="study-start-date">
+              </li>
+              <li>
+                <label for="study-end-date">End</label>
+                <input class="input-date" name="study-end-date" id="study-end-date">
+              </li>
+            </ul>
+          </fieldset>
+          <fieldset>
+            <legend>Is this going to be a survey?</legend>          
+            <div class="radios-labeled">
+              <input type="radio" name="study-is-survey" id="study-is-survey-1" value="yes">
+              <label for="study-is-survey-1">Yes</label> 
+              <input type="radio" name="study-is-survey" id="study-is-survey-2" value="no">
+              <label for="study-is-survey-2">No</label>
+            </div>
+          </fieldset></div><!-- end .padded-column-5 -->
+        </div><!-- end .section-container  -->
+      </section><!-- end #study-base -->
+      
       <section class="main-criteria" id="behavioral-metrics">
         <header>
-          <h2>Behavioral Metrics to Record</h2>
+          <h2>Study: Behavioral Metrics</h2>
           <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
         </header>
         <div class="section-container">
@@ -151,7 +203,7 @@
       </section><!-- end #behavioral-metrics  -->
       <section class="main-criteria" id="survey">
         <header>
-          <h2>Survey</h2>
+          <h2>Study: Survey</h2>
           <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
         </header>
         <div class="section-container">
@@ -212,60 +264,84 @@
           </section><!-- end #survey-qualifiers -->
         </div><!-- end .section-container  -->
       </section><!-- end #survey -->
-      <section class="main-criteria study-base" id="study-base">
+      
+      <section class="main-criteria study-base" id="study-quotas">
         <header>
-          <h2>Ad Effectiveness Study</h2>
+          <h2>Study: Quotas</h2>
           <nav class="lock"><a href="" class="lock">Lock</a><a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
         </header>
         <div class="section-container">
-          <fieldset class="padded-column-5">
-            <legend class="hide-visual">Basic details about the survey</legend>
-            <ul>
-              <li>
-                <label for="study-name">Study Name</label>
-                <input type="text" name="study-name" id="study-name">
-              </li>
-              <li>
-                <label for="study-id">Study ID</label>
-                <input type="text" name="study-id" id="study-id">
-              </li>
-              <li>
-                <label for="study-sample-size">Sample Size (N)</label>
-                <input type="text" name="study-sample-size" id="study-sample-size">
-              </li>
-              <li>
-                <label for="study-min-threshold">Min. Threshold</label>
-                <input type="text" name="study-min-threshold" id="study-min-threshold">
-              </li>
+          <section class="secondary-criteria full" id="study-quota">
+            <header>
+              <h3>Quotas</h3>
+              <p>Who will qualify for the study?</p>
+            </header>
+            <fieldset id="fieldset-study-quota">
+              <ul class="study-parameters">
+                <li class="padded-column-10 first">
+                  <ul>
+                    <li class="quota-select first">
+                      <label for="study-gender">M/F</label>
+                      <select name="study-gender" id="study-gender">
+                        <option value="" selected>Choose</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                    </li>
+                    <li class="quota-select">
+                      <label for="study-age">Age</label>
+                      <select name="study-age" id="study-age">
+                        <option value="" selected>Choose</option>
+                        <option value="13-17">13-17</option>
+                        <option value="18-24">18-24</option>
+                        <option value="25-34">25-34</option>
+                        <option value="35-44">35-44</option>
+                        <option value="45-54">45-54</option>
+                        <option value="55-64">55-64</option>
+                        <option value="65+">65+</option>
+                        <option value="18+">18+</option>
+                        <option value="18-49">18-49</option>
+                      </select>
+                    </li>
+                    <li class="quota-select">
+                      <label for="study-ethnicity">Ethnicity</label>
+                      <select name="study-ethnicity" id="study-ethnicity">
+                        <option value="" selected>Choose</option>
+                        <option value="All">All</option>
+                        <option value="White">White</option>
+                        <option value="African American">African American</option>
+                        <option value="Asian">Asian</option>
+                        <option value="Latino">Latino</option>
+                        <option value="Native American">Native American</option>
+                        <option value="Hawaiian or Pacific Islander">Hawaiian or Pacific Islander</option>
+                      </select>
+                    </li>
+                    <li class="quota-select">
+                      <label for="study-size-percent">Cell %</label>
+                      <select name="study-size-percent" id="study-size-percent">
+                        <option value="" selected>Choose</option>
+                        <option value="25">25%</option>
+                        <option value="50">50%</option>
+                        <option value="75">75%</option>
+                        <option value="100">100%</option>
+                      </select>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </fieldset>
+            <div class="button-holder">
+              <button id="add-quota" class="add-fieldset-data styled-button">Add This Quota</button>
+            </div>            
+            <ul class="cell-lists empty data-list" id="list-study-quota">
             </ul>
-          </fieldset><div class="padded-column-5">
-          <fieldset>
-            <legend class="hide-visual">Start and end dates for the survey</legend>
-            <ul>
-              <li>
-                <label for="study-start-date">Begin</label>
-                <input class="input-date" name="study-start-date" id="study-start-date">
-              </li>
-              <li>
-                <label for="study-end-date">End</label>
-                <input class="input-date" name="study-end-date" id="study-end-date">
-              </li>
-            </ul>
-          </fieldset>
-          <fieldset>
-            <legend>Is this going to be a survey?</legend>          
-            <div class="radios-labeled">
-              <input type="radio" name="study-is-survey" id="study-is-survey-1" value="yes">
-              <label for="study-is-survey-1">Yes</label> 
-              <input type="radio" name="study-is-survey" id="study-is-survey-2" value="no">
-              <label for="study-is-survey-2">No</label>
-            </div>
-          </fieldset></div><!-- end .padded-column-5 -->
+          </section><!-- end #cell-quota -->
         </div><!-- end .section-container  -->
       </section><!-- end #study-base -->
+      
       <section class="main-criteria" id="build-cells">
         <header>
-          <h2>Build Study Cells</h2>
+          <h2>Study: Cells</h2>
           <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
         </header>
         <div class="section-container">
@@ -307,71 +383,7 @@
               </div>
             </fieldset>
           </section>
-          <section class="secondary-criteria build-cells full" id="cell-quota">
-            <header>
-              <h3>Cell Quotas</h3>
-              <p>Who will qualify for the study?</p>
-            </header>
-            <fieldset id="fieldset-cell-quota">
-              <ul class="cell-parameters">
-                <li class="padded-column-10 first">
-                  <ul>
-                    <li class="quota-select first">
-                      <label for="cell-gender">M/F</label>
-                      <select name="cell-gender" id="cell-gender">
-                        <option value="" selected>Choose</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                      </select>
-                    </li>
-                    <li class="quota-select">
-                      <label for="cell-age">Age</label>
-                      <select name="cell-age" id="cell-age">
-                        <option value="" selected>Choose</option>
-                        <option value="13-17">13-17</option>
-                        <option value="18-24">18-24</option>
-                        <option value="25-34">25-34</option>
-                        <option value="35-44">35-44</option>
-                        <option value="45-54">45-54</option>
-                        <option value="55-64">55-64</option>
-                        <option value="65+">65+</option>
-                        <option value="18+">18+</option>
-                        <option value="18-49">18-49</option>
-                      </select>
-                    </li>
-                    <li class="quota-select">
-                      <label for="cell-size-percent">Cell %</label>
-                      <select name="cell-size-percent" id="cell-size-percent">
-                        <option value="" selected>Choose</option>
-                        <option value="25">25%</option>
-                        <option value="50">50%</option>
-                        <option value="75">75%</option>
-                        <option value="100">100%</option>
-                      </select>
-                    </li>
-                    <li class="quota-select">
-                      <label for="cell-ethnicity">Ethnicity</label>
-                      <select name="cell-ethnicity" id="cell-ethnicity">
-                        <option value="" selected>Choose</option>
-                        <option value="All">All</option>
-                        <option value="White">White</option>
-                        <option value="African American">African American</option>
-                        <option value="Asian">Asian</option>
-                        <option value="Latino">Latino</option>
-                        <option value="Native American">Native American</option>
-                        <option value="Hawaiian or Pacific Islander">Hawaiian or Pacific Islander</option>
-                      </select>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </fieldset>
-            <div class="button-holder">
-              <button id="add-quota" class="add-fieldset-data add-cell styled-button">Add This Quota</button>
-            </div>            
-            <ul class="cell-lists empty data-list" id="list-cell-quota">
-            </ul>
-          </section><!-- end #cell-quota -->
+          
           <section class="secondary-criteria behavioral-qualifiers build-cells full" id="behavioral-qualifiers">
             <header>
               <h3>Behavioral & Delivery Qualifiers</h3>

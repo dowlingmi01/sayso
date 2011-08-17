@@ -60,16 +60,6 @@ sayso.templates = {
         </ul>\
       </div>\
     </div>\
-    <div class="entry">\
-      <label>Cell Quotas</label>\
-      <div class="value">\
-        <ul>\
-          {{#quota}}\
-            <li>{{percent}}% {{ethnicity}} {{gender}}s, {{age}}</li>\
-          {{/quota}}\
-        </ul>\
-      </div>\
-    </div>\
     {{#qualifier}}\
     <div class="entry">\
       <label>Online Browsing</label>\

@@ -85,6 +85,15 @@
             tagdomain : {}, 
             domainAvail : {},
             creative : {},
+            basic : {
+                name: '',
+                id: '',
+                size: '',
+                minimum: '',
+                begindate: '',
+                enddate: '',
+                issurvey: 'no'
+            },
             metrics : { 
                 clicktrack : 'No',
                 searchengines : {},
@@ -95,22 +104,13 @@
                 tag : '',
                 deliverIf : {}
             },
-            basic : {
-                name: '',
-                id: '',
-                size: '',
-                minimum: '',
-                begindate: '',
-                enddate: '',
-                issurvey: 'no'
-            },
+            quota : {},
             cells : {}
         };
         
         // temporary object for storing list data 
         // prior to aggregation into sayso.data
         sayso.temp = {
-            quota : {},
             qualifier : {
                 browse : {},
                 search : {}
@@ -498,15 +498,14 @@
     $('input.input-date').datepicker();
     
     // ==============================================================
-    // Build Study Cells
+    // Quotas
     
-    // quotas (subset of cells)
     $('#add-quota').click(function(e) {
         e.preventDefault();
-        var gender = $('#cell-gender'),
-            age = $('#cell-age'),
-            percent = $('#cell-size-percent'),
-            ethnicity = $('#cell-ethnicity');
+        var gender = $('#study-gender'),
+            age = $('#study-age'),
+            percent = $('#study-size-percent'),
+            ethnicity = $('#study-ethnicity');
         if (!gender.val() && !age.val() && !ethnicity.val()) {
             alert('Quotas must have at least one criteria (gender, age or ethnicity)');
             return;
@@ -519,31 +518,34 @@
             // this may need a prop of 'type'
         };
         data.id = uniqueId();
-        sayso.temp.quota[data.id] = data;
+        sayso.data.quota[data.id] = data;
         // validate quota percent
         var checkPercent = 0;
-        for (var i in sayso.temp.quota) {
-            checkPercent += sayso.temp.quota[i].percent;
+        for (var i in sayso.data.quota) {
+            checkPercent += sayso.data.quota[i].percent;
         }
         if (checkPercent > 100) {
             alert('Total quotas exceeds 100%');
-            delete sayso.temp.quota[data.id];
+            delete sayso.data.quota[data.id];
             return;
         }
         // @todo handle missing data required by templates
-        $(tpl('quotas', data)).appendTo('#list-cell-quota');
+        $(tpl('quotas', data)).appendTo('#list-study-quota');
         gender.val(false); age.val(false); ethnicity.val(false); percent.val(false);
     });
     
-    $('#list-cell-quota a.delete').live('click', function (e) {
+    $('#list-study-quota a.delete').live('click', function (e) {
         e.preventDefault();
         var container = $(this).dataContainer(),
             id = container.getId();
         if (confirm('Are you sure you want to delete the quota "' + container.find('span').text() + '"?')) {
-            delete sayso.temp.quota[id];
+            delete sayso.data.quota[id];
             container.removeNow();
         }
     });
+    
+    // ==============================================================
+    // Build Study Cells
     
     // online browsing
     $('#add-browsing-qualifier').click(function(e) {
@@ -634,8 +636,8 @@
             alert('Study cell must have a description');
             return;
         }
-        if (!numProperties(sayso.temp.quota) || (!numProperties(sayso.temp.qualifier.browse) && !numProperties(sayso.temp.qualifier.search))) {
-            alert('Study cell must have quota(s) and qualifier(s)');
+        if (!numProperties(sayso.temp.qualifier.browse) && !numProperties(sayso.temp.qualifier.search)) {
+            alert('Study cell must have qualifier(s)');
             return;
         }
         // validate cell size does not exceed study sample size
@@ -678,7 +680,6 @@
             size : $('#cell-size').val(),
             deliverIf : $('input[name=deliver-if]:checked').val(),
             adtag : adtags,
-            quota : sayso.temp.quota,
             qualifier : {
                 browse : sayso.temp.qualifier.browse,
                 search : sayso.temp.qualifier.search
@@ -702,7 +703,6 @@
         }
         sayso.data.cells[cell.id] = cell;
         
-        sayso.temp.quota = {};
         sayso.temp.qualifier.browse = {};
         sayso.temp.qualifier.search = {};
         
@@ -721,7 +721,6 @@
         $('#build-cells select').val(false);
         $('#build-cells input[type=checkbox]').removeAttr('checked');
         
-        $('#list-cell-quota').empty();
         $('#list-browsing-qualifier').empty();
         $('#list-search-qualifier').empty();
         
@@ -737,7 +736,6 @@
                 type: cellData.type,
                 size: cellData.size,
                 adTag: [],
-                quota: [],
                 qualifier: {
                     browse: [],
                     search: [],
@@ -746,9 +744,6 @@
             };
           for (var i in cellData.adtag) {
             templateData.adTag.push(cellData.adtag[i].label);
-          }
-          for (var i in cellData.quota) {
-            templateData.quota.push(cellData.quota[i]);
           }
           for (var i in cellData.qualifier.browse) {
             templateData.qualifier.browse.push(cellData.qualifier.browse[i]);
@@ -789,11 +784,7 @@
         for (var i in data.adtag) {
             $('div[data-id=' + i + '] input').attr('checked', true);
         }
-        // re-display the quotas/qualifiers
-        for (var i in data.quota) {
-            sayso.temp.quota[i] = data.quota[i];
-            $(tpl('quotas', data.quota[i])).appendTo('#list-cell-quota');
-        }
+        // re-display the qualifiers
         for (var i in data.qualifier.browse) {
             sayso.temp.qualifier.browse[i] = data.qualifier.browse[i];
             $(tpl('browsingQualifiers', data.qualifier.browse[i])).appendTo('#list-browsing-qualifier');

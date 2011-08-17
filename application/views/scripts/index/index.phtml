@@ -7,72 +7,50 @@ $ethnicBackgrounds = new Lookup_Collection_EthnicBackground(); $ethnicBackground
 $genders = new Lookup_Collection_Gender(); $genders->lookup();
 
 ?>
-<div id="get-the-app">
-    <h2>Get the app!</h2>
-    <ul>
-        <li>
-            <h3>ADgregator ALPHA</h3>
-            <p></p>
-            <p><a href="/install/ADgregator/ADgregator-ALPHA.xpi" title="Click to install the ADgregator app in your browser">Install ADgregator in your Firefox browser</a></p>
-        </li>
-        <li>
-            <h3>ADjuster ALPHA</h3>
-            <p></p>
-            <p><a href="/install/ADjuster/ADjuster-ALPHA.xpi" title="Click to install the ADjuster app in your browser">Install ADjuster in your Firefox browser</a></p>
-        </li>
-        
-        <li>
-            <h3>Starbar ALPHA</h3>
-            <p></p>
-            <p><a href="/install/StarBar/Starbar-ALPHA.xpi" title="Click to install the StarBar app in your browser">Install StarBar in your Firefox browser</a></p>
-        </li>
-    </ul>
-</div>
+
 <div id="sign-up">
     <h2>Sign up!</h2>
     <form id="registration-form" method="POST" action="/index/register-submit">
         <fieldset>
             <legend>Username &amp; Password</legend>
-            <div>
+            <p>
                 <label for="username" class="required">Username</label>
-                <input type="text" name="username" id="username" />
-            </div>
-            <div>
+                <input name="username" id="username" type="text" class="input_text">
+            </p>
+            <p>
                 <label for="password" class="required">Password</label>
-                <input type="password" name="password" id="password" />
-            </div>
-            <div>
+                <input name="password" id="password" type="password" class="input_text">
+            </p>
+            <p>
                 <label for="password_verify" class="required">Verify Password</label>
-                <input type="password" name="password_verify" id="password_verify" />
-            </div>
+                <input name="password_verify" id="password_verify" type="password" class="input_text">
+            </p>
         </fieldset>
         <fieldset>
             <legend>Personal Info</legend>
-            <div>
+            <p>
                 <label for="first_name" class="required">First Name</label>
-                <input type="text" name="first_name" id="first_name" />
-            </div>
-            <div>
+                <input name="first_name" id="first_name" type="text" class="input_text">
+            </p>
+            <p>
                 <label for="last_name" class="required">Last Name</label>
-                <input type="text" name="last_name" id="last_name" />
-            </div>
-            <div>
+                <input name="last_name" id="last_name" type="text" class="input_text">
+            </p>
+            <p>
                 <label for="email" class="required">Email</label>
-                <input type="text" name="email" id="email" />
-            </div>
-            <div>
-                <ul>
-                    <?php foreach ($genders as $gender) : 
-                    if ($gender->short_name === 'unspecified') continue; ?>
-                    <li>
-                        <label for="gender_<?= $gender->getId() ?>" class="required"><?= $gender->getTitle() ?></label>
-                        <input type="radio" name="gender_id" id="gender_<?= $gender->getId() ?>" value="<?= $gender->getId() ?>" />
-                    </li>
-                    <?php endforeach ?>
-                </ul>
-                <div class="custom-error" name="gender_id" style="display: none;" />
-            </div>
-            <div>
+                <input name="email" id="email" type="text" class="input_text">
+            </p>
+            <p>
+                <label class="required">Gender</label>
+                <?php $male = $genders[1]; $female = $genders[2]; ?>
+                <input type="radio" name="gender_id" id="gender_<?= $male->getId() ?>" value="<?= $male->getId() ?>" />
+                <label for="gender_<?= $male->getId() ?>" class="required label_short"><?= $male->getTitle() ?></label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="gender_id" id="gender_<?= $female->getId() ?>" value="<?= $female->getId() ?>" />
+                <label for="gender_<?= $female->getId() ?>" class="required label_short"><?= $female->getTitle() ?></label>
+                <span class="custom-error" name="gender_id" style="display: none;" />
+            </p>
+            <p>
                 <label for="birth_year" class="required">Birth Year</label>
                 <select name="birth_year" id="birth_year">
                     <option value="">Choose ...</option>
@@ -80,17 +58,17 @@ $genders = new Lookup_Collection_Gender(); $genders->lookup();
                         <option value="<?= $i ?>"><?= $i ?></option>
                     <?php endfor ?>
                 </select>
-            </div>
-            <div>
-                <label for="ethnicity">Heritage</label>
+            </p>
+            <p>
+                <label class="required" for="ethnicity">Heritage</label>
                 <select name="ethnicity_id" id="ethnicity">
                     <option value="">Choose...</option>
                     <?php foreach ($ethnicBackgrounds as $ethnicBackground) : ?>
                     <option value="<?= $ethnicBackground->getId() ?>"><?= $ethnicBackground->getTitle() ?></option>
                     <?php endforeach ?>
                 </select>
-            </div>
-            <div>
+            </p>
+            <p>
                 <label for="timezone">Time Zone</label>
                 <select name="timezone" id="timezone">
                     <option value="">Choose...</option>
@@ -99,94 +77,83 @@ $genders = new Lookup_Collection_Gender(); $genders->lookup();
                     <?php endforeach ?>
                 </select>
                 <input type="hidden" name="timezone_type" value="utc" />
-            </div>
+            </p>
         </fieldset>
         <fieldset>
             <legend>Preferences</legend>
-            <div>
+            <p>
                 <h3>How often do you want to earn by giving your opinion?</h3>
-                <table>
-                    <tr>
-                        <th></th>
-                        <th colspan="2">Bring 'em on!</th>
-                        <th colspan="2">Occasionally</th>
-                        <th colspan="2">Never</th>
-                    </tr>
-                    <tr>
-                        <td>Emails</td>
-                        <?php foreach ($emailFrequencies as $frequency) : ?>
-                            <td><input type="radio" name="email_frequency_id" value="<?= $frequency->getId() ?>" /></td>
-                            <td rowspan="2"><?= $frequency->extra ?></td>
-                        <?php endforeach ?>
-                        
-                    </tr>
-                    <tr>
-                        <td>Polls</td>
-                        <?php foreach ($pollFrequencies as $frequency) : ?>
-                            <td><input type="radio" name="poll_frequency_id" value="<?= $frequency->getId() ?>" /></td>
-                        <?php endforeach ?>
-                    </tr>
+                <table width="100%">
+                    <tbody>
+                        <tr>
+                            <th></th>
+                            <?php foreach ($emailFrequencies as $frequency) : ?>
+                                <th><strong><?= $frequency->getTitle() ?></strong><br /><small><?= $frequency->extra ?></small></th>
+                            <?php endforeach ?>
+                        </tr>
+                        <tr>
+                            <td><strong>Emails</strong></td>
+                            <?php foreach ($emailFrequencies as $frequency) : ?>
+                                <td><input type="radio" name="email_frequency_id" value="<?= $frequency->getId() ?>" /></td>
+                                <!--td rowspan="2"><?= $frequency->extra ?></td-->
+                            <?php endforeach ?>
+                            
+                        </tr>
+                        <tr>
+                            <td><strong>Polls</strong></td>
+                            <?php foreach ($pollFrequencies as $frequency) : ?>
+                                <td><input type="radio" name="poll_frequency_id" value="<?= $frequency->getId() ?>" /></td>
+                            <?php endforeach ?>
+                        </tr>
+                    </tbody>
                 </table>
-                <div class="custom-error" name="email_frequency_id" style="display: none;"></div>
-                <div class="custom-error" name="poll_frequency_id" style="display: none;"></div>
-                <!--div>
-                    <h4>Emails</h4>
-                    <ul>
-                        <li>
-                            <label for="email_frequency_1">Email me like there's no tomorrow!</label>
-                            <input type="radio" name="email_frequency" id="email_frequency_1" value="often" />
-                            <span>Earn a lotta Pay.So! :D</span>
-                        </li>
-                        <li>
-                            <label for="email_frequency_2">Email me occasionally</label>
-                            <input type="radio" name="email_frequency" id="email_frequency_2" value="occasionally" />
-                            <span>Earn a little Pay.So. :|</span>
-                        </li>
-                        <li>
-                            <label for="email_frequency_3">No emails ever!</label>
-                            <input type="radio" name="email_frequency" id="email_frequency_3" value="never" />
-                            <span>Earn no Pay.So. :(</span>
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>Polls</h4>
-                    <ul>
-                        <li>
-                            <label for="poll_frequency_1">Bring on the polls!</label>
-                            <input type="radio" name="poll_frequency" id="poll_frequency_1" value="often" />
-                            <span>Earn a lotta Pay.So! :D</span>
-                        </li>
-                        <li>
-                            <label for="poll_frequency_2">Poll me occasionally</label>
-                            <input type="radio" name="poll_frequency" id="poll_frequency_2" value="occasionally" />
-                            <span>Earn a little Pay.So. :|</span>
-                        </li>
-                        <li>
-                            <label for="poll_frequency_3">No polls ever!</label>
-                            <input type="radio" name="poll_frequency" id="poll_frequency_3" value="never" />
-                            <span>Earn no Pay.So. :(</span>
-                        </li>
-                    </ul>
-                </div-->
-            </div>
-            <div>
+                <p class="custom-error" name="email_frequency_id" style="display: none;"></p>
+                <p class="custom-error" name="poll_frequency_id" style="display: none;"></p>
                 <h3>On what subjects and industries do you want to weigh in on?</h3>
-                <?php foreach ($surveyTypes as $surveyType) : ?>
-                <div>
-                    <input type="checkbox" name="survey_type_id[]" value="<?= $surveyType->getId() ?>" />
-                    <label><?= ucwords($surveyType->getTitle()) ?></label>
-                </div>
-                <?php endforeach ?>
+                <table width="100%">
+                    <?php 
+                    $rows = array_chunk($surveyTypes->getArray(), 3);
+                    foreach ($rows as $row) :
+                    ?>
+                    <tr>
+                        <?php foreach ($row as $surveyType) : ?>
+                        <td>
+                            <input type="checkbox" name="survey_type_id[]" value="<?= $surveyType->getId() ?>" />&nbsp;
+                            <label><?= ucwords($surveyType->getTitle()) ?></label>
+                        </td>
+                        <?php endforeach ?>
+                    </tr>
+                    <?php endforeach ?>
+                </table>
                 <div class="custom-error" name="survey_type_id" style="display: none;"></div>
-            </div>
-            
+            </p>
         </fieldset>
         <fieldset>
             <legend>Get Started!</legend>
-            <input type="submit" value="Register Now" />
+            <input type="submit" value="Register Now" class="btn_submit">
         </fieldset>
     </form>
+</div>
+<div id="get-the-app">
+    <h2>Get the app!</h2>
+    <ul class="download">
+        <li>
+            <h3><a href="/install/ADgregator/ADgregator-ALPHA.xpi" title="Click to install the ADgregator app in your browser">ADgregator ALPHA</a></h3>
+            <p>Description here...</p>
+            <p><a href="/install/ADgregator/ADgregator-ALPHA.xpi" title="Click to install the ADgregator app in your browser">Install ADgregator in your Firefox browser</a></p>
+        </li>
+        <li>
+            <h3><a href="/install/ADjuster/ADjuster-ALPHA.xpi" title="Click to install the ADjuster app in your browser">ADjuster ALPHA</a></h3>
+            <p>Description here...</p>
+            <p><a href="/install/ADjuster/ADjuster-ALPHA.xpi" title="Click to install the ADjuster app in your browser">Install ADjuster in your Firefox browser</a></p>
+        </li>
+        
+        <li>
+            <h3><a href="/install/StarBar/Starbar-ALPHA.xpi" title="Click to install the StarBar app in your browser">Starbar ALPHA</a></h3>
+            <p>Description here...</p>
+            <p><a href="/install/StarBar/Starbar-ALPHA.xpi" title="Click to install the StarBar app in your browser">Install StarBar in your Firefox browser</a></p>
+        </li>
+    </ul>
 </div>
 <script type="text/javascript">
     $(function () {

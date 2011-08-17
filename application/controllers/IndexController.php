@@ -5,11 +5,13 @@ class IndexController extends Api_AbstractController
 
     public function init()
     {
+        $this->view->headLink()->appendStylesheet('/css/sayso-corporate.css', 'screen');
         /* Initialize action controller here */
     }
 
     public function indexAction()
     {
+        
         // action body
     }
 

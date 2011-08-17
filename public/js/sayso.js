@@ -466,8 +466,12 @@
             alert('Please select a Survey Type first');
             return;
         }
+        
         var domain = $('#delivery-domain'),
             timeframe = $('#delivery-timeframe');
+        
+        // if no domain in the text field, look in the history drop down
+        if (!domain.val().length) domain = $('#delivery-domain-history');
         
         if (!domain.val().length || !timeframe.val().length) {
             alert('Delivery Criteria requires a domain and a time frame');

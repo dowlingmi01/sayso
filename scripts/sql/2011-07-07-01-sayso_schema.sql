@@ -54,6 +54,7 @@ DROP TABLE IF EXISTS lookup_poll_frequency;
 DROP TABLE IF EXISTS lookup_email_frequency;
 DROP TABLE IF EXISTS lookup_search_engines;
 DROP TABLE IF EXISTS lookup_social_activity_type;
+DROP TABLE IF EXISTS lookup_timeframe;
 DROP TABLE IF EXISTS preference_general;
 DROP TABLE IF EXISTS preference_survey_type;
 DROP TABLE IF EXISTS study_domain;
@@ -63,6 +64,12 @@ DROP TABLE IF EXISTS study;
 DROP TABLE IF EXISTS study_search_engines_map;
 DROP TABLE IF EXISTS study_social_activity_type_map; 
 DROP TABLE IF EXISTS study_quota;
+DROP TABLE IF EXISTS study_survey;
+DROP TABLE IF EXISTS study_survey_criterion;
+DROP TABLE IF EXISTS study_cell;
+DROP TABLE IF EXISTS study_cell_tag_map;
+DROP TABLE IF EXISTS study_cell_qualifier_browsing;
+DROP TABLE IF EXISTS study_cell_qualifier_search;
 
 SET foreign_key_checks = 1;
 
@@ -280,6 +287,16 @@ CREATE TABLE lookup_social_activity_type (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE lookup_timeframe (
+    id int(10) NOT NULL auto_increment,
+    short_name varchar(100) NOT NULL,
+    label varchar(100),
+    seconds varchar(100),
+    description varchar(255) DEFAULT NULL,    
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 /**
  * Preferences
  * 
@@ -334,7 +351,8 @@ CREATE TABLE study_tag (
     content text COMMENT "tag",
     created timestamp DEFAULT '0000-00-00 00:00:00',
     modified timestamp DEFAULT '0000-00-00 00:00:00',
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    CONSTRAINT tag_user_id FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -356,7 +374,7 @@ CREATE TABLE study (
     begin_date datetime DEFAULT NULL,
     end_date datetime DEFAULT NULL,
     click_track boolean,
-    is_survey boolean,
+    /* is_survey boolean, s/not be nec. just check study_survey */
     created timestamp DEFAULT '0000-00-00 00:00:00',
     modified timestamp DEFAULT '0000-00-00 00:00:00',
     PRIMARY KEY (id),
@@ -381,15 +399,94 @@ CREATE TABLE study_social_activity_type_map (
 
 CREATE TABLE study_quota (
     id int(10) NOT NULL auto_increment,
-    user_id int(10) DEFAULT NULL,
-    percentile_id int(10) NOT NULL,
-    gender_id int(10) NOT NULL,
+    study_id int(10) DEFAULT NULL,
+    percentile_id int(10) DEFAULT NULL,
+    gender_id int(10) DEFAULT NULL,
     age_range_id int(10) DEFAULT NULL,
+    ethnicity_id int(10) DEFAULT NULL,
+    income_range_id int(10) DEFAULT NULL,
     created timestamp DEFAULT '0000-00-00 00:00:00',
     modified timestamp DEFAULT '0000-00-00 00:00:00',
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    CONSTRAINT study_quota_study_id FOREIGN KEY (study_id) REFERENCES study (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT study_quota_percentile_id FOREIGN KEY (percentile_id) REFERENCES lookup_quota_percentile (id) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT study_quota_gender_id FOREIGN KEY (gender_id) REFERENCES lookup_gender (id) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT study_quota_age_range_id FOREIGN KEY (age_range_id) REFERENCES lookup_age_range (id) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT study_quota_ethnicity_id FOREIGN KEY (ethnicity_id) REFERENCES lookup_ethnicity (id) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT study_quota_income_range_id FOREIGN KEY (income_range_id) REFERENCES lookup_income_range (id) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
- 
+
+CREATE TABLE study_survey (
+    id int(10) NOT NULL auto_increment,
+    study_id int(10) DEFAULT NULL,
+    url varchar(255) COMMENT "URL to the iframe content",
+    created timestamp DEFAULT '0000-00-00 00:00:00',
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (id),
+    CONSTRAINT study_survey_study_id FOREIGN KEY (study_id) REFERENCES study (id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE study_survey_criterion (
+    id int(10) NOT NULL auto_increment,
+    study_survey_id int(10) DEFAULT NULL,
+    site varchar(255) COMMENT "domain",
+    timeframe_id int(10) DEFAULT NULL,
+    created timestamp DEFAULT '0000-00-00 00:00:00',
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (id),
+    CONSTRAINT study_survey_criterion_study_survey_id FOREIGN KEY (study_survey_id) REFERENCES study_survey (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT study_survey_criterion_timeframe_id FOREIGN KEY (timeframe_id) REFERENCES lookup_timeframe (id) ON DELETE SET NULL ON UPDATE CASCADE
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE study_cell (
+    id int(10) NOT NULL auto_increment,
+    study_id int(10) DEFAULT NULL,
+    size int(10) DEFAULT NULL,
+    cell_type enum('test', 'control') DEFAULT 'test' COMMENT "control means all ads associated are generic and not part of the study",
+    created timestamp DEFAULT '0000-00-00 00:00:00',
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (id),
+    CONSTRAINT study_cell_study_id FOREIGN KEY (study_id) REFERENCES study (id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8; 
+
+CREATE TABLE study_cell_tag_map (
+    cell_id int(10) NOT NULL,
+    tag_id int(10) NOT NULL,
+    CONSTRAINT study_cell_tag_map_cell_id FOREIGN KEY (cell_id) REFERENCES study_cell (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT study_cell_tag_map_tag_id FOREIGN KEY (tag_id) REFERENCES study_tag (id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE study_cell_qualifier_browsing (
+    id int(10) NOT NULL auto_increment,
+    cell_id int(10) DEFAULT NULL,
+    exclude boolean,
+    site varchar(255),
+    timeframe_id int(10) DEFAULT NULL,
+    created timestamp DEFAULT '0000-00-00 00:00:00',
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (id),
+    CONSTRAINT study_cell_qualifier_browsing_cell_id FOREIGN KEY (cell_id) REFERENCES study_cell (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT study_cell_qualifier_browsing_timeframe_id FOREIGN KEY (timeframe_id) REFERENCES lookup_timeframe (id) ON DELETE SET NULL ON UPDATE CASCADE    
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE study_cell_qualifier_search (
+    id int(10) NOT NULL auto_increment,
+    cell_id int(10) DEFAULT NULL,
+    exclude boolean,
+    term varchar(255) COMMENT "search term/query",
+    search_engine_id int(10) DEFAULT NULL,
+    timeframe_id int(10) DEFAULT NULL,
+    created timestamp DEFAULT '0000-00-00 00:00:00',
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (id),
+    CONSTRAINT study_cell_qualifier_search_cell_id FOREIGN KEY (cell_id) REFERENCES study_cell (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT study_cell_qualifier_search_timeframe_id FOREIGN KEY (timeframe_id) REFERENCES lookup_timeframe (id) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT study_cell_qualifier_search_search_engine_id FOREIGN KEY (search_engine_id) REFERENCES lookup_search_engines (id) ON DELETE SET NULL ON UPDATE CASCADE    
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 /*
 DROP TABLE IF EXISTS
 

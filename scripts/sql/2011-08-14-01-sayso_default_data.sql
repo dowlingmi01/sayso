@@ -64,15 +64,15 @@ INSERT INTO lookup_survey_type (id, short_name) VALUES
     (8, 'household'),
     (9, 'television');
 
-INSERT INTO lookup_poll_frequency (id, short_name, description, extra, default_frequency) VALUES 
-    (1, 'often', 'Often - earn the most Pay.So!', 'Earn a lotta Pay.So! :D', false),
-    (2, 'occasionally', 'Occasionally - earn a little Pay.So', 'Earn a little Pay.So. :|', true),
-    (3, 'never', 'Never - no Pay.So :(', 'Earn no Pay.So. :(', false);
+INSERT INTO lookup_poll_frequency (id, short_name, label, description, extra, default_frequency) VALUES 
+    (1, 'often', 'Bring ''em on!', 'Often - earn the most Pay.So!', 'Earn a lotta Pay.So! :D', false),
+    (2, 'occasionally', 'Occasionally', 'Occasionally - earn a little Pay.So', 'Earn a little Pay.So. :|', true),
+    (3, 'never', 'Never', 'Never - no Pay.So :(', 'Earn no Pay.So. :(', false);
 
-INSERT INTO lookup_email_frequency (id, short_name, description, extra, default_frequency) VALUES 
-    (1, 'often', 'Often - earn the most Pay.So!', 'Earn a lotta Pay.So! :D', false),
-    (2, 'occasionally', 'Occasionally - earn a little Pay.So', 'Earn a little Pay.So. :|', true),
-    (3, 'never', 'Never - no Pay.So :(', 'Earn no Pay.So. :(', false);
+INSERT INTO lookup_email_frequency (id, short_name, label, description, extra, default_frequency) VALUES 
+    (1, 'often', 'Bring ''em on!', 'Often - earn the most Pay.So!', 'Earn a lotta Pay.So! :D', false),
+    (2, 'occasionally', 'Occasionally', 'Occasionally - earn a little Pay.So', 'Earn a little Pay.So. :|', true),
+    (3, 'never', 'Never', 'Never - no Pay.So :(', 'Earn no Pay.So. :(', false);
 
 INSERT INTO lookup_search_engines (id, short_name) VALUES 
     (1, 'bing'),
@@ -83,3 +83,8 @@ INSERT INTO lookup_social_activity_type (id, short_name) VALUES
     (1, 'facebook_like'),
     (2, 'tweet');
     
+INSERT INTO lookup_timeframe (id, short_name, label, seconds) VALUES
+    (1, 'one_hour', '1 Hour', '3600'),
+    (2, 'one_day', '1 Day', '86400'),
+    (3, 'one_week', '1 Week', '604800'),
+    (4, 'one_month', '1 Month', '2592000');

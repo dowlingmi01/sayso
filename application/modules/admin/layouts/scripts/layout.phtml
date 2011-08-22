@@ -5,9 +5,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>Say.So Survey Administration</title>
         <meta name="description" content="">
-        <meta name="author" content="Joshua Cody, David James">
-        <link rel="stylesheet" href="css/admin.css">
-        <link rel="stylesheet" href="css/smoothness/jquery-ui-1.8.13.custom.css">
+        <meta name="author" content="Sayso LLC">
+        <?= $this->headLink() . PHP_EOL ?>
         <script type="text/javascript">
             if (!window.sayso) sayso = {};
             sayso.baseDomain = "<?= BASE_DOMAIN ?>";
@@ -29,11 +28,7 @@
             <?php echo $this->layout()->content ?>
         </div>
         <footer></footer>
-        <script src="/js/jquery-1.5.1.min.js"></script>
-        <script src="/js/jquery-ui-1.8.13.custom.min.js"></script>
-        <script src="/js/mustache.js"></script>
-        <script src="/js/templates.js"></script>
-        <script src="/js/sayso.js"></script>
+        <?= $this->headScript() ?>
     </body>
 </html>
   

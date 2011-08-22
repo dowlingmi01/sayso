@@ -1,11 +1,13 @@
 <?php
 
-class IndexController extends Api_AbstractController
+require_once APPLICATION_PATH . '/controllers/GlobalController.php';
+
+class IndexController extends GlobalController
 {
 
     public function init()
     {
-        $this->view->headLink()->appendStylesheet('/css/sayso-corporate.css', 'screen');
+        parent::init();
         /* Initialize action controller here */
     }
 

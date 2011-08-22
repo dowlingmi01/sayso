@@ -35,21 +35,15 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
         
         $layout = Zend_Layout::startMvc();
         
-        if ($currentModule === 'default') {
-            $layout->setLayoutPath(APPLICATION_PATH . '/layouts/scripts');
-        } else {
-            $layout->setLayoutPath(APPLICATION_PATH . '/modules/' . $currentModule . '/layouts/scripts');
-        }
-        $view = $layout->getView();
-        
-        if (!$this->_request->isXmlHttpRequest()) {
-            $view->doctype('XHTML1_STRICT');
-            $scripts = $view->headScript();
-            $scripts->appendFile('/js/jquery-1.6.1.min.js');
-            $scripts->appendFile('/js/jquery.form.min.js');
-            $scripts->appendFile('/js/pubsub.js');
-            $scripts->appendFile('/js/main.js');
-            
+        switch ($currentModule) {
+            case 'default' :
+                $layout->setLayoutPath(APPLICATION_PATH . '/layouts/scripts');
+                break;
+            case 'admin' :
+            case 'starbar' :
+            default :
+                $layout->setLayoutPath(APPLICATION_PATH . '/modules/' . $currentModule . '/layouts/scripts');
+                break;
         }
     }
 }

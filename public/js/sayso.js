@@ -97,7 +97,9 @@
             metrics : { 
                 clicktrack : 'No',
                 searchengines : {},
-                social : {}
+                searchengineIds : [],
+                social : {},
+                socialIds : []
             },
             surveyinfo : {
                 type : 'No Survey',
@@ -479,12 +481,15 @@
         } 
         var data = {
             domain : domain.val(),
-            timeframe : timeframe.val()
+            timeframe : timeframe.find(':checked').text(),
+            timeframeId : timeframe.val()
         };
         data.id = uniqueId();
         sayso.data.surveyinfo.deliverIf[data.id] = data;
         $(tpl('deliveryCriteria', data)).appendTo('#list-survey-delivery-criteria');
-        domain.val(false);
+        // reset domain
+        $('#delivery-domain').val('');
+        $('#delivery-domain-history').val(false);
         timeframe.val(false);
     });
     
@@ -515,10 +520,14 @@
             return;
         }
         var data = {
-            gender : gender.val(),
-            age : age.val(),
-            ethnicity : ethnicity.val(),
-            percent : parseInt(percent.val())
+            gender : gender.find(':checked').text(),
+            genderId : gender.val(),
+            age : age.find(':checked').text(),
+            ageId : age.val(),
+            ethnicity : ethnicity.find(':checked').text(),
+            ethnicityId : ethnicity.val(),
+            percent : percent.find(':checked').text(),
+            percentId : percent.val()
             // this may need a prop of 'type'
         };
         data.id = uniqueId();
@@ -526,7 +535,7 @@
         // validate quota percent
         var checkPercent = 0;
         for (var i in sayso.data.quota) {
-            checkPercent += sayso.data.quota[i].percent;
+            checkPercent += parseInt($('#study-size-percent option[value=' + sayso.data.quota[i].percentId + ']').attr('data-percent'));
         }
         if (checkPercent > 100) {
             alert('Total quotas exceeds 100%');
@@ -568,7 +577,8 @@
         var data = {
             include : includeExclude.val(),
             site : domainName.val(),
-            timeframe : timeframe.val()
+            timeframe : timeframe.find(':checked').text(),
+            timeframeId : timeframe.val()
         };
         data.id = uniqueId();
         sayso.temp.qualifier.browse[data.id] = data;
@@ -607,13 +617,18 @@
         var data = {
             include : includeExclude.val(),
             term : domainName.val(),
-            timeframe : timeframe.val(),
+            timeframe : timeframe.find(':checked').text(),
+            timeframeId : timeframe.val(),
             which : {
-                bing : $('#engine-bing').is(':checked') ? 'Yes' : 'No',
-                google : $('#engine-google').is(':checked') ? 'Yes' : 'No',
-                yahoo : $('#engine-yahoo').is(':checked') ? 'Yes' : 'No'
-            } // @todo test if this is working correctly (with the template)
+                bing : $('input.select-search-engines[data-short-name=bing]').is(':checked') ? 'Yes' : 'No',
+                google : $('input.select-search-engines[data-short-name=google]').is(':checked') ? 'Yes' : 'No',
+                yahoo : $('input.select-search-engines[data-short-name=yahoo]').is(':checked') ? 'Yes' : 'No'
+            }, // @todo test if this is working correctly (with the template)
+            whichIds : []
         };
+        // add the search engine ids to an array
+        $('input.select-search-engines:checked').each(function () { data.whichIds.push($(this).val()); })
+        
         data.id = uniqueId();
         sayso.temp.qualifier.search[data.id] = data;
         // @todo handle missing data required by templates
@@ -824,11 +839,13 @@
         if ($('input[name=record-click-track]:checked').length) {
             sayso.data.metrics.clicktrack = $('input[name=record-click-track]:checked').val();
         }
-        $('input[name^=record-search-engine]').each(function(){
-            sayso.data.metrics.searchengines[$(this).val()] = $(this).is(':checked') ? 'Yes' : 'No';
+        $('input.record-search-engines:checked').each(function(){
+            sayso.data.metrics.searchengines[$(this).parent().find('label').text()] = $(this).is(':checked') ? 'Yes' : 'No';
+            sayso.data.metrics.searchengineIds.push($(this).val());
         });
-        $('input[name^=record-social]').each(function(){
-            sayso.data.metrics.social[$(this).val()] = $(this).is(':checked') ? 'Yes' : 'No';
+        $('input.record-social:checked').each(function(){
+            sayso.data.metrics.social[$(this).parent().find('label').text()] = $(this).is(':checked') ? 'Yes' : 'No';
+            sayso.data.metrics.socialIds.push($(this).val());
         });
         
         // survey
@@ -870,14 +887,14 @@
         // localStorage
         localStorage.setItem('sayso', jsonString);
         
-        $.ajax({
-            url : 'http://' + sayso.baseDomain + '/admin/data/submit',
-            data : { data : jsonString },
-            type : 'POST',
-            success : function (response) {
-                console.log(response);
-            }
-        });
+//        $.ajax({
+//            url : 'http://' + sayso.baseDomain + '/admin/data/submit-study',
+//            data : { data : jsonString },
+//            type : 'POST',
+//            success : function (response) {
+//                console.log(response);
+//            }
+//        });
         
         // reset form fields and return "changes pending" to false
         //resetForm();

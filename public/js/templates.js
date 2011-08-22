@@ -3,7 +3,7 @@ if (typeof sayso === 'undefined') sayso = {};
 sayso.templates = {
 
   // list of quotas
-  quotas : '<li data-id="{{id}}" class="completed-parameter"><span>{{type}} {{percent}}% {{ethnicity}} {{gender}}s, {{age}}</span> <a href="#" class="delete">Delete</a></li>',
+  quotas : '<li data-id="{{id}}" class="completed-parameter"><span>{{type}} {{percent}} {{ethnicity}} {{gender}}s, {{age}}</span> <a href="#" class="delete">Delete</a></li>',
 
   // list of browsing qualifiers
   browsingQualifiers : '<li data-id="{{id}}" class="completed-parameter"><span>{{include}} visits to {{site}} in the last {{timeframe}}</span> <a href="#" class="delete">Delete</a></li>',

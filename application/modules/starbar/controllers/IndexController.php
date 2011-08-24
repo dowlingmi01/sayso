@@ -29,5 +29,9 @@ class Starbar_IndexController extends Api_AbstractController
         $this->render();
         return $this->_resultType(new Object(array('html' => $this->getResponse()->getBody())));
     }
+    
+    public function genericAction () {
+        
+    }
 }
 

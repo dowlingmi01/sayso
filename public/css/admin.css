@@ -405,7 +405,7 @@ body {
   *font-size: small; }
 
 select, input, textarea, button {
-  font: 99% sans-serif; }
+  font: 99% Verdana; }
 
 /* Webkit tap highlight
  * j.mp/webkit-tap-highlight-color */
@@ -852,6 +852,11 @@ section.tag-domain-pairs .radios-labeled label,
 section.creative .radios-labeled label,
 section.domains-avails .radios-labeled label {
   margin: 0 10px 5px 0; }
+
+div.notation {
+	color : grey;
+	font-style: italic;
+}
 
 #domains-creative hr {
   border-top: 2px solid black; }

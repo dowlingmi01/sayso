@@ -50,7 +50,7 @@
     
     function tpl ( tpl, obj, extra ) {
         if (!extra) extra = {};
-        data = $.extend({}, obj, extra);
+        var data = $.extend({}, obj, extra);
         return Mustache.to_html( sayso.templates[tpl], data );
     }
     
@@ -67,12 +67,11 @@
         }
     }
     
-    function numProperties (obj) {
-        var size = 0, key;
-        for (key in obj) {
-            if (obj.hasOwnProperty(key)) size++;
+    function isEmpty (object) {
+        for (var key in object) {
+            return false;
         }
-        return size;
+        return true;
     }
     
     // ==============================================================
@@ -149,6 +148,8 @@
         $('ul.data-list').empty(); 
         $('table.cell-lists tbody').empty();
         $('#fieldset-cell-adtags div.radios-labeled').empty();
+        $('#fieldset-creative-adtags div.radios-labeled').empty();
+        $('#fieldset-creative-adtags div.radios-labeled').text('None created').addClass('notation');
         // reset flag, nothing pending (therefore allow navigating away)
         _changesPending = false;
     }
@@ -233,8 +234,8 @@
         e.preventDefault();
     });
     
-    // ==============================================================
-    // Ad Tags (ADgregator)
+    // =============================================================================
+    // Ad Tags (ADgregator) (NOTE: first two functions also handle ADjuster domains)
     
     $('button.add-domain').click(function(e) { 
         e.preventDefault();
@@ -244,21 +245,27 @@
         // with enter/return, the only way to prevent it is to ensure
         // a mouse click w/actual coords is performed for this button
         if (!e.clientX && !e.clientY) return;
-        var domain = $('#pairs-domains');
+        if ($(this).parents('#fieldset-tag-domain-pair').length) {
+            // ADgregator
+            var domain = $('#pairs-domains');
+        } else {
+            // ADjuster
+            var domain = $('#domains-avails-domain');
+        }
         if (!domain.val().length) {
             alert('Please enter a domain name');
             return;
         }
         var data = {
-            name : domain.val()
+            name : domain.val(),
+            id : uniqueId()
         };
-        data.id = uniqueId();
         sayso.temp.domain[data.id] = data;
-        $(tpl('domains', data)).appendTo('#list-domains');
+        $(tpl('domains', data)).appendTo($(this).next()); // next s/b the <ul> with the domain list
         domain.val('');
     });
     
-    $('#list-domains a.delete').live('click', function (e) {
+    $('ul.list-domains a.delete').live('click', function (e) {
         e.preventDefault();
         var container = $(this).dataContainer(),
             id = container.getId();
@@ -271,8 +278,8 @@
         if (e.keyCode == '13') return;
         var label = $('#pairs-label');
         var adtag = $('#pairs-ad-tag');
-        if (!label.val().length || !adtag.val().length) {
-            alert('Ad tag requires a label and ad tag URL');
+        if (!label.val().length || !adtag.val().length || isEmpty(sayso.temp.domain)) {
+            alert('Ad tags require a label, ad tag content and at least one domain');
             return;
         }
         var data = {
@@ -300,13 +307,13 @@
             // add this tag to the cell form below to allow adding tags to cells
             $('#fieldset-cell-adtags div.radios-labeled').append(tpl('adTag', data));
         }
-        $('button.add-pair').text('Add Tag-Domain Pair');
+        $('button.add-pair').text('Add Tag');
         // add it to/replace it in the data store (by id)
         sayso.data.tagdomain[data.id] = data;
         // reset the fields
         label.val('');
         adtag.val('');
-        $('#list-domains li').remove();
+        $('ul.list-domains li').remove();
     });
     
     $('#list-tag-domain-pair a.edit').live('click', function(e){
@@ -318,13 +325,15 @@
         // populate the fields
         $('#pairs-label').val(tagdomain.label);
         $('#pairs-ad-tag').val(tagdomain.tag);
-        if (numProperties(tagdomain.domain)) {
+        if (!isEmpty(tagdomain.domain)) {
+            // empty the list, just in case the user was already in the middle of editing another row
+            $('#fieldset-tag-domain-pair ul.list-domains li').remove();
             for (var i in tagdomain.domain) {
                 sayso.temp.domain[i] = tagdomain.domain[i];
-                $(tpl('domains', tagdomain.domain[i])).appendTo('#list-domains');
+                $(tpl('domains', tagdomain.domain[i])).appendTo('#fieldset-tag-domain-pair ul.list-domains');
             }
         }
-        $('button.add-pair').text('Update Tag-Domain Pair');
+        $('button.add-pair').text('Update');
     });
     
     $('#list-tag-domain-pair a.delete').live('click', function(e){
@@ -345,36 +354,46 @@
     $('#domains-avails button.add-tag-domain-pair').click(function (e) {
         e.preventDefault();
         if (!e.clientX && !e.clientY) return; // see above for why
-        var domain = $('#domains-avails-domain'),
+        var label = $('#domains-avails-label'),
             tag = $('#domains-avails-tag');
         
-        if (!domain.val().length || !tag.val().length) {
-            alert('Domain and ad tag are required');
+        if (!label.val().length || !tag.val().length || isEmpty(sayso.temp.domain)) {
+            alert('Requires a label, ad tag content and at least one domain');
             return;
         }
         var data = {
-            // label : '', // why is this missing from the mocks?
-            domain : domain.val(),
-            tag : tag.val()
+            label : label.val(),
+            tag : tag.val(),
+            domain : sayso.temp.domain
         };
+        sayso.temp.domain = {};
         var container = $(this).dataContainer();
         if (container.getId()) { // edit existing
             data.id = container.getId();
             container.removeId();
             // replace the list item
-            $('#list-domains-avails li[data-id=' + data.id +']').replaceWith(tpl('tagDomainPairs', data, { label : data.domain }));
+            $('#list-domains-avails li[data-id=' + data.id +']').replaceWith(tpl('tagDomainPairs', data, { label : data.label }));
             // also replace the ad tags listed below in cells
-            $('#fieldset-cell-adtags div.radios-labeled div[data-id=' + data.id + ']').replaceWith(tpl('adTag', data, { label : data.domain}));
+            $('#fieldset-cell-adtags div.radios-labeled div[data-id=' + data.id + ']').replaceWith(tpl('adTag', data, { label : data.label}));
+            $('#fieldset-creative-adtags div.radios-labeled div[data-id=' + data.id + ']').replaceWith(tpl('adTag', data, { label : data.label}));
         } else { // create new
             data.id = uniqueId();
             // display list item
-            $(tpl('tagDomainPairs', data, { label : data.domain })).appendTo('#list-domains-avails');
+            $(tpl('tagDomainPairs', data, { label : data.label })).appendTo('#list-domains-avails');
             // add this tag to the cell form below to allow adding tags to cells
-            $('#fieldset-cell-adtags div.radios-labeled').append(tpl('adTag', data, { label : data.domain}));
+            $('#fieldset-cell-adtags div.radios-labeled').append(tpl('adTag', data, { label : data.label}));
+            var creativeAdtags = $('#fieldset-creative-adtags div.radios-labeled');
+            if (!creativeAdtags.children().length) {
+                // empty list, make sure placeholder text is removed
+                creativeAdtags.text('');
+                creativeAdtags.removeClass('notation');
+            }
+            creativeAdtags.append(tpl('adTag', data, { label : data.label}));
         }
-        $(this).text('Add');
+        $(this).text('Add Avail');
         sayso.data.domainAvail[data.id] = data;
-        domain.val(''); tag.val('');
+        label.val(''); tag.val('');
+        $('ul.list-domains li').remove();
     });
     
     $('#list-domains-avails a.edit').live('click', function(e) {
@@ -383,9 +402,17 @@
             id = container.getId(),
             domainAvail = sayso.data.domainAvail[id];
         $('#domains-avails').makeDataContainer(id);
-        $('#domains-avails-domain').val(domainAvail.domain);
+        $('#domains-avails-label').val(domainAvail.label);
         $('#domains-avails-tag').val(domainAvail.tag);
         $('#domains-avails button.add-tag-domain-pair').text('Update');
+        if (!isEmpty(domainAvail.domain)) {
+            // empty list, just in case the user was already in the middle of editing another row
+            $('#fieldset-domains-avails ul.list-domains li').remove();
+            for (var i in domainAvail.domain) {
+                sayso.temp.domain[i] = domainAvail.domain[i];
+                $(tpl('domains', domainAvail.domain[i])).appendTo('#fieldset-domains-avails ul.list-domains');
+            }
+        }
     });
     
     $('#list-domains-avails a.delete').live('click', function (e){
@@ -397,6 +424,28 @@
             container.removeNow();
             // remove the ad tag listed below
             $('#fieldset-cell-adtags div.radios-labeled div[data-id=' + id + ']').remove();
+            $('#fieldset-creative-adtags div.radios-labeled div[data-id=' + id + ']').remove();
+            if (!$('#fieldset-creative-adtags div.radios-labeled').children().length) {
+                $('#fieldset-creative-adtags div.radios-labeled').addClass('notation').text('None created');
+            }
+            // remove any references to domains/avails from any creatives
+            var warn = 0;
+            for (var i in sayso.data.creative) {
+                if (!isEmpty(sayso.data.creative[i].domainAvail)) {
+                    for (var j in sayso.data.creative[i].domainAvail) {
+                        if (sayso.data.creative[i].domainAvail[j] === id) {
+                            sayso.data.creative[i].domainAvail.splice(j, 1);
+                        }
+                    }
+                    if (!sayso.data.creative[i].domainAvail.length) {
+                        warn++;
+                    }
+                }
+            }
+            if (warn) {
+                alert('Deleting this avail has invalidated ' + warn + ' of the creatives -- i.e. no avail(s) associated. Please review and fix your creatives.');
+            }
+            
         }
     });
     
@@ -404,16 +453,30 @@
         e.preventDefault();
         var name = $('#creative-name'),
             creativeUrl = $('#creative-url'),
+            contentType = $('#creative-type'),
             //file = $('#creative-file'),
             targetUrl = $('#creative-target-url');
         if (!name.val().length || !creativeUrl.val().length || !targetUrl.val().length) {
             alert('Name, creative URL and target URL are required');
             return;
         }
+        // gather up domains/avails that are associated with this creative
+        var domainAvail = [];
+        $('#fieldset-creative-adtags input[type=checkbox]:checked').each(function () {
+            var id = $(this).dataContainer().getId();
+            // if domain/avail is checked, then add it to the list for this creative
+            domainAvail.push(id);
+        });
+        if (!domainAvail.length) {
+            alert('Please select at least one avail for this creative.');
+            return;
+        }
         var data = {
             name : name.val(),
             creativeUrl : creativeUrl.val(),
-            targetUrl : targetUrl.val()
+            contentType : contentType.val(),
+            targetUrl : targetUrl.val(),
+            domainAvail : domainAvail
         };
         var container = $(this).dataContainer();
         if (container.getId()) { // edit existing
@@ -424,9 +487,10 @@
             data.id = uniqueId();
             $(tpl('creative', data)).appendTo('#list-creative');
         }
-        $(this).text('Add');
+        $(this).text('Add Creative');
         sayso.data.creative[data.id] = data;
-        name.val(''); creativeUrl.val(''); targetUrl.val('');
+        name.val(''); contentType.val(false); creativeUrl.val(''); targetUrl.val('');
+        $('#fieldset-creative-adtags input[type=checkbox]').removeAttr('checked');
     });
     
     $('#list-creative a.edit').live('click', function (e) {
@@ -439,6 +503,9 @@
         $('#creative-url').val(creative.creativeUrl);
         $('#creative-target-url').val(creative.targetUrl);
         $('#creative button.add-creative').text('Update');
+        for (var i in creative.domainAvail) {
+            $('#fieldset-creative-adtags div[data-id=' + creative.domainAvail[i] + '] input').attr('checked', true);
+        }
     });
     
     $('#list-creative a.delete').live('click', function (e) {
@@ -448,6 +515,15 @@
         if (confirm('Are you sure you want to delete creative for "' + container.find('span.creative-name').text() + '"?')) {
             delete sayso.data.creative[id];
             container.removeNow();
+        }
+    });
+    
+    // no target URL for certain types (such as HTML)
+    $('#creative-type').live('change', function (e) {
+        if ($(this).val() == 8) {
+            $('#creative-target-url').attr('disabled', 'disabled');
+        } else {
+            $('#creative-target-url').removeAttr('disabled');
         }
     });
     
@@ -655,7 +731,7 @@
             alert('Study cell must have a description');
             return;
         }
-        if (!numProperties(sayso.temp.qualifier.browse) && !numProperties(sayso.temp.qualifier.search)) {
+        if (isEmpty(sayso.temp.qualifier.browse) && isEmpty(sayso.temp.qualifier.search)) {
             alert('Study cell must have qualifier(s)');
             return;
         }

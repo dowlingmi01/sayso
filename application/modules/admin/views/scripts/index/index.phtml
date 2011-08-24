@@ -10,6 +10,7 @@
               <h3>Tag-Domain Pairs</h3>
               <p>What ad tags should be tested on which domains?</p>
             </header>
+            
             <fieldset class="under-full" id="fieldset-tag-domain-pair">
               <label for="pairs-label">Label It</label>
               <input type="text" name="pairs-label" id="pairs-label">
@@ -20,11 +21,12 @@
                 <input type="text" name="pairs-domains" id="pairs-domains" class="pairs-domains">
               </fieldset>
               <button class="add-fieldset-data add-domain">Add Domain</button>
-              <ul class="cell-lists empty data-list" id="list-domains">
+              <ul class="cell-lists empty data-list list-domains">
               </ul>
             </fieldset>
+            
             <div class="button-holder">
-              <button class="add-fieldset-data add-pair styled-button">Add Tag-Domain Pair</button>
+              <button class="add-fieldset-data add-pair styled-button">Add Tag</button>
             </div>
           </section><!-- end #tag-domain-pairs -->
           <section class="secondary-criteria study-list padded-column-5 last" id="study-list" style="width: 355px;">
@@ -40,25 +42,34 @@
       
       <section class="main-criteria" id="domains-creative" style="display: none;">
         <header>
-          <h2>Domains &amp; Creative (ADjuster)</h2>
+          <h2>Avails &amp; Creative (ADjuster)</h2>
           <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
         </header>
         <div class="section-container">
           <section class="secondary-criteria domains-avails first padded-column-5" id="domains-avails">
             <header class="under-full">
               <h3>Domains and Avails</h3>
-              <p style="font-size: .7em;">On which domains &amp; avails would you like to test your creative?</p>
+              <p style="font-size: .7em;">On which domains &amp; avails would you like to test your creative(s)?</p>
             </header>
+            
             <fieldset class="under-full" id="fieldset-domains-avails">
-              <label for="domains-avails-domain">Domain</label>
-                <input type="text" name="domains-avails-domain" id="domains-avails-domain">
-              <label for="domains-avails-tag">Avail (paste DIV ID tag)</label>
+              <label for="domains-avails-label">Label It</label>
+              <input type="text" name="domains-avails-label" id="domains-avails-label">
+              <label for="domains-avails-tag">Avail (paste tag here)</label>
                 <textarea name="domains-avails-tag" id="domains-avails-tag" cols="30" rows="10" style="width:225px"></textarea>
-              <button class="add-fieldset-data add-tag-domain-pair styled-button">Add</button>
+              <label for="domains-avails-domain">Domains:</label>
+                <fieldset id="fieldset-domains-avails-domains">
+                <input type="text" name="domains-avails-domain" id="domains-avails-domain">
+                </fieldset>
+              <button class="add-fieldset-data add-domain">Add Domain</button>
+              <ul class="cell-lists empty data-list list-domains">
+              </ul>
+              <button class="add-fieldset-data add-tag-domain-pair styled-button">Add Avail</button>
               <hr />
               <ul class="cell-lists empty data-list" id="list-domains-avails">
               </ul>
             </fieldset>
+            
           </section><!-- end #domains-avails -->
           <section class="secondary-criteria creative padded-column-5 last" id="creative" style="width: 350px;">
             <header class="under-full">
@@ -70,6 +81,13 @@
                 <input type="text" name="creative-name" id="creative-name">
               <label for="creative-url">AD creative URL</label>
                 <input type="text" name="creative-url" id="creative-url" value="http://whereamiapp.com/image.php?key=959a6853f043ec34f0167250bfb5293c&id=187&size=100&max">
+              <label for="creative-type">Type</label>
+              <select name="creative-type" id="creative-type">
+                <option value="" selected>Choose</option>
+                <?php foreach (Lookup_Collection_MimeType::loadAll()->filter('common_ad_type', true) as $mimeType) : ?>
+                <option value="<?= $mimeType->getId() ?>"><?= $mimeType->getTitle() ?></option>
+                <?php endforeach ?>
+              </select>
               <!--p>OR</p>
               <label for="creative-file">AD creative UPLOAD</label>
                 <input type="file" name="creative-file" id="creative-file" /-->
@@ -77,8 +95,14 @@
                 <input type="text" name="creative-weight" id="creative-weight"-->
               <label for="creative-target-url">Target URL for AD Creative</label>
                 <input type="text" name="creative-target-url" id="creative-target-url">
-              
-              <button class="add-fieldset-data add-creative styled-button">Add</button>
+              <div class="padded-column-4 first last ad-tag-list" style="border: 1px solid rgb(230,230,230); padding: 10px; width: 315px;">
+                <fieldset id="fieldset-creative-adtags">
+                  <legend>Domains/Avails</legend>
+                  <div class="radios-labeled">
+                  </div>
+                </fieldset>
+              </div>
+              <button class="add-fieldset-data add-creative styled-button">Add Creative</button>
               <hr />
               <ul class="cell-lists empty data-list" id="list-creative">
               </ul>

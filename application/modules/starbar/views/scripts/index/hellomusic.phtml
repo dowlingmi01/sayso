@@ -1,0 +1,25 @@
+<script type="text/javascript">
+    $S(function () {
+        var baseDomain = "<?= BASE_DOMAIN ?>";
+        if (!window.sayso) window.sayso = {};
+        window.sayso.starbar = {
+            state : {
+                visibility : 'starbar-visOpen'
+            },
+            baseDomain : baseDomain,
+        };
+        if (typeof(KOBJ) === 'undefined') {
+            KOBJ = { 
+                warn : function () { 
+                    console.warn('Requested action has limited functionality outside of browser app.'); 
+                },
+                get_application : function () { 
+                    return { 
+                        raise_event : function () { KOBJ.warn(); }
+                    } 
+                }
+            };
+        }
+    });
+</script>
+<div id="sayso-starbar" style=""><?= $this->partial('index/hellomusic-remote.phtml') ?></div>

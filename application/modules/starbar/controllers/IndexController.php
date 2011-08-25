@@ -31,11 +31,21 @@ class Starbar_IndexController extends Api_AbstractController
     }
     
     public function genericAction () {
-        $this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');
+        $this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
         $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
     }
     
     public function genericRemoteAction () {
+        
+    }
+    
+    public function hellomusicAction () {
+        $this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
+        $this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');
+        $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
+    }
+    
+    public function hellomusicRemoteAction () {
         
     }
 }

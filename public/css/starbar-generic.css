@@ -1,0 +1,447 @@
+/*
+ * This is taken from the HTML5 Boilerplate
+ * html5doctor.com Reset Stylesheet (Eric Meyer's Reset Reloaded + HTML5 baseline)
+ * v1.6.1 2010-09-17 | Authors: Eric Meyer & Richard Clark
+ * html5doctor.com/html-5-reset-stylesheet/
+ */
+#sayso-starbar div, #sayso-starbar span, #sayso-starbar object, #sayso-starbar iframe, #sayso-starbar h1, #sayso-starbar h2, #sayso-starbar h3, #sayso-starbar h4, #sayso-starbar h5, #sayso-starbar h6, #sayso-starbar p, #sayso-starbar blockquote, #sayso-starbar pre, #sayso-starbar abbr, #sayso-starbar address, #sayso-starbar cite, #sayso-starbar code, #sayso-starbar del, #sayso-starbar dfn, #sayso-starbar em, #sayso-starbar img, #sayso-starbar ins, #sayso-starbar kbd, #sayso-starbar q, #sayso-starbar samp, #sayso-starbar small, #sayso-starbar strong, #sayso-starbar sub, #sayso-starbar sup, #sayso-starbar var, #sayso-starbar b, #sayso-starbar i, #sayso-starbar dl, #sayso-starbar dt, #sayso-starbar dd, #sayso-starbar ol, #sayso-starbar ul, #sayso-starbar li, #sayso-starbar fieldset, #sayso-starbar form, #sayso-starbar label, #sayso-starbar legend, #sayso-starbar table, #sayso-starbar caption, #sayso-starbar tbody, #sayso-starbar tfoot, #sayso-starbar thead, #sayso-starbar tr, #sayso-starbar th, #sayso-starbar td, #sayso-starbar article, #sayso-starbar aside, #sayso-starbar canvas, #sayso-starbar details, #sayso-starbar figcaption, #sayso-starbar figure, #sayso-starbar footer, #sayso-starbar header, #sayso-starbar hgroup, #sayso-starbar menu, #sayso-starbar nav, #sayso-starbar section, #sayso-starbar summary, #sayso-starbar time, #sayso-starbar mark, #sayso-starbar audio, #sayso-starbar video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: 13px/1.231 sans-serif;	
+	vertical-align: baseline;
+}
+#sayso-starbar article, #sayso-starbar aside, #sayso-starbar details, #sayso-starbar figcaption, #sayso-starbar figure, #sayso-starbar footer, #sayso-starbar header, #sayso-starbar hgroup, #sayso-starbar menu, #sayso-starbar nav, #sayso-starbar section {
+	display: block;
+}
+#sayso-starbar h1, #sayso-starbar h2, #sayso-starbar h3, #sayso-starbar h4, #sayso-starbar h5, #sayso-starbar h6 {
+	font-weight: bold;
+}
+#sayso-starbar blockquote, #sayso-starbar q {
+	quotes: none;
+}
+#sayso-starbar blockquote:before, #sayso-starbar blockquote:after, #sayso-starbar q:before, #sayso-starbar q:after {
+	content: "";
+	content: none;
+}
+#sayso-starbar ins {
+	background-color: #ffff99;
+	color: black;
+	text-decoration: none;
+}
+#sayso-starbar mark {
+	background-color: #ffff99;
+	color: black;
+	font-style: italic;
+	font-weight: bold;
+}
+#sayso-starbar del {
+	text-decoration: line-through;
+}
+#sayso-starbar abbr[title], #sayso-starbar dfn[title] {
+	border-bottom: 1px dotted;
+	cursor: help;
+}
+#sayso-starbar table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+#sayso-starbar td {
+	vertical-align: top;
+}
+#sayso-starbar hr {
+	border: 0;
+	border-top: 1px solid #cccccc;
+	display: block;
+	height: 1px;
+	margin: 1em 0;
+	padding: 0;
+}
+#sayso-starbar input, select {
+	vertical-align: middle;
+}
+/* Force scrollbar so you don't get jumping content */
+html {
+	overflow-y: scroll;
+}
+/* Accessible focus treatment
+ * people.opera.com/patrickl/experiments/keyboard/test */
+#sayso-starbar a:hover, #sayso-starbar a:active {
+	outline: none;
+}
+/* Set sub, sup without affecting line-height: gist.github.com/413930 */
+#sayso-starbar sub, #sayso-starbar sup {
+	font-size: 75%;
+	line-height: 0;
+	position: relative;
+}
+#sayso-starbar sup {
+	top: -0.5em;
+}
+#sayso-starbar sub {
+	bottom: -0.25em;
+}
+/* Allow for code blocks to still wrap to the next line when using preformatted text:
+ * http://pathf.com//blogs/2008/05/formatting-quoted-code-in-blog-posts-css21-white-space-pre-wrap/ */
+#sayso-starbar pre {
+	white-space: pre;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	padding: 15px;
+}
+/* Remove default textarea scrollbars on IE:
+ * http://sitepoint.com/blogs/2010/08/20/ie-remove-textarea-scrollbars/ */
+#sayso-starbar textarea {
+	overflow: auto;
+}
+/* Align checkboxes, radios, text inputs with their label by: Thierry Koblentz
+ * http://tjkdesign.com/ez-css/css/base.css  */
+#sayso-starbar input[type="radio"] {
+	vertical-align: text-bottom;
+}
+#sayso-starbar input[type="checkbox"] {
+	vertical-align: bottom;
+}
+#sayso-starbar .ie7 input[type="checkbox"] {
+	vertical-align: baseline;
+}
+#sayso-starbar .ie6 input {
+	vertical-align: text-bottom;
+}
+/* Hand cursor on clickable input elements */
+#sayso-starbar label, #sayso-starbar input[type="button"], #sayso-starbar input[type="submit"], #sayso-starbar input[type="image"], #sayso-starbar button {
+	cursor: pointer;
+}
+/* Webkit browsers add a 2px margin outside the chrome of form elements */
+#sayso-starbar button, #sayso-starbar input, #sayso-starbar select, #sayso-starbar textarea {
+	margin: 0;
+}
+/* Make buttons play nice in IE:
+ * www.viget.com/inspire/styling-the-button-element-in-internet-explorer/ */
+#sayso-starbar button {
+	width: auto;
+	overflow: visible;
+}
+/* Bicubic resizing for non-native sized IMG:
+ * code.flickr.com/blog/2008/11/12/on-ui-quality-the-little-things-client-side-image-resizing/ */
+#sayso-starbar .ie7 img {
+	-ms-interpolation-mode: bicubic;
+}
+/* Normalize monospace sizing:
+ * en.wikipedia.org/wiki/MediaWiki_talk:Common.css/Archive_11#Teletype_style_fix_for_Chrome */
+#sayso-starbar pre, #sayso-starbar code, #sayso-starbar kbd, #sayso-starbar samp {
+	font-family: monospace, sans-serif;
+}
+
+/* Hide only visually, but have it available for screenreaders: by Jon Neal.
+ * www.webaim.org/techniques/css/invisiblecontent/  &  j.mp/visuallyhidden 
+ * Extend to allow the element to be focusable when navigated to via the keyboard
+ * drupal.org/node/897638 */
+/* Colors for form validity http://www.whatwg.org/specs/web-apps/current-work/multipage/links.html */
+#sayso-starbar input:invalid, #sayso-starbar textarea:invalid {
+ border-radius: 1px;
+ -moz-box-shadow: 0px 0px 5px red;
+ -webkit-box-shadow: 0px 0px 5px red;
+ box-shadow: 0px 0px 5px red;
+}
+#sayso-starbar .no-boxshadow input:invalid, #sayso-starbar .no-boxshadow textarea:invalid {
+ background-color: #f0dddd;
+}
+
+/* Vendor-specific pseudo-class declarations have to be separated */
+::-moz-selection {
+ background: #eaeaea;
+ color: black;
+ text-shadow: none;
+}
+
+::selection {
+ background: #eaeaea;
+ color: black;
+ text-shadow: none;
+}
+/* Font normalization inspired by YUI Library's fonts.css
+ * developer.yahoo.com/yui/ 
+ * #444444 looks better than black
+ * twitter.com/H_FJ/statuses/11800719859 */
+
+#sayso-starbar select, #sayso-starbar input, #sayso-starbar textarea, #sayso-starbar button {
+	font: 99% sans-serif;
+}
+/* Webkit tap highlight
+ * j.mp/webkit-tap-highlight-color */
+#sayso-starbar a:link {
+	-webkit-tap-highlight-color: #ff5e99;
+}
+
+/* DONE RESETTING */
+
+/* BEGIN FORMATTING */
+
+##sayso-starbar {
+	color: #fff;
+	font: 13px/1.231 sans-serif;
+	margin: 0 auto;
+	padding: 0 20px;
+	width: 960px;
+	background: none;
+}
+#sayso-starbar strong {
+	font-weight: bold;
+}
+#sayso-starbar em{
+	font-style: italic;
+}
+#sayso-starbar h1 {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+}
+#sayso-starbar h1:active, #sayso-starbar h1:focus {
+	clip: auto;
+	height: auto;
+	margin: 0;
+	overflow: visible;
+	position: static;
+	width: auto;
+}
+#sayso-starbar h2 {
+	color: #303030;
+	font-weight: normal;
+	margin: 0 0 5px 0;
+	font-size: 14px;
+	font-weight: bold;
+}
+#sayso-starbar a, #sayso-starbar a:link, #sayso-starbar a:active, #sayso-starbar a:visited {
+	color: #1a8fbb;
+	text-decoration: none;
+}
+#sayso-starbar a:hover {
+	text-decoration: underline;
+}
+#sayso-starbar .starbar-contain {
+}
+#sayso-starbar #starbar-player-console{
+	background-image: url('../images/bg_bar.png');
+	background-repeat: repeat-x;
+	background-position: 0px bottom;
+	bottom: 0px;
+	color: #fff;
+	left: 0;
+	min-height: 70px;
+	right: 0;
+	position: fixed;
+	z-index: 1000;
+}
+
+/* define the console / sub-items for various states */
+
+#sayso-starbar #starbar-player-console.starbar-visOpen{
+	width: 100%;
+}
+#sayso-starbar #starbar-player-console.starbar-visStowed{
+	width: 45px;
+	background: none;
+	background-position: 0px 17px;
+}
+#sayso-starbar #starbar-player-console.starbar-visClosed{
+	width: 90px;
+}
+
+/* container elements */
+
+#sayso-starbar #starbar-wrapper{
+	width: 1000px;
+	margin: 0px auto;
+	position: relative;
+}
+
+/* starbar visibility + logo controls */
+
+#sayso-starbar #starbar-visControls{
+	position: relative;
+	width: 100px;
+	height: 70px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-toggleVis {
+	cursor: pointer;
+	background-repeat: no-repeat;
+	height: 14px;
+	display: block;
+	text-indent: -9999px;
+	top: 3px;
+	position: absolute;
+}
+
+#sayso-starbar #starbar-player-console #starbar-toggleVis.starbar-open{
+	background-image: url('../images/generic/img_hide.png');
+	width: 44px;
+}
+#sayso-starbar #starbar-player-console #starbar-toggleVis.starbar-closed{
+	background-image: url('../images/generic/img_close.png');
+	width: 51px;
+	margin: 0px 0px 0px -4px;
+}
+#sayso-starbar #starbar-player-console #starbar-toggleVis.starbar-stowed{
+	background-image: none;
+}
+
+#sayso-starbar #starbar-player-console #starbar-logo{
+	background-image: url('../images/generic/logo_sayso.png');
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+	width: 85px;
+	height: 35px;
+	display: inline-block;
+	text-indent: -9999px;
+	cursor: pointer;
+	position: absolute;
+	top: 25px;
+	left: 8px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-logo:hover{
+	background-position: 0px -35px;
+}
+
+/* STARBAR TYPE */
+
+#sayso-starbar #starbar-player-console #starbar-type{
+	width: 240px;
+	height: 70px;
+	position: absolute;
+	top: 0;
+	left: 100px;
+	z-index: 1000;
+	background-image: url('../images/generic/bg_starbar-type.png');
+}
+
+#sayso-starbar #starbar-player-console #starbar-type .inner{
+	position: relative;
+}
+
+#sayso-starbar #starbar-player-console #starbar-type .changeTheme{
+	border-radius: 3px 3px 0px 0px;
+	height: 14px;
+	width: 217px;
+	background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.22, rgb(6,106,145)),
+    color-stop(0.61, rgb(9,54,77)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(6,106,145) 22%,
+			rgb(9,54,77) 61%);
+	background-color: #084865;
+	position: absolute;
+	z-index: 1;
+	top: 11px;
+	left: 9px;
+	overflow: hidden;
+}
+
+#sayso-starbar #starbar-player-console #starbar-type .changeTheme span{
+	background-image: url('../images/generic/icon_change.png');
+	background-repeat: no-repeat;
+	background-position: right 50%;
+	height: 14px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	padding: 0px 15px 0px 10px;
+	font-size: 10px;
+	text-align: right;
+	margin: 0px 5px 0px 0px;
+	float: right;
+	cursor: pointer;
+}
+
+#sayso-starbar #starbar-player-console #starbar-type .logo{
+	width: 70px;
+	height: 48px;
+	z-index: 100;
+	position: absolute;
+	top: 17px;
+	left: 15px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-type .content{
+	color: #fff;
+	font-size: 11px;
+	position: absolute;
+	width: 125px;
+	height: 35px;
+	top: 20px;
+	right: 20px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-type .content h2, #sayso-starbar #starbar-player-console #starbar-type .content a{
+	color: #fff;
+}
+
+/* NAVIGATION */
+#sayso-starbar #starbar-player-console #starbar-nav{
+	position: absolute;
+	z-index: 10;
+	background-color: #060;
+	left: 331px;
+	bottom: 0;
+	height: 53px;
+	display: inline;
+}
+
+#sayso-starbar #starbar-player-console #starbar-nav ul{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#sayso-starbar #starbar-player-console #starbar-nav ul li{
+	margin: 0;
+	padding: 0;
+	float: left;
+	border-right: 1px solid #000;
+	cursor: pointer;
+}
+
+#sayso-starbar #starbar-player-console #starbar-nav ul li a{
+	display: inline-block;
+	padding: 0px 0px;
+	height: 53px;
+	background-position: center 18px;
+	background-repeat: no-repeat;
+	position: relative;
+}
+
+#sayso-starbar #starbar-player-console #starbar-nav ul li span{
+	background-color: #333333;
+	text-indent: -9999px;
+	height: 8px;
+	display: block;
+	border-top: 1px solid #333;
+	border-bottom: 1px solid #333;
+	margin: 0px 0px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-nav ul li.nav_polls a{
+	background-image: url('../images/generic/nav_polls.png');
+	width: 74px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-nav ul li.nav_surveys a{
+	background-image: url('../images/generic/nav_surveys.png');
+	width: 97px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-nav ul li.nav_daily-deals a{
+	background-image: url('../images/generic/nav_daily-deals.png');
+	width: 101px;
+}
+

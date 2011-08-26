@@ -1,3 +1,154 @@
-body{
-	background-color: #000;
+#sayso-starbar #starbar-player-console{
+	background-image: url('../images/hellomusic/bg_bar.png');
+}
+
+/* turn off starbar type background + switcher */
+#sayso-starbar #starbar-player-console #starbar-type .changeTheme{
+	display: none;
+}
+
+/* starbar type logo + content area */
+#sayso-starbar #starbar-player-console #starbar-type .logo{
+	width: 99px;
+	height: 47px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-type .content{
+	width: 98px;
+}
+
+/* nav */
+#sayso-starbar #starbar-player-console #starbar-nav ul li{	
+
+}
+
+/* special color classes */
+#sayso-starbar #starbar-player-console .theme_navOnGradient{
+	/*background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.22, rgb(102,102,102)),
+    color-stop(0.61, rgb(255,255,255)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(102,102,102) 22%,
+			rgb(255,255,255) 61%);
+	*/
+}
+
+#sayso-starbar #starbar-player-console .theme_bgGradient{
+	background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.22, rgb(22,141,202)),
+    color-stop(0.61, rgb(7,61,89)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(22,141,202) 22%,
+			rgb(7,61,89) 61%);
+	background-color: #0081c5;
+}
+
+#sayso-starbar #starbar-player-console .theme_textHighlight{
+	color: #0082c5 !important;
+}
+
+/* promo area */
+
+#sayso-starbar #starbar-player-console #starbar-promo{
+	z-index: 1000;
+	position: absolute;
+	left: 606px;
+	bottom: 0;
+	height: 53px;
+}
+
+/* user level / progress area */
+
+#sayso-starbar #starbar-player-console #starbar-level{
+	z-index: 1000;
+	position: absolute;
+	left: 770px;
+	bottom: 0;
+	height: 53px;
+	width: 150px;
+	background-image: url('../images/generic/bg_divider.png');
+	background-repeat: no-repeat;
+	background-position: 0px 50%;
+}
+
+#sayso-starbar #starbar-player-console #starbar-level .content{
+	padding: 6px 0px 0px 10px;
+	position: relative;
+}
+
+#sayso-starbar #starbar-player-console #starbar-level .content .user-level{
+	text-align: center;
+}
+
+#sayso-starbar #starbar-player-console #starbar-level .content .user-level, 
+#sayso-starbar #starbar-player-console #starbar-level .content .user-level span{	
+	color: #fff;
+	text-transform: uppercase;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+#sayso-starbar #starbar-player-console #starbar-level .user-level-box{
+	margin-top: -2px;
+}
+
+/* REUSABLE: user level box */
+
+#sayso-starbar #starbar-player-console .user-level-box{
+	height: 27px;
+	position: relative;
+}
+
+#sayso-starbar #starbar-player-console .user-level-box .user-level-star{
+	position: absolute;
+	z-index: 1000;
+	top: -5px;
+	left: 0;
+	background-image: url('../images/hellomusic/img_star.png');
+	width: 27px;
+	height: 27px;
+}
+#sayso-starbar #starbar-player-console .user-level-box .user-level-bar_bg{
+	border: 3px solid #fff;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.22, rgb(201,194,180)),
+    color-stop(0.61, rgb(243,237,227)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(201,194,180) 22%,
+			rgb(243,237,227) 61%);
+	margin: 5px 0px 0px 15px;
+	position: relative;
+}
+
+#sayso-starbar #starbar-player-console .user-level-box .user-level-bar_bg .progress{
+	height: 12px;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+#sayso-starbar #starbar-player-console .user-level-box .user-level-bar_bg .score{
+	text-align: center;
+	color: #000;
+	font-size: 11px;
+	position: absolute;
+	z-index: 1000;
+	top: 0;
+	left: 43%;
+	font-weight: bold;
 }

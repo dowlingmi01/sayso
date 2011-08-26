@@ -55,12 +55,17 @@ DROP TABLE IF EXISTS lookup_email_frequency;
 DROP TABLE IF EXISTS lookup_search_engines;
 DROP TABLE IF EXISTS lookup_social_activity_type;
 DROP TABLE IF EXISTS lookup_timeframe;
+DROP TABLE IF EXISTS lookup_mime_type;
 DROP TABLE IF EXISTS preference_general;
 DROP TABLE IF EXISTS preference_survey_type;
 DROP TABLE IF EXISTS study_domain;
 DROP TABLE IF EXISTS study_tag;
 DROP TABLE IF EXISTS study_tag_domain_map;
+DROP TABLE IF EXISTS study_creative;
+DROP TABLE IF EXISTS study_creative_data;
+DROP TABLE IF EXISTS study_creative_tag_map;
 DROP TABLE IF EXISTS study;
+DROP TABLE IF EXISTS study_creative_map;
 DROP TABLE IF EXISTS study_search_engines_map;
 DROP TABLE IF EXISTS study_social_activity_type_map; 
 DROP TABLE IF EXISTS study_quota;
@@ -297,6 +302,17 @@ CREATE TABLE lookup_timeframe (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE lookup_mime_type (
+    id int(10) NOT NULL auto_increment,
+    short_name varchar(100) NOT NULL,
+    label varchar(100),
+    description varchar(255) DEFAULT NULL COMMENT "See http://en.wikipedia.org/wiki/Internet_media_type",
+    base_type enum('application', 'audio', 'image', 'text', 'video', 'x') DEFAULT 'image',
+    common_ad_type boolean,
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 /**
  * Preferences
  * 
@@ -355,13 +371,44 @@ CREATE TABLE study_tag (
     CONSTRAINT tag_user_id FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
 CREATE TABLE study_tag_domain_map ( 
     tag_id int(10) NOT NULL,
     domain_id int(10) NOT NULL,
     UNIQUE KEY tag_domain_map_unique (domain_id, tag_id),
     CONSTRAINT tag_domain_map_tag_id FOREIGN KEY (tag_id) REFERENCES study_tag (id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT tag_domain_map_domain_id FOREIGN KEY (domain_id) REFERENCES study_domain (id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE study_creative (
+    id int(10) NOT NULL auto_increment,
+    user_id int(10) DEFAULT NULL,
+    mime_type_id int(10) DEFAULT NULL,
+    name varchar(100) NOT NULL COMMENT "label",
+    url varchar(255) DEFAULT NULL COMMENT "Null if binary data exists in study_creative_data",
+    target_url varchar(255),
+    created timestamp DEFAULT '0000-00-00 00:00:00',
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (id),
+    CONSTRAINT creative_user_id FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT creative_mime_type_id FOREIGN KEY (mime_type_id) REFERENCES lookup_mime_type (id) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE study_creative_data (
+    id int(10) NOT NULL auto_increment,
+    study_creative_id int(10) DEFAULT NULL,
+    data mediumblob NOT NULL,
+    created timestamp DEFAULT '0000-00-00 00:00:00',
+    modified timestamp DEFAULT '0000-00-00 00:00:00',
+    PRIMARY KEY (id),
+    CONSTRAINT creative_data_study_creative_id FOREIGN KEY (study_creative_id) REFERENCES study_creative (id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE study_creative_tag_map ( 
+    creative_id int(10) NOT NULL,
+    tag_id int(10) NOT NULL,
+    UNIQUE KEY creative_tag_map_unique (creative_id, tag_id),
+    CONSTRAINT creative_tag_map_creative_id FOREIGN KEY (creative_id) REFERENCES study_creative (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT creative_tag_map_tag_id FOREIGN KEY (tag_id) REFERENCES study_tag (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE study (
@@ -379,6 +426,14 @@ CREATE TABLE study (
     modified timestamp DEFAULT '0000-00-00 00:00:00',
     PRIMARY KEY (id),
     CONSTRAINT study_user_id FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE study_creative_map ( 
+    study_id int(10) NOT NULL,
+    creative_id int(10) NOT NULL,
+    UNIQUE KEY study_creative_map_unique (study_id, creative_id),
+    CONSTRAINT study_creative_map_study_id FOREIGN KEY (study_id) REFERENCES study (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT study_creative_map_creative_id FOREIGN KEY (creative_id) REFERENCES study_creative (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE study_search_engines_map (
@@ -484,7 +539,6 @@ CREATE TABLE study_cell_qualifier_search (
     CONSTRAINT study_cell_qualifier_search_timeframe_id FOREIGN KEY (timeframe_id) REFERENCES lookup_timeframe (id) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT study_cell_qualifier_search_search_engine_id FOREIGN KEY (search_engine_id) REFERENCES lookup_search_engines (id) ON DELETE SET NULL ON UPDATE CASCADE    
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 
 /*

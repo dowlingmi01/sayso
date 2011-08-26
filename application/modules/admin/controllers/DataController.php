@@ -7,7 +7,7 @@ class Admin_DataController extends Api_AbstractController
     
     public function init()
     {
-        $this->_enableRenderer($renderer = new Api_Plugin_JsonPRenderer());
+        
     }
 
     public function indexAction()
@@ -15,36 +15,6 @@ class Admin_DataController extends Api_AbstractController
         
         $object = new Object(array('test' => 'this is my test!', 'foo' => new Object(array('bar' => 'baz', 'bop' => new Object(array('a' => 1, 'b' => 2, 'c' => 3))))));
         return $this->_resultType($object);
-    }
-
-    public function submitStudyAction () {
-        $this->_validateRequiredParameters(array('data'));
-        $data = json_decode($this->data);
-        $type = $data->type;
-        switch ($type) {
-            case 'ADgregator' :
-                $tags = new Study_Collection_Tag();
-                foreach ($data->tagdomain as $tagDomainData) {
-                    $tag = new Study_Tag();
-                    $tag->name = $tagDomainData->label;
-                    $tag->content = $tagDomainData->tag;
-                    $tags->addItem($tag);
-                    if (!empty($tagDomainData->domain)) {
-                        foreach ($tagDomainData->domain as $domainData) {
-                            $domain = new Study_Domain();
-                            $domain->domain = $domainData->name;
-                            $tag->addDomain($domain);
-                        }
-                    }
-                }
-                break;
-            case 'ADjuster' :
-                break;
-        }
-        $tags->save();
-        return $this->_resultType($tags);
-       
-        
     }
 
     public function sampleAction () {

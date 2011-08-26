@@ -74,10 +74,10 @@ INSERT INTO lookup_email_frequency (id, short_name, label, description, extra, d
     (2, 'occasionally', 'Occasionally', 'Occasionally - earn a little Pay.So', 'Earn a little Pay.So. :|', true),
     (3, 'never', 'Never', 'Never - no Pay.So :(', 'Earn no Pay.So. :(', false);
 
-INSERT INTO lookup_search_engines (id, short_name) VALUES 
-    (1, 'bing'),
-    (2, 'google'),
-    (3, 'yahoo!');
+INSERT INTO lookup_search_engines (id, short_name, label) VALUES 
+    (1, 'bing', 'Bing'),
+    (2, 'google', 'Google'),
+    (3, 'yahoo', 'Yahoo!');
     
 INSERT INTO lookup_social_activity_type (id, short_name) VALUES 
     (1, 'facebook_like'),
@@ -88,3 +88,19 @@ INSERT INTO lookup_timeframe (id, short_name, label, seconds) VALUES
     (2, 'one_day', '1 Day', '86400'),
     (3, 'one_week', '1 Week', '604800'),
     (4, 'one_month', '1 Month', '2592000');
+    
+INSERT INTO lookup_mime_type (id, short_name, label, description, base_type, common_ad_type) VALUES
+    (1, 'gif', 'GIF (image)', 'image/gif', 'image', true),
+    (2, 'jpg', 'JPG (image)', 'image/jpeg', 'image', true),
+    (3, 'png', 'PNG (image)', 'image/png', 'image', true),
+    (4, 'tiff', 'TIFF (image)', 'image/tiff', 'image', false),
+    (5, 'svg', 'SVG', 'image/svg+xml', 'image', false),
+    (6, 'javascript', 'Javascript', 'application/javascript', 'application', false),
+    (7, 'pdf', 'PDF', 'application/pdf', 'application', false),
+    (8, 'html', 'HTML', 'text/html', 'text', true),
+    (9, 'text', 'Text', 'text/plain', 'text', false),
+    (10, 'mpeg', 'MPEG (video)', 'video/mpeg', 'video', false),
+    (11, 'quicktime', 'Quicktime (video)', 'video/quicktime', 'video', false),
+    (12, 'flash', 'Flash (video/other)', 'application/x-shockwave-flash', 'x', true);
+    
+    

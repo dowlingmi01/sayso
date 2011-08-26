@@ -1,0 +1,23 @@
+<?php
+
+$json = '{"type":"ADgregator","tagdomain":{"38191":{"label":"asdf","tag":"asdf","domain":{"40638":{"name":"asdf.com","id":40638},"86801":{"name":"xczv.com","id":86801}},"id":38191}},"domainAvail":{"31399":{"domain":"foo.com","tag":"my_div","id":31399},"77843":{"domain":"bar.com","tag":"my_other_div","id":77843}},"creative":{"57073":{"name":"Test","creativeUrl":"http://whereamiapp.com/image.php?key=06c83b46a4db9fe40270faefb7e58726&id=16&size=380&max","targetUrl":"http://www.google.com/","id":57073}},"metrics":{"clicktrack":"Yes","searchengines":{"Bing":"No","Google":"No","Yahoo!":"Yes"},"social":{"facebookLike":"No","tweet":"Yes"}},"surveyinfo":{"type":"Standard Survey","tag":"","deliverIf":{"15993":{"domain":"Facebook.com","timeframe":"1 hour","id":15993}}},"basic":{"name":"My Study","id":"1234","size":"1000","minimum":"","begindate":"08/16/2011","enddate":"08/26/2011","issurvey":"yes"},"cells":{"44149":{"description":"My Cell","type":"Test","size":"100","deliverIf":"visited-similar-site","adtag":{"38191":{"label":"asdf","tag":"asdf","domain":{"40638":{"name":"asdf.com","id":40638},"86801":{"name":"xczv.com","id":86801}},"id":38191}},"quota":{"27286":{"gender":"Female","age":"18-24","ethnicity":"White","percent":100,"id":27286}},"qualifier":{"browse":{"75213":{"include":"Include","site":"asdf","timeframe":"1 week","id":75213}},"search":{"47349":{"include":"Include","term":"foo","timeframe":"1 week","which":{"bing":"No","google":"Yes","yahoo":"Yes"},"id":47349}}},"id":44149},"64961":{"description":"My Second Cell","type":"Test","size":"700","adtag":{},"quota":{"77422":{"gender":"Male","age":"18-24","ethnicity":"Asian","percent":50,"id":77422}},"qualifier":{"browse":{"27522":{"include":"Include","site":"foo.com","timeframe":"1 week","id":27522}},"search":{"62931":{"include":"Include","term":"qwer","timeframe":"1 week","which":{"bing":"No","google":"No","yahoo":"Yes"},"id":62931}}},"id":64961}}}';
+
+
+?>
+<button>Go</button>
+<script type="text/javascript" src="http://local.sayso.com/js/jquery-1.6.1.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $('button').click(function () {
+            $.ajax({
+                url : 'http://local.sayso.com/api/study/submit',
+                data : { data : '<?= $json ?>' },
+                type : 'POST',
+                dataType : 'json',
+                success : function (response) {
+                    console.log(response);
+                }
+            });
+        });
+    });
+</script>

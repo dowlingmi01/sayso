@@ -7,6 +7,6 @@ class IndexController extends GlobalController
 
     public function indexAction()
     {
-        $this->_redirect('/user/register');
+
     }
 }

@@ -1,0 +1,44 @@
+<?php
+
+$userSession = Api_UserSession::getInstance();
+$loggedIn = false;
+$user = new NullObject();
+if ($userSession->isValid())
+{
+    try 
+    {
+        $user = $userSession->getUser();
+        $loggedIn = true;
+    }
+    catch (Exception $e) {}
+}
+/* @var $user User */
+?>
+<p id="login">
+<?php if ($loggedIn) : ?>
+    Logged in as <strong><?= $user->getTitle() ?></strong>. <a id="log-out" href="/user/logout">Log Out</a>
+<?php else : ?>
+    <a id="log-in" class="modal-control" href="/default/user/login">Log In</a> or <a id="register" class="modal-control" href="/default/user/register">Sign Up</a>
+<?php endif ?>
+</p>
+<script type="text/javascript">
+    $(function () {
+
+//        function _userLogin (user)
+//        {
+//            if (user) {
+//                a.user.object = user;
+//                a.user.loggedIn = true;
+//                a.user.id = user.id;
+//                $('#login').fadeOut('slow', function () { 
+//                    $('#login').html('Logged in as <strong>' + user.username + '</strong>. <a id="log-out" href="/user/logout">Log Out</a>');
+//                    $('#login').fadeIn('slow');
+//                });
+//            } 
+//        }
+//        
+//        $.subscribe('/user/create', _userLogin);
+//        $.subscribe('/user/login', _userLogin);
+        
+    });
+</script>

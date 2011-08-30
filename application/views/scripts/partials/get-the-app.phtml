@@ -1,0 +1,48 @@
+<?php
+
+$userSession = Api_UserSession::getInstance();
+$loggedIn = false;
+$user = new NullObject();
+if ($userSession->isValid())
+{
+    try 
+    {
+        $user = $userSession->getUser();
+        $loggedIn = true;
+    }
+    catch (Exception $e) {}
+}
+
+?>
+<div id="get-the-app" style="display: <?= $loggedIn ? 'block' : 'none' ?>;">
+    <h2>Get the app!</h2>
+    <ul class="download">
+        <li>
+            <h3><a href="/install/ADgregator/ADgregator-ALPHA.xpi" title="Click to install the ADgregator app in your browser">ADgregator ALPHA</a></h3>
+            <p>Description here...</p>
+            <p><a href="/install/ADgregator/ADgregator-ALPHA.xpi" title="Click to install the ADgregator app in your browser">Install ADgregator in your Firefox browser</a></p>
+        </li>
+        <li>
+            <h3><a href="/install/ADjuster/ADjuster-ALPHA.xpi" title="Click to install the ADjuster app in your browser">ADjuster ALPHA</a></h3>
+            <p>Description here...</p>
+            <p><a href="/install/ADjuster/ADjuster-ALPHA.xpi" title="Click to install the ADjuster app in your browser">Install ADjuster in your Firefox browser</a></p>
+        </li>
+        
+        <li>
+            <h3><a href="/install/StarBar/Starbar-ALPHA.xpi" title="Click to install the StarBar app in your browser">Starbar ALPHA</a></h3>
+            <p>Description here...</p>
+            <p><a href="/install/StarBar/Starbar-ALPHA.xpi" title="Click to install the StarBar app in your browser">Install StarBar in your Firefox browser</a></p>
+        </li>
+    </ul>
+</div>
+<script type="text/javascript">
+    $(function () {
+        function showApps (user) {
+            if (!$('#get-the-app').is(':visible')) {
+                $('#get-the-app').fadeIn('slow');
+            }
+        }
+        $.subscribe('/user/create', showApps);
+        $.subscribe('/user/login', showApps);
+    });
+</script>

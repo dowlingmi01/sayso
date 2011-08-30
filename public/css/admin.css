@@ -407,6 +407,9 @@ body {
 select, input, textarea, button {
   font: 99% Verdana; }
 
+a:hover {
+	cursor: pointer;
+}
 /* Webkit tap highlight
  * j.mp/webkit-tap-highlight-color */
 a:link {
@@ -980,6 +983,15 @@ input.main-submit {
 
 button.update-cell {
   display: none; }
+	
+.modal-window {
+    background: white;
+	border: solid 1px black;
+	padding: 10px;
+}
+
+
+
 
 /* Inlined to avoid required HTTP connection:
  * http://phpied.com/delay-loading-your-print-css/ */

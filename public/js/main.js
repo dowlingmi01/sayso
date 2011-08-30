@@ -58,9 +58,9 @@ a = (function () {
             // if URL has 3 segments then it is a cross-module
             // URL, therefore prepend with /ajax in order for 
             // routing to work correctly. see ModuleManager.php
-            if (options.url.split(/\//).length > 3 && !options.url.match(/http/)) {
-                options.url = '/ajax' + options.url;
-            }
+//            if (options.url.split(/\//).length > 3 && !options.url.match(/http/)) {
+//                options.url = '/ajax' + options.url;
+//            }
             // for jsonp, ensure PHP session ID is passed along
             if (options.dataType === 'jsonp') {
                 var sessionId = _this.utils.cookie.get('PHPSESSID');
@@ -100,6 +100,7 @@ a = (function () {
                     // override the form action url to use the ajax route
                     url : form.attr('action'),
                     dataType : 'json',
+                    type : 'post', // must be of type post for API posts to work correctly
                     beforeSubmit : function (data, form, options) {
                         if (form.hasClass('disabled') || form.find('a.button').hasClass('disabled')) return false;
                         else return true;

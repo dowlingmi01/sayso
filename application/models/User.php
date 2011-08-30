@@ -1,6 +1,6 @@
 <?php
 
-class User extends Record
+class User extends Record implements Titled
 {
     protected $_tableName = 'user';
     
@@ -29,13 +29,26 @@ class User extends Record
      */
     protected $_plainTextPassword;
     
+    /**
+     * The unique session id for this user
+     * 
+     * @var string
+     */
+    protected $_key;
+    
+    public function getTitle ()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+    
     public function setEmail (User_Email $email) {
         $this->_email = $email;
     }
     
     public function getEmail () {
         if (!$this->_email) {
-            // @todo look it up
+            $this->_email = new User_Email();
+            $this->_email->loadData($this->primary_email_id);
         }
         return $this->_email;
     }
@@ -71,6 +84,15 @@ class User extends Record
     public function setPlainTextPassword ($password)
     {
         $this->_plainTextPassword = $password;
+    }
+    
+    /**
+     * Set the unique session id for this user
+     * 
+     * @param $key
+     */
+    public function setKey ($key) {
+        $this->_key = $key;
     }
     
     /**
@@ -117,13 +139,31 @@ class User extends Record
         $this->commitTransaction();
     }
     
+    public function exportData() {
+        $fields = array(
+            'username',
+            'first_name',
+            'last_name',
+            'birthdate',
+            'timezone'
+        );
+        return array_intersect_key($this->getData(), array_flip($fields));
+    }
+    
     public function exportProperties($parentObject = null) {
         $props = array(
-            '_email' => $this->_email,
+            '_email' => $this->getEmail()->getTitle(),
             '_preferences' => $this->_generalPreference,
             '_survey_types' => $this->_surveyTypes
         );
+        if ($this->_key)
+        {
+            $props['_key'] = $this->_key;
+        }
         return array_merge(parent::exportProperties($parentObject), $props);
     }
+
+    
+
 }
 

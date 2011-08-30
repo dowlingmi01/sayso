@@ -10,7 +10,8 @@ $genders = new Lookup_Collection_Gender(); $genders->lookup();
 
 <div id="sign-up">
     <h2>Sign up!</h2>
-    <form id="registration-form" method="POST" action="/user/register-submit">
+    <form id="registration-form" method="POST" action="/api/user/register">
+        <input type="hidden" name="auth_key" value="<?= Api_Registry::getConfig()->api->authKey ?>">
         <fieldset>
             <legend>Username &amp; Password</legend>
             <p>
@@ -134,34 +135,9 @@ $genders = new Lookup_Collection_Gender(); $genders->lookup();
         </fieldset>
     </form>
 </div>
-<div id="get-the-app">
-    <h2>Get the app!</h2>
-    <ul class="download">
-        <li>
-            <h3><a href="/install/ADgregator/ADgregator-ALPHA.xpi" title="Click to install the ADgregator app in your browser">ADgregator ALPHA</a></h3>
-            <p>Description here...</p>
-            <p><a href="/install/ADgregator/ADgregator-ALPHA.xpi" title="Click to install the ADgregator app in your browser">Install ADgregator in your Firefox browser</a></p>
-        </li>
-        <li>
-            <h3><a href="/install/ADjuster/ADjuster-ALPHA.xpi" title="Click to install the ADjuster app in your browser">ADjuster ALPHA</a></h3>
-            <p>Description here...</p>
-            <p><a href="/install/ADjuster/ADjuster-ALPHA.xpi" title="Click to install the ADjuster app in your browser">Install ADjuster in your Firefox browser</a></p>
-        </li>
-        
-        <li>
-            <h3><a href="/install/StarBar/Starbar-ALPHA.xpi" title="Click to install the StarBar app in your browser">Starbar ALPHA</a></h3>
-            <p>Description here...</p>
-            <p><a href="/install/StarBar/Starbar-ALPHA.xpi" title="Click to install the StarBar app in your browser">Install StarBar in your Firefox browser</a></p>
-        </li>
-    </ul>
-</div>
+<?= $this->partial('partials/get-the-app.phtml') ?>
 <script type="text/javascript">
     $(function () {
         a.forms.ajax($('#registration-form'), '/user/create');
-        $.subscribe('/user/create', function (user) {
-            $('#sign-up').fadeOut('slow', function () {
-                $('#get-the-app').fadeIn('slow');
-            });
-        });
     });
 </script>

@@ -1,5 +1,5 @@
 
-(function () {
+$(function () {
 
     if (typeof sayso === 'undefined') sayso = {};
     
@@ -1007,4 +1007,4 @@
     //    sayso.metrics.searchengines.yahoo
     //    sayso.metrics.social.facebookLike
     //    sayso.metrics.social.tweet
-})();
+});

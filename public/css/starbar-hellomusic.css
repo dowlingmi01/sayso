@@ -73,7 +73,7 @@
 	left: 770px;
 	bottom: 0;
 	height: 53px;
-	width: 150px;
+	width: 140px;
 	background-image: url('../images/generic/bg_divider.png');
 	background-repeat: no-repeat;
 	background-position: 0px 50%;
@@ -100,11 +100,37 @@
 	margin-top: -2px;
 }
 
-/* REUSABLE: user level box */
+#sayso-starbar #starbar-player-console #starbar-points{
+	z-index: 1000;
+	position: absolute;
+	left: 920px;
+	bottom: 0;
+	height: 53px;
+	width: 80px;
+	background-image: url('../images/generic/bg_divider.png');
+	background-repeat: no-repeat;
+	background-position: 0px 50%;
+}
+
+#sayso-starbar #starbar-player-console #starbar-points .content{
+	margin: 8px 0px 0px 5px;
+	position: relative;
+}
+
+
+/* REUSABLE: user level box and user score */
 
 #sayso-starbar #starbar-player-console .user-level-box{
 	height: 27px;
 	position: relative;
+	display: block;
+}
+
+#sayso-starbar #starbar-player-console .user-points-box{
+	height: 37px;
+	position: relative;
+	display: block;
+	padding: 10px 0px 0px 0px;
 }
 
 #sayso-starbar #starbar-player-console .user-level-box .user-level-star{
@@ -116,7 +142,18 @@
 	width: 27px;
 	height: 27px;
 }
-#sayso-starbar #starbar-player-console .user-level-box .user-level-bar_bg{
+
+#sayso-starbar #starbar-player-console .user-points-box .user-points-note{
+	position: absolute;
+	z-index: 1000;
+	top: 0px;
+	left: 0;
+	background-image: url('../images/hellomusic/img_note.png');
+	width: 26px;
+	height: 37px;
+}
+
+#sayso-starbar #starbar-player-console .user-level-box .user-level-bar_bg, #sayso-starbar #starbar-player-console .user-points-box .user-points-bar_bg{
 	border: 3px solid #fff;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -133,10 +170,11 @@
 			rgb(243,237,227) 61%);
 	margin: 5px 0px 0px 15px;
 	position: relative;
+	height: 13px;
 }
 
-#sayso-starbar #starbar-player-console .user-level-box .user-level-bar_bg .progress{
-	height: 12px;
+#sayso-starbar #starbar-player-console .user-level-box .user-level-bar_bg .progress, #sayso-starbar #starbar-player-console .user-points-box .user-points-bar_bg .progress{
+	height: 13px;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -150,5 +188,16 @@
 	z-index: 1000;
 	top: 0;
 	left: 43%;
+	font-weight: bold;
+}
+
+#sayso-starbar #starbar-player-console .user-points-box .user-points-bar_bg .score{
+	text-align: center;
+	color: #000;
+	font-size: 11px;
+	position: absolute;
+	z-index: 1000;
+	top: 0;
+	left: 35%;
 	font-weight: bold;
 }

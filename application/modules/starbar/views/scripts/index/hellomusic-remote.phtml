@@ -1,44 +1,63 @@
 <div id="starbar-player-console" class="starbar-visOpen">
 	<div id="starbar-wrapper">
 		<div id="starbar-visControls">
-			<div id="starbar-toggleVis" class="starbar-open"></div><!-- #starbar-toggleVis -->
-      <a id="starbar-logo">say.so <span id="starbar-logoBorder" class="starbar-hidden starbar-setColorShadow starbar-setColorHover"></span> </a>
+			<div id="starbar-toggleVis" class="btnStarbar-open"></div><!-- #starbar-toggleVis -->
+      <a id="starbar-logo">say.so</a>
+      <span id="starbar-logoBorder"></span>
 		</div><!-- #starbar-visControls -->
-    <div id="starbar-type">
-    	<div class="inner">
-      	<div class="changeTheme"><span>Check out other starbars</span></div><!-- .changeTheme -->
-        <div class="logo">
-        	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/logo_hellomusic.png" alt="HelloMusic logo" />
-        </div><!-- .logo -->
+    <div id="starbar-main">
+      <div id="starbar-type">
+        <div class="inner">
+          <div class="changeTheme"><span>Check out other starbars</span></div><!-- .changeTheme -->
+          <div class="logo">
+            <img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/logo_hellomusic.png" alt="HelloMusic logo" />
+          </div><!-- .logo -->
+          <div class="content">
+            <h2>Hi Tatanisha</h2>
+            <a href="">Edit Profile</a>
+          </div><!-- .content -->
+        </div><!-- .inner -->
+      </div><!-- #starbar-type -->
+      <div id="starbar-nav">
+        <ul>
+          <li class="nav_polls theme_bgGradient"><a href=""><span class="theme_navOnGradient">Polls</span></a></li>
+          <li class="nav_surveys theme_bgGradient"><a href=""><span class="theme_navOnGradient">Surveys</span></a></li>
+          <li class="nav_daily-deals theme_bgGradient"><a href=""><span class="theme_navOnGradient">Daily Deals</span></a></li>
+        </ul>
+      </div><!-- #starbar-nav -->
+      <div id="starbar-promo">
+        <a href=""><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_promo.png" alt="Promo" /></a>
+      </div><!-- #starbar-promo -->
+      <div id="starbar-level">
         <div class="content">
-        	<h2>Hi Tatanisha</h2>
-          <a href="">Edit Profile</a>
+          <div class="user-level">Level 1. <span class="theme_textHighlight">Musician</span></div>
+          <div class="user-level-box">
+            <span class="user-level-star"></span>
+            <div class="user-level-bar_bg">
+              <div class="progress theme_bgGradient" style="width: 30%"></div>
+              <div class="score">
+              430
+              </div><!-- .score -->
+            </div><!-- .user-level-bar_bg -->
+          </div><!-- .user-level-box -->
         </div><!-- .content -->
-      </div><!-- .inner -->
-    </div><!-- #starbar-type -->
-    <div id="starbar-nav">
-    	<ul>
-      	<li class="nav_polls theme_bgGradient"><a href=""><span class="theme_navOnGradient">Polls</span></a></li>
-        <li class="nav_surveys theme_bgGradient"><a href=""><span class="theme_navOnGradient">Surveys</span></a></li>
-        <li class="nav_daily-deals theme_bgGradient"><a href=""><span class="theme_navOnGradient">Daily Deals</span></a></li>
-      </ul>
-    </div><!-- #starbar-nav -->
-    <div id="starbar-promo">
-    	<a href=""><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_promo.png" alt="Promo" /></a>
-    </div><!-- #starbar-promo -->
-    <div id="starbar-level">
-    	<div class="content">
-        <div class="user-level">Level 1. <span class="theme_textHighlight">Musician</span></div>
-        <div class="user-level-box">
-          <span class="user-level-star"></span>
-          <div class="user-level-bar_bg">
-          	<div class="progress theme_bgGradient" style="width: 30%"></div>
-          	<div class="score">
-            430
-            </div><!-- .score -->
-          </div><!-- .user-level-bar_bg -->
-        </div><!-- .user-level-box -->
-    	</div><!-- .content -->
-    </div><!-- #starbar-level -->
+      </div><!-- #starbar-level -->
+      <div id="starbar-points">
+        <div class="content">
+          <div class="user-points-box">
+            <span class="user-points-note"></span>
+            <div class="user-points-bar_bg">
+              <div class="score">
+              80
+              </div><!-- .score -->
+            </div><!-- .user-points-bar_bg -->
+          </div><!-- .user-points-box -->
+        </div><!-- .content -->
+      </div><!-- #starbar-points -->
+    </div><!-- #starbar-main -->
 	</div><!-- #starbar-wrapper -->
 </div><!-- #starbar-player-console -->
+<script type="text/javascript" src="http://<?= BASE_DOMAIN ?>/js/starbar/jquery.tinyscrollbar.js"></script>
+<script type="text/javascript" src="http://<?= BASE_DOMAIN ?>/js/starbar/jquery.lightbox_me.js"></script>
+<script type="text/javascript" src="http://<?= BASE_DOMAIN ?>/js/starbar/jquery.cookie.js"></script>
+<script type="text/javascript" src="http://<?= BASE_DOMAIN ?>/js/starbar/starbar-new.js"></script>

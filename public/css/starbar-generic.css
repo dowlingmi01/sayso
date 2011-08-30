@@ -251,7 +251,7 @@ html {
 	background-position: 0px 17px;
 }
 #sayso-starbar #starbar-player-console.starbar-visClosed{
-	width: 90px;
+	width: 200px;
 }
 
 /* container elements */
@@ -260,6 +260,14 @@ html {
 	width: 1000px;
 	margin: 0px auto;
 	position: relative;
+}
+
+#sayso-starbar #starbar-player-console.starbar-visClosed #starbar-wrapper{
+	width: 200px;
+}
+ 
+#sayso-starbar #starbar-wrapper #starbar-main{
+	width: 900px;	
 }
 
 /* starbar visibility + logo controls */
@@ -280,16 +288,16 @@ html {
 	position: absolute;
 }
 
-#sayso-starbar #starbar-player-console #starbar-toggleVis.starbar-open{
+#sayso-starbar #starbar-player-console #starbar-toggleVis.btnStarbar-open{
 	background-image: url('../images/generic/img_hide.png');
 	width: 44px;
 }
-#sayso-starbar #starbar-player-console #starbar-toggleVis.starbar-closed{
+#sayso-starbar #starbar-player-console #starbar-toggleVis.btnStarbar-closed{
 	background-image: url('../images/generic/img_close.png');
 	width: 51px;
 	margin: 0px 0px 0px -4px;
 }
-#sayso-starbar #starbar-player-console #starbar-toggleVis.starbar-stowed{
+#sayso-starbar #starbar-player-console #starbar-toggleVis.btnStarbar-stowed{
 	background-image: none;
 }
 
@@ -310,6 +318,17 @@ html {
 #sayso-starbar #starbar-player-console #starbar-logo:hover{
 	background-position: 0px -35px;
 }
+
+#sayso-starbar #starbar-player-console #starbar-logoBorder{
+	height: 53px;
+	width: 5px;
+	background-color: #090;
+	position: absolute;
+	bottom: 0;
+	left: 100px;
+	z-index: 1000;
+}
+
 
 /* STARBAR TYPE */
 

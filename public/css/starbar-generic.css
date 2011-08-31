@@ -247,11 +247,9 @@ html {
 }
 #sayso-starbar #starbar-player-console.starbar-visStowed{
 	width: 45px;
-	background: none;
-	background-position: 0px 17px;
 }
 #sayso-starbar #starbar-player-console.starbar-visClosed{
-	width: 200px;
+	width: 100px;
 }
 
 /* container elements */
@@ -262,10 +260,11 @@ html {
 	position: relative;
 }
 
-#sayso-starbar #starbar-player-console.starbar-visClosed #starbar-wrapper{
-	width: 200px;
+#sayso-starbar #starbar-player-console.starbar-visClosed #starbar-wrapper,
+#sayso-starbar #starbar-player-console.starbar-visStowed #starbar-wrapper{
+	width: 100%;
 }
- 
+
 #sayso-starbar #starbar-wrapper #starbar-main{
 	width: 900px;	
 }
@@ -274,8 +273,9 @@ html {
 
 #sayso-starbar #starbar-visControls{
 	position: relative;
-	width: 100px;
+	width: 100%;
 	height: 70px;
+	display: block;
 }
 
 #sayso-starbar #starbar-player-console #starbar-toggleVis {
@@ -298,37 +298,53 @@ html {
 	margin: 0px 0px 0px -4px;
 }
 #sayso-starbar #starbar-player-console #starbar-toggleVis.btnStarbar-stowed{
-	background-image: none;
+	background: none;
 }
 
 #sayso-starbar #starbar-player-console #starbar-logo{
 	background-image: url('../images/generic/logo_sayso.png');
 	background-repeat: no-repeat;
-	background-position: 0px 0px;
-	width: 85px;
+	background-position: 10px 0px;
+	width: 100%;
 	height: 35px;
 	display: inline-block;
 	text-indent: -9999px;
 	cursor: pointer;
 	position: absolute;
 	top: 25px;
-	left: 8px;
+	left: 0px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-logo:hover{
-	background-position: 0px -35px;
+	background-position: 10px -35px;
+}
+
+#sayso-starbar #starbar-player-console.starbar-visClosed #starbar-logo{
+	background-position: 3px 0px;
+}
+
+#sayso-starbar #starbar-player-console.starbar-visClosed #starbar-logo:hover{
+	background-position: 3px -35px;
+}
+
+#sayso-starbar #starbar-player-console.starbar-visStowed #starbar-logo{
+	background-image: url('../images/generic/logo_sayso_sm.png');
+	background-repeat: no-repeat;
+	background-position: 5px 6px;
+	width: 100%;
+	height: 35px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-logoBorder{
 	height: 53px;
-	width: 5px;
-	background-color: #090;
+	width: 10px;
+	background-color: #000;
 	position: absolute;
 	bottom: 0;
-	left: 100px;
-	z-index: 1000;
+	right: 0px;
+	z-index: -1;
+	display: none;
 }
-
 
 /* STARBAR TYPE */
 
@@ -427,7 +443,6 @@ html {
 	padding: 0;
 	float: left;
 	border-right: 1px solid #000;
-	cursor: pointer;
 }
 
 #sayso-starbar #starbar-player-console #starbar-nav ul li a{
@@ -437,6 +452,7 @@ html {
 	background-position: center 18px;
 	background-repeat: no-repeat;
 	position: relative;
+	cursor: pointer;
 }
 
 #sayso-starbar #starbar-player-console #starbar-nav ul li span{
@@ -449,18 +465,91 @@ html {
 	margin: 0px 0px;
 }
 
-#sayso-starbar #starbar-player-console #starbar-nav ul li.nav_polls a{
+#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_polls a{
 	background-image: url('../images/generic/nav_polls.png');
 	width: 74px;
 }
 
-#sayso-starbar #starbar-player-console #starbar-nav ul li.nav_surveys a{
+#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_surveys a{
 	background-image: url('../images/generic/nav_surveys.png');
 	width: 97px;
 }
 
-#sayso-starbar #starbar-player-console #starbar-nav ul li.nav_daily-deals a{
+#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_daily-deals a{
 	background-image: url('../images/generic/nav_daily-deals.png');
 	width: 101px;
 }
 
+/* POP BOX STYLES */
+
+#sayso-starbar #starbar-player-console .popBox{
+	width: 540px;
+	height: 250px;
+	position: absolute;
+	background-color: #383838;
+	z-index: 9999;
+	bottom: 70px;
+	left: 0;
+}
+
+#sayso-starbar #starbar-player-console .popBox .popBoxInner{
+	position: relative;
+	margin: 5px;
+	padding: 10px 0px;
+	height: 220px;
+	background-color: #f3f3f3;
+	box-shadow: 0px 0px 3px #000000;
+	-moz-box-shadow: 0px 0px 3px #000000;
+	-webkit-box-shadow: 0px 0px 3px #000000;
+	font-size: 11px;
+	line-height: 15px;
+	color: #404040;
+}
+
+/* TRIANGLES */
+#sayso-starbar #starbar-player-console .triangle-border {
+	border: 1px solid #000;
+	box-shadow: 0px 0px 5px #333333;
+	-moz-box-shadow: 0px 0px 5px #333333;
+	-webkit-box-shadow: 0px 0px 5px #333333;
+}
+#sayso-starbar #starbar-player-console .triangle-border:before {
+	content:"";
+	position:absolute;
+	bottom:-7px; /* value = - border-top-width - border-bottom-width */
+	left:40px; /* controls horizontal position */
+	border-width:7px 7px 0;
+	border-style:solid;
+	border-color:#000 transparent;
+	/* reduce the damage in FF3.0 */
+  	display:block;
+	width:0;
+}
+/* creates the smaller  triangle */
+#sayso-starbar #starbar-player-console .triangle-border:after {
+	content:"";
+	position:absolute;
+	bottom: -6px; /* value = - border-top-width - border-bottom-width */
+	left:41px; /* value = (:before left) + (:before border-left) - (:after border-left) */
+	border-width: 6px 6px 0;
+	border-style:solid;
+	border-color:#383838 transparent;
+	/* reduce the damage in FF3.0 */
+    display:block;
+	width:0;
+}
+#sayso-starbar #starbar-player-console .triangle-solid {
+}
+
+#sayso-starbar #starbar-player-console .triangle-solid:after {
+	content:"";
+	position:absolute;
+	bottom:-4px; /* value = - border-top-width - border-bottom-width */
+	left:38px; /* controls horizontal position */
+	border-width:4px 4px 0; /* vary these values to change the angle of the vertex */
+	border-style:solid;
+	border-color:#f3f3f3 transparent;
+	/* reduce the damage in FF3.0 */
+    display:block;
+	width:0;
+}

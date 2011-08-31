@@ -3,7 +3,7 @@
 		<div id="starbar-visControls">
 			<div id="starbar-toggleVis" class="btnStarbar-open"></div><!-- #starbar-toggleVis -->
       <a id="starbar-logo">say.so</a>
-      <span id="starbar-logoBorder"></span>
+      <span id="starbar-logoBorder" class=""></span>
 		</div><!-- #starbar-visControls -->
     <div id="starbar-main">
       <div id="starbar-type">
@@ -12,7 +12,10 @@
           <div class="logo">
             <img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/logo_hellomusic.png" alt="HelloMusic logo" />
           </div><!-- .logo -->
-          <div class="content">
+          <div class="userImg">
+          	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="User Image" />
+          </div><!-- /userImg -->
+          <div class="content">          	
             <h2>Hi Tatanisha</h2>
             <a href="">Edit Profile</a>
           </div><!-- .content -->
@@ -20,9 +23,27 @@
       </div><!-- #starbar-type -->
       <div id="starbar-nav">
         <ul>
-          <li class="nav_polls theme_bgGradient"><a href=""><span class="theme_navOnGradient">Polls</span></a></li>
-          <li class="nav_surveys theme_bgGradient"><a href=""><span class="theme_navOnGradient">Surveys</span></a></li>
-          <li class="nav_daily-deals theme_bgGradient"><a href=""><span class="theme_navOnGradient">Daily Deals</span></a></li>
+          <li id="nav_polls" class="theme_bgGradient"><a href=""><span class="nav_border">Polls</span></a>
+            <div class="popBox triangle-border">
+            	<div class="popBoxInner triangle-solid">
+              polls
+              </div><!-- /popBoxInner -->
+            </div><!-- /popBox -->
+          </li>
+          <li id="nav_surveys" class="theme_bgGradient"><a href=""><span class="nav_border">Surveys</span></a>
+          	<div class="popBox triangle-border">
+            	<div class="popBoxInner triangle-solid">
+              survey
+              </div><!-- /popBoxInner -->
+            </div><!-- /popBox -->
+          </li>
+          <li id="nav_daily-deals" class="theme_bgGradient"><a href=""><span class="nav_border">Daily Deals</span></a>
+          	<div class="popBox triangle-border">
+            	<div class="popBoxInner triangle-solid">
+              daily deals
+              </div><!-- /popBoxInner -->
+            </div><!-- /popBox -->
+          </li>
         </ul>
       </div><!-- #starbar-nav -->
       <div id="starbar-promo">

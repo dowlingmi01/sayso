@@ -22,8 +22,39 @@ setTimeout(function(){
 	var elemPlayerConsole = $S('#sayso-starbar #starbar-player-console');
 	var elemStarbarMain = $S('#sayso-starbar #starbar-player-console #starbar-main');
 	var elemVisControls = $S('#sayso-starbar #starbar-player-console #starbar-visControls');
-	var elemStarbarNav = $S('#sayso-starbar #starbar-player-console #starbar-nav ul li');
+	var elemStarbarClickable = $S('#sayso-starbar #starbar-player-console .nav_element');
 	var elemPopBox = $S('#sayso-starbar #starbar-player-console .popBox');
+	var elemAlerts = $S('#sayso-starbar #starbar-player-console .starbar-alert');
+	
+	/* 
+	Set up some extra bits to handle closing windows if the user clicks outside the starbar or hits ESC key
+	*/
+	$S(document).keyup(function(e) {
+		if (e.keyCode == 27) {
+			closePopBox();
+		}  // esc
+	});
+	
+	// close if you click outside the starbar while in the iframe
+	$S(document).click(function(e) {
+		closePopBox();
+	});
+	
+	elemPlayerConsole.click(function(e) {
+	    e.stopPropagation();
+	});
+	
+	/*
+	set some properties for each of the popboxes
+	- prevent from closing when clicked 
+	*/
+	elemStarbarClickable.each(function(){
+		$S(this).bind({
+			click: function(e){ 
+				 e.stopPropagation();
+			} 
+		}); 
+	});
 	
 	/*
 	 Set up handlers for expanding / minimizing the starbar when "hide" or logo is clicked
@@ -69,29 +100,51 @@ setTimeout(function(){
 	/*
 	Set up nav items (click properties to show/hide their popboxes, hover / active sates 
 	*/
-	elemStarbarNav.each(function(){
+	elemStarbarClickable.each(function(){
 		$S(this).bind({
 			click: function(event){
-			event.preventDefault();
+			event.preventDefault();			
+				// the popbox is AFTER the clickable area
+				var thisPopBox = $S(this).next('.popBox');
+			
+				// set up a handler in case we click an element that isn't directly next to its target popbox. it will have 'target_popBoxID' as a class
+				var targetPopBox = $S(this).attr('class');
+				if (targetPopBox.indexOf('target_') > 0){
+					targetPopBox = targetPopBox.replace('nav_element','');
+					targetPopBox = targetPopBox.replace('target_','');
+					targetPopBox = targetPopBox.replace(' ','');
+					// reset the popbox it should open to this ID
+					thisPopBox = $S('#'+targetPopBox);
+					// set a delay before closing the alert element
+					hideAlerts($S(this).closest('.starbar-alert'));
+				}
+				
 				// if it was already open, close it and remove the class. otherwise, open the popbox
-				if ($S('.popBox',this).hasClass('popBoxActive')){
-					closePopBox($S('.popBox',this));
+				if (thisPopBox.hasClass('popBoxActive')){
+					closePopBox(thisPopBox);
 				}else{
 					// this menu item's popBox is active
-					closePopBox($S('.popBox',this));
-					openPopBox($S('.popBox',this));
-					$S('span', this).addClass('theme_navOnGradient');
+					closePopBox(thisPopBox);
+					openPopBox(thisPopBox);
+					// if we're a regular nav item
+					if ($S(this).parent().hasClass('theme_bgGradient')){
+						$S('span', this).addClass('theme_navOnGradient');
+					}
 				}
 			},
 			mouseenter: function(event){
 			event.preventDefault();
-				$S('span', this).addClass('theme_navOnGradient');
+				if ($S(this).parent().hasClass('theme_bgGradient')){
+					$S('span', this).addClass('theme_navOnGradient');
+				}
 			},
 			mouseleave: function(event){
 			event.preventDefault();				
+			
+				var thisPopBox = $S(this).next('.popBox');
 				// only remove the "hover" class for the nav item if it's box isn't active
-				if (!$S('.popBox',this).hasClass('popBoxActive')){
-					$S('span.nav_border', this).removeClass('theme_navOnGradient');
+				if (($S(this).parent().hasClass('theme_bgGradient')) && (!thisPopBox.hasClass('popBoxActive'))){
+					$S('span', this).removeClass('theme_navOnGradient');
 				}
 			}
 		}); // end bind
@@ -106,6 +159,7 @@ setTimeout(function(){
 	// initialize the starbar
 	function initStarBar(){
 		closePopBox();
+		showAlerts();
 	}
 	
 	// animates the starbar-player-console bar based on current state
@@ -125,16 +179,16 @@ setTimeout(function(){
 								// Animation complete.
 								$S(this).attr('class','').addClass('starbar-visClosed');
 								elemSaySoLogoBorder.show();
+								hideAlerts();
 								//updateState();
 							});
-						//starBarStatusHeight = 'starbar-closed';
-						//starBarStatusWidth = 'starbar-visClosed';
 					break;
 					case 'starbar-visClosed':
 						btnToggleVis.attr('class','');
 						btnToggleVis.addClass('btnStarbar-stowed');
 						btnSaySoLogo.css('backgroundPosition','');
 						btnSaySoLogo.css('width','28px');
+						hideAlerts();
 						elemPlayerConsole.animate({
 								width: '45'
 							}, 500, function() {
@@ -143,14 +197,13 @@ setTimeout(function(){
 								btnSaySoLogo.css('width','');
 								//updateState();
 						});
-						//starBarStatusHeight = 'btnStarbar-closed';
-						//starBarStatusWidth = 'starbar-visStowed';
 					break;
 					case 'starbar-visStowed':
 						btnToggleVis.attr('class','');
 						elemSaySoLogoBorder.hide();
 						elemVisControls.hide();
 						btnSaySoLogo.css('backgroundPosition','');
+						hideAlerts();
 						elemPlayerConsole.animate({
 								width: '100%'
 							}, 500, function() {
@@ -158,8 +211,8 @@ setTimeout(function(){
 								$S(this).attr('class','').addClass('starbar-visOpen');
 								elemStarbarMain.fadeIn('fast');
 								elemVisControls.fadeIn('fast');
-								btnToggleVis.addClass('btnStarbar-open');
-								//updateState();
+								btnToggleVis.addClass('btnStarbar-open');		
+								showAlerts();
 						});
 					break;
 				}	// END SWITCH				
@@ -176,7 +229,7 @@ setTimeout(function(){
 			$S(this).removeClass('popBoxActive');
 			$S(this).hide();
 		});
-		elemStarbarNav.each(function(){ 
+		elemStarbarClickable.each(function(){ 
 			// remove hover class from all nav items
 			$S('span.nav_border', this).removeClass('theme_navOnGradient');
 		});
@@ -189,6 +242,30 @@ setTimeout(function(){
 		popBox.show();
 		popBox.addClass('popBoxActive');
 		return;
+	}
+	
+	function showAlerts(target){
+		if (target){
+			target.delay(200).slideDown('fast');				
+		}else{
+			elemAlerts.each(function(){
+				// show alerts that aren't empty.
+				if ($S('span',this).html().length != 0){
+					$S(this).delay(200).slideDown('fast');				 
+				}
+			});
+		}
+		return;
+	}
+	
+	function hideAlerts(target){
+		if (target){
+			target.delay(300).slideUp('fast');				
+		}else{
+			elemAlerts.each(function(){
+				$S(this).hide();				 
+			});
+		}
 	}
 	
 }, 200); // slight delay to ensure other libraries are loaded

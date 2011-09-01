@@ -11,6 +11,7 @@
 	font-size: 100%;
 	font: 13px/1.231 sans-serif;	
 	vertical-align: baseline;
+	outline: 0;
 }
 #sayso-starbar article, #sayso-starbar aside, #sayso-starbar details, #sayso-starbar figcaption, #sayso-starbar figure, #sayso-starbar footer, #sayso-starbar header, #sayso-starbar hgroup, #sayso-starbar menu, #sayso-starbar nav, #sayso-starbar section {
 	display: block;
@@ -421,7 +422,67 @@ html {
 	color: #fff;
 }
 
+/* VARIOUS ALERTS AND POSITIONING */
+
+#sayso-starbar #starbar-player-console .starbar-alert{
+	width: 218px;
+	background-image: url('../images/generic/bg_alert_starbar-type.png');
+	background-repeat: no-repeat;
+	position: absolute;
+	z-index: -9999;
+	display:none;
+}
+
+#sayso-starbar #starbar-player-console #starbar-alert-new.starbar-alert{	
+	bottom: 65px;
+	left: 108px;
+}
+
+#sayso-starbar #starbar-player-console .starbar-alert .inner{
+	position: relative;
+	margin: 8px 8px 0px 8px;
+}
+
+#sayso-starbar #starbar-player-console .starbar-alert .inner .content{
+	border-radius: 3px 3px 0px 0px;
+	-moz-border-radius: 3px 3px 0px 0px;
+	-webkit-border-radius: 3px 3px 0px 0px;
+	padding: 2px 5px;
+	text-align: center;
+	font-size: 11px;
+}
+
+#sayso-starbar #starbar-player-console .starbar-alert .inner .content span{
+	background-image: url('../images/generic/img_arrow_white.png');
+	background-repeat: no-repeat;
+	background-position: right 50%;
+	padding: 0px 15px 0px 0px;
+	text-align: center;
+	display: inline-block;
+	margin: 0px 5px 0px 0px;
+	font-size: 11px;
+}
+
+#sayso-starbar #starbar-player-console .theme_bgAlertRed{
+	background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.22, rgb(191,46,20)),
+    color-stop(0.61, rgb(145,8,35)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(191,46,20) 22%,
+			rgb(145,8,35) 61%);
+	background-color: #a2161d;
+}
+
 /* NAVIGATION */
+
+#sayso-starbar #starbar-player-console .nav_element{
+	cursor: pointer;
+}
+
 #sayso-starbar #starbar-player-console #starbar-nav{
 	position: absolute;
 	z-index: 10;
@@ -445,7 +506,7 @@ html {
 	border-right: 1px solid #000;
 }
 
-#sayso-starbar #starbar-player-console #starbar-nav ul li a{
+#sayso-starbar #starbar-player-console #starbar-nav ul li span.nav_element{
 	display: inline-block;
 	padding: 0px 0px;
 	height: 53px;
@@ -455,7 +516,7 @@ html {
 	cursor: pointer;
 }
 
-#sayso-starbar #starbar-player-console #starbar-nav ul li span{
+#sayso-starbar #starbar-player-console #starbar-nav ul li span.nav_border{
 	background-color: #333333;
 	text-indent: -9999px;
 	height: 8px;
@@ -465,17 +526,17 @@ html {
 	margin: 0px 0px;
 }
 
-#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_polls a{
+#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_polls span.nav_element{
 	background-image: url('../images/generic/nav_polls.png');
 	width: 74px;
 }
 
-#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_surveys a{
+#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_surveys span.nav_element{
 	background-image: url('../images/generic/nav_surveys.png');
 	width: 97px;
 }
 
-#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_daily-deals a{
+#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_daily-deals span.nav_element{
 	background-image: url('../images/generic/nav_daily-deals.png');
 	width: 101px;
 }
@@ -483,21 +544,19 @@ html {
 /* POP BOX STYLES */
 
 #sayso-starbar #starbar-player-console .popBox{
-	width: 540px;
-	height: 250px;
 	position: absolute;
 	background-color: #383838;
 	z-index: 9999;
 	bottom: 70px;
 	left: 0;
+	display: none;
 }
 
 #sayso-starbar #starbar-player-console .popBox .popBoxInner{
 	position: relative;
 	margin: 5px;
-	padding: 10px 0px;
-	height: 220px;
-	background-color: #f3f3f3;
+	padding: 5px;
+	background-color: #fff;
 	box-shadow: 0px 0px 3px #000000;
 	-moz-box-shadow: 0px 0px 3px #000000;
 	-webkit-box-shadow: 0px 0px 3px #000000;
@@ -506,7 +565,19 @@ html {
 	color: #404040;
 }
 
+#sayso-starbar #starbar-player-console .popBox .popBoxInner .content{
+	padding: 10px 5px 5px 15px;
+	background-color: #f3f3f3;
+	height: 200px;
+	width: 500px;
+}
+
+/* CUSTOM POPBOX STYLINGS */
+
+
+
 /* TRIANGLES */
+
 #sayso-starbar #starbar-player-console .triangle-border {
 	border: 1px solid #000;
 	box-shadow: 0px 0px 5px #333333;

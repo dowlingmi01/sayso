@@ -38,7 +38,7 @@
 }
 
 /* nav */
-#sayso-starbar #starbar-player-console #starbar-nav ul li{	
+#sayso-starbar #starbar-player-console #starbar-nav ul > li{	
 
 }
 
@@ -226,4 +226,28 @@
 	top: 0;
 	width: 100%;
 	font-weight: bold;
+}
+
+/* JQUERY OVERRIDES */
+
+
+/* FORMATTING AND COLOR SETTINGS */
+
+/* everything that has textcolor */
+
+#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li.ui-tabs-selected a, 
+#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li.ui-state-disabled a, 
+#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li.ui-state-processing a,
+#sayso-starbar a, #sayso-starbar a:link, 
+#sayso-starbar a:active, 
+#sayso-starbar a:visited,
+#sayso-starbar h3.title,
+#sayso-starbar h2.title{
+	color: #0081c5;
+}
+
+/* other special formatting styles */
+
+#sayso-starbar h2.title{
+	text-transform: uppercase;
 }

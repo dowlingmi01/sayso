@@ -32,7 +32,9 @@ class Starbar_IndexController extends Api_AbstractController
     
     public function genericAction () {
         $this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
+        $this->view->headLink()->appendStylesheet('/css/jquery-ui-1.8.13.custom.css');
         $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
+        $this->view->headScript()->appendFile('/js/starbar/jquery-ui-1.8.13.custom.min.js');
     }
     
     public function genericRemoteAction () {
@@ -40,9 +42,13 @@ class Starbar_IndexController extends Api_AbstractController
     }
     
     public function hellomusicAction () {
+				//$this->view->headLink()->appendStylesheet('/css/smoothness/jquery-ui-1.8.16.custom.css');
+				$this->view->headLink()->appendStylesheet('/css/jquery.jscrollpane.css');
         $this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
         $this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');
         $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
+        $this->view->headScript()->appendFile('/js/starbar/jquery-ui-1.8.16.custom.min.js');
+        $this->view->headScript()->appendFile('/js/starbar/jquery.jscrollpane.min.js');
     }
     
     public function hellomusicRemoteAction () {

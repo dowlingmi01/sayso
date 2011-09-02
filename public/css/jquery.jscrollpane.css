@@ -1,0 +1,89 @@
+/*
+ * CSS Styles that are needed by jScrollPane for it to operate correctly.
+ *
+ * Include this stylesheet in your site or copy and paste the styles below into your stylesheet - jScrollPane
+ * may not operate correctly without them.
+ */
+
+#sayso-starbar .jspContainer {
+	overflow: hidden;
+	position: relative;
+}
+#sayso-starbar .jspPane {
+	position: absolute;
+}
+#sayso-starbar .jspVerticalBar {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 6px;
+	height: 100%;
+	background: red;
+}
+#sayso-starbar .jspHorizontalBar {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 6px;
+	background: red;
+}
+#sayso-starbar .jspVerticalBar *, #sayso-starbar .jspHorizontalBar * {
+	margin: 0;
+	padding: 0;
+}
+#sayso-starbar .jspCap {
+	display: none;
+}
+#sayso-starbar .jspHorizontalBar .jspCap {
+	float: left;
+}
+#sayso-starbar .jspTrack {
+	background: #dfdfdf;
+	position: relative;
+	width: 6px;
+}
+#sayso-starbar .jspDrag {
+	background: #6f6f6f;
+	position: relative;
+	top: 0;
+	left: 0;
+	cursor: pointer;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+}
+#sayso-starbar .jspHorizontalBar .jspTrack, #sayso-starbar .jspHorizontalBar .jspDrag {
+	float: left;
+	height: 100%;
+}
+#sayso-starbar .jspArrow {
+	background: #50506d;
+	text-indent: -20000px;
+	display: block;
+	cursor: pointer;
+}
+#sayso-starbar .jspArrow.jspDisabled {
+	cursor: default;
+	background: #80808d;
+}
+#sayso-starbar .jspVerticalBar .jspArrow {
+	height: 8spx;
+}
+#sayso-starbar .jspHorizontalBar .jspArrow {
+	width: 6px;
+	float: left;
+	height: 100%;
+}
+#sayso-starbar .jspVerticalBar .jspArrow:focus {
+	outline: none;
+}
+#sayso-starbar .jspCorner {
+	background: #eeeef4;
+	float: left;
+	height: 100%;
+}
+/* Yuk! CSS Hack for IE6 3 pixel bug :( */
+* html #sayso-starbar .jspCorner {
+	margin: 0 -3px 0 0;
+}

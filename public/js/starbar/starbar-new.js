@@ -37,12 +37,16 @@ setTimeout(function(){
 	
 	// close if you click outside the starbar while in the iframe
 	$S(document).click(function(e) {
-		closePopBox();
+		// don't close if they just right-clicked
+		if (e.button != 2){
+			closePopBox();
+		}
 	});
 	
 	elemPlayerConsole.click(function(e) {
 	    e.stopPropagation();
 	});
+	
 	
 	/*
 	set some properties for each of the popboxes
@@ -180,7 +184,6 @@ setTimeout(function(){
 								$S(this).attr('class','').addClass('starbar-visClosed');
 								elemSaySoLogoBorder.show();
 								hideAlerts();
-								//updateState();
 							});
 					break;
 					case 'starbar-visClosed':
@@ -195,7 +198,6 @@ setTimeout(function(){
 								// Animation complete.
 								$S(this).attr('class','').addClass('starbar-visStowed');
 								btnSaySoLogo.css('width','');
-								//updateState();
 						});
 					break;
 					case 'starbar-visStowed':
@@ -241,6 +243,9 @@ setTimeout(function(){
 		var popBox = elem;
 		popBox.show();
 		popBox.addClass('popBoxActive');
+		activateTabs(popBox);
+		activateAccordion(popBox);
+		activateScroll(popBox);
 		return;
 	}
 	
@@ -268,4 +273,33 @@ setTimeout(function(){
 		}
 	}
 	
+	function activateTabs(target){
+		// only set up the tabs if they're there
+		if ($S('.tabs',target).length > 0){
+			$S('.tabs',target).tabs();
+		}		
+	}
+	
+	function activateScroll(target){
+		// first, resize the scrollpane dynamically to fit whatever height it lives in (.content.height() - .header.height())
+		var contentHeight = $S('.content',target).height();
+		// add height of the header + any margins / paddings	
+		if ($S('.content .header',target).length > 0){
+			var headerHeight =  eval($S('.header',target).css('margin-bottom').replace('px',''))+$S('.content .header',target).height();		
+		}else{
+			var headerHeight = 0;		}
+		
+		$S('.scrollPane',target).css('height',contentHeight-headerHeight);		
+		$S('.scrollPane',target).jScrollPane({
+			autoReinitialise: true,
+			autoReinitialiseDelay: 100
+		});
+	}
+	
+	function activateAccordion(target){
+		$S(".accordion", target).accordion({
+			collapsible: true																	 
+		});
+	}
+		
 }, 200); // slight delay to ensure other libraries are loaded

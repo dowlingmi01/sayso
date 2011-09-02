@@ -1,3 +1,5 @@
+SET foreign_key_checks = 0;
+
 TRUNCATE TABLE study_tag;
 
 ALTER TABLE study_tag CHANGE content tag varchar(255), ADD UNIQUE KEY tag_unique (tag);
@@ -7,7 +9,6 @@ ALTER TABLE study_tag CHANGE content tag varchar(255), ADD UNIQUE KEY tag_unique
  * It's actually easier to just do new creates wrapped in 
  * no foreign key checks, then to do alter statements
  */
-SET foreign_key_checks = 0;
 
 DROP TABLE IF EXISTS study_search_engines_map;
 DROP TABLE IF EXISTS study_social_activity_type_map; 

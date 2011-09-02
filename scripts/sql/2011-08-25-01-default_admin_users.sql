@@ -1,3 +1,5 @@
+SET foreign_key_checks = 0;
+
 TRUNCATE TABLE user;
 
 TRUNCATE TABLE user_email;

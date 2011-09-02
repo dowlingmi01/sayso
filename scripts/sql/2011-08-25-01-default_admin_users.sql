@@ -1,4 +1,6 @@
+TRUNCATE TABLE user;
 
+TRUNCATE TABLE user_email;
 
 INSERT INTO `user` (id, username, password, password_salt, first_name, last_name, gender_id, ethnicity_id, income_range_id, birthdate, url, timezone, primary_email_id, user_role_id, created) VALUES 
     (null, 'david', md5(concat(md5('12345'),'doon')), 'doon', 'David', 'James', 1, 1, 4, '1969-11-01', 'http://www.davidbjames.info', '+1:00', null, 6, now());

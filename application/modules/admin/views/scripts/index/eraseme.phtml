@@ -9,7 +9,7 @@ $json = '{"type":"ADjuster","tagdomain":{},"domainAvail":{"85256":{"label":"test
     $(function() {
         $('button').click(function () {
             a.ajax({
-                url : 'http://local.sayso.com/api/study/submit',
+                url : 'http://<?= BASE_DOMAIN ?>/api/study/submit',
                 data : { data : '<?= $json ?>' },
                 type : 'POST',
                 dataType : 'json',

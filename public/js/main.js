@@ -30,8 +30,9 @@ a = (function () {
         {
             loggedIn : false,
             id : 0,
-            timezone : null, 
-            object : null
+            timezone : '', 
+            object : null,
+            key : ''
         },
         
         location : 
@@ -55,24 +56,23 @@ a = (function () {
          */
         ajax : function (options)
         {
-            // if URL has 3 segments then it is a cross-module
-            // URL, therefore prepend with /ajax in order for 
-            // routing to work correctly. see ModuleManager.php
-//            if (options.url.split(/\//).length > 3 && !options.url.match(/http/)) {
-//                options.url = '/ajax' + options.url;
-//            }
             // for jsonp, ensure PHP session ID is passed along
             if (options.dataType === 'jsonp') {
                 var sessionId = _this.utils.cookie.get('PHPSESSID');
                 if (!options.data) options.data = {};
                 if (sessionId) options.data.PHPSESSID = sessionId;
             }
-            // where i got to: change Addictionary ajax to remove all auth keys
-            // and ensure all calls use a.ajax.. then test.. then remove Auth logic.. then test again!
+            if (!options.hasOwnProperty('data')) {
+                options.data = {};
+            }
             // add the auth_key to the call
             if (a.api && a.api.authKey) {
-                options.data = $.extend(options.data || {}, { auth_key : a.api.authKey });
+                options.data = $.extend(options.data, { auth_key : a.api.authKey });
             }
+            // add user id and session key if they exist
+            if (!options.hasOwnProperty('user_id')) options.data.user_id = a.user.id;
+            if (!options.hasOwnProperty('user_key')) options.data.user_key = a.user.key;
+            
             $.ajax(options);
         },
         /**

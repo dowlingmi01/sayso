@@ -16,7 +16,7 @@ if ($userSession->isValid())
 ?>
 <p id="login">
 <?php if ($loggedIn) : ?>
-    Logged in as <strong><?= $user->getTitle() ?></strong>. <a id="log-out" href="/user/logout">Log Out</a>
+    Logged in as <strong><?= $user->getTitle() ?></strong>. <a id="log-out" href="">Log Out</a>
 <?php else : ?>
     <a id="log-in" class="modal-control" href="/default/user/login">Log In</a> or <a id="register" class="modal-control" href="/default/user/register">Sign Up</a>
 <?php endif ?>
@@ -24,21 +24,32 @@ if ($userSession->isValid())
 <script type="text/javascript">
     $(function () {
 
-//        function _userLogin (user)
-//        {
-//            if (user) {
-//                a.user.object = user;
-//                a.user.loggedIn = true;
-//                a.user.id = user.id;
-//                $('#login').fadeOut('slow', function () { 
-//                    $('#login').html('Logged in as <strong>' + user.username + '</strong>. <a id="log-out" href="/user/logout">Log Out</a>');
-//                    $('#login').fadeIn('slow');
-//                });
-//            } 
-//        }
-//        
-//        $.subscribe('/user/create', _userLogin);
-//        $.subscribe('/user/login', _userLogin);
+        $('#log-out').live('click', function (e) {
+            // enable redirecting back to the current page on log out
+            var currentLocation = encodeURIComponent(location.pathname + location.search),
+                logoutUrl = 'http://<?= BASE_DOMAIN ?>/default/user/logout?return_url=' + currentLocation;
+            e.preventDefault();
+            window.location.href = logoutUrl;
+        });
+        
+        function _userLogin (user)
+        {
+            if (user) {
+                a.user.object = user;
+                a.user.loggedIn = true;
+                a.user.id = user.id;
+                // user session key which is required for API calls
+                // for our own API usage, this key is the same as PHPSESSID
+                a.user.key = user._key;
+                $('#login').fadeOut('slow', function () { 
+                    $('#login').html('Logged in as <strong>' + user.first_name + ' ' + user.last_name + '</strong>. <a id="log-out" href="">Log Out</a>');
+                    $('#login').fadeIn('slow');
+                });
+            } 
+        }
+        
+        $.subscribe('/user/create', _userLogin);
+        $.subscribe('/user/login', _userLogin);
         
     });
 </script>

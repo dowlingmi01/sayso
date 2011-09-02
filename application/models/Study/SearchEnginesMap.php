@@ -1,13 +1,13 @@
 <?php
 
 
-class Study_TagDomainMap extends Record
+class Study_SearchEnginesMap extends Record
 {
-    protected $_tableName = 'study_tag_domain_map';
+    protected $_tableName = 'study_search_engines_map';
     
     protected $_idKey = null;
     
-    protected $_uniqueFields = array('tag_id' => 0, 'domain_id' => 0);
+    protected $_uniqueFields = array('study_id' => 0, 'search_engines_id' => 0);
     
     public function init() {
         parent::init();

@@ -1,6 +1,8 @@
 <?php
 
-class Api_UserController extends Api_AbstractController
+require_once APPLICATION_PATH . '/modules/api/controllers/GlobalController.php';
+
+class Api_UserController extends Api_GlobalController
 {
 
     public function init()

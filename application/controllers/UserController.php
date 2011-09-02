@@ -21,7 +21,7 @@ class UserController extends GlobalController
     public function logoutAction ()
     {
         Api_UserSession::logout();
-        $this->_redirect('/');
+        $this->_redirect($this->return_url);
     }
 }
 

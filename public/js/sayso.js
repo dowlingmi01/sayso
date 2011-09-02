@@ -532,9 +532,9 @@ $(function () {
     
     $('input[name=type-survey]').change(function(){
         if ($(this).val() === 'Custom Survey') {
-            $('label.paste-iframe-label, textarea#type-iframe').fadeIn('slow');
+            $('label.paste-iframe-label, input#type-iframe').fadeIn('slow');
         } else {
-            $('label.paste-iframe-label, textarea#type-iframe').fadeOut('slow');
+            $('label.paste-iframe-label, input#type-iframe').fadeOut('slow');
         }
     });
     
@@ -634,7 +634,7 @@ $(function () {
     });
     
     // ==============================================================
-    // Build Study Cells
+    // Cells
     
     // online browsing
     $('#add-browsing-qualifier').click(function(e) {
@@ -751,20 +751,13 @@ $(function () {
             }
         }
         // gather up any ad tags the user wants to attach to this cell
-        var adtags = {};
+        var adtags = [];
         $('#fieldset-cell-adtags input[type=checkbox]').each(function() {
             var id = $(this).dataContainer().getId();
             if ($(this).is(':checked')) {
-                switch (sayso.data.type) {
-                    case 'ADgregator' :
-                        adtags[id] = sayso.data.tagdomain[id];
-                        break;
-                    case 'ADjuster' :
-                        adtags[id] = sayso.data.domainAvail[id];
-                        break;
-                }
-            } else if (adtags.hasOwnProperty(id)) {
-                delete adtags[id];
+                adtags.push(id);
+            } else if (adtags.indexOf(id) > -1) {
+                adtags.splice(adtags.indexOf(id), 1);
             }
         });
         // build out the data for the cell
@@ -929,7 +922,7 @@ $(function () {
             sayso.data.surveyinfo.type = $('input[name=type-survey]:checked').val();
         } 
         if ($('input[name=type-survey]:checked').val() === 'Custom Survey') {
-            sayso.data.surveyinfo.tag = $('#type-iframe').val();
+            sayso.data.surveyinfo.url = $('#type-iframe').val();
         }
         
         // basic (ad effectiveness)

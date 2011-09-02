@@ -5,6 +5,8 @@ class Study_Tag extends Record
 {
     protected $_tableName = 'study_tag';
     
+    protected $_uniqueFields = array('tag' => '');
+    
     /**
      * @var Study_Collection_Domain
      */
@@ -27,15 +29,10 @@ class Study_Tag extends Record
         if ($this->_domains) {
             $this->_domains->save();
             foreach ($this->_domains as $domain) {
-                /* @var $domain Study_Domain */
-                $mapping = new Study_TagDomainMap();
-                $mapping->loadDataByUniqueFields(array(
-                    'tag_id' => $this->getId(),
-                    'domain_id' => $domain->getid()
-                ));
-                if (!$mapping->hasId()) $mapping->save();
-                // where i got to: this isn't working. mappings are not getting saved
-                // also the api is not returning a proper error message (just no_action)
+                $map = new Study_TagDomainMap();
+                $map->tag_id = $this->getId();
+                $map->domain_id = $domain->getId();
+                $map->save();
             }
         }
     }

@@ -1,13 +1,13 @@
 <?php
 
 
-class Study_TagDomainMap extends Record
+class Study_SurveyCriterionMap extends Record
 {
-    protected $_tableName = 'study_tag_domain_map';
+    protected $_tableName = 'study_survey_criterion_map';
     
     protected $_idKey = null;
     
-    protected $_uniqueFields = array('tag_id' => 0, 'domain_id' => 0);
+    protected $_uniqueFields = array('study_survey_map_id' => 0, 'survey_criterion_id' => 0);
     
     public function init() {
         parent::init();

@@ -32,7 +32,7 @@ class Api_StudyController extends Api_GlobalController
                 // ?
         }
         
-        //Record::beginTransaction();
+        Record::beginTransaction();
         
         // study
         
@@ -130,9 +130,71 @@ class Api_StudyController extends Api_GlobalController
             $creatives->save();
         }
         
-        //Record::commitTransaction();
+        // quotas
         
-        return $this->_resultType($tags);
+        foreach ($data->quota as $quotaData) {
+            $quota = new Study_Quota();
+            $quota->study_id = $study->getId();
+            $quota->percentile_id = $quotaData->percentId;
+            $quota->gender_id = $quotaData->genderId;
+            $quota->age_range_id = $quotaData->ageId;
+            $quota->ethnicity_id = $quotaData->ethnicityId;
+            // $quota->income_range_id // not currently supported in admin tool
+            $quota->save();
+        }
+        
+        
+        // cells
+        
+        foreach ($data->cells as $cellData) {
+            $cell = new Study_Cell();
+            $cell->study_id = $study->getId();
+            $cell->size = $cellData->size;
+            $cell->cell_type = $cellData->type;
+            $cell->save();
+            foreach ($cellData->adtag as $adTagId) {
+                $tag = $tagsByClientIds[$adTagId];
+                /* @var $tag Study_Tag */
+                $map = new Study_CellTagMap();
+                $map->cell_id = $cell->getId();
+                $map->tag_id = $tag->getId();
+                $map->save();
+            }
+            if ($cellData->qualifier) {
+                if ($cellData->qualifier->browse) {
+                    foreach ($cellData->qualifier->browse as $browseQualifierData) {
+                        $browseQualifier = new Study_CellBrowsingQualifier();
+                        $browseQualifier->cell_id = $cell->getId();
+                        if ($browseQualifierData->include === 'Exclude') $browseQualifier->exclude = 1;
+                        $browseQualifier->site = $browseQualifierData->site;
+                        if ($browseQualifierData->timeframeId) $browseQualifier->timeframe_id = $browseQualifierData->timeframeId;
+                        $browseQualifier->save(); 
+                    }
+                }
+                if ($cellData->qualifier->search) {
+                    foreach ($cellData->qualifier->search as $searchQualifierData) {
+                        $searchQualifier = new Study_CellSearchQualifier();
+                        $searchQualifier->cell_id = $cell->getId();
+                        if ($searchQualifierData->include === 'Exclude') $searchQualifier->exclude = 1;
+                        $searchQualifier->term = $searchQualifierData->term;
+                        if ($searchQualifierData->timeframeId) $searchQualifier->timeframe_id = $searchQualifierData->timeframeId;
+                        $searchQualifier->save(); 
+                        if ($searchQualifierData->whichIds) {
+                            foreach ($searchQualifierData->whichIds as $searchEngineId) {
+                                $map = new Study_CellSearchQualifierMap();
+                                $map->cell_qualifier_search_id = $searchQualifier->getId();
+                                $map->search_engines_id = $searchEngineId;
+                                $map->save();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        Record::commitTransaction();
+        
+        return $this->_resultType($study);
        
         
     }

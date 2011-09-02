@@ -22,9 +22,9 @@ setTimeout(function(){
 	var elemPlayerConsole = $S('#sayso-starbar #starbar-player-console');
 	var elemStarbarMain = $S('#sayso-starbar #starbar-player-console #starbar-main');
 	var elemVisControls = $S('#sayso-starbar #starbar-player-console #starbar-visControls');
-	var elemStarbarClickable = $S('#sayso-starbar #starbar-player-console .nav_element');
-	var elemPopBox = $S('#sayso-starbar #starbar-player-console .popBox');
-	var elemAlerts = $S('#sayso-starbar #starbar-player-console .starbar-alert');
+	var elemStarbarClickable = $S('#sayso-starbar #starbar-player-console .sb_nav_element');
+	var elemPopBox = $S('#sayso-starbar #starbar-player-console .sb_popBox');
+	var elemAlerts = $S('#sayso-starbar #starbar-player-console .sb_starbar-alert');
 	
 	/* 
 	Set up some extra bits to handle closing windows if the user clicks outside the starbar or hits ESC key
@@ -78,25 +78,25 @@ setTimeout(function(){
 		click: function(event) {
 			event.preventDefault();
 			var playerClass = elemPlayerConsole.attr('class');
-			if (playerClass != 'starbar-visOpen'){
+			if (playerClass != 'sb_starbar-visOpen'){
 				// manual override to have any click re-open starbar to original state
-				animateBar('starbar-visStowed', 'button');
+				animateBar('sb_starbar-visStowed', 'button');
 			}
 		},
 		mouseenter: function() {
-			if (elemPlayerConsole.hasClass('starbar-visOpen')){
+			if (elemPlayerConsole.hasClass('sb_starbar-visOpen')){
 				// if it's open
 			}
 			else{
-				elemSaySoLogoBorder.addClass('theme_bgGradient theme_bgGlow').show();
+				elemSaySoLogoBorder.addClass('sb_theme_bgGradient sb_theme_bgGlow').show();
 			}
 		},
 		mouseleave: function(){
-			if (elemPlayerConsole.hasClass('starbar-visOpen')){
+			if (elemPlayerConsole.hasClass('sb_starbar-visOpen')){
 				// if it's open
 			}
 			else{
-				elemSaySoLogoBorder.removeClass('theme_bgGradient theme_bgGlow');
+				elemSaySoLogoBorder.removeClass('sb_theme_bgGradient sb_theme_bgGlow');
 			}
 		}
 	}); // end logo hover + click actions 
@@ -109,46 +109,46 @@ setTimeout(function(){
 			click: function(event){
 			event.preventDefault();			
 				// the popbox is AFTER the clickable area
-				var thisPopBox = $S(this).next('.popBox');
+				var thisPopBox = $S(this).next('.sb_popBox');
 			
 				// set up a handler in case we click an element that isn't directly next to its target popbox. it will have 'target_popBoxID' as a class
 				var targetPopBox = $S(this).attr('class');
-				if (targetPopBox.indexOf('target_') > 0){
-					targetPopBox = targetPopBox.replace('nav_element','');
-					targetPopBox = targetPopBox.replace('target_','');
+				if (targetPopBox.indexOf('sb_target_') > 0){
+					targetPopBox = targetPopBox.replace('sb_nav_element','');
+					targetPopBox = targetPopBox.replace('sb_target_','');
 					targetPopBox = targetPopBox.replace(' ','');
 					// reset the popbox it should open to this ID
 					thisPopBox = $S('#'+targetPopBox);
 					// set a delay before closing the alert element
-					hideAlerts($S(this).closest('.starbar-alert'));
+					hideAlerts($S(this).closest('.sb_starbar-alert'));
 				}
 				
 				// if it was already open, close it and remove the class. otherwise, open the popbox
-				if (thisPopBox.hasClass('popBoxActive')){
+				if (thisPopBox.hasClass('sb_popBoxActive')){
 					closePopBox(thisPopBox);
 				}else{
 					// this menu item's popBox is active
 					closePopBox(thisPopBox);
 					openPopBox(thisPopBox);
 					// if we're a regular nav item
-					if ($S(this).parent().hasClass('theme_bgGradient')){
-						$S('span', this).addClass('theme_navOnGradient');
+					if ($S(this).parent().hasClass('sb_theme_bgGradient')){
+						$S('span', this).addClass('sb_theme_navOnGradient');
 					}
 				}
 			},
 			mouseenter: function(event){
 			event.preventDefault();
-				if ($S(this).parent().hasClass('theme_bgGradient')){
-					$S('span', this).addClass('theme_navOnGradient');
+				if ($S(this).parent().hasClass('sb_theme_bgGradient')){
+					$S('span', this).addClass('sb_theme_navOnGradient');
 				}
 			},
 			mouseleave: function(event){
 			event.preventDefault();				
 			
-				var thisPopBox = $S(this).next('.popBox');
+				var thisPopBox = $S(this).next('.sb_popBox');
 				// only remove the "hover" class for the nav item if it's box isn't active
-				if (($S(this).parent().hasClass('theme_bgGradient')) && (!thisPopBox.hasClass('popBoxActive'))){
-					$S('span', this).removeClass('theme_navOnGradient');
+				if (($S(this).parent().hasClass('sb_theme_bgGradient')) && (!thisPopBox.hasClass('sb_popBoxActive'))){
+					$S('span', this).removeClass('sb_theme_navOnGradient');
 				}
 			}
 		}); // end bind
@@ -172,23 +172,23 @@ setTimeout(function(){
 			// if we're clicking from a button, determine what state we're in and how to shrink / grow
 			case 'button':
 				switch (playerClass){
-					case 'starbar-visOpen':
+					case 'sb_starbar-visOpen':
 						elemStarbarMain.fadeOut('fast');
 						btnToggleVis.attr('class','');
-						btnToggleVis.addClass('btnStarbar-closed');
+						btnToggleVis.addClass('sb_btnStarbar-closed');
 						btnSaySoLogo.css('backgroundPosition','3px 0px');
 						elemPlayerConsole.animate({
 								width: '100'
 							}, 500, function() {
 								// Animation complete.
-								$S(this).attr('class','').addClass('starbar-visClosed');
+								$S(this).attr('class','').addClass('sb_starbar-visClosed');
 								elemSaySoLogoBorder.show();
 								hideAlerts();
 							});
 					break;
-					case 'starbar-visClosed':
+					case 'sb_starbar-visClosed':
 						btnToggleVis.attr('class','');
-						btnToggleVis.addClass('btnStarbar-stowed');
+						btnToggleVis.addClass('sb_btnStarbar-stowed');
 						btnSaySoLogo.css('backgroundPosition','');
 						btnSaySoLogo.css('width','28px');
 						hideAlerts();
@@ -196,11 +196,11 @@ setTimeout(function(){
 								width: '45'
 							}, 500, function() {
 								// Animation complete.
-								$S(this).attr('class','').addClass('starbar-visStowed');
+								$S(this).attr('class','').addClass('sb_starbar-visStowed');
 								btnSaySoLogo.css('width','');
 						});
 					break;
-					case 'starbar-visStowed':
+					case 'sb_starbar-visStowed':
 						btnToggleVis.attr('class','');
 						elemSaySoLogoBorder.hide();
 						elemVisControls.hide();
@@ -210,10 +210,10 @@ setTimeout(function(){
 								width: '100%'
 							}, 500, function() {
 								// Animation complete.
-								$S(this).attr('class','').addClass('starbar-visOpen');
+								$S(this).attr('class','').addClass('sb_starbar-visOpen');
 								elemStarbarMain.fadeIn('fast');
 								elemVisControls.fadeIn('fast');
-								btnToggleVis.addClass('btnStarbar-open');		
+								btnToggleVis.addClass('sb_btnStarbar-open');		
 								showAlerts();
 						});
 					break;
@@ -228,12 +228,12 @@ setTimeout(function(){
 	
 	function closePopBox(exception){
 		elemPopBox.each(function(){
-			$S(this).removeClass('popBoxActive');
+			$S(this).removeClass('sb_popBoxActive');
 			$S(this).hide();
 		});
 		elemStarbarClickable.each(function(){ 
 			// remove hover class from all nav items
-			$S('span.nav_border', this).removeClass('theme_navOnGradient');
+			$S('span.sb_nav_border', this).removeClass('sb_theme_navOnGradient');
 		});
 		return;
 	}
@@ -242,9 +242,9 @@ setTimeout(function(){
 		closePopBox();
 		var popBox = elem;
 		popBox.show();
-		popBox.addClass('popBoxActive');
-		activateTabs(popBox);
+		popBox.addClass('sb_popBoxActive');
 		activateAccordion(popBox);
+		activateTabs(popBox);
 		activateScroll(popBox);
 		return;
 	}
@@ -275,31 +275,45 @@ setTimeout(function(){
 	
 	function activateTabs(target){
 		// only set up the tabs if they're there
-		if ($S('.tabs',target).length > 0){
-			$S('.tabs',target).tabs();
+		if ($S('.sb_tabs',target).length > 0){
+			$S('.sb_tabs',target).tabs();
 		}		
 	}
 	
 	function activateScroll(target){
 		// first, resize the scrollpane dynamically to fit whatever height it lives in (.content.height() - .header.height())
-		var contentHeight = $S('.content',target).height();
+		var contentHeight = $S('.sb_content',target).height();
 		// add height of the header + any margins / paddings	
-		if ($S('.content .header',target).length > 0){
-			var headerHeight =  eval($S('.header',target).css('margin-bottom').replace('px',''))+$S('.content .header',target).height();		
+		if ($S('.sb_content .sb_header',target).length > 0){
+			var headerHeight =  eval($S('.sb_header',target).css('margin-bottom').replace('px',''))+$S('.sb_content .sb_header',target).height();		
 		}else{
 			var headerHeight = 0;		}
 		
-		$S('.scrollPane',target).css('height',contentHeight-headerHeight);		
-		$S('.scrollPane',target).jScrollPane({
+		$S('.sb_scrollPane',target).css('height',contentHeight-headerHeight);		
+		$S('.sb_scrollPane',target).jScrollPane({
 			autoReinitialise: true,
-			autoReinitialiseDelay: 100
-		});
+			autoReinitialiseDelay: 100,
+			contentWidth: '100%'
+		});		
 	}
 	
 	function activateAccordion(target){
-		$S(".accordion", target).accordion({
-			collapsible: true																	 
-		});
+		if ($S('.sb_tabs',target).length > 0){
+			$S('.sb_tabs .sb_tabPane',target).each(function(){
+				$S('.sb_accordion',this).accordion({
+					collapsible: true
+				});
+			});
+		}else{
+			$S('.sb_accordion',target).accordion({
+				collapsible: true
+			});
+		}
+		
+		return;
 	}
 		
+	//setTimeout(function(){activateAccordion()},5000);
+	
+	
 }, 200); // slight delay to ensure other libraries are loaded

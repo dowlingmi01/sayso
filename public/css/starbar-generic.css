@@ -180,9 +180,9 @@ html {
 
 /* BEGIN FORMATTING */
 
-##sayso-starbar {
+#sayso-starbar {
 	color: #fff;
-	font: 13px/1.231 sans-serif;
+	font: 13px/1.sb_231 sans-serif;
 	margin: 0 auto;
 	padding: 0 20px;
 	width: 960px;
@@ -226,7 +226,7 @@ html {
 #sayso-starbar a:hover {
 	text-decoration: underline;
 }
-#sayso-starbar .starbar-contain {
+#sayso-starbar .sb_starbar-contain {
 }
 #sayso-starbar #starbar-player-console{
 	background-image: url('../images/bg_bar.png');
@@ -243,13 +243,13 @@ html {
 
 /* define the console / sub-items for various states */
 
-#sayso-starbar #starbar-player-console.starbar-visOpen{
+#sayso-starbar #starbar-player-console.sb_starbar-visOpen{
 	width: 100%;
 }
-#sayso-starbar #starbar-player-console.starbar-visStowed{
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed{
 	width: 45px;
 }
-#sayso-starbar #starbar-player-console.starbar-visClosed{
+#sayso-starbar #starbar-player-console.sb_starbar-visClosed{
 	width: 100px;
 }
 
@@ -261,8 +261,8 @@ html {
 	position: relative;
 }
 
-#sayso-starbar #starbar-player-console.starbar-visClosed #starbar-wrapper,
-#sayso-starbar #starbar-player-console.starbar-visStowed #starbar-wrapper{
+#sayso-starbar #starbar-player-console.sb_starbar-visClosed #starbar-wrapper,
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed #starbar-wrapper{
 	width: 100%;
 }
 
@@ -274,9 +274,14 @@ html {
 
 #sayso-starbar #starbar-visControls{
 	position: relative;
-	width: 100%;
+	width: 100px;
 	height: 70px;
 	display: block;
+}
+
+#sayso-starbar #starbar-player-console.sb_starbar-visClosed #starbar-visControls,
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed #starbar-visControls{
+	width: 100%;
 }
 
 #sayso-starbar #starbar-player-console #starbar-toggleVis {
@@ -289,16 +294,16 @@ html {
 	position: absolute;
 }
 
-#sayso-starbar #starbar-player-console #starbar-toggleVis.btnStarbar-open{
+#sayso-starbar #starbar-player-console #starbar-toggleVis.sb_btnStarbar-open{
 	background-image: url('../images/generic/img_hide.png');
 	width: 44px;
 }
-#sayso-starbar #starbar-player-console #starbar-toggleVis.btnStarbar-closed{
+#sayso-starbar #starbar-player-console #starbar-toggleVis.sb_btnStarbar-closed{
 	background-image: url('../images/generic/img_close.png');
 	width: 51px;
 	margin: 0px 0px 0px -4px;
 }
-#sayso-starbar #starbar-player-console #starbar-toggleVis.btnStarbar-stowed{
+#sayso-starbar #starbar-player-console #starbar-toggleVis.sb_btnStarbar-stowed{
 	background: none;
 }
 
@@ -320,15 +325,15 @@ html {
 	background-position: 10px -35px;
 }
 
-#sayso-starbar #starbar-player-console.starbar-visClosed #starbar-logo{
+#sayso-starbar #starbar-player-console.sb_starbar-visClosed #starbar-logo{
 	background-position: 3px 0px;
 }
 
-#sayso-starbar #starbar-player-console.starbar-visClosed #starbar-logo:hover{
+#sayso-starbar #starbar-player-console.sb_starbar-visClosed #starbar-logo:hover{
 	background-position: 3px -35px;
 }
 
-#sayso-starbar #starbar-player-console.starbar-visStowed #starbar-logo{
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed #starbar-logo{
 	background-image: url('../images/generic/logo_sayso_sm.png');
 	background-repeat: no-repeat;
 	background-position: 5px 6px;
@@ -359,11 +364,11 @@ html {
 	background-image: url('../images/generic/bg_starbar-type.png');
 }
 
-#sayso-starbar #starbar-player-console #starbar-type .inner{
+#sayso-starbar #starbar-player-console #starbar-type .sb_inner{
 	position: relative;
 }
 
-#sayso-starbar #starbar-player-console #starbar-type .changeTheme{
+#sayso-starbar #starbar-player-console #starbar-type .sb_changeTheme{
 	border-radius: 3px 3px 0px 0px;
 	height: 14px;
 	width: 217px;
@@ -385,7 +390,7 @@ html {
 	overflow: hidden;
 }
 
-#sayso-starbar #starbar-player-console #starbar-type .changeTheme span{
+#sayso-starbar #starbar-player-console #starbar-type .sb_changeTheme span{
 	background-image: url('../images/generic/icon_change.png');
 	background-repeat: no-repeat;
 	background-position: right 50%;
@@ -399,7 +404,7 @@ html {
 	cursor: pointer;
 }
 
-#sayso-starbar #starbar-player-console #starbar-type .logo{
+#sayso-starbar #starbar-player-console #starbar-type .sb_logo{
 	width: 70px;
 	height: 48px;
 	z-index: 100;
@@ -408,7 +413,7 @@ html {
 	left: 15px;
 }
 
-#sayso-starbar #starbar-player-console #starbar-type .content{
+#sayso-starbar #starbar-player-console #starbar-type .sb_content{
 	color: #fff;
 	font-size: 11px;
 	position: absolute;
@@ -418,13 +423,13 @@ html {
 	right: 20px;
 }
 
-#sayso-starbar #starbar-player-console #starbar-type .content h2, #sayso-starbar #starbar-player-console #starbar-type .content a{
+#sayso-starbar #starbar-player-console #starbar-type .sb_content h2, #sayso-starbar #starbar-player-console #starbar-type .sb_content a{
 	color: #fff;
 }
 
 /* VARIOUS ALERTS AND POSITIONING */
 
-#sayso-starbar #starbar-player-console .starbar-alert{
+#sayso-starbar #starbar-player-console .sb_starbar-alert{
 	width: 218px;
 	background-image: url('../images/generic/bg_alert_starbar-type.png');
 	background-repeat: no-repeat;
@@ -433,17 +438,17 @@ html {
 	display:none;
 }
 
-#sayso-starbar #starbar-player-console #starbar-alert-new.starbar-alert{	
+#sayso-starbar #starbar-player-console #starbar-alert-new.sb_starbar-alert{	
 	bottom: 65px;
 	left: 108px;
 }
 
-#sayso-starbar #starbar-player-console .starbar-alert .inner{
+#sayso-starbar #starbar-player-console .sb_starbar-alert .sb_inner{
 	position: relative;
 	margin: 8px 8px 0px 8px;
 }
 
-#sayso-starbar #starbar-player-console .starbar-alert .inner .content{
+#sayso-starbar #starbar-player-console .sb_starbar-alert .sb_inner .sb_content{
 	border-radius: 3px 3px 0px 0px;
 	-moz-border-radius: 3px 3px 0px 0px;
 	-webkit-border-radius: 3px 3px 0px 0px;
@@ -452,7 +457,7 @@ html {
 	font-size: 11px;
 }
 
-#sayso-starbar #starbar-player-console .starbar-alert .inner .content span{
+#sayso-starbar #starbar-player-console .sb_starbar-alert .sb_inner .sb_content span{
 	background-image: url('../images/generic/img_arrow_white.png');
 	background-repeat: no-repeat;
 	background-position: right 50%;
@@ -463,7 +468,7 @@ html {
 	font-size: 11px;
 }
 
-#sayso-starbar #starbar-player-console .theme_bgAlertRed{
+#sayso-starbar #starbar-player-console .sb_theme_bgAlertRed{
 	background-image: -webkit-gradient(
     linear,
     left top,
@@ -479,7 +484,7 @@ html {
 
 /* NAVIGATION */
 
-#sayso-starbar #starbar-player-console .nav_element{
+#sayso-starbar #starbar-player-console .sb_nav_element{
 	cursor: pointer;
 }
 
@@ -506,7 +511,7 @@ html {
 	border-right: 1px solid #000;
 }
 
-#sayso-starbar #starbar-player-console #starbar-nav ul li span.nav_element{
+#sayso-starbar #starbar-player-console #starbar-nav ul li span.sb_nav_element{
 	display: inline-block;
 	padding: 0px 0px;
 	height: 53px;
@@ -516,7 +521,7 @@ html {
 	cursor: pointer;
 }
 
-#sayso-starbar #starbar-player-console #starbar-nav ul li span.nav_border{
+#sayso-starbar #starbar-player-console #starbar-nav ul li span.sb_nav_border{
 	background-color: #333333;
 	text-indent: -9999px;
 	height: 8px;
@@ -526,24 +531,24 @@ html {
 	margin: 0px 0px;
 }
 
-#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_polls span.nav_element{
+#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_polls span.sb_nav_element{
 	background-image: url('../images/generic/nav_polls.png');
 	width: 74px;
 }
 
-#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_surveys span.nav_element{
+#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_surveys span.sb_nav_element{
 	background-image: url('../images/generic/nav_surveys.png');
 	width: 97px;
 }
 
-#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_daily-deals span.nav_element{
+#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_daily-deals span.sb_nav_element{
 	background-image: url('../images/generic/nav_daily-deals.png');
 	width: 101px;
 }
 
 /* POP BOX STYLES */
 
-#sayso-starbar #starbar-player-console .popBox{
+#sayso-starbar #starbar-player-console .sb_popBox{
 	position: absolute;
 	background-color: #383838;
 	z-index: 9999;
@@ -552,7 +557,7 @@ html {
 	display: none;
 }
 
-#sayso-starbar #starbar-player-console .popBox .popBoxInner{
+#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner{
 	position: relative;
 	margin: 5px;
 	padding: 5px;
@@ -565,45 +570,45 @@ html {
 	color: #404040;
 }
 
-#sayso-starbar #starbar-player-console .popBox .popBoxInner .content{
+#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_content{
 	padding: 5px 5px 5px 10px;
 	background-color: #f3f3f3;
 	height: 200px;
 	width: 500px;
 }
 
-#sayso-starbar #starbar-player-console .popBox .header{
+#sayso-starbar #starbar-player-console .sb_popBox .sb_header{
 	overflow: hidden;
 	margin-bottom: 10px;
 }
 
-#sayso-starbar #starbar-player-console .popBox .header img{
+#sayso-starbar #starbar-player-console .sb_popBox .sb_header img{
 	display: inline-block;
 	vertical-align: text-bottom;
 }
 
-#sayso-starbar #starbar-player-console .scrollPane{
+#sayso-starbar #starbar-player-console .sb_scrollPane{
 	width: 100%;
 	height: 200px;
 	overflow: auto;
 }
 
 /* CUSTOM POPBOX STYLINGS */
-#sayso-starbar #starbar-player-console #popBox_polls .content,
-#sayso-starbar #starbar-player-console #popBox_surveys .content{
+#sayso-starbar #starbar-player-console #popBox_polls .sb_content,
+#sayso-starbar #starbar-player-console #popBox_surveys .sb_content{
 	height: 220px;
 }
 
 
 /* TRIANGLES */
 
-#sayso-starbar #starbar-player-console .triangle-border {
+#sayso-starbar #starbar-player-console .sb_triangle-border {
 	border: 1px solid #000;
 	box-shadow: 0px 0px 5px #333333;
 	-moz-box-shadow: 0px 0px 5px #333333;
 	-webkit-box-shadow: 0px 0px 5px #333333;
 }
-#sayso-starbar #starbar-player-console .triangle-border:before {
+#sayso-starbar #starbar-player-console .sb_triangle-border:before {
 	content:"";
 	position:absolute;
 	bottom:-7px; /* value = - border-top-width - border-bottom-width */
@@ -611,12 +616,12 @@ html {
 	border-width:7px 7px 0;
 	border-style:solid;
 	border-color:#000 transparent;
-	/* reduce the damage in FF3.0 */
+	/* reduce the damage in FF3.sb_0 */
   	display:block;
 	width:0;
 }
 /* creates the smaller  triangle */
-#sayso-starbar #starbar-player-console .triangle-border:after {
+#sayso-starbar #starbar-player-console .sb_triangle-border:after {
 	content:"";
 	position:absolute;
 	bottom: -6px; /* value = - border-top-width - border-bottom-width */
@@ -624,14 +629,14 @@ html {
 	border-width: 6px 6px 0;
 	border-style:solid;
 	border-color:#383838 transparent;
-	/* reduce the damage in FF3.0 */
+	/* reduce the damage in FF3.sb_0 */
     display:block;
 	width:0;
 }
-#sayso-starbar #starbar-player-console .triangle-solid {
+#sayso-starbar #starbar-player-console .sb_triangle-solid {
 }
 
-#sayso-starbar #starbar-player-console .triangle-solid:after {
+#sayso-starbar #starbar-player-console .sb_triangle-solid:after {
 	content:"";
 	position:absolute;
 	bottom:-4px; /* value = - border-top-width - border-bottom-width */
@@ -639,7 +644,7 @@ html {
 	border-width:4px 4px 0; /* vary these values to change the angle of the vertex */
 	border-style:solid;
 	border-color:#f3f3f3 transparent;
-	/* reduce the damage in FF3.0 */
+	/* reduce the damage in FF3.sb_0 */
     display:block;
 	width:0;
 }
@@ -648,17 +653,17 @@ html {
 
 JQUERY-UI
 
-bringing in elements from jquery-ui smoothness theme and overriding.
+bringing in elements from jquery-ui smoothness theme and overriding.sb_
 
 */
 
 /* ui-tabs */
 
-#sayso-starbar #starbar-player-console .ui-tabs {
+#sayso-starbar #starbar-player-console .sb_ui-tabs {
 	position: relative;
 	zoom: 1;
 } /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav {
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav {
 	margin: 0;
 	padding: .2em .2em 0;
 	float: right;
@@ -667,7 +672,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.
 	top: -40px;
 	right: 0;
 }
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li {
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li {
 	list-style: none;
 	float: left;
 	position: relative;
@@ -678,11 +683,11 @@ bringing in elements from jquery-ui smoothness theme and overriding.
 	border-left: 1px solid #999;
 }
 
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li:first-child{
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li:first-child{
 	border: none;
 }
 
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li a {
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a {
 	float: left;
 	padding: 0px 8px;
 	text-decoration: none;
@@ -691,79 +696,79 @@ bringing in elements from jquery-ui smoothness theme and overriding.
 	color: #000;
 }
 
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li a:hover{
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a:hover{
 	color: #333;
 }
 
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li.ui-tabs-selected {
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected {
 	margin-bottom: 0;
 	padding-bottom: 1px;
 }
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li.ui-tabs-selected a, 
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li.ui-state-disabled a, 
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li.ui-state-processing a {
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a, 
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-disabled a, 
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-processing a {
 	cursor: text;
 	color: #1a8fbb;
 }
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li a, 
-#sayso-starbar #starbar-player-console .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a, 
+#sayso-starbar #starbar-player-console .sb_ui-tabs.sb_ui-tabs-collapsible .sb_ui-tabs-nav li.sb_ui-tabs-selected a {
 	cursor: pointer;
-} /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-panel {
+} /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere.sb_.sb_.sb_ */
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-panel {
 	display: block;
 	border-width: 0;
 	padding: 0;
 	background: none;
 }
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-hide {
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-hide {
 	display: none !important;
 }
 
 /* ui-accordion */
 /*
- * jQuery UI Accordion 1.8.16
+ * jQuery UI Accordion 1.sb_8.sb_16
  *
- * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://jquery.org/license
+ * Copyright 2011, AUTHORS.sb_txt (http://jqueryui.sb_com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.sb_
+ * http://jquery.sb_org/license
  *
- * http://docs.jquery.com/UI/Accordion#theming
+ * http://docs.sb_jquery.sb_com/UI/Accordion#theming
  */
 /* IE/Win - Fix animation bug - #4615 */
-#sayso-starbar #starbar-player-console .ui-accordion {
+#sayso-starbar #starbar-player-console .sb_ui-accordion {
 	width: 100%;
 	margin: 5px 0px;
 }
-#sayso-starbar #starbar-player-console .ui-accordion .ui-accordion-header {
+#sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header {
 	cursor: pointer;
 	position: relative;
 	margin-top: 5px;
 	zoom: 1;
 	border: 1px solid #c7c7c7;
 }
-#sayso-starbar #starbar-player-console .ui-accordion .ui-accordion-li-fix {
+#sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-li-fix {
 	display: inline;
 }
-#sayso-starbar #starbar-player-console .ui-accordion .ui-state-active {
+#sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-state-active {
 	border-bottom: 0 !important;
 }
-#sayso-starbar #starbar-player-console .ui-accordion .ui-accordion-header a {
+#sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header a {
 	display: block;
 	font-size: 1em;
 	padding: 3px 8px;
 	font-size: 15px;
 	text-decoration: none !important;
 }
-#sayso-starbar #starbar-player-console .ui-accordion-icons .ui-accordion-header a {
+#sayso-starbar #starbar-player-console .sb_ui-accordion-icons .sb_ui-accordion-header a {
 	
 }
-#sayso-starbar #starbar-player-console .ui-accordion .ui-accordion-header .ui-icon {
+#sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_ui-icon {
 	position: absolute;
 	left: .5em;
 	top: 50%;
 	margin-top: -8px;
 }
-#sayso-starbar #starbar-player-console .ui-accordion .ui-accordion-content {
+#sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-content {
 	padding: 3px 8px;
 	border-top: 0;
 	margin-top: -2px;
@@ -775,7 +780,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.
 	zoom: 1;
 	border: 1px solid #c7c7c7;
 }
-#sayso-starbar #starbar-player-console .ui-accordion .ui-accordion-content-active {
+#sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-content-active {
 	display: block;
 	border-top: 0 !important;
 }
@@ -785,19 +790,29 @@ bringing in elements from jquery-ui smoothness theme and overriding.
 
 /* everything that has textcolor */
 
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li.ui-tabs-selected a, 
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li.ui-state-disabled a, 
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li.ui-state-processing a,
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a, 
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-disabled a, 
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-processing a,
 #sayso-starbar a, #sayso-starbar a:link, 
 #sayso-starbar a:active, 
 #sayso-starbar a:visited,
-#sayso-starbar h3.title,
-#sayso-starbar h2.title{
+#sayso-starbar h3.sb_title,
+#sayso-starbar h2.sb_title{
 	color: #1a8fbb;
 }
 
 /* other special formatting styles */
 
-#sayso-starbar h2.title{
+#sayso-starbar h2.sb_title{
 	text-transform: uppercase;
+}
+
+.wrapper{
+	position: absolute;
+	z-index: 999;
+	top: -500px;
+	left: 0;
+	width: 300px;
+	height: 300px;
+	color: #000;
 }

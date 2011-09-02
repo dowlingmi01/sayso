@@ -3,18 +3,18 @@
 }
 
 /* turn off starbar type background + switcher */
-#sayso-starbar #starbar-player-console #starbar-type .changeTheme{
+#sayso-starbar #starbar-player-console #starbar-type .sb_changeTheme{
 	display: none;
 }
 
 /* starbar type logo + content area */
-#sayso-starbar #starbar-player-console #starbar-type .logo{
+#sayso-starbar #starbar-player-console #starbar-type .sb_logo{
 	width: 78px;
 	height: 37px;
 	margin: 5px 0px 0px 0px;
 }
 
-#sayso-starbar #starbar-player-console #starbar-type .userImg{
+#sayso-starbar #starbar-player-console #starbar-type .sb_userImg{
 	width: 32px;
 	height: 35px;
 	position: absolute;
@@ -23,16 +23,16 @@
 	cursor: pointer;
 }
 
-#sayso-starbar #starbar-player-console #starbar-type .content{
+#sayso-starbar #starbar-player-console #starbar-type .sb_content{
 	width: 82px;
 	top: 22px;
 }
 
-#sayso-starbar #starbar-player-console #starbar-type .content h2{
+#sayso-starbar #starbar-player-console #starbar-type .sb_content h2{
 	font-size: 13px;
 }
 
-#sayso-starbar #starbar-player-console #starbar-type .content img{
+#sayso-starbar #starbar-player-console #starbar-type .sb_content img{
 	float: left;
 	margin: 0px 5px 0px 0px;
 }
@@ -43,7 +43,7 @@
 }
 
 /* special color classes */
-#sayso-starbar #starbar-player-console .theme_navOnGradient{
+#sayso-starbar #starbar-player-console .sb_theme_navOnGradient{
 	background-image: -webkit-gradient(
     linear,
     left top,
@@ -57,7 +57,7 @@
 	background-color# ccc;
 }
 
-#sayso-starbar #starbar-player-console .theme_bgGradient{
+#sayso-starbar #starbar-player-console .sb_theme_bgGradient{
 	background-image: -webkit-gradient(
     linear,
     left top,
@@ -71,11 +71,11 @@
 	background-color: #0081c5;
 }
 
-#sayso-starbar #starbar-player-console .theme_textHighlight{
+#sayso-starbar #starbar-player-console .sb_theme_textHighlight{
 	color: #0082c5 !important;
 }
 
-#sayso-starbar #starbar-player-console .theme_bgGlow{
+#sayso-starbar #starbar-player-console .sb_theme_bgGlow{
   -moz-box-shadow: 0px 0px 5px #0081c5;
   -webkit-box-shadow: 0px 0px 5px #0081c5;
   box-shadow: 0px 0px 5px #0081c5;
@@ -105,24 +105,24 @@
 	background-position: 0px 50%;
 }
 
-#sayso-starbar #starbar-player-console #starbar-level .content{
+#sayso-starbar #starbar-player-console #starbar-level .sb_content{
 	padding: 6px 0px 0px 10px;
 	position: relative;
 }
 
-#sayso-starbar #starbar-player-console #starbar-level .content .user-level{
+#sayso-starbar #starbar-player-console #starbar-level .sb_content .sb_user-level{
 	text-align: center;
 }
 
-#sayso-starbar #starbar-player-console #starbar-level .content .user-level, 
-#sayso-starbar #starbar-player-console #starbar-level .content .user-level span{	
+#sayso-starbar #starbar-player-console #starbar-level .sb_content .sb_user-level, 
+#sayso-starbar #starbar-player-console #starbar-level .sb_content .sb_user-level span{	
 	color: #fff;
 	text-transform: uppercase;
 	font-size: 11px;
 	font-weight: bold;
 }
 
-#sayso-starbar #starbar-player-console #starbar-level .user-level-box{
+#sayso-starbar #starbar-player-console #starbar-level .sb_user-level-box{
 	margin-top: -2px;
 }
 
@@ -138,7 +138,7 @@
 	background-position: 0px 50%;
 }
 
-#sayso-starbar #starbar-player-console #starbar-points .content{
+#sayso-starbar #starbar-player-console #starbar-points .sb_content{
 	margin: 8px 0px 0px 5px;
 	position: relative;
 }
@@ -146,20 +146,20 @@
 
 /* REUSABLE: user level box and user score */
 
-#sayso-starbar #starbar-player-console .user-level-box{
+#sayso-starbar #starbar-player-console .sb_user-level-box{
 	height: 27px;
 	position: relative;
 	display: block;
 }
 
-#sayso-starbar #starbar-player-console .user-points-box{
+#sayso-starbar #starbar-player-console .sb_user-points-box{
 	height: 37px;
 	position: relative;
 	display: block;
 	padding: 10px 0px 0px 0px;
 }
 
-#sayso-starbar #starbar-player-console .user-level-box .user-level-star{
+#sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-star{
 	position: absolute;
 	z-index: 1000;
 	top: -5px;
@@ -169,7 +169,7 @@
 	height: 27px;
 }
 
-#sayso-starbar #starbar-player-console .user-points-box .user-points-note{
+#sayso-starbar #starbar-player-console .sb_user-points-box .sb_user-points-note{
 	position: absolute;
 	z-index: 1000;
 	top: 0px;
@@ -179,7 +179,8 @@
 	height: 37px;
 }
 
-#sayso-starbar #starbar-player-console .user-level-box .user-level-bar_bg, #sayso-starbar #starbar-player-console .user-points-box .user-points-bar_bg{
+#sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-bar_bg, 
+#sayso-starbar #starbar-player-console .sb_user-points-box .sb_user-points-bar_bg{
 	border: 3px solid #fff;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -199,14 +200,15 @@
 	height: 13px;
 }
 
-#sayso-starbar #starbar-player-console .user-level-box .user-level-bar_bg .progress, #sayso-starbar #starbar-player-console .user-points-box .user-points-bar_bg .progress{
+#sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-bar_bg .sb_progress, 
+#sayso-starbar #starbar-player-console .sb_user-points-box .sb_user-points-bar_bg .sb_progress{
 	height: 13px;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 }
 
-#sayso-starbar #starbar-player-console .user-level-box .user-level-bar_bg .score{
+#sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-bar_bg .sb_score{
 	text-align: center;
 	color: #000;
 	font-size: 11px;
@@ -217,7 +219,7 @@
 	font-weight: bold;
 }
 
-#sayso-starbar #starbar-player-console .user-points-box .user-points-bar_bg .score{
+#sayso-starbar #starbar-player-console .sb_user-points-box .sb_user-points-bar_bg .sb_score{
 	text-align: center;
 	color: #000;
 	font-size: 11px;
@@ -235,19 +237,19 @@
 
 /* everything that has textcolor */
 
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li.ui-tabs-selected a, 
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li.ui-state-disabled a, 
-#sayso-starbar #starbar-player-console .ui-tabs .ui-tabs-nav li.ui-state-processing a,
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a, 
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-disabled a, 
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-processing a,
 #sayso-starbar a, #sayso-starbar a:link, 
 #sayso-starbar a:active, 
 #sayso-starbar a:visited,
-#sayso-starbar h3.title,
-#sayso-starbar h2.title{
+#sayso-starbar h3.sb_title,
+#sayso-starbar h2.sb_title{
 	color: #0081c5;
 }
 
 /* other special formatting styles */
 
-#sayso-starbar h2.title{
+#sayso-starbar h2.sb_title{
 	text-transform: uppercase;
 }

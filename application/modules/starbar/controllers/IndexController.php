@@ -48,7 +48,6 @@ class Starbar_IndexController extends Api_AbstractController
         $this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');
         $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
         $this->view->headScript()->appendFile('/js/starbar/jquery-ui-1.8.16.custom.min.js');
-        $this->view->headScript()->appendFile('/js/starbar/jquery.jscrollpane.min.js');
     }
     
     public function hellomusicRemoteAction () {

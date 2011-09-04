@@ -956,14 +956,15 @@ $(function () {
         // localStorage
         localStorage.setItem('sayso', jsonString);
         
-//        $.ajax({
-//            url : 'http://' + sayso.baseDomain + '/admin/data/submit-study',
-//            data : { data : jsonString },
-//            type : 'POST',
-//            success : function (response) {
-//                console.log(response);
-//            }
-//        });
+        $.ajax({
+            url : 'http://' + sayso.baseDomain + '/api/study/submit',
+            data : { data : jsonString },
+            type : 'POST',
+            dataType: 'json',
+            success : function (response) {
+                console.log(response);
+            }
+        });
         
         // reset form fields and return "changes pending" to false
         //resetForm();

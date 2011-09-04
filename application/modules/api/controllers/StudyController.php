@@ -22,14 +22,13 @@ class Api_StudyController extends Api_GlobalController
         $type = $data->type;
         
         switch ($type) {
-            case 'ADgregator' :
-                $tagsDomainsData = $data->tagdomain;
-                break;
             case 'ADjuster' :
                 $tagsDomainsData = $data->domainAvail;
                 break;
+            case 'ADgregator' :
             default :
-                // ?
+                $tagsDomainsData = $data->tagdomain;
+                break;
         }
         
         Record::beginTransaction();

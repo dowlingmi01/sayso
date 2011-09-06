@@ -15,6 +15,35 @@ class Api_StudyController extends Api_GlobalController
         return $this->_resultType(new Object(array('foo' => 'bar')));
     }
 
+    public function validateAction () {
+        $this->_validateRequiredParameters(array('user_id', 'study_id'));
+        // @todo check if study date is still valid
+        return $this->_resultType(true);
+    }
+    
+    public function getAction () {
+        $this->_validateRequiredParameters(array('user_id'));
+        
+        // check if current study exists for this user
+        $activeCellId = Study_CellAssignment::getActiveCellIdByUser($this->user_id);
+        if ($activeCellId) {
+            // user is part of an active study
+        } else {
+            // user not part of an active study
+            // so find one to assign them to
+            $builder = new Sql_GetQualifyingStudies();
+            $builder->setUserId($this->user_id);
+            $study = $builder->run()->getFirst();
+            // where I got to: this is the initial query object that finds qualifying studies
+            // for the current user .. there is much to add to it, as well as some post
+            // processing of the result collection, and possibly some further queries
+            // in order to determine the correct study.
+            // in this example, I am just getting the first one (via getFirst() and returning it)
+            // test URL is at http://local.sayso.com/api/study/get/user_id/1 (assumes user id 1 exists)
+            return $this->_resultType($study);
+        }
+    }
+    
     public function submitAction () {
         $this->_validateRequiredParameters(array('data', 'user_id'));
         $this->_authenticateUser(false, true); // true = admin user

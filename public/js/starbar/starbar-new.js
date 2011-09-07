@@ -60,6 +60,18 @@ setTimeout(function(){
 		}); 
 	});
 	
+	/* prevent default for any link with # as the href */
+	$S('a').each(function(){
+		if ($S(this).attr('href')=='#'){
+			$S(this).bind({
+				click: function(e){ 
+					e.preventDefault();
+				} 
+			}); 
+		}
+	});
+	
+	
 	/*
 	 Set up handlers for expanding / minimizing the starbar when "hide" or logo is clicked
 	*/
@@ -163,7 +175,11 @@ setTimeout(function(){
 	// initialize the starbar
 	function initStarBar(){
 		closePopBox();
-		showAlerts();
+		showAlerts();		
+		activateProgressBar();
+		
+		// initializes development-only jquery
+		devInit();
 	}
 	
 	// animates the starbar-player-console bar based on current state
@@ -300,8 +316,12 @@ setTimeout(function(){
 	function activateAccordion(target){
 		if ($S('.sb_tabs',target).length > 0){
 			$S('.sb_tabs .sb_tabPane',target).each(function(){
+				var isCollapsible = true;
+				if ($S('.sb_accordion',this).hasClass('sb_pollQuestion') || $S('.sb_accordion',this).hasClass('sb_pollResult')){
+					isCollapsible = false;
+				}
 				$S('.sb_accordion',this).accordion({
-					collapsible: true
+					collapsible: isCollapsible
 				});
 			});
 		}else{
@@ -312,8 +332,25 @@ setTimeout(function(){
 		
 		return;
 	}
+	
+	function activateProgressBar(target){
+		$S('.sb_progressBar').each(function(){
+			var percentValue = eval($S('.sb_progressBarPercent',this).html());
+			$S(this).progressbar({
+				value : percentValue								 
+			});
+			if (percentValue >= 55){
+				$S('.sb_progressBarValue',this).addClass('sb_progressBarValue_revert');
+			}
+		});
+	}
+	
+	function devInit(){
 		
-	//setTimeout(function(){activateAccordion()},5000);
+		
+		
+		
+	}
 	
 	
 }, 200); // slight delay to ensure other libraries are loaded

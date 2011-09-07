@@ -55,41 +55,241 @@
                       <li><a href="#polls_tabs_3">Archive</a></li>
                     </ul>
                     <div id="polls_tabs_1" class="sb_tabPane">
-                    	<div class="sb_scrollPane">                      
-                        <p>Earn 10 Notes for each poll you complete. Check back often to keep earning and for your chance to win the Weekly Giveaway!</p>                        <div class="sb_accordion">
-                            <h3><a href="#">Music Potpourri <span>+ 10 Notes</span></a></h3>
+                    	                    
+                    	<div class="sb_scrollPane"> 
+                        <!--
+                        	Programming note:
+                          to show how each section should flow, I have wrapped the 3 poll views into divs called "sb_pollView_x"
+                          *** this should not be seen as permanent code. ***
+                          it's only purpose is to show the 3 states when taking a poll.
+                        -->
+                        
+                       	<!-- ********************************************* -->
+                        <div id="sb_pollView_1"><!-- REMOVE THIS CONTAINER FOR PRODUCTION / FOR DEV USE ONLY -->
+                        <!-- ********************************************* -->
+                        
+                        <!-- BEGIN POLL BOX LANDING -->                        
+                        <p>Earn <strong class="sb_theme_textHighlight">10 Notes</strong> for each poll you complete. Check back often to keep earning and for your chance to win the Weekly Giveaway!</p>  
+                        <div class="sb_accordion">
+                            <h3><a href="#"><span class="sb_questionCount"><span class="sb_questionCurrent">1</span> of 10</span>Bob Dylan pre or post Newport? <span class="sb_questionValue">+ 10 Notes</span></a></h3>
                             <div>
-                            	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_poll.jpg" alt="Poll Image" />
-                              <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
-                            </div>
-                            <h3><a href="#">Second header</a></h3>
-                            <div>Second content</div>
-                            <h3><a href="#">Third header</a></h3>
-                            <div>Second content</div>
+                            	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_poll.jpg" alt="Poll Image" class="sb_pollImage" />
+                              <div class="sb_pollContent">
+                              <p><strong>Do you play electric or acoustic instruments?</strong></p>
+                              <form action="" name="">
+                              <div class="sb_column50">
+                             		<p><input type="radio" /> <label>Electric</label></p>
+                                <p><input type="radio" /> <label>Acoustic</label></p>
+                              </div><!-- .sb_column50 -->
+                              <div class="sb_column50">
+                              	<p><input type="radio" / ><label>Both</label></p>
+                              </div><!-- .sb_column50 -->
+                              </form>
+                              </div><!-- .sb_questionAnswers -->
+                            </div><!-- / END ACCORDION CONTENT -->
+                            <h3><a href="#"><span class="sb_questionCount"><span class="sb_questionCurrent">1</span> of 10</span>Everything Gibson <span class="sb_questionValue">+ 10 Notes</span></a></h3>
+                            <div>
+                            	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_poll.jpg" alt="Poll Image" class="sb_pollImage" />
+                              <div class="sb_pollContent">
+                              <p><strong>Do you play electric or acoustic instruments?</strong></p>
+                              <form action="" name="">
+                              <div class="sb_column50">
+                             		<p><input type="radio" /> <label>Electric</label></p>
+                                <p><input type="radio" /> <label>Acoustic</label></p>
+                              </div><!-- .sb_column50 -->
+                              <div class="sb_column50">
+                              	<p><input type="radio" / ><label>Both</label></p>
+                              </div><!-- .sb_column50 -->
+                              </form>
+                              </div><!-- .sb_questionAnswers -->
+                            </div><!-- / END ACCORDION CONTENT -->
+                            <h3><a href="#"><span class="sb_questionCount"><span class="sb_questionCurrent">1</span> of 10</span>Guitar Center or the Corner Music Shop <span class="sb_questionValue">+ 10 Notes</span></a></h3>
+                            <div>
+                            	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_poll.jpg" alt="Poll Image" class="sb_pollImage" />
+                              <div class="sb_pollContent">
+                              <p><strong>Do you play electric or acoustic instruments?</strong></p>
+                              <form action="" name="">
+                              <div class="sb_column50">
+                             		<p><input type="radio" /> <label>Electric</label></p>
+                                <p><input type="radio" /> <label>Acoustic</label></p>
+                              </div><!-- .sb_column50 -->
+                              <div class="sb_column50">
+                              	<p><input type="radio" / ><label>Both</label></p>
+                              </div><!-- .sb_column50 -->
+                              </form>
+                              </div><!-- .sb_questionAnswers -->
+                            </div><!-- / END ACCORDION CONTENT -->
                         </div><!-- .accordion -->
+                        <!-- END POLL BOX LANDING -->
+                        
+                        <!-- ********************************************* -->
+                        </div><!-- REMOVE THIS CONTAINER FOR PRODUCTION / FOR DEV USE ONLY -->
+                        <!-- ********************************************* -->
+                        
+                        
+                        <!-- ********************************************* -->
+                        <div id="sb_pollView_2"><!-- REMOVE THIS CONTAINER FOR PRODUCTION / FOR DEV USE ONLY -->
+                        <!-- ********************************************* -->
+                        <!-- BEGIN POLL RESULTS -->
+                        <p>Earn <strong class="sb_theme_textHighlight">10 Notes</strong> for each poll you complete. Check back often to keep earning and for your chance to win the Weekly Giveaway!</p>  
+                        <div class="sb_accordion sb_pollResult">
+                            <h3><a href="#"><span class="sb_questionCount"><span class="sb_questionCurrent">1</span> of 10</span>Bob Dylan pre or post Newport? <span class="sb_questionValue">+ 10 Notes</span></a></h3>
+                            <div>
+                            	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_poll.jpg" alt="Poll Image" class="sb_pollImage" />
+                              <div class="sb_pollContent">
+                                <p><strong>Do you play electric or acoustic instruments?</strong></p>
+                                <div class="sb_pollResultList">
+                                  <div class="sb_pollChoice">Electric</div>                              
+                                  <div class="sb_progressBar sb_progressBar_grey">
+                                    <span class="sb_progressBarPercent">25</span>
+                                    <span class="sb_progressBarValue">25%</span>
+                                  </div><!-- .sb_progressBar -->
+                                </div>
+                                
+                                <div class="sb_pollResultList">
+                                  <div class="sb_pollChoice">Acoustic</div>                              
+                                  <div class="sb_progressBar sb_progressBar_grey">
+                                    <span class="sb_progressBarPercent">15</span>
+                                    <span class="sb_progressBarValue">15%</span>
+                                  </div><!-- .sb_progressBar -->
+                                </div>
+                                
+                                <div class="sb_pollResultList">
+                                  <div class="sb_pollChoice"><strong class="sb_theme_textHighlight">Both</strong></div>                              
+                                  <div class="sb_progressBar">
+                                    <span class="sb_progressBarPercent">60</span>
+                                    <span class="sb_progressBarValue sb_theme_textHighlight">60%</span>
+                                  </div><!-- .sb_progressBar -->
+                                </div>
+                                <br />
+                                <p align="right">
+                                	<a href="#" class="sb_theme_button"><span>Next</span></a>
+                                </p>
+                                <br />                    
+                              </div><!-- .sb_pollContent -->
+                            </div><!-- / END ACCORDION CONTENT -->                            
+                        </div><!-- .accordion -->
+                        <!-- END POLL RESULTS -->
+                        
+                        <!-- ********************************************* -->
+                        </div><!-- REMOVE THIS CONTAINER FOR PRODUCTION / FOR DEV USE ONLY -->
+                        <!-- ********************************************* -->
+                        
+                        <!-- ********************************************* -->
+                        <div id="sb_pollView_3"><!-- REMOVE THIS CONTAINER FOR PRODUCTION / FOR DEV USE ONLY -->
+                        <!-- ********************************************* -->
+                        <!-- BEGIN POLL QUESTIONS -->
+                        <p>Earn <strong class="sb_theme_textHighlight">10 Notes</strong> for each poll you complete. Check back often to keep earning and for your chance to win the Weekly Giveaway!</p>  
+                        <p align="right"><a href="#" class="sb_theme_iconChange sb_noLink">Switch Polls</a>
+                        <div class="sb_accordion sb_pollQuestion">
+                            <h3><a href="#"><span class="sb_questionCount"><span class="sb_questionCurrent">1</span> of 10</span>Bob Dylan pre or post Newport? <span class="sb_questionValue">+ 10 Notes</span></a></h3>
+                            <div>
+                            	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_poll.jpg" alt="Poll Image" class="sb_pollImage" />
+                              <div class="sb_pollContent">
+                              <p><strong>Do you play electric or acoustic instruments?</strong></p>
+                              <form action="" name="">
+                              <div class="sb_column50">
+                             		<p><input type="radio" /> <label>Electric</label></p>
+                                <p><input type="radio" /> <label>Acoustic</label></p>
+                              </div><!-- .sb_column50 -->
+                              <div class="sb_column50">
+                              	<p><input type="radio" / > <label>Both</label></p>
+                              </div><!-- .sb_column50 -->
+                              </form>
+                              </div><!-- .sb_questionAnswers -->
+                            </div><!-- / END ACCORDION CONTENT -->                            
+                        </div><!-- .accordion -->
+                        <!-- END POLL QUESTIONS -->
+                        
+                        <!-- ********************************************* -->
+                        </div><!-- REMOVE THIS CONTAINER FOR PRODUCTION / FOR DEV USE ONLY -->
+                        <!-- ********************************************* -->
+                      
                       </div><!-- .sb_scrollPane -->
+                      
                     </div><!-- #tabs_1 -->
                    	
                     <div id="polls_tabs_2" class="sb_tabPane">
-                    	<div class="sb_scrollPane">                      
-                        <p>2</p>  
-                        <div class="sb_accordion">
-                            <h3><a href="#">Music Potpourri <span>+ 10 Notes</span></a></h3>
-                            <div>
-                            	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_poll.jpg" alt="Poll Image" />
-                              <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
-                            </div>
-                            <h3><a href="#">Second header</a></h3>
-                            <div>Second content</div>
-                            <h3><a href="#">Third header</a></h3>
-                            <div>Second content</div>
-                        </div><!-- .accordion -->                      
+                    	<div class="sb_scrollPane">
+                      	<ul class="sb_outlineList">
+                        	<li><h3><span class="sb_theme_iconComplete"></span>Bob Dylan pre or post Newport? <span class="sb_pointsEarned">+25</span></h3></li>
+                          <li><h3><span class="sb_theme_iconComplete"></span>Everything Gibson <span class="sb_pointsEarned">+25</span></h3></li>
+                          <li><h3><span class="sb_theme_iconComplete"></span>Guitar Center or the Corner Music Shop <span class="sb_pointsEarned">+25</span></h3></li>
+                        </ul>                                       
                       </div><!-- .sb_scrollPane -->
                     </div><!-- #tabs_2 -->
                     
                     <div id="polls_tabs_3" class="sb_tabPane">
                     	<div class="sb_scrollPane">                      
-                        <p>3</p>                        
+                        <!--
+                        	Programming note:
+                          to show how each section should flow, I have wrapped the 3 poll views into divs called "sb_pollView_x"
+                          *** this should not be seen as permanent code. ***
+                          it's only purpose is to show the 3 states when taking a poll.
+                        -->
+                        
+                       	<!-- ********************************************* -->
+                        <div id="sb_pollView_1"><!-- REMOVE THIS CONTAINER FOR PRODUCTION / FOR DEV USE ONLY -->
+                        <!-- ********************************************* -->
+                        
+                        <!-- BEGIN POLL BOX LANDING -->                        
+                        <p>Earn <strong class="sb_theme_textHighlight">10 Notes</strong> for each poll you complete. Check back often to keep earning and for your chance to win the Weekly Giveaway!</p>  
+                        <div class="sb_accordion">
+                            <h3><a href="#"><span class="sb_questionCount"><span class="sb_questionCurrent">1</span> of 10</span>Bob Dylan pre or post Newport? <span class="sb_questionValue">+ 10 Notes</span></a></h3>
+                            <div>
+                            	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_poll.jpg" alt="Poll Image" class="sb_pollImage" />
+                              <div class="sb_pollContent">
+                              <p><strong>Do you play electric or acoustic instruments?</strong></p>
+                              <form action="" name="">
+                              <div class="sb_column50">
+                             		<p><input type="radio" /> <label>Electric</label></p>
+                                <p><input type="radio" /> <label>Acoustic</label></p>
+                              </div><!-- .sb_column50 -->
+                              <div class="sb_column50">
+                              	<p><input type="radio" / ><label>Both</label></p>
+                              </div><!-- .sb_column50 -->
+                              </form>
+                              </div><!-- .sb_questionAnswers -->
+                            </div><!-- / END ACCORDION CONTENT -->
+                            <h3><a href="#"><span class="sb_questionCount"><span class="sb_questionCurrent">1</span> of 10</span>Everything Gibson <span class="sb_questionValue">+ 10 Notes</span></a></h3>
+                            <div>
+                            	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_poll.jpg" alt="Poll Image" class="sb_pollImage" />
+                              <div class="sb_pollContent">
+                              <p><strong>Do you play electric or acoustic instruments?</strong></p>
+                              <form action="" name="">
+                              <div class="sb_column50">
+                             		<p><input type="radio" /> <label>Electric</label></p>
+                                <p><input type="radio" /> <label>Acoustic</label></p>
+                              </div><!-- .sb_column50 -->
+                              <div class="sb_column50">
+                              	<p><input type="radio" / ><label>Both</label></p>
+                              </div><!-- .sb_column50 -->
+                              </form>
+                              </div><!-- .sb_questionAnswers -->
+                            </div><!-- / END ACCORDION CONTENT -->
+                            <h3><a href="#"><span class="sb_questionCount"><span class="sb_questionCurrent">1</span> of 10</span>Guitar Center or the Corner Music Shop <span class="sb_questionValue">+ 10 Notes</span></a></h3>
+                            <div>
+                            	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_poll.jpg" alt="Poll Image" class="sb_pollImage" />
+                              <div class="sb_pollContent">
+                              <p><strong>Do you play electric or acoustic instruments?</strong></p>
+                              <form action="" name="">
+                              <div class="sb_column50">
+                             		<p><input type="radio" /> <label>Electric</label></p>
+                                <p><input type="radio" /> <label>Acoustic</label></p>
+                              </div><!-- .sb_column50 -->
+                              <div class="sb_column50">
+                              	<p><input type="radio" / ><label>Both</label></p>
+                              </div><!-- .sb_column50 -->
+                              </form>
+                              </div><!-- .sb_questionAnswers -->
+                            </div><!-- / END ACCORDION CONTENT -->
+                        </div><!-- .accordion -->
+                        <!-- END POLL BOX LANDING -->
+                        
+                        <!-- ********************************************* -->
+                        </div><!-- REMOVE THIS CONTAINER FOR PRODUCTION / FOR DEV USE ONLY -->
+                        <!-- ********************************************* -->
+                                             
                       </div><!-- .sb_scrollPane -->
                     </div><!-- #tabs_3 -->
                                          
@@ -104,7 +304,7 @@
               	<div class="sb_content">
                 	<div class="sb_scrollPane">                      
                         <p>Earn 10 Notes for each poll you complete. Check back often to keep earning and for your chance to win the Weekly Giveaway!</p>                        <div class="sb_accordion">
-                            <h3><a href="#">Music Potpourri <span>+ 10 Notes</span></a></h3>
+                            <h3><a href="#">Music Potpourri <span class="sb_pointValue">+ 10 Notes</span></a></h3>
                             <div>
                             	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_poll.jpg" alt="Poll Image" />
                               <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
@@ -143,14 +343,9 @@
       <div id="starbar-level">
         <div class="sb_content sb_nav_element">
           <div class="sb_user-level">Level 1. <span class="theme_textHighlight">Musician</span></div>
-          <div class=sb_"user-level-box">
+          <div class="sb_user-level-box">
             <span class="sb_user-level-star"></span>
-            <div class="sb_user-level-bar_bg">
-              <div class="sb_progress sb_theme_bgGradient" style="width: 30%"></div>
-              <div class="sb_score">
-              430
-              </div><!-- .score -->
-            </div><!-- .user-level-bar_bg -->
+            <div class="sb_progressBar"><span class="sb_progressBarPercent">60</span><span class="sb_progressBarValue">450</span></div>
           </div><!-- .user-level-box -->
         </div><!-- .content -->
           <div id="popBox_user-level" class="sb_popBox sb_triangle-border">
@@ -165,11 +360,7 @@
         <div class="sb_content sb_nav_element">
           <div class="sb_user-points-box">
             <span class="sb_user-points-note"></span>
-            <div class="sb_user-points-bar_bg">
-              <div class="sb_score">
-              80
-              </div><!-- .score -->
-            </div><!-- .user-points-bar_bg -->
+            <div class="sb_progressBar"><span class="sb_progressBarPercent">50</span><span class="sb_progressBarValue">125</span></div>
           </div><!-- .user-points-box -->          
         </div><!-- .content -->
         <div id="popBox_user-points" class="sb_popBox sb_triangle-border">

@@ -37,10 +37,6 @@
 	margin: 0px 5px 0px 0px;
 }
 
-/* nav */
-#sayso-starbar #starbar-player-console #starbar-nav ul > li{	
-
-}
 
 /* special color classes */
 #sayso-starbar #starbar-player-console .sb_theme_navOnGradient{
@@ -57,7 +53,9 @@
 	background-color# ccc;
 }
 
-#sayso-starbar #starbar-player-console .sb_theme_bgGradient{
+#sayso-starbar #starbar-player-console .sb_theme_bgGradient, 
+#sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value,
+#sayso-starbar #starbar-player-console .sb_theme_button{
 	background-image: -webkit-gradient(
     linear,
     left top,
@@ -73,12 +71,23 @@
 
 #sayso-starbar #starbar-player-console .sb_theme_textHighlight{
 	color: #0082c5 !important;
+	text-shadow: none !important;
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_bgGlow{
   -moz-box-shadow: 0px 0px 5px #0081c5;
   -webkit-box-shadow: 0px 0px 5px #0081c5;
   box-shadow: 0px 0px 5px #0081c5;
+}
+
+#sayso-starbar #starbar-player-console .sb_theme_iconChange{
+	background-image: url('../images/hellomusic/img_change.png');
+	background-repeat: no-repeat;
+	background-position: right 3px;
+	font-weight: bold;
+	text-decoration: none;
+	font-size: 12px;
+	padding: 0px 13px 0px 0px;
 }
 
 /* promo area */
@@ -179,55 +188,15 @@
 	height: 37px;
 }
 
-#sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-bar_bg, 
-#sayso-starbar #starbar-player-console .sb_user-points-box .sb_user-points-bar_bg{
-	border: 3px solid #fff;
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	background-image: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0.22, rgb(201,194,180)),
-    color-stop(0.61, rgb(243,237,227)));
-	background-image: -moz-linear-gradient(
-			center top,
-			rgb(201,194,180) 22%,
-			rgb(243,237,227) 61%);
-	margin: 5px 0px 0px 15px;
+#sayso-starbar .sb_user-level-box .sb_progressBar,
+#sayso-starbar .sb_user-points-box .sb_progressBar{
+	border: 2px solid #fff;
+	margin: 5px 0px 0px 13px;
 	position: relative;
-	height: 13px;
 }
 
-#sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-bar_bg .sb_progress, 
-#sayso-starbar #starbar-player-console .sb_user-points-box .sb_user-points-bar_bg .sb_progress{
-	height: 13px;
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-}
-
-#sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-bar_bg .sb_score{
-	text-align: center;
-	color: #000;
-	font-size: 11px;
-	position: absolute;
-	z-index: 1000;
-	top: 0;
-	width: 100%;
-	font-weight: bold;
-}
-
-#sayso-starbar #starbar-player-console .sb_user-points-box .sb_user-points-bar_bg .sb_score{
-	text-align: center;
-	color: #000;
-	font-size: 11px;
-	position: absolute;
-	z-index: 1000;
-	top: 0;
-	width: 100%;
-	font-weight: bold;
+#sayso-starbar .sb_user-level-box .sb_progressBar .sb_progressBarValue{
+	top: 1px;
 }
 
 /* JQUERY OVERRIDES */
@@ -244,7 +213,8 @@
 #sayso-starbar a:active, 
 #sayso-starbar a:visited,
 #sayso-starbar h3.sb_title,
-#sayso-starbar h2.sb_title{
+#sayso-starbar h2.sb_title,
+#sayso-starbar #starbar-player-console .sb_outlineList li h3{
 	color: #0081c5;
 }
 
@@ -252,4 +222,8 @@
 
 #sayso-starbar h2.sb_title{
 	text-transform: uppercase;
+}
+
+#sayso-starbar #starbar-player-console .sb_pointsEarned{	
+	background-image: url('../images/hellomusic/img_note_sm.png');
 }

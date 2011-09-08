@@ -8,6 +8,11 @@ class Starbar_ContentController extends Api_AbstractController
         /* Initialize action controller here */
     }
 
+    public function aboutSaysoAction ()
+    {
+        $this->_disableLayout(); // ajax loaded
+    }
+
     public function hellomusicPollsAction ()
     {
         $this->_disableLayout(); // ajax loaded
@@ -24,6 +29,11 @@ class Starbar_ContentController extends Api_AbstractController
     }
 
     public function hellomusicPromosAction ()
+    {
+        $this->_disableLayout(); // ajax loaded
+    }
+
+    public function hellomusicUserProfileAction ()
     {
         $this->_disableLayout(); // ajax loaded
     }

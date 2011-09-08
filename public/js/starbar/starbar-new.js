@@ -1,22 +1,22 @@
 /**
  * Starbar
  */
-          
+
 // load after slight delay
 setTimeout(function(){
-		
-		
+
+
     var kynetxAppId = 'a239x14';
-    
+
 	// global var
     var themeColor = '#de40b2';
-	
-	// LETS USE VARS! 
-	
+
+	// LETS USE VARS!
+
 	// clickable elements that ppl will interact with
 	var btnToggleVis = $S('#sayso-starbar #starbar-visControls #starbar-toggleVis');
 	var btnSaySoLogo = $S('#sayso-starbar #starbar-visControls #starbar-logo');
-	
+
 	// container elements
 	var elemSaySoLogoBorder = $S('#sayso-starbar #starbar-player-console #starbar-logoBorder');
 	var elemPlayerConsole = $S('#sayso-starbar #starbar-player-console');
@@ -26,8 +26,8 @@ setTimeout(function(){
 	var elemPopBox = $S('#sayso-starbar #starbar-player-console .sb_popBox');
 	var elemAlerts = $S('#sayso-starbar #starbar-player-console .sb_starbar-alert');
 	var elemPopBoxVisControl = $S('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
-	
-	/* 
+
+	/*
 	Set up some extra bits to handle closing windows if the user clicks outside the starbar or hits ESC key
 	*/
 	$S(document).keyup(function(e) {
@@ -35,7 +35,7 @@ setTimeout(function(){
 			closePopBox();
 		}  // esc
 	});
-	
+
 	// close if you click outside the starbar while in the iframe
 	$S(document).click(function(e) {
 		// don't close if they just right-clicked
@@ -43,49 +43,49 @@ setTimeout(function(){
 			closePopBox();
 		}
 	});
-	
+
 	elemPlayerConsole.click(function(e) {
 	    e.stopPropagation();
 	});
-	
-	
+
+
 	/*
 	set some properties for each of the popboxes
-	- prevent from closing when clicked 
+	- prevent from closing when clicked
 	*/
 	elemStarbarClickable.each(function(){
 		$S(this).bind({
-			click: function(e){ 
+			click: function(e){
 				 e.stopPropagation();
-			} 
-		}); 
+			}
+		});
 	});
-	
+
 	/* prevent default for any link with # as the href */
 	$S('a').each(function(){
 		if ($S(this).attr('href')=='#'){
 			$S(this).bind({
-				click: function(e){ 
+				click: function(e){
 					e.preventDefault();
-				} 
-			}); 
+				}
+			});
 		}
 	});
-	
-	
+
+
 	/*
 	 Set up handlers for expanding / minimizing the starbar when "hide" or logo is clicked
 	*/
-	
+
 	btnToggleVis.click(function(event){
-		event.preventDefault();																																
+		event.preventDefault();
 		var playerClass = elemPlayerConsole.attr('class');
 		animateBar(playerClass, 'button');
-		//popBoxClose();																														
+		//popBoxClose();
 	});
-	
-	/* 
-	Set up logo hover + click action behaviors 
+
+	/*
+	Set up logo hover + click action behaviors
 	*/
 	btnSaySoLogo.bind({
 		click: function(e) {
@@ -126,47 +126,57 @@ setTimeout(function(){
 				elemSaySoLogoBorder.removeClass('sb_theme_bgGradient sb_theme_bgGlow');
 			}
 		}
-	}); // end logo hover + click actions 
-	
+	}); // end logo hover + click actions
+
 	/*
-	Set up nav items (click properties to show/hide their popboxes, hover / active sates 
+	Set up nav items (click properties to show/hide their popboxes, hover / active sates
 	*/
 	elemStarbarClickable.each(function(){
 		$S(this).bind({
 			click: function(event){
-			event.preventDefault();			
+			event.preventDefault();
 				// the popbox is AFTER the clickable area
 				var thisPopBox = $S(this).next('.sb_popBox');
-			
+
 				/*
-				set up a handler in case we click an element that isn't directly next to its target popbox. 
+				set up a handler in case we click an element that isn't directly next to its target popbox.
 				a linked element outside of the nav will have rel="#ID OF TARGET" set.
 				*/
 				var targetPopBox = '';
 				if ($S(this).attr('rel') !== undefined){
 					var targetPopBox = $S(this).attr('rel');
-					
+
 					// reset the popbox it should open to this ID
 					thisPopBox = $S('#'+targetPopBox);
-					
+
 					// set a delay before closing the alert element
 					if ($S(this).hasClass('sb_alert')){
 						hideAlerts($S(this).closest('.sb_starbar-alert'));
 					}
 				}
-				
+
 				// if it was already open, close it and remove the class. otherwise, open the popbox
 				if (thisPopBox.hasClass('sb_popBoxActive')){
 					closePopBox(thisPopBox);
 				}else{
 					// this menu item's popBox is active
-					closePopBox(thisPopBox);
-					openPopBox(thisPopBox);
+                    // Next line is unnecessary? Commented out -- Hamza
+                    // closePopBox(thisPopBox);
+
+                    // check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
+                    var thisPopBoxSrc = $S(this).attr('href');
+                    if (thisPopBoxSrc) {
+                        thisPopBox.load(thisPopBoxSrc, null, function(){
+                            openPopBox(thisPopBox);
+                        })
+                    } else {
+                        openPopBox(thisPopBox);
+                    }
 					// if we're a regular nav item
 					if ($S(this).parent().hasClass('sb_theme_bgGradient')){
 						$S('span.sb_nav_border', this).addClass('sb_theme_navOnGradient');
 					}
-					
+
 					// try to turn on the nav highlight if it opened a "large" sub popbox
 					if (targetPopBox != ''){
 						//console.log(thisPopBox);
@@ -174,10 +184,10 @@ setTimeout(function(){
 							var listItem = thisPopBox.parents('.sb_theme_bgGradient');
 							$S('span.sb_nav_border',listItem).addClass('sb_theme_navOnGradient');
 						} // travel op the dom tree to find if the large subpopbox is open
-						
-						
+
+
 					}// end if targetPopBox != ''
-					
+
 				}
 			},
 			mouseenter: function(event){
@@ -187,8 +197,8 @@ setTimeout(function(){
 				}
 			},
 			mouseleave: function(event){
-			event.preventDefault();				
-			
+			event.preventDefault();
+
 				var thisPopBox = $S(this).next('.sb_popBox');
 				// only remove the "hover" class for the nav item if it's box isn't active
 				if (($S(this).parent().hasClass('sb_theme_bgGradient')) && (!thisPopBox.hasClass('sb_popBoxActive'))){
@@ -197,25 +207,25 @@ setTimeout(function(){
 			}
 		}); // end bind
 	}); // end each loop for starbarNav
-	
+
 	// initialize the starbar
 	initStarBar();
-	
-	
+
+
 	/* FUNCTIONS */
-	
+
 	// initialize the starbar
 	function initStarBar(){
 		closePopBox();
-		showAlerts();		
+		showAlerts();
 		activateProgressBar();
-		
+
 		// initializes development-only jquery
 		devInit();
 	}
-	
+
 	// animates the starbar-player-console bar based on current state
-	function animateBar(playerClass, clickPoint){		
+	function animateBar(playerClass, clickPoint){
 		switch(clickPoint){
 			// if we're clicking from a button, determine what state we're in and how to shrink / grow
 			case 'button':
@@ -262,31 +272,31 @@ setTimeout(function(){
 								$S(this).attr('class','').addClass('sb_starbar-visOpen');
 								elemStarbarMain.fadeIn('fast');
 								elemVisControls.fadeIn('fast');
-								btnToggleVis.addClass('sb_btnStarbar-open');		
+								btnToggleVis.addClass('sb_btnStarbar-open');
 								showAlerts();
 						});
 					break;
-				}	// END SWITCH				
-			break; // end if clickPoint = button	
-			
+				}	// END SWITCH
+			break; // end if clickPoint = button
+
 		} // end switch clickpoint
-		
+
 		return false;
-	
+
 	} // end FUNCTION ANIMATEBAR
-	
+
 	function closePopBox(exception){
 		elemPopBox.each(function(){
 			$S(this).removeClass('sb_popBoxActive');
 			$S(this).hide();
 		});
-		elemStarbarClickable.each(function(){ 
+		elemStarbarClickable.each(function(){
 			// remove hover class from all nav items
 			$S('span.sb_nav_border', this).removeClass('sb_theme_navOnGradient');
 		});
 		return;
 	}
-	
+
 	function openPopBox(elem){
 		closePopBox();
 		var popBox = elem;
@@ -297,55 +307,55 @@ setTimeout(function(){
 		activateScroll(popBox);
 		return;
 	}
-	
+
 	function showAlerts(target){
 		if (target){
-			target.delay(200).slideDown('fast');				
+			target.delay(200).slideDown('fast');
 		}else{
 			elemAlerts.each(function(){
 				// show alerts that aren't empty.
 				if ($S('a',this).html().length != 0){
-					$S(this).delay(200).slideDown('fast');				 
+					$S(this).delay(200).slideDown('fast');
 				}
 			});
 		}
 		return;
 	}
-	
+
 	function hideAlerts(target){
 		if (target){
-			target.delay(300).slideUp('fast');				
+			target.delay(300).slideUp('fast');
 		}else{
 			elemAlerts.each(function(){
-				$S(this).hide();				 
+				$S(this).hide();
 			});
 		}
 	}
-	
+
 	function activateTabs(target){
 		// only set up the tabs if they're there
 		if ($S('.sb_tabs',target).length > 0){
 			$S('.sb_tabs',target).tabs();
-		}		
+		}
 	}
-	
+
 	function activateScroll(target){
 		// first, resize the scrollpane dynamically to fit whatever height it lives in (.content.height() - .header.height())
 		var contentHeight = $S('.sb_content',target).height();
-		// add height of the header + any margins / paddings	
+		// add height of the header + any margins / paddings
 		if ($S('.sb_content .sb_header',target).length > 0){
-			var headerHeight =  eval($S('.sb_header',target).css('margin-bottom').replace('px',''))+$S('.sb_content .sb_header',target).height();		
+			var headerHeight =  eval($S('.sb_header',target).css('margin-bottom').replace('px',''))+$S('.sb_content .sb_header',target).height();
 		}else{
 			var headerHeight = 0;		}
-		
-		$S('.sb_scrollPane',target).css('height',contentHeight-headerHeight);		
+
+		$S('.sb_scrollPane',target).css('height',contentHeight-headerHeight);
 		$S('.sb_scrollPane',target).jScrollPane({
 			autoReinitialise: true,
 			autoReinitialiseDelay: 100,
 			contentWidth: '100%'
-		});		
+		});
 	}
-	
+
 	function activateAccordion(target){
 		if ($S('.sb_tabs',target).length > 0){
 			$S('.sb_tabs .sb_tabPane',target).each(function(){
@@ -354,7 +364,15 @@ setTimeout(function(){
 					isCollapsible = false;
 				}
 				$S('.sb_accordion',this).accordion({
-					collapsible: isCollapsible
+					collapsible: isCollapsible,
+                    // find the link that caused the accordian to open, take the href, and set the src of the inner iframe to it
+                    changestart: function(event, ui){
+                        var activeLink = ui.newHeader.find('a');
+                        var activeIframe = ui.newContent.find('iframe');
+                        if (activeIframe && activeLink && activeIframe.attr('src') != activeLink.attr('href')) {
+                            activeIframe.attr('src', activeLink.attr('href'));
+                        }
+                    }
 				});
 			});
 		}else{
@@ -362,28 +380,28 @@ setTimeout(function(){
 				collapsible: true
 			});
 		}
-		
+
 		return;
 	}
-	
+
 	function activateProgressBar(target){
 		$S('.sb_progressBar').each(function(){
 			var percentValue = eval($S('.sb_progressBarPercent',this).html());
 			$S(this).progressbar({
-				value : percentValue								 
+				value : percentValue
 			});
 			if (percentValue >= 55){
 				$S('.sb_progressBarValue',this).addClass('sb_progressBarValue_revert');
 			}
 		});
 	}
-	
+
 	function devInit(){
-		
-		
-		
-		
+
+
+
+
 	}
-	
-	
+
+
 }, 200); // slight delay to ensure other libraries are loaded

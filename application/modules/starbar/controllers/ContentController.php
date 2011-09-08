@@ -13,29 +13,29 @@ class Starbar_ContentController extends Api_AbstractController
         $this->_disableLayout(); // ajax loaded
     }
 
-    public function surveysAction ()
+    public function hellomusicSurveysAction ()
     {
-
+        $this->_disableLayout(); // ajax loaded
     }
 
-    public function dailyDealsAction ()
+    public function hellomusicDailyDealsAction ()
     {
-
+        $this->_disableLayout(); // ajax loaded
     }
 
-    public function promosAction ()
+    public function hellomusicPromosAction ()
     {
-
+        $this->_disableLayout(); // ajax loaded
     }
 
-    public function userLevelAction ()
+    public function hellomusicUserLevelAction ()
     {
-
+        $this->_disableLayout(); // ajax loaded
     }
 
-    public function userPointsAction ()
+    public function hellomusicUserPointsAction ()
     {
-
+        $this->_disableLayout(); // ajax loaded
     }
 
 }

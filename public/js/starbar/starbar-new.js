@@ -25,6 +25,7 @@ setTimeout(function(){
 	var elemStarbarClickable = $S('#sayso-starbar #starbar-player-console .sb_nav_element');
 	var elemPopBox = $S('#sayso-starbar #starbar-player-console .sb_popBox');
 	var elemAlerts = $S('#sayso-starbar #starbar-player-console .sb_starbar-alert');
+	var elemPopBoxVisControl = $S('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
 	
 	/* 
 	Set up some extra bits to handle closing windows if the user clicks outside the starbar or hits ESC key
@@ -87,12 +88,26 @@ setTimeout(function(){
 	Set up logo hover + click action behaviors 
 	*/
 	btnSaySoLogo.bind({
-		click: function(event) {
-			event.preventDefault();
+		click: function(e) {
+			e.preventDefault();
 			var playerClass = elemPlayerConsole.attr('class');
 			if (playerClass != 'sb_starbar-visOpen'){
 				// manual override to have any click re-open starbar to original state
 				animateBar('sb_starbar-visStowed', 'button');
+			}else{
+				var thisPopBox = btnSaySoLogo.next('.sb_popBox');
+				// if it was already open, close it and remove the class. otherwise, open the popbox
+				if (thisPopBox.hasClass('sb_popBoxActive')){
+					closePopBox(thisPopBox);
+				}else{
+					// this menu item's popBox is active
+					closePopBox(thisPopBox);
+					openPopBox(thisPopBox);
+					// if we're a regular nav item
+					if ($S(this).parent().hasClass('sb_theme_bgGradient')){
+						$S('span', this).addClass('sb_theme_navOnGradient');
+					}
+				}
 			}
 		},
 		mouseenter: function() {
@@ -123,16 +138,21 @@ setTimeout(function(){
 				// the popbox is AFTER the clickable area
 				var thisPopBox = $S(this).next('.sb_popBox');
 			
-				// set up a handler in case we click an element that isn't directly next to its target popbox. it will have 'target_popBoxID' as a class
-				var targetPopBox = $S(this).attr('class');
-				if (targetPopBox.indexOf('sb_target_') > 0){
-					targetPopBox = targetPopBox.replace('sb_nav_element','');
-					targetPopBox = targetPopBox.replace('sb_target_','');
-					targetPopBox = targetPopBox.replace(' ','');
+				/*
+				set up a handler in case we click an element that isn't directly next to its target popbox. 
+				a linked element outside of the nav will have rel="#ID OF TARGET" set.
+				*/
+				var targetPopBox = '';
+				if ($S(this).attr('rel') !== undefined){
+					var targetPopBox = $S(this).attr('rel');
+					
 					// reset the popbox it should open to this ID
 					thisPopBox = $S('#'+targetPopBox);
+					
 					// set a delay before closing the alert element
-					hideAlerts($S(this).closest('.sb_starbar-alert'));
+					if ($S(this).hasClass('sb_alert')){
+						hideAlerts($S(this).closest('.sb_starbar-alert'));
+					}
 				}
 				
 				// if it was already open, close it and remove the class. otherwise, open the popbox
@@ -144,8 +164,20 @@ setTimeout(function(){
 					openPopBox(thisPopBox);
 					// if we're a regular nav item
 					if ($S(this).parent().hasClass('sb_theme_bgGradient')){
-						$S('span', this).addClass('sb_theme_navOnGradient');
+						$S('span.sb_nav_border', this).addClass('sb_theme_navOnGradient');
 					}
+					
+					// try to turn on the nav highlight if it opened a "large" sub popbox
+					if (targetPopBox != ''){
+						//console.log(thisPopBox);
+						if (thisPopBox.parents('.sb_theme_bgGradient').hasClass('sb_theme_bgGradient')){
+							var listItem = thisPopBox.parents('.sb_theme_bgGradient');
+							$S('span.sb_nav_border',listItem).addClass('sb_theme_navOnGradient');
+						} // travel op the dom tree to find if the large subpopbox is open
+						
+						
+					}// end if targetPopBox != ''
+					
 				}
 			},
 			mouseenter: function(event){
@@ -190,6 +222,7 @@ setTimeout(function(){
 				switch (playerClass){
 					case 'sb_starbar-visOpen':
 						elemStarbarMain.fadeOut('fast');
+						elemPopBoxVisControl.fadeOut('fast');
 						btnToggleVis.attr('class','');
 						btnToggleVis.addClass('sb_btnStarbar-closed');
 						btnSaySoLogo.css('backgroundPosition','3px 0px');
@@ -271,7 +304,7 @@ setTimeout(function(){
 		}else{
 			elemAlerts.each(function(){
 				// show alerts that aren't empty.
-				if ($S('span',this).html().length != 0){
+				if ($S('a',this).html().length != 0){
 					$S(this).delay(200).slideDown('fast');				 
 				}
 			});

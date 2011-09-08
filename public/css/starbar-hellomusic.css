@@ -69,6 +69,12 @@
 	background-color: #0081c5;
 }
 
+#sayso-starbar #starbar-player-console .sb_theme_button .sb_imgNote{
+	position: absolute;
+	top: -8px;
+	left: -14px;
+}
+
 #sayso-starbar #starbar-player-console .sb_theme_textHighlight{
 	color: #0082c5 !important;
 	text-shadow: none !important;
@@ -178,14 +184,11 @@
 	height: 27px;
 }
 
-#sayso-starbar #starbar-player-console .sb_user-points-box .sb_user-points-note{
+#sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgNote{
 	position: absolute;
 	z-index: 1000;
 	top: 0px;
 	left: 0;
-	background-image: url('../images/hellomusic/img_note.png');
-	width: 26px;
-	height: 37px;
 }
 
 #sayso-starbar .sb_user-level-box .sb_progressBar,
@@ -226,4 +229,48 @@
 
 #sayso-starbar #starbar-player-console .sb_pointsEarned{	
 	background-image: url('../images/hellomusic/img_note_sm.png');
+}
+
+#sayso-starbar #starbar-player-console .sb_imgNote{	
+	background-image: url('../images/hellomusic/img_note.png');
+	width: 26px;
+	height: 37px;
+	display: inline-block;
+}
+
+/* POPBOX SPECIFIC STYLES */
+
+#sayso-starbar #sb_popBox_surveys .sb_theme_button{
+	padding-left: 15px;
+	margin: 5px 0px 5px 10px;
+}
+
+/* POSITION ALL OF THE POPBOX TRIANGLES */
+
+
+/* surveys */
+
+#sayso-starbar #sb_popBox_surveys.sb_triangle-border:before,
+#sayso-starbar #sb_popBox_surveys_lg.sb_triangle-border:before{
+	left: 115px;
+}
+#sayso-starbar #sb_popBox_surveys.sb_triangle-border:after,
+#sayso-starbar #sb_popBox_surveys_lg.sb_triangle-border:after{
+	left: 116px;
+}
+#sayso-starbar #sb_popBox_surveys .sb_triangle-solid:after,
+#sayso-starbar #sb_popBox_surveys_lg .sb_triangle-solid:after{
+	left: 113px;
+}
+
+/* daily deals */
+
+#sayso-starbar #sb_popBox_daily-deals.sb_triangle-border:before{
+	left: 215px;
+}
+#sayso-starbar #sb_popBox_daily-deals.sb_triangle-border:after{
+	left: 216px;
+}
+#sayso-starbar #sb_popBox_daily-deals .sb_triangle-solid:after{
+	left: 213px;
 }

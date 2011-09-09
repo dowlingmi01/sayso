@@ -6,7 +6,7 @@
 setTimeout(function(){
 
 
-    var kynetxAppId = 'a239x14';
+    var kynetxAppId = 'a239x18';
 
 	// global var
     var themeColor = '#de40b2';
@@ -213,61 +213,90 @@ setTimeout(function(){
 
 	// animates the starbar-player-console bar based on current state
 	function animateBar(playerClass, clickPoint){
-		switch(clickPoint){
-			// if we're clicking from a button, determine what state we're in and how to shrink / grow
-			case 'button':
-				switch (playerClass){
-					case 'sb_starbar-visOpen':
-						elemStarbarMain.fadeOut('fast');
-						elemPopBoxVisControl.fadeOut('fast');
-						btnToggleVis.attr('class','');
-						btnToggleVis.addClass('sb_btnStarbar-closed');
-						btnSaySoLogo.css('backgroundPosition','3px 0px');
-						elemPlayerConsole.animate({
-								width: '100'
-							}, 500, function() {
-								// Animation complete.
-								$S(this).attr('class','').addClass('sb_starbar-visClosed');
-								elemSaySoLogoBorder.show();
-								hideAlerts();
-							});
-					break;
-					case 'sb_starbar-visClosed':
-						btnToggleVis.attr('class','');
-						btnToggleVis.addClass('sb_btnStarbar-stowed');
-						btnSaySoLogo.css('backgroundPosition','');
-						btnSaySoLogo.css('width','28px');
-						hideAlerts();
-						elemPlayerConsole.animate({
-								width: '45'
-							}, 500, function() {
-								// Animation complete.
-								$S(this).attr('class','').addClass('sb_starbar-visStowed');
-								btnSaySoLogo.css('width','');
-						});
-					break;
-					case 'sb_starbar-visStowed':
-						btnToggleVis.attr('class','');
-						elemSaySoLogoBorder.hide();
-						elemVisControls.hide();
-						btnSaySoLogo.css('backgroundPosition','');
-						hideAlerts();
-						elemPlayerConsole.animate({
-								width: '100%'
-							}, 500, function() {
-								// Animation complete.
-								$S(this).attr('class','').addClass('sb_starbar-visOpen');
-								elemStarbarMain.fadeIn('fast');
-								elemVisControls.fadeIn('fast');
-								btnToggleVis.addClass('sb_btnStarbar-open');
-								showAlerts();
-						});
-					break;
-				}	// END SWITCH
-			break; // end if clickPoint = button
+	    
+	    if (!playerClass) playerClass = window.sayso.starbar.state.visibility;
+	    
+	    switch(clickPoint){
+            // if we're clicking from a button, determine what state we're in and how to shrink / grow
+            case 'button':
+                switch (playerClass){
+                    case 'sb_starbar-visOpen':
+                        _closeBar();
+                        break;
+                    case 'sb_starbar-visClosed':
+                        _stowBar();
+                        break;
+                    case 'sb_starbar-visStowed':
+                        _openBar();
+                        break;
+                }   
+                break;
+            // if refreshing based on current state, then update bar to match
+            case 'refresh' :
+                switch (playerClass) {
+                    case 'sb_starbar-visOpen':
+                        if (!btnToggleVis.hasClass('sb_btnStarbar-open')) _openBar();
+                        break;
+                    case 'sb_starbar-visClosed':
+                        if (!btnToggleVis.hasClass('sb_btnStarbar-closed')) _closeBar();
+                        break;
+                    case 'sb_starbar-visStowed':
+                        if (!btnToggleVis.hasClass('sb_btnStarbar-stowed')) _stowBar();
+                        break;
+                }
+                break;
 
-		} // end switch clickpoint
-
+	    } // end switch clickpoint
+	    
+	    function _closeBar () {
+	        elemStarbarMain.fadeOut('fast');
+            elemPopBoxVisControl.fadeOut('fast');
+            btnToggleVis.attr('class','');
+            btnToggleVis.addClass('sb_btnStarbar-closed');
+            btnSaySoLogo.css('backgroundPosition','3px 0px');
+            elemPlayerConsole.animate({
+                    width: '100'
+                }, 500, function() {
+                    // Animation complete.
+                    $S(this).attr('class','').addClass('sb_starbar-visClosed');
+                    elemSaySoLogoBorder.show();
+                    hideAlerts();
+                    updateState('sb_starbar-visClosed');
+                });
+	    }
+	    function _stowBar () {
+	        btnToggleVis.attr('class','');
+            btnToggleVis.addClass('sb_btnStarbar-stowed');
+            btnSaySoLogo.css('backgroundPosition','');
+            btnSaySoLogo.css('width','28px');
+            hideAlerts();
+            elemPlayerConsole.animate({
+                    width: '45'
+                }, 500, function() {
+                    // Animation complete.
+                    $S(this).attr('class','').addClass('sb_starbar-visStowed');
+                    btnSaySoLogo.css('width','');
+                    updateState('sb_starbar-visStowed');
+            });
+	    }
+	    function _openBar () {
+	        btnToggleVis.attr('class','');
+            elemSaySoLogoBorder.hide();
+            elemVisControls.hide();
+            btnSaySoLogo.css('backgroundPosition','');
+            hideAlerts();
+            elemPlayerConsole.animate({
+                    width: '100%'
+                }, 500, function() {
+                    // Animation complete.
+                    $S(this).attr('class','').addClass('sb_starbar-visOpen');
+                    elemStarbarMain.fadeIn('fast');
+                    elemVisControls.fadeIn('fast');
+                    btnToggleVis.addClass('sb_btnStarbar-open');
+                    showAlerts();
+                    updateState('sb_starbar-visOpen');
+            });
+	    }
 		return false;
 
 	} // end FUNCTION ANIMATEBAR
@@ -408,6 +437,44 @@ setTimeout(function(){
 
 
 	}
+	
+	// keep the state of the Starbar consistent across sites (currently handles visibility only)
+	
+	function updateState (visibility){ 
+        if (!visibility) visibility = elemPlayerConsole.attr('class');
+        window.sayso.starbar.state.visibility = visibility;
+        var app = KOBJ.get_application(kynetxAppId);
+        app.raise_event('update_state', { 'visibility' : visibility /* other state changes here */ });
+    }
+    
+    function refreshState () {
+        window.sayso.starbar.callback = function () { log('callback firing'); animateBar(null, 'refresh'); /* other state reload logic here */ };
+        var app = KOBJ.get_application(kynetxAppId);
+        app.raise_event('refresh_state');
+    }
+    
+    // http://www.thefutureoftheweb.com/blog/detect-browser-window-focus
+    // I augmented this to include honoring existing focus events
+    if (/*@cc_on!@*/false) { // check for Internet Explorer
+        var oldOnFocus = document.onfocusin && typeof document.onfocusin === 'function' ? document.onfocusin : function () {};
+        document.onfocusin = function () { oldOnFocus(); refreshState(); };
+    } else {
+        var oldOnFocus = window.onfocus && typeof window.onfocus === 'function' ? window.onfocus : function () {};
+        window.onfocus = function () { oldOnFocus(); refreshState(); };
+    }
 
+    // "safe" logging functions
+    
+    function log () {
+        if (sayso.debug && typeof console !== 'undefined') {
+            console.log.apply(console, arguments);
+        }
+    };
+    
+    function warn () {
+        if (sayso.debug && typeof console !== 'undefined') {
+            console.warn.apply(console, arguments);
+        }
+    };
 
 }, 200); // slight delay to ensure other libraries are loaded

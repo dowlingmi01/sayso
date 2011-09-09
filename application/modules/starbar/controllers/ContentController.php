@@ -8,44 +8,51 @@ class Starbar_ContentController extends Api_AbstractController
         /* Initialize action controller here */
     }
 
+    public function postDispatch()
+    {
+        $this->_enableRenderer(new Api_Plugin_JsonPRenderer());
+        $this->render();
+        return $this->_resultType(new Object(array('html' => $this->getResponse()->getBody())));
+    }
+
     public function aboutSaysoAction ()
     {
-        $this->_disableLayout(); // ajax loaded
+
     }
 
     public function hellomusicPollsAction ()
     {
-        $this->_disableLayout(); // ajax loaded
+
     }
 
     public function hellomusicSurveysAction ()
     {
-        $this->_disableLayout(); // ajax loaded
+
     }
 
     public function hellomusicDailyDealsAction ()
     {
-        $this->_disableLayout(); // ajax loaded
+
     }
 
     public function hellomusicPromosAction ()
     {
-        $this->_disableLayout(); // ajax loaded
+
     }
 
     public function hellomusicUserProfileAction ()
     {
-        $this->_disableLayout(); // ajax loaded
+
     }
 
     public function hellomusicUserLevelAction ()
     {
-        $this->_disableLayout(); // ajax loaded
+
     }
 
     public function hellomusicUserPointsAction ()
     {
-        $this->_disableLayout(); // ajax loaded
+
     }
 
 }

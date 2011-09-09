@@ -15,10 +15,10 @@ setTimeout(function(){
 
 	// clickable elements that ppl will interact with
 	var btnToggleVis = $S('#sayso-starbar #starbar-visControls #starbar-toggleVis');
-	var btnSaySoLogo = $S('#sayso-starbar #starbar-visControls #starbar-logo');
+	var btnSaySoLogo = $S('#sayso-starbar #starbar-visControls #sb_starbar-logo');
 
 	// container elements
-	var elemSaySoLogoBorder = $S('#sayso-starbar #starbar-player-console #starbar-logoBorder');
+	var elemSaySoLogoBorder = $S('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
 	var elemPlayerConsole = $S('#sayso-starbar #starbar-player-console');
 	var elemStarbarMain = $S('#sayso-starbar #starbar-player-console #starbar-main');
 	var elemVisControls = $S('#sayso-starbar #starbar-player-console #starbar-visControls');
@@ -87,6 +87,7 @@ setTimeout(function(){
 	/*
 	Set up logo hover + click action behaviors
 	*/
+	
 	btnSaySoLogo.bind({
 		click: function(e) {
 			e.preventDefault();
@@ -96,17 +97,20 @@ setTimeout(function(){
 				animateBar('sb_starbar-visStowed', 'button');
 			}else{
 				var thisPopBox = btnSaySoLogo.next('.sb_popBox');
+								
 				// if it was already open, close it and remove the class. otherwise, open the popbox
 				if (thisPopBox.hasClass('sb_popBoxActive')){
 					closePopBox(thisPopBox);
 				}else{
-					// this menu item's popBox is active
-					closePopBox(thisPopBox);
-					openPopBox(thisPopBox);
-					// if we're a regular nav item
-					if ($S(this).parent().hasClass('sb_theme_bgGradient')){
-						$S('span', this).addClass('sb_theme_navOnGradient');
-					}
+					// check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
+          	var thisPopBoxSrc = $S(this).attr('href');
+          		if (thisPopBoxSrc) {
+              	thisPopBox.load(thisPopBoxSrc, null, function(){
+                	openPopBox(thisPopBox);
+                 })
+              } else {
+              	openPopBox(thisPopBox);
+             	}
 				}
 			}
 		},
@@ -134,7 +138,12 @@ setTimeout(function(){
 	elemStarbarClickable.each(function(){
 		$S(this).bind({
 			click: function(event){
-			event.preventDefault();
+				event.preventDefault();
+				
+				// SPECIAL HANDLING FOR STARBAR LOGO
+				if ($S(this).attr('id') == 'sb_starbar-logo'){
+					return;
+				}			
 				// the popbox is AFTER the clickable area
 				var thisPopBox = $S(this).next('.sb_popBox');
 
@@ -160,32 +169,26 @@ setTimeout(function(){
 					closePopBox(thisPopBox);
 				}else{
 					// this menu item's popBox is active
-                    // Next line is unnecessary? Commented out -- Hamza
-                    // closePopBox(thisPopBox);
+         	// Next line is unnecessary? Commented out -- Hamza
+        	// closePopBox(thisPopBox);
 
-                    // check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
-                    var thisPopBoxSrc = $S(this).attr('href');
-                    if (thisPopBoxSrc) {
-                        thisPopBox.load(thisPopBoxSrc, null, function(){
-                            openPopBox(thisPopBox);
-                        })
-                    } else {
-                        openPopBox(thisPopBox);
-                    }
-					// if we're a regular nav item
-					if ($S(this).parent().hasClass('sb_theme_bgGradient')){
-						$S('span.sb_nav_border', this).addClass('sb_theme_navOnGradient');
-					}
-
+          // check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
+          	var thisPopBoxSrc = $S(this).attr('href');
+          		if (thisPopBoxSrc) {
+              	thisPopBox.load(thisPopBoxSrc, null, function(){
+                	openPopBox(thisPopBox);
+                 })
+              } else {
+              	openPopBox(thisPopBox);
+             	}
+					
+					
 					// try to turn on the nav highlight if it opened a "large" sub popbox
 					if (targetPopBox != ''){
-						//console.log(thisPopBox);
 						if (thisPopBox.parents('.sb_theme_bgGradient').hasClass('sb_theme_bgGradient')){
 							var listItem = thisPopBox.parents('.sb_theme_bgGradient');
 							$S('span.sb_nav_border',listItem).addClass('sb_theme_navOnGradient');
 						} // travel op the dom tree to find if the large subpopbox is open
-
-
 					}// end if targetPopBox != ''
 
 				}
@@ -193,16 +196,15 @@ setTimeout(function(){
 			mouseenter: function(event){
 			event.preventDefault();
 				if ($S(this).parent().hasClass('sb_theme_bgGradient')){
-					$S('span', this).addClass('sb_theme_navOnGradient');
+					$S('span.sb_nav_border', this).addClass('sb_theme_navOnGradient');
 				}
 			},
 			mouseleave: function(event){
 			event.preventDefault();
-
 				var thisPopBox = $S(this).next('.sb_popBox');
 				// only remove the "hover" class for the nav item if it's box isn't active
 				if (($S(this).parent().hasClass('sb_theme_bgGradient')) && (!thisPopBox.hasClass('sb_popBoxActive'))){
-					$S('span', this).removeClass('sb_theme_navOnGradient');
+					$S('span.sb_nav_border', this).removeClass('sb_theme_navOnGradient');
 				}
 			}
 		}); // end bind
@@ -292,7 +294,7 @@ setTimeout(function(){
 		});
 		elemStarbarClickable.each(function(){
 			// remove hover class from all nav items
-			$S('span.sb_nav_border', this).removeClass('sb_theme_navOnGradient');
+			$S('span.sb_nav_border').removeClass('sb_theme_navOnGradient');
 		});
 		return;
 	}
@@ -305,6 +307,13 @@ setTimeout(function(){
 		activateAccordion(popBox);
 		activateTabs(popBox);
 		activateScroll(popBox);
+		
+		// if we're a regular nav item, turn on the highlight
+		var parentClick = elem.parent();
+		if (parentClick.children('span.sb_nav_border')){
+			$S('span.sb_nav_border',parentClick).addClass('sb_theme_navOnGradient');
+		}
+			
 		return;
 	}
 
@@ -397,8 +406,6 @@ setTimeout(function(){
 	}
 
 	function devInit(){
-
-
 
 
 	}

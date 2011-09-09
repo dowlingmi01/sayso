@@ -150,7 +150,7 @@
 }
 
 #sayso-starbar #starbar-player-console #starbar-level .sb_user-level-box{
-	margin-top: -2px;
+	
 }
 
 #sayso-starbar #starbar-player-console #starbar-points{
@@ -177,13 +177,15 @@
 	height: 27px;
 	position: relative;
 	display: block;
+	margin: 0px 0px 0px 0px;
 }
 
 #sayso-starbar #starbar-player-console .sb_user-points-box{
-	height: 37px;
+	height: 30px;
+	width: 75px;
 	position: relative;
 	display: block;
-	padding: 10px 0px 0px 0px;
+	padding: 12px 0px 0px 0px;
 }
 
 #sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-star{
@@ -199,15 +201,18 @@
 #sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgNote{
 	position: absolute;
 	z-index: 1000;
-	top: 0px;
+	top: 2px;
 	left: 0;
 }
 
 #sayso-starbar .sb_user-level-box .sb_progressBar,
 #sayso-starbar .sb_user-points-box .sb_progressBar{
 	border: 2px solid #fff;
-	margin: 5px 0px 0px 13px;
+	margin: 5px 3px 0px 13px;
 	position: relative;
+	-moz-box-shadow: 0px 0px 2px #666;
+  -webkit-box-shadow: 0px 0px 2px #666;
+  box-shadow: 0px 0px 2px #666;
 }
 
 #sayso-starbar .sb_user-level-box .sb_progressBar .sb_progressBarValue{
@@ -285,21 +290,25 @@
 	list-style: none;
 	position: relative;
 	width: 185px;
-	background-color: #161a1e;
 	text-align: left;
 	color: #fff;
+}
+
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealInfo{
+	background-color: #161a1e;
+	margin: -5px 0px 0px 0px;
 }
 
 #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li a{
 	text-decoration: none;
 }
 
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li p{
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealInfo p{
 	padding: 5px;
 	position: relative;
 }
 
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li img{
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li img.sb_dealImage{
 	position: relative;
 	width: 185px;
 }
@@ -354,7 +363,93 @@
 	right: 5px;
 }
 
+/* user level */
 
+#sayso-starbar #sb_popBox_user-level img.sb_imgCurrentLevel{
+	margin: -5px 10px 0px 0px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevelColor1{
+	color: #980752;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: inherit;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevelColor2{
+	color: #1751a5;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: inherit;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevelColor3{
+	color: #8ca406;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: inherit;
+}
+
+#sayso-starbar #sb_popBox_user-level small.sb_nextLevel{
+	top: -5px;
+	left: 15px;
+	position: relative;
+}
+
+#sayso-starbar #sb_popBox_user-level ul.sb_userLevels{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+#sayso-starbar #sb_popBox_user-level ul.sb_userLevels li{
+	border: none;
+	padding: 0;
+	margin: 0;
+	width: 33%;
+	float: left;
+	font-size: 11px!important;
+	font-weight: bold;
+	opacity: 0.5;
+	text-align: center;
+}
+
+#sayso-starbar #sb_popBox_user-level ul.sb_userLevels li.sb_unlockedLevel{
+	opacity: 1;
+}
+
+#sayso-starbar #sb_popBox_user-level table.sb_table_rewards{
+	width: 100%;
+}
+
+#sayso-starbar #sb_popBox_user-level table.sb_table_rewards thead th{
+	font-size: 13px;
+	font-weight: bold !important;
+	text-align: left;
+}
+
+#sayso-starbar #sb_popBox_user-level table.sb_table_rewards thead th span{	
+	font-weight: bold !important;
+}
+
+#sayso-starbar #sb_popBox_user-level table.sb_table_rewards .sb_points{
+	text-align: right;
+}
+
+#sayso-starbar #sb_popBox_user-level table.sb_table_rewards td{
+	font-size: 11px !important;
+	padding: 3px 0px;
+	color: #999;
+}
+
+#sayso-starbar #sb_popBox_user-level table.sb_table_rewards tr.sb_unlockedReward td{
+	color: #111;
+}
+
+#sayso-starbar #sb_popBox_user-level table.sb_table_rewards tr.sb_unlockedReward td a{
+	
+}
 
 /* POSITION ALL OF THE POPBOX TRIANGLES */
 
@@ -384,4 +479,20 @@
 }
 #sayso-starbar #sb_popBox_daily-deals .sb_triangle-solid:after{
 	left: 338px;
+}
+
+/* user levels */
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-level.sb_popBox{
+	left: -307px;
+}
+
+#sayso-starbar #sb_popBox_user-level.sb_triangle-border:before{
+	left: 370px;
+}
+#sayso-starbar #sb_popBox_user-level.sb_triangle-border:after{
+	left: 371px;
+}
+#sayso-starbar #sb_popBox_user-level .sb_triangle-solid:after{
+	left: 368px;
 }

@@ -544,6 +544,12 @@ html {
 	float: right;
 }
 
+#sayso-starbar .sb_boxShadow{
+	box-shadow: 0px 0px 3px #666;
+	-mox-box-shadow: 0px 0px 3px #666;
+	-webkit-box-shadow: 0px 0px 3px #666;
+}
+
 #sayso-starbar #starbar-player-console .sb_popBox .sb_header h2{
 	display: inline-block;
 }
@@ -655,6 +661,7 @@ html {
   display:block;
 	width:0;
 }
+
 /* 
 
 JQUERY-UI
@@ -914,13 +921,44 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	display: block;
 }
 
+#sayso-starbar small{
+	font-size: 11px;
+}
+
 #sayso-starbar h2.sb_title {
 	text-transform: uppercase;
 }
+#sayso-starbar .sb_column50BG {
+	overflow: hidden;
+	background-image: url('../images/generic/bg_column50.png');
+	background-repeat: repeat-y;
+	background-position: center top;
+}
+
 #sayso-starbar .sb_column50 {
 	width: 50%;
 	float: left;
 }
+
+#sayso-starbar .sb_column50BG .sb_column50{
+	width: 48%;
+}
+
+#sayso-starbar .sb_column50BG .sb_column50:last-child{
+	float: right;
+	width: 47%;
+	margin: 0px 5px 0px 0px;
+}
+
+#sayso-starbar .sb_column50 h2.sb_title{
+	text-transform: none;
+}
+
+#sayso-starbar .sb_column50 .sb_header{
+	border-bottom: 1px solid #929292;
+}
+
+
 #sayso-starbar #starbar-player-console .sb_theme_iconChange {
 	background-image: url('../images/generic/img_change.png');
 	background-repeat: no-repeat;
@@ -998,6 +1036,17 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	font-size: 15px;
 }
 
+/* dividing lines between list items */
+#sayso-starbar #starbar-player-console .sb_lineList {
+	margin: 0px 0px;
+	list-style: none;
+}
+#sayso-starbar #starbar-player-console .sb_lineList li {
+	border-bottom: 1px solid #929292;
+	margin: 0px 0px 0px 0px;
+	overflow: hidden;
+	padding: 10px 0px;
+}
 
 /* solid, alternating background list */
 

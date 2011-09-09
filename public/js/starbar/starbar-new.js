@@ -333,6 +333,7 @@ setTimeout(function(){
 			popBox.addClass('sb_popBoxActive');
 			activateAccordion(popBox);
 			activateTabs(popBox);
+			activateProgressBar(popBox);
 			activateScroll(popBox);
 
 			// if we're a regular nav item, turn on the highlight
@@ -423,6 +424,7 @@ setTimeout(function(){
 
 	function activateProgressBar(target){
 		$S('.sb_progressBar').each(function(){
+			console.log(target);
 			var percentValue = eval($S('.sb_progressBarPercent',this).html());
 			$S(this).progressbar({
 				value : percentValue

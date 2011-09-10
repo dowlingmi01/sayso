@@ -137,12 +137,12 @@
 	position: relative;
 }
 
-#sayso-starbar #starbar-player-console #starbar-level .sb_content .sb_user-level{
+#sayso-starbar #starbar-player-console #starbar-level .sb_popContent .sb_user-level{
 	text-align: center;
 }
 
-#sayso-starbar #starbar-player-console #starbar-level .sb_content .sb_user-level, 
-#sayso-starbar #starbar-player-console #starbar-level .sb_content .sb_user-level span{	
+#sayso-starbar #starbar-player-console #starbar-level .sb_popContent .sb_user-level, 
+#sayso-starbar #starbar-player-console #starbar-level .sb_popContent .sb_user-level span{	
 	color: #fff;
 	text-transform: uppercase;
 	font-size: 11px;
@@ -268,10 +268,10 @@
 /* daily deals */
 
 #sayso-starbar #sb_popBox_daily-deals.sb_popBox{
-	left: -125px;
+	left: -128px;
 }
 
-#sayso-starbar #sb_popBox_daily-deals.sb_popBox .sb_popBoxInner .sb_content{
+#sayso-starbar #sb_popBox_daily-deals.sb_popBox .sb_popBoxInner .sb_popContent{
 	width: 755px;
 	height: auto;
 }
@@ -495,4 +495,20 @@
 }
 #sayso-starbar #sb_popBox_user-level .sb_triangle-solid:after{
 	left: 368px;
+}
+
+/* promo */
+
+#sayso-starbar #starbar-player-console #sb_popBox_promo.sb_popBox{
+	left: -148px;
+}
+
+#sayso-starbar #sb_popBox_promo.sb_triangle-border:before{
+	left: 225px;
+}
+#sayso-starbar #sb_popBox_promo.sb_triangle-border:after{
+	left: 226px;
+}
+#sayso-starbar #sb_popBox_promo .sb_triangle-solid:after{
+	left: 223px;
 }

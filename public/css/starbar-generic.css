@@ -68,9 +68,9 @@ html {
 }
 /* Accessible focus treatment
  * people.opera.com/patrickl/experiments/keyboard/test */
-#sayso-starbar a:hover, #sayso-starbar a:active {
-	outline: none;
-}
+#sayso-starbar a:hover, #sayso-starbar a:active, #sayso-starbar a:focus { 
+    outline: none; 
+} 
 /* Set sub, sup without affecting line-height: gist.github.com/413930 */
 #sayso-starbar sub, #sayso-starbar sup {
 	font-size: 75%;
@@ -440,6 +440,7 @@ html {
 
 #sayso-starbar #starbar-player-console .sb_nav_element {
 	cursor: pointer;
+	text-decoration: none;
 }
 #sayso-starbar #starbar-player-console #starbar-nav {
 	position: absolute;
@@ -513,14 +514,15 @@ html {
 	line-height: 15px;
 	color: #404040;
 }
-#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_content {
-	padding: 5px 5px 5px 10px;
+#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent {
+	padding: 5px 5px 5px 10px !important;
 	background-color: #f3f3f3;
-	height: 200px;
+	height: 220px;
 	width: 500px;
 }
-#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_content p {
+#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent p {
 	margin: 0px 0px 5px 0px;
+	line-height: 18px;
 }
 #sayso-starbar #starbar-player-console .sb_popBox .sb_header {
 	overflow: hidden;
@@ -561,7 +563,7 @@ html {
 }
 
 /* larger popboxes */
-#sayso-starbar #starbar-player-console .sb_popBox.sb_popBoxLg .sb_popBoxInner .sb_content{
+#sayso-starbar #starbar-player-console .sb_popBox.sb_popBoxLg .sb_popBoxInner .sb_popContent{
 	height: 380px;
 }
 
@@ -574,9 +576,6 @@ html {
 
 
 /* polls */
-#sayso-starbar #starbar-player-console #sb_popBox_polls .sb_content, #sayso-starbar #starbar-player-console #sb_popBox_surveys .sb_content {
-	height: 220px;
-}
 #sayso-starbar #starbar-player-console #sb_popBox_polls .sb_pollImage {
 	float: left;
 	width: 35px;
@@ -613,6 +612,44 @@ html {
 
 /* surveys */
 
+/* about say.so */
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo{
+	bottom: 100px;
+	left: 210px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_popContent{
+	width: 520px;
+	height: 340px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_header{
+	margin: -15px 0px 0px 0px;
+	padding: 10px 10px 0px 10px;
+	background-color: #383838;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_ui-tabs .sb_ui-tabs-nav li a{
+	font-weight: normal;
+	color: #ffffff;
+	font-size: 14px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a{
+	color: #3bccea;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_ui-tabs h2{
+	margin: 12px 0px;
+	color: #075879;
+	font-weight: normal;
+	font-size: 18px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_ui-tabs p{
+	margin: 12px 0px;
+}
 
 /* TRIANGLES */
 
@@ -675,6 +712,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar #starbar-player-console .sb_ui-tabs {
 	position: relative;
 	zoom: 1;
+	display: block;
 } /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav {
 	margin: 0;
@@ -711,7 +749,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 }
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected {
 	margin-bottom: 0;
-	padding-bottom: 1px;
+	padding-bottom: 0px;
 }
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a, #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-disabled a, #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-processing a {
 	cursor: text;
@@ -725,6 +763,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	border-width: 0;
 	padding: 0;
 	background: none;
+	width: 100%;
 }
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-hide {
 	display: none !important;

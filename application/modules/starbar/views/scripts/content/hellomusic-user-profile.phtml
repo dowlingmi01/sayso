@@ -1,12 +1,86 @@
   <div class="sb_popBoxInner sb_triangle-solid">
-    <div class="sb_content">
-   		<div class="sb_column50">
-      	<div class="sb_header">
-        <h2 class="sb_title">My Account</h2>
-      	</div><!-- .sb_header -->
-      </div><!-- .sb_column50 -->
-      <div class="sb_column_50">
-      
-      </div><!-- .sb_column50 -->
-    </div><!-- .sb_content -->
+    <div class="sb_popContent">
+    	<div class="sb_column50BG">
+        <div class="sb_column50">
+          <div class="sb_header">
+          <h2 class="sb_title">My Account</h2>
+          </div><!-- .sb_header -->
+          <div class="sb_scrollPane">
+          	<ul class="sb_lineList">
+            	<li>
+              	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_level_musician.png" alt="Level - Musician" width="25" class="sb_alignLeft sb_imgCurrentLevel" /> <strong>Level 1. <span class="sb_userLevelColor1">Musician</span></strong></li>
+              <li>
+              	<p><strong class="sb_theme_textHighlight">Chops</strong></p>
+                <div class="sb_user-level-box">
+                  <span class="sb_user-level-star"></span>
+                  <div class="sb_progressBar"><span class="sb_progressBarPercent">40</span><span class="sb_progressBarValue">450</span></div>
+                </div><!-- .user-level-box -->
+                <small class="sb_nextLevel">Level up at 1000 chops</small>
+                
+                <p><strong class="sb_theme_textHighlight">Notes</strong></p>
+                <div class="sb_user-points-box">
+                  <span class="sb_imgNote"></span>
+                  <div class="sb_progressBar"><span class="sb_progressBarPercent">0</span><span class="sb_progressBarValue">450</span></div>
+                </div><!-- .user-level-box -->
+                <small class="sb_nextLevel">Next reward unlocked at 100 Notes</small>
+            	</li>
+              <li>
+              <p><strong class="sb_theme_textHighlight">Levels</strong></p>
+              	<ul class="sb_userLevels">
+                	<li class="sb_unlockedLevel">
+                  	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_level_musician.png" alt="Level - Musician" /><br />
+                   	Level 1.<br /><span class="sb_userLevelColor1">Musician</span>
+                  </li>
+                  <li class="sb_userLevelsUnlocked">
+                  	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_level_busker.png" alt="Level - Busker" /><br />
+                   	Level 2.<br /><span class="sb_userLevelColor2">Busker</span>
+                  </li>
+                  <li class="sb_userLevelsUnlocked">
+                  	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_level_band-member.png" alt="Level - Band Member" /><br />
+                   	Level 3.<br /><span class="sb_userLevelColor3">Band Member</span>
+                  </li>
+                </ul> 
+            </ul>
+          </div><!-- .sb_scrollPane -->
+        </div><!-- .sb_column50 -->
+        <div class="sb_column50">
+          <div class="sb_header">
+            <h2 class="sb_title">My Rewards</h2>
+          </div><!-- .sb_header -->
+         	<div class="sb_scrollPane">
+            <p>Click on a reward to redeem!</p>
+            <table cellpadding="0" cellspacing="0" border="0" class="sb_table_rewards">
+            	<thead>
+              	<tr>
+                	<th><span class="sb_theme_textHighlight">Reward</span></th>
+                  <th class="sb_points"><span class="sb_theme_textHighlight">Points</span></th>
+                </tr>
+              </thead>
+              <tbody>
+              	<tr class="sb_unlockedReward">
+                	<td><a href="">Hello Music $10 Credit</a></td>
+                  <td class="sb_points">50</td>
+                </tr>
+                <tr class="sb_unlockedReward">
+                	<td><a href="">iTunes $10 Gift Card</a></td>
+                  <td class="sb_points">75</td>
+                </tr>
+                <tr>
+                	<td>Hello Music $25 Credit</td>
+                  <td class="sb_points">100</td>
+                </tr>
+                <tr>
+                	<td>iTunes $25 Gift Card</td>
+                  <td class="sb_points">150</td>
+                </tr>
+                <tr>
+                	<td>Hello Music $50 Credit</td>
+                  <td class="sb_points">200</td>
+                </tr>
+              </tbody>
+            </table>
+          </div><!-- .sb_scrollPane -->
+        </div><!-- .sb_column50 -->
+      </div><!-- .sb_column50BG -->
+    </div><!-- .sb_popContent -->
   </div><!-- .sb_popBoxInner -->

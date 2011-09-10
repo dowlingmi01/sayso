@@ -19,6 +19,7 @@ setTimeout(function(){
 
 	// container elements
 	var elemSaySoLogoBorder = $S('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
+	var elemSaySoBarBG = $S('#sayso-starbar #starbar-player-console').css('background-image');
 	var elemPlayerConsole = $S('#sayso-starbar #starbar-player-console');
 	var elemStarbarMain = $S('#sayso-starbar #starbar-player-console #starbar-main');
 	var elemVisControls = $S('#sayso-starbar #starbar-player-console #starbar-visControls');
@@ -109,19 +110,20 @@ setTimeout(function(){
 			}
 		},
 		mouseenter: function() {
-			if (elemPlayerConsole.hasClass('sb_starbar-visOpen')){
-				// if it's open
+			if (elemPlayerConsole.hasClass('sb_starbar-visClosed')){
+				// if it's closed
+				elemSaySoLogoBorder.addClass('sb_theme_bgGradient sb_theme_bgGlow').show();
 			}
 			else{
-				elemSaySoLogoBorder.addClass('sb_theme_bgGradient sb_theme_bgGlow').show();
 			}
 		},
 		mouseleave: function(){
-			if (elemPlayerConsole.hasClass('sb_starbar-visOpen')){
-				// if it's open
+			if (elemPlayerConsole.hasClass('sb_starbar-visClosed')){
+				// if it's closed
+				elemSaySoLogoBorder.removeClass('sb_theme_bgGradient sb_theme_bgGlow');
 			}
 			else{
-				elemSaySoLogoBorder.removeClass('sb_theme_bgGradient sb_theme_bgGlow');
+				
 			}
 		}
 	}); // end logo hover + click actions
@@ -272,10 +274,12 @@ setTimeout(function(){
             hideAlerts();
             elemPlayerConsole.animate({
                     width: '45'
-                }, 500, function() {
+                }, 300, function() {
                     // Animation complete.
                     $S(this).attr('class','').addClass('sb_starbar-visStowed');
                     btnSaySoLogo.css('width','');
+            				elemSaySoLogoBorder.hide();
+										elemPlayerConsole.css('background-image','none');
                     updateState('sb_starbar-visStowed');
             });
 	    }
@@ -284,6 +288,7 @@ setTimeout(function(){
             elemSaySoLogoBorder.hide();
             elemVisControls.hide();
             btnSaySoLogo.css('backgroundPosition','');
+						elemPlayerConsole.css('background-image',elemSaySoBarBG);
             hideAlerts();
             elemPlayerConsole.animate({
                     width: '100%'
@@ -332,9 +337,9 @@ setTimeout(function(){
 			popBox.show();
 			popBox.addClass('sb_popBoxActive');
 			activateAccordion(popBox);
+			activateScroll(popBox);
 			activateTabs(popBox);
 			activateProgressBar(popBox);
-			activateScroll(popBox);
 
 			// if we're a regular nav item, turn on the highlight
 			var parentClick = elem.parent();
@@ -373,24 +378,38 @@ setTimeout(function(){
 	function activateTabs(target){
 		// only set up the tabs if they're there
 		if ($S('.sb_tabs',target).length > 0){
-			$S('.sb_tabs',target).tabs();
+			$S('.sb_tabs',target).tabs({ 
+				show: function(){
+						// re-call the scrollbar to re-initialize to avoid the "flash" of narrow content.
+						activateScroll(target);
+					}
+				//fx: { opacity: 'toggle' } 
+			});
 		}
 	}
 
 	function activateScroll(target){
 		// first, resize the scrollpane dynamically to fit whatever height it lives in (.content.height() - .header.height())
-		var contentHeight = $S('.sb_content',target).height();
+		var contentHeight = $S('.sb_popContent',target).height();
+		
 		// add height of the header + any margins / paddings
-		if ($S('.sb_content .sb_header',target).length > 0){
-			var headerHeight =  eval($S('.sb_header',target).css('margin-bottom').replace('px',''))+$S('.sb_content .sb_header',target).height();
+		if ($S('.sb_popContent .sb_header',target).length > 0){
+			var headerHeight =  eval($S('.sb_header',target).css('margin-bottom').replace('px',''))+$S('.sb_popContent .sb_header',target).height();
 		}else{
-			var headerHeight = 0;		}
-
+			var headerHeight = 0;		
+		}
+		
+		// set an absolute width for the scroll container to prevent "flash" while it resizes
+		var contentWidth = $S('.sb_popContent',target).width();
+		var contentPadL = $S('.sb_popContent',target).css('padding-left');
+		var contentPadR = $S('.sb_popContent',target).css('padding-right');
+		var contentPad = eval(contentWidth - (contentPadL.replace('px','') + contentPadR.replace('px','')))+'px';
+		
 		$S('.sb_scrollPane',target).css('height',contentHeight-headerHeight);
 		$S('.sb_scrollPane',target).jScrollPane({
 			autoReinitialise: true,
-			autoReinitialiseDelay: 100,
-			contentWidth: '100%'
+			autoReinitialiseDelay: 1000,
+			contentWidth: contentPad
 		});
 	}
 
@@ -424,7 +443,6 @@ setTimeout(function(){
 
 	function activateProgressBar(target){
 		$S('.sb_progressBar').each(function(){
-			console.log(target);
 			var percentValue = eval($S('.sb_progressBarPercent',this).html());
 			$S(this).progressbar({
 				value : percentValue

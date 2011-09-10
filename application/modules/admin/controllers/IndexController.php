@@ -20,7 +20,7 @@ class Admin_IndexController extends Api_AbstractController
             $scripts->appendFile('/js/templates.js');
             $scripts->appendFile('/js/bind.js');
             $scripts->appendFile('/js/main.js');
-            $scripts->appendFile('/js/sayso.js');
+            $scripts->appendFile('/js/admin.js');
             $scripts->appendScript('a.api.authKey = "' . $config->api->authKey . '"; a.api.imageKey = "' . $config->api->imageKey . '";');
         }
         parent::init();

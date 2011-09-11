@@ -3,7 +3,7 @@ $S(function () {
     
     // setup
     
-    var starbar = sayso.starbar;
+    var starbar = window.sayso.starbar;
     
     var ajax = function (options) {
         options.data = $S.extend(options.data || {}, {

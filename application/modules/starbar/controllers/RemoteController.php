@@ -34,6 +34,7 @@ class Starbar_RemoteController extends Api_AbstractController
     
     /**
      * Lady Gaga Starbar
+     * @todo add to starbar table if we decide to use it
      */
     public function gagaAction () 
     {
@@ -43,6 +44,7 @@ class Starbar_RemoteController extends Api_AbstractController
     
     /**
      * Generic Starbar
+     * @todo add to starbar table
      */
     public function genericAction () {
         
@@ -57,6 +59,7 @@ class Starbar_RemoteController extends Api_AbstractController
         
         $starbar = $this->_getStarbarObject();
         $starbar->setApiAuthKey(Api_Registry::getConfig()->api->helloMusic->authKey);
+        $starbar->setCssUrl('http://' . BASE_DOMAIN . '/css/starbar-hellomusic.css');
         $starbar->setHtml($this->getResponse()->getBody()); 
         return $this->_resultType($starbar);
     }

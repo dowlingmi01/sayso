@@ -9,10 +9,16 @@ class Starbar extends Record
     
     protected $_apiAuthKey = '';
     
+    protected $_cssUrl = '';
+    
     protected $_html = '';
     
     public function setApiAuthKey ($apiAuthKey) {
         $this->_apiAuthKey = $apiAuthKey;
+    }
+    
+    public function setCssUrl ($cssUrl) {
+        $this->_cssUrl = $cssUrl;
     }
     
     public function setHtml ($html) {
@@ -22,6 +28,7 @@ class Starbar extends Record
     public function exportProperties($parentObject = null) {
         $props = array(
             '_auth_key' => $this->_apiAuthKey,
+            '_css_url' => $this->_cssUrl,
             '_html' => $this->_html
         );
         return array_merge(parent::exportProperties($parentObject), $props);

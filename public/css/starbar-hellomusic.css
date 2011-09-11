@@ -512,3 +512,9 @@
 #sayso-starbar #sb_popBox_promo .sb_triangle-solid:after{
 	left: 223px;
 }
+
+/* Keep this at end of file. It's used for testing if CSS is loaded. */
+
+._sayso_starbar_css_loaded {
+	display: none;
+}

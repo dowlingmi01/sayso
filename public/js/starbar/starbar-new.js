@@ -208,7 +208,7 @@ setTimeout(function(){
 		closePopBox();
 		showAlerts();
 		activateProgressBar();
-
+		refreshState();
 		// initializes development-only jquery
 		devInit();
 	}

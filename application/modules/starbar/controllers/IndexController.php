@@ -9,6 +9,17 @@
  */
 class Starbar_IndexController extends Api_AbstractController
 {
+    public function preDispatch() {
+        if (!in_array($this->_request->getActionName(), array('index', 'gaga'))) {
+            // i.e. for everything based on Generic Starbar, use these includes
+            $this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
+            $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
+            $this->view->headScript()->appendFile('/js/starbar/jquery-ui-1.8.16.custom.min.js');
+            $this->view->headScript()->appendFile('/js/starbar/jquery.jscrollpane.min.js');
+            $this->view->headScript()->appendFile('/js/starbar/jquery.cookie.js');
+        }
+    }
+    
     public function indexAction () {
         
     }
@@ -16,18 +27,14 @@ class Starbar_IndexController extends Api_AbstractController
     public function gagaAction()
     {
         $this->view->headLink()->appendStylesheet('/css/starbar-qualified.css');
-        $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
     }
     
     public function genericAction () {
-        $this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
-        $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
     }
    
     public function hellomusicAction () {
-        $this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
         $this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');
-        $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
+        
     }
 }
 

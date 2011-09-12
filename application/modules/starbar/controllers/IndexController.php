@@ -27,6 +27,7 @@ class Starbar_IndexController extends Api_AbstractController
     public function gagaAction()
     {
         $this->view->headLink()->appendStylesheet('/css/starbar-qualified.css');
+        $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
     }
     
     public function genericAction () {

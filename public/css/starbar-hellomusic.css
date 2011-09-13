@@ -141,8 +141,8 @@
 	text-align: center;
 }
 
-#sayso-starbar #starbar-player-console #starbar-level .sb_popContent .sb_user-level, 
-#sayso-starbar #starbar-player-console #starbar-level .sb_popContent .sb_user-level span{	
+#sayso-starbar #starbar-player-console a .sb_user-level, 
+#sayso-starbar #starbar-player-console a .sb_user-level span{	
 	color: #fff;
 	text-transform: uppercase;
 	font-size: 11px;
@@ -234,15 +234,12 @@
 #sayso-starbar a:visited,
 #sayso-starbar h3.sb_title,
 #sayso-starbar h2.sb_title,
-#sayso-starbar #starbar-player-console .sb_outlineList li h3{
+#sayso-starbar #starbar-player-console .sb_outlineList li h3,
+#sayso-starbar #starbar-player-console #starbar-type .sb_content .sb_popBox a{
 	color: #0081c5;
 }
 
 /* other special formatting styles */
-
-#sayso-starbar h2.sb_title{
-	text-transform: uppercase;
-}
 
 #sayso-starbar #starbar-player-console .sb_pointsEarned{	
 	background-image: url('../images/hellomusic/img_note_sm.png');
@@ -369,22 +366,22 @@
 	margin: -5px 10px 0px 0px;
 }
 
-#sayso-starbar #sb_popBox_user-level .sb_userLevelColor1{
-	color: #980752;
+#sayso-starbar .sb_userLevelColor1{
+	color: #980752 !important;
 	text-transform: uppercase;
 	font-weight: bold;
 	font-size: inherit;
 }
 
-#sayso-starbar #sb_popBox_user-level .sb_userLevelColor2{
-	color: #1751a5;
+#sayso-starbar .sb_userLevelColor2{
+	color: #1751a5 !important;
 	text-transform: uppercase;
 	font-weight: bold;
 	font-size: inherit;
 }
 
-#sayso-starbar #sb_popBox_user-level .sb_userLevelColor3{
-	color: #8ca406;
+#sayso-starbar .sb_userLevelColor3{
+	color: #8ca406 !important;
 	text-transform: uppercase;
 	font-weight: bold;
 	font-size: inherit;
@@ -451,6 +448,14 @@
 	
 }
 
+/* user profile settings */
+#sayso-starbar #starbar-type #sb_popBox_user-profile h2.sb_title{
+	font-weight: normal;
+	font-size: 14px;
+	color: #333;
+}
+
+
 /* POSITION ALL OF THE POPBOX TRIANGLES */
 
 
@@ -512,6 +517,27 @@
 #sayso-starbar #sb_popBox_promo .sb_triangle-solid:after{
 	left: 223px;
 }
+
+/* user account */
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile.sb_popBox{
+	left: -220px;
+}
+
+#sayso-starbar #sb_popBox_user-profile.sb_triangle-border:before{
+	left: 225px;
+}
+#sayso-starbar #sb_popBox_user-profile.sb_triangle-border:after{
+	left: 226px;
+}
+#sayso-starbar #sb_popBox_user-profile .sb_triangle-solid:after{
+	left: 223px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile.sb_popBox .sb_popContent{
+	height: 280px;
+}
+
 
 /* Keep this at end of file. It's used for testing if CSS is loaded. */
 

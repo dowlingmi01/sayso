@@ -153,11 +153,11 @@ setTimeout(function(){
 
 					// reset the popbox it should open to this ID
 					thisPopBox = $S('#'+targetPopBox);
-
-					// set a delay before closing the alert element
-					if ($S(this).hasClass('sb_alert')){
-						hideAlerts($S(this).closest('.sb_starbar-alert'));
-					}
+				}
+				
+				// set a delay before closing the alert element
+				if ($S(this).hasClass('sb_alert')){
+					hideAlerts($S(this).closest('.sb_starbar-alert'));
 				}
 
 				// if it was already open, close it and remove the class. otherwise, open the popbox
@@ -429,7 +429,8 @@ setTimeout(function(){
                         if (activeIframe && activeLink && activeIframe.attr('src') != activeLink.attr('href')) {
                             activeIframe.attr('src', activeLink.attr('href'));
                         }
-                    }
+                    },
+				active: false
 				});
 			});
 		}else{

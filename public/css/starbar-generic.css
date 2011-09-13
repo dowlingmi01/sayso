@@ -64,7 +64,7 @@
 }
 /* Force scrollbar so you don't get jumping content */
 html {
-	overflow-y: scroll;
+	/*overflow-y: scroll;*/
 }
 /* Accessible focus treatment
  * people.opera.com/patrickl/experiments/keyboard/test */
@@ -398,16 +398,28 @@ html {
 
 #sayso-starbar #starbar-player-console .sb_starbar-alert {
 	width: 218px;
-	background-image: url('../images/generic/bg_alert_starbar-type.png');
+	background-image: url('../images/generic/bg_alert_starbar-reg.png');
 	background-repeat: no-repeat;
 	position: absolute;
 	z-index: -9999;
 	display:none;
 }
+
+#sayso-starbar #starbar-player-console .sb_starbar-alert-wide{
+	width: 260px;
+	background-image: url('../images/generic/bg_alert_starbar-wide.png');
+}
+
 #sayso-starbar #starbar-player-console #starbar-alert-new.sb_starbar-alert {
 	bottom: 65px;
 	left: 108px;
 }
+
+#sayso-starbar #starbar-player-console #starbar-alert-earned.sb_starbar-alert {
+	bottom: 53px;
+	right: 0px;
+}
+
 #sayso-starbar #starbar-player-console .sb_starbar-alert .sb_inner {
 	position: relative;
 	margin: 8px 8px 0px 8px;
@@ -421,20 +433,30 @@ html {
 	font-size: 11px;
 }
 #sayso-starbar #starbar-player-console .sb_starbar-alert .sb_inner .sb_content a{
-	background-image: url('../images/generic/img_arrow_white.png');
-	background-repeat: no-repeat;
-	background-position: right 50%;
-	padding: 0px 15px 0px 0px;
 	text-align: center;
-	display: inline-block;
+	display: block;
 	margin: 0px 5px 0px 0px;
 	font-size: 11px;
 	color: #fff;
 }
+
+#sayso-starbar #starbar-player-console .sb_starbar-alert .sb_inner .sb_content a.sb_alert-arrow{
+	background-image: url('../images/generic/img_arrow_white.png');
+	background-repeat: no-repeat;
+	background-position: right 50%;
+	padding: 0px 15px 0px 0px;
+	display: inline-block;
+}
+
 #sayso-starbar #starbar-player-console .sb_theme_bgAlertRed {
 	background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0.22, rgb(191,46,20)), color-stop(0.61, rgb(145,8,35)));
 	background-image: -moz-linear-gradient( center top, rgb(191,46,20) 22%, rgb(145,8,35) 61%);
 	background-color: #a2161d;
+}
+#sayso-starbar #starbar-player-console .sb_theme_bgAlertGreen {
+	background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0.22, rgb(80,145,55)), color-stop(0.61, rgb(4,67,25)));
+	background-image: -moz-linear-gradient( center top, rgb(80,145,55) 22%, rgb(4,67,25) 61%);
+	background-color: #256927;
 }
 /* NAVIGATION */
 
@@ -501,6 +523,7 @@ html {
 	bottom: 70px;
 	left: 0;
 	display: none;
+	text-align: left;
 }
 #sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner {
 	position: relative;
@@ -953,6 +976,14 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar #starbar-player-console .sb_outlineList li h3 {
 	color: #1a8fbb;
 }
+
+#sayso-starbar h2.sb_titlePlain{
+	font-size: 14px !important;
+	color: #333 !important;
+	font-weight: normal !important;
+	text-transform: none !important;
+}
+
 /* other special formatting styles */
 
 #sayso-starbar h3{
@@ -973,6 +1004,12 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	background-repeat: repeat-y;
 	background-position: center top;
 }
+#sayso-starbar .sb_column6040BG {
+	overflow: hidden;
+	background-image: url('../images/generic/bg_column50.png');
+	background-repeat: repeat-y;
+	background-position: 60% top;
+}
 
 #sayso-starbar .sb_column50 {
 	width: 50%;
@@ -989,11 +1026,35 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	margin: 0px 5px 0px 0px;
 }
 
-#sayso-starbar .sb_column50 h2.sb_title{
+#sayso-starbar .sb_column60 {
+	width: 60%;
+	float: left;
+}
+
+#sayso-starbar .sb_column40 {
+	width: 40%;
+	float: left;
+}
+
+#sayso-starbar .sb_column6040BG .sb_column60{
+	width: 58%;
+}
+
+#sayso-starbar .sb_column6040BG .sb_column40{
+	float: right;
+	width: 37%;
+	margin: 0px 5px 0px 0px;
+}
+
+#sayso-starbar .sb_column50 h2, 
+#sayso-starbar .sb_column60 h2,
+#sayso-starbar .sb_column40 h2{
 	text-transform: none;
 }
 
-#sayso-starbar .sb_column50 .sb_header{
+#sayso-starbar .sb_column50 .sb_header,
+#sayso-starbar .sb_column60 .sb_header,
+#sayso-starbar .sb_column40 .sb_header{
 	border-bottom: 1px solid #929292;
 }
 
@@ -1045,7 +1106,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	font-size: 14px;
 	font-weight: normal;
 	text-decoration: none;
-	color: #fff;
+	color: #fff !important;
 	padding: 5px 10px;
 	box-shadow: 0px 0px 3px #666;
 	-moz-box-shadow: 0px 0px 3px #666;
@@ -1077,7 +1138,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 
 /* dividing lines between list items */
 #sayso-starbar #starbar-player-console .sb_lineList {
-	margin: 0px 0px;
+	margin: 0px 0px 5px 0px;
 	list-style: none;
 }
 #sayso-starbar #starbar-player-console .sb_lineList li {
@@ -1104,4 +1165,36 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 }
 #sayso-starbar #starbar-player-console .sb_solidList li.sb_listEven{
 	background-color: #d2d2d2;
+}
+
+/* facebook / twitter connect icons */
+
+#sayso-starbar a.sb_connect_facebook{
+	width: 53px;
+	height: 64px;
+	text-indent: -9999px;
+	display: inline-block;
+	background-image: url('../images/generic/img_connect_facebook.png');
+	background-repeat: no-repeat;
+	background-position: -56px 0px;
+	margin: 0px 5px 5px 0px;
+}
+#sayso-starbar a.sb_connect_twitter{
+	width: 53px;
+	height: 64px;
+	text-indent: -9999px;
+	display: inline-block;
+	background-image: url('../images/generic/img_connect_twitter.png');
+	background-repeat: no-repeat;
+	margin: 0px 5px 5px 0px;
+	background-position: -56px 0px;
+}
+
+#sayso-starbar a.sb_unconnected:hover{
+	background-position: 0px 0px;
+	opacity: 0.5;
+}
+
+#sayso-starbar a.sb_connected{
+	background-position: 0px 0px;
 }

@@ -421,7 +421,7 @@ setTimeout(function(){
 					isCollapsible = false;
 				}
 				$S('.sb_accordion',this).accordion({
-					collapsible: isCollapsible,
+					collapsible: isCollapsible, // Accordion can have all its divs be closed simultaneously
 					active: false, // All accordion divs are closed by default
                     // find the link that caused the accordian to open, take the href, and set the src of the inner iframe to it
                     changestart: function(event, ui){

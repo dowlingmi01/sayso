@@ -68,9 +68,9 @@ html {
 }
 /* Accessible focus treatment
  * people.opera.com/patrickl/experiments/keyboard/test */
-#sayso-starbar a:hover, #sayso-starbar a:active, #sayso-starbar a:focus { 
-    outline: none; 
-} 
+#sayso-starbar a:hover, #sayso-starbar a:active, #sayso-starbar a:focus {
+    outline: none;
+}
 /* Set sub, sup without affecting line-height: gist.github.com/413930 */
 #sayso-starbar sub, #sayso-starbar sup {
 	font-size: 75%;
@@ -136,7 +136,7 @@ html {
 }
 
 /* Hide only visually, but have it available for screenreaders: by Jon Neal.
- * www.webaim.org/techniques/css/invisiblecontent/  &  j.mp/visuallyhidden 
+ * www.webaim.org/techniques/css/invisiblecontent/  &  j.mp/visuallyhidden
  * Extend to allow the element to be focusable when navigated to via the keyboard
  * drupal.org/node/897638 */
 /* Colors for form validity http://www.whatwg.org/specs/web-apps/current-work/multipage/links.html */
@@ -163,7 +163,7 @@ html {
  text-shadow: none;
 }
 /* Font normalization inspired by YUI Library's fonts.css
- * developer.yahoo.com/yui/ 
+ * developer.yahoo.com/yui/
  * #444444 looks better than black
  * twitter.com/H_FJ/statuses/11800719859 */
 
@@ -540,7 +540,7 @@ html {
 #sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent {
 	padding: 5px 5px 5px 10px !important;
 	background-color: #f3f3f3;
-	height: 220px;
+	height: 270px;
 	width: 500px;
 }
 #sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent p {
@@ -722,7 +722,7 @@ html {
 	width:0;
 }
 
-/* 
+/*
 
 JQUERY-UI
 
@@ -827,11 +827,29 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	text-decoration: none !important;
 }
 #sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_ui-icon {
-	position: absolute;
-	left: .5em;
-	top: 50%;
-	margin-top: -8px;
+	float: right;
+	background-repeat: no-repeat;
+	background-position: right 2px;
+	padding: 0px 20px 2px 0px;
+	margin: 2px 4px 0 0;
+	height: 16px;
+	font-weight: bold;
+	font-size: 15px;
 }
+#sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_ui-icon-triangle-1-s {
+	background-image: url('../images/generic/img_arrow_accordion_open.png');
+}
+#sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_ui-icon-triangle-1-e {
+	background-image: url('../images/generic/img_arrow_accordion_closed.png');
+}
+
+
+
+#sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_questionValue {
+}
+#sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_questionValue_open {
+}
+
 #sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-content {
 	padding: 3px 8px;
 	border-top: 0;
@@ -866,13 +884,16 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 }
 #sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_questionValue {
 	float: right;
-	background-image: url('../images/generic/img_arrow_accordion.png');
+	background-image: url('../images/generic/img_arrow_accordion_closed.png');
 	background-repeat: no-repeat;
 	background-position: right 2px;
 	padding: 0px 20px 2px 0px;
 	height: 16px;
 	font-weight: bold;
 	font-size: 15px;
+}
+#sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_questionValue_open {
+	background-image: url('../images/generic/img_arrow_accordion_open.png');
 }
 #sayso-starbar #starbar-player-console .sb_ui-accordion.sb_pollQuestion, #sayso-starbar #starbar-player-console .sb_ui-accordion.sb_pollResult {
 	background-color: #e5e5e5;
@@ -964,15 +985,15 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 
 /* everything that has textcolor */
 
-#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a, 
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a,
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-disabled a,
-#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-processing a, 
-#sayso-starbar a, 
-#sayso-starbar a:link, 
-#sayso-starbar a:active, 
-#sayso-starbar a:visited, 
-#sayso-starbar h3.sb_title, 
-#sayso-starbar h2.sb_title, 
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-processing a,
+#sayso-starbar a,
+#sayso-starbar a:link,
+#sayso-starbar a:active,
+#sayso-starbar a:visited,
+#sayso-starbar h3.sb_title,
+#sayso-starbar h2.sb_title,
 #sayso-starbar #starbar-player-console .sb_outlineList li h3 {
 	color: #1a8fbb;
 }
@@ -1046,7 +1067,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	margin: 0px 5px 0px 0px;
 }
 
-#sayso-starbar .sb_column50 h2, 
+#sayso-starbar .sb_column50 h2,
 #sayso-starbar .sb_column60 h2,
 #sayso-starbar .sb_column40 h2{
 	text-transform: none;

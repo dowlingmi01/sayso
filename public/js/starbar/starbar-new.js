@@ -123,7 +123,7 @@ setTimeout(function(){
 				elemSaySoLogoBorder.removeClass('sb_theme_bgGradient sb_theme_bgGlow');
 			}
 			else{
-				
+
 			}
 		}
 	}); // end logo hover + click actions
@@ -154,7 +154,7 @@ setTimeout(function(){
 					// reset the popbox it should open to this ID
 					thisPopBox = $S('#'+targetPopBox);
 				}
-				
+
 				// set a delay before closing the alert element
 				if ($S(this).hasClass('sb_alert')){
 					hideAlerts($S(this).closest('.sb_starbar-alert'));
@@ -215,9 +215,9 @@ setTimeout(function(){
 
 	// animates the starbar-player-console bar based on current state
 	function animateBar(playerClass, clickPoint){
-	    
+
 	    if (!playerClass) playerClass = window.sayso.starbar.state.visibility;
-	    
+
 	    switch(clickPoint){
             // if we're clicking from a button, determine what state we're in and how to shrink / grow
             case 'button':
@@ -231,7 +231,7 @@ setTimeout(function(){
                     case 'sb_starbar-visStowed':
                         _openBar();
                         break;
-                }   
+                }
                 break;
             // if refreshing based on current state, then update bar to match
             case 'refresh' :
@@ -249,7 +249,7 @@ setTimeout(function(){
                 break;
 
 	    } // end switch clickpoint
-	    
+
 	    function _closeBar () {
 	        elemStarbarMain.fadeOut('fast');
             elemPopBoxVisControl.fadeOut('fast');
@@ -378,12 +378,12 @@ setTimeout(function(){
 	function activateTabs(target){
 		// only set up the tabs if they're there
 		if ($S('.sb_tabs',target).length > 0){
-			$S('.sb_tabs',target).tabs({ 
+			$S('.sb_tabs',target).tabs({
 				show: function(){
 						// re-call the scrollbar to re-initialize to avoid the "flash" of narrow content.
 						activateScroll(target);
 					}
-				//fx: { opacity: 'toggle' } 
+				//fx: { opacity: 'toggle' }
 			});
 		}
 	}
@@ -391,20 +391,20 @@ setTimeout(function(){
 	function activateScroll(target){
 		// first, resize the scrollpane dynamically to fit whatever height it lives in (.content.height() - .header.height())
 		var contentHeight = $S('.sb_popContent',target).height();
-		
+
 		// add height of the header + any margins / paddings
 		if ($S('.sb_popContent .sb_header',target).length > 0){
 			var headerHeight =  eval($S('.sb_header',target).css('margin-bottom').replace('px',''))+$S('.sb_popContent .sb_header',target).height();
 		}else{
-			var headerHeight = 0;		
+			var headerHeight = 0;
 		}
-		
+
 		// set an absolute width for the scroll container to prevent "flash" while it resizes
 		var contentWidth = $S('.sb_popContent',target).width();
 		var contentPadL = $S('.sb_popContent',target).css('padding-left');
 		var contentPadR = $S('.sb_popContent',target).css('padding-right');
 		var contentPad = eval(contentWidth - (contentPadL.replace('px','') + contentPadR.replace('px','')))+'px';
-		
+
 		$S('.sb_scrollPane',target).css('height',contentHeight-headerHeight);
 		$S('.sb_scrollPane',target).jScrollPane({
 			autoReinitialise: true,
@@ -422,6 +422,7 @@ setTimeout(function(){
 				}
 				$S('.sb_accordion',this).accordion({
 					collapsible: isCollapsible,
+					active: false, // All accordion divs are closed by default
                     // find the link that caused the accordian to open, take the href, and set the src of the inner iframe to it
                     changestart: function(event, ui){
                         var activeLink = ui.newHeader.find('a');
@@ -429,8 +430,7 @@ setTimeout(function(){
                         if (activeIframe && activeLink && activeIframe.attr('src') != activeLink.attr('href')) {
                             activeIframe.attr('src', activeLink.attr('href'));
                         }
-                    },
-				active: false
+                    }
 				});
 			});
 		}else{
@@ -458,22 +458,22 @@ setTimeout(function(){
 
 
 	}
-	
+
 	// keep the state of the Starbar consistent across sites (currently handles visibility only)
-	
-	function updateState (visibility){ 
+
+	function updateState (visibility){
         if (!visibility) visibility = elemPlayerConsole.attr('class');
         window.sayso.starbar.state.visibility = visibility;
         var app = KOBJ.get_application(kynetxAppId);
         app.raise_event('update_state', { 'visibility' : visibility /* other state changes here */ });
     }
-    
+
     function refreshState () {
         window.sayso.starbar.callback = function () { log('callback firing'); animateBar(null, 'refresh'); /* other state reload logic here */ };
         var app = KOBJ.get_application(kynetxAppId);
         app.raise_event('refresh_state');
     }
-    
+
     // http://www.thefutureoftheweb.com/blog/detect-browser-window-focus
     // I augmented this to include honoring existing focus events
     if (/*@cc_on!@*/false) { // check for Internet Explorer
@@ -485,13 +485,13 @@ setTimeout(function(){
     }
 
     // "safe" logging functions
-    
+
     function log () {
         if (sayso.debug && typeof console !== 'undefined') {
             console.log.apply(console, arguments);
         }
     };
-    
+
     function warn () {
         if (sayso.debug && typeof console !== 'undefined') {
             console.warn.apply(console, arguments);

@@ -2,6 +2,7 @@
 
 class Starbar_ContentController extends Api_AbstractController
 {
+	protected $_usingJsonPRenderer = true;
 
     public function init()
     {
@@ -10,14 +11,25 @@ class Starbar_ContentController extends Api_AbstractController
 
     public function postDispatch()
     {
-        $this->_enableRenderer(new Api_Plugin_JsonPRenderer());
-        $this->render();
-        return $this->_resultType(new Object(array('html' => $this->getResponse()->getBody())));
+    	if ($this->_usingJsonPRenderer) {
+	        $this->_enableRenderer(new Api_Plugin_JsonPRenderer());
+	        $this->render();
+	        return $this->_resultType(new Object(array('html' => $this->getResponse()->getBody())));
+		}
     }
 
     public function aboutSaysoAction ()
     {
 
+    }
+
+    public function embedPollAction ()
+    {
+    	$this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
+    	$this->_usingJsonPRenderer = false;
+		$request = $this->getRequest();
+		$this->view->assign('poll_id', $request->getParam('poll_id'));
+		$this->view->assign('poll_key', $request->getParam('poll_key'));
     }
 
     public function hellomusicPollsAction ()

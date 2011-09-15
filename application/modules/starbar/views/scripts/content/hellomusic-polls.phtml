@@ -16,18 +16,12 @@
             <!-- BEGIN POLL BOX LANDING -->
             <p>Earn <strong class="sb_theme_textHighlight">10 Notes</strong> for each poll you complete. Check back often to keep earning and for your chance to win the Weekly Giveaway!</p>
             <div class="sb_accordion">
-                <h3><a href="http://<?= BASE_DOMAIN ?>/starbar/content/embed-poll?poll_id=636054&poll_key=7MG588QL1S7OI911LF7UXQ4AJEH6IB">Bob Dylan pre or post Newport?</a></h3>
-                <div>
-                    <iframe src="" width="470" height="120" frameborder="0" marginheight="0" marginwidth="0" scrollbar="no"></iframe>
-                </div><!-- / END ACCORDION CONTENT -->
-                <h3><a href="http://<?= BASE_DOMAIN ?>/starbar/content/embed-poll?poll_id=636054&poll_key=7MG588QL1S7OI911LF7UXQ4AJEH6IB">Everything Gibson</a></h3>
-                <div>
-                    <iframe src="" width="470" height="120" frameborder="0" marginheight="0" marginwidth="0" scrollbar="no"></iframe>
-                </div><!-- / END ACCORDION CONTENT -->
-                <h3><a href="http://<?= BASE_DOMAIN ?>/starbar/content/embed-poll?poll_id=636054&poll_key=7MG588QL1S7OI911LF7UXQ4AJEH6IB">Guitar Center or the Corner Music Shop</a></h3>
-                <div>
-                    <iframe src="" width="470" height="120" frameborder="0" marginheight="0" marginwidth="0" scrollbar="no"></iframe>
-                </div><!-- / END ACCORDION CONTENT -->
+            	<? foreach ($this->new_surveys as $survey) { ?>
+	                <h3><a href="http://<?= BASE_DOMAIN ?>/starbar/content/embed-poll?survey_id=<?= $survey->id ?>"><?= $survey->title ?></a></h3>
+	                <div>
+	                    <iframe src="" width="470" height="120" frameborder="0" marginheight="0" marginwidth="0" scrollbar="no"></iframe>
+	                </div><!-- / END ACCORDION CONTENT -->
+	            <? } ?>
             </div><!-- .accordion -->
             <!-- END POLL BOX LANDING -->
 

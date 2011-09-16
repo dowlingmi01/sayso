@@ -74,6 +74,11 @@ class Starbar_ContentController extends Api_AbstractController
 		$this->view->assign('complete_surveys', $complete_surveys);
 		$this->view->assign('archive_surveys', $archive_surveys);
     }
+		
+    public function embedSurveyAction ()
+    {
+
+    }
 
     public function hellomusicDailyDealsAction ()
     {

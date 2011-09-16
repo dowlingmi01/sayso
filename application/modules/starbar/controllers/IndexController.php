@@ -17,6 +17,7 @@ class Starbar_IndexController extends Api_AbstractController
             $this->view->headScript()->appendFile('/js/starbar/jquery-ui-1.8.16.custom.min.js');
             $this->view->headScript()->appendFile('/js/starbar/jquery.jscrollpane.min.js');
             $this->view->headScript()->appendFile('/js/starbar/jquery.cookie.js');
+            $this->view->headScript()->appendFile('/js/starbar/jquery.jeip.js');
         }
     }
     

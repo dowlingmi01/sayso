@@ -78,6 +78,7 @@ setTimeout(function(){
 		elemPopBox = $S('#sayso-starbar #starbar-player-console .sb_popBox');
 		elemAlerts = $S('#sayso-starbar #starbar-player-console .sb_starbar-alert');
 		elemPopBoxVisControl = $S('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
+		elemTabClick = $S('#sayso-starbar #starbar-player-console .sb_nav_tabs');
 
 		elemPlayerConsole.unbind();
 		elemPlayerConsole.click(function(e) {
@@ -125,6 +126,7 @@ setTimeout(function(){
 		/*
 		Set up logo hover + click action behaviors
 		*/
+		
 		btnSaySoLogo.unbind();
 		btnSaySoLogo.bind({
 			click: function(e) {
@@ -141,7 +143,7 @@ setTimeout(function(){
 						closePopBox(thisPopBox);
 					}else{
 						// check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
-                		var thisPopBoxSrc = $S(this).attr('href');
+            var thisPopBoxSrc = $S(this).attr('href');
 						openPopBox(thisPopBox, thisPopBoxSrc);
 					}
 				}
@@ -169,15 +171,14 @@ setTimeout(function(){
 		Set up nav items (click properties to show/hide their popboxes, hover / active sates
 		*/
 		elemStarbarClickable.each(function(){
+			// SPECIAL HANDLING FOR STARBAR LOGO
+			if ($S(this).attr('id') == 'sb_starbar-logo'){
+				return;
+			}
 			$S(this).unbind();
 			$S(this).bind({
 				click: function(event){
 					event.preventDefault();
-
-					// SPECIAL HANDLING FOR STARBAR LOGO
-					if ($S(this).attr('id') == 'sb_starbar-logo'){
-						return;
-					}
 					// the popbox is AFTER the clickable area
 					var thisPopBox = $S(this).next('.sb_popBox');
 
@@ -234,6 +235,19 @@ setTimeout(function(){
 				}
 			}); // end bind
 		}); // end each loop for starbarNav
+		
+		// to open a specific tab
+		elemTabClick.each(function(){
+			$S(this).unbind();
+			$S(this).bind({
+				click: function(event){
+					var $tabs = $S('.sb_popBoxActive .sb_tabs').tabs();					
+					$tabs.tabs('select', $S(this).attr('rel')-1); // switch to third tab
+    			return false;
+				}
+			});
+		});
+		
 	} // end initElements()
 
 	// animates the starbar-player-console bar based on current state
@@ -521,5 +535,6 @@ setTimeout(function(){
             console.warn.apply(console, arguments);
         }
     };
+
 
 }, 200); // slight delay to ensure other libraries are loaded

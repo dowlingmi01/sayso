@@ -3,12 +3,12 @@
 class SurveyCollection extends RecordCollection
 {
 	/*
-	* get polls or surveys for a specific user for a specific tab:
-		* $userId = get surveys for this user
+	* load polls or surveys for a specific user for a specific survey_user_status:
+		* $user_id = get surveys for this user
 		* $type = 'poll' or 'survey'
-		* $tab = 'new', 'complete' or 'archived'
+		* $survey_user_status = 'new', 'complete' or 'archived', i.e. has this user completed the survey, etc.
 	*/
-    public function getSurveysForUser ($userId, $type, $tab)
+    public function loadSurveysForUser ($user_id, $type, $survey_user_status)
     {
     	$order = "id ASC";
     	$surveys = null;
@@ -16,10 +16,10 @@ class SurveyCollection extends RecordCollection
     	$type = str_replace("surveys", "survey", $type);
     	$type = str_replace("polls", "poll", $type);
 
-    	$tab = str_replace("completed", "complete", $tab);
-    	$tab = str_replace("archived", "archive", $tab);
+    	$survey_user_status = str_replace("completed", "complete", $survey_user_status);
+    	$survey_user_status = str_replace("archived", "archive", $survey_user_status);
 
-    	switch ($tab)
+    	switch ($survey_user_status)
     	{
     		case 'new':
 				$sql = "SELECT *
@@ -28,31 +28,33 @@ class SurveyCollection extends RecordCollection
 							AND id NOT IN (SELECT survey_id FROM survey_user_map WHERE user_id = ?)
 						ORDER BY ?
 						 ";
-        		$surveys = Db_Pdo::fetchAll($sql, $type, $userId, $order);
+        		$surveys = Db_Pdo::fetchAll($sql, $type, $user_id, $order);
     			break;
 
     		case 'complete':
 				$sql = "SELECT *
-						FROM survey	LEFT JOIN survey_user_map
+						FROM survey
+							LEFT JOIN survey_user_map
 							ON survey.id = survey_user_map.survey_id
-							AND survey_user_map.user_id = ?
-							AND survey_user_map.response_id IS NOT NULL
+								AND survey_user_map.user_id = ?
+								AND survey_user_map.status = 'complete'
 						WHERE survey.type = ?
 						ORDER BY ?
 						 ";
-        		$surveys = Db_Pdo::fetchAll($sql, $userId, $type, $order);
+        		$surveys = Db_Pdo::fetchAll($sql, $user_id, $type, $order);
     			break;
 
     		case 'archive':
 				$sql = "SELECT *
-						FROM survey	LEFT JOIN survey_user_map
+						FROM survey
+							LEFT JOIN survey_user_map
 							ON survey.id = survey_user_map.survey_id
-							AND survey_user_map.user_id = ?
-							AND survey_user_map.response_id IS NULL
+								AND survey_user_map.user_id = ?
+								AND survey_user_map.status = 'archive'
 						WHERE survey.type = ?
 						ORDER BY ?
 						 ";
-        		$surveys = Db_Pdo::fetchAll($sql, $userId, $type, $order);
+        		$surveys = Db_Pdo::fetchAll($sql, $user_id, $type, $order);
     			break;
 		}
 

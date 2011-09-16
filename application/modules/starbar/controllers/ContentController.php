@@ -31,11 +31,11 @@ class Starbar_ContentController extends Api_AbstractController
     	$this->_usingJsonPRenderer = false;
 		$request = $this->getRequest();
 
-		$surveyId = (int) $request->getParam('survey_id');
+		$survey_id = (int) $request->getParam('survey_id');
 
-		if ($surveyId) {
+		if ($survey_id) {
 			$survey = new Survey();
-			$survey->loadData($surveyId);
+			$survey->loadData($survey_id);
 
 			//switch ($survey->origin)
 			$this->view->assign('poll_id', $survey->external_id);
@@ -46,13 +46,13 @@ class Starbar_ContentController extends Api_AbstractController
     // Fetches polls for the current user for display
     public function hellomusicPollsAction ()
     {
-		$surveys = new SurveyCollection();
-		$surveys->getSurveysForUser(1, 'poll', 'new');
-		$new_surveys = clone $surveys;
-		$surveys->getSurveysForUser(1, 'poll', 'complete');
-		$complete_surveys = clone $surveys;
-		$surveys->getSurveysForUser(1, 'poll', 'archive');
-		$archive_surveys = clone $surveys;
+		$new_surveys = new SurveyCollection();
+		$complete_surveys = new SurveyCollection();
+		$archive_surveys = new SurveyCollection();
+
+		$new_surveys->loadSurveysForUser(1, 'poll', 'new');
+		$complete_surveys->loadSurveysForUser(1, 'poll', 'complete');
+		$archive_surveys->loadSurveysForUser(1, 'poll', 'archive');
 
 		$this->view->assign('new_surveys', $new_surveys);
 		$this->view->assign('complete_surveys', $complete_surveys);
@@ -62,13 +62,13 @@ class Starbar_ContentController extends Api_AbstractController
     // Fetches surveys for the current user for display
     public function hellomusicSurveysAction ()
     {
-		$surveys = new SurveyCollection();
-		$surveys->getSurveysForUser(1, 'survey', 'new');
-		$new_surveys = clone $surveys;
-		$surveys->getSurveysForUser(1, 'survey', 'complete');
-		$complete_surveys = clone $surveys;
-		$surveys->getSurveysForUser(1, 'survey', 'archive');
-		$archive_surveys = clone $surveys;
+		$new_surveys = new SurveyCollection();
+		$complete_surveys = new SurveyCollection();
+		$archive_surveys = new SurveyCollection();
+
+		$new_surveys->loadSurveysForUser(1, 'survey', 'new');
+		$complete_surveys->loadSurveysForUser(1, 'survey', 'complete');
+		$archive_surveys->loadSurveysForUser(1, 'survey', 'archive');
 
 		$this->view->assign('new_surveys', $new_surveys);
 		$this->view->assign('complete_surveys', $complete_surveys);

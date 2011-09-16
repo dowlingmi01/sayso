@@ -79,6 +79,7 @@ setTimeout(function(){
 		elemAlerts = $S('#sayso-starbar #starbar-player-console .sb_starbar-alert');
 		elemPopBoxVisControl = $S('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
 
+		elemPlayerConsole.unbind();
 		elemPlayerConsole.click(function(e) {
 		    e.stopPropagation();
 		});
@@ -89,6 +90,7 @@ setTimeout(function(){
 		- prevent from closing when clicked
 		*/
 		elemStarbarClickable.each(function(){
+			$S(this).unbind();
 			$S(this).bind({
 				click: function(e){
 					 e.stopPropagation();
@@ -98,6 +100,7 @@ setTimeout(function(){
 
 		/* prevent default for any link with # as the href */
 		$S('a').each(function(){
+			$S(this).unbind();
 			if ($S(this).attr('href')=='#'){
 				$S(this).bind({
 					click: function(e){
@@ -111,7 +114,7 @@ setTimeout(function(){
 		/*
 		 Set up handlers for expanding / minimizing the starbar when "hide" or logo is clicked
 		*/
-
+		btnToggleVis.unbind();
 		btnToggleVis.click(function(event){
 			event.preventDefault();
 			var playerClass = elemPlayerConsole.attr('class');
@@ -122,7 +125,7 @@ setTimeout(function(){
 		/*
 		Set up logo hover + click action behaviors
 		*/
-
+		btnSaySoLogo.unbind();
 		btnSaySoLogo.bind({
 			click: function(e) {
 				e.preventDefault();
@@ -166,6 +169,7 @@ setTimeout(function(){
 		Set up nav items (click properties to show/hide their popboxes, hover / active sates
 		*/
 		elemStarbarClickable.each(function(){
+			$S(this).unbind();
 			$S(this).bind({
 				click: function(event){
 					event.preventDefault();

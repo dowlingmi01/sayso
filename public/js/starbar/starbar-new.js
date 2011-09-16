@@ -11,23 +11,6 @@ setTimeout(function(){
 	// global var
     var themeColor = '#de40b2';
 
-	// LETS USE VARS!
-
-	// clickable elements that ppl will interact with
-	var btnToggleVis = $S('#sayso-starbar #starbar-visControls #starbar-toggleVis');
-	var btnSaySoLogo = $S('#sayso-starbar #starbar-visControls #sb_starbar-logo');
-
-	// container elements
-	var elemSaySoLogoBorder = $S('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
-	var elemSaySoBarBG = $S('#sayso-starbar #starbar-player-console').css('background-image');
-	var elemPlayerConsole = $S('#sayso-starbar #starbar-player-console');
-	var elemStarbarMain = $S('#sayso-starbar #starbar-player-console #starbar-main');
-	var elemVisControls = $S('#sayso-starbar #starbar-player-console #starbar-visControls');
-	var elemStarbarClickable = $S('#sayso-starbar #starbar-player-console .sb_nav_element');
-	var elemPopBox = $S('#sayso-starbar #starbar-player-console .sb_popBox');
-	var elemAlerts = $S('#sayso-starbar #starbar-player-console .sb_starbar-alert');
-	var elemPopBoxVisControl = $S('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
-
 	/*
 	Set up some extra bits to handle closing windows if the user clicks outside the starbar or hits ESC key
 	*/
@@ -45,166 +28,32 @@ setTimeout(function(){
 		}
 	});
 
-	elemPlayerConsole.click(function(e) {
-	    e.stopPropagation();
-	});
+	// LETS USE VARS!
+	// NOTE: The variables below are initialized in initElements()
 
+	// clickable elements that ppl will interact with
+	var btnToggleVis; //  = $S('#sayso-starbar #starbar-visControls #starbar-toggleVis');
+	var btnSaySoLogo; // = $S('#sayso-starbar #starbar-visControls #sb_starbar-logo');
 
-	/*
-	set some properties for each of the popboxes
-	- prevent from closing when clicked
-	*/
-	elemStarbarClickable.each(function(){
-		$S(this).bind({
-			click: function(e){
-				 e.stopPropagation();
-			}
-		});
-	});
-
-	/* prevent default for any link with # as the href */
-	$S('a').each(function(){
-		if ($S(this).attr('href')=='#'){
-			$S(this).bind({
-				click: function(e){
-					e.preventDefault();
-				}
-			});
-		}
-	});
-
-
-	/*
-	 Set up handlers for expanding / minimizing the starbar when "hide" or logo is clicked
-	*/
-
-	btnToggleVis.click(function(event){
-		event.preventDefault();
-		var playerClass = elemPlayerConsole.attr('class');
-		animateBar(playerClass, 'button');
-		//popBoxClose();
-	});
-
-	/*
-	Set up logo hover + click action behaviors
-	*/
-
-	btnSaySoLogo.bind({
-		click: function(e) {
-			e.preventDefault();
-			var playerClass = elemPlayerConsole.attr('class');
-			if (playerClass != 'sb_starbar-visOpen'){
-				// manual override to have any click re-open starbar to original state
-				animateBar('sb_starbar-visStowed', 'button');
-			}else{
-				var thisPopBox = btnSaySoLogo.next('.sb_popBox');
-
-				// if it was already open, close it and remove the class. otherwise, open the popbox
-				if (thisPopBox.hasClass('sb_popBoxActive')){
-					closePopBox(thisPopBox);
-				}else{
-					// check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
-                	var thisPopBoxSrc = $S(this).attr('href');
-					openPopBox(thisPopBox, thisPopBoxSrc);
-				}
-			}
-		},
-		mouseenter: function() {
-			if (elemPlayerConsole.hasClass('sb_starbar-visClosed')){
-				// if it's closed
-				elemSaySoLogoBorder.addClass('sb_theme_bgGradient sb_theme_bgGlow').show();
-			}
-			else{
-			}
-		},
-		mouseleave: function(){
-			if (elemPlayerConsole.hasClass('sb_starbar-visClosed')){
-				// if it's closed
-				elemSaySoLogoBorder.removeClass('sb_theme_bgGradient sb_theme_bgGlow');
-			}
-			else{
-
-			}
-		}
-	}); // end logo hover + click actions
-
-	/*
-	Set up nav items (click properties to show/hide their popboxes, hover / active sates
-	*/
-	elemStarbarClickable.each(function(){
-		$S(this).bind({
-			click: function(event){
-				event.preventDefault();
-
-				// SPECIAL HANDLING FOR STARBAR LOGO
-				if ($S(this).attr('id') == 'sb_starbar-logo'){
-					return;
-				}
-				// the popbox is AFTER the clickable area
-				var thisPopBox = $S(this).next('.sb_popBox');
-
-				/*
-				set up a handler in case we click an element that isn't directly next to its target popbox.
-				a linked element outside of the nav will have rel="#ID OF TARGET" set.
-				*/
-				var targetPopBox = '';
-				if ($S(this).attr('rel') !== undefined){
-					var targetPopBox = $S(this).attr('rel');
-
-					// reset the popbox it should open to this ID
-					thisPopBox = $S('#'+targetPopBox);
-				}
-
-				// set a delay before closing the alert element
-				if ($S(this).hasClass('sb_alert')){
-					hideAlerts($S(this).closest('.sb_starbar-alert'));
-				}
-
-				// if it was already open, close it and remove the class. otherwise, open the popbox
-				if (thisPopBox.hasClass('sb_popBoxActive')){
-					closePopBox(thisPopBox);
-				}else{
-					// this menu item's popBox is active
-
-					// check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
-		  			var thisPopBoxSrc = $S(this).attr('href');
-			  		openPopBox(thisPopBox, thisPopBoxSrc);
-
-					// try to turn on the nav highlight if it opened a "large" sub popbox
-					if (targetPopBox != ''){
-						if (thisPopBox.parents('.sb_theme_bgGradient').hasClass('sb_theme_bgGradient')){
-							var listItem = thisPopBox.parents('.sb_theme_bgGradient');
-							$S('span.sb_nav_border',listItem).addClass('sb_theme_navOnGradient');
-						} // travel op the dom tree to find if the large subpopbox is open
-					}// end if targetPopBox != ''
-
-				}
-			},
-			mouseenter: function(event){
-			event.preventDefault();
-				if ($S(this).parent().hasClass('sb_theme_bgGradient')){
-					$S('span.sb_nav_border', this).addClass('sb_theme_navOnGradient');
-				}
-			},
-			mouseleave: function(event){
-			event.preventDefault();
-				var thisPopBox = $S(this).next('.sb_popBox');
-				// only remove the "hover" class for the nav item if it's box isn't active
-				if (($S(this).parent().hasClass('sb_theme_bgGradient')) && (!thisPopBox.hasClass('sb_popBoxActive'))){
-					$S('span.sb_nav_border', this).removeClass('sb_theme_navOnGradient');
-				}
-			}
-		}); // end bind
-	}); // end each loop for starbarNav
+	// container elements
+	var elemSaySoLogoBorder; // = $S('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
+	var elemSaySoBarBG; // = $S('#sayso-starbar #starbar-player-console').css('background-image');
+	var elemPlayerConsole; // = $S('#sayso-starbar #starbar-player-console');
+	var elemStarbarMain; // = $S('#sayso-starbar #starbar-player-console #starbar-main');
+	var elemVisControls; // = $S('#sayso-starbar #starbar-player-console #starbar-visControls');
+	var elemStarbarClickable; // = $S('#sayso-starbar #starbar-player-console .sb_nav_element');
+	var elemPopBox; // = $S('#sayso-starbar #starbar-player-console .sb_popBox');
+	var elemAlerts; // = $S('#sayso-starbar #starbar-player-console .sb_starbar-alert');
+	var elemPopBoxVisControl; // = $S('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
 
 	// initialize the starbar
 	initStarBar();
-
 
 	/* FUNCTIONS */
 
 	// initialize the starbar
 	function initStarBar(){
+		initElements();
 		closePopBox();
 		showAlerts();
 		activateProgressBar();
@@ -212,6 +61,176 @@ setTimeout(function(){
 		// initializes development-only jquery
 		devInit();
 	}
+
+	// initialize the elements
+	function initElements(){
+		// clickable elements that ppl will interact with
+		btnToggleVis = $S('#sayso-starbar #starbar-visControls #starbar-toggleVis');
+		btnSaySoLogo = $S('#sayso-starbar #starbar-visControls #sb_starbar-logo');
+
+		// container elements
+		elemSaySoLogoBorder = $S('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
+		elemSaySoBarBG = $S('#sayso-starbar #starbar-player-console').css('background-image');
+		elemPlayerConsole = $S('#sayso-starbar #starbar-player-console');
+		elemStarbarMain = $S('#sayso-starbar #starbar-player-console #starbar-main');
+		elemVisControls = $S('#sayso-starbar #starbar-player-console #starbar-visControls');
+		elemStarbarClickable = $S('#sayso-starbar #starbar-player-console .sb_nav_element');
+		elemPopBox = $S('#sayso-starbar #starbar-player-console .sb_popBox');
+		elemAlerts = $S('#sayso-starbar #starbar-player-console .sb_starbar-alert');
+		elemPopBoxVisControl = $S('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
+
+		elemPlayerConsole.click(function(e) {
+		    e.stopPropagation();
+		});
+
+
+		/*
+		set some properties for each of the popboxes
+		- prevent from closing when clicked
+		*/
+		elemStarbarClickable.each(function(){
+			$S(this).bind({
+				click: function(e){
+					 e.stopPropagation();
+				}
+			});
+		});
+
+		/* prevent default for any link with # as the href */
+		$S('a').each(function(){
+			if ($S(this).attr('href')=='#'){
+				$S(this).bind({
+					click: function(e){
+						e.preventDefault();
+					}
+				});
+			}
+		});
+
+
+		/*
+		 Set up handlers for expanding / minimizing the starbar when "hide" or logo is clicked
+		*/
+
+		btnToggleVis.click(function(event){
+			event.preventDefault();
+			var playerClass = elemPlayerConsole.attr('class');
+			animateBar(playerClass, 'button');
+			//popBoxClose();
+		});
+
+		/*
+		Set up logo hover + click action behaviors
+		*/
+
+		btnSaySoLogo.bind({
+			click: function(e) {
+				e.preventDefault();
+				var playerClass = elemPlayerConsole.attr('class');
+				if (playerClass != 'sb_starbar-visOpen'){
+					// manual override to have any click re-open starbar to original state
+					animateBar('sb_starbar-visStowed', 'button');
+				}else{
+					var thisPopBox = btnSaySoLogo.next('.sb_popBox');
+
+					// if it was already open, close it and remove the class. otherwise, open the popbox
+					if (thisPopBox.hasClass('sb_popBoxActive')){
+						closePopBox(thisPopBox);
+					}else{
+						// check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
+                		var thisPopBoxSrc = $S(this).attr('href');
+						openPopBox(thisPopBox, thisPopBoxSrc);
+					}
+				}
+			},
+			mouseenter: function() {
+				if (elemPlayerConsole.hasClass('sb_starbar-visClosed')){
+					// if it's closed
+					elemSaySoLogoBorder.addClass('sb_theme_bgGradient sb_theme_bgGlow').show();
+				}
+				else{
+				}
+			},
+			mouseleave: function(){
+				if (elemPlayerConsole.hasClass('sb_starbar-visClosed')){
+					// if it's closed
+					elemSaySoLogoBorder.removeClass('sb_theme_bgGradient sb_theme_bgGlow');
+				}
+				else{
+
+				}
+			}
+		}); // end logo hover + click actions
+
+		/*
+		Set up nav items (click properties to show/hide their popboxes, hover / active sates
+		*/
+		elemStarbarClickable.each(function(){
+			$S(this).bind({
+				click: function(event){
+					event.preventDefault();
+
+					// SPECIAL HANDLING FOR STARBAR LOGO
+					if ($S(this).attr('id') == 'sb_starbar-logo'){
+						return;
+					}
+					// the popbox is AFTER the clickable area
+					var thisPopBox = $S(this).next('.sb_popBox');
+
+					/*
+					set up a handler in case we click an element that isn't directly next to its target popbox.
+					a linked element outside of the nav will have rel="#ID OF TARGET" set.
+					*/
+					var targetPopBox = '';
+					if ($S(this).attr('rel') !== undefined){
+						var targetPopBox = $S(this).attr('rel');
+
+						// reset the popbox it should open to this ID
+						thisPopBox = $S('#'+targetPopBox);
+					}
+
+					// set a delay before closing the alert element
+					if ($S(this).hasClass('sb_alert')){
+						hideAlerts($S(this).closest('.sb_starbar-alert'));
+					}
+
+					// if it was already open, close it and remove the class. otherwise, open the popbox
+					if (thisPopBox.hasClass('sb_popBoxActive')){
+						closePopBox(thisPopBox);
+					}else{
+						// this menu item's popBox is active
+
+						// check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
+		  				var thisPopBoxSrc = $S(this).attr('href');
+			  			openPopBox(thisPopBox, thisPopBoxSrc);
+
+						// try to turn on the nav highlight if it opened a "large" sub popbox
+						if (targetPopBox != ''){
+							if (thisPopBox.parents('.sb_theme_bgGradient').hasClass('sb_theme_bgGradient')){
+								var listItem = thisPopBox.parents('.sb_theme_bgGradient');
+								$S('span.sb_nav_border',listItem).addClass('sb_theme_navOnGradient');
+							} // travel op the dom tree to find if the large subpopbox is open
+						}// end if targetPopBox != ''
+
+					}
+				},
+				mouseenter: function(event){
+				event.preventDefault();
+					if ($S(this).parent().hasClass('sb_theme_bgGradient')){
+						$S('span.sb_nav_border', this).addClass('sb_theme_navOnGradient');
+					}
+				},
+				mouseleave: function(event){
+				event.preventDefault();
+					var thisPopBox = $S(this).next('.sb_popBox');
+					// only remove the "hover" class for the nav item if it's box isn't active
+					if (($S(this).parent().hasClass('sb_theme_bgGradient')) && (!thisPopBox.hasClass('sb_popBoxActive'))){
+						$S('span.sb_nav_border', this).removeClass('sb_theme_navOnGradient');
+					}
+				}
+			}); // end bind
+		}); // end each loop for starbarNav
+	} // end initElements()
 
 	// animates the starbar-player-console bar based on current state
 	function animateBar(playerClass, clickPoint){
@@ -329,6 +348,7 @@ setTimeout(function(){
 				url : src,
 				success : function (response, status) {
 					popBox.html(response.data.html);
+					initElements();
 					openPopBox(elem, null);
     			}
 			});

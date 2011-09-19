@@ -14,7 +14,6 @@ class Starbar_ContentController extends Api_GlobalController
 	        $this->render();
 	        return $this->_resultType(new Object(array('html' => $this->getResponse()->getBody())));
 		} else {
-            $this->view->headScript()->appendFile('/js/starbar/starbar-new.js');
             $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
             $this->view->headScript()->appendFile('/js/starbar/jquery-ui-1.8.16.custom.min.js');
             $this->view->headScript()->appendFile('/js/starbar/jquery.jscrollpane.min.js');
@@ -51,8 +50,6 @@ class Starbar_ContentController extends Api_GlobalController
     // Embed a single SG survey. Expects "survey_id" passed via URL (GET)
     public function embedSurveyAction ()
     {
-    	$this->_usingJsonPRenderer = false;
-
 		$request = $this->getRequest();
 
 		$survey_id = (int) $request->getParam('survey_id');
@@ -74,9 +71,9 @@ class Starbar_ContentController extends Api_GlobalController
 		$completeSurveys = new SurveyCollection();
 		$archiveSurveys = new SurveyCollection();
 
-		$newSurveys->loadSurveysForUser(1, 'poll', 'new');
-		$completeSurveys->loadSurveysForUser(1, 'poll', 'complete');
-		$archiveSurveys->loadSurveysForUser(1, 'poll', 'archive');
+		$newSurveys->loadSurveysForStarBarAndUser(1, 1, 'poll', 'new');
+		$completeSurveys->loadSurveysForStarBarAndUser(1, 1, 'poll', 'complete');
+		$archiveSurveys->loadSurveysForStarBarAndUser(1, 1, 'poll', 'archive');
 
 		$this->view->assign('new_surveys', $newSurveys);
 		$this->view->assign('complete_surveys', $completeSurveys);
@@ -90,19 +87,19 @@ class Starbar_ContentController extends Api_GlobalController
 		$completeSurveys = new SurveyCollection();
 		$archiveSurveys = new SurveyCollection();
 
-		$newSurveys->loadSurveysForUser(1, 'survey', 'new');
-		$completeSurveys->loadSurveysForUser(1, 'survey', 'complete');
-		$archiveSurveys->loadSurveysForUser(1, 'survey', 'archive');
+		$newSurveys->loadSurveysForStarBarAndUser(1, 1, 'survey', 'new');
+		$completeSurveys->loadSurveysForStarBarAndUser(1, 1, 'survey', 'complete');
+		$archiveSurveys->loadSurveysForStarBarAndUser(1, 1, 'survey', 'archive');
 
 		$this->view->assign('new_surveys', $newSurveys);
 		$this->view->assign('complete_surveys', $completeSurveys);
 		$this->view->assign('archive_surveys', $archiveSurveys);
     }
 
-    public function dailyDealsAction ()
+    public function onboardingAction ()
     {
 
-    }
+	}
 
     public function promosAction ()
     {

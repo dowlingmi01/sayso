@@ -12,4 +12,9 @@ class Starbar_HellomusicController extends Starbar_ContentController
         parent::postDispatch();
 	}
 
+	// Daily deals is probably unique to each starbar
+    public function dailyDealsAction ()
+    {
+
+    }
 }

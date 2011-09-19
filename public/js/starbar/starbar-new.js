@@ -85,19 +85,6 @@ setTimeout(function(){
 		});
 
 
-		/*
-		set some properties for each of the popboxes
-		- prevent from closing when clicked
-		*/
-		elemStarbarClickable.each(function(){
-			$S(this).unbind();
-			$S(this).bind({
-				click: function(e){
-					 e.stopPropagation();
-				}
-			});
-		});
-
 		/* prevent default for any link with # as the href */
 		$S('a').each(function(){
 			$S(this).unbind();
@@ -174,9 +161,10 @@ setTimeout(function(){
 			if ($S(this).attr('id') == 'sb_starbar-logo'){
 				return;
 			}
-			$S(this).unbind();
+
 			$S(this).bind({
 				click: function(event){
+					event.stopPropagation();
 					event.preventDefault();
 					// the popbox is AFTER the clickable area
 					var thisPopBox = $S(this).next('.sb_popBox');

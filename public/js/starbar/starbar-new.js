@@ -162,6 +162,7 @@ setTimeout(function(){
 				return;
 			}
 
+			$S(this).unbind();
 			$S(this).bind({
 				click: function(event){
 					event.stopPropagation();
@@ -348,15 +349,12 @@ setTimeout(function(){
 
 		// if the src string is specified, load via ajax (jsonp), then call this function again without the src
 		if (src) {
-			$S.ajax({
-				dataType: 'jsonp',
-				url : src,
-				success : function (response, status) {
+			$S.ajaxWithAuth(src, function (response, status) {
 					popBox.html(response.data.html);
 					initElements();
 					openPopBox(elem, null);
     			}
-			});
+			);
 		// show the popBox
 		} else {
 			popBox.show();
@@ -539,6 +537,27 @@ setTimeout(function(){
             console.warn.apply(console, arguments);
         }
     };
+
+	$S.ajaxWithAuth = function(src, successFunction) {
+		var user_data = null;
+
+		// Authenticated?
+		try
+		{
+			user_data = {
+				user_id : window.sayso.starbar.user.id,
+				user_key : window.sayso.starbar.user.key
+			};
+		}
+		catch (e) {}
+
+		$S.ajax({
+			dataType : 'jsonp',
+			data : user_data,
+			url : src,
+			success : successFunction
+		});
+	};
 
 
 }, 200); // slight delay to ensure other libraries are loaded

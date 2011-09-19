@@ -21,9 +21,15 @@
 				<div class="sb_dealInfo">
 					<p>
 						<span class="sb_itemName"><?= $deal->name ?></span>
-						<a href="" target="_blank" class="sb_theme_button_flat">View</a>
-						<span class="sb_dealPrice">$<?= $deal->price ?> Deal</span>
-						<span class="sb_dealMsrp">$<?= $deal->msrp ?> MSRP</span>
+						<a href="<?= $deal->itemURL ?>" target="_blank" class="sb_theme_button_flat">View</a>
+						<? if ((string) $deal->price) { ?>
+							<span class="sb_dealPrice">$<?= $deal->price ?> Deal</span>
+							<? if ((string) $deal->msrp) { ?>
+								<span class="sb_dealMsrp">$<?= $deal->msrp ?> MSRP</span>
+							<? } ?>
+						<? } else { ?>
+							<span class="sb_dealPercentOff"><?= $deal->discountPercentage ?>% OFF!</span>
+						<? } ?>
 					</p>
 				</div><!-- .sb_dealInfo -->
 				<a href=""><img src="http://<?= BASE_DOMAIN ?>/images/generic/logo_facebook.png" alt="Facebook" /></a>

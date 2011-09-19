@@ -356,7 +356,7 @@
 }
 
 #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealInfo p{
-	padding: 5px;
+	padding: 7px;
 	position: relative;
 }
 
@@ -365,7 +365,7 @@
 	width: 185px;
 }
 #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_itemName{
-	height: 16px;
+	height: 34px;
 	overflow: hidden;
 	display: block;
 }
@@ -395,7 +395,19 @@
 	background-color: #900;
 }
 
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealPercentOff{
+	height: 27px;
+	font-size: 16px;
+	font-weight: bold;
+	padding-top: 5px;
+	margin: 2px 0px;
+	text-transform: uppercase;
+	display: block;
+	clear: both;
+}
+
 #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealPrice{
+	height: 17px;
 	font-size: 14px;
 	font-weight: bold;
 	margin: 2px 0px;
@@ -405,6 +417,7 @@
 }
 
 #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealMsrp{
+	height: 13px;
 	font-size: 11px;
 	margin: 2px 0px;
 	color: #ccc;

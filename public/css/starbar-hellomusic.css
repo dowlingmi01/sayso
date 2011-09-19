@@ -364,7 +364,11 @@
 	position: relative;
 	width: 185px;
 }
-
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_itemName{
+	height: 16px;
+	overflow: hidden;
+	display: block;
+}
 #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealStatus{
 	font-size: 12px;
 	font-weight: bold;
@@ -374,7 +378,6 @@
 	color: #fff;
 	text-transform: uppercase;
 }
-
 #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealStatusBG{
 	opacity: 0.8;
 	position: absolute;

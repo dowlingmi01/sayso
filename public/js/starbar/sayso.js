@@ -3,7 +3,10 @@ $S(function () {
     
     // setup
     
-    var starbar = window.sayso.starbar;
+    var sayso = window.sayso, 
+        starbar = window.sayso.starbar,
+        log = window.sayso.log,
+        warn = window.sayso.warn;
     
     var ajax = function (options) {
         options.data = $S.extend(options.data || {}, {
@@ -16,17 +19,33 @@ $S(function () {
         return $S.ajax(options);
     };
     
-    var log = function () {
-        if (sayso.debug && typeof console !== 'undefined') {
-            console.log.apply(console, arguments);
-        }
-    };
-    
-    var warn = function () {
-        if (sayso.debug && typeof console !== 'undefined') {
-            console.warn.apply(console, arguments);
-        }
-    };
+    /**
+     * Helper function which can be used outside this context (e.g. in KRL)
+     * 
+     * @example window.sayso.helper.socialActivity('foo.com', 'blah blah', 1)
+     */
+    window.sayso.helper = new function () {
+        
+        var _instance = this;
+        
+        // social activity 
+        
+        // see KRL for Facebook Like logic
+        
+        this.socialActivity = function (url, content, type_id) {
+            ajax({
+                url : 'http://' + sayso.baseDomain + '/api/metrics/social-activity-submit',
+                data : {
+                    type_id : type_id,
+                    url : url,
+                    content : content
+                },
+                success : function (response) {
+                    log('Social activity', response);
+                }
+            });
+        };
+    }
     
     // behavioral tracking
     
@@ -36,12 +55,12 @@ $S(function () {
     // page view
     
     ajax({
-        url : 'http://' + starbar.baseDomain + '/api/metrics/page-view-submit',
+        url : 'http://' + sayso.baseDomain + '/api/metrics/page-view-submit',
         data : {
             url : encodeURIComponent(location.href)
         },
         success : function (response) {
-            log('Track page view:', response);
+            log('Track page view', response);
         }
     });
     
@@ -66,13 +85,13 @@ $S(function () {
         if (searchQueryArray.length > 1) {
             var searchQuery = searchQueryArray[1]; 
             ajax({
-                url : 'http://' + starbar.baseDomain + '/api/metrics/search-engine-submit',
+                url : 'http://' + sayso.baseDomain + '/api/metrics/search-engine-submit',
                 data : {
                     type_id : searchType,
                     query : searchQuery
                 },
                 success : function (response) {
-                    log('Search:', response);
+                    log('Search', response);
                 }
             });
         } else {
@@ -80,51 +99,24 @@ $S(function () {
         }
     }
     
-    var _constructor = function () {
+    // Tweets
+    
+    if (location.hostname.match('twitter.com')) {
         
-        var _instance = this;
-        
-        // social activity (NOTE: exposed as a public function so that Kynetx app can call when fired)
-        
-        // see KRL for Facebook Like logic
-        
-        this.socialActivity = function (url, content, type_id) {
-            ajax({
-                url : 'http://' + starbar.baseDomain + '/api/metrics/social-activity-submit',
-                data : {
-                    type_id : type_id,
-                    url : url,
-                    content : content
-                },
-                success : function (response) {
-                    log('Social activity:', response);
-                }
-            });
-        };
-        
-        // Tweets
-        
-        if (location.hostname.match('twitter.com')) {
-            
-            var tweet = '';
-            $S('div.tweet-box textarea').keyup(function () {
-                // since there is a race condition between
-                // when our click event is fired and Twitter removes
-                // the content of the tweet box, then we just
-                // continuously capture the contents here
-                tweet = $S(this).val();
-            });
-            $S('div.tweet-box div.tweet-button-sub-container').click(function (e) {
-                e.preventDefault();
-                _instance.socialActivity(location.href, tweet, 2);
-                tweet = '';
-            });
-        }
+        var tweet = '';
+        $S('div.tweet-box textarea').keyup(function () {
+            // since there is a race condition between
+            // when our click event is fired and Twitter removes
+            // the content of the tweet box, then we just
+            // continuously capture the contents here
+            tweet = $S(this).val();
+        });
+        $S('div.tweet-box div.tweet-button-sub-container').click(function (e) {
+            e.preventDefault();
+            sayso.helper.socialActivity(location.href, tweet, 2);
+            tweet = '';
+        });
     }
-    
-    // setup the Helper so it can be used outside this context (e.g. in the browser app)
-    
-    window.sayso.helper = new _constructor();
 });
 
 

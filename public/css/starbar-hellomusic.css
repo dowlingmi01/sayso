@@ -597,5 +597,5 @@
 /* Keep this at end of file. It's used for testing if CSS is loaded. */
 
 ._sayso_starbar_css_loaded {
-	display: none;
+	width: 1px;
 }

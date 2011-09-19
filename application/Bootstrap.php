@@ -12,6 +12,7 @@ class Bootstrap extends App_Bootstrap
 {
     public function initApp () {
         parent::initApp();
+        Record::$defaultModifiedColumn = 'modified';
         Zend_Controller_Front::getInstance()->registerPlugin(new BootstrapPlugin());
     }
 }

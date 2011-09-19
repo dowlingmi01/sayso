@@ -6,8 +6,6 @@
 setTimeout(function(){
 
 
-    var kynetxAppId = 'a239x18';
-
 	// global var
     var themeColor = '#de40b2';
 
@@ -60,6 +58,7 @@ setTimeout(function(){
 		refreshState();
 		// initializes development-only jquery
 		devInit();
+		log('Loaded and Ready');
 	}
 
 	// initialize the elements
@@ -519,13 +518,13 @@ setTimeout(function(){
 	function updateState (visibility){
         if (!visibility) visibility = elemPlayerConsole.attr('class');
         window.sayso.starbar.state.visibility = visibility;
-        var app = KOBJ.get_application(kynetxAppId);
+        var app = KOBJ.get_application(window.sayso.starbar.kynetxAppId);
         app.raise_event('update_state', { 'visibility' : visibility /* other state changes here */ });
     }
 
     function refreshState () {
-        window.sayso.starbar.callback = function () { log('callback firing'); animateBar(null, 'refresh'); /* other state reload logic here */ };
-        var app = KOBJ.get_application(kynetxAppId);
+        window.sayso.starbar.callback = function () { animateBar(null, 'refresh'); /* other state reload logic here */ };
+        var app = KOBJ.get_application(window.sayso.starbar.kynetxAppId);
         app.raise_event('refresh_state');
     }
 

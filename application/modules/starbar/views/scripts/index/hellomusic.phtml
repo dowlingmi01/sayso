@@ -2,11 +2,11 @@
     $S(function () {
         var baseDomain = "<?= BASE_DOMAIN ?>";
         if (!window.sayso) window.sayso = {};
+        window.sayso.baseDomain = baseDomain;
         window.sayso.starbar = {
             state : {
                 visibility : 'starbar-visOpen'
-            },
-            baseDomain : baseDomain,
+            }
         };
         if (typeof(KOBJ) === 'undefined') {
             KOBJ = { 

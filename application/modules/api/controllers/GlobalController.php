@@ -17,6 +17,12 @@ class Api_GlobalController extends Api_AbstractController
         
         $this->_authenticated = true;
         
+        if ($targetUserMustMatch) {
+            if ($this->user_id !== $user->getId()) {
+                throw new Api_Exception(Api_Error::create(Api_Error::TARGET_USER_MISMATCH));
+            }
+        }
+        
         // if this call requires admins and the current user
         // is not an admin, then throw exception
         // @todo use ordinals instead of IDs 

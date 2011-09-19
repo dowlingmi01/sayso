@@ -4,7 +4,7 @@
  * v1.6.1 2010-09-17 | Authors: Eric Meyer & Richard Clark
  * html5doctor.com/html-5-reset-stylesheet/
  */
-#sayso-starbar div, #sayso-starbar span, #sayso-starbar object, #sayso-starbar iframe, #sayso-starbar h1, #sayso-starbar h2, #sayso-starbar h3, #sayso-starbar h4, #sayso-starbar h5, #sayso-starbar h6, #sayso-starbar p, #sayso-starbar blockquote, #sayso-starbar pre, #sayso-starbar abbr, #sayso-starbar address, #sayso-starbar cite, #sayso-starbar code, #sayso-starbar del, #sayso-starbar dfn, #sayso-starbar em, #sayso-starbar img, #sayso-starbar ins, #sayso-starbar kbd, #sayso-starbar q, #sayso-starbar samp, #sayso-starbar small, #sayso-starbar strong, #sayso-starbar sub, #sayso-starbar sup, #sayso-starbar var, #sayso-starbar b, #sayso-starbar i, #sayso-starbar dl, #sayso-starbar dt, #sayso-starbar dd, #sayso-starbar ol, #sayso-starbar ul, #sayso-starbar li, #sayso-starbar fieldset, #sayso-starbar form, #sayso-starbar label, #sayso-starbar legend, #sayso-starbar table, #sayso-starbar caption, #sayso-starbar tbody, #sayso-starbar tfoot, #sayso-starbar thead, #sayso-starbar tr, #sayso-starbar th, #sayso-starbar td, #sayso-starbar article, #sayso-starbar aside, #sayso-starbar canvas, #sayso-starbar details, #sayso-starbar figcaption, #sayso-starbar figure, #sayso-starbar footer, #sayso-starbar header, #sayso-starbar hgroup, #sayso-starbar menu, #sayso-starbar nav, #sayso-starbar section, #sayso-starbar summary, #sayso-starbar time, #sayso-starbar mark, #sayso-starbar audio, #sayso-starbar video {
+#sayso-starbar div, #sayso-starbar span, #sayso-starbar object, #sayso-starbar iframe, #sayso-starbar h1, #sayso-starbar h2, #sayso-starbar h3, #sayso-starbar h4, #sayso-starbar h5, #sayso-starbar h6, #sayso-starbar p, #sayso-starbar blockquote, #sayso-starbar pre, #sayso-starbar abbr, #sayso-starbar address, #sayso-starbar cite, #sayso-starbar code, #sayso-starbar del, #sayso-starbar dfn, #sayso-starbar em, #sayso-starbar img, #sayso-starbar ins, #sayso-starbar kbd, #sayso-starbar q, #sayso-starbar samp, #sayso-starbar small, #sayso-starbar strong, #sayso-starbar sub, #sayso-starbar sup, #sayso-starbar var, #sayso-starbar b, #sayso-starbar i, #sayso-starbar dl, #sayso-starbar dt, #sayso-starbar dd, #sayso-starbar ol, #sayso-starbar ul, #sayso-starbar li, #sayso-starbar fieldset, #sayso-starbar form, #sayso-starbar label, #sayso-starbar legend, #sayso-starbar table, #sayso-starbar caption, #sayso-starbar tbody, #sayso-starbar tfoot, #sayso-starbar thead, #sayso-starbar tr, #sayso-starbar th, #sayso-starbar td, #sayso-starbar article, #sayso-starbar aside, #sayso-starbar canvas, #sayso-starbar details, #sayso-starbar figcaption, #sayso-starbar figure, #sayso-starbar footer, #sayso-starbar header, #sayso-starbar hgroup, #sayso-starbar menu, #sayso-starbar nav, #sayso-starbar section, #sayso-starbar summary, #sayso-starbar time, #sayso-starbar mark, #sayso-starbar audio, #sayso-starbar video, #sayso-starbar-embed, #sayso-starbar-embed div, #sayso-starbar-embed p {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -618,6 +618,11 @@ html {
 	margin: 0px 0px 0px 10px;
 	text-shadow: none;
 }
+#sayso-starbar #starbar-player-console #sb_popBox_polls .sb_nextPoll {
+	float: right;
+	text-align: right;
+}
+
 /* surveys */
 
 /* about say.so */
@@ -1126,6 +1131,13 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	background-repeat: no-repeat;
 	margin: -2px 5px 0px -5px;
 }
+#sayso-starbar #starbar-player-console .sb_img_nextTriangle {
+	width: 20px;
+	height: 20px;
+	float: right;
+	background-image: url('../images/generic/img_arrow_accordion_closed.png');
+	margin-left: 4px;
+}
 /* dividing lines between list items */
 #sayso-starbar #starbar-player-console .sb_lineList {
 	margin: 0px 0px 5px 0px;
@@ -1198,7 +1210,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	font-size: 20px;
 	padding: 3px 20px 3px 20px;
 }
-#sayso-starbar .sb_jeip-mouseover, 
+#sayso-starbar .sb_jeip-mouseover,
 #sayso-starbar .sb_jeip-editfield {
 	background-color: #ffff99;
 	padding: 5px;
@@ -1210,4 +1222,21 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar .sb_jeip-cancelbutton {
 	background-color: #ccc;
 	color: #fff;
+}
+
+/* Embed Poll */
+
+#sayso-starbar-loading-external {
+	float: left;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	top: 30px;
+	font-size: 150%;
+	font-weight: bold;
+}
+#sayso-starbar-embed #sb-survey-completed {
+	display: none;
+	color: #000;
 }

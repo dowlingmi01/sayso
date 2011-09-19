@@ -53,7 +53,7 @@
 	background-color# ccc;
 }
 
-#sayso-starbar #starbar-player-console .sb_theme_bgGradient, 
+#sayso-starbar #starbar-player-console .sb_theme_bgGradient,
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value,
 #sayso-starbar #starbar-player-console .sb_theme_button{
 	background-image: -webkit-gradient(
@@ -103,7 +103,7 @@
 	left: -14px;
 }
 
-#sayso-starbar #starbar-player-console .sb_theme_textHighlight{
+#sayso-starbar #starbar-player-console .sb_theme_textHighlight, #sayso-starbar-embed .sb_theme_textHighlight {
 	color: #0082c5 !important;
 	text-shadow: none !important;
 }
@@ -163,8 +163,8 @@
 	text-align: center;
 }
 
-#sayso-starbar #starbar-player-console a .sb_user-level, 
-#sayso-starbar #starbar-player-console a .sb_user-level span{	
+#sayso-starbar #starbar-player-console a .sb_user-level,
+#sayso-starbar #starbar-player-console a .sb_user-level span{
 	color: #fff;
 	text-transform: uppercase;
 	font-size: 11px;
@@ -172,7 +172,7 @@
 }
 
 #sayso-starbar #starbar-player-console #starbar-level .sb_user-level-box{
-	
+
 }
 
 #sayso-starbar #starbar-player-console #starbar-points{
@@ -248,11 +248,11 @@
 
 /* everything that has textcolor */
 
-#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a, 
-#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-disabled a, 
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a,
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-disabled a,
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-processing a,
-#sayso-starbar a, #sayso-starbar a:link, 
-#sayso-starbar a:active, 
+#sayso-starbar a, #sayso-starbar a:link,
+#sayso-starbar a:active,
 #sayso-starbar a:visited,
 #sayso-starbar h3.sb_title,
 #sayso-starbar h2.sb_title,
@@ -263,7 +263,7 @@
 
 /* other special formatting styles */
 
-#sayso-starbar #starbar-player-console .sb_notesEarned{	
+#sayso-starbar #starbar-player-console .sb_notesEarned{
 	background-image: url('../images/hellomusic/img_note_sm.png');
 	background-repeat: no-repeat;
 	background-position: 3px 3px;
@@ -275,7 +275,7 @@
 	display: block;
 }
 
-#sayso-starbar #starbar-player-console .sb_chopsEarned{	
+#sayso-starbar #starbar-player-console .sb_chopsEarned{
 	background-image: url('../images/hellomusic/img_star_sm.png');
 	background-repeat: no-repeat;
 	background-position: 3px 3px;
@@ -288,7 +288,7 @@
 	border-bottom: 1px solid #c2c2c2;
 }
 
-#sayso-starbar #starbar-player-console .sb_imgNote{	
+#sayso-starbar #starbar-player-console .sb_imgNote{
 	background-image: url('../images/hellomusic/img_note.png');
 	width: 26px;
 	height: 37px;
@@ -303,7 +303,6 @@
 }
 
 /* POPBOX SPECIFIC STYLES */
-
 
 /* surveys */
 
@@ -482,7 +481,7 @@
 	text-align: left;
 }
 
-#sayso-starbar #sb_popBox_user-level table.sb_table_rewards thead th span{	
+#sayso-starbar #sb_popBox_user-level table.sb_table_rewards thead th span{
 	font-weight: bold !important;
 }
 
@@ -501,7 +500,7 @@
 }
 
 #sayso-starbar #sb_popBox_user-level table.sb_table_rewards tr.sb_unlockedReward td a{
-	
+
 }
 
 /* user profile settings */

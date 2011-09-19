@@ -5,9 +5,15 @@ class Starbar_ContentController extends Api_AbstractController
 	// Render with JsonP by default
 	protected $_usingJsonPRenderer = true;
 
-    public function init()
-    {
-        /* Initialize action controller here */
+    public function preDispatch() {
+        if (!in_array($this->_request->getActionName(), array('index', 'gaga'))) {
+            // i.e. for everything based on Generic Starbar, use these includes
+            $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
+            $this->view->headScript()->appendFile('/js/starbar/jquery-ui-1.8.16.custom.min.js');
+            $this->view->headScript()->appendFile('/js/starbar/jquery.jscrollpane.min.js');
+            $this->view->headScript()->appendFile('/js/starbar/jquery.cookie.js');
+            $this->view->headScript()->appendFile('/js/starbar/jquery.jeip.js');
+        }
     }
 
     public function postDispatch()
@@ -25,9 +31,11 @@ class Starbar_ContentController extends Api_AbstractController
     }
 
     // Embed a single poll. Expects "survey_id" passed via URL (GET)
-    public function embedPollAction ()
+    public function hellomusicEmbedPollAction ()
     {
     	$this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
+        $this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
+        $this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');
     	$this->_usingJsonPRenderer = false;
 		$request = $this->getRequest();
 
@@ -46,35 +54,35 @@ class Starbar_ContentController extends Api_AbstractController
     // Fetches polls for the current user for display
     public function hellomusicPollsAction ()
     {
-		$new_surveys = new SurveyCollection();
-		$complete_surveys = new SurveyCollection();
-		$archive_surveys = new SurveyCollection();
+		$newSurveys = new SurveyCollection();
+		$completeSurveys = new SurveyCollection();
+		$archiveSurveys = new SurveyCollection();
 
-		$new_surveys->loadSurveysForUser(1, 'poll', 'new');
-		$complete_surveys->loadSurveysForUser(1, 'poll', 'complete');
-		$archive_surveys->loadSurveysForUser(1, 'poll', 'archive');
+		$newSurveys->loadSurveysForUser(1, 'poll', 'new');
+		$completeSurveys->loadSurveysForUser(1, 'poll', 'complete');
+		$archiveSurveys->loadSurveysForUser(1, 'poll', 'archive');
 
-		$this->view->assign('new_surveys', $new_surveys);
-		$this->view->assign('complete_surveys', $complete_surveys);
-		$this->view->assign('archive_surveys', $archive_surveys);
+		$this->view->assign('new_surveys', $newSurveys);
+		$this->view->assign('complete_surveys', $completeSurveys);
+		$this->view->assign('archive_surveys', $archiveSurveys);
 	}
 
     // Fetches surveys for the current user for display
     public function hellomusicSurveysAction ()
     {
-		$new_surveys = new SurveyCollection();
-		$complete_surveys = new SurveyCollection();
-		$archive_surveys = new SurveyCollection();
+		$newSurveys = new SurveyCollection();
+		$completeSurveys = new SurveyCollection();
+		$archiveSurveys = new SurveyCollection();
 
-		$new_surveys->loadSurveysForUser(1, 'survey', 'new');
-		$complete_surveys->loadSurveysForUser(1, 'survey', 'complete');
-		$archive_surveys->loadSurveysForUser(1, 'survey', 'archive');
+		$newSurveys->loadSurveysForUser(1, 'survey', 'new');
+		$completeSurveys->loadSurveysForUser(1, 'survey', 'complete');
+		$archiveSurveys->loadSurveysForUser(1, 'survey', 'archive');
 
-		$this->view->assign('new_surveys', $new_surveys);
-		$this->view->assign('complete_surveys', $complete_surveys);
-		$this->view->assign('archive_surveys', $archive_surveys);
+		$this->view->assign('new_surveys', $newSurveys);
+		$this->view->assign('complete_surveys', $completeSurveys);
+		$this->view->assign('archive_surveys', $archiveSurveys);
     }
-		
+
     public function embedSurveyAction ()
     {
 

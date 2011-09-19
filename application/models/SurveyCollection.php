@@ -34,7 +34,7 @@ class SurveyCollection extends RecordCollection
     		case 'complete':
 				$sql = "SELECT *
 						FROM survey
-							LEFT JOIN survey_user_map
+							INNER JOIN survey_user_map
 							ON survey.id = survey_user_map.survey_id
 								AND survey_user_map.user_id = ?
 								AND survey_user_map.status = 'complete'
@@ -47,7 +47,7 @@ class SurveyCollection extends RecordCollection
     		case 'archive':
 				$sql = "SELECT *
 						FROM survey
-							LEFT JOIN survey_user_map
+							INNER JOIN survey_user_map
 							ON survey.id = survey_user_map.survey_id
 								AND survey_user_map.user_id = ?
 								AND survey_user_map.status = 'archive'

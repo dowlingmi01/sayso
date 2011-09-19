@@ -126,7 +126,7 @@ setTimeout(function(){
 		/*
 		Set up logo hover + click action behaviors
 		*/
-		
+
 		btnSaySoLogo.unbind();
 		btnSaySoLogo.bind({
 			click: function(e) {
@@ -235,19 +235,19 @@ setTimeout(function(){
 				}
 			}); // end bind
 		}); // end each loop for starbarNav
-		
+
 		// to open a specific tab
 		elemTabClick.each(function(){
 			$S(this).unbind();
 			$S(this).bind({
 				click: function(event){
-					var $tabs = $S('.sb_popBoxActive .sb_tabs').tabs();					
+					var $tabs = $S('.sb_popBoxActive .sb_tabs').tabs();
 					$tabs.tabs('select', $S(this).attr('rel')-1); // switch to third tab
     			return false;
 				}
 			});
 		});
-		
+
 	} // end initElements()
 
 	// animates the starbar-player-console bar based on current state
@@ -455,9 +455,11 @@ setTimeout(function(){
 		if ($S('.sb_tabs',target).length > 0){
 			$S('.sb_tabs .sb_tabPane',target).each(function(){
 				var isCollapsible = true;
+				/* Is this necessary still? -- Hamza
 				if ($S('.sb_accordion',this).hasClass('sb_pollQuestion') || $S('.sb_accordion',this).hasClass('sb_pollResult')){
 					isCollapsible = false;
 				}
+				*/
 				$S('.sb_accordion',this).accordion({
 					collapsible: isCollapsible, // Accordion can have all its divs be closed simultaneously
 					active: false, // All accordion divs are closed by default
@@ -465,9 +467,24 @@ setTimeout(function(){
                     changestart: function(event, ui){
                         var activeLink = ui.newHeader.find('a');
                         var activeIframe = ui.newContent.find('iframe');
+                        var activeFooter = ui.newContent.find('.sb_pollAccordionFooter');
+
+                        // Hide the footer (share links, next survey links)
+                        if (activeFooter){
+							activeFooter.fadeTo(0, 0);
+						}
+
+						// Load the iframe if not already loaded
                         if (activeIframe && activeLink && activeIframe.attr('src') != activeLink.attr('href')) {
                             activeIframe.attr('src', activeLink.attr('href'));
                         }
+
+                        // Fade in the footer
+                        if (activeFooter){
+	                        setTimeout(function(){
+								activeFooter.fadeTo(500, 1);
+	                        }, 2000);
+						}
                     }
 				});
 			});

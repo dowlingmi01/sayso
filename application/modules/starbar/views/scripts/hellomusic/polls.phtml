@@ -20,7 +20,7 @@
 						<? $total_surveys = sizeof($this->new_surveys) ?>
 						<? foreach ($this->new_surveys as $survey) { ?>
 							<h3>
-								<a href="http://<?= BASE_DOMAIN ?>/starbar/content/hellomusic-embed-poll?survey_id=<?= $survey->id ?>">
+								<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>">
 									<? if ($survey->premium) { ?>
 										<span class="sb_img_doubleValue"></span>
 									<? } ?>
@@ -78,7 +78,7 @@
 						<? $total_surveys = sizeof($this->new_surveys) ?>
 						<? foreach ($this->archive_surveys as $survey) { ?>
 							<h3>
-								<a href="http://<?= BASE_DOMAIN ?>/starbar/content/hellomusic-embed-poll?survey_id=<?= $survey->id ?>">
+								<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>">
 									<? if ($survey->premium) { ?>
 										<span class="sb_img_doubleValue"></span>
 									<? } ?>

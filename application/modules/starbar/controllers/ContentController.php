@@ -1,20 +1,11 @@
 <?php
 
-class Starbar_ContentController extends Api_AbstractController
+require_once APPLICATION_PATH . '/modules/api/controllers/GlobalController.php';
+
+class Starbar_ContentController extends Api_GlobalController
 {
 	// Render with JsonP by default
 	protected $_usingJsonPRenderer = true;
-
-    public function preDispatch() {
-        if (!in_array($this->_request->getActionName(), array('index', 'gaga'))) {
-            // i.e. for everything based on Generic Starbar, use these includes
-            $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
-            $this->view->headScript()->appendFile('/js/starbar/jquery-ui-1.8.16.custom.min.js');
-            $this->view->headScript()->appendFile('/js/starbar/jquery.jscrollpane.min.js');
-            $this->view->headScript()->appendFile('/js/starbar/jquery.cookie.js');
-            $this->view->headScript()->appendFile('/js/starbar/jquery.jeip.js');
-        }
-    }
 
     public function postDispatch()
     {
@@ -22,6 +13,14 @@ class Starbar_ContentController extends Api_AbstractController
 	        $this->_enableRenderer(new Api_Plugin_JsonPRenderer());
 	        $this->render();
 	        return $this->_resultType(new Object(array('html' => $this->getResponse()->getBody())));
+		} else {
+            $this->view->headScript()->appendFile('/js/starbar/starbar-new.js');
+            $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
+            $this->view->headScript()->appendFile('/js/starbar/jquery-ui-1.8.16.custom.min.js');
+            $this->view->headScript()->appendFile('/js/starbar/jquery.jscrollpane.min.js');
+            $this->view->headScript()->appendFile('/js/starbar/jquery.cookie.js');
+            $this->view->headScript()->appendFile('/js/starbar/jquery.jeip.js');
+        	$this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
 		}
     }
 
@@ -30,13 +29,30 @@ class Starbar_ContentController extends Api_AbstractController
 
     }
 
-    // Embed a single poll. Expects "survey_id" passed via URL (GET)
-    public function hellomusicEmbedPollAction ()
+    // Embed a single SG poll. Expects "survey_id" passed via URL (GET)
+    public function embedPollAction ()
     {
-    	$this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
-        $this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
-        $this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');
     	$this->_usingJsonPRenderer = false;
+
+		$request = $this->getRequest();
+
+		$survey_id = (int) $request->getParam('survey_id');
+
+		if ($survey_id) {
+			$survey = new Survey();
+			$survey->loadData($survey_id);
+
+			//switch ($survey->origin)
+			$this->view->assign('poll_id', $survey->external_id);
+			$this->view->assign('poll_key', $survey->external_key);
+		}
+    }
+
+    // Embed a single SG survey. Expects "survey_id" passed via URL (GET)
+    public function embedSurveyAction ()
+    {
+    	$this->_usingJsonPRenderer = false;
+
 		$request = $this->getRequest();
 
 		$survey_id = (int) $request->getParam('survey_id');
@@ -52,7 +68,7 @@ class Starbar_ContentController extends Api_AbstractController
     }
 
     // Fetches polls for the current user for display
-    public function hellomusicPollsAction ()
+    public function pollsAction ()
     {
 		$newSurveys = new SurveyCollection();
 		$completeSurveys = new SurveyCollection();
@@ -68,7 +84,7 @@ class Starbar_ContentController extends Api_AbstractController
 	}
 
     // Fetches surveys for the current user for display
-    public function hellomusicSurveysAction ()
+    public function surveysAction ()
     {
 		$newSurveys = new SurveyCollection();
 		$completeSurveys = new SurveyCollection();
@@ -83,34 +99,28 @@ class Starbar_ContentController extends Api_AbstractController
 		$this->view->assign('archive_surveys', $archiveSurveys);
     }
 
-    public function embedSurveyAction ()
+    public function dailyDealsAction ()
     {
 
     }
 
-    public function hellomusicDailyDealsAction ()
+    public function promosAction ()
     {
 
     }
 
-    public function hellomusicPromosAction ()
+    public function userProfileAction ()
     {
 
     }
 
-    public function hellomusicUserProfileAction ()
+    public function userLevelAction ()
     {
 
     }
 
-    public function hellomusicUserLevelAction ()
+    public function userPointsAction ()
     {
 
     }
-
-    public function hellomusicUserPointsAction ()
-    {
-
-    }
-
 }

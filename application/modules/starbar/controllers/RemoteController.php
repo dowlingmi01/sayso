@@ -1,5 +1,19 @@
 <?php
-
+/**
+ * This controller handles the authentication and delivery of the client-specific Starbar
+ * 
+ * The principle point of entry is the index action which handles pre and post
+ * install situations and routes the call to the correct Starbar action
+ * 
+ * Scenarios:
+ * - user logs in / installs app / restarts / returns to client site
+ * - user logs in / installs app / restarts / returns to any other site
+ * - user logs in / logs out / another user logs in
+ * - user logs in / deletes cookies / user logs in
+ * - user logs in / deletes cookies / another user logs in
+ * @author davidbjames
+ *
+ */
 class Starbar_RemoteController extends Api_AbstractController
 {
     public function preDispatch() {
@@ -16,12 +30,22 @@ class Starbar_RemoteController extends Api_AbstractController
      */
     public function indexAction () {
         $this->_acceptIdParameter('starbar_id');
-        $starbar = new Starbar();
         if ($this->starbar_id || $this->short_name) { // starbar identity provided
+            
+            $starbar = new Starbar();
             
             $this->_validateRequiredParameters(array('user_id', 'auth_key'));
             Api_Auth::getInstance()->authorizeApp($this->auth_key);
             
+            // since the starbar id is known at this point, we can safely delete 
+            // the user IP/UserAgent which will protect us from conflicts during 
+            // installation/authentication. (scenario: multiple users sharing an IP
+            // and who also happen to have the exact same browser and version number)
+            // ALSO, only delete if install_counter is 0 to protect from timing issues
+            // @todo figure out a better approach so this doesn't have to be run
+            // for every request (me wishes it could be done asyncronously)
+            Db_Pdo::execute('UPDATE external_user SET install_ip_address = NULL, install_user_agent = NULL, install_counter = 0 WHERE user_id = ? AND install_counter <= 0', $this->user_id);
+                    
             if ($this->starbar_id) {
                 $starbar->loadData($this->starbar_id);
             } else {
@@ -32,13 +56,6 @@ class Starbar_RemoteController extends Api_AbstractController
                 // we are on the customer's web site (must be if these params are present)
                 // also client_name and client_uuid_type
                 
-                // - user logs in / installs app / restarts / returns to any other site
-                // - user logs in / installs app / restarts/ returns to client site
-                // - user logs in / logs out / another user logs in
-                // - user logs in / deletes cookies / user logs in
-                // - user logs in / deletes cookies / another user logs in
-                
-
                 // so verify that the user id matches the uuid
                 // if NOT, then switch users
                 $checkExternalUser = Db_Pdo::fetch('SELECT * FROM external_user WHERE user_id = ?', $this->user_id);
@@ -52,10 +69,6 @@ class Starbar_RemoteController extends Api_AbstractController
                     $externalUser->install_ip_address = $_SERVER['REMOTE_ADDR'];
                     $externalUser->install_user_agent = $_SERVER['HTTP_USER_AGENT'];
                     $externalUser->save(); // <-- inserts/updates based on uniques
-                    
-                    // delete the previous user IP/UA so there is no conflict with the current one
-                    // which will necessarily be the same
-                    Db_Pdo::execute('UPDATE external_user SET install_ip_address = NULL, install_user_agent = NULL WHERE user_id = ?', $this->user_id);
                     
                     if ($starbar->short_name !== $this->client_name) {
                         // customer site change!
@@ -208,14 +221,10 @@ class Starbar_RemoteController extends Api_AbstractController
             
             // save IP / user agent to external user
         
-            if (!$externalUser->install_ip_address) { // <-- race condition is safe (see above doc block)
-                $externalUser->install_ip_address = $ipAddress;
-                $externalUser->install_user_agent = $userAgent;
-                $externalUser->save();
-            }   // else 
-                // another instance is attempting to install.
-                // safe to ignore, since that instance will just call post-install-deliver next
-                // and the ip/agent will be there to match against this user
+            $externalUser->install_ip_address = $ipAddress;
+            $externalUser->install_user_agent = $userAgent;
+            $externalUser->install_counter = $externalUser->install_counter + 1;
+            $externalUser->save();
             
         } else if ($this->client_uuid) { // on customer site 
             
@@ -228,6 +237,7 @@ class Starbar_RemoteController extends Api_AbstractController
             $externalUser->starbar_id = $starbar->getId();
             $externalUser->install_ip_address = $ipAddress;
             $externalUser->install_user_agent = $userAgent;
+            $externalUser->install_counter = $externalUser->install_counter + 1;
             $externalUser->save();
             
         } else {
@@ -291,6 +301,7 @@ class Starbar_RemoteController extends Api_AbstractController
     
         externalUserExists:
         
+        
         // User
         
         $user = new User();
@@ -303,8 +314,11 @@ class Starbar_RemoteController extends Api_AbstractController
             $stmt = Db_Pdo::execute('INSERT INTO user (id, created) VALUES (null, now())');
             $user->setId(Db_Pdo::getPdo()->lastInsertId());
             $externalUser->user_id = $user->getId();
-            $externalUser->save();
         }
+        
+        // decrement the counter and save
+        $externalUser->install_counter = $externalUser->install_counter - 1;
+        $externalUser->save();
         
         // refresh the db data
         

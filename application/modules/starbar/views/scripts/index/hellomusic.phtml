@@ -2,8 +2,16 @@
     $S(function () {
         var baseDomain = "<?= BASE_DOMAIN ?>";
         if (!window.sayso) window.sayso = {};
+        window.sayso.debug = true;
         window.sayso.baseDomain = baseDomain;
         window.sayso.starbar = {
+            id : 1,
+            kynetxAppId : 'a239x18',
+            authKey : '<?= Api_Registry::getConfig()->api->helloMusic->authKey ?>',
+            user : {
+                id : 1,
+                key : '<?= Api_UserSession::getInstance()->getKey() ?>'
+            },
             state : {
                 visibility : 'starbar-visOpen'
             }

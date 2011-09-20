@@ -78,6 +78,9 @@ setTimeout(function(){
 		elemAlerts = $S('#sayso-starbar #starbar-player-console .sb_starbar-alert');
 		elemPopBoxVisControl = $S('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
 		elemTabClick = $S('#sayso-starbar #starbar-player-console .sb_nav_tabs');
+		
+		// jquery edit in place
+		elemJEIP = $S('#sayso-starbar .sb_jeip');
 
 		elemPlayerConsole.unbind();
 		elemPlayerConsole.click(function(e) {
@@ -235,6 +238,19 @@ setTimeout(function(){
 				}
 			});
 		});
+		
+		// set up the EIP elements
+		elemJEIP.each(function(){
+			$S(this).eip( "save.php", {
+				savebutton_text		: "save",
+				savebutton_class	: "sb_theme_button",
+				cancelbutton_text	: "cancel",
+				cancelbutton_class	: "sb_theme_button sb_theme_button_grey",
+				
+			});									 
+		
+		});
+		
 
 	} // end initElements()
 

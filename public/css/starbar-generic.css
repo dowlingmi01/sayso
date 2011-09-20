@@ -1084,7 +1084,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	background-color: #084865;
 }
 #sayso-starbar #starbar-player-console .sb_theme_button {
-	border-right: 6px;
+	border-radius: 6px;
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
 	background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0.22, rgb(6,106,145)), color-stop(0.61, rgb(9,54,77)));
@@ -1099,7 +1099,20 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	-moz-box-shadow: 0px 0px 3px #666;
 	-webkit-box-shadow: 0px 0px 3px #666;
 	position: relative;
+	border: none;
 }
+
+#sayso-starbar #starbar-player-console input.sb_theme_button{
+	padding: 2px 5px;
+	font-size: 12px;
+}
+
+#sayso-starbar #starbar-player-console .sb_theme_button_grey {
+	background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0.22, rgb(160,160,160)), color-stop(0.61, rgb(130,130,130))) !important;
+	background-image: -moz-linear-gradient( center top, rgb(160,160,160) 22%, rgb(130,130,130) 61%) !important;
+	background-color: #666 !important;
+}
+
 #sayso-starbar #starbar-player-console .sb_theme_button span.sb_theme_buttonArrow {
 	background-image: url('../images/generic/img_arrow_white_lg.png');
 	background-repeat: no-repeat;
@@ -1171,9 +1184,11 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar #starbar-player-console .sb_solidList li.sb_listEven {
 	background-color: #d2d2d2;
 }
+
+
 /* facebook / twitter connect icons */
 
-#sayso-starbar a.sb_connect_facebook {
+#sayso-starbar .sb_connect_facebook {
 	width: 53px;
 	height: 64px;
 	text-indent: -9999px;
@@ -1183,7 +1198,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	background-position: -56px 0px;
 	margin: 0px 5px 5px 0px;
 }
-#sayso-starbar a.sb_connect_twitter {
+#sayso-starbar .sb_connect_twitter {
 	width: 53px;
 	height: 64px;
 	text-indent: -9999px;
@@ -1193,14 +1208,19 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	margin: 0px 5px 5px 0px;
 	background-position: -56px 0px;
 }
-#sayso-starbar a.sb_unconnected:hover {
+#sayso-starbar .sb_unconnected:hover {
 	background-position: 0px 0px;
 	opacity: 0.5;
 }
-#sayso-starbar a.sb_connected {
+#sayso-starbar .sb_connected {
 	background-position: 0px 0px;
 }
 /* JQUERY EDIT IN PLACE */
+
+#sayso-starbar .sb_jeip{
+	padding: 2px;
+	margin: 1px;
+}
 
 #sayso-starbar .sb_jeip-saving {
   background-repeat: no-repeat;
@@ -1210,11 +1230,18 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	font-size: 20px;
 	padding: 3px 20px 3px 20px;
 }
+
 #sayso-starbar .sb_jeip-mouseover,
 #sayso-starbar .sb_jeip-editfield {
 	background-color: #ffff99;
-	padding: 5px;
+	border: 1px solid #d98a00;
+	margin: 0;
 }
+
+#sayso-starbar .sb_jeip-mouseover{
+	cursor: pointer;
+}
+
 #sayso-starbar .sb_jeip-savebutton {
 	background-color: #6c0;
 	color: #fff;
@@ -1239,4 +1266,15 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar-embed #sb-survey-completed {
 	display: none;
 	color: #000;
+}
+
+/* loading animated gif */
+#sayso-starbar .sb_img_loading, #sayso-starbar-loading-external .sb_img_loading{
+	width: 32px;
+	height: 32px;
+	display: inline-block;
+	margin: 0px auto;
+	background-image: url('../images/generic/img_ajax-loader.gif');
+	background-repeat: no-repeat;
+	text-indent: -9999px;
 }

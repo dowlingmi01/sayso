@@ -302,6 +302,12 @@
 	background-color: #e4e4e4;
 }
 
+/* loading animated gif */
+#sayso-starbar .sb_img_loading, #sayso-starbar-loading-external .sb_img_loading{
+	background-image: url('../images/hellomusic/img_ajax-loader.gif') !important;
+}
+
+
 /* POPBOX SPECIFIC STYLES */
 
 /* surveys */

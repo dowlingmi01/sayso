@@ -23,6 +23,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 // version: 0.1.2
 
+/*
+ NOTE: this file has been modified to use $S instead of $ and jquery.
+*/
+
 (function( $S ) {
 	$S.fn.eip = function( save_url, options ) {
 		// Defaults
@@ -45,21 +49,21 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			cols				: 60,
 
 			savebutton_text		: "SAVE",
-			savebutton_class	: "jeip-savebutton",
+			savebutton_class	: "sb_jeip-savebutton",
 			cancelbutton_text	: "CANCEL",
-			cancelbutton_class	: "jeip-cancelbutton",
+			cancelbutton_class	: "sb_jeip-cancelbutton",
 
-			mouseover_class		: "jeip-mouseover",
-			editor_class		: "jeip-editor",
-			editfield_class		: "jeip-editfield",
+			mouseover_class		: "sb_jeip-mouseover",
+			editor_class		: "sb_jeip-editor",
+			editfield_class		: "sb_jeip-editfield",
 
 			saving_text			: "Saving ...",
-			saving_class		: "jeip-saving",
+			saving_class		: "sb_jeip-saving",
 
 			saving				: '<span id="saving-#{id}" class="#{saving_class}" style="display: none;">#{saving_text}</span>',
 
 			start_form			: '<span id="editor-#{id}" class="#{editor_class}" style="display: none;">',
-			form_buttons		: '<span><input type="button" id="save-#{id}" class="#{savebutton_class}" value="#{savebutton_text}" /> OR <input type="button" id="cancel-#{id}" class="#{cancelbutton_class}" value="#{cancelbutton_text}" /></span>',
+			form_buttons		: '<p align="right"><input type="button" id="save-#{id}" class="#{savebutton_class}" value="#{savebutton_text}" /> or <input type="button" id="cancel-#{id}" class="#{cancelbutton_class}" value="#{cancelbutton_text}" /></p>',
 			stop_form			: '</span>',
 
 			text_form			: '<input type="text" id="edit-#{id}" class="#{editfield_class}" value="#{value}" /> <br />',

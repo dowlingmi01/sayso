@@ -118,6 +118,16 @@
             data : params,
             url : 'http://' + sayso.baseDomain + '/starbar/remote',
             success : function (response, status) {
+                
+                if (response.status === 'error') {
+                    // error happened on server (probably in remote/post-install-deliver)
+                    // go no further, do not display starbar
+                    // situation will likely be rectified by returning to client site
+                    // @todo provide feedback to user to return to client site
+                    warn(response.data);
+                    return;
+                }
+                
                 // load server data for this Starbar
                 var starbar = response.data;
                 log('Received - ' + starbar.label + ' Starbar');

@@ -47,8 +47,12 @@ class User extends Record implements Titled
     
     public function getEmail () {
         if (!$this->_email) {
-            $this->_email = new User_Email();
-            $this->_email->loadData($this->primary_email_id);
+            if ($this->primary_email_id) {
+                $this->_email = new User_Email();
+                $this->_email->loadData($this->primary_email_id);
+            } else {
+                $this->_email = new NullObject('User_Email');
+            }
         }
         return $this->_email;
     }

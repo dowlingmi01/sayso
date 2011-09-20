@@ -5,7 +5,11 @@
 		</div><!-- .sb_header -->
 		<div class="sb_tabs">
 			<ul>
-				<li><a href="#polls_tabs_1">3 New!</a></li>
+				<? if ($this->count_new_surveys) { ?>
+					<li><a href="#polls_tabs_1"><?= $this->count_new_surveys ?> New!</a></li>
+				<? } else { ?>
+					<li><a href="#polls_tabs_1">New</a></li>
+				<? } ?>
 				<li><a href="#polls_tabs_2">Completed</a></li>
 				<li><a href="#polls_tabs_3">Archive</a></li>
 			</ul>
@@ -17,7 +21,6 @@
 					<p>Earn <strong class="sb_theme_textHighlight">1 Notes</strong> &amp; <strong class="sb_theme_textHighlight">250 Chops</strong> for each Poll you complete. Share with your friends to earn extra points and you'll be that much closer to winning the big giveaway.</p>
 					<div class="sb_accordion">
 						<? $i = 0 ?>
-						<? $total_surveys = sizeof($this->new_surveys) ?>
 						<? foreach ($this->new_surveys as $survey) { ?>
 							<h3>
 								<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>">
@@ -31,7 +34,7 @@
 								<iframe src="" width="470" height="100" frameborder="0" marginheight="0" marginwidth="0" scrolling="no"></iframe>
 								<div class="sb_pollAccordionFooter">
 									Share this poll to earn extra points
-									<? if ($i < ($total_surveys - 1)) { ?>
+									<? if ($i < ($this->count_new_surveys - 1)) { ?>
 										<div class="sb_nextPoll">
 											<a href="#" onclick="$S(this).parents('.sb_accordion').accordion('activate', <?= ($i+1) ?>)"><span class="sb_img_nextTriangle"></span>Next Poll</a>
 										</div>
@@ -55,11 +58,11 @@
 				        	<li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
               					<div class="sb_pointsEarnedTotal">
               						<? if ($survey->premium) { ?>
-                						<span class="sb_chopsEarned">+500</span>
-                						<span class="sb_notesEarned">+2</span>
+                						<span class="sb_theme_textHighlight_alt">+500</span>
+                						<span class="sb_theme_textHighlight_alt">+2</span>
 									<? } else { ?>
-                						<span class="sb_chopsEarned">+250</span>
-                						<span class="sb_notesEarned">+1</span>
+                						<span class="sb_theme_textHighlight">+250</span>
+                						<span class="sb_theme_textHighlight">+1</span>
 									<? } ?>
 				                </div><!-- .sb_pointsEarnedTotal -->
 							</li>
@@ -75,7 +78,6 @@
 					<p>Earn <strong class="sb_theme_textHighlight">10 Notes</strong> for each poll you complete. Check back often to keep earning and for your chance to win the Weekly Giveaway!</p>
 					<div class="sb_accordion">
 						<? $i = 0 ?>
-						<? $total_surveys = sizeof($this->new_surveys) ?>
 						<? foreach ($this->archive_surveys as $survey) { ?>
 							<h3>
 								<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>">
@@ -89,7 +91,7 @@
 								<iframe src="" width="470" height="100" frameborder="0" marginheight="0" marginwidth="0" scrolling="no"></iframe>
 								<div class="sb_pollAccordionFooter">
 									Share this poll to earn extra points
-									<? if ($i < ($total_surveys - 1)) { ?>
+									<? if ($i < ($this->count_archive_surveys - 1)) { ?>
 										<div class="sb_nextPoll">
 											<a href="#" onclick="$S(this).parents('.sb_accordion').accordion('activate', <?= ($i+1) ?>)"><span class="sb_img_nextTriangle"></span>Next Poll</a>
 										</div>
@@ -98,56 +100,6 @@
 							</div><!-- / END ACCORDION CONTENT -->
 							<? $i++ ?>
 						<? } ?>
-						<? /*
-						<h3><a href="#">Bob Dylan pre or post Newport?</a></h3>
-						<div>
-							<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_poll.jpg" alt="Poll Image" class="sb_pollImage" />
-							<div class="sb_pollContent">
-								<p><strong>Do you play electric or acoustic instruments?</strong></p>
-								<form action="" name="">
-									<div class="sb_column50">
-										<p><input type="radio" /> <label>Electric</label></p>
-										<p><input type="radio" /> <label>Acoustic</label></p>
-									</div><!-- .sb_column50 -->
-									<div class="sb_column50">
-										<p><input type="radio" / ><label>Both</label></p>
-									</div><!-- .sb_column50 -->
-								</form>
-							</div><!-- .sb_questionAnswers -->
-						</div><!-- / END ACCORDION CONTENT -->
-						<h3><a href="#">Everything Gibson</a></h3>
-						<div>
-							<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_poll.jpg" alt="Poll Image" class="sb_pollImage" />
-							<div class="sb_pollContent">
-								<p><strong>Do you play electric or acoustic instruments?</strong></p>
-								<form action="" name="">
-									<div class="sb_column50">
-										<p><input type="radio" /> <label>Electric</label></p>
-										<p><input type="radio" /> <label>Acoustic</label></p>
-									</div><!-- .sb_column50 -->
-									<div class="sb_column50">
-										<p><input type="radio" / ><label>Both</label></p>
-									</div><!-- .sb_column50 -->
-								</form>
-							</div><!-- .sb_questionAnswers -->
-						</div><!-- / END ACCORDION CONTENT -->
-						<h3><a href="#">Guitar Center or the Corner Music Shop</a></h3>
-						<div>
-							<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_poll.jpg" alt="Poll Image" class="sb_pollImage" />
-							<div class="sb_pollContent">
-								<p><strong>Do you play electric or acoustic instruments?</strong></p>
-								<form action="" name="">
-									<div class="sb_column50">
-										<p><input type="radio" /> <label>Electric</label></p>
-										<p><input type="radio" /> <label>Acoustic</label></p>
-									</div><!-- .sb_column50 -->
-									<div class="sb_column50">
-										<p><input type="radio" / ><label>Both</label></p>
-									</div><!-- .sb_column50 -->
-								</form>
-							</div><!-- .sb_questionAnswers -->
-						</div><!-- / END ACCORDION CONTENT -->
-						*/ ?>
 					</div><!-- .accordion -->
 					<!-- END POLL BOX LANDING -->
 				    <br />

@@ -1,121 +1,124 @@
-  <div class="sb_popBoxInner sb_triangle-solid">
-    <div class="sb_popContent">
-      <div class="sb_header">
-        <h2 class="sb_title"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/logo_hellomusic.png" alt="HelloMusic logo" width="70" /> Surveys</h2>
-      </div><!-- .sb_header -->
-      <div class="sb_tabs">
-        <ul>
-          <li><a href="#surveys_tabs_1">3 New!</a></li>
-          <li><a href="#surveys_tabs_2">Completed</a></li>
-          <li><a href="#surveys_tabs_3">Archive</a></li>
-        </ul>
-        <div id="surveys_tabs_1" class="sb_tabPane">
-            <div class="sb_scrollPane">
-              <p>Earn <strong class="sb_theme_textHighlight">Notes</strong> &amp; <strong class="sb_theme_textHighlight">Chops</strong> for each survey you complete. Share with your friends to earn extra points and you'll be that much closer to winning the big giveaway.</p>
-              <ul class="sb_solidList">
-                <li class="sb_listOdd">
-                  <div class="sb_surveyInfo">
-                    <h3>Do you plan to / have you gone to college for music?</h3>
-                    <p>10 Questions - Earn <strong class="sb_theme_textHighlight">1 Note</strong> and <strong class="sb_theme_textHighlight">250 Chops</strong></p>
-                  </div><!-- .sb_surveyInfo -->
-                  <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey" class="sb_surveyLaunch sb_theme_button sb_nav_element sb_alignRight" rel="sb_popBox_surveys_lg"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
-              	</li>
-              	<li class="sb_listEven">
-                  <div class="sb_surveyInfo">
-                    <h3>Do you plan to / have you gone to college for music?</h3>
-                    <p>10 Questions - Earn <strong class="sb_theme_textHighlight_alt">1 Note</strong> and <strong class="sb_theme_textHighlight_alt">250 Chops</strong></p>
-                  </div><!-- .sb_surveyInfo -->
-                  <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey" class="sb_surveyLaunch sb_theme_button sb_theme_button_alt sb_nav_element sb_alignRight" rel="sb_popBox_surveys_lg"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
-              	</li>
-                <li class="sb_listOdd">
-                  <div class="sb_surveyInfo">
-                    <h3>Do you plan to / have you gone to college for music?</h3>
-                    <p>10 Questions - Earn <strong class="sb_theme_textHighlight">1 Note</strong> and <strong class="sb_theme_textHighlight">250 Chops</strong></p>
-                  </div><!-- .sb_surveyInfo -->
-                  <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey" class="sb_surveyLaunch sb_theme_button sb_nav_element sb_alignRight" rel="sb_popBox_surveys_lg"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
-              	</li>
-              	<li class="sb_listEven">
-                  <div class="sb_surveyInfo">
-                    <h3>Do you plan to / have you gone to college for music?</h3>
-                    <p>10 Questions - Earn <strong class="sb_theme_textHighlight_alt">1 Note</strong> and <strong class="sb_theme_textHighlight_alt">250 Chops</strong></p>
-                  </div><!-- .sb_surveyInfo -->
-                  <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey" class="sb_surveyLaunch sb_theme_button sb_theme_button_alt sb_nav_element sb_alignRight" rel="sb_popBox_surveys_lg"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
-              	</li>
-            </ul>
-          </div><!-- .sb_scrollPane -->
+<?
+$numberOfPremiumNotes = 4;
+$numberOfPremiumChops = 1000;
+$numberOfRegularNotes = 2;
+$numberOfRegularChops = 500;
+?>
+<div class="sb_popBoxInner sb_triangle-solid">
+	<div class="sb_popContent">
+		<div class="sb_header">
+			<h2 class="sb_title"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/logo_hellomusic.png" alt="HelloMusic logo" width="70" /> Surveys</h2>
+		</div><!-- .sb_header -->
+		<div class="sb_tabs">
+			<ul>
+				<? if ($this->count_new_surveys) { ?>
+					<li><a href="#surveys_tabs_1"><?= $this->count_new_surveys ?> New!</a></li>
+				<? } else { ?>
+					<li><a href="#surveys_tabs_1">New</a></li>
+				<? } ?>
+				<li><a href="#surveys_tabs_2">Completed</a></li>
+				<li><a href="#surveys_tabs_3">Archive</a></li>
+			</ul>
+			<div id="surveys_tabs_1" class="sb_tabPane">
+				<div class="sb_scrollPane">
+					<p>Earn <strong class="sb_theme_textHighlight">Notes</strong> &amp; <strong class="sb_theme_textHighlight">Chops</strong> for each survey you complete. Share with your friends to earn extra points and you'll be that much closer to winning the big giveaway.</p>
+					<ul class="sb_solidList">
+						<? $i = 0 ?>
+						<? foreach ($this->new_surveys as $survey) { ?>
+							<?
+							// "sb_listOdd" or "sb_listEven"
+							$listItemClass = "sb_list".(($i % 2) ? "Odd" : "Even");
 
-        </div><!-- #tabs_1 -->
+							if ($survey->premium) {
+								$strongClass = "sb_theme_textHighlight_alt";
+								$buttonClass = "sb_theme_button sb_theme_button_alt";
+								$numberOfNotes = $numberOfPremiumNotes;
+								$numberOfChops = $numberOfPremiumChops;
+							} else {
+								$strongClass = "sb_theme_textHighlight";
+								$buttonClass = "sb_theme_button";
+								$numberOfNotes = $numberOfRegularNotes;
+								$numberOfChops = $numberOfRegularChops;
+							}
+							?>
+							<li class="<?= $listItemClass ?>">
+								<div class="sb_surveyInfo">
+									<h3><?= $survey->title ?></h3>
+									<p>10 Questions - Earn <strong class="<?= $strongClass ?>"><?= $numberOfNotes ?> Notes</strong> and <strong class="<?= $strongClass ?>"><?= $numberOfChops ?> Chops</strong></p>
+								</div><!-- .sb_surveyInfo -->
+								<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey?survey_id=<?= $survey->id ?>" class="sb_surveyLaunch <?= $buttonClass ?> sb_nav_element sb_alignRight" rel="sb_popBox_surveys_lg"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
+							</li>
+							<? $i++ ?>
+						<? } ?>
+					</ul>
+				</div><!-- .sb_scrollPane -->
 
-        <div id="surveys_tabs_2" class="sb_tabPane">
-        	<div class="sb_scrollPane">
-            <p>All of your completed surveys are listed below.</p>
-          	<ul class="sb_outlineList">
-              <li><h3 class="sb_theme_iconComplete">Bob Dylan pre or post Newport? </h3>
-              	<div class="sb_pointsEarnedTotal">
-                	<span class="sb_chopsEarned">+250</span>
-                	<span class="sb_notesEarned">+1</span>
-                </div><!-- .sb_pointsEarnedTotal -->
-              </li>
-              <li><h3 class="sb_theme_iconComplete">Bob Dylan pre or post Newport? </h3>
-              	<div class="sb_pointsEarnedTotal">
-                	<span class="sb_chopsEarned">+250</span>
-                	<span class="sb_notesEarned">+1</span>
-                </div><!-- .sb_pointsEarnedTotal -->
-              </li>
-              <li><h3 class="sb_theme_iconComplete">Bob Dylan pre or post Newport? </h3>
-              	<div class="sb_pointsEarnedTotal">
-                	<span class="sb_chopsEarned">+250</span>
-                	<span class="sb_notesEarned">+1</span>
-                </div><!-- .sb_pointsEarnedTotal -->
-              </li>
-              <li><h3 class="sb_theme_iconComplete">Bob Dylan pre or post Newport? </h3>
-              	<div class="sb_pointsEarnedTotal">
-                	<span class="sb_chopsEarned">+250</span>
-                	<span class="sb_notesEarned">+1</span>
-                </div><!-- .sb_pointsEarnedTotal -->
-              </li>
-            </ul>
-          </div><!-- .sb_scrollPane -->
-        </div><!-- #tabs_2 -->
+			</div><!-- #tabs_1 -->
 
-        <div id="surveys_tabs_3" class="sb_tabPane">
-        	<div class="sb_scrollPane">
-              <p>Earn <strong class="sb_theme_textHighlight">Notes</strong> &amp; <strong class="sb_theme_textHighlight">Chops</strong> for each survey you complete. Share with your friends to earn extra points and you'll be that much closer to winning the big giveaway.</p>
-              <ul class="sb_solidList">
-                <li class="sb_listOdd">
-                  <div class="sb_surveyInfo">
-                    <h3>Do you plan to / have you gone to college for music?</h3>
-                    <p>10 Questions - Earn <strong class="sb_theme_textHighlight">1 Note</strong> and <strong class="sb_theme_textHighlight">250 Chops</strong></p>
-                  </div><!-- .sb_surveyInfo -->
-                  <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey" class="sb_surveyLaunch sb_theme_button sb_nav_element sb_alignRight" rel="sb_popBox_surveys_lg"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
-              	</li>
-              	<li class="sb_listEven">
-                  <div class="sb_surveyInfo">
-                    <h3>Do you plan to / have you gone to college for music?</h3>
-                    <p>10 Questions - Earn <strong class="sb_theme_textHighlight_alt">1 Note</strong> and <strong class="sb_theme_textHighlight_alt">250 Chops</strong></p>
-                  </div><!-- .sb_surveyInfo -->
-                  <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey" class="sb_surveyLaunch sb_theme_button sb_theme_button_alt sb_nav_element sb_alignRight" rel="sb_popBox_surveys_lg"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
-              	</li>
-                <li class="sb_listOdd">
-                  <div class="sb_surveyInfo">
-                    <h3>Do you plan to / have you gone to college for music?</h3>
-                    <p>10 Questions - Earn <strong class="sb_theme_textHighlight">1 Note</strong> and <strong class="sb_theme_textHighlight">250 Chops</strong></p>
-                  </div><!-- .sb_surveyInfo -->
-                  <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey" class="sb_surveyLaunch sb_theme_button sb_nav_element sb_alignRight" rel="sb_popBox_surveys_lg"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
-              	</li>
-              	<li class="sb_listEven">
-                  <div class="sb_surveyInfo">
-                    <h3>Do you plan to / have you gone to college for music?</h3>
-                    <p>10 Questions - Earn <strong class="sb_theme_textHighlight_alt">1 Note</strong> and <strong class="sb_theme_textHighlight_alt">250 Chops</strong></p>
-                  </div><!-- .sb_surveyInfo -->
-                  <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey" class="sb_surveyLaunch sb_theme_button sb_theme_button_alt sb_nav_element sb_alignRight" rel="sb_popBox_surveys_lg"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
-              	</li>
-            </ul>
-            <br />
-						<p align="right"><a href="#" class="sb_nav_tabs sb_theme_button" rel="1"><span class="sb_theme_buttonArrow">Take a New Survey</span></a></p>
-          </div><!-- .sb_scrollPane -->
-        </div><!-- #tabs_3 -->
+			<div id="surveys_tabs_2" class="sb_tabPane">
+				<div class="sb_scrollPane">
+					<p>All of your completed surveys are listed below.</p>
+					<ul class="sb_outlineList">
+						<? $i = 0 ?>
+						<? foreach ($this->complete_surveys as $survey) { ?>
+							<?
+							if ($survey->premium) {
+								$numberOfNotes = $numberOfPremiumNotes;
+								$numberOfChops = $numberOfPremiumChops;
+							} else {
+								$numberOfNotes = $numberOfRegularNotes;
+								$numberOfChops = $numberOfRegularChops;
+							}
+							?>
+							<li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
+								<div class="sb_pointsEarnedTotal">
+									<span class="sb_chopsEarned">+<?= $numberOfChops ?></span>
+									<span class="sb_notesEarned">+<?= $numberOfNotes ?></span>
+								</div><!-- .sb_pointsEarnedTotal -->
+							</li>
+							<? $i++ ?>
+						<? } ?>
+					</ul>
+				</div><!-- .sb_scrollPane -->
+			</div><!-- #tabs_2 -->
 
-      </div><!-- .tabs -->
-    </div><!-- .sb_popContent -->
-  </div><!-- .sb_popBoxInner -->
+			<div id="surveys_tabs_3" class="sb_tabPane">
+				<div class="sb_scrollPane">
+					<p>Earn <strong class="sb_theme_textHighlight">Notes</strong> &amp; <strong class="sb_theme_textHighlight">Chops</strong> for each survey you complete. Share with your friends to earn extra points and you'll be that much closer to winning the big giveaway.</p>
+					<ul class="sb_solidList">
+						<? $i = 0 ?>
+						<? foreach ($this->archive_surveys as $survey) { ?>
+							<?
+							// "sb_listOdd" or "sb_listEven"
+							$listItemClass = "sb_list".(($i % 2) ? "Odd" : "Even");
+
+							if ($survey->premium) {
+								$strongClass = "sb_theme_textHighlight_alt";
+								$buttonClass = "sb_theme_button sb_theme_button_alt";
+								$numberOfNotes = $numberOfPremiumNotes;
+								$numberOfChops = $numberOfPremiumChops;
+							} else {
+								$strongClass = "sb_theme_textHighlight";
+								$buttonClass = "sb_theme_button";
+								$numberOfNotes = $numberOfRegularNotes;
+								$numberOfChops = $numberOfRegularChops;
+							}
+							?>
+							<li class="<?= $listItemClass ?>">
+								<div class="sb_surveyInfo">
+									<h3><?= $survey->title ?></h3>
+									<p>10 Questions - Earn <strong class="<?= $strongClass ?>"><?= $numberOfNotes ?> Notes</strong> and <strong class="<?= $strongClass ?>"><?= $numberOfChops ?> Chops</strong></p>
+								</div><!-- .sb_surveyInfo -->
+								<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey?survey_id=<?= $survey->id ?>" class="sb_surveyLaunch <?= $buttonClass ?> sb_nav_element sb_alignRight" rel="sb_popBox_surveys_lg"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
+							</li>
+							<? $i++ ?>
+						<? } ?>
+					</ul>
+					<br />
+					<p align="right"><a href="#" class="sb_nav_tabs sb_theme_button" rel="1"><span class="sb_theme_buttonArrow">Take a New Survey</span></a></p>
+				</div><!-- .sb_scrollPane -->
+			</div><!-- #tabs_3 -->
+
+		</div><!-- .tabs -->
+	</div><!-- .sb_popContent -->
+</div><!-- .sb_popBoxInner -->

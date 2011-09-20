@@ -41,9 +41,7 @@ class Starbar_ContentController extends Api_GlobalController
 			$survey = new Survey();
 			$survey->loadData($survey_id);
 
-			//switch ($survey->origin)
-			$this->view->assign('poll_id', $survey->external_id);
-			$this->view->assign('poll_key', $survey->external_key);
+			$this->view->assign('survey', $survey);
 		}
     }
 
@@ -58,9 +56,7 @@ class Starbar_ContentController extends Api_GlobalController
 			$survey = new Survey();
 			$survey->loadData($survey_id);
 
-			//switch ($survey->origin)
-			$this->view->assign('poll_id', $survey->external_id);
-			$this->view->assign('poll_key', $survey->external_key);
+			$this->view->assign('survey', $survey);
 		}
     }
 
@@ -71,13 +67,17 @@ class Starbar_ContentController extends Api_GlobalController
 		$completeSurveys = new SurveyCollection();
 		$archiveSurveys = new SurveyCollection();
 
-		$newSurveys->loadSurveysForStarBarAndUser(1, 1, 'poll', 'new');
-		$completeSurveys->loadSurveysForStarBarAndUser(1, 1, 'poll', 'complete');
-		$archiveSurveys->loadSurveysForStarBarAndUser(1, 1, 'poll', 'archive');
+		$newSurveys->loadSurveysForStarbarAndUser(1, 1, 'poll', 'new');
+		$completeSurveys->loadSurveysForStarbarAndUser(1, 1, 'poll', 'complete');
+		$archiveSurveys->loadSurveysForStarbarAndUser(1, 1, 'poll', 'archive');
 
 		$this->view->assign('new_surveys', $newSurveys);
 		$this->view->assign('complete_surveys', $completeSurveys);
 		$this->view->assign('archive_surveys', $archiveSurveys);
+
+		$this->view->assign('count_new_surveys', sizeof($newSurveys));
+		$this->view->assign('count_complete_surveys', sizeof($completeSurveys));
+		$this->view->assign('count_archive_surveys', sizeof($archiveSurveys));
 	}
 
     // Fetches surveys for the current user for display
@@ -87,14 +87,18 @@ class Starbar_ContentController extends Api_GlobalController
 		$completeSurveys = new SurveyCollection();
 		$archiveSurveys = new SurveyCollection();
 
-		$newSurveys->loadSurveysForStarBarAndUser(1, 1, 'survey', 'new');
-		$completeSurveys->loadSurveysForStarBarAndUser(1, 1, 'survey', 'complete');
-		$archiveSurveys->loadSurveysForStarBarAndUser(1, 1, 'survey', 'archive');
+		$newSurveys->loadSurveysForStarbarAndUser(1, 1, 'survey', 'new');
+		$completeSurveys->loadSurveysForStarbarAndUser(1, 1, 'survey', 'complete');
+		$archiveSurveys->loadSurveysForStarbarAndUser(1, 1, 'survey', 'archive');
 
 		$this->view->assign('new_surveys', $newSurveys);
 		$this->view->assign('complete_surveys', $completeSurveys);
 		$this->view->assign('archive_surveys', $archiveSurveys);
-    }
+
+		$this->view->assign('count_new_surveys', sizeof($newSurveys));
+		$this->view->assign('count_complete_surveys', sizeof($completeSurveys));
+		$this->view->assign('count_archive_surveys', sizeof($archiveSurveys));
+}
 
     public function onboardingAction ()
     {

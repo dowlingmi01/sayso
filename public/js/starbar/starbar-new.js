@@ -349,12 +349,14 @@ setTimeout(function(){
 
 		// if the src string is specified, load via ajax (jsonp), then call this function again without the src
 		if (src) {
-			$S.ajaxWithAuth(src, function (response, status) {
+			$S.ajaxWithAuth({
+				url : src,
+				success : function (response, status) {
 					popBox.html(response.data.html);
 					initElements();
 					openPopBox(elem, null);
     			}
-			);
+			});
 		// show the popBox
 		} else {
 			popBox.show();
@@ -540,25 +542,28 @@ setTimeout(function(){
 
 }, 200); // slight delay to ensure other libraries are loaded
 
-
-// This function needs to be outside the setTimeout, otherwise it won't work on IE
-$S.ajaxWithAuth = function(src, successFunction) {
-	var user_data = null;
+$S.ajaxWithAuth = function (options) {
+	var starbar_id = null;
+	var auth_key = null;
+	var user_id = null;
+	var user_key = null;
 
 	// Authenticated?
 	try
 	{
-		user_data = {
-			user_id : window.sayso.starbar.user.id,
-			user_key : window.sayso.starbar.user.key
-		};
+		starbar_id = window.sayso.starbar.id;
+		user_id = window.sayso.starbar.user.id;
+		user_key = window.sayso.starbar.user.key;
+		auth_key = window.sayso.starbar.authKey;
 	}
 	catch (e) {}
 
-	$S.ajax({
-		dataType : 'jsonp',
-		data : user_data,
-		url : src,
-		success : successFunction
+	options.data = $S.extend(options.data || {}, {
+		starbar_id : starbar_id,
+		user_id : user_id,
+		user_key : user_key,
+		auth_key : auth_key
 	});
+	options.dataType = 'jsonp';
+	return $S.ajax(options);
 };

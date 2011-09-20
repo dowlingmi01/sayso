@@ -538,26 +538,27 @@ setTimeout(function(){
         }
     };
 
-	$S.ajaxWithAuth = function(src, successFunction) {
-		var user_data = null;
-
-		// Authenticated?
-		try
-		{
-			user_data = {
-				user_id : window.sayso.starbar.user.id,
-				user_key : window.sayso.starbar.user.key
-			};
-		}
-		catch (e) {}
-
-		$S.ajax({
-			dataType : 'jsonp',
-			data : user_data,
-			url : src,
-			success : successFunction
-		});
-	};
-
-
 }, 200); // slight delay to ensure other libraries are loaded
+
+
+// This function needs to be outside the setTimeout, otherwise it won't work on IE
+$S.ajaxWithAuth = function(src, successFunction) {
+	var user_data = null;
+
+	// Authenticated?
+	try
+	{
+		user_data = {
+			user_id : window.sayso.starbar.user.id,
+			user_key : window.sayso.starbar.user.key
+		};
+	}
+	catch (e) {}
+
+	$S.ajax({
+		dataType : 'jsonp',
+		data : user_data,
+		url : src,
+		success : successFunction
+	});
+};

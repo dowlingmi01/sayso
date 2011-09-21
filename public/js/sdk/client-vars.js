@@ -1,10 +1,15 @@
-// Place this Javascript on all post-login pages
+// Before providing this to client, fill in the custom fields:
+// - client name
+// - UUID cookie name
+// - logged-in cookie name (may be same as UUID)
+// - uuid type
 
-// @todo - set client name
-//       - set UUID cookie name
-//       - set logged in cookie name (may be same as UUID)
-//       - set uuid type
-
+/**
+ * Client post-login variables
+ * - include this snippet on any post-login page
+ * 
+ * @author davidbjames 
+ */
 (function () {
 
     if (!window.sayso) window.sayso = {};

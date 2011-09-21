@@ -41,10 +41,10 @@ class Starbar_RemoteController extends Api_AbstractController
             // the user IP/UserAgent which will protect us from conflicts during 
             // installation/authentication. (scenario: multiple users sharing an IP
             // and who also happen to have the exact same browser and version number)
-            // ALSO, only delete if install_counter is 0 to protect from timing issues
+            // ALSO, only delete if install_begin_time is more than 2 minutes ago
             // @todo figure out a better approach so this doesn't have to be run
             // for every request (me wishes it could be done asyncronously)
-            Db_Pdo::execute('UPDATE external_user SET install_ip_address = NULL, install_user_agent = NULL, install_counter = 0 WHERE user_id = ? AND install_counter <= 0', $this->user_id);
+            Db_Pdo::execute('UPDATE external_user SET install_ip_address = NULL, install_user_agent = NULL WHERE user_id = ? AND timestampdiff(MINUTE, install_begin_time, now()) >= 2', $this->user_id);
                     
             if ($this->starbar_id) {
                 $starbar->loadData($this->starbar_id);
@@ -223,8 +223,10 @@ class Starbar_RemoteController extends Api_AbstractController
         
             $externalUser->install_ip_address = $ipAddress;
             $externalUser->install_user_agent = $userAgent;
-            $externalUser->install_counter = $externalUser->install_counter + 1;
             $externalUser->save();
+            
+            Db_Pdo::execute('UPDATE external_user SET install_begin_time = now() WHERE id = ? AND install_begin_time IS NULL', $externalUser->getId());
+        
             
         } else if ($this->client_uuid) { // on customer site 
             
@@ -237,8 +239,9 @@ class Starbar_RemoteController extends Api_AbstractController
             $externalUser->starbar_id = $starbar->getId();
             $externalUser->install_ip_address = $ipAddress;
             $externalUser->install_user_agent = $userAgent;
-            $externalUser->install_counter = $externalUser->install_counter + 1;
             $externalUser->save();
+            
+            Db_Pdo::execute('UPDATE external_user SET install_begin_time = now() WHERE id = ? AND install_begin_time IS NULL', $externalUser->getId());
             
         } else {
             // no cookies / no client vars
@@ -314,11 +317,8 @@ class Starbar_RemoteController extends Api_AbstractController
             $stmt = Db_Pdo::execute('INSERT INTO user (id, created) VALUES (null, now())');
             $user->setId(Db_Pdo::getPdo()->lastInsertId());
             $externalUser->user_id = $user->getId();
+            $externalUser->save();
         }
-        
-        // decrement the counter and save
-        $externalUser->install_counter = $externalUser->install_counter - 1;
-        $externalUser->save();
         
         // refresh the db data
         

@@ -212,6 +212,40 @@ class Api_UserController extends Api_GlobalController
         }
     }
     
+    public function saveInPlaceAction() {
+		$response = array();
+		$response["is_error"] = true;
+		$response["error_text"] = "Edit Failed.";
+		$response["html"] = "";
+		
+		if ($this->user_id) {
+			$user = new User();
+			$user->loadData($this->user_id);
+
+			$request = $this->getRequest();
+			$editedElementId = $request->getParam('id');
+			
+			switch ($editedElementId) {
+				case "sb_profile_username":
+					$origUsername = $request->getParam('orig_value');
+					$newUsername = $request->getParam('new_value');
+					
+					if ($newUsername && ($origUsername == $user->username)) {
+						$user->username = $newUsername;
+						$user->save();
+
+						$response["is_error"] = false;
+						$response["error_text"] = "";
+						$response["html"] = $newUsername;
+					}
+					
+					break;
+			}
+		}
+		
+		return $this->_resultType(new Object($response));
+	}
+    
     protected function _startUserSession (User & $user) {
         
         $userSession = Api_UserSession::getInstance();

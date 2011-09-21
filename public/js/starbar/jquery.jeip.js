@@ -287,7 +287,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				ajax_data.new_option_text = $S( "#edit-option-" + self.id + "-" + new_value ).html( );
 			}
 
-			$S.ajax( {
+			$S.ajaxWithAuth( {
 				url		: opt.save_url,
 				type	: "POST",
 				dataType: "json",
@@ -296,11 +296,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					$S( "#editor-" + self.id ).fadeOut( "fast" );
 					$S( "#editor-" + self.id ).remove( );
 
-					if( data.is_error == true ) {
-						opt.on_error( data.error_text );
+					if( data.data.is_error == true ) {
+						opt.on_error( data.data.error_text );
 					}
 					else {
-						$S( self ).html( data.html );
+						$S( self ).html( data.data.html );
 					}
 
 					$S( "#saving-" + self.id ).fadeOut( "fast" );

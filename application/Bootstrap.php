@@ -68,6 +68,10 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
         
         $layout = Zend_Layout::startMvc();
         
+        $cache = Zend_Cache::factory('Core', 'File', array('automatic_serialization' => true, 'lifetime' => 3600), array('cache_dir' => CACHE_PATH));
+		Api_Registry::set('cache', $cache);
+
+        
         switch ($currentModule) {
             case 'default' :
                 $layout->setLayoutPath(APPLICATION_PATH . '/layouts/scripts');

@@ -24,11 +24,11 @@ $S.ajaxWithAuth = function (options) {
         user_key : user_key,
         auth_key : auth_key
     });
-    options.dataType = 'jsonp';
+    if (!options.dataType) options.dataType = 'jsonp';
     return $S.ajax(options);
 };
 
-(function(){
+setTimeout(function(){
 
 	// global var
     var themeColor = '#de40b2';
@@ -265,7 +265,7 @@ $S.ajaxWithAuth = function (options) {
 		
 		// set up the EIP elements
 		elemJEIP.each(function(){
-			$S(this).eip( "save.php", {
+			$S(this).eip( "/api/user/save-in-place", {
 				savebutton_text		: "save",
 				savebutton_class	: "sb_theme_button",
 				cancelbutton_text	: "cancel",
@@ -580,5 +580,5 @@ $S.ajaxWithAuth = function (options) {
         }
     };
 
-})();
+}, 200);
 

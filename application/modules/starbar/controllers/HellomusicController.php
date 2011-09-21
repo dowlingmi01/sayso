@@ -17,8 +17,19 @@ class Starbar_HellomusicController extends Starbar_ContentController
     public function dailyDealsAction ()
     {
 		$feedUrl = "http://staging.hellomusic.com/ec/Interpret.aspx?auth=uyskCsCO5jeS2d1fc5";
-		$xml = simpleXML_load_file($feedUrl, "SimpleXMLElement", LIBXML_NOCDATA);
 
+		$cache = Api_Registry::get('cache');
+		$key = 'dailydeals';
+		if ($cache->test($key)) {
+			$feed = $cache->load($key);
+		} else {
+			$handle = fopen($feedUrl, 'r');
+			$feed = stream_get_contents($handle);
+			$cache->save($feed);
+		}
+
+		$xml = simpleXML_load_string($feed, "SimpleXMLElement", LIBXML_NOCDATA);
+		
 		if($xml ===  FALSE) {
 
 		} else {

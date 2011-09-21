@@ -134,7 +134,12 @@ class Starbar_ContentController extends Api_GlobalController
 
     public function userProfileAction ()
     {
-
+		$user = new User();
+		$user->loadData($this->user_id);
+		$userEmail = new User_Email();
+		$userEmail->loadData($user->primary_email_id);
+		$this->view->assign('user', $user);
+		$this->view->assign('user_email', $userEmail);
     }
 
     public function userLevelAction ()

@@ -16,11 +16,6 @@ class Api_SurveyController extends Api_GlobalController
     
     public function surveyGizmoSubmitAction ()
     {
-        // dumping the post data into the log (remove this after testing)
-        $logger = new Zend_Log();
-        $logger->addWriter(new Zend_Log_Writer_Stream(LOG_PATH . '/api.log'));
-        $logger->log(print_r($this->_request->getPost(), true), Zend_Log::INFO);
-
 		$request = $this->getRequest();
 		$surveyId = (int) $request->getParam('survey_id');
 		$userId = (int) $request->getParam('user_id');
@@ -32,11 +27,6 @@ class Api_SurveyController extends Api_GlobalController
     }
 
     public function userPollSubmitAction () {
-        // dumping the post data into the log (remove this after testing)
-        $logger = new Zend_Log();
-        $logger->addWriter(new Zend_Log_Writer_Stream(LOG_PATH . '/api.log'));
-        $logger->log(print_r($this->_request->getPost(), true), Zend_Log::INFO);
-
 		$request = $this->getRequest();
 		$surveyId = (int) $request->getParam('survey_id');
 		// authentication is done via user_id and user_key sent by ajax request

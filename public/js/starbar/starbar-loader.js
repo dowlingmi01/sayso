@@ -5,17 +5,19 @@
         log = window.sayso.log,
         warn = window.sayso.warn;
     
+    var starbarContainer = document.getElementById('sayso-starbar');
+    
     // bring in the GENERIC CSS
     var css1 = document.createElement('link'); 
     css1.rel = 'stylesheet';
     css1.href = 'http://' + sayso.baseDomain + '/css/starbar-generic.css';
-    document.getElementById('sayso-starbar').appendChild(css1);
+    starbarContainer.appendChild(css1);
 
     // bring in namespaced jQuery $S 
     if (!window.hasOwnProperty('$S')) {
         var js1 = document.createElement('script'); 
         js1.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
-        document.getElementById('sayso-starbar').appendChild(js1);
+        starbarContainer.appendChild(js1);
     }
     
     // functions to control load order
@@ -57,7 +59,7 @@
         var _testCssLoaded = document.createElement("div");
         _testCssLoaded.style = 'display: none !important;';
         // NOTE: appending is req'd with Chrome (FF works w/o appending)
-        document.getElementById('sayso-starbar').appendChild(_testCssLoaded);
+        starbarContainer.appendChild(_testCssLoaded);
     
         function _waitUntilCssLoaded () {
             if ($S(_testCssLoaded).css('width') === '1px') {
@@ -88,15 +90,15 @@
         // load auxilliary (namespaced) JS libraries
         var js2 = document.createElement('script'); 
         js2.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-ui-1.8.16.custom.min.js';
-        document.getElementById('sayso-starbar').appendChild(js2);
+        starbarContainer.appendChild(js2);
         
         var js3 = document.createElement('script'); 
         js3.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.jscrollpane.min.js';
-        document.getElementById('sayso-starbar').appendChild(js3);
+        starbarContainer.appendChild(js3);
         
         var js4 = document.createElement('script'); 
         js4.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.cookie.js';
-        document.getElementById('sayso-starbar').appendChild(js4);
+        starbarContainer.appendChild(js4);
         
         var url = 'http://' + sayso.baseDomain;
         
@@ -152,13 +154,13 @@
                 // load SaySo Javascript (which depends on the above data settings!)
                 var js5 = document.createElement('script'); 
                 js5.src = 'http://' + sayso.baseDomain + '/js/starbar/sayso.js';
-                document.getElementById('sayso-starbar').appendChild(js5);
+                starbarContainer.appendChild(js5);
                 
                 // load the specific CSS for this Starbar
                 var css2 = document.createElement('link'); 
                 css2.rel = 'stylesheet';
                 css2.href = starbar._css_url;
-                document.getElementById('sayso-starbar').appendChild(css2);
+                starbarContainer.appendChild(css2);
                 
                 // append the HTML to the DOM
                 var customCssLoadTimer = new cssLoadTimer(); 
@@ -169,6 +171,11 @@
                     jQueryLibraryLoadTimer.start('jQueryUILoaded', function () {
                         log('Loaded - jQuery libs (incl. jQueryUI)');
                         $K('#sayso-starbar').append(starbar._html);
+                        
+                        // load SaySo Javascript (which depends on the above data settings!)
+                        var js6 = document.createElement('script'); 
+                        js6.src = 'http://' + sayso.baseDomain + '/js/starbar/starbar-new.js';
+                        starbarContainer.appendChild(js6);
                     });
                 });
             }

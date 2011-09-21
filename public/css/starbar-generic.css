@@ -250,6 +250,33 @@ html {
 #sayso-starbar #starbar-player-console.sb_starbar-visClosed {
 	width: 100px;
 }
+
+/* set up what is / isn't visible per state */
+
+/* CLOSED */
+#sayso-starbar #starbar-player-console.sb_starbar-visClosed #starbar-main,
+#sayso-starbar #starbar-player-console.sb_starbar-visClosed .sb_starbar-alert,
+#sayso-starbar #starbar-player-console.sb_starbar-visClosed .sb_popBox,
+#sayso-starbar #starbar-player-console.sb_starbar-visClosed #sb_starbar-logoBorder{
+	display: none;
+}
+
+#sayso-starbar #starbar-player-console.sb_starbar-visClosed #sb_starbar-logoBorder{
+	display: block;
+}
+
+/* STOWED */
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed #starbar-visControls #starbar-toggleVis,
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed .sb_starbar-alert, 
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed .sb_popBox{
+	display: none;
+}
+
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed{
+	background: none;
+}
+
+
 /* container elements */
 
 #sayso-starbar #starbar-wrapper {

@@ -2,9 +2,33 @@
  * Starbar
  */
 
-// load after slight delay
-setTimeout(function(){
+$S.ajaxWithAuth = function (options) {
+    var starbar_id = null;
+    var auth_key = null;
+    var user_id = null;
+    var user_key = null;
 
+    // Authenticated?
+    try
+    {
+        starbar_id = window.sayso.starbar.id;
+        user_id = window.sayso.starbar.user.id;
+        user_key = window.sayso.starbar.user.key;
+        auth_key = window.sayso.starbar.authKey;
+    }
+    catch (e) {}
+
+    options.data = $S.extend(options.data || {}, {
+        starbar_id : starbar_id,
+        user_id : user_id,
+        user_key : user_key,
+        auth_key : auth_key
+    });
+    options.dataType = 'jsonp';
+    return $S.ajax(options);
+};
+
+(function(){
 
 	// global var
     var themeColor = '#de40b2';
@@ -556,30 +580,5 @@ setTimeout(function(){
         }
     };
 
-}, 200); // slight delay to ensure other libraries are loaded
+})();
 
-$S.ajaxWithAuth = function (options) {
-	var starbar_id = null;
-	var auth_key = null;
-	var user_id = null;
-	var user_key = null;
-
-	// Authenticated?
-	try
-	{
-		starbar_id = window.sayso.starbar.id;
-		user_id = window.sayso.starbar.user.id;
-		user_key = window.sayso.starbar.user.key;
-		auth_key = window.sayso.starbar.authKey;
-	}
-	catch (e) {}
-
-	options.data = $S.extend(options.data || {}, {
-		starbar_id : starbar_id,
-		user_id : user_id,
-		user_key : user_key,
-		auth_key : auth_key
-	});
-	options.dataType = 'jsonp';
-	return $S.ajax(options);
-};

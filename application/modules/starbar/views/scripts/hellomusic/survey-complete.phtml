@@ -1,0 +1,15 @@
+<script type="text/javascript">
+	setTimeout(function() {
+		$S('#sb-survey-completed').fadeIn(500)
+	}, 1000);
+</script>
+<div id="sayso-starbar-embed">
+	OMG! You completely the survey! I bet you're reeaaal proud of yourself for that one, huh?<br /><br />
+	<div id="sb-survey-completed">
+		<? if ($this->survey->premium) { ?>
+			<p>Congratulations! You earned <strong class="sb_theme_textHighlight_alt">4 Notes</strong> &amp;  <strong class="sb_theme_textHighlight_alt">1000 Chops</strong></p>
+		<? } else { ?>
+			<p>Congratulations! You earned <strong class="sb_theme_textHighlight">2 Notes</strong> &amp;  <strong class="sb_theme_textHighlight">500 Chops</strong></p>
+		<? } ?>
+	</div>
+</div>

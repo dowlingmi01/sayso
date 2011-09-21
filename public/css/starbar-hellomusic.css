@@ -103,12 +103,12 @@
 	left: -14px;
 }
 
-#sayso-starbar #starbar-player-console .sb_theme_textHighlight, #sayso-starbar-embed .sb_theme_textHighlight {
+#sayso-starbar #starbar-player-console .sb_theme_textHighlight, #sayso-starbar-embed .sb_theme_textHighlight{
 	color: #0082c5 !important;
 	text-shadow: none !important;
 }
 
-#sayso-starbar #starbar-player-console .sb_theme_textHighlight_alt{
+#sayso-starbar #starbar-player-console .sb_theme_textHighlight_alt, #sayso-starbar-embed .sb_theme_textHighlight_alt{
 	color: #d98a00 !important;
 	text-shadow: none !important;
 }

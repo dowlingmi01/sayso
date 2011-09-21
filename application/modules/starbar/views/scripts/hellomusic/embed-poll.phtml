@@ -1,8 +1,9 @@
+<?= $this->partial('remote/init-remote.phtml'); ?>
 <div id="sayso-starbar-loading-external">
 	<span class="sb_img_loading">Loading</span>
 </div>
 <div id="sayso-starbar-external">
-	<script type="text/javascript">document.write("<scr"+"ipt type=\"text/javascript\" src=\"http://www.surveygizmo.com/s3/polljs/<?= $this->survey->external_id ?>-<?= $this->survey->external_key ?>/?cookie="+document.cookie.match(/sg-response-<?= $this->survey->external_id ?>/gi)+"\"></scr"+"ipt>");</script>
+	<script type="text/javascript">document.write("<scr"+"ipt type=\"text/javascript\" src=\"http://www.surveygizmo.com/s3/polljs/<?= $this->survey->external_id ?>-<?= $this->survey->external_key ?>/?bundle_of_joy=<?= $this->bundle_of_joy ?>\"></scr"+"ipt>");</script>
 </div>
 <script type="text/javascript">
 	var loadingElement = $S('#sayso-starbar-loading-external');
@@ -38,9 +39,13 @@
 						click: function(event){
 							$S(this).attr('checked', 'checked');
 							survey.Vote(domain);
+							$S.ajaxWithAuth({
+								url : "http://<?= BASE_DOMAIN ?>/api/survey/user-poll-submit?survey_id=<?= $this->survey->id ?>",
+								success : function () {alert('yay!');}
+							});
 							survey.ShowResults(domain);
 							setTimeout(function() {
-								$('#sb-survey-completed').fadeIn(500)
+								$S('#sb-survey-completed').fadeIn(500)
 							}, 1000);
 						}
 					});

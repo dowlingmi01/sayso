@@ -7,6 +7,7 @@ class Starbar_HellomusicController extends Starbar_ContentController
     public function postDispatch() {
 		if (!$this->_usingJsonPRenderer) {
         	$this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');
+    		$this->view->inlineScript()->appendFile('/js/starbar/starbar-new.js');
         }
 
         parent::postDispatch();

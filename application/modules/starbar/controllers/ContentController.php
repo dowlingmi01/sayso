@@ -31,17 +31,21 @@ class Starbar_ContentController extends Api_GlobalController
     // Embed a single SG poll. Expects "survey_id" passed via URL (GET)
     public function embedPollAction ()
     {
+    	// this page is fetched via an iframe, not ajax;
     	$this->_usingJsonPRenderer = false;
 
 		$request = $this->getRequest();
 
-		$survey_id = (int) $request->getParam('survey_id');
+		$surveyId = (int) $request->getParam('survey_id');
 
-		if ($survey_id) {
+		if ($surveyId) {
 			$survey = new Survey();
-			$survey->loadData($survey_id);
+			$survey->loadData($surveyId);
 
 			$this->view->assign('survey', $survey);
+
+			$bundleOfJoy = $this->_getBundleOfJoy($surveyId);
+			$this->view->assign('bundle_of_joy', $bundleOfJoy);
 		}
     }
 
@@ -50,15 +54,33 @@ class Starbar_ContentController extends Api_GlobalController
     {
 		$request = $this->getRequest();
 
-		$survey_id = (int) $request->getParam('survey_id');
+		$surveyId = (int) $request->getParam('survey_id');
 
-		if ($survey_id) {
+		if ($surveyId) {
 			$survey = new Survey();
-			$survey->loadData($survey_id);
+			$survey->loadData($surveyId);
+
+			$this->view->assign('survey', $survey);
+
+			$bundleOfJoy = $this->_getBundleOfJoy($surveyId);
+			$this->view->assign('bundle_of_joy', $bundleOfJoy);
+		}
+	}
+
+    public function surveyCompleteAction ()
+    {
+    	// this page is fetched via an iframe, not ajax;
+    	$this->_usingJsonPRenderer = false;
+
+		$request = $this->getRequest();
+		$surveyId = $request->getParam('survey_id');
+		if ($surveyId) {
+			$survey = new Survey();
+			$survey->loadData($surveyId);
 
 			$this->view->assign('survey', $survey);
 		}
-    }
+	}
 
     // Fetches polls for the current user for display
     public function pollsAction ()
@@ -98,7 +120,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('count_new_surveys', sizeof($newSurveys));
 		$this->view->assign('count_complete_surveys', sizeof($completeSurveys));
 		$this->view->assign('count_archive_surveys', sizeof($archiveSurveys));
-}
+	}
 
     public function onboardingAction ()
     {
@@ -124,4 +146,22 @@ class Starbar_ContentController extends Api_GlobalController
     {
 
     }
+    
+    private function _getBundleOfJoy ($surveyId)
+    {
+    	$bundleOfJoy = "";
+    	$sep = "^|^"; // seperator between variables
+    	$eq = "^-^"; // seperator between variable name and value
+    	// e.g. user_id^-^1^|^user_key^-^123
+    	
+    	$bundleOfJoy .= "user_id" . $eq . $this->user_id;
+    	$bundleOfJoy .= $sep;
+    	$bundleOfJoy .= "user_key" . $eq . $this->user_key;
+    	$bundleOfJoy .= $sep;
+    	$bundleOfJoy .= "auth_key" . $eq . $this->auth_key;
+    	$bundleOfJoy .= $sep;
+    	$bundleOfJoy .= "survey_id" . $eq . $this->survey_id;
+    	
+    	return $bundleOfJoy;
+	}
 }

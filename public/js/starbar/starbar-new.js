@@ -497,17 +497,12 @@ $S(function(){
 			var headerHeight = 0;
 		}
 
-		// set an absolute width for the scroll container to prevent "flash" while it resizes
-		var contentWidth = $S('.sb_popContent',target).width();
-		var contentPadL = $S('.sb_popContent',target).css('padding-left');
-		var contentPadR = $S('.sb_popContent',target).css('padding-right');
-		var contentPad = eval(contentWidth - (contentPadL.replace('px','') + contentPadR.replace('px','')))+'px';
-
-		$S('.sb_scrollPane',target).css('height',contentHeight-headerHeight);
-		$S('.sb_scrollPane',target).jScrollPane({
-			autoReinitialise: true,
-			autoReinitialiseDelay: 1000,
-			contentWidth: contentPad
+		var panes = $S('.sb_scrollPane',target);
+		panes.each(function(i) {
+			var paragraph = $S('p',$S(this).parent());
+			var paragraphHeight = paragraph.height()+eval(paragraph.css('margin-top').replace('px',''))+eval(paragraph.css('margin-bottom').replace('px',''));
+			$S(this).css('height',contentHeight-(headerHeight+paragraphHeight));
+			$S(this).jScrollPane();
 		});
 	}
 
@@ -545,7 +540,15 @@ $S(function(){
 								activeFooter.fadeTo(500, 1);
 	                        }, 2000);
 						}
-                    }
+                    },
+                    change: function (event, ui){
+                    	var scrollPane = $S(this).parents('.sb_scrollPane')
+                    	scrollPane.jScrollPane(); // re-initialize the scroll pane now that the content size may be different
+                    	if (ui.newHeader.position()) {  // if the accordion is open
+							var paneHandle = scrollPane.data('jsp');
+                    		paneHandle.scrollToY(ui.newHeader.position().top-10); // scroll to the new header (-10 to keep some visibility of stuff above)
+						}
+					}
 				});
 			});
 		}else{

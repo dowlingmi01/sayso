@@ -745,6 +745,10 @@
 	height: 280px;
 }
 
+/* accordions */
+#sayso-starbar #starbar-player-console .sb_popBox .sb_accordion{
+	width: 490px;
+}
 
 /* Keep this at end of file. It's used for testing if CSS is loaded. */
 

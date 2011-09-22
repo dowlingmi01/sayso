@@ -212,7 +212,11 @@ class Api_UserController extends Api_GlobalController
         }
     }
     
-    public function saveInPlaceAction() {
+    public function saveInPlaceAction() {		
+		$logger = new Zend_Log();
+    $logger->addWriter(new Zend_Log_Writer_Stream(LOG_PATH . '/api.log'));
+    $logger->log(print_r($this->_request->getPost(), true), Zend_Log::INFO);
+		
 		$response = array();
 		$response["is_error"] = true;
 		$response["error_text"] = "Edit Failed.";
@@ -242,6 +246,8 @@ class Api_UserController extends Api_GlobalController
 					break;
 			}
 		}
+		
+		$logger->log(print_r($response, true), Zend_Log::INFO);
 		
 		return $this->_resultType(new Object($response));
 	}

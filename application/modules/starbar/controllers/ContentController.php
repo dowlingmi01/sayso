@@ -168,5 +168,12 @@ class Starbar_ContentController extends Api_GlobalController
     	$bundleOfJoy .= "survey_id" . $eq . $this->survey_id;
     	
     	return $bundleOfJoy;
-	}
+		}
+		
+		
+    public function onboardAction ()
+    {
+
+    }
+		
 }

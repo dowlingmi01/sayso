@@ -532,6 +532,136 @@
 	color: #333;
 }
 
+/* onboarding popup */
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard {
+	bottom: 100px;
+	left: 210px;
+}
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_popBoxInner .sb_popContent {
+	width: 470px;
+	height: 400px;
+	padding: 5px 20px 5px 20px !important;
+}
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_header {
+	margin: -15px 0px 0px 0px;
+	padding: 5px 10px 0px 5px;
+	background-color: #383838;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .img_onboard{
+	position: absolute;
+	z-index: 10;
+	bottom: -18px;
+	left: 30px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList{
+	border-top: 1px solid #ccc;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li{
+	border-bottom: 1px solid #ccc;
+	padding: 10px 45px 10px 55px;
+	background-repeat: no-repeat;
+	background-position: 0px 10px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_chops{
+	background-image: url('../images/hellomusic/img_star_lg.png');
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_notes{
+	background-image: url('../images/hellomusic/img_note_lg.png');
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_polls{
+	background-image: url('../images/hellomusic/img_poll_lg.png');
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_surveys{
+	background-image: url('../images/hellomusic/img_survey_lg.png');
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_deals{
+	background-image: url('../images/hellomusic/img_deal_lg.png');
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav{
+	float: none;
+	margin: 0;
+	top: auto;
+	left: 40px;
+	right: auto;
+	bottom: 0px;
+	background-image: url('../images/hellomusic/img_onboard_nav.png');
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+	padding: 0;
+	width: 375px;
+	height: 42px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul#sb_ui-tabs-nav_2{
+	background-position: 0px -42px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul#sb_ui-tabs-nav_3{
+	background-position: 0px -84px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul#sb_ui-tabs-nav_4{
+	background-position: 0px -126px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li{
+	border: none;
+	color: #fff;
+	width: 125px;
+	text-align: center;	
+}
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li:first-child{
+	display: none;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li a{	
+	color: #fff;
+	text-shadow: #000 0px 0px 4px;
+	height: 42px;
+	padding: 0px 10px 0px 20px;
+	text-align: center;
+	line-height: 40px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs a.sb_surveyLaunch{
+	color: #fff;
+	text-shadow: #000 0px 0px 4px;
+	height: 42px;
+	padding: 0px 0px 0px 15px;
+	text-align: center;
+	line-height: 40px;
+	position: absolute;
+	bottom: 0px;
+	z-index: 9999;
+	left: 300px;
+	font-weight: bold;
+	font-size: 12px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard h2.sb_title{
+	text-transform: none;
+	font-size: 22px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard h3.sb_title{
+	text-transform: none;
+	font-size: 18px;
+	position: absolute;
+	bottom: 45px;
+	text-align: center;
+	width: 100%;
+	font-weight: normal;
+}
 
 /* POSITION ALL OF THE POPBOX TRIANGLES */
 

@@ -292,15 +292,18 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				type	: "POST",
 				dataType: "json",
 				data	: ajax_data,
+				error : function (xhr, text, err) { window.console.log(text); },
 				success	: function( data ) {
+					if (data.data) data = data.data;
+					
 					$S( "#editor-" + self.id ).fadeOut( "fast" );
 					$S( "#editor-" + self.id ).remove( );
 
-					if( data.data.is_error == true ) {
-						opt.on_error( data.data.error_text );
+					if( data.is_error == true ) {
+						opt.on_error( data.error_text );
 					}
 					else {
-						$S( self ).html( data.data.html );
+						$S( self ).html( data.html );
 					}
 
 					$S( "#saving-" + self.id ).fadeOut( "fast" );

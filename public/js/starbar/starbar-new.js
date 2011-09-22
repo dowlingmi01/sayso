@@ -25,6 +25,11 @@ $S.ajaxWithAuth = function (options) {
         auth_key : auth_key
     });
     if (!options.dataType) options.dataType = 'jsonp';
+		options.beforeSend = function(x) {
+			if(x && x.overrideMimeType) {
+			 x.overrideMimeType("application/j-son;charset=UTF-8");
+			}
+	 };
     return $S.ajax(options);
 };
 
@@ -40,6 +45,20 @@ setTimeout(function(){
 		if (e.keyCode == 27) {
 			closePopBox();
 		}  // esc
+		
+		if (e.keyCode == 16) {
+			var thisPopBox = $S('#sb_popBox_onboard');
+			var thisPopBoxSrc = $S('#sb_popBox_onboard').attr('href');
+			
+			if (thisPopBox.hasClass('sb_popBoxActive')){
+				closePopBox(thisPopBox);
+			}else{
+				closePopBox();
+				openPopBox(thisPopBox, thisPopBoxSrc);
+			}
+			
+		}  // shift
+		
 	});
 
 	// close if you click outside the starbar while in the iframe
@@ -49,6 +68,7 @@ setTimeout(function(){
 			closePopBox();
 		}
 	});
+	
 
 	// LETS USE VARS!
 	// NOTE: The variables below are initialized in initElements()
@@ -444,11 +464,15 @@ setTimeout(function(){
 		// only set up the tabs if they're there
 		if ($S('.sb_tabs',target).length > 0){
 			$S('.sb_tabs',target).tabs({
-				show: function(){
+				show: function(event, ui){
 						// re-call the scrollbar to re-initialize to avoid the "flash" of narrow content.
-						activateScroll(target);
+						activateScroll(target);							
+						window.location.hash = '';
+						
+						// adding ID to determine which tab is selected
+						$S('ul.sb_ui-tabs-nav',this).attr('id','');
+						$S('ul.sb_ui-tabs-nav',this).attr('id','sb_ui-tabs-nav_'+eval(ui.index+1));
 					}
-				//fx: { opacity: 'toggle' }
 			});
 		}
 	}

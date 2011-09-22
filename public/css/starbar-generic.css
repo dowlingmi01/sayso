@@ -747,7 +747,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	padding: .2em .2em 0;
 	float: right;
 	position: absolute;
-	z-index: 9999;
+	z-index: 5000;
 	top: -40px;
 	right: 0;
 }
@@ -1008,6 +1008,11 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 }
 #sayso-starbar small {
 	font-size: 11px;
+}
+
+#sayso-starbar big {
+	font-size: 14px;
+	line-height: normal;
 }
 #sayso-starbar h2.sb_title {
 	text-transform: uppercase;

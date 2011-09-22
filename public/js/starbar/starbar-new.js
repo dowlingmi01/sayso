@@ -33,7 +33,7 @@ $S.ajaxWithAuth = function (options) {
     return $S.ajax(options);
 };
 
-setTimeout(function(){
+$S(function(){
 
 	// global var
     var themeColor = '#de40b2';
@@ -99,7 +99,6 @@ setTimeout(function(){
 		closePopBox();
 		showAlerts();
 		activateProgressBar();
-		refreshState();
 		// initializes development-only jquery
 		devInit();
 		log('Loaded and Ready');
@@ -593,16 +592,16 @@ setTimeout(function(){
     // "safe" logging functions
 
     function log () {
-        if (sayso.debug && typeof console !== 'undefined') {
+        if (window.sayso.debug && typeof console !== 'undefined' && typeof console.log !== 'undefined' && typeof console.log.apply === 'function') {
             console.log.apply(console, arguments);
         }
     };
 
     function warn () {
-        if (sayso.debug && typeof console !== 'undefined') {
+        if (window.sayso.debug && typeof console !== 'undefined' && typeof console.log !== 'undefined' && typeof console.log.apply === 'function') {
             console.warn.apply(console, arguments);
         }
     };
 
-}, 200);
+});
 

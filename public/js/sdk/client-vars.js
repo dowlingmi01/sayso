@@ -16,8 +16,8 @@
     window.sayso.client = {
         name : '',
         uuid : getCookie(''),
-        uuid_type : '', // email, username, hash, integer
-        user_logged_in : (getCookie('').length ? true : false)
+        uuidType : '', // email, username, hash, integer
+        userLoggedIn : (getCookie('').length ? true : false)
     };
     
     String.prototype.trim = function() {

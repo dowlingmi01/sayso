@@ -38,6 +38,11 @@ class Starbar_IndexController extends Api_AbstractController
         $this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');
 
     	$this->view->inlineScript()->appendFile('/js/starbar/starbar-new.js');
+    	
+    	$starbar = new Starbar();
+    	$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));
+    	$starbar->setVisibility('sb_starbar-visOpen');
+    	$this->view->starbar = $starbar;
     }
 }
 

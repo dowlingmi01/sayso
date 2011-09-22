@@ -40,7 +40,7 @@
     // and in return set cookies on the client
     
     var iframe = document.createElement('iframe');
-    iframe.src = 'http://' + saysoDomain + '/starbar/remote/pre-install?auth_key=309e34632c2ca9cd5edaf2388f5fa3db&name=' + window.sayso.client.name + '&uuid=' + window.sayso.client.uuid + '&uuid_type=' + window.sayso.client.uuid_type + '&install_token=' + getRandomToken();
+    iframe.src = 'http://' + saysoDomain + '/starbar/remote/pre-install?auth_key=309e34632c2ca9cd5edaf2388f5fa3db&name=' + window.sayso.client.name + '&uuid=' + window.sayso.client.uuid + '&uuid_type=' + window.sayso.client.uuidType + '&install_token=' + getRandomToken();
     iframe.width= '0'; iframe.height = '0'; 
     iframe.scrolling='0'; iframe.style = 'width: 0; height: 0; border: none; display: none;';
     

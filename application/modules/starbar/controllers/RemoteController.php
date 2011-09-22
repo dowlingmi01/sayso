@@ -33,6 +33,7 @@ class Starbar_RemoteController extends Api_AbstractController
         if ($this->starbar_id || $this->short_name) { // starbar identity provided
             
             $starbar = new Starbar();
+            $this->view->starbar = $starbar;
             
             $this->_validateRequiredParameters(array('user_id', 'auth_key'));
             Api_Auth::getInstance()->authorizeApp($this->auth_key);
@@ -42,14 +43,20 @@ class Starbar_RemoteController extends Api_AbstractController
             // installation/authentication. (scenario: multiple users sharing an IP
             // and who also happen to have the exact same browser and version number)
             // ALSO, only delete if install_begin_time is more than 2 minutes ago
+            // so that we honor multi-tab/slow installing
             // @todo figure out a better approach so this doesn't have to be run
             // for every request (me wishes it could be done asyncronously)
             Db_Pdo::execute('UPDATE external_user SET install_ip_address = NULL, install_user_agent = NULL WHERE user_id = ? AND timestampdiff(MINUTE, install_begin_time, now()) >= 2', $this->user_id);
                     
             if ($this->starbar_id) {
+                
                 $starbar->loadData($this->starbar_id);
             } else {
                 $starbar->loadDataByUniqueFields(array('short_name' => $this->short_name));
+            }
+            
+            if ($this->visibility) {
+                $starbar->setVisibility($this->visibility);
             }
             
             if ($this->client_uuid) { 

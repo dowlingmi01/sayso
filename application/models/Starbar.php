@@ -15,6 +15,8 @@ class Starbar extends Record
     
     protected $_cssUrl = '';
     
+    protected $_visibility = '';
+    
     protected $_html = '';
     
     protected $_user;
@@ -51,6 +53,14 @@ class Starbar extends Record
     
     public function setUser (User $user) {
         $this->_user = $user;
+    }
+    
+    public function setVisibility ($visibility) {
+        $this->_visibility = $visibility;
+    }
+    
+    public function getVisibility () {
+        return $this->_visibility;
     }
     
     public function exportProperties($parentObject = null) {

@@ -106,13 +106,14 @@
             starbar_id : sayso.starbar.id,
             auth_key : sayso.starbar.authKey,
             user_id : sayso.starbar.user.id,
-            user_key : sayso.starbar.user.key
+            user_key : sayso.starbar.user.key,
+            visibility : sayso.starbar.state.visibility
         };
         
         if (sayso.client) { // we must be on the customer's page
             params.client_name = sayso.client.name;
             params.client_uuid = sayso.client.uuid;
-            params.client_uuid_type = sayso.client.uuid_type;
+            params.client_uuid_type = sayso.client.uuidType;
         }
         
         $S.ajax({

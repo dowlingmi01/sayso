@@ -38,7 +38,7 @@ switch ($starbar->getVisibility()){
           	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="User Image" />
           </div><!-- .userImg -->
           <div class="sb_content">
-            <h2>Hi Tatanisha</h2>
+            <h2>Hi <?= $this->user->username ?></h2>
             <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-profile" class="sb_nav_element" rel="sb_popBox_user-profile">Edit Profile</a>
             <div id="sb_popBox_user-profile" class="sb_popBox sb_triangle-border">
             </div><!-- .sb_popBox -->
@@ -63,9 +63,7 @@ switch ($starbar->getVisibility()){
             </div><!-- .sb_popBox -->
 
             <div id="sb_popBox_surveys_lg" class="sb_popBox sb_popBoxLg sb_triangle-border">
-            test
             </div><!-- .sb_popBox -->
-
           </li>
           <li id="nav_daily-deals" class="sb_theme_bgGradient"><span href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/daily-deals" class="sb_nav_element"><span class="sb_nav_border">Daily Deals</span></span>
           	<div id="sb_popBox_daily-deals" class="sb_popBox sb_triangle-border">

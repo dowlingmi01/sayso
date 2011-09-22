@@ -89,9 +89,9 @@ class Starbar_ContentController extends Api_GlobalController
 		$completeSurveys = new SurveyCollection();
 		$archiveSurveys = new SurveyCollection();
 
-		$newSurveys->loadSurveysForStarbarAndUser(1, 1, 'poll', 'new');
-		$completeSurveys->loadSurveysForStarbarAndUser(1, 1, 'poll', 'complete');
-		$archiveSurveys->loadSurveysForStarbarAndUser(1, 1, 'poll', 'archive');
+		$newSurveys->loadSurveysForStarbarAndUser(1, $this->user_id, 'poll', 'new');
+		$completeSurveys->loadSurveysForStarbarAndUser(1, $this->user_id, 'poll', 'complete');
+		$archiveSurveys->loadSurveysForStarbarAndUser(1, $this->user_id, 'poll', 'archive');
 
 		$this->view->assign('new_surveys', $newSurveys);
 		$this->view->assign('complete_surveys', $completeSurveys);
@@ -109,9 +109,9 @@ class Starbar_ContentController extends Api_GlobalController
 		$completeSurveys = new SurveyCollection();
 		$archiveSurveys = new SurveyCollection();
 
-		$newSurveys->loadSurveysForStarbarAndUser(1, 1, 'survey', 'new');
-		$completeSurveys->loadSurveysForStarbarAndUser(1, 1, 'survey', 'complete');
-		$archiveSurveys->loadSurveysForStarbarAndUser(1, 1, 'survey', 'archive');
+		$newSurveys->loadSurveysForStarbarAndUser(1, $this->user_id, 'survey', 'new');
+		$completeSurveys->loadSurveysForStarbarAndUser(1, $this->user_id, 'survey', 'complete');
+		$archiveSurveys->loadSurveysForStarbarAndUser(1, $this->user_id, 'survey', 'archive');
 
 		$this->view->assign('new_surveys', $newSurveys);
 		$this->view->assign('complete_surveys', $completeSurveys);
@@ -136,9 +136,10 @@ class Starbar_ContentController extends Api_GlobalController
     {
 		$user = new User();
 		$user->loadData($this->user_id);
+		$this->view->assign('user', $user);
+
 		$userEmail = new User_Email();
 		$userEmail->loadData($user->primary_email_id);
-		$this->view->assign('user', $user);
 		$this->view->assign('user_email', $userEmail);
     }
 

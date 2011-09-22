@@ -43,6 +43,12 @@ class Starbar_IndexController extends Api_AbstractController
     	$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));
     	$starbar->setVisibility('sb_starbar-visOpen');
     	$this->view->starbar = $starbar;
+    	
+    	$this->user_id = 1;
+
+		$user = new User();
+		$user->loadData($this->user_id);
+		$this->view->assign('user', $user);
     }
 }
 

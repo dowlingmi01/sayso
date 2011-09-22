@@ -1279,6 +1279,20 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	color: #fff;
 }
 
+/* popBox loading */
+#sayso-starbar-loading-ajax {
+	float: left;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	font-size: 150%;
+	font-weight: bold;
+}
+#sayso-starbar-ajax-content {
+	min-height: 200px;
+}
+
 /* Embed Poll */
 
 #sayso-starbar-loading-external {
@@ -1287,7 +1301,6 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	width: 100%;
 	height: 100%;
 	text-align: center;
-	top: 30px;
 	font-size: 150%;
 	font-weight: bold;
 }
@@ -1298,10 +1311,12 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 
 /* loading animated gif */
 #sayso-starbar .sb_img_loading, #sayso-starbar-loading-external .sb_img_loading{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -16px 0 0 -32px;
 	width: 32px;
 	height: 32px;
-	display: inline-block;
-	margin: 0px auto;
 	background-image: url('../images/generic/img_ajax-loader.gif');
 	background-repeat: no-repeat;
 	text-indent: -9999px;

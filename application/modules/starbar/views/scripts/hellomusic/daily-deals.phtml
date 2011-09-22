@@ -1,13 +1,11 @@
-  <div class="sb_popBoxInner sb_triangle-solid">
-    <div class="sb_popContent">
-			<div class="sb_header">
-        <h2 class="sb_title"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/logo_hellomusic.png" alt="HelloMusic logo" width="70" /> Deals</h2>
-      </div><!-- .sb_header -->
-      <p>Act fast, deals don't last long! And remember to keep earning <strong class="sb_theme_textHighlight">Notes</strong> by <a href="">sharing</a>.</p>
-      <ul class="sb_listDeals">
-      	<? foreach ($this->deals as $deal) { ?>
-      		<li>
-      			<a href="<?= $deal->itemURL ?>"><img src="<?= $deal->itemImageURL ?>" alt="" class="sb_dealImage" />
+<div class="sb_header">
+	<h2 class="sb_title"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/logo_hellomusic.png" alt="HelloMusic logo" width="70" /> Deals</h2>
+</div><!-- .sb_header -->
+<p>Act fast, deals don't last long! And remember to keep earning <strong class="sb_theme_textHighlight">Notes</strong> by <a href="">sharing</a>.</p>
+<ul class="sb_listDeals">
+	<? foreach ($this->deals as $deal) { ?>
+		<li>
+			<a href="<?= $deal->itemURL ?>"><img src="<?= $deal->itemImageURL ?>" alt="" class="sb_dealImage" />
 				<? if ($deal->status == "SOLD OUT") { ?>
 					<span class="sb_dealStatusBG sb_dealStatusBG_red">
 						<span class="sb_dealStatus">Sold Out</span>
@@ -17,25 +15,23 @@
 						<span class="sb_dealStatus">Almost Sold Out</span>
 					</span>
 				<? } ?>
-				</a>
-				<div class="sb_dealInfo">
-					<p>
-						<span class="sb_itemName"><?= $deal->name ?></span>
-						<a href="<?= $deal->itemURL ?>" target="_blank" class="sb_theme_button_flat">View</a>
-						<? if ((string) $deal->price) { ?>
-							<span class="sb_dealPrice">$<?= $deal->price ?> Deal</span>
-							<? if ((string) $deal->msrp) { ?>
-								<span class="sb_dealMsrp">$<?= $deal->msrp ?> MSRP</span>
-							<? } ?>
-						<? } else { ?>
-							<span class="sb_dealPercentOff"><?= $deal->discountPercentage ?>% OFF!</span>
+			</a>
+			<div class="sb_dealInfo">
+				<p>
+					<span class="sb_itemName"><?= $deal->name ?></span>
+					<a href="<?= $deal->itemURL ?>" target="_blank" class="sb_theme_button_flat">View</a>
+					<? if ((string) $deal->price) { ?>
+						<span class="sb_dealPrice">$<?= $deal->price ?> Deal</span>
+						<? if ((string) $deal->msrp) { ?>
+							<span class="sb_dealMsrp">$<?= $deal->msrp ?> MSRP</span>
 						<? } ?>
-					</p>
-				</div><!-- .sb_dealInfo -->
-				<a href=""><img src="http://<?= BASE_DOMAIN ?>/images/generic/logo_facebook.png" alt="Facebook" /></a>
-				<a href=""><img src="http://<?= BASE_DOMAIN ?>/images/generic/logo_twitter.png" alt="Twitter" /></a>
-			</li>
-      	<? } ?>
-      </ul><!-- .sb_dailyDeal -->
-    </div><!-- .sb_popContent -->
-  </div><!-- .sb_popBoxInner -->
+					<? } else { ?>
+						<span class="sb_dealPercentOff"><?= $deal->discountPercentage ?>% OFF!</span>
+					<? } ?>
+				</p>
+			</div><!-- .sb_dealInfo -->
+			<a href=""><img src="http://<?= BASE_DOMAIN ?>/images/generic/logo_facebook.png" alt="Facebook" /></a>
+			<a href=""><img src="http://<?= BASE_DOMAIN ?>/images/generic/logo_twitter.png" alt="Twitter" /></a>
+		</li>
+	<? } ?>
+</ul><!-- .sb_dailyDeal -->

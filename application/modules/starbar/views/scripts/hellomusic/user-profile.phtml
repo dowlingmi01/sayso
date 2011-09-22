@@ -1,60 +1,56 @@
-  <div class="sb_popBoxInner sb_triangle-solid">
-    <div class="sb_popContent">
-    	<div class="sb_column6040BG">
-        <div class="sb_column60">
-          <div class="sb_header">
-          <h2 class="sb_titlePlain">Welcome Back, <strong class="sb_theme_textHighlight">Alfonso</strong></h2>
-          </div><!-- .sb_header -->
-          <div class="sb_scrollPane">
-          	<ul class="sb_lineList">
-            	<li>
-              	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="User" width="40" class="sb_alignLeft" />
-                <p style="margin-left: 50px">
-                <strong>Username:</strong> <span id="sb_profile_username" class="sb_jeip"><?= $this->user->username ?></span><br />
-                <?= $this->user_email->email ?>
-                </p>
-              </li>
-              <li>
-              	[ FACEBOOK LIKE BUTTON ]
-            	</li>
-              <li>
-              <h2 class="sb_titlePlain">Link Your Accounts</h2>
-              <p>
-              	<span id="sb_profile_facebook" class="sb_connect_facebook sb_connected">http://www.facebook.com</span>
-                <span id="sb_profile_twitter" class="sb_connect_twitter sb_unconnected">http://www.twitter.com</span>
-              </p>
-              </li>
-            </ul>
-          </div><!-- .sb_scrollPane -->
-        </div><!-- .sb_column60 -->
-        <div class="sb_column40">
-          <div class="sb_header">
-            <h2 class="sb_titlePlain">What's New Today</h2>
-          </div><!-- .sb_header -->
-          	<ul class="sb_lineList">
-              <li>
-              <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/polls" class="sb_nav_element" rel="sb_popBox_polls">4 New Polls</a><br />
-              <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/surveys" class="sb_nav_element" rel="sb_popBox_surveys">2 New Polls</a><br />
-              <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/daily-deals" class="sb_nav_element" rel="sb_popBox_daily-deals">6 New Daily Deals</a>
-              </li>
-          	</ul>
-            <div class="sb_header">
-            <h2 class="sb_titlePlain">My Stats</h2>
-          </div><!-- .sb_header -->
+<div class="sb_column6040BG">
+	<div class="sb_column60">
+		<div class="sb_header">
+			<h2 class="sb_titlePlain">Welcome Back, <strong class="sb_theme_textHighlight"><?= $this->user->username ?></strong></h2>
+		</div><!-- .sb_header -->
+		<div class="sb_scrollPane">
+			<ul class="sb_lineList">
+				<li>
+					<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="User" width="40" class="sb_alignLeft" />
+					<p style="margin-left: 50px">
+						<strong>Username:</strong> <span id="sb_profile_username" class="sb_jeip"><?= $this->user->username ?></span><br />
+						<?= $this->user_email->email ?>
+					</p>
+				</li>
+				<li>
+					[ FACEBOOK LIKE BUTTON ]
+				</li>
+				<li>
+					<h2 class="sb_titlePlain">Link Your Accounts</h2>
+					<p>
+						<span id="sb_profile_facebook" class="sb_connect_facebook sb_connected">http://www.facebook.com</span>
+						<span id="sb_profile_twitter" class="sb_connect_twitter sb_unconnected">http://www.twitter.com</span>
+					</p>
+				</li>
+			</ul>
+		</div><!-- .sb_scrollPane -->
+	</div><!-- .sb_column60 -->
+	<div class="sb_column40">
+		<div class="sb_header">
+			<h2 class="sb_titlePlain">What's New Today</h2>
+		</div><!-- .sb_header -->
+		<ul class="sb_lineList">
+			<li>
+				<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/polls" class="sb_nav_element" rel="sb_popBox_polls">4 New Polls</a><br />
+				<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/surveys" class="sb_nav_element" rel="sb_popBox_surveys">2 New Polls</a><br />
+				<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/daily-deals" class="sb_nav_element" rel="sb_popBox_daily-deals">6 New Daily Deals</a>
+			</li>
+		</ul>
+		<div class="sb_header">
+			<h2 class="sb_titlePlain">My Stats</h2>
+		</div><!-- .sb_header -->
 
-            <p>
-            	<strong>Level 1. <span class="sb_userLevelColor1">Musician</span></strong>
-            </p>
-            <p>
-            	<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level">80 Notes</a><br />
-              <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level">430 Chops</a><br />
-              <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level">Redeem Rewards</a>
-            </p>
-            <br />
-            <p>
-            	<a href="" class="sb_theme_button"><span class="sb_theme_buttonArrow">Recommend to a Friend</span></a>
-            </p>
-        </div><!-- .sb_column40 -->
-      </div><!-- .sb_column6040BG -->
-    </div><!-- .sb_popContent -->
-  </div><!-- .sb_popBoxInner -->
+		<p>
+			<strong>Level 1. <span class="sb_userLevelColor1">Musician</span></strong>
+		</p>
+		<p>
+			<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level">80 Notes</a><br />
+			<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level">430 Chops</a><br />
+			<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level">Redeem Rewards</a>
+		</p>
+		<br />
+		<p>
+			<a href="" class="sb_theme_button"><span class="sb_theme_buttonArrow">Recommend to a Friend</span></a>
+		</p>
+	</div><!-- .sb_column40 -->
+</div><!-- .sb_column6040BG -->

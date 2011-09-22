@@ -402,37 +402,47 @@ $S(function(){
 		return;
 	}
 
-	function openPopBox(elem, src){
+	function openPopBox(popBox, src){
 		closePopBox();
-		var popBox = elem;
 
+		popBox.html('<div class="sb_popBoxInner sb_triangle-solid"><div class="sb_popContent"></div></div>');
+		popContent = popBox.find('.sb_popContent');
 		// if the src string is specified, load via ajax (jsonp), then call this function again without the src
-		if (src) {
-			$S.ajaxWithAuth({
-				url : src,
-				success : function (response, status) {
-					popBox.html(response.data.html);
-					initElements();
-					openPopBox(elem, null);
-    			}
-			});
-		// show the popBox
-		} else {
-			popBox.show();
-			popBox.addClass('sb_popBoxActive');
-			activateAccordion(popBox);
-			activateScroll(popBox);
-			activateTabs(popBox);
-			activateProgressBar(popBox);
+		popContent.html('<div id="sayso-starbar-loading-ajax"><span class="sb_img_loading">Loading</span></div><div id="sayso-starbar-ajax-content"></div>');
+		var loadingElement = popContent.find('#sayso-starbar-loading-ajax');
+		var ajaxContentContainer = popContent.find('#sayso-starbar-ajax-content');
+		
+		popBox.show();
+		popBox.addClass('sb_popBoxActive');
 
-			// if we're a regular nav item, turn on the highlight
-			var parentClick = elem.parent();
-			if (parentClick.children('span.sb_nav_border')){
-				$S('span.sb_nav_border',parentClick).addClass('sb_theme_navOnGradient');
-			}
+		$S.ajaxWithAuth({
+			url : src,
+			success : function (response, status) {
+				ajaxContentContainer.html(response.data.html);
+				initElements();
+				showPopBoxContents(popBox, loadingElement, ajaxContentContainer);
+    		}
+		});
+	}
+
+	function showPopBoxContents(popBox, loadingElement, ajaxContentContainer) {
+		activateAccordion(popBox);
+		activateScroll(popBox);
+		activateTabs(popBox);
+		activateProgressBar(popBox);
+
+		// if we're a regular nav item, turn on the highlight
+		var parentClick = popBox.parent();
+		if (parentClick.children('span.sb_nav_border')){
+			$S('span.sb_nav_border',parentClick).addClass('sb_theme_navOnGradient');
 		}
 
-		return;
+		// Fade out loading element
+		loadingElement.fadeTo(500, 0);
+		// Set display to none to avoid mouse click issues
+		setTimeout(function() {loadingElement.css('display', 'none');}, 500);
+		// Fade in the container.
+		ajaxContentContainer.fadeTo(500, 1);
 	}
 
 	function showAlerts(target){

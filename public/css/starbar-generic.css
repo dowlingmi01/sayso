@@ -1283,12 +1283,13 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 /* popBox loading */
 #sayso-starbar-loading-ajax {
 	float: left;
+}
+.sb_popBoxLoading {
+	float: left;
 	position: absolute;
 	width: 100%;
 	height: 100%;
 	text-align: center;
-	font-size: 150%;
-	font-weight: bold;
 }
 #sayso-starbar-ajax-content {
 	min-height: 200px;

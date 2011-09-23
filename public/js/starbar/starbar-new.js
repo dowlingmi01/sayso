@@ -54,7 +54,7 @@ $S(function(){
 				closePopBox(thisPopBox);
 			}else{
 				closePopBox();
-				openPopBox(thisPopBox, thisPopBoxSrc);
+				openPopBox(thisPopBox, thisPopBoxSrc, false);
 			}
 			
 		}  // shift
@@ -175,8 +175,8 @@ $S(function(){
 						closePopBox(thisPopBox);
 					}else{
 						// check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
-            var thisPopBoxSrc = $S(this).attr('href');
-						openPopBox(thisPopBox, thisPopBoxSrc);
+            			var thisPopBoxSrc = $S(this).attr('href');
+						openPopBox(thisPopBox, thisPopBoxSrc, false);
 					}
 				}
 			},
@@ -241,7 +241,7 @@ $S(function(){
 
 						// check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
 		  				var thisPopBoxSrc = $S(this).attr('href');
-			  			openPopBox(thisPopBox, thisPopBoxSrc);
+			  			openPopBox(thisPopBox, thisPopBoxSrc, true);
 
 						// try to turn on the nav highlight if it opened a "large" sub popbox
 						if (targetPopBox != ''){
@@ -402,29 +402,53 @@ $S(function(){
 		return;
 	}
 
-	function openPopBox(popBox, src){
+	/* open (i.e. show) a popBox, optionally loading a source via AJAX in the process
+	* popBox: the element to write into (emptied first!)
+	* src: the URL to load into the popBox (set to false to not load via AJAX)
+	* withLoadingElement: true to insert loading elements before loading via AJAX (ignored if src is false)
+	*/
+	function openPopBox(popBox, src, withLoadingElement){
+		var ajaxContentContainer = null;
+		var loadingElement = null;
+		
 		closePopBox();
 
-		popBox.html('<div class="sb_popBoxInner sb_triangle-solid"><div class="sb_popContent"></div></div>');
-		popContent = popBox.find('.sb_popContent');
-		// if the src string is specified, load via ajax (jsonp), then call this function again without the src
-		popContent.html('<div id="sayso-starbar-loading-ajax"><span class="sb_img_loading">Loading</span></div><div id="sayso-starbar-ajax-content"></div>');
-		var loadingElement = popContent.find('#sayso-starbar-loading-ajax');
-		var ajaxContentContainer = popContent.find('#sayso-starbar-ajax-content');
+		if (src && withLoadingElement) {  // insert loading elements into popBox, then load content into inner container
+			// fill in the container with loading div and container divs
+			popBox.html('<div class="sb_popBoxInner"><div class="sb_popContent"></div></div>');
+			popContent = popBox.find('.sb_popContent');
+			// if the src string is specified, load via ajax (jsonp), then call this function again without the src
+			popContent.html('<div id="sayso-starbar-loading-ajax"><span class="sb_img_loading">Loading</span></div><div id="sayso-starbar-ajax-content"></div>');
+			loadingElement = popContent.find('#sayso-starbar-loading-ajax');
+			ajaxContentContainer = popContent.find('#sayso-starbar-ajax-content');  // the inner container for the content
+		} else if (src) {   // insert into popBox directly
+			popBox.html(''); // clear current contents
+			ajaxContentContainer = popBox; // insert into popBox directly
+		} else {
+			ajaxContentContainer = popBox; // insert into popBox directly
+		}
+		
+		if (src && withLoadingElement) {
+			popBox.fadeTo(500, 1); // fade in the loading element
+		}
 		
 		popBox.show();
 		popBox.addClass('sb_popBoxActive');
 
-		$S.ajaxWithAuth({
-			url : src,
-			success : function (response, status) {
-				ajaxContentContainer.html(response.data.html);
-				initElements();
-				showPopBoxContents(popBox, loadingElement, ajaxContentContainer);
-    		}
-		});
+		if (src) {
+			$S.ajaxWithAuth({
+				url : src,
+				success : function (response, status) {
+					ajaxContentContainer.html(response.data.html);
+					initElements();
+					showPopBoxContents(popBox, loadingElement, ajaxContentContainer);
+    			}
+			});
+		} else {
+			showPopBoxContents(popBox, false, ajaxContentContainer);
+		}
 	}
-
+	
 	function showPopBoxContents(popBox, loadingElement, ajaxContentContainer) {
 		activateAccordion(popBox);
 		activateScroll(popBox);
@@ -437,11 +461,19 @@ $S(function(){
 			$S('span.sb_nav_border',parentClick).addClass('sb_theme_navOnGradient');
 		}
 
-		// Fade out loading element
-		loadingElement.fadeTo(500, 0);
-		// Set display to none to avoid mouse click issues
-		setTimeout(function() {loadingElement.css('display', 'none');}, 500);
-		// Fade in the container.
+		if (loadingElement) {
+			// Hide the container (even though it's already hidden with 
+			ajaxContentContainer.fadeTo(0, 0);
+			// Fade out loading element
+			loadingElement.fadeTo(500, 0);
+			// Set display to none to avoid mouse click issues
+			setTimeout(function() {loadingElement.css('display', 'none');}, 500);
+		} else {
+			// Hide the container
+			ajaxContentContainer.fadeTo(0, 0);
+			ajaxContentContainer.css('display', 'block');
+		}
+		// Fade in the content (container)
 		ajaxContentContainer.fadeTo(500, 1);
 	}
 
@@ -499,8 +531,9 @@ $S(function(){
 
 		var panes = $S('.sb_scrollPane',target);
 		panes.each(function(i) {
-			var paragraph = $S('p',$S(this).parent());
-			var paragraphHeight = paragraph.height()+eval(paragraph.css('margin-top').replace('px',''))+eval(paragraph.css('margin-bottom').replace('px',''));
+			var paragraph = $S('.sb_tabHeader',$S(this).parent());
+			var paragraphHeight = 0;
+			paragraph.each(function(i) {paragraphHeight += paragraph.height()+eval(paragraph.css('margin-top').replace('px',''))+eval(paragraph.css('margin-bottom').replace('px',''));});
 			$S(this).css('height',contentHeight-(headerHeight+paragraphHeight));
 			$S(this).jScrollPane();
 		});

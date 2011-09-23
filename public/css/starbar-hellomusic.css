@@ -593,7 +593,7 @@
 	top: auto;
 	left: 40px;
 	right: auto;
-	bottom: 0px;
+	bottom: 5px;
 	background-image: url('../images/hellomusic/img_onboard_nav.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
@@ -641,7 +641,7 @@
 	text-align: center;
 	line-height: 40px;
 	position: absolute;
-	bottom: 0px;
+	bottom: 5px;
 	z-index: 9999;
 	left: 300px;
 	font-weight: bold;
@@ -657,7 +657,7 @@
 	text-transform: none;
 	font-size: 18px;
 	position: absolute;
-	bottom: 45px;
+	bottom: 50px;
 	text-align: center;
 	width: 100%;
 	font-weight: normal;

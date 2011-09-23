@@ -47,6 +47,7 @@ $S(function(){
 		}  // esc
 		
 		if (e.keyCode == 16) {
+		    return; // don't fire this. It's annoying. Onboard popup will happen based on conditional logic (which I'm working on next) - David
 			var thisPopBox = $S('#sb_popBox_onboard');
 			var thisPopBoxSrc = $S('#sb_popBox_onboard').attr('href');
 			

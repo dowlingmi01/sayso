@@ -3,15 +3,19 @@
 $starbar = $this->starbar;
 /* @var $starbar Starbar */
 
+$user = $this->user;
+/* @var $user User */
+
 switch ($starbar->getVisibility()){
-    case 'sb_starbar-visOpen':
-        $buttonVisibility = 'sb_btnStarbar-open';
-        break;
     case 'sb_starbar-visClosed':
         $buttonVisibility = 'sb_btnStarbar-closed';
         break;
     case 'sb_starbar-visStowed':
         $buttonVisibility = 'sb_btnStarbar-stowed';
+        break;
+    case 'sb_starbar-visOpen':
+    default :
+        $buttonVisibility = 'sb_btnStarbar-open';
         break;
 }
 ?>
@@ -38,7 +42,7 @@ switch ($starbar->getVisibility()){
           	<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="User Image" />
           </div><!-- .userImg -->
           <div class="sb_content">
-            <h2>Hi <?= $this->user->username ?></h2>
+            <h2>Hi <?= $user->getTitle() ?></h2>
             <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-profile" class="sb_nav_element" rel="sb_popBox_user-profile">Edit Profile</a>
             <div id="sb_popBox_user-profile" class="sb_popBox sb_triangle-border">
             </div><!-- .sb_popBox -->

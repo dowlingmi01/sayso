@@ -38,7 +38,7 @@ class User extends Record implements Titled
     
     public function getTitle ()
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return $this->username;
     }
     
     public function setEmail (User_Email $email) {

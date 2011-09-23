@@ -55,6 +55,13 @@ class Starbar extends Record
         $this->_user = $user;
     }
     
+    /**
+     * @return User
+     */
+    public function getUser () {
+        return $this->_user;
+    }
+    
     public function setVisibility ($visibility) {
         $this->_visibility = $visibility;
     }

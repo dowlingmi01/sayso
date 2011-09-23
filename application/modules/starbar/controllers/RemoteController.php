@@ -16,10 +16,15 @@
  */
 class Starbar_RemoteController extends Api_AbstractController
 {
+    private static $_errorControllerSet = false;
+    
     public function preDispatch() {
-        Zend_Controller_Front::getInstance()
-            ->getPlugin('Zend_Controller_Plugin_ErrorHandler')
-            ->setErrorHandlerModule(Api_Bootstrap::$moduleName);
+        if (!self::$_errorControllerSet) {
+            Zend_Controller_Front::getInstance()
+                ->getPlugin('Zend_Controller_Plugin_ErrorHandler')
+                ->setErrorHandlerModule(Api_Bootstrap::$moduleName);
+            self::$_errorControllerSet = true;
+        }
     }
     
     /**
@@ -42,11 +47,25 @@ class Starbar_RemoteController extends Api_AbstractController
             // the user IP/UserAgent which will protect us from conflicts during 
             // installation/authentication. (scenario: multiple users sharing an IP
             // and who also happen to have the exact same browser and version number)
-            // ALSO, only delete if install_begin_time is more than 2 minutes ago
+            // ALSO, only delete if install_begin_time is more than 1 minute ago
             // so that we honor multi-tab/slow installing
             // @todo figure out a better approach so this doesn't have to be run
             // for every request (me wishes it could be done asyncronously)
-            Db_Pdo::execute('UPDATE external_user SET install_ip_address = NULL, install_user_agent = NULL WHERE user_id = ? AND timestampdiff(MINUTE, install_begin_time, now()) >= 2', $this->user_id);
+            // @todo save IP/UA for statistical purposes
+            
+            $externalUserData = Db_Pdo::fetch('SELECT * FROM external_user WHERE user_id = ?', $this->user_id);
+            if ($externalUserData['install_ip_address']) {
+                $install = new External_UserInstall();
+                $install->external_user_id = $externalUserData['id'];
+                $install->token = $externalUserData['install_token'];
+                $install->ip_address = $externalUserData['install_ip_address'];
+                $install->user_agent = $externalUserData['install_user_agent'];
+                $install->begin_time = $externalUserData['install_begin_time'];
+                $install->completed_time = new Zend_Db_Expr('now()');
+                $install->save();
+                
+                Db_Pdo::execute('UPDATE external_user SET install_ip_address = NULL, install_user_agent = NULL, install_begin_time = NULL WHERE id = ? AND timestampdiff(SECOND, install_begin_time, now()) >= 30', $externalUserData['id']);
+            }
                     
             if ($this->starbar_id) {
                 
@@ -65,8 +84,7 @@ class Starbar_RemoteController extends Api_AbstractController
                 
                 // so verify that the user id matches the uuid
                 // if NOT, then switch users
-                $checkExternalUser = Db_Pdo::fetch('SELECT * FROM external_user WHERE user_id = ?', $this->user_id);
-                if ($checkExternalUser['uuid'] !== $this->client_uuid) {
+                if ($externalUserData['uuid'] !== $this->client_uuid) {
                     // user change! (on same browser/computer)
                     // create/update external user
                     $externalUser = new External_User();
@@ -390,6 +408,7 @@ class Starbar_RemoteController extends Api_AbstractController
     public function gagaAction () 
     {
         $this->render();
+        $this->_enableRenderer(new Api_Plugin_JsonPRenderer());
         return $this->_resultType(new Object(array('html' => $this->getResponse()->getBody())));
     }
     
@@ -406,23 +425,23 @@ class Starbar_RemoteController extends Api_AbstractController
      */
     public function hellomusicAction () {
         
+        // get Starbar passed via index or post-install-deliver
+        // and assign it to the view
+        $starbar = $this->_getStarbarObject();
+        $this->view->assign('starbar', $starbar);
+        $this->view->assign('user', $starbar->getUser());
+        
+        // render the view manually, we will pass it back in the JSON
         $this->render();
         
-        $starbar = $this->_getStarbarObject();
+        // setup Hello Music specific data
         $starbar->setApiAuthKey(Api_Registry::getConfig()->api->helloMusic->authKey);
         $starbar->setCssUrl('http://' . BASE_DOMAIN . '/css/starbar-hellomusic.css');
-        $starbar->setHtml($this->getResponse()->getBody()); 
+        $starbar->setHtml($this->getResponse()->getBody());
+
+        // return Starbar via JSON-P
+        $this->_enableRenderer(new Api_Plugin_JsonPRenderer());
         return $this->_resultType($starbar);
-    }
-    
-    /**
-     * Setup renderer
-     */
-    public function postDispatch() {
-        if (!in_array($this->_request->getActionName(), array('index'))) {
-            // for actual starbar, setup JSONP renderer
-            $this->_enableRenderer(new Api_Plugin_JsonPRenderer());
-        }
     }
     
     /**

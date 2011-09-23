@@ -361,11 +361,10 @@ $S(function(){
                     width: '45'
                 }, 300, function() {
                     // Animation complete.
-                    $S(this).attr('class','').addClass('sb_starbar-visStowed');
-                    btnSaySoLogo.css('width','');
-            				elemSaySoLogoBorder.hide();
-										elemPlayerConsole.css('background-image','none');
-                    updateState('sb_starbar-visStowed');
+                	$S(this).attr('class','').addClass('sb_starbar-visStowed');
+                  btnSaySoLogo.css('width','');
+            			elemSaySoLogoBorder.hide();
+                  updateState('sb_starbar-visStowed');
             });
 	    }
 	    function _openBar () {
@@ -373,13 +372,14 @@ $S(function(){
             elemSaySoLogoBorder.hide();
             elemVisControls.hide();
             btnSaySoLogo.css('backgroundPosition','');
-						elemPlayerConsole.css('background-image',elemSaySoBarBG);
+						elemPlayerConsole.addClass('sb_starbar-visBG');
             hideAlerts();
             elemPlayerConsole.animate({
                     width: '100%'
                 }, 500, function() {
                     // Animation complete.
                     $S(this).attr('class','').addClass('sb_starbar-visOpen');
+										$S(this).removeClass('sb_starbar-visBG');
                     elemStarbarMain.fadeIn('fast');
                     elemVisControls.fadeIn('fast');
                     btnToggleVis.addClass('sb_btnStarbar-open');

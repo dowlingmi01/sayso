@@ -2,6 +2,13 @@
 	background-image: url('../images/hellomusic/bg_bar.png');
 }
 
+
+#sayso-starbar #starbar-player-console.sb_starbar-visBG{	
+	background-image: url('../images/hellomusic/bg_bar.png');
+	background-repeat: repeat-x ;
+	background-position: 0px bottom;
+}
+
 /* turn off starbar type background + switcher */
 #sayso-starbar #starbar-player-console #starbar-type .sb_changeTheme{
 	display: none;

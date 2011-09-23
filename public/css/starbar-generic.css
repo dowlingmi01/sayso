@@ -240,6 +240,13 @@ html {
 	position: fixed;
 	z-index: 1000;
 }
+
+#sayso-starbar #starbar-player-console.sb_starbar-visBG{	
+	background-image: url('../images/bg_bar.png');
+	background-repeat: repeat-x;
+	background-position: 0px bottom;
+}
+
 /* define the console / sub-items for various states */
 
 #sayso-starbar #starbar-player-console.sb_starbar-visOpen {

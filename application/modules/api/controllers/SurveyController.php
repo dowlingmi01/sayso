@@ -26,6 +26,18 @@ class Api_SurveyController extends Api_GlobalController
         return $this->_resultType(true);
     }
 
+    public function surveyGizmoDisqualifyAction ()
+    {
+		$request = $this->getRequest();
+		$surveyId = (int) $request->getParam('survey_id');
+		$userId = (int) $request->getParam('user_id');
+
+		$this->_markSurveyUserDisqualified($surveyId, $userId);
+
+        // success
+        return $this->_resultType(true);
+    }
+
     public function userPollSubmitAction () {
 		$request = $this->getRequest();
 		$surveyId = (int) $request->getParam('survey_id');
@@ -60,6 +72,9 @@ class Api_SurveyController extends Api_GlobalController
 	}
 		
 
-    
+    private function _markSurveyUserDisqualified ($surveyId, $userId) {
+    	// @todo mark disqualified users differently?
+    	$this->_markSurveyCompletedByUser($surveyId, $userId);
+	}
 }
 

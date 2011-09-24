@@ -67,6 +67,21 @@ class Starbar_ContentController extends Api_GlobalController
 		}
 	}
 
+    public function surveyDisqualifyAction ()
+    {
+    	// this page is fetched via an iframe, not ajax;
+    	$this->_usingJsonPRenderer = false;
+
+		$request = $this->getRequest();
+		$surveyId = $request->getParam('survey_id');
+		if ($surveyId) {
+			$survey = new Survey();
+			$survey->loadData($surveyId);
+
+			$this->view->assign('survey', $survey);
+		}
+	}
+
     public function surveyCompleteAction ()
     {
     	// this page is fetched via an iframe, not ajax;

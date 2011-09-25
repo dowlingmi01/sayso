@@ -54,13 +54,6 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
     public function routeShutdown(Zend_Controller_Request_Abstract $request) {
         $currentModule = strtolower($request->getModuleName());
         
-        if ($request->getParam('bundle_of_joy')) {
-            foreach (explode('^|^', $request->getParam('bundle_of_joy')) as $keyValue) {
-                $parts = explode('^-^', $keyValue);
-                $request->setParam($parts[0], $parts[1]);
-            }
-        }
-        
         if ($currentModule === 'api') return;
         
         $userKey = $request->getParam(Api_Constant::USER_KEY);

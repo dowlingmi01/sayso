@@ -7,6 +7,24 @@ class Starbar_ContentController extends Api_GlobalController
 	// Render with JsonP by default
 	protected $_usingJsonPRenderer = true;
 
+	public function preDispatch()
+	{
+		$request = $this->getRequest();
+		/*
+		* bundle_of_joy is the variable sent to and from SurveyGizmo.
+		* It is a 'manually' serialized list of variables and values, where ^|^ seperates variables
+		* from each other, and ^-^ seperates variable names from variable values. Example:
+		* GET version: ?user_id=1&user_key=123&auth_key=abc
+		* bundle_of_joy version: ?bundle_of_joy=user_id^-^1^|^user_key^-^123^|^auth_key^-^abc
+		*/
+        if ($request->getParam('bundle_of_joy')) {
+            foreach (explode('^|^', $request->getParam('bundle_of_joy')) as $keyValue) {
+                $parts = explode('^-^', $keyValue);
+                $request->setParam($parts[0], $parts[1]);
+            }
+        }
+	}   
+
     public function postDispatch()
     {
     	if ($this->_usingJsonPRenderer) {
@@ -65,6 +83,12 @@ class Starbar_ContentController extends Api_GlobalController
 			$bundleOfJoy = $this->_getBundleOfJoy($surveyId);
 			$this->view->assign('bundle_of_joy', $bundleOfJoy);
 		}
+	}
+
+    public function surveyUnavailableAction ()
+    {
+    	// this page is fetched via an iframe, not ajax;
+    	$this->_usingJsonPRenderer = false;
 	}
 
     public function surveyDisqualifyAction ()

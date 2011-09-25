@@ -117,6 +117,39 @@ $S(function () {
             tweet = '';
         });
     }
+    
+    // Facebook Like
+    
+    var likeButtons = $S('iframe[src*="facebook.com/plugins/like.php"],iframe[src*="facebook.com/widgets/like.php"]');
+    
+    if (likeButtons.length) {
+        var liked = false;
+        likeButtons.bind('mouseover', function (eventOver) {
+            //sayso.log('Over Like');
+            
+            // only register 1 Like event per page
+            if (liked) return;
+            
+            var timerRunning = true;
+            
+            // register Like if mouse stays over for enough time
+            // to aim, click and get feedback (button changes)
+            var mouseOutTimer = setTimeout(function () {
+                timerRunning= false;
+                liked = true;
+                //sayso.log('Like!');
+                sayso.helper.socialActivity(location.href, '', 1);
+            }, 700); // aim + click + feedback
+            
+            // cancel Like if mouse passes back out quickly
+            $S(this).unbind('mouseout').bind('mouseout', function (eventOut) {
+                if (timerRunning) {
+                    timerRunning = false;
+                    clearTimeout(mouseOutTimer);
+                }
+            });
+        });
+    }
 });
 
 

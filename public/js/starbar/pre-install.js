@@ -1,12 +1,11 @@
-// Before providing this to client fix the base domain
-
 /**
- * Pre-install setup. Handles updating install link to correct install for browser
+ * Starbar Pre-install Setup. 
+ * 
+ * Handles updating install link to correct install for browser
  * as well as injecting an iframe which connects the user agent with sayso servers
  * 
- * - put this on the "landing page" where your user will install the app
- * - this JS must be AFTER the "Client post-login variables" JS
- * - ensure 'sayso-get-app' id is added to Install link e.g. <a id="sayso-get-app">Install</a>
+ * - this JS must be called after client variables setup (window.sayso.client)
+ * - ensure 'sayso-get-app' id is added to install link e.g. <a id="sayso-get-app">Install</a>
  * 
  * @author davidbjames
  */
@@ -14,11 +13,11 @@
         
     if (!window.sayso || !window.sayso.client || !window.sayso.client.uuid) return;
     
-    var saysoDomain = 'local.sayso.com';
+    var sayso = window.sayso;
     
     // detect browser and provide appropriate install link
     
-    var browserAppUrl = 'http://' + saysoDomain + '/install';
+    var browserAppUrl = 'http://' + sayso.baseDomain + '/install';
     
     if (navigator.userAgent.match('Firefox')) {
         browserAppUrl += '/firefox/SaySo-DEV.xpi';
@@ -40,7 +39,7 @@
     // and in return set cookies on the client
     
     var iframe = document.createElement('iframe');
-    iframe.src = 'http://' + saysoDomain + '/starbar/remote/pre-install?auth_key=309e34632c2ca9cd5edaf2388f5fa3db&name=' + window.sayso.client.name + '&uuid=' + window.sayso.client.uuid + '&uuid_type=' + window.sayso.client.uuidType + '&install_token=' + getRandomToken();
+    iframe.src = 'http://' + sayso.baseDomain + '/starbar/remote/pre-install?auth_key=309e34632c2ca9cd5edaf2388f5fa3db&client_name=' + sayso.client.name + '&client_uuid=' + sayso.client.uuid + '&client_uuid_type=' + sayso.client.uuidType + '&client_user_logged_in=' + (sayso.client.userLoggedIn ? 'true' : '') + '&install_token=' + getRandomToken();
     iframe.width= '0'; iframe.height = '0'; 
     iframe.scrolling='0'; iframe.style = 'width: 0; height: 0; border: none; display: none;';
     

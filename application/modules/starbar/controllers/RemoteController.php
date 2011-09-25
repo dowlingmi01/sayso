@@ -78,9 +78,9 @@ class Starbar_RemoteController extends Api_AbstractController
                 $starbar->setVisibility($this->visibility);
             }
             
-            if ($this->client_uuid) { 
+            if ($this->client_user_logged_in && $starbar->short_name === $this->client_name) { 
                 // we are on the customer's web site (must be if these params are present)
-                // also client_name and client_uuid_type
+                // client vars: client_name, client_uuid, client_uuid_type
                 
                 // so verify that the user id matches the uuid
                 // if NOT, then switch users
@@ -91,8 +91,10 @@ class Starbar_RemoteController extends Api_AbstractController
                     $externalUser->uuid = $this->client_uuid; // unique
                     $externalUser->uuid_type = $this->client_uuid_type;
                     $externalUser->starbar_id = $starbar->getId(); // unique
+                    // note: we also treat this as a new "install":
                     $externalUser->install_ip_address = $_SERVER['REMOTE_ADDR'];
                     $externalUser->install_user_agent = $_SERVER['HTTP_USER_AGENT'];
+                    $externalUser->install_begin_time = new Zend_Db_Expr('now()');
                     $externalUser->save(); // <-- inserts/updates based on uniques
                     
                     if ($starbar->short_name !== $this->client_name) {
@@ -138,10 +140,10 @@ class Starbar_RemoteController extends Api_AbstractController
     public function preInstallAction () {
         
         // if no external user identifier provided, then ignore this request
-        if (!$this->uuid) return; 
+        if (!$this->client_uuid) return; 
         
         // validate
-        $this->_validateRequiredParameters(array('auth_key', 'name', 'uuid', 'uuid_type', 'install_token'));
+        $this->_validateRequiredParameters(array('auth_key', 'client_name', 'client_uuid', 'client_uuid_type', 'install_token'));
         
         // authorize the app. This just checks that the key exists
         // and if not, throws an API exception
@@ -160,7 +162,7 @@ class Starbar_RemoteController extends Api_AbstractController
             
             // if the uuid of the found user is the same as the current user
             // then just re-use the install token from the cookie
-            if ($externalUserTest['uuid'] === $this->uuid) { 
+            if ($externalUserTest['uuid'] === $this->client_uuid) { 
                 $this->install_token = $_COOKIE['starbar_setup_install_token'];
             } 
             // else
@@ -169,12 +171,12 @@ class Starbar_RemoteController extends Api_AbstractController
         }
         
         // determine Starbar from short name
-        $starbarData = Db_Pdo::fetch('SELECT * FROM starbar WHERE short_name = ?', $this->name);
+        $starbarData = Db_Pdo::fetch('SELECT * FROM starbar WHERE short_name = ?', $this->client_name);
         
         $externalUser = new External_User();
         
-        $externalUser->uuid = $this->uuid; // unique
-        $externalUser->uuid_type = $this->uuid_type;
+        $externalUser->uuid = $this->client_uuid; // unique
+        $externalUser->uuid_type = $this->client_uuid_type;
         $externalUser->starbar_id = $starbarData['id']; // unique
         $externalUser->install_token = $this->install_token;
         $externalUser->save();

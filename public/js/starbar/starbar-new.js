@@ -35,6 +35,8 @@ $S.ajaxWithAuth = function (options) {
 
 $S(function(){
 
+    var sayso = window.sayso;
+    
 	// global var
     var themeColor = '#de40b2';
 
@@ -102,7 +104,7 @@ $S(function(){
 		activateProgressBar();
 		// initializes development-only jquery
 		devInit();
-		log('Loaded and Ready');
+		sayso.log('Loaded and Ready');
 	}
 
 	// initialize the elements
@@ -635,20 +637,5 @@ $S(function(){
         var oldOnFocus = window.onfocus && typeof window.onfocus === 'function' ? window.onfocus : function () {};
         window.onfocus = function () { oldOnFocus(); refreshState(); };
     }
-
-    // "safe" logging functions
-
-    function log () {
-        if (window.sayso.debug && typeof console !== 'undefined' && typeof console.log !== 'undefined' && typeof console.log.apply === 'function') {
-            console.log.apply(console, arguments);
-        }
-    };
-
-    function warn () {
-        if (window.sayso.debug && typeof console !== 'undefined' && typeof console.log !== 'undefined' && typeof console.log.apply === 'function') {
-            console.warn.apply(console, arguments);
-        }
-    };
-
 });
 

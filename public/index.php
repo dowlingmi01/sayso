@@ -15,11 +15,7 @@ defined('APPLICATION_ENV')
 
 define('GLOBAL_LIBRARY_PATH', realpath(APPLICATION_PATH . '/../../library'));
 
-// ensure global library is on include_path
-set_include_path(implode(PATH_SEPARATOR, array(
-    GLOBAL_LIBRARY_PATH,
-    get_include_path(),
-)));
+set_include_path('.' . PATH_SEPARATOR . GLOBAL_LIBRARY_PATH); 
 
 // setup autoloader
 require_once 'Zend/Loader/Autoloader.php';

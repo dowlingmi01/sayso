@@ -43,30 +43,6 @@ class Starbar_RemoteController extends Api_AbstractController
             $this->_validateRequiredParameters(array('user_id', 'auth_key'));
             Api_Auth::getInstance()->authorizeApp($this->auth_key);
             
-            // since the starbar id is known at this point, we can safely delete 
-            // the user IP/UserAgent which will protect us from conflicts during 
-            // installation/authentication. (scenario: multiple users sharing an IP
-            // and who also happen to have the exact same browser and version number)
-            // ALSO, only delete if install_begin_time is more than 1 minute ago
-            // so that we honor multi-tab/slow installing
-            // @todo figure out a better approach so this doesn't have to be run
-            // for every request (me wishes it could be done asyncronously)
-            // @todo save IP/UA for statistical purposes
-            
-            $externalUserData = Db_Pdo::fetch('SELECT * FROM external_user WHERE user_id = ?', $this->user_id);
-            if ($externalUserData['install_ip_address']) {
-                $install = new External_UserInstall();
-                $install->external_user_id = $externalUserData['id'];
-                $install->token = $externalUserData['install_token'];
-                $install->ip_address = $externalUserData['install_ip_address'];
-                $install->user_agent = $externalUserData['install_user_agent'];
-                $install->begin_time = $externalUserData['install_begin_time'];
-                $install->completed_time = new Zend_Db_Expr('now()');
-                $install->save();
-                
-                Db_Pdo::execute('UPDATE external_user SET install_ip_address = NULL, install_user_agent = NULL, install_begin_time = NULL WHERE id = ? AND timestampdiff(SECOND, install_begin_time, now()) >= 30', $externalUserData['id']);
-            }
-                    
             if ($this->starbar_id) {
                 
                 $starbar->loadData($this->starbar_id);
@@ -82,6 +58,7 @@ class Starbar_RemoteController extends Api_AbstractController
                 // we are on the customer's web site (must be if these params are present)
                 // client vars: client_name, client_uuid, client_uuid_type
                 
+                $externalUserData = Db_Pdo::fetch('SELECT * FROM external_user WHERE user_id = ?', $this->user_id);
                 // so verify that the user id matches the uuid
                 // if NOT, then switch users
                 if ($externalUserData['uuid'] !== $this->client_uuid) {

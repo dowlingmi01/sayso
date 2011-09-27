@@ -2,6 +2,14 @@
  * Starbar
  */
 
+ // this function needs to be here so that the popup window can access it via window.opener.refreshConnectExternal()
+ // provider = 'twitter' or 'facebook'
+function refreshConnectExternal(provider){
+	$S('#sb_profile_'+provider).unbind();
+	$S('#sb_profile_'+provider).addClass('sb_connected');
+	$S('#sb_profile_'+provider).removeClass('sb_unconnected');
+}
+	
 $S.ajaxWithAuth = function (options) {
     var starbar_id = null;
     var auth_key = null;
@@ -17,6 +25,9 @@ $S.ajaxWithAuth = function (options) {
         auth_key = window.sayso.starbar.authKey;
     }
     catch (e) {}
+    
+    // @todo remove this: currently user_key is working but not user_id
+    user_id = 1;
 
     options.data = $S.extend(options.data || {}, {
         starbar_id : starbar_id,
@@ -90,6 +101,7 @@ $S(function(){
 	var elemPopBox; // = $S('#sayso-starbar #starbar-player-console .sb_popBox');
 	var elemAlerts; // = $S('#sayso-starbar #starbar-player-console .sb_starbar-alert');
 	var elemPopBoxVisControl; // = $S('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
+	var elemExternalConnect; // = $S('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
 
 	// initialize the starbar
 	initStarBar();
@@ -124,6 +136,7 @@ $S(function(){
 		elemAlerts = $S('#sayso-starbar #starbar-player-console .sb_starbar-alert');
 		elemPopBoxVisControl = $S('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
 		elemTabClick = $S('#sayso-starbar #starbar-player-console .sb_nav_tabs');
+		elemExternalConnect = $S('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
 		
 		// jquery edit in place
 		elemJEIP = $S('#sayso-starbar .sb_jeip');
@@ -295,6 +308,25 @@ $S(function(){
 				
 			});									 
 		
+		});
+		
+		// connect with facebook or twitter
+		elemExternalConnect.each(function(){
+			$S(this).unbind();
+			$S(this).bind({
+				click: function(event){
+					switch($S(this).attr('id')) {
+						case "sb_profile_facebook":
+			  				var windowParameters = 'location=1,status=1,scrollbars=0,width=981,height=440';
+							break;
+							
+						case "sb_profile_twitter":
+			  				var windowParameters = 'location=1,status=1,scrollbars=0,width=750,height=550';
+							break;
+					}
+			  		window.open($S(this).attr('href'), 'sb_window_open', windowParameters);
+				}
+			});
 		});
 		
 

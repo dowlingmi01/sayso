@@ -18,8 +18,16 @@
 				<li>
 					<h2 class="sb_titlePlain">Link Your Accounts</h2>
 					<p>
-						<span id="sb_profile_facebook" class="sb_connect_facebook sb_connected">http://www.facebook.com</span>
-						<span id="sb_profile_twitter" class="sb_connect_twitter sb_unconnected">http://www.twitter.com</span>
+						<? if ($this->facebook_social->user_id) { ?>
+							<span id="sb_profile_facebook" class="sb_connect_facebook sb_connected">http://www.facebook.com</span>
+						<? } else { ?>
+							<span href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/facebook-connect?user_id=<?= $this->user->id ?>&user_key=<?= $this->user_key ?>" id="sb_profile_facebook" class="sb_connect_facebook sb_unconnected">http://www.facebook.com</span>
+						<? } ?>
+						<? if ($this->twitter_social->user_id) { ?>
+							<span id="sb_profile_twitter" class="sb_connect_twitter sb_connected">http://www.twitter.com</span>
+						<? } else { ?>
+							<span href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/redirect-twitter-connect?user_id=<?= $this->user->id ?>&user_key=<?= $this->user_key ?>" id="sb_profile_twitter" class="sb_connect_twitter sb_unconnected">http://www.twitter.com</span>
+						<? } ?>
 					</p>
 				</li>
 			</ul>

@@ -1,0 +1,19 @@
+<? if ($this->success) { ?>
+	<script type="text/javascript">
+		window.opener.refreshConnectExternal('twitter');
+		setTimeout(function() {
+			$S('#sb-survey-completed').fadeIn(500)
+		}, 1000);
+	</script>
+	<div id="sayso-starbar-embed">
+		Thank you, you have successfully connected your Twitter account.<br /><br />
+		<a href="#" onclick="window.close(); return false;">Take me back!</a><br /><br />
+		<div id="sb-survey-completed">
+			<p>Congratulations! You earned <strong class="sb_theme_textHighlight_alt">4 Notes</strong> &amp;  <strong class="sb_theme_textHighlight_alt">1000 Chops</strong></p>
+		</div>
+	</div>
+<? } else { ?>
+	Sorry, we can't connect you to Twitter at this time. Please try again later.
+
+	<a href="#" onclick="window.close(); return false;">Take me back!</span>
+<? } ?>

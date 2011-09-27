@@ -115,6 +115,7 @@
 	position: relative;
 	border: none;
 	float: left;
+	margin: 0 10px 0 10px;
 	}
 	.sg-buttons,
 	.sg-button-bar input {
@@ -127,8 +128,19 @@
 .sg-button-bar {
 	float: left;
 	margin: 0px 0 10px 0;
+	width: 100%;
 	}
 
+#sg_NextButton {
+	float: right;
+}
+.sg-table thead th {
+	color: black;
+}
+.sg-header-row-first tr th {
+	background-color: #B2B2B2;
+}
+	
 .sg-progress-bar {
 	margin-top: 4px;
 	clear: none;

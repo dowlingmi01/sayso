@@ -41,7 +41,7 @@
 							survey.Vote(domain);
 							$S.ajaxWithAuth({
 								url : "http://<?= BASE_DOMAIN ?>/api/survey/user-poll-submit?survey_id=<?= $this->survey->id ?>",
-								success : function () {alert('yay!');}
+								success : function (r, s) {}
 							});
 							survey.ShowResults(domain);
 							setTimeout(function() {

@@ -23,6 +23,11 @@ class Starbar_ContentController extends Api_GlobalController
                 $request->setParam($parts[0], $parts[1]);
             }
         }
+        
+	    if (!($this->user_id && $this->user_key)) {
+	    	echo "No user id or key.";
+	    	exit;
+		}
 	}   
 
     public function postDispatch()
@@ -39,7 +44,7 @@ class Starbar_ContentController extends Api_GlobalController
             $this->view->headScript()->appendFile('/js/starbar/jquery.jeip.js');
         	$this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
 		}
-    }
+}
 
     public function aboutSaysoAction ()
     {
@@ -177,21 +182,132 @@ class Starbar_ContentController extends Api_GlobalController
 		$user->loadData($this->user_id);
 		$this->view->assign('user', $user);
 
+		$this->view->assign('user_key', $this->user_key);
+
+		$facebookSocial = new User_Social();
+		$facebookSocial->loadByUserIdAndProvider($user->id, 'facebook');
+		$this->view->assign('facebook_social', $facebookSocial);
+
+		$twitterSocial = new User_Social();
+		$twitterSocial->loadByUserIdAndProvider($user->id, 'twitter');
+		$this->view->assign('twitter_social', $twitterSocial);
+
 		$userEmail = new User_Email();
 		$userEmail->loadData($user->primary_email_id);
 		$this->view->assign('user_email', $userEmail);
-    }
+	}
 
     public function userLevelAction ()
     {
 
     }
 
-    public function userPointsAction ()
+    public function facebookConnectAction ()
     {
+    	// this page is fetched in a popup, not ajax
+    	$this->_usingJsonPRenderer = false;
 
-    }
-    
+        $config = Api_Registry::getConfig();
+		$request = $this->getRequest();
+
+		$facebook = new Facebook(array(
+			'appId'  => $config->facebook->app_id,
+			'secret' => $config->facebook->secret
+		));
+
+		$user = $facebook->getUser();
+
+		if ($user) {
+			try {
+				$user_profile = $facebook->api('/me');
+			} catch (FacebookApiException $e) {
+				error_log($e);
+				$user = null;
+			}
+		}
+
+		$callbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-connect?user_id=".$this->user_id."&user_key=".$this->user_key;
+		
+		if ($user) {
+			if ($request->getParam('user_id') === Api_UserSession::getInstance()->getId()) {
+			}
+				$userSocial = new User_Social();
+				$userSocial->user_id = $request->getParam('user_id');
+				$userSocial->provider = "facebook";
+				$userSocial->identifier = $user;
+				$userSocial->username = $user_profile['username'];
+				$userSocial->save();
+			//}
+		} else {
+			$this->_redirect($facebook->getLoginUrl());
+		}
+	}
+
+    public function redirectTwitterConnectAction ()
+    {
+        $config = Api_Registry::getConfig();
+
+        $success = false;
+        
+        try {
+			/* Build TwitterOAuth object with client credentials. */
+			$connection = new TwitterOAuth($config->twitter->consumer_key, $config->twitter->consumer_secret);
+
+			$callbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/connect-twitter-result?user_id=".$this->user_id."&user_key=".$this->user_key;
+			
+			/* Get temporary credentials and set the callback URL. */
+			$twitterRequestToken = $connection->getRequestToken($callbackUrl);
+
+			/* Save temporary credentials to session. */
+			$_SESSION['oauth_token'] = $twitterRequestToken['oauth_token'];
+			$_SESSION['oauth_token_secret'] = $twitterRequestToken['oauth_token_secret'];
+
+			if ($twitterRequestToken['oauth_callback_confirmed'] == 'true') $success = true;
+		} catch (Exception $e) {}
+
+		if ($success) {
+			$this->_redirect("http://api.twitter.com/oauth/authorize?oauth_token=".$twitterRequestToken['oauth_token']);
+		}
+	}
+
+    public function connectTwitterResultAction ()
+    {
+    	// this page is fetched in a popup, not ajax
+    	$this->_usingJsonPRenderer = false;
+
+        $config = Api_Registry::getConfig();
+		$request = $this->getRequest();
+
+		/* If the oauth_token is old redirect to the connect page. */
+		if ($request->getParam('oauth_verifier') && $_SESSION['oauth_token'] !== $request->getParam('oauth_token')) {
+			$this->_redirect('/starbar/hellomusic/redirect-twitter-connect');
+		}
+
+        $success = false;
+        
+        try {
+			/* Create TwitteroAuth object with app key/secret and token key/secret from default phase */
+			$connection = new TwitterOAuth($config->twitter->consumer_key, $config->twitter->consumer_secret, $_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
+
+			/* Request access tokens from twitter */
+			$accessToken = $connection->getAccessToken($request->getParam('oauth_verifier'));
+
+			if ($request->getParam('user_id') === Api_UserSession::getInstance()->getId()) {
+			}
+				$userSocial = new User_Social();
+				$userSocial->user_id = $request->getParam('user_id');
+				$userSocial->provider = "twitter";
+				$userSocial->identifier = $accessToken['user_id'];
+				$userSocial->username = $accessToken['screen_name'];
+				$userSocial->save();
+			//}
+
+			$success = true;
+		} catch (Exception $e) {}
+
+		$this->view->assign('success', $success);
+	}
+
     private function _getBundleOfJoy ($surveyId)
     {
     	$bundleOfJoy = "";

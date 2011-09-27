@@ -243,7 +243,7 @@ class Starbar_ContentController extends Api_GlobalController
 		}
 	}
 
-    public function redirectTwitterConnectAction ()
+    public function twitterConnectRedirectAction ()
     {
         $config = Api_Registry::getConfig();
 
@@ -253,7 +253,7 @@ class Starbar_ContentController extends Api_GlobalController
 			/* Build TwitterOAuth object with client credentials. */
 			$connection = new TwitterOAuth($config->twitter->consumer_key, $config->twitter->consumer_secret);
 
-			$callbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/connect-twitter-result?user_id=".$this->user_id."&user_key=".$this->user_key;
+			$callbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/twitter-connect-result?user_id=".$this->user_id."&user_key=".$this->user_key;
 			
 			/* Get temporary credentials and set the callback URL. */
 			$twitterRequestToken = $connection->getRequestToken($callbackUrl);
@@ -270,7 +270,7 @@ class Starbar_ContentController extends Api_GlobalController
 		}
 	}
 
-    public function connectTwitterResultAction ()
+    public function twitterConnectResultAction ()
     {
     	// this page is fetched in a popup, not ajax
     	$this->_usingJsonPRenderer = false;
@@ -280,7 +280,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 		/* If the oauth_token is old redirect to the connect page. */
 		if ($request->getParam('oauth_verifier') && $_SESSION['oauth_token'] !== $request->getParam('oauth_token')) {
-			$this->_redirect('/starbar/hellomusic/redirect-twitter-connect');
+			$this->_redirect('/starbar/hellomusic/twitter-connect-redirect');
 		}
 
         $success = false;

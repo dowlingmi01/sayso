@@ -144,6 +144,9 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('count_new_surveys', sizeof($newSurveys));
 		$this->view->assign('count_complete_surveys', sizeof($completeSurveys));
 		$this->view->assign('count_archive_surveys', sizeof($archiveSurveys));
+
+		$this->view->assign('user_id', $this->user_id);
+		$this->view->assign('user_key', $this->user_key);
 	}
 
     // Fetches surveys for the current user for display

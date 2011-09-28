@@ -325,7 +325,7 @@ class Starbar_ContentController extends Api_GlobalController
     	$bundleOfJoy .= $sep;
     	$bundleOfJoy .= "auth_key" . $eq . $this->auth_key;
     	$bundleOfJoy .= $sep;
-    	$bundleOfJoy .= "survey_id" . $eq . $this->survey_id;
+    	$bundleOfJoy .= "survey_id" . $eq . $surveyId;
     	
     	return $bundleOfJoy;
 		}

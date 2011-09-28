@@ -40,9 +40,6 @@ $S.ajaxWithAuth = function (options) {
     }
     catch (e) {}
     
-    // @todo remove this: currently user_key is working but not user_id
-    user_id = 1;
-
     options.data = $S.extend(options.data || {}, {
         starbar_id : starbar_id,
         user_id : user_id,

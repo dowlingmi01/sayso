@@ -15,6 +15,7 @@ function refreshConnectExternal(provider){
 		case "facebook":
 			elemRefresh = $S('#sb_profile_facebook');
 			break;
+	}
 
 	if (elemRefresh) {
 		elemRefresh.unbind();

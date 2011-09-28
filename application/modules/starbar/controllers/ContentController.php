@@ -209,7 +209,7 @@ class Starbar_ContentController extends Api_GlobalController
     {
     	// this page is fetched in a popup, not ajax
     	$this->_usingJsonPRenderer = false;
-
+        
         $config = Api_Registry::getConfig();
 		$request = $this->getRequest();
 
@@ -232,16 +232,15 @@ class Starbar_ContentController extends Api_GlobalController
 		$callbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-connect?user_id=".$this->user_id."&user_key=".$this->user_key;
 		
 		if ($user) {
-			if ($request->getParam('user_id') === Api_UserSession::getInstance()->getId()) {
+			if ($this->user_id === Api_UserSession::getInstance($this->user_key)->getId()) {
+    			$userSocial = new User_Social();
+    			$userSocial->user_id = $request->getParam('user_id');
+    			$userSocial->provider = "facebook";
+    			$userSocial->identifier = $user;
+    			if (isset($user_profile['username']))
+    				$userSocial->username = $user_profile['username'];
+    			$userSocial->save();
 			}
-				$userSocial = new User_Social();
-				$userSocial->user_id = $request->getParam('user_id');
-				$userSocial->provider = "facebook";
-				$userSocial->identifier = $user;
-				if (isset($user_profile['username']))
-					$userSocial->username = $user_profile['username'];
-				$userSocial->save();
-			//}
 		} else {
 			$this->_redirect($facebook->getLoginUrl());
 		}
@@ -296,15 +295,14 @@ class Starbar_ContentController extends Api_GlobalController
 			/* Request access tokens from twitter */
 			$accessToken = $connection->getAccessToken($request->getParam('oauth_verifier'));
 
-			if ($request->getParam('user_id') === Api_UserSession::getInstance()->getId()) {
-			}
+			if ($this->user_id === Api_UserSession::getInstance($this->user_key)->getId()) {
 				$userSocial = new User_Social();
 				$userSocial->user_id = $request->getParam('user_id');
 				$userSocial->provider = "twitter";
 				$userSocial->identifier = $accessToken['user_id'];
 				$userSocial->username = $accessToken['screen_name'];
 				$userSocial->save();
-			//}
+			}
 
 			$success = true;
 		} catch (Exception $e) {}

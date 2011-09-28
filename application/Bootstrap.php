@@ -54,10 +54,19 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
     public function routeShutdown(Zend_Controller_Request_Abstract $request) {
         $currentModule = strtolower($request->getModuleName());
         
+        // Prevent PHP from creating PHPSESSID cookie so that we don't 
+        // inadvertently overwrite a user's session on a site that uses PHP!
+        // Instead, we will manage keeping the session alive via kobj.net cookie
+        // and pass that as user_key.
+        if ($currentModule === 'api' || $currentModule === 'starbar') {
+            ini_set('session.use_cookies', '0');
+        }
         if ($currentModule === 'api') return;
         
         $userKey = $request->getParam(Api_Constant::USER_KEY);
-        Api_UserSession::init($userKey);
+        if ($userKey) {
+            Api_UserSession::init($userKey);
+        }
         
         $layout = Zend_Layout::startMvc();
         

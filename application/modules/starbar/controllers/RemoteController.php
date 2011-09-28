@@ -40,7 +40,7 @@ class Starbar_RemoteController extends Api_AbstractController
             $starbar = new Starbar();
             $this->view->starbar = $starbar;
             
-            $this->_validateRequiredParameters(array('user_id', 'auth_key'));
+            $this->_validateRequiredParameters(array('user_id', 'user_key', 'auth_key'));
             Api_Auth::getInstance()->authorizeApp($this->auth_key);
             
             if ($this->starbar_id) {
@@ -87,8 +87,15 @@ class Starbar_RemoteController extends Api_AbstractController
                     
                 }
             }
+            
+            // get session and verify
+            $session = Api_UserSession::getInstance($this->user_key);
+            if ($session->getId() !== $this->user_id) {
+                throw new Api_Exception(Api_Error::create(Api_Error::TARGET_USER_MISMATCH));
+            }
             $user = new User();
             $user->loadData($this->user_id);
+            $user->setKey($this->user_key); // <-- keep session key in the loop
             $starbar->setUser($user);
             return $this->_forward(
                 $starbar->short_name, 
@@ -347,7 +354,7 @@ class Starbar_RemoteController extends Api_AbstractController
                 // do nothing for now
         }
         
-        // start the session
+        // start a NEW session
         
         $userSession = Api_UserSession::getInstance();
         // set the user id on the session

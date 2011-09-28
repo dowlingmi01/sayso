@@ -577,9 +577,9 @@ $S(function(){
 
 		var panes = $S('.sb_scrollPane',target);
 		panes.each(function(i) {
-			var paragraph = $S('.sb_tabHeader',$S(this).parent());
+			var paragraphs = $S('.sb_tabHeader',$S(this).parent());
 			var paragraphHeight = 0;
-			paragraph.each(function(i) {paragraphHeight += paragraph.height()+eval(paragraph.css('margin-top').replace('px',''))+eval(paragraph.css('margin-bottom').replace('px',''));});
+			paragraphs.each(function(i) {paragraphHeight += $S(this).height()+eval($S(this).css('margin-top').replace('px',''))+eval($S(this).css('margin-bottom').replace('px',''));});
 			$S(this).css('height',contentHeight-(headerHeight+paragraphHeight));
 			$S(this).jScrollPane();
 		});

@@ -5,9 +5,22 @@
  // this function needs to be here so that the popup window can access it via window.opener.refreshConnectExternal()
  // provider = 'twitter' or 'facebook'
 function refreshConnectExternal(provider){
-	$S('#sb_profile_'+provider).unbind();
-	$S('#sb_profile_'+provider).addClass('sb_connected');
-	$S('#sb_profile_'+provider).removeClass('sb_unconnected');
+	var elemRefresh;
+	
+	switch (provider) {
+		case "twitter":
+			elemRefresh = $S('#sb_profile_twitter');
+			break;
+
+		case "facebook":
+			elemRefresh = $S('#sb_profile_facebook');
+			break;
+
+	if (elemRefresh) {
+		elemRefresh.unbind();
+		elemRefresh.addClass('sb_connected');
+		elemRefresh.removeClass('sb_unconnected');
+	}
 }
 	
 $S.ajaxWithAuth = function (options) {

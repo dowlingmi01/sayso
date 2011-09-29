@@ -172,12 +172,17 @@ class Starbar_ContentController extends Api_GlobalController
     public function onboardingAction ()
     {
 
-	}
+		}
 
     public function promosAction ()
     {
 
     }
+		
+		public function rewardsAction ()
+    {
+
+		}
 
     public function userProfileAction ()
     {

@@ -91,6 +91,21 @@
 }
 
 
+#sayso-starbar #starbar-player-console .sb_theme_button_grey{
+	background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.22, rgb(70,70,70)),
+    color-stop(0.61, rgb(55,55,55)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(70,70,70) 22%,
+			rgb(55,55,55) 61%);
+	background-color: #303030;
+	color: #666;
+}
+
 
 #sayso-starbar #starbar-player-console .sb_theme_button_flat{
 	background-color: #627484;
@@ -223,8 +238,20 @@
 	top: -5px;
 	left: 0;
 	background-image: url('../images/hellomusic/img_star.png');
+	background-repeat: no-repeat;
 	width: 27px;
 	height: 27px;
+}
+
+#sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-note{
+	position: absolute;
+	z-index: 1000;
+	top: -5px;
+	left: 0px;
+	background-image: url('../images/hellomusic/img_note_sm.png');
+	background-repeat: no-repeat;
+	width: 14px;
+	height: 20px;
 }
 
 #sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgNote{
@@ -264,7 +291,8 @@
 #sayso-starbar h3.sb_title,
 #sayso-starbar h2.sb_title,
 #sayso-starbar #starbar-player-console .sb_outlineList li h3,
-#sayso-starbar #starbar-player-console #starbar-type .sb_content .sb_popBox a{
+#sayso-starbar #starbar-player-console #starbar-type .sb_content .sb_popBox a,
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardHeader{
 	color: #0081c5;
 }
 
@@ -670,6 +698,61 @@
 	font-weight: normal;
 }
 
+/* Rewards Popup */
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewards{
+	overflow: hidden;
+	margin: 0px 0px 0px -15px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem{
+	width: 150px;
+	height: 210px;
+	float: left;
+	border: 1px solid #ababab;
+	background-color: #383838;
+	margin: 0px 0px 20px 15px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardHeader{
+	padding: 5px 10px;
+	text-align: center;
+	height: 30px;
+	overflow: hidden;
+	background-color: #fff;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardImg{
+	text-align: center;
+	padding: 5px 0px;
+	height: 85px;
+	background-color: #fff;
+}
+
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardBase{
+	text-align: center;
+	overflow: hidden;
+	padding: 0px 5px 10px 5px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardBase .sb_theme_button{
+	margin: 0px 0px 0px 0px;
+	display: inline-block;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_user-points-box .sb_progressBar{
+	margin: 0px auto;
+	width: 130px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_user-points-box .sb_progressBar img{
+	 margin: -10px 0px 0px -20px; 
+	 vertical-align: text-bottom;
+}
+
+
+
 /* POSITION ALL OF THE POPBOX TRIANGLES */
 
 
@@ -750,6 +833,23 @@
 
 #sayso-starbar #starbar-player-console #sb_popBox_user-profile.sb_popBox .sb_popContent{
 	height: 280px;
+}
+
+/* rewards */
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards {
+	left: auto;
+	right: 0;
+}
+
+#sayso-starbar #sb_popBox_rewards.sb_triangle-border:before{
+	left: 370px;
+}
+#sayso-starbar #sb_popBox_rewards.sb_triangle-border:after{
+	left: 371px;
+}
+#sayso-starbar #sb_popBox_rewards .sb_triangle-solid:after{
+	left: 367px;
 }
 
 /* accordions */

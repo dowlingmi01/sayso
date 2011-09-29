@@ -475,7 +475,7 @@ $S(function(){
 		}
 		
 		if (src && withLoadingElement) {
-			popBox.fadeTo(500, 1); // fade in the loading element
+			popBox.fadeTo(200, 1); // fade in the loading element
 		}
 		
 		popBox.show();
@@ -511,16 +511,16 @@ $S(function(){
 			// Hide the container (even though it's already hidden with 
 			ajaxContentContainer.fadeTo(0, 0);
 			// Fade out loading element
-			loadingElement.fadeTo(500, 0);
+			loadingElement.fadeTo(200, 0);
 			// Set display to none to avoid mouse click issues
-			setTimeout(function() {loadingElement.css('display', 'none');}, 500);
+			setTimeout(function() {loadingElement.css('display', 'none');}, 200);
 		} else {
 			// Hide the container
 			ajaxContentContainer.fadeTo(0, 0);
 			ajaxContentContainer.css('display', 'block');
 		}
 		// Fade in the content (container)
-		ajaxContentContainer.fadeTo(500, 1);
+		ajaxContentContainer.fadeTo(200, 1);
 	}
 
 	function showAlerts(target){

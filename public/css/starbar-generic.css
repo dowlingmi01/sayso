@@ -613,9 +613,15 @@ html {
 	height: 380px;
 }
 #sayso-starbar #starbar-player-console .sb_popBox.sb_popBoxLg .sb_header {
-	padding: 8px 5px 4px 5px;
-	margin: 0;
+	padding: 8px 5px 8px 5px;
+	margin: -15px -15px 0px -20px;
+	background-color: #383838;
 }
+
+#sayso-starbar #starbar-player-console .sb_popBox.sb_popBoxLg .sb_header h2.sb_title{
+	margin: 5px 0px 0px 0px;
+}
+
 /* CUSTOM POPBOX STYLINGS */
 
 
@@ -963,6 +969,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 }
 #sayso-starbar .sb_ui-progressbar .sb_progressBarValue {
 	position: absolute;
+	z-index: 9999;
 	text-align: center;
 	width: 100%;
 	font-size: 11px !important;
@@ -1131,11 +1138,11 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0.22, rgb(6,106,145)), color-stop(0.61, rgb(9,54,77)));
 	background-image: -moz-linear-gradient( center top, rgb(6,106,145) 22%, rgb(9,54,77) 61%);
 	background-color: #084865;
-	font-size: 14px;
+	font-size: 13px;
 	font-weight: normal;
 	text-decoration: none;
 	color: #fff !important;
-	padding: 5px 10px;
+	padding: 4px 10px;
 	box-shadow: 0px 0px 3px #666;
 	-moz-box-shadow: 0px 0px 3px #666;
 	-webkit-box-shadow: 0px 0px 3px #666;
@@ -1148,10 +1155,15 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	font-size: 12px;
 }
 
+#sayso-starbar #starbar-player-console .sb_theme_button_disabled{
+	cursor: default;
+}
+
+
 #sayso-starbar #starbar-player-console .sb_theme_button_grey {
-	background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0.22, rgb(160,160,160)), color-stop(0.61, rgb(130,130,130))) !important;
-	background-image: -moz-linear-gradient( center top, rgb(160,160,160) 22%, rgb(130,130,130) 61%) !important;
-	background-color: #666 !important;
+	background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0.22, rgb(160,160,160)), color-stop(0.61, rgb(130,130,130)));
+	background-image: -moz-linear-gradient( center top, rgb(160,160,160) 22%, rgb(130,130,130) 61%);
+	background-color: #666;
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_button span.sb_theme_buttonArrow {

@@ -2,41 +2,32 @@
  * Starbar
  */
 
- // this function needs to be here so that the popup window can access it via window.opener.refreshConnectExternal()
- // provider = 'twitter' or 'facebook'
-function refreshConnectExternal(provider){
-	var elemRefresh;
-	
-	switch (provider) {
-		case "twitter":
-			elemRefresh = $SQ('#sb_profile_twitter');
-			break;
-
-		case "facebook":
-			elemRefresh = $SQ('#sb_profile_facebook');
-			break;
-	}
-
-	if (elemRefresh) {
-		elemRefresh.unbind();
-		elemRefresh.addClass('sb_connected');
-		elemRefresh.removeClass('sb_unconnected');
-	}
-}
-	
 $SQ.ajaxWithAuth = function (options) {
     var starbar_id = null;
     var auth_key = null;
     var user_id = null;
     var user_key = null;
 
+    try
+    {
+    	sayso = window.sayso;
+    	sayso = top.window.sayso;
+	}
+	catch (e) {}
+    
+    try
+    {
+    	sayso = parent.window.sayso;
+	}
+	catch (e) {}
+    
     // Authenticated?
     try
     {
-        starbar_id = window.sayso.starbar.id;
-        user_id = window.sayso.starbar.user.id;
-        user_key = window.sayso.starbar.user.key;
-        auth_key = window.sayso.starbar.authKey;
+        starbar_id = sayso.starbar.id;
+        user_id = sayso.starbar.user.id;
+        user_key = sayso.starbar.user.key;
+        auth_key = sayso.starbar.authKey;
     }
     catch (e) {}
     
@@ -705,6 +696,28 @@ $SQ(function(){
         app.raise_event('refresh_state');
     }
 
+	 // this function needs to be here so that the popup window can access it via window.opener.sayso.refreshConnectExternal()
+	 // provider = 'twitter' or 'facebook'
+	sayso.refreshConnectExternal = function (provider){
+		var elemRefresh;
+		
+		switch (provider) {
+			case "twitter":
+				elemRefresh = $SQ('#sb_profile_twitter');
+				break;
+
+			case "facebook":
+				elemRefresh = $SQ('#sb_profile_facebook');
+				break;
+		}
+
+		if (elemRefresh) {
+			elemRefresh.unbind();
+			elemRefresh.addClass('sb_connected');
+			elemRefresh.removeClass('sb_unconnected');
+		}
+	}
+	
     // http://www.thefutureoftheweb.com/blog/detect-browser-window-focus
     // I augmented this to include honoring existing focus events
     if (/*@cc_on!@*/false) { // check for Internet Explorer

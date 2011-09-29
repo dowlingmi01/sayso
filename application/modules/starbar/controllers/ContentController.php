@@ -199,7 +199,7 @@ class Starbar_ContentController extends Api_GlobalController
 		public function rewardsAction ()
     {
 
-		}
+	}
 
     public function userProfileAction ()
     {
@@ -252,7 +252,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$callbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-connect?user_id=".$this->user_id."&user_key=".$this->user_key;
 		
 		if ($user) {
-			if ($this->user_id === Api_UserSession::getInstance($this->user_key)->getId()) {
+			if ((int)$this->user_id == (int)Api_UserSession::getInstance($this->user_key)->getId()) {
     			$userSocial = new User_Social();
     			$userSocial->user_id = $this->user_id;
     			$userSocial->provider = "facebook";
@@ -315,7 +315,7 @@ class Starbar_ContentController extends Api_GlobalController
 			/* Request access tokens from twitter */
 			$accessToken = $connection->getAccessToken($request->getParam('oauth_verifier'));
 
-			if ($this->user_id === Api_UserSession::getInstance($this->user_key)->getId()) {
+			if ((int) $this->user_id == (int) Api_UserSession::getInstance($this->user_key)->getId()) {
 				$userSocial = new User_Social();
 				$userSocial->user_id = $this->user_id;
 				$userSocial->provider = "twitter";
@@ -334,7 +334,7 @@ class Starbar_ContentController extends Api_GlobalController
     {
 
     }
-
+    
     protected function _getBundleOfJoy ($surveyId)
     {
     	$bundleOfJoy = "";

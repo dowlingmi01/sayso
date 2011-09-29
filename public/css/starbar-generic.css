@@ -4,7 +4,7 @@
  * v1.6.1 2010-09-17 | Authors: Eric Meyer & Richard Clark
  * html5doctor.com/html-5-reset-stylesheet/
  */
-#sayso-starbar div, #sayso-starbar span, #sayso-starbar object, #sayso-starbar iframe, #sayso-starbar h1, #sayso-starbar h2, #sayso-starbar h3, #sayso-starbar h4, #sayso-starbar h5, #sayso-starbar h6, #sayso-starbar p, #sayso-starbar blockquote, #sayso-starbar pre, #sayso-starbar abbr, #sayso-starbar address, #sayso-starbar cite, #sayso-starbar code, #sayso-starbar del, #sayso-starbar dfn, #sayso-starbar em, #sayso-starbar img, #sayso-starbar ins, #sayso-starbar kbd, #sayso-starbar q, #sayso-starbar samp, #sayso-starbar small, #sayso-starbar strong, #sayso-starbar sub, #sayso-starbar sup, #sayso-starbar var, #sayso-starbar b, #sayso-starbar i, #sayso-starbar dl, #sayso-starbar dt, #sayso-starbar dd, #sayso-starbar ol, #sayso-starbar ul, #sayso-starbar li, #sayso-starbar fieldset, #sayso-starbar form, #sayso-starbar label, #sayso-starbar legend, #sayso-starbar table, #sayso-starbar caption, #sayso-starbar tbody, #sayso-starbar tfoot, #sayso-starbar thead, #sayso-starbar tr, #sayso-starbar th, #sayso-starbar td, #sayso-starbar article, #sayso-starbar aside, #sayso-starbar canvas, #sayso-starbar details, #sayso-starbar figcaption, #sayso-starbar figure, #sayso-starbar footer, #sayso-starbar header, #sayso-starbar hgroup, #sayso-starbar menu, #sayso-starbar nav, #sayso-starbar section, #sayso-starbar summary, #sayso-starbar time, #sayso-starbar mark, #sayso-starbar audio, #sayso-starbar video, #sayso-starbar-embed, #sayso-starbar-embed div, #sayso-starbar-embed p {
+#sayso-starbar div, #sayso-starbar span, #sayso-starbar object, #sayso-starbar iframe, #sayso-starbar h1, #sayso-starbar h2, #sayso-starbar h3, #sayso-starbar h4, #sayso-starbar h5, #sayso-starbar h6, #sayso-starbar p, #sayso-starbar blockquote, #sayso-starbar pre, #sayso-starbar abbr, #sayso-starbar address, #sayso-starbar cite, #sayso-starbar code, #sayso-starbar del, #sayso-starbar dfn, #sayso-starbar em, #sayso-starbar img, #sayso-starbar ins, #sayso-starbar kbd, #sayso-starbar q, #sayso-starbar samp, #sayso-starbar small, #sayso-starbar strong, #sayso-starbar sub, #sayso-starbar sup, #sayso-starbar var, #sayso-starbar b, #sayso-starbar i, #sayso-starbar dl, #sayso-starbar dt, #sayso-starbar dd, #sayso-starbar ol, #sayso-starbar ul, #sayso-starbar li, #sayso-starbar fieldset, #sayso-starbar form, #sayso-starbar label, #sayso-starbar legend, #sayso-starbar table, #sayso-starbar caption, #sayso-starbar tbody, #sayso-starbar tfoot, #sayso-starbar thead, #sayso-starbar tr, #sayso-starbar th, #sayso-starbar td, #sayso-starbar article, #sayso-starbar aside, #sayso-starbar canvas, #sayso-starbar details, #sayso-starbar figcaption, #sayso-starbar figure, #sayso-starbar footer, #sayso-starbar header, #sayso-starbar hgroup, #sayso-starbar menu, #sayso-starbar nav, #sayso-starbar section, #sayso-starbar summary, #sayso-starbar time, #sayso-starbar mark, #sayso-starbar audio, #sayso-starbar video, #sayso-starbar-embed, #sayso-starbar-embed div, #sayso-starbar-embed p, #sayso-starbar-embed a, #sayso-starbar-embed img {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -569,7 +569,7 @@ html {
 #sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent {
 	padding: 5px 5px 5px 10px !important;
 	background-color: #f3f3f3;
-	height: 270px;
+	height: 350px;
 	width: 500px;
 }
 #sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent p {
@@ -660,8 +660,9 @@ html {
 	text-shadow: none;
 }
 #sayso-starbar #starbar-player-console #sb_popBox_polls .sb_nextPoll {
-	float: right;
-	text-align: right;
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
 }
 
 /* surveys */
@@ -1338,6 +1339,11 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar-embed #sb-survey-completed, #sayso-starbar-embed #sb-survey-disqualified {
 	display: none;
 	color: #000;
+}
+
+#sayso-starbar-embed p.sb_embedShare {
+	padding-top: 5px;
+	vertical-align: top;
 }
 
 /* loading animated gif */

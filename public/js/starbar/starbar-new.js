@@ -46,12 +46,15 @@ $S.ajaxWithAuth = function (options) {
         user_key : user_key,
         auth_key : auth_key
     });
-    if (!options.dataType) options.dataType = 'jsonp';
-		options.beforeSend = function(x) {
-			if(x && x.overrideMimeType) {
-			 x.overrideMimeType("application/j-son;charset=UTF-8");
-			}
-	 };
+
+    if (!options.dataType)
+    	options.dataType = 'jsonp';
+
+	options.beforeSend = function(x) {
+		if (x && x.overrideMimeType) {
+			x.overrideMimeType("application/j-son;charset=UTF-8");
+		}
+	};
     return $S.ajax(options);
 };
 
@@ -113,6 +116,7 @@ $S(function(){
 	var elemAlerts; // = $S('#sayso-starbar #starbar-player-console .sb_starbar-alert');
 	var elemPopBoxVisControl; // = $S('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
 	var elemExternalConnect; // = $S('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
+	var elemExternalShare; // = $S('#sayso-starbar #starbar-player-console .sb_externalShare, #sayso-starbar-embed .sb_externalShare');
 
 	// initialize the starbar
 	initStarBar();
@@ -148,7 +152,8 @@ $S(function(){
 		elemPopBoxVisControl = $S('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
 		elemTabClick = $S('#sayso-starbar #starbar-player-console .sb_nav_tabs');
 		elemExternalConnect = $S('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
-		
+		elemExternalShare = $S('#sayso-starbar #starbar-player-console .sb_externalShare, #sayso-starbar-embed .sb_externalShare');
+
 		// jquery edit in place
 		elemJEIP = $S('#sayso-starbar .sb_jeip');
 
@@ -326,20 +331,40 @@ $S(function(){
 			$S(this).unbind();
 			$S(this).bind({
 				click: function(event){
+					var windowParameters = 'location=1,status=1,scrollbars=0';
 					switch($S(this).attr('id')) {
 						case "sb_profile_facebook":
-			  				var windowParameters = 'location=1,status=1,scrollbars=0,width=981,height=440';
+			  				windowParameters += ',width=981,height=440';
 							break;
 							
 						case "sb_profile_twitter":
-			  				var windowParameters = 'location=1,status=1,scrollbars=0,width=750,height=550';
+			  				windowParameters += ',width=750,height=550';
 							break;
 					}
-			  		window.open($S(this).attr('href'), 'sb_window_open', windowParameters);
+					var link = $S(this).attr('href');
+					if (link.indexOf("?") == -1)
+						link += "?";
+					else
+						link += "&";
+					link += "user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&auth_key="+sayso.starbar.authKey;
+			  		window.open(link, 'sb_window_open', windowParameters);
 				}
 			});
 		});
 		
+		// share via facebook or twitter
+		elemExternalShare.each(function(){
+			$S(this).unbind();
+			$S(this).bind({
+				click: function(event){
+			  		var windowParameters = 'location=1,status=1,scrollbars=0,width=981,height=450';
+					var link = $S(this).attr('href');
+
+			  		window.open(link, 'sb_window_open', windowParameters);
+			  		return false;
+				}
+			});
+		});
 
 	} // end initElements()
 
@@ -508,7 +533,7 @@ $S(function(){
 		}
 
 		if (loadingElement) {
-			// Hide the container (even though it's already hidden with 
+			// Hide the container (to be able to fade it back in)
 			ajaxContentContainer.fadeTo(0, 0);
 			// Fade out loading element
 			loadingElement.fadeTo(200, 0);
@@ -577,6 +602,7 @@ $S(function(){
 
 		var panes = $S('.sb_scrollPane',target);
 		panes.each(function(i) {
+			// Add height of all the paragraphs (or anything with the class "sb_tabHeader" really)
 			var paragraphs = $S('.sb_tabHeader',$S(this).parent());
 			var paragraphHeight = 0;
 			paragraphs.each(function(i) {paragraphHeight += $S(this).height()+eval($S(this).css('margin-top').replace('px',''))+eval($S(this).css('margin-bottom').replace('px',''));});
@@ -601,7 +627,8 @@ $S(function(){
                     changestart: function(event, ui){
                         var activeLink = ui.newHeader.find('a');
                         var activeIframe = ui.newContent.find('iframe');
-                        var activeFooter = ui.newContent.find('.sb_pollAccordionFooter');
+                        var activeFooter = ui.newContent.find('.sb_nextPoll');
+                        var link = "";
 
                         // Hide the footer (share links, next survey links)
                         if (activeFooter){
@@ -610,7 +637,14 @@ $S(function(){
 
 						// Load the iframe if not already loaded
                         if (activeIframe && activeLink && activeIframe.attr('src') != activeLink.attr('href')) {
-                            activeIframe.attr('src', activeLink.attr('href'));
+                        	// Add the authentication info to the request
+							link = activeLink.attr('href');
+							if (link.indexOf("?") == -1)
+								link += "?";
+							else
+								link += "&";
+							link += "user_id="+window.sayso.starbar.user.id+"&user_key="+window.sayso.starbar.user.key+"&auth_key="+window.sayso.starbar.authKey;
+                            activeIframe.attr('src', link);
                         }
 
                         // Fade in the footer

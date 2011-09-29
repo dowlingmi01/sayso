@@ -31,6 +31,8 @@
 				// Fade in the container.
 				loadingElement.fadeTo(500, 0);
 				externalContentContainer.fadeTo(500, 1);
+				// Set display to none to avoid mouse click issues
+				setTimeout(function() {loadingElement.css('display', 'none');}, 500);
 
 				// Make the radio buttons clickable
 				var elemRadios = $S('input:radio');
@@ -46,9 +48,18 @@
 							survey.ShowResults(domain);
 							setTimeout(function() {
 								$S('#sb-survey-completed').fadeIn(500)
-							}, 1000);
+							}, 500);
 						}
 					});
+				});
+				
+				$S.getScript("http://platform.twitter.com/widgets.js", function(){
+					function handleTweetEvent(event){
+						if (event) {
+							// @todo Tweet has occured, reward user!
+						}
+					}
+					twttr.events.bind('tweet', handleTweetEvent);
 				});
 	        }
 	        catch (err) {}
@@ -61,9 +72,27 @@
 <div id="sayso-starbar-embed">
 	<div id="sb-survey-completed">
 		<? if ($this->survey->premium) { ?>
-			<p>Congratulations! You earned <strong class="sb_theme_textHighlight_alt">2 Notes</strong> &amp;  <strong class="sb_theme_textHighlight_alt">500 Chops</strong></p>
+			<p>Excellent! You earned <strong class="sb_theme_textHighlight_alt">2 Notes</strong> &amp;  <strong class="sb_theme_textHighlight_alt">500 Chops</strong></p>
 		<? } else { ?>
-			<p>Congratulations! You earned <strong class="sb_theme_textHighlight">1 Note</strong> &amp;  <strong class="sb_theme_textHighlight">250 Chops</strong></p>
+			<p>Excellent! You earned <strong class="sb_theme_textHighlight">1 Note</strong> &amp;  <strong class="sb_theme_textHighlight">250 Chops</strong></p>
 		<? } ?>
+		<p class="sb_embedShare">
+			<a class="sb_externalShare"
+				href="http://www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($this->share_link) ?>&caption=<?= urlencode($this->facebook_share_caption) ?>&picture=<?= urlencode($this->facebook_share_image_url) ?>&redirect_uri=<?= urlencode($this->facebook_share_callback_url) ?>">
+				<img src="http://<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
+			</a>
+			<a class="twitter-share-button"
+				data-related="<?= $this->twitter_share_related_users ?>"
+				data-hashtags="<?= $this->twitter_share_hashtags ?>"
+				data-via="<?= $this->twitter_share_via_user ?>"
+				data-url="<?= $this->share_link ?>"
+				data-text="<?= $this->twitter_share_text ?>"
+				data-count="none"
+				href="https://twitter.com/intent/tweet">
+					<img src="http://<?= BASE_DOMAIN ?>/images/generic/logo_twitter.png" alt="Twitter" />
+			</a>
+
+			Share this poll to earn extra points
+		</p>
 	</div>
 </div>

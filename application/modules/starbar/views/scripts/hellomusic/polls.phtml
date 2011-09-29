@@ -13,7 +13,8 @@
 	</ul>
 	<div id="polls_tabs_1" class="sb_tabPane">
 		<p class="sb_tabHeader">
-    Polls are a speedy and effective way to gauge which way the wind is blowing.  Each poll completed earns you <strong class="sb_theme_textHighlight">100 Notes</strong> &amp; <strong class="sb_theme_textHighlight">500 Chops</strong>. Share and tweet Polls to for bonus Notes!  And look for special Polls with point magnifiers!</p>
+			Polls are a speedy and effective way to gauge which way the wind is blowing.  Each poll completed earns you <strong class="sb_theme_textHighlight">100 Notes</strong> &amp; <strong class="sb_theme_textHighlight">500 Chops</strong>. Share and tweet Polls to for bonus Notes!  And look for special Polls with point magnifiers!
+		</p>
 		<div class="sb_scrollPane">
 
 			<!-- BEGIN POLL BOX LANDING -->
@@ -21,7 +22,7 @@
 				<? $i = 0 ?>
 				<? foreach ($this->new_surveys as $survey) { ?>
 					<h3>
-						<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>&user_id=<?= $this->user_id ?>&user_key=<?= $this->user_key ?>">
+						<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>">
 							<? if ($survey->premium) { ?>
 								<span class="sb_img_doubleValue"></span>
 							<? } ?>
@@ -29,15 +30,13 @@
 						</a>
 					</h3>
 					<div>
-						<iframe src="" width="470" height="100" frameborder="0" marginheight="0" marginwidth="0" scrolling="no"></iframe>
-						<div class="sb_pollAccordionFooter">
-							Share The Results To Earn A 50% Bonus!
-							<? if ($i < ($this->count_new_surveys - 1)) { ?>
-								<div class="sb_nextPoll">
-									<a href="#" onclick="$S(this).parents('.sb_accordion').accordion('activate', <?= ($i+1) ?>)"><span class="sb_img_nextTriangle"></span>Next Poll</a>
-								</div>
-							<? } ?>
-						</div><!-- / END ACCORDION FOOTER -->
+						<? if ($i < ($this->count_new_surveys - 1)) { ?>
+							<div class="sb_nextPoll">
+								<a href="#" onclick="$S(this).parents('.sb_accordion').accordion('activate', <?= ($i+1) ?>)"><span class="sb_img_nextTriangle"></span>Next Poll</a>
+							</div>
+						<? } ?>
+						<? $iframeHeight = 58 + (ceil($survey->number_of_answers / 2.0) * 32); // 58 base height + 32 per row of answers ?>
+						<iframe src="" width="470" height="<?= $iframeHeight ?>" frameborder="0" marginheight="0" marginwidth="0" scrolling="no"></iframe>
 					</div><!-- / END ACCORDION CONTENT -->
 					<? $i++ ?>
 				<? } ?>
@@ -49,7 +48,8 @@
 	</div><!-- #tabs_1 -->
 
 	<div id="polls_tabs_2" class="sb_tabPane">
-		<p class="sb_tabHeader">These are polls you’ve completed:</p>
+		<p class="sb_tabHeader">These are polls you'’ve completed</p>
+		<p class="sb_tabHeader"><a href="#" onclick='$S.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/reset-surveys-and-polls", success : function (r, s) {} });'>Reset surveys and polls</a></p>
 		<div class="sb_scrollPane">
 			<ul class="sb_outlineList">
 				<? foreach ($this->complete_surveys as $survey) { ?>
@@ -71,7 +71,8 @@
 
 	<div id="polls_tabs_3" class="sb_tabPane">
 		<p class="sb_tabHeader">
-    We'd still love your opinion on these Archived Polls, and you can still earn by completing them!  Same deal-- <strong class="sb_theme_textHighlight">100 Notes</strong> &amp; <strong class="sb_theme_textHighlight">500 Chops</strong> for each one you complete.</p>
+			We'd still love your opinion on these Archived Polls, and you can still earn by completing them!  Same deal-- <strong class="sb_theme_textHighlight">100 Notes</strong> &amp; <strong class="sb_theme_textHighlight">500 Chops</strong> for each one you complete.
+		</p>
 		<div class="sb_scrollPane">
 
 			<!-- BEGIN POLL BOX LANDING -->
@@ -79,7 +80,7 @@
 				<? $i = 0 ?>
 				<? foreach ($this->archive_surveys as $survey) { ?>
 					<h3>
-						<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>&user_id=<?= $this->user_id ?>&user_key=<?= $this->user_key ?>">
+						<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>">
 							<? if ($survey->premium) { ?>
 								<span class="sb_img_doubleValue"></span>
 							<? } ?>
@@ -87,15 +88,13 @@
 						</a>
 					</h3>
 					<div>
-						<iframe src="" width="470" height="100" frameborder="0" marginheight="0" marginwidth="0" scrolling="no"></iframe>
-						<div class="sb_pollAccordionFooter">
-							Share this poll to earn extra points
-							<? if ($i < ($this->count_archive_surveys - 1)) { ?>
-								<div class="sb_nextPoll">
-									<a href="#" onclick="$S(this).parents('.sb_accordion').accordion('activate', <?= ($i+1) ?>)"><span class="sb_img_nextTriangle"></span>Next Poll</a>
-								</div>
-							<? } ?>
-						</div>
+						<? $iframeHeight = 58 + (ceil($survey->number_of_answers / 2.0) * 32); // 58 base height + 32 per row of answers ?>
+						<iframe src="" width="470" height="<?= $iframeHeight ?>" frameborder="0" marginheight="0" marginwidth="0" scrolling="no"></iframe>
+						<? if ($i < ($this->count_archive_surveys - 1)) { ?>
+							<div class="sb_nextPoll">
+								<a href="#" onclick="$S(this).parents('.sb_accordion').accordion('activate', <?= ($i+1) ?>)"><span class="sb_img_nextTriangle"></span>Next Poll</a>
+							</div>
+						<? } ?>
 					</div><!-- / END ACCORDION CONTENT -->
 					<? $i++ ?>
 				<? } ?>

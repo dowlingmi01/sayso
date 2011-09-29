@@ -252,6 +252,32 @@ class Api_UserController extends Api_GlobalController
 		return $this->_resultType(new Object($response));
 	}
     
+    // @todo for dev/QA only, delete for production
+    public function resetSurveysAndPollsAction() {		
+		$logger = new Zend_Log();
+		$logger->addWriter(new Zend_Log_Writer_Stream(LOG_PATH . '/api.log'));
+		$logger->log(print_r($this->_request->getPost(), true), Zend_Log::INFO);
+		
+		if ($this->user_id) {
+			Db_Pdo::execute("DELETE FROM survey_user_map WHERE status = 'complete' AND user_id = ?", $this->user_id);
+		}
+		
+		return $this->_resultType(true);
+	}
+    
+    // @todo for dev/QA only, delete for production
+    public function resetExternalAction() {		
+		$logger = new Zend_Log();
+		$logger->addWriter(new Zend_Log_Writer_Stream(LOG_PATH . '/api.log'));
+		$logger->log(print_r($this->_request->getPost(), true), Zend_Log::INFO);
+		
+		if ($this->user_id) {
+			Db_Pdo::execute("DELETE FROM user_social WHERE user_id = ?", $this->user_id);
+		}
+		
+		return $this->_resultType(true);
+	}
+    
     protected function _startUserSession (User & $user) {
         
         $userSession = Api_UserSession::getInstance();

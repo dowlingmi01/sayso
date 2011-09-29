@@ -24,8 +24,8 @@ class Starbar_ContentController extends Api_GlobalController
             }
         }
         
-	    if (!($this->user_id && $this->user_key)) {
-	    	echo "No user id or key.";
+	    if (!($this->user_id && $this->user_key && $this->auth_key)) {
+	    	echo "You are not logged in.";
 	    	exit;
 		}
 	}   
@@ -44,7 +44,7 @@ class Starbar_ContentController extends Api_GlobalController
             $this->view->headScript()->appendFile('/js/starbar/jquery.jeip.js');
         	$this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
 		}
-}
+	}
 
     public function aboutSaysoAction ()
     {
@@ -69,6 +69,12 @@ class Starbar_ContentController extends Api_GlobalController
 
 			$bundleOfJoy = $this->_getBundleOfJoy($surveyId);
 			$this->view->assign('bundle_of_joy', $bundleOfJoy);
+
+			// @todo point this to onboarding
+			$shareLink = "http://www.say.so/";
+			$shareText = "Just answered '".$survey->title."' on Hello Music's Say.So BeatBar";
+			$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared=poll&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
+			$this->_assignShareInfoToView($shareLink, $shareText, $facebookCallbackUrl);
 		}
     }
 
@@ -109,6 +115,13 @@ class Starbar_ContentController extends Api_GlobalController
 
 			$this->view->assign('survey', $survey);
 		}
+
+		// @todo point this to onboarding
+		$shareLink = "http://www.say.so/";
+		// @todo share text to vary based on starbar_id?
+		$shareText = "I didn't qualify for '".$survey->title."' on Hello Music's Say.So BeatBar, but maybe you will!";
+		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
+		$this->_assignShareInfoToView($shareLink, $shareText, $facebookCallbackUrl);
 	}
 
     public function surveyCompleteAction ()
@@ -124,6 +137,13 @@ class Starbar_ContentController extends Api_GlobalController
 
 			$this->view->assign('survey', $survey);
 		}
+
+		// @todo point this to onboarding
+		$shareLink = "http://www.say.so/";
+		// @todo share text to vary based on starbar_id?
+		$shareText = "Survey time! Just filled out '".$survey->title."' on Hello Music's Say.So BeatBar";
+		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
+		$this->_assignShareInfoToView($shareLink, $shareText, $facebookCallbackUrl);
 	}
 
     // Fetches polls for the current user for display
@@ -144,9 +164,6 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('count_new_surveys', sizeof($newSurveys));
 		$this->view->assign('count_complete_surveys', sizeof($completeSurveys));
 		$this->view->assign('count_archive_surveys', sizeof($archiveSurveys));
-
-		$this->view->assign('user_id', $this->user_id);
-		$this->view->assign('user_key', $this->user_key);
 	}
 
     // Fetches surveys for the current user for display
@@ -190,8 +207,6 @@ class Starbar_ContentController extends Api_GlobalController
 		$user->loadData($this->user_id);
 		$this->view->assign('user', $user);
 
-		$this->view->assign('user_key', $this->user_key);
-
 		$facebookSocial = new User_Social();
 		$facebookSocial->loadByUserIdAndProvider($user->id, 'facebook');
 		$this->view->assign('facebook_social', $facebookSocial);
@@ -214,7 +229,7 @@ class Starbar_ContentController extends Api_GlobalController
     {
     	// this page is fetched in a popup, not ajax
     	$this->_usingJsonPRenderer = false;
-        
+
         $config = Api_Registry::getConfig();
 		$request = $this->getRequest();
 
@@ -239,7 +254,7 @@ class Starbar_ContentController extends Api_GlobalController
 		if ($user) {
 			if ($this->user_id === Api_UserSession::getInstance($this->user_key)->getId()) {
     			$userSocial = new User_Social();
-    			$userSocial->user_id = $request->getParam('user_id');
+    			$userSocial->user_id = $this->user_id;
     			$userSocial->provider = "facebook";
     			$userSocial->identifier = $user;
     			if (isset($user_profile['username']))
@@ -261,7 +276,7 @@ class Starbar_ContentController extends Api_GlobalController
 			/* Build TwitterOAuth object with client credentials. */
 			$connection = new TwitterOAuth($config->twitter->consumer_key, $config->twitter->consumer_secret);
 
-			$callbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/twitter-connect-result?user_id=".$this->user_id."&user_key=".$this->user_key;
+			$callbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/twitter-connect-result?user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
 			
 			/* Get temporary credentials and set the callback URL. */
 			$twitterRequestToken = $connection->getRequestToken($callbackUrl);
@@ -288,7 +303,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 		/* If the oauth_token is old redirect to the connect page. */
 		if ($request->getParam('oauth_verifier') && $_SESSION['oauth_token'] !== $request->getParam('oauth_token')) {
-			$this->_redirect('/starbar/hellomusic/twitter-connect-redirect');
+			$this->_redirect("/starbar/hellomusic/twitter-connect-redirect?user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key);
 		}
 
         $success = false;
@@ -302,7 +317,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 			if ($this->user_id === Api_UserSession::getInstance($this->user_key)->getId()) {
 				$userSocial = new User_Social();
-				$userSocial->user_id = $request->getParam('user_id');
+				$userSocial->user_id = $this->user_id;
 				$userSocial->provider = "twitter";
 				$userSocial->identifier = $accessToken['user_id'];
 				$userSocial->username = $accessToken['screen_name'];
@@ -315,7 +330,12 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('success', $success);
 	}
 
-    private function _getBundleOfJoy ($surveyId)
+    public function onboardAction ()
+    {
+
+    }
+
+    protected function _getBundleOfJoy ($surveyId)
     {
     	$bundleOfJoy = "";
     	$sep = "^|^"; // seperator between variables
@@ -331,12 +351,30 @@ class Starbar_ContentController extends Api_GlobalController
     	$bundleOfJoy .= "survey_id" . $eq . $surveyId;
     	
     	return $bundleOfJoy;
-		}
-		
-		
-    public function onboardAction ()
-    {
+	}
 
-    }
+	protected function _assignShareInfoToView($shareLink = null, $shareText = null, $facebookCallbackUrl = null)
+	{
+        $config = Api_Registry::getConfig();
 		
+		$this->view->assign('facebook_app_id', $config->facebook->app_id);
+		$this->view->assign('facebook_share_image_url', $config->facebook->share_image_url);
+		$this->view->assign('twitter_share_via_user', $config->twitter->share_via_user);
+		$this->view->assign('twitter_share_related_users', $config->twitter->share_related_users);
+		$this->view->assign('twitter_share_hashtags', $config->twitter->share_hashtags);
+
+        if ($shareLink)
+        	$this->view->assign('share_link', $shareLink);
+
+		if ($facebookCallbackUrl)
+			$this->view->assign('facebook_share_callback_url', $facebookCallbackUrl);
+
+        if ($shareText) {
+			$facebookShareCaption = $shareText;
+			$twitterShareText = $shareText." -";
+
+			$this->view->assign('facebook_share_caption', $facebookShareCaption);
+			$this->view->assign('twitter_share_text', $twitterShareText);
+		}
+	}
 }

@@ -21,7 +21,7 @@ class Bootstrap extends App_Bootstrap
         
         // only log if used by a developer
         $currentRemoteAddress = getRemoteAddress();
-        $devAddresses = array('djames' => '195.60.129.27', 'local' => '127.0.0.1');
+        $devAddresses = array('djames' => '195.60.129.27', 'local' => '127.0.0.1', 'dev' => '174.129.49.244');
         if (!in_array($currentRemoteAddress, $devAddresses)) {
             $filterSupress = new Zend_Log_Filter_Suppress();
             $filterSupress->suppress(true);
@@ -61,6 +61,11 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
         if ($currentModule === 'api' || $currentModule === 'starbar') {
             ini_set('session.use_cookies', '0');
         }
+        // make sure api requests have all keys
+        if ($currentModule === 'api' && (!$request->getParam('auth_key') || !$request->getParam('user_key') || !$request->getParam('user_id'))) {
+            throw new Exception('Module \'api\' requires auth_key, user_key and user_id to be provided in every request. URI: ' . $_SERVER['REQUEST_URI']);
+        }
+            
         if ($currentModule === 'api') return;
         
         $userKey = $request->getParam(Api_Constant::USER_KEY);

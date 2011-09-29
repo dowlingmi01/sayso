@@ -108,10 +108,13 @@
             _callback = null;
         
         function _waitUntilJsLoaded () {
-            if (window.hasOwnProperty(_searchSymbol)) {
-                _callback();
-                return;
-            }
+            try {
+                if (eval(_searchSymbol)) {
+                    _callback();
+                    return;
+                }
+            } catch (exception) {} // ignore
+            
             if (_counter++ > _maxCount) { 
                 _callback(); // stop waiting and just fire the callback
                 sayso.log('Stopped waiting for JS to load (not found: ' + _searchSymbol + ')');
@@ -252,12 +255,43 @@
                         var jQueryLibraryLoadTimer = new jsLoadTimer();
                         jQueryLibraryLoadTimer.start('jQueryUILoaded', function () {
                             sayso.log('Loaded - jQuery libs (incl. jQueryUI)');
-                            $K('#sayso-starbar').append(starbar._html);
                             
-                            // load SaySo Javascript (which depends on the above data settings!)
+                            // finally, inject the HTML!
+                            $SQ('#sayso-starbar').append(starbar._html);
+                            
+                            // load SaySo Javascript (which depends on the above data settings)
                             var js6 = document.createElement('script'); 
                             js6.src = 'http://' + sayso.baseDomain + '/js/starbar/starbar-new.js';
                             starbarContainer.appendChild(js6);
+                            
+                            var starbarJsTimer = new jsLoadTimer();
+                            starbarJsTimer.start('window.sayso.starbar.loaded', function () {
+                                // if user has not "onboarded" and we are on the Starbar's base domain
+                                // then trigger the onboarding to display
+                                if (!starbar._user_map.onboarded && window.location.href.match(starbar.domain)) {
+                                    // trigger onboarding to display (see starbar-new.js where this is handled)
+                                    $SQ(document).trigger('onboarding-display');
+                                    // bind when the last step of the onboarding is selected, to mark onboarding done
+                                    // see starbar-new.js where this is triggered
+                                    $SQ(document).bind('onboarding-complete', function () { 
+                                        $SQ.ajax({
+                                            dataType: 'jsonp',
+                                            data : {
+                                                starbar_id : sayso.starbar.id,
+                                                auth_key : sayso.starbar.authKey,
+                                                user_id : sayso.starbar.user.id,
+                                                user_key : sayso.starbar.user.key,
+                                                renderer : 'jsonp',
+                                                status : 1 // complete
+                                            },
+                                            url : 'http://' + sayso.baseDomain + '/api/starbar/set-onboard-status',
+                                            success : function (response, status) {
+                                                sayso.log('Onboarding complete.', response.data);
+                                            }
+                                        });
+                                    });
+                                }
+                            });
                         });
                     });
                 }

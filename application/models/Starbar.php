@@ -11,6 +11,10 @@ class Starbar extends Record
     
     protected $_uniqueFields = array('short_name' => '');
     
+    protected $_user;
+    
+    protected $_userMap;
+    
     protected $_apiAuthKey = '';
     
     protected $_cssUrl = '';
@@ -19,7 +23,23 @@ class Starbar extends Record
     
     protected $_html = '';
     
-    protected $_user;
+    public function setUser (User $user) {
+        $this->_user = $user;
+    }
+    
+    /**
+     * @return User
+     */
+    public function getUser () {
+        return $this->_user;
+    }
+    
+    /**
+     * @param Starbar_UserMap $userMap
+     */
+    public function setUserMap (Starbar_UserMap $userMap) {
+        $this->_userMap = $userMap;
+    }
     
     /**
      * Each Starbar has it's own API key 
@@ -51,16 +71,7 @@ class Starbar extends Record
         $this->_html = $html;
     }
     
-    public function setUser (User $user) {
-        $this->_user = $user;
-    }
     
-    /**
-     * @return User
-     */
-    public function getUser () {
-        return $this->_user;
-    }
     
     public function setVisibility ($visibility) {
         $this->_visibility = $visibility;
@@ -70,12 +81,24 @@ class Starbar extends Record
         return $this->_visibility;
     }
     
+    public function exportData() {
+        $fields = array(
+            'short_name',
+            'label',
+            'description',
+            'user_pseudonym',
+            'domain'
+        );
+        return array_intersect_key($this->getData(), array_flip($fields));
+    }
+    
     public function exportProperties($parentObject = null) {
         $props = array(
+            '_user' => $this->_user,
+            '_user_map' => $this->_userMap,
             '_auth_key' => $this->_apiAuthKey,
             '_css_url' => $this->_cssUrl,
-            '_html' => $this->_html,
-            '_user' => $this->_user
+            '_html' => $this->_html
         );
         return array_merge(parent::exportProperties($parentObject), $props);
     }

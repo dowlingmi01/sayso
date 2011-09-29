@@ -44,11 +44,15 @@ class Starbar_RemoteController extends Api_AbstractController
             Api_Auth::getInstance()->authorizeApp($this->auth_key);
             
             if ($this->starbar_id) {
-                
                 $starbar->loadData($this->starbar_id);
             } else {
                 $starbar->loadDataByUniqueFields(array('short_name' => $this->short_name));
             }
+            
+            $starbarUserMap = new Starbar_UserMap();
+            $starbarUserMap->loadDataByUniqueFields(array('user_id' => $this->user_id, 'starbar_id' => $starbar->getId()));
+            
+            $starbar->setUserMap($starbarUserMap);
             
             if ($this->visibility) {
                 $starbar->setVisibility($this->visibility);
@@ -90,7 +94,7 @@ class Starbar_RemoteController extends Api_AbstractController
             
             // get session and verify
             $session = Api_UserSession::getInstance($this->user_key);
-            if ($session->getId() !== $this->user_id) {
+            if ($session->getId() !== (int) $this->user_id) {
                 throw new Api_Exception(Api_Error::create(Api_Error::TARGET_USER_MISMATCH));
             }
             $user = new User();
@@ -376,6 +380,8 @@ class Starbar_RemoteController extends Api_AbstractController
         $starbarUserMap->starbar_id = $starbar->getId();
         $starbarUserMap->active = 1;
         $starbarUserMap->save();
+        
+        $starbar->setUserMap($starbarUserMap->reload());
         
         // now we know which starbar, route to the appropriate starbar action:
         

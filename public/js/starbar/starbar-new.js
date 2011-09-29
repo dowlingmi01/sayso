@@ -63,21 +63,21 @@ $SQ(function(){
 		if (e.keyCode == 27) {
 			closePopBox();
 		}  // esc
-		
-		if (e.keyCode == 16) {
-		    return; // don't fire this. It's annoying. Onboard popup will happen based on conditional logic (which I'm working on next) - David
-			var thisPopBox = $SQ('#sb_popBox_onboard');
-			var thisPopBoxSrc = $SQ('#sb_popBox_onboard').attr('href');
-			
-			if (thisPopBox.hasClass('sb_popBoxActive')){
-				closePopBox(thisPopBox);
-			}else{
-				closePopBox();
-				openPopBox(thisPopBox, thisPopBoxSrc, false);
-			}
-			
-		}  // shift
-		
+	});
+	
+	// setup event binding to allow starbar-loader.js to 
+	// display onboarding if the user has not already seen it
+	// and the user is on the Starbar's base domain (e.g. hellomusic.com)
+	$SQ(document).bind('onboarding-display', function () {
+	    var onboarding = $SQ('#sb_popBox_onboard');
+	    openPopBox(onboarding, onboarding.attr('href'), false);
+	    setTimeout(function () {
+	        // once the onboarding is displayed, bind click on the last step 
+	        // to trigger completion of the onboarding 
+	        $SQ('#sb_popBox_onboard a.sb_surveyLaunch').bind('click', function () {
+	            $SQ(document).trigger('onboarding-complete');
+	        });
+	    }, 500);
 	});
 
 	// close if you click outside the starbar while in the iframe
@@ -727,5 +727,8 @@ $SQ(function(){
         var oldOnFocus = window.onfocus && typeof window.onfocus === 'function' ? window.onfocus : function () {};
         window.onfocus = function () { oldOnFocus(); refreshState(); };
     }
+    
+    // flag so we know this file has loaded
+    window.sayso.starbar.loaded = true;
 });
 

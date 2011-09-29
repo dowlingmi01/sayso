@@ -12,6 +12,7 @@ $SQ(function () {
         options.data = $SQ.extend(options.data || {}, {
             auth_key : starbar.authKey,
             user_id : starbar.user.id,
+            user_key : starbar.user.key,
             starbar_id : starbar.id,
             renderer : 'jsonp'
         });

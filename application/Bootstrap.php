@@ -61,9 +61,13 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
         if ($currentModule === 'api' || $currentModule === 'starbar') {
             ini_set('session.use_cookies', '0');
         }
-        // make sure api requests have all keys
-        if ($currentModule === 'api' && (!$request->getParam('auth_key') || !$request->getParam('user_key') || !$request->getParam('user_id'))) {
-            throw new Exception('Module \'api\' requires auth_key, user_key and user_id to be provided in every request. URI: ' . $_SERVER['REQUEST_URI']);
+        
+        // make sure api requests has user_key
+        if ($currentModule === 'api' && (!$request->getParam('user_key') || $request->getParam('user_key') === 'undefined')) {
+            $message = 'SaySo API requires user_key in every request.';
+            if ($request->getParam('user_key') === 'undefined') $message .= ' (user_key === "undefined")'; // probably need to delete kobj.net cookie
+            $message .= ' URI: ' . $_SERVER['REQUEST_URI'];
+            throw new Exception($message);
         }
             
         if ($currentModule === 'api') return;

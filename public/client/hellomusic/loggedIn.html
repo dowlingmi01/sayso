@@ -19,17 +19,20 @@
                 <h3><span class="sso_textHighlight">GRAB</span> the BeatBar. <span class="sso_textHighlight">GIVE</span> your opinion.</h3>
                 <h2><span class="sso_textHighlight">GET</span> FREE GEAR.</h2>
                 <h4 style="height: 50px;">
-                <span class="sso_textError" style="">Whoops. Make sure you agree to the terms<br />
+                <span class="sso_textError" style="display: none;">Whoops. Make sure you agree to the terms<br />
                 and conditions before you download.</span>
                 </h4>
                 <form action="" name="" method="">
                     <p><input type="radio" /> I agree to the <a href="">terms</a> and <a href="">conditions</a></p>
-                    <p><input id="sayso-get-app" type="submit" value="GRAB IT" class="sso_theme_button sso_theme_buttonXL" /></p>
+                    <!--<p><input id="sayso-get-app" type="submit" value="GRAB IT" class="sso_theme_button sso_theme_buttonXL" /></p>
+                    -->
+                    <p><a id="sayso-get-app" href="" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL">GRAB IT</a></p>
                 </form>
             </div><!-- .sso_content -->
             <div class="sso_main-image"></div><!-- .sso_main-image -->
         </div><!-- #sso_wraper -->
         <script type="text/javascript" src="js/starbar-onboard.js"></script>
     </div><!-- #sayso-onboard -->
+    <div style="position: fixed; bottom: 4px; left: 4px; font-weigth: bold; color: white; z-index: 99999; font-family: Verdana;"><?= $randomEmail ?></div>
 </body>
 </html>

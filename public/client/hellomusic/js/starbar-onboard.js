@@ -42,6 +42,7 @@
         });
         $SQ('#sso_wrapper input[type=radio]').bind('change', function () {
             $SQ('span.sso_textError').fadeOut('slow');
+						$SQ('#sayso-get-app').removeClass('sso_theme_button_disabled');
         });
         
         // -------------------------------------------

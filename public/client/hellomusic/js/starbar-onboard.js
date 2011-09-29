@@ -22,26 +22,26 @@
     document.getElementsByTagName('body')[0].appendChild(jQueryInclude);
     
     var loadTimer = new jsLoadTimer();
-    loadTimer.start('$S', function () {
+    loadTimer.start('$SQ', function () {
         
         // -------------------------------------------
         // Custom setup 
         
-        var elemPage = $S('#sayso-onboard');
+        var elemPage = $SQ('#sayso-onboard');
 
-        elemPage.height($S(window).height());
-        elemPage.width($S(window).width());
+        elemPage.height($SQ(window).height());
+        elemPage.width($SQ(window).width());
         
-        $S('#sso_wrapper input[type=radio]').attr('checked', false);
+        $SQ('#sso_wrapper input[type=radio]').attr('checked', false);
         
-        $S('#sayso-get-app').click(function(e) {
-            if (!$S('#sso_wrapper input[type=radio]').is(':checked')) {
+        $SQ('#sayso-get-app').click(function(e) {
+            if (!$SQ('#sso_wrapper input[type=radio]').is(':checked')) {
                 e.preventDefault();
-                $S('span.sso_textError').fadeIn('slow');
+                $SQ('span.sso_textError').fadeIn('slow');
             }
         });
-        $S('#sso_wrapper input[type=radio]').bind('change', function () {
-            $S('span.sso_textError').fadeOut('slow');
+        $SQ('#sso_wrapper input[type=radio]').bind('change', function () {
+            $SQ('span.sso_textError').fadeOut('slow');
         });
         
         // -------------------------------------------
@@ -107,7 +107,7 @@
                     return;
                 }
                 
-                $S('#sayso-get-app').attr('href', browserAppUrl);
+                $SQ('#sayso-get-app').attr('href', browserAppUrl);
 
                 // Pre-Install routine
                 // pass uuid and token for this user to sayso

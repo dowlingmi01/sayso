@@ -1,5 +1,5 @@
 
-$S(function () { 
+$SQ(function () { 
     
     // setup
     
@@ -9,14 +9,14 @@ $S(function () {
         warn = window.sayso.warn;
     
     var ajax = function (options) {
-        options.data = $S.extend(options.data || {}, {
+        options.data = $SQ.extend(options.data || {}, {
             auth_key : starbar.authKey,
             user_id : starbar.user.id,
             starbar_id : starbar.id,
             renderer : 'jsonp'
         });
         options.dataType = 'jsonp';
-        return $S.ajax(options);
+        return $SQ.ajax(options);
     };
     
     /**
@@ -104,14 +104,14 @@ $S(function () {
     if (location.hostname.match('twitter.com')) {
         
         var tweet = '';
-        $S('div.tweet-box textarea').keyup(function () {
+        $SQ('div.tweet-box textarea').keyup(function () {
             // since there is a race condition between
             // when our click event is fired and Twitter removes
             // the content of the tweet box, then we just
             // continuously capture the contents here
-            tweet = $S(this).val();
+            tweet = $SQ(this).val();
         });
-        $S('div.tweet-box div.tweet-button-sub-container').click(function (e) {
+        $SQ('div.tweet-box div.tweet-button-sub-container').click(function (e) {
             e.preventDefault();
             sayso.helper.socialActivity(location.href, tweet, 2);
             tweet = '';
@@ -120,7 +120,7 @@ $S(function () {
     
     // Facebook Like
     
-    var likeButtons = $S('iframe[src*="facebook.com/plugins/like.php"],iframe[src*="facebook.com/widgets/like.php"]');
+    var likeButtons = $SQ('iframe[src*="facebook.com/plugins/like.php"],iframe[src*="facebook.com/widgets/like.php"]');
     
     if (likeButtons.length) {
         var liked = false;
@@ -142,7 +142,7 @@ $S(function () {
             }, 700); // aim + click + feedback
             
             // cancel Like if mouse passes back out quickly
-            $S(this).unbind('mouseout').bind('mouseout', function (eventOut) {
+            $SQ(this).unbind('mouseout').bind('mouseout', function (eventOut) {
                 if (timerRunning) {
                     timerRunning = false;
                     clearTimeout(mouseOutTimer);

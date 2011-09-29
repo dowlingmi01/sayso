@@ -9,11 +9,11 @@ function refreshConnectExternal(provider){
 	
 	switch (provider) {
 		case "twitter":
-			elemRefresh = $S('#sb_profile_twitter');
+			elemRefresh = $SQ('#sb_profile_twitter');
 			break;
 
 		case "facebook":
-			elemRefresh = $S('#sb_profile_facebook');
+			elemRefresh = $SQ('#sb_profile_facebook');
 			break;
 	}
 
@@ -24,7 +24,7 @@ function refreshConnectExternal(provider){
 	}
 }
 	
-$S.ajaxWithAuth = function (options) {
+$SQ.ajaxWithAuth = function (options) {
     var starbar_id = null;
     var auth_key = null;
     var user_id = null;
@@ -40,7 +40,7 @@ $S.ajaxWithAuth = function (options) {
     }
     catch (e) {}
     
-    options.data = $S.extend(options.data || {}, {
+    options.data = $SQ.extend(options.data || {}, {
         starbar_id : starbar_id,
         user_id : user_id,
         user_key : user_key,
@@ -55,10 +55,10 @@ $S.ajaxWithAuth = function (options) {
 			x.overrideMimeType("application/j-son;charset=UTF-8");
 		}
 	};
-    return $S.ajax(options);
+    return $SQ.ajax(options);
 };
 
-$S(function(){
+$SQ(function(){
 
     var sayso = window.sayso;
     
@@ -68,15 +68,15 @@ $S(function(){
 	/*
 	Set up some extra bits to handle closing windows if the user clicks outside the starbar or hits ESC key
 	*/
-	$S(document).keyup(function(e) {
+	$SQ(document).keyup(function(e) {
 		if (e.keyCode == 27) {
 			closePopBox();
 		}  // esc
 		
 		if (e.keyCode == 16) {
 		    return; // don't fire this. It's annoying. Onboard popup will happen based on conditional logic (which I'm working on next) - David
-			var thisPopBox = $S('#sb_popBox_onboard');
-			var thisPopBoxSrc = $S('#sb_popBox_onboard').attr('href');
+			var thisPopBox = $SQ('#sb_popBox_onboard');
+			var thisPopBoxSrc = $SQ('#sb_popBox_onboard').attr('href');
 			
 			if (thisPopBox.hasClass('sb_popBoxActive')){
 				closePopBox(thisPopBox);
@@ -90,7 +90,7 @@ $S(function(){
 	});
 
 	// close if you click outside the starbar while in the iframe
-	$S(document).click(function(e) {
+	$SQ(document).click(function(e) {
 		// don't close if they just right-clicked
 		if (e.button != 2){
 			closePopBox();
@@ -102,21 +102,21 @@ $S(function(){
 	// NOTE: The variables below are initialized in initElements()
 
 	// clickable elements that ppl will interact with
-	var btnToggleVis; //  = $S('#sayso-starbar #starbar-visControls #starbar-toggleVis');
-	var btnSaySoLogo; // = $S('#sayso-starbar #starbar-visControls #sb_starbar-logo');
+	var btnToggleVis; //  = $SQ('#sayso-starbar #starbar-visControls #starbar-toggleVis');
+	var btnSaySoLogo; // = $SQ('#sayso-starbar #starbar-visControls #sb_starbar-logo');
 
 	// container elements
-	var elemSaySoLogoBorder; // = $S('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
-	var elemSaySoBarBG; // = $S('#sayso-starbar #starbar-player-console').css('background-image');
-	var elemPlayerConsole; // = $S('#sayso-starbar #starbar-player-console');
-	var elemStarbarMain; // = $S('#sayso-starbar #starbar-player-console #starbar-main');
-	var elemVisControls; // = $S('#sayso-starbar #starbar-player-console #starbar-visControls');
-	var elemStarbarClickable; // = $S('#sayso-starbar #starbar-player-console .sb_nav_element');
-	var elemPopBox; // = $S('#sayso-starbar #starbar-player-console .sb_popBox');
-	var elemAlerts; // = $S('#sayso-starbar #starbar-player-console .sb_starbar-alert');
-	var elemPopBoxVisControl; // = $S('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
-	var elemExternalConnect; // = $S('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
-	var elemExternalShare; // = $S('#sayso-starbar #starbar-player-console .sb_externalShare, #sayso-starbar-embed .sb_externalShare');
+	var elemSaySoLogoBorder; // = $SQ('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
+	var elemSaySoBarBG; // = $SQ('#sayso-starbar #starbar-player-console').css('background-image');
+	var elemPlayerConsole; // = $SQ('#sayso-starbar #starbar-player-console');
+	var elemStarbarMain; // = $SQ('#sayso-starbar #starbar-player-console #starbar-main');
+	var elemVisControls; // = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls');
+	var elemStarbarClickable; // = $SQ('#sayso-starbar #starbar-player-console .sb_nav_element');
+	var elemPopBox; // = $SQ('#sayso-starbar #starbar-player-console .sb_popBox');
+	var elemAlerts; // = $SQ('#sayso-starbar #starbar-player-console .sb_starbar-alert');
+	var elemPopBoxVisControl; // = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
+	var elemExternalConnect; // = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
+	var elemExternalShare; // = $SQ('#sayso-starbar #starbar-player-console .sb_externalShare, #sayso-starbar-embed .sb_externalShare');
 
 	// initialize the starbar
 	initStarBar();
@@ -137,25 +137,25 @@ $S(function(){
 	// initialize the elements
 	function initElements(){
 		// clickable elements that ppl will interact with
-		btnToggleVis = $S('#sayso-starbar #starbar-visControls #starbar-toggleVis');
-		btnSaySoLogo = $S('#sayso-starbar #starbar-visControls #sb_starbar-logo');
+		btnToggleVis = $SQ('#sayso-starbar #starbar-visControls #starbar-toggleVis');
+		btnSaySoLogo = $SQ('#sayso-starbar #starbar-visControls #sb_starbar-logo');
 
 		// container elements
-		elemSaySoLogoBorder = $S('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
-		elemSaySoBarBG = $S('#sayso-starbar #starbar-player-console').css('background-image');
-		elemPlayerConsole = $S('#sayso-starbar #starbar-player-console');
-		elemStarbarMain = $S('#sayso-starbar #starbar-player-console #starbar-main');
-		elemVisControls = $S('#sayso-starbar #starbar-player-console #starbar-visControls');
-		elemStarbarClickable = $S('#sayso-starbar #starbar-player-console .sb_nav_element');
-		elemPopBox = $S('#sayso-starbar #starbar-player-console .sb_popBox');
-		elemAlerts = $S('#sayso-starbar #starbar-player-console .sb_starbar-alert');
-		elemPopBoxVisControl = $S('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
-		elemTabClick = $S('#sayso-starbar #starbar-player-console .sb_nav_tabs');
-		elemExternalConnect = $S('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
-		elemExternalShare = $S('#sayso-starbar #starbar-player-console .sb_externalShare, #sayso-starbar-embed .sb_externalShare');
+		elemSaySoLogoBorder = $SQ('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
+		elemSaySoBarBG = $SQ('#sayso-starbar #starbar-player-console').css('background-image');
+		elemPlayerConsole = $SQ('#sayso-starbar #starbar-player-console');
+		elemStarbarMain = $SQ('#sayso-starbar #starbar-player-console #starbar-main');
+		elemVisControls = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls');
+		elemStarbarClickable = $SQ('#sayso-starbar #starbar-player-console .sb_nav_element');
+		elemPopBox = $SQ('#sayso-starbar #starbar-player-console .sb_popBox');
+		elemAlerts = $SQ('#sayso-starbar #starbar-player-console .sb_starbar-alert');
+		elemPopBoxVisControl = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
+		elemTabClick = $SQ('#sayso-starbar #starbar-player-console .sb_nav_tabs');
+		elemExternalConnect = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
+		elemExternalShare = $SQ('#sayso-starbar #starbar-player-console .sb_externalShare, #sayso-starbar-embed .sb_externalShare');
 
 		// jquery edit in place
-		elemJEIP = $S('#sayso-starbar .sb_jeip');
+		elemJEIP = $SQ('#sayso-starbar .sb_jeip');
 
 		elemPlayerConsole.unbind();
 		elemPlayerConsole.click(function(e) {
@@ -164,10 +164,10 @@ $S(function(){
 
 
 		/* prevent default for any link with # as the href */
-		$S('a').each(function(){
-			$S(this).unbind();
-			if ($S(this).attr('href')=='#'){
-				$S(this).bind({
+		$SQ('a').each(function(){
+			$SQ(this).unbind();
+			if ($SQ(this).attr('href')=='#'){
+				$SQ(this).bind({
 					click: function(e){
 						e.preventDefault();
 					}
@@ -207,7 +207,7 @@ $S(function(){
 						closePopBox(thisPopBox);
 					}else{
 						// check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
-            			var thisPopBoxSrc = $S(this).attr('href');
+            			var thisPopBoxSrc = $SQ(this).attr('href');
 						openPopBox(thisPopBox, thisPopBoxSrc, false);
 					}
 				}
@@ -236,33 +236,33 @@ $S(function(){
 		*/
 		elemStarbarClickable.each(function(){
 			// SPECIAL HANDLING FOR STARBAR LOGO
-			if ($S(this).attr('id') == 'sb_starbar-logo'){
+			if ($SQ(this).attr('id') == 'sb_starbar-logo'){
 				return;
 			}
 
-			$S(this).unbind();
-			$S(this).bind({
+			$SQ(this).unbind();
+			$SQ(this).bind({
 				click: function(event){
 					event.stopPropagation();
 					event.preventDefault();
 					// the popbox is AFTER the clickable area
-					var thisPopBox = $S(this).next('.sb_popBox');
+					var thisPopBox = $SQ(this).next('.sb_popBox');
 
 					/*
 					set up a handler in case we click an element that isn't directly next to its target popbox.
 					a linked element outside of the nav will have rel="#ID OF TARGET" set.
 					*/
 					var targetPopBox = '';
-					if ($S(this).attr('rel') !== undefined){
-						var targetPopBox = $S(this).attr('rel');
+					if ($SQ(this).attr('rel') !== undefined){
+						var targetPopBox = $SQ(this).attr('rel');
 
 						// reset the popbox it should open to this ID
-						thisPopBox = $S('#'+targetPopBox);
+						thisPopBox = $SQ('#'+targetPopBox);
 					}
 
 					// set a delay before closing the alert element
-					if ($S(this).hasClass('sb_alert')){
-						hideAlerts($S(this).closest('.sb_starbar-alert'));
+					if ($SQ(this).hasClass('sb_alert')){
+						hideAlerts($SQ(this).closest('.sb_starbar-alert'));
 					}
 
 					// if it was already open, close it and remove the class. otherwise, open the popbox
@@ -272,14 +272,14 @@ $S(function(){
 						// this menu item's popBox is active
 
 						// check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
-		  				var thisPopBoxSrc = $S(this).attr('href');
+		  				var thisPopBoxSrc = $SQ(this).attr('href');
 			  			openPopBox(thisPopBox, thisPopBoxSrc, true);
 
 						// try to turn on the nav highlight if it opened a "large" sub popbox
 						if (targetPopBox != ''){
 							if (thisPopBox.parents('.sb_theme_bgGradient').hasClass('sb_theme_bgGradient')){
 								var listItem = thisPopBox.parents('.sb_theme_bgGradient');
-								$S('span.sb_nav_border',listItem).addClass('sb_theme_navOnGradient');
+								$SQ('span.sb_nav_border',listItem).addClass('sb_theme_navOnGradient');
 							} // travel op the dom tree to find if the large subpopbox is open
 						}// end if targetPopBox != ''
 
@@ -287,16 +287,16 @@ $S(function(){
 				},
 				mouseenter: function(event){
 				event.preventDefault();
-					if ($S(this).parent().hasClass('sb_theme_bgGradient')){
-						$S('span.sb_nav_border', this).addClass('sb_theme_navOnGradient');
+					if ($SQ(this).parent().hasClass('sb_theme_bgGradient')){
+						$SQ('span.sb_nav_border', this).addClass('sb_theme_navOnGradient');
 					}
 				},
 				mouseleave: function(event){
 				event.preventDefault();
-					var thisPopBox = $S(this).next('.sb_popBox');
+					var thisPopBox = $SQ(this).next('.sb_popBox');
 					// only remove the "hover" class for the nav item if it's box isn't active
-					if (($S(this).parent().hasClass('sb_theme_bgGradient')) && (!thisPopBox.hasClass('sb_popBoxActive'))){
-						$S('span.sb_nav_border', this).removeClass('sb_theme_navOnGradient');
+					if (($SQ(this).parent().hasClass('sb_theme_bgGradient')) && (!thisPopBox.hasClass('sb_popBoxActive'))){
+						$SQ('span.sb_nav_border', this).removeClass('sb_theme_navOnGradient');
 					}
 				}
 			}); // end bind
@@ -304,11 +304,11 @@ $S(function(){
 
 		// to open a specific tab
 		elemTabClick.each(function(){
-			$S(this).unbind();
-			$S(this).bind({
+			$SQ(this).unbind();
+			$SQ(this).bind({
 				click: function(event){
-					var $tabs = $S('.sb_popBoxActive .sb_tabs').tabs();
-					$tabs.tabs('select', $S(this).attr('rel')-1); // switch to third tab
+					var $tabs = $SQ('.sb_popBoxActive .sb_tabs').tabs();
+					$tabs.tabs('select', $SQ(this).attr('rel')-1); // switch to third tab
     			return false;
 				}
 			});
@@ -316,7 +316,7 @@ $S(function(){
 		
 		// set up the EIP elements
 		elemJEIP.each(function(){
-			$S(this).eip( "/api/user/save-in-place", {
+			$SQ(this).eip( "/api/user/save-in-place", {
 				savebutton_text		: "save",
 				savebutton_class	: "sb_theme_button",
 				cancelbutton_text	: "cancel",
@@ -328,11 +328,11 @@ $S(function(){
 		
 		// connect with facebook or twitter
 		elemExternalConnect.each(function(){
-			$S(this).unbind();
-			$S(this).bind({
+			$SQ(this).unbind();
+			$SQ(this).bind({
 				click: function(event){
 					var windowParameters = 'location=1,status=1,scrollbars=0';
-					switch($S(this).attr('id')) {
+					switch($SQ(this).attr('id')) {
 						case "sb_profile_facebook":
 			  				windowParameters += ',width=981,height=440';
 							break;
@@ -341,7 +341,7 @@ $S(function(){
 			  				windowParameters += ',width=750,height=550';
 							break;
 					}
-					var link = $S(this).attr('href');
+					var link = $SQ(this).attr('href');
 					if (link.indexOf("?") == -1)
 						link += "?";
 					else
@@ -354,11 +354,11 @@ $S(function(){
 		
 		// share via facebook or twitter
 		elemExternalShare.each(function(){
-			$S(this).unbind();
-			$S(this).bind({
+			$SQ(this).unbind();
+			$SQ(this).bind({
 				click: function(event){
 			  		var windowParameters = 'location=1,status=1,scrollbars=0,width=981,height=450';
-					var link = $S(this).attr('href');
+					var link = $SQ(this).attr('href');
 
 			  		window.open(link, 'sb_window_open', windowParameters);
 			  		return false;
@@ -415,7 +415,7 @@ $S(function(){
                     width: '100'
                 }, 500, function() {
                     // Animation complete.
-                    $S(this).attr('class','').addClass('sb_starbar-visClosed');
+                    $SQ(this).attr('class','').addClass('sb_starbar-visClosed');
                     elemSaySoLogoBorder.show();
                     hideAlerts();
                     updateState('sb_starbar-visClosed');
@@ -431,7 +431,7 @@ $S(function(){
                     width: '45'
                 }, 300, function() {
                     // Animation complete.
-                	$S(this).attr('class','').addClass('sb_starbar-visStowed');
+                	$SQ(this).attr('class','').addClass('sb_starbar-visStowed');
                   btnSaySoLogo.css('width','');
             			elemSaySoLogoBorder.hide();
                   updateState('sb_starbar-visStowed');
@@ -448,8 +448,8 @@ $S(function(){
                     width: '100%'
                 }, 500, function() {
                     // Animation complete.
-                    $S(this).attr('class','').addClass('sb_starbar-visOpen');
-										$S(this).removeClass('sb_starbar-visBG');
+                    $SQ(this).attr('class','').addClass('sb_starbar-visOpen');
+										$SQ(this).removeClass('sb_starbar-visBG');
                     elemStarbarMain.fadeIn('fast');
                     elemVisControls.fadeIn('fast');
                     btnToggleVis.addClass('sb_btnStarbar-open');
@@ -463,12 +463,12 @@ $S(function(){
 
 	function closePopBox(exception){
 		elemPopBox.each(function(){
-			$S(this).removeClass('sb_popBoxActive');
-			$S(this).hide();
+			$SQ(this).removeClass('sb_popBoxActive');
+			$SQ(this).hide();
 		});
 		elemStarbarClickable.each(function(){
 			// remove hover class from all nav items
-			$S('span.sb_nav_border').removeClass('sb_theme_navOnGradient');
+			$SQ('span.sb_nav_border').removeClass('sb_theme_navOnGradient');
 		});
 		return;
 	}
@@ -507,7 +507,7 @@ $S(function(){
 		popBox.addClass('sb_popBoxActive');
 
 		if (src) {
-			$S.ajaxWithAuth({
+			$SQ.ajaxWithAuth({
 				url : src,
 				success : function (response, status) {
 					ajaxContentContainer.html(response.data.html);
@@ -529,7 +529,7 @@ $S(function(){
 		// if we're a regular nav item, turn on the highlight
 		var parentClick = popBox.parent();
 		if (parentClick.children('span.sb_nav_border')){
-			$S('span.sb_nav_border',parentClick).addClass('sb_theme_navOnGradient');
+			$SQ('span.sb_nav_border',parentClick).addClass('sb_theme_navOnGradient');
 		}
 
 		if (loadingElement) {
@@ -554,8 +554,8 @@ $S(function(){
 		}else{
 			elemAlerts.each(function(){
 				// show alerts that aren't empty.
-				if ($S('a',this).html().length != 0){
-					$S(this).delay(200).slideDown('fast');
+				if ($SQ('a',this).html().length != 0){
+					$SQ(this).delay(200).slideDown('fast');
 				}
 			});
 		}
@@ -567,23 +567,23 @@ $S(function(){
 			target.delay(300).slideUp('fast');
 		}else{
 			elemAlerts.each(function(){
-				$S(this).hide();
+				$SQ(this).hide();
 			});
 		}
 	}
 
 	function activateTabs(target){
 		// only set up the tabs if they're there
-		if ($S('.sb_tabs',target).length > 0){
-			$S('.sb_tabs',target).tabs({
+		if ($SQ('.sb_tabs',target).length > 0){
+			$SQ('.sb_tabs',target).tabs({
 				show: function(event, ui){
 						// re-call the scrollbar to re-initialize to avoid the "flash" of narrow content.
 						activateScroll(target);							
 						window.location.hash = '';
 						
 						// adding ID to determine which tab is selected
-						$S('ul.sb_ui-tabs-nav',this).attr('id','');
-						$S('ul.sb_ui-tabs-nav',this).attr('id','sb_ui-tabs-nav_'+eval(ui.index+1));
+						$SQ('ul.sb_ui-tabs-nav',this).attr('id','');
+						$SQ('ul.sb_ui-tabs-nav',this).attr('id','sb_ui-tabs-nav_'+eval(ui.index+1));
 					}
 			});
 		}
@@ -591,36 +591,36 @@ $S(function(){
 
 	function activateScroll(target){
 		// first, resize the scrollpane dynamically to fit whatever height it lives in (.content.height() - .header.height())
-		var contentHeight = $S('.sb_popContent',target).height();
+		var contentHeight = $SQ('.sb_popContent',target).height();
 
 		// add height of the header + any margins / paddings
-		if ($S('.sb_popContent .sb_header',target).length > 0){
-			var headerHeight =  eval($S('.sb_header',target).css('margin-bottom').replace('px',''))+$S('.sb_popContent .sb_header',target).height();
+		if ($SQ('.sb_popContent .sb_header',target).length > 0){
+			var headerHeight =  eval($SQ('.sb_header',target).css('margin-bottom').replace('px',''))+$SQ('.sb_popContent .sb_header',target).height();
 		}else{
 			var headerHeight = 0;
 		}
 
-		var panes = $S('.sb_scrollPane',target);
+		var panes = $SQ('.sb_scrollPane',target);
 		panes.each(function(i) {
 			// Add height of all the paragraphs (or anything with the class "sb_tabHeader" really)
-			var paragraphs = $S('.sb_tabHeader',$S(this).parent());
+			var paragraphs = $SQ('.sb_tabHeader',$SQ(this).parent());
 			var paragraphHeight = 0;
-			paragraphs.each(function(i) {paragraphHeight += $S(this).height()+eval($S(this).css('margin-top').replace('px',''))+eval($S(this).css('margin-bottom').replace('px',''));});
-			$S(this).css('height',contentHeight-(headerHeight+paragraphHeight));
-			$S(this).jScrollPane();
+			paragraphs.each(function(i) {paragraphHeight += $SQ(this).height()+eval($SQ(this).css('margin-top').replace('px',''))+eval($SQ(this).css('margin-bottom').replace('px',''));});
+			$SQ(this).css('height',contentHeight-(headerHeight+paragraphHeight));
+			$SQ(this).jScrollPane();
 		});
 	}
 
 	function activateAccordion(target){
-		if ($S('.sb_tabs',target).length > 0){
-			$S('.sb_tabs .sb_tabPane',target).each(function(){
+		if ($SQ('.sb_tabs',target).length > 0){
+			$SQ('.sb_tabs .sb_tabPane',target).each(function(){
 				var isCollapsible = true;
 				/* Is this necessary still? -- Hamza
-				if ($S('.sb_accordion',this).hasClass('sb_pollQuestion') || $S('.sb_accordion',this).hasClass('sb_pollResult')){
+				if ($SQ('.sb_accordion',this).hasClass('sb_pollQuestion') || $SQ('.sb_accordion',this).hasClass('sb_pollResult')){
 					isCollapsible = false;
 				}
 				*/
-				$S('.sb_accordion',this).accordion({
+				$SQ('.sb_accordion',this).accordion({
 					collapsible: isCollapsible, // Accordion can have all its divs be closed simultaneously
 					active: false, // All accordion divs are closed by default
                     // find the link that caused the accordian to open, take the href, and set the src of the inner iframe to it
@@ -655,7 +655,7 @@ $S(function(){
 						}
                     },
                     change: function (event, ui){
-                    	var scrollPane = $S(this).parents('.sb_scrollPane')
+                    	var scrollPane = $SQ(this).parents('.sb_scrollPane')
                     	scrollPane.jScrollPane(); // re-initialize the scroll pane now that the content size may be different
                     	if (ui.newHeader.position()) {  // if the accordion is open
 							var paneHandle = scrollPane.data('jsp');
@@ -665,7 +665,7 @@ $S(function(){
 				});
 			});
 		}else{
-			$S('.sb_accordion',target).accordion({
+			$SQ('.sb_accordion',target).accordion({
 				collapsible: true
 			});
 		}
@@ -674,13 +674,13 @@ $S(function(){
 	}
 
 	function activateProgressBar(target){
-		$S('.sb_progressBar').each(function(){
-			var percentValue = eval($S('.sb_progressBarPercent',this).html());
-			$S(this).progressbar({
+		$SQ('.sb_progressBar').each(function(){
+			var percentValue = eval($SQ('.sb_progressBarPercent',this).html());
+			$SQ(this).progressbar({
 				value : percentValue
 			});
 			if (percentValue >= 55){
-				$S('.sb_progressBarValue',this).addClass('sb_progressBarValue_revert');
+				$SQ('.sb_progressBarValue',this).addClass('sb_progressBarValue_revert');
 			}
 		});
 	}

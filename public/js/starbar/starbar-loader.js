@@ -50,9 +50,9 @@
     css1.href = 'http://' + sayso.baseDomain + '/css/starbar-generic.css';
     starbarContainer.appendChild(css1);
 
-    // bring in namespaced jQuery $S 
+    // bring in namespaced jQuery $SQ 
     
-    if (!window.hasOwnProperty('$S')) {
+    if (!window.hasOwnProperty('$SQ')) {
         var js1 = document.createElement('script'); 
         js1.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
         starbarContainer.appendChild(js1);
@@ -140,8 +140,8 @@
         starbarContainer.appendChild(_testCssLoaded);
     
         function _waitUntilCssLoaded () {
-            if ($S(_testCssLoaded).css('width') === '1px') {
-                $S(_testCssLoaded).css('width', '0px');
+            if ($SQ(_testCssLoaded).css('width') === '1px') {
+                $SQ(_testCssLoaded).css('width', '0px');
                 _callback();
                 return;
             }
@@ -164,7 +164,7 @@
         
         // bring in the Starbar
         var jQueryLoadTimer = new jsLoadTimer();
-        jQueryLoadTimer.start('$S', function () {
+        jQueryLoadTimer.start('$SQ', function () {
             sayso.log('Loaded - jQuery, generic CSS');
             
             // load auxilliary (namespaced) JS libraries
@@ -197,7 +197,7 @@
                 params.client_user_logged_in = (sayso.client.userLoggedIn ? 'true' : '');
             }
             
-            $S.ajax({
+            $SQ.ajax({
                 dataType: 'jsonp',
                 data : params,
                 url : 'http://' + sayso.baseDomain + '/starbar/remote',
@@ -261,7 +261,7 @@
                         });
                     });
                 }
-            }); // end $S.ajax()
+            }); // end $SQ.ajax()
         }); // end jQueryLoadTimer
     } // end loadStarbar()
 })();

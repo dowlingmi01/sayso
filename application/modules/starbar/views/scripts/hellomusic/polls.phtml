@@ -32,7 +32,7 @@
 					<div>
 						<? if ($i < ($this->count_new_surveys - 1)) { ?>
 							<div class="sb_nextPoll">
-								<a href="#" onclick="$S(this).parents('.sb_accordion').accordion('activate', <?= ($i+1) ?>)"><span class="sb_img_nextTriangle"></span>Next Poll</a>
+								<a href="#" onclick="$SQ(this).parents('.sb_accordion').accordion('activate', <?= ($i+1) ?>)"><span class="sb_img_nextTriangle"></span>Next Poll</a>
 							</div>
 						<? } ?>
 						<? $iframeHeight = 58 + (ceil($survey->number_of_answers / 2.0) * 32); // 58 base height + 32 per row of answers ?>
@@ -49,7 +49,7 @@
 
 	<div id="polls_tabs_2" class="sb_tabPane">
 		<p class="sb_tabHeader">These are polls you'’ve completed</p>
-		<p class="sb_tabHeader"><a href="#" onclick='$S.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/reset-surveys-and-polls", success : function (r, s) {} });'>Reset surveys and polls</a></p>
+		<p class="sb_tabHeader"><a href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/reset-surveys-and-polls", success : function (r, s) {} });'>Reset surveys and polls</a></p>
 		<div class="sb_scrollPane">
 			<ul class="sb_outlineList">
 				<? foreach ($this->complete_surveys as $survey) { ?>
@@ -92,7 +92,7 @@
 						<iframe src="" width="470" height="<?= $iframeHeight ?>" frameborder="0" marginheight="0" marginwidth="0" scrolling="no"></iframe>
 						<? if ($i < ($this->count_archive_surveys - 1)) { ?>
 							<div class="sb_nextPoll">
-								<a href="#" onclick="$S(this).parents('.sb_accordion').accordion('activate', <?= ($i+1) ?>)"><span class="sb_img_nextTriangle"></span>Next Poll</a>
+								<a href="#" onclick="$SQ(this).parents('.sb_accordion').accordion('activate', <?= ($i+1) ?>)"><span class="sb_img_nextTriangle"></span>Next Poll</a>
 							</div>
 						<? } ?>
 					</div><!-- / END ACCORDION CONTENT -->

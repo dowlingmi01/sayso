@@ -6,8 +6,8 @@
 	<script type="text/javascript">document.write("<scr"+"ipt type=\"text/javascript\" src=\"http://www.surveygizmo.com/s3/polljs/<?= $this->survey->external_id ?>-<?= $this->survey->external_key ?>/?bundle_of_joy=<?= $this->bundle_of_joy ?>\"></scr"+"ipt>");</script>
 </div>
 <script type="text/javascript">
-	var loadingElement = $S('#sayso-starbar-loading-external');
-	var externalContentContainer = $S('#sayso-starbar-external');
+	var loadingElement = $SQ('#sayso-starbar-loading-external');
+	var externalContentContainer = $SQ('#sayso-starbar-external');
 
 	// Hide the container while it loads.
 	externalContentContainer.fadeTo(0,0);
@@ -15,13 +15,13 @@
 	function enableClickableRadios() {
 		// Ensure that poll.js is loaded (it's loaded at the bottom of the SG content)
 		if ((typeof SG_init_page) != 'undefined' && (typeof SGSurvey) != 'undefined') {
-			var domain = $S('#sg_SubmitButton').data("domain");
+			var domain = $SQ('#sg_SubmitButton').data("domain");
 			var survey = null;
 
 			// SG_init_page still fails sometimes, if poll.js is partially loaded
 	        try
 	        {
-				SG_init_page($S('#survey-wrapper-<?= $this->survey->external_id ?>'));
+				SG_init_page($SQ('#survey-wrapper-<?= $this->survey->external_id ?>'));
 				survey = new SGSurvey(SGAPI.surveyData["<?= $this->survey->external_id ?>"], false);
 				survey.InitPage(3);
 
@@ -35,25 +35,25 @@
 				setTimeout(function() {loadingElement.css('display', 'none');}, 500);
 
 				// Make the radio buttons clickable
-				var elemRadios = $S('input:radio');
+				var elemRadios = $SQ('input:radio');
 				elemRadios.each(function(){
-					$S(this).bind({
+					$SQ(this).bind({
 						click: function(event){
-							$S(this).attr('checked', 'checked');
+							$SQ(this).attr('checked', 'checked');
 							survey.Vote(domain);
-							$S.ajaxWithAuth({
+							$SQ.ajaxWithAuth({
 								url : "http://<?= BASE_DOMAIN ?>/api/survey/user-poll-submit?survey_id=<?= $this->survey->id ?>",
 								success : function (r, s) {}
 							});
 							survey.ShowResults(domain);
 							setTimeout(function() {
-								$S('#sb-survey-completed').fadeIn(500)
+								$SQ('#sb-survey-completed').fadeIn(500)
 							}, 500);
 						}
 					});
 				});
 				
-				$S.getScript("http://platform.twitter.com/widgets.js", function(){
+				$SQ.getScript("http://platform.twitter.com/widgets.js", function(){
 					function handleTweetEvent(event){
 						if (event) {
 							// @todo Tweet has occured, reward user!

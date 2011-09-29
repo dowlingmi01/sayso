@@ -132,4 +132,4 @@
         
         return initialize();
     };
-})($_S);
+})($_SQ);

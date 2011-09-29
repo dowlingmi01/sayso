@@ -18,26 +18,26 @@ setTimeout(function(){
 	initStarBar();
 	
 	//set up all links inside popBox to have hoverColor
-	$S('#sayso-starbar .starbar-popBox a').addClass('starbar-setLinkHover');
+	$SQ('#sayso-starbar .starbar-popBox a').addClass('starbar-setLinkHover');
 													 
 	setThemeColors(themeColor);
 	
 	// set up the full / shrunk / closed states for the bar
-	$S('#sayso-starbar #starbar-toggleVis').click(function(event){
+	$SQ('#sayso-starbar #starbar-toggleVis').click(function(event){
 		event.preventDefault();
-		var playerClass = $S('#sayso-starbar #starbar-player-console').attr('class');
+		var playerClass = $SQ('#sayso-starbar #starbar-player-console').attr('class');
 		animateBar(playerClass, 'button');
 		popBoxClose();
 	});
-	$S('#sayso-starbar #starbar-logo').click(function(event){
-	    var playerClass = $S('#sayso-starbar #starbar-player-console').attr('class');
+	$SQ('#sayso-starbar #starbar-logo').click(function(event){
+	    var playerClass = $SQ('#sayso-starbar #starbar-player-console').attr('class');
 		if (playerClass != 'starbar-visOpen'){
 			// only run if we're not at full visibility
 			animateBar(playerClass, 'logo');
 			popBoxClose();
 		}else{
 			event.preventDefault();
-			popBox($S(this));
+			popBox($SQ(this));
 			refreshScroll();
 			refreshDialog();
 		}
@@ -45,9 +45,9 @@ setTimeout(function(){
 	});
 	
 	//set up click behavior for menu + popBox reveals
-	$S('#sayso-starbar .starbar-navLink').click(function(event){																
+	$SQ('#sayso-starbar .starbar-navLink').click(function(event){																
 		event.preventDefault();
-		popBox($S(this));
+		popBox($SQ(this));
 		refreshScroll();
 		refreshDialog();
 		toggleNav();
@@ -57,9 +57,9 @@ setTimeout(function(){
 
 	
 	// close popBox if "escape" pressed
-	$S(document).keyup(function(e) {
+	$SQ(document).keyup(function(e) {
 		if (e.keyCode == 27) {
-			var currentNavActive = $S('#sayso-starbar #starbar-nav li#starbar-nav_active');
+			var currentNavActive = $SQ('#sayso-starbar #starbar-nav li#starbar-nav_active');
 			currentNavActive.children().children('span.starbar-navBorder').css('backgroundColor','');
 			popBoxClose();
 		}  // esc
@@ -67,8 +67,8 @@ setTimeout(function(){
 	
 	
 	// close if you click outside the starbar while in the iframe
-	$S(document).click(function(e) {
-		var navActive = $S('#sayso-starbar #starbar-nav_active');
+	$SQ(document).click(function(e) {
+		var navActive = $SQ('#sayso-starbar #starbar-nav_active');
 		var navActiveLink = navActive.children('a');
 		var navActiveSpan = navActiveLink.children('span.starbar-navBorder');
 		navActiveSpan.css('backgroundColor','');
@@ -77,15 +77,15 @@ setTimeout(function(){
 	
 	// close if you click outside the starbar on the main window
 	// @todo now that we are not using an iframe, re-enable this using 'body'
-//	$S(parent.document).click(function(e) {
-//		var navActive = $S('#starbar-nav_active');
+//	$SQ(parent.document).click(function(e) {
+//		var navActive = $SQ('#starbar-nav_active');
 //		var navActiveLink = navActive.children('a');
 //		var navActiveSpan = navActiveLink.children('span.starbar-navBorder');
 //		navActiveSpan.css('backgroundColor','');
 //  	popBoxClose();
 //	});
 	
-	$S('#sayso-starbar #starbar-player-console').click(function(e) {
+	$SQ('#sayso-starbar #starbar-player-console').click(function(e) {
 	    e.stopPropagation();
 	});
     
@@ -112,8 +112,8 @@ setTimeout(function(){
     	var itemList = clickedLink.parent();
     	var itemID = itemList.children('.starbar-popBoxContent').attr('id');
     		
-    	var currentPopID = $S('#sayso-starbar .starbar-popBox').attr('id');
-    	var currentNavActive = $S('#sayso-starbar #starbar-nav_active');
+    	var currentPopID = $SQ('#sayso-starbar .starbar-popBox').attr('id');
+    	var currentNavActive = $SQ('#sayso-starbar #starbar-nav_active');
     			
     	//if the link's parent <li> clicked already had an ID, it was the active one we should just close a box and quit
     	if (itemList.attr('id').length != 0){
@@ -145,8 +145,8 @@ setTimeout(function(){
     	var itemInner = itemList.children('.starbar-popBoxContent').html();
     	var itemLink = itemList.children('a.starbar-navLink');
     	var itemLinkSpan = itemLink.children('span.starbar-navBorder');
-    	var popBox = $S('#sayso-starbar .starbar-popBox');
-    	var popBoxInner = $S('#sayso-starbar .starbar-popBox .starbar-popInner');
+    	var popBox = $SQ('#sayso-starbar .starbar-popBox');
+    	var popBoxInner = $SQ('#sayso-starbar .starbar-popBox .starbar-popInner');
     			
     	popBoxInner.html(itemInner);
     	itemList.attr('id','starbar-nav_active');
@@ -168,8 +168,8 @@ setTimeout(function(){
     	3. closes popbox
     	*/
     	
-    	var popBoxOpened = $S('#sayso-starbar .starbar-popBox');
-    	var navActive = $S('#sayso-starbar #starbar-nav_active');
+    	var popBoxOpened = $SQ('#sayso-starbar .starbar-popBox');
+    	var navActive = $SQ('#sayso-starbar #starbar-nav_active');
     	var navActiveLink = navActive.children('a');
     	var navActiveSpan = navActiveLink.children('span.starbar-navBorder');
     		
@@ -194,45 +194,45 @@ setTimeout(function(){
 		}
 		
 		// if it's just a flat color that needs changing...
-		$S('#sayso-starbar .starbar-setColor').css('backgroundColor', newColor);
-		$S('#sayso-starbar .starbar-setColorActive').css('backgroundColor',newColor);
-		$S('#sayso-starbar .starbar-setTextColor').css('color', newColor);
+		$SQ('#sayso-starbar .starbar-setColor').css('backgroundColor', newColor);
+		$SQ('#sayso-starbar .starbar-setColorActive').css('backgroundColor',newColor);
+		$SQ('#sayso-starbar .starbar-setTextColor').css('color', newColor);
 		
 		// now we're going to set up specialized cases for hovers
-		$S('#sayso-starbar .starbar-setColorHover').parent().hover(
+		$SQ('#sayso-starbar .starbar-setColorHover').parent().hover(
 			function(){
-				$S(this).children('.starbar-setColorHover').css('backgroundColor', newColor);			
+				$SQ(this).children('.starbar-setColorHover').css('backgroundColor', newColor);			
 			},
 			function(){
-				if ($S(this).children().hasClass('starbar-setColorActive')){
+				if ($SQ(this).children().hasClass('starbar-setColorActive')){
 					return false;
 				}else{
-					$S(this).children('.starbar-setColorHover').css('backgroundColor','');
+					$SQ(this).children('.starbar-setColorHover').css('backgroundColor','');
 				}
 			});
 		
 		// set up hover colors for regular links
-		$S('#sayso-starbar a.starbar-setLinkHover').hover(
+		$SQ('#sayso-starbar a.starbar-setLinkHover').hover(
 			function(){
-				$S(this).css('color', newColor);			
-				$S(this).css('backgroundColor','none');
+				$SQ(this).css('color', newColor);			
+				$SQ(this).css('backgroundColor','none');
 			},
 			function(){				
-				$S(this).css('color', '');		
-				$S(this).css('backgroundColor','none');
+				$SQ(this).css('color', '');		
+				$SQ(this).css('backgroundColor','none');
 			});
 		
 		//set up the hover shadows
-		$S('#sayso-starbar .starbar-setColorShadow').parent().hover(
+		$SQ('#sayso-starbar .starbar-setColorShadow').parent().hover(
 			function(){
-				$S(this).children('.starbar-setColorShadow').css({boxShadow: '0 0 5px'+newColor});
-				$S(this).children('.starbar-setColorShadow').css({'-moz-boxShadow': '0 0 5px'+newColor});
-				$S(this).children('.starbar-setColorShadow').css({'-webkit-boxShadow': '0 0 5px'+newColor});
+				$SQ(this).children('.starbar-setColorShadow').css({boxShadow: '0 0 5px'+newColor});
+				$SQ(this).children('.starbar-setColorShadow').css({'-moz-boxShadow': '0 0 5px'+newColor});
+				$SQ(this).children('.starbar-setColorShadow').css({'-webkit-boxShadow': '0 0 5px'+newColor});
 			},
 			function(){
-				$S(this).children('.starbar-setColorShadow').css({boxShadow: '0px 0px 0px'+newColor});
-				$S(this).children('.starbar-setColorShadow').css({'-moz-boxShadow': '0 0 0px'+newColor});
-				$S(this).children('.starbar-setColorShadow').css({'-webkit-boxShadow': '0 0 0px'+newColor});
+				$SQ(this).children('.starbar-setColorShadow').css({boxShadow: '0px 0px 0px'+newColor});
+				$SQ(this).children('.starbar-setColorShadow').css({'-moz-boxShadow': '0 0 0px'+newColor});
+				$SQ(this).children('.starbar-setColorShadow').css({'-webkit-boxShadow': '0 0 0px'+newColor});
 			});
 		
 		
@@ -247,10 +247,10 @@ setTimeout(function(){
     	var newCount = themeParent.children().children('h5').html();
     	var newColor = newTheme.attr('href');
     	
-    	$S('#sayso-starbar .starbar .starbar-content img').attr('src',newImg.attr('src'));
-    	$S('#sayso-starbar .starbar .starbar-content h3').html(newTitle);
-    	$S('#sayso-starbar .starbar .starbar-content h5').html(newCount);
-    	$S('#sayso-starbar .starbar .starbar-content h5 span').html('');
+    	$SQ('#sayso-starbar .starbar .starbar-content img').attr('src',newImg.attr('src'));
+    	$SQ('#sayso-starbar .starbar .starbar-content h3').html(newTitle);
+    	$SQ('#sayso-starbar .starbar .starbar-content h5').html(newCount);
+    	$SQ('#sayso-starbar .starbar .starbar-content h5 span').html('');
     	setThemeColors(newColor);
     	return false;
     }
@@ -261,46 +261,46 @@ setTimeout(function(){
 		if (clickPoint == 'button'){
 			switch (playerClass){
 				case 'starbar-visOpen':
-					$S('#sayso-starbar #starbar-mainContent').fadeOut('fast');
-					$S('#sayso-starbar #starbar-toggleVis').attr('class','');
-					$S('#sayso-starbar #starbar-toggleVis').addClass('close');
-					$S('#sayso-starbar #starbar-player-console').animate({
+					$SQ('#sayso-starbar #starbar-mainContent').fadeOut('fast');
+					$SQ('#sayso-starbar #starbar-toggleVis').attr('class','');
+					$SQ('#sayso-starbar #starbar-toggleVis').addClass('close');
+					$SQ('#sayso-starbar #starbar-player-console').animate({
 							width: '90'
 						}, 500, function() {
 							// Animation complete.
-							$S(this).attr('class','').addClass('starbar-visClosed');
-							$S('#sayso-starbar #starbar-logoBorder').show();
+							$SQ(this).attr('class','').addClass('starbar-visClosed');
+							$SQ('#sayso-starbar #starbar-logoBorder').show();
 							updateState();
 						});
 					starBarStatusHeight = 'starbar-closed';
 					starBarStatusWidth = 'starbar-visClosed';
 				break;
 				case 'starbar-visClosed':
-					$S('#sayso-starbar #starbar-toggleVis').attr('class','');
-					$S('#sayso-starbar #starbar-toggleVis').addClass('starbar-closed');
-					//$S('#starbar-player-console').addClass('starbar-visStowed');
-					$S('#sayso-starbar #starbar-logoBorder').hide();
-					$S('#sayso-starbar #starbar-player-console').animate({
+					$SQ('#sayso-starbar #starbar-toggleVis').attr('class','');
+					$SQ('#sayso-starbar #starbar-toggleVis').addClass('starbar-closed');
+					//$SQ('#starbar-player-console').addClass('starbar-visStowed');
+					$SQ('#sayso-starbar #starbar-logoBorder').hide();
+					$SQ('#sayso-starbar #starbar-player-console').animate({
 							width: '45'
 						}, 500, function() {
 							// Animation complete.
-							$S(this).attr('class','').addClass('starbar-visStowed');
+							$SQ(this).attr('class','').addClass('starbar-visStowed');
 							updateState();
 					});
 					starBarStatusHeight = 'starbar-closed';
 					starBarStatusWidth = 'starbar-visStowed';
 				break;
 				case 'starbar-visStowed':
-					$S('#sayso-starbar #starbar-toggleVis').attr('class','');
-					$S('#sayso-starbar #starbar-toggleVis').addClass('starbar-hide');
-					$S('#sayso-starbar #starbar-logoBorder').hide();
-					$S('#sayso-starbar #starbar-player-console').addClass('starbar-visOpen');
-					$S('#sayso-starbar #starbar-player-console').animate({
+					$SQ('#sayso-starbar #starbar-toggleVis').attr('class','');
+					$SQ('#sayso-starbar #starbar-toggleVis').addClass('starbar-hide');
+					$SQ('#sayso-starbar #starbar-logoBorder').hide();
+					$SQ('#sayso-starbar #starbar-player-console').addClass('starbar-visOpen');
+					$SQ('#sayso-starbar #starbar-player-console').animate({
 							width: '100%'
 						}, 500, function() {
 							// Animation complete.
-							$S(this).attr('class','').addClass('starbar-visOpen');
-							$S('#starbar-mainContent').fadeIn('fast');			
+							$SQ(this).attr('class','').addClass('starbar-visOpen');
+							$SQ('#starbar-mainContent').fadeIn('fast');			
 							updateState();
 					});
 					starBarStatusHeight = 'starbar-open';
@@ -312,30 +312,30 @@ setTimeout(function(){
 		else if (clickPoint == 'init'){
 			switch (playerClass){ 
 				case 'starbar-visOpen':				
-					$S('#sayso-starbar #starbar-player-console').hide();
-					$S('#sayso-starbar #starbar-toggleVis').attr('class','');
-					$S('#sayso-starbar #starbar-toggleVis').addClass('starbar-hide');
-					$S('#sayso-starbar #starbar-logoBorder').hide();
-					$S('#sayso-starbar #starbar-player-console').attr('class','').addClass('starbar-visOpen').show();
-					$S('#sayso-starbar #starbar-mainContent').fadeIn('fast');
+					$SQ('#sayso-starbar #starbar-player-console').hide();
+					$SQ('#sayso-starbar #starbar-toggleVis').attr('class','');
+					$SQ('#sayso-starbar #starbar-toggleVis').addClass('starbar-hide');
+					$SQ('#sayso-starbar #starbar-logoBorder').hide();
+					$SQ('#sayso-starbar #starbar-player-console').attr('class','').addClass('starbar-visOpen').show();
+					$SQ('#sayso-starbar #starbar-mainContent').fadeIn('fast');
 					starBarStatusWidth = 'starbar-visOpen';
 					break;
 				case 'starbar-visClosed': 					
-					$S('#sayso-starbar #starbar-player-console').hide();
-					$S('#sayso-starbar #starbar-mainContent').fadeOut('fast');
-					$S('#sayso-starbar #starbar-toggleVis').attr('class','');
-					$S('#sayso-starbar #starbar-toggleVis').addClass('close');
-					$S('#sayso-starbar #starbar-player-console').attr('class','').addClass('starbar-visClosed').show();
-					$S('#sayso-starbar #starbar-logoBorder').show();
+					$SQ('#sayso-starbar #starbar-player-console').hide();
+					$SQ('#sayso-starbar #starbar-mainContent').fadeOut('fast');
+					$SQ('#sayso-starbar #starbar-toggleVis').attr('class','');
+					$SQ('#sayso-starbar #starbar-toggleVis').addClass('close');
+					$SQ('#sayso-starbar #starbar-player-console').attr('class','').addClass('starbar-visClosed').show();
+					$SQ('#sayso-starbar #starbar-logoBorder').show();
 					starBarStatusHeight = 'starbar-closed';
 					starBarStatusWidth = 'starbar-visClosed';
 					break;
 				case 'starbar-visStowed':					
-					$S('#sayso-starbar #starbar-player-console').hide();
-					$S('#sayso-starbar #starbar-toggleVis').attr('class','');
-					$S('#sayso-starbar #starbar-toggleVis').addClass('starbar-closed');
-					$S('#sayso-starbar #starbar-logoBorder').hide();
-					$S('#sayso-starbar #starbar-player-console').attr('class','').addClass('starbar-visStowed').show();
+					$SQ('#sayso-starbar #starbar-player-console').hide();
+					$SQ('#sayso-starbar #starbar-toggleVis').attr('class','');
+					$SQ('#sayso-starbar #starbar-toggleVis').addClass('starbar-closed');
+					$SQ('#sayso-starbar #starbar-logoBorder').hide();
+					$SQ('#sayso-starbar #starbar-player-console').attr('class','').addClass('starbar-visStowed').show();
 					starBarStatusHeight = 'starbar-closed';
 					starBarStatusWidth = 'starbar-visStowed';
 					break;
@@ -345,46 +345,46 @@ setTimeout(function(){
 		else if (clickPoint === 'refresh') {
 		    switch (playerClass){
                 case 'starbar-visOpen':
-                    $S('#sayso-starbar #starbar-toggleVis').attr('class','');
-                    $S('#sayso-starbar #starbar-toggleVis').addClass('starbar-hide');
-                    $S('#sayso-starbar #starbar-logoBorder').hide();
-                    $S('#sayso-starbar #starbar-player-console').addClass('starbar-visOpen');
-                    $S('#sayso-starbar #starbar-player-console').animate({
+                    $SQ('#sayso-starbar #starbar-toggleVis').attr('class','');
+                    $SQ('#sayso-starbar #starbar-toggleVis').addClass('starbar-hide');
+                    $SQ('#sayso-starbar #starbar-logoBorder').hide();
+                    $SQ('#sayso-starbar #starbar-player-console').addClass('starbar-visOpen');
+                    $SQ('#sayso-starbar #starbar-player-console').animate({
                             width: '100%'
                         }, 500, function() {
                             // Animation complete.
-                            $S(this).attr('class','').addClass('starbar-visOpen');
-                            $S('#starbar-mainContent').fadeIn('fast');          
+                            $SQ(this).attr('class','').addClass('starbar-visOpen');
+                            $SQ('#starbar-mainContent').fadeIn('fast');          
                     });
                     starBarStatusHeight = 'starbar-open';
                     starBarStatusWidth = 'starbar-visOpen';
                     break;
                 case 'starbar-visClosed':
-                    $S('#sayso-starbar #starbar-mainContent').fadeOut('fast');
-                    $S('#sayso-starbar #starbar-toggleVis').attr('class','');
-                    $S('#sayso-starbar #starbar-toggleVis').addClass('close');
-                    $S('#sayso-starbar #starbar-player-console').animate({
+                    $SQ('#sayso-starbar #starbar-mainContent').fadeOut('fast');
+                    $SQ('#sayso-starbar #starbar-toggleVis').attr('class','');
+                    $SQ('#sayso-starbar #starbar-toggleVis').addClass('close');
+                    $SQ('#sayso-starbar #starbar-player-console').animate({
                             width: '90'
                         }, 500, function() {
                             // Animation complete.
-                            $S(this).attr('class','').addClass('starbar-visClosed');
-                            $S('#sayso-starbar #starbar-logoBorder').show();
+                            $SQ(this).attr('class','').addClass('starbar-visClosed');
+                            $SQ('#sayso-starbar #starbar-logoBorder').show();
                         });
                     starBarStatusHeight = 'starbar-closed';
                     starBarStatusWidth = 'starbar-visClosed';
                     break;
                 case 'starbar-visStowed':
-                    if (!$S('#starbar-mainContent').is(':hidden')) {
-                        $S('#sayso-starbar #starbar-mainContent').fadeOut('fast');
+                    if (!$SQ('#starbar-mainContent').is(':hidden')) {
+                        $SQ('#sayso-starbar #starbar-mainContent').fadeOut('fast');
                     }
-                    $S('#sayso-starbar #starbar-toggleVis').attr('class','');
-                    $S('#sayso-starbar #starbar-toggleVis').addClass('starbar-closed');
-                    $S('#sayso-starbar #starbar-logoBorder').hide();
-                    $S('#sayso-starbar #starbar-player-console').animate({
+                    $SQ('#sayso-starbar #starbar-toggleVis').attr('class','');
+                    $SQ('#sayso-starbar #starbar-toggleVis').addClass('starbar-closed');
+                    $SQ('#sayso-starbar #starbar-logoBorder').hide();
+                    $SQ('#sayso-starbar #starbar-player-console').animate({
                             width: '45'
                         }, 500, function() {
                             // Animation complete.
-                            $S(this).attr('class','').addClass('starbar-visStowed');
+                            $SQ(this).attr('class','').addClass('starbar-visStowed');
                     });
                     
                     starBarStatusHeight = 'starbar-closed';
@@ -394,18 +394,18 @@ setTimeout(function(){
 		}
 		else{
 			// if we clicked the logo, always go into full view if we aren't already there
-			$S('#sayso-starbar #starbar-toggleVis').attr('class','');
-			$S('#sayso-starbar #starbar-toggleVis').addClass('starbar-hide');
-			$S('#sayso-starbar #starbar-logoBorder').hide();
-			$S('#sayso-starbar #starbar-player-console').attr('class','');
-			$S('#sayso-starbar #starbar-player-console').addClass('starbar-visOpen');
-			$S('#sayso-starbar #starbar-player-console').animate({
+			$SQ('#sayso-starbar #starbar-toggleVis').attr('class','');
+			$SQ('#sayso-starbar #starbar-toggleVis').addClass('starbar-hide');
+			$SQ('#sayso-starbar #starbar-logoBorder').hide();
+			$SQ('#sayso-starbar #starbar-player-console').attr('class','');
+			$SQ('#sayso-starbar #starbar-player-console').addClass('starbar-visOpen');
+			$SQ('#sayso-starbar #starbar-player-console').animate({
 					width: '100%'
 				}, 500, function() {
 					// Animation complete.
-					$S(this).attr('class','');
-					$S(this).addClass('starbar-visOpen');
-					$S('#starbar-mainContent').fadeIn('fast');
+					$SQ(this).attr('class','');
+					$SQ(this).addClass('starbar-visOpen');
+					$SQ('#starbar-mainContent').fadeIn('fast');
 					updateState();
 				});
 			starBarStatusHeight = 'starbar-closed';
@@ -419,18 +419,18 @@ setTimeout(function(){
 	
 	function refreshScroll(){
 		// set up scrollbars for the popBoxes
-		if ($S('#sayso-starbar .starbar-popBox .starbar-column_left .starbar-scrollbar').length != 0){
-			var ScrollbarL = $S('.starbar-popBox .starbar-column_left');
+		if ($SQ('#sayso-starbar .starbar-popBox .starbar-column_left .starbar-scrollbar').length != 0){
+			var ScrollbarL = $SQ('.starbar-popBox .starbar-column_left');
 			ScrollbarL.tinyscrollbar();	
 			ScrollbarL.tinyscrollbar_update();
 		}
-		if ($S('#sayso-starbar .starbar-popBox .starbar-column_right .starbar-scrollbar').length != 0){
-			var ScrollbarR = $S('.starbar-popBox .starbar-column_right');
+		if ($SQ('#sayso-starbar .starbar-popBox .starbar-column_right .starbar-scrollbar').length != 0){
+			var ScrollbarR = $SQ('.starbar-popBox .starbar-column_right');
 			ScrollbarR.tinyscrollbar();	
 			ScrollbarR.tinyscrollbar_update();
 		}		
-		if ($S('#sayso-starbar .starbar-popBox .starbar-column_single .starbar-scrollbar').length != 0){
-			var ScrollbarS = $S('.starbar-popBox .starbar-column_single');
+		if ($SQ('#sayso-starbar .starbar-popBox .starbar-column_single .starbar-scrollbar').length != 0){
+			var ScrollbarS = $SQ('.starbar-popBox .starbar-column_single');
 			ScrollbarS.tinyscrollbar();	
 			ScrollbarS.tinyscrollbar_update();
 		}		
@@ -440,10 +440,10 @@ setTimeout(function(){
 	// reset the dialog behaviors / set them up
 	function refreshDialog(){
 		// set up popDialogs
-		$S('#sayso-starbar a.starbar-popDialog').unbind('click').click(function(event){
+		$SQ('#sayso-starbar a.starbar-popDialog').unbind('click').click(function(event){
 			event.preventDefault();
-			var popDialogSrc = $S(this).attr('href'),
-			    popDialog = $S('#saysoPopBoxDialog');
+			var popDialogSrc = $SQ(this).attr('href'),
+			    popDialog = $SQ('#saysoPopBoxDialog');
 			popDialog.lightbox_me({
 			    onLoad : function () {},
 			    onClose : function () {},
@@ -453,14 +453,14 @@ setTimeout(function(){
 			popDialog.find('iframe').attr('src',popDialogSrc);
 		});
 			
-		$S('#sayso-starbar a.starbar-closePop').click(function(event){
+		$SQ('#sayso-starbar a.starbar-closePop').click(function(event){
 			event.preventDefault();
 			popBoxClose();				
 		});
 		
-		$S('#sayso-starbar a.starbar-changeTheme').click(function(event){
+		$SQ('#sayso-starbar a.starbar-changeTheme').click(function(event){
 			event.preventDefault();
-			changeTheme($S(this));				
+			changeTheme($SQ(this));				
 		});
 		return false;
 	}
@@ -468,24 +468,24 @@ setTimeout(function(){
 	// set up toggleNav behavior
 	function toggleNav(){
 		// initialize the first item
-		$S('#sayso-starbar .starbar-toggleElement').hide();
-		$S('#sayso-starbar .starbar-toggleNav li:nth-child(2)').children('a.starbar-toggleLink').addClass('active');
-		$S('#sayso-starbar .starbar-toggleElement').first().show();
+		$SQ('#sayso-starbar .starbar-toggleElement').hide();
+		$SQ('#sayso-starbar .starbar-toggleNav li:nth-child(2)').children('a.starbar-toggleLink').addClass('active');
+		$SQ('#sayso-starbar .starbar-toggleElement').first().show();
 		
 		
-		$S('#sayso-starbar .starbar-toggleNav a.starbar-toggleLink').click(function(){
-			var thisToggleID = $S(this).parent().attr('class');
-				$S('#sayso-starbar .starbar-toggleNav a.starbar-toggleLink').each(function(){
-					$S(this).removeClass('active');
+		$SQ('#sayso-starbar .starbar-toggleNav a.starbar-toggleLink').click(function(){
+			var thisToggleID = $SQ(this).parent().attr('class');
+				$SQ('#sayso-starbar .starbar-toggleNav a.starbar-toggleLink').each(function(){
+					$SQ(this).removeClass('active');
 				});
-				$S(this).addClass('active');
-				$S('#sayso-starbar .starbar-toggleElement').hide();
-				$S('#sayso-starbar #'+thisToggleID).show();																				 
+				$SQ(this).addClass('active');
+				$SQ('#sayso-starbar .starbar-toggleElement').hide();
+				$SQ('#sayso-starbar #'+thisToggleID).show();																				 
 		});
 	}
 	
 	function updateState (visibility){	
-	    if (!visibility) visibility = $S('#sayso-starbar #starbar-player-console').attr('class');
+	    if (!visibility) visibility = $SQ('#sayso-starbar #starbar-player-console').attr('class');
 	    window.sayso.starbar.state.visibility = visibility;
 	    var app = KOBJ.get_application(kynetxAppId);
         app.raise_event('update_state', { 'visibility' : visibility /* other state changes here */ });

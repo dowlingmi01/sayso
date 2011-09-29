@@ -11,13 +11,13 @@
 /**
  * Create a cookie with the given name and value and other optional parameters.
  *
- * @example $S.cookie('the_cookie', 'the_value');
+ * @example $SQ.cookie('the_cookie', 'the_value');
  * @desc Set the value of a cookie.
- * @example $S.cookie('the_cookie', 'the_value', { expires: 7, path: '/', domain: 'jquery.com', secure: true });
+ * @example $SQ.cookie('the_cookie', 'the_value', { expires: 7, path: '/', domain: 'jquery.com', secure: true });
  * @desc Create a cookie with all available options.
- * @example $S.cookie('the_cookie', 'the_value');
+ * @example $SQ.cookie('the_cookie', 'the_value');
  * @desc Create a session cookie.
- * @example $S.cookie('the_cookie', null);
+ * @example $SQ.cookie('the_cookie', null);
  * @desc Delete a cookie by passing null as value. Keep in mind that you have to use the same path and domain
  *       used when the cookie was set.
  *
@@ -34,7 +34,7 @@
  *                        require a secure protocol (like HTTPS).
  * @type undefined
  *
- * @name $S.cookie
+ * @name $SQ.cookie
  * @cat Plugins/Cookie
  * @author Klaus Hartl/klaus.hartl@stilbuero.de
  */
@@ -42,18 +42,18 @@
 /**
  * Get the value of a cookie with the given name.
  *
- * @example $S.cookie('the_cookie');
+ * @example $SQ.cookie('the_cookie');
  * @desc Get the value of a cookie.
  *
  * @param String name The name of the cookie.
  * @return The value of the cookie.
  * @type String
  *
- * @name $S.cookie
+ * @name $SQ.cookie
  * @cat Plugins/Cookie
  * @author Klaus Hartl/klaus.hartl@stilbuero.de
  */
-$_S.cookie = function(name, value, options) {
+$_SQ.cookie = function(name, value, options) {
     if (typeof value != 'undefined') { // name and value given, set cookie
         options = options || {};
         if (value === null) {
@@ -83,7 +83,7 @@ $_S.cookie = function(name, value, options) {
         if (document.cookie && document.cookie != '') {
             var cookies = document.cookie.split(';');
             for (var i = 0; i < cookies.length; i++) {
-                var cookie = $_S.trim(cookies[i]);
+                var cookie = $_SQ.trim(cookies[i]);
                 // Does this cookie string begin with the name we want?
                 if (cookie.substring(0, name.length + 1) == (name + '=')) {
                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));

@@ -24,11 +24,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // version: 0.1.2
 
 /*
- NOTE: this file has been modified to use $S instead of $ and jquery.
+ NOTE: this file has been modified to use $SQ instead of $ and jquery.
 */
 
-(function( $S ) {
-	$S.fn.eip = function( save_url, options ) {
+(function( $SQ ) {
+	$SQ.fn.eip = function( save_url, options ) {
 		// Defaults
 		var opt = {
 			save_url			: save_url,
@@ -74,8 +74,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 			after_save			: function( self ) {
 				for( var i = 0; i < 2; i++ ) {
-					$S( self ).fadeOut( "fast" );
-					$S( self ).fadeIn( "fast" );
+					$SQ( self ).fadeOut( "fast" );
+					$SQ( self ).fadeIn( "fast" );
 				}
 			},
 			on_error			: function( msg ) {
@@ -84,29 +84,29 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		}; // defaults
 
 		if( options ) {
-			$S.extend( opt, options );
+			$SQ.extend( opt, options );
 		}
 
 		this.each( function( ) {
 			var self = this;
 
-			$S( this ).bind( "mouseenter mouseleave", function( e ) {
-				$S( this ).toggleClass( opt.mouseover_class );
+			$SQ( this ).bind( "mouseenter mouseleave", function( e ) {
+				$SQ( this ).toggleClass( opt.mouseover_class );
 			} );
 
-			$S( this ).bind( opt.edit_event, function( e ) {
+			$SQ( this ).bind( opt.edit_event, function( e ) {
 				_editMode( this );
 			} );
 		} ); // this.each
 
 		// Private functions
 		var _editMode = function( self ) {
-			$S( self ).unbind( opt.edit_event );
+			$SQ( self ).unbind( opt.edit_event );
 
-			$S( self ).removeClass( opt.mouseover_class );
-			$S( self ).fadeOut( "fast", function( e ) {
+			$SQ( self ).removeClass( opt.mouseover_class );
+			$SQ( self ).fadeOut( "fast", function( e ) {
 				var id		= self.id;
-				var value	= $S( self ).html( );
+				var value	= $SQ( self ).html( );
 
 				var safe_value	= value.replace( /</g, "&lt;" );
 				safe_value		= value.replace( />/g, "&gt;" );
@@ -158,7 +158,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 						editfield_class	: opt.editfield_class
 					} );
 
-					$S.each( opt.select_options, function( k, v ) {
+					$SQ.each( opt.select_options, function( k, v ) {
 						var selected = '';
 						if( v == value ) {
 							selected = 'selected="selected"';
@@ -189,22 +189,22 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 				form += _template( opt.stop_form, { } );
 
-				$S( self ).after( form );
-				$S( "#editor-" + self.id ).fadeIn( "fast" );
+				$SQ( self ).after( form );
+				$SQ( "#editor-" + self.id ).fadeIn( "fast" );
 
 				if( opt.focus_edit ) {
-					$S( "#edit-" + self.id ).focus( );
+					$SQ( "#edit-" + self.id ).focus( );
 				}
 
 				if( opt.select_text ) {
-					$S( "#edit-" + self.id ).select( );
+					$SQ( "#edit-" + self.id ).select( );
 				}
 
-				$S( "#cancel-" + self.id ).bind( "click", function( e ) {
+				$SQ( "#cancel-" + self.id ).bind( "click", function( e ) {
 					_cancelEdit( self );
 				} );
 
-				$S( "#edit-" + self.id ).keydown( function( e ) {
+				$SQ( "#edit-" + self.id ).keydown( function( e ) {
 					// cancel
 					if( e.which == 27 ) {
 						_cancelEdit( self );
@@ -216,7 +216,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					}
 				} );
 
-				$S( "#save-" + self.id ).bind( "click", function( e ) {
+				$SQ( "#save-" + self.id ).bind( "click", function( e ) {
 					return _saveEdit( self, orig_option_value );
 				} ); // save click
 			} ); // this fadeOut
@@ -230,46 +230,46 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		};
 
 		var _trim = function( str ) {
-			return str.replace(/^\s\s*/, '').replace(/\s\s*$S/, '');
+			return str.replace(/^\s\s*/, '').replace(/\s\s*$SQ/, '');
 		}
 
 		var _cancelEdit = function( self ) {
-			$S( "#editor-" + self.id ).fadeOut( "fast" );
-			$S( "#editor-" + self.id ).remove( );
+			$SQ( "#editor-" + self.id ).fadeOut( "fast" );
+			$SQ( "#editor-" + self.id ).remove( );
 
-			$S( self ).bind( opt.edit_event, function( e ) {
+			$SQ( self ).bind( opt.edit_event, function( e ) {
 				_editMode( self );
 			} );
 
-			$S( self ).removeClass( opt.mouseover_class );
-			$S( self ).fadeIn( "fast" );
+			$SQ( self ).removeClass( opt.mouseover_class );
+			$SQ( self ).fadeIn( "fast" );
 		};
 		
 		var _saveEdit = function( self, orig_option_value ) {
-			var orig_value = $S( self ).html( );
-			var new_value = $S( "#edit-" + self.id ).attr( "value" );
+			var orig_value = $SQ( self ).html( );
+			var new_value = $SQ( "#edit-" + self.id ).attr( "value" );
 
 			if( orig_value == new_value ) {
-				$S( "#editor-" + self.id ).fadeOut( "fast" );
-				$S( "#editor-" + self.id ).remove( );
+				$SQ( "#editor-" + self.id ).fadeOut( "fast" );
+				$SQ( "#editor-" + self.id ).remove( );
 
-				$S( self ).bind( opt.edit_event, function( e ) {
+				$SQ( self ).bind( opt.edit_event, function( e ) {
 					_editMode( self );
 				} );
 
-				$S( self ).removeClass( opt.mouseover_class );
-				$S( self ).fadeIn( "fast" );
+				$SQ( self ).removeClass( opt.mouseover_class );
+				$SQ( self ).fadeIn( "fast" );
 
 				return true;
 			}
 
-			$S( "#editor-" + self.id ).after( _template( opt.saving, {
+			$SQ( "#editor-" + self.id ).after( _template( opt.saving, {
 				id			: self.id,
 				saving_class: opt.saving_class,
 				saving_text	: opt.saving_text
 			} ) );
-			$S( "#editor-" + self.id ).fadeOut( "fast", function( ) {
-				$S( "#saving-" + self.id).fadeIn( "fast" );
+			$SQ( "#editor-" + self.id ).fadeOut( "fast", function( ) {
+				$SQ( "#saving-" + self.id).fadeIn( "fast" );
 			} );
 
 			var ajax_data = {
@@ -277,17 +277,17 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				id			: self.id,
 				form_type	: opt.form_type,
 				orig_value	: orig_value,
-				new_value	: $S( "#edit-" + self.id ).attr( "value" ),
+				new_value	: $SQ( "#edit-" + self.id ).attr( "value" ),
 				data		: opt.data
 			}
 
 			if( opt.form_type == 'select' ) {
 				ajax_data.orig_option_value = orig_option_value;
 				ajax_data.orig_option_text = orig_value;
-				ajax_data.new_option_text = $S( "#edit-option-" + self.id + "-" + new_value ).html( );
+				ajax_data.new_option_text = $SQ( "#edit-option-" + self.id + "-" + new_value ).html( );
 			}
 
-			$S.ajaxWithAuth( {
+			$SQ.ajaxWithAuth( {
 				url		: opt.save_url,
 				type	: "POST",
 				dataType: "json",
@@ -296,35 +296,35 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				success	: function( data ) {
 					if (data.data) data = data.data;
 					
-					$S( "#editor-" + self.id ).fadeOut( "fast" );
-					$S( "#editor-" + self.id ).remove( );
+					$SQ( "#editor-" + self.id ).fadeOut( "fast" );
+					$SQ( "#editor-" + self.id ).remove( );
 
 					if( data.is_error == true ) {
 						opt.on_error( data.error_text );
 					}
 					else {
-						$S( self ).html( data.html );
+						$SQ( self ).html( data.html );
 					}
 
-					$S( "#saving-" + self.id ).fadeOut( "fast" );
-					$S( "#saving-" + self.id ).remove( );
+					$SQ( "#saving-" + self.id ).fadeOut( "fast" );
+					$SQ( "#saving-" + self.id ).remove( );
 
-					$S( self ).bind( opt.edit_event, function( e ) {
+					$SQ( self ).bind( opt.edit_event, function( e ) {
 						_editMode( self );
 					} );
 
-					$S( self ).addClass( opt.mouseover_class );
-					$S( self ).fadeIn( "fast" );
+					$SQ( self ).addClass( opt.mouseover_class );
+					$SQ( self ).fadeIn( "fast" );
 
 					if( opt.after_save != false ) {
 						opt.after_save( self );
 					}
 
-					$S( self ).removeClass( opt.mouseover_class );
+					$SQ( self ).removeClass( opt.mouseover_class );
 				} // success
 			} ); // ajax
 		}; // _saveEdit
 
 
 	}; // inplaceEdit
-})( $S );
+})( $SQ );

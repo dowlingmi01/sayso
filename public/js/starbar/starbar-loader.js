@@ -100,10 +100,11 @@
     
     // functions to control load order
     
-    function jsLoadTimer () {
+    function jsLoadTimer (maxCount, waitTime) {
         
         var _counter = 0,
-            _maxCount = 200, // about 10 seconds (200 x 50 mseconds for each timer)
+            _maxCount = maxCount || 200, // about 10 seconds (200 x 50 mseconds for each timer)
+            _waitTime = waitTime || 50,
             _searchSymbol = '',
             _callback = null;
         
@@ -117,10 +118,9 @@
             
             if (_counter++ > _maxCount) { 
                 _callback(); // stop waiting and just fire the callback
-                sayso.log('Stopped waiting for JS to load (not found: ' + _searchSymbol + ')');
                 return;
             }
-            setTimeout(_waitUntilJsLoaded, 50);
+            setTimeout(_waitUntilJsLoaded, _waitTime);
         }
         
         this.start = function (symbol, callback) {
@@ -268,9 +268,10 @@
                             starbarJsTimer.start('window.sayso.starbar.loaded', function () {
                                 // if user has not "onboarded" and we are on the Starbar's base domain
                                 // then trigger the onboarding to display
-                                if (!starbar._user_map.onboarded && (window.location.href.match(starbar.domain) || window.location.href.match('saysollc.com'))) {
+                                var href = window.location.href;
+                                if (!starbar._user_map.onboarded && (href.match(starbar.domain) || href.match('saysollc.com') || href.match('sayso.com'))) {
                                     // trigger onboarding to display (see starbar-new.js where this is handled)
-                                    $SQ(document).trigger('onboarding-display');
+                                    setTimeout(function () { $SQ(document).trigger('onboarding-display'); }, 2500);
                                     // bind when the last step of the onboarding is selected, to mark onboarding done
                                     // see starbar-new.js where this is triggered
                                     $SQ(document).bind('onboarding-complete', function () { 

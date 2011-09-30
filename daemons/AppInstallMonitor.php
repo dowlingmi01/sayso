@@ -43,6 +43,8 @@ if ($runmode['help'] == true) {
 // ------------------------------------------------------------------
 // Include/autoload/Zend setup
 
+date_default_timezone_set('UTC');
+
 defined('APPLICATION_PATH')
     || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
 

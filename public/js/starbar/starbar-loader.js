@@ -268,7 +268,7 @@
                             starbarJsTimer.start('window.sayso.starbar.loaded', function () {
                                 // if user has not "onboarded" and we are on the Starbar's base domain
                                 // then trigger the onboarding to display
-                                if (!starbar._user_map.onboarded && window.location.href.match(starbar.domain)) {
+                                if (!starbar._user_map.onboarded && (window.location.href.match(starbar.domain) || window.location.href.match('saysollc.com'))) {
                                     // trigger onboarding to display (see starbar-new.js where this is handled)
                                     $SQ(document).trigger('onboarding-display');
                                     // bind when the last step of the onboarding is selected, to mark onboarding done

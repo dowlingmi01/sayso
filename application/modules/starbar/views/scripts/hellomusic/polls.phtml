@@ -8,8 +8,12 @@
 		<? } else { ?>
 			<li><a href="#polls_tabs_1">New</a></li>
 		<? } ?>
-		<li><a href="#polls_tabs_2">Completed</a></li>
-		<li><a href="#polls_tabs_3">Archive</a></li>
+		<? if ($this->count_complete_surveys) { ?>
+			<li><a href="#polls_tabs_2">Completed</a></li>
+		<? } ?>
+		<? if ($this->count_archive_surveys) { ?>
+			<li><a href="#polls_tabs_3">Archive</a></li>
+		<? } ?>
 	</ul>
 	<div id="polls_tabs_1" class="sb_tabPane">
 		<p class="sb_tabHeader">
@@ -47,62 +51,66 @@
 
 	</div><!-- #tabs_1 -->
 
-	<div id="polls_tabs_2" class="sb_tabPane">
-		<p class="sb_tabHeader">These are polls you'’ve completed</p>
-		<p class="sb_tabHeader"><a href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/reset-surveys-and-polls", success : function (r, s) {} });'>Reset surveys and polls</a></p>
-		<div class="sb_scrollPane">
-			<ul class="sb_outlineList">
-				<? foreach ($this->complete_surveys as $survey) { ?>
-				    <li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
-              			<div class="sb_pointsEarnedTotal">
-              				<? if ($survey->premium) { ?>
-                				<span class="sb_chopsEarned sb_theme_textHighlight_alt">+500</span>
-                				<span class="sb_notesEarned sb_theme_textHighlight_alt">+2</span>
-							<? } else { ?>
-                				<span class="sb_chopsEarned sb_theme_textHighlight">+250</span>
-                				<span class="sb_notesEarned sb_theme_textHighlight">+1</span>
-							<? } ?>
-				        </div><!-- .sb_pointsEarnedTotal -->
-					</li>
-				<? } ?>
-			</ul>
-		</div><!-- .sb_scrollPane -->
-	</div><!-- #tabs_2 -->
+	<? if ($this->count_complete_surveys) { ?>
+		<div id="polls_tabs_2" class="sb_tabPane">
+			<p class="sb_tabHeader">These are polls you'’ve completed</p>
+			<p class="sb_tabHeader"><a href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/reset-surveys-and-polls", success : function (r, s) {} });'>Reset surveys and polls</a></p>
+			<div class="sb_scrollPane">
+				<ul class="sb_outlineList">
+					<? foreach ($this->complete_surveys as $survey) { ?>
+					    <li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
+              				<div class="sb_pointsEarnedTotal">
+              					<? if ($survey->premium) { ?>
+                					<span class="sb_chopsEarned sb_theme_textHighlight_alt">+500</span>
+                					<span class="sb_notesEarned sb_theme_textHighlight_alt">+2</span>
+								<? } else { ?>
+                					<span class="sb_chopsEarned sb_theme_textHighlight">+250</span>
+                					<span class="sb_notesEarned sb_theme_textHighlight">+1</span>
+								<? } ?>
+					        </div><!-- .sb_pointsEarnedTotal -->
+						</li>
+					<? } ?>
+				</ul>
+			</div><!-- .sb_scrollPane -->
+		</div><!-- #tabs_2 -->
+	<? } ?>
 
-	<div id="polls_tabs_3" class="sb_tabPane">
-		<p class="sb_tabHeader">
-			We'd still love your opinion on these Archived Polls, and you can still earn by completing them!  Same deal-- <strong class="sb_theme_textHighlight">100 Notes</strong> &amp; <strong class="sb_theme_textHighlight">500 Chops</strong> for each one you complete.
-		</p>
-		<div class="sb_scrollPane">
+	<? if ($this->count_archive_surveys) { ?>
+		<div id="polls_tabs_3" class="sb_tabPane">
+			<p class="sb_tabHeader">
+				We'd still love your opinion on these Archived Polls, and you can still earn by completing them! Same deal-- <strong class="sb_theme_textHighlight">100 Notes</strong> &amp; <strong class="sb_theme_textHighlight">500 Chops</strong> for each one you complete.
+			</p>
+			<div class="sb_scrollPane">
 
-			<!-- BEGIN POLL BOX LANDING -->
-			<div class="sb_accordion">
-				<? $i = 0 ?>
-				<? foreach ($this->archive_surveys as $survey) { ?>
-					<h3>
-						<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>">
-							<? if ($survey->premium) { ?>
-								<span class="sb_img_doubleValue"></span>
+				<!-- BEGIN POLL BOX LANDING -->
+				<div class="sb_accordion">
+					<? $i = 0 ?>
+					<? foreach ($this->archive_surveys as $survey) { ?>
+						<h3>
+							<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>">
+								<? if ($survey->premium) { ?>
+									<span class="sb_img_doubleValue"></span>
+								<? } ?>
+								<?= $survey->title ?>
+							</a>
+						</h3>
+						<div>
+							<? $iframeHeight = 58 + (ceil($survey->number_of_answers / 2.0) * 32); // 58 base height + 32 per row of answers ?>
+							<iframe src="" width="470" height="<?= $iframeHeight ?>" frameborder="0" marginheight="0" marginwidth="0" scrolling="no"></iframe>
+							<? if ($i < ($this->count_archive_surveys - 1)) { ?>
+								<div class="sb_nextPoll">
+									<a href="#" onclick="$SQ(this).parents('.sb_accordion').accordion('activate', <?= ($i+1) ?>)"><span class="sb_img_nextTriangle"></span>Next Poll</a>
+								</div>
 							<? } ?>
-							<?= $survey->title ?>
-						</a>
-					</h3>
-					<div>
-						<? $iframeHeight = 58 + (ceil($survey->number_of_answers / 2.0) * 32); // 58 base height + 32 per row of answers ?>
-						<iframe src="" width="470" height="<?= $iframeHeight ?>" frameborder="0" marginheight="0" marginwidth="0" scrolling="no"></iframe>
-						<? if ($i < ($this->count_archive_surveys - 1)) { ?>
-							<div class="sb_nextPoll">
-								<a href="#" onclick="$SQ(this).parents('.sb_accordion').accordion('activate', <?= ($i+1) ?>)"><span class="sb_img_nextTriangle"></span>Next Poll</a>
-							</div>
-						<? } ?>
-					</div><!-- / END ACCORDION CONTENT -->
-					<? $i++ ?>
-				<? } ?>
-			</div><!-- .accordion -->
-			<!-- END POLL BOX LANDING -->
-			<br />
-			<p align="right"><a href="#" class="sb_nav_tabs sb_theme_button" rel="1"><span class="sb_theme_buttonArrow">Take a New Poll</span></a></p>
-		</div><!-- .sb_scrollPane -->
-	</div><!-- #tabs_3 -->
+						</div><!-- / END ACCORDION CONTENT -->
+						<? $i++ ?>
+					<? } ?>
+				</div><!-- .accordion -->
+				<!-- END POLL BOX LANDING -->
+				<br />
+				<p align="right"><a href="#" class="sb_nav_tabs sb_theme_button" rel="1"><span class="sb_theme_buttonArrow">Take a New Poll</span></a></p>
+			</div><!-- .sb_scrollPane -->
+		</div><!-- #tabs_3 -->
+	<? } ?>
 
 </div><!-- .tabs -->

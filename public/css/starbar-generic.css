@@ -836,7 +836,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	margin-top: 5px;
 	zoom: 1;
 	border: 1px solid #c7c7c7;
-	height: 25px;
+	padding: 3px 0 3px 0;
 }
 #sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-li-fix {
 	display: inline;
@@ -1229,6 +1229,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	border-bottom: 1px solid #c7c7c7;
 	margin: 0;
 	padding: 10px;
+	width: 470px;
 	overflow: hidden;
 	position: relative;
 }

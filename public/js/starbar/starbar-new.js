@@ -122,7 +122,7 @@ $SQ(function(){
 		activateProgressBar();
 		// initializes development-only jquery
 		devInit();
-		sayso.log('Loaded and Ready');
+		//sayso.log('Loaded and Ready');
 	}
 
 	// initialize the elements
@@ -586,7 +586,7 @@ $SQ(function(){
 
 		// add height of the header + any margins / paddings
 		if ($SQ('.sb_popContent .sb_header',target).length > 0){
-			var headerHeight =  eval($SQ('.sb_header',target).css('margin-bottom').replace('px',''))+$SQ('.sb_popContent .sb_header',target).height();
+			var headerHeight = $SQ('.sb_popContent .sb_header',target).totalHeight();
 		}else{
 			var headerHeight = 0;
 		}
@@ -596,7 +596,7 @@ $SQ(function(){
 			// Add height of all the paragraphs (or anything with the class "sb_tabHeader" really)
 			var paragraphs = $SQ('.sb_tabHeader',$SQ(this).parent());
 			var paragraphHeight = 0;
-			paragraphs.each(function(i) {paragraphHeight += $SQ(this).height()+eval($SQ(this).css('margin-top').replace('px',''))+eval($SQ(this).css('margin-bottom').replace('px',''));});
+			paragraphs.each(function(i) {paragraphHeight += $SQ(this).totalHeight();});
 			$SQ(this).css('height',contentHeight-(headerHeight+paragraphHeight));
 			$SQ(this).jScrollPane();
 		});
@@ -605,14 +605,8 @@ $SQ(function(){
 	function activateAccordion(target){
 		if ($SQ('.sb_tabs',target).length > 0){
 			$SQ('.sb_tabs .sb_tabPane',target).each(function(){
-				var isCollapsible = true;
-				/* Is this necessary still? -- Hamza
-				if ($SQ('.sb_accordion',this).hasClass('sb_pollQuestion') || $SQ('.sb_accordion',this).hasClass('sb_pollResult')){
-					isCollapsible = false;
-				}
-				*/
 				$SQ('.sb_accordion',this).accordion({
-					collapsible: isCollapsible, // Accordion can have all its divs be closed simultaneously
+					collapsible: true, // Accordion can have all its divs be closed simultaneously
 					active: false, // All accordion divs are closed by default
                     // find the link that caused the accordian to open, take the href, and set the src of the inner iframe to it
                     changestart: function(event, ui){
@@ -625,9 +619,12 @@ $SQ(function(){
                         if (activeFooter){
 							activeFooter.fadeTo(0, 0);
 						}
-
+						
 						// Load the iframe if not already loaded
                         if (activeIframe && activeLink && activeIframe.attr('src') != activeLink.attr('href')) {
+							// The iframe's height is calculated and set by the controller, use it to set the size of the accordion
+							ui.newContent.css('height', activeIframe.height()+5);
+
                         	// Add the authentication info to the request
 							link = activeLink.attr('href');
 							if (link.indexOf("?") == -1)
@@ -650,7 +647,15 @@ $SQ(function(){
                     	scrollPane.jScrollPane(); // re-initialize the scroll pane now that the content size may be different
                     	if (ui.newHeader.position()) {  // if the accordion is open
 							var paneHandle = scrollPane.data('jsp');
-                    		paneHandle.scrollToY(ui.newHeader.position().top-10); // scroll to the new header (-10 to keep some visibility of stuff above)
+
+                    		var currentScroll = paneHandle.getContentPositionY();
+                    		var topOfOpenAccordion = ui.newHeader.position().top;
+                    		var bottomOfOpenAccordion = topOfOpenAccordion+ui.newHeader.totalHeight()+ui.newContent.totalHeight();
+                    		var sizeOfPane = scrollPane.height();
+
+                    		if ((bottomOfOpenAccordion - currentScroll) > (sizeOfPane - 10)) { // - 24 for the extra padding
+                    			paneHandle.scrollByY((bottomOfOpenAccordion - currentScroll) - (sizeOfPane - 10)); // scroll by the difference
+							}
 						}
 					}
 				});
@@ -695,6 +700,20 @@ $SQ(function(){
         var app = KOBJ.get_application(window.sayso.starbar.kynetxAppId);
         app.raise_event('refresh_state');
     }
+
+    (function($$SQ){
+		$$SQ.fn.extend({
+			totalHeight: function() {
+				return (
+					this.height() +
+					eval(this.css('margin-top').replace('px','')) +
+					eval(this.css('margin-bottom').replace('px','')) +
+					eval(this.css('padding-top').replace('px','')) +
+					eval(this.css('padding-bottom').replace('px',''))
+				);
+			}
+		});
+	})($SQ);
 
 	 // this function needs to be here so that the popup window can access it via window.opener.sayso.refreshConnectExternal()
 	 // provider = 'twitter' or 'facebook'

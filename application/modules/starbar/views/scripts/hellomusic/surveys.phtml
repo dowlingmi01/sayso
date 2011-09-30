@@ -14,8 +14,12 @@
 		<? } else { ?>
 			<li><a href="#surveys_tabs_1">New</a></li>
 		<? } ?>
-		<li><a href="#surveys_tabs_2">Completed</a></li>
-		<li><a href="#surveys_tabs_3">Archive</a></li>
+		<? if ($this->count_complete_surveys) { ?>
+			<li><a href="#surveys_tabs_2">Completed</a></li>
+		<? } ?>
+		<? if ($this->count_archive_surveys) { ?>
+			<li><a href="#surveys_tabs_3">Archive</a></li>
+		<? } ?>
 	</ul>
 	<div id="surveys_tabs_1" class="sb_tabPane">
 		<p class="sb_tabHeader">
@@ -56,69 +60,73 @@
 
 	</div><!-- #tabs_1 -->
 
-	<div id="surveys_tabs_2" class="sb_tabPane">
-		<p class="sb_tabHeader">All of your completed surveys are listed below.</p>
-		<p class="sb_tabHeader"><a href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/reset-surveys-and-polls", success : function (r, s) {} })'>Reset surveys and polls</a></p>
-		<div class="sb_scrollPane">
-			<ul class="sb_outlineList">
-				<? $i = 0 ?>
-				<? foreach ($this->complete_surveys as $survey) { ?>
-					<?
-					if ($survey->premium) {
-						$numberOfNotes = $numberOfPremiumNotes;
-						$numberOfChops = $numberOfPremiumChops;
-					} else {
-						$numberOfNotes = $numberOfRegularNotes;
-						$numberOfChops = $numberOfRegularChops;
-					}
-					?>
-					<li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
-						<div class="sb_pointsEarnedTotal">
-							<span class="sb_chopsEarned">+<?= $numberOfChops ?></span>
-							<span class="sb_notesEarned">+<?= $numberOfNotes ?></span>
-						</div><!-- .sb_pointsEarnedTotal -->
-					</li>
-					<? $i++ ?>
-				<? } ?>
-			</ul>
-		</div><!-- .sb_scrollPane -->
-	</div><!-- #tabs_2 -->
+	<? if ($this->count_complete_surveys) { ?>
+		<div id="surveys_tabs_2" class="sb_tabPane">
+			<p class="sb_tabHeader">All of your completed surveys are listed below.</p>
+			<p class="sb_tabHeader"><a href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/reset-surveys-and-polls", success : function (r, s) {} })'>Reset surveys and polls</a></p>
+			<div class="sb_scrollPane">
+				<ul class="sb_outlineList">
+					<? $i = 0 ?>
+					<? foreach ($this->complete_surveys as $survey) { ?>
+						<?
+						if ($survey->premium) {
+							$numberOfNotes = $numberOfPremiumNotes;
+							$numberOfChops = $numberOfPremiumChops;
+						} else {
+							$numberOfNotes = $numberOfRegularNotes;
+							$numberOfChops = $numberOfRegularChops;
+						}
+						?>
+						<li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
+							<div class="sb_pointsEarnedTotal">
+								<span class="sb_chopsEarned">+<?= $numberOfChops ?></span>
+								<span class="sb_notesEarned">+<?= $numberOfNotes ?></span>
+							</div><!-- .sb_pointsEarnedTotal -->
+						</li>
+						<? $i++ ?>
+					<? } ?>
+				</ul>
+			</div><!-- .sb_scrollPane -->
+		</div><!-- #tabs_2 -->
+	<? } ?>
+	
+	<? if ($this->count_archive_surveys) { ?>
+		<div id="surveys_tabs_3" class="sb_tabPane">
+			<p class="sb_tabHeader">No shelf-life on these babies totally take-able Surveys.  SaySo immortality awaits.  We await your SaySo.</p>
+			<div class="sb_scrollPane">
+				<ul class="sb_solidList">
+					<? $i = 0 ?>
+					<? foreach ($this->archive_surveys as $survey) { ?>
+						<?
+						// "sb_listOdd" or "sb_listEven"
+						$listItemClass = "sb_list".(($i % 2) ? "Odd" : "Even");
 
-	<div id="surveys_tabs_3" class="sb_tabPane">
-		<p class="sb_tabHeader">No shelf-life on these babies totally take-able Surveys.  SaySo immortality awaits.  We await your SaySo.</p>
-		<div class="sb_scrollPane">
-			<ul class="sb_solidList">
-				<? $i = 0 ?>
-				<? foreach ($this->archive_surveys as $survey) { ?>
-					<?
-					// "sb_listOdd" or "sb_listEven"
-					$listItemClass = "sb_list".(($i % 2) ? "Odd" : "Even");
-
-					if ($survey->premium) {
-						$strongClass = "sb_theme_textHighlight_alt";
-						$buttonClass = "sb_theme_button sb_theme_button_alt";
-						$numberOfNotes = $numberOfPremiumNotes;
-						$numberOfChops = $numberOfPremiumChops;
-					} else {
-						$strongClass = "sb_theme_textHighlight";
-						$buttonClass = "sb_theme_button";
-						$numberOfNotes = $numberOfRegularNotes;
-						$numberOfChops = $numberOfRegularChops;
-					}
-					?>
-					<li class="<?= $listItemClass ?>">
-						<div class="sb_surveyInfo">
-							<h3><?= $survey->title ?></h3>
-							<p>10 Questions - Earn <strong class="<?= $strongClass ?>"><?= $numberOfNotes ?> Notes</strong> and <strong class="<?= $strongClass ?>"><?= $numberOfChops ?> Chops</strong></p>
-						</div><!-- .sb_surveyInfo -->
-						<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey?survey_id=<?= $survey->id ?>" class="sb_surveyLaunch <?= $buttonClass ?> sb_nav_element sb_alignRight" rel="sb_popBox_surveys_lg"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
-					</li>
-					<? $i++ ?>
-				<? } ?>
-			</ul>
-			<br />
-			<p align="right"><a href="#" class="sb_nav_tabs sb_theme_button" rel="1"><span class="sb_theme_buttonArrow">Take a New Survey</span></a></p>
-		</div><!-- .sb_scrollPane -->
-	</div><!-- #tabs_3 -->
+						if ($survey->premium) {
+							$strongClass = "sb_theme_textHighlight_alt";
+							$buttonClass = "sb_theme_button sb_theme_button_alt";
+							$numberOfNotes = $numberOfPremiumNotes;
+							$numberOfChops = $numberOfPremiumChops;
+						} else {
+							$strongClass = "sb_theme_textHighlight";
+							$buttonClass = "sb_theme_button";
+							$numberOfNotes = $numberOfRegularNotes;
+							$numberOfChops = $numberOfRegularChops;
+						}
+						?>
+						<li class="<?= $listItemClass ?>">
+							<div class="sb_surveyInfo">
+								<h3><?= $survey->title ?></h3>
+								<p>10 Questions - Earn <strong class="<?= $strongClass ?>"><?= $numberOfNotes ?> Notes</strong> and <strong class="<?= $strongClass ?>"><?= $numberOfChops ?> Chops</strong></p>
+							</div><!-- .sb_surveyInfo -->
+							<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey?survey_id=<?= $survey->id ?>" class="sb_surveyLaunch <?= $buttonClass ?> sb_nav_element sb_alignRight" rel="sb_popBox_surveys_lg"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
+						</li>
+						<? $i++ ?>
+					<? } ?>
+				</ul>
+				<br />
+				<p align="right"><a href="#" class="sb_nav_tabs sb_theme_button" rel="1"><span class="sb_theme_buttonArrow">Take a New Survey</span></a></p>
+			</div><!-- .sb_scrollPane -->
+		</div><!-- #tabs_3 -->
+	<? } ?>
 
 </div><!-- .tabs -->

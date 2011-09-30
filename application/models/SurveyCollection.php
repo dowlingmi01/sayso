@@ -8,9 +8,9 @@ class SurveyCollection extends RecordCollection
 		* $type = 'poll' or 'survey'
 		* $survey_user_status = 'new', 'complete' or 'archived', i.e. has this user completed the survey, etc.
 	*/
-    public function loadSurveysForStarBarAndUser ($starbar_id, $user_id, $type, $survey_user_status)
+    public function loadSurveysForStarbarAndUser ($starbar_id, $user_id, $type, $survey_user_status)
     {
-    	$order = "id ASC";
+    	$order = "ordinal ASC";
     	$surveys = null;
 
     	$type = str_replace("surveys", "survey", $type);
@@ -27,9 +27,9 @@ class SurveyCollection extends RecordCollection
 						WHERE survey.type = ?
 							AND id NOT IN (SELECT survey_id FROM survey_user_map WHERE user_id = ?)
 							AND survey.starbar_id = ?
-						ORDER BY ?
+						ORDER BY ".$order."
 						 ";
-        		$surveys = Db_Pdo::fetchAll($sql, $type, $user_id, $starbar_id, $order);
+        		$surveys = Db_Pdo::fetchAll($sql, $type, $user_id, $starbar_id);
     			break;
 
     		case 'complete':
@@ -41,9 +41,9 @@ class SurveyCollection extends RecordCollection
 								AND survey_user_map.status = 'complete'
 						WHERE survey.type = ?
 							AND survey.starbar_id = ?
-						ORDER BY ?
+						ORDER BY ".$order."
 						 ";
-        		$surveys = Db_Pdo::fetchAll($sql, $user_id, $type, $starbar_id, $order);
+        		$surveys = Db_Pdo::fetchAll($sql, $user_id, $type, $starbar_id);
     			break;
 
     		case 'archive':
@@ -55,9 +55,9 @@ class SurveyCollection extends RecordCollection
 								AND survey_user_map.status = 'archive'
 						WHERE survey.type = ?
 							AND survey.starbar_id = ?
-						ORDER BY ?
+						ORDER BY ".$order."
 						 ";
-        		$surveys = Db_Pdo::fetchAll($sql, $user_id, $type, $starbar_id, $order);
+        		$surveys = Db_Pdo::fetchAll($sql, $user_id, $type, $starbar_id);
     			break;
 		}
 

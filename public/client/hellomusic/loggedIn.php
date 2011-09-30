@@ -50,6 +50,6 @@ if (!isset($_COOKIE['CHOMPUID']) && !isset($_COOKIE['MyEmail'])) {
     </div><!-- #sayso-onboard -->
     
     <!-- the following is for testing purposes only, do not deliver to customer -->
-    <div style="position: fixed; bottom: 4px; left: 4px; font-weigth: bold; color: white; z-index: 99999; font-family: Verdana;"><?= $randomEmail ?></div>
+    <div style="position: fixed; top: 4px; left: 4px; font-weigth: bold; color: white; z-index: 99999; font-family: Verdana;"><?= $randomEmail ?></div>
 </body>
 </html>

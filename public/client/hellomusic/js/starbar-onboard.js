@@ -14,6 +14,7 @@
     
     if (!window.sayso) window.sayso = {};
     if (!window.sayso.baseDomain) window.sayso.baseDomain = 'local.sayso.com';
+    if (!window.sayso.environment) window.sayso.environment = 'LOCAL';
     
     var sayso = window.sayso;
 
@@ -105,13 +106,13 @@
                 var browserAppUrl = 'http://' + sayso.baseDomain + '/install';
                 
                 if (navigator.userAgent.match('Firefox')) {
-                    browserAppUrl += '/firefox/SaySo-DEV.xpi';
+                    browserAppUrl += '/firefox/SaySo-' + sayso.environment + '.xpi';
                 } else if (navigator.userAgent.match('Chrome')) {
-                    browserAppUrl += '/chrome/SaySo-DEV.crx';
+                    browserAppUrl += '/chrome/SaySo-' + sayso.environment + '.crx';
                 } else if (navigator.userAgent.match('MSIE')) {
-                    browserAppUrl += '/ie/SaySo-DEV-Setup.exe';
+                    browserAppUrl += '/ie/SaySo-' + sayso.environment + '-Setup.exe';
                 } else if (navigator.userAgent.match('Apple')) {
-                    browserAppUrl += '/safari/SaySo-DEV.hmm';
+                    browserAppUrl += '/safari/SaySo-' + sayso.environment + '.hmm';
                 } else {
                     // Browser is not supported. Must be Firefox, Chrome, Safari or Internet Explorer.
                     return;
@@ -139,7 +140,7 @@
      * Javascript Load Timer
      * @author davidbjames
      */
-    function jsLoadTimer(){function d(){window.hasOwnProperty(e)?a():b++>c?a():setTimeout(d,50)}var b=0,c=200,e="",a=null;this.start=function(b,c){e=b;a=c;d()}};
+    function jsLoadTimer(){function c(){try{if(eval(d)){a();return}}catch(e){}b++>f?a():setTimeout(c,50)}var b=0,f=200,d="",a=null;this.start=function(e,b){d=e;a=b;c()}};
     
     /**
      * Get a random 64 character token 

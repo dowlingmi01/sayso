@@ -1,3 +1,20 @@
+<?php
+
+switch (APPLICATION_ENV) {
+    case 'development' :
+        $env = 'LOCAL'; break;
+    case 'sandbox' :
+        $env = 'DEV'; break;
+    case 'testing' :
+        $env = 'TEST'; break;
+    case 'staging' :
+        $env = 'STAGING'; break;
+    case 'production' :
+    default :
+        $env = 'PRODUCTION'; break;
+}
+
+?>
 <script type="text/javascript">
     /**
      * Purpose of this code is to represent the browser app for testing/development
@@ -11,6 +28,7 @@
         if (!window.sayso) window.sayso = {};
         window.sayso.debug = true;
         window.sayso.baseDomain = baseDomain;
+        window.sayso.environment = '<?= $env ?>';
         window.sayso.log = _log('log'); 
         window.sayso.warn = _log('warn');
         function _log (type) { // <-- closure here allows re-use for log() and warn()

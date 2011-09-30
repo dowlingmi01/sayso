@@ -122,7 +122,7 @@ $SQ(function(){
 		activateProgressBar();
 		// initializes development-only jquery
 		devInit();
-		//sayso.log('Loaded and Ready');
+		sayso.log('Loaded and Ready');
 	}
 
 	// initialize the elements

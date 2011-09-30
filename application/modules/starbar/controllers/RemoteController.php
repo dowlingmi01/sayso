@@ -155,7 +155,7 @@ class Starbar_RemoteController extends Api_AbstractController
             } 
             // else
             // this is a new user altogether so use the new install token
-            // and create a new user
+            // and create a new user (this is automatic below based on unique fields)
         }
         
         // determine Starbar from short name

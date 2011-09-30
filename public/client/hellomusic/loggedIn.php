@@ -1,5 +1,9 @@
 <?php
 
+// the following PHP code is for testing purposes only
+// to simulate a hellomusic.com login
+// do not deliver to customer
+
 if (!isset($_COOKIE['CHOMPUID']) && !isset($_COOKIE['MyEmail'])) {
     $randomEmail = substr(str_shuffle('bcdfghjklmnpqrstvwxz'), 0, 1) . substr(str_shuffle('aeiouy'), 0, 1) . substr(str_shuffle('bcdfghjklmnpqrstvwxz'), 0, 2) . substr(str_shuffle('aeiouy'), 0, 1) . substr(str_shuffle('bcdfghjklmnpqrstvwxz'), 0, 1) . substr(str_shuffle('123456789'), 0, 1);
     $randomEmail .= '@go.com';
@@ -15,7 +19,7 @@ if (!isset($_COOKIE['CHOMPUID']) && !isset($_COOKIE['MyEmail'])) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
+<title>Hello Music</title>
 <link rel="stylesheet" type="text/css" href="css/sayso-onboard.css" />
 </head>
 <body style="margin: 0; padding: 0;">
@@ -37,14 +41,15 @@ if (!isset($_COOKIE['CHOMPUID']) && !isset($_COOKIE['MyEmail'])) {
                 </h4>
                 <form action="" name="" method="">
                     <p><input type="radio" /> I agree to the <a href="">terms</a> and <a href="">conditions</a></p>
-                    <!--<p><input id="sayso-get-app" type="submit" value="GRAB IT" class="sso_theme_button sso_theme_buttonXL" /></p>
-                    --><p><a id="sayso-get-app" href="" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL">GRAB IT</a></p>
+                    <p><a id="sayso-get-app" href="" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL">GRAB IT</a></p>
                 </form>
             </div><!-- .sso_content -->
             <div class="sso_main-image"></div><!-- .sso_main-image -->
         </div><!-- #sso_wraper -->
         <script type="text/javascript" src="js/starbar-onboard.js"></script>
     </div><!-- #sayso-onboard -->
+    
+    <!-- the following is for testing purposes only, do not deliver to customer -->
     <div style="position: fixed; bottom: 4px; left: 4px; font-weigth: bold; color: white; z-index: 99999; font-family: Verdana;"><?= $randomEmail ?></div>
 </body>
 </html>

@@ -17,9 +17,11 @@
     
     var sayso = window.sayso;
 
-    var jQueryInclude = document.createElement('script'); 
-    jQueryInclude.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
-    document.getElementsByTagName('body')[0].appendChild(jQueryInclude);
+    if (!window.hasOwnProperty('$SQ')) {
+        var jQueryInclude = document.createElement('script'); 
+        jQueryInclude.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
+        document.getElementsByTagName('body')[0].appendChild(jQueryInclude);
+    }
     
     var loadTimer = new jsLoadTimer();
     loadTimer.start('$SQ', function () {
@@ -42,7 +44,7 @@
         });
         $SQ('#sso_wrapper input[type=radio]').bind('change', function () {
             $SQ('span.sso_textError').fadeOut('slow');
-						$SQ('#sayso-get-app').removeClass('sso_theme_button_disabled');
+            $SQ('#sayso-get-app').removeClass('sso_theme_button_disabled');
         });
         
         // -------------------------------------------
@@ -92,6 +94,13 @@
         loginTimer.start('saysoClientSetup', function () {
             if (sayso.client.userLoggedIn) {
                 
+                if (window.sayso.starbar && window.sayso.starbar.loaded) {
+                    // Starbar already loaded, adjust the DOM a little and go no further
+                    $SQ('#sayso-get-app').addClass('sso_theme_button_disabled').text('Installed!');
+                    $SQ('#sso_wrapper input[type=radio]').attr('checked', 'checked');
+                    $SQ('span.sso_textError').text('');
+                    return;
+                }
                 // detect browser and provide appropriate install link
                 var browserAppUrl = 'http://' + sayso.baseDomain + '/install';
                 

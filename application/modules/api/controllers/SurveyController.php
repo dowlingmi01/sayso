@@ -76,14 +76,19 @@ class Api_SurveyController extends Api_GlobalController
         if ($results) {
         	return false; // user has already completed this survey
 		} else {
-			$surveyUserMap = new Survey_UserMap();
-			$surveyUserMap->survey_id = $survey->id;
-			$surveyUserMap->user_id = $userId;
-			$surveyUserMap->status = "complete";
+	        $results = Db_Pdo::fetch("SELECT survey_id FROM survey_user_map WHERE survey_id = ? AND user_id = ?", $survey->id, $userId);
+	        if ($results) { // user already has map to survey, update status to complete
+        		Db_Pdo::execute("UPDATE survey_user_map SET status = 'complete' WHERE survey_id = ? AND user_id = ?", $survey->id, $userId);
+			} else { // create 
+				$surveyUserMap = new Survey_UserMap();
+				$surveyUserMap->survey_id = $survey->id;
+				$surveyUserMap->user_id = $userId;
+				$surveyUserMap->status = "complete";
 
-			if ($surveyUserMap->save()) {
-				// todo award points here
-				return true;
+				if ($surveyUserMap->save()) {
+					// todo award points here
+					return true;
+				}
 			}
 		}
 	}

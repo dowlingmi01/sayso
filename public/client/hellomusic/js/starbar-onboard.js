@@ -92,7 +92,7 @@
         }
         
         var loginTimer = new jsLoadTimer();
-        loginTimer.start('saysoClientSetup', function () {
+        loginTimer.start('saysoClientSetup', function () { 
             if (sayso.client.userLoggedIn) {
                 
                 // detect browser and provide appropriate install link
@@ -128,9 +128,9 @@
             }
         });
         
-        var starbarLoad = new jsLoadTimer();
-        starbarLoad.start('window.sayso.starbar.loaded', function () {
-            // Starbar already loaded, adjust the DOM a little and go no further
+        var starbarLoad = new jsLoadTimer(null, null, true);
+        starbarLoad.start('window.sayso.starbar.loaded', function () { 
+            // Starbar already loaded
             $SQ('#sayso-get-app').addClass('sso_theme_button_disabled').text('Installed!').removeAttr('href');
             $SQ('#sso_wrapper input[type=radio]').attr('checked', 'checked');
             $SQ('span.sso_textError').text('');
@@ -141,7 +141,7 @@
      * Javascript Load Timer
      * @author davidbjames
      */
-    function jsLoadTimer(a,f){function c(){try{if(eval(d)){b();return}}catch(e){}g++>h?b():setTimeout(c,i)}var g=0,h=a||200,i=f||50,d="",b=null;this.start=function(e,a){d=e;b=a;c()}};
+    function jsLoadTimer(a,f,g){function c(){try{if(eval(d)){b();return}}catch(e){}h++>i?j||b():setTimeout(c,k)}var h=0,i=a||200,k=f||50,d="",j=g||!1,b=null;this.start=function(e,a){d=e;b=a;c()}};
     
     /**
      * Get a random 64 character token 

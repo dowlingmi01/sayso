@@ -4,7 +4,7 @@
 // to simulate a hellomusic.com login
 // do not deliver to customer
 
-if (!isset($_COOKIE['CHOMPUID']) && !isset($_COOKIE['MyEmail'])) {
+if (!isset($_COOKIE['CHOMPUID']) || !isset($_COOKIE['MyEmail'])) {
     $randomEmail = substr(str_shuffle('bcdfghjklmnpqrstvwxz'), 0, 1) . substr(str_shuffle('aeiouy'), 0, 1) . substr(str_shuffle('bcdfghjklmnpqrstvwxz'), 0, 2) . substr(str_shuffle('aeiouy'), 0, 1) . substr(str_shuffle('bcdfghjklmnpqrstvwxz'), 0, 1) . substr(str_shuffle('123456789'), 0, 1);
     $randomEmail .= '@hellomusic.com';
     setcookie('CHOMPUID', md5($randomEmail));

@@ -100,12 +100,13 @@
     
     // functions to control load order
     
-    function jsLoadTimer (maxCount, waitTime) {
+    function jsLoadTimer (maxCount, waitTime, refactorMe) {
         
         var _counter = 0,
             _maxCount = maxCount || 200, // about 10 seconds (200 x 50 mseconds for each timer)
             _waitTime = waitTime || 50,
             _searchSymbol = '',
+            _refactorMe = refactorMe || false,
             _callback = null;
         
         function _waitUntilJsLoaded () {
@@ -117,7 +118,7 @@
             } catch (exception) {} // ignore
             
             if (_counter++ > _maxCount) { 
-                _callback(); // stop waiting and just fire the callback
+                if (!_refactorMe) _callback(); // stop waiting and just fire the callback
                 return;
             }
             setTimeout(_waitUntilJsLoaded, _waitTime);

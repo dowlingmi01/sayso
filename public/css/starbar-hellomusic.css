@@ -62,7 +62,7 @@
 
 #sayso-starbar #starbar-player-console .sb_theme_bgGradient,
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value,
-#sayso-starbar #starbar-player-console .sb_theme_button{
+#sayso-starbar .sb_theme_button{
 	background-image: -webkit-gradient(
     linear,
     left top,
@@ -292,7 +292,7 @@
 #sayso-starbar h2.sb_title,
 #sayso-starbar #starbar-player-console .sb_outlineList li h3,
 #sayso-starbar #starbar-player-console #starbar-type .sb_content .sb_popBox a,
-#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardHeader{
+#sayso-starbar .sb_rewardItem .sb_rewardHeader{
 	color: #0081c5;
 }
 
@@ -705,52 +705,155 @@
 	margin: 0px 0px 0px -15px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem{
+#sayso-starbar .sb_rewardItem{
 	width: 150px;
-	height: 210px;
+	height: 230px;
 	float: left;
 	border: 1px solid #ababab;
 	background-color: #383838;
 	margin: 0px 0px 20px 15px;
+	cursor: pointer;
+	position: relative;
+	z-index: 1;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardHeader{
+#sayso-starbar #sb_colorbox .sb_rewardItem{
+	cursor: auto;
+	width: auto;
+	height: 100%;
+	border: none;
+	float: none;
+	background-color: ##fff;
+	margin: 0;
+}
+
+#sayso-starbar .sb_rewardItem .sb_rewardHeader{
 	padding: 5px 10px;
 	text-align: center;
-	height: 30px;
 	overflow: hidden;
 	background-color: #fff;
+	height: 30px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardImg{
+#sayso-starbar #sb_colorbox .sb_rewardItem .sb_rewardHeader{
+	font-size: 16px;
+	height: auto;
+	padding: 20px 10px 5px 10px;
+}
+
+#sayso-starbar .sb_rewardItem .sb_rewardImg{
 	text-align: center;
 	padding: 5px 0px;
 	height: 85px;
 	background-color: #fff;
 }
 
+#sayso-starbar #sb_colorbox .sb_rewardItem .sb_rewardImg{
+	height: auto;
+}
 
-#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardBase{
+
+#sayso-starbar .sb_rewardItem .sb_rewardBase{
 	text-align: center;
 	overflow: hidden;
 	padding: 0px 5px 10px 5px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardBase .sb_theme_button{
-	margin: 0px 0px 0px 0px;
+
+#sayso-starbar #sb_colorbox .sb_rewardItem .sb_rewardBase{
+	background-color: #383838;
+}
+
+#sayso-starbar #sb_colorbox .sb_rewardItem .sb_rewardOrder{
+	background-color: #fff;
+	color: #222;
+	padding: 5px 10px;
+}
+
+#sayso-starbar .sb_rewardItem .sb_theme_button{
+	margin: 5px 0px 0px 0px;
 	display: inline-block;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_user-points-box .sb_progressBar{
+#sayso-starbar .sb_rewardItem .sb_user-points-box .sb_progressBar{
 	margin: 0px auto;
-	width: 130px;
+	width: 135px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_user-points-box .sb_progressBar img{
+#sayso-starbar #sb_colorbox .sb_rewardItem .sb_user-points-box .sb_progressBar{
+	width: 85%;
+}
+
+#sayso-starbar #sb_colorbox .sb_rewardItem .sb_user-points-box{
+	margin: 10px 0px;
+}
+
+#sayso-starbar #sb_colorbox .sb_rewardItem .sb_column50{
+	font-size: 10px;
+	line-height: 15px;
+}
+
+#sayso-starbar #sb_colorbox .sb_rewardItem .sb_column50 .sb_user-points-box .sb_progressBar{
+	margin: -5px 0px 0px 0px;
+}
+
+#sayso-starbar #sb_colorbox .sb_rewardItem p{
+	font-size: 11px;
+	line-height: 15px;
+	margin: 10px 0px;
+}
+
+#sayso-starbar .sb_rewardItem .sb_user-points-box .sb_progressBar img{
 	 margin: -10px 0px 0px -20px; 
 	 vertical-align: text-bottom;
 }
 
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem.sb_rewardItem_disabled:hover{
+	cursor: default;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardItem_disabledMsg{
+	display: none;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem.sb_rewardItem_disabled:hover .sb_rewardItem_disabledMsg{
+	display: block;
+	background-image: url('../images/colorbox/overlay.png');
+	background-repeat: repeat;
+	width: inherit;
+	height: inherit;
+	position: absolute;
+	z-index: 9999;
+	color: #fff;
+	font-size: 11px;
+	text-align: center;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardItem_disabledMsg p{
+	font-size: 11px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardItem_disabledMsg h1{
+	margin: 40% 0px 0px 0px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem p.sb_reward_levelReq{
+	height: 14px;
+	margin: -10px 0px 10px 0px;
+	display: block;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem p.sb_reward_levelReq span{
+	text-transform: uppercase;
+	color: #fff;
+	font-size: 10px;
+	background-image: url('../images/generic/img_lock.png');
+	background-repeat: no-repeat;
+	background-position: 0px 2px;
+	padding: 2px 0px 0px 15px;
+	display: inline-block;
+	margin: 0px auto;
+}
 
 
 /* POSITION ALL OF THE POPBOX TRIANGLES */

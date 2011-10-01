@@ -82,8 +82,8 @@ $SQ(function(){
 
 	// close if you click outside the starbar while in the iframe
 	$SQ(document).click(function(e) {
-		// don't close if they just right-clicked
-		if (e.button != 2){
+		// don't close if they just right-clicked OR were clicking inside of a colorbox
+		if ((e.button != 2) && ($SQ('#sb_cboxOverlay').css('display') != 'block')){
 			closePopBox();
 		}
 	});
@@ -108,6 +108,7 @@ $SQ(function(){
 	var elemPopBoxVisControl; // = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
 	var elemExternalConnect; // = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
 	var elemExternalShare; // = $SQ('#sayso-starbar #starbar-player-console .sb_externalShare, #sayso-starbar-embed .sb_externalShare');
+	var elemRewardItem; // = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem');
 
 	// initialize the starbar
 	initStarBar();
@@ -144,6 +145,7 @@ $SQ(function(){
 		elemTabClick = $SQ('#sayso-starbar #starbar-player-console .sb_nav_tabs');
 		elemExternalConnect = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
 		elemExternalShare = $SQ('#sayso-starbar #starbar-player-console .sb_externalShare, #sayso-starbar-embed .sb_externalShare');
+		elemRewardItem = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem');
 
 		// jquery edit in place
 		elemJEIP = $SQ('#sayso-starbar .sb_jeip');
@@ -356,6 +358,27 @@ $SQ(function(){
 				}
 			});
 		});
+		
+		// rewards center items overlay
+		elemRewardItem.each(function(){
+			$SQ(this).unbind();
+			$SQ(this).bind({
+				click: function(event){
+					if ($SQ(this).hasClass('sb_rewardItem_disabled')){
+						return;
+					}else{
+						$SQ.sb_colorbox({
+							width:"220px", 
+							inline: true, 
+							href:"#sb_rewardsOverlay"
+						});
+					}
+				}			
+			});
+		
+		});
+		
+		
 
 	} // end initElements()
 

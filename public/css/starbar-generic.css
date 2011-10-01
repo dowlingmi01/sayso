@@ -195,21 +195,14 @@ html {
 }
 #sayso-starbar h1 {
 	border: 0;
-	clip: rect(0 0 0 0);
-	height: 1px;
-	margin: -1px;
 	overflow: hidden;
 	padding: 0;
-	position: absolute;
-	width: 1px;
+	font-size: 38px;
+	font-weight: bold;
+	margin: 0px 0px 5px 0px;
 }
 #sayso-starbar h1:active, #sayso-starbar h1:focus {
-	clip: auto;
-	height: auto;
-	margin: 0;
-	overflow: visible;
-	position: static;
-	width: auto;
+	
 }
 #sayso-starbar h2 {
 	color: #303030;
@@ -572,7 +565,8 @@ html {
 	height: 350px;
 	width: 500px;
 }
-#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent p {
+#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent p,
+#sayso-starbar #sb_colorbox p{
 	margin: 5px 0px 5px 0px;
 	line-height: 18px;
 }
@@ -611,11 +605,6 @@ html {
 /* larger popboxes */
 #sayso-starbar #starbar-player-console .sb_popBox.sb_popBoxLg .sb_popBoxInner .sb_popContent {
 	height: 380px;
-}
-#sayso-starbar #starbar-player-console .sb_popBox.sb_popBoxLg .sb_header {
-	padding: 8px 5px 8px 5px;
-	margin: -15px -15px 0px -20px;
-	background-color: #383838;
 }
 
 #sayso-starbar #starbar-player-console .sb_popBox.sb_popBoxLg .sb_header h2.sb_title{
@@ -970,7 +959,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 }
 #sayso-starbar .sb_ui-progressbar .sb_progressBarValue {
 	position: absolute;
-	z-index: 9999;
+	z-index: 9000;
 	text-align: center;
 	width: 100%;
 	font-size: 11px !important;
@@ -1038,6 +1027,11 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar h2.sb_title {
 	text-transform: uppercase;
 }
+
+#sayso-starbar .sb_textError{
+	color: #c90c0c !important;
+}
+
 #sayso-starbar .sb_column50BG {
 	overflow: hidden;
 	background-image: url('../images/generic/bg_column50.png');
@@ -1132,7 +1126,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	background-image: -moz-linear-gradient( center top, rgb(6,106,145) 22%, rgb(9,54,77) 61%);
 	background-color: #084865;
 }
-#sayso-starbar #starbar-player-console .sb_theme_button {
+#sayso-starbar .sb_theme_button {
 	border-radius: 6px;
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
@@ -1149,6 +1143,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	-webkit-box-shadow: 0px 0px 3px #666;
 	position: relative;
 	border: none;
+	text-decoration: none !important;
 }
 
 #sayso-starbar #starbar-player-console input.sb_theme_button{

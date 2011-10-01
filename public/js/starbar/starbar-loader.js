@@ -85,7 +85,7 @@
             var iframe = document.createElement('iframe');
             iframe.src = postInstallUrl;
             iframe.width = '0'; iframe.height = '0'; iframe.scrolling = '0';
-            iframe.style = 'width: 0; height: 0; border: none;';
+            //iframe.style = 'width: 0; height: 0; border: none;';
             starbarContainer.appendChild(iframe);
             
             // after a short delay, continue loading starbar
@@ -139,10 +139,10 @@
         
         // create & append a test div to the dom
         var _testCssLoaded = document.createElement("div");
-        _testCssLoaded.style = 'display: none !important;';
+        // _testCssLoaded.style = 'display: none !important;';
         // NOTE: appending is req'd with Chrome (FF works w/o appending)
         starbarContainer.appendChild(_testCssLoaded);
-    
+   	//$SQ(_testCssLoaded).hide(); 
         function _waitUntilCssLoaded () {
             if ($SQ(_testCssLoaded).css('width') === '1px') {
                 $SQ(_testCssLoaded).css('width', '0px');

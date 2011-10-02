@@ -271,7 +271,7 @@
                                 // if user has not "onboarded" and we are on the Starbar's base domain
                                 // then trigger the onboarding to display
                                 var href = window.location.href;
-                                if (!starbar._user_map.onboarded && (href.match(starbar.domain) || href.match('saysollc.com') || href.match('sayso.com'))) {
+                                if (!starbar._user_map.onboarded && (href.match('^(?:http|https){1}://(?:[\w.]+)?' + starbar.domain) || href.match('saysollc.com') || href.match('sayso.com'))) {
                                     // trigger onboarding to display (see starbar-new.js where this is handled)
                                     setTimeout(function () { $SQ(document).trigger('onboarding-display'); }, 2500);
                                     // bind when the last step of the onboarding is selected, to mark onboarding done

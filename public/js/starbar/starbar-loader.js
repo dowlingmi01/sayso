@@ -59,7 +59,7 @@
     }
     
     var clientSetupTimer = new jsLoadTimer();
-    clientSetupTimer.start('saysoClientSetup', function () {
+    clientSetupTimer.start('window.saysoClientSetup', function () {
         
         if (sayso.starbar.id) { // load known Starbar 
             
@@ -85,7 +85,7 @@
             var iframe = document.createElement('iframe');
             iframe.src = postInstallUrl;
             iframe.width = '0'; iframe.height = '0'; iframe.scrolling = '0';
-            //iframe.style = 'width: 0; height: 0; border: none;';
+            iframe.style.width = '0'; iframe.style.height = '0'; iframe.style.border = 'none';
             starbarContainer.appendChild(iframe);
             
             // after a short delay, continue loading starbar
@@ -100,32 +100,33 @@
     
     // functions to control load order
     
-    function jsLoadTimer (maxCount, waitTime, refactorMe) {
+    function jsLoadTimer () {
         
         var _counter = 0,
-            _maxCount = maxCount || 200, // about 10 seconds (200 x 50 mseconds for each timer)
-            _waitTime = waitTime || 50,
-            _searchSymbol = '',
-            _refactorMe = refactorMe || false,
-            _callback = null;
+            _maxCount = 400, // about 20 seconds (400 x 50 mseconds for each timer)
+            _waitTime = 50,
+            _symbol = '',
+            _callback = null,
+            _timeout = null,
+            _instance = this;
         
         function _waitUntilJsLoaded () {
             try {
-                if (eval(_searchSymbol)) {
+                if (eval(_symbol)) {
+                    if (_timeout) clearTimeout(_timeout);
                     _callback();
                     return;
                 }
             } catch (exception) {} // ignore
             
-            if (_counter++ > _maxCount) { 
-                if (!_refactorMe) _callback(); // stop waiting and just fire the callback
+            if (_counter++ > _maxCount) {
+                clearTimeout(_timeout);
                 return;
             }
-            setTimeout(_waitUntilJsLoaded, _waitTime);
+            _timeout = setTimeout(_waitUntilJsLoaded, _waitTime);
         }
-        
         this.start = function (symbol, callback) {
-            _searchSymbol = symbol;
+            _symbol = symbol;
             _callback = callback;
             _waitUntilJsLoaded();
         };
@@ -138,11 +139,11 @@
             _callback = null;
         
         // create & append a test div to the dom
-        var _testCssLoaded = document.createElement("div");
-        // _testCssLoaded.style = 'display: none !important;';
+        var _testCssLoaded = document.createElement('div');
+        _testCssLoaded.style.display = 'none';
         // NOTE: appending is req'd with Chrome (FF works w/o appending)
         starbarContainer.appendChild(_testCssLoaded);
-   	//$SQ(_testCssLoaded).hide(); 
+
         function _waitUntilCssLoaded () {
             if ($SQ(_testCssLoaded).css('width') === '1px') {
                 $SQ(_testCssLoaded).css('width', '0px');
@@ -168,7 +169,7 @@
         
         // bring in the Starbar
         var jQueryLoadTimer = new jsLoadTimer();
-        jQueryLoadTimer.start('$SQ', function () {
+        jQueryLoadTimer.start('window.$SQ', function () {
             sayso.log('Loaded - jQuery, generic CSS');
             
             // load auxilliary (namespaced) JS libraries
@@ -254,7 +255,7 @@
                         sayso.log('Loaded - custom CSS');
                         
                         var jQueryLibraryLoadTimer = new jsLoadTimer();
-                        jQueryLibraryLoadTimer.start('jQueryUILoaded', function () {
+                        jQueryLibraryLoadTimer.start('window.jQueryUILoaded', function () {
                             sayso.log('Loaded - jQuery libs (incl. jQueryUI)');
                             
                             // finally, inject the HTML!

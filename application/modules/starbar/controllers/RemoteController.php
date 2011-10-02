@@ -427,7 +427,7 @@ class Starbar_RemoteController extends Api_AbstractController
         $this->render();
         
         // setup Hello Music specific data
-        $starbar->setApiAuthKey(Api_Registry::getConfig()->api->helloMusic->authKey);
+        $starbar->setApiAuthKey(Api_Registry::getConfig()->helloMusic->api->authKey);
         $starbar->setCssUrl('http://' . BASE_DOMAIN . '/css/starbar-hellomusic.css');
         $starbar->setHtml($this->getResponse()->getBody());
 

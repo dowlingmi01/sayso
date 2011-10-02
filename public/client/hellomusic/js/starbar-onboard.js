@@ -120,15 +120,14 @@
                 var iframe = document.createElement('iframe');
                 iframe.src = 'http://' + sayso.baseDomain + '/starbar/remote/pre-install?auth_key=309e34632c2ca9cd5edaf2388f5fa3db&client_name=' + sayso.client.name + '&client_uuid=' + sayso.client.uuid + '&client_uuid_type=' + sayso.client.uuidType + '&client_user_logged_in=' + (sayso.client.userLoggedIn ? 'true' : '') + '&install_token=' + getRandomToken();
                 iframe.width= '0'; iframe.height = '0'; 
-                iframe.scrolling='0'; //iframe.style = 'width: 0; height: 0; border: none; display: none;';
-                
+                iframe.scrolling='0';
+                // note 'style' property cannot be set directly. must use it's individual properties instead
+                iframe.style.width = '0'; iframe.style.height = '0'; iframe.style.border = 'none'; iframe.style.display = 'none';
                 document.getElementsByTagName('body')[0].appendChild(iframe);
-                
-                
             }
         });
         
-        var starbarLoad = new jsLoadTimer(null, null, true);
+        var starbarLoad = new jsLoadTimer();
         starbarLoad.start('window.sayso.starbar.loaded', function () { 
             // Starbar already loaded
             $SQ('#sayso-get-app').addClass('sso_theme_button_disabled').text('Installed!').removeAttr('href');
@@ -139,9 +138,16 @@
     
     /**
      * Javascript Load Timer
+     * - waits until specified JS symbol comes into existence
+     *   (and evaluates to true) and then fires a callback
+     * - gives up after 20 seconds
+     * 
+     * var timer = new jsLoadTimer();
+     * timer.start('window.sayso.starbar', function () { // ready, so fire } );
+     * 
      * @author davidbjames
      */
-    function jsLoadTimer(a,f,g){function c(){try{if(eval(d)){b();return}}catch(e){}h++>i?j||b():setTimeout(c,k)}var h=0,i=a||200,k=f||50,d="",j=g||!1,b=null;this.start=function(e,a){d=e;b=a;c()}};
+    function jsLoadTimer(){function c(){try{if(eval(d)){a&&clearTimeout(a);e();return}}catch(h){}b++>f?clearTimeout(a):a=setTimeout(c,g)}var b=0,f=400,g=50,d="",e=null,a=null;this.start=function(a,b){d=a;e=b;c()}};
     
     /**
      * Get a random 64 character token 

@@ -50,7 +50,7 @@ switch (APPLICATION_ENV) {
         window.sayso.starbar = {
             id : 1, // hellomusic
             kynetxAppId : 'a239x20', // <-- this doesn't matter in this context
-            authKey : '<?= Api_Registry::getConfig()->api->helloMusic->authKey ?>',
+            authKey : '<?= Api_Registry::getConfig()->helloMusic->api->authKey ?>',
             user : {
                 id : <?= Api_UserSession::getInstance()->getId() ?>,
                 key : '<?= Api_UserSession::getInstance()->getKey() ?>'

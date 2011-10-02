@@ -185,6 +185,10 @@
             js4.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.cookie.js';
             starbarContainer.appendChild(js4);
             
+            var js5 = document.createElement('script'); 
+            js5.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.jeip.js';
+            starbarContainer.appendChild(js5);
+            
             var url = 'http://' + sayso.baseDomain;
             
             var params = {

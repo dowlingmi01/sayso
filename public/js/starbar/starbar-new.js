@@ -15,12 +15,6 @@ $SQ.ajaxWithAuth = function (options) {
 	}
 	catch (e) {}
     
-    try
-    {
-    	sayso = parent.window.sayso; // should work in popups (ones opened with window.open)
-	}
-	catch (e) {}
-    
     // Authenticated?
     try
     {
@@ -79,12 +73,6 @@ $SQ(function(){
     {
     	sayso = window.sayso; // should work for starbar itself
     	sayso = top.window.sayso; // should work in an iframe
-	}
-	catch (e) {}
-    
-    try
-    {
-    	sayso = parent.window.sayso; // should work in popups (ones opened with window.open)
 	}
 	catch (e) {}
     

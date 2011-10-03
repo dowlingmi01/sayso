@@ -11,7 +11,6 @@ $SQ.ajaxWithAuth = function (options) {
     try
     {
     	sayso = window.sayso; // should work for starbar itself
-    	sayso = top.window.sayso; // should work in an iframe
 	}
 	catch (e) {}
     
@@ -78,7 +77,6 @@ $SQ(function(){
     try
     {
     	sayso = window.sayso; // should work for starbar itself
-    	sayso = top.window.sayso; // should work in an iframe
 	}
 	catch (e) {}
     

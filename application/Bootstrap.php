@@ -20,7 +20,7 @@ class Bootstrap extends App_Bootstrap
         $apiLog->addWriter($apiLogWriter);
         
         // only log if used by a developer
-        $currentRemoteAddress = getRemoteAddress();
+        $currentRemoteAddress = $_SERVER['REMOTE_ADDR'];
         $devAddresses = array('djames' => '195.60.129.27', 'local' => '127.0.0.1', 'dev' => '174.129.49.244');
         if (!in_array($currentRemoteAddress, $devAddresses)) {
             $filterSupress = new Zend_Log_Filter_Suppress();
@@ -59,6 +59,7 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
         // Instead, we will manage keeping the session alive via kobj.net cookie
         // and pass that as user_key.
         if ($currentModule === 'api' || $currentModule === 'starbar') {
+            ini_set('session.use_only_cookies', '0');
             ini_set('session.use_cookies', '0');
         }
         

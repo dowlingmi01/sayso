@@ -94,6 +94,7 @@ class Starbar_RemoteController extends Api_AbstractController
             
             // get session and verify
             $session = Api_UserSession::getInstance($this->user_key);
+            quickLog('session id ' . $this->user_key . ' - user id ' . $this->user_id);
             if ($session->getId() !== (int) $this->user_id) {
                 throw new Api_Exception(Api_Error::create(Api_Error::TARGET_USER_MISMATCH));
             }
@@ -365,6 +366,8 @@ class Starbar_RemoteController extends Api_AbstractController
         $userSession->setId($user->getId());
         // set the key on the user object so it is available for client-apps
         $user->setKey($userSession->getKey());
+        
+        quickLog('new Starbar - session id ' . $userSession->getKey() . ' - user id ' . $user->getId());
         
         // Starbar
     

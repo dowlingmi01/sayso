@@ -10,6 +10,18 @@
  */
 (function () {
     
+    var urlMatchPrepend = '^(?:http|https){1}://(?:[\\w.]+)?',
+        currentUrl = window.location.href;
+    
+    var skipList = ['facebook.com/dialog', 'twitter.com/intent'];
+    
+    for (var i = 0; i < skipList.length; i++) {
+        if (currentUrl.match(urlMatchPrepend + skipList[i])) {
+            // do not load starbar for this page
+            return;
+        }
+    }
+    
     // setup global "safe" logging functions
     window.sayso.log = _log('log'); 
     window.sayso.warn = _log('warn');
@@ -45,17 +57,17 @@
     
     // bring in the GENERIC CSS
     
-    var css1 = document.createElement('link'); 
-    css1.rel = 'stylesheet';
-    css1.href = 'http://' + sayso.baseDomain + '/css/starbar-generic.css';
-    starbarContainer.appendChild(css1);
+    var cssGeneric = document.createElement('link'); 
+    cssGeneric.rel = 'stylesheet';
+    cssGeneric.href = 'http://' + sayso.baseDomain + '/css/starbar-generic.css';
+    starbarContainer.appendChild(cssGeneric);
 
     // bring in namespaced jQuery $SQ 
     
     if (!window.hasOwnProperty('$SQ')) {
-        var js1 = document.createElement('script'); 
-        js1.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
-        starbarContainer.appendChild(js1);
+        var jsJQuery = document.createElement('script'); 
+        jsJQuery.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
+        starbarContainer.appendChild(jsJQuery);
     }
     
     var clientSetupTimer = new jsLoadTimer();
@@ -173,21 +185,21 @@
             sayso.log('Loaded - jQuery, generic CSS');
             
             // load auxilliary (namespaced) JS libraries
-            var js2 = document.createElement('script'); 
-            js2.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-ui-1.8.16.custom.min.js';
-            starbarContainer.appendChild(js2);
+            var jsUi = document.createElement('script'); 
+            jsUi.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-ui-1.8.16.custom.min.js';
+            starbarContainer.appendChild(jsUi);
             
-            var js3 = document.createElement('script'); 
-            js3.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.jscrollpane.min.js';
-            starbarContainer.appendChild(js3);
+            var jsScroll = document.createElement('script'); 
+            jsScroll.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.jscrollpane.min.js';
+            starbarContainer.appendChild(jsScroll);
             
-            var js4 = document.createElement('script'); 
-            js4.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.cookie.js';
-            starbarContainer.appendChild(js4);
+            var jsCookie = document.createElement('script'); 
+            jsCookie.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.cookie.js';
+            starbarContainer.appendChild(jsCookie);
             
-            var js5 = document.createElement('script'); 
-            js5.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.jeip.js';
-            starbarContainer.appendChild(js5);
+            var jsJeip = document.createElement('script'); 
+            jsJeip.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.jeip.js';
+            starbarContainer.appendChild(jsJeip);
             
             var url = 'http://' + sayso.baseDomain;
             
@@ -243,15 +255,15 @@
                     );
                     
                     // load SaySo Javascript (which depends on the above data settings!)
-                    var js5 = document.createElement('script'); 
-                    js5.src = 'http://' + sayso.baseDomain + '/js/starbar/sayso.js';
-                    starbarContainer.appendChild(js5);
+                    var jsSayso = document.createElement('script'); 
+                    jsSayso.src = 'http://' + sayso.baseDomain + '/js/starbar/sayso.js';
+                    starbarContainer.appendChild(jsSayso);
                     
                     // load the specific CSS for this Starbar
-                    var css2 = document.createElement('link'); 
-                    css2.rel = 'stylesheet';
-                    css2.href = starbar._css_url;
-                    starbarContainer.appendChild(css2);
+                    var cssStarbar = document.createElement('link'); 
+                    cssStarbar.rel = 'stylesheet';
+                    cssStarbar.href = starbar._css_url;
+                    starbarContainer.appendChild(cssStarbar);
                     
                     // append the HTML to the DOM
                     var customCssLoadTimer = new cssLoadTimer(); 
@@ -266,18 +278,21 @@
                             $SQ('#sayso-starbar').append(starbar._html);
                             
                             // load SaySo Javascript (which depends on the above data settings)
-                            var js6 = document.createElement('script'); 
-                            js6.src = 'http://' + sayso.baseDomain + '/js/starbar/starbar-new.js';
-                            starbarContainer.appendChild(js6);
+                            var jsStarbar = document.createElement('script'); 
+                            jsStarbar.src = 'http://' + sayso.baseDomain + '/js/starbar/starbar-new.js';
+                            starbarContainer.appendChild(jsStarbar);
                             
                             var starbarJsTimer = new jsLoadTimer();
                             starbarJsTimer.start('window.sayso.starbar.loaded', function () {
                                 // if user has not "onboarded" and we are on the Starbar's base domain
                                 // then trigger the onboarding to display
-                                var href = window.location.href,
-                                    prependUrl = '^(?:http|https){1}://(?:[\w.]+)?';
-                                
-                                if (!starbar._user_map.onboarded && (href.match(prependUrl + starbar.domain) || href.match(prependUrl + 'saysollc.com') || href.match(prependUrl + 'sayso.com'))) {
+                                if (!starbar._user_map.onboarded && 
+                                    (
+                                        currentUrl.match(urlMatchPrepend + starbar.domain) || 
+                                        currentUrl.match(urlMatchPrepend + 'saysollc.com') || 
+                                        currentUrl.match(urlMatchPrepend + 'sayso.com')
+                                    )
+                                ) {
                                     // trigger onboarding to display (see starbar-new.js where this is handled)
                                     setTimeout(function () { $SQ(document).trigger('onboarding-display'); }, 2500);
                                     // bind when the last step of the onboarding is selected, to mark onboarding done

@@ -541,7 +541,7 @@ html {
 #sayso-starbar #starbar-player-console .sb_popBox {
 	position: absolute;
 	background-color: #383838;
-	z-index: 5000;
+	z-index: -1;
 	bottom: 70px;
 	left: 0;
 	display: none;

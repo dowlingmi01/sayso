@@ -406,6 +406,10 @@ $SQ(function(){
 						$SQ.sb_colorbox({
 							width:"220px", 
 							inline: true, 
+							initialWidth: 50,
+							initialHeight: 50,
+							speed: 500,
+							transition: 'fade',
 							href:"#sb_rewardsOverlay"
 						});
 					}
@@ -542,6 +546,9 @@ $SQ(function(){
 		var loadingElement = null;
 		
 		closePopBox();
+		
+		// if there's a colorbox open, close it
+		$SQ.sb_colorbox.close();
 
 		if (src && withLoadingElement) {  // insert loading elements into popBox, then load content into inner container
 			// fill in the container with loading div and container divs

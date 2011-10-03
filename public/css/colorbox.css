@@ -136,3 +136,25 @@
 #sayso-starbar #sb_cboxClose.hover {
 	background-position:bottom center;
 }
+
+
+/* OVERRIDES TO POSITION IT DIRECTLY OVER THE REWARDS POPBOX */
+
+#sayso-starbar #sb_cboxOverlay{
+	width: 535px !important;
+	height: 412px !important;
+	left: auto;
+	top: auto;
+	right: 1px !important;
+	bottom: 70px !important;
+	position: absolute !important;
+	z-index: 9999;
+}
+
+#sayso-starbar #sb_colorbox{
+	position: absolute !important;
+	top: auto !important;
+	left: auto !important;
+	right: 150px;
+	bottom: 90px;
+}

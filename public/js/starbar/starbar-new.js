@@ -16,7 +16,7 @@ $SQ.ajaxWithAuth = function (options) {
     
     try
     {
-    	sayso = window.opener.sayso; // should work in popups (ones opened with window.open)
+    	sayso = parent.window.sayso; // should work in popups (ones opened with window.open)
 	}
 	catch (e) {}
     
@@ -82,7 +82,7 @@ $SQ(function(){
     
     try
     {
-    	sayso = window.opener.sayso; // should work in popups (ones opened with window.open)
+    	sayso = parent.window.sayso; // should work in popups (ones opened with window.open)
 	}
 	catch (e) {}
     

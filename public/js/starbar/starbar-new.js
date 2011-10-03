@@ -128,6 +128,7 @@ $SQ(function(){
 	// clickable elements that ppl will interact with
 	var btnToggleVis; //  = $SQ('#sayso-starbar #starbar-visControls #starbar-toggleVis');
 	var btnSaySoLogo; // = $SQ('#sayso-starbar #starbar-visControls #sb_starbar-logo');
+	var btnCloseColorbox; // = $SQ('#sayso-starbar .sb_closeColorbox');
 
 	// container elements
 	var elemSaySoLogoBorder; // = $SQ('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
@@ -179,6 +180,8 @@ $SQ(function(){
 		elemExternalConnect = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
 		elemExternalShare = $SQ('#sayso-starbar #starbar-player-console .sb_externalShare, #sayso-starbar-embed .sb_externalShare');
 		elemRewardItem = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem');
+		btnCloseColorbox = $SQ('#sayso-starbar .sb_closeColorbox');
+
 
 		// jquery edit in place
 		elemJEIP = $SQ('#sayso-starbar .sb_jeip');
@@ -411,6 +414,15 @@ $SQ(function(){
 		
 		});
 		
+		btnCloseColorbox.each(function(){
+			$SQ(this).unbind();
+			$SQ(this).bind({
+				click: function(event){
+					$SQ.sb_colorbox.close();
+					return false;
+				}			
+			});									 
+		});
 		
 
 	} // end initElements()

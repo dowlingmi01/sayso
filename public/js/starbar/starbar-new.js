@@ -10,14 +10,14 @@ $SQ.ajaxWithAuth = function (options) {
 
     try
     {
-    	sayso = window.sayso;
-    	sayso = top.window.sayso;
+    	sayso = window.sayso; // should work for starbar itself
+    	sayso = top.window.sayso; // should work in an iframe
 	}
 	catch (e) {}
     
     try
     {
-    	sayso = parent.window.sayso;
+    	sayso = window.opener.sayso; // should work in popups (ones opened with window.open)
 	}
 	catch (e) {}
     
@@ -30,6 +30,30 @@ $SQ.ajaxWithAuth = function (options) {
         auth_key = sayso.starbar.authKey;
     }
     catch (e) {}
+    
+    if (typeof sayso == "undefined") {
+    // setup global "safe" logging functions
+    window.sayso.log = _log('log'); 
+    window.sayso.warn = _log('warn');
+    function _log (type) { // <-- closure here allows re-use for log() and warn()
+        return function () {
+            if (window.sayso.debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
+                var args = Array.prototype.slice.call(arguments);
+                if (typeof console.log.apply === 'function') {
+                    args.unshift('SaySo:');
+                    window.console[type].apply(window.console, args);
+                } else {
+                    // must be IE
+                    if (typeof args[0] !== 'object') {
+                        window.console.log(args[0]);
+                    }
+                }
+            }
+        }
+    };
+    
+    var sayso = window.sayso;
+	}
     
     options.data = $SQ.extend(options.data || {}, {
         starbar_id : starbar_id,
@@ -51,7 +75,18 @@ $SQ.ajaxWithAuth = function (options) {
 
 $SQ(function(){
 
-    var sayso = window.sayso;
+    try
+    {
+    	sayso = window.sayso; // should work for starbar itself
+    	sayso = top.window.sayso; // should work in an iframe
+	}
+	catch (e) {}
+    
+    try
+    {
+    	sayso = window.opener.sayso; // should work in popups (ones opened with window.open)
+	}
+	catch (e) {}
     
 	// global var
     var themeColor = '#de40b2';

@@ -201,6 +201,10 @@
             jsJeip.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.jeip.js';
             starbarContainer.appendChild(jsJeip);
             
+            var jsColorBox = document.createElement('script'); 
+            jsColorBox.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.colorbox-min.js';
+            starbarContainer.appendChild(jsColorBox);
+            
             var url = 'http://' + sayso.baseDomain;
             
             var params = {

@@ -315,12 +315,11 @@
 	background-repeat: no-repeat;
 	background-position: 3px 3px;
 	height: 20px;
-	padding: 3px 5px 3px 28px;
+	padding: 3px 5px 3px 20px;
 	font-size: 11px;
-	line-height: 23px;
+	line-height: 22px;
 	color: #333;
 	display: block;
-	border-bottom: 1px solid #c2c2c2;
 }
 
 #sayso-starbar #starbar-player-console .sb_imgNote{
@@ -474,90 +473,73 @@
 
 /* user level */
 
-#sayso-starbar #sb_popBox_user-level img.sb_imgCurrentLevel{
-	margin: -5px 10px 0px 0px;
-}
-
-#sayso-starbar .sb_userLevelColor1{
-	color: #980752 !important;
-	text-transform: uppercase;
-	font-weight: bold;
-	font-size: inherit;
-}
-
-#sayso-starbar .sb_userLevelColor2{
-	color: #1751a5 !important;
-	text-transform: uppercase;
-	font-weight: bold;
-	font-size: inherit;
-}
-
-#sayso-starbar .sb_userLevelColor3{
-	color: #8ca406 !important;
-	text-transform: uppercase;
-	font-weight: bold;
-	font-size: inherit;
-}
-
-#sayso-starbar #sb_popBox_user-level small.sb_nextLevel{
-	top: -5px;
-	left: 15px;
-	position: relative;
-}
-
-#sayso-starbar #sb_popBox_user-level ul.sb_userLevels{
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-}
-
-#sayso-starbar #sb_popBox_user-level ul.sb_userLevels li{
-	border: none;
-	padding: 0;
-	margin: 0;
-	width: 33%;
+#sayso-starbar #sb_popBox_user-level .sb_userLevelIcons{
 	float: left;
-	font-size: 11px!important;
-	font-weight: bold;
-	opacity: 0.5;
+	margin: 0px 5px 0px 0px;
 	text-align: center;
 }
 
-#sayso-starbar #sb_popBox_user-level ul.sb_userLevels li.sb_unlockedLevel{
-	opacity: 1;
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_earned,
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_next{
+	width: 95px;
 }
 
-#sayso-starbar #sb_popBox_user-level table.sb_table_rewards{
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_current{
+	width: 95px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevelImg{
+	height: 110px;
 	width: 100%;
+	background-repeat: no-repeat;
+	background-position: center bottom;
 }
 
-#sayso-starbar #sb_popBox_user-level table.sb_table_rewards thead th{
-	font-size: 13px;
-	font-weight: bold !important;
-	text-align: left;
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_earned .sb_userLevelImg,
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_next .sb_userLevelImg{
+	margin: 50px 0px 0px 0px;
+	height: 60px;
+	background-position: center 0px;
 }
 
-#sayso-starbar #sb_popBox_user-level table.sb_table_rewards thead th span{
-	font-weight: bold !important;
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_next{
+	opacity:0.5;
+	filter:alpha(opacity=50);
 }
 
-#sayso-starbar #sb_popBox_user-level table.sb_table_rewards .sb_points{
-	text-align: right;
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_musician{
+	background-image: url('../images/hellomusic/img_level_musician.png');
 }
 
-#sayso-starbar #sb_popBox_user-level table.sb_table_rewards td{
-	font-size: 11px !important;
-	padding: 3px 0px;
-	color: #999;
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_busker{
+	background-image: url('../images/hellomusic/img_level_busker.png');
 }
 
-#sayso-starbar #sb_popBox_user-level table.sb_table_rewards tr.sb_unlockedReward td{
-	color: #111;
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_band-member{
+	background-image: url('../images/hellomusic/img_level_band-member.png');
 }
 
-#sayso-starbar #sb_popBox_user-level table.sb_table_rewards tr.sb_unlockedReward td a{
 
+#sayso-starbar #sb_popBox_user-level .sb_user-level-box{
+	margin: 18px 0px 0px 0px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_user-points-box{
+	float: left;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_rewardsCenterLink{
+	float: right;
+	margin: 16px 0px 0px 0px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_img_purchase{
+	float: left;
+	margin: 10px 15px 10px 0px;
+	width: 80px;
+	height: auto;
 }
 
 /* user profile settings */

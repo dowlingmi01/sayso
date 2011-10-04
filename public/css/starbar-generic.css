@@ -1033,6 +1033,10 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	color: #c90c0c !important;
 }
 
+#sayso-starbar .sb_column5050{
+	overflow: hidden;
+}
+
 #sayso-starbar .sb_column50BG {
 	overflow: hidden;
 	background-image: url('../images/generic/bg_column50.png');
@@ -1046,13 +1050,14 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	background-position: 60% top;
 }
 #sayso-starbar .sb_column50 {
-	width: 50%;
+	width: 48%;
 	float: left;
 }
 #sayso-starbar .sb_column50BG .sb_column50 {
 	width: 48%;
 }
-#sayso-starbar .sb_column50BG .sb_column50:last-child {
+#sayso-starbar .sb_column50BG .sb_column50:last-child, 
+#sayso-starbar .sb_column5050 .sb_column50:last-child {
 	float: right;
 	width: 47%;
 	margin: 0px 5px 0px 0px;
@@ -1170,6 +1175,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	display: inline-block;
 	padding: 0px 15px 0px 0px;
 }
+
 /* outline list to mimic the look of the accordion */
 
 #sayso-starbar #starbar-player-console .sb_outlineList {
@@ -1212,6 +1218,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	overflow: hidden;
 	padding: 10px 0px;
 	position: relative;
+	clear: both;
 }
 /* solid, alternating background list */
 

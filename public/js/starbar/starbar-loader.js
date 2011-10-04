@@ -229,7 +229,7 @@
                         // go no further, do not display starbar
                         // situation will likely be rectified by returning to client site
                         // @todo provide feedback to user to return to client site
-                        warn(response.data);
+                        sayso.warn(response.data);
                         return;
                     }
                     
@@ -289,7 +289,7 @@
                                 if (!starbar._user_map.onboarded && 
                                     (
                                         currentUrl.match(urlMatchPrepend + starbar.domain) || 
-                                        currentUrl.match(urlMatchPrepend + 'saysollc.com') || 
+                                        currentUrl.match(urlMatchPrepend + 'saysollc.com') ||  // also trigger on our domains for testing purposes
                                         currentUrl.match(urlMatchPrepend + 'sayso.com')
                                     )
                                 ) {

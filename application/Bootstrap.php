@@ -61,6 +61,7 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
         if ($currentModule === 'api' || $currentModule === 'starbar') {
             ini_set('session.use_only_cookies', '0');
             ini_set('session.use_cookies', '0');
+            ini_set('session.use_trans_sid', '0');
         }
         
         // make sure api requests has user_key

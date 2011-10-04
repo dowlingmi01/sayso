@@ -16,14 +16,14 @@
  */
 class Starbar_RemoteController extends Api_AbstractController
 {
-    private static $_errorControllerSet = false;
-    
-    public function preDispatch() {
-        if (!self::$_errorControllerSet) {
+    public function init() {
+        if (!$this->_init()) {
+            // setup error module to use the API error module
             Zend_Controller_Front::getInstance()
                 ->getPlugin('Zend_Controller_Plugin_ErrorHandler')
                 ->setErrorHandlerModule(Api_Bootstrap::$moduleName);
-            self::$_errorControllerSet = true;
+            // make sure errors output via JSONP renderer
+            Api_Registry::set('renderer', new Api_Plugin_JsonPRenderer());
         }
     }
     
@@ -58,38 +58,40 @@ class Starbar_RemoteController extends Api_AbstractController
                 $starbar->setVisibility($this->visibility);
             }
             
-            if ($this->client_user_logged_in && $starbar->short_name === $this->client_name) { 
-                // we are on the customer's web site (must be if these params are present)
-                // client vars: client_name, client_uuid, client_uuid_type
+            if ($this->client_user_logged_in) {
                 
-                $externalUserData = Db_Pdo::fetch('SELECT * FROM external_user WHERE user_id = ?', $this->user_id);
-                // so verify that the user id matches the uuid
-                // if NOT, then switch users
-                if ($externalUserData['uuid'] !== $this->client_uuid) {
-                    // user change! (on same browser/computer)
-                    // create/update external user
-                    $externalUser = new External_User();
-                    $externalUser->uuid = $this->client_uuid; // unique
-                    $externalUser->uuid_type = $this->client_uuid_type;
-                    $externalUser->starbar_id = $starbar->getId(); // unique
-                    // note: we also treat this as a new "install":
-                    $externalUser->install_ip_address = $_SERVER['REMOTE_ADDR'];
-                    $externalUser->install_user_agent = $_SERVER['HTTP_USER_AGENT'];
-                    $externalUser->install_begin_time = new Zend_Db_Expr('now()');
-                    $externalUser->save(); // <-- inserts/updates based on uniques
-                    
-                    if ($starbar->short_name !== $this->client_name) {
-                        // customer site change!
-                        // @todo handle this scenario
-                    }
-                    return $this->_forward(
-                        'post-install-deliver', 
-                        null, 
-                        null, 
-                        array('external_user' => $externalUser)
-                    );
-                    
+                if ($starbar->short_name !== $this->client_name) {
+                    // customer site change!
+                    // @todo handle this scenario
                 }
+                if ($starbar->short_name === $this->client_name) { 
+                    // we are on the customer's web site (must be if these params are present)
+                    // client vars: client_name, client_uuid, client_uuid_type
+                    
+                    $externalUserData = Db_Pdo::fetch('SELECT * FROM external_user WHERE user_id = ?', $this->user_id);
+                    // so verify that the user id matches the uuid
+                    // if NOT, then switch users
+                    if ($externalUserData['uuid'] !== $this->client_uuid) {
+                        // user change! (on same browser/computer)
+                        // create/update external user
+                        $externalUser = new External_User();
+                        $externalUser->uuid = $this->client_uuid; // unique
+                        $externalUser->uuid_type = $this->client_uuid_type;
+                        $externalUser->starbar_id = $starbar->getId(); // unique
+                        // note: we also treat this as a new "install":
+                        $externalUser->install_ip_address = $_SERVER['REMOTE_ADDR'];
+                        $externalUser->install_user_agent = $_SERVER['HTTP_USER_AGENT'];
+                        $externalUser->install_begin_time = new Zend_Db_Expr('now()');
+                        $externalUser->save(); // <-- inserts/updates based on uniques
+                        
+                        return $this->_forward(
+                            'post-install-deliver', 
+                            null, 
+                            null, 
+                            array('external_user' => $externalUser)
+                        );
+                    }
+                } 
             }
             
             // get session and verify
@@ -171,9 +173,9 @@ class Starbar_RemoteController extends Api_AbstractController
         $externalUser->save();
         
         // set cookies (to be retreived in post-install)
-        setcookie('starbar_setup_auth_key', $this->auth_key);
-        setcookie('starbar_setup_external_user_id', $externalUser->getId());
-        setcookie('starbar_setup_install_token', $this->install_token);
+        setcookie('starbar_setup_auth_key', $this->auth_key, mktime(0,0,0,12,31,2030), '/');
+        setcookie('starbar_setup_external_user_id', $externalUser->getId(), mktime(0,0,0,12,31,2030), '/');
+        setcookie('starbar_setup_install_token', $this->install_token, mktime(0,0,0,12,31,2030), '/');
         
         return $this->_resultType(true);
     }
@@ -320,6 +322,9 @@ class Starbar_RemoteController extends Api_AbstractController
     
         externalUserExists:
         
+        // @todo handle race condition between the above select and the insert just below
+        // problem is that other loads (e.g. browser tabs) may create extra users
+        // if they hit this section simultaneously
         
         // User
         
@@ -360,8 +365,13 @@ class Starbar_RemoteController extends Api_AbstractController
         }
         
         // start a NEW session
+        $userSession = Api_UserSession::getInstance(); 
+        // (In rare cases the user_key may already be included and the session started. see BootstrapPlugin)
+        if ($userSession->hasId() && $userSession->getId() !== $user->getId()) { 
+            // user ID is already set on session but the user is different than the one we just created!!
+            // what to do?
+        }
         
-        $userSession = Api_UserSession::getInstance();
         // set the user id on the session
         $userSession->setId($user->getId());
         // set the key on the user object so it is available for client-apps
@@ -412,7 +422,6 @@ class Starbar_RemoteController extends Api_AbstractController
      * @todo add to starbar table
      */
     public function genericAction () {
-        
     }
 
     /**

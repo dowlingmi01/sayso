@@ -7,14 +7,15 @@
 if (!isset($_COOKIE['CHOMPUID']) || !isset($_COOKIE['MyEmail'])) {
     $randomEmail = substr(str_shuffle('bcdfghjklmnpqrstvwxz'), 0, 1) . substr(str_shuffle('aeiouy'), 0, 1) . substr(str_shuffle('bcdfghjklmnpqrstvwxz'), 0, 2) . substr(str_shuffle('aeiouy'), 0, 1) . substr(str_shuffle('bcdfghjklmnpqrstvwxz'), 0, 1) . substr(str_shuffle('123456789'), 0, 1);
     $randomEmail .= '@hellomusic.com';
-    setcookie('CHOMPUID', md5($randomEmail));
-    setcookie('MyEmail', $randomEmail);
+    setcookie('CHOMPUID', md5($randomEmail), mktime(0,0,0,12,31,2030), '/');
+    setcookie('MyEmail', $randomEmail, mktime(0,0,0,12,31,2030), '/');
 } else {
     $randomEmail = $_COOKIE['MyEmail'];
 }
 
 ini_set('session.use_only_cookies', '0');
 ini_set('session.use_cookies', '0');
+ini_set('session.use_trans_sid', '0');
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

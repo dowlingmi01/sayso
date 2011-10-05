@@ -13,15 +13,6 @@
     var urlMatchPrepend = '^(?:http|https){1}://(?:[\\w.]+)?',
         currentUrl = window.location.href;
     
-    var skipList = ['facebook.com/dialog', 'twitter.com/intent'];
-    
-    for (var i = 0; i < skipList.length; i++) {
-        if (currentUrl.match(urlMatchPrepend + skipList[i])) {
-            // do not load starbar for this page
-            return;
-        }
-    }
-    
     // setup global "safe" logging functions
     window.sayso.log = _log('log'); 
     window.sayso.warn = _log('warn');
@@ -43,6 +34,18 @@
     };
     
     var sayso = window.sayso;
+    if (window.opener) {
+        sayso.log('This is a popup. Starbar will not be loaded.');
+        return;
+    }
+    var skipList = ['facebook.com/dialog', 'twitter.com/intent'];
+    
+    for (var i = 0; i < skipList.length; i++) {
+        if (currentUrl.match(urlMatchPrepend + skipList[i])) {
+            // do not load starbar for this page
+            return;
+        }
+    }
     
     var starbarContainer = document.getElementById('sayso-starbar');
     

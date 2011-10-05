@@ -4,6 +4,7 @@
 // to simulate a hellomusic.com login
 // do not deliver to customer
 
+date_default_timezone_set('UTC');
 ini_set('session.use_only_cookies', '0');
 ini_set('session.use_cookies', '0');
 ini_set('session.use_trans_sid', '0');

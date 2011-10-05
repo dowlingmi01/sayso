@@ -13,10 +13,10 @@
 (function () {
     
     if (!window.sayso) window.sayso = {};
-//    if (!window.sayso.baseDomain) window.sayso.baseDomain = 'app-dev.saysollc.com';
-//    if (!window.sayso.environment) window.sayso.environment = 'DEV';
-    if (!window.sayso.baseDomain) window.sayso.baseDomain = 'local.sayso.com';
-    if (!window.sayso.environment) window.sayso.environment = 'LOCAL';
+    if (!window.sayso.baseDomain) window.sayso.baseDomain = 'app-dev.saysollc.com';
+    if (!window.sayso.environment) window.sayso.environment = 'DEV';
+//    if (!window.sayso.baseDomain) window.sayso.baseDomain = 'local.sayso.com';
+//    if (!window.sayso.environment) window.sayso.environment = 'LOCAL';
     
     var sayso = window.sayso;
 

@@ -473,9 +473,13 @@
 
 /* user level */
 
+#sayso-starbar #sb_popBox_user-level .sb_header{
+	border-bottom: 1px solid #929292;
+}
+
 #sayso-starbar #sb_popBox_user-level .sb_userLevelIcons{
 	float: left;
-	margin: 0px 5px 0px 0px;
+	margin: 0px 0px 0px 0px;
 	text-align: center;
 }
 
@@ -489,7 +493,7 @@
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevelImg{
-	height: 110px;
+	height: 80px;
 	width: 100%;
 	background-repeat: no-repeat;
 	background-position: center bottom;
@@ -498,7 +502,7 @@
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_earned .sb_userLevelImg,
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next .sb_userLevelImg{
-	margin: 50px 0px 0px 0px;
+	margin: 20px 0px 0px 0px;
 	height: 60px;
 	background-position: center 0px;
 }
@@ -516,9 +520,13 @@
 	background-image: url('../images/hellomusic/img_level_busker.png');
 }
 
-
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_band-member{
 	background-image: url('../images/hellomusic/img_level_band-member.png');
+}
+
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_empty{
+	background-image: url('../images/hellomusic/img_level_empty.png');
 }
 
 
@@ -928,13 +936,13 @@
 }
 
 #sayso-starbar #sb_popBox_rewards.sb_triangle-border:before{
-	left: 370px;
+	left: 490px;
 }
 #sayso-starbar #sb_popBox_rewards.sb_triangle-border:after{
-	left: 371px;
+	left: 491px;
 }
 #sayso-starbar #sb_popBox_rewards .sb_triangle-solid:after{
-	left: 367px;
+	left: 487px;
 }
 
 /* accordions */

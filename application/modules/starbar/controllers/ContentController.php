@@ -267,7 +267,7 @@ class Starbar_ContentController extends Api_GlobalController
     			
     			if ($message->id) {
     				$messageUserMap = new Notification_MessageUserMap();
-    				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, true);
+    				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, false);
 				}
 			}
 		} else {
@@ -338,7 +338,7 @@ class Starbar_ContentController extends Api_GlobalController
     			
     			if ($message->id) {
     				$messageUserMap = new Notification_MessageUserMap();
-    				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, true);
+    				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, false);
 				}
 			}
 

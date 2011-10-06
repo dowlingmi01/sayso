@@ -140,7 +140,7 @@ class Notification_MessageCollection extends RecordCollection
 
 		$messageGroup = new Notification_MessageGroup();
 
-		// 1. nextInGroupMessages -- those are already filtered, but may not have user_maps, so let's start there
+		// 1. nextInGroupMessages -- those are already filtered, and already have user maps made, so let's start there
 		$this->loadNextInGroupMessagesForStarbarAndUser($starbarId, $userId);
 
 		// 2. previouslyUnscheduledMessages -- need to filter those, and add user_maps

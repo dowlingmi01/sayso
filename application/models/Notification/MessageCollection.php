@@ -166,7 +166,7 @@ class Notification_MessageCollection extends RecordCollection
 		// 3. userActionMessages -- do NOT need to filter those, and they already have user maps
 		$userActionMessages = new Notification_MessageCollection();
 		$userActionMessages->loadUserActionMessagesForStarbarAndUser($starbarId, $userId);
-		foreach ($previouslyUnscheduledMessages as $message) {
+		foreach ($userActionMessages as $message) {
 			$this->addItem($message);
 		}
 	}

@@ -1362,3 +1362,14 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	background-repeat: no-repeat;
 	text-indent: -9999px;
 }
+
+/* INPUT FORMATTING */
+
+#sayso-starbar .sb_popBox input[type=text],
+#sayso-starbar .sb_popBox textarea{
+	font-family: Arial, Helvetica, sans-serif;
+	border: 1px solid #ccc;
+	padding: 2px;
+	font-size: 12px;
+	line-height: 18px;
+}

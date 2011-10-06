@@ -845,6 +845,45 @@
 	margin: 0px auto;
 }
 
+/* share starber */
+
+#sayso-starbar #sb_popBox_user-share textarea{
+	width: 98.5%;
+}
+
+#sayso-starbar #sb_popBox_user-share .sb_importShare{
+	background-color: #7c7364;
+	color: #fff;
+	margin: 0px 0px 0px 0px !important;
+	padding: 2px 5px 5px 5px;
+	line-height: 14px !important;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-family: Arial Narrow, Helvetica, sans-serif;
+	height: 16px;
+	overflow: hidden;
+}
+
+#sayso-starbar #sb_popBox_user-share .sb_importShare span{
+	margin: 1px 0px 0px 0px;
+	float: left;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-family: Arial Narrow, Helvetica, sans-serif;
+}
+
+#sayso-starbar #sb_popBox_user-share .sb_importShare a{
+	color: #000;
+	margin: 0px 0px 0px 5px;
+	display: inline-block;
+	float: left;
+	line-height: 14px;
+}
+
+#sayso-starbar #sb_popBox_user-share .sb_importShare a img{
+	padding: 2px 0px 0px 0px;
+}
+
 
 /* POSITION ALL OF THE POPBOX TRIANGLES */
 
@@ -910,21 +949,27 @@
 
 /* user account */
 
-#sayso-starbar #starbar-player-console #sb_popBox_user-profile.sb_popBox{
-	left: -220px;
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile.sb_popBox,
+#sayso-starbar #starbar-player-console #sb_popBox_user-share.sb_popBox{
+	left: -100px;
+	bottom: 10px;
 }
 
-#sayso-starbar #sb_popBox_user-profile.sb_triangle-border:before{
+#sayso-starbar #sb_popBox_user-profile.sb_triangle-border:before,
+#sayso-starbar #sb_popBox_user-share.sb_triangle-border:before{
 	left: 225px;
 }
-#sayso-starbar #sb_popBox_user-profile.sb_triangle-border:after{
+#sayso-starbar #sb_popBox_user-profile.sb_triangle-border:after,
+#sayso-starbar #sb_popBox_user-share.sb_triangle-border:after{
 	left: 226px;
 }
-#sayso-starbar #sb_popBox_user-profile .sb_triangle-solid:after{
+#sayso-starbar #sb_popBox_user-profile .sb_triangle-solid:after,
+#sayso-starbar #sb_popBox_user-share .sb_triangle-solid:after{
 	left: 223px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_user-profile.sb_popBox .sb_popContent{
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile.sb_popBox .sb_popContent,
+#sayso-starbar #starbar-player-console #sb_popBox_user-share.sb_popBox .sb_popContent{
 	height: 280px;
 }
 

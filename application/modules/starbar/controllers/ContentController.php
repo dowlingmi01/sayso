@@ -204,6 +204,11 @@ class Starbar_ContentController extends Api_GlobalController
 		$userEmail->loadData($user->primary_email_id);
 		$this->view->assign('user_email', $userEmail);
 	}
+	
+		public function userShareAction()
+		{
+			
+		}
 
     public function userLevelAction ()
     {

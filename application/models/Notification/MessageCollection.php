@@ -114,11 +114,7 @@ class Notification_MessageCollection extends RecordCollection
 				INNER JOIN notification_message_group nmg
 					ON nmg.id = nm.notification_message_group_id
 						AND nmg.starbar_id = ?
-						AND nmg.type = 'User Action'
-				INNER JOIN user 
-					ON user.id = ?
-					AND ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(user.created)) > nmg.start_after
-						OR nmg.start_after IS NULL)
+						AND nmg.type = 'User Actions'
 				INNER JOIN notification_message_user_map nmum 
 					ON nmum.notification_message_id = nm.id
 						AND nmum.user_id = ?

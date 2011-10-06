@@ -122,7 +122,7 @@ class Notification_MessageCollection extends RecordCollection
 			ORDER BY nmum.id DESC
 		";
 		
-        $data = Db_Pdo::fetchAll($sql, $starbarId, $userId, $userId);
+        $data = Db_Pdo::fetchAll($sql, $starbarId, $userId);
 
 		if ($data) {
         	$this->build($data, new Notification_Message());

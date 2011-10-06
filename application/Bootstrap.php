@@ -64,6 +64,20 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
             ini_set('session.use_trans_sid', '0');
         }
         
+		/*
+		* bundle_of_joy is the variable sent to and from SurveyGizmo.
+		* It is a 'manually' serialized list of variables and values, where ^|^ seperates variables
+		* from each other, and ^-^ seperates variable names from variable values. Example:
+		* GET version: ?user_id=1&user_key=123&auth_key=abc
+		* bundle_of_joy version: ?bundle_of_joy=user_id^-^1^|^user_key^-^123^|^auth_key^-^abc
+		*/
+        if ($request->getParam('bundle_of_joy')) {
+            foreach (explode('^|^', $request->getParam('bundle_of_joy')) as $keyValue) {
+                $parts = explode('^-^', $keyValue);
+                $request->setParam($parts[0], $parts[1]);
+            }
+        }
+
         // make sure api requests has user_key
         if ($currentModule === 'api' && (!$request->getParam('user_key') || $request->getParam('user_key') === 'undefined')) {
             $message = 'SaySo API requires user_key in every request.';

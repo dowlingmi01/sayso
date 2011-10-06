@@ -12,6 +12,8 @@
 	font: 13px/1.231 sans-serif;
 	vertical-align: baseline;
 	outline: 0;
+	background-image: none;
+	background-color: none;
 }
 #sayso-starbar article, #sayso-starbar aside, #sayso-starbar details, #sayso-starbar figcaption, #sayso-starbar figure, #sayso-starbar footer, #sayso-starbar header, #sayso-starbar hgroup, #sayso-starbar menu, #sayso-starbar nav, #sayso-starbar section {
 	display: block;

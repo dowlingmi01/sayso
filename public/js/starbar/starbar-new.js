@@ -339,7 +339,7 @@ $SQ(function(){
 		
 		// set up the EIP elements
 		elemJEIP.each(function(){
-			$SQ(this).eip( "/api/user/save-in-place", {
+			$SQ(this).eip( "http://"+sayso.baseDomain+"/api/user/save-in-place", {
 				savebutton_text		: "save",
 				savebutton_class	: "sb_theme_button",
 				cancelbutton_text	: "cancel",

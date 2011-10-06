@@ -245,6 +245,7 @@
                     sayso.log('Received - ' + starbar.label + ' Starbar');
                     sayso.log(starbar);
                     sayso.starbar.id = starbar.id;
+                    sayso.starbar.short_name = starbar.short_name;
                     sayso.starbar.authKey = starbar._auth_key;
                     sayso.starbar.user.id = starbar._user.id;
                     sayso.starbar.user.key = starbar._user._key;

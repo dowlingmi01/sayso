@@ -58,10 +58,6 @@ class Starbar_IndexController extends Api_AbstractController
     	$this->view->starbar = $starbar;
     	
 		$this->view->assign('user', Api_UserSession::getInstance()->getUser());
-        
-        $messages = new Notification_MessageCollection();
-        $messages->loadAllNotificationMessagesForStarbarAndUser($starbar->id, $this->view->user->id);
-        $this->view->assign('notification_messages', $messages);
     }
 }
 

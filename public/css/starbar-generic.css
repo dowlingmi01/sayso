@@ -432,10 +432,6 @@ html {
 	z-index: -9999;
 	display:none;
 }
-#sayso-starbar #starbar-player-console .sb_starbar-alert-wide {
-	width: 260px;
-	background-image: url('../images/generic/bg_alert_starbar-wide.png');
-}
 #sayso-starbar #starbar-player-console .sb_starbar-alert-promos {
 	bottom: 64px;
 	left: 108px;
@@ -443,6 +439,8 @@ html {
 #sayso-starbar #starbar-player-console .sb_starbar-alert-alerts {
 	bottom: 53px;
 	right: 0px;
+	width: 260px;
+	background-image: url('../images/generic/bg_alert_starbar-wide.png');
 }
 #sayso-starbar #starbar-player-console .sb_starbar-alert .sb_inner {
 	position: relative;

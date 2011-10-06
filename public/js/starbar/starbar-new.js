@@ -142,8 +142,7 @@ $SQ(function(){
 	// initialize the starbar
 	function initStarBar(){
 		initElements();
-		closePopBox();
-		showAlerts();
+		updateAlerts(true);
 		activateProgressBar();
 		// initializes development-only jquery
 		devInit();
@@ -164,7 +163,6 @@ $SQ(function(){
 		elemVisControls = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls');
 		elemStarbarClickable = $SQ('#sayso-starbar #starbar-player-console .sb_nav_element');
 		elemPopBox = $SQ('#sayso-starbar #starbar-player-console .sb_popBox');
-		elemAlerts = $SQ('#sayso-starbar #starbar-player-console .sb_starbar-alert');
 		elemPopBoxVisControl = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
 		elemTabClick = $SQ('#sayso-starbar #starbar-player-console .sb_nav_tabs');
 		elemExternalConnect = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
@@ -356,6 +354,7 @@ $SQ(function(){
 			$SQ(this).unbind();
 			$SQ(this).bind({
 				click: function(event){
+					closePopBox();
 					var windowParameters = 'location=1,status=1,scrollbars=0';
 					switch($SQ(this).attr('id')) {
 						case "sb_profile_facebook":
@@ -529,6 +528,7 @@ $SQ(function(){
 			// remove hover class from all nav items
 			$SQ('span.sb_nav_border').removeClass('sb_theme_navOnGradient');
 		});
+		updateAlerts(false);
 		return;
 	}
 
@@ -614,6 +614,7 @@ $SQ(function(){
 		if (target){
 			target.delay(200).slideDown('fast');
 		}else{
+			elemAlerts = $SQ('#sayso-starbar #starbar-player-console .sb_starbar-alert');
 			elemAlerts.each(function(){
 				// show alerts that aren't empty.
 				if ($SQ('a',this).html().length != 0){
@@ -627,11 +628,58 @@ $SQ(function(){
 	function hideAlerts(target){
 		if (target){
 			target.delay(300).slideUp('fast');
+			// setTimeout is called in the global scope, so it needs to find the target again
+			setTimeout("$SQ('#"+target.attr('id')+"').empty()", 300);
 		}else{
 			elemAlerts.each(function(){
 				$SQ(this).hide();
 			});
 		}
+	}
+
+	function updateAlerts(reverseOrder) {
+		$SQ.ajaxWithAuth({
+			dataType: "json",
+			url : 'http://'+sayso.baseDomain+'/api/user/notification-update?starbar_id='+sayso.starbar.id,
+			success : function (response, status, jqXHR) {
+				var newAlerts = false;
+				if (response.data.messages.length > 0) {
+					$SQ.each(response.data.messages, function (index, info) {
+						// Check if an alert with that message already exists, if so, do nothing
+						var id = info[0];
+						if ($SQ('#starbar-alert-'+id).length == 0) {
+							var notification_area = info[1];
+							var message = info[2];
+							var popbox_to_open = info[3];
+							var color = info[4];
+
+							var elemAlertContainer = $SQ('#starbar-alert-container-'+notification_area);
+
+							var newAlertHtml = '<div class="sb_starbar-alert sb_starbar-alert-'+notification_area+'" id="starbar-alert-'+id+'"><div class="sb_inner"><div class="sb_content sb_theme_bgAlert'+color+'">';
+							if (popbox_to_open) {
+								newAlertHtml += '<a href="http://'+sayso.baseDomain+'/starbar/'+sayso.starbar.short_name+'/'+popbox_to_open+'" class="sb_nav_element sb_alert" rel="sb_popBox_'+popbox_to_open+'">'+message+'</a>'
+							} else {
+								newAlertHtml += '<a href="#" class="sb_nav_element sb_alert" rel="">'+message+'</a>';
+							}
+
+							newAlertHtml += '</div><!-- .sb_content --></div><!-- .sb_inner --></div><!-- #sb_alert-new -->';
+							if (reverseOrder) {
+								elemAlertContainer.prepend(newAlertHtml);
+							} else {
+								elemAlertContainer.append(newAlertHtml);
+							}
+
+							newAlerts = true;
+						}
+					});
+
+					if (newAlerts) {
+						initElements();
+						showAlerts();
+					}
+				}
+    		}
+		});
 	}
 
 	function activateTabs(target){
@@ -786,28 +834,6 @@ $SQ(function(){
 		});
 	})($SQ);
 
-	 // this function needs to be here so that the popup window can access it via window.opener.sayso.refreshConnectExternal()
-	 // provider = 'twitter' or 'facebook'
-	sayso.refreshConnectExternal = function (provider){
-		var elemRefresh;
-		
-		switch (provider) {
-			case "twitter":
-				elemRefresh = $SQ('#sb_profile_twitter');
-				break;
-
-			case "facebook":
-				elemRefresh = $SQ('#sb_profile_facebook');
-				break;
-		}
-
-		if (elemRefresh) {
-			elemRefresh.unbind();
-			elemRefresh.addClass('sb_connected');
-			elemRefresh.removeClass('sb_unconnected');
-		}
-	}
-	
     // http://www.thefutureoftheweb.com/blog/detect-browser-window-focus
     // I augmented this to include honoring existing focus events
     if (/*@cc_on!@*/false) { // check for Internet Explorer

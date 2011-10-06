@@ -435,10 +435,6 @@ class Starbar_RemoteController extends Api_AbstractController
         $this->view->assign('starbar', $starbar);
         $this->view->assign('user', $starbar->getUser());
         
-        $messages = new Notification_MessageCollection();
-        $messages->loadAllNotificationMessagesForStarbarAndUser($starbar->id, $this->view->user->id);
-        $this->view->assign('notification_messages', $messages);
-        
         // render the view manually, we will pass it back in the JSON
         $this->render();
         

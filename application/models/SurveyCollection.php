@@ -3,12 +3,12 @@
 class SurveyCollection extends RecordCollection
 {
 	/*
-	* load polls or surveys for a specific user for a specific survey_user_status:
-		* $user_id = get surveys for this user
+	* load polls or surveys for a specific user for a specific $surveyUserStatus:
+		* $userId = get surveys for this user
 		* $type = 'poll' or 'survey'
-		* $survey_user_status = 'new', 'complete' or 'archived', i.e. has this user completed the survey, etc.
+		* $surveyUserStatus = 'new', 'complete' or 'archived', i.e. has this user completed the survey, etc.
 	*/
-    public function loadSurveysForStarbarAndUser ($starbar_id, $user_id, $type, $survey_user_status)
+    public function loadSurveysForStarbarAndUser ($starbarId, $userId, $type, $surveyUserStatus)
     {
     	$order = "ordinal ASC";
     	$surveys = null;
@@ -16,10 +16,10 @@ class SurveyCollection extends RecordCollection
     	$type = str_replace("surveys", "survey", $type);
     	$type = str_replace("polls", "poll", $type);
 
-    	$survey_user_status = str_replace("completed", "complete", $survey_user_status);
-    	$survey_user_status = str_replace("archived", "archive", $survey_user_status);
+    	$surveyUserStatus = str_replace("completed", "complete", $surveyUserStatus);
+    	$surveyUserStatus = str_replace("archived", "archive", $surveyUserStatus);
 
-    	switch ($survey_user_status)
+    	switch ($surveyUserStatus)
     	{
     		case 'new':
 				$sql = "SELECT *
@@ -29,7 +29,7 @@ class SurveyCollection extends RecordCollection
 							AND survey.starbar_id = ?
 						ORDER BY ".$order."
 						 ";
-        		$surveys = Db_Pdo::fetchAll($sql, $type, $user_id, $starbar_id);
+        		$surveys = Db_Pdo::fetchAll($sql, $type, $userId, $starbarId);
     			break;
 
     		case 'complete':
@@ -43,7 +43,7 @@ class SurveyCollection extends RecordCollection
 							AND survey.starbar_id = ?
 						ORDER BY ".$order."
 						 ";
-        		$surveys = Db_Pdo::fetchAll($sql, $user_id, $type, $starbar_id);
+        		$surveys = Db_Pdo::fetchAll($sql, $userId, $type, $starbarId);
     			break;
 
     		case 'archive':
@@ -57,7 +57,7 @@ class SurveyCollection extends RecordCollection
 							AND survey.starbar_id = ?
 						ORDER BY ".$order."
 						 ";
-        		$surveys = Db_Pdo::fetchAll($sql, $user_id, $type, $starbar_id);
+        		$surveys = Db_Pdo::fetchAll($sql, $userId, $type, $starbarId);
     			break;
 		}
 

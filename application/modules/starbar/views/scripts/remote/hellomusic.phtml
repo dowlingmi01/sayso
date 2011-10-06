@@ -52,13 +52,21 @@ switch ($starbar->getVisibility()){
           </div><!-- .sb_content -->
         </div><!-- .inner -->
       </div><!-- #starbar-type -->
-      <div class="sb_starbar-alert" id="starbar-alert-new">
-        <div class="sb_inner">
-          <div class="sb_content sb_theme_bgAlertRed">
-          	<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/daily-deals" class="sb_nav_element sb_alert sb_alert-arrow" rel="sb_popBox_daily-deals">You have 2 new Daily Deals</a>
-       		</div><!-- .sb_content -->
-      	</div><!-- .sb_inner -->
-      </div><!-- #sb_alert-new -->
+	  <? foreach ($this->notification_messages as $message) { ?>
+	  	<? if ($message->notification_area == 'promos') { ?>
+          <div class="sb_starbar-alert sb_starbar-alert-promos" id="starbar-alert-<?= $message->id ?>">
+            <div class="sb_inner">
+              <div class="sb_content sb_theme_bgAlertRed">
+                <? if ($message->popBoxToOpen) { ?>
+                  <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/<?= $message->popBoxToOpen ?>" class="sb_nav_element sb_alert" rel="sb_popBox_<?= $message->popBoxToOpen ?>"><?= $message->message ?></a>
+                <? } else { ?>
+                  <a href="#" class="sb_nav_element sb_alert" rel=""><?= $message->message ?></a>
+                <? } ?>
+   		      </div><!-- .sb_content -->
+  		    </div><!-- .sb_inner -->
+          </div><!-- #sb_alert-new -->
+        <? } ?>
+      <? } ?>
       <div id="starbar-nav">
         <ul>
           <li id="nav_polls" class="sb_theme_bgGradient"><span href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/polls" class="sb_nav_element"><span class="sb_nav_border">Polls</span></span>
@@ -85,13 +93,21 @@ switch ($starbar->getVisibility()){
         <div id="sb_popBox_promo" class="sb_popBox sb_triangle-border">
         </div><!-- .sb_popBox -->
       </div><!-- #starbar-promo -->
-      <div class="sb_starbar-alert sb_starbar-alert-wide" id="starbar-alert-earned">
-        <div class="sb_inner">
-          <div class="sb_content sb_theme_bgAlertGreen">
-          	<a href="#" class="sb_nav_element sb_alert" rel="">You have completed your first survey!<br />You Earned +5 Notes!</a>
-       		</div><!-- .sb_content -->
-      	</div><!-- .sb_inner -->
-      </div><!-- #sb_alert-new -->
+	  <? foreach ($this->notification_messages as $message) { ?>
+	  	<? if ($message->notification_area == 'alerts') { ?>
+          <div class="sb_starbar-alert sb_starbar-alert-wide sb_starbar-alert-alerts" id="starbar-alert-<?= $message->id ?>">
+            <div class="sb_inner">
+              <div class="sb_content sb_theme_bgAlertGreen">
+                <? if ($message->popBoxToOpen) { ?>
+                  <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/<?= $message->popBoxToOpen ?>" class="sb_nav_element sb_alert" rel="sb_popBox_<?= $message->popBoxToOpen ?>"><?= $message->message ?></a>
+                <? } else { ?>
+                  <a href="#" class="sb_nav_element sb_alert" rel=""><?= $message->message ?></a>
+                <? } ?>
+   		      </div><!-- .sb_content -->
+  		    </div><!-- .sb_inner -->
+          </div><!-- #sb_alert-new -->
+        <? } ?>
+      <? } ?>
       <div id="starbar-level">    
       	<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level">  
         <div class="sb_content">        	

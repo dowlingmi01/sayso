@@ -37,4 +37,9 @@ class Survey_UserMap extends Record
     // SEE User class for examples
     // public function exportData()
     // public function exportProperties($parentObject = null)
+    
+    function checkIfUserHasCompletedSurvey($userId, $surveyId) {
+    	$sql = "SELECT user_id FROM survey_user_map WHERE status = 'complete' AND user_id = ? AND survey_id = ?";
+    	return !!(Db_Pdo::fetch($sql, $userId, $surveyId));
+	}
 }

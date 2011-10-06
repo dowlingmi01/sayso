@@ -45,6 +45,7 @@
 								url : "http://<?= BASE_DOMAIN ?>/api/survey/user-poll-submit?survey_id=<?= $this->survey->id ?>",
 								success : function (r, s) {}
 							});
+							//top.refreshStarbar();
 							survey.ShowResults(domain);
 							setTimeout(function() {
 								$SQ('#sb-survey-completed').fadeIn(500)

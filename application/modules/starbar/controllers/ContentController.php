@@ -260,6 +260,15 @@ class Starbar_ContentController extends Api_GlobalController
     			if (isset($user_profile['username']))
     				$userSocial->username = $user_profile['username'];
     			$userSocial->save();
+    			
+    			// Show user congrats notification
+    			$message = new Notification_Message();
+    			$message->loadDataByUniqueFields(array('short_name' => 'FB Account Connected'));
+    			
+    			if ($message->id) {
+    				$messageUserMap = new Notification_MessageUserMap();
+    				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, true);
+				}
 			}
 		} else {
 			$this->_redirect($facebook->getLoginUrl());
@@ -322,6 +331,15 @@ class Starbar_ContentController extends Api_GlobalController
 				$userSocial->identifier = $accessToken['user_id'];
 				$userSocial->username = $accessToken['screen_name'];
 				$userSocial->save();
+				
+    			// Show user congrats notification
+    			$message = new Notification_Message();
+    			$message->loadDataByUniqueFields(array('short_name' => 'TW Account Connected'));
+    			
+    			if ($message->id) {
+    				$messageUserMap = new Notification_MessageUserMap();
+    				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, true);
+				}
 			}
 
 			$success = true;

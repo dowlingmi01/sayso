@@ -32,9 +32,7 @@ class Starbar_HellomusicController extends Starbar_ContentController
 			$feed = stream_get_contents($handle);
 
 			// cache until the next update
-			$nextUpdatTime = strtotime("9:30am tomorrow");
-			$secondsUntilNextUpdate = $nextUpdatTime - time();
-			$cache->setLifetime($secondsUntilNextUpdate);
+			$cache->setLifetime(3600);
 
 			$cache->save($feed);
 		}

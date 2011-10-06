@@ -246,6 +246,22 @@ class Api_UserController extends Api_GlobalController
 		return $this->_resultType(new Object($response));
 	}
     
+    // This function is called whenever a notification message is closed:
+    // We need to insert or update (should always be update) a notification_message_user_map record
+    // so the user doesn't see the notification again
+    public function notificationCloseAction() {		
+		if ($this->user_id) {
+			$request = $this->getRequest();
+			$messageId = $request->getParam('message_id');
+
+			if ($messageId) {
+    			$messageUserMap = new Notification_MessageUserMap();
+    			$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($messageId, $this->user_id, true);
+			}
+		}
+		return $this->_resultType(true);
+	}
+    
     // @todo for dev/QA only, delete for production
     public function resetSurveysAndPollsAction() {		
 		if ($this->user_id) {

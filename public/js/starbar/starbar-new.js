@@ -8,17 +8,7 @@ $SQ.ajaxWithAuth = function (options) {
     var user_id = null;
     var user_key = null;
 
-    try
-    {
-    	sayso = window.sayso; // should work for starbar itself
-	}
-	catch (e) {}
-    
-    try
-    {
-    	sayso = parent.window.sayso; // should work in popups (ones opened with window.open)
-	}
-	catch (e) {}
+    sayso = window.sayso;
     
     // Authenticated?
     try
@@ -291,7 +281,13 @@ $SQ(function(){
 
 					// set a delay before closing the alert element
 					if ($SQ(this).hasClass('sb_alert')){
-						hideAlerts($SQ(this).closest('.sb_starbar-alert'));
+						var notification = $SQ(this).closest('.sb_starbar-alert');
+						var notification_id = notification.attr('id').match(/([0-9]+)/);
+						$SQ.ajaxWithAuth({
+							url : 'http://'+sayso.baseDomain+'/api/user/notification-close?message_id='+notification_id,
+							success : function (response, status) {}
+						});
+						hideAlerts(notification);
 					}
 
 					// if it was already open, close it and remove the class. otherwise, open the popbox

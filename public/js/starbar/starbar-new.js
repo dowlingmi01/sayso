@@ -339,7 +339,7 @@ $SQ(function(){
 		
 		// set up the EIP elements
 		elemJEIP.each(function(){
-			$SQ(this).eip( "http://"+sayso.baseDomain+"/api/user/save-in-place", {
+			$SQ(this).eip( "http://"+sayso.baseDomain+"/api/user/save-in-place?renderer=jsonp", {
 				savebutton_text		: "save",
 				savebutton_class	: "sb_theme_button",
 				cancelbutton_text	: "cancel",
@@ -639,8 +639,7 @@ $SQ(function(){
 
 	function updateAlerts(reverseOrder) {
 		$SQ.ajaxWithAuth({
-			dataType: "json",
-			url : 'http://'+sayso.baseDomain+'/api/user/notification-update?starbar_id='+sayso.starbar.id,
+			url : 'http://'+sayso.baseDomain+'/api/user/notification-update?renderer=jsonp&starbar_id='+sayso.starbar.id,
 			success : function (response, status, jqXHR) {
 				var newAlerts = false;
 				if (response.data.messages.length > 0) {

@@ -1,14 +1,14 @@
 <div class="sb_column6040BG">
 	<div class="sb_column60">
 		<div class="sb_header">
-			<h2 class="sb_titlePlain">Welcome Back, <strong class="sb_theme_textHighlight"><?= $this->user->username ?></strong></h2>
+			<h2 class="sb_titlePlain">Welcome Back, <strong class="sb_theme_textHighlight"><?= $this->user->getTitle() ?></strong></h2>
 		</div><!-- .sb_header -->
 		<div class="sb_scrollPane">
 			<ul class="sb_lineList">
 				<li>
 					<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="User" width="40" class="sb_alignLeft" />
 					<p style="margin-left: 50px">
-						<strong>Username:</strong> <span id="sb_profile_username" class="sb_jeip"><?= $this->user->username ?></span><br />
+						<strong>Username:</strong> <span id="sb_profile_username" class="sb_jeip"><?= $this->user->getTitle() ?></span><br />
 						<?= $this->user_email->email ?>
 					</p>
 				</li>

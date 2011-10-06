@@ -290,7 +290,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			$SQ.ajaxWithAuth( {
 				url		: opt.save_url,
 				type	: "POST",
-				dataType: "json",
 				data	: ajax_data,
 				error : function (xhr, text, err) { window.console.log(text); },
 				success	: function( data ) {

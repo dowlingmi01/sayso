@@ -1373,3 +1373,33 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	font-size: 12px;
 	line-height: 18px;
 }
+
+/* Easy Tooltip */
+
+#sayso-starbar #sb_easyTooltip{
+	background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.22, rgb(70,70,70)),
+    color-stop(0.61, rgb(55,55,55)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(70,70,70) 22%,
+			rgb(55,55,55) 61%);
+	background-color: #303030;
+	color: #fff;
+	padding: 5px 10px;
+	z-index: 9999;
+	width: 200px;
+	border: 1px solid #333;	
+	box-shadow: 0px 0px 3px #000000;
+	-moz-box-shadow: 0px 0px 3px #000000;
+	-webkit-box-shadow: 0px 0px 3px #000000;
+}
+
+#sayso-starbar .sb_tooltip{
+	cursor: default;
+}
+
+/* // Easy Tooltip */

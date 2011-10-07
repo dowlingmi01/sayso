@@ -31,6 +31,7 @@ class Starbar_IndexController extends Api_AbstractController
             $this->view->headScript()->appendFile('/js/starbar/jquery.cookie.js');
             $this->view->headScript()->appendFile('/js/starbar/jquery.jeip.js');
             $this->view->headScript()->appendFile('/js/starbar/jquery.colorbox-min.js');
+            $this->view->headScript()->appendFile('/js/starbar/jquery.easyTooltip.js');
         }
     }
 

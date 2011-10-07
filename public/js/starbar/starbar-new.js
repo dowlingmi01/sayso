@@ -133,6 +133,7 @@ $SQ(function(){
 	var elemExternalConnect; // = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
 	var elemExternalShare; // = $SQ('#sayso-starbar #starbar-player-console .sb_externalShare, #sayso-starbar-embed .sb_externalShare');
 	var elemRewardItem; // = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem');
+	var elemTooltip; // = $SQ('#sayso-starbar .sb_Tooltip');
 
 	// initialize the starbar
 	initStarBar();
@@ -169,6 +170,7 @@ $SQ(function(){
 		elemExternalShare = $SQ('#sayso-starbar #starbar-player-console .sb_externalShare, #sayso-starbar-embed .sb_externalShare');
 		elemRewardItem = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem');
 		btnCloseColorbox = $SQ('#sayso-starbar .sb_closeColorbox');
+		elemTooltip = $SQ('#sayso-starbar .sb_tooltip');
 
 
 		// jquery edit in place
@@ -177,6 +179,11 @@ $SQ(function(){
 		elemPlayerConsole.unbind();
 		elemPlayerConsole.click(function(e) {
 		    e.stopPropagation();
+		});
+		
+		// tooltip binding
+		elemTooltip.each(function(){
+		 	$SQ(this).easyTooltip();
 		});
 
 
@@ -189,7 +196,7 @@ $SQ(function(){
 						e.preventDefault();
 					}
 				});
-			}
+			}			
 		});
 
 

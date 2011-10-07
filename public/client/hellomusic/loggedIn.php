@@ -44,7 +44,7 @@ if (!isset($_COOKIE['CHOMPUID']) || !isset($_COOKIE['MyEmail'])) {
                 and conditions before you download.</span>
                 </h4>
                 <form action="" name="" method="">
-                    <p><input type="radio" /> I agree to the <a href="">terms</a> and <a href="">conditions</a></p>
+                    <p><input type="radio" /> I agree to the <a href="SaySo_TC.pdf" target="_blank">terms and conditions</a></p>
                     <p><a id="sayso-get-app" href="" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL">GRAB IT</a></p>
                 </form>
             </div><!-- .sso_content -->

@@ -25,6 +25,9 @@
 		local: {}
 	});
 
+	// prevent SG from using or checking for cookies
+	SGCookie=function(s,B,E){return true;}
+	
 	function enableClickableRadios() {
 		// Ensure that poll.js is loaded (it's loaded at the bottom of the SG content)
 		if ((typeof SG_init_page) != 'undefined' && (typeof SGSurvey) != 'undefined') {

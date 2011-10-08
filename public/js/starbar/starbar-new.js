@@ -724,7 +724,7 @@ $SQ(function(){
 							}, {
 								local: {
 									alertMessage: function (msg) {
-										alert(msg);
+										sayso.log(msg);
 									}
 								}
 							});

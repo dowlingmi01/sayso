@@ -212,6 +212,10 @@
             jsEasyTooltip.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.easyTooltip.js';
             starbarContainer.appendChild(jsEasyTooltip);
             
+            var jsEasyXDM = document.createElement('script'); 
+            jsEasyXDM.src = 'http://' + sayso.baseDomain + '/js/starbar/easyXDM.min.js';
+            starbarContainer.appendChild(jsEasyXDM);
+            
             var url = 'http://' + sayso.baseDomain;
             
             var params = {

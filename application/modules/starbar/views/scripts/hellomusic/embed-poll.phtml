@@ -3,7 +3,7 @@
 	<span class="sb_img_loading">Loading</span>
 </div>
 <div id="sayso-starbar-external">
-	<script type="text/javascript">document.write("<scr"+"ipt type=\"text/javascript\" src=\"http://www.surveygizmo.com/s3/polljs/<?= $this->survey->external_id ?>-<?= $this->survey->external_key ?>/?cookie=&bundle_of_joy=<?= $this->bundle_of_joy ?>\"></scr"+"ipt>");</script>
+	<script type="text/javascript">document.write("<scr"+"ipt type=\"text/javascript\" src=\"http://www.surveygizmo.com/s3/polljs/<?= $this->survey->external_id ?>-<?= $this->survey->external_key ?>/?bundle_of_joy=<?= $this->bundle_of_joy ?>\"></scr"+"ipt>");</script>
 </div>
 <script type="text/javascript">
 	var loadingElement = $SQ('#sayso-starbar-loading-external');
@@ -25,9 +25,6 @@
 		local: {}
 	});
 
-	// prevent SG from using or checking for cookies
-	SGCookie=function(s,B,E){return true;}
-	
 	function enableClickableRadios() {
 		// Ensure that poll.js is loaded (it's loaded at the bottom of the SG content)
 		if ((typeof SG_init_page) != 'undefined' && (typeof SGSurvey) != 'undefined') {
@@ -56,7 +53,12 @@
 					$SQ(this).bind({
 						click: function(event){
 							$SQ(this).attr('checked', 'checked');
-							survey.Vote(domain);
+							
+							// Simulate what survey.Vote(domain) does... which is submit the vote via ajax
+							var vote=$SQ("#sg_FormFor<?= $this->survey->external_id ?>").serialize();
+							var link=["http://",domain,"/s3/polljs/<?= $this->survey->external_id ?>-<?= $this->survey->external_key ?>?_vote=",escape(vote)].join("");
+							$SQ.ajax({url:link,dataType:"jsonp"});
+							
 							$SQ.ajaxWithAuth({
 								url : "http://<?= BASE_DOMAIN ?>/api/survey/user-poll-submit?survey_id=<?= $this->survey->id ?>",
 								success : function (r, s) {}

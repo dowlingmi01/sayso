@@ -12,19 +12,6 @@
 	// Hide the container while it loads.
 	externalContentContainer.fadeTo(0,0);
 
-	easyXDM.DomHelper.requiresJSON("http://<?= BASE_DOMAIN ?>/js/starbar/json2.min.js");
-
-	var remote = new easyXDM.Rpc({
-		remote: "http://<?= BASE_DOMAIN ?>/html/communicator.html",
-		local: "http://<?= BASE_DOMAIN ?>/html/communicator.html",
-		swf: "http://<?= BASE_DOMAIN ?>/swf/easyxdm.swf",
-	}, {
-		remote: {
-			alertMessage: {}
-		},
-		local: {}
-	});
-
 	function enableClickableRadios() {
 		// Ensure that poll.js is loaded (it's loaded at the bottom of the SG content)
 		if ((typeof SG_init_page) != 'undefined' && (typeof SGSurvey) != 'undefined') {
@@ -40,6 +27,9 @@
 
 				// If we've made it this far, everything has loaded properly.
 				clearInterval(repeatUntilEmbedLoads);
+				setTimeout(function() { // add delay to frame resizing, otherwise height is calculated while elements are being rendered, causing funky behaviour
+					$SQ.remoteControl.resizeFrame(62+$SQ('.sg-question-set').totalHeight());
+				}, 200);
 
 				// Fade in the container.
 				loadingElement.fadeTo(500, 0);
@@ -64,7 +54,7 @@
 								success : function (r, s) {}
 							});
 
-							remote.alertMessage('The Starbar is aware of this poll completion!');
+							$SQ.remoteControl.alertMessage('The Starbar is aware of this poll completion!');
 
 							survey.ShowResults(domain);
 							setTimeout(function() {

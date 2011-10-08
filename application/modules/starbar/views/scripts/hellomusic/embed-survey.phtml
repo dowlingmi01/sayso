@@ -6,7 +6,7 @@
 
 <div id="starbar-survey-<?= $this->survey->id ?>" class="sb_survey_container"></div>
 <script type="text/javascript">
-	var link="http://www.surveygizmo.com/s3/<?= $this->survey->external_id ?>/<?= $this->survey->external_key ?>?bundle_of_joy=<?= $this->bundle_of_joy ?>";
+	var link="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/survey-redirect?survey_id=<?= $this->survey->id ?>";
 	var iframeContainerId = "starbar-survey-<?= $this->survey->id ?>";
 	$SQ.insertCommunicationIframe(link, iframeContainerId, 500, 290, "yes"); // Add new iframe!
 </script>

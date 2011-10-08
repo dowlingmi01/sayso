@@ -131,6 +131,22 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->_assignShareInfoToView($shareLink, $shareText, $facebookCallbackUrl);
 	}
 
+    public function surveyRedirectAction ()
+    {
+    	// this page is fetched via an iframe, not ajax;
+    	$this->_usingJsonPRenderer = false;
+
+		$request = $this->getRequest();
+		$surveyId = $request->getParam('survey_id');
+		if ($surveyId) {
+			$survey = new Survey();
+			$survey->loadData($surveyId);
+
+			$bundleOfJoy = $this->_getBundleOfJoy($survey->id);
+			$this->_redirect("http://www.surveygizmo.com/s3/".$survey->external_id."/".$survey->external_key."?bundle_of_joy=".$bundleOfJoy);
+		}
+	}
+
     // Fetches polls for the current user for display
     public function pollsAction ()
     {

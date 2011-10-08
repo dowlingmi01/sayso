@@ -1,7 +1,10 @@
+<?= $this->partial('remote/init-remote.phtml'); ?>
 <script type="text/javascript">
 	setTimeout(function() {
 		$SQ('#sb-survey-completed').fadeIn(500)
 	}, 500);
+
+	$SQ.remoteControl.alertMessage('The Starbar is aware of this survey completion!');
 
 	$SQ.getScript("http://platform.twitter.com/widgets.js", function(){
 		function handleTweetEvent(event){
@@ -13,7 +16,7 @@
 	});
 </script>
 <div id="sayso-starbar-embed">
-	Thank you for completing <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong><br /><br />
+	Thank you for completing the <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong> survey!<br /><br />
 	<div id="sb-survey-completed">
 		<? if ($this->survey->premium) { ?>
 			<p>Excellent! You earned <strong class="sb_theme_textHighlight_alt">250 Notes</strong> &amp;  <strong class="sb_theme_textHighlight_alt">1000 Chops</strong></p>

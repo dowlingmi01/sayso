@@ -1,7 +1,10 @@
+<?= $this->partial('remote/init-remote.phtml'); ?>
 <script type="text/javascript">
 	setTimeout(function() {
 		$SQ('#sb-survey-disqualified').fadeIn(500)
 	}, 500);
+
+	$SQ.remoteControl.alertMessage('The Starbar is aware of this survey disqualification!');
 
 	$SQ.getScript("http://platform.twitter.com/widgets.js", function(){
 		function handleTweetEvent(event){
@@ -13,7 +16,7 @@
 	});
 </script>
 <div id="sayso-starbar-embed">
-	Sorry, it appears that you do not qualify for <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong>. Don't worry, we'll still give you the notes and chops for trying!<br /><br />
+	Sorry, it appears that you do not qualify for the <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong> survey. Don't worry, we'll still give you the notes and chops for trying!<br /><br />
 	<div id="sb-survey-disqualified">
 		<? if ($this->survey->premium) { ?>
 			<p>You earned <strong class="sb_theme_textHighlight_alt">4 Notes</strong> &amp;  <strong class="sb_theme_textHighlight_alt">1000 Chops</strong></p>

@@ -72,3 +72,74 @@ $SQ.ajaxWithAuth = function (options) {
 	});
 })($SQ);
 
+$SQ.frameCommunicationFunctions = {
+	loadComplete: function (hideLoadingElem, newFrameHeight) {
+		var openFrame = sayso.starbar.openFrame;
+		var openFrameContainer = sayso.starbar.openFrameContainer;
+		var openFrameContainerParent = sayso.starbar.openFrameContainer.parent();
+
+		if (hideLoadingElem) {
+			var loadingElement = openFrameContainer.children('.sayso-starbar-loading-external');
+			loadingElement.fadeTo(200, 0);
+			// Set display to none to avoid mouse click issues
+			setTimeout(function() {
+				// Note that setTimeout works in global scope
+				sayso.starbar.openFrameContainer.children('.sayso-starbar-loading-external').css('display', 'none');
+			}, 200);
+		}
+		
+		if (newFrameHeight) {
+			openFrame.height(newFrameHeight);
+			openFrameContainerParent.css('height', newFrameHeight+5);
+
+			// if the frame (and container and its parent) are in a scrollpane, re-initialize it and scroll if necessary
+		    var scrollPane = openFrameContainerParent.parents('.sb_scrollPane');
+		    if (scrollPane.length > 0) {
+			    scrollPane.jScrollPane(); // re-initialize the scroll pane now that the content size may be different
+			    if (openFrameContainerParent.position()) {  // if the accordion is open
+					var paneHandle = scrollPane.data('jsp');
+
+					var accordionHeader = openFrameContainerParent.prev('h3');
+			        var currentScroll = paneHandle.getContentPositionY();
+			        var topOfOpenAccordion = accordionHeader.position().top;
+			        var bottomOfOpenAccordion = topOfOpenAccordion+accordionHeader.totalHeight()+openFrameContainerParent.totalHeight();
+			        var sizeOfPane = scrollPane.height();
+
+			        if ((bottomOfOpenAccordion - currentScroll) > (sizeOfPane - 10)) { // - 24 for the extra padding
+			            paneHandle.scrollByY((bottomOfOpenAccordion - currentScroll) - (sizeOfPane - 10)); // scroll by the difference
+					}
+				}
+			}
+		}
+	},
+	alertMessage: function (msg) {
+		sayso.log(msg);
+	}
+};
+
+$SQ.insertCommunicationIframe = function(link, container, width, height, scrolling) {
+	// This function inserts the iframe (with x-domain communication enabled!)
+	// The id of the container is placed inside the 'ref' attribute at the top of the accordion
+	new easyXDM.Rpc({
+		local: "http://"+sayso.baseDomain+"/html/communicator.html",
+		swf: "http://"+sayso.baseDomain+"/swf/easyxdm.swf",
+		remote: link,
+		remoteHelper: "http://"+sayso.baseDomain+"/html/communicator.html",
+        container: container,
+        props: {
+			scrolling: scrolling,
+			style: {
+				height: parseInt(height)+"px",
+				width: parseInt(width)+"px",
+				margin: 0,
+				border: 0
+			}
+		},
+	}, {
+		// Local functions (i.e. remote procedure calls arrive here)
+		local: $SQ.frameCommunicationFunctions
+	});
+
+	sayso.starbar.openFrameContainer = $SQ('#'+container);
+	sayso.starbar.openFrame = sayso.starbar.openFrameContainer.children('iframe');
+}

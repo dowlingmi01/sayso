@@ -706,52 +706,9 @@ $SQ(function(){
 								link += "&";
 							link += "user_id="+window.sayso.starbar.user.id+"&user_key="+window.sayso.starbar.user.key+"&auth_key="+window.sayso.starbar.authKey;
 
-							// This function inserts the iframe (with x-domain communication enabled!)
-							// The id of the container is placed inside the 'ref' attribute at the top of the accordion
-							new easyXDM.Rpc({
-								local: "http://<?= BASE_DOMAIN ?>/html/communicator.html",
-								swf: "http://"+sayso.baseDomain+"/swf/easyxdm.swf",
-								remote: link,
-								remoteHelper: "http://<?= BASE_DOMAIN ?>/html/communicator.html",
-                				container: activeLink.attr('rel'),
-                				props: {
-				                    scrolling: "no",
-				                    style: {
-				                        height: parseInt(activeLink.attr('iframeHeight'))+"px",
-				                        width: "470px",
-				                        margin: 0,
-				                        border: 0
-				                    }
-				                },
-							}, {
-								// Local functions (i.e. remote procedure calls arrive here)
-								local: {
-									resizeFrame: function (height) {
-										frame = $SQ('iframe', ui.newContent);
-										frame.height(height);
-										ui.newContent.css('height', height+5);
-
-                    					var scrollPane = ui.newHeader.parents('.sb_scrollPane');
-                    					scrollPane.jScrollPane(); // re-initialize the scroll pane now that the content size may be different
-                    					if (ui.newHeader.position()) {  // if the accordion is open
-											var paneHandle = scrollPane.data('jsp');
-
-                    						var currentScroll = paneHandle.getContentPositionY();
-                    						var topOfOpenAccordion = ui.newHeader.position().top;
-                    						var bottomOfOpenAccordion = topOfOpenAccordion+ui.newHeader.totalHeight()+ui.newContent.totalHeight();
-                    						var sizeOfPane = scrollPane.height();
-
-                    						if ((bottomOfOpenAccordion - currentScroll) > (sizeOfPane - 10)) { // - 24 for the extra padding
-                    							paneHandle.scrollByY((bottomOfOpenAccordion - currentScroll) - (sizeOfPane - 10)); // scroll by the difference
-											}
-										}
-									
-									},
-									alertMessage: function (msg) {
-										sayso.log(msg);
-									}
-								}
-							});
+							// The container for the new iFrame is in the link's 'ref' attribute
+							var iFrameContainerId = activeLink.attr('rel');
+							$SQ.insertCommunicationIframe(link, iFrameContainerId, 470, parseInt(activeLink.attr('iframeHeight')), "no");
 							
 							activeLink.attr('loaded', 'true');
 						}

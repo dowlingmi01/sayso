@@ -1331,14 +1331,16 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 
 /* Embed Poll */
 
-#sayso-starbar-loading-external {
+.sayso-starbar-loading-external {
 	float: left;
 	position: absolute;
-	width: 100%;
-	height: 100%;
+	width: 97%;
+	height: 95%;
 	text-align: center;
 	font-size: 150%;
 	font-weight: bold;
+	margin: 0;
+	padding: 0;
 }
 #sayso-starbar-embed #sb-survey-completed, #sayso-starbar-embed #sb-survey-disqualified {
 	display: none;

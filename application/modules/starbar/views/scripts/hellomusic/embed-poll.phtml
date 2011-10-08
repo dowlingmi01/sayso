@@ -1,17 +1,8 @@
 <?= $this->partial('remote/init-remote.phtml'); ?>
-<div id="sayso-starbar-loading-external">
-	<span class="sb_img_loading">Loading</span>
-</div>
 <div id="sayso-starbar-external">
 	<script type="text/javascript">document.write("<scr"+"ipt type=\"text/javascript\" src=\"http://www.surveygizmo.com/s3/polljs/<?= $this->survey->external_id ?>-<?= $this->survey->external_key ?>/?bundle_of_joy=<?= $this->bundle_of_joy ?>\"></scr"+"ipt>");</script>
 </div>
 <script type="text/javascript">
-	var loadingElement = $SQ('#sayso-starbar-loading-external');
-	var externalContentContainer = $SQ('#sayso-starbar-external');
-
-	// Hide the container while it loads.
-	externalContentContainer.fadeTo(0,0);
-
 	function enableClickableRadios() {
 		// Ensure that poll.js is loaded (it's loaded at the bottom of the SG content)
 		if ((typeof SG_init_page) != 'undefined' && (typeof SGSurvey) != 'undefined') {
@@ -28,14 +19,8 @@
 				// If we've made it this far, everything has loaded properly.
 				clearInterval(repeatUntilEmbedLoads);
 				setTimeout(function() { // add delay to frame resizing, otherwise height is calculated while elements are being rendered, causing funky behaviour
-					$SQ.remoteControl.resizeFrame(62+$SQ('.sg-question-set').totalHeight());
+					$SQ.remoteControl.loadComplete(true, 62+$SQ('.sg-question-set').totalHeight());
 				}, 200);
-
-				// Fade in the container.
-				loadingElement.fadeTo(500, 0);
-				externalContentContainer.fadeTo(500, 1);
-				// Set display to none to avoid mouse click issues
-				setTimeout(function() {loadingElement.css('display', 'none');}, 500);
 
 				// Make the radio buttons clickable
 				var elemRadios = $SQ('input:radio');

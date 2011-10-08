@@ -2,80 +2,12 @@
  * Starbar
  */
 
-$SQ.ajaxWithAuth = function (options) {
-    var starbar_id = null;
-    var auth_key = null;
-    var user_id = null;
-    var user_key = null;
-
-    sayso = window.sayso;
-    
-    // Authenticated?
-    try
-    {
-        starbar_id = sayso.starbar.id;
-        user_id = sayso.starbar.user.id;
-        user_key = sayso.starbar.user.key;
-        auth_key = sayso.starbar.authKey;
-    }
-    catch (e) {}
-    
-    if (typeof sayso == "undefined") {
-    // setup global "safe" logging functions
-    window.sayso.log = _log('log'); 
-    window.sayso.warn = _log('warn');
-    function _log (type) { // <-- closure here allows re-use for log() and warn()
-        return function () {
-            if (window.sayso.debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
-                var args = Array.prototype.slice.call(arguments);
-                if (typeof console.log.apply === 'function') {
-                    args.unshift('SaySo:');
-                    window.console[type].apply(window.console, args);
-                } else {
-                    // must be IE
-                    if (typeof args[0] !== 'object') {
-                        window.console.log(args[0]);
-                    }
-                }
-            }
-        }
-    };
-    
-    var sayso = window.sayso;
-	}
-    
-    options.data = $SQ.extend(options.data || {}, {
-        starbar_id : starbar_id,
-        user_id : user_id,
-        user_key : user_key,
-        auth_key : auth_key
-    });
-
-    if (!options.dataType)
-    	options.dataType = 'jsonp';
-
-	options.beforeSend = function(x) {
-		if (x && x.overrideMimeType) {
-			x.overrideMimeType("application/j-son;charset=UTF-8");
-		}
-	};
-    return $SQ.ajax(options);
-};
-
 $SQ(function(){
 
-    try
-    {
-    	sayso = window.sayso; // should work for starbar itself
-	}
-	catch (e) {}
+    sayso = window.sayso; // should work for starbar itself
     
-    try
-    {
-    	sayso = parent.window.sayso; // should work in popups (ones opened with window.open)
-	}
-	catch (e) {}
-    
+    easyXDM.DomHelper.requiresJSON("http://"+sayso.baseDomain+"/js/starbar/json2.min.js");
+
 	// global var
     var themeColor = '#de40b2';
 
@@ -752,7 +684,7 @@ $SQ(function(){
                     // find the link that caused the accordian to open, take the href, and set the src of the inner iframe to it
                     changestart: function(event, ui){
                         var activeLink = ui.newHeader.find('a');
-                        var activeIframe = ui.newContent.find('iframe');
+                        var frameHeight = parseInt(activeLink.attr('iframeHeight'));
                         var activeFooter = ui.newContent.find('.sb_nextPoll');
                         var link = "";
 
@@ -762,9 +694,9 @@ $SQ(function(){
 						}
 						
 						// Load the iframe if not already loaded
-                        if (activeIframe && activeLink && activeIframe.attr('src') != activeLink.attr('href')) {
+                        if (activeLink.length > 0 && activeLink.attr('loaded') != "true") {
 							// The iframe's height is calculated and set by the controller, use it to set the size of the accordion
-							ui.newContent.css('height', activeIframe.height()+5);
+							ui.newContent.css('height', frameHeight+5);
 
                         	// Add the authentication info to the request
 							link = activeLink.attr('href');
@@ -773,8 +705,32 @@ $SQ(function(){
 							else
 								link += "&";
 							link += "user_id="+window.sayso.starbar.user.id+"&user_key="+window.sayso.starbar.user.key+"&auth_key="+window.sayso.starbar.authKey;
-                            activeIframe.attr('src', link);
-                        }
+
+							new easyXDM.Rpc({
+								local: "http://<?= BASE_DOMAIN ?>/html/communicator.html",
+								swf: "http://"+sayso.baseDomain+"/swf/easyxdm.swf",
+								remote: link,
+								remoteHelper: "http://<?= BASE_DOMAIN ?>/html/communicator.html",
+                				container: activeLink.attr('rel'),
+                				props: {
+				                    scrolling: "no",
+				                    style: {
+				                        height: parseInt(activeLink.attr('iframeHeight'))+"px",
+				                        width: "470px",
+				                        margin: 0,
+				                        border: 0
+				                    }
+				                },
+							}, {
+								local: {
+									alertMessage: function (msg) {
+										alert(msg);
+									}
+								}
+							});
+							
+							activeLink.attr('loaded', 'true');
+						}
 
                         // Fade in the footer
                         if (activeFooter){
@@ -841,20 +797,6 @@ $SQ(function(){
         var app = KOBJ.get_application(window.sayso.starbar.kynetxAppId);
         app.raise_event('refresh_state');
     }
-
-    (function($$SQ){
-		$$SQ.fn.extend({
-			totalHeight: function() {
-				return (
-					this.height() +
-					eval(this.css('margin-top').replace('px','')) +
-					eval(this.css('margin-bottom').replace('px','')) +
-					eval(this.css('padding-top').replace('px','')) +
-					eval(this.css('padding-bottom').replace('px',''))
-				);
-			}
-		});
-	})($SQ);
 
     // http://www.thefutureoftheweb.com/blog/detect-browser-window-focus
     // I augmented this to include honoring existing focus events

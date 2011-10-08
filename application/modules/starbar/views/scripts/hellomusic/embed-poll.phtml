@@ -12,6 +12,19 @@
 	// Hide the container while it loads.
 	externalContentContainer.fadeTo(0,0);
 
+	easyXDM.DomHelper.requiresJSON("http://<?= BASE_DOMAIN ?>/js/starbar/json2.min.js");
+
+	var remote = new easyXDM.Rpc({
+		remote: "http://<?= BASE_DOMAIN ?>/html/communicator.html",
+		local: "http://<?= BASE_DOMAIN ?>/html/communicator.html",
+		swf: "http://<?= BASE_DOMAIN ?>/swf/easyxdm.swf",
+	}, {
+		remote: {
+			alertMessage: {}
+		},
+		local: {}
+	});
+
 	function enableClickableRadios() {
 		// Ensure that poll.js is loaded (it's loaded at the bottom of the SG content)
 		if ((typeof SG_init_page) != 'undefined' && (typeof SGSurvey) != 'undefined') {
@@ -45,9 +58,12 @@
 								url : "http://<?= BASE_DOMAIN ?>/api/survey/user-poll-submit?survey_id=<?= $this->survey->id ?>",
 								success : function (r, s) {}
 							});
+
+							remote.alertMessage('The Starbar is aware of this poll completion!');
+
 							survey.ShowResults(domain);
 							setTimeout(function() {
-								$SQ('#sb-survey-completed').fadeIn(500)
+								$SQ('#sb-survey-completed').fadeIn(500);
 							}, 500);
 						}
 					});

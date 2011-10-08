@@ -289,10 +289,15 @@
                             // finally, inject the HTML!
                             $SQ('#sayso-starbar').append(starbar._html);
                             
-                            // load SaySo Javascript (which depends on the above data settings)
+                            // load Starbar Javascript (which depends on the above data settings)
                             var jsStarbar = document.createElement('script'); 
                             jsStarbar.src = 'http://' + sayso.baseDomain + '/js/starbar/starbar-new.js';
                             starbarContainer.appendChild(jsStarbar);
+                            
+                            // load SaySo Shared Javascript (which depends on the above data settings)
+                            var jsSaysoShared = document.createElement('script'); 
+                            jsSaysoShared.src = 'http://' + sayso.baseDomain + '/js/starbar/sayso-shared.js';
+                            starbarContainer.appendChild(jsSaysoShared);
                             
                             var starbarJsTimer = new jsLoadTimer();
                             starbarJsTimer.start('window.sayso.starbar.loaded', function () {

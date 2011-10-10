@@ -356,7 +356,8 @@ class Starbar_ContentController extends Api_GlobalController
     
     public function facebookPostResultAction ()
     {
-        $this->_validateRequiredParameters(array('post_id', 'shared_type'));
+        // @todo re-enable this validation as necessary and remove the if() condition below
+        //$this->_validateRequiredParameters(array('post_id', 'shared_type'));
     	// this page is fetched in an iframe, not ajax
     	$this->_usingJsonPRenderer = false;
 

@@ -17,7 +17,7 @@ class Bootstrap extends App_Bootstrap
         Record::$defaultModifiedColumn = 'modified';
         Api_UserSession::setup('User', '', 'Gamer');
         
-        Game_Abstract::$_disabled = true;
+        Game_Abstract::$_enabled = false;
         
         // API logging will be necessary since requests
         // are coming from mobile, it's hard to see what's going on
@@ -74,7 +74,7 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
             // Protect our sessions from garbage collection.
             // We want our user sessions to be permanent.
             // Only destroy sessions if the user changes on the client
-            ini_set('session.save_path', CACHE_PATH . '/session');
+            ini_set('session.save_path', realpath(APPLICATION_PATH . '/../session'));
             ini_set('session.gc_probability', 0); // no garbage collection please
             ini_set('session.gc_maxlifetime', 7700000); // aprox. 3 months 
         }

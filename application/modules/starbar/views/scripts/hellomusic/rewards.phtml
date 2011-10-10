@@ -22,7 +22,7 @@
 					<div class="sb_progressBar"><span class="sb_progressBarPercent">40</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 2000</span></div>
 				</div><!-- .user-points-box -->
         <p class="sb_reward_levelReq"><span>Level Requirement</span></p>
-        <a href="" class="sb_theme_button sb_theme_button_grey">Redeem</a>
+        <span class="sb_theme_button sb_theme_button_grey">Redeem</span>
       </div><!-- .sb_rewardBase -->
     </div><!-- .sb_rewardItem -->
         
@@ -38,7 +38,7 @@
 					<div class="sb_progressBar"><span class="sb_progressBarPercent">100</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 1000</span></div>
 				</div><!-- .user-points-box -->
         <p class="sb_reward_levelReq"></p>
-        <a href="" class="sb_theme_button">Redeem</a>
+        <span class="sb_theme_button">Redeem</span>
       </div><!-- .sb_rewardBase -->
     </div><!-- .sb_rewardItem -->
     
@@ -58,7 +58,7 @@
 					<div class="sb_progressBar"><span class="sb_progressBarPercent">40</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 2000</span></div>
 				</div><!-- .user-points-box -->
         <p class="sb_reward_levelReq"><span>Level Requirement</span></p>
-        <a href="" class="sb_theme_button sb_theme_button_grey">Redeem</a>
+        <span class="sb_theme_button sb_theme_button_grey">Redeem</span>
       </div><!-- .sb_rewardBase -->
     </div><!-- .sb_rewardItem -->    
     
@@ -74,7 +74,7 @@
 					<div class="sb_progressBar"><span class="sb_progressBarPercent">100</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 1000</span></div>
 				</div><!-- .user-points-box -->        
         <p class="sb_reward_levelReq"></p>
-        <a href="" class="sb_theme_button">Redeem</a>
+        <span class="sb_theme_button">Redeem</span>
       </div><!-- .sb_rewardBase -->
     </div><!-- .sb_rewardItem -->
     
@@ -84,7 +84,7 @@
 <div style="display:none">
   <div id="sb_rewardsOverlay">
   	<div class="sb_rewardItem">
-      
+      <div id="sb_reward_step1" class="sb_reward_step">
 			<!-- BEGIN LANDING -->
       <div class="sb_rewardHeader">
         $25 Ticketmaster Gift Certificate
@@ -98,118 +98,152 @@
 					<div class="sb_progressBar"><span class="sb_progressBarPercent">100</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 2000</span></div>
 				</div><!-- .user-points-box -->
         <p>Redeem your Notes for a entry Token into the Week One Giveaway - xxx prize. The more tokens you purchase the better your chance of winning.</p>
-        <a href="#" class="sb_theme_button sb_theme_button_grey">Redeem</a>
+        <span class="sb_theme_button">Redeem</span>
       </div><!-- .sb_rewardBase -->
 			<!-- END LANDING -->
+      </div><!-- #sb_reward_step1 -->
+      
+     	<div id="sb_reward_step2" class="sb_reward_step">
+      	<!-- BEGIN SHIPPING ADDRESS CONFIRM -->
+        <div class="sb_rewardHeader">
+          $25 Ticketmaster Gift Certificate
+        </div><!-- .sb_rewardHeader -->  	
+        <div class="sb_rewardImg">
+          <img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_reward_lg.jpg" height="85" alt="Reward" />
+        </div><!-- .sb_rewardImg -->
+        <div class="sb_rewardOrder">
+          <div class="sb_column_5050BG">
+            <div class="sb_column50">
+              Current Balance
+              <div class="sb_user-points-box">					
+                <div class="sb_progressBar"><span class="sb_progressBarPercent">100</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 2000</span></div>
+              </div><!-- .user-points-box -->
+            </div><!-- .sb_column50 -->
+            <div class="sb_column50">
+              Ending Balance
+              <div class="sb_user-points-box">					
+                <div class="sb_progressBar"><span class="sb_progressBarPercent">50</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 1000</span></div>
+              </div><!-- .user-points-box -->
+            </div><!-- .sb_column50 -->
+          </div><!-- .column_5050BG -->
+          <p><strong>Shipping Address: </strong></p> 
+          <p><span id="sb_reward_name" class="sb_jeip">Jane wynter</span><br />
+          <span id="sb_reward_address" class="sb_jeip">121 Simpson Ave</span><br />
+          <span id="sb_reward_address2" class="sb_jeip">Suite 201</span><br />
+          <span id="sb_reward_city" class="sb_jeip">Boston</span>, <span id="sb_reward_state" class="sb_jeip">MA</span> <span id="sb_reward_zip" class="sb_jeip">01720</span></p>
+          <p align="center">My information is correct<br clear="all" />
+          <span class="sb_theme_button">Place Order</span></p>
+        </div><!-- .sb_rewardOrder -->
+        <!-- END SHIPPING ADDRESS CONFIRM -->
+      </div><!-- #sb_reward_step2 -->
+      
+     	<div id="sb_reward_step3" class="sb_reward_step">
+      	<!-- ORDER COMPLETE - SHIPPING -->
+        <div class="sb_rewardHeader">
+          <h2>Order Complete!</h2>
+          $25 Ticketmaster Gift Certificate
+        </div><!-- .sb_rewardHeader -->  	
+        <div class="sb_rewardImg">
+          <img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_reward_lg.jpg" height="85" alt="Reward" />
+        </div><!-- .sb_rewardImg -->
+        <div class="sb_rewardOrder">
+          <p align="center"><strong><small>Your order will arrive via USPS in 2-4 weeks</small></strong></p>
+          <p><strong>Shipping Address:</strong></p> 
+          <p>Jane wynter<br />
+          121 Simpson Ave<br />
+          Suite 201<br />
+          Boston, MA 01720</p>
+          <br clear="all" />
+          <p align="center"><span class="sb_theme_button sb_closeColorbox">Back to Rewards Center</span></p>
+        </div><!-- .sb_rewardOrder -->
+        <!-- END ORDER COMPLETE - SHIPPING -->
+      </div><!-- #sb_reward_step3 -->
 			<?php
 			/*
-      <!-- BEGIN SHIPPING ADDRESS CONFIRM -->
-      <div class="sb_rewardHeader">
-        $25 Ticketmaster Gift Certificate
-      </div><!-- .sb_rewardHeader -->  	
-      <div class="sb_rewardImg">
-        <img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_reward_lg.jpg" height="85" alt="Reward" />
-      </div><!-- .sb_rewardImg -->
-      <div class="sb_rewardOrder">
-      	<div class="sb_column_5050BG">
-        	<div class="sb_column50">
-          	Current Balance
-            <div class="sb_user-points-box">					
-              <div class="sb_progressBar"><span class="sb_progressBarPercent">100</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 2000</span></div>
-            </div><!-- .user-points-box -->
-          </div><!-- .sb_column50 -->
-          <div class="sb_column50">
-          	Ending Balance
-            <div class="sb_user-points-box">					
-              <div class="sb_progressBar"><span class="sb_progressBarPercent">50</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 1000</span></div>
-            </div><!-- .user-points-box -->
-          </div><!-- .sb_column50 -->
-        </div><!-- .column_5050BG -->
-        <p><strong>Shipping Address: </strong></p> 
-        <p><span id="sb_reward_name" class="sb_jeip">Jane wynter</span><br />
-        <span id="sb_reward_address" class="sb_jeip">121 Simpson Ave</span><br />
-        <span id="sb_reward_address2" class="sb_jeip">Suite 201</span><br />
-        <span id="sb_reward_city" class="sb_jeip">Boston</span>, <span id="sb_reward_state" class="sb_jeip">MA</span> <span id="sb_reward_zip" class="sb_jeip">01720</span></p>
-        <p align="center">My information is correct<br clear="all" />
-        <a href="" class="sb_theme_button">Place Order</a></p>
-      </div><!-- .sb_rewardOrder -->
-      <!-- END SHIPPING ADDRESS CONFIRM -->
+      
+			<div id="sb_reward_step2" class="sb_reward_step">
+				<!-- BEGIN NO-SHIPPING / ORDER QUANTITY -->
+				<div class="sb_rewardHeader">
+					$25 Ticketmaster Gift Certificate
+				</div><!-- .sb_rewardHeader -->  	
+				<div class="sb_rewardImg">
+					<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_reward_lg.jpg" height="85" alt="Reward" />
+				</div><!-- .sb_rewardImg -->
+				<div class="sb_rewardOrder">
+					<div class="sb_column_5050BG">
+						<div class="sb_column50">
+							Current Balance
+							<div class="sb_user-points-box">					
+								<div class="sb_progressBar"><span class="sb_progressBarPercent">100</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 2000</span></div>
+							</div><!-- .user-points-box -->
+						</div><!-- .sb_column50 -->
+						<div class="sb_column50">
+							Ending Balance
+							<div class="sb_user-points-box">					
+								<div class="sb_progressBar"><span class="sb_progressBarPercent">50</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 1000</span></div>
+							</div><!-- .user-points-box -->
+						</div><!-- .sb_column50 -->
+					</div><!-- .column_5050BG -->
+					<p><strong>Choose Quantity:</strong></p> 
+					<p>
+					<select>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+					</select>
+					</p>
+					<p>Tokens will appear in your account and you will be automatically entered into the Week One giveaway</p>
+					<p align="center">My information is correct<br clear="all" />
+					<a href="" class="sb_theme_button">Place Order</a></p>
+				</div><!-- .sb_rewardOrder -->
+				<!-- END NO-SHIPPING / ORDER QUANTITY -->      
+      </div><!-- #sb_reward_step2 -->
 			
-      <!-- BEGIN NO-SHIPPING / ORDER QUANTITY -->
-      <div class="sb_rewardHeader">
-        $25 Ticketmaster Gift Certificate
-      </div><!-- .sb_rewardHeader -->  	
-      <div class="sb_rewardImg">
-        <img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_reward_lg.jpg" height="85" alt="Reward" />
-      </div><!-- .sb_rewardImg -->
-      <div class="sb_rewardOrder">
-      	<div class="sb_column_5050BG">
-        	<div class="sb_column50">
-          	Current Balance
-            <div class="sb_user-points-box">					
-              <div class="sb_progressBar"><span class="sb_progressBarPercent">100</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 2000</span></div>
-            </div><!-- .user-points-box -->
-          </div><!-- .sb_column50 -->
-          <div class="sb_column50">
-          	Ending Balance
-            <div class="sb_user-points-box">					
-              <div class="sb_progressBar"><span class="sb_progressBarPercent">50</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 1000</span></div>
-            </div><!-- .user-points-box -->
-          </div><!-- .sb_column50 -->
-        </div><!-- .column_5050BG -->
-        <p><strong>Choose Quantity:</strong></p> 
-        <p>
-        <select>
-        	<option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select>
-        </p>
-        <p>Tokens will appear in your account and you will be automatically entered into the Week One giveaway</p>
-        <p align="center">My information is correct<br clear="all" />
-        <a href="" class="sb_theme_button">Place Order</a></p>
-      </div><!-- .sb_rewardOrder -->
-      <!-- END NO-SHIPPING / ORDER QUANTITY -->
-      
-      <!-- ORDER COMPLETE - SHIPPING -->
-      <div class="sb_rewardHeader">
-      	<h2>Order Complete!</h2>
-        $25 Ticketmaster Gift Certificate
-      </div><!-- .sb_rewardHeader -->  	
-      <div class="sb_rewardImg">
-        <img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_reward_lg.jpg" height="85" alt="Reward" />
-      </div><!-- .sb_rewardImg -->
-      <div class="sb_rewardOrder">
-      	<p align="center"><strong><small>Your order will arrive via USPS in 2-4 weeks</small></strong></p>
-        <p><strong>Shipping Address:</strong></p> 
-        <p>Jane wynter<br />
-        121 Simpson Ave<br />
-        Suite 201<br />
-       	Boston, MA 01720</p>
-        <br clear="all" />
-        <p align="center"><a href="#" class="sb_theme_button sb_closeColorbox">Back to Rewards Center</a></p>
-      </div><!-- .sb_rewardOrder -->
-      <!-- END ORDER COMPLETE - SHIPPING -->
-      
-      <!-- ORDER COMPLETE - NO SHIPPING -->
-      <div class="sb_rewardHeader">
-      	<h2>Order Complete!</h2>
-        $25 Ticketmaster Gift Certificate
-      </div><!-- .sb_rewardHeader -->  	
-      <div class="sb_rewardImg">
-        <img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_reward_lg.jpg" height="85" alt="Reward" />
-      </div><!-- .sb_rewardImg -->
-      <div class="sb_rewardOrder">
-      	<p align="center"><strong><small>The giveaway will be drawn on Nov. 21, 2011</small></strong></p>
-        <p>Remember, you can enter as many times as you want and increase your likelihood of winning.</p>
-        <br clear="all" />
-        <p align="center"><a href="#" class="sb_theme_button sb_closeColorbox">Back to Rewards Center</a></p>
-      </div><!-- .sb_rewardOrder -->
-      <!-- END ORDER COMPLETE - NO SHIPPING -->
+			<div id="sb_reward_step3" class="sb_reward_step">
+				<!-- ORDER COMPLETE - NO SHIPPING -->
+				<div class="sb_rewardHeader">
+					<h2>Order Complete!</h2>
+					$25 Ticketmaster Gift Certificate
+				</div><!-- .sb_rewardHeader -->  	
+				<div class="sb_rewardImg">
+					<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_reward_lg.jpg" height="85" alt="Reward" />
+				</div><!-- .sb_rewardImg -->
+				<div class="sb_rewardOrder">
+					<p align="center"><strong><small>The giveaway will be drawn on Nov. 21, 2011</small></strong></p>
+					<p>Remember, you can enter as many times as you want and increase your likelihood of winning.</p>
+					<br clear="all" />
+					<p align="center"><a href="#" class="sb_theme_button sb_closeColorbox">Back to Rewards Center</a></p>
+				</div><!-- .sb_rewardOrder -->
+				<!-- END ORDER COMPLETE - NO SHIPPING -->			
+      </div><!-- #sb_reward_step3 -->
 			*/
 			?>
     </div><!-- .sb_rewardItem -->
   </div><!-- #sb_rewardsOverlay -->
 </div>
+<script language="javascript">
+$SQ(function(){
+	var rewardStep = $SQ('#sayso-starbar #sb_rewardsOverlay .sb_reward_step');
+	var rewardOverlay = $SQ('#sayso-starbar #sb_rewardsOverlay');
+	var rewardBtnRedeem = $SQ('#sayso-starbar #sb_rewardsOverlay .sb_theme_button');
+	
+	rewardStep.each(function(){
+		$SQ(this).hide();	
+	});
+	
+	$SQ(rewardOverlay + '.sb_reward_step:first').show();
+	
+	
+	rewardBtnRedeem.each(function(){
+		$SQ(this).click(function(e){
+			var currentBox = $SQ(this).parents('.sb_reward_step');
+			var nextBox = $SQ(this).parents('.sb_reward_step').next();
+			nextBox.show();
+			currentBox.replaceWith(nextBox);
+		});
+	});
+	
+});
+</script>

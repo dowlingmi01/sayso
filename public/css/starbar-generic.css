@@ -1150,6 +1150,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	position: relative;
 	border: none;
 	text-decoration: none !important;
+	cursor: pointer;
 }
 
 #sayso-starbar #starbar-player-console input.sb_theme_button{

@@ -1,4 +1,4 @@
-<?= $this->partial('remote/init-remote.phtml'); ?>
+<?= $this->partial('remote/init-remote.phtml', null, array('starbar' => $this->starbar)); ?>
 <script type="text/javascript">
 	setTimeout(function() {
 		$SQ('#sb-survey-completed').fadeIn(500)

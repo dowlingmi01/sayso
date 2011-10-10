@@ -25,6 +25,8 @@ class Starbar_ContentController extends Api_GlobalController
             $this->view->headScript()->appendFile('/js/starbar/jquery.cookie.js');
             $this->view->headScript()->appendFile('/js/starbar/jquery.jeip.js');
         	$this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
+        	// For init-remote.phtml
+			$this->_assignStarbarToView();
 		}
 	}
 
@@ -415,5 +417,24 @@ class Starbar_ContentController extends Api_GlobalController
 			$this->view->assign('facebook_share_caption', $facebookShareCaption);
 			$this->view->assign('twitter_share_text', $twitterShareText);
 		}
+	}
+	
+	protected function _assignStarbarToView()
+	{
+		$request = $this->getRequest();
+		$starbar = new Starbar();
+
+		$authKey = $request->getParam('auth_key');
+
+		if ($authKey) {
+			$starbar->loadDataByUniqueFields(array('auth_key' => $authKey));
+		}
+		
+		if (!$starbar->id) {
+			exit;
+			// @todo No starbar, should exit?
+		}
+
+		$this->view->assign('starbar', $starbar);
 	}
 }

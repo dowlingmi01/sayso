@@ -43,27 +43,11 @@ class Starbar_HellomusicController extends Starbar_ContentController
 		} else {
 			$this->view->assign('deals', $xml);
 			
+			// award the user
+		    $this->_getGame()->viewPromos();
+			
 			$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared=deal&shared_id=THE_DEAL_ID&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
 			$this->_assignShareInfoToView(null, null, $facebookCallbackUrl);
 		}
     }
-    
-    public function facebookPostResultAction ()
-    {
-    	// this page is fetched in an iframe, not ajax
-    	$this->_usingJsonPRenderer = false;
-
-		$request = $this->getRequest();
-
-        $success = false;
-
-		/* Facebook wall post successful */
-		if ($request->getParam('post_id')) {
-			$success = true;
-			// @todo Reward user here based on $request->getParam('shared') (e.g. poll, survey, daily-deal, etc.) and $request->getParam('shared_id')
-		}
-
-		$this->view->assign('success', $success);
-	}
-
 }

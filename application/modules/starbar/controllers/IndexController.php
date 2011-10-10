@@ -52,13 +52,22 @@ class Starbar_IndexController extends Api_AbstractController
         $this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');
 
     	$this->view->inlineScript()->appendFile('/js/starbar/starbar-new.js');
-    	
+
+    	// Starbar
     	$starbar = new Starbar();
     	$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));
     	$starbar->setVisibility('sb_starbar-visOpen');
     	$this->view->starbar = $starbar;
     	
-		$this->view->assign('user', Api_UserSession::getInstance()->getUser());
+    	// User
+    	$session = Api_UserSession::getInstance();
+    	$user = $session->getUser();
+		$this->view->user = $user;
+		
+		// Gamer
+		// make sure this user (and session) has a gaming user associated
+		$gamer = Gamer::create($user->getId(), $starbar->getId());
+		$session->setGamingUser($gamer);
     }
 }
 

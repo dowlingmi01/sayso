@@ -11,8 +11,14 @@ require_once 'App/Bootstrap.php';
 class Bootstrap extends App_Bootstrap
 {
     public function initApp () {
-        parent::initApp();
+        
+        App_Bootstrap::initApp();
+        
         Record::$defaultModifiedColumn = 'modified';
+        Api_UserSession::setup('User', '', 'Gamer');
+        
+        Game_Abstract::$_disabled = true;
+        
         // API logging will be necessary since requests
         // are coming from mobile, it's hard to see what's going on
         $apiLog = new Zend_Log();
@@ -36,7 +42,7 @@ class Bootstrap extends App_Bootstrap
         );
         
         Api_Registry::set('log', $apiLog);
-        Zend_Controller_Front::getInstance()->registerPlugin(new BootstrapPlugin());
+        Zend_Controller_Front::getInstance()->registerPlugin(new BootstrapPlugin(), 1);
     }
 }
 
@@ -53,15 +59,24 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
 {
     public function routeShutdown(Zend_Controller_Request_Abstract $request) {
         $currentModule = strtolower($request->getModuleName());
+        $currentController = strtolower($request->getControllerName());
+        $currentAction = strtolower($request->getActionName());
         
-        // Prevent PHP from creating PHPSESSID cookie so that we don't 
-        // inadvertently overwrite a user's session on a site that uses PHP!
-        // Instead, we will manage keeping the session alive via kobj.net cookie
-        // and pass that as user_key.
         if ($currentModule === 'api' || $currentModule === 'starbar') {
+            // Prevent PHP from creating PHPSESSID cookie so that we don't 
+            // inadvertently overwrite a user's session on a site that uses PHP!
+            // Instead, we will manage keeping the session alive via kobj.net cookie
+            // and pass that as user_key.
             ini_set('session.use_only_cookies', '0');
             ini_set('session.use_cookies', '0');
             ini_set('session.use_trans_sid', '0');
+            
+            // Protect our sessions from garbage collection.
+            // We want our user sessions to be permanent.
+            // Only destroy sessions if the user changes on the client
+            ini_set('session.save_path', CACHE_PATH . '/session');
+            ini_set('session.gc_probability', 0); // no garbage collection please
+            ini_set('session.gc_maxlifetime', 7700000); // aprox. 3 months 
         }
         
 		/*
@@ -78,18 +93,24 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
             }
         }
 
+        // @hack
         // make sure api requests has user_key
         if ($currentModule === 'api' && (!$request->getParam('user_key') || $request->getParam('user_key') === 'undefined')) {
-            $message = 'SaySo API requires user_key in every request.';
-            if ($request->getParam('user_key') === 'undefined') $message .= ' (user_key === "undefined")'; // probably need to delete kobj.net cookie
-            $message .= ' URI: ' . $_SERVER['REQUEST_URI'];
-            throw new Exception($message);
+            if ($currentController === 'user' && in_array($currentAction, array('register', 'login'))) {
+                // don't require user_key for registration and login
+            } else {
+                $message = 'SaySo API requires user_key in every request.';
+                if ($request->getParam('user_key') === 'undefined') $message .= ' (user_key === "undefined")'; // probably need to delete kobj.net cookie
+                $message .= ' URI: ' . $_SERVER['REQUEST_URI'];
+                throw new Exception($message);
+            }
         }
             
         if ($currentModule === 'api') return;
         
         $userKey = $request->getParam(Api_Constant::USER_KEY);
         if ($userKey) {
+            quickLog('Starting session with user key: ' . $userKey);
             Api_UserSession::init($userKey);
         }
         

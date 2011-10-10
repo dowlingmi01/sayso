@@ -14,6 +14,9 @@ switch (APPLICATION_ENV) {
         $env = 'PRODUCTION'; break;
 }
 
+$starbar = $this->starbar;
+/* @var $starbar Starbar */
+
 ?>
 <script type="text/javascript">
     /**
@@ -24,10 +27,9 @@ switch (APPLICATION_ENV) {
      * User session is dynamic
      */
     $SQ(function () {
-        var baseDomain = "<?= BASE_DOMAIN ?>";
         if (!window.sayso) window.sayso = {};
         window.sayso.debug = true;
-        window.sayso.baseDomain = baseDomain;
+        window.sayso.baseDomain = '<?= BASE_DOMAIN ?>';
         window.sayso.environment = '<?= $env ?>';
         window.sayso.log = _log('log'); 
         window.sayso.warn = _log('warn');
@@ -48,10 +50,10 @@ switch (APPLICATION_ENV) {
             }
         };
         window.sayso.starbar = {
-            id : 1, // hellomusic
-            short_name : 'hellomusic',
+            id : <?= $starbar->getId() ?>, 
+            shortName : '<?= $starbar->short_name ?>',
             kynetxAppId : 'a239x20', // <-- this doesn't matter in this context
-            authKey : '<?= Api_Registry::getConfig()->helloMusic->api->authKey ?>',
+            authKey : '<?= $starbar->auth_key ?>',
             user : {
                 id : <?= Api_UserSession::getInstance()->getId() ?>,
                 key : '<?= Api_UserSession::getInstance()->getKey() ?>'

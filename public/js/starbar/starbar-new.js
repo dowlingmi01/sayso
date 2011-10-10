@@ -595,7 +595,7 @@ $SQ(function(){
 
 							var newAlertHtml = '<div class="sb_starbar-alert sb_starbar-alert-'+notification_area+'" id="starbar-alert-'+id+'"><div class="sb_inner"><div class="sb_content sb_theme_bgAlert'+color+'">';
 							if (popbox_to_open) {
-								newAlertHtml += '<a href="http://'+sayso.baseDomain+'/starbar/'+sayso.starbar.short_name+'/'+popbox_to_open+'" class="sb_nav_element sb_alert" rel="sb_popBox_'+popbox_to_open+'">'+message+'</a>'
+								newAlertHtml += '<a href="http://'+sayso.baseDomain+'/starbar/'+sayso.starbar.shortName+'/'+popbox_to_open+'" class="sb_nav_element sb_alert" rel="sb_popBox_'+popbox_to_open+'">'+message+'</a>'
 							} else {
 								newAlertHtml += '<a href="#" class="sb_nav_element sb_alert" rel="">'+message+'</a>';
 							}

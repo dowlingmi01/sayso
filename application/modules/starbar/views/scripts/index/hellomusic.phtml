@@ -1,2 +1,2 @@
-<?= $this->partial('remote/init-remote.phtml'); ?>
+<?= $this->partial('remote/init-remote.phtml', null, array('starbar' => $this->starbar, 'user' => $this->user)); ?>
 <div id="sayso-starbar" style=""><?= $this->partial('remote/hellomusic.phtml', null, array('starbar' => $this->starbar, 'user' => $this->user));  ?></div>

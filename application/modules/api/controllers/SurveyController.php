@@ -68,7 +68,8 @@ class Api_SurveyController extends Api_GlobalController
 				$surveyUserMap->status = "complete";
 
 				if ($surveyUserMap->save()) {
-					// todo award points here
+				    // award the user
+				    $this->_getGame()->completeSurvey($survey);
 					return true;
 				}
 			}

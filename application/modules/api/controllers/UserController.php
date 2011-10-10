@@ -212,7 +212,8 @@ class Api_UserController extends Api_GlobalController
         }
     }
     
-    public function saveInPlaceAction() {		
+    public function saveInPlaceAction() {	
+        $this->_validateRequiredParameters(array('user_id'));	
 		$response = array();
 		$response["is_error"] = true;
 		$response["error_text"] = "Edit Failed.";
@@ -246,7 +247,8 @@ class Api_UserController extends Api_GlobalController
 		return $this->_resultType(new Object($response));
 	}
     
-    public function notificationUpdateAction() {		
+    public function notificationUpdateAction() {	
+        $this->_validateRequiredParameters(array('user_id'));	
 		$response = array();
 		$response["messages"] = array();
 
@@ -276,34 +278,33 @@ class Api_UserController extends Api_GlobalController
     // We need to insert or update (should always be update) a notification_message_user_map record
     // so the user doesn't see the notification again
     public function notificationCloseAction() {		
-		if ($this->user_id) {
-			$request = $this->getRequest();
-			$messageId = $request->getParam('message_id');
-
-			if ($messageId) {
-    			$messageUserMap = new Notification_MessageUserMap();
-    			$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($messageId, $this->user_id, true);
-			}
-		}
+        $this->_validateRequiredParameters(array('user_id', 'message_id'));
+		$request = $this->getRequest();
+		$messageId = $request->getParam('message_id');
+		$messageUserMap = new Notification_MessageUserMap();
+		$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($messageId, $this->user_id, true);
 		return $this->_resultType(true);
 	}
     
-    // @todo for dev/QA only, delete for production
-    public function resetSurveysAndPollsAction() {		
-		if ($this->user_id) {
+    public function resetSurveysAndPollsAction() {
+        if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
+            $this->_validateRequiredParameters(array('user_id'));
 			Db_Pdo::execute("DELETE FROM survey_user_map WHERE status = 'complete' AND user_id = ?", $this->user_id);
-		}
-		
-		return $this->_resultType(true);
+		    return $this->_resultType(true);
+        } else {
+    		return $this->_resultType(false);
+            
+        }
 	}
     
-    // @todo for dev/QA only, delete for production
     public function resetExternalAction() {		
-		if ($this->user_id) {
+        if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
+            $this->_validateRequiredParameters(array('user_id'));
 			Db_Pdo::execute("DELETE FROM user_social WHERE user_id = ?", $this->user_id);
-		}
-		
-		return $this->_resultType(true);
+    		return $this->_resultType(true);
+        } else {
+    		return $this->_resultType(false);
+        }
 	}
     
     protected function _startUserSession (User & $user) {

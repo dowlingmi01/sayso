@@ -15,8 +15,6 @@ class Starbar extends Record
     
     protected $_userMap;
     
-    protected $_apiAuthKey = '';
-    
     protected $_cssUrl = '';
     
     protected $_visibility = '';
@@ -39,15 +37,6 @@ class Starbar extends Record
      */
     public function setUserMap (Starbar_UserMap $userMap) {
         $this->_userMap = $userMap;
-    }
-    
-    /**
-     * Each Starbar has it's own API key 
-     * 
-     * @param string $apiAuthKey
-     */
-    public function setApiAuthKey ($apiAuthKey) {
-        $this->_apiAuthKey = $apiAuthKey;
     }
     
     /**
@@ -87,7 +76,8 @@ class Starbar extends Record
             'label',
             'description',
             'user_pseudonym',
-            'domain'
+            'domain',
+            'auth_key'
         );
         return array_intersect_key($this->getData(), array_flip($fields));
     }
@@ -96,7 +86,6 @@ class Starbar extends Record
         $props = array(
             '_user' => $this->_user,
             '_user_map' => $this->_userMap,
-            '_auth_key' => $this->_apiAuthKey,
             '_css_url' => $this->_cssUrl,
             '_html' => $this->_html
         );

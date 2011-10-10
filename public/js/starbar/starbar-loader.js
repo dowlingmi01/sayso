@@ -258,10 +258,14 @@
                     sayso.log('Received - ' + starbar.label + ' Starbar');
                     sayso.log(starbar);
                     sayso.starbar.id = starbar.id;
-                    sayso.starbar.short_name = starbar.short_name;
-                    sayso.starbar.authKey = starbar._auth_key;
+                    sayso.starbar.shortName = starbar.short_name;
+                    sayso.starbar.authKey = starbar.auth_key;
                     sayso.starbar.user.id = starbar._user.id;
                     sayso.starbar.user.key = starbar._user._key;
+                    
+                    if (response.gamer && response.gamer.type === 'Gamer') {
+                        sayso.starbar.user.gaming = response.gamer;
+                    }
                     
                     // update global/persistent vars on kobj.net
                     var app = KOBJ.get_application(sayso.starbar.kynetxAppId);
@@ -269,7 +273,7 @@
                         'update_global_variables', 
                         { 
                             'starbar_id' : starbar.id, 
-                            'auth_key' : starbar._auth_key,
+                            'auth_key' : starbar.auth_key,
                             'user_id' : starbar._user.id,
                             'user_key' : starbar._user._key
                         }

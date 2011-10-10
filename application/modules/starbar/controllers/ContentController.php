@@ -9,10 +9,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function preDispatch()
 	{
-	    if (!($this->user_id && $this->user_key && $this->auth_key)) {
-	    	echo "You are not logged in.";
-	    	exit;
-		}
+	    $this->_validateRequiredParameters(array('user_id', 'user_key', 'auth_key'));
 	}   
 
     public function postDispatch()
@@ -111,17 +108,15 @@ class Starbar_ContentController extends Api_GlobalController
 
     public function surveyCompleteAction ()
     {
+    	$this->_validateRequiredParameters(array('survey_id'));
     	// this page is fetched via an iframe, not ajax;
     	$this->_usingJsonPRenderer = false;
 
 		$request = $this->getRequest();
-		$surveyId = $request->getParam('survey_id');
-		if ($surveyId) {
-			$survey = new Survey();
-			$survey->loadData($surveyId);
+		$survey = new Survey();
+		$survey->loadData($this->survey_id);
 
-			$this->view->assign('survey', $survey);
-		}
+		$this->view->assign('survey', $survey);
 
 		// @todo point this to onboarding
 		$shareLink = "http://www.say.so/";
@@ -358,6 +353,25 @@ class Starbar_ContentController extends Api_GlobalController
     {
 
     }
+    
+    public function facebookPostResultAction ()
+    {
+        $this->_validateRequiredParameters(array('post_id', 'shared_type'));
+    	// this page is fetched in an iframe, not ajax
+    	$this->_usingJsonPRenderer = false;
+
+		$request = $this->getRequest();
+
+        $success = false;
+
+		/* Facebook wall post successful */
+		if ($request->getParam('post_id')) {
+			$success = true;
+			$this->_getGame()->share($this->shared_type, @$this->shared_id);
+		}
+
+		$this->view->assign('success', $success);
+	}
     
     protected function _getBundleOfJoy ($surveyId)
     {

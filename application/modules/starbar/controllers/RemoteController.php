@@ -84,6 +84,8 @@ class Starbar_RemoteController extends Api_AbstractController
                         $externalUser->install_begin_time = new Zend_Db_Expr('now()');
                         $externalUser->save(); // <-- inserts/updates based on uniques
                         
+                        Api_UserSession::getInstance($this->user_key)->logoutAndDestroy();
+                        
                         return $this->_forward(
                             'post-install-deliver', 
                             null, 
@@ -96,14 +98,27 @@ class Starbar_RemoteController extends Api_AbstractController
             
             // get session and verify
             $session = Api_UserSession::getInstance($this->user_key);
-            quickLog('session id ' . $this->user_key . ' - user id ' . $this->user_id);
-            if ($session->getId() !== (int) $this->user_id) {
-                throw new Api_Exception(Api_Error::create(Api_Error::TARGET_USER_MISMATCH));
+            quickLog('session id ' . $this->user_key . ' with internal user id ' . $session->getId() . ' - user id parameter ' . $this->user_id);
+            if ($session->hasId()) {
+                if ($session->getId() !== (int) $this->user_id) {
+                    // session user id is not the same as user_id in the request!
+                    throw new Api_Exception(Api_Error::create(Api_Error::TARGET_USER_MISMATCH));
+                } else {
+                    // everything is ok, carry on.
+                }
+            } else {
+                // user id missing!
+                throw new Api_Exception(Api_Error::create(Api_Error::SESSION_USER_MISSING));
             }
+            
             $user = new User();
             $user->loadData($this->user_id);
             $user->setKey($this->user_key); // <-- keep session key in the loop
             $starbar->setUser($user);
+            
+            $gamer = Gamer::create($user->getId(), $starbar->getId());
+            Game_Starbar::create($gamer, $this->_request)->checkin();
+            
             return $this->_forward(
                 $starbar->short_name, 
                 null, 
@@ -329,12 +344,14 @@ class Starbar_RemoteController extends Api_AbstractController
         // User
         
         $user = new User();
+        $newUser = false;
         
         // if user id already exists on external user, then use that
         
         if ($externalUser->user_id) {
             $user->setId($externalUser->user_id);
         } else { // .. otherwise create a new one
+            $newUser = true;
             $stmt = Db_Pdo::execute('INSERT INTO user (id, created) VALUES (null, now())');
             $user->setId(Db_Pdo::getPdo()->lastInsertId());
             $externalUser->user_id = $user->getId();
@@ -365,11 +382,16 @@ class Starbar_RemoteController extends Api_AbstractController
         }
         
         // start a NEW session
+        // Important: this could get hit multiple times during install
+        // which is safe, AS LONG AS all session values are re-entered (the same)
+        // A new user key will be created but will reference the same
+        // values within the session
         $userSession = Api_UserSession::getInstance(); 
+        
         // (In rare cases the user_key may already be included and the session started. see BootstrapPlugin)
         if ($userSession->hasId() && $userSession->getId() !== $user->getId()) { 
             // user ID is already set on session but the user is different than the one we just created!!
-            // what to do?
+            throw new Api_Exception(Api_Error::create(Api_Error::APPLICATION_ERROR, 'User session (via key: ' . $userSession->getkey() . ') is for user id: ' . $userSession->getId() . ', however the user we just ' . ($newUser ? 'created' : 'retreived (via external user ' . $externalUser->getId() . ')') . ' is id: ' . $user->getId()));
         }
         
         // set the user id on the session
@@ -396,8 +418,19 @@ class Starbar_RemoteController extends Api_AbstractController
         
         $starbar->setUserMap($starbarUserMap->reload());
         
-        // now we know which starbar, route to the appropriate starbar action:
+        // Game
         
+        $gamer = Gamer::create($user->getId(), $starbar->getId());
+        quickLog('Gaming id ' . $gamer->getGamingId());
+        
+        // save gaming user to session for easy retreival
+        $userSession->setGamingUser($gamer);
+        
+        
+        // trigger game transaction: *install* 
+        Game_Starbar::create($gamer, $this->_request, $starbar)->install();
+        
+        // now we know which starbar, route to the appropriate starbar action:
         return $this->_forward(
             $starbar->short_name, 
             null, 
@@ -432,14 +465,14 @@ class Starbar_RemoteController extends Api_AbstractController
         // get Starbar passed via index or post-install-deliver
         // and assign it to the view
         $starbar = $this->_getStarbarObject();
+        $user = $starbar->getUser();
         $this->view->assign('starbar', $starbar);
-        $this->view->assign('user', $starbar->getUser());
+        $this->view->assign('user', $user);
         
         // render the view manually, we will pass it back in the JSON
         $this->render();
         
         // setup Hello Music specific data
-        $starbar->setApiAuthKey(Api_Registry::getConfig()->helloMusic->api->authKey);
         $starbar->setCssUrl('http://' . BASE_DOMAIN . '/css/starbar-hellomusic.css');
         $starbar->setHtml($this->getResponse()->getBody());
 

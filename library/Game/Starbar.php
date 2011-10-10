@@ -124,6 +124,7 @@ abstract class Game_Starbar extends Game_Abstract {
         
         try {
             
+            if (!Game_Abstract::$_enabled) return false;
             parent::submitAction($actionId, $customAmount);
             $this->_gamer->loadProfile($this->_client);
             $this->_request->setParam(Api_AbstractController::GAMING_USER, $this->_gamer);

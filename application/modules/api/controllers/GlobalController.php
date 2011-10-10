@@ -41,8 +41,12 @@ class Api_GlobalController extends Api_AbstractController
      * @return Game_Starbar
      */
     protected function _getGame () {
-        $gamer = Api_UserSession::getInstance($this->user_key)->getGamingUser();
-		return Game_Starbar::create($gamer, $this->_request);
+        if (Game_Abstract::$_enabled) {
+            $gamer = Api_UserSession::getInstance($this->user_key)->getGamingUser();
+    		return Game_Starbar::create($gamer, $this->_request);
+        } else {
+            return new NullObject('Game_Starbar');
+        }
     }
 }
 

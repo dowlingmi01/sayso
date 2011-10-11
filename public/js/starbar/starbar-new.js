@@ -399,17 +399,17 @@ $SQ(function(){
                     $SQ(this).fadeTo(500, 0);
                     hideAlerts();
                     setTimeout(function () {
-                    	$SQ('#sayso-starbar #starbar-player-console').hide();
+                    	elemPlayerConsole.hide();
 					}, 500);
                     setTimeout(function () {
 			            btnToggleVis.attr('class','').addClass('sb_btnStarbar-visStowed');
-                    	$SQ('#sayso-starbar #starbar-player-console').css('width','');
-                    	$SQ('#sayso-starbar #starbar-player-console').attr('class','').addClass('sb_starbar-visStowed');
-                    	$SQ('#sayso-starbar #starbar-player-console').show();
-                    	$SQ('#sayso-starbar #starbar-player-console').fadeTo(157, 1); // 157 found to work best for some bizarre reason
-                    	$SQ('#sayso-starbar #sb_starbar-logoSemiStowed').fadeTo(500, 0);
+                    	elemPlayerConsole.css('width','');
+                    	elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
+                    	elemPlayerConsole.show();
+                    	elemPlayerConsole.fadeTo(157, 1); // 157 found to work best for some bizarre reason
+                    	elemSaySoLogoSemiStowed.fadeTo(500, 0);
+            			updateState('sb_starbar-visStowed');
 					}, 1000);
-            		updateState('sb_starbar-visStowed');
             	}
             );
 	    }

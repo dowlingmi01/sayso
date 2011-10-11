@@ -403,11 +403,10 @@ $SQ(function(){
 					}, 500);
                     setTimeout(function () {
 			            btnToggleVis.attr('class','').addClass('sb_btnStarbar-visStowed');
-	                    $SQ(this).attr('class','').addClass('sb_starbar-visStowed');
+                    	$SQ('#sayso-starbar #starbar-player-console').css('width','');
                     	$SQ('#sayso-starbar #starbar-player-console').attr('class','').addClass('sb_starbar-visStowed');
                     	$SQ('#sayso-starbar #starbar-player-console').css('display', 'block');
                     	$SQ('#sayso-starbar #starbar-player-console').fadeTo(157, 1); // 157 found to work best for some bizarre reason
-                    	$SQ('#sayso-starbar #starbar-visControls #sb_starbar-logo').css('width','30px');
                     	$SQ('#sayso-starbar #sb_starbar-logoSemiStowed').fadeTo(500, 0);
 					}, 1000);
             });

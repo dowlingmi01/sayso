@@ -309,6 +309,17 @@
                             
                             var starbarJsTimer = new jsLoadTimer();
                             starbarJsTimer.start('window.sayso.starbar.loaded', function () {
+                                sayso.log('Onboarding status [user:' + sayso.starbar.user.id + ']', (starbar._user_map.onboarded ? 'ONBOARDED' : 'NOT ONBOARDED'));
+                                if (currentUrl.match(urlMatchPrepend + starbar.domain)) {
+                                    sayso.log('Onboard URL match [' + starbar.domain + ']', currentUrl);
+                                } else if (currentUrl.match(urlMatchPrepend + 'saysollc.com')) {
+                                    sayso.log('Onboard URL match [saysollc.com]', currentUrl);
+                                } else if (currentUrl.match(urlMatchPrepend + 'sayso.com')) {
+                                    sayso.log('Onboard URL match [sayso.com]', currentUrl);
+                                } else {
+                                    sayso.log('Onboard URL *NO MATCH*', currentUrl);
+                                }
+                                
                                 // if user has not "onboarded" and we are on the Starbar's base domain
                                 // then trigger the onboarding to display
                                 if (!starbar._user_map.onboarded && 

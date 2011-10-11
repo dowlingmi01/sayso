@@ -368,10 +368,10 @@ $SQ(function(){
             case 'button':
                 switch (playerClass){
                     case 'sb_starbar-visOpen':
-                        _stowBar();
+                        _stowBar(true);
                         break;
                     case 'sb_starbar-visStowed':
-                        _openBar();
+                        _openBar(true);
                         break;
                 }
                 break;
@@ -379,17 +379,19 @@ $SQ(function(){
             case 'refresh' :
                 switch (playerClass) {
                     case 'sb_starbar-visOpen':
-                        if (!btnToggleVis.hasClass('sb_btnStarbar-open')) _openBar();
+                        if (!btnToggleVis.hasClass('sb_btnStarbar-open')) _openBar(false);
                         break;
                     case 'sb_starbar-visStowed':
-                        if (!btnToggleVis.hasClass('sb_btnStarbar-stowed')) _stowBar();
+                        if (!btnToggleVis.hasClass('sb_btnStarbar-stowed')) _stowBar(false);
                         break;
                 }
                 break;
 
 	    } // end switch clickpoint
 
-	    function _stowBar () {
+	    function _stowBar (needToUpdateState) {
+			if (needToUpdateState) updateState('sb_starbar-visStowed');
+
 	        elemStarbarMain.fadeOut('fast');
             elemPopBoxVisControl.fadeOut('fast');
             btnToggleVis.attr('class','').addClass('sb_btnStarbar-visClosed');
@@ -413,12 +415,13 @@ $SQ(function(){
                     	elemPlayerConsole.show();
                     	elemPlayerConsole.fadeTo(157, 1); // 157 found to work best for some bizarre reason
                     	elemSaySoLogoSemiStowed.fadeTo(500, 0);
-            			updateState('sb_starbar-visStowed');
 					}, 1000);
             	}
             );
 	    }
-	    function _openBar () {
+	    function _openBar (needToUpdateState) {
+			if (needToUpdateState) updateState('sb_starbar-visOpen');
+
 	        btnToggleVis.attr('class','');
             elemSaySoLogoBorder.hide();
             elemVisControls.hide();
@@ -434,7 +437,6 @@ $SQ(function(){
                     elemVisControls.fadeIn('fast');
                     btnToggleVis.attr('class','').addClass('sb_btnStarbar-open');
                     showAlerts();
-                    updateState('sb_starbar-visOpen');
             	}
             );
 	    }

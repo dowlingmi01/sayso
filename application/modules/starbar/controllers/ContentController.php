@@ -245,7 +245,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 		if ($user) {
 			try {
-				$user_profile = $facebook->api('/me');
+				$fbProfile = $facebook->api('/me');
 			} catch (FacebookApiException $e) {
 				error_log($e);
 				$user = null;
@@ -253,21 +253,21 @@ class Starbar_ContentController extends Api_GlobalController
 		}
 
 		$callbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-connect?user_id=".$this->user_id."&user_key=".$this->user_key;
-		
+
 		if ($user) {
 			if ($this->user_key && (int)$this->user_id === (int)Api_UserSession::getInstance($this->user_key)->getId()) {
     			$userSocial = new User_Social();
     			$userSocial->user_id = $this->user_id;
     			$userSocial->provider = "facebook";
     			$userSocial->identifier = $user;
-    			if (isset($user_profile['username']))
-    				$userSocial->username = $user_profile['username'];
+    			if (isset($fbProfile['username']))
+    				$userSocial->username = $fbProfile['username'];
     			$userSocial->save();
-    			
+
     			// Show user congrats notification
     			$message = new Notification_Message();
     			$message->loadDataByUniqueFields(array('short_name' => 'FB Account Connected'));
-    			
+
     			if ($message->id) {
     				$messageUserMap = new Notification_MessageUserMap();
     				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, false);

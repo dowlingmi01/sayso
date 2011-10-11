@@ -15,7 +15,7 @@ class Starbar_HellomusicController extends Starbar_ContentController
 	// Daily deals is probably unique to each starbar
     public function dailyDealsAction ()
     {
-		$feedUrl = "http://www.hellomusic.com/ec/Interpret.aspx?auth=uyskCsCO5jeS2d1fc5";
+		$feedUrl = "http://staging.hellomusic.com/ec/Interpret.aspx?auth=uyskCsCO5jeS2d1fc5";
 
 		$feed = null;
 		$cache = Api_Registry::get('cache');

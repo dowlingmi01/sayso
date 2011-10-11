@@ -9,7 +9,7 @@
 					<? if ($this->facebook_social->identifier) { ?>
 						<img class="sb_userImg sb_alignLeft" src="http://graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $this->user->getTitle() ?>" />
 					<? } else { ?>
-						<img class="sb_userImg sb_alignLeft" src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="<?= $this->user->getTitle() ?>" />
+						<img class="sb_userImg sb_alignLeft" src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.png" alt="<?= $this->user->getTitle() ?>" />
 					<? } ?>
 					<p style="margin-left: 50px">
 						<strong>Username:</strong> <span id="sb_profile_username" class="sb_jeip"><?= $this->user->getTitle() ?></span><br />
@@ -31,7 +31,7 @@
 								fjs.parentNode.insertBefore(js, fjs);
 							}(document, 'script', 'facebook-jssdk'));
 						</script>
-						<div class="fb-like" data-href="http://www.facebook.com/pages/SaySo/290443177649449" data-send="false" data-width="83" data-layout="button_count" data-show-faces="false"></div>
+						<iframe src="http://www.facebook.com/plugins/like.php?locale=en_US&amp;href=http://www.facebook.com/pages/SaySo/290443177649449&amp;layout=standard&amp;show_faces=false&amp;width=300&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:300px; height:35px;" allowTransparency="true"></iframe>
 					</div>
 				</li>
 				<li>

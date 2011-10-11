@@ -38,7 +38,8 @@ class User extends Record implements Titled
     
     public function getTitle ()
     {
-        return $this->username;
+    	if ($this->username) return $this->username;
+    	return "Musician";
     }
     
     public function setEmail (User_Email $email) {

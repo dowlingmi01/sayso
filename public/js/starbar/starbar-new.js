@@ -54,6 +54,8 @@ $SQ(function(){
 
 	// container elements
 	var elemSaySoLogoBorder; // = $SQ('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
+	var elemSaySoLogoSemiStowed; // = $SQ('#sayso-starbar #sb_starbar-logoSemiStowed');
+	var elemStarbarWrapper; // = $SQ('#sayso-starbar #starbar-player-console #starbar-wrapper');
 	var elemSaySoBarBG; // = $SQ('#sayso-starbar #starbar-player-console').css('background-image');
 	var elemPlayerConsole; // = $SQ('#sayso-starbar #starbar-player-console');
 	var elemStarbarMain; // = $SQ('#sayso-starbar #starbar-player-console #starbar-main');
@@ -63,7 +65,6 @@ $SQ(function(){
 	var elemAlerts; // = $SQ('#sayso-starbar #starbar-player-console .sb_starbar-alert');
 	var elemPopBoxVisControl; // = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
 	var elemExternalConnect; // = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
-	var elemExternalShare; // = $SQ('#sayso-starbar #starbar-player-console .sb_externalShare, #sayso-starbar-embed .sb_externalShare');
 	var elemRewardItem; // = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem');
 	var elemTooltip; // = $SQ('#sayso-starbar .sb_Tooltip');
 
@@ -90,6 +91,8 @@ $SQ(function(){
 
 		// container elements
 		elemSaySoLogoBorder = $SQ('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
+		elemSaySoLogoSemiStowed = $SQ('#sayso-starbar #sb_starbar-logoSemiStowed');
+		elemStarbarWrapper = $SQ('#sayso-starbar #starbar-player-console #starbar-wrapper');
 		elemSaySoBarBG = $SQ('#sayso-starbar #starbar-player-console').css('background-image');
 		elemPlayerConsole = $SQ('#sayso-starbar #starbar-player-console');
 		elemStarbarMain = $SQ('#sayso-starbar #starbar-player-console #starbar-main');
@@ -99,7 +102,6 @@ $SQ(function(){
 		elemPopBoxVisControl = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
 		elemTabClick = $SQ('#sayso-starbar #starbar-player-console .sb_nav_tabs');
 		elemExternalConnect = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
-		elemExternalShare = $SQ('#sayso-starbar #starbar-player-console .sb_externalShare, #sayso-starbar-embed .sb_externalShare');
 		elemRewardItem = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem');
 		btnCloseColorbox = $SQ('#sayso-starbar .sb_closeColorbox');
 		elemTooltip = $SQ('#sayso-starbar .sb_tooltip');
@@ -315,19 +317,6 @@ $SQ(function(){
 			});
 		});
 		
-		// share via facebook or twitter
-		elemExternalShare.each(function(){
-			$SQ(this).unbind();
-			$SQ(this).bind({
-				click: function(event){
-			  		var windowParameters = 'location=1,status=1,scrollbars=0,width=981,height=450';
-					var link = $SQ(this).attr('href');
-
-			  		window.open(link, 'sb_window_open', windowParameters);
-			  		return false;
-				}
-			});
-		});
 		
 		// rewards center items overlay
 		elemRewardItem.each(function(){
@@ -361,7 +350,6 @@ $SQ(function(){
 				}			
 			});									 
 		});
-		
 
 	} // end initElements()
 
@@ -375,9 +363,6 @@ $SQ(function(){
             case 'button':
                 switch (playerClass){
                     case 'sb_starbar-visOpen':
-                        _closeBar();
-                        break;
-                    case 'sb_starbar-visClosed':
                         _stowBar();
                         break;
                     case 'sb_starbar-visStowed':
@@ -391,9 +376,6 @@ $SQ(function(){
                     case 'sb_starbar-visOpen':
                         if (!btnToggleVis.hasClass('sb_btnStarbar-open')) _openBar();
                         break;
-                    case 'sb_starbar-visClosed':
-                        if (!btnToggleVis.hasClass('sb_btnStarbar-closed')) _closeBar();
-                        break;
                     case 'sb_starbar-visStowed':
                         if (!btnToggleVis.hasClass('sb_btnStarbar-stowed')) _stowBar();
                         break;
@@ -402,36 +384,32 @@ $SQ(function(){
 
 	    } // end switch clickpoint
 
-	    function _closeBar () {
+	    function _stowBar () {
 	        elemStarbarMain.fadeOut('fast');
             elemPopBoxVisControl.fadeOut('fast');
-            btnToggleVis.attr('class','');
-            btnToggleVis.addClass('sb_btnStarbar-closed');
-            btnSaySoLogo.css('backgroundPosition','3px 0px');
+            btnToggleVis.attr('class','').addClass('sb_btnStarbar-visClosed');
+            btnSaySoLogo.css('backgroundPosition','2px 0px');
+            updateState('sb_starbar-visStowed');
             elemPlayerConsole.animate({
                     width: '100'
                 }, 500, function() {
                     // Animation complete.
                     $SQ(this).attr('class','').addClass('sb_starbar-visClosed');
-                    elemSaySoLogoBorder.show();
+                    elemSaySoLogoSemiStowed.fadeTo(0, 1);
+                    elemPlayerConsole.fadeTo(500, 0);
                     hideAlerts();
-                    updateState('sb_starbar-visClosed');
-                });
-	    }
-	    function _stowBar () {
-	        btnToggleVis.attr('class','');
-            btnToggleVis.addClass('sb_btnStarbar-stowed');
-            btnSaySoLogo.css('backgroundPosition','');
-            btnSaySoLogo.css('width','28px');
-            hideAlerts();
-            elemPlayerConsole.animate({
-                    width: '45'
-                }, 300, function() {
-                    // Animation complete.
-                	$SQ(this).attr('class','').addClass('sb_starbar-visStowed');
-                  btnSaySoLogo.css('width','');
-            			elemSaySoLogoBorder.hide();
-                  updateState('sb_starbar-visStowed');
+                    setTimeout(function () {
+                    	$SQ('#sayso-starbar #starbar-player-console').css('display', 'none');
+					}, 500);
+                    setTimeout(function () {
+			            btnToggleVis.attr('class','').addClass('sb_btnStarbar-visStowed');
+	                    $SQ(this).attr('class','').addClass('sb_starbar-visStowed');
+                    	$SQ('#sayso-starbar #starbar-player-console').attr('class','').addClass('sb_starbar-visStowed');
+                    	$SQ('#sayso-starbar #starbar-player-console').css('display', 'block');
+                    	$SQ('#sayso-starbar #starbar-player-console').fadeTo(157, 1); // 157 found to work best for some bizarre reason
+                    	$SQ('#sayso-starbar #starbar-visControls #sb_starbar-logo').css('width','30px');
+                    	$SQ('#sayso-starbar #sb_starbar-logoSemiStowed').fadeTo(500, 0);
+					}, 1000);
             });
 	    }
 	    function _openBar () {
@@ -439,14 +417,14 @@ $SQ(function(){
             elemSaySoLogoBorder.hide();
             elemVisControls.hide();
             btnSaySoLogo.css('backgroundPosition','');
-						elemPlayerConsole.addClass('sb_starbar-visBG');
+            btnSaySoLogo.css('width','100px');
+			elemPlayerConsole.addClass('sb_starbar-visBG');
             hideAlerts();
             elemPlayerConsole.animate({
                     width: '100%'
                 }, 500, function() {
                     // Animation complete.
                     $SQ(this).attr('class','').addClass('sb_starbar-visOpen');
-										$SQ(this).removeClass('sb_starbar-visBG');
                     elemStarbarMain.fadeIn('fast');
                     elemVisControls.fadeIn('fast');
                     btnToggleVis.addClass('sb_btnStarbar-open');
@@ -554,12 +532,14 @@ $SQ(function(){
 			target.delay(200).slideDown('fast');
 		}else{
 			elemAlerts = $SQ('#sayso-starbar #starbar-player-console .sb_starbar-alert');
-			elemAlerts.each(function(){
-				// show alerts that aren't empty.
-				if ($SQ('a',this).html().length != 0){
-					$SQ(this).delay(200).slideDown('fast');
-				}
-			});
+			if (elemAlerts.length > 0) {
+				elemAlerts.each(function(){
+					// show alerts that aren't empty.
+					if ($SQ('a',this).html().length != 0){
+						$SQ(this).delay(200).slideDown('fast');
+					}
+				});
+			}
 		}
 		return;
 	}
@@ -570,6 +550,7 @@ $SQ(function(){
 			// setTimeout is called in the global scope, so it needs to find the target again
 			setTimeout("$SQ('#"+target.attr('id')+"').empty()", 300);
 		}else{
+			elemAlerts = $SQ('#sayso-starbar #starbar-player-console .sb_starbar-alert');
 			elemAlerts.each(function(){
 				$SQ(this).hide();
 			});

@@ -318,14 +318,21 @@ html {
 	width: 44px;
 }
 #sayso-starbar #starbar-player-console #starbar-toggleVis.sb_btnStarbar-closed {
-	background-image: url('../images/generic/img_close.png');
-	width: 51px;
-	margin: 0px 0px 0px -4px;
+	display: none;
 }
 #sayso-starbar #starbar-player-console #starbar-toggleVis.sb_btnStarbar-stowed {
 	background: none;
 }
-#sayso-starbar #starbar-player-console #sb_starbar-logo {
+#sayso-starbar #sb_starbar-logoSemiStowed {
+	display: none;
+	background: none;
+	width: 100px;
+	position: absolute;
+	bottom: 10px;
+	left: 2px;
+	z-index: 214747000;
+}
+#sayso-starbar #starbar-player-console .sb_starbar-logo {
 	background-image: url('../images/generic/logo_sayso.png');
 	background-repeat: no-repeat;
 	background-position: 10px 0px;
@@ -347,11 +354,10 @@ html {
 #sayso-starbar #starbar-player-console.sb_starbar-visClosed #sb_starbar-logo:hover {
 	background-position: 3px -35px;
 }
-#sayso-starbar #starbar-player-console.sb_starbar-visStowed #sb_starbar-logo {
-	background-image: url('../images/generic/logo_sayso_sm.png');
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed #sb_starbar-logo, #sayso-starbar #sb_starbar-logoSemiStowed {
+	background-image: url('../images/generic/logo_sayso.png');
 	background-repeat: no-repeat;
-	background-position: 5px 6px;
-	width: 100%;
+	background-position: 0px 0px;
 	height: 35px;
 }
 #sayso-starbar #starbar-player-console #sb_starbar-logoBorder {
@@ -403,6 +409,14 @@ html {
 	margin: 0px 5px 0px 0px;
 	float: right;
 	cursor: pointer;
+}
+#sayso-starbar #starbar-player-console #starbar-type .sb_logo {
+	width: 70px;
+	height: 48px;
+	z-index: 2147481000;
+	position: absolute;
+	top: 17px;
+	left: 15px;
 }
 #sayso-starbar #starbar-player-console #starbar-type .sb_logo {
 	width: 70px;

@@ -20,14 +20,16 @@
 	}
 ?>
 <link type="text/css" rel="stylesheet" media="screen" href="http://<?= BASE_DOMAIN ?>/css/jquery.jscrollpane.css" />
+<div id="sb_starbar-logoSemiStowed">
+	<span class="sb_starbar-logo"></span>
+</div><!-- #starbar-toggleVis -->
 <div id="starbar-player-console" class="<?= $starbar->getVisibility() ?>">
 	<div id="starbar-wrapper">
 		<div id="starbar-visControls">
 			<div id="starbar-toggleVis" class="<?= $buttonVisibility ?>"></div><!-- #starbar-toggleVis -->
-			<a href="http://<?= BASE_DOMAIN ?>/starbar/content/about-sayso" class="sb_nav_element" id="sb_starbar-logo" rel="sb_popBox_about-saySo">say.so</a>
+			<a href="http://<?= BASE_DOMAIN ?>/starbar/content/about-sayso" class="sb_nav_element sb_starbar-logo" id="sb_starbar-logo" rel="sb_popBox_about-saySo">say.so</a>
 			<div id="sb_popBox_about-saySo" class="sb_popBox">
 			</div><!-- .sb_popBox -->
-			<span id="sb_starbar-logoBorder" class=""></span>
 			<div id="sb_popBox_onboard" class="sb_popBox" href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/onboard">
 			</div><!-- #sb_popBox_onboard -->
 		</div><!-- #starbar-visControls -->

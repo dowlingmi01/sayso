@@ -235,7 +235,14 @@ html {
 	position: fixed;
 	z-index: 2147483647;
 }
-
+#sayso-starbar #starbar-player-semiStowed {
+	bottom: 0px;
+	color: #fff;
+	left: 0;
+	min-height: 70px;
+	right: 0;
+	position: fixed;
+}
 #sayso-starbar #starbar-player-console.sb_starbar-visBG{	
 	background-image: url('../images/bg_bar.png');
 	background-repeat: repeat-x;
@@ -328,7 +335,7 @@ html {
 	background: none;
 	width: 100px;
 	position: absolute;
-	bottom: 10px;
+	top: 25px;
 	left: 2px;
 	z-index: 214747000;
 }

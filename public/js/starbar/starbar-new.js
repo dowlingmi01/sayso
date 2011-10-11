@@ -389,7 +389,6 @@ $SQ(function(){
             elemPopBoxVisControl.fadeOut('fast');
             btnToggleVis.attr('class','').addClass('sb_btnStarbar-visClosed');
             btnSaySoLogo.css('backgroundPosition','2px 0px');
-            updateState('sb_starbar-visStowed');
             elemPlayerConsole.animate({
                     width: '100'
                 }, 500, function() {
@@ -409,6 +408,7 @@ $SQ(function(){
                     	$SQ('#sayso-starbar #starbar-player-console').fadeTo(157, 1); // 157 found to work best for some bizarre reason
                     	$SQ('#sayso-starbar #sb_starbar-logoSemiStowed').fadeTo(500, 0);
 					}, 1000);
+            	updateState('sb_starbar-visStowed');
             });
 	    }
 	    function _openBar () {

@@ -38,8 +38,8 @@
         elemPage.height($SQ(window).height());
         elemPage.width($SQ(window).width());
         
-				$(window).resize(function() {
-					elemOverlay.css('margin-left','-300px');
+				$SQ(window).resize(function() {
+					elemOverlay.css('marginLeft','-300px');
 					elemOverlay.css('left','50%');
 				});
 				

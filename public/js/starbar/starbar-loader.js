@@ -10,7 +10,7 @@
  */
 (function () {
     
-    var urlMatchPrepend = '^(?:http|https){1}://(?:[\\w.]+)?',
+    var urlMatchPrepend = '^(?:http|https){1}://(?:[\\w.-]+)?',
         currentUrl = window.location.href;
     
     // setup global "safe" logging functions

@@ -40,9 +40,9 @@
 					</div><!-- .logo -->
 					<div class="sb_userImg">
 						<? if ($this->facebook_social->identifier) { ?>
-							<img src="http://graph.facebook.com/<?= $this->facebook_social->external_id ?>/picture?type=square" alt="<?= $user->getTitle() ?>" />
+							<img class="sb_userImg" src="http://graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $user->getTitle() ?>" />
 						<? } else { ?>
-							<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="<?= $user->getTitle() ?>" />
+							<img class="sb_userImg" src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="<?= $user->getTitle() ?>" />
 						<? } ?>
 					</div><!-- .userImg -->
 					<div class="sb_content">

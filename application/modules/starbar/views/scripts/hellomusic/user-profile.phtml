@@ -6,7 +6,11 @@
 		<div class="sb_scrollPane">
 			<ul class="sb_lineList">
 				<li>
-					<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="User" width="40" class="sb_alignLeft" />
+					<? if ($this->facebook_social->identifier) { ?>
+						<img class="sb_userImg sb_alignLeft" src="http://graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $user->getTitle() ?>" />
+					<? } else { ?>
+						<img class="sb_userImg sb_alignLeft" src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="<?= $user->getTitle() ?>" />
+					<? } ?>
 					<p style="margin-left: 50px">
 						<strong>Username:</strong> <span id="sb_profile_username" class="sb_jeip"><?= $this->user->getTitle() ?></span><br />
 						<?= $this->user_email->email ?>

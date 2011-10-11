@@ -7,9 +7,9 @@
 			<ul class="sb_lineList">
 				<li>
 					<? if ($this->facebook_social->identifier) { ?>
-						<img class="sb_userImg sb_alignLeft" src="http://graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $user->getTitle() ?>" />
+						<img class="sb_userImg sb_alignLeft" src="http://graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $this->user->getTitle() ?>" />
 					<? } else { ?>
-						<img class="sb_userImg sb_alignLeft" src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="<?= $user->getTitle() ?>" />
+						<img class="sb_userImg sb_alignLeft" src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="<?= $this->user->getTitle() ?>" />
 					<? } ?>
 					<p style="margin-left: 50px">
 						<strong>Username:</strong> <span id="sb_profile_username" class="sb_jeip"><?= $this->user->getTitle() ?></span><br />
@@ -71,9 +71,9 @@
 			<h2 class="sb_titlePlain">Documents</h2>
 		</div><!-- .sb_header -->
     <p>
-    	<a href="http://<?= BASE_DOMAIN ?>/starbar/docs/Terms & Conditions.pdf">Terms &amp; Conditions</a><br />
-      <a href="http://<?= BASE_DOMAIN ?>/starbar/docs/SaySo_Privacy_Policy.pdf">Privacy Policy</a><br />
-      <a href="http://<?= BASE_DOMAIN ?>/starbar/docs/HelloMusic_Rewards_Rules.pdf">Rewards Rule</a>
+    	<a href="http://<?= BASE_DOMAIN ?>/docs/Terms & Conditions.pdf">Terms &amp; Conditions</a><br />
+      <a href="http://<?= BASE_DOMAIN ?>/docs/SaySo_Privacy_Policy.pdf">Privacy Policy</a><br />
+      <a href="http://<?= BASE_DOMAIN ?>/docs/HelloMusic_Rewards_Rules.pdf">Rewards Rule</a>
     </p>
 		</div><!-- .sb_scrollPane -->
 	</div><!-- .sb_column40 -->

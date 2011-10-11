@@ -358,92 +358,6 @@ $SQ(function(){
 
 	} // end initElements()
 
-	// animates the starbar-player-console bar based on current state
-	function animateBar(playerClass, clickPoint){
-
-	    if (!playerClass) playerClass = window.sayso.starbar.state.visibility;
-
-	    switch(clickPoint){
-            // if we're clicking from a button, determine what state we're in and how to shrink / grow
-            case 'button':
-                switch (playerClass){
-                    case 'sb_starbar-visOpen':
-                        _stowBar(true);
-                        break;
-                    case 'sb_starbar-visStowed':
-                        _openBar(true);
-                        break;
-                }
-                break;
-            // if refreshing based on current state, then update bar to match
-            case 'refresh' :
-                switch (playerClass) {
-                    case 'sb_starbar-visOpen':
-                        if (!btnToggleVis.hasClass('sb_btnStarbar-open')) _openBar(false);
-                        break;
-                    case 'sb_starbar-visStowed':
-                        if (!btnToggleVis.hasClass('sb_btnStarbar-stowed')) _stowBar(false);
-                        break;
-                }
-                break;
-
-	    } // end switch clickpoint
-
-	    function _stowBar (needToUpdateState) {
-			if (needToUpdateState) updateState('sb_starbar-visStowed');
-
-	        elemStarbarMain.fadeOut('fast');
-            elemPopBoxVisControl.fadeOut('fast');
-            btnToggleVis.attr('class','').addClass('sb_btnStarbar-visClosed');
-            btnSaySoLogo.css('backgroundPosition','2px 0px');
-            elemPlayerConsole.animate(
-            	{ width: '100' },
-                500,
-                function() {
-                    // Animation complete.
-                    $SQ(this).attr('class','').addClass('sb_starbar-visClosed');
-                    elemSaySoLogoSemiStowed.fadeTo(0, 1);
-                    $SQ(this).fadeTo(500, 0);
-                    hideAlerts();
-                    setTimeout(function () {
-                    	elemPlayerConsole.hide();
-					}, 500);
-                    setTimeout(function () {
-			            btnToggleVis.attr('class','').addClass('sb_btnStarbar-visStowed');
-                    	elemPlayerConsole.css('width','');
-                    	elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
-                    	elemPlayerConsole.show();
-                    	elemPlayerConsole.fadeTo(157, 1); // 157 found to work best for some bizarre reason
-                    	elemSaySoLogoSemiStowed.fadeTo(500, 0);
-					}, 1000);
-            	}
-            );
-	    }
-	    function _openBar (needToUpdateState) {
-			if (needToUpdateState) updateState('sb_starbar-visOpen');
-
-	        btnToggleVis.attr('class','');
-            elemSaySoLogoBorder.hide();
-            elemVisControls.hide();
-			elemPlayerConsole.addClass('sb_starbar-visBG');
-            hideAlerts();
-            elemPlayerConsole.animate(
-            	{ width: '100%' },
-            	500,
-            	function() {
-                    // Animation complete.
-                    $SQ(this).attr('class','').addClass('sb_starbar-visOpen');
-                    elemStarbarMain.fadeIn('fast');
-                    elemVisControls.fadeIn('fast');
-                    btnToggleVis.attr('class','').addClass('sb_btnStarbar-open');
-                    showAlerts();
-            	}
-            );
-	    }
-		return false;
-
-	} // end FUNCTION ANIMATEBAR
-
 	function closePopBox(exception){
 		elemPopBox.each(function(){
 			$SQ(this).removeClass('sb_popBoxActive');
@@ -752,6 +666,92 @@ $SQ(function(){
 
 
 	}
+
+	// animates the starbar-player-console bar based on current state
+	function animateBar(playerClass, clickPoint){
+
+	    if (!playerClass) playerClass = window.sayso.starbar.state.visibility;
+
+	    switch(clickPoint){
+            // if we're clicking from a button, determine what state we're in and how to shrink / grow
+            case 'button':
+                switch (playerClass){
+                    case 'sb_starbar-visOpen':
+                        _stowBar(true);
+                        break;
+                    case 'sb_starbar-visStowed':
+                        _openBar(true);
+                        break;
+                }
+                break;
+            // if refreshing based on current state, then update bar to match
+            case 'refresh' :
+                switch (playerClass) {
+                    case 'sb_starbar-visOpen':
+                        if (!btnToggleVis.hasClass('sb_btnStarbar-visOpen')) _openBar(false);
+                        break;
+                    case 'sb_starbar-visStowed':
+                        if (!btnToggleVis.hasClass('sb_btnStarbar-visStowed')) _stowBar(false);
+                        break;
+                }
+                break;
+
+	    } // end switch clickpoint
+
+	    function _stowBar (needToUpdateState) {
+			if (needToUpdateState) updateState('sb_starbar-visStowed');
+
+	        elemStarbarMain.fadeOut('fast');
+            elemPopBoxVisControl.fadeOut('fast');
+            btnToggleVis.attr('class','').addClass('sb_btnStarbar-visClosed');
+            btnSaySoLogo.css('backgroundPosition','2px 0px');
+            elemPlayerConsole.animate(
+            	{ width: '100' },
+                500,
+                function() {
+                    // Animation complete.
+                    $SQ(this).attr('class','').addClass('sb_starbar-visClosed');
+                    elemSaySoLogoSemiStowed.fadeTo(0, 1);
+                    $SQ(this).fadeTo(500, 0);
+                    hideAlerts();
+                    setTimeout(function () {
+                    	elemPlayerConsole.hide();
+					}, 500);
+                    setTimeout(function () {
+			            btnToggleVis.attr('class','').addClass('sb_btnStarbar-visStowed');
+                    	elemPlayerConsole.css('width','');
+                    	elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
+                    	elemPlayerConsole.show();
+                    	elemPlayerConsole.fadeTo(157, 1); // 157 found to work best for some bizarre reason
+                    	elemSaySoLogoSemiStowed.fadeTo(500, 0);
+					}, 1000);
+            	}
+            );
+	    }
+	    function _openBar (needToUpdateState) {
+			if (needToUpdateState) updateState('sb_starbar-visOpen');
+
+	        btnToggleVis.attr('class','');
+            elemSaySoLogoBorder.hide();
+            elemVisControls.hide();
+			elemPlayerConsole.addClass('sb_starbar-visBG');
+            hideAlerts();
+            elemPlayerConsole.animate(
+            	{ width: '100%' },
+            	500,
+            	function() {
+                    // Animation complete.
+                    $SQ(this).attr('class','').addClass('sb_starbar-visOpen');
+                    elemStarbarMain.fadeIn('fast');
+                    elemVisControls.fadeIn('fast');
+                    btnToggleVis.attr('class','').addClass('sb_btnStarbar-open');
+                    showAlerts();
+            	}
+            );
+	    }
+		return false;
+
+	} // end FUNCTION ANIMATEBAR
 
 	// keep the state of the Starbar consistent across sites (currently handles visibility only)
 

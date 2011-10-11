@@ -33,7 +33,7 @@
         // -------------------------------------------
         // Custom setup 
         
-        /*var elemPage = $SQ('#sayso-onboard');
+        var elemPage = $SQ('#sayso-onboard');
 				var elemOverlay = $SQ('#sayso-onboard #sso_wrapper');
 
         elemPage.height($SQ(window).height());
@@ -43,7 +43,7 @@
 					console.log('boo');
 					elemOverlay.css('left','50%');
 					elemOverlay.css('margin-left','-300px');
-				});*/
+				});
 				
 				
 				console.log('boo');

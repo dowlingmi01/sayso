@@ -28,7 +28,7 @@ if (!isset($_COOKIE['CHOMPUID']) || !isset($_COOKIE['MyEmail'])) {
 <link rel="stylesheet" type="text/css" href="css/colorbox.css" />
 </head>
 <body style="margin: 0; padding: 0; background: url('images/HelloMusicScreenShot.png') top center no-repeat; background-size: 120%;">
-    <div id="sayso-onboard" style="display: none;">
+    <div id="sayso-onboard"> 
     	<div id="sso_wrapper">
           	<div id="sso_logo">
             	<a href=""><img src="images/logo_hello-music.png" alt="HelloMusic&trade; Logo" /></a>

@@ -389,13 +389,14 @@ $SQ(function(){
             elemPopBoxVisControl.fadeOut('fast');
             btnToggleVis.attr('class','').addClass('sb_btnStarbar-visClosed');
             btnSaySoLogo.css('backgroundPosition','2px 0px');
-            elemPlayerConsole.animate({
-                    width: '100'
-                }, 500, function() {
+            elemPlayerConsole.animate(
+            	{ width: '100' },
+                500,
+                function() {
                     // Animation complete.
                     $SQ(this).attr('class','').addClass('sb_starbar-visClosed');
                     elemSaySoLogoSemiStowed.fadeTo(0, 1);
-                    elemPlayerConsole.fadeTo(500, 0);
+                    $SQ(this).fadeTo(500, 0);
                     hideAlerts();
                     setTimeout(function () {
                     	$SQ('#sayso-starbar #starbar-player-console').css('display', 'none');
@@ -408,8 +409,9 @@ $SQ(function(){
                     	$SQ('#sayso-starbar #starbar-player-console').fadeTo(157, 1); // 157 found to work best for some bizarre reason
                     	$SQ('#sayso-starbar #sb_starbar-logoSemiStowed').fadeTo(500, 0);
 					}, 1000);
-            	updateState('sb_starbar-visStowed');
-            });
+            		updateState('sb_starbar-visStowed');
+            	}
+            );
 	    }
 	    function _openBar () {
 	        btnToggleVis.attr('class','');
@@ -419,17 +421,19 @@ $SQ(function(){
             btnSaySoLogo.css('width','100px');
 			elemPlayerConsole.addClass('sb_starbar-visBG');
             hideAlerts();
-            elemPlayerConsole.animate({
-                    width: '100%'
-                }, 500, function() {
+            elemPlayerConsole.animate(
+            	{ width: '100%' },
+            	500,
+            	function() {
                     // Animation complete.
                     $SQ(this).attr('class','').addClass('sb_starbar-visOpen');
                     elemStarbarMain.fadeIn('fast');
                     elemVisControls.fadeIn('fast');
-                    btnToggleVis.addClass('sb_btnStarbar-open');
+                    btnToggleVis.attr('class','').addClass('sb_btnStarbar-open');
                     showAlerts();
                     updateState('sb_starbar-visOpen');
-            });
+            	}
+            );
 	    }
 		return false;
 

@@ -34,10 +34,26 @@
     };
     
     var sayso = window.sayso;
+
+    // starbar display conditions
+    
+    var noSkipList = ['facebook.com/pages/SaySo'];
+    
     if (window.opener) {
-        sayso.log('This is a popup. Starbar will not be loaded.');
-        return;
+        var skip = true;
+        for (var i = 0; i < noSkipList.length; i++) {
+            if (currentUrl.match(urlMatchPrepend + noSkipList[i])) {
+                // do not load starbar for this page
+                skip = false;
+                break;
+            }
+        }
+        if (skip) {
+            sayso.log('This is a popup. Starbar will not be loaded.');
+            return;
+        }
     }
+    
     var skipList = ['facebook.com/dialog', 'twitter.com/intent'];
     
     for (var i = 0; i < skipList.length; i++) {
@@ -46,6 +62,7 @@
             return;
         }
     }
+    // --- end starbar display conditions
     
     var starbarContainer = document.getElementById('sayso-starbar');
     

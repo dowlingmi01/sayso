@@ -82,7 +82,7 @@ abstract class Game_Starbar extends Game_Abstract {
                 }
                 $survey = new Survey();
                 $survey->loadData($typeId);
-                if ($type === 'poll') {
+                if ($type === self::SHARE_POLL) {
                     if ($survey->premium) {
                         $this->submitAction('POLL_PREMIUM_SHARE');
                     } else {

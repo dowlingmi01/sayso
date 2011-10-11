@@ -84,7 +84,10 @@ class Starbar_RemoteController extends Api_AbstractController
                         $externalUser->install_begin_time = new Zend_Db_Expr('now()');
                         $externalUser->save(); // <-- inserts/updates based on uniques
                         
-                        Api_UserSession::getInstance($this->user_key)->logoutAndDestroy();
+                        $session = Api_UserSession::getInstance($this->user_key);
+                        // reset all internal session namespaces and variables
+                        // plus regenerate the id, however re-use the session file itself
+                        $this->user_key = $session->reset()->getKey();
                         
                         return $this->_forward(
                             'post-install-deliver', 

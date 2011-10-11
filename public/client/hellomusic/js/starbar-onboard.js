@@ -33,10 +33,16 @@
         // Custom setup 
         
         var elemPage = $SQ('#sayso-onboard');
+				var elemOverlay = $SQ('#sayso-onboard #sso_wrapper');
 
         elemPage.height($SQ(window).height());
         elemPage.width($SQ(window).width());
         
+				$(window).resize(function() {
+					elemOverlay.css('margin-left','-300px');
+					elemOverlay.css('left','50%');
+				});
+				
         $SQ('#sso_wrapper input[type=radio]').attr('checked', false);
         
         $SQ('#sayso-get-app').click(function(e) {

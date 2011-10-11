@@ -39,8 +39,9 @@
         elemPage.width($SQ(window).width());
         
 				$SQ(window).resize(function() {
-					elemOverlay.css('marginLeft','-300px');
+					console.log('boo');
 					elemOverlay.css('left','50%');
+					elemOverlay.css('margin-left','-300px');
 				});
 				
         $SQ('#sso_wrapper input[type=radio]').attr('checked', false);

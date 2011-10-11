@@ -777,17 +777,27 @@
 	width: 135px;
 }
 
-#sayso-starbar #sb_colorbox .sb_rewardItem .sb_user-points-box .sb_progressBar{
+#sayso-starbar #sb_colorbox .sb_rewardItem .sb_user-points-box{
 	width: 85%;
+	margin: 0px auto;
 }
 
-#sayso-starbar #sb_colorbox .sb_rewardItem .sb_user-points-box{
-	margin: 10px 0px;
+#sayso-starbar #sb_colorbox .sb_rewardItem .sb_user-points-box .sb_progressBar{
+	width: auto;
 }
 
 #sayso-starbar #sb_colorbox .sb_rewardItem .sb_column50{
 	font-size: 10px;
 	line-height: 15px;
+}
+
+#sayso-starbar #sb_colorbox .sb_rewardItem .sb_column50:last-child{
+	float: right;
+}
+
+#sayso-starbar #sb_colorbox .sb_rewardItem .sb_column50 .sb_user-points-box{
+	margin: 0;
+	width: 90%;
 }
 
 #sayso-starbar #sb_colorbox .sb_rewardItem .sb_column50 .sb_user-points-box .sb_progressBar{

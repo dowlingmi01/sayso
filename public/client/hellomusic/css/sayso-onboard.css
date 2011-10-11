@@ -194,7 +194,7 @@ html {
 	background-repeat: repeat-x;
 	background-color: #000;
 	border: 1px solid #bdd93b;
-	position: relative;
+	position: absolute;
 	top: 50%;
 	left: 50%;
 	margin: -215px 0px 0px -300px;

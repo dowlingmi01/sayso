@@ -21,18 +21,19 @@
     var sayso = window.sayso;
 
     if (!window.hasOwnProperty('$SQ')) {
-        var jQueryInclude = document.createElement('script'); 
+        var jQueryInclude = document.createElement('script');         
         jQueryInclude.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
         document.getElementsByTagName('body')[0].appendChild(jQueryInclude);
     }
     
     var loadTimer = new jsLoadTimer();
     loadTimer.start('$SQ', function () {
+			
         
         // -------------------------------------------
         // Custom setup 
         
-        var elemPage = $SQ('#sayso-onboard');
+        /*var elemPage = $SQ('#sayso-onboard');
 				var elemOverlay = $SQ('#sayso-onboard #sso_wrapper');
 
         elemPage.height($SQ(window).height());
@@ -42,7 +43,10 @@
 					console.log('boo');
 					elemOverlay.css('left','50%');
 					elemOverlay.css('margin-left','-300px');
-				});
+				});*/
+				
+				
+				console.log('boo');
 				
         $SQ('#sso_wrapper input[type=radio]').attr('checked', false);
         

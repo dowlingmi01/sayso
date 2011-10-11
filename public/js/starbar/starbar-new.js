@@ -688,10 +688,10 @@ $SQ(function(){
             case 'refresh' :
                 switch (playerClass) {
                     case 'sb_starbar-visOpen':
-                        if (!btnToggleVis.hasClass('sb_btnStarbar-visOpen')) _openBar(false);
+                        if (!btnToggleVis.hasClass('sb_btnStarbar-open')) _openBar(false);
                         break;
                     case 'sb_starbar-visStowed':
-                        if (!btnToggleVis.hasClass('sb_btnStarbar-visStowed')) _stowBar(false);
+                        if (!btnToggleVis.hasClass('sb_btnStarbar-stowed')) _stowBar(false);
                         break;
                 }
                 break;
@@ -703,7 +703,7 @@ $SQ(function(){
 
 	        elemStarbarMain.fadeOut('fast');
             elemPopBoxVisControl.fadeOut('fast');
-            btnToggleVis.attr('class','').addClass('sb_btnStarbar-visClosed');
+            btnToggleVis.attr('class','').addClass('sb_btnStarbar-closed');
             btnSaySoLogo.css('backgroundPosition','2px 0px');
             elemPlayerConsole.animate(
             	{ width: '100' },
@@ -718,7 +718,7 @@ $SQ(function(){
                     	elemPlayerConsole.hide();
 					}, 500);
                     setTimeout(function () {
-			            btnToggleVis.attr('class','').addClass('sb_btnStarbar-visStowed');
+			            btnToggleVis.attr('class','').addClass('sb_btnStarbar-stowed');
                     	elemPlayerConsole.css('width','');
                     	elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
                     	elemPlayerConsole.show();

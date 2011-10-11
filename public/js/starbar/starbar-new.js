@@ -417,8 +417,6 @@ $SQ(function(){
 	        btnToggleVis.attr('class','');
             elemSaySoLogoBorder.hide();
             elemVisControls.hide();
-            btnSaySoLogo.css('backgroundPosition','');
-            btnSaySoLogo.css('width','100px');
 			elemPlayerConsole.addClass('sb_starbar-visBG');
             hideAlerts();
             elemPlayerConsole.animate(

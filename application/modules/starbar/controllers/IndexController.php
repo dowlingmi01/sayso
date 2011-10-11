@@ -64,6 +64,11 @@ class Starbar_IndexController extends Api_AbstractController
     	$user = $session->getUser();
 		$this->view->user = $user;
 		
+		// Facebook Connection
+		$facebookSocial = new User_Social();
+		$facebookSocial->loadByUserIdAndProvider($user->id, 'facebook');
+		$this->view->assign('facebook_social', $facebookSocial);
+
 		// Gamer
 		// make sure this user (and session) has a gaming user associated
 		$gamer = Gamer::create($user->getId(), $starbar->getId());

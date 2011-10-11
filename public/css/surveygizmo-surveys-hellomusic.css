@@ -17,18 +17,15 @@
 	margin:0 auto;
 	}
 .sg-header {
-	margin: 0 0 10px 0;
-	padding:5px;
+	margin: 0;
 	min-height:40px;
 	}
 .sg-content {
 	clear:both;
 	margin:0;
-	padding: 5px;
 	}
 .sg-footer { 
-	min-height:40px;
-	padding:15px 0 0 0;
+	padding:0;
 	text-align:center;
 	margin:20px 0 0 0;
 	}
@@ -71,7 +68,7 @@
 
 /* !----- Questions ----- */
 .sg-question {
-	margin: 0 0;
+	margin: 0;
 	clear: both;
 	border-bottom: 0;
 	}
@@ -81,8 +78,16 @@
 
 
 .sg-question-options {
-	padding: 10px 0 0 0;
+	padding: 0;
 	font-size: 12px;
+}
+
+
+ul.sg-list-vertical li {
+	clear: none !important;
+	float: left;
+	min-width: 220px;
+	margin: 0 10px 0 0;
 }
 
 /* !----- Buttons ----- */
@@ -126,9 +131,12 @@
 		}
 
 .sg-button-bar {
-	float: left;
-	margin: 0px 0 10px 0;
-	width: 100%;
+	position: fixed;
+	bottom: 0;
+	border-top: 10px solid #F3F3F3;
+	border-bottom: 10px solid #F3F3F3;
+	background: #F3F3F3;
+	width: 98%;
 	}
 
 #sg_NextButton {
@@ -142,7 +150,10 @@
 }
 	
 .sg-progress-bar {
-	margin-top: 4px;
+	position: fixed;
+	left: 50%;
+	margin-left: -100px;
+	bottom: 10px;
 	clear: none;
 	}
 .sg-powered-by {

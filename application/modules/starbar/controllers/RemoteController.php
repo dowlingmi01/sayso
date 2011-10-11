@@ -468,6 +468,10 @@ class Starbar_RemoteController extends Api_AbstractController
         $user = $starbar->getUser();
         $this->view->assign('starbar', $starbar);
         $this->view->assign('user', $user);
+
+		$facebookSocial = new User_Social();
+		$facebookSocial->loadByUserIdAndProvider($user->id, 'facebook');
+		$this->view->assign('facebook_social', $facebookSocial);
         
         // render the view manually, we will pass it back in the JSON
         $this->render();

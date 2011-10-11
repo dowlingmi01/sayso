@@ -39,7 +39,11 @@
 						<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/logo_hellomusic.png" alt="HelloMusic logo" />
 					</div><!-- .logo -->
 					<div class="sb_userImg">
-						<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="User Image" />
+						<? if ($this->facebook_social->external_id) { ?>
+							<img src="http://graph.facebook.com/<?= $this->facebook_social->external_id ?>/picture?type=square" alt="<?= $user->getTitle() ?>" />
+						<? } else { ?>
+							<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="<?= $user->getTitle() ?>" />
+						<? } ?>
 					</div><!-- .userImg -->
 					<div class="sb_content">
 						<h2>Hi <?= $user->getTitle() ?></h2>

@@ -32,6 +32,11 @@ $SQ(function(){
 	        $SQ('#sb_popBox_onboard a.sb_surveyLaunch').bind('click', function () {
 	            $SQ(document).trigger('onboarding-complete');
 	        });
+	        $SQ('body').click(function (e) {
+	            if (!$SQ(e.target).parents('#sso_wrapper').length) {
+	                $SQ('#sayso-onboard').fadeOut('slow');
+	            }
+	        });
 	    }, 500);
 	});
 

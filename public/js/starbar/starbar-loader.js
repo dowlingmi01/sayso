@@ -319,7 +319,7 @@
                                     )
                                 ) {
                                     // trigger onboarding to display (see starbar-new.js where this is handled)
-                                    setTimeout(function () { $SQ(document).trigger('onboarding-display'); }, 2500);
+                                    setTimeout(function () { $SQ(document).trigger('onboarding-display'); }, 2000);
                                     // bind when the last step of the onboarding is selected, to mark onboarding done
                                     // see starbar-new.js where this is triggered
                                     $SQ(document).bind('onboarding-complete', function () { 

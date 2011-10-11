@@ -48,6 +48,9 @@
         $SQ('#sso_wrapper input[type=radio]').bind('change', function () {
             $SQ('span.sso_textError').fadeOut('slow');
             $SQ('#sayso-get-app').removeClass('sso_theme_button_disabled');
+            if (navigator.userAgent.match('Chrome')) {
+                $SQ('#sayso-install-tip').text('TIP: refresh this page after install.').fadeIn(1500);
+            }
         });
         
         // -------------------------------------------
@@ -68,6 +71,15 @@
                     }
                 }
                 return '';
+            }
+            
+            function setCookie(name, value, days) {
+                var dateTime = new Date();
+                if (days) {
+                    dateTime.setDate(dateTime.getDate() + days);
+                }
+                var value = escape(value) + (days ? '; expires=' + dateTime.toUTCString() : '') + '; path=/';
+                document.cookie = name + '=' + value;
             }
             
             // -------------------------------------------
@@ -135,6 +147,8 @@
             $SQ('#sayso-get-app').addClass('sso_theme_button_disabled').text('Installed!').removeAttr('href');
             $SQ('#sso_wrapper input[type=radio]').attr('checked', 'checked');
             $SQ('span.sso_textError').text('');
+            setTimeout(function () { $SQ('#sso_wrapper').fadeOut('slow'); }, 1000);
+            
         });
     });
     

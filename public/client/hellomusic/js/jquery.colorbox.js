@@ -58,7 +58,7 @@
     },
 	
     // Abstracting the HTML and event identifiers for easy rebranding
-    colorbox = 'colorbox',
+    colorbox = 'sb_colorbox',
     prefix = 'cbox',
     boxElement = prefix + 'Element',
     

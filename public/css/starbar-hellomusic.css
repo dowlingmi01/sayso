@@ -858,11 +858,15 @@
 	width: 98.5%;
 }
 
+#sayso-starbar #sb_popBox_user-share .sb_header{
+	margin-bottom: 0 !important;
+}
+
 #sayso-starbar #sb_popBox_user-share .sb_importShare{
 	background-color: #7c7364;
 	color: #fff;
 	margin: 0px 0px 0px 0px !important;
-	padding: 2px 5px 5px 5px;
+	padding: 0px 5px 2px 5px;
 	line-height: 14px !important;
 	text-transform: uppercase;
 	font-weight: bold;

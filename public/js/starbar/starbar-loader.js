@@ -37,27 +37,27 @@
 
     // starbar display conditions
     
-    var noSkipList = ['facebook.com/pages/SaySo'];
+    var whiteList = ['facebook.com/pages/SaySo'];
     
     if (window.opener) {
         var skip = true;
-        for (var i = 0; i < noSkipList.length; i++) {
-            if (currentUrl.match(urlMatchPrepend + noSkipList[i])) {
-                // do not load starbar for this page
+        for (var i = 0; i < whiteList.length; i++) {
+            if (currentUrl.match(urlMatchPrepend + whiteList[i])) {
                 skip = false;
                 break;
             }
         }
         if (skip) {
+            // do not load starbar for this page
             sayso.log('This is a popup. Starbar will not be loaded.');
             return;
         }
     }
     
-    var skipList = ['facebook.com/dialog', 'twitter.com/intent'];
+    var blackList = ['facebook.com/dialog', 'twitter.com/intent'];
     
-    for (var i = 0; i < skipList.length; i++) {
-        if (currentUrl.match(urlMatchPrepend + skipList[i])) {
+    for (var i = 0; i < blackList.length; i++) {
+        if (currentUrl.match(urlMatchPrepend + blackList[i])) {
             // do not load starbar for this page
             return;
         }

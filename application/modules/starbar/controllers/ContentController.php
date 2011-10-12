@@ -263,7 +263,9 @@ class Starbar_ContentController extends Api_GlobalController
     			if (isset($fbProfile['username']))
     				$userSocial->username = $fbProfile['username'];
     			$userSocial->save();
-
+                
+    			$this->_getGame()->associateSocialNetwork($userSocial);
+                
     			// Show user congrats notification
     			$message = new Notification_Message();
     			$message->loadDataByUniqueFields(array('short_name' => 'FB Account Connected'));
@@ -334,6 +336,8 @@ class Starbar_ContentController extends Api_GlobalController
 				$userSocial->identifier = $accessToken['user_id'];
 				$userSocial->username = $accessToken['screen_name'];
 				$userSocial->save();
+				
+				$this->_getGame()->associateSocialNetwork($userSocial);
 				
     			// Show user congrats notification
     			$message = new Notification_Message();

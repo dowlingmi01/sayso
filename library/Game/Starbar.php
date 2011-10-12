@@ -111,6 +111,26 @@ abstract class Game_Starbar extends Game_Abstract {
         $this->submitAction('PROMOS_VIEW');
     }
     
+    public function completeProfile (User $user) {
+        if ($user->username && $user->primary_email_id) {
+            $this->submitAction('PROFILE_COMPLETE');
+        }
+    }
+    
+    public function associateSocialNetwork (User_Social $userSocial) {
+        switch ($userSocial->provider) {
+            case 'facebook' :
+                $this->submitAction('FACEBOOK_ASSOCIATE');
+                break;
+            case 'twitter' :
+                $this->submitAction('TWITTER_ASSOCIATE');
+                break;
+            default :
+                throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Wrong or missing social user provider (' . $userSocial->provider . ') supplied to Game_Starbar::associateSocialNetwork().'));
+                break;
+        }
+    }
+    
     /**
      * Override parent::submitAction to grab user profile with updated 
      * points/currencies *after* the transaction has fired and load that

@@ -21,6 +21,7 @@
     var sayso = window.sayso;
 
     if (!window.hasOwnProperty('$SQ')) {
+        window.sayso.loading = 'jquery';
         var jQueryInclude = document.createElement('script');         
         jQueryInclude.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
         document.getElementsByTagName('body')[0].appendChild(jQueryInclude);
@@ -29,7 +30,8 @@
     var loadTimer = new jsLoadTimer();
     loadTimer.start('$SQ', function () {
 			
-        
+        window.sayso.loading = null;
+
         // -------------------------------------------
         // Custom setup 
         

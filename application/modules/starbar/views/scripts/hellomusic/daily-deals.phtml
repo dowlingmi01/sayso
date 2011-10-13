@@ -9,9 +9,9 @@
 	});
 </script>
 <div class="sb_header">
-	<h2 class="sb_title"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/logo_hellomusic.png" alt="Hello Music logo" width="70" /> Deals</h2>
+	<h2 class="sb_title"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/logo_hellomusic.png" alt="HelloMusic logo" width="70" /> Deals</h2>
 </div><!-- .sb_header -->
-<p>Act fast, deals don't last long! And remember to keep earning <strong class="sb_theme_textHighlight">Notes</strong> &amp; <strong class="sb_theme_textHighlight">Chops</strong> by sharing.</p>
+<p>Act fast, deals don't last long! And remember to keep earning <strong class="sb_theme_textHighlight sb_tooltip" title="Notes - are almost as good as cash and can be redeemed for goods in the Rewards Center.">Notes</strong> &amp; <strong class="sb_theme_textHighlight" title="Chops - determine your access to increasingly important levels of influence.">Chops</strong> by sharing.</p>
 <ul class="sb_listDeals">
 	<? foreach ($this->deals as $deal) { ?>
 		<li>
@@ -42,7 +42,7 @@
 			</div><!-- .sb_dealInfo -->
 			<? $facebookCallbackUrl = str_replace("THE_DEAL_ID", $deal->ID, $this->facebook_share_callback_url) ?>
 			<a class="sb_externalShare" href="#"
-				onclick="window.open('http://www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($deal->itemURL) ?>&caption=<?= urlencode($deal->shareText) ?>&picture=<?= urlencode($deal->itemImageURL) ?>&redirect_uri=<?= urlencode($facebookCallbackUrl) ?>', 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450'); return false;">
+				onclick="window.open('http://www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($deal->itemURL) ?>&caption=<?= urlencode($deal->shareText) ?>&picture=<?= urlencode($deal->itemImageURL) ?>&redirect_uri=<?= urlencode($facebookCallbackUrl) ?>&name=<?= $deal->name ?>&description=<?= urlencode($this->facebook_description) ?>', 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450'); return false;">
 				<img src="http://<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
 			</a>
 			<a class="twitter-share-button"

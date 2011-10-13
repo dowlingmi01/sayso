@@ -226,12 +226,7 @@ $SQ(function(){
 					// set a delay before closing the alert element
 					if ($SQ(this).hasClass('sb_alert')){
 						var notification = $SQ(this).closest('.sb_starbar-alert');
-						var notification_id = notification.attr('id').match(/([0-9]+)/);
-						$SQ.ajaxWithAuth({
-							url : 'http://'+sayso.baseDomain+'/api/user/notification-close?message_id='+notification_id,
-							success : function (response, status) {}
-						});
-						hideAlerts(notification);
+						hideAlerts(notification, true, true);
 					}
 
 					// if it was already open, close it and remove the class. otherwise, open the popbox
@@ -242,7 +237,7 @@ $SQ(function(){
 
 						// check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
 		  				var thisPopBoxSrc = $SQ(this).attr('href');
-			  			openPopBox(thisPopBox, thisPopBoxSrc, true);
+			  			openPopBox(thisPopBox, thisPopBoxSrc, true, $SQ(this).hasClass('sb_alert'));
 
 						// try to turn on the nav highlight if it opened a "large" sub popbox
 						if (targetPopBox != ''){
@@ -376,12 +371,21 @@ $SQ(function(){
 	* src: the URL to load into the popBox (set to false to not load via AJAX)
 	* withLoadingElement: true to insert loading elements before loading via AJAX (ignored if src is false)
 	*/
-	function openPopBox(popBox, src, withLoadingElement){
+	function openPopBox(popBox, src, withLoadingElement, fromNotification){
 		var ajaxContentContainer = null;
 		var loadingElement = null;
-		
+		var alertContainers = $SQ('.sb_alerts_container');
+
+		// Close the last (i.e. the visible) alert from each alert (notification) container if the user opens a popBox
+		// Unless the popBox is opening because the user clicked such an alert
+		if (!fromNotification && alertContainers.length > 0) {
+			alertContainers.each(function(){
+		 		var alertsInContainer = $SQ('.sb_starbar-alert', $SQ(this));
+		 		if (alertsInContainer.length > 0) hideAlerts(alertsInContainer.last(), true, true);
+			});
+		}
 		closePopBox();
-		
+
 		// if there's a colorbox open, close it
 		$SQ.sb_colorbox.close();
 
@@ -456,25 +460,34 @@ $SQ(function(){
 			elemAlerts = $SQ('#sayso-starbar #starbar-player-console .sb_starbar-alert');
 			if (elemAlerts.length > 0) {
 				elemAlerts.each(function(){
-					// show alerts that aren't empty.
-					if ($SQ('a',this).html().length != 0){
-						$SQ(this).delay(200).slideDown('fast');
-					}
+					$SQ(this).delay(200).slideDown('fast');
 				});
 			}
 		}
 		return;
 	}
 
-	function hideAlerts(target){
+	function hideAlerts(target, performAjaxCall, animate){
 		if (target){
-			target.delay(300).slideUp('fast');
-			// setTimeout is called in the global scope, so it needs to find the target again
-			setTimeout("$SQ('#"+target.attr('id')+"').empty()", 300);
-		}else{
+			if (performAjaxCall) {
+				var notification_id = target.attr('id').match(/([0-9]+)/);
+				$SQ.ajaxWithAuth({
+					url : 'http://'+sayso.baseDomain+'/api/user/notification-close?message_id='+notification_id,
+					success : function (response, status) {}
+				});
+			}
+
+			if (animate) {
+				target.delay(300).slideUp('fast');
+				// setTimeout is called in the global scope, so it needs to find the target again
+				setTimeout("$SQ('#"+target.attr('id')+"').annihilate()", 600);
+			} else {
+				target.annihilate();
+			}
+		} else {
 			elemAlerts = $SQ('#sayso-starbar #starbar-player-console .sb_starbar-alert');
 			elemAlerts.each(function(){
-				$SQ(this).hide();
+				hideAlerts($SQ(this), performAjaxCall, animate);
 			});
 		}
 	}
@@ -483,12 +496,22 @@ $SQ(function(){
 		$SQ.ajaxWithAuth({
 			url : 'http://'+sayso.baseDomain+'/api/user/notification-update?renderer=jsonp&starbar_id='+sayso.starbar.id,
 			success : function (response, status, jqXHR) {
+				var randomString = $SQ.randomString(10);
 				var newAlerts = false;
+				
+				elemAlerts = $SQ('#sayso-starbar #starbar-player-console .sb_starbar-alert');
+				if (elemAlerts.length > 0) {
+					elemAlerts.each(function(){
+						$SQ(this).addClass('sb_starbar-alert_'+randomString);
+					});
+				}
+				
 				if (response.data.messages.length > 0) {
 					$SQ.each(response.data.messages, function (index, info) {
 						// Check if an alert with that message already exists, if so, do nothing
 						var id = info[0];
-						if ($SQ('#starbar-alert-'+id).length == 0) {
+						var currentAlert = $SQ('#starbar-alert-'+id);
+						if (currentAlert.length == 0) { // New Alert
 							var notification_area = info[1];
 							var message = info[2];
 							var popbox_to_open = info[3];
@@ -511,8 +534,18 @@ $SQ(function(){
 							}
 
 							newAlerts = true;
+						} else { // Alert already exist, remove the class with the random string that we just added
+							currentAlert.removeClass('sb_starbar-alert_'+randomString);
 						}
 					});
+
+					if (elemAlerts.length > 0) {
+						elemAlerts.each(function(){
+							if ($SQ(this).hasClass('sb_starbar-alert_'+randomString)) { // Alert has been closed elsewhere, or should no longer be shown!
+								hideAlerts($SQ(this), false, true); // Animate but don't submit anything via ajax, since alert should already be closed for the code to get here
+							}
+						});
+					}
 
 					if (newAlerts) {
 						initElements();
@@ -704,7 +737,7 @@ $SQ(function(){
 	        elemStarbarMain.fadeOut('fast');
             elemPopBoxVisControl.fadeOut('fast');
             btnToggleVis.attr('class','').addClass('sb_btnStarbar-closed');
-            btnSaySoLogo.css('backgroundPosition','2px 0px');
+            btnSaySoLogo.css('backgroundPosition','3px 0px');
             elemPlayerConsole.animate(
             	{ width: '100' },
                 500,
@@ -719,6 +752,7 @@ $SQ(function(){
 					}, 500);
                     setTimeout(function () {
 			            btnToggleVis.attr('class','').addClass('sb_btnStarbar-stowed');
+            			btnSaySoLogo.css('backgroundPosition','');
                     	elemPlayerConsole.css('width','');
                     	elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
                     	elemPlayerConsole.show();

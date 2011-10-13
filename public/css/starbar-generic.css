@@ -337,6 +337,8 @@ html {
 	position: absolute;
 	top: 25px;
 	left: 2px;
+	width: 100px;
+	height: 35px;
 	z-index: 214747000;
 }
 #sayso-starbar #starbar-player-console .sb_starbar-logo {
@@ -352,21 +354,31 @@ html {
 	top: 25px;
 	left: 0px;
 }
-#sayso-starbar #starbar-player-console #sb_starbar-logo:hover {
+#sayso-starbar #starbar-player-console .sb_starbar-logo:hover {
 	background-position: 10px -35px;
 }
-#sayso-starbar #starbar-player-console.sb_starbar-visClosed #sb_starbar-logo {
+#sayso-starbar #starbar-player-console.sb_starbar-visClosed .sb_starbar-logo {
 	background-position: 3px 0px;
 }
-#sayso-starbar #starbar-player-console.sb_starbar-visClosed #sb_starbar-logo:hover {
+#sayso-starbar #starbar-player-console.sb_starbar-visClosed .sb_starbar-logo:hover {
 	background-position: 3px -35px;
 }
-#sayso-starbar #starbar-player-console.sb_starbar-visStowed #sb_starbar-logo, #sayso-starbar #sb_starbar-logoSemiStowed {
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed .sb_starbar-logo:hover {
+	background-position: 3px -35px;
+}
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed .sb_starbar-logo {
+	background-position: 3px 0px;
+}
+
+#sayso-starbar #sb_starbar-logoSemiStowed .sb_starbar-logo {
 	background-image: url('../images/generic/logo_sayso.png');
 	background-repeat: no-repeat;
-	background-position: 0px 0px;
+	background-position: 1px 0px;
+	width: 100px;
 	height: 35px;
+	display: inline-block;
 }
+
 #sayso-starbar #starbar-player-console #sb_starbar-logoBorder {
 	height: 53px;
 	width: 10px;
@@ -1175,7 +1187,6 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	position: relative;
 	border: none;
 	text-decoration: none !important;
-	cursor: pointer !important;
 }
 
 #sayso-starbar #starbar-player-console input.sb_theme_button{

@@ -3,16 +3,16 @@
 		<div class="sb_header">
 			<h2 class="sb_titlePlain">Welcome Back, <strong class="sb_theme_textHighlight"><?= $this->user->getTitle() ?></strong></h2>
 		</div><!-- .sb_header -->
-		<div class="sb_scrollPane">
+		<div>
 			<ul class="sb_lineList">
 				<li>
 					<? if ($this->facebook_social->identifier) { ?>
 						<img class="sb_userImg sb_alignLeft" src="http://graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $this->user->getTitle() ?>" />
 					<? } else { ?>
-						<img class="sb_userImg sb_alignLeft" src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.png" alt="<?= $this->user->getTitle() ?>" />
+						<img class="sb_userImg sb_alignLeft" src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="<?= $this->user->getTitle() ?>" />
 					<? } ?>
 					<p style="margin-left: 50px">
-						<strong>Username:</strong> <span id="sb_profile_username" class="sb_jeip"><?= $this->user->getTitle() ?></span><br />
+						<strong>Username:</strong> <span id="sb_profile_username" <? if (!$this->user->username) { ?>class="sb_jeip"<? } ?>><?= $this->user->getTitle() ?></span><br />
 						<?= $this->user_email->email ?>
 					</p>
 				</li>
@@ -36,6 +36,7 @@
 				</li>
 				<li>
 					<h2 class="sb_titlePlain">Link Your Accounts</h2>
+					<a style="float: right" href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/reset-external", success : function (r, s) {} });'>Reset account links</a>
 					<p>
 						<? if ($this->facebook_social->user_id) { ?>
 							<span id="sb_profile_facebook" class="sb_connect_facebook sb_connected">http://www.facebook.com</span>
@@ -48,10 +49,9 @@
 							<span href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/twitter-connect-redirect" id="sb_profile_twitter" class="sb_connect_twitter sb_unconnected">http://www.twitter.com</span>
 						<? } ?>
 					</p>
-					<!--<a href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/reset-external", success : function (r, s) {} });'>Reset account links</a>-->
 				</li>
 			</ul>
-		</div><!-- .sb_scrollPane -->
+		</div>
 	</div><!-- .sb_column60 -->
 	<div class="sb_column40">  	
 		<div class="sb_scrollPane" style="height: 260px;">
@@ -60,9 +60,9 @@
 		</div><!-- .sb_header -->
 		<ul class="sb_lineList">
 			<li>
-				<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/polls" class="sb_nav_element" rel="sb_popBox_polls">4 New Polls</a><br />
-				<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/surveys" class="sb_nav_element" rel="sb_popBox_surveys">2 New Polls</a><br />
-				<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/daily-deals" class="sb_nav_element" rel="sb_popBox_daily-deals">6 New Daily Deals</a>
+				<? if ($this->count_new_polls) { ?><a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/polls" class="sb_nav_element" rel="sb_popBox_polls"><?= $this->count_new_polls ?> New Polls</a><br /><? } ?>
+				<? if ($this->count_new_surveys) { ?><a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/surveys" class="sb_nav_element" rel="sb_popBox_surveys"><?= $this->count_new_surveys ?> New Surveys</a><br /><? } ?>
+				<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/daily-deals" class="sb_nav_element" rel="sb_popBox_daily-deals">4 New Daily Deals</a>
 			</li>
 		</ul>
 		<div class="sb_header">
@@ -79,7 +79,7 @@
 		</p>
 		<br />
 		<p>
-			<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-share" class="sb_theme_button sb_nav_element" rel="sb_popBox_user-share"><span class="sb_theme_buttonArrow" style="font-size: 12px;">Recommend to a Friend</span></a>
+			<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-share" class="sb_theme_button sb_nav_element" rel="sb_popBox_user-share"><span class="sb_theme_buttonArrow">Recommend to a Friend</span></a>
 		</p>
     <br />    
 		<div class="sb_header">

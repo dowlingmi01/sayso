@@ -66,46 +66,40 @@ class Starbar_ContentController extends Api_GlobalController
     // Embed a single SG poll. Expects "survey_id" passed via URL (GET)
     public function embedPollAction ()
     {
+    	$this->_validateRequiredParameters(array('survey_id'));
     	// this page is fetched via an iframe, not ajax;
     	$this->_usingJsonPRenderer = false;
 
-		$request = $this->getRequest();
+		$survey = new Survey();
+		$survey->loadData($this->survey_id);
 
-		$surveyId = (int) $request->getParam('survey_id');
+		$this->view->assign('survey', $survey);
 
-		if ($surveyId) {
-			$survey = new Survey();
-			$survey->loadData($surveyId);
+		$bundleOfJoy = $this->_getBundleOfJoy($this->survey_id);
+		$this->view->assign('bundle_of_joy', $bundleOfJoy);
 
-			$this->view->assign('survey', $survey);
-
-			$bundleOfJoy = $this->_getBundleOfJoy($surveyId);
-			$this->view->assign('bundle_of_joy', $bundleOfJoy);
-
-			// @todo point this to onboarding
-			$shareLink = "http://www.say.so/";
-			$shareText = "Just answered '".$survey->title."' on Hello Music's Say.So BeatBar";
-			$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared=poll&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
-			$this->_assignShareInfoToView($shareLink, $shareText, $facebookCallbackUrl);
-		}
+		// @todo point this to onboarding
+		$shareLink = "http://www.say.so/";
+		
+		$shareText = "Poll time! Just took the '".$survey->title."' poll on Hello Music's Say.So Beat Bar";
+		$facebookTitle = $survey->title;
+		$facebookDescription = "Like Music? You can get the Beat Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
+		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared=poll&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
+		$this->_assignShareInfoToView($shareLink, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
     }
 
     // Embed a single SG survey. Expects "survey_id" passed via URL (GET)
     public function embedSurveyAction ()
     {
-		$request = $this->getRequest();
+    	$this->_validateRequiredParameters(array('survey_id'));
 
-		$surveyId = (int) $request->getParam('survey_id');
+		$survey = new Survey();
+		$survey->loadData($this->survey_id);
 
-		if ($surveyId) {
-			$survey = new Survey();
-			$survey->loadData($surveyId);
+		$this->view->assign('survey', $survey);
 
-			$this->view->assign('survey', $survey);
-
-			$bundleOfJoy = $this->_getBundleOfJoy($surveyId);
-			$this->view->assign('bundle_of_joy', $bundleOfJoy);
-		}
+		$bundleOfJoy = $this->_getBundleOfJoy($this->survey_id);
+		$this->view->assign('bundle_of_joy', $bundleOfJoy);
 	}
 
     public function surveyUnavailableAction ()
@@ -116,33 +110,11 @@ class Starbar_ContentController extends Api_GlobalController
 
     public function surveyDisqualifyAction ()
     {
-    	// this page is fetched via an iframe, not ajax;
-    	$this->_usingJsonPRenderer = false;
-
-		$request = $this->getRequest();
-		$surveyId = $request->getParam('survey_id');
-		if ($surveyId) {
-			$survey = new Survey();
-			$survey->loadData($surveyId);
-
-			$this->view->assign('survey', $survey);
-		}
-
-		// @todo point this to onboarding
-		$shareLink = "http://www.say.so/";
-		// @todo share text to vary based on starbar_id?
-		$shareText = "I didn't qualify for '".$survey->title."' on Hello Music's Say.So BeatBar, but maybe you will!";
-		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
-		$this->_assignShareInfoToView($shareLink, $shareText, $facebookCallbackUrl);
-	}
-
-    public function surveyCompleteAction ()
-    {
+    	$this->_replaceBundleOfJoyWithGetVariables();
     	$this->_validateRequiredParameters(array('survey_id'));
     	// this page is fetched via an iframe, not ajax;
     	$this->_usingJsonPRenderer = false;
 
-		$request = $this->getRequest();
 		$survey = new Survey();
 		$survey->loadData($this->survey_id);
 
@@ -151,25 +123,46 @@ class Starbar_ContentController extends Api_GlobalController
 		// @todo point this to onboarding
 		$shareLink = "http://www.say.so/";
 		// @todo share text to vary based on starbar_id?
-		$shareText = "Survey time! Just filled out '".$survey->title."' on Hello Music's Say.So BeatBar";
+		$shareText = "Survey time! Just filled out '".$survey->title."' on Hello Music's Say.So Beat Bar";
+		$facebookTitle = $survey->title;
+		$facebookDescription = "Like Music? You can get the Beat Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
 		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
-		$this->_assignShareInfoToView($shareLink, $shareText, $facebookCallbackUrl);
+		$this->_assignShareInfoToView($shareLink, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
+	}
+
+    public function surveyCompleteAction ()
+    {
+    	$this->_replaceBundleOfJoyWithGetVariables();
+    	$this->_validateRequiredParameters(array('survey_id'));
+    	// this page is fetched via an iframe, not ajax;
+    	$this->_usingJsonPRenderer = false;
+
+		$survey = new Survey();
+		$survey->loadData($this->survey_id);
+
+		$this->view->assign('survey', $survey);
+
+		// @todo point this to onboarding
+		$shareLink = "http://www.say.so/";
+		// @todo share text to vary based on starbar_id?
+		$shareText = "Survey time! Just filled out '".$survey->title."' on Hello Music's Say.So Beat Bar";
+		$facebookTitle = $survey->title;
+		$facebookDescription = "Like Music? You can get the Beat Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
+		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
+		$this->_assignShareInfoToView($shareLink, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
 	}
 
     public function surveyRedirectAction ()
     {
+    	$this->_validateRequiredParameters(array('survey_id'));
     	// this page is fetched via an iframe, not ajax;
     	$this->_usingJsonPRenderer = false;
 
-		$request = $this->getRequest();
-		$surveyId = $request->getParam('survey_id');
-		if ($surveyId) {
-			$survey = new Survey();
-			$survey->loadData($surveyId);
+		$survey = new Survey();
+		$survey->loadData($this->survey_id);
 
-			$bundleOfJoy = $this->_getBundleOfJoy($survey->id);
-			$this->_redirect("http://www.surveygizmo.com/s3/".$survey->external_id."/".$survey->external_key."?bundle_of_joy=".$bundleOfJoy);
-		}
+		$bundleOfJoy = $this->_getBundleOfJoy($survey->id);
+		$this->_redirect("http://www.surveygizmo.com/s3/".$survey->external_id."/".$survey->external_key."?bundle_of_joy=".$bundleOfJoy);
 	}
 
     // Fetches polls for the current user for display
@@ -239,12 +232,20 @@ class Starbar_ContentController extends Api_GlobalController
 		$userEmail = new User_Email();
 		$userEmail->loadData($user->primary_email_id);
 		$this->view->assign('user_email', $userEmail);
+
+		$newSurveys = new SurveyCollection();
+		$newSurveys->loadSurveysForStarbarAndUser(1, $this->user_id, 'survey', 'new');
+		$this->view->assign('count_new_surveys', sizeof($newSurveys));
+
+		$newPolls = new SurveyCollection();
+		$newPolls->loadSurveysForStarbarAndUser(1, $this->user_id, 'poll', 'new');
+		$this->view->assign('count_new_polls', sizeof($newPolls));
 	}
 	
-		public function userShareAction()
-		{
-			
-		}
+	public function userShareAction()
+	{
+		
+	}
 
     public function userLevelAction ()
     {
@@ -257,7 +258,6 @@ class Starbar_ContentController extends Api_GlobalController
     	$this->_usingJsonPRenderer = false;
 
         $config = Api_Registry::getConfig();
-		$request = $this->getRequest();
 
 		$facebook = new Facebook(array(
 			'appId'  => $config->facebook->app_id,
@@ -402,26 +402,61 @@ class Starbar_ContentController extends Api_GlobalController
 
 		$this->view->assign('success', $success);
 	}
-    
+
     protected function _getBundleOfJoy ($surveyId)
     {
     	$bundleOfJoy = "";
     	$sep = "^|^"; // seperator between variables
     	$eq = "^-^"; // seperator between variable name and value
     	// e.g. user_id^-^1^|^user_key^-^123
-    	
-    	$bundleOfJoy .= "user_id" . $eq . $this->user_id;
-    	$bundleOfJoy .= $sep;
-    	$bundleOfJoy .= "user_key" . $eq . $this->user_key;
-    	$bundleOfJoy .= $sep;
-    	$bundleOfJoy .= "auth_key" . $eq . $this->auth_key;
-    	$bundleOfJoy .= $sep;
-    	$bundleOfJoy .= "survey_id" . $eq . $surveyId;
-    	
+
+		$request = $this->getRequest();
+
+    	// Include easyXDM variables so they can be used at the end of the survey for iframe communication
+    	// Namely, used by survey-complete and survey-disqualify
+    	$xdm_c = $request->getParam('xdm_c');
+    	$xdm_e = $request->getParam('xdm_e');
+    	$xdm_p = $request->getParam('xdm_p');
+
+    	$bundleData = array(
+    		'user_id' => $this->user_id,
+    		"user_key" => $this->user_key,
+    		"auth_key" => $this->auth_key,
+    		"survey_id" => $surveyId,
+    		"xdm_c" => $xdm_c,
+    		"xdm_e" => $xdm_e,
+    		"xdm_p" => $xdm_p,
+    	);
+
+    	foreach ($bundleData AS $name => $value) {
+    		if ($bundleOfJoy) $bundleOfJoy .= $sep;
+    		$bundleOfJoy .= $name . $eq . $value;
+		}
+
     	return $bundleOfJoy;
 	}
 
-	protected function _assignShareInfoToView($shareLink = null, $shareText = null, $facebookCallbackUrl = null)
+	protected function _replaceBundleOfJoyWithGetVariables()
+	{
+		$queryString = "";
+		$request = $this->getRequest();
+
+        if ($request->getParam('bundle_of_joy')) {
+            foreach (explode('^|^', $request->getParam('bundle_of_joy')) as $keyPair) {
+                if ($queryString) $queryString .= "&";
+                else $queryString = "?";
+
+                $parts = explode('^-^', $keyPair);
+                $queryString .= $parts[0] . "=" . $parts[1];
+            }
+            $currentPage = $_SERVER['REQUEST_URI'];
+			if (strpos($currentPage, "?") !== false) $currentPage = reset(explode("?", $currentPage));
+
+			$this->_redirect('http://' . BASE_DOMAIN . $currentPage . $queryString);
+        }
+	}
+
+	protected function _assignShareInfoToView($shareLink = null, $shareText = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null)
 	{
         $config = Api_Registry::getConfig();
 		
@@ -431,19 +466,16 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('twitter_share_related_users', $config->twitter->share_related_users);
 		$this->view->assign('twitter_share_hashtags', $config->twitter->share_hashtags);
 
-        if ($shareLink)
-        	$this->view->assign('share_link', $shareLink);
+        $this->view->assign('share_link', $shareLink);
 
-		if ($facebookCallbackUrl)
-			$this->view->assign('facebook_share_callback_url', $facebookCallbackUrl);
+		$facebookShareCaption = $shareText;
+		$twitterShareText = $shareText." -";
+		$this->view->assign('facebook_share_caption', $facebookShareCaption);
+		$this->view->assign('twitter_share_text', $twitterShareText);
 
-        if ($shareText) {
-			$facebookShareCaption = $shareText;
-			$twitterShareText = $shareText." -";
-
-			$this->view->assign('facebook_share_caption', $facebookShareCaption);
-			$this->view->assign('twitter_share_text', $twitterShareText);
-		}
+		$this->view->assign('facebook_share_callback_url', $facebookCallbackUrl);
+		$this->view->assign('facebook_title', $facebookTitle);
+		$this->view->assign('facebook_description', $facebookDescription);
 	}
 	
 	protected function _assignStarbarToView()

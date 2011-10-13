@@ -15,7 +15,7 @@ class Starbar_HellomusicController extends Starbar_ContentController
 	// Daily deals is probably unique to each starbar
     public function dailyDealsAction ()
     {
-		$feedUrl = "http://staging.hellomusic.com/ec/Interpret.aspx?auth=uyskCsCO5jeS2d1fc5";
+		$feedUrl = "http://www.hellomusic.com/ec/Interpret.aspx?auth=uyskCsCO5jeS2d1fc5";
 
 		$feed = null;
 		$cache = Api_Registry::get('cache');
@@ -47,7 +47,8 @@ class Starbar_HellomusicController extends Starbar_ContentController
 		    $this->_getGame()->viewPromos();
 			
 			$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared=deal&shared_id=THE_DEAL_ID&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
-			$this->_assignShareInfoToView(null, null, $facebookCallbackUrl);
+			$facebookDescription = "Like Music? You can get the Beat Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
+			$this->_assignShareInfoToView(null, null, $facebookCallbackUrl, null, $facebookDescription);
 		}
     }
 }

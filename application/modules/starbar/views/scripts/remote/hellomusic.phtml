@@ -46,7 +46,7 @@
 						<? if ($this->facebook_social->identifier) { ?>
 							<img class="sb_userImg" src="http://graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $user->getTitle() ?>" />
 						<? } else { ?>
-							<img class="sb_userImg" src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.png" alt="<?= $user->getTitle() ?>" />
+							<img class="sb_userImg" src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="<?= $user->getTitle() ?>" />
 						<? } ?>
 					</div><!-- .userImg -->
 					<div class="sb_content">
@@ -61,7 +61,7 @@
 						</div><!-- .sb_popBox -->
 				</div><!-- .inner -->
 			</div><!-- #starbar-type -->
-			<div id="starbar-alert-container-promos">
+			<div class="sb_alerts_container" id="starbar-alert-container-promos">
 			</div>
 			<div id="starbar-nav">
 				<ul>
@@ -89,7 +89,7 @@
 				<div id="sb_popBox_promo" class="sb_popBox sb_triangle-border">
 				</div><!-- .sb_popBox -->
 			</div><!-- #starbar-promo -->
-			<div id="starbar-alert-container-alerts">
+			<div class="sb_alerts_container" id="starbar-alert-container-alerts">
 			</div>
 			<div id="starbar-level">    
 				<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level">  

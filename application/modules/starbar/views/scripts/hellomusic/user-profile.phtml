@@ -1,7 +1,7 @@
 <div class="sb_column6040BG">
 	<div class="sb_column60">
 		<div class="sb_header">
-			<h2 class="sb_titlePlain">Welcome Back, <strong class="sb_theme_textHighlight"><?= $this->user->getTitle() ?></strong></h2>
+			<h2 class="sb_titlePlain">Welcome Back, <strong><a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><?= $this->user->getTitle() ?></a></strong></h2>
 		</div><!-- .sb_header -->
 		<div>
 			<ul class="sb_lineList">
@@ -11,7 +11,7 @@
 					<? } else { ?>
 						<img class="sb_userImg sb_alignLeft" src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="<?= $this->user->getTitle() ?>" />
 					<? } ?>
-					<p style="margin-left: 50px">
+					<p class="sb_nextToUserImage">
 						<strong>Username:</strong> <span id="sb_profile_username" <? if (!$this->user->username) { ?>class="sb_jeip"<? } ?>><?= $this->user->getTitle() ?></span><br />
 						<?= $this->user_email->email ?>
 					</p>

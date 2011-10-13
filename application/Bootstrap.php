@@ -17,7 +17,7 @@ class Bootstrap extends App_Bootstrap
         Record::$defaultModifiedColumn = 'modified';
         Api_UserSession::setup('User', '', 'Gamer');
         
-        Game_Abstract::$_enabled = false;
+        Game_Abstract::$_enabled = true;
         
         // API logging will be necessary since requests
         // are coming from mobile, it's hard to see what's going on

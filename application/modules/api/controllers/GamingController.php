@@ -16,6 +16,7 @@ class Api_GamingController extends Api_GlobalController
         // that is purely client side, such as Twitter sharing
     }
     
+    // http://local.sayso.com/api/gaming/user-profile/starbar_id/1/user_id/46/user_key/r3nouttk6om52u18ba154mc4j4/auth_key/309e34632c2ca9cd5edaf2388f5fa3db
     public function userProfileAction () {
         $this->_validateRequiredParameters(array('user_id', 'starbar_id'));
         $gamer = Gamer::create($this->user_id, $this->starbar_id);

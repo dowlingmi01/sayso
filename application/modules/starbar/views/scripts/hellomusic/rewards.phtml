@@ -5,7 +5,8 @@
 	<p>Make sure to get your tokens for the weekly giveaways and keep earning to be eligible for the final giveaway.</p>
 	<p><strong class="sb_theme_textHighlight">Select an item below</strong></p>
   
-  <div class="sb_rewards">    
+  <div class="sb_rewards">   
+    <?= $this->partialLoop('hellomusic/reward.phtml', null, $this->rewards) ?>
     <div class="sb_rewardItem sb_rewardItem_disabled">
     	<div class="sb_rewardItem_disabledMsg">
       	<h1 class="sb_textError">!</h1>

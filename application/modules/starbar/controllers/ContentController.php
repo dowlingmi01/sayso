@@ -19,6 +19,7 @@ class Starbar_ContentController extends Api_GlobalController
 	        $this->render();
 	        return $this->_resultType(new Object(array('html' => $this->getResponse()->getBody())));
 		} else {
+		    // iframe loaded content, hence the need for all JS dependencies
             $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
             $this->view->headScript()->appendFile('/js/starbar/jquery-ui-1.8.16.custom.min.js');
             $this->view->headScript()->appendFile('/js/starbar/jquery.jscrollpane.min.js');
@@ -30,6 +31,33 @@ class Starbar_ContentController extends Api_GlobalController
 		}
 	}
 
+    public function rewardsAction ()
+    {
+//        $this->_usingJsonPRenderer = false;
+        $client = $this->_getGame()->getHttpClient();
+        $client->setCustomParameters(array('attribute_friendly_id' => 'bdm-product-variant', 'verbosity' => 9));
+        $client->getNamedTransactionGroup('store');
+        $data = $client->getData();
+        
+        $rewards = new Game_RewardCollection();
+        foreach ($data as $rewardData) {
+            $reward = new Game_Reward();
+            $reward->build($rewardData);
+            $rewards->addItem($reward);
+        }
+        $this->view->rewards = $rewards;
+        return;
+        // http://local.sayso.com/starbar/hellomusic/rewards/user_key/r3nouttk6om52u18ba154mc4j4/user_id/46/auth_key/309e34632c2ca9cd5edaf2388f5fa3db
+        
+//        exit($client->getLastRequest());
+        header('Content-type: application/json');
+        $this->_enableRenderer(new Api_Plugin_JsonRenderer());
+        return $this->_resultType($rewards);
+        $result = $client->getData(true);
+        exit($result);
+        return $this->_resultType($result);
+	}
+	
     public function aboutSaysoAction ()
     {
 
@@ -194,11 +222,6 @@ class Starbar_ContentController extends Api_GlobalController
 
     }
 		
-		public function rewardsAction ()
-    {
-
-	}
-
     public function userProfileAction ()
     {
 		$user = new User();

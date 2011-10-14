@@ -585,14 +585,6 @@
 	padding: 5px 10px 0px 5px;
 	background-color: #383838;
 }
-
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .img_onboard{
-	position: absolute;
-	z-index: 10;
-	bottom: -18px;
-	left: 30px;
-}
-
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList{
 	border-top: 1px solid #ccc;
 }
@@ -624,50 +616,63 @@
 	background-image: url('../images/hellomusic/img_deal_lg.png');
 }
 
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_gear{
+	background-image: url('../images/hellomusic/img_gear_lg.png');
+	padding-left: 60px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_prizes{
+	background-image: url('../images/hellomusic/img_prizes_lg.png');
+	padding-left: 60px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_hottest{
+	background-image: url('../images/hellomusic/img_hottest_lg.png');
+	padding-left: 60px;
+}
+
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav{
 	float: none;
 	margin: 0;
 	top: auto;
-	left: 40px;
+	left: -10px;
 	right: auto;
-	bottom: 5px;
+	bottom: 0px;
 	background-image: url('../images/hellomusic/img_onboard_nav.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
 	padding: 0;
-	width: 375px;
-	height: 42px;
+	width: 495px;
+	height: 40px;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul#sb_ui-tabs-nav_2{
-	background-position: 0px -42px;
+	background-position: 0px -40px;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul#sb_ui-tabs-nav_3{
-	background-position: 0px -84px;
+	background-position: 0px -80px;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul#sb_ui-tabs-nav_4{
-	background-position: 0px -126px;
+	background-position: 0px -120px;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li{
 	border: none;
 	color: #fff;
-	width: 125px;
+	width: 120px;
 	text-align: center;	
-}
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li:first-child{
-	display: none;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li a{	
 	color: #fff;
 	text-shadow: #000 0px 0px 4px;
-	height: 42px;
-	padding: 0px 10px 0px 20px;
+	height: 40px;
+	width: 100%;
+	display: inline-block;
 	text-align: center;
-	line-height: 40px;
+	line-height: 38px;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs a.sb_surveyLaunch{

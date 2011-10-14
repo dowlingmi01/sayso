@@ -59,7 +59,10 @@ $starbar = $this->starbar;
                 key : '<?= Api_UserSession::getInstance()->getKey() ?>'
             },
             state : {
-                visibility : 'starbar-visOpen'
+                visibility : 'starbar-visOpen',
+                notifications : 'ready',
+                profile : 'ready',
+                game : 'ready'
             },
             loaded : true
         };

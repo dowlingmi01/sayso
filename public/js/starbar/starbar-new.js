@@ -4,7 +4,8 @@
 
 $SQ(function(){
 
-    sayso = window.sayso; // should work for starbar itself
+    var sayso = window.sayso,
+        starbar = sayso.starbar;
     
     easyXDM.DomHelper.requiresJSON("http://"+sayso.baseDomain+"/js/starbar/json2.min.js");
 
@@ -732,7 +733,10 @@ $SQ(function(){
 	    } // end switch clickpoint
 
 	    function _stowBar (needToUpdateState) {
-			if (needToUpdateState) updateState('sb_starbar-visStowed');
+			if (needToUpdateState) {
+			    starbar.state.visibility = 'sb_starbar-visStowed';
+			    starbar.state.update();
+			}
 
 	        elemStarbarMain.fadeOut('fast');
             elemPopBoxVisControl.fadeOut('fast');
@@ -763,7 +767,10 @@ $SQ(function(){
             );
 	    }
 	    function _openBar (needToUpdateState) {
-			if (needToUpdateState) updateState('sb_starbar-visOpen');
+			if (needToUpdateState) {
+			    starbar.state.visibility = 'sb_starbar-visOpen';
+                starbar.state.update();
+			}
 
 	        btnToggleVis.attr('class','');
             elemSaySoLogoBorder.hide();
@@ -787,29 +794,40 @@ $SQ(function(){
 
 	} // end FUNCTION ANIMATEBAR
 
-	// keep the state of the Starbar consistent across sites (currently handles visibility only)
+	
+	// Starbar state
 
-	function updateState (visibility){
-        if (!visibility) visibility = elemPlayerConsole.attr('class');
-        window.sayso.starbar.state.visibility = visibility;
-        var app = KOBJ.get_application(window.sayso.starbar.kynetxAppId);
-        app.raise_event('update_state', { 'visibility' : visibility /* other state changes here */ });
+	// Update the cross-domain state variables
+	starbar.state.update = function (){
+        var app = KOBJ.get_application(starbar.kynetxAppId);
+        app.raise_event('update_state', { 
+            'visibility' : starbar.state.visibility,
+            'notifications' : starbar.state.notifications,
+            'profile' : starbar.state.profile,
+            'game' : starbar.state.game
+        });
     }
 
-    function refreshState () {
-        window.sayso.starbar.callback = function () { animateBar(null, 'refresh'); /* other state reload logic here */ };
-        var app = KOBJ.get_application(window.sayso.starbar.kynetxAppId);
+	// Refresh the Starbar to respond to state changes, if any
+	starbar.state.refresh = function () {
+        starbar.state.callback = function () { 
+            // logic here to determine if/what should be fired to "refresh"
+            animateBar(null, 'refresh'); 
+            // example:
+            // if (starbar.state.notifications === 'update') updateAlerts();
+            // also, in updateAlerts() or wherever, don't forget to reset the
+            // value back to 'ready' and call starbar.state.update() again
+        };
+        var app = KOBJ.get_application(starbar.kynetxAppId);
         app.raise_event('refresh_state');
     }
 
-    // http://www.thefutureoftheweb.com/blog/detect-browser-window-focus
-    // I augmented this to include honoring existing focus events
     if (/*@cc_on!@*/false) { // check for Internet Explorer
         var oldOnFocus = document.onfocusin && typeof document.onfocusin === 'function' ? document.onfocusin : function () {};
-        document.onfocusin = function () { oldOnFocus(); refreshState(); };
+        document.onfocusin = function () { oldOnFocus(); starbar.state.refresh(); };
     } else {
         var oldOnFocus = window.onfocus && typeof window.onfocus === 'function' ? window.onfocus : function () {};
-        window.onfocus = function () { oldOnFocus(); refreshState(); };
+        window.onfocus = function () { oldOnFocus(); starbar.state.refresh(); };
     }
     
     // flag so we know this file has loaded

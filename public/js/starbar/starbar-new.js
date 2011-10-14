@@ -426,6 +426,7 @@ $SQ(function(){
 		activateScroll(popBox);
 		activateTabs(popBox);
 		activateProgressBar(popBox);
+		activateSlideshow(popBox);
 
 		// if we're a regular nav item, turn on the highlight
 		var parentClick = popBox.parent();
@@ -733,6 +734,15 @@ $SQ(function(){
 			if (percentValue >= 55){
 				$SQ('.sb_progressBarValue',this).addClass('sb_progressBarValue_revert');
 			}
+		});
+	}
+	
+	function activateSlideshow(target){
+		$SQ('#sb_slideshow').cycle({ 
+			timeout: 0,
+			speed: 500,
+			next: '#sb_slideshow_nav .sb_next',
+			prev: '#sb_slideshow_nav .sb_prev'
 		});
 	}
 

@@ -165,6 +165,91 @@
 	height: 53px;
 }
 
+#sayso-starbar #starbar-player-console #starbar-promo .sb_popBoxInner .sb_popContent{
+	width: 515px;
+	height: 290px;
+	padding: 0 !important;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_promoBG{
+	width: 515px;
+	height: 290px;
+	background-repeat: no-repeat;
+}
+
+
+#sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow{
+	position: relative;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week1{
+	display: block;
+	background-image: url('../images/hellomusic/img_promo_week1_bg.jpg');
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week2{
+	display: none;
+	background-image: url('../images/hellomusic/img_promo_week2_bg.jpg');
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week3{
+	display: none;
+	background-image: url('../images/hellomusic/img_promo_week3_bg.jpg');
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week4{
+	display: none;
+	background-image: url('../images/hellomusic/img_promo_week4_bg.jpg');
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide{
+	padding: 5px;
+	position: relative;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details{
+	position: absolute;
+	width: 240px;
+	top: 135px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p{
+	margin: 12px 0px;
+	font-size: 12px;
+	line-height: 15px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p small,
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p small strong{
+	font-size: 11px !important;
+}
+
+
+#sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow_nav{
+	position: absolute;
+	z-index: 1000;
+	bottom: 8px;
+	left: 10px;
+	overflow: hidden;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow_nav span{
+	width: 18px;
+	height: 18px;
+	display: inline-block;
+	background-repeat: no-repeat;
+	text-indent: -9999px;
+	cursor: pointer;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow_nav .sb_prev{
+	background-image: url('../images/generic/img_arrow_left.png');
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow_nav .sb_next{
+	background-image: url('../images/generic/img_arrow_right.png');
+}
+
 /* user level / progress area */
 
 #sayso-starbar #starbar-player-console #starbar-level{
@@ -567,6 +652,10 @@
 
 #sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_nextToUserImage {
 	margin: 0 0 0 50px;
+}
+
+#sayso-starbar #starbar-type #sb_popBox_user-profile .sb_theme_button span.sb_theme_buttonArrow{
+	font-size: 12px;
 }
 
 /* onboarding popup */

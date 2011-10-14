@@ -192,6 +192,15 @@ html {
 #sayso-starbar strong {
 	font-weight: bold;
 }
+#sayso-starbar small {
+	font-size: 11px !important;
+	font-weight: inherit;
+}
+
+#sayso-starbar big {
+	font-size: 14px;
+	line-height: normal;
+}
 #sayso-starbar em {
 	font-style: italic;
 }
@@ -894,10 +903,10 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	font-size: 15px;
 }
 #sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_ui-icon-triangle-1-s {
-	background-image: url('../images/generic/img_arrow_accordion_open.png');
+	background-image: url('../images/generic/img_arrow_down.png');
 }
 #sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_ui-icon-triangle-1-e {
-	background-image: url('../images/generic/img_arrow_accordion_closed.png');
+	background-image: url('../images/generic/img_arrow_right.png');
 }
 #sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_questionValue {
 }
@@ -937,7 +946,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 }
 #sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_questionValue {
 	float: right;
-	background-image: url('../images/generic/img_arrow_accordion_closed.png');
+	background-image: url('../images/generic/img_arrow_right.png');
 	background-repeat: no-repeat;
 	background-position: right 2px;
 	padding: 0px 20px 2px 0px;
@@ -946,7 +955,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	font-size: 15px;
 }
 #sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_questionValue_open {
-	background-image: url('../images/generic/img_arrow_accordion_open.png');
+	background-image: url('../images/generic/img_arrow_down.png');
 }
 #sayso-starbar #starbar-player-console .sb_ui-accordion.sb_pollQuestion, #sayso-starbar #starbar-player-console .sb_ui-accordion.sb_pollResult {
 	background-color: #e5e5e5;
@@ -1053,15 +1062,6 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar h3 {
 	font-size: 13px;
 	display: block;
-}
-#sayso-starbar small {
-	font-size: 11px;
-	font-weight: inherit;
-}
-
-#sayso-starbar big {
-	font-size: 14px;
-	line-height: normal;
 }
 #sayso-starbar h2.sb_title {
 	text-transform: uppercase;
@@ -1242,7 +1242,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	width: 20px;
 	height: 20px;
 	float: right;
-	background-image: url('../images/generic/img_arrow_accordion_closed.png');
+	background-image: url('../images/generic/img_arrow_right.png');
 	margin-left: 4px;
 }
 /* dividing lines between list items */

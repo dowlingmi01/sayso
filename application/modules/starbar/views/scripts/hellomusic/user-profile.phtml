@@ -63,9 +63,13 @@
 			<strong>Level 1. <span class="sb_userLevelColor1">Musician</span></strong>
 		</p>
 		<p>
-			<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level">80 Notes</a><br />
-			<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level">430 Chops</a><br />
-			<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level">Redeem Rewards</a>
+			<? if ($this->currency_notes) { ?>
+				<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><?= $this->currency_notes->current_balance ?> Notes</a><br />
+			<? } ?>
+			<? if ($this->currency_chops) { ?>
+				<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><?= $this->currency_chops->current_balance ?> Chops</a><br />
+			<? } ?>
+			<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/rewards" class="sb_nav_element" rel="sb_popBox_rewards">Redeem Rewards</a>
 		</p>
 		<br />
 		<p>

@@ -240,6 +240,13 @@ class Starbar_ContentController extends Api_GlobalController
 		$newPolls = new SurveyCollection();
 		$newPolls->loadSurveysForStarbarAndUser(1, $this->user_id, 'poll', 'new');
 		$this->view->assign('count_new_polls', sizeof($newPolls));
+
+		$game = $this->_getGame();
+		if ($game->_currencies) {
+			foreach($game->_currencies as $currency) {
+				$this->view->assign('currency_'.strtolower($currency->title), $currency);
+			}
+		}
 	}
 	
 	public function userShareAction()

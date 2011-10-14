@@ -291,7 +291,6 @@ $SQ(function(){
 			$SQ(this).unbind();
 			$SQ(this).bind({
 				click: function(event){
-					closePopBox();
 					var windowParameters = 'location=1,status=1,scrollbars=0';
 					switch($SQ(this).attr('id')) {
 						case "sb_profile_facebook":
@@ -524,9 +523,9 @@ $SQ(function(){
 								elemAlertContainer.append(newAlertHtml);
 							}
 
-							// Update username and profile image if we've just received a notification regarding FB getting connected.
-							if (message['short_name'] == 'FB Account Connected') {
-								updateProfile(true)
+							// Update profile if we've just received a notification regarding FB or TW getting connected.
+							if (message['short_name'] == 'FB Account Connected' || message['short_name'] == 'TW Account Connected') {
+								updateProfile(true);
 							}
 							
 							newAlerts = true;
@@ -558,13 +557,20 @@ $SQ(function(){
 			success : function (response, status, jqXHR) {
 				var user = response.data;
 				var userSocials;
-				
+
 				if (user && user['_user_socials'] && user['_user_socials']['collection'])
 					userSocials = user['_user_socials']['collection'];
 
-				// Update Profile Image
+				// Update Profile Image and connect icons
 				if (userSocials) {
 					$SQ.each(userSocials, function (index, userSocial) {
+						var connectIcon = $SQ('#sb_profile_'+userSocial['provider']);
+						if (connectIcon && connectIcon.hasClass('sb_unconnected')) {
+							connectIcon.unbind();
+							connectIcon.attr('href', '');
+							connectIcon.removeClass('sb_unconnected');
+							connectIcon.removeClass('sb_connected');
+						}
 						if (userSocial['provider'] == 'facebook') {
 							var profileImages = $SQ('img.sb_userImg');
 							if (profileImages.length > 0) {
@@ -575,7 +581,7 @@ $SQ(function(){
 						}
 					});
 				}
-				
+
 				// Update Username
 				if (user['username']) {
 					$SQ('.sb_userTitle').each(function(){
@@ -584,7 +590,7 @@ $SQ(function(){
 				}
     		}
 		});
-		
+
 		if (setGlobalUpdate) {
 			starbar.state.profile = Math.round(new Date().getTime() / 1000);
 			starbar.state.update();

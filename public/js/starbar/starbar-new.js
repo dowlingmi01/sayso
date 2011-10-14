@@ -738,12 +738,14 @@ $SQ(function(){
 	}
 	
 	function activateSlideshow(target){
-		$SQ('#sb_slideshow').cycle({ 
-			timeout: 0,
-			speed: 500,
-			next: '#sb_slideshow_nav .sb_next',
-			prev: '#sb_slideshow_nav .sb_prev'
-		});
+		if ($SQ('#sb_slideshow').length > 0){
+			$SQ('#sb_slideshow').cycle({ 
+				timeout: 0,
+				speed: 500,
+				next: '#sb_slideshow_nav .sb_next',
+				prev: '#sb_slideshow_nav .sb_prev'
+			});
+		}
 	}
 
 	function devInit(){

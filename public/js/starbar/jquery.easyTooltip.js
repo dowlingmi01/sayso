@@ -43,7 +43,7 @@
 				if (content != "" && content != undefined){			
 					$$SQ("body #sayso-starbar").append("<div id='"+ options.tooltipId +"'>"+ content +"</div>");		
 					$$SQ("#" + options.tooltipId)
-						.css("position","absolute")
+						.css("position","fixed")
 						.css("top",(e.pageY - options.yOffset) + "px")
 						.css("left",(e.pageX + options.xOffset) + "px")						
 						.css("display","none")

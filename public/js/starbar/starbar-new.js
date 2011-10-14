@@ -569,7 +569,7 @@ $SQ(function(){
 							connectIcon.unbind();
 							connectIcon.attr('href', '');
 							connectIcon.removeClass('sb_unconnected');
-							connectIcon.removeClass('sb_connected');
+							connectIcon.addClass('sb_connected');
 						}
 						if (userSocial['provider'] == 'facebook') {
 							var profileImages = $SQ('img.sb_userImg');

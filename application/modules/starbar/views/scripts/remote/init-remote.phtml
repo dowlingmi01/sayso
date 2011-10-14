@@ -34,20 +34,20 @@ $starbar = $this->starbar;
         window.sayso.log = _log('log'); 
         window.sayso.warn = _log('warn');
         function _log (type) { // <-- closure here allows re-use for log() and warn()
-            return function () {
-                if (window.sayso.debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
-                    var args = Array.prototype.slice.call(arguments);
-                    if (typeof console.log.apply === 'function') {
-                        args.unshift('SaySo:');
-                        window.console[type].apply(window.console, args);
-                    } else {
-                        // must be IE
-                        if (typeof args[0] !== 'object') {
-                            window.console.log(args[0]);
-                        }
-                    }
-                }
-            }
+	        return function () {
+	            if (window.sayso.debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
+	                var args = Array.prototype.slice.call(arguments);
+	                if (typeof console.log.apply === 'function') {
+	                    args.unshift('SaySo:');
+	                    window.console[type].apply(window.console, args);
+	                } else {
+	                    // must be IE
+	                    if (typeof args[0] !== 'object') {
+	                        window.console.log(args[0]);
+	                    }
+	                }
+	            }
+	        }
         };
         window.sayso.starbar = {
             id : <?= $starbar->getId() ?>, 
@@ -60,12 +60,11 @@ $starbar = $this->starbar;
             },
             state : {
                 visibility : 'starbar-visOpen',
-                notifications : 'ready',
-                profile : 'ready',
-                game : 'ready'
+            	local : {}
             },
             loaded : true
         };
+
         if (typeof(KOBJ) === 'undefined') {
             KOBJ = { 
                 warn : function () { 
@@ -96,6 +95,7 @@ $starbar = $this->starbar;
 		// functions available to remote pages
 		remote: {
 			loadComplete: {},
+			updateGame: {},
 			alertMessage: {}
 		},
 		local: {}

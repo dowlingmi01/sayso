@@ -35,8 +35,10 @@
 							$SQ.ajax({url:link,dataType:"jsonp"});
 							
 							$SQ.ajaxWithAuth({
-								url : "http://<?= BASE_DOMAIN ?>/api/survey/user-poll-submit?survey_id=<?= $this->survey->id ?>",
-								success : function (r, s) {}
+								url : "http://<?= BASE_DOMAIN ?>/api/survey/user-poll-submit?renderer=jsonp&survey_id=<?= $this->survey->id ?>",
+								success : function (response, status, jqXHR) {
+									$SQ.remoteControl.updateGame();
+								}
 							});
 
 							$SQ.remoteControl.alertMessage('The Starbar is aware of this poll completion!');
@@ -68,9 +70,9 @@
 <div id="sayso-starbar-embed">
 	<div id="sb-survey-completed">
 		<? if ($this->survey->premium) { ?>
-			<p>Excellent! You earned <strong class="sb_theme_textHighlight_alt">2 Notes</strong> &amp;  <strong class="sb_theme_textHighlight_alt">500 Chops</strong></p>
+			<p>Excellent! You earned <strong class="sb_theme_textHighlight_alt">50 Notes</strong> &amp;  <strong class="sb_theme_textHighlight_alt">500 Chops</strong></p>
 		<? } else { ?>
-			<p>Excellent! You earned <strong class="sb_theme_textHighlight">1 Note</strong> &amp;  <strong class="sb_theme_textHighlight">250 Chops</strong></p>
+			<p>Excellent! You earned <strong class="sb_theme_textHighlight">25 Notes</strong> &amp;  <strong class="sb_theme_textHighlight">250 Chops</strong></p>
 		<? } ?>
 		<p class="sb_embedShare">
 			<a class="sb_externalShare" href="#"

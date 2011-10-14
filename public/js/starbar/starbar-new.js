@@ -78,7 +78,7 @@ $SQ(function(){
 	function initStarBar(){
 		initElements();
 		updateAlerts(true);
-		activateProgressBar();
+		$SQ.updateGame(false, false, false);
 		// initializes development-only jquery
 		devInit();
 		sayso.log('Loaded and Ready');
@@ -425,8 +425,8 @@ $SQ(function(){
 		activateAccordion(popBox);
 		activateScroll(popBox);
 		activateTabs(popBox);
-		activateProgressBar(popBox);
 		activateSlideshow(popBox);
+		$SQ.activateGameElements(popBox, false);
 
 		// if we're a regular nav item, turn on the highlight
 		var parentClick = popBox.parent();
@@ -527,6 +527,7 @@ $SQ(function(){
 							// Update profile if we've just received a notification regarding FB or TW getting connected.
 							if (message['short_name'] == 'FB Account Connected' || message['short_name'] == 'TW Account Connected') {
 								updateProfile(true);
+								$SQ.updateGame(false, true, true);
 							}
 							
 							newAlerts = true;
@@ -725,18 +726,6 @@ $SQ(function(){
 		return;
 	}
 
-	function activateProgressBar(target){
-		$SQ('.sb_progressBar').each(function(){
-			var percentValue = eval($SQ('.sb_progressBarPercent',this).html());
-			$SQ(this).progressbar({
-				value : percentValue
-			});
-			if (percentValue >= 55){
-				$SQ('.sb_progressBarValue',this).addClass('sb_progressBarValue_revert');
-			}
-		});
-	}
-	
 	function activateSlideshow(target){
 		if ($SQ('#sb_slideshow').length > 0){
 			$SQ('#sb_slideshow').cycle({ 

@@ -15,11 +15,8 @@ class Api_SurveyController extends Api_GlobalController
     
     public function surveyGizmoSubmitAction ()
     {
-		$request = $this->getRequest();
-		$surveyId = (int) $request->getParam('survey_id');
-		$userId = (int) $request->getParam('user_id');
-
-		$this->_markSurveyCompletedByUser($surveyId, $userId);
+        $this->_validateRequiredParameters(array('survey_id', 'user_id'));
+		$this->_markSurveyCompletedByUser($this->survey_id, $this->user_id);
 
         // success
         return $this->_resultType(true);
@@ -27,22 +24,16 @@ class Api_SurveyController extends Api_GlobalController
 
     public function surveyGizmoDisqualifyAction ()
     {
-		$request = $this->getRequest();
-		$surveyId = (int) $request->getParam('survey_id');
-		$userId = (int) $request->getParam('user_id');
-
-		$this->_markSurveyUserDisqualified($surveyId, $userId);
+        $this->_validateRequiredParameters(array('survey_id', 'user_id'));
+		$this->_markSurveyUserDisqualified($this->survey_id, $this->user_id);
 
         // success
         return $this->_resultType(true);
     }
 
     public function userPollSubmitAction () {
-		$request = $this->getRequest();
-		$surveyId = (int) $request->getParam('survey_id');
-		// authentication is done via user_id and user_key sent by ajax request
-
-		$this->_markSurveyCompletedByUser($surveyId, $this->user_id);
+        $this->_validateRequiredParameters(array('survey_id', 'user_id'));
+		$this->_markSurveyCompletedByUser($this->survey_id, $this->user_id);
 
         // success
         return $this->_resultType(true);

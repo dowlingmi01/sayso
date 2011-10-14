@@ -120,6 +120,9 @@ $SQ.frameCommunicationFunctions = {
 			}
 		}
 	},
+	updateGame: function () {
+		$SQ.updateGame(false, true, true);
+	},
 	alertMessage: function (msg) {
 		sayso.log(msg);
 	}
@@ -142,7 +145,7 @@ $SQ.insertCommunicationIframe = function(link, container, width, height, scrolli
 				margin: 0,
 				border: 0
 			}
-		},
+		}
 	}, {
 		// Local functions (i.e. remote procedure calls arrive here)
 		local: $SQ.frameCommunicationFunctions
@@ -176,4 +179,67 @@ $SQ.randomString = function (length, special) {
 		randomString += String.fromCharCode(randomNumber);
 	}
 	return randomString;
+}
+
+$SQ.updateGame = function(loadFromCache, setGlobalUpdate, animate) {
+	if (loadFromCache) {
+		activateGameElements(null, animate);
+	} else {
+		$SQ.ajaxWithAuth({
+			url : 'http://'+sayso.baseDomain+'/api/gaming/user-profile?renderer=jsonp',
+			success : function (response, status, jqXHR) {
+				window.sayso.starbar.state.local.game_cache = response.data;
+				$SQ.activateGameElements(null, animate);
+    		}
+		});
+	}
+
+	if (setGlobalUpdate) {
+		starbar.state.game = Math.round(new Date().getTime() / 1000);
+		starbar.state.update();
+	}
+}
+
+$SQ.activateGameElements = function(target, animate) {
+	var userLevelTitleElems = $SQ('.sb_user_level_title', target);
+	var progressBarElems = $SQ('.sb_progressBar', target);
+	
+	if (userLevelTitleElems.length > 0) {
+		userLevelTitleElems.each(function() {
+			$SQ(this).html(window.sayso.starbar.state.local.game_cache._levels.collection[0].title);
+		});
+	}
+	
+	$SQ.each(window.sayso.starbar.state.local.game_cache._currencies.collection, function (index, currency) {
+		var currencyTitle = currency.title.toLowerCase();
+		var currencyBalance = parseInt(currency.current_balance);
+		var currencyPercent = 0;
+
+		var currencyBalanceElems = $SQ('.sb_currency_balance_'+currencyTitle, target);
+		var currencyPercentElems = $SQ('.sb_currency_percent_'+currencyTitle, target);
+
+		if (currencyBalanceElems.length > 0) {
+			currencyBalanceElems.each(function() {
+				$SQ(this).html(currencyBalance);
+			});
+		}
+
+		if (currencyPercentElems.length > 0) {
+			currencyPercentElems.each(function() {
+				$SQ(this).html(currencyPercent);
+			});
+		}
+	});
+
+	if (progressBarElems.length > 0) {
+		progressBarElems.each(function(){
+			var percentValue = eval($SQ('.sb_progressBarPercent',this).html());
+			$SQ(this).progressbar({
+				value : percentValue
+			});
+			if (percentValue >= 55){
+				$SQ('.sb_progressBarValue',this).addClass('sb_progressBarValue_revert');
+			}
+		});
+	}
 }

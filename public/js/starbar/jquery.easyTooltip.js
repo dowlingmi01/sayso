@@ -12,14 +12,14 @@
  *
  */
  /**
- * NOTE: this source has been altered to change the variable jQuery to $_SQ and $SQ to $SQSQ
+ * NOTE: this source has been altered to change the variable jQuery to $_SQ and $$SQ to $$SQSQ
  * The purpose of this is strictly technical. It enables our browser app (e.g. FF xpi) which can
  * be loaded on any domain which may already have jQuery present to work in complete isolation
  * from the code on that page, regardless of jQuery's presence, version or plugins used.
  */
-(function($SQ) {
+(function($$SQ) {
 
-	$SQ.fn.easyTooltip = function(options){
+	$$SQ.fn.easyTooltip = function(options){
 	  
 		// default configuration properties
 		var defaults = {	
@@ -31,18 +31,18 @@
 			useElement: ""
 		}; 
 			
-		var options = $SQ.extend(defaults, options);  
+		var options = $$SQ.extend(defaults, options);  
 		var content;
 				
 		this.each(function() {  				
-			var title = $SQ(this).attr("title");				
-			$SQ(this).hover(function(e){											 							   
+			var title = $$SQ(this).attr("title");				
+			$$SQ(this).hover(function(e){											 							   
 				content = (options.content != "") ? options.content : title;
-				content = (options.useElement != "") ? $SQ("#" + options.useElement).html() : content;
-				$SQ(this).attr("title","");									  				
+				content = (options.useElement != "") ? $$SQ("#" + options.useElement).html() : content;
+				$$SQ(this).attr("title","");									  				
 				if (content != "" && content != undefined){			
-					$SQ("body #sayso-starbar").append("<div id='"+ options.tooltipId +"'>"+ content +"</div>");		
-					$SQ("#" + options.tooltipId)
+					$$SQ("body #sayso-starbar").append("<div id='"+ options.tooltipId +"'>"+ content +"</div>");		
+					$$SQ("#" + options.tooltipId)
 						.css("position","absolute")
 						.css("top",(e.pageY - options.yOffset) + "px")
 						.css("left",(e.pageX + options.xOffset) + "px")						
@@ -51,22 +51,22 @@
 				}
 			},
 			function(){	
-				$SQ("#" + options.tooltipId).remove();
-				$SQ(this).attr("title",title);
+				$$SQ("#" + options.tooltipId).remove();
+				$$SQ(this).attr("title",title);
 			});	
-			$SQ(this).mousemove(function(e){
-				$SQ("#" + options.tooltipId)
+			$$SQ(this).mousemove(function(e){
+				$$SQ("#" + options.tooltipId)
 					.css("top",(e.pageY - options.yOffset) + "px")
 					.css("left",(e.pageX + options.xOffset) + "px")					
 			});	
 			if(options.clickRemove){
-				$SQ(this).mousedown(function(e){
-					$SQ("#" + options.tooltipId).remove();
-					$SQ(this).attr("title",title);
+				$$SQ(this).mousedown(function(e){
+					$$SQ("#" + options.tooltipId).remove();
+					$$SQ(this).attr("title",title);
 				});				
 			}
 		});
 	  
 	};
 
-})($_SQ);
+})($SQ);

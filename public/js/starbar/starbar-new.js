@@ -569,7 +569,7 @@ $SQ(function(){
 							var profileImages = $SQ('img.sb_userImg');
 							if (profileImages.length > 0) {
 								profileImages.each(function(){
-		 							$SQ(this).attr('src', 'http://graph.facebook.com/'+user_social['identifier']+'/picture?type=square');
+		 							$SQ(this).attr('src', 'http://graph.facebook.com/'+userSocial['identifier']+'/picture?type=square');
 								});
 							}
 						}

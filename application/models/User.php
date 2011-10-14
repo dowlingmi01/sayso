@@ -20,6 +20,11 @@ class User extends Record implements Titled
     protected $_surveyTypes;
     
     /**
+     * @var User_Social
+     */
+    protected $_userSocials;
+    
+    /**
      * Plain text password as provided by user
      * - stored as a protected property so we
      *   we don't confuse this with the md5'd
@@ -78,6 +83,25 @@ class User extends Record implements Titled
             // @todo look it up
         }
         return $this->_surveyTypes;
+    }
+    
+    public function setUserSocials (User_SocialCollection $userSocials) {
+        $this->_userSocials = $userSocials;
+    }
+    
+    public function getUserSocials () {
+        if (!$this->_userSocials) {
+        	$userSocials = new User_SocialCollection();
+        	$userSocials->loadForUser($this->getId());
+            $this->_userSocials = $userSocials;
+        }
+        return $this->_userSocials;
+    }
+    
+    public function loadUserSocials () {
+        $userSocials = new User_SocialCollection();
+        $userSocials->loadForUser($this->getId());
+        $this->_userSocials = $userSocials;
     }
     
 	/**
@@ -140,6 +164,12 @@ class User extends Record implements Titled
                 $surveyType->save();
             }
         }
+        if ($this->_userSocials) {
+        	foreach ($this->_userSocials as $userSocial) {
+            	$userSocial->user_id = $this->getId();
+            	$userSocial->save();
+			}
+        }
         // commit all changes
         $this->commitTransaction();
     }
@@ -159,7 +189,8 @@ class User extends Record implements Titled
         $props = array(
             '_email' => $this->getEmail()->getTitle(),
             '_preferences' => $this->_generalPreference,
-            '_survey_types' => $this->_surveyTypes
+            '_survey_types' => $this->_surveyTypes,
+            '_user_socials' => $this->_userSocials
         );
         if ($this->_key)
         {

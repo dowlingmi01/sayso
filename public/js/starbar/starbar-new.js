@@ -33,11 +33,6 @@ $SQ(function(){
 	        $SQ('#sb_popBox_onboard a.sb_surveyLaunch').bind('click', function () {
 	            $SQ(document).trigger('onboarding-complete');
 	        });
-	        $SQ('body').click(function (e) {
-	            if (!$SQ(e.target).parents('#sso_wrapper').length) {
-	                $SQ('#sayso-onboard').fadeOut('slow');
-	            }
-	        });
 	    }, 500);
 	});
 
@@ -286,7 +281,7 @@ $SQ(function(){
 				savebutton_class	: "sb_theme_button",
 				cancelbutton_text	: "cancel",
 				cancelbutton_class	: "sb_theme_button sb_theme_button_grey",
-				
+				after_save			: function() { updateProfile(true); }
 			});									 
 		
 		});
@@ -376,9 +371,9 @@ $SQ(function(){
 		var ajaxContentContainer = null;
 		var loadingElement = null;
 		var alertContainers = $SQ('.sb_alerts_container');
-
+		
 		// Close the last (i.e. the visible) alert from each alert (notification) container if the user opens a popBox
-		// Unless the popBox is opening because the user clicked such an alert
+		// Unless the popBox is opening because the user clicked an alert
 		if (!fromNotification && alertContainers.length > 0) {
 			alertContainers.each(function(){
 		 		var alertsInContainer = $SQ('.sb_starbar-alert', $SQ(this));
@@ -386,7 +381,8 @@ $SQ(function(){
 			});
 		}
 		closePopBox();
-
+		
+		
 		// if there's a colorbox open, close it
 		$SQ.sb_colorbox.close();
 
@@ -471,9 +467,9 @@ $SQ(function(){
 	function hideAlerts(target, performAjaxCall, animate){
 		if (target){
 			if (performAjaxCall) {
-				var notification_id = target.attr('id').match(/([0-9]+)/);
+				var notification_id = target.attr('id').match(/(?:[0-9]+)/);
 				$SQ.ajaxWithAuth({
-					url : 'http://'+sayso.baseDomain+'/api/user/notification-close?message_id='+notification_id,
+					url : 'http://'+sayso.baseDomain+'/api/notification/close?renderer=jsonp&message_id='+notification_id,
 					success : function (response, status) {}
 				});
 			}
@@ -495,7 +491,7 @@ $SQ(function(){
 
 	function updateAlerts(reverseOrder) {
 		$SQ.ajaxWithAuth({
-			url : 'http://'+sayso.baseDomain+'/api/user/notification-update?renderer=jsonp&starbar_id='+sayso.starbar.id,
+			url : 'http://'+sayso.baseDomain+'/api/notification/get-all?renderer=jsonp&starbar_id='+sayso.starbar.id,
 			success : function (response, status, jqXHR) {
 				var randomString = $SQ.randomString(10);
 				var newAlerts = false;
@@ -507,24 +503,18 @@ $SQ(function(){
 					});
 				}
 				
-				if (response.data.messages.length > 0) {
-					$SQ.each(response.data.messages, function (index, info) {
+				if (response.data.collection.length > 0) {
+					$SQ.each(response.data.collection, function (index, message) {
 						// Check if an alert with that message already exists, if so, do nothing
-						var id = info[0];
-						var currentAlert = $SQ('#starbar-alert-'+id);
+						var currentAlert = $SQ('#starbar-alert-'+message['id']);
 						if (currentAlert.length == 0) { // New Alert
-							var notification_area = info[1];
-							var message = info[2];
-							var popbox_to_open = info[3];
-							var color = info[4];
+							var elemAlertContainer = $SQ('#starbar-alert-container-'+message['notification_area']);
 
-							var elemAlertContainer = $SQ('#starbar-alert-container-'+notification_area);
-
-							var newAlertHtml = '<div class="sb_starbar-alert sb_starbar-alert-'+notification_area+'" id="starbar-alert-'+id+'"><div class="sb_inner"><div class="sb_content sb_theme_bgAlert'+color+'">';
-							if (popbox_to_open) {
-								newAlertHtml += '<a href="http://'+sayso.baseDomain+'/starbar/'+sayso.starbar.shortName+'/'+popbox_to_open+'" class="sb_nav_element sb_alert" rel="sb_popBox_'+popbox_to_open+'">'+message+'</a>'
+							var newAlertHtml = '<div class="sb_starbar-alert sb_starbar-alert-'+message['notification_area']+'" id="starbar-alert-'+message['id']+'"><div class="sb_inner"><div class="sb_content sb_theme_bgAlert'+message['color']+'">';
+							if (message['popbox_to_open']) {
+								newAlertHtml += '<a href="http://'+sayso.baseDomain+'/starbar/'+sayso.starbar.shortName+'/'+message['popbox_to_open']+'" class="sb_nav_element sb_alert" rel="sb_popBox_'+message['popbox_to_open']+'">'+message['message']+'</a>'
 							} else {
-								newAlertHtml += '<a href="#" class="sb_nav_element sb_alert" rel="">'+message+'</a>';
+								newAlertHtml += '<a href="#" class="sb_nav_element sb_alert" rel="">'+message['message']+'</a>';
 							}
 
 							newAlertHtml += '</div><!-- .sb_content --></div><!-- .sb_inner --></div><!-- #sb_alert-new -->';
@@ -534,6 +524,11 @@ $SQ(function(){
 								elemAlertContainer.append(newAlertHtml);
 							}
 
+							// Update username and profile image if we've just received a notification regarding FB getting connected.
+							if (message['short_name'] == 'FB Account Connected') {
+								updateProfile(true)
+							}
+							
 							newAlerts = true;
 						} else { // Alert already exist, remove the class with the random string that we just added
 							currentAlert.removeClass('sb_starbar-alert_'+randomString);
@@ -547,7 +542,7 @@ $SQ(function(){
 							}
 						});
 					}
-
+				
 					if (newAlerts) {
 						initElements();
 						showAlerts();
@@ -555,6 +550,45 @@ $SQ(function(){
 				}
     		}
 		});
+	}
+
+	function updateProfile(setGlobalUpdate) {
+		$SQ.ajaxWithAuth({
+			url : 'http://'+sayso.baseDomain+'/api/user/get?renderer=jsonp',
+			success : function (response, status, jqXHR) {
+				var user = response.data;
+				var userSocials;
+				
+				if (user && user['_user_socials'] && user['_user_socials']['collection'])
+					userSocials = user['_user_socials']['collection'];
+
+				// Update Profile Image
+				if (userSocials) {
+					$SQ.each(userSocials, function (index, userSocial) {
+						if (userSocial['provider'] == 'facebook') {
+							var profileImages = $SQ('img.sb_userImg');
+							if (profileImages.length > 0) {
+								profileImages.each(function(){
+		 							$SQ(this).attr('src', 'http://graph.facebook.com/'+user_social['identifier']+'/picture?type=square');
+								});
+							}
+						}
+					});
+				}
+				
+				// Update Username
+				if (user['username']) {
+					$SQ('.sb_userTitle').each(function(){
+						$SQ(this).html(user['username']);
+					});
+				}
+    		}
+		});
+		
+		if (setGlobalUpdate) {
+			starbar.state.profile = Math.round(new Date().getTime() / 1000);
+			starbar.state.update();
+		}
 	}
 
 	function activateTabs(target){
@@ -796,6 +830,10 @@ $SQ(function(){
 
 	
 	// Starbar state
+	starbar.state.local = {
+        'profile' : Math.round(new Date().getTime() / 1000),
+        'game' : Math.round(new Date().getTime() / 1000)
+	}
 
 	// Update the cross-domain state variables
 	starbar.state.update = function (){
@@ -813,6 +851,15 @@ $SQ(function(){
         starbar.state.callback = function () { 
             // logic here to determine if/what should be fired to "refresh"
             animateBar(null, 'refresh'); 
+            updateAlerts(false);
+            
+            if (starbar.state.profile > starbar.state.local.profile) {
+            	updateProfile(false);
+			}
+
+            /* (starbar.state.game > starbar.state.local.game) {
+            	updateGame();
+			}*/
             // example:
             // if (starbar.state.notifications === 'update') updateAlerts();
             // also, in updateAlerts() or wherever, don't forget to reset the

@@ -211,7 +211,17 @@ class Api_UserController extends Api_GlobalController
             throw new Api_UserException(new Api_ValidationError($validator->getMessages()));
         }
     }
-    
+
+    public function getAction() {
+        $this->_validateRequiredParameters(array('user_id'));
+
+    	$user = new User();
+    	$user->loadData($this->user_id);
+		$user->loadUserSocials();
+
+        return $this->_resultType($user);
+	}
+
     public function saveInPlaceAction() {	
         $this->_validateRequiredParameters(array('user_id'));	
 		$response = array();
@@ -245,45 +255,6 @@ class Api_UserController extends Api_GlobalController
 		return $this->_resultType(new Object($response));
 	}
     
-    public function notificationUpdateAction() {	
-        $this->_validateRequiredParameters(array('user_id'));	
-		$response = array();
-		$response["messages"] = array();
-
-		$request = $this->getRequest();
-		$starbarId = $request->getParam('starbar_id');
-		
-		if ($this->user_id && $starbarId) {
-	        $messages = new Notification_MessageCollection();
-	        $messages->loadAllNotificationMessagesForStarbarAndUser($starbarId, $this->user_id);
-	        if (sizeof($messages)) {
-	        	foreach ($messages as $message) {
-	        		$response["messages"][] = array(
-	        			$message->id,
-	        			$message->notification_area,
-	        			$message->message,
-	        			$message->popbox_to_open,
-	        			$message->color
-	        		);
-				}
-			}
-		}
-
-		return $this->_resultType(new Object($response));
-	}
-    
-    // This function is called whenever a notification message is closed:
-    // We need to insert or update (should always be update) a notification_message_user_map record
-    // so the user doesn't see the notification again
-    public function notificationCloseAction() {		
-        $this->_validateRequiredParameters(array('user_id', 'message_id'));
-		$request = $this->getRequest();
-		$messageId = $request->getParam('message_id');
-		$messageUserMap = new Notification_MessageUserMap();
-		$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($messageId, $this->user_id, true);
-		return $this->_resultType(true);
-	}
-    
     public function resetSurveysAndPollsAction() {
         if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
             $this->_validateRequiredParameters(array('user_id'));
@@ -294,7 +265,7 @@ class Api_UserController extends Api_GlobalController
             
         }
 	}
-    
+
     public function resetExternalAction() {		
         if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
             $this->_validateRequiredParameters(array('user_id'));
@@ -304,7 +275,7 @@ class Api_UserController extends Api_GlobalController
     		return $this->_resultType(false);
         }
 	}
-    
+
     protected function _startUserSession (User & $user) {
         
         $userSession = Api_UserSession::getInstance();

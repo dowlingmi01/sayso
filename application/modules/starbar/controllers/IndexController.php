@@ -14,13 +14,16 @@ class Starbar_IndexController extends Api_AbstractController
         // a user_key from the "client". This only applies here for the
         // initial load. Other actions (ajax, etc) will still need to
         // pass user_key, which can be retreived via sayso.starbar.user.key
-        if (isset($_COOKIE['simulated_starbar_user_key'])) {
-            $this->user_key = $_COOKIE['simulated_starbar_user_key'];
-        } else {
-            $this->user_key = md5(str_shuffle('abcdefghijklmnopqrstuvwxyz1234567890') . time());
-            setcookie('simulated_starbar_user_key', $this->user_key);
-        }
-        Api_UserSession::getInstance($this->user_key)->setId(1);
+        if (!$this->user_id || !$this->user_key) {
+            $this->user_id = 1;
+            if (isset($_COOKIE['simulated_starbar_user_key'])) {
+                $this->user_key = $_COOKIE['simulated_starbar_user_key'];
+            } else {
+                $this->user_key = md5(str_shuffle('abcdefghijklmnopqrstuvwxyz1234567890') . time());
+                setcookie('simulated_starbar_user_key', $this->user_key);
+            }
+        } 
+        Api_UserSession::getInstance($this->user_key)->setId($this->user_id);
         if (!in_array($this->_request->getActionName(), array('index', 'gaga'))) {
             // i.e. for everything based on Generic Starbar, use these includes
             $this->view->headLink()->appendStylesheet('/css/starbar-generic.css');

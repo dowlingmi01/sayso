@@ -60,7 +60,7 @@ class Api_SurveyController extends Api_GlobalController
 
 				if ($surveyUserMap->save()) {
 				    // award the user
-				    $this->_getGame()->completeSurvey($survey);
+				    Game_Starbar::getInstance()->completeSurvey($survey);
 					return true;
 				}
 			}

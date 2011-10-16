@@ -44,7 +44,7 @@ class User extends Record implements Titled
     public function getTitle ()
     {
     	if ($this->username) return $this->username;
-    	return "Musician";
+    	return Game_Starbar::getInstance()->getGamer()->getHighestLevel()->title;
     }
     
     public function setEmail (User_Email $email) {

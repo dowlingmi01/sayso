@@ -115,6 +115,8 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
         }
         
         $layout = Zend_Layout::startMvc();
+        $view = $layout->getView();
+        $view->partialLoop()->setObjectKey('model');
         
         $cache = Zend_Cache::factory('Core', 'File', array('automatic_serialization' => true, 'lifetime' => 3600), array('cache_dir' => CACHE_PATH));
 		Api_Registry::set('cache', $cache);

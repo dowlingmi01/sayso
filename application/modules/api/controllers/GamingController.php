@@ -17,12 +17,40 @@ class Api_GamingController extends Api_GlobalController
     }
     
     // http://local.sayso.com/api/gaming/user-profile/starbar_id/1/user_id/46/user_key/r3nouttk6om52u18ba154mc4j4/auth_key/309e34632c2ca9cd5edaf2388f5fa3db
+    
+    /**
+     * Get RAW user profile from Big Door
+     * - use this for testing only. see next method for standard use
+     * 
+     */
+    public function userProfileRawAction () {
+        $game = Game_Starbar::getInstance();
+        $gamer = $game->getGamer(false);
+        $client = $game->getHttpClient();
+        $client->getEndUser($gamer->getGamingId());
+        return $this->_resultType($client->getData(true));
+    }
+    
+    /**
+     * Get User profile via our own objects
+     * Enter description here ...
+     */
     public function userProfileAction () {
         $this->_validateRequiredParameters(array('user_id', 'starbar_id'));
         $gamer = Gamer::create($this->user_id, $this->starbar_id);
         $game = Game_Starbar::create($gamer, $this->_request);
         $gamer->loadProfile($game->getHttpClient());
         return $this->_resultType($gamer);
+    }
+    
+    /**
+     * Get levels THIS IS STILL IN PROGRESS
+     * 
+     */
+    public function levelsAction () {
+        $client = new Gaming_BigDoor_HttpClient('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
+        $client->getNamedLevelCollection(43352);
+        return $this->_resultType($client->getData(true));
     }
     
     public function testBigDoorAction () {

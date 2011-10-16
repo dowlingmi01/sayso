@@ -32,25 +32,5 @@ class Api_GlobalController extends Api_AbstractController
         }
         
     }
-    
-    /**
-     * Get current Game
-     * 
-     * NOTE: user_key and auth_key must exist in the request
-     *   
-     * @return Game_Starbar
-     */
-    protected function _getGame () {
-        static $game = null;
-        if (Game_Abstract::$_enabled) {
-            if (!$game) {
-                $gamer = Api_UserSession::getInstance($this->user_key)->getGamingUser();
-        		$game = Game_Starbar::create($gamer, $this->_request);
-            }
-            return $game;
-        } else {
-            return new NullObject('Game_Starbar');
-        }
-    }
 }
 

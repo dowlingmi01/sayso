@@ -130,7 +130,7 @@ abstract class Game_Starbar extends Game_Abstract {
                 break;
         }
     }
-    
+
     /**
      * Override parent::submitAction to grab user profile with updated 
      * points/currencies *after* the transaction has fired and load that
@@ -221,6 +221,25 @@ abstract class Game_Starbar extends Game_Abstract {
             
         }
         return new NullObject('Game_Starbar');
+    }
+    
+    /**
+     * Get the single Game instance for this request
+     * 
+     * @return Game_Starbar
+     */
+    public static function getInstance () {
+        static $game = null;
+        if (Game_Abstract::$_enabled) {
+            if (!$game) {
+                $request = Zend_Controller_Front::getInstance()->getRequest();
+                $gamer = Api_UserSession::getInstance($request->getParam('user_key'))->getGamingUser();
+        		$game = Game_Starbar::create($gamer, $request);
+            }
+            return $game;
+        } else {
+            return new NullObject('Game_Starbar');
+        }
     }
     
     /**

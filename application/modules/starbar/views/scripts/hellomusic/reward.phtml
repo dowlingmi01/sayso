@@ -1,13 +1,16 @@
 <?php
 
-$reward = $this;
-/* @var $reward Game_Reward */
+$reward = $this->model;
+/* @var $reward Gaming_BigDoor_Good */
+
 ?>
-<div class="sb_rewardItem sb_rewardItem_disabled">
+<div class="sb_rewardItem <?= $reward->isRedeemable() ? '' : 'sb_rewardItem_disabled' ?>">
+    <?php if (!$reward->isRedeemable()) : ?>
     <div class="sb_rewardItem_disabledMsg">
         <h1 class="sb_textError">!</h1>
         <p>Must be Level 2 - Busker</p>
     </div><!-- .sb_rewardItem_disabledMsg -->
+    <?php endif ?>
     <div class="sb_rewardHeader">
         <?= $reward->title ?>
     </div><!-- .sb_rewardHeader -->   
@@ -18,7 +21,9 @@ $reward = $this;
         <div class="sb_user-points-box">                    
             <div class="sb_progressBar"><span class="sb_progressBarPercent">40</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 2000</span></div>
         </div><!-- .user-points-box -->
+        <?php if (!$reward->isRedeemable()) : ?>
         <p class="sb_reward_levelReq"><span>Level Requirement</span></p>
+        <?php endif ?>
         <span class="sb_theme_button sb_theme_button_grey">Redeem</span>
     </div><!-- .sb_rewardBase -->
 </div><!-- .sb_rewardItem -->

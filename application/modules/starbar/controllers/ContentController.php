@@ -34,29 +34,40 @@ class Starbar_ContentController extends Api_GlobalController
 
     public function rewardsAction ()
     {
-//        $this->_usingJsonPRenderer = false;
-        $client = $this->_getGame()->getHttpClient();
-        $client->setCustomParameters(array('attribute_friendly_id' => 'bdm-product-variant', 'verbosity' => 9));
+        $game = Game_Starbar::getInstance();
+        $client = $game->getHttpClient();
+        $client->setCustomParameters(array(
+        	'attribute_friendly_id' => 'bdm-product-variant', 
+        	'verbosity' => 9,
+            'end_record' => 100
+        ));
         $client->getNamedTransactionGroup('store');
         $data = $client->getData();
-        
-        $rewards = new Game_RewardCollection();
-        foreach ($data as $rewardData) {
-            $reward = new Game_Reward();
-            $reward->build($rewardData);
-            $rewards->addItem($reward);
+        $goods = new Collection(); 
+        foreach ($data as $goodData) {
+            $good = new Gaming_BigDoor_Good();
+            $good->build($goodData);
+            $good->accept($game);
+            $goods[] = $good;
         }
-        $this->view->rewards = $rewards;
-        return;
+//        Debug::exitNicely($goods);
+        if ($this->test) {
+            // get the raw reward data for dev purposes
+            $this->_usingJsonPRenderer = false;
+            $this->_enableRenderer(new Api_Plugin_JsonRenderer());
+            if ($this->test === 'raw') {
+                $result = $client->getData();
+                return $this->_resultType(new Object($result));
+            } else {
+                foreach ($goods as $good) unset($good->object);
+                return $this->_resultType($goods);
+            }
+            
+        } else { 
+            $this->view->rewards = $goods;
+        }
         // http://local.sayso.com/starbar/hellomusic/rewards/user_key/r3nouttk6om52u18ba154mc4j4/user_id/46/auth_key/309e34632c2ca9cd5edaf2388f5fa3db
         
-//        exit($client->getLastRequest());
-        header('Content-type: application/json');
-        $this->_enableRenderer(new Api_Plugin_JsonRenderer());
-        return $this->_resultType($rewards);
-        $result = $client->getData(true);
-        exit($result);
-        return $this->_resultType($result);
 	}
 	
     public function aboutSaysoAction ()
@@ -288,7 +299,7 @@ class Starbar_ContentController extends Api_GlobalController
     				$userSocial->username = $fbProfile['username'];
     			$userSocial->save();
                 
-    			$this->_getGame()->associateSocialNetwork($userSocial);
+    			Game_Starbar::getInstance()->associateSocialNetwork($userSocial);
                 
     			// Show user congrats notification
     			$message = new Notification_Message();
@@ -361,7 +372,7 @@ class Starbar_ContentController extends Api_GlobalController
 				$userSocial->username = $accessToken['screen_name'];
 				$userSocial->save();
 				
-				$this->_getGame()->associateSocialNetwork($userSocial);
+				Game_Starbar::getInstance()->associateSocialNetwork($userSocial);
 				
     			// Show user congrats notification
     			$message = new Notification_Message();
@@ -398,7 +409,7 @@ class Starbar_ContentController extends Api_GlobalController
 		/* Facebook wall post successful */
 		if ($request->getParam('post_id')) {
 			$success = true;
-			$this->_getGame()->share($this->shared_type, @$this->shared_id);
+			Game_Starbar::getInstance()->share($this->shared_type, @$this->shared_id);
 		}
 
 		$this->view->assign('success', $success);

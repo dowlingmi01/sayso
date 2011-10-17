@@ -217,10 +217,14 @@ $SQ.activateGameElements = function(target, animate) {
 	if (userLevelNumberElems.length > 0) {
 		userLevelNumberElems.each(function() {
 			var newLevel = ""+(window.sayso.starbar.user.gaming._levels.collection.length - 1);
-			if (!animate) $SQ(this).html(newLevel);
-			else {
-				if ($SQ(this).html() != newLevel) {
-				}
+			$SQ(this).html(newLevel);
+			if (animate && window.sayso.starbar.user.gaming._levels.collection[0].leveled_up) {
+				$SQ(this).fadeTo(animationDuration/6, 0)
+					.fadeTo(animationDuration/6, 1)
+					.fadeTo(animationDuration/6, 0)
+					.fadeTo(animationDuration/6, 1)
+					.fadeTo(animationDuration/6, 0)
+					.fadeTo(animationDuration/6, 1);
 			}
 		});
 	}
@@ -229,30 +233,15 @@ $SQ.activateGameElements = function(target, animate) {
 		userLevelTitleElems.each(function() {
 			// The current level is the first level in the collection (it is sorted by the gaming API!)
 			$SQ(this).html(window.sayso.starbar.user.gaming._levels.collection[0].title);
+			if (animate && window.sayso.starbar.user.gaming._levels.collection[0].leveled_up) {
+				$SQ(this).fadeTo(animationDuration/6, 0)
+					.fadeTo(animationDuration/6, 1)
+					.fadeTo(animationDuration/6, 0)
+					.fadeTo(animationDuration/6, 1)
+					.fadeTo(animationDuration/6, 0)
+					.fadeTo(animationDuration/6, 1);
+			}
 		});
-	}
-
-	if (animate && window.sayso.starbar.user.gaming._levels.collection[0].leveled_up) {
-		if (userLevelNumberElems.length > 0) {
-			userLevelNumberElems.each(function() {
-				$SQ(this).fadeTo(animationDuration/6, 0);
-				$SQ(this).fadeTo(animationDuration/6, 1);
-				$SQ(this).fadeTo(animationDuration/6, 0);
-				$SQ(this).fadeTo(animationDuration/6, 1);
-				$SQ(this).fadeTo(animationDuration/6, 0);
-				$SQ(this).fadeTo(animationDuration/6, 1);
-			});
-		}
-		if (userLevelTitleElems.length > 0) {
-			userLevelTitleElems.each(function() {
-				$SQ(this).fadeTo(animationDuration/6, 0);
-				$SQ(this).fadeTo(animationDuration/6, 1);
-				$SQ(this).fadeTo(animationDuration/6, 0);
-				$SQ(this).fadeTo(animationDuration/6, 1);
-				$SQ(this).fadeTo(animationDuration/6, 0);
-				$SQ(this).fadeTo(animationDuration/6, 1);
-			});
-		}
 	}
 
 	$SQ.each(window.sayso.starbar.user.gaming._currencies.collection, function (index, currency) {

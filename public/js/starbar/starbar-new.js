@@ -374,19 +374,15 @@ $SQ(function(){
 		
 		// Close the last (i.e. the visible) alert from each alert (notification) container if the user opens a popBox
 		// Unless the popBox is opening because the user clicked an alert
-		if (!keepNotificationsOpen && alertContainers.length > 0) {
+		// If there is a popBox already open, don't close any notifications
+		if (!keepNotificationsOpen && alertContainers.length > 0 && $SQ('.sb_popBoxActive').length == 0) {
 			alertContainers.each(function(){
 		 		var alertsInContainer = $SQ('.sb_starbar-alert', $SQ(this));
 		 		if (alertsInContainer.length > 0) hideAlerts(alertsInContainer.last(), true, true);
 			});
 		}
 		
-		// If there is a popBox already open, don't close any notifications
-		if ($SQ('.sb_popBoxActive').length > 1) {
-			closePopBox(true);
-		} else {
-			closePopBox(keepNotificationsOpen);
-		}
+		closePopBox(keepNotificationsOpen);
 		
 		// if there's a colorbox open, close it
 		$SQ.sb_colorbox.close();

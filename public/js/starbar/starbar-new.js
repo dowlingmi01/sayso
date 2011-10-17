@@ -380,7 +380,13 @@ $SQ(function(){
 		 		if (alertsInContainer.length > 0) hideAlerts(alertsInContainer.last(), true, true);
 			});
 		}
-		closePopBox(keepNotificationsOpen);
+		
+		// If there is a popBox already open, don't close any notifications
+		if ($SQ('.sb_popBoxActive').length > 1) {
+			closePopBox(true);
+		} else {
+			closePopBox(keepNotificationsOpen);
+		}
 		
 		// if there's a colorbox open, close it
 		$SQ.sb_colorbox.close();

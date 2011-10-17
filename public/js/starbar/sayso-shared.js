@@ -219,7 +219,7 @@ $SQ.activateGameElements = function(target, animate) {
 			var newLevel = ""+(window.sayso.starbar.user.gaming._levels.collection.length - 1);
 			$SQ(this).html(newLevel);
 			if (animate && window.sayso.starbar.user.gaming._levels.collection[0].leveled_up) {
-				$SQ(this).effect("pulsate", { times:3 }, animationDuration/3);;
+				$SQ(this).effect("pulsate", { times:3 }, parseInt(animationDuration/3));;
 			}
 		});
 	}
@@ -229,7 +229,7 @@ $SQ.activateGameElements = function(target, animate) {
 			// The current level is the first level in the collection (it is sorted by the gaming API!)
 			$SQ(this).html(window.sayso.starbar.user.gaming._levels.collection[0].title);
 			if (animate && window.sayso.starbar.user.gaming._levels.collection[0].leveled_up) {
-				$SQ(this).effect("pulsate", { times:3 }, animationDuration/3);;
+				$SQ(this).effect("pulsate", { times:3 }, parseInt(animationDuration/3));;
 			}
 		});
 	}

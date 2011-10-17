@@ -220,12 +220,18 @@ $SQ.activateGameElements = function(target, animate) {
 			var newLevel = ""+(window.sayso.starbar.user.gaming._levels.collection.length - 1);
 			$SQ(this).html(newLevel);
 			if (animate && window.sayso.starbar.user.gaming._levels.collection[0].leveled_up) {
-				$SQ(this).fadeTo(animationDurationSixth, 0);
-				$SQ(this).fadeTo(animationDurationSixth, 1);
-				$SQ(this).fadeTo(animationDurationSixth, 0);
-				$SQ(this).fadeTo(animationDurationSixth, 1);
-				$SQ(this).fadeTo(animationDurationSixth, 0);
-				$SQ(this).fadeTo(animationDurationSixth, 1);
+				// Probably not the best way :(
+				$SQ(this).fadeOut(animationDurationSixth,
+					$SQ(this).fadeIn(animationDurationSixth, 
+						$SQ(this).fadeOut(animationDurationSixth,
+							$SQ(this).fadeIn(animationDurationSixth, 
+								$SQ(this).fadeOut(animationDurationSixth,
+									$SQ(this).fadeIn(animationDurationSixth)
+								)
+							)
+						)
+					)
+				);
 			}
 		});
 	}
@@ -235,12 +241,17 @@ $SQ.activateGameElements = function(target, animate) {
 			// The current level is the first level in the collection (it is sorted by the gaming API!)
 			$SQ(this).html(window.sayso.starbar.user.gaming._levels.collection[0].title);
 			if (animate && window.sayso.starbar.user.gaming._levels.collection[0].leveled_up) {
-				$SQ(this).fadeTo(animationDurationSixth, 0);
-				$SQ(this).fadeTo(animationDurationSixth, 1);
-				$SQ(this).fadeTo(animationDurationSixth, 0);
-				$SQ(this).fadeTo(animationDurationSixth, 1);
-				$SQ(this).fadeTo(animationDurationSixth, 0);
-				$SQ(this).fadeTo(animationDurationSixth, 1);
+				$SQ(this).fadeOut(animationDurationSixth,
+					$SQ(this).fadeIn(animationDurationSixth, 
+						$SQ(this).fadeOut(animationDurationSixth,
+							$SQ(this).fadeIn(animationDurationSixth, 
+								$SQ(this).fadeOut(animationDurationSixth,
+									$SQ(this).fadeIn(animationDurationSixth)
+								)
+							)
+						)
+					)
+				);
 			}
 		});
 	}

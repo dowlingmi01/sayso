@@ -89,7 +89,7 @@ class Starbar_HellomusicController extends Starbar_ContentController
     		$this->view->count_new_polls = 5 - ($this->view->count_complete_polls + $this->view->count_archive_polls);
     		if ($this->view->count_new_polls < 0) $this->view->count_new_polls = 0;
 
-    		$this->view->count_new_surveys = 5 - ($this->view->count_complete_surveys + $this->view->count_archive_surveys);
+    		$this->view->count_new_surveys = 4 - ($this->view->count_complete_surveys + $this->view->count_archive_surveys);
     		if ($this->view->count_new_surveys < 0) $this->view->count_new_surveys = 0;
 		}
 	}

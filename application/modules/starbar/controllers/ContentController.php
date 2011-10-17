@@ -276,20 +276,20 @@ class Starbar_ContentController extends Api_GlobalController
 			'secret' => $config->facebook->secret
 		));
 
-		$user = $facebook->getUser();
+		$fbUser = $facebook->getUser();
 
-		if ($user) {
+		if ($fbUser) {
 			try {
 				$fbProfile = $facebook->api('/me');
 			} catch (FacebookApiException $e) {
 				error_log($e);
-				$user = null;
+				$fbUser = null;
 			}
 		}
 
 		$callbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-connect?user_id=".$this->user_id."&user_key=".$this->user_key;
 
-		if ($user) {
+		if ($fbUser) {
 			if ($this->user_key && (int)$this->user_id === (int)Api_UserSession::getInstance($this->user_key)->getId()) {
     			$userSocial = new User_Social();
     			$userSocial->user_id = $this->user_id;
@@ -298,8 +298,12 @@ class Starbar_ContentController extends Api_GlobalController
     			$userSocial->save();
                 
     			if (isset($fbProfile['username'])) {
-    				$user->username = $fbProfile['username'];
-    				$user->save();
+    				$user = new User();
+    				$user->loadData($this->user_id);
+    				if (!$user->username) {
+    					$user->username = $fbProfile['username'];
+    					$user->save();
+					}
 				}
 
     			Game_Starbar::getInstance()->associateSocialNetwork($userSocial);

@@ -213,14 +213,13 @@ $SQ.activateGameElements = function(target, animate) {
 	var userLevelTitleElems = $SQ('.sb_user_level_title', target);
 
 	var animationDuration = 1500; // milliseconds
-	var sixth = parseInt(animationDuration/6); // milliseconds
 
 	if (userLevelNumberElems.length > 0) {
 		userLevelNumberElems.each(function() {
 			var newLevel = ""+(window.sayso.starbar.user.gaming._levels.collection.length - 1);
 			$SQ(this).html(newLevel);
 			if (animate && window.sayso.starbar.user.gaming._levels.collection[0].leveled_up) {
-				$SQ(this).fadeOut(sixth).fadeIn(sixth).fadeOut(sixth).fadeIn(sixth).fadeOut(sixth).fadeIn(sixth);
+				$SQ(this).effect("pulsate", { times:3 }, animationDuration/3);;
 			}
 		});
 	}
@@ -230,7 +229,7 @@ $SQ.activateGameElements = function(target, animate) {
 			// The current level is the first level in the collection (it is sorted by the gaming API!)
 			$SQ(this).html(window.sayso.starbar.user.gaming._levels.collection[0].title);
 			if (animate && window.sayso.starbar.user.gaming._levels.collection[0].leveled_up) {
-				$SQ(this).fadeOut(sixth).fadeIn(sixth).fadeOut(sixth).fadeIn(sixth).fadeOut(sixth).fadeIn(sixth);
+				$SQ(this).effect("pulsate", { times:3 }, animationDuration/3);;
 			}
 		});
 	}

@@ -791,6 +791,7 @@ $SQ(function(){
                 function() {
                     // Animation complete.
                     $SQ(this).attr('class','').addClass('sb_starbar-visClosed');
+                    elemSaySoLogoSemiStowed.parent().show();
                     elemSaySoLogoSemiStowed.fadeTo(0, 1);
                     $SQ(this).fadeTo(500, 0);
                     hideAlerts();
@@ -806,6 +807,9 @@ $SQ(function(){
                     	elemPlayerConsole.fadeTo(157, 1); // 157 found to work best for some bizarre reason
                     	elemSaySoLogoSemiStowed.fadeTo(500, 0);
 					}, 1000);
+                    setTimeout(function () {
+						elemSaySoLogoSemiStowed.parent().hide();
+					}, 1500);
             	}
             );
 	    }

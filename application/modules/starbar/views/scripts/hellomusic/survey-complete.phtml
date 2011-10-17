@@ -4,7 +4,7 @@
 		$SQ('#sb-survey-completed').fadeIn(500)
 	}, 500);
 
-	$SQ.remoteControl.alertMessage('The Starbar is aware of this survey completion!');
+	$SQ.remoteControl.updateGame(null);
 
 	$SQ.getScript("http://platform.twitter.com/widgets.js", function(){
 		function handleTweetEvent(event){

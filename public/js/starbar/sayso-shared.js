@@ -120,8 +120,9 @@ $SQ.frameCommunicationFunctions = {
 			}
 		}
 	},
-	updateGame: function () {
-		$SQ.updateGame(false, true, true);
+	updateGame: function (newProfile) {
+		if (newProfile) $SQ.updateGame(newProfile, true, true);
+		else $SQ.updateGame('ajax', true, true);
 	},
 	alertMessage: function (msg) {
 		sayso.log(msg);
@@ -181,18 +182,22 @@ $SQ.randomString = function (length, special) {
 	return randomString;
 }
 
-$SQ.updateGame = function(loadFromCache, setGlobalUpdate, animate) {
-	if (loadFromCache) {
-		activateGameElements(null, animate);
-	} else {
+$SQ.updateGame = function(loadSource, setGlobalUpdate, animate) {
+	if (loadSource === "ajax") {
 		$SQ.ajaxWithAuth({
 			url : 'http://'+sayso.baseDomain+'/api/gaming/user-profile?renderer=jsonp',
 			success : function (response, status, jqXHR) {
-				window.sayso.starbar.state.local.game_cache = response.data;
+				window.sayso.starbar.user.gaming = response.data;
 				$SQ.activateGameElements(null, animate);
     		}
 		});
+	} else if (loadSource === "cache") {
+		$SQ.activateGameElements(null, animate);
+	} else { // loadSource object is a gamer profile, load from there
+		window.sayso.starbar.user.gaming = loadSource;
+		$SQ.activateGameElements(null, animate);
 	}
+
 
 	if (setGlobalUpdate) {
 		starbar.state.game = Math.round(new Date().getTime() / 1000);
@@ -201,32 +206,99 @@ $SQ.updateGame = function(loadFromCache, setGlobalUpdate, animate) {
 }
 
 $SQ.activateGameElements = function(target, animate) {
-	var userLevelTitleElems = $SQ('.sb_user_level_title', target);
+	var currencyBalanceElems = $SQ('.sb_currency_balance', target);
+	var currencyPercentElems = $SQ('.sb_currency_percent', target);
 	var progressBarElems = $SQ('.sb_progressBar', target);
-	
-	if (userLevelTitleElems.length > 0) {
-		userLevelTitleElems.each(function() {
-			$SQ(this).html(window.sayso.starbar.state.local.game_cache._levels.collection[0].title);
+	var userLevelNumberElems = $SQ('.sb_user_level_number', target);
+	var userLevelTitleElems = $SQ('.sb_user_level_title', target);
+
+	var animationDuration = 1500; // milliseconds
+
+	if (userLevelNumberElems.length > 0) {
+		userLevelNumberElems.each(function() {
+			var newLevel = ""+(window.sayso.starbar.user.gaming._levels.collection.length - 1);
+			if (!animate) $SQ(this).html(newLevel);
+			else {
+				if ($SQ(this).html() != newLevel) {
+				}
+			}
 		});
 	}
-	
-	$SQ.each(window.sayso.starbar.state.local.game_cache._currencies.collection, function (index, currency) {
+
+	if (userLevelTitleElems.length > 0) {
+		userLevelTitleElems.each(function() {
+			// The current level is the first level in the collection (it is sorted by the gaming API!)
+			$SQ(this).html(window.sayso.starbar.user.gaming._levels.collection[0].title);
+		});
+	}
+
+	if (animate && window.sayso.starbar.user.gaming._levels[0].leveled_up) {
+		if (userLevelNumberElems.length > 0) {
+			userLevelNumberElems.each(function() {
+				$SQ(this).fadeTo(animationDuration/6, 0);
+				$SQ(this).fadeTo(animationDuration/6, 1);
+				$SQ(this).fadeTo(animationDuration/6, 0);
+				$SQ(this).fadeTo(animationDuration/6, 1);
+				$SQ(this).fadeTo(animationDuration/6, 0);
+				$SQ(this).fadeTo(animationDuration/6, 1);
+			});
+		}
+		if (userLevelTitleElems.length > 0) {
+			userLevelTitleElems.each(function() {
+				$SQ(this).fadeTo(animationDuration/6, 0);
+				$SQ(this).fadeTo(animationDuration/6, 1);
+				$SQ(this).fadeTo(animationDuration/6, 0);
+				$SQ(this).fadeTo(animationDuration/6, 1);
+				$SQ(this).fadeTo(animationDuration/6, 0);
+				$SQ(this).fadeTo(animationDuration/6, 1);
+			});
+		}
+	}
+
+	$SQ.each(window.sayso.starbar.user.gaming._currencies.collection, function (index, currency) {
 		var currencyTitle = currency.title.toLowerCase();
 		var currencyBalance = parseInt(currency.current_balance);
+		var previousCurrencyBalance = parseInt(currency.previous_balance);
 		var currencyPercent = 0;
-
-		var currencyBalanceElems = $SQ('.sb_currency_balance_'+currencyTitle, target);
-		var currencyPercentElems = $SQ('.sb_currency_percent_'+currencyTitle, target);
 
 		if (currencyBalanceElems.length > 0) {
 			currencyBalanceElems.each(function() {
-				$SQ(this).html(currencyBalance);
+				if ($SQ(this).attr('data-currency') == currencyTitle) {
+					if (animate && currencyBalance != parseInt($SQ(this).html())) { // New value, play animation
+						var originalColor = $SQ(this).css('color');
+						// Prepare the element for numeric 'animation' (i.e. tweening the number)
+						$SQ(this).animate(
+							{ animationCurrencyBalance: previousCurrencyBalance },
+							{ duration : 0 }
+						).animate(
+							{
+								color : 'red',
+								animationCurrencyBalance : currencyBalance
+							},
+							{ 
+								duration : parseInt(animationDuration*4/5),
+								step : function (now, fx) {
+									$SQ(this).html(parseInt(now));
+								},
+								complete : function () {
+									$SQ(this).html(currencyBalance);
+									$SQ(this).css('color', originalColor);
+								}
+							}
+						).animate(
+							{ color : originalColor },
+							{ duration : parseInt(animationDuration/5) }
+						);
+					} else {
+						$SQ(this).html(currencyBalance);
+					}
+				}
 			});
 		}
 
 		if (currencyPercentElems.length > 0) {
 			currencyPercentElems.each(function() {
-				$SQ(this).html(currencyPercent);
+				if ($SQ(this).attr('data-currency') == currencyTitle) $SQ(this).html(currencyPercent);
 			});
 		}
 	});

@@ -78,7 +78,7 @@ $SQ(function(){
 	function initStarBar(){
 		initElements();
 		updateAlerts(true);
-		$SQ.updateGame(false, false, false);
+		$SQ.activateGameElements(null, false);
 		// initializes development-only jquery
 		devInit();
 		sayso.log('Loaded and Ready');
@@ -527,7 +527,7 @@ $SQ(function(){
 							// Update profile if we've just received a notification regarding FB or TW getting connected.
 							if (message['short_name'] == 'FB Account Connected' || message['short_name'] == 'TW Account Connected') {
 								updateProfile(true);
-								$SQ.updateGame(false, true, true);
+								$SQ.updateGame('ajax', true, true);
 							}
 							
 							newAlerts = true;
@@ -864,9 +864,9 @@ $SQ(function(){
             	updateProfile(false);
 			}
 
-            /* (starbar.state.game > starbar.state.local.game) {
-            	updateGame();
-			}*/
+            if (starbar.state.game > starbar.state.local.game) {
+            	$SQ.updateGame('ajax', false, false);
+			}
             // example:
             // if (starbar.state.notifications === 'update') updateAlerts();
             // also, in updateAlerts() or wherever, don't forget to reset the

@@ -57,6 +57,9 @@ $starbar = $this->starbar;
             user : {
                 id : <?= Api_UserSession::getInstance()->getId() ?>,
                 key : '<?= Api_UserSession::getInstance()->getKey() ?>'
+                <? if ($this->game) { ?>
+                	, gaming : <?= Zend_Json_Encoder::encode($this->game->getGamer()->export(new ObjectExporter_Array())) ?>
+                <? } ?>
             },
             state : {
                 visibility : 'starbar-visOpen',

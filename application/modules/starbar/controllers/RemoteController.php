@@ -14,7 +14,9 @@
  * @author davidbjames
  *
  */
-class Starbar_RemoteController extends Api_AbstractController
+require_once APPLICATION_PATH . '/modules/api/controllers/GlobalController.php';
+
+class Starbar_RemoteController extends Api_GlobalController
 {
     public function init() {
         if (!$this->_init()) {
@@ -475,7 +477,9 @@ class Starbar_RemoteController extends Api_AbstractController
 		$facebookSocial = new User_Social();
 		$facebookSocial->loadByUserIdAndProvider($user->id, 'facebook');
 		$this->view->assign('facebook_social', $facebookSocial);
-        
+
+        $this->view->assign('game', $this->_getGame());
+
         // render the view manually, we will pass it back in the JSON
         $this->render();
         

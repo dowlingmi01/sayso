@@ -7,7 +7,9 @@
  * @see RemoteController for actual Starbars
  * @author davidbjames
  */
-class Starbar_IndexController extends Api_AbstractController
+require_once APPLICATION_PATH . '/modules/api/controllers/GlobalController.php';
+
+class Starbar_IndexController extends Api_GlobalController
 {
     public function preDispatch() {
         // for the simulated app, we also have to simulate passing
@@ -77,6 +79,11 @@ class Starbar_IndexController extends Api_AbstractController
 		// make sure this user (and session) has a gaming user associated
 		$gamer = Gamer::create($user->getId(), $starbar->getId());
 		$session->setGamingUser($gamer);
-    }
+
+		$this->_request->setParam('starbar_id', $starbar->getId());
+        $game = Game_Starbar::getInstance();
+        $game->checkin();
+		$this->view->assign('game', $game);
+	}
 }
 

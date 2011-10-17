@@ -231,6 +231,10 @@
             jsEasyTooltip.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.easyTooltip.js';
             starbarContainer.appendChild(jsEasyTooltip);
             
+            var jsCycle = document.createElement('script'); 
+            jsCycle.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.cycle.lite.js';
+            starbarContainer.appendChild(jsCycle);
+            
             var jsEasyXDM = document.createElement('script'); 
             jsEasyXDM.src = 'http://' + sayso.baseDomain + '/js/starbar/easyXDM.min.js';
             starbarContainer.appendChild(jsEasyXDM);

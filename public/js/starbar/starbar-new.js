@@ -163,7 +163,7 @@ $SQ(function(){
 
 					// if it was already open, close it and remove the class. otherwise, open the popbox
 					if (thisPopBox.hasClass('sb_popBoxActive')){
-						closePopBox(thisPopBox);
+						closePopBox();
 					}else{
 						// check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
             			var thisPopBoxSrc = $SQ(this).attr('href');
@@ -227,7 +227,7 @@ $SQ(function(){
 
 					// if it was already open, close it and remove the class. otherwise, open the popbox
 					if (thisPopBox.hasClass('sb_popBoxActive')){
-						closePopBox(thisPopBox);
+						closePopBox();
 					}else{
 						// this menu item's popBox is active
 
@@ -348,7 +348,7 @@ $SQ(function(){
 
 	} // end initElements()
 
-	function closePopBox(exception){
+	function closePopBox(keepNotifications){
 		elemPopBox.each(function(){
 			$SQ(this).removeClass('sb_popBoxActive');
 			$SQ(this).hide();
@@ -357,7 +357,8 @@ $SQ(function(){
 			// remove hover class from all nav items
 			$SQ('span.sb_nav_border').removeClass('sb_theme_navOnGradient');
 		});
-		updateAlerts(false);
+		
+		if (!keepNotifications) updateAlerts(false);
 		return;
 	}
 
@@ -379,8 +380,7 @@ $SQ(function(){
 		 		if (alertsInContainer.length > 0) hideAlerts(alertsInContainer.last(), true, true);
 			});
 		}
-		closePopBox();
-		
+		closePopBox(keepNotificationsOpen);
 		
 		// if there's a colorbox open, close it
 		$SQ.sb_colorbox.close();

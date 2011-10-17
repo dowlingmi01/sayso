@@ -295,10 +295,13 @@ class Starbar_ContentController extends Api_GlobalController
     			$userSocial->user_id = $this->user_id;
     			$userSocial->provider = "facebook";
     			$userSocial->identifier = $user;
-    			if (isset($fbProfile['username']))
-    				$userSocial->username = $fbProfile['username'];
     			$userSocial->save();
                 
+    			if (isset($fbProfile['username'])) {
+    				$user->username = $fbProfile['username'];
+    				$user->save();
+				}
+
     			Game_Starbar::getInstance()->associateSocialNetwork($userSocial);
                 
     			// Show user congrats notification

@@ -180,21 +180,21 @@ class Starbar_ContentController extends Api_GlobalController
     // Fetches polls for the current user for display
     public function pollsAction ()
     {
-		$newSurveys = new SurveyCollection();
-		$completeSurveys = new SurveyCollection();
-		$archiveSurveys = new SurveyCollection();
+		$newPolls = new SurveyCollection();
+		$completePolls = new SurveyCollection();
+		$archivePolls = new SurveyCollection();
 
-		$newSurveys->loadSurveysForStarbarAndUser(1, $this->user_id, 'poll', 'new');
-		$completeSurveys->loadSurveysForStarbarAndUser(1, $this->user_id, 'poll', 'complete');
-		$archiveSurveys->loadSurveysForStarbarAndUser(1, $this->user_id, 'poll', 'archive');
+		$newPolls->loadSurveysForStarbarAndUser(1, $this->user_id, 'poll', 'new');
+		$completePolls->loadSurveysForStarbarAndUser(1, $this->user_id, 'poll', 'complete');
+		$archivePolls->loadSurveysForStarbarAndUser(1, $this->user_id, 'poll', 'archive');
 
-		$this->view->assign('new_surveys', $newSurveys);
-		$this->view->assign('complete_surveys', $completeSurveys);
-		$this->view->assign('archive_surveys', $archiveSurveys);
+		$this->view->assign('new_polls', $newPolls);
+		$this->view->assign('complete_polls', $completePolls);
+		$this->view->assign('archive_polls', $archivePolls);
 
-		$this->view->assign('count_new_surveys', sizeof($newSurveys));
-		$this->view->assign('count_complete_surveys', sizeof($completeSurveys));
-		$this->view->assign('count_archive_surveys', sizeof($archiveSurveys));
+		$this->view->assign('count_new_polls', sizeof($newPolls));
+		$this->view->assign('count_complete_polls', sizeof($completePolls));
+		$this->view->assign('count_archive_polls', sizeof($archivePolls));
 	}
 
     // Fetches surveys for the current user for display
@@ -245,13 +245,9 @@ class Starbar_ContentController extends Api_GlobalController
 		$userEmail->loadData($user->primary_email_id);
 		$this->view->assign('user_email', $userEmail);
 
-		$newSurveys = new SurveyCollection();
-		$newSurveys->loadSurveysForStarbarAndUser(1, $this->user_id, 'survey', 'new');
-		$this->view->assign('count_new_surveys', sizeof($newSurveys));
-
-		$newPolls = new SurveyCollection();
-		$newPolls->loadSurveysForStarbarAndUser(1, $this->user_id, 'poll', 'new');
-		$this->view->assign('count_new_polls', sizeof($newPolls));
+		// Assign the counts for surveys and polls
+		$this->pollsAction();
+		$this->surveysAction();
 	}
 	
 	public function userShareAction()

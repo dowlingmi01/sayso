@@ -3,28 +3,34 @@
 </div><!-- .sb_header -->
 <div class="sb_tabs">
 	<ul>
-		<? if ($this->count_new_surveys) { ?>
-			<li><a href="#polls_tabs_1"><?= $this->count_new_surveys ?> New!</a></li>
+		<? if ($this->count_new_polls) { ?>
+			<li><a href="#polls_tabs_1"><?= $this->count_new_polls ?> New!</a></li>
 		<? } else { ?>
 			<li><a href="#polls_tabs_1">New</a></li>
 		<? } ?>
-		<? if ($this->count_complete_surveys) { ?>
+		<? if ($this->count_complete_polls) { ?>
 			<li><a href="#polls_tabs_2">Completed</a></li>
 		<? } ?>
-		<? if ($this->count_archive_surveys) { ?>
+		<? if ($this->count_archive_polls) { ?>
 			<li><a href="#polls_tabs_3">Archive</a></li>
 		<? } ?>
 	</ul>
 	<div id="polls_tabs_1" class="sb_tabPane">
 		<p class="sb_tabHeader">
-			Polls are a speedy and effective way to gauge which way the wind is blowing. Each poll completed earns you <strong class="sb_theme_textHighlight sb_tooltip" title="Notes - are almost as good as cash and can be redeemed for goods in the Rewards Center.">100 Notes</strong> &amp; <strong class="sb_theme_textHighlight sb_tooltip" title="Chops - determine your access to increasingly important levels of influence.">500 Chops</strong>. Share and tweet Polls to for bonus Notes! And look for special Polls with point magnifiers!
+			Polls are a speedy and effective way to gauge which way the wind is blowing. Each poll completed earns you <strong class="sb_theme_textHighlight sb_tooltip" title="Notes - are almost as good as cash and can be redeemed for goods in the Rewards Center.">25 Notes</strong> &amp; <strong class="sb_theme_textHighlight sb_tooltip" title="Chops - determine your access to increasingly important levels of influence.">250 Chops</strong>. Share and tweet Polls to for bonus Notes! And look for special Polls with point magnifiers!
 		</p>
+		<? if (!$this->primary_survey_taken) { ?>
+			<p class="sb_tabHeader">
+				Complete the <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey?survey_id=1" class="sb_nav_element" rel="sb_popBox_polls_lg">Influencer Survey</a> to unlock the remaining polls!
+			</p>
+		<? } ?>
 		<div class="sb_scrollPane">
 
 			<!-- BEGIN POLL BOX LANDING -->
 			<div class="sb_accordion">
 				<? $i = 0 ?>
-				<? foreach ($this->new_surveys as $survey) { ?>
+				<? foreach ($this->new_polls as $survey) { ?>
+					<? if ($i >= $this->count_new_polls) break ?>
 					<h3>
 						<? $iframeHeight = 62 + (ceil($survey->number_of_answers / 2.0) * 32); // 62 base height + 32 per row of answers -- Note that this height estimate is updated after the iframe loads ?>
 						<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>" rel="starbar-poll-<?= $survey->id ?>" iframeHeight="<?= $iframeHeight ?>">
@@ -35,7 +41,7 @@
 						</a>
 					</h3>
 					<div>
-						<? if ($i < ($this->count_new_surveys - 1)) { ?>
+						<? if ($i < ($this->count_new_polls - 1)) { ?>
 							<div class="sb_nextPoll">
 								<a href="#" onclick="$SQ(this).parents('.sb_accordion').accordion('activate', <?= ($i+1) ?>)"><span class="sb_img_nextTriangle"></span>Next Poll</a>
 							</div>
@@ -50,18 +56,16 @@
 				<? } ?>
 			</div><!-- .accordion -->
 			<!-- END POLL BOX LANDING -->
-
 		</div><!-- .sb_scrollPane -->
-
 	</div><!-- #tabs_1 -->
 
-	<? if ($this->count_complete_surveys) { ?>
+	<? if ($this->count_complete_polls) { ?>
 		<div id="polls_tabs_2" class="sb_tabPane">
 			<p class="sb_tabHeader">These are polls you've completed</p>
 			<p class="sb_tabHeader"><a href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/reset-surveys-and-polls", success : function (r, s) {} });'>Reset surveys and polls</a></p>
 			<div class="sb_scrollPane">
 				<ul class="sb_outlineList">
-					<? foreach ($this->complete_surveys as $survey) { ?>
+					<? foreach ($this->complete_polls as $survey) { ?>
 					    <li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
               				<div class="sb_pointsEarnedTotal">
               					<? if ($survey->premium) { ?>
@@ -79,7 +83,7 @@
 		</div><!-- #tabs_2 -->
 	<? } ?>
 
-	<? if ($this->count_archive_surveys) { ?>
+	<? if ($this->count_archive_polls) { ?>
 		<div id="polls_tabs_3" class="sb_tabPane">
 			<p class="sb_tabHeader">
 				We'd still love your opinion on these Archived Polls, and you can still earn by completing them! Same deal&ndash; <strong class="sb_theme_textHighlight">100 Notes</strong> &amp; <strong class="sb_theme_textHighlight">500 Chops</strong> for each one you complete.
@@ -89,7 +93,7 @@
 				<!-- BEGIN POLL BOX LANDING -->
 				<div class="sb_accordion">
 					<? $i = 0 ?>
-					<? foreach ($this->archive_surveys as $survey) { ?>
+					<? foreach ($this->archive_polls as $survey) { ?>
 						<h3>
 							<? $iframeHeight = 62 + (ceil($survey->number_of_answers / 2.0) * 32); // 62 base height + 32 per row of answers -- Note that this height estimate is updated after the iframe loads ?>
 							<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>" rel="starbar-poll-<?= $survey->id ?>" iframeHeight="<?= $iframeHeight ?>">
@@ -100,7 +104,7 @@
 							</a>
 						</h3>
 						<div>
-							<? if ($i < ($this->count_archive_surveys - 1)) { ?>
+							<? if ($i < ($this->count_archive_polls - 1)) { ?>
 								<div class="sb_nextPoll">
 									<a href="#" onclick="$SQ(this).parents('.sb_accordion').accordion('activate', <?= ($i+1) ?>)"><span class="sb_img_nextTriangle"></span>Next Poll</a>
 								</div>

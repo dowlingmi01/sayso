@@ -16,12 +16,12 @@
 	});
 </script>
 <div id="sayso-starbar-embed">
-	Sorry, it appears that you do not qualify for the <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong> survey. Don't worry, we'll still give you the notes and chops for trying!<br /><br />
+	Sorry, it appears that you do not qualify for the <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong> survey. Don't worry, we'll still give you <?= ($this->survey->premium ? "some" : "the" ) ?> notes and chops for trying!<br /><br />
 	<div id="sb-survey-disqualified">
 		<? if ($this->survey->premium) { ?>
-			<p>You earned <strong class="sb_theme_textHighlight_alt">4 Notes</strong> &amp;  <strong class="sb_theme_textHighlight_alt">1000 Chops</strong></p>
+			<p>You earned <strong class="sb_theme_textHighlight_alt">50 Notes</strong> &amp;  <strong class="sb_theme_textHighlight_alt">500 Chops</strong></p>
 		<? } else { ?>
-			<p>You earned <strong class="sb_theme_textHighlight">2 Notes</strong> &amp;  <strong class="sb_theme_textHighlight">500 Chops</strong></p>
+			<p>You earned <strong class="sb_theme_textHighlight">50 Notes</strong> &amp;  <strong class="sb_theme_textHighlight">500 Chops</strong></p>
 		<? } ?>
 		<p class="sb_embedShare">
 			<a class="sb_externalShare" href="#"

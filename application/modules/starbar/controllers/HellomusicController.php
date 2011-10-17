@@ -51,4 +51,46 @@ class Starbar_HellomusicController extends Starbar_ContentController
 			$this->_assignShareInfoToView(null, null, $facebookCallbackUrl, null, $facebookDescription);
 		}
     }
+    
+    public function pollsAction ()
+    {
+    	parent::pollsAction();
+    	$surveyUserMap = new Survey_UserMap();
+    	$primarySurveyTaken = $surveyUserMap->checkIfUserHasCompletedSurvey($this->user_id, 1);
+    	$this->view->primary_survey_taken = $primarySurveyTaken;
+    	
+    	if (!$primarySurveyTaken) {
+    		$this->view->count_new_polls = 5 - ($this->view->count_complete_polls + $this->view->count_archive_polls);
+    		if ($this->view->count_new_polls < 0) $this->view->count_new_polls = 0;
+		}
+	}
+
+    public function surveysAction ()
+    {
+    	parent::surveysAction();
+    	$surveyUserMap = new Survey_UserMap();
+    	$primarySurveyTaken = $surveyUserMap->checkIfUserHasCompletedSurvey($this->user_id, 1);
+    	$this->view->primary_survey_taken = $primarySurveyTaken;
+
+    	if (!$primarySurveyTaken) {
+    		$this->view->count_new_surveys = 4 - ($this->view->count_complete_surveys + $this->view->count_archive_surveys);
+    		if ($this->view->count_new_surveys < 0) $this->view->count_new_surveys = 0;
+		}
+	}
+
+    public function userProfileAction ()
+    {
+    	parent::userProfileAction();
+    	$surveyUserMap = new Survey_UserMap();
+    	$primarySurveyTaken = $surveyUserMap->checkIfUserHasCompletedSurvey($this->user_id, 1);
+    	$this->view->primary_survey_taken = $primarySurveyTaken;
+
+    	if (!$primarySurveyTaken) {
+    		$this->view->count_new_polls = 5 - ($this->view->count_complete_polls + $this->view->count_archive_polls);
+    		if ($this->view->count_new_polls < 0) $this->view->count_new_polls = 0;
+
+    		$this->view->count_new_surveys = 5 - ($this->view->count_complete_surveys + $this->view->count_archive_surveys);
+    		if ($this->view->count_new_surveys < 0) $this->view->count_new_surveys = 0;
+		}
+	}
 }

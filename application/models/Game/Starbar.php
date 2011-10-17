@@ -217,7 +217,7 @@ abstract class Game_Starbar extends Game_Abstract {
             
         } catch (Exception $exception) {
             
-            self::_handleException($exception, $this->_request);
+            self::_handleException($exception, $request);
             
         }
         return new NullObject('Game_Starbar');

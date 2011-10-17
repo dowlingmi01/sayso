@@ -200,8 +200,8 @@ $SQ.updateGame = function(loadSource, setGlobalUpdate, animate) {
 
 
 	if (setGlobalUpdate) {
-		starbar.state.game = Math.round(new Date().getTime() / 1000);
-		starbar.state.update();
+		sayso.starbar.state.game = Math.round(new Date().getTime() / 1000);
+		sayso.starbar.state.update();
 	}
 }
 

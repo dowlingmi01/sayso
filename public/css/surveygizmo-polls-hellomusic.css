@@ -149,6 +149,9 @@
 	padding:20px;
 	display: none;
 	}
+.sg-error-message {
+	display: none;
+	}
 
 /* !----- Headers, Footers, Table headers ----- */
 .sg-header, 

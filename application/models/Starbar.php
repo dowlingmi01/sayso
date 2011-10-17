@@ -21,6 +21,14 @@ class Starbar extends Record
     
     protected $_html = '';
     
+    public function init() {
+        if (Registry::isRegistered('starbar')) {
+            throw new Exception('Starbar already created and registered in Registry as \'starbar\'');
+        }
+        Registry::set('starbar', $this);
+        parent::init();
+    }
+    
     public function setUser (User $user) {
         $this->_user = $user;
     }

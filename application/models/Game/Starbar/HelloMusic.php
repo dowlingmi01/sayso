@@ -23,15 +23,9 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
             $currencyPrimarySurveyId = $this->_economy->getCurrencyId('PRIMARY_SURVEY_POINTS');
             $currencyPrimarySurvey = $profile->getCurrencies()->find('id', $currencyPrimarySurveyId)->getFirst();
             if ((int) $currencyPrimarySurvey->current_balance < 2) {
-                $good->setIsRedeemable(false);
+                $good->isRedeemable(false);
             }
         } 
-        // for goods other than first weekly give away
-        // if user has finished primary survey
-        // set redeemable true
         parent::_visitGood($good);
-        
     }
-
-     
 }

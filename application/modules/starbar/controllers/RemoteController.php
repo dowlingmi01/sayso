@@ -49,6 +49,7 @@ class Starbar_RemoteController extends Api_GlobalController
                 $starbar->loadData($this->starbar_id);
             } else {
                 $starbar->loadDataByUniqueFields(array('short_name' => $this->short_name));
+                $this->starbar_id = $starbar->getId();
             }
             
             $starbarUserMap = new Starbar_UserMap();
@@ -124,7 +125,6 @@ class Starbar_RemoteController extends Api_GlobalController
             $gamer = Gamer::create($user->getId(), $starbar->getId());
 			$session->setGamingUser($gamer);
 
-			$this->_request->setParam('starbar_id', $starbar->getId());
 	        $game = Game_Starbar::getInstance();
 	        $game->checkin();
 			$this->view->assign('game', $game);
@@ -497,7 +497,7 @@ class Starbar_RemoteController extends Api_GlobalController
     }
     
     /**
-     * Make sure Starbar has been determined in index
+     * Make sure Starbar has been determined in index (or post-install-deliver)
      * @return Starbar
      */
     private function _getStarbarObject () {

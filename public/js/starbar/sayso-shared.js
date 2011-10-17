@@ -232,7 +232,7 @@ $SQ.activateGameElements = function(target, animate) {
 		});
 	}
 
-	if (animate && window.sayso.starbar.user.gaming._levels[0].leveled_up) {
+	if (animate && window.sayso.starbar.user.gaming._levels.collection[0].leveled_up) {
 		if (userLevelNumberElems.length > 0) {
 			userLevelNumberElems.each(function() {
 				$SQ(this).fadeTo(animationDuration/6, 0);

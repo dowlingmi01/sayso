@@ -241,7 +241,6 @@ $SQ.activateGameElements = function(target, animate) {
 	$SQ.each(window.sayso.starbar.user.gaming._currencies.collection, function (index, currency) {
 		var currencyTitle = currency.title.toLowerCase();
 		var currencyBalance = parseInt(currency.current_balance);
-		var previousCurrencyBalance = parseInt(currency.previous_balance);
 		var currencyPercent = 0;
 
 		if (currencyBalanceElems.length > 0) {
@@ -251,7 +250,7 @@ $SQ.activateGameElements = function(target, animate) {
 						var originalColor = $SQ(this).css('color');
 						// Prepare the element for numeric 'animation' (i.e. tweening the number)
 						$SQ(this).animate(
-							{ animationCurrencyBalance: previousCurrencyBalance },
+							{ animationCurrencyBalance: parseInt($SQ(this).html()) },
 							{ duration : 0 }
 						).animate(
 							{

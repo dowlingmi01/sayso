@@ -26,7 +26,7 @@ $SQ(function(){
 	// and the user is on the Starbar's base domain (e.g. hellomusic.com)
 	$SQ(document).bind('onboarding-display', function () {
 	    var onboarding = $SQ('#sb_popBox_onboard');
-	    openPopBox(onboarding, onboarding.attr('href'), false);
+	    openPopBox(onboarding, onboarding.attr('href'), false, true);
 	    setTimeout(function () {
 	        // once the onboarding is displayed, bind click on the last step 
 	        // to trigger completion of the onboarding 
@@ -366,14 +366,14 @@ $SQ(function(){
 	* src: the URL to load into the popBox (set to false to not load via AJAX)
 	* withLoadingElement: true to insert loading elements before loading via AJAX (ignored if src is false)
 	*/
-	function openPopBox(popBox, src, withLoadingElement, fromNotification){
+	function openPopBox(popBox, src, withLoadingElement, keepNotificationsOpen){
 		var ajaxContentContainer = null;
 		var loadingElement = null;
 		var alertContainers = $SQ('.sb_alerts_container');
 		
 		// Close the last (i.e. the visible) alert from each alert (notification) container if the user opens a popBox
 		// Unless the popBox is opening because the user clicked an alert
-		if (!fromNotification && alertContainers.length > 0) {
+		if (!keepNotificationsOpen && alertContainers.length > 0) {
 			alertContainers.each(function(){
 		 		var alertsInContainer = $SQ('.sb_starbar-alert', $SQ(this));
 		 		if (alertsInContainer.length > 0) hideAlerts(alertsInContainer.last(), true, true);

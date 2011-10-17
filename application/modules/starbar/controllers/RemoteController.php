@@ -438,6 +438,7 @@ class Starbar_RemoteController extends Api_GlobalController
         
         
         // trigger game transaction: *install* 
+		$this->_request->setParam('starbar_id', $starbar->getId());
         Game_Starbar::create($gamer, $this->_request, $starbar)->install();
         
         // now we know which starbar, route to the appropriate starbar action:

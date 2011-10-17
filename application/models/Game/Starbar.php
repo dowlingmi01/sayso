@@ -188,7 +188,8 @@ abstract class Game_Starbar extends Game_Abstract {
                     // 2a. via Starbar object
                     $authKey = $starbar->auth_key;
                 } else {
-                    $starbar = new Starbar();
+                    if (Registry::isRegistered('starbar')) $starbar = Registry::getStarbar();
+                    else $starbar = new Starbar();
                     $starbarId = $request->getParam('starbar_id');
                     $shortName = $request->getParam('short_name');
                     if ($starbarId) {

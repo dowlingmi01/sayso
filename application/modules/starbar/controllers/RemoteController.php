@@ -478,8 +478,6 @@ class Starbar_RemoteController extends Api_GlobalController
 		$facebookSocial->loadByUserIdAndProvider($user->id, 'facebook');
 		$this->view->assign('facebook_social', $facebookSocial);
 
-        $this->view->assign('game', $this->_getGame());
-
         // render the view manually, we will pass it back in the JSON
         $this->render();
         

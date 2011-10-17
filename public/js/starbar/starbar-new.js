@@ -81,17 +81,6 @@ $SQ(function(){
 		$SQ.activateGameElements(null, false);
 		// initializes development-only jquery
 		devInit();
-
-		var userLevelNumberElems = $SQ('.sb_user_level_number');
-
-		var animationDuration = 1500; // milliseconds
-
-		if (userLevelNumberElems.length > 0) {
-			userLevelNumberElems.each(function() {
-				$SQ(this).effect("pulsate", { times:20 }, parseInt(animationDuration/3));;
-			});
-		}
-
 		sayso.log('Loaded and Ready');
 	}
 

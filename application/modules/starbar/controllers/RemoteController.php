@@ -413,8 +413,12 @@ class Starbar_RemoteController extends Api_GlobalController
         
         // Starbar
     
-        $starbar = new Starbar();
-        $starbar->loadData($externalUser->starbar_id);  
+        if (Registry::isRegistered('starbar')) {
+            $starbar = Registry::getStarbar();
+        } else {
+            $starbar = new Starbar();
+            $starbar->loadData($externalUser->starbar_id);  
+        }
         
         $starbar->setUser($user); // <-- agreggate user to starbar
         

@@ -492,18 +492,11 @@ class Starbar_ContentController extends Api_GlobalController
 	
 	protected function _assignStarbarToView()
 	{
-		$request = $this->getRequest();
-		$starbar = new Starbar();
-
-		$authKey = $request->getParam('auth_key');
-
-		if ($authKey) {
-			$starbar->loadDataByUniqueFields(array('auth_key' => $authKey));
-		}
-		
-		if (!$starbar->id) {
-			exit;
-			// @todo No starbar, should exit?
+		if (Registry::isRegistered('starbar')) {
+		    $starbar = Registry::getStarbar();
+		} else {
+		    $starbar = new Starbar();
+			$starbar->loadDataByUniqueFields(array('auth_key' => $this->auth_key));
 		}
 
 		$this->view->assign('starbar', $starbar);

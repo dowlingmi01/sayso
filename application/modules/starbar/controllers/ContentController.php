@@ -294,7 +294,7 @@ class Starbar_ContentController extends Api_GlobalController
     			$userSocial = new User_Social();
     			$userSocial->user_id = $this->user_id;
     			$userSocial->provider = "facebook";
-    			$userSocial->identifier = $user;
+    			$userSocial->identifier = $fbUser;
     			$userSocial->save();
                 
     			if (isset($fbProfile['username'])) {

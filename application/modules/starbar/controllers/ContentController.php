@@ -248,6 +248,15 @@ class Starbar_ContentController extends Api_GlobalController
 		// Assign the counts for surveys and polls
 		$this->pollsAction();
 		$this->surveysAction();
+
+		// @todo point this to onboarding
+		$shareLink = "http://www.say.so/";
+		// @todo share text to vary based on starbar_id?
+		$shareText = "Say.So is totally awesome";
+		$facebookTitle = "Say.So";
+		$facebookDescription = "Like Music? You can get the Beat Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
+		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=starbar&shared_id=".$this->starbar_id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
+		$this->_assignShareInfoToView($shareLink, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
 	}
 	
 	public function userShareAction()

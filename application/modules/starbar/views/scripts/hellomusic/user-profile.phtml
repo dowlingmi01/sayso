@@ -16,13 +16,8 @@
 						<?= $this->user_email->email ?>
 					</p>
 				</li>
-				<li>
-					<!--<div class="sb_alignLeft" style="padding-top: 5px;">
-						<a href="http://www.facebook.com/pages/SaySo/290443177649449" target="_new">Follow us on Facebook!</a>
-					</div>-->
-					<div class="sb_alignLeft">
-						<iframe src="http://www.facebook.com/plugins/like.php?locale=en_US&amp;href=http://www.facebook.com/pages/SaySo/290443177649449&amp;layout=button_count&amp;show_faces=false&amp;width=300&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=24" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:54px; height:24px; margin-right: 10px;" allowTransparency="true"></iframe>
-					</div>
+				<li style="padding: 10px 0 0 0;">
+			        <iframe src="http://www.facebook.com/plugins/like.php?locale=en_US&amp;href=http://www.facebook.com/pages/SaySo/290443177649449&amp;layout=standard&amp;show_faces=false&amp;width=240&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:290px; height:35px;" allowTransparency="true"></iframe>
 				</li>
 				<li>
 					<h2 class="sb_titlePlain">Link Your Accounts</h2>
@@ -37,18 +32,17 @@
 						<? } else { ?>
 							<span href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/twitter-connect-redirect" id="sb_profile_twitter" class="sb_connect_twitter sb_unconnected">http://www.twitter.com</span>
 						<? } ?>
-            <br />
-            <small><a href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/reset-external", success : function (r, s) {} });'>Reset account links</a></small>
+						<br />
 					</p>
 				</li>
-        <li style="border: 0;">
-        	<h2 class="sb_titlePlain" style="margin: 0;">Documents</h2>
-          <p style="margin: 0;">
-            <small><a href="http://<?= BASE_DOMAIN ?>/docs/Terms & Conditions.pdf">Terms &amp; Conditions</a>&nbsp;&nbsp;|&nbsp;&nbsp; 
-            <a href="http://<?= BASE_DOMAIN ?>/docs/SaySo_Privacy_Policy.pdf">Privacy Policy</a>&nbsp;&nbsp;|&nbsp;&nbsp; 
-            <a href="http://<?= BASE_DOMAIN ?>/docs/HelloMusic_Rewards_Rules.pdf">Rewards Rule</a></small>
-          </p>
-        </li>
+				<li style="border: 0;">
+					<h2 class="sb_titlePlain" style="margin: 0;">Documents</h2>
+					<p style="margin: 0;">
+						<small><a href="http://<?= BASE_DOMAIN ?>/docs/Terms & Conditions.pdf">Terms &amp; Conditions</a>&nbsp;&nbsp;|&nbsp;&nbsp; 
+						<a href="http://<?= BASE_DOMAIN ?>/docs/SaySo_Privacy_Policy.pdf">Privacy Policy</a>&nbsp;&nbsp;|&nbsp;&nbsp; 
+						<a href="http://<?= BASE_DOMAIN ?>/docs/HelloMusic_Rewards_Rules.pdf">Rewards Rule</a></small>
+					</p>
+				</li>
 			</ul>
 		</div>
 	</div><!-- .sb_column60 -->
@@ -69,38 +63,46 @@
 		</div><!-- .sb_header -->
 
 		<p>
-			<strong>Level 1. <span class="sb_userLevelColor1">Musician</span></strong>
+			<strong>Level <span class="sb_user_level_number"></span>. <span class="sb_userLevelColor1 sb_user_level_title"></span></strong>
 		</p>
 		<p>
-			<? if ($this->currency_notes) { ?>
-				<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><?= $this->currency_notes->current_balance ?> Notes</a><br />
-			<? } ?>
-			<? if ($this->currency_chops) { ?>
-				<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><?= $this->currency_chops->current_balance ?> Chops</a><br />
-			<? } ?>
+			<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><span class="sb_currency_balance" data-currency="notes"></span> Notes</a><br />
+			<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><span class="sb_currency_balance" data-currency="chops"></span> Chops</a><br />
 			<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/rewards" class="sb_nav_element" rel="sb_popBox_rewards">Redeem Rewards</a>
 		</p>
     </li>
     <li style="border: none;">
 		<div class="sb_header">
-			<h2 class="sb_titlePlain">Share</h2>
+			<h2 class="sb_titlePlain" style="padding-top: 3px">Share</h2>
 		</div><!-- .sb_header -->
-    <p>
-    	<div style="width: 50%; float: left; overflow: hidden">
-    <iframe src="//www.facebook.com/plugins/like.php?href&amp;send=false&amp;layout=button_count&amp;width=0&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font&amp;height=21&amp;appId=238278386195968" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:21px; width: 100px" allowTransparency="true"></iframe>
-    	</div>
-    	<div style="width: 50%; float: left; overflow: hidden !important">
-    <iframe allowtransparency="true" frameborder="0" scrolling="no"
-        src="//platform.twitter.com/widgets/tweet_button.html?count=none"
-        style="width:70px; height:20px;"></iframe>
-			</div>
-    </p>
-    <br clear="all" />
-    <p>
-			<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-share" class="sb_theme_button sb_nav_element" rel="sb_popBox_user-share"><span class="sb_theme_buttonArrow">Recommend to a Friend</span></a>
-		</p>
-    </li>
-    </ul>
+	    <p>
+			<a class="sb_externalShare" href="#"
+				onclick="window.open('http://www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($this->share_link) ?>&caption=<?= urlencode($this->facebook_share_caption) ?>&picture=<?= urlencode($this->facebook_share_image_url) ?>&redirect_uri=<?= urlencode($this->facebook_share_callback_url) ?>&name=<?= urlencode($this->facebook_title) ?>&description=<?= urlencode($this->facebook_description) ?>', 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450'); return false;">
+				<img src="http://<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
+			</a>
+			<script type="text/javascript">
+				$SQ.getScript("http://platform.twitter.com/widgets.js", function(){
+					function handleTweetEvent(event){
+						if (event) {
+							// @todo Tweet has occured, reward user!
+						}
+					}
+					twttr.events.bind('tweet', handleTweetEvent);
+				});
+			</script>
+			<a class="twitter-share-button"
+				data-related="<?= $this->twitter_share_related_users ?>"
+				data-hashtags="<?= $this->twitter_share_hashtags ?>"
+				data-via="<?= $this->twitter_share_via_user ?>"
+				data-url="<?= $this->share_link ?>"
+				data-text="<?= $this->twitter_share_text ?>"
+				data-count="none"
+				href="https://twitter.com/intent/tweet">
+					<img src="http://<?= BASE_DOMAIN ?>/images/generic/logo_twitter.png" alt="Twitter" />
+			</a>
+	    </p>
+	    </li>
+	    </ul>
 		</div><!-- .sb_scrollPane -->
 	</div><!-- .sb_column40 -->
 </div><!-- .sb_column6040BG -->

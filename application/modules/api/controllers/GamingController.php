@@ -48,9 +48,23 @@ class Api_GamingController extends Api_GlobalController
      * 
      */
     public function levelsAction () {
+        
         $client = new Gaming_BigDoor_HttpClient('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
         $client->getNamedLevelCollection(43352);
-        return $this->_resultType($client->getData(true));
+        $data = $client->getData();
+        $levels = new Collection();
+        foreach ($data->named_levels as $levelData) {
+            $level = new Gaming_BigDoor_Level();
+            $level->setId($levelData->id);
+            $level->title = $levelData->end_user_title;
+            $level->description = $levelData->end_user_description;
+            $level->urls = Gaming_BigDoor_Url::buildUrlCollection($levelData->urls);
+            $level->timestamp = $levelData->created_timestamp;
+            $level->ordinal = $levelData->threshold;
+            $levels[] = $level;
+        }
+        return $this->_resultType($levels);
+//        return $this->_resultType($client->getData(true)); // raw data
     }
     
     public function testBigDoorAction () {

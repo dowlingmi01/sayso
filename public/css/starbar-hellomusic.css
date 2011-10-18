@@ -658,7 +658,7 @@
 	font-size: 12px;
 }
 
-/* onboarding popup */
+/* onboarding popup AND ONBOARDING INSTRUCTIONS W/IN HELP */
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard {
 	bottom: 100px;
@@ -674,53 +674,64 @@
 	padding: 5px 10px 0px 5px;
 	background-color: #383838;
 }
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList{
 	border-top: 1px solid #ccc;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li{
 	border-bottom: 1px solid #ccc;
 	padding: 10px 45px 10px 55px;
 	background-repeat: no-repeat;
 	background-position: 0px 10px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_chops{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_chops,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_chops{
 	background-image: url('../images/hellomusic/img_star_lg.png');
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_notes{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_notes,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_notes{
 	background-image: url('../images/hellomusic/img_note_lg.png');
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_polls{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_polls,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_polls{
 	background-image: url('../images/hellomusic/img_poll_lg.png');
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_surveys{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_surveys,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_surveys{
 	background-image: url('../images/hellomusic/img_survey_lg.png');
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_deals{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_deals,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_deals{
 	background-image: url('../images/hellomusic/img_deal_lg.png');
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_gear{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_gear,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_gear{
 	background-image: url('../images/hellomusic/img_gear_lg.png');
 	padding-left: 60px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_prizes{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_prizes,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_prizes{
 	background-image: url('../images/hellomusic/img_prizes_lg.png');
 	padding-left: 60px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_hottest{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_hottest,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_hottest{
 	background-image: url('../images/hellomusic/img_hottest_lg.png');
 	padding-left: 60px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul.sb_ui-tabs-nav{
 	float: none;
 	margin: 0;
 	top: auto;
@@ -735,26 +746,35 @@
 	height: 40px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul#sb_ui-tabs-nav_2{
+#starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul.sb_ui-tabs-nav {
+	left: 10px !important;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul#sb_ui-tabs-nav_2,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul#sb_ui-tabs-nav_2{
 	background-position: 0px -40px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul#sb_ui-tabs-nav_3{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul#sb_ui-tabs-nav_3,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul#sb_ui-tabs-nav_3{
 	background-position: 0px -80px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul#sb_ui-tabs-nav_4{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul#sb_ui-tabs-nav_4,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul#sb_ui-tabs-nav_4{
 	background-position: 0px -120px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul.sb_ui-tabs-nav li{
 	border: none;
 	color: #fff;
 	width: 120px;
 	text-align: center;	
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li a{	
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li a,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul.sb_ui-tabs-nav li a{	
 	color: #fff;
 	text-shadow: #000 0px 0px 4px;
 	height: 40px;
@@ -764,7 +784,8 @@
 	line-height: 38px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs a.sb_surveyLaunch{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs a.sb_surveyLaunch,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs a.sb_surveyLaunch{
 	color: #fff;
 	text-shadow: #000 0px 0px 4px;
 	height: 42px;
@@ -773,10 +794,28 @@
 	line-height: 40px;
 	position: absolute;
 	bottom: 5px;
-	z-index: 2147483647;
+	z-index: 9999;
 	left: 300px;
 	font-weight: bold;
 	font-size: 12px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_tabs{
+	height: 370px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_tabs h3.sb_title{
+	font-size: 14px;
+	margin: 0;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_tabs p{
+	margin: 5px 0px 10px 0px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs{
+	border-top: 1px solid #ccc;
+	padding-top: 10px;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard h2.sb_title{

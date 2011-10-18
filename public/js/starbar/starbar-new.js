@@ -604,16 +604,21 @@ $SQ(function(){
 	function activateTabs(target){
 		// only set up the tabs if they're there
 		if ($SQ('.sb_tabs',target).length > 0){
-			$SQ('.sb_tabs',target).tabs({
-				show: function(event, ui){
-						// re-call the scrollbar to re-initialize to avoid the "flash" of narrow content.
-						activateScroll(target);							
-						window.location.hash = '';
-						
-						// adding ID to determine which tab is selected
-						$SQ('ul.sb_ui-tabs-nav',this).attr('id','');
-						$SQ('ul.sb_ui-tabs-nav',this).attr('id','sb_ui-tabs-nav_'+eval(ui.index+1));
-					}
+			$SQ('.sb_tabs',target).each(function(){
+				$SQ(this).tabs({
+					show: function(event, ui){
+							// re-call the scrollbar to re-initialize to avoid the "flash" of narrow content.
+							activateScroll(target);							
+							window.location.hash = '';
+							
+							// adding ID to determine which tab is selected
+							$SQ('ul.sb_ui-tabs-nav',this).attr('id','');
+							$SQ('ul.sb_ui-tabs-nav',this).attr('id','sb_ui-tabs-nav_'+eval(ui.index+1));
+							
+							// reset child tabs to 0
+							$SQ('.sb_tabPane ul.sb_ui-tabs-nav',this).attr('id','');
+						}
+				});
 			});
 		}
 	}

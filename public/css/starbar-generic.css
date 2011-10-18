@@ -711,7 +711,7 @@ html {
 }
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_popContent {
 	width: 520px;
-	height: 340px;
+	height: 470px;
 }
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_header {
 	margin: -15px 0px 0px 0px;
@@ -726,15 +726,35 @@ html {
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a {
 	color: #3bccea;
 }
-#sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_ui-tabs h2 {
-	margin: 12px 0px;
-	color: #075879;
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_ui-tabs h2.sb_title {
+	margin: 0px 0px 0px 0px;
+	/*color: #075879;*/
 	font-weight: normal;
 	font-size: 18px;
+	text-transform: none;
 }
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_ui-tabs p {
 	margin: 12px 0px;
 }
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo label{
+	width: 120px;
+	margin: 0px 10px 0px 0px;
+	text-align: right;
+	display: inline-block;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo textarea,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo input[type=text]{
+	display: inline;
+	width: 250px;
+	vertical-align: text-top;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_theme_button{
+	margin: 0px 0px 0px 130px;
+}
+
 /* TRIANGLES */
 
 #sayso-starbar #starbar-player-console .sb_triangle-border {

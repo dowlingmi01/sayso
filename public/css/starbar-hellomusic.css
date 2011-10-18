@@ -650,6 +650,15 @@
 	color: #333;
 }
 
+#sayso-starbar #starbar-type #sb_popBox_user-profile .sb_header{
+	margin-bottom: 0;
+}
+
+
+#sayso-starbar #starbar-type #sb_popBox_user-profile .sb_lineList li{
+	padding: 5px 0px;
+}
+
 #sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_nextToUserImage {
 	margin: 0 0 0 50px;
 }

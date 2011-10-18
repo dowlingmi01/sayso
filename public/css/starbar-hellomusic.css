@@ -786,11 +786,13 @@
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul.sb_ui-tabs-nav li a{	
 	color: #fff;
 	text-shadow: #000 0px 0px 4px;
+	font-size: 13px;
 	height: 40px;
 	width: 100%;
 	display: inline-block;
 	text-align: center;
 	line-height: 38px;
+	margin-left: 2px;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs a.sb_surveyLaunch,

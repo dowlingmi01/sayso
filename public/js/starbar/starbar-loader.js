@@ -317,9 +317,9 @@
                         sayso.starbar.user.gaming = response.gamer;
                     }
                     
-                    if (response.levels) {
-                        sayso.starbar.gaming = {
-                        	levels : response.levels
+                    if (response.starbar._game && response.starbar._game._levels) {
+                        sayso.starbar.game = {
+                        	levels : response.starbar._game._levels
 						}
                     }
                     

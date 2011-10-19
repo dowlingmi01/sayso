@@ -212,21 +212,23 @@ $SQ.updateGame = function(loadSource, setGlobalUpdate, animate) {
 }
 
 $SQ.activateGameElements = function(target, animate) {
+	var levelIconsContainerElems = $SQ('.sb_user_level_icons_container', target);
+	var currencyBalanceNextLevelElems = $SQ('.sb_currency_balance_next_level', target);
 	var currencyBalanceElems = $SQ('.sb_currency_balance', target);
 	var currencyPercentElems = $SQ('.sb_currency_percent', target);
-	var progressBarElems = $SQ('.sb_progressBar', target);
+	var progressBarElems = $SQ('.sb_progress_bar', target);
 	var userLevelNumberElems = $SQ('.sb_user_level_number', target);
 	var userLevelTitleElems = $SQ('.sb_user_level_title', target);
 
 	var animationDuration = 1500; // milliseconds
 
-	var allLevels = window.sayso.starbar.gaming.levels.collection;
+	var allLevels = window.sayso.starbar.game.levels.collection;
 	var userLevels = window.sayso.starbar.user.gaming._levels.collection;
 	// The current level is the first level in the collection (it is sorted by the gaming API!)
 	var userCurrentLevel = userLevels[0];
 	var userNextLevel;
 	var justLeveledUp = false;
-	
+
 	if (allLevels && userLevels) {
 		$SQ.each(allLevels, function (index, level) {
 			if (parseInt(userCurrentLevel.ordinal) < parseInt(level.ordinal) && (!userNextLevel || userNextLevel.ordinal > level.ordinal)) {
@@ -238,7 +240,13 @@ $SQ.activateGameElements = function(target, animate) {
 	if (!userNextLevel) { // There should always be a next level for the user, but just in case...
 		userNextLevel = { ordinal : userCurrentLevel.ordinal + 50000 }
 	}
-	
+
+	if (currencyBalanceNextLevelElems.length > 0) {
+		currencyBalanceNextLevelElems.each(function() {
+			$SQ(this).html(userNextLevel.ordinal);
+		});
+	}
+
 	if (userLevelNumberElems.length > 0) {
 		userLevelNumberElems.each(function() {
 			var newLevel = ""+(userLevels.length - 1);
@@ -261,6 +269,42 @@ $SQ.activateGameElements = function(target, animate) {
 				}
 			});
 		}
+	}
+
+	if (levelIconsContainerElems.length > 0) {
+		levelIconsContainerElems.each(function() {
+			$SQ(this).html('');
+			if (allLevels && userCurrentLevel) {
+				$SQ.each(allLevels, function (index, level) {
+					var smallImageUrl, bigImageUrl;
+					$SQ.each(level.urls.collection, function (index, url) {
+						if (url.url.indexOf('_b.png') != -1) bigImageUrl = url.url;
+						if (url.url.indexOf('_sm.png') != -1) smallImageUrl = url.url;
+					});
+
+					var levelIcon = $SQ(document.createElement('div'));
+					levelIcon.addClass('sb_userLevelIcons');
+					if (level.ordinal == userCurrentLevel.ordinal) {
+						levelIcon.addClass('sb_userLevel_current');
+						levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+bigImageUrl+'\')"></div><p><strong class="sb_theme_textHighlight">'+level.title+'</strong><br /><small class="sb_chopsEarned">'+level.ordinal+' Chops</small></p>');
+					} else {
+						if (level.ordinal < userCurrentLevel.ordinal) {
+							levelIcon.addClass('sb_userLevel_earned');
+						} else { // level.ordinal > userCurrentLevel.ordinal
+							levelIcon.addClass('sb_userLevel_next');
+						}
+						levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+smallImageUrl+'\')"></div><p>'+level.title+'<br /><small class="sb_chopsEarned">'+level.ordinal+' Chops</small></p>');
+					}
+					levelIconsContainerElems.append(levelIcon);
+				});
+
+				var emptyLevelsToAdd = 5 - allLevels.length;
+				while (emptyLevelsToAdd > 0) {
+					levelIconsContainerElems.append('<div class="sb_userLevelIcons sb_userLevel_next"><div class="sb_userLevelImg sb_userLevel_empty"></div><p><br /></p></div>');
+					emptyLevelsToAdd--;
+				}
+			}
+		});
 	}
 
 	if (progressBarElems.length > 0) {
@@ -323,10 +367,10 @@ $SQ.activateGameElements = function(target, animate) {
 			if (currencyPercent > 100) currencyPercent = 100; // technically this should never happen
 		
 			currencyPercentElems.each(function() {
+				if (!$SQ(this).hasClass('sb_ui-progressbar-value')) {
+					$SQ(this).addClass('sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left');
+				}
 				if ($SQ(this).attr('data-currency') == currencyTitle) {
-					if (!$SQ(this).hasClass('sb_ui-progressbar-value')) {
-						$SQ(this).addClass('sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left');
-					}
 					startingWidthPercent = $SQ(this).percentWidth();
 					if (animate && !justLeveledUp) {
 						var animatingBarElem = $SQ(document.createElement('div'));

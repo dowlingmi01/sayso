@@ -683,12 +683,12 @@ html {
 	text-align: right;
 	margin: 0px 10px 0px 0px;
 }
-#sayso-starbar #starbar-player-console #sb_popBox_polls .sb_pollContent .sb_progressBar {
+#sayso-starbar #starbar-player-console #sb_popBox_polls .sb_pollContent .sb_progress_bar {
 	float: left;
 	width: 65%;
 	position: relative;
 }
-#sayso-starbar #starbar-player-console #sb_popBox_polls .sb_pollContent .sb_progressBar .sb_progressBarValue {
+#sayso-starbar #starbar-player-console #sb_popBox_polls .sb_pollContent .sb_progress_bar .sb_progressBarValue {
 	text-align: left;
 	width: auto;
 	left: 100%;
@@ -1054,7 +1054,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	color: #fff;
 	text-shadow: 1px 1px 0px #000;
 }
-#sayso-starbar .sb_progressBar {
+#sayso-starbar .sb_progress_bar {
 	position: relative;
 }
 /* Component containers

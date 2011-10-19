@@ -343,6 +343,16 @@
 	height: 20px;
 }
 
+#sayso-starbar #starbar-player-console .sb_mini-note-reward{
+	background-image: url('../images/hellomusic/img_note_sm.png');
+	background-repeat: no-repeat;
+	padding: 3px 0 3px 16px;
+	height: 14px;
+	font-size: 11px;
+	margin: 0;
+	clear: none;
+}
+
 #sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgNote{
 	position: absolute;
 	z-index: 1000;
@@ -350,8 +360,8 @@
 	left: 0;
 }
 
-#sayso-starbar .sb_user-level-box .sb_progressBar,
-#sayso-starbar .sb_user-points-box .sb_progressBar{
+#sayso-starbar .sb_user-level-box .sb_progress_bar,
+#sayso-starbar .sb_user-points-box .sb_progress_bar{
 	border: 2px solid #fff;
 	margin: 5px 3px 0px 13px;
 	position: relative;
@@ -360,7 +370,7 @@
   box-shadow: 0px 0px 2px #666;
 }
 
-#sayso-starbar .sb_user-level-box .sb_progressBar .sb_progressBarValue{
+#sayso-starbar .sb_user-level-box .sb_progress_bar .sb_progressBarValue{
 	top: 1px;
 }
 
@@ -606,23 +616,9 @@
 	filter:alpha(opacity=50);
 }
 
-#sayso-starbar #sb_popBox_user-level .sb_userLevel_musician{
-	background-image: url('../images/hellomusic/img_level_musician.png');
-}
-
-#sayso-starbar #sb_popBox_user-level .sb_userLevel_busker{
-	background-image: url('../images/hellomusic/img_level_busker.png');
-}
-
-#sayso-starbar #sb_popBox_user-level .sb_userLevel_band-member{
-	background-image: url('../images/hellomusic/img_level_band-member.png');
-}
-
-
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_empty{
 	background-image: url('../images/hellomusic/img_level_empty.png');
 }
-
 
 #sayso-starbar #sb_popBox_user-level .sb_user-level-box{
 	margin: 18px 0px 0px 0px;
@@ -922,12 +918,12 @@
 	display: inline-block;
 }
 
-#sayso-starbar .sb_rewardItem .sb_user-points-box .sb_progressBar{
+#sayso-starbar .sb_rewardItem .sb_user-points-box .sb_progress_bar{
 	margin: 0px auto;
 	width: 135px;
 }
 
-#sayso-starbar #sb_colorbox .sb_rewardItem .sb_user-points-box .sb_progressBar{
+#sayso-starbar #sb_colorbox .sb_rewardItem .sb_user-points-box .sb_progress_bar{
 	width: 85%;
 }
 
@@ -940,7 +936,7 @@
 	line-height: 15px;
 }
 
-#sayso-starbar #sb_colorbox .sb_rewardItem .sb_column50 .sb_user-points-box .sb_progressBar{
+#sayso-starbar #sb_colorbox .sb_rewardItem .sb_column50 .sb_user-points-box .sb_progress_bar{
 	margin: -5px 0px 0px 0px;
 }
 
@@ -950,7 +946,7 @@
 	margin: 10px 0px;
 }
 
-#sayso-starbar .sb_rewardItem .sb_user-points-box .sb_progressBar img{
+#sayso-starbar .sb_rewardItem .sb_user-points-box .sb_progress_bar img{
 	 margin: -10px 0px 0px -20px; 
 	 vertical-align: text-bottom;
 }

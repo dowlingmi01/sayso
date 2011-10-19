@@ -424,11 +424,11 @@ $SQ(function(){
 	}
 	
 	function showPopBoxContents(popBox, loadingElement, ajaxContentContainer) {
+		$SQ.activateGameElements(popBox, false);
 		activateAccordion(popBox);
 		activateScroll(popBox);
 		activateTabs(popBox);
 		activateSlideshow(popBox);
-		$SQ.activateGameElements(popBox, false);
 
 		// if we're a regular nav item, turn on the highlight
 		var parentClick = popBox.parent();

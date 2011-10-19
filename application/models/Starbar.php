@@ -21,6 +21,8 @@ class Starbar extends Record
     
     protected $_html = '';
     
+    protected $_game;
+    
     public function init() {
         if (Registry::isRegistered('starbar')) {
             throw new Exception('Starbar already created and registered in Registry as \'starbar\'');
@@ -31,6 +33,21 @@ class Starbar extends Record
     
     public function setUser (User $user) {
         $this->_user = $user;
+    }
+    
+    /**
+     * @return Game
+     */
+    public function getGame () {
+        return $this->_game;
+    }
+    
+    public function setGame (Collection $game = null) {
+    	if (!$game) {
+			$game = new Starbar_Game();
+			$game->setLevels();
+		}
+        $this->_game = $game;
     }
     
     /**
@@ -95,7 +112,8 @@ class Starbar extends Record
             '_user' => $this->_user,
             '_user_map' => $this->_userMap,
             '_css_url' => $this->_cssUrl,
-            '_html' => $this->_html
+            '_html' => $this->_html,
+            '_game' => $this->_game
         );
         return array_merge(parent::exportProperties($parentObject), $props);
     }

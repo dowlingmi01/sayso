@@ -5,39 +5,8 @@
 	<ul class="sb_lineList">
 		<li>
 			<h3 class="sb_title">Levels</h3>
-			<div class="sb_userLevelIcons sb_userLevel_earned">
-				<div class="sb_userLevelImg sb_userLevel_musician"></div>
-				<p>
-					Musician<br />
-					<small class="sb_chopsEarned">1000 Chops</small>
-				</p>
-			</div><!-- .sb_userLevelBox -->
-			<div class="sb_userLevelIcons sb_userLevel_current">
-				<div class="sb_userLevelImg sb_userLevel_busker"></div>
-				<p>
-					<strong class="sb_theme_textHighlight">Busker</strong><br />
-					<small class="sb_chopsEarned">2000 Chops</small>
-				</p>
-			</div><!-- .sb_userLevelBox -->
-			<div class="sb_userLevelIcons sb_userLevel_next">
-				<div class="sb_userLevelImg sb_userLevel_band-member"></div>
-				<p>
-					Band Member<br />
-					<small class="sb_chopsEarned">3000 chops</small>
-				</p>
-			</div><!-- .sb_userLevelBox -->
-			<div class="sb_userLevelIcons sb_userLevel_next">
-				<div class="sb_userLevelImg sb_userLevel_empty"></div>
-				<p>
-					<br />
-				</p>
-			</div><!-- .sb_userLevelBox -->
-			<div class="sb_userLevelIcons sb_userLevel_next">
-				<div class="sb_userLevelImg sb_userLevel_empty"></div>
-				<p>
-					<br />
-				</p>
-			</div><!-- .sb_userLevelBox -->
+			<div class="sb_user_level_icons_container">
+			</div>
 		</li>
 		<li>
 			<div class="sb_column5050">
@@ -45,15 +14,15 @@
 					<h3 class="sb_title">Chops</h3>
 					<div class="sb_user-level-box">
 						<span class="sb_user-level-star"></span>
-						<div class="sb_progressBar"><span class="sb_currency_percent" data-currency="chops"></span><span class="sb_progressBarValue sb_currency_balance" data-currency="chops"></span></div>
+						<div class="sb_progress_bar"><span class="sb_currency_percent" data-currency="chops"></span><span class="sb_progressBarValue sb_currency_balance" data-currency="chops"></span></div>
 					</div><!-- .user-level-box -->
-					<small>Level up at 1000 Chops</small>
+					<small>Level up at <span class="sb_currency_balance_next_level"></span> Chops</small>
 				</div><!-- .sb_column50 -->
 				<div class="sb_column50">
 					<h3 class="sb_title">Notes</h3>
 					<div class="sb_user-points-box">
 						<span class="sb_imgNote"></span>
-						<div class="sb_progressBar"><span class="sb_progressBarPercent"></span><span class="sb_progressBarValue sb_currency_balance" data-currency="notes"></span></div>
+						<div class="sb_progress_bar"><span class="sb_currency_percent"></span><span class="sb_progressBarValue sb_currency_balance" data-currency="notes"></span></div>
 					</div><!-- .user-points-box -->
 					<strong><a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/rewards" class="sb_rewardsCenterLink sb_nav_element" rel="sb_popBox_rewards">Rewards Center<span class="sb_img_nextTriangle"></span></a></strong>
 				</div><!-- .sb_column50 -->

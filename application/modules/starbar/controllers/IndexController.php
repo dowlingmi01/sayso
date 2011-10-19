@@ -63,6 +63,7 @@ class Starbar_IndexController extends Api_GlobalController
     	$starbar = new Starbar();
     	$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));
     	$starbar->setVisibility('sb_starbar-visOpen');
+    	$starbar->setGame();
     	$this->view->starbar = $starbar;
     	
     	// User
@@ -84,10 +85,6 @@ class Starbar_IndexController extends Api_GlobalController
         $game = Game_Starbar::getInstance();
         $game->checkin();
 		$this->view->assign('game', $game);
-
-    	require_once APPLICATION_PATH . '/modules/api/controllers/GamingController.php';
-		$levels = Api_GamingController::levelsAction();
-		$this->view->assign('levels', $levels);
 	}
 }
 

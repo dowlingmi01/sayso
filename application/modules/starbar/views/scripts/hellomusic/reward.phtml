@@ -4,7 +4,7 @@ $reward = $this->model;
 /* @var $reward Gaming_BigDoor_Good */
 $gamer = $reward->getGame()->getGamer();
 $notes = $gamer->getCurrencyByTitle('notes')->current_balance;
-$percentNotesToCost = ((int) $notes / (int) $reward->cost) * 100;
+$percentNotesToCost = round(((int) $notes / (int) $reward->cost) * 100);
 if ($percentNotesToCost > 100) $percentNotesToCost = 100;
 
 ?>
@@ -23,7 +23,7 @@ if ($percentNotesToCost > 100) $percentNotesToCost = 100;
     </div><!-- .sb_rewardImg -->
     <div class="sb_rewardBase">
         <div class="sb_user-points-box">                    
-            <div class="sb_progressBar"><span class="sb_progressBarPercent"><?= $percentNotesToCost ?></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <?= $reward->cost ?></span></div>
+            <div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentNotesToCost ?>%"></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <?= $reward->cost ?></span></div>
         </div><!-- .user-points-box -->
         <?php if (!$reward->isRedeemable()) : ?>
         <p class="sb_reward_levelReq"><span>Survey Requirement</span></p>

@@ -222,7 +222,7 @@ $SQ.activateGameElements = function(target, animate) {
 
 	var animationDuration = 1500; // milliseconds
 
-	var allLevels = window.sayso.starbar.game.levels.collection;
+	var allLevels = window.sayso.starbar._game._levels.collection;
 	var userLevels = window.sayso.starbar.user.gaming._levels.collection;
 	// The current level is the first level in the collection (it is sorted by the gaming API!)
 	var userCurrentLevel = userLevels[0];

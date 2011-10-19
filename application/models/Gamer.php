@@ -30,4 +30,22 @@ class Gamer extends Gaming_User {
         }
         return $gamer;
     }
+    
+    /**
+     * Reset the current gaming user and return the new gaming user
+     * 
+     * @param int $userId
+     * @param int $userKey
+     * @param int $starbarId
+     * @return Gamer
+     */
+    public static function reset ($userId, $userKey, $starbarId) {
+        $gamer = new self;
+        $gamer->loadDataByUniqueFields(array('user_id' => (int) $userId, 'starbar_id' => (int) $starbarId));
+        $gamer->delete();
+        
+        $newGamer = self::create($userId, $starbarId);
+        Api_UserSession::getInstance($userKey)->setGamingUser($newGamer);
+        return $newGamer;
+    }
 }

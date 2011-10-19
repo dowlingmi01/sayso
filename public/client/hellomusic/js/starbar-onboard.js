@@ -47,6 +47,8 @@
 				});
 				
 				
+				elemOverlay.css('display','block');
+				
         $SQ('#sso_wrapper input[type=radio]').attr('checked', false);
         
         $SQ('#sayso-get-app').click(function(e) {

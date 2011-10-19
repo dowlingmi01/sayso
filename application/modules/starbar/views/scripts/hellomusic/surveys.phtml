@@ -1,8 +1,13 @@
 <?
 	$numberOfPremiumNotes = 500;
 	$numberOfPremiumChops = 5000;
-	$numberOfRegularNotes = 250;
-	$numberOfRegularChops = 1000;
+	$numberOfRegularNotes = 50;
+	$numberOfRegularChops = 500;
+	
+	$numberOfPremiumNotesDisqualified = 100;
+	$numberOfPremiumChopsDisqualified = 1000;
+	$numberOfRegularNotesDisqualified = 25;
+	$numberOfRegularChopsDisqualified = 250;
 ?>
 <div class="sb_header">
 	<h2 class="sb_title"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/logo_hellomusic.png" alt="Hello Music logo" width="70" /> Surveys</h2>
@@ -14,7 +19,7 @@
 		<? } else { ?>
 			<li><a href="#surveys_tabs_1">New</a></li>
 		<? } ?>
-		<? if ($this->count_complete_surveys) { ?>
+		<? if ($this->count_completed_surveys || $this->count_disqualified_surveys) { ?>
 			<li><a href="#surveys_tabs_2">Completed</a></li>
 		<? } ?>
 		<? if ($this->count_archive_surveys) { ?>
@@ -64,14 +69,14 @@
 		</div><!-- .sb_scrollPane -->
 	</div><!-- #tabs_1 -->
 
-	<? if ($this->count_complete_surveys) { ?>
+	<? if ($this->count_completed_surveys || $this->count_disqualified_surveys) { ?>
 		<div id="surveys_tabs_2" class="sb_tabPane">
 			<p class="sb_tabHeader">All of your completed surveys are listed below.</p>
 			<p class="sb_tabHeader"><a href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/reset-surveys-and-polls", success : function (r, s) {} })'>Reset surveys and polls</a></p>
 			<div class="sb_scrollPane">
 				<ul class="sb_outlineList">
 					<? $i = 0 ?>
-					<? foreach ($this->complete_surveys as $survey) { ?>
+					<? foreach ($this->completed_surveys as $survey) { ?>
 						<?
 						if ($survey->premium) {
 							$numberOfNotes = $numberOfPremiumNotes;
@@ -89,18 +94,36 @@
 						</li>
 						<? $i++ ?>
 					<? } ?>
+					<? foreach ($this->count_disqualified_surveys as $survey) { ?>
+						<?
+						if ($survey->premium) {
+							$numberOfNotes = $numberOfPremiumNotesDisqualified;
+							$numberOfChops = $numberOfPremiumChopsDisqualified;
+						} else {
+							$numberOfNotes = $numberOfRegularNotesDisqualified;
+							$numberOfChops = $numberOfRegularChopsDisqualified;
+						}
+						?>
+						<li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
+							<div class="sb_pointsEarnedTotal">
+								<span class="sb_chopsEarned">+<?= $numberOfChops ?></span>
+								<span class="sb_notesEarned">+<?= $numberOfNotes ?></span>
+							</div><!-- .sb_pointsEarnedTotal -->
+						</li>
+						<? $i++ ?>
+					<? } ?>
 				</ul>
 			</div><!-- .sb_scrollPane -->
 		</div><!-- #tabs_2 -->
 	<? } ?>
 	
-	<? if ($this->count_archive_surveys) { ?>
+	<? if ($this->count_archived_surveys) { ?>
 		<div id="surveys_tabs_3" class="sb_tabPane">
 			<p class="sb_tabHeader">No shelf-life on these babies totally take-able Surveys. SaySo immortality awaits. We await your SaySo.</p>
 			<div class="sb_scrollPane">
 				<ul class="sb_solidList">
 					<? $i = 0 ?>
-					<? foreach ($this->archive_surveys as $survey) { ?>
+					<? foreach ($this->archived_surveys as $survey) { ?>
 						<?
 						// "sb_listOdd" or "sb_listEven"
 						$listItemClass = "sb_list".(($i % 2) ? "Odd" : "Even");

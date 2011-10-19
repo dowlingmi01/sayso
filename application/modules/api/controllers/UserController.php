@@ -258,7 +258,7 @@ class Api_UserController extends Api_GlobalController
     public function resetSurveysAndPollsAction() {
         if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
             $this->_validateRequiredParameters(array('user_id'));
-			Db_Pdo::execute("DELETE FROM survey_user_map WHERE status = 'complete' AND user_id = ?", $this->user_id);
+			Db_Pdo::execute("DELETE FROM survey_user_map WHERE user_id = ?", $this->user_id);
 		    return $this->_resultType(true);
         } else {
     		return $this->_resultType(false);

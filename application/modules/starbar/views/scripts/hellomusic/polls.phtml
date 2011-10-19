@@ -8,10 +8,10 @@
 		<? } else { ?>
 			<li><a href="#polls_tabs_1">New</a></li>
 		<? } ?>
-		<? if ($this->count_complete_polls) { ?>
+		<? if ($this->count_completed_polls || $this->count_disqualified_polls) { ?>
 			<li><a href="#polls_tabs_2">Completed</a></li>
 		<? } ?>
-		<? if ($this->count_archive_polls) { ?>
+		<? if ($this->count_archived_polls) { ?>
 			<li><a href="#polls_tabs_3">Archive</a></li>
 		<? } ?>
 	</ul>
@@ -59,13 +59,26 @@
 		</div><!-- .sb_scrollPane -->
 	</div><!-- #tabs_1 -->
 
-	<? if ($this->count_complete_polls) { ?>
+	<? if ($this->count_completed_polls || $this->count_disqualified_polls) { ?>
 		<div id="polls_tabs_2" class="sb_tabPane">
 			<p class="sb_tabHeader">These are polls you've completed</p>
 			<p class="sb_tabHeader"><a href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/reset-surveys-and-polls", success : function (r, s) {} });'>Reset surveys and polls</a></p>
 			<div class="sb_scrollPane">
 				<ul class="sb_outlineList">
-					<? foreach ($this->complete_polls as $survey) { ?>
+					<? foreach ($this->completed_polls as $survey) { ?>
+					    <li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
+              				<div class="sb_pointsEarnedTotal">
+              					<? if ($survey->premium) { ?>
+                					<span class="sb_chopsEarned sb_theme_textHighlight_alt">+500</span>
+                					<span class="sb_notesEarned sb_theme_textHighlight_alt">+2</span>
+								<? } else { ?>
+                					<span class="sb_chopsEarned sb_theme_textHighlight">+250</span>
+                					<span class="sb_notesEarned sb_theme_textHighlight">+1</span>
+								<? } ?>
+					        </div><!-- .sb_pointsEarnedTotal -->
+						</li>
+					<? } ?>
+					<? foreach ($this->disqualified_polls as $survey) { ?>
 					    <li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
               				<div class="sb_pointsEarnedTotal">
               					<? if ($survey->premium) { ?>
@@ -83,17 +96,17 @@
 		</div><!-- #tabs_2 -->
 	<? } ?>
 
-	<? if ($this->count_archive_polls) { ?>
+	<? if ($this->count_archived_polls) { ?>
 		<div id="polls_tabs_3" class="sb_tabPane">
 			<p class="sb_tabHeader">
-				We'd still love your opinion on these Archived Polls, and you can still earn by completing them! Same deal&ndash; <strong class="sb_theme_textHighlight">100 Notes</strong> &amp; <strong class="sb_theme_textHighlight">500 Chops</strong> for each one you complete.
+				We'd still love your opinion on these Archived Polls, and you can still earn by completing them! Same deal&ndash; <strong class="sb_theme_textHighlight">25 Notes</strong> &amp; <strong class="sb_theme_textHighlight">250 Chops</strong> for each one you complete.
 			</p>
 			<div class="sb_scrollPane">
 
 				<!-- BEGIN POLL BOX LANDING -->
 				<div class="sb_accordion">
 					<? $i = 0 ?>
-					<? foreach ($this->archive_polls as $survey) { ?>
+					<? foreach ($this->archived_polls as $survey) { ?>
 						<h3>
 							<? $iframeHeight = 62 + (ceil($survey->number_of_answers / 2.0) * 32); // 62 base height + 32 per row of answers -- Note that this height estimate is updated after the iframe loads ?>
 							<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>" rel="starbar-poll-<?= $survey->id ?>" iframeHeight="<?= $iframeHeight ?>">

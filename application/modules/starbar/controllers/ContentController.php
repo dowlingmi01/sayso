@@ -97,7 +97,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$facebookTitle = $survey->title;
 		$facebookDescription = "Like Music? You can get the Beat Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
 		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=poll&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
-		$this->_assignShareInfoToView($shareLink, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
+		$this->_assignShareInfoToView($shareLink, $shareText, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
     }
 
     // Embed a single SG survey. Expects "survey_id" passed via URL (GET)
@@ -139,7 +139,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$facebookTitle = $survey->title;
 		$facebookDescription = "Like Music? You can get the Beat Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
 		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
-		$this->_assignShareInfoToView($shareLink, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
+		$this->_assignShareInfoToView($shareLink, $shareText, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
 	}
 
     public function surveyCompleteAction ()
@@ -161,7 +161,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$facebookTitle = $survey->title;
 		$facebookDescription = "Like Music? You can get the Beat Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
 		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
-		$this->_assignShareInfoToView($shareLink, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
+		$this->_assignShareInfoToView($shareLink, $shareText, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
 	}
 
     public function surveyRedirectAction ()
@@ -180,47 +180,25 @@ class Starbar_ContentController extends Api_GlobalController
     // Fetches polls for the current user for display
     public function pollsAction ()
     {
-		$newPolls = new SurveyCollection();
-		$completePolls = new SurveyCollection();
-		$archivePolls = new SurveyCollection();
-
-		$newPolls->loadSurveysForStarbarAndUser(1, $this->user_id, 'poll', 'new');
-		$completePolls->loadSurveysForStarbarAndUser(1, $this->user_id, 'poll', 'complete');
-		$archivePolls->loadSurveysForStarbarAndUser(1, $this->user_id, 'poll', 'archive');
-
-		$this->view->assign('new_polls', $newPolls);
-		$this->view->assign('complete_polls', $completePolls);
-		$this->view->assign('archive_polls', $archivePolls);
-
-		$this->view->assign('count_new_polls', sizeof($newPolls));
-		$this->view->assign('count_complete_polls', sizeof($completePolls));
-		$this->view->assign('count_archive_polls', sizeof($archivePolls));
+    	$surveyUserMaps = new Survey_UserMapCollection();
+    	$surveyUserMaps->markOldSurveysArchivedForStarbarAndUser($this->starbar_id, $this->user_id, 'polls');
+    	$surveyUserMaps->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'polls');
+    	$this->_assignSurveysToView('polls');
 	}
 
     // Fetches surveys for the current user for display
     public function surveysAction ()
     {
-		$newSurveys = new SurveyCollection();
-		$completeSurveys = new SurveyCollection();
-		$archiveSurveys = new SurveyCollection();
-
-		$newSurveys->loadSurveysForStarbarAndUser(1, $this->user_id, 'survey', 'new');
-		$completeSurveys->loadSurveysForStarbarAndUser(1, $this->user_id, 'survey', 'complete');
-		$archiveSurveys->loadSurveysForStarbarAndUser(1, $this->user_id, 'survey', 'archive');
-
-		$this->view->assign('new_surveys', $newSurveys);
-		$this->view->assign('complete_surveys', $completeSurveys);
-		$this->view->assign('archive_surveys', $archiveSurveys);
-
-		$this->view->assign('count_new_surveys', sizeof($newSurveys));
-		$this->view->assign('count_complete_surveys', sizeof($completeSurveys));
-		$this->view->assign('count_archive_surveys', sizeof($archiveSurveys));
+    	$surveyUserMaps = new Survey_UserMapCollection();
+    	$surveyUserMaps->markOldSurveysArchivedForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys');
+    	$surveyUserMaps->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys');
+    	$this->_assignSurveysToView('surveys');
 	}
 
     public function onboardingAction ()
     {
 
-		}
+	}
 
     public function promosAction ()
     {
@@ -246,17 +224,20 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('user_email', $userEmail);
 
 		// Assign the counts for surveys and polls
-		$this->pollsAction();
-		$this->surveysAction();
+    	$surveyUserMaps = new Survey_UserMapCollection();
+    	$surveyUserMaps->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'polls');
+    	$this->_assignSurveysToView('polls');
+    	$surveyUserMaps->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys');
+    	$this->_assignSurveysToView('surveys');
 
 		// @todo point this to onboarding
 		$shareLink = "http://www.say.so/";
 		// @todo share text to vary based on starbar_id?
-		$shareText = "Say.So is totally awesome";
-		$facebookTitle = "Say.So";
-		$facebookDescription = "Like Music? You can get the Beat Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
+		$twitterShareText = "If you're a Musician, you should join me in Hello Music's Beat Bar app. Get access to sweet gear deals and a chance to win a Takamine Guitar.";
+		$facebookTitle = "Hello Music's Say.So Beat Bar";
+		$facebookCaption = "If you're a Musician or dig music gear, you should join me in Hello Music's Beat Bar app. We get access to some sweet gear deals and get awesome odds on walking away with one of their big giveaways like a Takamine Acoustic, a Full Midi Kit, and others. We just give our opinion on a few things and they give us Notes we can redeem for stuff. Sweet deal. Only lasts a month. Want in?";
 		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=starbar&shared_id=".$this->starbar_id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
-		$this->_assignShareInfoToView($shareLink, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
+		$this->_assignShareInfoToView($shareLink, $twitterShareText, $facebookCaption,  $facebookCallbackUrl, $facebookTitle, null);
 	}
 	
 	public function userShareAction()
@@ -480,7 +461,7 @@ class Starbar_ContentController extends Api_GlobalController
         }
 	}
 
-	protected function _assignShareInfoToView($shareLink = null, $shareText = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null)
+	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null)
 	{
         $config = Api_Registry::getConfig();
 		
@@ -490,13 +471,11 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('twitter_share_related_users', $config->twitter->share_related_users);
 		$this->view->assign('twitter_share_hashtags', $config->twitter->share_hashtags);
 
-        $this->view->assign('share_link', $shareLink);
-
-		$facebookShareCaption = $shareText;
-		$twitterShareText = $shareText." -";
-		$this->view->assign('facebook_share_caption', $facebookShareCaption);
 		$this->view->assign('twitter_share_text', $twitterShareText);
 
+        $this->view->assign('share_link', $shareLink);
+
+		$this->view->assign('facebook_share_caption', $facebookShareCaption);
 		$this->view->assign('facebook_share_callback_url', $facebookCallbackUrl);
 		$this->view->assign('facebook_title', $facebookTitle);
 		$this->view->assign('facebook_description', $facebookDescription);
@@ -512,5 +491,25 @@ class Starbar_ContentController extends Api_GlobalController
 		}
 
 		$this->view->assign('starbar', $starbar);
+	}
+	
+	protected function _assignSurveysToView($type)
+	{
+    	$type = str_replace("surveys", "survey", $type);
+    	$type = str_replace("polls", "poll", $type);
+		$statusArray = Array('new', 'completed', 'archived', 'disqualified');
+    	
+		if ($type == "poll" || $type == "survey") {
+			foreach ($statusArray as $status) {
+				$surveyCollection = new SurveyCollection();
+				$surveyCollection->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, $type, $status);
+
+			    // new_polls, completed_surveys, etc.
+				$this->view->assign($status.'_'.$type.'s', $surveyCollection);
+
+				// e.g. count_new_polls, count_completed_surveys, etc.
+				$this->view->assign('count_'.$status.'_'.$type.'s', sizeof($surveyCollection));
+			}
+		}
 	}
 }

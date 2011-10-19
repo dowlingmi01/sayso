@@ -60,7 +60,7 @@ class Starbar_HellomusicController extends Starbar_ContentController
     	$this->view->primary_survey_taken = $primarySurveyTaken;
     	
     	if (!$primarySurveyTaken) {
-    		$this->view->count_new_polls = 5 - ($this->view->count_complete_polls + $this->view->count_archive_polls);
+    		$this->view->count_new_polls = 5 - ($this->view->count_completed_polls + $this->view->count_disqualified_polls + $this->view->count_archived_polls);
     		if ($this->view->count_new_polls < 0) $this->view->count_new_polls = 0;
 		}
 	}
@@ -73,7 +73,7 @@ class Starbar_HellomusicController extends Starbar_ContentController
     	$this->view->primary_survey_taken = $primarySurveyTaken;
 
     	if (!$primarySurveyTaken) {
-    		$this->view->count_new_surveys = 4 - ($this->view->count_complete_surveys + $this->view->count_archive_surveys);
+    		$this->view->count_new_surveys = 4 - ($this->view->count_completed_surveys + $this->view->count_disqualified_surveys + $this->view->count_archived_surveys);
     		if ($this->view->count_new_surveys < 0) $this->view->count_new_surveys = 0;
 		}
 	}
@@ -86,10 +86,10 @@ class Starbar_HellomusicController extends Starbar_ContentController
     	$this->view->primary_survey_taken = $primarySurveyTaken;
 
     	if (!$primarySurveyTaken) {
-    		$this->view->count_new_polls = 5 - ($this->view->count_complete_polls + $this->view->count_archive_polls);
+    		$this->view->count_new_polls = 5 - ($this->view->count_completed_polls + $this->view->count_disqualified_surveys + $this->view->count_archived_polls);
     		if ($this->view->count_new_polls < 0) $this->view->count_new_polls = 0;
 
-    		$this->view->count_new_surveys = 4 - ($this->view->count_complete_surveys + $this->view->count_archive_surveys);
+    		$this->view->count_new_surveys = 4 - ($this->view->count_completed_surveys + $this->view->count_disqualified_surveys + $this->view->count_archived_surveys);
     		if ($this->view->count_new_surveys < 0) $this->view->count_new_surveys = 0;
 		}
 	}

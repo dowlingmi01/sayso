@@ -54,7 +54,11 @@
         }
     }
     
-    var blackList = ['facebook.com/dialog', 'twitter.com/intent'];
+    var blackList = [
+        'facebook.com/dialog', 'facebook.com/plugins', 'twitter.com/intent', 'twitter.com/widgets', 
+        'stumbleupon.com/badge', 'reddit.com/static', '(?:sayso.com|saysollc.com)/html/communicator',
+        '(?:sayso.com|saysollc.com)/starbar/remote'
+    ];
     
     for (var i = 0; i < blackList.length; i++) {
         if (currentUrl.match(urlMatchPrepend + blackList[i])) {

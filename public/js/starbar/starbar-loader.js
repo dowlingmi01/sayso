@@ -14,24 +14,26 @@
         currentUrl = window.location.href;
     
     // setup global "safe" logging functions
-    window.sayso.log = _log('log'); 
-    window.sayso.warn = _log('warn');
-    function _log (type) { // <-- closure here allows re-use for log() and warn()
-        return function () {
-            if (window.sayso.debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
-                var args = Array.prototype.slice.call(arguments);
-                if (typeof console.log.apply === 'function') {
-                    args.unshift('SaySo:');
-                    window.console[type].apply(window.console, args);
-                } else {
-                    // must be IE
-                    if (typeof args[0] !== 'object') {
-                        window.console.log(args[0]);
+    if (!window.sayso.log) {
+        window.sayso.log = _log('log'); 
+        window.sayso.warn = _log('warn');
+        function _log (type) { // <-- closure here allows re-use for log() and warn()
+            return function () {
+                if (window.sayso.debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
+                    var args = Array.prototype.slice.call(arguments);
+                    if (typeof console.log.apply === 'function') {
+                        args.unshift('SaySo:');
+                        window.console[type].apply(window.console, args);
+                    } else {
+                        // must be IE
+                        if (typeof args[0] !== 'object') {
+                            window.console.log(args[0]);
+                        }
                     }
                 }
             }
-        }
-    };
+        };
+    }
     
     var sayso = window.sayso;
 
@@ -49,96 +51,107 @@
         }
         if (skip) {
             // do not load starbar for this page
-            sayso.log('This is a popup. Starbar will not be loaded.');
+            sayso.log('Popup - Not loading Starbar');
             return;
         }
     }
     
     var blackList = [
         'facebook.com/dialog', 'facebook.com/plugins', 'twitter.com/intent', 'twitter.com/widgets', 
-        'stumbleupon.com/badge', 'reddit.com/static', '(?:sayso.com|saysollc.com)/html/communicator',
-        '(?:sayso.com|saysollc.com)/starbar/remote'
+        'stumbleupon.com/badge', 'reddit.com/static', 'static.addtoany.com/menu',
+        'plusone.google.com', 'intensedebate',
+        '(?:sayso.com|saysollc.com)/html/communicator', '(?:sayso.com|saysollc.com)/starbar/remote'
     ];
     
-    for (var i = 0; i < blackList.length; i++) {
-        if (currentUrl.match(urlMatchPrepend + blackList[i])) {
+    var bi = 0;
+    for (; bi < blackList.length; bi++) {
+        if (currentUrl.match(urlMatchPrepend + blackList[bi])) {
             // do not load starbar for this page
+            sayso.log('iFrame: ' + blackList[bi] + ' - Not loading Starbar');
             return;
         }
     }
     // --- end starbar display conditions
     
-    var starbarContainer = document.getElementById('sayso-starbar');
+    var validUrlTimer = new jsLoadTimer();
+    validUrlTimer.setMaxCount(100);
+    validUrlTimer.start('bi === blackList.length', function () {
     
-    sayso.log('Starbar initializing');
-    sayso.log(sayso.starbar);
-    
-    // detect client site (and setup client vars)
-    
-    var clientSetup = document.createElement('script'); 
-    clientSetup.src = 'http://' + sayso.baseDomain + '/js/starbar/client-setup.js';
-    starbarContainer.appendChild(clientSetup);
-    
-    // bring in the GENERIC CSS
-    
-    var cssGeneric = document.createElement('link'); 
-    cssGeneric.rel = 'stylesheet';
-    cssGeneric.href = 'http://' + sayso.baseDomain + '/css/starbar-generic.css';
-    starbarContainer.appendChild(cssGeneric);
-
-    // bring in namespaced jQuery $SQ 
-    
-    if (!window.hasOwnProperty('$SQ')) {
-        if (!sayso.loading || sayso.loading !== 'jquery') {
-            var jsJQuery = document.createElement('script'); 
-            jsJQuery.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
-            starbarContainer.appendChild(jsJQuery);
-        }
-    }
-    
-    var clientSetupTimer = new jsLoadTimer();
-    clientSetupTimer.start('window.saysoClientSetup', function () {
+        // this timer is necessary to prevent JS from going too fast!
         
-        if (sayso.starbar.id) { // load known Starbar 
-            
-            sayso.log('Starbar ID: ' + sayso.starbar.id);
-            loadStarbar();
-            
-        } else {                // install new Starbar
+        var starbarContainer = document.getElementById('sayso-starbar');
         
-            sayso.log('****** Installing NEW Starbar ******');
-            
-            var postInstallUrl = 'http://' + sayso.baseDomain + '/starbar/remote/post-install-setup';
-            
-            if (sayso.client) { // we must be on a client site, so provide client vars
-                postInstallUrl += 
-                    '?client_name=' + sayso.client.name + 
-                    '&client_uuid=' + sayso.client.uuid + 
-                    '&client_uuid_type=' + sayso.client.uuidType +
-                    '&client_user_logged_in=' + (sayso.client.userLoggedIn ? 'true' : '');
+        sayso.log('Starbar initializing');
+        sayso.log(sayso.starbar);
+        
+        // detect client site (and setup client vars)
+        
+        var clientSetup = document.createElement('script'); 
+        clientSetup.src = 'http://' + sayso.baseDomain + '/js/starbar/client-setup.js';
+        starbarContainer.appendChild(clientSetup);
+        
+        // bring in the GENERIC CSS
+        
+        var cssGeneric = document.createElement('link'); 
+        cssGeneric.rel = 'stylesheet';
+        cssGeneric.href = 'http://' + sayso.baseDomain + '/css/starbar-generic.css';
+        starbarContainer.appendChild(cssGeneric);
+    
+        // bring in namespaced jQuery $SQ 
+        
+        if (!window.hasOwnProperty('$SQ')) {
+            if (!sayso.loading || sayso.loading !== 'jquery') {
+                var jsJQuery = document.createElement('script'); 
+                jsJQuery.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
+                starbarContainer.appendChild(jsJQuery);
             }
+        }
+        
+        var clientSetupTimer = new jsLoadTimer();
+        clientSetupTimer.start('window.saysoClientSetup', function () {
             
-            // load iframe to pass pre-install cookies to sayso
-            // along with IP and user agent headers
-            var iframe = document.createElement('iframe');
-            iframe.src = postInstallUrl;
-            iframe.width = '0'; iframe.height = '0'; iframe.scrolling = '0';
-            iframe.style.width = '0'; iframe.style.height = '0'; iframe.style.border = 'none';
-            starbarContainer.appendChild(iframe);
+            if (sayso.starbar.id) { // load known Starbar 
+                
+                sayso.log('Starbar ID: ' + sayso.starbar.id);
+                loadStarbar();
+                
+            } else {                // install new Starbar
             
-            // after a short delay, continue loading starbar
-            // NOTE: because the Starbar ID is not established at this point
-            // the action to retreive the starbar (/starbar/remote) will
-            // be routed to /starbar/remote/post-install-deliver which will
-            // match the IP/user agent from the previous step and lookup the 
-            // correct Starbar for this user (e.g. HelloMusic)
-            setTimeout(loadStarbar, 1000);
-        } 
-    });
+                sayso.log('****** Installing NEW Starbar ******');
+                
+                var postInstallUrl = 'http://' + sayso.baseDomain + '/starbar/remote/post-install-setup';
+                
+                if (sayso.client) { // we must be on a client site, so provide client vars
+                    postInstallUrl += 
+                        '?client_name=' + sayso.client.name + 
+                        '&client_uuid=' + sayso.client.uuid + 
+                        '&client_uuid_type=' + sayso.client.uuidType +
+                        '&client_user_logged_in=' + (sayso.client.userLoggedIn ? 'true' : '');
+                }
+                
+                // load iframe to pass pre-install cookies to sayso
+                // along with IP and user agent headers
+                var iframe = document.createElement('iframe');
+                iframe.src = postInstallUrl;
+                iframe.width = '0'; iframe.height = '0'; iframe.scrolling = '0';
+                iframe.style.width = '0'; iframe.style.height = '0'; iframe.style.border = 'none';
+                starbarContainer.appendChild(iframe);
+                
+                // after a short delay, continue loading starbar
+                // NOTE: because the Starbar ID is not established at this point
+                // the action to retreive the starbar (/starbar/remote) will
+                // be routed to /starbar/remote/post-install-deliver which will
+                // match the IP/user agent from the previous step and lookup the 
+                // correct Starbar for this user (e.g. HelloMusic)
+                setTimeout(loadStarbar, 1000);
+            } 
+        });
+    
+    }); // end of timer, determining if Starbar should be loaded
     
     // functions to control load order
     
-    function jsLoadTimer () {
+    function jsLoadTimer () { // optional reference to use in condition 'ref === foo'
         
         var _counter = 0,
             _maxCount = 400, // about 20 seconds (400 x 50 mseconds for each timer)
@@ -146,7 +159,8 @@
             _symbol = '',
             _callback = null,
             _timeout = null,
-            _instance = this;
+            _instance = this,
+            ref = null;
         
         function _waitUntilJsLoaded () {
             try {
@@ -163,6 +177,15 @@
             }
             _timeout = setTimeout(_waitUntilJsLoaded, _waitTime);
         }
+        this.setMaxCount = function (max) {
+            _maxCount = max;
+        };
+        this.setInterval = function (interval) {
+            _waitTime = interval;
+        };
+        this.setLocalReference = function (reference) {
+            ref = reference;
+        };
         this.start = function (symbol, callback) {
             _symbol = symbol;
             _callback = callback;
@@ -336,17 +359,6 @@
                             
                             var starbarJsTimer = new jsLoadTimer();
                             starbarJsTimer.start('window.sayso.starbar.loaded', function () {
-//                                sayso.log('Onboarding status [user:' + sayso.starbar.user.id + ']', (starbar._user_map.onboarded ? 'ONBOARDED' : 'NOT ONBOARDED'));
-//                                if (currentUrl.match(urlMatchPrepend + starbar.domain)) {
-//                                    sayso.log('Onboard URL match [' + starbar.domain + ']', currentUrl);
-//                                } else if (currentUrl.match(urlMatchPrepend + 'saysollc.com')) {
-//                                    sayso.log('Onboard URL match [saysollc.com]', currentUrl);
-//                                } else if (currentUrl.match(urlMatchPrepend + 'sayso.com')) {
-//                                    sayso.log('Onboard URL match [sayso.com]', currentUrl);
-//                                } else {
-//                                    sayso.log('Onboard URL *NO MATCH*', currentUrl);
-//                                }
-                                
                                 // if user has not "onboarded" and we are on the Starbar's base domain
                                 // then trigger the onboarding to display
                                 if (!starbar._user_map.onboarded && 

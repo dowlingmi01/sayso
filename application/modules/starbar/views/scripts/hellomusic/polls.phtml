@@ -66,29 +66,29 @@
 			<div class="sb_scrollPane">
 				<ul class="sb_outlineList">
 					<? foreach ($this->completed_polls as $survey) { ?>
-					    <li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
+						<li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
               				<div class="sb_pointsEarnedTotal">
               					<? if ($survey->premium) { ?>
                 					<span class="sb_chopsEarned sb_theme_textHighlight_alt">+500</span>
-                					<span class="sb_notesEarned sb_theme_textHighlight_alt">+2</span>
+                					<span class="sb_notesEarned sb_theme_textHighlight_alt">+50</span>
 								<? } else { ?>
                 					<span class="sb_chopsEarned sb_theme_textHighlight">+250</span>
-                					<span class="sb_notesEarned sb_theme_textHighlight">+1</span>
+                					<span class="sb_notesEarned sb_theme_textHighlight">+25</span>
 								<? } ?>
-					        </div><!-- .sb_pointsEarnedTotal -->
+						    </div><!-- .sb_pointsEarnedTotal -->
 						</li>
 					<? } ?>
 					<? foreach ($this->disqualified_polls as $survey) { ?>
-					    <li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
+						<li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
               				<div class="sb_pointsEarnedTotal">
               					<? if ($survey->premium) { ?>
                 					<span class="sb_chopsEarned sb_theme_textHighlight_alt">+500</span>
-                					<span class="sb_notesEarned sb_theme_textHighlight_alt">+2</span>
+                					<span class="sb_notesEarned sb_theme_textHighlight_alt">+50</span>
 								<? } else { ?>
                 					<span class="sb_chopsEarned sb_theme_textHighlight">+250</span>
-                					<span class="sb_notesEarned sb_theme_textHighlight">+1</span>
+                					<span class="sb_notesEarned sb_theme_textHighlight">+25</span>
 								<? } ?>
-					        </div><!-- .sb_pointsEarnedTotal -->
+						    </div><!-- .sb_pointsEarnedTotal -->
 						</li>
 					<? } ?>
 				</ul>

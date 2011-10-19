@@ -317,6 +317,12 @@
                         sayso.starbar.user.gaming = response.gamer;
                     }
                     
+                    if (response.levels) {
+                        sayso.starbar.gaming = {
+                        	levels : response.levels
+						}
+                    }
+                    
                     // update global/persistent vars on kobj.net
                     var app = KOBJ.get_application(sayso.starbar.kynetxAppId);
                     app.raise_event(

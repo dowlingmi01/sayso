@@ -61,6 +61,11 @@ $starbar = $this->starbar;
                 	, gaming : <?= Zend_Json_Encoder::encode($this->game->getGamer()->export(new ObjectExporter_Array())) ?>
                 <? } ?>
             },
+            <? if ($this->levels) { ?>
+            	gaming : {
+                	levels : <?= Zend_Json_Encoder::encode($this->levels->export(new ObjectExporter_Array())) ?>
+				},
+            <? } ?>
             state : {
                 visibility : 'starbar-visOpen',
             	local : {}

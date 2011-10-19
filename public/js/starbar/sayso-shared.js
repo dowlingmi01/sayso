@@ -72,6 +72,12 @@ $SQ.ajaxWithAuth = function (options) {
 	});
 
 	$$SQ.fn.extend({
+		percentWidth: function() {
+			return Math.round(this.width() * 100 / this.parent().width());
+		}
+	});
+
+	$$SQ.fn.extend({
 		annihilate: function() {
 			this.attr('id', 'sb_oldElement_'+$SQ.randomString(10));
 			this.detach();
@@ -214,11 +220,31 @@ $SQ.activateGameElements = function(target, animate) {
 
 	var animationDuration = 1500; // milliseconds
 
+	var allLevels = window.sayso.starbar.gaming.levels.collection;
+	var userLevels = window.sayso.starbar.user.gaming._levels.collection;
+	// The current level is the first level in the collection (it is sorted by the gaming API!)
+	var userCurrentLevel = userLevels[0];
+	var userNextLevel;
+	var justLeveledUp = false;
+	
+	if (allLevels && userLevels) {
+		$SQ.each(allLevels, function (index, level) {
+			if (parseInt(userCurrentLevel.ordinal) < parseInt(level.ordinal) && (!userNextLevel || userNextLevel.ordinal > level.ordinal)) {
+				userNextLevel = level;
+			}
+		});
+	}
+	
+	if (!userNextLevel) { // There should always be a next level for the user, but just in case...
+		userNextLevel = { ordinal : userCurrentLevel.ordinal + 50000 }
+	}
+	
 	if (userLevelNumberElems.length > 0) {
 		userLevelNumberElems.each(function() {
-			var newLevel = ""+(window.sayso.starbar.user.gaming._levels.collection.length - 1);
+			var newLevel = ""+(userLevels.length - 1);
 			if ($SQ(this).html() != newLevel) {
 				$SQ(this).html(newLevel);
+				justLeveledUp = true;
 				if (animate) {
 					$SQ(this).effect("pulsate", { times:3 }, parseInt(animationDuration/3));
 				}
@@ -226,14 +252,21 @@ $SQ.activateGameElements = function(target, animate) {
 		});
 	}
 
-	if (userLevelTitleElems.length > 0) {
-		userLevelTitleElems.each(function() {
-			// The current level is the first level in the collection (it is sorted by the gaming API!)
-			if ($SQ(this).html() != window.sayso.starbar.user.gaming._levels.collection[0].title) {
-				$SQ(this).html(window.sayso.starbar.user.gaming._levels.collection[0].title);
+	if (justLeveledUp) {
+		if (userLevelTitleElems.length > 0) {
+			userLevelTitleElems.each(function() {
+				$SQ(this).html(userCurrentLevel.title);
 				if (animate) {
 					$SQ(this).effect("pulsate", { times:3 }, parseInt(animationDuration/3));
 				}
+			});
+		}
+	}
+
+	if (progressBarElems.length > 0) {
+		progressBarElems.each(function(){
+			if (!$SQ(this).hasClass('sb_ui-progressbar')) {
+				$SQ(this).addClass('sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all');
 			}
 		});
 	}
@@ -241,13 +274,15 @@ $SQ.activateGameElements = function(target, animate) {
 	$SQ.each(window.sayso.starbar.user.gaming._currencies.collection, function (index, currency) {
 		var currencyTitle = currency.title.toLowerCase();
 		var currencyBalance = parseInt(currency.current_balance);
-		var currencyPercent = 0;
 
 		if (currencyBalanceElems.length > 0) {
 			currencyBalanceElems.each(function() {
 				if ($SQ(this).attr('data-currency') == currencyTitle) {
 					if (animate && currencyBalance != parseInt($SQ(this).html())) { // New value, play animation
 						var originalColor = $SQ(this).css('color');
+						// total duration is doubled when leveling up
+						var durationMultiplier = 4/5;
+						if (justLeveledUp) durationMultiplier = 9/5;
 						// Prepare the element for numeric 'animation' (i.e. tweening the number)
 						$SQ(this).animate(
 							{ animationCurrencyBalance: parseInt($SQ(this).html()) },
@@ -258,7 +293,7 @@ $SQ.activateGameElements = function(target, animate) {
 								animationCurrencyBalance : currencyBalance
 							},
 							{ 
-								duration : parseInt(animationDuration*4/5),
+								duration : parseInt(animationDuration*durationMultiplier),
 								step : function (now, fx) {
 									$SQ(this).html(parseInt(now));
 								},
@@ -279,21 +314,76 @@ $SQ.activateGameElements = function(target, animate) {
 		}
 
 		if (currencyPercentElems.length > 0) {
+			if (userNextLevel && userNextLevel.ordinal && currencyBalance > userCurrentLevel.ordinal) {
+				currencyPercent = Math.round((currencyBalance - userCurrentLevel.ordinal)/(userNextLevel.ordinal - userCurrentLevel.ordinal)*100);
+			} else {
+				currencyPercent = 0;
+			}
+			
+			if (currencyPercent > 100) currencyPercent = 100; // technically this should never happen
+		
 			currencyPercentElems.each(function() {
-				if ($SQ(this).attr('data-currency') == currencyTitle) $SQ(this).html(currencyPercent);
+				if ($SQ(this).attr('data-currency') == currencyTitle) {
+					if (!$SQ(this).hasClass('sb_ui-progressbar-value')) {
+						$SQ(this).addClass('sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left');
+					}
+					startingWidthPercent = $SQ(this).percentWidth();
+					if (animate && !justLeveledUp) {
+						var animatingBarElem = $SQ(document.createElement('div'));
+						var fadingBarElem = $SQ(document.createElement('div'));
+						var progressBarElem = $SQ(this); // so it can be accessed from setTimeout()
+						var currencyPercentLocal = currencyPercent; // so it can be accessed from setTimeout()
+						animatingBarElem.addClass('sb_ui-progressbar-value-animating sb_ui-widget-header sb_ui-corner-left');
+						animatingBarElem.css('width', startingWidthPercent+'%');
+						fadingBarElem.addClass('sb_ui-progressbar-value-fading sb_ui-widget-header sb_ui-corner-left');
+						fadingBarElem.css('width', currencyPercent+'%');
+						
+						animatingBarElem.insertBefore($SQ(this));
+						fadingBarElem.insertBefore($SQ(this));
+						fadingBarElem.fadeTo(0, 0);
+						
+						animatingBarElem.animate(
+							{ width : currencyPercent+'%' },
+							{ duration : parseInt(animationDuration*2/5) }
+						);
+						setTimeout(function() {
+							fadingBarElem.fadeTo(parseInt(animationDuration*3/5), 1);
+						}, parseInt(animationDuration*2/5));
+						
+						setTimeout(function() {
+							progressBarElem.css('width', currencyPercentLocal+'%');
+							animatingBarElem.annihilate();
+							fadingBarElem.annihilate();
+						}, animationDuration);
+					} else if (animate && justLeveledUp) { // Just leveled up
+						var animatingBarElem = $SQ(document.createElement('div'));
+						var progressBarElem = $SQ(this); // so it can be accessed from setTimeout()
+						var currencyPercentLocal = currencyPercent; // so it can be accessed from setTimeout()
+						animatingBarElem.addClass('sb_ui-progressbar-value-animating sb_ui-widget-header sb_ui-corner-left');
+						animatingBarElem.css('width', startingWidthPercent+'%');
+						
+						animatingBarElem.insertBefore($SQ(this));
+						
+						animatingBarElem.animate(
+							{ width : '100%' },
+							{ duration : parseInt(animationDuration*2/5) }
+						);
+						setTimeout(function() {
+							progressBarElem.fadeTo(parseInt(animationDuration), 0);
+						}, parseInt(animationDuration*2/5));
+						setTimeout(function() {
+							progressBarElem.css('width', currencyPercentLocal+'%');
+							progressBarElem.fadeTo(parseInt(animationDuration*3/5), 1);
+							animatingBarElem.fadeTo(parseInt(animationDuration*3/5), 0);
+						}, parseInt(animationDuration*7/5));
+						setTimeout(function() {
+							animatingBarElem.annihilate();
+						}, animationDuration*2);
+					} else {
+						$SQ(this).css('width', currencyPercent+'%');
+					}
+				}
 			});
 		}
-	});
-
-	if (progressBarElems.length > 0) {
-		progressBarElems.each(function(){
-			var percentValue = eval($SQ('.sb_progressBarPercent',this).html());
-			$SQ(this).progressbar({
-				value : percentValue
-			});
-			if (percentValue >= 55){
-				$SQ('.sb_progressBarValue',this).addClass('sb_progressBarValue_revert');
-			}
-		});
-	}
+	}); // each currency
 }

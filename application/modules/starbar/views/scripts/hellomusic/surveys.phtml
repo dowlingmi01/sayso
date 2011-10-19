@@ -94,7 +94,7 @@
 						</li>
 						<? $i++ ?>
 					<? } ?>
-					<? foreach ($this->count_disqualified_surveys as $survey) { ?>
+					<? foreach ($this->disqualified_surveys as $survey) { ?>
 						<?
 						if ($survey->premium) {
 							$numberOfNotes = $numberOfPremiumNotesDisqualified;

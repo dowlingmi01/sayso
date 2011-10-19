@@ -127,17 +127,15 @@ class Starbar_RemoteController extends Api_GlobalController
 
 	        $game = Game_Starbar::getInstance();
 	        $game->checkin();
-			$this->view->assign('game', $game);
             
     		require_once APPLICATION_PATH . '/modules/api/controllers/GamingController.php';
 			$levels = Api_GamingController::levelsAction();
-			$this->view->assign('levels', $levels);
             
             return $this->_forward(
                 $starbar->short_name, 
                 null, 
                 null, 
-                array('starbar' => $starbar)
+                array('starbar' => $starbar, 'levels' => $levels)
             );
         } else { // no starbar id, so assume we are in the post install process
             return $this->_forward('post-install-deliver');

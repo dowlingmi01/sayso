@@ -10,6 +10,7 @@ class Starbar_Game extends RecordCollection
     public function setLevels (Collection $levels = null) {
         if (!$levels) {
 	        $client = Gaming_BigDoor_HttpClient::getInstance('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
+	        if (!client) $client = new Gaming_BigDoor_HttpClient('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
 	        $client->getNamedLevelCollection(43352);
 	        $data = $client->getData();
 	        $levels = new Collection();

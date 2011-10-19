@@ -133,7 +133,7 @@ class Starbar_RemoteController extends Api_GlobalController
                 $starbar->short_name, 
                 null, 
                 null, 
-                array('starbar' => $starbar, 'levels' => $levels)
+                array('starbar' => $starbar)
             );
         } else { // no starbar id, so assume we are in the post install process
             return $this->_forward('post-install-deliver');

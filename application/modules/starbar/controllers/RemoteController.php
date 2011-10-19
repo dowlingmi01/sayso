@@ -121,16 +121,14 @@ class Starbar_RemoteController extends Api_GlobalController
             $user->loadData($this->user_id);
             $user->setKey($this->user_key); // <-- keep session key in the loop
             $starbar->setUser($user);
+			$starbar->setGame();
             
             $gamer = Gamer::create($user->getId(), $starbar->getId());
 			$session->setGamingUser($gamer);
 
 	        $game = Game_Starbar::getInstance();
 	        $game->checkin();
-            
-    		require_once APPLICATION_PATH . '/modules/api/controllers/GamingController.php';
-			$levels = Api_GamingController::levelsAction();
-            
+
             return $this->_forward(
                 $starbar->short_name, 
                 null, 

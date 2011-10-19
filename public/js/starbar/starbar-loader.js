@@ -15,8 +15,6 @@
     
     // setup global "safe" logging functions
     if (!window.sayso.log) {
-        window.sayso.log = _log('log'); 
-        window.sayso.warn = _log('warn');
         function _log (type) { // <-- closure here allows re-use for log() and warn()
             return function () {
                 if (window.sayso.debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
@@ -33,6 +31,8 @@
                 }
             }
         };
+        window.sayso.log = _log('log'); 
+        window.sayso.warn = _log('warn');
     }
     
     var sayso = window.sayso;

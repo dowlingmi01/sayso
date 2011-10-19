@@ -73,9 +73,9 @@
     }
     // --- end starbar display conditions
     
-    var validUrlTimer = new jsLoadTimer();
-    validUrlTimer.setMaxCount(100);
-    validUrlTimer.start('bi === blackList.length', function () {
+//    var validUrlTimer = new jsLoadTimer();
+//    validUrlTimer.setMaxCount(100);
+//    validUrlTimer.start('bi === blackList.length', function () {
     
         // this timer is necessary to prevent JS from going too fast!
         
@@ -147,7 +147,7 @@
             } 
         });
     
-    }); // end of timer, determining if Starbar should be loaded
+//    }); // end of timer, determining if Starbar should be loaded
     
     // functions to control load order
     

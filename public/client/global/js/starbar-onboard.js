@@ -90,14 +90,16 @@
             // detect browser and provide appropriate install link
             var browserAppUrl = 'http://' + sayso.baseDomain + '/install';
             
+            var appName = sayso.environment === 'PROD' ? 'Say.So Starbar' : 'SaySo-' + sayso.environment;
+            
             if (navigator.userAgent.match('Firefox')) {
-                browserAppUrl += '/firefox/SaySo-' + sayso.environment + '.xpi';
+                browserAppUrl += '/firefox/' + appName + '.xpi';
             } else if (navigator.userAgent.match('Chrome')) {
-                browserAppUrl += '/chrome/SaySo-' + sayso.environment + '.crx';
+                browserAppUrl += '/chrome/' + appName + '.crx';
             } else if (navigator.userAgent.match('MSIE')) {
-                browserAppUrl += '/ie/SaySo-' + sayso.environment + '-Setup.exe';
+                browserAppUrl += '/ie/' + appName + '-Setup.exe';
             } else if (navigator.userAgent.match('Apple')) {
-                browserAppUrl += '/safari/SaySo-' + sayso.environment + '.hmm';
+                browserAppUrl += '/safari/' + appName + '.hmm';
             } else {
                 // Browser is not supported. Must be Firefox, Chrome, Safari or Internet Explorer.
                 return;

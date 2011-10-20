@@ -281,7 +281,7 @@ $SQ(function(){
 				savebutton_class	: "sb_theme_button",
 				cancelbutton_text	: "cancel",
 				cancelbutton_class	: "sb_theme_button sb_theme_button_grey",
-				after_save			: function() { updateProfile(true); }
+				after_save			: function() { updateProfile(true, true); }
 			});									 
 		
 		});
@@ -528,7 +528,7 @@ $SQ(function(){
 
 							// Update profile if we've just received a notification regarding FB or TW getting connected.
 							if (message['short_name'] == 'FB Account Connected' || message['short_name'] == 'TW Account Connected') {
-								updateProfile(true);
+								updateProfile(true, true);
 								$SQ.updateGame('ajax', true, true);
 							}
 							
@@ -555,7 +555,7 @@ $SQ(function(){
 		});
 	}
 
-	function updateProfile(setGlobalUpdate) {
+	function updateProfile(setGlobalUpdate, userInitiated) {
 		$SQ.ajaxWithAuth({
 			url : 'http://'+sayso.baseDomain+'/api/user/get?renderer=jsonp',
 			success : function (response, status, jqXHR) {
@@ -589,6 +589,11 @@ $SQ(function(){
 				// Update Username
 				if (user['username']) {
 					$SQ('.sb_user_title').each(function(){
+						// If the user edited their username, turn off auto-updating on
+						// level-up for fields that have it (so we don't overwrite their name)
+						if (userInitiated && $SQ(this).html() != user['username']) {
+							$SQ(this).removeClass('sb_user_level_title');
+						}
 						$SQ(this).html(user['username']);
 					});
 				}

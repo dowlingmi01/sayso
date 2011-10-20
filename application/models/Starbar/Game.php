@@ -34,6 +34,10 @@ class Starbar_Game extends RecordCollection
         return $this->_levels;
     }
 
+    public function exportData() {
+        return array();
+    }
+    
     public function exportProperties($parentObject = null) {
         $props = array(
             '_game' => $this->_game

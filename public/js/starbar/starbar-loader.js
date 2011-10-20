@@ -312,6 +312,9 @@
                     sayso.starbar.authKey = starbar.auth_key;
                     sayso.starbar.user.id = starbar._user.id;
                     sayso.starbar.user.key = starbar._user._key;
+                    sayso.starbar.game = {
+                    	levels : starbar._game._levels
+					}
                     
                     if (response.gamer && response.gamer.type === 'Gamer') {
                         sayso.starbar.user.gaming = response.gamer;

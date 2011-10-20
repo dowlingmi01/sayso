@@ -62,8 +62,8 @@ $starbar = $this->starbar;
                 <? } ?>
             },
             <? if ($this->starbar->getGame() && $this->starbar->getGame()->getLevels()) { ?>
-            	_game : {
-                	_levels : <?= Zend_Json_Encoder::encode($this->starbar->getGame()->getLevels()->export(new ObjectExporter_Array())) ?>
+            	game : {
+                	levels : <?= Zend_Json_Encoder::encode($this->starbar->getGame()->getLevels()->export(new ObjectExporter_Array())) ?>
 				},
             <? } ?>
             state : {

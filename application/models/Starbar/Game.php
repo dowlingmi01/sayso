@@ -3,7 +3,7 @@
  * Class representing a Starbar Game
  * 
  */
-class Starbar_Game extends Collection
+class Starbar_Game extends Object
 {
     protected $_levels;
 
@@ -40,7 +40,7 @@ class Starbar_Game extends Collection
     
     public function exportProperties($parentObject = null) {
         $props = array(
-            '_game' => $this->_game
+            '_levels' => $this->_levels
         );
         return array_merge(parent::exportProperties($parentObject), $props);
     }

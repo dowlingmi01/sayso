@@ -1158,6 +1158,9 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar .sb_column50 .sb_header, #sayso-starbar .sb_column60 .sb_header, #sayso-starbar .sb_column40 .sb_header {
 	border-bottom: 1px solid #929292;
 }
+#sayso-starbar .sb_tiny_note{
+	font-size: 10px;
+}
 #sayso-starbar #starbar-player-console .sb_theme_iconChange {
 	background-image: url('../images/generic/img_change.png');
 	background-repeat: no-repeat;

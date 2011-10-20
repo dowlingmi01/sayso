@@ -42,7 +42,7 @@ class Starbar extends Record
         return $this->_game;
     }
     
-    public function setGame (Collection $game = null) {
+    public function setGame (Starbar_Game $game = null) {
     	if (!$game) {
 			$game = new Starbar_Game();
 			$game->setLevels();

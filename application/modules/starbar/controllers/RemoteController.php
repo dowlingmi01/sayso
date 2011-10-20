@@ -56,6 +56,7 @@ class Starbar_RemoteController extends Api_GlobalController
             $starbarUserMap->loadDataByUniqueFields(array('user_id' => $this->user_id, 'starbar_id' => $starbar->getId()));
             
             $starbar->setUserMap($starbarUserMap);
+            $starbar->setGame();
             
             if ($this->visibility) {
                 $starbar->setVisibility($this->visibility);
@@ -121,7 +122,6 @@ class Starbar_RemoteController extends Api_GlobalController
             $user->loadData($this->user_id);
             $user->setKey($this->user_key); // <-- keep session key in the loop
             $starbar->setUser($user);
-			$starbar->setGame();
             
             $gamer = Gamer::create($user->getId(), $starbar->getId());
 			$session->setGamingUser($gamer);
@@ -431,7 +431,9 @@ class Starbar_RemoteController extends Api_GlobalController
         $starbarUserMap->save();
         
         $starbar->setUserMap($starbarUserMap->reload());
-        
+
+        $starbar->setGame();
+
         // Game
         
         $gamer = Gamer::create($user->getId(), $starbar->getId());
@@ -444,8 +446,6 @@ class Starbar_RemoteController extends Api_GlobalController
         // trigger game transaction: *install* 
 		$this->_request->setParam('starbar_id', $starbar->getId());
         Game_Starbar::create($gamer, $this->_request, $starbar)->install();
-        
-		$starbar->setGame();
             
         // now we know which starbar, route to the appropriate starbar action:
         return $this->_forward(

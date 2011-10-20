@@ -46,6 +46,7 @@ class Starbar_ContentController extends Api_GlobalController
         $goods = new Collection(); 
         foreach ($data as $goodData) {
             $good = new Gaming_BigDoor_Good();
+            $good->setPrimaryCurrencyId(67384);
             $good->build($goodData);
             $good->accept($game);
             $goods[] = $good;

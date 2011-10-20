@@ -1,7 +1,7 @@
 <div class="sb_column6040BG">
 	<div class="sb_column60">
 		<div class="sb_header">
-			<h2 class="sb_titlePlain">Welcome Back, <strong><a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element sb_userTitle" rel="sb_popBox_user-level"><?= $this->user->getTitle() ?></a></strong></h2>
+			<h2 class="sb_titlePlain">Welcome Back, <strong><a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element sb_user_title <?= ($user->username ? "" ? "sb_user_level_title") ?>" rel="sb_popBox_user-level"><?= $this->user->getTitle() ?></a></strong></h2>
 		</div><!-- .sb_header -->
 		<div>
 			<ul class="sb_lineList">
@@ -12,7 +12,7 @@
 						<img class="sb_userImg sb_alignLeft" src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="<?= $this->user->getTitle() ?>" />
 					<? } ?>
 					<p class="sb_nextToUserImage">
-						<strong>Username:</strong> <span id="sb_profile_username" class="sb_userTitle <? if (!$this->user->username) { ?> sb_jeip<? } ?>"><?= $this->user->getTitle() ?></span><br />
+						<strong>Username:</strong> <span id="sb_profile_username" class="sb_user_title <? if (!$this->user->username) { ?> sb_jeip<? } ?>"><?= $this->user->getTitle() ?></span><br />
 						<?= $this->user_email->email ?>
 					</p>
 				</li>

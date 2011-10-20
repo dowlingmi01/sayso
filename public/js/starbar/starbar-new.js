@@ -588,7 +588,7 @@ $SQ(function(){
 
 				// Update Username
 				if (user['username']) {
-					$SQ('.sb_userTitle').each(function(){
+					$SQ('.sb_user_title').each(function(){
 						$SQ(this).html(user['username']);
 					});
 				}

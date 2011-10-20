@@ -265,7 +265,7 @@ $SQ.activateGameElements = function(target, animate) {
 	if (userLevelNumberElems.length > 0) {
 		userLevelNumberElems.each(function() {
 			var newLevel = ""+(userLevels.length - 1);
-			if ($SQ(this).html() != newLevel) {
+			if (parseInt($SQ(this).html()) != parseInt(newLevel)) {
 				$SQ(this).html(newLevel);
 				justLeveledUp = true;
 				if (animate) {

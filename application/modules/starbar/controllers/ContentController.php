@@ -39,7 +39,7 @@ class Starbar_ContentController extends Api_GlobalController
         $client->setCustomParameters(array(
         	'attribute_friendly_id' => 'bdm-product-variant', 
         	'verbosity' => 9,
-            'end_record' => 100
+            'max_records' => 100
         ));
         $client->getNamedTransactionGroup('store');
         $data = $client->getData();

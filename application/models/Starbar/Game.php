@@ -3,7 +3,7 @@
  * Class representing a Starbar Game
  * 
  */
-class Starbar_Game extends RecordCollection
+class Starbar_Game extends Object
 {
     protected $_levels;
 

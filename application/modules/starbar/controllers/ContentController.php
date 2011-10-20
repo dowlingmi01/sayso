@@ -247,9 +247,7 @@ class Starbar_ContentController extends Api_GlobalController
 
     public function userLevelAction ()
     {
-    	require_once APPLICATION_PATH . '/modules/api/controllers/GamingController.php';
-		$levels = Api_GamingController::levelsAction();
-		$this->view->assign('levels', $levels);
+    	
     }
 
     public function facebookConnectAction ()

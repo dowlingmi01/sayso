@@ -1,0 +1,47 @@
+<?php 
+$baseUrl = 'http://' . Registry::getConfig()->baseDomain;
+?>
+<script type="text/javascript">
+    if (!window.sayso) window.sayso = {};
+    if (!window.sayso.client) {
+        window.sayso.client = {
+            name : 'hellomusic',
+            uuid : '',
+            uuidType : 'email',
+            userLoggedIn : false,
+            meta : {
+                uuidKey : 'MyEmail',
+                userLoggedInKey : 'CHOMPUID',
+                customStartMessage : 'Start the Music!'
+            }    
+        };
+    }
+</script>
+
+<div id="sayso-onboard">
+	<div id="sso_wrapper">
+      	<div id="sso_logo">
+        	<a href=""><img src="<?= $baseUrl ?>/client/hellomusic/images/logo_hello-music.png" alt="Hello Music&trade; Logo" /></a>
+        </div><!-- #sso_logo -->
+      	<div class="sso_content">
+            <h1>Keep The Beat!<br />With the BeatBar</h1>
+            <h4>You've been selected as a member of the rhythm<br />
+            section keeping Hello Music products and deals in<br />
+            sync with you, our customers.</h4>
+            <h3><span class="sso_textHighlight">GRAB</span> the BeatBar. <span class="sso_textHighlight">GIVE</span> your opinion.</h3>
+            <h2><span class="sso_textHighlight">GET</span> FREE GEAR.</h2>
+            <h4 style="height: 50px;">
+            <span class="sso_textError" style="display: none;">Whoops. Make sure you agree to the terms<br />
+            and conditions before you download.</span>
+            </h4>
+            <form action="" name="" method="">
+                <p><input type="radio" /> I agree to the <a href="<?= $baseUrl ?>/client/hellomusic/SaySo_TC.pdf" target="_blank">terms and conditions</a></p>
+                <p><a id="sayso-get-app" href="" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL">GRAB IT</a></p>
+                <p id="sayso-install-tip" style="font-size: 0.8em; position:relative; top: -3px; display: none;"></p>
+            </form>
+        </div><!-- .sso_content -->
+        <div class="sso_main-image"></div><!-- .sso_main-image -->
+    </div><!-- #sso_wraper -->
+    <script type="text/javascript" src="<?= $baseUrl ?>/client/global/js/starbar-onboard.js"></script>
+</div><!-- #sayso-onboard -->
+

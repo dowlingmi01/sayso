@@ -1,0 +1,179 @@
+<?php
+
+// customer/starbar short name
+
+$shortName = strtolower(Zend_Controller_Front::getInstance()->getRequest()->getControllerName()); 
+
+?>
+<script type="text/javascript">
+
+    // base domain, etc per the current server environment
+    
+    if (!window.sayso) window.sayso = {};
+    if (!window.sayso.baseDomain) {
+        window.sayso.baseDomain = '<?= Registry::getConfig()->baseDomain ?>';
+        window.sayso.environment = '<?= Registry::getPseudoEnvironmentName() ?>';
+    }
+</script>
+
+<!-- SIMULATED customer login (popup) -->
+
+
+<div id="simulate-login" style="background: white; opacity: 1; padding: 10px; margin: 15px; border: solid 2px black; width: 300px; font-family: Verdana; font-size: .8em; z-index: 10000; position: absolute; display: none;">
+    <h2 style="margin: 2px;">Login <small id="simulate-login-status" style="font-size: .6em; color: green;"><?= $this->userLoggedIn ? '(logged in)' : '' ?></small></h2>
+    <p style="margin: 2px;">Enter <strong>email</strong> to simulate user login</p>
+    <small style="margin: 2px;">Changing email addresses (while the app is installed) simulates logging in as a different user</small>
+    <form method="post" action="/client/<?= $shortName ?>/login">
+        <p>
+            <input type="hidden" name="uuid_type" value="<?= $this->uuidType ?>" />
+            <input class="email" type="text" name="uuid" value="<?= $this->uuid ?>" style="width: 200px; font-size: 1.3em;" />&nbsp;<input class="submit" type="submit" name="simulate_submit" value="Login" />
+        </p>
+    </form>
+</div>
+
+<!-- onboarding container (will also be used on customer site) -->
+
+<div id="sayso-container" style="display: none; width: 100%; height: 100%; position: absolute;">
+</div>
+
+<script type="text/javascript">
+
+    (function () {
+
+        // don't do anything unless install parameter exists
+        if (!getUrlParam('sayso-install')) return false;
+
+        // IE and Safari not supported at the moment
+        if (navigator.userAgent.match('MSIE') || navigator.userAgent.match('Apple')) {
+            return false;
+        }
+        
+        var sayso = window.sayso;
+
+        // jquery
+        
+        var jQueryInclude = document.createElement('script');         
+        jQueryInclude.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
+        document.getElementsByTagName('body')[0].appendChild(jQueryInclude);
+        sayso.loading = 'jquery';
+        
+        var jQueryTimer = new jsLoadTimer();
+        jQueryTimer.start('window.$SQ', function () {
+
+            sayso.loading = null;
+            var container = $SQ('#sayso-container'), 
+                body = document.getElementsByTagName('body')[0];
+
+            // css
+            
+            var cssGeneric = document.createElement('link'); 
+            cssGeneric.rel = 'stylesheet';
+            cssGeneric.href = 'http://' + sayso.baseDomain + '/client/<?= $shortName ?>/css/sayso-onboard.css';
+            body.appendChild(cssGeneric);
+            
+            var cssColorbox = document.createElement('link'); 
+            cssColorbox.rel = 'stylesheet';
+            cssColorbox.href = 'http://' + sayso.baseDomain + '/client/global/css/colorbox.css';
+            body.appendChild(cssColorbox);
+
+            // overlay
+            
+            $SQ.ajax({
+                url : 'http://' + sayso.baseDomain + '/client/<?= $shortName ?>/install',
+                dataType : 'jsonp',
+                success : function (response) {
+
+                    setTimeout(function () {
+                        // overlay
+                        container.html(response.data.html);
+                        container.fadeIn('slow');
+
+                        // login popup
+                        setTimeout(function () {
+                            $SQ('#simulate-login').show();
+                        }, 3000);
+                    }, 1000);
+                }
+            });
+
+            // SIMULATED login form
+            
+            // since jquery.form is not namespaced, we transfer over the ref
+            // back to jQuery/$ for it to use. This is safe in our simulated environ.
+            jQuery = $ = $SQ; 
+            
+            var jQueryForm = document.createElement('script');         
+            jQueryForm.src = 'http://' + sayso.baseDomain + '/js/jquery.form.min.js';
+            document.getElementsByTagName('body')[0].appendChild(jQueryForm);
+
+            var timer2 = new jsLoadTimer();
+            timer2.start('typeof $SQ.fn.ajaxForm === "function"', function () {
+                
+                $SQ('#simulate-login form').ajaxForm({
+                    url : $SQ(this).attr('action'),
+                    type : 'post',
+                    dataType : 'jsonp',
+                    success : function (response) {
+                        
+                        $SQ('#simulate-login-status').text('(logged in)');
+                        
+                        var client = window.sayso.client,
+                            data = response.data;
+                        
+                        client.name = data.name;
+                        client.uuid = data.uuid;
+                        client.uuidType = data.uuidType;
+                        client.userLoggedIn = data.userLoggedIn
+
+                        setTimeout(function() { $SQ('#simulate-login').fadeOut(); }, 1500);
+                        
+                        if (client.preInstallSetup) {
+                            client.preInstallSetup();
+                        }                            
+                    }
+                });
+            });
+        });
+
+        // various useful functions
+        
+        function jsLoadTimer(){function c(){if(i++>d)return clearTimeout(a),false;else a=setTimeout(e,f)}function e(){try{eval(g)?(a&&clearTimeout(a),h()):c()}catch(b){c()}}var i=0,d=400,f=50,g="",h=null,a=null;this.setMaxCount=function(b){d=b};this.setInterval=function(b){f=b};this.setLocalReference=function(){};this.start=function(b,a){g=b;h=a;e()}};
+
+        function getCookie (find) {
+            var cookies = document.cookie.split(';');
+            for(var i = 0; i < cookies.length; i++) {
+                var nameValue = cookies[i].split('=');
+                var name = nameValue[0].trim();
+                if (name === find) {
+                    return nameValue[1].trim();
+                }
+            }
+            return '';
+        }
+
+        function setCookie(name, value, days) {
+            var dateTime = new Date();
+            if (days) {
+                dateTime.setDate(dateTime.getDate() + days);
+            }
+            var value = escape(value) + (days ? '; expires=' + dateTime.toUTCString() : '') + '; path=/';
+            document.cookie = name + '=' + value;
+        }
+        
+        function getUrlParam (name) {
+            if (!this.params) {
+                this.params = {};
+                var e,
+                a = /\+/g,
+                r = /([^&=]+)=?([^&]*)/g,
+                d = function (s) { return decodeURIComponent(s.replace(a, " ")); },
+                q = window.location.search.substring(1);
+
+                while (e = r.exec(q)) {
+                    this.params[d(e[1])] = d(e[2]);
+                }
+            }
+            return this.params[name];
+        }
+    })();
+</script>

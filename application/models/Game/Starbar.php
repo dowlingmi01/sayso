@@ -188,22 +188,25 @@ abstract class Game_Starbar extends Game_Abstract {
                     // 2a. via Starbar object
                     $authKey = $starbar->auth_key;
                 } else {
-                    if (Registry::isRegistered('starbar')) $starbar = Registry::getStarbar();
-                    else $starbar = new Starbar();
-                    $starbarId = $request->getParam('starbar_id');
-                    $shortName = $request->getParam('short_name');
-                    if ($starbarId) {
-                        // 2b. via starbar_id
-                        $starbar->loadData($starbarId);
-                    } else if ($shortName) {
-                        // 2c. via short_name
-                        $starbar->loadDataByUniqueFields(array('short_name' => $shortName));
+                    if (Registry::isRegistered('starbar')) {
+                        $starbar = Registry::getStarbar();
                     } else {
-                        // 2d. via Starbar_<shortname>Controller
-                        $shortName = strtolower($request->getControllerName());
-                        $starbar->loadDataByUniqueFields(array('short_name' => $shortName));
-                        if (!$starbar->hasId()) {
-                            throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Could not determine Game in Game_Starbar::create(). See method for for more information.'));
+                        $starbar = new Starbar();
+                        $starbarId = $request->getParam('starbar_id');
+                        $shortName = $request->getParam('short_name');
+                        if ($starbarId) {
+                            // 2b. via starbar_id
+                            $starbar->loadData($starbarId);
+                        } else if ($shortName) {
+                            // 2c. via short_name
+                            $starbar->loadDataByUniqueFields(array('short_name' => $shortName));
+                        } else {
+                            // 2d. via Starbar_<shortname>Controller
+                            $shortName = strtolower($request->getControllerName());
+                            $starbar->loadDataByUniqueFields(array('short_name' => $shortName));
+                            if (!$starbar->hasId()) {
+                                throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Could not determine Game in Game_Starbar::create(). See method for for more information.'));
+                            }
                         }
                     }
                     $authKey = $starbar->auth_key;

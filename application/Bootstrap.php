@@ -58,6 +58,11 @@ class Bootstrap extends App_Bootstrap
 class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
 {
     public function routeShutdown(Zend_Controller_Request_Abstract $request) {
+        
+        if (strpos($_SERVER['SERVER_NAME'], 'client.') === 0) {
+            $request->setModuleName('client');
+        }
+        
         $currentModule = strtolower($request->getModuleName());
         $currentController = strtolower($request->getControllerName());
         $currentAction = strtolower($request->getActionName());
@@ -128,6 +133,7 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
                 break;
             case 'admin' :
             case 'starbar' :
+            case 'client' :
             default :
                 $layout->setLayoutPath(APPLICATION_PATH . '/modules/' . $currentModule . '/layouts/scripts');
                 break;

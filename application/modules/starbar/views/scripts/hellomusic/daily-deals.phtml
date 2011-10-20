@@ -2,7 +2,10 @@
 	$SQ.getScript("http://platform.twitter.com/widgets.js", function(){
 		function handleTweetEvent(event){
 			if (event) {
-				// @todo Tweet has occured, reward user!
+				matches = event.target.src.match(/%3Fdid%3D(\d+)&/i);
+				if (matches && matches.length == 2) {
+					$SQ.handleTweet('promos', matches[1]);
+				}
 			}
 		}
 		twttr.events.bind('tweet', handleTweetEvent);
@@ -40,21 +43,25 @@
 					<? } ?>
 				</p>
 			</div><!-- .sb_dealInfo -->
-			<? $facebookCallbackUrl = str_replace("THE_DEAL_ID", $deal->ID, $this->facebook_share_callback_url) ?>
-			<a class="sb_externalShare" href="#"
-				onclick="window.open('http://www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($deal->itemURL) ?>&caption=<?= urlencode($deal->shareText) ?>&picture=<?= urlencode($deal->itemImageURL) ?>&redirect_uri=<?= urlencode($facebookCallbackUrl) ?>&name=<?= $deal->name ?>&description=<?= urlencode($this->facebook_description) ?>', 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450'); return false;">
-				<img src="http://<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
-			</a>
-			<a class="twitter-share-button"
-				data-related="<?= $this->twitter_share_related_users ?>"
-				data-hashtags="<?= $this->twitter_share_hashtags ?>"
-				data-via="<?= $this->twitter_share_via_user ?>"
-				data-url="<?= $deal->itemURL ?>"
-				data-text="<?= $deal->shareText ?>"
-				data-count="none"
-				href="https://twitter.com/intent/tweet">
-					<img src="http://<?= BASE_DOMAIN ?>/images/generic/logo_twitter.png" alt="Twitter" />
-			</a>
+		    <div class="sb_externalShares">
+				<? $facebookCallbackUrl = str_replace("THE_DEAL_ID", $deal->ID, $this->facebook_share_callback_url) ?>
+				<a class="sb_externalShare" href="#"
+					onclick="window.open('http://www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($deal->itemURL) ?>&caption=<?= urlencode($deal->shareText) ?>&picture=<?= urlencode($deal->itemImageURL) ?>&redirect_uri=<?= urlencode($facebookCallbackUrl) ?>&name=<?= $deal->name ?>&description=<?= urlencode($this->facebook_description) ?>', 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450'); return false;">
+					<img src="http://<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
+				</a>
+				<span class="sb_mini-note-reward">+25</span>
+				<a class="twitter-share-button"
+					data-related="<?= $this->twitter_share_related_users ?>"
+					data-hashtags="<?= $this->twitter_share_hashtags ?>"
+					data-via="<?= $this->twitter_share_via_user ?>"
+					data-url="<?= $deal->itemURL ?>"
+					data-text="<?= $deal->shareText ?>"
+					data-count="none"
+					href="https://twitter.com/intent/tweet">
+						<img src="http://<?= BASE_DOMAIN ?>/images/generic/logo_twitter.png" alt="Twitter" />
+				</a>
+				<span class="sb_mini-note-reward">+25</span>
+			</div>
 		</li>
 	<? } ?>
 </ul><!-- .sb_dailyDeal -->

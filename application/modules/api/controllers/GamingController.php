@@ -49,9 +49,7 @@ class Api_GamingController extends Api_GlobalController
      */
     public function levelsAction () {
         
-        //$client = new Gaming_BigDoor_HttpClient('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
-        // @todo Temporary hack to call levelsAction from other controllers. Will remove this...
-        $client = Gaming_BigDoor_HttpClient::getInstance('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
+        $client = new Gaming_BigDoor_HttpClient('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
         $client->getNamedLevelCollection(43352);
         $data = $client->getData();
         $levels = new Collection();
@@ -68,6 +66,13 @@ class Api_GamingController extends Api_GlobalController
         return $this->_resultType($levels);
 //        return $this->_resultType($client->getData(true)); // raw data
     }
+    
+    public function shareAction () {
+        $this->_validateRequiredParameters(array('shared_type', 'shared_id'));
+        
+    	Game_Starbar::getInstance()->share($this->shared_type, @$this->shared_id);
+        return $this->_resultType(true);
+	}
     
     public function testBigDoorAction () {
         $this->_validateRequiredParameters(array('user_id', 'starbar_id'));

@@ -1352,6 +1352,15 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar .sb_connected {
 	background-position: 0px 0px;
 }
+#sayso-starbar .sb_externalShares, #sayso-starbar-embed .sb_externalShares {
+	margin-top: 5px;
+}
+#sayso-starbar .sb_externalShare, #sayso-starbar-embed .sb_externalShare {
+	float: left;
+}
+#sayso-starbar .twitter-share-button, #sayso-starbar-embed .twitter-share-button {
+	float: left;
+}
 /* JQUERY EDIT IN PLACE */
 
 #sayso-starbar .sb_jeip{

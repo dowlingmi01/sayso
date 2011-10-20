@@ -343,14 +343,16 @@
 	height: 20px;
 }
 
-#sayso-starbar #starbar-player-console .sb_mini-note-reward{
-	background-image: url('../images/hellomusic/img_note_sm.png');
+#sayso-starbar #starbar-player-console .sb_mini-note-reward, #sayso-starbar-embed .sb_mini-note-reward {
+	background-image: url('../images/hellomusic/img_note_tn.png');
 	background-repeat: no-repeat;
-	padding: 3px 0 3px 16px;
+	background-position: 0px 3px;
+	padding: 5px 0 3px 13px;
 	height: 14px;
-	font-size: 11px;
-	margin: 0;
-	clear: none;
+	font-size: 10px;
+	margin: 0 3px 0 3px;
+	color: black;
+	float: left;
 }
 
 #sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgNote{
@@ -414,7 +416,7 @@
 	background-repeat: no-repeat;
 	background-position: 3px 3px;
 	height: 20px;
-	padding: 3px 5px 3px 20px;
+	padding: 3px 5px 3px 26px;
 	font-size: 11px;
 	line-height: 22px;
 	color: #333;

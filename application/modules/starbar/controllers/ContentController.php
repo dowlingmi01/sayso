@@ -392,6 +392,8 @@ class Starbar_ContentController extends Api_GlobalController
     {
         // @todo re-enable this validation as necessary and remove the if() condition below
         //$this->_validateRequiredParameters(array('post_id', 'shared_type'));
+        // ^^ Nay! Should show friendly message if user post doesn't work or if user decides not to post (this already works)
+
     	// this page is fetched in an iframe, not ajax
     	$this->_usingJsonPRenderer = false;
 

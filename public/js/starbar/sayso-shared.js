@@ -130,6 +130,9 @@ $SQ.frameCommunicationFunctions = {
 		if (newProfile) $SQ.updateGame(newProfile, true, true);
 		else $SQ.updateGame('ajax', true, true);
 	},
+	handleTweet: function (shared_type, shared_id) {
+		if (shared_type && shared_id) $SQ.handleTweet(shared_type, shared_id);
+	},
 	alertMessage: function (msg) {
 		sayso.log(msg);
 	}
@@ -186,6 +189,18 @@ $SQ.randomString = function (length, special) {
 		randomString += String.fromCharCode(randomNumber);
 	}
 	return randomString;
+}
+
+$SQ.handleTweet = function(shared_type, shared_id) {
+	if (shared_type && shared_id) {
+		$SQ.ajaxWithAuth({
+			url : 'http://'+sayso.baseDomain+'/api/gaming/share?renderer=jsonp&shared_type='+shared_type+'&shared_id='+shared_id,
+			success : function (response, status, jqXHR) {
+				window.sayso.starbar.user.gaming = response.gamer;
+				$SQ.activateGameElements(null, true);
+    		}
+		});
+	}
 }
 
 $SQ.updateGame = function(loadSource, setGlobalUpdate, animate) {

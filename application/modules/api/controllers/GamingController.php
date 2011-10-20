@@ -74,6 +74,11 @@ class Api_GamingController extends Api_GlobalController
         return $this->_resultType(true);
 	}
     
+    public function checkinAction () {
+    	Game_Starbar::getInstance()->checkin();
+        return $this->_resultType(true);
+	}
+    
     public function testBigDoorAction () {
         $this->_validateRequiredParameters(array('user_id', 'starbar_id'));
         

@@ -492,8 +492,11 @@ $SQ(function(){
 	}
 
 	function updateAlerts(reverseOrder) {
+		var starbarStowed = "false";
+		if (starbar.state.visibility == 'sb_starbar-visStowed') starbarStowed = "true";
+
 		$SQ.ajaxWithAuth({
-			url : 'http://'+sayso.baseDomain+'/api/notification/get-all?renderer=jsonp&starbar_id='+sayso.starbar.id,
+			url : 'http://'+sayso.baseDomain+'/api/notification/get-all?renderer=jsonp&starbar_stowed='+starbarStowed+'&starbar_id='+sayso.starbar.id,
 			success : function (response, status, jqXHR) {
 				var randomString = $SQ.randomString(10);
 				var newAlerts = false;
@@ -510,29 +513,42 @@ $SQ(function(){
 						// Check if an alert with that message already exists, if so, do nothing
 						var currentAlert = $SQ('#starbar-alert-'+message['id']);
 						if (currentAlert.length == 0) { // New Alert
-							var elemAlertContainer = $SQ('#starbar-alert-container-'+message['notification_area']);
+							if (message['notification_area']) {
+								var elemAlertContainer = $SQ('#starbar-alert-container-'+message['notification_area']);
 
-							var newAlertHtml = '<div class="sb_starbar-alert sb_starbar-alert-'+message['notification_area']+'" id="starbar-alert-'+message['id']+'"><div class="sb_inner"><div class="sb_content sb_theme_bgAlert'+message['color']+'">';
-							if (message['popbox_to_open']) {
-								newAlertHtml += '<a href="http://'+sayso.baseDomain+'/starbar/'+sayso.starbar.shortName+'/'+message['popbox_to_open']+'" class="sb_nav_element sb_alert" rel="sb_popBox_'+message['popbox_to_open']+'">'+message['message']+'</a>'
+								var newAlertHtml = '<div class="sb_starbar-alert sb_starbar-alert-'+message['notification_area']+'" id="starbar-alert-'+message['id']+'"><div class="sb_inner"><div class="sb_content sb_theme_bgAlert'+message['color']+'">';
+								if (message['popbox_to_open']) {
+									newAlertHtml += '<a href="http://'+sayso.baseDomain+'/starbar/'+sayso.starbar.shortName+'/'+message['popbox_to_open']+'" class="sb_nav_element sb_alert" rel="sb_popBox_'+message['popbox_to_open']+'">'+message['message']+'</a>'
+								} else {
+									newAlertHtml += '<a href="#" class="sb_nav_element sb_alert" rel="">'+message['message']+'</a>';
+								}
+
+								newAlertHtml += '</div><!-- .sb_content --></div><!-- .sb_inner --></div><!-- #sb_alert-new -->';
+								if (reverseOrder) {
+									elemAlertContainer.prepend(newAlertHtml);
+								} else {
+									elemAlertContainer.append(newAlertHtml);
+								}
+
+								// Update profile if we've just received a notification regarding FB or TW getting connected.
+								if (message['short_name'] == 'FB Account Connected' || message['short_name'] == 'TW Account Connected') {
+									updateProfile(true, true);
+									$SQ.updateGame('ajax', true, true);
+								} else if (message['short_name'] == 'Checking in') { // This notification is set up to only be sent when the starbar is open (i.e. not stowed)
+									gameCheckin();
+								}
+								
+								newAlerts = true;
 							} else {
-								newAlertHtml += '<a href="#" class="sb_nav_element sb_alert" rel="">'+message['message']+'</a>';
+								// Messages with no notification area should not be shown, they are sent silently to initiate certain actions
+								if (message['short_name'] == 'Update Game') {
+									$SQ.updateGame('ajax', true, true);
+								}
+								$SQ.ajaxWithAuth({ // Mark closed, those notifications are meant to be received only once.
+									url : 'http://'+sayso.baseDomain+'/api/notification/close?renderer=jsonp&message_id='+message['id'],
+									success : function (response, status) {}
+								});
 							}
-
-							newAlertHtml += '</div><!-- .sb_content --></div><!-- .sb_inner --></div><!-- #sb_alert-new -->';
-							if (reverseOrder) {
-								elemAlertContainer.prepend(newAlertHtml);
-							} else {
-								elemAlertContainer.append(newAlertHtml);
-							}
-
-							// Update profile if we've just received a notification regarding FB or TW getting connected.
-							if (message['short_name'] == 'FB Account Connected' || message['short_name'] == 'TW Account Connected') {
-								updateProfile(true, true);
-								$SQ.updateGame('ajax', true, true);
-							}
-							
-							newAlerts = true;
 						} else { // Alert already exist, remove the class with the random string that we just added
 							currentAlert.removeClass('sb_starbar-alert_'+randomString);
 						}
@@ -552,6 +568,16 @@ $SQ(function(){
 					}
 				}
     		}
+		});
+	}
+
+	function gameCheckin() {
+		$SQ.ajaxWithAuth({
+			url : 'http://'+sayso.baseDomain+'/api/gaming/checkin?renderer=jsonp',
+			success : function (response, status, jqXHR) {
+				window.sayso.starbar.user.gaming = response.gamer;
+				$SQ.activateGameElements(null, true);
+			}
 		});
 	}
 
@@ -791,6 +817,7 @@ $SQ(function(){
 			    starbar.state.update();
 			}
 
+			closePopBox(true);
 	        elemStarbarMain.fadeOut('fast');
             elemPopBoxVisControl.fadeOut('fast');
             btnToggleVis.attr('class','').addClass('sb_btnStarbar-closed');
@@ -807,7 +834,7 @@ $SQ(function(){
                     hideAlerts();
                     setTimeout(function () {
                     	elemPlayerConsole.hide();
-					}, 500);
+					}, 510);
                     setTimeout(function () {
 			            btnToggleVis.attr('class','').addClass('sb_btnStarbar-stowed');
             			btnSaySoLogo.css('backgroundPosition','');

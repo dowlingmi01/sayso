@@ -235,7 +235,7 @@ $SQ.activateGameElements = function(target, animate) {
 	var userLevelNumberElems = $SQ('.sb_user_level_number', target);
 	var userLevelTitleElems = $SQ('.sb_user_level_title', target);
 
-	var animationDuration = 1500; // milliseconds
+	var animationDuration = 2000; // milliseconds
 
 	var allLevels = window.sayso.starbar.game.levels.collection;
 	var userLevels = window.sayso.starbar.user.gaming._levels.collection;
@@ -341,7 +341,11 @@ $SQ.activateGameElements = function(target, animate) {
 						var originalColor = $SQ(this).css('color');
 						// total duration is doubled when leveling up
 						var durationMultiplier = 4/5;
-						if (justLeveledUp) durationMultiplier = 9/5;
+						if (justLeveledUp) {
+							durationMultiplier = 9/5;
+							// pulsate when leveling up
+							$SQ(this).effect("pulsate", { times:3 }, parseInt(animationDuration/3));
+						}
 						// Prepare the element for numeric 'animation' (i.e. tweening the number)
 						$SQ(this).animate(
 							{ animationCurrencyBalance: parseInt($SQ(this).html()) },
@@ -382,27 +386,28 @@ $SQ.activateGameElements = function(target, animate) {
 			if (currencyPercent > 100) currencyPercent = 100; // technically this should never happen
 		
 			currencyPercentElems.each(function() {
+				var startingWidth = $SQ(this).width();
+				var availableWidth = $SQ(this).parent().width();
+				var newWidth = Math.round(availableWidth * currencyPercent/100);
 				if (!$SQ(this).hasClass('sb_ui-progressbar-value')) {
 					$SQ(this).addClass('sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left');
 				}
 				if ($SQ(this).attr('data-currency') == currencyTitle) {
-					startingWidthPercent = $SQ(this).percentWidth();
 					if (animate && !justLeveledUp) {
 						var animatingBarElem = $SQ(document.createElement('div'));
 						var fadingBarElem = $SQ(document.createElement('div'));
 						var progressBarElem = $SQ(this); // so it can be accessed from setTimeout()
-						var currencyPercentLocal = currencyPercent; // so it can be accessed from setTimeout()
 						animatingBarElem.addClass('sb_ui-progressbar-value-animating sb_ui-widget-header sb_ui-corner-left');
-						animatingBarElem.css('width', startingWidthPercent+'%');
+						animatingBarElem.css('width', startingWidth+'px');
 						fadingBarElem.addClass('sb_ui-progressbar-value-fading sb_ui-widget-header sb_ui-corner-left');
-						fadingBarElem.css('width', currencyPercent+'%');
+						fadingBarElem.css('width', newWidth+'px');
 						
 						animatingBarElem.insertBefore($SQ(this));
 						fadingBarElem.insertBefore($SQ(this));
 						fadingBarElem.fadeTo(0, 0);
 						
 						animatingBarElem.animate(
-							{ width : currencyPercent+'%' },
+							{ width : newWidth+'px' },
 							{ duration : parseInt(animationDuration*2/5) }
 						);
 						setTimeout(function() {
@@ -410,36 +415,35 @@ $SQ.activateGameElements = function(target, animate) {
 						}, parseInt(animationDuration*2/5));
 						
 						setTimeout(function() {
-							progressBarElem.css('width', currencyPercentLocal+'%');
+							progressBarElem.css('width', newWidth+'px');
 							animatingBarElem.annihilate();
 							fadingBarElem.annihilate();
 						}, animationDuration);
-					} else if (animate && justLeveledUp) { // Just leveled up
+					} else if (animate && justLeveledUp) {
 						var animatingBarElem = $SQ(document.createElement('div'));
 						var progressBarElem = $SQ(this); // so it can be accessed from setTimeout()
-						var currencyPercentLocal = currencyPercent; // so it can be accessed from setTimeout()
 						animatingBarElem.addClass('sb_ui-progressbar-value-animating sb_ui-widget-header sb_ui-corner-left');
-						animatingBarElem.css('width', startingWidthPercent+'%');
+						animatingBarElem.css('width', startingWidth+'px');
 						
 						animatingBarElem.insertBefore($SQ(this));
 						
 						animatingBarElem.animate(
-							{ width : '100%' },
+							{ width : availableWidth+'px' },
 							{ duration : parseInt(animationDuration*2/5) }
 						);
 						setTimeout(function() {
 							progressBarElem.fadeTo(parseInt(animationDuration), 0);
 						}, parseInt(animationDuration*2/5));
 						setTimeout(function() {
-							progressBarElem.css('width', currencyPercentLocal+'%');
+							progressBarElem.css('width', newWidth+'px');
 							progressBarElem.fadeTo(parseInt(animationDuration*3/5), 1);
 							animatingBarElem.fadeTo(parseInt(animationDuration*3/5), 0);
 						}, parseInt(animationDuration*7/5));
 						setTimeout(function() {
 							animatingBarElem.annihilate();
 						}, animationDuration*2);
-					} else {
-						$SQ(this).css('width', currencyPercent+'%');
+					} else { // No animation
+						$SQ(this).css('width', newWidth+'px');
 					}
 				}
 			});

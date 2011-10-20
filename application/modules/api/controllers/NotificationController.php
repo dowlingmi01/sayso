@@ -5,10 +5,13 @@ require_once APPLICATION_PATH . '/modules/api/controllers/GlobalController.php';
 class Api_NotificationController extends Api_GlobalController
 {
 	public function getAllAction() {
-        $this->_validateRequiredParameters(array('starbar_id', 'user_id'));
+        $this->_validateRequiredParameters(array('starbar_id', 'starbar_stowed', 'user_id'));
 
+        if ($this->starbar_stowed = "true") $this->starbar_stowed = true;
+        else $this->starbar_stowed = false;
+        
 	    $messages = new Notification_MessageCollection();
-	    $messages->loadAllNotificationMessagesForStarbarAndUser($this->starbar_id, $this->user_id);
+	    $messages->loadAllNotificationMessagesForStarbarAndUser($this->starbar_id, $this->starbar_stowed, $this->user_id);
 
 		return $this->_resultType($messages);
 	}

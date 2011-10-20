@@ -33,7 +33,12 @@ class Notification_MessageCollection extends RecordCollection
 	*     (i.e. no notification_message_user_map to any notification_message in a scheduled notification_message_group)
 	*     We want the first one (by ordinal) from each message group.
 	*/
-	public function loadPreviouslyUnscheduledMessagesForStarbarAndUser ($starbarId, $userId) {
+	public function loadPreviouslyUnscheduledMessagesForStarbarAndUser ($starbarId, $starbarStowed, $userId) {
+		$starbarStowedClause = "";
+		if ((int) $starbarStowed == 1) { // Don't get check-in notifications in stowed state
+			$starbarStowedClause = " AND nm.short_name <> 'Checking in' ";
+		}
+
 		$sql = "
 			SELECT * FROM (
 				SELECT nm.*
@@ -53,6 +58,7 @@ class Notification_MessageCollection extends RecordCollection
 							AND nmum.user_id = ?
 							AND nmg.id = nm.notification_message_group_id
 				WHERE nmum.id IS NULL
+					".$starbarStowedClause."
 				ORDER BY nm.ordinal ASC, nmum.id DESC
 			) AS S 
 			GROUP BY notification_message_group_id
@@ -139,17 +145,28 @@ class Notification_MessageCollection extends RecordCollection
 	}
 	
 	// === Now put them all together (see above), and filter and add user maps when necessary
-	public function loadAllNotificationMessagesForStarbarAndUser($starbarId, $userId) {
+	public function loadAllNotificationMessagesForStarbarAndUser($starbarId, $starbarStowed, $userId) {
 		// (see function comments for descritions of those message collections)
 
 		$messageGroup = new Notification_MessageGroup();
+		$messageUserMap = new Notification_MessageUserMap();
 
 		// 1. queuedMessages -- those are already filtered, and already have user maps made, start here
 		$this->loadQueuedMessagesForStarbarAndUser($starbarId, $userId);
+		$queuedMessages = new Notification_MessageCollection();
+		$queuedMessages->loadQueuedMessagesForStarbarAndUser($starbarId, $userId);
+		foreach ($queuedMessages as $message) {
+			if ($message->validateForUser($userId)) {
+				$this->addItem($message);
+			} else {
+				// Close the message so it is no longer queued
+				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId, true);
+			}
+		}
 
 		// 2. previouslyUnscheduledMessages -- need to filter those, and add user_maps
 		$previouslyUnscheduledMessages = new Notification_MessageCollection();
-		$previouslyUnscheduledMessages->loadPreviouslyUnscheduledMessagesForStarbarAndUser($starbarId, $userId);
+		$previouslyUnscheduledMessages->loadPreviouslyUnscheduledMessagesForStarbarAndUser($starbarId, $starbarStowed, $userId);
 		foreach ($previouslyUnscheduledMessages as $message) {
 			if ($message->validateForUser($userId)) { // user should see this message, so append to collection
 				$this->addItem($message);

@@ -406,6 +406,15 @@ class Starbar_ContentController extends Api_GlobalController
 		if ($request->getParam('post_id')) {
 			$success = true;
 			Game_Starbar::getInstance()->share($this->shared_type, @$this->shared_id);
+    		
+    		// Send hidden game update notification to make the user request an update
+    		$message = new Notification_Message();
+    		$message->loadDataByUniqueFields(array('short_name' => 'Update Game'));
+    		
+    		if ($message->id) {
+    			$messageUserMap = new Notification_MessageUserMap();
+    			$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, false);
+			}
 		}
 
 		$this->view->assign('success', $success);

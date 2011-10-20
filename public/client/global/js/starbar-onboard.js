@@ -86,7 +86,7 @@
         });
         
         sayso.client.preInstallSetup = function () {
-            console.log('setting up');
+            
             // detect browser and provide appropriate install link
             var browserAppUrl = 'http://' + sayso.baseDomain + '/install';
             
@@ -161,7 +161,12 @@
             $SQ('#sayso-get-app').addClass('sso_theme_button_disabled').text('Installed!').removeAttr('href');
             $SQ('#sso_wrapper input[type=radio]').attr('checked', 'checked');
             $SQ('span.sso_textError').text('');
-            setTimeout(function () { $SQ('#sso_wrapper').fadeOut('slow'); }, 1000);
+            setTimeout(function () { 
+                $SQ('#sso_wrapper').fadeOut('slow'); 
+                if ($SQ('#sayso-container').length) {
+                    $SQ('#sayso-container').remove();
+                }
+            }, 1000);
             
         });
     });

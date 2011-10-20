@@ -51,5 +51,9 @@ class Client_GlobalController extends Api_GlobalController
         );
         return $this->_resultType(new Object($clientData));
     }
+    
+    public function embedAction () {
+        
+    }
 }
 

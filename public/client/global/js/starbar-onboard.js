@@ -106,8 +106,6 @@
             $SQ('#sayso-container').fadeOut('slow', function () { 
                 $SQ('#sayso-container').remove(); 
             });
-            // delete the install cookie
-            setCookie('sayso-install', null, -10);
         });   
     });
     

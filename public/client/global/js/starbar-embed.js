@@ -64,6 +64,9 @@
             // note 'style' property cannot be set directly. must use it's individual properties instead
             iframe.style.width = '0'; iframe.style.height = '0'; iframe.style.border = 'none'; iframe.style.display = 'none';
             document.getElementsByTagName('body')[0].appendChild(iframe);
+            
+            // delete the install cookie
+            setCookie('sayso-install', null, -10);
         }
     
         var div = document.createElement('div');

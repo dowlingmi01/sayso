@@ -127,6 +127,7 @@ class Starbar_RemoteController extends Api_GlobalController
 			$session->setGamingUser($gamer);
 
 	        $game = Game_Starbar::getInstance();
+        	$game->checkin();
 
             return $this->_forward(
                 $starbar->short_name, 

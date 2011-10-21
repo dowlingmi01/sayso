@@ -37,11 +37,30 @@ $shortName = strtolower(Zend_Controller_Front::getInstance()->getRequest()->getC
 
     (function () {
 
+        // already logged in
+        if ('<?= $this->userLoggedIn ?>'.length) return;
+        
         var sayso = window.sayso;
 
-        var jQueryTimer = new jsLoadTimer();
+        if (!sayso.functions) {
+            sayso.functions = {
+                jsLoadTimer : function (){function c(){if(i++>g)return clearTimeout(a),false;else a=setTimeout(d,h)}function d(){try{if(eval(e))a&&clearTimeout(a),f();else return c()}catch(b){return c()}}var i=0,g=400,h=50,e="",f=null,a=null;this.setMaxCount=function(b){g=b};this.setInterval=function(b){h=b};this.setLocalReference=function(){};this.start=function(b,a){e=b;f=a;try{eval(e)?f():d()}catch(c){d()}}},
+                getCookie : function (d){for(var b=document.cookie.split(";"),a=0;a<b.length;a++){var c=b[a].split("=");if(c[0].trim()===d)return c[1].trim()}return""},
+                setCookie : function (d,a,b){var c=new Date;b&&c.setDate(c.getDate()+b);a=escape(a)+(b?"; expires="+c.toUTCString():"")+"; path=/";document.cookie=d+"="+a},
+                getUrlParam : function (c){if(!this.params){this.params={};for(var a,b=/\+/g,d=/([^&=]+)=?([^&]*)/g,e=window.location.search.substring(1);a=d.exec(e);)this.params[decodeURIComponent(a[1].replace(b," "))]=decodeURIComponent(a[2].replace(b," "))}return this.params[c]}
+            };  
+        }
+
+        var f = sayso.functions;
+        
+        var jQueryInclude = document.createElement('script');         
+        jQueryInclude.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
+        document.getElementsByTagName('body')[0].appendChild(jQueryInclude);
+        
+
+        var jQueryTimer = new f.jsLoadTimer();
         jQueryTimer.start('window.$SQ', function () { // note: jquery is loaded in the embed script
-            
+
             // SIMULATED login form
             
             // since jquery.form is not namespaced, we transfer over the ref
@@ -52,37 +71,32 @@ $shortName = strtolower(Zend_Controller_Front::getInstance()->getRequest()->getC
             jQueryForm.src = 'http://' + sayso.baseDomain + '/js/jquery.form.min.js';
             document.getElementsByTagName('body')[0].appendChild(jQueryForm);
     
-            var timer2 = new jsLoadTimer();
-            timer2.start('typeof $SQ.fn.ajaxForm === "function"', function () {
+            var timer2 = new f.jsLoadTimer();
+            timer2.start('typeof $.fn.ajaxForm === "function"', function () {
                 
-                $SQ('#simulate-login form').ajaxForm({
-                    url : $SQ(this).attr('action'),
-                    type : 'post',
-                    dataType : 'jsonp',
-                    success : function (response) {
-                        
-                        $SQ('#simulate-login-status').text('(logged in)');
-                        
-                        var client = window.sayso.client,
-                            data = response.data;
-                        
-                        client.name = data.name;
-                        client.uuid = data.uuid;
-                        client.uuidType = data.uuidType;
-                        client.userLoggedIn = data.userLoggedIn
-    
-                        setTimeout(function() { $SQ('#simulate-login').fadeOut(); }, 1500);
-                        
-                        if (client.preInstallSetup) {
-                            client.preInstallSetup();
-                        }                            
-                    }
-                });
+                // login popup
+                setTimeout(function () {
+                    $('#simulate-login').show();
+                    
+                    // ajax form
+                    $('#simulate-login form').ajaxForm({
+                        url : $(this).attr('action'),
+                        type : 'post',
+                        dataType : 'jsonp',
+                        success : function (response) {
+                            $('#simulate-login-status').text('(logged in)');
+                            
+                            // refresh page    
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 1000);
+                        }
+                    });
+                }, 1500);
             });
         });
-        
-        function jsLoadTimer(){function c(){if(i++>g)return clearTimeout(a),false;else a=setTimeout(d,h)}function d(){try{if(eval(e))a&&clearTimeout(a),f();else return c()}catch(b){return c()}}var i=0,g=400,h=50,e="",f=null,a=null;this.setMaxCount=function(b){g=b};this.setInterval=function(b){h=b};this.setLocalReference=function(){};this.start=function(b,a){e=b;f=a;try{eval(e)?f():d()}catch(c){d()}}};
 
+        
         
     })();
 </script>

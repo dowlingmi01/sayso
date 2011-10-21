@@ -1,18 +1,6 @@
 <?php
 
-switch (APPLICATION_ENV) {
-    case 'development' :
-        $env = 'LOCAL'; break;
-    case 'sandbox' :
-        $env = 'DEV'; break;
-    case 'testing' :
-        $env = 'TEST'; break;
-    case 'staging' :
-        $env = 'STAGING'; break;
-    case 'production' :
-    default :
-        $env = 'PRODUCTION'; break;
-}
+$env = Registry::getPseudoEnvironmentName();
 
 $starbar = $this->starbar;
 /* @var $starbar Starbar */

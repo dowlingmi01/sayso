@@ -43,6 +43,7 @@ class Client_GlobalController extends Api_GlobalController
         $this->_enableRenderer(new Api_Plugin_JsonPRenderer());
         setcookie($this->_uuidCookieName, $this->uuid, mktime(0,0,0,12,31,2030), '/');
         setcookie($this->_loggedInCookieName, md5($this->uuid), mktime(0,0,0,12,31,2030), '/');
+        // on reload, the following doesn't get used
         $clientData = array(
             'name' => strtolower($this->_request->getControllerName()),
         	'uuid' => $this->uuid,

@@ -32,7 +32,7 @@
     	</p>
 		<? if (!$this->primary_survey_taken) { ?>
 			<p class="sb_tabHeader">
-				More surveys and more ways to earn notes will be available to you when you complete the <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey?survey_id=1" class="sb_nav_element" rel="sb_popBox_surveys_lg">Influencer Survey</a>.
+				More surveys and more ways to earn notes will be available to you when you complete the <a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey?survey_id=1" class="sb_nav_element" rel="sb_popBox_surveys_hg">Influencer Survey</a>.
 			</p>
 		<? } ?>
 		<div class="sb_scrollPane">
@@ -47,11 +47,13 @@
 					if ($survey->premium) {
 						$strongClass = "sb_theme_textHighlight_alt";
 						$buttonClass = "sb_theme_button sb_theme_button_alt";
+						$popBoxToOpen = "sb_popBox_surveys_hg";
 						$numberOfNotes = $numberOfPremiumNotes;
 						$numberOfChops = $numberOfPremiumChops;
 					} else {
 						$strongClass = "sb_theme_textHighlight";
 						$buttonClass = "sb_theme_button";
+						$popBoxToOpen = "sb_popBox_surveys_lg";
 						$numberOfNotes = $numberOfRegularNotes;
 						$numberOfChops = $numberOfRegularChops;
 					}
@@ -61,7 +63,7 @@
 							<h3><?= $survey->title ?></h3>
 							<p><?= $survey->number_of_questions ?> Questions - Earn <strong class="<?= $strongClass ?>"><?= $numberOfNotes ?> Notes</strong> and <strong class="<?= $strongClass ?>"><?= $numberOfChops ?> Chops</strong></p>
 						</div><!-- .sb_surveyInfo -->
-						<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey?survey_id=<?= $survey->id ?>" class="sb_surveyLaunch <?= $buttonClass ?> sb_nav_element sb_alignRight" rel="sb_popBox_surveys_lg"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
+						<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey?survey_id=<?= $survey->id ?>" class="sb_surveyLaunch <?= $buttonClass ?> sb_nav_element sb_alignRight" rel="<?= $popBoxToOpen ?>"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
 					</li>
 					<? $i++ ?>
 				<? } ?>
@@ -131,11 +133,13 @@
 						if ($survey->premium) {
 							$strongClass = "sb_theme_textHighlight_alt";
 							$buttonClass = "sb_theme_button sb_theme_button_alt";
+							$popBoxToOpen = "sb_popBox_surveys_hg";
 							$numberOfNotes = $numberOfPremiumNotes;
 							$numberOfChops = $numberOfPremiumChops;
 						} else {
 							$strongClass = "sb_theme_textHighlight";
 							$buttonClass = "sb_theme_button";
+							$popBoxToOpen = "sb_popBox_surveys_lg";
 							$numberOfNotes = $numberOfRegularNotes;
 							$numberOfChops = $numberOfRegularChops;
 						}
@@ -145,7 +149,7 @@
 								<h3><?= $survey->title ?></h3>
 								<p><?= $survey->number_of_questions ?> Questions - Earn <strong class="<?= $strongClass ?>"><?= $numberOfNotes ?> Notes</strong> and <strong class="<?= $strongClass ?>"><?= $numberOfChops ?> Chops</strong></p>
 							</div><!-- .sb_surveyInfo -->
-							<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey?survey_id=<?= $survey->id ?>" class="sb_surveyLaunch <?= $buttonClass ?> sb_nav_element sb_alignRight" rel="sb_popBox_surveys_lg"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
+							<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey?survey_id=<?= $survey->id ?>" class="sb_surveyLaunch <?= $buttonClass ?> sb_nav_element sb_alignRight" rel="<?= $popBoxToOpen ?>"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
 						</li>
 						<? $i++ ?>
 					<? } ?>

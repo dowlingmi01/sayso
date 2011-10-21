@@ -1,0 +1,12 @@
+/*
+ * Theme: Theme for HelloMusic Surveys
+ * To be used on surveys loaded via SG
+*/
+
+/* !----- Basic Structure ----- */
+.sg-wrapper {
+	width:615px;
+	}
+ul.sg-list-vertical li {
+	min-width: 290px;
+}

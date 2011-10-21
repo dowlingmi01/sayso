@@ -13,12 +13,11 @@
 	background:#F3F3F3;
 	color:black;
 	border:0;
-	width:480px;
-	margin:0 auto;
+	width:490px;
+	margin:0 5px 0 5px;
 	}
 .sg-header {
 	margin: 0;
-	min-height:40px;
 	}
 .sg-content {
 	clear:both;
@@ -30,9 +29,10 @@
 	margin:20px 0 0 0;
 	}
 .sg-page-title {
-	color: black;
-	font-weight:normal;
-	font-size: 13px;
+	padding: 5px 0 5px 0;
+	color: #0081C5;
+	font-weight:bold;
+	font-size: 15px;
 	}
 .sg-page-description {
 	background-color:#F3F3F3;
@@ -58,7 +58,6 @@
 /* !----- Question Titles ----- */
 .sg-question-title {
     position: relative;
-	font-weight:bold;
 	color:black;
 	margin:0 ;
 	padding:3px 0;
@@ -139,21 +138,29 @@ ul.sg-list-vertical li {
 	width: 98%;
 	}
 
+#sg_BackButton {
+	margin-left: 141px;
+}
 #sg_NextButton {
+	margin-right: 141px;
+	float: right;
+}
+#sg_SubmitButton {
+	margin-right: 125px;
 	float: right;
 }
 .sg-table thead th {
 	color: black;
 }
 .sg-header-row-first tr th {
-	background-color: #B2B2B2;
+	background-color: #b9d2df;
 }
 	
 .sg-progress-bar {
 	position: fixed;
 	left: 50%;
 	margin-left: -100px;
-	bottom: 10px;
+	bottom: 12px;
 	clear: none;
 	}
 .sg-powered-by {
@@ -184,11 +191,8 @@ ul.sg-list-vertical li {
 .sg-wrapper h3 {font-size:1.15em;}	
 .sg-wrapper h4 {font-size:.95em;}	
 h1.sg-title {
-	margin:0;
-	padding:0 0 .3em 0;
-	color: #0081C5;
-	font-weight:bold;
-	}
+	display: none;
+}
 
 /* !----- Font Settings: Body ----- */
 .sg-wrapper,
@@ -208,4 +212,18 @@ h1.sg-title {
 .sg-wrapper select:focus, 
 .sg-wrapper textarea:focus {
 	background-color: #feffaf !important;
+	}
+
+.sg-table .sg-odd-row th, .sg-table .sg-odd-row td {
+	background-color: #dadada;
+	}
+.sg-table .sg-even-row th, .sg-table .sg-even-row td {
+	background-color: #dbe7ee;
+	}
+.sg-type-table tbody th {
+	border-top: 1px solid #FFF !important;
+	}
+.sg-type-table td {
+	border-top: 1px solid #FFF !important;
+	border-left: 1px solid #888 !important;
 	}

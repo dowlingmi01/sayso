@@ -1046,15 +1046,18 @@
 /* surveys */
 
 #sayso-starbar #sb_popBox_surveys.sb_triangle-border:before,
-#sayso-starbar #sb_popBox_surveys_lg.sb_triangle-border:before{
+#sayso-starbar #sb_popBox_surveys_lg.sb_triangle-border:before,
+#sayso-starbar #sb_popBox_surveys_hg.sb_triangle-border:before{
 	left: 115px;
 }
 #sayso-starbar #sb_popBox_surveys.sb_triangle-border:after,
-#sayso-starbar #sb_popBox_surveys_lg.sb_triangle-border:after{
+#sayso-starbar #sb_popBox_surveys_lg.sb_triangle-border:after,
+#sayso-starbar #sb_popBox_surveys_hg.sb_triangle-border:after{
 	left: 116px;
 }
 #sayso-starbar #sb_popBox_surveys .sb_triangle-solid:after,
-#sayso-starbar #sb_popBox_surveys_lg .sb_triangle-solid:after{
+#sayso-starbar #sb_popBox_surveys_lg .sb_triangle-solid:after,
+#sayso-starbar #sb_popBox_surveys_hg .sb_triangle-solid:after{
 	left: 113px;
 }
 

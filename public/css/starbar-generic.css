@@ -658,6 +658,23 @@ html {
 	margin: 5px 0px 0px 0px;
 }
 
+/* omg HUGE popboxes */
+#sayso-starbar #starbar-player-console .sb_popBox.sb_popBoxHg .sb_popBoxInner .sb_popContent {
+	height: 510px;
+	width: 640px;
+	padding: 0 !important;
+}
+
+#sayso-starbar #starbar-player-console .sb_popBox.sb_popBoxHg .sb_header {
+	margin: -10px -10px 0px -10px;
+	padding: 10px 10px 10px 10px;
+	background-color: #383838;
+}
+
+#sayso-starbar #starbar-player-console .sb_popBox.sb_popBoxHg .sb_header h2.sb_title{
+	margin: 5px 0px 0px 0px;
+}
+
 /* CUSTOM POPBOX STYLINGS */
 
 
@@ -1376,7 +1393,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	background-position: left;
 	background-color: #903;
 	color: #fff;
-	font-size: 20px;
+	font-size: 15px;
 	padding: 3px 20px 3px 20px;
 }
 
@@ -1417,7 +1434,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 
 /* Embed Poll */
 
-.sayso-starbar-loading-external {
+#sayso-starbar .sayso-starbar-loading-external, #sayso-starbar-embed .sayso-starbar-loading-external {
 	float: left;
 	position: absolute;
 	width: 97%;
@@ -1428,7 +1445,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	margin: 0;
 	padding: 0;
 }
-#sayso-starbar-embed #sb-survey-completed, #sayso-starbar-embed #sb-survey-disqualified {
+#sayso-starbar-embed #sb-survey-completed, #sb-survey-disqualified {
 	display: none;
 	color: #000;
 }
@@ -1436,6 +1453,19 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar-embed p.sb_embedShare {
 	padding-top: 5px;
 	vertical-align: top;
+}
+
+/* Embed Survey */
+
+#sayso-starbar .sb_survey_title {
+	padding: 5px 0 5px 5px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#sayso-starbar .sb_survey_container {
+	clear: both;
+	border-top: 1px solid #383838;
 }
 
 /* loading animated gif */

@@ -234,7 +234,7 @@ class Starbar_ContentController extends Api_GlobalController
 		// @todo point this to onboarding
 		$shareLink = "http://www.say.so/";
 		// @todo share text to vary based on starbar_id?
-		$twitterShareText = "If you're a Musician, you should join me in Hello Music's Beat Bar app. Get access to sweet gear deals and a chance to win a Takamine Guitar.";
+		$twitterShareText = "Join me in Hello Music's Beat Bar app. Get access to sweet gear deals and a chance to win a Takamine Guitar";
 		$facebookTitle = "Hello Music's Say.So Beat Bar";
 		$facebookCaption = "If you're a Musician or dig music gear, you should join me in Hello Music's Beat Bar app. We get access to some sweet gear deals and get awesome odds on walking away with one of their big giveaways like a Takamine Acoustic, a Full Midi Kit, and others. We just give our opinion on a few things and they give us Notes we can redeem for stuff. Sweet deal. Only lasts a month. Want in?";
 		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=starbar&shared_id=".$this->starbar_id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;

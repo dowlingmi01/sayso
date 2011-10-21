@@ -617,7 +617,7 @@ $SQ(function(){
 					$SQ('.sb_user_title').each(function(){
 						// If the user edited their username, turn off auto-updating on
 						// level-up for fields that have it (so we don't overwrite their name)
-						if (userInitiated && $SQ(this).html() != user['username']) {
+						if (userInitiated && $SQ(this).cleanHtml() != user['username']) {
 							$SQ(this).removeClass('sb_user_level_title');
 						}
 						$SQ(this).html(user['username']);

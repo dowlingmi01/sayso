@@ -68,20 +68,22 @@ $SQ.ajaxWithAuth = function (options) {
 				eval(this.css('padding-top').replace('px','')) +
 				eval(this.css('padding-bottom').replace('px',''))
 			);
-		}
-	});
+		},
 
-	$$SQ.fn.extend({
 		percentWidth: function() {
 			return Math.round(this.width() * 100 / this.parent().width());
-		}
-	});
+		},
 
-	$$SQ.fn.extend({
 		annihilate: function() {
 			this.attr('id', 'sb_oldElement_'+$SQ.randomString(10));
 			this.detach();
 			this.empty();
+		},
+
+		// @todo temporary workaround for http://bugs.jquery.com/ticket/10460
+		// remove this function and replace calls to .cleanHtml() with calls to .html() when jquery is fixed!
+		cleanHtml: function() {
+			return this.html().replace('<a xmlns="http://www.w3.org/1999/xhtml">', '').replace('</a>', '');
 		}
 	});
 })($SQ);
@@ -264,8 +266,8 @@ $SQ.activateGameElements = function(target, animate) {
 
 	if (userLevelNumberElems.length > 0) {
 		userLevelNumberElems.each(function() {
-			var currentLevel = $SQ(this).html();
-			currentLevel = parseInt(currentLevel.replace('<a xmlns="http://www.w3.org/1999/xhtml">', '').replace('</a>', '')); // 
+			var currentLevel = $SQ(this).cleanHtml();
+			currentLevel = parseInt(currentLevel);
 			var newLevel = userLevels.length - 1;
 			if (currentLevel != newLevel) {
 				$SQ(this).html(newLevel);
@@ -338,17 +340,19 @@ $SQ.activateGameElements = function(target, animate) {
 
 		if (currencyBalanceElems.length > 0) {
 			currencyBalanceElems.each(function() {
-				if ($SQ(this).attr('data-currency') == currencyTitle) {
-					if (animate && currencyBalance != parseInt($SQ(this).html())) { // New value, play animation
-						var originalColor = $SQ(this).css('color');
+				var $SQthis = $SQ(this);
+				if ($SQthis.attr('data-currency') == currencyTitle) {
+					var currentCurrencyBalance = parseInt($SQthis.cleanHtml())
+					if (animate && currencyBalance != currentCurrencyBalance) { // New value, play animation
+						var originalColor = $SQthis.css('color');
 						// total duration is doubled when leveling up
 						var durationMultiplier = 4/5;
 						if (justLeveledUp) {
 							durationMultiplier = 9/5;
 						}
 						// Prepare the element for numeric 'animation' (i.e. tweening the number)
-						$SQ(this).animate(
-							{ animationCurrencyBalance: parseInt($SQ(this).html()) },
+						$SQthis.animate(
+							{ animationCurrencyBalance: currentCurrencyBalance },
 							{ duration : 0 }
 						).animate(
 							{
@@ -358,11 +362,11 @@ $SQ.activateGameElements = function(target, animate) {
 							{ 
 								duration : parseInt(animationDuration*durationMultiplier),
 								step : function (now, fx) {
-									$SQ(this).html(parseInt(now));
+									$SQthis.html(parseInt(now));
 								},
 								complete : function () {
-									$SQ(this).html(currencyBalance);
-									$SQ(this).css('color', originalColor);
+									$SQthis.html(currencyBalance);
+									$SQthis.css('color', originalColor);
 								}
 							}
 						).animate(
@@ -370,7 +374,7 @@ $SQ.activateGameElements = function(target, animate) {
 							{ duration : parseInt(animationDuration/5) }
 						);
 					} else {
-						$SQ(this).html(currencyBalance);
+						$SQthis.html(currencyBalance);
 					}
 				}
 			});
@@ -386,24 +390,25 @@ $SQ.activateGameElements = function(target, animate) {
 			if (currencyPercent > 100) currencyPercent = 100; // technically this should never happen
 		
 			currencyPercentElems.each(function() {
-				var startingWidth = $SQ(this).width();
-				var availableWidth = $SQ(this).parent().width();
+				var $SQthis = $SQ(this);
+				var startingWidth = $SQthis.width();
+				var availableWidth = $SQthis.parent().width();
 				var newWidth = Math.round(availableWidth * currencyPercent/100);
-				if (!$SQ(this).hasClass('sb_ui-progressbar-value')) {
-					$SQ(this).addClass('sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left');
+				if (!$SQthis.hasClass('sb_ui-progressbar-value')) {
+					$SQthis.addClass('sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left');
 				}
-				if ($SQ(this).attr('data-currency') == currencyTitle) {
+				if ($SQthis.attr('data-currency') == currencyTitle) {
 					if (animate && !justLeveledUp) {
 						var animatingBarElem = $SQ(document.createElement('div'));
 						var fadingBarElem = $SQ(document.createElement('div'));
-						var progressBarElem = $SQ(this); // so it can be accessed from setTimeout()
+						var progressBarElem = $SQthis; // so it can be accessed from setTimeout()
 						animatingBarElem.addClass('sb_ui-progressbar-value-animating sb_ui-widget-header sb_ui-corner-left');
 						animatingBarElem.css('width', startingWidth+'px');
 						fadingBarElem.addClass('sb_ui-progressbar-value-fading sb_ui-widget-header sb_ui-corner-left');
 						fadingBarElem.css('width', newWidth+'px');
 						
-						animatingBarElem.insertBefore($SQ(this));
-						fadingBarElem.insertBefore($SQ(this));
+						animatingBarElem.insertBefore($SQthis);
+						fadingBarElem.insertBefore($SQthis);
 						fadingBarElem.fadeTo(0, 0);
 						
 						animatingBarElem.animate(
@@ -421,11 +426,11 @@ $SQ.activateGameElements = function(target, animate) {
 						}, animationDuration);
 					} else if (animate && justLeveledUp) {
 						var animatingBarElem = $SQ(document.createElement('div'));
-						var progressBarElem = $SQ(this); // so it can be accessed from setTimeout()
+						var progressBarElem = $SQthis; // so it can be accessed from setTimeout()
 						animatingBarElem.addClass('sb_ui-progressbar-value-animating sb_ui-widget-header sb_ui-corner-left');
 						animatingBarElem.css('width', startingWidth+'px');
 						
-						animatingBarElem.insertBefore($SQ(this));
+						animatingBarElem.insertBefore($SQthis);
 						
 						animatingBarElem.animate(
 							{ width : availableWidth+'px' },
@@ -443,7 +448,7 @@ $SQ.activateGameElements = function(target, animate) {
 							animatingBarElem.annihilate();
 						}, animationDuration*2);
 					} else { // No animation
-						$SQ(this).css('width', newWidth+'px');
+						$SQthis.css('width', newWidth+'px');
 					}
 				}
 			});

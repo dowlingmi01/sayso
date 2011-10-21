@@ -38,7 +38,7 @@
 			var title = $$SQ(this).attr("title");				
 			$$SQ(this).hover(function(e){											 							   
 				content = (options.content != "") ? options.content : title;
-				content = (options.useElement != "") ? $$SQ("#" + options.useElement).html() : content;
+				content = (options.useElement != "") ? $$SQ("#" + options.useElement).cleanHtml() : content;
 				$$SQ(this).attr("title","");									  				
 				if (content != "" && content != undefined){			
 					$$SQ("body #sayso-starbar").append("<div id='"+ options.tooltipId +"'>"+ content +"</div>");		

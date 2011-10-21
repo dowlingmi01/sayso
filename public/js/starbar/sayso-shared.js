@@ -264,8 +264,10 @@ $SQ.activateGameElements = function(target, animate) {
 
 	if (userLevelNumberElems.length > 0) {
 		userLevelNumberElems.each(function() {
-			var newLevel = ""+(userLevels.length - 1);
-			if (parseInt($SQ(this).html()) != parseInt(newLevel)) {
+			var currentLevel = $SQ(this).html();
+			currentLevel = parseInt(currentLevel.replace('<a xmlns="http://www.w3.org/1999/xhtml">', '').replace('</a>', '')); // 
+			var newLevel = userLevels.length - 1;
+			if (currentLevel != newLevel) {
 				$SQ(this).html(newLevel);
 				justLeveledUp = true;
 				if (animate) {
@@ -343,8 +345,6 @@ $SQ.activateGameElements = function(target, animate) {
 						var durationMultiplier = 4/5;
 						if (justLeveledUp) {
 							durationMultiplier = 9/5;
-							// pulsate when leveling up
-							$SQ(this).effect("pulsate", { times:3 }, parseInt(animationDuration/3));
 						}
 						// Prepare the element for numeric 'animation' (i.e. tweening the number)
 						$SQ(this).animate(

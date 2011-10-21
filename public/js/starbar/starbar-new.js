@@ -129,6 +129,7 @@ $SQ(function(){
 				$SQ(this).bind({
 					click: function(e){
 						e.preventDefault();
+						e.stopPropagation();
 					}
 				});
 			}			
@@ -141,6 +142,7 @@ $SQ(function(){
 		btnToggleVis.unbind();
 		btnToggleVis.click(function(event){
 			event.preventDefault();
+			event.stopPropagation();
 			var playerClass = elemPlayerConsole.attr('class');
 			animateBar(playerClass, 'button');
 			//popBoxClose();
@@ -154,6 +156,7 @@ $SQ(function(){
 		btnSaySoLogo.bind({
 			click: function(e) {
 				e.preventDefault();
+				e.stopPropagation();
 				var playerClass = elemPlayerConsole.attr('class');
 				if (playerClass != 'sb_starbar-visOpen'){
 					// manual override to have any click re-open starbar to original state
@@ -269,7 +272,7 @@ $SQ(function(){
 				click: function(event){
 					var $tabs = $SQ('.sb_popBoxActive .sb_tabs').tabs();
 					$tabs.tabs('select', $SQ(this).attr('rel')-1); // switch to third tab
-    			return false;
+    				return false;
 				}
 			});
 		});

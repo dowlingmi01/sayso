@@ -159,10 +159,21 @@ ul.sg-list-vertical li {
 .sg-progress-bar {
 	position: fixed;
 	left: 50%;
-	margin-left: -100px;
-	bottom: 12px;
+	width: 150px;
+	height: 16px;
+	margin-left: -75px;
+	bottom: 14px;
 	clear: none;
 	}
+.sg-progress-bar-text {
+	width: 150px;
+	margin-top: 3px;
+	font-size: 11px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	text-align: center;
+}
 .sg-powered-by {
 	visibility: hidden;
 	width: 1px;

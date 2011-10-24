@@ -19,23 +19,6 @@
     var installParam = getUrlParam('sayso-install'),
         installCookie = getCookie('sayso-install');
     
-    // already installed
-    // commented out. advantage: prevent onboarding from showing
-    // if page refreshes (after install) with the sayso-install param in it
-    // disadvantage: prevents the user from installing again within the
-    // period the cookie is alive (1 day)
-//    if (installCookie === 'installed') {
-//        if (!installParam) {
-//            // install param is no longer present, so it's safe
-//            // to remove the cookie. if they come in *again* with
-//            // the install param, it's from the email and they
-//            // probably want to re-install
-//            setCookie('sayso-install', null, -10);
-//        }
-//        return;
-//    }
-//    if (!installCookie && (!installParam || installCookie === 'installed')) {
-    
     // url param exists, set the cookie
     if (installParam) {
         setCookie('sayso-install', 1, 1);

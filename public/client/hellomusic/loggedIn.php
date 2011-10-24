@@ -1,5 +1,7 @@
 <?php
 
+exit('<a href="http://client.' . str_replace('www.', '', $_SERVER['SERVER_NAME']) . '/hellomusic/home?sayso-install=true">Moved</a>');
+
 // the following PHP code is for testing purposes only
 // to simulate a hellomusic.com login
 // do not deliver to customer
@@ -17,6 +19,7 @@ if (!isset($_COOKIE['CHOMPUID']) || !isset($_COOKIE['MyEmail'])) {
 } else {
     $randomEmail = $_COOKIE['MyEmail'];
 }
+
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -45,7 +48,7 @@ if (!isset($_COOKIE['CHOMPUID']) || !isset($_COOKIE['MyEmail'])) {
                 and conditions before you download.</span>
                 </h4>
                 <form action="" name="" method="">
-                    <p><input type="radio" /> I agree to the <a href="SaySo_TC.pdf" target="_blank">terms and conditions</a></p>
+                    <p><input type="radio" /> I agree to the <a href="../global/SaySo_TC.pdf" target="_blank">terms and conditions</a></p>
                     <p><a id="sayso-get-app" href="" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL">GRAB IT</a></p>
                     <p id="sayso-install-tip" style="font-size: 0.8em; position:relative; top: -3px; display: none;"></p>
                     

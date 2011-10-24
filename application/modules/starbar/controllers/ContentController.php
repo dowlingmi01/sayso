@@ -305,11 +305,11 @@ class Starbar_ContentController extends Api_GlobalController
     			$userSocial->identifier = $fbUser;
     			$userSocial->save();
                 
-    			if (isset($fbProfile['username'])) {
+    			if (isset($fbProfile['first_name'])) {
     				$user = new User();
     				$user->loadData($this->user_id);
     				if (!$user->username) {
-    					$user->username = $fbProfile['username'];
+    					$user->username = $fbProfile['first_name'];
     					$user->save();
 					}
 				}

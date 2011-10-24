@@ -125,7 +125,7 @@
         return this.replace(/^\s+|\s+$/g,'');
     };
     
-    function jsLoadTimer(){function c(){if(i++>g)return clearTimeout(a),false;else a=setTimeout(d,h)}function d(){try{if(eval(e))a&&clearTimeout(a),f();else return c()}catch(b){return c()}}var i=0,g=400,h=50,e="",f=null,a=null;this.setMaxCount=function(b){g=b};this.setInterval=function(b){h=b};this.setLocalReference=function(){};this.start=function(b,a){e=b;f=a;try{eval(e)?f():d()}catch(c){d()}}};
+    function jsLoadTimer(){function d(){i++<=b&&(c=setTimeout(e,f))}function e(){try{if(eval(g)){c&&clearTimeout(c);try{h()}catch(a){sayso.warn(a)}}else d()}catch(b){d()}}var i=0,b=400,f=50,g="",h=null,c=null;this.setMaxCount=function(a){b=a};this.setInterval=function(a){f=a};this.setLocalReference=function(){};this.start=function(a,b){g=a;h=b;e()}};
 
     function getCookie (find) {
         var cookies = document.cookie.split(';');

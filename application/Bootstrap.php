@@ -15,7 +15,7 @@ class Bootstrap extends App_Bootstrap
         App_Bootstrap::initApp();
         
         Record::$defaultModifiedColumn = 'modified';
-        Api_UserSession::setup('User', '', 'Gamer', 'Game_Starbar');
+        Api_UserSession::setup('User', '', 'Gamer');
         
         Game_Abstract::$_enabled = true;
         

@@ -46,7 +46,7 @@ $SQ(function () {
                 }
             });
         };
-    }
+    };
     
     // behavioral tracking
     

@@ -10,14 +10,17 @@
  */
 (function () {
     
-    var urlMatchPrepend = '^(?:http|https){1}://(?:[\\w.-]+)?',
+    var sayso = window.sayso,
+        starbarContainer = document.getElementById('sayso-starbar'),
+        
+        urlMatchPrepend = '^(?:http|https){1}://(?:[\\w.-]+)?',
         currentUrl = window.location.href;
     
     // setup global "safe" logging functions
-    if (!window.sayso.log) {
+    if (!sayso.log) {
         function _log (type) { // <-- closure here allows re-use for log() and warn()
             return function () {
-                if (window.sayso.debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
+                if (sayso.debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
                     var args = Array.prototype.slice.call(arguments);
                     if (typeof console.log.apply === 'function') {
                         args.unshift('SaySo:');
@@ -29,14 +32,12 @@
                         }
                     }
                 }
-            }
+            };
         };
-        window.sayso.log = _log('log'); 
-        window.sayso.warn = _log('warn');
+        sayso.log = _log('log'); 
+        sayso.warn = _log('warn');
     }
     
-    var sayso = window.sayso;
-
     // starbar display conditions
     
     var whiteList = ['facebook.com/pages/SaySo'];
@@ -59,7 +60,7 @@
     var blackList = [
         'facebook.com/dialog', 'facebook.com/plugins', 'twitter.com/intent', 'twitter.com/widgets', 
         'stumbleupon.com/badge', 'reddit.com/static', 'static.addtoany.com/menu',
-        'plusone.google.com', 'intensedebate',
+        'plusone.google.com', 'intensedebate/empty',
         '(?:sayso.com|saysollc.com)/html/communicator', '(?:sayso.com|saysollc.com)/starbar/remote'
     ];
     
@@ -73,13 +74,11 @@
     }
     // --- end starbar display conditions
     
-//    var validUrlTimer = new jsLoadTimer();
-//    validUrlTimer.setMaxCount(100);
-//    validUrlTimer.start('bi === blackList.length', function () {
+    var validUrlTimer = new jsLoadTimer();
+    validUrlTimer.setMaxCount(100);
+    validUrlTimer.start('bi === blackList.length', function () {
     
         // this timer is necessary to prevent JS from going too fast!
-        
-        var starbarContainer = document.getElementById('sayso-starbar');
         
         sayso.log('Starbar initializing');
         sayso.log(sayso.starbar);
@@ -147,14 +146,14 @@
             } 
         });
     
-//    }); // end of timer, determining if Starbar should be loaded
+    }); // end of timer, determining if Starbar should be loaded
     
     // functions to control load order
     
-    function jsLoadTimer () { // optional reference to use in condition 'ref === foo'
+    function jsLoadTimer () { 
         
         var _counter = 0,
-            _maxCount = 400, // about 20 seconds (400 x 50 mseconds for each timer)
+            _maxCount = 400, // # of reps X wait time in milliseconds
             _waitTime = 50,
             _symbol = '',
             _callback = null,
@@ -162,20 +161,27 @@
             _instance = this,
             ref = null;
         
+        function _check () {
+            if (_counter++ <= _maxCount) {
+                _timeout = setTimeout(_waitUntilJsLoaded, _waitTime);
+            }
+        }
         function _waitUntilJsLoaded () {
             try {
                 if (eval(_symbol)) {
                     if (_timeout) clearTimeout(_timeout);
-                    _callback();
+                    try {
+                        _callback();
+                    } catch (exception) {
+                        sayso.warn(exception);
+                    }
                     return;
+                } else {
+                    _check();
                 }
-            } catch (exception) {} // ignore
-            
-            if (_counter++ > _maxCount) {
-                clearTimeout(_timeout);
-                return;
-            }
-            _timeout = setTimeout(_waitUntilJsLoaded, _waitTime);
+            } catch (exception) { 
+                _check();
+            } 
         }
         this.setMaxCount = function (max) {
             _maxCount = max;
@@ -191,7 +197,7 @@
             _callback = callback;
             _waitUntilJsLoaded();
         };
-    };
+    }
     
     function cssLoadTimer () {
         
@@ -313,11 +319,12 @@
                     sayso.starbar.user.id = starbar._user.id;
                     sayso.starbar.user.key = starbar._user._key;
                     if (response.game) {
+                        sayso.log(response.game);
 	                    sayso.starbar.game = {
-                    		gamer : response.game.gamer,
-                    		levels : response.game.levels
+                    		gamer : response.game._gamer,
+                    		levels : response.game._levels
 						}
-					}
+					};
                     
                     // update global/persistent vars on kobj.net
                     var app = KOBJ.get_application(sayso.starbar.kynetxAppId);

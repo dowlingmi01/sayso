@@ -1,9 +1,10 @@
 <?php
 
-$env = Registry::getPseudoEnvironmentName();
-
 $starbar = $this->starbar;
 /* @var $starbar Starbar */
+
+$game = $this->game;
+/* @var $game Game_Starbar */
 
 ?>
 <script type="text/javascript">
@@ -18,7 +19,7 @@ $starbar = $this->starbar;
         if (!window.sayso) window.sayso = {};
         window.sayso.debug = true;
         window.sayso.baseDomain = '<?= BASE_DOMAIN ?>';
-        window.sayso.environment = '<?= $env ?>';
+        window.sayso.environment = '<?= Registry::getPseudoEnvironmentName() ?>';
         window.sayso.log = _log('log'); 
         window.sayso.warn = _log('warn');
         function _log (type) { // <-- closure here allows re-use for log() and warn()
@@ -46,10 +47,10 @@ $starbar = $this->starbar;
                 id : <?= Api_UserSession::getInstance()->getId() ?>,
                 key : '<?= Api_UserSession::getInstance()->getKey() ?>'
             },
-            <? if ($this->game && $this->game->getGamer() && $this->game->getLevels()) { ?>
+            <? if ($game && $game->getGamer() && $game->getLevels()) { ?>
             	game : {
-                	gamer : <?= Zend_Json_Encoder::encode($this->game->getGamer()->export(new ObjectExporter_Array())) ?>,
-                	levels : <?= Zend_Json_Encoder::encode($this->game->getLevels()->export(new ObjectExporter_Array())) ?>
+                	gamer : <?= $this->game->getGamer()->export(new ObjectExporter_Json()) ?>,
+                	levels : <?= $this->game->getLevels()->export(new ObjectExporter_Json()) ?>
 				},
             <? } ?>
             state : {

@@ -49,8 +49,8 @@ $game = $this->game;
             },
             <? if ($game && $game->getGamer() && $game->getLevels()) { ?>
             	game : {
-                	_gamer : <?= $this->game->getGamer()->export(new ObjectExporter_Json()) ?>,
-                	_levels : <?= $this->game->getLevels()->export(new ObjectExporter_Json()) ?>
+                	gamer : <?= $this->game->getGamer()->export(new ObjectExporter_Json()) ?>,
+                	levels : <?= $this->game->getLevels()->export(new ObjectExporter_Json()) ?>
 				},
             <? } ?>
             state : {

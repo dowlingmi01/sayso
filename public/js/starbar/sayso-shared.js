@@ -215,8 +215,8 @@ $SQ.activateGameElements = function(target, animate) {
 
 	var animationDuration = 2000; // milliseconds
 
-	var allLevels = window.sayso.starbar.game._levels.collection;
-	var userLevels = window.sayso.starbar.game._gamer._levels.collection;
+	var allLevels = window.sayso.starbar.game.levels.collection;
+	var userLevels = window.sayso.starbar.game.gamer.levels.collection;
 	// The current level is the first level in the collection (it is sorted by the gaming API!)
 	var userCurrentLevel = userLevels[0];
 	var userNextLevel;
@@ -310,7 +310,7 @@ $SQ.activateGameElements = function(target, animate) {
 		});
 	}
 
-	$SQ.each(window.sayso.starbar.game._gamer._currencies.collection, function (index, currency) {
+	$SQ.each(window.sayso.starbar.game.gamer._currencies.collection, function (index, currency) {
 		var currencyTitle = currency.title.toLowerCase();
 		var currencyBalance = parseInt(currency.current_balance);
 

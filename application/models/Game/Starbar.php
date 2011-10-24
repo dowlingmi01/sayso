@@ -57,7 +57,7 @@ abstract class Game_Starbar extends Game_Abstract {
         $this->submitAction('STARBAR_CHECKIN');
     }
     
-    public function completeSurvey (Survey $survey) {
+    public function completeSurvey (Survey $survey, Survey_UserMap $surveyUserMap = null) {
         
         switch ($survey->type) {
             case 'poll' :
@@ -70,9 +70,17 @@ abstract class Game_Starbar extends Game_Abstract {
             case 'survey' :
             default :
                 if ($survey->premium) {
-                    $this->submitAction('SURVEY_PREMIUM');
+                    if ($surveyUserMap && $surveyUserMap->status === 'disqualified') {
+                        $this->submitAction('SURVEY_PREMIUM_DISQUALIFIED');
+                    } else {
+                        $this->submitAction('SURVEY_PREMIUM');
+                    }
                 } else {
-                    $this->submitAction('SURVEY_STANDARD');
+                    if ($surveyUserMap && $surveyUserMap->status === 'disqualified') {
+                        $this->submitAction('SURVEY_STANDARD_DISQUALIFIED');
+                    } else {
+                        $this->submitAction('SURVEY_STANDARD');
+                    }
                 }
         }
     }

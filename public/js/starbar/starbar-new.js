@@ -578,8 +578,7 @@ $SQ(function(){
 		$SQ.ajaxWithAuth({
 			url : 'http://'+sayso.baseDomain+'/api/gaming/checkin?renderer=jsonp',
 			success : function (response, status, jqXHR) {
-				window.sayso.starbar.user.gaming = response.gamer;
-				$SQ.activateGameElements(null, true);
+				$SQ.updateGame(response.game.gamer, true, true);
 			}
 		});
 	}
@@ -629,7 +628,7 @@ $SQ(function(){
     		}
 		});
 
-		if (setGlobalUpdate) {
+		if (setGlobalUpdate) { // tell the starbars in other tabs to update profile info
 			starbar.state.profile = Math.round(new Date().getTime() / 1000);
 			starbar.state.update();
 		}

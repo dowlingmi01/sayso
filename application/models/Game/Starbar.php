@@ -35,10 +35,58 @@
  */
 abstract class Game_Starbar extends Game_Abstract {
     
+    /**
+     * All this starbar's available game levels
+     * 
+     * @var Collection
+     */
+    protected $_levels;
+
     const SHARE_POLL = 'poll';
     const SHARE_SURVEY = 'survey';
     const SHARE_STARBAR = 'starbar';
     const SHARE_PROMOS = 'promos';
+    
+	public function init() {
+		$this->loadLevelsFromBigDoor();
+	}
+
+    public function setLevels (Collection $levels = null) {
+        $this->_levels = $levels;
+    }
+    
+    /**
+     * @return Levels
+     */
+    public function getLevels () {
+        return $this->_levels;
+    }
+
+    public function loadLevelsFromBigDoor () {
+	    $client = Gaming_BigDoor_HttpClient::getInstance('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
+	    $client->getNamedLevelCollection(43352);
+	    $data = $client->getData();
+	    $levels = new Collection();
+	    foreach ($data->named_levels as $levelData) {
+	        $level = new Gaming_BigDoor_Level();
+	        $level->setId($levelData->id);
+	        $level->title = $levelData->end_user_title;
+	        $level->description = $levelData->end_user_description;
+	        $level->urls = Gaming_BigDoor_Url::buildUrlCollection($levelData->urls);
+	        $level->timestamp = $levelData->created_timestamp;
+	        $level->ordinal = $levelData->threshold;
+	        $levels[] = $level;
+		}
+		$this->_levels = $levels;
+	}
+
+    public function exportProperties($parentObject = null) {
+        $props = array(
+            '_levels' => $this->_levels
+        );
+        return array_merge(parent::exportProperties($parentObject), $props);
+    }
+    
     
     public function gamingTestBigDoor () {
         $this->submitAction('POLL_STANDARD');
@@ -147,7 +195,6 @@ abstract class Game_Starbar extends Game_Abstract {
             if (!Game_Abstract::$_enabled) return false;
             parent::submitAction($actionId, $customAmount);
             $this->_gamer->loadProfile($this->_client);
-            $this->_request->setParam(Api_AbstractController::GAMING_USER, $this->_gamer);
             
         } catch (Exception $exception) {
             

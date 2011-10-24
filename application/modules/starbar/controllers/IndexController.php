@@ -63,7 +63,6 @@ class Starbar_IndexController extends Api_GlobalController
     	$starbar = new Starbar();
     	$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));
     	$starbar->setVisibility('sb_starbar-visOpen');
-    	$starbar->setGame();
     	$this->view->starbar = $starbar;
     	
     	// User
@@ -82,8 +81,9 @@ class Starbar_IndexController extends Api_GlobalController
 		$session->setGamingUser($gamer);
 
 		$this->_request->setParam('starbar_id', $starbar->getId());
-        $game = Game_Starbar::getInstance();
-        $game->checkin();
+		$game = Game_Starbar::getInstance();
+		$game->loadLevelsFromBigDoor();
+		$game->checkin();
 		$this->view->assign('game', $game);
 	}
 }

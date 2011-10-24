@@ -312,13 +312,12 @@
                     sayso.starbar.authKey = starbar.auth_key;
                     sayso.starbar.user.id = starbar._user.id;
                     sayso.starbar.user.key = starbar._user._key;
-                    sayso.starbar.game = {
-                    	levels : starbar._game._levels
+                    if (response.game) {
+	                    sayso.starbar.game = {
+                    		gamer : response.game.gamer,
+                    		levels : response.game.levels
+						}
 					}
-                    
-                    if (response.gamer && response.gamer.type === 'Gamer') {
-                        sayso.starbar.user.gaming = response.gamer;
-                    }
                     
                     // update global/persistent vars on kobj.net
                     var app = KOBJ.get_application(sayso.starbar.kynetxAppId);

@@ -198,8 +198,7 @@ $SQ.handleTweet = function(shared_type, shared_id) {
 		$SQ.ajaxWithAuth({
 			url : 'http://'+sayso.baseDomain+'/api/gaming/share?renderer=jsonp&shared_type='+shared_type+'&shared_id='+shared_id,
 			success : function (response, status, jqXHR) {
-				window.sayso.starbar.user.gaming = response.gamer;
-				$SQ.activateGameElements(null, true);
+				$SQ.updateGame(response.game.gamer, true, true);
     		}
 		});
 	}
@@ -210,19 +209,18 @@ $SQ.updateGame = function(loadSource, setGlobalUpdate, animate) {
 		$SQ.ajaxWithAuth({
 			url : 'http://'+sayso.baseDomain+'/api/gaming/user-profile?renderer=jsonp',
 			success : function (response, status, jqXHR) {
-				window.sayso.starbar.user.gaming = response.data;
-				$SQ.activateGameElements(null, animate);
+				$SQ.updateGame(response.data, setGlobalUpdate, animate);
     		}
 		});
 	} else if (loadSource === "cache") {
 		$SQ.activateGameElements(null, animate);
 	} else { // loadSource object is a gamer profile, load from there
-		window.sayso.starbar.user.gaming = loadSource;
+		window.sayso.starbar.game.gamer = loadSource;
 		$SQ.activateGameElements(null, animate);
 	}
 
 
-	if (setGlobalUpdate) {
+	if (setGlobalUpdate) { // tell the starbars in other tabs to update game info
 		sayso.starbar.state.game = Math.round(new Date().getTime() / 1000);
 		sayso.starbar.state.update();
 	}
@@ -240,7 +238,7 @@ $SQ.activateGameElements = function(target, animate) {
 	var animationDuration = 2000; // milliseconds
 
 	var allLevels = window.sayso.starbar.game.levels.collection;
-	var userLevels = window.sayso.starbar.user.gaming._levels.collection;
+	var userLevels = window.sayso.starbar.game.gamer._levels.collection;
 	// The current level is the first level in the collection (it is sorted by the gaming API!)
 	var userCurrentLevel = userLevels[0];
 	var userNextLevel;
@@ -334,7 +332,7 @@ $SQ.activateGameElements = function(target, animate) {
 		});
 	}
 
-	$SQ.each(window.sayso.starbar.user.gaming._currencies.collection, function (index, currency) {
+	$SQ.each(window.sayso.starbar.game.gamer._currencies.collection, function (index, currency) {
 		var currencyTitle = currency.title.toLowerCase();
 		var currencyBalance = parseInt(currency.current_balance);
 

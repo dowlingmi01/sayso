@@ -56,7 +56,6 @@ class Starbar_RemoteController extends Api_GlobalController
             $starbarUserMap->loadDataByUniqueFields(array('user_id' => $this->user_id, 'starbar_id' => $starbar->getId()));
             
             $starbar->setUserMap($starbarUserMap);
-            $starbar->setGame();
             
             if ($this->visibility) {
                 $starbar->setVisibility($this->visibility);
@@ -127,7 +126,9 @@ class Starbar_RemoteController extends Api_GlobalController
 			$session->setGamingUser($gamer);
 
 	        $game = Game_Starbar::getInstance();
+	        $game->loadLevelsFromBigDoor();
         	$game->checkin();
+            $this->_request->setParam(Api_AbstractController::GAME, $game);
 
             return $this->_forward(
                 $starbar->short_name, 
@@ -431,8 +432,6 @@ class Starbar_RemoteController extends Api_GlobalController
         $starbarUserMap->save();
         
         $starbar->setUserMap($starbarUserMap->reload());
-
-        $starbar->setGame();
 
         // Game
         

@@ -45,13 +45,11 @@ $starbar = $this->starbar;
             user : {
                 id : <?= Api_UserSession::getInstance()->getId() ?>,
                 key : '<?= Api_UserSession::getInstance()->getKey() ?>'
-                <? if ($this->game) { ?>
-                	, gaming : <?= Zend_Json_Encoder::encode($this->game->getGamer()->export(new ObjectExporter_Array())) ?>
-                <? } ?>
             },
-            <? if ($this->starbar->getGame() && $this->starbar->getGame()->getLevels()) { ?>
+            <? if ($this->game && $this->game->getGamer() && $this->game->getLevels()) { ?>
             	game : {
-                	levels : <?= Zend_Json_Encoder::encode($this->starbar->getGame()->getLevels()->export(new ObjectExporter_Array())) ?>
+                	gamer : <?= Zend_Json_Encoder::encode($this->game->getGamer()->export(new ObjectExporter_Array())) ?>,
+                	levels : <?= Zend_Json_Encoder::encode($this->game->getLevels()->export(new ObjectExporter_Array())) ?>
 				},
             <? } ?>
             state : {
@@ -60,6 +58,8 @@ $starbar = $this->starbar;
             },
             loaded : true
         };
+        
+        sayso.log(window.sayso.starbar);
 
         if (typeof(KOBJ) === 'undefined') {
             KOBJ = { 

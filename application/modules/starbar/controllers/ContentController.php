@@ -104,14 +104,23 @@ class Starbar_ContentController extends Api_GlobalController
     // Embed a single SG survey. Expects "survey_id" passed via URL (GET)
     public function embedSurveyAction ()
     {
-    	$this->_validateRequiredParameters(array('survey_id'));
+    	$this->_validateRequiredParameters(array('survey_id', 'user_id'));
 
 		$survey = new Survey();
 		$survey->loadData($this->survey_id);
 
 		$this->view->assign('survey', $survey);
 
-		$bundleOfJoy = $this->_getBundleOfJoy($this->survey_id);
+		if (! $this->survey_user_status) $this->survey_user_status = 'new';
+
+		// Find the next survey after this survey for this user
+		$nextSurvey = Survey::getNextSurveyForUser($survey, $this->user_id);
+		if ($nextSurvey->id) $nextSurveyId = $nextSurvey->id;
+		else $nextSurveyId = -1;
+
+		$this->view->assign('next_survey_id', $nextSurveyId);
+
+		$bundleOfJoy = $this->_getBundleOfJoy($this->survey_id, $nextSurveyId);
 		$this->view->assign('bundle_of_joy', $bundleOfJoy);
 	}
 
@@ -124,14 +133,20 @@ class Starbar_ContentController extends Api_GlobalController
     public function surveyDisqualifyAction ()
     {
     	$this->_replaceBundleOfJoyWithGetVariables();
-    	$this->_validateRequiredParameters(array('survey_id'));
+    	$this->_validateRequiredParameters(array('survey_id', 'next_survey_id'));
     	// this page is fetched via an iframe, not ajax;
     	$this->_usingJsonPRenderer = false;
 
 		$survey = new Survey();
 		$survey->loadData($this->survey_id);
+		
+		$nextSurvey = new Survey();
+		if ($this->next_survey_id != -1) {
+			$nextSurvey->loadData($this->next_survey_id);
+		}
 
 		$this->view->assign('survey', $survey);
+		$this->view->assign('next_survey', $nextSurvey);
 
 		// @todo point this to onboarding
 		$shareLink = "http://www.say.so/";
@@ -146,14 +161,20 @@ class Starbar_ContentController extends Api_GlobalController
     public function surveyCompleteAction ()
     {
     	$this->_replaceBundleOfJoyWithGetVariables();
-    	$this->_validateRequiredParameters(array('survey_id'));
+    	$this->_validateRequiredParameters(array('survey_id', 'next_survey_id'));
     	// this page is fetched via an iframe, not ajax;
     	$this->_usingJsonPRenderer = false;
 
 		$survey = new Survey();
 		$survey->loadData($this->survey_id);
+		
+		$nextSurvey = new Survey();
+		if ($this->next_survey_id != -1) {
+			$nextSurvey->loadData($this->next_survey_id);
+		}
 
 		$this->view->assign('survey', $survey);
+		$this->view->assign('next_survey', $nextSurvey);
 
 		// @todo point this to onboarding
 		$shareLink = "http://www.say.so/";
@@ -167,14 +188,14 @@ class Starbar_ContentController extends Api_GlobalController
 
     public function surveyRedirectAction ()
     {
-    	$this->_validateRequiredParameters(array('survey_id'));
+    	$this->_validateRequiredParameters(array('survey_id', 'next_survey_id'));
     	// this page is fetched via an iframe, not ajax;
     	$this->_usingJsonPRenderer = false;
 
 		$survey = new Survey();
 		$survey->loadData($this->survey_id);
 
-		$bundleOfJoy = $this->_getBundleOfJoy($survey->id);
+		$bundleOfJoy = $this->_getBundleOfJoy($this->survey_id, $this->next_survey_id);
 		$this->_redirect("http://www.surveygizmo.com/s3/".$survey->external_id."/".$survey->external_key."?bundle_of_joy=".$bundleOfJoy);
 	}
 
@@ -420,7 +441,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('success', $success);
 	}
 
-    protected function _getBundleOfJoy ($surveyId)
+    protected function _getBundleOfJoy ($surveyId, $nextSurveyId = -1)
     {
     	$bundleOfJoy = "";
     	$sep = "^|^"; // seperator between variables
@@ -440,6 +461,7 @@ class Starbar_ContentController extends Api_GlobalController
     		"user_key" => $this->user_key,
     		"auth_key" => $this->auth_key,
     		"survey_id" => $surveyId,
+    		"next_survey_id" => $nextSurveyId,
     		"xdm_c" => $xdm_c,
     		"xdm_e" => $xdm_e,
     		"xdm_p" => $xdm_p,
@@ -453,6 +475,8 @@ class Starbar_ContentController extends Api_GlobalController
     	return $bundleOfJoy;
 	}
 
+	// Used so that the easyXDM variables (xdm_c, xdm_e, xdm_p)
+	// are in the URL and can be used by easyXDM for our cross domain iframe communication
 	protected function _replaceBundleOfJoyWithGetVariables()
 	{
 		$queryString = "";

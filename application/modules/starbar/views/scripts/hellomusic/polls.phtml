@@ -28,32 +28,7 @@
 
 			<!-- BEGIN POLL BOX LANDING -->
 			<div class="sb_accordion">
-				<? $i = 0 ?>
-				<? foreach ($this->new_polls as $survey) { ?>
-					<? if ($i >= $this->count_new_polls) break ?>
-					<h3>
-						<? $iframeHeight = 62 + (ceil($survey->number_of_answers / 2.0) * 32); // 62 base height + 32 per row of answers -- Note that this height estimate is updated after the iframe loads ?>
-						<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>" rel="starbar-poll-<?= $survey->id ?>" iframeHeight="<?= $iframeHeight ?>">
-							<? if ($survey->premium) { ?>
-								<span class="sb_img_doubleValue"></span>
-							<? } ?>
-							<?= $survey->title ?>
-						</a>
-					</h3>
-					<div>
-						<? if ($i < ($this->count_new_polls - 1)) { ?>
-							<div class="sb_nextPoll">
-								<a href="#" onclick="$SQ(this).parents('.sb_accordion').accordion('activate', <?= ($i+1) ?>)"><span class="sb_img_nextTriangle"></span>Next Poll</a>
-							</div>
-						<? } ?>
-						<div id="starbar-poll-<?= $survey->id ?>">
-							<div class="sayso-starbar-loading-external">
-								<span class="sb_img_loading">Loading</span>
-							</div>
-						</div>
-					</div><!-- / END ACCORDION CONTENT -->
-					<? $i++ ?>
-				<? } ?>
+				<? $this->displayPolls('new') ?>
 			</div><!-- .accordion -->
 			<!-- END POLL BOX LANDING -->
 		</div><!-- .sb_scrollPane -->
@@ -65,32 +40,8 @@
 			<p class="sb_tabHeader"><a href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/reset-surveys-and-polls", success : function (r, s) {} });'>Reset surveys and polls</a></p>
 			<div class="sb_scrollPane">
 				<ul class="sb_outlineList">
-					<? foreach ($this->completed_polls as $survey) { ?>
-						<li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
-              				<div class="sb_pointsEarnedTotal">
-              					<? if ($survey->premium) { ?>
-                					<span class="sb_chopsEarned sb_theme_textHighlight_alt">+500</span>
-                					<span class="sb_notesEarned sb_theme_textHighlight_alt">+50</span>
-								<? } else { ?>
-                					<span class="sb_chopsEarned sb_theme_textHighlight">+250</span>
-                					<span class="sb_notesEarned sb_theme_textHighlight">+25</span>
-								<? } ?>
-						    </div><!-- .sb_pointsEarnedTotal -->
-						</li>
-					<? } ?>
-					<? foreach ($this->disqualified_polls as $survey) { ?>
-						<li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
-              				<div class="sb_pointsEarnedTotal">
-              					<? if ($survey->premium) { ?>
-                					<span class="sb_chopsEarned sb_theme_textHighlight_alt">+500</span>
-                					<span class="sb_notesEarned sb_theme_textHighlight_alt">+50</span>
-								<? } else { ?>
-                					<span class="sb_chopsEarned sb_theme_textHighlight">+250</span>
-                					<span class="sb_notesEarned sb_theme_textHighlight">+25</span>
-								<? } ?>
-						    </div><!-- .sb_pointsEarnedTotal -->
-						</li>
-					<? } ?>
+					<? $this->displayPolls('completed') ?>
+					<? $this->displayPolls('disqualified') ?>
 				</ul>
 			</div><!-- .sb_scrollPane -->
 		</div><!-- #tabs_2 -->
@@ -105,31 +56,7 @@
 
 				<!-- BEGIN POLL BOX LANDING -->
 				<div class="sb_accordion">
-					<? $i = 0 ?>
-					<? foreach ($this->archived_polls as $survey) { ?>
-						<h3>
-							<? $iframeHeight = 62 + (ceil($survey->number_of_answers / 2.0) * 32); // 62 base height + 32 per row of answers -- Note that this height estimate is updated after the iframe loads ?>
-							<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>" rel="starbar-poll-<?= $survey->id ?>" iframeHeight="<?= $iframeHeight ?>">
-								<? if ($survey->premium) { ?>
-									<span class="sb_img_doubleValue"></span>
-								<? } ?>
-								<?= $survey->title ?>
-							</a>
-						</h3>
-						<div>
-							<? if ($i < ($this->count_archive_polls - 1)) { ?>
-								<div class="sb_nextPoll">
-									<a href="#" onclick="$SQ(this).parents('.sb_accordion').accordion('activate', <?= ($i+1) ?>)"><span class="sb_img_nextTriangle"></span>Next Poll</a>
-								</div>
-							<? } ?>
-							<div id="starbar-poll-<?= $survey->id ?>">
-								<div class="sayso-starbar-loading-external">
-									<span class="sb_img_loading">Loading</span>
-								</div>
-							</div>
-						</div><!-- / END ACCORDION CONTENT -->
-						<? $i++ ?>
-					<? } ?>
+					<? $this->displayPolls('archived') ?>
 				</div><!-- .accordion -->
 				<!-- END POLL BOX LANDING -->
 				<br />

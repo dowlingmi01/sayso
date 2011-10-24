@@ -42,4 +42,10 @@ class Survey_UserMap extends Record
     	$sql = "SELECT user_id FROM survey_user_map WHERE (status = 'completed' OR status = 'disqualified') AND user_id = ? AND survey_id = ?";
     	return !!(Db_Pdo::fetch($sql, $userId, $surveyId));
 	}
+    
+    function loadDataForSurveyAndUser($surveyId, $userId) {
+    	$sql = "SELECT * FROM survey_user_map WHERE user_id = ? AND survey_id = ?";
+		$data = Db_Pdo::fetch($sql, $userId, $surveyId);
+		if ($data) $this->build($data);
+	}
 }

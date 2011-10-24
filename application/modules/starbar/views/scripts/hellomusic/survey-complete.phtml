@@ -42,5 +42,9 @@
 			<span class="sb_mini-note-reward"><?= ($this->survey->premium ? "50" : "25") ?></span>
 			Share this survey to earn extra points
 		</div>
+		<br />
+		<? if ($this->next_survey->id) { ?>
+			Keep on earning notes and chops with the next survey: <a href="#" onclick="$SQ.remoteControl.nextSurvey(<? $this->next_survey->id ?>)"><?= ($this->next_survey->title) ?></a>
+		<? } ?>
 	</div>
 </div>

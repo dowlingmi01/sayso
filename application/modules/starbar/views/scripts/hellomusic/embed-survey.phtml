@@ -11,7 +11,7 @@
 
 <div id="starbar-survey-<?= $this->survey->id ?>" class="sb_survey_container"></div>
 <script type="text/javascript">
-	var link="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/survey-redirect?survey_id=<?= $this->survey->id ?>&user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&auth_key="+sayso.starbar.authKey;
+	var link="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/survey-redirect?survey_id=<?= $this->survey->id ?>&next_survey_id=<?= $this->next_survey_id ?>&user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&auth_key="+sayso.starbar.authKey;
 	var iframeContainerId = "starbar-survey-<?= $this->survey->id ?>";
 	<? if ($this->survey->premium) { ?>
 		$SQ.insertCommunicationIframe(link, iframeContainerId, 640, 410, "yes"); // Add new iframe!

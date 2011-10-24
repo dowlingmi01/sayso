@@ -90,53 +90,31 @@ $SQ.ajaxWithAuth = function (options) {
 
 $SQ.frameCommunicationFunctions = {
 	loadComplete: function (hideLoadingElem, newFrameHeight) {
-		var openFrame = sayso.starbar.openFrame;
-		var openFrameContainer = sayso.starbar.openFrameContainer;
-		var openFrameContainerParent = sayso.starbar.openFrameContainer.parent();
-
-		if (hideLoadingElem) {
-			var loadingElement = openFrameContainer.children('.sayso-starbar-loading-external');
-			loadingElement.fadeTo(200, 0);
-			// Set display to none to avoid mouse click issues
-			setTimeout(function() {
-				// Note that setTimeout works in global scope
-				sayso.starbar.openFrameContainer.children('.sayso-starbar-loading-external').css('display', 'none');
-			}, 200);
-		}
-		
-		if (newFrameHeight) {
-			openFrame.height(newFrameHeight);
-			openFrameContainerParent.css('height', newFrameHeight+5);
-
-			// if the frame (and container and its parent) are in a scrollpane, re-initialize it and scroll if necessary
-		    var scrollPane = openFrameContainerParent.parents('.sb_scrollPane');
-		    if (scrollPane.length > 0) {
-			    scrollPane.jScrollPane(); // re-initialize the scroll pane now that the content size may be different
-			    if (openFrameContainerParent.position()) {  // if the accordion is open
-					var paneHandle = scrollPane.data('jsp');
-
-					var accordionHeader = openFrameContainerParent.prev('h3');
-			        var currentScroll = paneHandle.getContentPositionY();
-			        var topOfOpenAccordion = accordionHeader.position().top;
-			        var bottomOfOpenAccordion = topOfOpenAccordion+accordionHeader.totalHeight()+openFrameContainerParent.totalHeight();
-			        var sizeOfPane = scrollPane.height();
-
-			        if ((bottomOfOpenAccordion - currentScroll) > (sizeOfPane - 10)) { // - 24 for the extra padding
-			            paneHandle.scrollByY((bottomOfOpenAccordion - currentScroll) - (sizeOfPane - 10)); // scroll by the difference
-					}
-				}
-			}
-		}
+		$SQ('#sayso-starbar').trigger('frameCommunication', ['loadComplete', {
+			hideLoadingElem: hideLoadingElem,
+			newFrameHeight: newFrameHeight
+		}]);
 	},
 	updateGame: function (newProfile) {
-		if (newProfile) $SQ.updateGame(newProfile, true, true);
-		else $SQ.updateGame('ajax', true, true);
+		$SQ('#sayso-starbar').trigger('frameCommunication', ['updateGame', {
+			newProfile: newProfile
+		}]);
 	},
 	handleTweet: function (shared_type, shared_id) {
-		if (shared_type && shared_id) $SQ.handleTweet(shared_type, shared_id);
+		$SQ('#sayso-starbar').trigger('frameCommunication', ['handleTweet', {
+			shared_type: shared_type,
+			shared_id: shared_id
+		}]);
 	},
-	alertMessage: function (msg) {
-		sayso.log(msg);
+	openSurvey: function (survey_id) {
+		$SQ('#sayso-starbar').trigger('frameCommunication', ['openSurvey', {
+			survey_id: survey_id
+		}]);
+	},
+	alertMessage: function (alertMessage) {
+		$SQ('#sayso-starbar').trigger('frameCommunication', ['alertMessage', {
+			alertMessage: alertMessage
+		}]);
 	}
 };
 
@@ -198,7 +176,7 @@ $SQ.handleTweet = function(shared_type, shared_id) {
 		$SQ.ajaxWithAuth({
 			url : 'http://'+sayso.baseDomain+'/api/gaming/share?renderer=jsonp&shared_type='+shared_type+'&shared_id='+shared_id,
 			success : function (response, status, jqXHR) {
-				$SQ.updateGame(response.game.gamer, true, true);
+				$SQ.updateGame(response.game, true, true);
     		}
 		});
 	}
@@ -207,15 +185,15 @@ $SQ.handleTweet = function(shared_type, shared_id) {
 $SQ.updateGame = function(loadSource, setGlobalUpdate, animate) {
 	if (loadSource === "ajax") {
 		$SQ.ajaxWithAuth({
-			url : 'http://'+sayso.baseDomain+'/api/gaming/user-profile?renderer=jsonp',
+			url : 'http://'+sayso.baseDomain+'/api/gaming/get-game?renderer=jsonp',
 			success : function (response, status, jqXHR) {
 				$SQ.updateGame(response.data, setGlobalUpdate, animate);
     		}
 		});
 	} else if (loadSource === "cache") {
 		$SQ.activateGameElements(null, animate);
-	} else { // loadSource object is a gamer profile, load from there
-		window.sayso.starbar.game.gamer = loadSource;
+	} else { // loadSource object is a game object, load from there
+		window.sayso.starbar.game = loadSource;
 		$SQ.activateGameElements(null, animate);
 	}
 
@@ -237,8 +215,8 @@ $SQ.activateGameElements = function(target, animate) {
 
 	var animationDuration = 2000; // milliseconds
 
-	var allLevels = window.sayso.starbar.game.levels.collection;
-	var userLevels = window.sayso.starbar.game.gamer._levels.collection;
+	var allLevels = window.sayso.starbar.game._levels.collection;
+	var userLevels = window.sayso.starbar.game._gamer._levels.collection;
 	// The current level is the first level in the collection (it is sorted by the gaming API!)
 	var userCurrentLevel = userLevels[0];
 	var userNextLevel;
@@ -332,7 +310,7 @@ $SQ.activateGameElements = function(target, animate) {
 		});
 	}
 
-	$SQ.each(window.sayso.starbar.game.gamer._currencies.collection, function (index, currency) {
+	$SQ.each(window.sayso.starbar.game._gamer._currencies.collection, function (index, currency) {
 		var currencyTitle = currency.title.toLowerCase();
 		var currencyBalance = parseInt(currency.current_balance);
 

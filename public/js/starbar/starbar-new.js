@@ -45,8 +45,73 @@ $SQ(function(){
 	});
 	
 
+	var frameCommunicationFunctions = {
+		'loadComplete': function (parameters) {
+			var hideLoadingElem = parameters['hideLoadingElem'];
+			var newFrameHeight = parameters['newFrameHeight'];
+	
+			var openFrame = sayso.starbar.openFrame;
+			var openFrameContainer = sayso.starbar.openFrameContainer;
+			var openFrameContainerParent = sayso.starbar.openFrameContainer.parent();
+
+			if (hideLoadingElem) {
+				var loadingElement = openFrameContainer.children('.sayso-starbar-loading-external');
+				loadingElement.fadeTo(200, 0);
+				// Set display to none to avoid mouse click issues
+				setTimeout(function() {
+					// Note that setTimeout works in global scope
+					sayso.starbar.openFrameContainer.children('.sayso-starbar-loading-external').css('display', 'none');
+				}, 200);
+			}
+			
+			if (newFrameHeight) {
+				openFrame.height(newFrameHeight);
+				openFrameContainerParent.css('height', newFrameHeight+5);
+
+				// if the frame (and container and its parent) are in a scrollpane, re-initialize it and scroll if necessary
+			    var scrollPane = openFrameContainerParent.parents('.sb_scrollPane');
+			    if (scrollPane.length > 0) {
+				    scrollPane.jScrollPane(); // re-initialize the scroll pane now that the content size may be different
+				    if (openFrameContainerParent.position()) {  // if the accordion is open
+						var paneHandle = scrollPane.data('jsp');
+
+						var accordionHeader = openFrameContainerParent.prev('h3');
+				        var currentScroll = paneHandle.getContentPositionY();
+				        var topOfOpenAccordion = accordionHeader.position().top;
+				        var bottomOfOpenAccordion = topOfOpenAccordion+accordionHeader.totalHeight()+openFrameContainerParent.totalHeight();
+				        var sizeOfPane = scrollPane.height();
+
+				        if ((bottomOfOpenAccordion - currentScroll) > (sizeOfPane - 10)) { // - 24 for the extra padding
+				            paneHandle.scrollByY((bottomOfOpenAccordion - currentScroll) - (sizeOfPane - 10)); // scroll by the difference
+						}
+					}
+				}
+			}
+		},
+		'updateGame': function (parameters) {
+			var newProfile = parameters['newProfile'];
+			if (newProfile) $SQ.updateGame(newProfile, true, true);
+			else $SQ.updateGame('ajax', true, true);
+		},
+		'handleTweet': function (parameters) {
+			var shared_type = parameters['shared_type'];
+			var shared_id = parameters['shared_id'];
+			if (shared_type && shared_id) $SQ.handleTweet(shared_type, shared_id);
+		},
+		'openSurvey': function (parameters) {
+			var survey_id = parameters['survey_id'];
+			
+			openPopBox($SQ('#sb_popBox_surveys_lg'), 'http://'+sayso.baseDomain+'/starbar/hellomusic/embed-survey?survey_id='+survey_id, true, true);
+		},
+		'alertMessage': function (parameters) {
+			var msg = parameters['msg'];
+			sayso.log(msg);
+		}
+	};
+
 	// LETS USE VARS!
 	// NOTE: The variables below are initialized in initElements()
+	var starbarElem; //  = $SQ('#sayso-starbar');
 
 	// clickable elements that ppl will interact with
 	var btnToggleVis; //  = $SQ('#sayso-starbar #starbar-visControls #starbar-toggleVis');
@@ -57,7 +122,6 @@ $SQ(function(){
 	var elemSaySoLogoBorder; // = $SQ('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
 	var elemSaySoLogoSemiStowed; // = $SQ('#sayso-starbar #sb_starbar-logoSemiStowed');
 	var elemStarbarWrapper; // = $SQ('#sayso-starbar #starbar-player-console #starbar-wrapper');
-	var elemSaySoBarBG; // = $SQ('#sayso-starbar #starbar-player-console').css('background-image');
 	var elemPlayerConsole; // = $SQ('#sayso-starbar #starbar-player-console');
 	var elemStarbarMain; // = $SQ('#sayso-starbar #starbar-player-console #starbar-main');
 	var elemVisControls; // = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls');
@@ -86,30 +150,36 @@ $SQ(function(){
 
 	// initialize the elements
 	function initElements(){
+		starbarElem = $SQ('#sayso-starbar');
+
 		// clickable elements that ppl will interact with
-		btnToggleVis = $SQ('#sayso-starbar #starbar-visControls #starbar-toggleVis');
-		btnSaySoLogo = $SQ('#sayso-starbar #starbar-visControls #sb_starbar-logo');
+		btnToggleVis = $SQ('#starbar-visControls #starbar-toggleVis', starbarElem);
+		btnSaySoLogo = $SQ('#starbar-visControls #sb_starbar-logo', starbarElem);
 
 		// container elements
-		elemSaySoLogoBorder = $SQ('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
-		elemSaySoLogoSemiStowed = $SQ('#sayso-starbar #sb_starbar-logoSemiStowed');
-		elemStarbarWrapper = $SQ('#sayso-starbar #starbar-player-console #starbar-wrapper');
-		elemSaySoBarBG = $SQ('#sayso-starbar #starbar-player-console').css('background-image');
-		elemPlayerConsole = $SQ('#sayso-starbar #starbar-player-console');
-		elemStarbarMain = $SQ('#sayso-starbar #starbar-player-console #starbar-main');
-		elemVisControls = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls');
-		elemStarbarClickable = $SQ('#sayso-starbar #starbar-player-console .sb_nav_element');
-		elemPopBox = $SQ('#sayso-starbar #starbar-player-console .sb_popBox');
-		elemPopBoxVisControl = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
-		elemTabClick = $SQ('#sayso-starbar #starbar-player-console .sb_nav_tabs');
-		elemExternalConnect = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
-		elemRewardItem = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem');
-		btnCloseColorbox = $SQ('#sayso-starbar .sb_closeColorbox');
-		elemTooltip = $SQ('#sayso-starbar .sb_tooltip');
+		btnCloseColorbox = $SQ('.sb_closeColorbox', starbarElem);
+		elemTooltip = $SQ('.sb_tooltip', starbarElem);
+		elemSaySoLogoSemiStowed = $SQ('#sb_starbar-logoSemiStowed', starbarElem);
+		elemPlayerConsole = $SQ('#starbar-player-console', starbarElem);
 
+		elemSaySoLogoBorder = $SQ('#sb_starbar-logoBorder', elemPlayerConsole);
+		elemStarbarWrapper = $SQ('#starbar-wrapper', elemPlayerConsole);
+		elemStarbarMain = $SQ('#starbar-main', elemPlayerConsole);
+		elemVisControls = $SQ('#starbar-visControls', elemPlayerConsole);
+		elemStarbarClickable = $SQ('.sb_nav_element', elemPlayerConsole);
+		elemPopBox = $SQ('.sb_popBox', elemPlayerConsole);
+		elemPopBoxVisControl = $SQ('#starbar-visControls .sb_popBox', elemPlayerConsole);
+		elemTabClick = $SQ('.sb_nav_tabs', elemPlayerConsole);
+		elemExternalConnect = $SQ('#sb_popBox_user-profile .sb_unconnected', elemPlayerConsole);
+		elemRewardItem = $SQ('#sb_popBox_rewards .sb_rewardItem', elemPlayerConsole);
+
+
+		starbarElem.bind('frameCommunication', function (event, functionName, functionParameters) {
+			frameCommunicationFunctions[functionName](functionParameters);
+		});
 
 		// jquery edit in place
-		elemJEIP = $SQ('#sayso-starbar .sb_jeip');
+		elemJEIP = $SQ('.sb_jeip', starbarElem);
 
 		elemPlayerConsole.unbind();
 		elemPlayerConsole.click(function(e) {

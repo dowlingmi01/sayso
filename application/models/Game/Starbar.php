@@ -70,23 +70,19 @@ abstract class Game_Starbar extends Game_Abstract {
             case 'survey' :
             default :
                 if ($survey->premium) {
-                    if ($surveyUserMap && $surveyUserMap->status === 'disqualified') {
-                        $this->submitAction('SURVEY_PREMIUM_DISQUALIFIED');
-                    } else {
-                        $this->submitAction('SURVEY_PREMIUM');
-                    }
+                    $this->submitAction('SURVEY_PREMIUM');
                 } else {
-                    if ($surveyUserMap && $surveyUserMap->status === 'disqualified') {
-                        $this->submitAction('SURVEY_STANDARD_DISQUALIFIED');
-                    } else {
-                        $this->submitAction('SURVEY_STANDARD');
-                    }
+                    $this->submitAction('SURVEY_STANDARD');
                 }
         }
     }
     
     public function disqualifySurvey (Survey $survey) {
-        
+        if ($survey->premium) {
+            $this->submitAction('SURVEY_PREMIUM_DISQUALIFIED');
+        } else {
+            $this->submitAction('SURVEY_STANDARD_DISQUALIFIED');
+        }
     }
     
     public function share ($type, $typeId = 0) {
@@ -255,9 +251,8 @@ abstract class Game_Starbar extends Game_Abstract {
             if (!$game) {
                 $request = Zend_Controller_Front::getInstance()->getRequest();
                 $gamer = Api_UserSession::getInstance($request->getParam('user_key'))->getGamingUser();
-    			$client = Gaming_BigDoor_HttpClient::getInstance('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
-    			$gamer->loadProfile($client);
         		$game = Game_Starbar::create($gamer, $request);
+        		$gamer->loadProfile($game->getHttpClient());
             }
             return $game;
         } else {

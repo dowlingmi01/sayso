@@ -175,9 +175,7 @@ $SQ(function(){
 
 		starbarElem.unbind();
 		starbarElem.bind('frameCommunication', function (event, functionName, functionParameters) {
-			sayso.log(functionName);
-			sayso.log(functionParameters);
-			frameCommunicationFunctions[functionName](functionParameters);
+			frameCommunicationFunctions[functionName](functionParameters[0]);
 		});
 
 		// jquery edit in place

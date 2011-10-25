@@ -29,7 +29,7 @@ class Survey_UserMapCollection extends RecordCollection
 						ON s.id = sum.survey_id
 						AND s.type = ?
 						AND s.starbar_id = ?
-					SET status = 'archive'
+					SET status = 'archived'
 					WHERE sum.user_id = ?
 						AND status = 'new'
 						AND ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(sum.created)) > ?)

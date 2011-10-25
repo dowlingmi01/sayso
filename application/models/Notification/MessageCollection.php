@@ -85,32 +85,27 @@ class Notification_MessageCollection extends RecordCollection
 
 		$unfilteredMessages->_loadMostRecentGroupMessagesForStarbarAndUser($starbarId, $userId);
 		foreach ($unfilteredMessages as $message) {
+			$messageGroup->loadData($message->notification_message_group_id);
+			// The most recently closed notification from that group has been closed longer than the minimum_interval between messages in that group
 			$messageUserMap->loadMapForNotificationMessageAndUser($message->id, $userId);
 			$closedStamp = strtotime($messageUserMap->closed);
-			if (!$closedStamp) { // message has never been closed (i.e. either never viewed or should remain in view)
-				$this->addItem($message); // Append the message to the collection
-			} else {
-				$messageGroup->loadData($message->notification_message_group_id);
-				// The most recently closed notification from that group has been closed longer than the minimum_interval between messages in that group
-				if ((time() - $closedStamp) > (int) $messageGroup->minimum_interval) {
-					$nextMessage = new Notification_Message();
-					// Grab the next message in that group that the user should see
-					$nextMessage->loadNextMessageInGroupForUser($message, $messageGroup, $userId);
+			if ($messageGroup->minimum_interval && (time() - $closedStamp) > (int) $messageGroup->minimum_interval) {
+				$nextMessage = new Notification_Message();
+				// Grab the next message in that group that the user should see
+				$nextMessage->loadNextMessageInGroupForUser($message, $messageGroup, $userId);
 
-					// If successful, append it to the collection
-					if ($nextMessage->id) {
-						$this->addItem($nextMessage);
-						// add user_map
-    					$messageUserMap = new Notification_MessageUserMap();
-    					$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($nextMessage->id, $userId, false);
-					}
+				// If successful, append it to the collection
+				if ($nextMessage->id) {
+					$this->addItem($nextMessage);
+					// add user_map
+    				$messageUserMap = new Notification_MessageUserMap();
+    				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($nextMessage->id, $userId, false);
 				}
 			}
 		}
 	}
 	
 	// For every group that the user has already received messages, get the latest message received
-	// unless the latest message received has never been closed (that's handled by loadQueuedMessagesForStarbarAndUser)
 	private function _loadMostRecentGroupMessagesForStarbarAndUser ($starbarId, $userId) {
 		$sql = "
 			SELECT * FROM (
@@ -126,18 +121,22 @@ class Notification_MessageCollection extends RecordCollection
 						ON user.id = ?
 						AND ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(user.created)) > nmg.start_after
 							OR nmg.start_after IS NULL)
-					RIGHT JOIN notification_message_user_map nmum
+					LEFT JOIN notification_message_user_map nmum
 						ON nmum.notification_message_id = nm.id
 							AND nmum.user_id = ?
+				WHERE nm.id NOT IN 
+					(SELECT notification_message_id 
+						FROM notification_message_user_map nmum
+						WHERE nmum.user_id = ?
 							AND nmum.closed = '0000-00-00 00:00:00'
-				WHERE nmum.id = NULL
+					)
 				ORDER BY nm.ordinal ASC, nmum.id DESC
 			) AS S 
 			GROUP BY notification_message_group_id
 			ORDER BY ordinal ASC 
 		";
 		
-		$data = Db_Pdo::fetchAll($sql, $starbarId, $userId, $userId);
+		$data = Db_Pdo::fetchAll($sql, $starbarId, $userId, $userId, $userId);
 		
 		if ($data) {
 			$this->build($data, new Notification_Message());

@@ -7,6 +7,9 @@ class Starbar_ContentController extends Api_GlobalController
 	// Render with JsonP by default
 	protected $_usingJsonPRenderer = true;
 
+	// To be set by inherited classes, e.g. HellomusicController
+	protected $_maximumDisplayed = array('polls' => 0, 'surveys' => 0);
+	
 	public function preDispatch()
 	{
 	    $this->_validateRequiredParameters(array('user_id', 'user_key', 'auth_key'));
@@ -92,7 +95,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('bundle_of_joy', $bundleOfJoy);
 
 		// @todo point this to onboarding
-		$shareLink = "http://www.say.so/";
+		$shareLink = "http://www.hellomusic.com/?sayso-install=true";
 		
 		$shareText = "Poll time! Just took the '".$survey->title."' poll on Hello Music's Say.So Beat Bar";
 		$facebookTitle = $survey->title;
@@ -149,7 +152,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('next_survey', $nextSurvey);
 
 		// @todo point this to onboarding
-		$shareLink = "http://www.say.so/";
+		$shareLink = "http://www.hellomusic.com/?sayso-install=true";
 		// @todo share text to vary based on starbar_id?
 		$shareText = "Survey time! Just filled out '".$survey->title."' on Hello Music's Say.So Beat Bar";
 		$facebookTitle = $survey->title;
@@ -177,7 +180,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('next_survey', $nextSurvey);
 
 		// @todo point this to onboarding
-		$shareLink = "http://www.say.so/";
+		$shareLink = "http://www.hellomusic.com/?sayso-install=true";
 		// @todo share text to vary based on starbar_id?
 		$shareText = "Survey time! Just filled out '".$survey->title."' on Hello Music's Say.So Beat Bar";
 		$facebookTitle = $survey->title;
@@ -204,7 +207,7 @@ class Starbar_ContentController extends Api_GlobalController
     {
     	$surveyUserMaps = new Survey_UserMapCollection();
     	$surveyUserMaps->markOldSurveysArchivedForStarbarAndUser($this->starbar_id, $this->user_id, 'polls');
-    	$surveyUserMaps->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'polls');
+    	$surveyUserMaps->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'polls', $this->_maximumDisplayed['polls']);
     	$this->_assignSurveysToView('polls');
 	}
 
@@ -213,7 +216,7 @@ class Starbar_ContentController extends Api_GlobalController
     {
     	$surveyUserMaps = new Survey_UserMapCollection();
     	$surveyUserMaps->markOldSurveysArchivedForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys');
-    	$surveyUserMaps->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys');
+    	$surveyUserMaps->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys', $this->_maximumDisplayed['surveys']);
     	$this->_assignSurveysToView('surveys');
 	}
 
@@ -247,13 +250,13 @@ class Starbar_ContentController extends Api_GlobalController
 
 		// Assign the counts for surveys and polls
     	$surveyUserMaps = new Survey_UserMapCollection();
-    	$surveyUserMaps->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'polls');
+    	$surveyUserMaps->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'polls', $this->_maximumDisplayed['polls']);
     	$this->_assignSurveysToView('polls');
-    	$surveyUserMaps->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys');
+    	$surveyUserMaps->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys', $this->_maximumDisplayed['surveys']);
     	$this->_assignSurveysToView('surveys');
 
 		// @todo point this to onboarding
-		$shareLink = "http://www.say.so/";
+		$shareLink = "http://www.hellomusic.com/?sayso-install=true";
 		// @todo share text to vary based on starbar_id?
 		$twitterShareText = "Join me in Hello Music's Beat Bar app. Get access to sweet gear deals and a chance to win a Takamine Guitar";
 		$facebookTitle = "Hello Music's Say.So Beat Bar";
@@ -529,22 +532,41 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('starbar', $starbar);
 	}
 	
+	// Sets view variables to display polls and surveys:
+	// new_polls, completed_surveys, etc.
+	// count_new_polls, count_completed_surveys, etc.
 	protected function _assignSurveysToView($type)
 	{
     	$type = str_replace("surveys", "survey", $type);
     	$type = str_replace("polls", "poll", $type);
-		$statusArray = Array('new', 'completed', 'archived', 'disqualified');
-    	
+		$statusArray = Array('completed', 'disqualified', 'archived', 'new', );
+    	$totalDisplayed = 0;
+
 		if ($type == "poll" || $type == "survey") {
+			$maximumDisplayed = $this->_maximumDisplayed[$type.'s'];
 			foreach ($statusArray as $status) {
 				$surveyCollection = new SurveyCollection();
 				$surveyCollection->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, $type, $status);
+				$numberOfSurveys = sizeof($surveyCollection);
 
-			    // new_polls, completed_surveys, etc.
+				if ($maximumDisplayed && $totalDisplayed >= $maximumDisplayed && $status == 'archived') {
+					$this->view->assign('count_archived_'.$type.'s', 0);
+					$this->view->assign('count_new_'.$type.'s', 0);
+					break;
+				} elseif ($maximumDisplayed && $totalDisplayed >= $maximumDisplayed && $status == 'new') {
+					$this->view->assign('count_new_'.$type.'s', 0);
+					break;
+				}
+
 				$this->view->assign($status.'_'.$type.'s', $surveyCollection);
 
-				// e.g. count_new_polls, count_completed_surveys, etc.
-				$this->view->assign('count_'.$status.'_'.$type.'s', sizeof($surveyCollection));
+				if ($maximumDisplayed && $numberOfSurveys > ($maximumDisplayed - $totalDisplayed) && ($status == 'archived' || $status == 'new')) {
+					$numberOfSurveys = ($maximumDisplayed - $totalDisplayed);
+				}
+
+				$this->view->assign('count_'.$status.'_'.$type.'s', $numberOfSurveys);
+
+				$totalDisplayed += $numberOfSurveys;
 			}
 		}
 	}

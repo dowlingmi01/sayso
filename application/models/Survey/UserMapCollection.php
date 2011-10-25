@@ -2,9 +2,27 @@
 
 class Survey_UserMapCollection extends RecordCollection
 {
-	public function markUnseenSurveysNewForStarbarAndUser ($starbarId, $userId, $type) {
+	public function markUnseenSurveysNewForStarbarAndUser ($starbarId, $userId, $type, $maximumToDisplay) {
+		$limitClause = "";
+		
 		$type = str_replace("surveys", "survey", $type);
 		$type = str_replace("polls", "poll", $type);
+		
+		if ($maximumToDisplay) {
+			$sql = "SELECT count(id) AS theCount
+					FROM survey_user_map sum 
+					JOIN survey s 
+						ON s.id = sum.survey_id
+						AND s.starbar_id = ?
+						AND s.type = ?
+					WHERE sum.user_id = ?
+					";
+			$result = Db_Pdo::fetch($sql, $starbarId, $type, $userId);
+			$alreadyDisplayed = (int) $result['theCount'];
+
+			if ($alreadyDisplayed >= $maximumToDisplay) return;
+			$limitClause = " LIMIT ".($maximumToDisplay - $alreadyDisplayed);
+		}
 		
 		if ($type == "poll" || $type == "survey") {
 			$sql = "INSERT INTO survey_user_map (survey_id, user_id, status, created) 
@@ -13,6 +31,7 @@ class Survey_UserMapCollection extends RecordCollection
 						WHERE type = ?
 							AND id NOT IN (SELECT survey_id FROM survey_user_map WHERE user_id = ?)
 							AND starbar_id = ?
+						".$limitClause."
 					";
 			Db_Pdo::execute($sql, $userId, $type, $userId, $starbarId);
 		}

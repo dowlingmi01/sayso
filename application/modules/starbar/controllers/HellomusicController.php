@@ -54,43 +54,38 @@ class Starbar_HellomusicController extends Starbar_ContentController
     
     public function pollsAction ()
     {
-    	parent::pollsAction();
     	$surveyUserMap = new Survey_UserMap();
     	$primarySurveyTaken = $surveyUserMap->checkIfUserHasCompletedSurvey($this->user_id, 1);
     	$this->view->primary_survey_taken = $primarySurveyTaken;
     	
     	if (!$primarySurveyTaken) {
-    		$this->view->count_new_polls = 5 - ($this->view->count_completed_polls + $this->view->count_disqualified_polls + $this->view->count_archived_polls);
-    		if ($this->view->count_new_polls < 0) $this->view->count_new_polls = 0;
+    		$this->_maximumDisplayed['polls'] = 5;
 		}
+    	parent::pollsAction();
 	}
 
     public function surveysAction ()
     {
-    	parent::surveysAction();
     	$surveyUserMap = new Survey_UserMap();
     	$primarySurveyTaken = $surveyUserMap->checkIfUserHasCompletedSurvey($this->user_id, 1);
     	$this->view->primary_survey_taken = $primarySurveyTaken;
 
     	if (!$primarySurveyTaken) {
-    		$this->view->count_new_surveys = 4 - ($this->view->count_completed_surveys + $this->view->count_disqualified_surveys + $this->view->count_archived_surveys);
-    		if ($this->view->count_new_surveys < 0) $this->view->count_new_surveys = 0;
+    		$this->_maximumDisplayed['surveys'] = 4;
 		}
+    	parent::surveysAction();
 	}
 
     public function userProfileAction ()
     {
-    	parent::userProfileAction();
     	$surveyUserMap = new Survey_UserMap();
     	$primarySurveyTaken = $surveyUserMap->checkIfUserHasCompletedSurvey($this->user_id, 1);
     	$this->view->primary_survey_taken = $primarySurveyTaken;
 
     	if (!$primarySurveyTaken) {
-    		$this->view->count_new_polls = 5 - ($this->view->count_completed_polls + $this->view->count_disqualified_polls + $this->view->count_archived_polls);
-    		if ($this->view->count_new_polls < 0) $this->view->count_new_polls = 0;
-
-    		$this->view->count_new_surveys = 4 - ($this->view->count_completed_surveys + $this->view->count_disqualified_surveys + $this->view->count_archived_surveys);
-    		if ($this->view->count_new_surveys < 0) $this->view->count_new_surveys = 0;
+    		$this->_maximumDisplayed['polls'] = 5;
+    		$this->_maximumDisplayed['surveys'] = 4;
 		}
+    	parent::userProfileAction();
 	}
 }

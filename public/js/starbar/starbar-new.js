@@ -257,7 +257,7 @@ $SQ(function(){
 
 
 		/* prevent default for any link with # as the href */
-		$SQ('a').each(function(){
+		$SQ('a', starbarElem).each(function(){
 			$SQ(this).unbind();
 			if ($SQ(this).attr('href')=='#'){
 				$SQ(this).bind({

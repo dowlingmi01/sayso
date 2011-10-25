@@ -44,71 +44,6 @@ $SQ(function(){
 		}
 	});
 	
-
-	var frameCommunicationFunctions = {
-		'loadComplete': function (parameters) {
-			var hideLoadingElem = parameters['hideLoadingElem'];
-			var newFrameHeight = parameters['newFrameHeight'];
-	
-			var openFrame = sayso.starbar.openFrame;
-			var openFrameContainer = sayso.starbar.openFrameContainer;
-			var openFrameContainerParent = sayso.starbar.openFrameContainer.parent();
-
-			if (hideLoadingElem) {
-				var loadingElement = openFrameContainer.children('.sayso-starbar-loading-external');
-				loadingElement.fadeTo(200, 0);
-				// Set display to none to avoid mouse click issues
-				setTimeout(function() {
-					// Note that setTimeout works in global scope
-					sayso.starbar.openFrameContainer.children('.sayso-starbar-loading-external').css('display', 'none');
-				}, 200);
-			}
-			
-			if (newFrameHeight) {
-				openFrame.height(newFrameHeight);
-				openFrameContainerParent.css('height', newFrameHeight+5);
-
-				// if the frame (and container and its parent) are in a scrollpane, re-initialize it and scroll if necessary
-			    var scrollPane = openFrameContainerParent.parents('.sb_scrollPane');
-			    if (scrollPane.length > 0) {
-				    scrollPane.jScrollPane(); // re-initialize the scroll pane now that the content size may be different
-				    if (openFrameContainerParent.position()) {  // if the accordion is open
-						var paneHandle = scrollPane.data('jsp');
-
-						var accordionHeader = openFrameContainerParent.prev('h3');
-				        var currentScroll = paneHandle.getContentPositionY();
-				        var topOfOpenAccordion = accordionHeader.position().top;
-				        var bottomOfOpenAccordion = topOfOpenAccordion+accordionHeader.totalHeight()+openFrameContainerParent.totalHeight();
-				        var sizeOfPane = scrollPane.height();
-
-				        if ((bottomOfOpenAccordion - currentScroll) > (sizeOfPane - 10)) { // - 24 for the extra padding
-				            paneHandle.scrollByY((bottomOfOpenAccordion - currentScroll) - (sizeOfPane - 10)); // scroll by the difference
-						}
-					}
-				}
-			}
-		},
-		'updateGame': function (parameters) {
-			var newProfile = parameters['newProfile'];
-			if (newProfile) updateGame(newProfile, true, true);
-			else updateGame('ajax', true, true);
-		},
-		'handleTweet': function (parameters) {
-			var shared_type = parameters['shared_type'];
-			var shared_id = parameters['shared_id'];
-			if (shared_type && shared_id) handleTweet(shared_type, shared_id);
-		},
-		'openSurvey': function (parameters) {
-			var survey_id = parameters['survey_id'];
-			
-			openPopBox($SQ('#sb_popBox_surveys_lg'), 'http://'+sayso.baseDomain+'/starbar/hellomusic/embed-survey?survey_id='+survey_id, true, true);
-		},
-		'alertMessage': function (parameters) {
-			var msg = parameters['msg'];
-			sayso.log(msg);
-		}
-	};
-
 	// LETS USE VARS!
 	// NOTE: The variables below are initialized in initElements()
 	var starbarElem; //  = $SQ('#sayso-starbar');
@@ -175,7 +110,7 @@ $SQ(function(){
 
 		starbarElem.unbind();
 		starbarElem.bind('frameCommunication', function (event, functionName, functionParameters) {
-			frameCommunicationFunctions[functionName](functionParameters[0]);
+			frameCommunicationFunctions[functionName](functionParameters);
 		});
 
 		// jquery edit in place
@@ -663,6 +598,71 @@ $SQ(function(){
 			});
 		}
 	}
+
+
+	var frameCommunicationFunctions = {
+		'loadComplete': function (parameters) {
+			var hideLoadingElem = parameters['hideLoadingElem'];
+			var newFrameHeight = parameters['newFrameHeight'];
+	
+			var openFrame = sayso.starbar.openFrame;
+			var openFrameContainer = sayso.starbar.openFrameContainer;
+			var openFrameContainerParent = sayso.starbar.openFrameContainer.parent();
+
+			if (hideLoadingElem) {
+				var loadingElement = openFrameContainer.children('.sayso-starbar-loading-external');
+				loadingElement.fadeTo(200, 0);
+				// Set display to none to avoid mouse click issues
+				setTimeout(function() {
+					// Note that setTimeout works in global scope
+					sayso.starbar.openFrameContainer.children('.sayso-starbar-loading-external').css('display', 'none');
+				}, 200);
+			}
+			
+			if (newFrameHeight) {
+				openFrame.height(newFrameHeight);
+				openFrameContainerParent.css('height', newFrameHeight+5);
+
+				// if the frame (and container and its parent) are in a scrollpane, re-initialize it and scroll if necessary
+			    var scrollPane = openFrameContainerParent.parents('.sb_scrollPane');
+			    if (scrollPane.length > 0) {
+				    scrollPane.jScrollPane(); // re-initialize the scroll pane now that the content size may be different
+				    if (openFrameContainerParent.position()) {  // if the accordion is open
+						var paneHandle = scrollPane.data('jsp');
+
+						var accordionHeader = openFrameContainerParent.prev('h3');
+				        var currentScroll = paneHandle.getContentPositionY();
+				        var topOfOpenAccordion = accordionHeader.position().top;
+				        var bottomOfOpenAccordion = topOfOpenAccordion+accordionHeader.totalHeight()+openFrameContainerParent.totalHeight();
+				        var sizeOfPane = scrollPane.height();
+
+				        if ((bottomOfOpenAccordion - currentScroll) > (sizeOfPane - 10)) { // - 24 for the extra padding
+				            paneHandle.scrollByY((bottomOfOpenAccordion - currentScroll) - (sizeOfPane - 10)); // scroll by the difference
+						}
+					}
+				}
+			}
+		},
+		'updateGame': function (parameters) {
+			var newProfile = parameters['newProfile'];
+			if (newProfile) updateGame(newProfile, true, true);
+			else updateGame('ajax', true, true);
+		},
+		'handleTweet': function (parameters) {
+			var shared_type = parameters['shared_type'];
+			var shared_id = parameters['shared_id'];
+			if (shared_type && shared_id) handleTweet(shared_type, shared_id);
+		},
+		'openSurvey': function (parameters) {
+			var survey_id = parameters['survey_id'];
+			
+			openPopBox($SQ('#sb_popBox_surveys_lg'), 'http://'+sayso.baseDomain+'/starbar/hellomusic/embed-survey?survey_id='+survey_id, true, true);
+		},
+		'alertMessage': function (parameters) {
+			var msg = parameters['msg'];
+			sayso.log(msg);
+		}
+	};
 
 	function updateGame (loadSource, setGlobalUpdate, animate) {
 		if (loadSource === "ajax") {

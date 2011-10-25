@@ -4,7 +4,7 @@
 		$SQ('#sb-survey-completed').fadeIn(500)
 	}, 500);
 
-	$SQ.remoteControl.updateGame(null);
+	$SQ.remoteControl.updateGame('ajax');
 
 	$SQ.getScript("http://platform.twitter.com/widgets.js", function(){
 		function handleTweetEvent(event){

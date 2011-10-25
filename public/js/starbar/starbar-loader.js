@@ -320,11 +320,8 @@
                     sayso.starbar.user.key = starbar._user._key;
                     if (response.game) {
                         sayso.log(response.game);
-	                    sayso.starbar.game = {
-                    		gamer : response.game._gamer,
-                    		levels : response.game._levels
-						}
-					};
+                        sayso.starbar.game = response.game;
+					}
                     
                     // update global/persistent vars on kobj.net
                     var app = KOBJ.get_application(sayso.starbar.kynetxAppId);

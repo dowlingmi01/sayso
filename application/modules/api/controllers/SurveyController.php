@@ -25,8 +25,7 @@ class Api_SurveyController extends Api_GlobalController
     public function surveyGizmoDisqualifyAction ()
     {
         $this->_validateRequiredParameters(array('survey_id', 'user_id'));
-		// @todo $this->_updateSurveyUserMapStatus($this->survey_id, $this->user_id, 'disqualified');
-		$result = $this->_updateSurveyUserMapStatus($this->survey_id, $this->user_id, 'completed');
+		$result = $this->_updateSurveyUserMapStatus($this->survey_id, $this->user_id, 'disqualified');
 
         // success
         return $this->_resultType($result);
@@ -65,13 +64,10 @@ class Api_SurveyController extends Api_GlobalController
 			}
 
 			// award the user
-			/* @todo if ($newStatus == "completed") {
+			if ($newStatus == "completed") {
 				Game_Starbar::getInstance()->completeSurvey($survey);
 			} elseif ($newStatus == "disqualified") {
 				Game_Starbar::getInstance()->disqualifySurvey($survey);
-			}*/
-			if ($newStatus == "completed" || $newStatus == "disqualified") {
-				Game_Starbar::getInstance()->completeSurvey($survey, $surveyUserMap);
 			}
 			return true;
 		}

@@ -85,6 +85,10 @@ abstract class Game_Starbar extends Game_Abstract {
         }
     }
     
+    public function disqualifySurvey (Survey $survey) {
+        
+    }
+    
     public function share ($type, $typeId = 0) {
         
         switch ($type) {
@@ -251,6 +255,8 @@ abstract class Game_Starbar extends Game_Abstract {
             if (!$game) {
                 $request = Zend_Controller_Front::getInstance()->getRequest();
                 $gamer = Api_UserSession::getInstance($request->getParam('user_key'))->getGamingUser();
+    			$client = Gaming_BigDoor_HttpClient::getInstance('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
+    			$gamer->loadProfile($client);
         		$game = Game_Starbar::create($gamer, $request);
             }
             return $game;

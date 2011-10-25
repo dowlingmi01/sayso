@@ -173,8 +173,10 @@ $SQ(function(){
 		elemExternalConnect = $SQ('#sb_popBox_user-profile .sb_unconnected', elemPlayerConsole);
 		elemRewardItem = $SQ('#sb_popBox_rewards .sb_rewardItem', elemPlayerConsole);
 
-
+		starbarElem.unbind();
 		starbarElem.bind('frameCommunication', function (event, functionName, functionParameters) {
+			sayso.log(functionName);
+			sayso.log(functionParameters);
 			frameCommunicationFunctions[functionName](functionParameters);
 		});
 
@@ -675,7 +677,7 @@ $SQ(function(){
 		} else if (loadSource === "cache") {
 			activateGameElements(null, animate);
 		} else { // loadSource object is a game object, load from there
-			window.sayso.starbar.game = loadSource;
+			sayso.starbar.game = loadSource;
 			activateGameElements(null, animate);
 		}
 
@@ -697,8 +699,8 @@ $SQ(function(){
 
 		var animationDuration = 2000; // milliseconds
 
-		var allLevels = window.sayso.starbar.game.levels.collection;
-		var userLevels = window.sayso.starbar.game.gamer._levels.collection;
+		var allLevels = sayso.starbar.game._levels.collection;
+		var userLevels = sayso.starbar.game._gamer._levels.collection;
 		// The current level is the first level in the collection (it is sorted by the gaming API!)
 		var userCurrentLevel = userLevels[0];
 		var userNextLevel;
@@ -792,7 +794,7 @@ $SQ(function(){
 			});
 		}
 
-		$SQ.each(window.sayso.starbar.game.gamer._currencies.collection, function (index, currency) {
+		$SQ.each(sayso.starbar.game._gamer._currencies.collection, function (index, currency) {
 			var currencyTitle = currency.title.toLowerCase();
 			var currencyBalance = parseInt(currency.current_balance);
 
@@ -1054,7 +1056,7 @@ $SQ(function(){
 								link += "?";
 							else
 								link += "&";
-							link += "user_id="+window.sayso.starbar.user.id+"&user_key="+window.sayso.starbar.user.key+"&auth_key="+window.sayso.starbar.authKey;
+							link += "user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&auth_key="+sayso.starbar.authKey;
 
 							// The container for the new iFrame is in the link's 'ref' attribute
 							var iFrameContainerId = activeLink.attr('rel');
@@ -1116,7 +1118,7 @@ $SQ(function(){
 	// animates the starbar-player-console bar based on current state
 	function animateBar(playerClass, clickPoint){
 
-	    if (!playerClass) playerClass = window.sayso.starbar.state.visibility;
+	    if (!playerClass) playerClass = sayso.starbar.state.visibility;
 
 	    switch(clickPoint){
             // if we're clicking from a button, determine what state we're in and how to shrink / grow
@@ -1261,6 +1263,6 @@ $SQ(function(){
     }
     
     // flag so we know this file has loaded
-    window.sayso.starbar.loaded = true;
+    sayso.starbar.loaded = true;
 });
 

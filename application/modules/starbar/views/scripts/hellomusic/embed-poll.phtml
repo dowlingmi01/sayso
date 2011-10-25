@@ -37,7 +37,7 @@
 							$SQ.ajaxWithAuth({
 								url : "http://<?= BASE_DOMAIN ?>/api/survey/user-poll-submit?renderer=jsonp&survey_id=<?= $this->survey->id ?>",
 								success : function (response, status, jqXHR) {
-									$SQ.remoteControl.updateGame(response.gamer);
+									$SQ.remoteControl.updateGame(response.game);
 								}
 							});
 

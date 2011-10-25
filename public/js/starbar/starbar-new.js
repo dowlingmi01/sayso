@@ -44,6 +44,134 @@ $SQ(function(){
 		}
 	});
 	
+	/**
+     * Get the data container of a given DOM object
+     * - a "data container" (per this convention) is any DOM object
+     *   with the HTML5 data attribute "data-id", indicating
+     *   an identifiable record, within which the current object
+     *   is a child
+     * - default is to return the *first* parent container (index 0)
+     *   but can be specified via parentIndex param (e.g. *second* (outer) parent == 1)
+     * - you can also access the data container even if the current element
+     *   IS the data container (i.e. it contains the "data-id" attr)
+     * 
+     * - example: $('a.facebook').dataContainer().find('.button').show()
+     * - example: $('a.facebook').dataContainer(1).getId() <-- get the id of an outer container
+     * - example:
+     *     <div class="reward" data-id="<?= $reward->getId() ?>">
+     *         <a>Redeem!</a>
+     *     </div>
+     *     <script type="text/javascript">
+     *         $SQ('div.reward a').click(function () {
+     *             var rewardId = $SQ(this).dataContainer().getId();
+     *             // redeem this reward
+     *         });
+     *     </script>
+     * 
+     * @author davidbjames
+     * 
+     * @param integer parentIndex OPTIONAL defaults to 0 (first parent)
+     * @return jQuery object of the data/parent element
+     */
+    $SQ.fn.dataContainer = function (parentIndex) {
+        
+        var _container;
+        if (typeof parentIndex === 'number') {
+            // if parent is explicitly set
+            _container = this.parents('[data-id]').eq(parentIndex);
+        } else if (this.attr('data-id').length) {
+            // if the data-id exists on *this* element
+            _container = this;
+        } else {
+            // otherwise default to first parent
+            _container = this.parents('[data-id]').eq(0);
+        }
+        
+        if (!_container.length) {
+            // if none found provide harmless object
+            return {
+                getId : function () { return 0; },
+                setObject : function () { return this; },
+                getObject : function () { return this; },
+                reset : function () {},
+                removeNow : function () {}
+            };
+        }
+        
+        // store off the id
+        var _id = _container.attr('data-id');
+        
+        /**
+         * Get the ID of the object
+         * - this usually corresponds to the record ID
+         * @returns integer
+         */
+        _container.getId = function () {
+            return typeof _id === 'undefined' ? 0 : parseInt(_id);
+        };
+        
+        /**
+         * Attach an object to this data container
+         * @param object|string object
+         */
+        _container.setObject = function (object) {
+            _container.data('object', typeof(object) === 'string' ? object : JSON.stringify(object));
+            return _container;
+        };
+        
+        /**
+         * Get the object from this data container
+         * @returns object
+         */
+        _container.getObject = function () {
+            return JSON.parse(_container.data('object'));
+        };
+        
+        /**
+         * Copy the current data container to another DOM node
+         * @param target
+         * @returns object "data container"
+         */
+        _container.copy = function (target) {
+            if (typeof _container.data('object') !== 'undefined') {
+                target.data('object', _container.data('object'));
+            }
+            target.attr('data-id', _container.getId());
+            return target.dataContainer(); // the new data container
+        };
+        
+        /**
+         * Move the current data container to another DOM node
+         * @param target
+         * @returns object "data container"
+         */
+        _container.move = function (target) {
+            var newContainer = _container.copy(target);
+            _container.reset();
+            return newContainer;
+        };
+        
+        /**
+         * Reset the data container (remove id and object)
+         */
+        _container.reset = function () {
+            _container.removeAttr('data-id');
+            _container.removeData('object');
+            return _container;
+        };
+        
+        /**
+         * Remove the data container completely
+         */
+        _container.removeNow = function () {
+            _container.fadeOut(function() {
+                _container.remove();
+            });
+        };
+        
+        return _container;
+    };
+
 	// LETS USE VARS!
 	// NOTE: The variables below are initialized in initElements()
 	var starbarElem; //  = $SQ('#sayso-starbar');
@@ -106,7 +234,6 @@ $SQ(function(){
 		elemPopBoxVisControl = $SQ('#starbar-visControls .sb_popBox', elemPlayerConsole);
 		elemTabClick = $SQ('.sb_nav_tabs', elemPlayerConsole);
 		elemExternalConnect = $SQ('#sb_popBox_user-profile .sb_unconnected', elemPlayerConsole);
-		elemRewardItem = $SQ('#sb_popBox_rewards .sb_rewardItem', elemPlayerConsole);
 
 		starbarElem.unbind();
 		starbarElem.bind('frameCommunication', function (event, functionName, functionParameters) {
@@ -321,31 +448,7 @@ $SQ(function(){
 				}
 			});
 		});
-		
-		
-		// rewards center items overlay
-		elemRewardItem.each(function(){
-			$SQ(this).unbind();
-			$SQ(this).bind({
-				click: function(event){
-					if ($SQ(this).hasClass('sb_rewardItem_disabled')){
-						return;
-					}else{
-						$SQ.sb_colorbox({
-							width:"220px", 
-							inline: true, 
-							initialWidth: 50,
-							initialHeight: 50,
-							speed: 500,
-							transition: 'fade',
-							href:"#sb_rewardsOverlay"
-						});
-					}
-				}			
-			});
-		
-		});
-		
+
 		btnCloseColorbox.each(function(){
 			$SQ(this).unbind();
 			$SQ(this).bind({

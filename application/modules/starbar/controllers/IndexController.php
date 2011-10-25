@@ -82,6 +82,7 @@ class Starbar_IndexController extends Api_GlobalController
 
 		$this->_request->setParam('starbar_id', $starbar->getId());
 		$game = Game_Starbar::getInstance();
+		$game->checkin();
 		$this->view->assign('game', $game);
 	}
 }

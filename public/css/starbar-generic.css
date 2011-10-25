@@ -1444,6 +1444,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	font-weight: bold;
 	margin: 0;
 	padding: 0;
+	background-color: #F3F3F3;
 }
 #sayso-starbar-embed #sb-survey-completed, #sb-survey-disqualified {
 	display: none;

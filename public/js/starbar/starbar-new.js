@@ -110,6 +110,8 @@ $SQ(function(){
 
 		starbarElem.unbind();
 		starbarElem.bind('frameCommunication', function (event, functionName, functionParameters) {
+			sayso.log(functionName);
+			sayso.log(functionParameters);
 			frameCommunicationFunctions[functionName](functionParameters);
 		});
 
@@ -609,43 +611,45 @@ $SQ(function(){
 			var openFrameContainer = sayso.starbar.openFrameContainer;
 			var openFrameContainerParent = sayso.starbar.openFrameContainer.parent();
 
-			if (hideLoadingElem) {
-				var loadingElement = openFrameContainer.children('.sayso-starbar-loading-external');
-				loadingElement.fadeTo(200, 0);
-				// Set display to none to avoid mouse click issues
-				setTimeout(function() {
-					// Note that setTimeout works in global scope
-					sayso.starbar.openFrameContainer.children('.sayso-starbar-loading-external').css('display', 'none');
-				}, 200);
-			}
-			
 			if (newFrameHeight) {
 				openFrame.height(newFrameHeight);
 				openFrameContainerParent.css('height', newFrameHeight+5);
 
 				// if the frame (and container and its parent) are in a scrollpane, re-initialize it and scroll if necessary
-			    var scrollPane = openFrameContainerParent.parents('.sb_scrollPane');
-			    if (scrollPane.length > 0) {
-				    scrollPane.jScrollPane(); // re-initialize the scroll pane now that the content size may be different
-				    if (openFrameContainerParent.position()) {  // if the accordion is open
+				var scrollPane = openFrameContainerParent.parents('.sb_scrollPane');
+				if (scrollPane.length > 0) {
+					scrollPane.jScrollPane(); // re-initialize the scroll pane now that the content size may be different
+					if (openFrameContainerParent.position()) {  // if the accordion is open
 						var paneHandle = scrollPane.data('jsp');
 
 						var accordionHeader = openFrameContainerParent.prev('h3');
-				        var currentScroll = paneHandle.getContentPositionY();
-				        var topOfOpenAccordion = accordionHeader.position().top;
-				        var bottomOfOpenAccordion = topOfOpenAccordion+accordionHeader.totalHeight()+openFrameContainerParent.totalHeight();
-				        var sizeOfPane = scrollPane.height();
+					    var currentScroll = paneHandle.getContentPositionY();
+					    var topOfOpenAccordion = accordionHeader.position().top;
+					    var bottomOfOpenAccordion = topOfOpenAccordion+accordionHeader.totalHeight()+openFrameContainerParent.totalHeight();
+					    var sizeOfPane = scrollPane.height();
 
-				        if ((bottomOfOpenAccordion - currentScroll) > (sizeOfPane - 10)) { // - 24 for the extra padding
-				            paneHandle.scrollByY((bottomOfOpenAccordion - currentScroll) - (sizeOfPane - 10)); // scroll by the difference
+					    if ((bottomOfOpenAccordion - currentScroll) > (sizeOfPane - 10)) { // - 24 for the extra padding
+					        paneHandle.scrollByY((bottomOfOpenAccordion - currentScroll) - (sizeOfPane - 10)); // scroll by the difference
 						}
 					}
 				}
 			}
+			
+			setTimeout(function() { // slight delay to allow the css to load and the page to render correctly
+				if (hideLoadingElem) {
+					var loadingElement = openFrameContainer.children('.sayso-starbar-loading-external');
+					loadingElement.fadeTo(200, 0);
+					// Set display to none to avoid mouse click issues
+					setTimeout(function() {
+						// Note that setTimeout works in global scope
+						sayso.starbar.openFrameContainer.children('.sayso-starbar-loading-external').css('display', 'none');
+					}, 200);
+				}
+			}, 200);
 		},
 		'updateGame': function (parameters) {
-			var newProfile = parameters['newProfile'];
-			if (newProfile) updateGame(newProfile, true, true);
+			var newGame = parameters['newGame'];
+			if (newGame) updateGame(newGame, true, true);
 			else updateGame('ajax', true, true);
 		},
 		'handleTweet': function (parameters) {

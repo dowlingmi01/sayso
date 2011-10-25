@@ -95,9 +95,9 @@ $SQ.frameCommunicationFunctions = {
 			newFrameHeight: newFrameHeight
 		}]);
 	},
-	updateGame: function (newProfile) {
+	updateGame: function (newGame) {
 		$SQ('#sayso-starbar').trigger('frameCommunication', ['updateGame', {
-			newProfile: newProfile
+			newGame: newGame
 		}]);
 	},
 	handleTweet: function (shared_type, shared_id) {

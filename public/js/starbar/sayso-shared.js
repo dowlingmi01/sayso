@@ -16,30 +16,6 @@ $SQ.ajaxWithAuth = function (options) {
     }
     catch (e) {}
     
-    if (typeof sayso == "undefined") {
-    // setup global "safe" logging functions
-    window.sayso.log = _log('log'); 
-    window.sayso.warn = _log('warn');
-    function _log (type) { // <-- closure here allows re-use for log() and warn()
-        return function () {
-            if (window.sayso.debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
-                var args = Array.prototype.slice.call(arguments);
-                if (typeof console.log.apply === 'function') {
-                    args.unshift('SaySo:');
-                    window.console[type].apply(window.console, args);
-                } else {
-                    // must be IE
-                    if (typeof args[0] !== 'object') {
-                        window.console.log(args[0]);
-                    }
-                }
-            }
-        }
-    };
-    
-    var sayso = window.sayso;
-	}
-    
     options.data = $SQ.extend(options.data || {}, {
         starbar_id : starbar_id,
         user_id : user_id,

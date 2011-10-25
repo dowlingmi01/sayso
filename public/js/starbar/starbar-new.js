@@ -527,6 +527,10 @@ $SQ(function(){
 				url : src,
 				success : function (response, status) {
 					ajaxContentContainer.html(response.data.html);
+					// some pages perform game calls, e.g. daily deals
+					// update the game stuff if the request returns a game object
+					if (response.game) updateGame(response.game, true, true);
+					
 					initElements();
 					showPopBoxContents(popBox, loadingElement, ajaxContentContainer);
     			}
@@ -772,14 +776,14 @@ $SQ(function(){
 	};
 
 	function updateGame (loadSource, setGlobalUpdate, animate) {
-		if (loadSource === "ajax") {
+		if (loadSource == "ajax") {
 			$SQ.ajaxWithAuth({
 				url : 'http://'+sayso.baseDomain+'/api/gaming/get-game?renderer=jsonp',
 				success : function (response, status, jqXHR) {
 					updateGame(response.data, setGlobalUpdate, animate);
     			}
 			});
-		} else if (loadSource === "cache") {
+		} else if (loadSource == "cache") {
 			activateGameElements(null, animate);
 		} else { // loadSource object is a game object, load from there
 			sayso.starbar.game = loadSource;

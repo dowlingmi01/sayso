@@ -95,7 +95,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('bundle_of_joy', $bundleOfJoy);
 
 		// @todo point this to onboarding
-		$shareLink = "http://www.hellomusic.com/?sayso-install=true";
+		$shareLink = "http://www.hellomusic.com/landing.aspx?sayso-install=true";
 		
 		$shareText = "Poll time! Just took the '".$survey->title."' poll on Hello Music's Say.So Beat Bar";
 		$facebookTitle = $survey->title;
@@ -152,7 +152,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('next_survey', $nextSurvey);
 
 		// @todo point this to onboarding
-		$shareLink = "http://www.hellomusic.com/?sayso-install=true";
+		$shareLink = "http://www.hellomusic.com/landing.aspx?sayso-install=true";
 		// @todo share text to vary based on starbar_id?
 		$shareText = "Survey time! Just filled out '".$survey->title."' on Hello Music's Say.So Beat Bar";
 		$facebookTitle = $survey->title;
@@ -180,7 +180,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('next_survey', $nextSurvey);
 
 		// @todo point this to onboarding
-		$shareLink = "http://www.hellomusic.com/?sayso-install=true";
+		$shareLink = "http://www.hellomusic.com/landing.aspx?sayso-install=true";
 		// @todo share text to vary based on starbar_id?
 		$shareText = "Survey time! Just filled out '".$survey->title."' on Hello Music's Say.So Beat Bar";
 		$facebookTitle = $survey->title;
@@ -256,7 +256,7 @@ class Starbar_ContentController extends Api_GlobalController
     	$this->_assignSurveysToView('surveys');
 
 		// @todo point this to onboarding
-		$shareLink = "http://www.hellomusic.com/?sayso-install=true";
+		$shareLink = "http://www.hellomusic.com/landing.aspx?sayso-install=true";
 		// @todo share text to vary based on starbar_id?
 		$twitterShareText = "Join me in Hello Music's Beat Bar app. Get access to sweet gear deals and a chance to win a Takamine Guitar";
 		$facebookTitle = "Hello Music's Say.So Beat Bar";

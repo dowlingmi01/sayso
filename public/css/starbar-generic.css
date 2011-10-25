@@ -772,6 +772,11 @@ html {
 	margin: 0px 0px 0px 130px;
 }
 
+#sayso-starbar #starbar-player-console .sb_theme_button:hover,
+#sayso-starbar #starbar-player-console .sb_theme_button:active {
+	cursor : pointer;
+}
+
 /* TRIANGLES */
 
 #sayso-starbar #starbar-player-console .sb_triangle-border {

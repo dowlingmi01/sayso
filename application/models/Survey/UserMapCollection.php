@@ -21,7 +21,7 @@ class Survey_UserMapCollection extends RecordCollection
 	public function markOldSurveysArchivedForStarbarAndUser ($starbarId, $userId, $type) {
 		$type = str_replace("surveys", "survey", $type);
 		$type = str_replace("polls", "poll", $type);
-		$secondsBeforeAutoArchive = 86400; // one day
+		$secondsBeforeAutoArchive = 300; // one day
 		
 		if ($type == "poll" || $type == "survey") {
 			$sql = "UPDATE survey_user_map sum
@@ -32,8 +32,8 @@ class Survey_UserMapCollection extends RecordCollection
 					SET status = 'archive'
 					WHERE sum.user_id = ?
 						AND status = 'new'
-						AND ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(sum.created)) > ?
-					)";
+						AND ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(sum.created)) > ?)
+					";
 			Db_Pdo::execute($sql, $type, $starbarId, $userId, $secondsBeforeAutoArchive);
 		}
 	}

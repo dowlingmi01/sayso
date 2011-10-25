@@ -40,7 +40,7 @@ class Survey_UserMapCollection extends RecordCollection
 	public function markOldSurveysArchivedForStarbarAndUser ($starbarId, $userId, $type) {
 		$type = str_replace("surveys", "survey", $type);
 		$type = str_replace("polls", "poll", $type);
-		$secondsBeforeAutoArchive = 300; // one day
+		$secondsBeforeAutoArchive = 86400; // one day
 		
 		if ($type == "poll" || $type == "survey") {
 			$sql = "UPDATE survey_user_map sum

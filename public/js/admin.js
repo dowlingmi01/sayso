@@ -16,30 +16,106 @@ $(function () {
        };
     }
     
-    $.fn.dataContainer = function (parentIndex) {
+    /**
+     * Get the data container of a given DOM object
+     * - a "data container" (per this convention) is any DOM object
+     *   with the HTML5 data attribute "data-id", indicating
+     *   an identifiable record, within which the current object
+     *   is a child
+     * - default is to return the *first* parent container (index 0)
+     *   but can be specified via parentIndex param (e.g. *second* (outer) parent == 1)
+     * - you can also access the data container even if the current element
+     *   IS the data container (i.e. it contains the "data-id" attr)
+     * 
+     * - example: $('a.facebook').dataContainer().find('.button').show()
+     * - example: $('a.facebook').dataContainer(1).getId() <-- get the id of an outer container
+     * - example:
+     *     <div class="reward" data-id="<?= $reward->getId() ?>">
+     *         <a>Redeem!</a>
+     *     </div>
+     *     <script type="text/javascript">
+     *         $SQ('div.reward a').click(function () {
+     *             var rewardId = $SQ(this).dataContainer().getId();
+     *             // redeem this reward
+     *         });
+     *     </script>
+     * 
+     * @author davidbjames
+     * 
+     * @param integer parentIndex OPTIONAL defaults to 0 (first parent)
+     * @return jQuery object of the parent element
+     */
+    $SQ.fn.dataContainer = function (parentIndex) {
         // get the parent container
-        var _container = this.parents('[data-id]').eq(parentIndex ? parentIndex : 0);
+        var _container;
+        if (typeof parentIndex === 'number') {
+            // if parent is explicitly set
+            _container = this.parents('[data-id]').eq(parentIndex);
+        } else if (this.attr('data-id').length) {
+            // if the data-id exists on *this* element
+            _container = this;
+        } else{
+            // otherwise default to first parent
+            _container = this.parents('[data-id]').eq(0);
+        }
+        
         if (!_container.length) {
             // if none found provide harmless object
-            _container = {
-                attr : function () { return 0; },
-                removeAttr : function () {}
+            return {
+                getId : function () { return 0; },
+                setObject : function () { return this; },
+                getObject : function () { return this; },
+                reset : function () {},
+                removeNow : function () {}
             };
         }
+        
         // store off the id
         var _id = _container.attr('data-id');
-        // add this as a method on container
+        /**
+         * Get the ID of the object
+         * - this usually corresponds to the record ID
+         * @returns integer
+         */
         _container.getId = function () {
             return typeof _id === 'undefined' ? 0 : parseInt(_id);
         };
-        _container.removeId = function () {
-            _container.removeAttr('data-id');
+        
+        /**
+         * Attach an object to this data container
+         * 
+         * @param object|string object
+         */
+        _container.setObject = function (object) {
+            _container.data('object', typeof(object) === 'string' ? object : JSON.stringify(object));
+            return _container;
         };
+        
+        /**
+         * Get the object from this data container
+         * 
+         * @returns object
+         */
+        _container.getObject = function () {
+            return JSON.parse(_container.data('object'));
+        };
+        
+        /**
+         * Reset the data container (remove id and object)
+         */
+        _container.reset = function () {
+            _container.removeAttr('data-id');
+            _container.removeData('object');
+        };
+        
+        /**
+         * Remove the data container completely
+         */
         _container.removeNow = function () {
             _container.fadeOut(function() {
                 _container.remove();
             });
-        }
+        };
         // return the container
         return _container;
     };
@@ -293,7 +369,7 @@ $(function () {
         if (container.getId()) {
             // grab and remove the id
             data.id = container.getId();
-            container.removeId();
+            container.reset();
             // replace the list item 
             $('#list-tag-domain-pair li[data-id=' + data.id + ']').replaceWith(tpl('tagDomainPairs', data));
             // also replace the ad tags listed below in cells
@@ -370,7 +446,7 @@ $(function () {
         var container = $(this).dataContainer();
         if (container.getId()) { // edit existing
             data.id = container.getId();
-            container.removeId();
+            container.reset();
             // replace the list item
             $('#list-domains-avails li[data-id=' + data.id +']').replaceWith(tpl('tagDomainPairs', data, { label : data.label }));
             // also replace the ad tags listed below in cells
@@ -481,7 +557,7 @@ $(function () {
         var container = $(this).dataContainer();
         if (container.getId()) { // edit existing
             data.id = container.getId();
-            container.removeId(); // to indicate we are going OUT of editing mode
+            container.reset(); // to indicate we are going OUT of editing mode
             $('#list-creative li[data-id=' + data.id + ']').replaceWith(tpl('creative', data));
         } else { // create new
             data.id = uniqueId();
@@ -779,7 +855,7 @@ $(function () {
         if (container.getId()) {
             // grab and remove the id (so that it's ready for a new record)
             cell.id = container.getId();
-            container.removeId();
+            container.reset();
             // replace the list item 
             $('table.cell-lists tbody tr[data-id=' + cell.id + ']').replaceWith(tpl('cellTableRow', cell));
         // or creating a new one?

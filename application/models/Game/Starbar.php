@@ -159,6 +159,7 @@ abstract class Game_Starbar extends Game_Abstract {
             
             if (!Game_Abstract::$_enabled) return false;
             parent::submitAction($actionId, $customAmount);
+            $this->loadGamerProfile(); // get latest points after transaction
             $this->_request->setParam(Api_AbstractController::GAME, $this);
             
         } catch (Exception $exception) {
@@ -252,7 +253,6 @@ abstract class Game_Starbar extends Game_Abstract {
                 $request = Zend_Controller_Front::getInstance()->getRequest();
                 $gamer = Api_UserSession::getInstance($request->getParam('user_key'))->getGamingUser();
         		$game = Game_Starbar::create($gamer, $request);
-        		$gamer->loadProfile($game->getHttpClient());
             }
             return $game;
         } else {

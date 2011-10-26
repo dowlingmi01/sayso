@@ -114,17 +114,25 @@ class Starbar_ContentController extends Api_GlobalController
 
 		$this->view->assign('survey', $survey);
 
-		if (! $this->survey_user_status) $this->survey_user_status = 'new';
+    	$surveyUserMap = new Survey_UserMap();
+		$surveyAlreadyCompleted = $surveyUserMap->checkIfUserHasCompletedSurvey($this->user_id, $this->survey_id);
 
-		// Find the next survey after this survey for this user
-		$nextSurvey = Survey::getNextSurveyForUser($survey, $this->user_id);
-		if ($nextSurvey->id) $nextSurveyId = $nextSurvey->id;
-		else $nextSurveyId = -1;
+		if ($surveyAlreadyCompleted) {
+			$this->view->assign('survey_already_completed', true);
+		} else {
+			$this->view->assign('survey_already_completed', false);
 
-		$this->view->assign('next_survey_id', $nextSurveyId);
+			// Find the next survey after this survey for this user
+			$nextSurvey = Survey::getNextSurveyForUser($survey, $this->user_id);
+			if ($nextSurvey->id) $nextSurveyId = $nextSurvey->id;
+			else $nextSurveyId = -1;
 
-		$bundleOfJoy = $this->_getBundleOfJoy($this->survey_id, $nextSurveyId);
-		$this->view->assign('bundle_of_joy', $bundleOfJoy);
+			$this->view->assign('next_survey_id', $nextSurveyId);
+
+			$bundleOfJoy = $this->_getBundleOfJoy($this->survey_id, $nextSurveyId);
+			$this->view->assign('bundle_of_joy', $bundleOfJoy);			
+		}
+
 	}
 
     public function surveyUnavailableAction ()

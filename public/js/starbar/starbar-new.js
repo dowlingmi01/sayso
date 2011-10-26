@@ -341,6 +341,11 @@ $SQ(function(){
 				click: function(event){
 					event.stopPropagation();
 					event.preventDefault();
+
+					if (sayso.overwrite_onbeforeunload) {
+						if (!confirm("If you leave this survey, you will lose any unsaved progress. Are you sure you want to leave this survey?")) return;
+					}
+
 					// the popbox is AFTER the clickable area
 					var thisPopBox = $SQ(this).next('.sb_popBox');
 
@@ -472,6 +477,8 @@ $SQ(function(){
 		});
 		
 		if (!keepNotifications) updateAlerts(false);
+
+		revertConfirmBeforeUnload(); // for overlays, etc.
 		return;
 	}
 
@@ -546,6 +553,7 @@ $SQ(function(){
 		activateScroll(popBox);
 		activateTabs(popBox);
 		activateSlideshow(popBox);
+		activateOverlay(popBox);
 
 		// if we're a regular nav item, turn on the highlight
 		var parentClick = popBox.parent();
@@ -768,6 +776,9 @@ $SQ(function(){
 			var survey_id = parameters['survey_id'];
 			
 			openPopBox($SQ('#sb_popBox_surveys_lg'), 'http://'+sayso.baseDomain+'/starbar/hellomusic/embed-survey?survey_id='+survey_id, true, true);
+		},
+		'hideOverlay': function () {
+			hideOverlay();
 		},
 		'alertMessage': function (parameters) {
 			var msg = parameters['msg'];
@@ -1082,8 +1093,8 @@ $SQ(function(){
 
 	function activateTabs(target){
 		// only set up the tabs if they're there
-		if ($SQ('.sb_tabs',target).length > 0){
-			$SQ('.sb_tabs',target).each(function(){
+		if ($SQ('.sb_tabs', target).length > 0){
+			$SQ('.sb_tabs', target).each(function(){
 				$SQ(this).tabs({
 					show: function(event, ui){
 							// re-call the scrollbar to re-initialize to avoid the "flash" of narrow content.
@@ -1091,11 +1102,11 @@ $SQ(function(){
 							window.location.hash = '';
 							
 							// adding ID to determine which tab is selected
-							$SQ('ul.sb_ui-tabs-nav',this).attr('id','');
-							$SQ('ul.sb_ui-tabs-nav',this).attr('id','sb_ui-tabs-nav_'+eval(ui.index+1));
+							$SQ('ul.sb_ui-tabs-nav', this).attr('id','');
+							$SQ('ul.sb_ui-tabs-nav', this).attr('id','sb_ui-tabs-nav_'+eval(ui.index+1));
 							
 							// reset child tabs to 0
-							$SQ('.sb_tabPane ul.sb_ui-tabs-nav',this).attr('id','');
+							$SQ('.sb_tabPane ul.sb_ui-tabs-nav', this).attr('id','');
 						}
 				});
 			});
@@ -1104,10 +1115,10 @@ $SQ(function(){
 
 	function activateScroll(target){
 		// first, resize the scrollpane dynamically to fit whatever height it lives in (.content.height() - .header.height())
-		var contentHeight = $SQ('.sb_popContent',target).height();
+		var contentHeight = $SQ('.sb_popContent', target).height();
 
 		// add height of the header + any margins / paddings
-		if ($SQ('.sb_popContent .sb_header',target).length > 0){
+		if ($SQ('.sb_popContent .sb_header', target).length > 0){
 			var headerHeight = $SQ('.sb_popContent .sb_header',target).totalHeight();
 		}else{
 			var headerHeight = 0;
@@ -1125,7 +1136,7 @@ $SQ(function(){
 		var panes = $SQ('.sb_scrollPane',target);
 		panes.each(function(i) {
 			// Add height of all the paragraphs (or anything with the class "sb_tabHeader" really)
-			var paragraphs = $SQ('.sb_tabHeader',$SQ(this).parent());
+			var paragraphs = $SQ('.sb_tabHeader', $SQ(this).parent());
 			var paragraphHeight = 0;
 			paragraphs.each(function(i) {paragraphHeight += $SQ(this).totalHeight();});		
 						
@@ -1141,8 +1152,8 @@ $SQ(function(){
 	}
 
 	function activateAccordion(target){
-		if ($SQ('.sb_tabs',target).length > 0){
-			$SQ('.sb_tabs .sb_tabPane',target).each(function(){
+		if ($SQ('.sb_tabs', target).length > 0){
+			$SQ('.sb_tabs .sb_tabPane', target).each(function(){
 				$SQ('.sb_accordion',this).accordion({
 					collapsible: true, // Accordion can have all its divs be closed simultaneously
 					active: false, // All accordion divs are closed by default
@@ -1204,7 +1215,7 @@ $SQ(function(){
 				});
 			});
 		}else{
-			$SQ('.sb_accordion',target).accordion({
+			$SQ('.sb_accordion', target).accordion({
 				collapsible: true
 			});
 		}
@@ -1213,12 +1224,23 @@ $SQ(function(){
 	}
 
 	function activateSlideshow(target){
-		if ($SQ('#sb_slideshow').length > 0){
-			$SQ('#sb_slideshow').cycle({ 
+		if ($SQ('#sb_slideshow', target).length > 0){
+			$SQ('#sb_slideshow', target).cycle({ 
 				timeout: 0,
 				speed: 500,
 				next: '#sb_slideshow_nav .sb_next',
 				prev: '#sb_slideshow_nav .sb_prev'
+			});
+		}
+	}
+
+	function activateOverlay(target){
+		var overlay = $SQ('.sb_overlay', target);
+		if (overlay.length == 1){
+			enableConfirmBeforeUnload();
+			overlay.unbind();
+			overlay.bind('click', function (event) {
+				if (confirm("If you leave this survey, you will lose any unsaved progress. Are you sure you want to leave this survey?")) closePopBox();
 			});
 		}
 	}
@@ -1326,7 +1348,40 @@ $SQ(function(){
 
 	} // end FUNCTION ANIMATEBAR
 
+	function enableConfirmBeforeUnload () {
+		if (window.onbeforeunload) {
+			sayso.old_onbeforeunload = window.onbeforeunload;
+		}
+		sayso.overwrite_onbeforeunload = true;
+		window.onbeforeunload = confirmBeforeLeavingSurvey;
+	}
+
+	function confirmBeforeLeavingSurvey () {
+		return "If you leave this survey, you will lose any unsaved progress.";
+	}
 	
+	function revertConfirmBeforeUnload () {
+		if (sayso.overwrite_onbeforeunload) {
+			if (sayso.old_onbeforeunload) {
+				window.onbeforeunload = sayso.old_onbeforeunload;
+				sayso.old_onbeforeunload = null;
+			} else {
+				window.onbeforeunload = null;
+			}
+			sayso.overwrite_onbeforeunload = false;
+		}
+	}
+
+	function hideOverlay() {
+		var overlay = $SQ('.sb_overlay', starbarElem);
+		if (overlay.length == 1) {
+			overlay.fadeTo(200, 0);
+			setTimeout(function () {
+				overlay.annihilate();
+			}, 200);
+		}
+	}
+
 	// Starbar state
 	starbar.state.local = {
         'profile' : Math.round(new Date().getTime() / 1000),

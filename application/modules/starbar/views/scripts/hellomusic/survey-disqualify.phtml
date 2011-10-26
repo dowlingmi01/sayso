@@ -2,9 +2,9 @@
 <script type="text/javascript">
 	setTimeout(function() {
 		$SQ('#sb-survey-disqualified').fadeIn(500)
+		$SQ.remoteControl.updateGame(null);
+		$SQ.remoteControl.hideOverlay();
 	}, 500);
-
-	$SQ.remoteControl.updateGame(null);
 
 	$SQ.getScript("http://platform.twitter.com/widgets.js", function(){
 		function handleTweetEvent(event){

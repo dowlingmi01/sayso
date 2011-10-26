@@ -1250,11 +1250,13 @@ $SQ(function(){
 	} // end FUNCTION ANIMATEBAR
 
 	function enableConfirmBeforeUnload () {
-		if (window.onbeforeunload) {
-			sayso.old_onbeforeunload = window.onbeforeunload;
+		if (!sayso.overwrite_onbeforeunload) {
+			if (window.onbeforeunload) {
+				sayso.old_onbeforeunload = window.onbeforeunload;
+			}
+			sayso.overwrite_onbeforeunload = true;
+			window.onbeforeunload = confirmBeforeLeavingSurvey;
 		}
-		sayso.overwrite_onbeforeunload = true;
-		window.onbeforeunload = confirmBeforeLeavingSurvey;
 	}
 
 	function confirmBeforeLeavingSurvey () {

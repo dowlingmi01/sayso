@@ -904,6 +904,9 @@
 	padding: 0px 5px 10px 5px;
 }
 
+#sayso-starbar #sb_colorbox #sb_reward_step1{
+	height: 420px;
+}
 
 #sayso-starbar #sb_colorbox .sb_rewardItem .sb_rewardBase{
 	background-color: #383838;
@@ -931,6 +934,7 @@
 
 #sayso-starbar #sb_colorbox .sb_rewardItem .sb_user-points-box{
 	margin: 10px 0px;
+	width: 100%;
 }
 
 #sayso-starbar #sb_colorbox .sb_rewardItem .sb_column50{

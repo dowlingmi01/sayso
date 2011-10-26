@@ -21,7 +21,7 @@ $percentUserBalanceRemaining = round(($balanceAfter / $currentBalance) * 100);
 
 <div id="sb_rewardItem" class="sb_rewardItem" data-id="<?= $good->getId() ?>">
 
-    <div id="sb_reward_step1" class="sb_reward_step">
+    <div id="sb_reward_step1" class="sb_reward_step" style="background-color: #383838">
         <!-- BEGIN LANDING -->
         <div class="sb_rewardHeader"><span><?= $good->title ?></span></div>      
         <div class="sb_rewardImg">
@@ -29,7 +29,7 @@ $percentUserBalanceRemaining = round(($balanceAfter / $currentBalance) * 100);
         </div><!-- .sb_rewardImg -->
         <div class="sb_rewardBase">
             <div class="sb_user-points-box">                    
-                <div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentUserBalanceToCost ?>%"></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $itemCost ?></span></span></div>
+                <div class="sb_progress_bar sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all"><span class="sb_currency_percent sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left" style="width: <?= $percentUserBalanceToCost ?>%"></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $itemCost ?></span></span></div>
             </div><!-- .user-points-box -->
             <?php if ($good->hasAttribute('giveaway_token')) : ?>
                 <p class="sb_rewardDescription">Redeem your Notes for an entry Token to win <strong><?= $good->description ?></strong></p>
@@ -50,15 +50,15 @@ $percentUserBalanceRemaining = round(($balanceAfter / $currentBalance) * 100);
         <div class="sb_rewardOrder">
             <div class="sb_column_5050BG">
                 <div class="sb_column50">
-                    Current Balance
-                    <div class="sb_user-points-box">                    
-                        <div class="sb_progress_bar"><span class="sb_currency_percent" style="width: 100%"></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $currentBalance ?></span></span></div>
+                    Current Balance<br clear="all" />
+                    <div class="sb_user-points-box" style="margin-top: 0px">                    
+                        <div class="sb_progress_bar sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all"><span class="sb_currency_percent sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left" style="width: 100%"></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $currentBalance ?></span></span></div>
                     </div><!-- .user-points-box -->
                 </div><!-- .sb_column50 -->
                 <div class="sb_column50">
-                    Ending Balance
-                    <div class="sb_user-points-box">                    
-                        <div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentUserBalanceRemaining ?>%"></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $balanceAfter ?></span></span></div>
+                    Ending Balance<br clear="all" />
+                    <div class="sb_user-points-box" style="margin-top: 0px">                    
+                        <div class="sb_progress_bar sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all"><span class="sb_currency_percent sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left" style="width: <?= $percentUserBalanceRemaining ?>%"></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $balanceAfter ?></span></span></div>
                     </div><!-- .user-points-box -->
                 </div><!-- .sb_column50 -->
             </div><!-- .column_5050BG -->
@@ -89,7 +89,8 @@ $percentUserBalanceRemaining = round(($balanceAfter / $currentBalance) * 100);
         <!-- END SHIPPING ADDRESS CONFIRM -->
     </div><!-- #sb_reward_step2 -->
 
-    <div id="sb_reward_step3" class="sb_reward_step" style="display: none;">
+    <div id="sb_reward_step3" class="sb_reward_step" style="display: none;">		
+				<img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_ajax-loader.gif" alt="Loading..." id="sb_img-loading" style="display: none;" />
         <!-- ajax loaded after order is complete -->
     </div><!-- #sb_reward_step3 -->
    
@@ -141,12 +142,16 @@ $percentUserBalanceRemaining = round(($balanceAfter / $currentBalance) * 100);
                         $SQ.ajaxWithAuth({
                             url : 'http://' + sayso.baseDomain + '/starbar/hellomusic/reward-redeemed',
                             data : params,
+														beforeSend: function(){
+															nextBox.show();
+															$SQ('#sayso-starbar #sb_img-loading').show();
+														},
                             success : function (response) {
-                                sayso.log(response.game);
+                                sayso.log(response.game);																
                                 $SQ('#sayso-starbar').trigger('frameCommunication', ['updateGame', {
                                     newGame: response.game
                                 }]);
-                                nextBox.show();
+																$SQ('#sayso-starbar #sb_img-loading').hide();                                
                                 currentBox.replaceWith(response.data.html);
                             }
                         });

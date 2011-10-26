@@ -8,8 +8,8 @@ class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 		$numberOfRegularNotes = 50;
 		$numberOfRegularChops = 500;
 
-		$numberOfPremiumNotesDisqualified = 100;
-		$numberOfPremiumChopsDisqualified = 1000;
+		$numberOfPremiumNotesDisqualified = 200;
+		$numberOfPremiumChopsDisqualified = 2000;
 		$numberOfRegularNotesDisqualified = 25;
 		$numberOfRegularChopsDisqualified = 250;
 
@@ -69,7 +69,7 @@ class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 						$numberOfNotes = $numberOfRegularNotesDisqualified;
 						$numberOfChops = $numberOfRegularChopsDisqualified;
 					}
-				} elseif ($status == 'archived') {
+				} elseif ($status == 'disqualified') {
 					if ($survey->premium) {
 						$numberOfNotes = $numberOfPremiumNotesDisqualified;
 						$numberOfChops = $numberOfPremiumChopsDisqualified;

@@ -87,6 +87,9 @@ $SQ.frameCommunicationFunctions = {
 			survey_id: survey_id
 		}]);
 	},
+	hideOverlay: function (survey_id) {
+		$SQ('#sayso-starbar').trigger('frameCommunication', ['hideOverlay']);
+	},
 	alertMessage: function (alertMessage) {
 		$SQ('#sayso-starbar').trigger('frameCommunication', ['alertMessage', {
 			alertMessage: alertMessage

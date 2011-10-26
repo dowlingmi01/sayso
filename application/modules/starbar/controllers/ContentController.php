@@ -135,7 +135,9 @@ class Starbar_ContentController extends Api_GlobalController
 	    
 	    $game = Game_Starbar::getInstance();
 	    $client = $game->getHttpClient();
-        $client->namedTransactionGroup($good->getTransactionId())->postExecute($game->getGamer(false)->getGamingId());
+	    for ($i = 0; $i < (int) $this->quantity; $i++) {
+            $client->namedTransactionGroup($good->getTransactionId())->postExecute($game->getGamer(false)->getGamingId());
+	    }
         quickLog($client->getData(true));
         $game->loadGamerProfile(true);
         

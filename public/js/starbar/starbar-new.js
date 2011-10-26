@@ -1250,6 +1250,7 @@ $SQ(function(){
 	} // end FUNCTION ANIMATEBAR
 
 	function enableConfirmBeforeUnload () {
+		sayso.log('enableConfirmBeforeUnload');
 		if (!sayso.overwrite_onbeforeunload) {
 			if (window.onbeforeunload) {
 				sayso.old_onbeforeunload = window.onbeforeunload;
@@ -1264,6 +1265,7 @@ $SQ(function(){
 	}
 	
 	function revertConfirmBeforeUnload () {
+		sayso.log('enableConfirmBeforeUnload');
 		if (sayso.overwrite_onbeforeunload) {
 			if (sayso.old_onbeforeunload) {
 				window.onbeforeunload = sayso.old_onbeforeunload;

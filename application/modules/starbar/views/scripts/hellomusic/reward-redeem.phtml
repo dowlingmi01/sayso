@@ -29,7 +29,7 @@ $percentUserBalanceRemaining = round(($balanceAfter / $currentBalance) * 100);
         </div><!-- .sb_rewardImg -->
         <div class="sb_rewardBase">
             <div class="sb_user-points-box">                    
-                <div class="sb_progress_bar sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all"><span class="sb_currency_percent sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left" style="width: <?= $percentUserBalanceToCost ?>%"></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $itemCost ?></span></span></div>
+                <div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentUserBalanceToCost ?>%"></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $itemCost ?></span></span></div>
             </div><!-- .user-points-box -->
             <?php if ($good->hasAttribute('giveaway_token')) : ?>
                 <p class="sb_rewardDescription">Redeem your Notes for an entry Token to win <strong><?= $good->description ?></strong></p>
@@ -90,7 +90,7 @@ $percentUserBalanceRemaining = round(($balanceAfter / $currentBalance) * 100);
     </div><!-- #sb_reward_step2 -->
 
     <div id="sb_reward_step3" class="sb_reward_step" style="display: none;">        
-                <img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_ajax-loader.gif" alt="Loading..." id="sb_img-loading" style="display: none;" />
+         <img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_ajax-loader.gif" alt="Loading..." id="sb_img-loading" style="margin: 50px auto; display:block; text-align: center;" />
         <!-- ajax loaded after order is complete -->
     </div><!-- #sb_reward_step3 -->
    
@@ -99,15 +99,32 @@ $percentUserBalanceRemaining = round(($balanceAfter / $currentBalance) * 100);
     $SQ(function(){
         var sayso = window.sayso;
         var rewardSteps = $SQ('#sb_rewardItem .sb_reward_step');
+				var loadingImg = $SQ('#sb_rewardItem #sb_img-loading');
     
         var step1 = rewardSteps.eq(0),
             step2 = rewardSteps.eq(1),
             step3 = rewardSteps.eq(2);
 
+				// set up the progress bars (copied from starbar-new.js)
+				var reward_progressBarElems = $SQ('.sb_progress_bar', rewardSteps);
+				var reward_currencyPercentElems = $SQ('.sb_currency_percent', rewardSteps);
+				reward_progressBarElems.each(function(){
+						if (!$SQ(this).hasClass('sb_ui-progressbar')) {
+							$SQ(this).addClass('sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all');
+						}
+				});
+			
+				reward_currencyPercentElems.each(function() {
+					var $SQthis = $SQ(this);
+					if (!$SQthis.hasClass('sb_ui-progressbar-value')) {
+						$SQthis.addClass('sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left');
+					}
+				});
+
         $SQ('#sb_rewardItem .sb_theme_button').each(function(){
             $SQ(this).click(function(e){
                 var currentBox = $SQ(this).parents('.sb_reward_step');
-                var nextBox = currentBox.next();
+                var nextBox = currentBox.next();								
                 
                 switch (currentBox.attr('id')) {
                     case 'sb_reward_step1' : // intro
@@ -122,7 +139,7 @@ $percentUserBalanceRemaining = round(($balanceAfter / $currentBalance) * 100);
                             good_id : <?= $good->getId() ?>,
                             quantity : (quantity.length ? quantity.val() : 1)
                         };
-                        
+												
                         if (personalInfo.length) {
                             params.first_name = $SQ('.sb_first_name', personalInfo).val();
                             params.last_name = $SQ('.sb_last_name', personalInfo).val();
@@ -132,14 +149,18 @@ $percentUserBalanceRemaining = round(($balanceAfter / $currentBalance) * 100);
                             params.state = $SQ('.sb_state', personalInfo).val();
                             params.zip = $SQ('.sb_zip', personalInfo).val();
                         }
+												
+												// ghetto solution for loading image b/c beforeSend wasn't working. :(
+												$SQ('.sb_rewardOrder',currentBox).html(loadingImg);
+												
                         $SQ.ajaxWithAuth({
                             url : 'http://' + sayso.baseDomain + '/starbar/hellomusic/reward-redeemed',
                             data : params,
                             beforeSend: function(){
-                                nextBox.show();
-                                $SQ('#sayso-starbar #sb_img-loading').show();
+														
                             },
                             success : function (response) {
+																nextBox.show();
                                 sayso.log(response.game);                                                                
                                 $SQ('#sayso-starbar').trigger('frameCommunication', ['updateGame', {
                                     newGame: response.game

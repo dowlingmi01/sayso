@@ -52,6 +52,7 @@ $SQ.ajaxWithAuth = function (options) {
 
 		annihilate: function() {
 			this.attr('id', 'sb_oldElement_'+$SQ.randomString(10));
+			this.removeClass();
 			this.detach();
 			this.empty();
 		},

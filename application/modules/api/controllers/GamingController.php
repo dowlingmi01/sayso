@@ -73,6 +73,46 @@ class Api_GamingController extends Api_GlobalController
 //        return $this->_resultType($client->getData(true)); // raw data
     }
     
+    public function getGoodAction () {
+        $this->_validateRequiredParameters(array('good_id'));
+        $game = Game_Starbar::getInstance();
+        $client = $game->getHttpClient();
+        
+        // better approach.. first try to get a specific good via store
+        // and use that data since it better reflects "purchasable" goods
+        // If you can't just get one then get them all.. this will
+        // improve with caching
+        $client->getNamedGood($this->good_id);
+        $data = $client->getData();
+        $good = new Gaming_BigDoor_Good();
+        $good->build($data);
+        $good->accept($game);
+        return $this->_resultType($good);
+    }
+    
+    public function getGoodFromStoreAction () {
+        $this->_validateRequiredParameters(array('good_id'));
+        $game = Game_Starbar::getInstance();
+        $client = $game->getHttpClient();
+        $client->setCustomParameters(array(
+        	'attribute_friendly_id' => 'bdm-product-variant', 
+        	'verbosity' => 9,
+            'max_records' => 100
+        ));
+        $client->getNamedTransactionGroup('store');
+        $data = $client->getData();
+        foreach ($data as $goodData) {
+            if ((int) $goodData->goods[0]->named_good_id === (int) $this->good_id) {
+                $good = new Gaming_BigDoor_Good();
+                $good->setPrimaryCurrencyId($game->getPurchaseCurrencyId());
+                $good->build($goodData);
+                $good->accept($game);
+                return $this->_resultType($good);
+            }
+        }
+        throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Good ID ' . $this->good_id . ' not found in store'));
+    } 
+    
     public function shareAction () {
         $this->_validateRequiredParameters(array('shared_type', 'shared_id'));
         

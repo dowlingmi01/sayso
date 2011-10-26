@@ -1,31 +1,31 @@
 <?php
 
-$reward = $this->model;
+$good = $this->model;
 /* @var $reward Gaming_BigDoor_Good */
-$gamer = $reward->getGame()->getGamer();
+$gamer = $good->getGame()->getGamer();
 $notes = $gamer->getCurrencyByTitle('notes')->current_balance;
-$percentNotesToCost = round(((int) $notes / (int) $reward->cost) * 100);
-if ($percentNotesToCost > 100) $percentNotesToCost = 100; 
+$percentUserBalanceToCost = round(((int) $notes / (int) $good->cost) * 100);
+if ($percentUserBalanceToCost > 100) $percentUserBalanceToCost = 100; 
 
 ?>
-<div class="sb_rewardItem <?= $reward->isRedeemable() ? '' : 'sb_rewardItem_disabled' ?>" data-id="<?= $reward->getId() ?>">
-    <?php if (!$reward->isRedeemable()) : ?>
+<div class="sb_rewardItem <?= $good->isRedeemable() ? '' : 'sb_rewardItem_disabled' ?>" data-id="<?= $good->getId() ?>">
+    <?php if (!$good->isRedeemable()) : ?>
     <div class="sb_rewardItem_disabledMsg">
         <h1 class="sb_textError">!</h1>
-        <p>Must complete<br /><a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey?survey_id=1" class="sb_nav_element" rel="sb_popBox_surveys_hg" title="Take premium survey now!" style="position: relative; top: -5px;">Premium Survey</a></p>
+        <p>Must complete<br /><a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey?survey_id=1" class="sb_nav_element" rel="sb_popBox_surveys_hg" title="Take influencer survey now!" style="position: relative; top: -5px;">Influencer Survey</a></p>
     </div><!-- .sb_rewardItem_disabledMsg -->
     <?php endif ?>
     <div class="sb_rewardHeader">
-        <?= $reward->title ?>
+        <?= $good->title ?>
     </div><!-- .sb_rewardHeader -->   
     <div class="sb_rewardImg">
-        <img src="<?= $reward->url_preview ?>" alt="Reward" />
+        <img src="<?= $good->url_preview ?>" alt="Reward" />
     </div><!-- .sb_rewardImg -->
     <div class="sb_rewardBase">
         <div class="sb_user-points-box">                    
-            <div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentNotesToCost ?>%"></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $reward->cost ?></span></span></div>
+            <div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentUserBalanceToCost ?>%"></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $good->cost ?></span></span></div>
         </div><!-- .user-points-box -->
-        <?php if (!$reward->isRedeemable()) : ?>
+        <?php if (!$good->isRedeemable()) : ?>
         <p class="sb_reward_levelReq"><span>Survey Requirement</span></p>
         <?php endif ?>
         <span class="sb_theme_button sb_theme_button_grey">Redeem</span>
@@ -33,6 +33,6 @@ if ($percentNotesToCost > 100) $percentNotesToCost = 100;
 </div><!-- .sb_rewardItem -->
 <script type="text/javascript">
     $SQ(function(){
-        $SQ('#sayso-starbar #sb_popBox_rewards .sb_rewardItem[data-id=<?= $reward->getId() ?>]').dataContainer().setObject(<?= $reward->export(new ObjectExporter_Json()) ?>);
+        $SQ('#sayso-starbar #sb_popBox_rewards .sb_rewardItem[data-id=<?= $good->getId() ?>]').dataContainer().setObject(<?= $good->export(new ObjectExporter_Json()) ?>);
     });
 </script>

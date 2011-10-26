@@ -144,6 +144,8 @@ abstract class Game_Starbar extends Game_Abstract {
         }
     }
 
+    abstract public function getPurchaseCurrencyId ();
+    
     /**
      * Override parent::submitAction to grab user profile with updated 
      * points/currencies *after* the transaction has fired and load that
@@ -160,13 +162,21 @@ abstract class Game_Starbar extends Game_Abstract {
             if (!Game_Abstract::$_enabled) return false;
             parent::submitAction($actionId, $customAmount);
             $this->loadGamerProfile(); // get latest points after transaction
-            $this->_request->setParam(Api_AbstractController::GAME, $this);
             
         } catch (Exception $exception) {
             
             self::_handleException($exception, $this->_request);
             
         }
+    }
+    
+    /**
+     * Override so we can attach the gamer profile to the request
+     * 
+     */
+    public function loadGamerProfile () {
+        parent::loadGamerProfile();
+        $this->_request->setParam(Api_AbstractController::GAME, $this);
     }
     
     /**

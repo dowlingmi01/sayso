@@ -1,0 +1,40 @@
+<?php 
+
+$game = $this->game;
+/* @var $game Game_Starbar */
+$good = $this->good;
+/* @var $good Gaming_BigDoor_Good */
+$user = $this->user;
+/* @var $user User */
+
+?>
+<div id="sb_reward_step3" class="sb_reward_step">
+    <!-- ORDER COMPLETE - SHIPPING -->
+    <div class="sb_rewardHeader"><h2>Order Complete!</h2><span/></div>
+    <div class="sb_rewardImg">
+        <img src="<?= $good->url_full ?>" alt="<?= $good->title ?>" />
+    </div><!-- .sb_rewardImg -->
+    <div class="sb_rewardOrder">
+        <?php if ($good->hasAttribute('giveaway_token')) : ?>
+            <p align="center"><strong><small>The giveaway will be drawn on Nov. 21, 2011</small></strong></p>
+            <p>Remember, you can enter as many times as you want and increase your likelihood of winning.</p>
+        <?php else : ?>
+            <p align="center"><strong><small>Your order will arrive via USPS in 2-4 weeks</small></strong></p>
+            <p><strong>Shipping Address:</strong></p> 
+            <p>Jane wynter<br />
+            121 Simpson Ave<br />
+            Suite 201<br />
+            Boston, MA 01720</p>
+        <?php endif ?>
+        <br clear="all" />
+        <p align="center"><span class="sb_theme_button sb_closeColorbox">Back to Rewards Center</span></p>
+    </div><!-- .sb_rewardOrder -->
+    <!-- END ORDER COMPLETE - SHIPPING -->
+</div><!-- #sb_reward_step3 -->
+<script type="text/javascript">
+    $SQ(function () {
+        $SQ('#sb_reward_step3 .sb_theme_button').bind('click', function () {
+            $SQ.sb_colorbox.close();
+        });
+    });
+</script>

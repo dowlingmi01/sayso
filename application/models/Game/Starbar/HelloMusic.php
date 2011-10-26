@@ -23,6 +23,8 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
             $buskerLevel = $this->getLevels()->find('title', 'busker')->getFirst();
         }
         $profile = $this->getGamer();
+        
+        // determine whether good is redeemable
         if ($good->getId() !== $this->_economy->getGoodId('WEEK_ONE_GIVEAWAY')) {
             $currencyPrimarySurveyId = $this->_economy->getCurrencyId('PRIMARY_SURVEY_POINTS');
             $currencyPrimarySurvey = $profile->getCurrencies()->find('id', $currencyPrimarySurveyId)->getFirst();
@@ -32,6 +34,15 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
                 $good->isRedeemable(false);
             }
         } 
+        
         parent::_visitGood($good);
+    }
+    
+    public function getPurchaseCurrencyId() {
+        static $currencyId = 0;
+        if (!$currencyId) {
+            $currencyId = $this->_economy->getCurrencyId('NOTES'); 
+        }
+        return $currencyId;
     }
 }

@@ -10,293 +10,38 @@
   </div><!-- .sb_rewards -->
 </div><!-- .sb_scrollPane -->
 
-<div id="sb_rewardsOverlayContainer" style="display:none;">
-    <div id="sb_rewardsOverlay">
-        <div class="sb_rewardItem">
-        
-            <div id="sb_reward_step1" class="sb_reward_step">
-                <!-- BEGIN LANDING -->
-                <div class="sb_rewardHeader"><span/></div>      
-                <div class="sb_rewardImg">
-                    <img src="" alt="" />
-                </div><!-- .sb_rewardImg -->
-                <div class="sb_rewardBase">
-                    <div class="sb_user-points-box">                    
-                        <div class="sb_progress_bar"><span class="sb_currency_percent">100</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 2000</span></div>
-                    </div><!-- .user-points-box -->
-                    <p class="rewardDescription">Redeem your Notes for a entry Token into the Week One Giveaway - xxx prize. The more tokens you purchase the better your chance of winning.</span></p>
-                    <span class="sb_theme_button">Redeem</span>
-                </div><!-- .sb_rewardBase -->
-                <!-- END LANDING -->
-            </div><!-- #sb_reward_step1 -->
-        
-            <div id="sb_reward_step2" class="sb_reward_step">
-                <!-- BEGIN SHIPPING ADDRESS CONFIRM -->
-                <div class="sb_rewardHeader"><span/></div><!-- .sb_rewardHeader -->      
-                <div class="sb_rewardImg">
-                    <img src="" height="85" alt="Reward" />
-                </div><!-- .sb_rewardImg -->
-                <div class="sb_rewardOrder">
-                    <div class="sb_column_5050BG">
-                        <div class="sb_column50">
-                            Current Balance
-                            <div class="sb_user-points-box">                    
-                                <div class="sb_progress_bar"><span class="sb_currency_percent">100</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 2000</span></div>
-                            </div><!-- .user-points-box -->
-                        </div><!-- .sb_column50 -->
-                        <div class="sb_column50">
-                            Ending Balance
-                            <div class="sb_user-points-box">                    
-                                <div class="sb_progress_bar"><span class="sb_currency_percent">50</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 1000</span></div>
-                            </div><!-- .user-points-box -->
-                        </div><!-- .sb_column50 -->
-                    </div><!-- .column_5050BG -->
-                    <div class="sb_step2Actions">
-                        <p><strong>Shipping Address: </strong></p> 
-                        <p><input name="sb_first_name" type="text" placeholder="First Name" /> <input name="sb_last_name" type="text" placeholder="Last Name" /><br />
-                        <input name="sb_address1" type="text" placeholder="Address" /><br />
-                        <input name="sb_address2" type="text" /><br />
-                        <input name="sb_city" type="text" placeholder="City" />, <input name="sb_state" type="text" placeholder="State" /> <input name="sb_zip" type="text" placeholder="Zip" /></p>
-                    </div>
-                    <p align="center">My information is correct<br clear="all" />
-                    <span class="sb_theme_button">Place Order</span></p>
-                </div><!-- .sb_rewardOrder -->
-                <!-- END SHIPPING ADDRESS CONFIRM -->
-            </div><!-- #sb_reward_step2 -->
-        
-            <div id="sb_reward_step3" class="sb_reward_step">
-                <!-- ORDER COMPLETE - SHIPPING -->
-                <div class="sb_rewardHeader"><h2>Order Complete!</h2><span/></div>
-                <div class="sb_rewardImg">
-                    <img src="" height="85" alt="Reward" />
-                </div><!-- .sb_rewardImg -->
-                <div class="sb_rewardOrder">
-                    <p align="center"><strong><small>Your order will arrive via USPS in 2-4 weeks</small></strong></p>
-                    <p><strong>Shipping Address:</strong></p> 
-                    <p>Jane wynter<br />
-                    121 Simpson Ave<br />
-                    Suite 201<br />
-                    Boston, MA 01720</p>
-                    <br clear="all" />
-                    <p align="center"><span class="sb_theme_button sb_closeColorbox">Back to Rewards Center</span></p>
-                </div><!-- .sb_rewardOrder -->
-                <!-- END ORDER COMPLETE - SHIPPING -->
-            </div><!-- #sb_reward_step3 -->
-            <?php
-            /*
-      
-      <p><strong>Shipping Address: </strong></p> 
-    <p><span id="sb_reward_name" class="sb_jeip">Jane wynter</span><br />
-    <span id="sb_reward_address" class="sb_jeip">121 Simpson Ave</span><br />
-    <span id="sb_reward_address2" class="sb_jeip">Suite 201</span><br />
-    <span id="sb_reward_city" class="sb_jeip">Boston</span>, <span id="sb_reward_state" class="sb_jeip">MA</span> <span id="sb_reward_zip" class="sb_jeip">01720</span></p>
-                        
-            <div id="sb_reward_step2" class="sb_reward_step">
-                <!-- BEGIN NO-SHIPPING / ORDER QUANTITY -->
-                <div class="sb_rewardHeader">
-                    $25 Ticketmaster Gift Certificate
-                </div><!-- .sb_rewardHeader -->      
-                <div class="sb_rewardImg">
-                    <img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_reward_lg.jpg" height="85" alt="Reward" />
-                </div><!-- .sb_rewardImg -->
-                <div class="sb_rewardOrder">
-                    <div class="sb_column_5050BG">
-                        <div class="sb_column50">
-                            Current Balance
-                            <div class="sb_user-points-box">                    
-                                <div class="sb_progress_bar"><span class="sb_currency_percent">100</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 2000</span></div>
-                            </div><!-- .user-points-box -->
-                        </div><!-- .sb_column50 -->
-                        <div class="sb_column50">
-                            Ending Balance
-                            <div class="sb_user-points-box">                    
-                                <div class="sb_progress_bar"><span class="sb_currency_percent">50</span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> 1000</span></div>
-                            </div><!-- .user-points-box -->
-                        </div><!-- .sb_column50 -->
-                    </div><!-- .column_5050BG -->
-                    <p><strong>Choose Quantity:</strong></p> 
-                    <p>
-                    <select>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
-                    </p>
-                    <p>Tokens will appear in your account and you will be automatically entered into the Week One giveaway</p>
-                    <p align="center">My information is correct<br clear="all" />
-                    <a href="" class="sb_theme_button">Place Order</a></p>
-                </div><!-- .sb_rewardOrder -->
-                <!-- END NO-SHIPPING / ORDER QUANTITY -->      
-      </div><!-- #sb_reward_step2 -->
-            
-            <div id="sb_reward_step3" class="sb_reward_step">
-                <!-- ORDER COMPLETE - NO SHIPPING -->
-                <div class="sb_rewardHeader">
-                    <h2>Order Complete!</h2>
-                    $25 Ticketmaster Gift Certificate
-                </div><!-- .sb_rewardHeader -->      
-                <div class="sb_rewardImg">
-                    <img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_reward_lg.jpg" height="85" alt="Reward" />
-                </div><!-- .sb_rewardImg -->
-                <div class="sb_rewardOrder">
-                    <p align="center"><strong><small>The giveaway will be drawn on Nov. 21, 2011</small></strong></p>
-                    <p>Remember, you can enter as many times as you want and increase your likelihood of winning.</p>
-                    <br clear="all" />
-                    <p align="center"><a href="#" class="sb_theme_button sb_closeColorbox">Back to Rewards Center</a></p>
-                </div><!-- .sb_rewardOrder -->
-                <!-- END ORDER COMPLETE - NO SHIPPING -->            
-      </div><!-- #sb_reward_step3 -->
-            */
-            ?>
-    </div><!-- .sb_rewardItem -->
-  </div><!-- #sb_rewardsOverlay -->
-</div>
+<div id="sb_rewardsOverlay"></div>
 <script language="javascript">
-$SQ(function(){
-    var sayso = window.sayso;
-    var rewards = $SQ('#sayso-starbar .sb_rewards');
-    var overlay = $SQ('#sayso-starbar #sb_rewardsOverlay');
-    var rewardSteps = $SQ('.sb_reward_step', overlay);
-	var rewardBtnRedeem = $SQ('#sayso-starbar #sb_rewardsOverlay .sb_theme_button');
+    $SQ(function(){
+        var sayso = window.sayso;
+        var overlay = $SQ('#sayso-starbar #sb_rewardsOverlay');
 
-    var step1 = rewardSteps.eq(0),
-        step2 = rewardSteps.eq(1),
-        step3 = rewardSteps.eq(2);
-	
-	rewardSteps.each(function(){
-		$SQ(this).hide();	
-	});
-	
-	$SQ(overlay + '.sb_reward_step:first').show();
-	
-	rewardBtnRedeem.each(function(){
-        $SQ(this).click(function(e){
-            var currentBox = $SQ(this).parents('.sb_reward_step');
-            switch (currentBox.attr('id')) {
-                case 'sb_reward_step1' : // intro
-                    break;
-                case 'sb_reward_step2' : // address/confirm
-                    break;
-                case 'sb_reward_step3' : // success
-                    break;
-            }
-            var nextBox = $SQ(this).parents('.sb_reward_step').next();
-            nextBox.show();
-            currentBox.replaceWith(nextBox);
+        $SQ(document).bind('sb_cbox_cleanup', function () {
+            overlay.hide();
+        });
+        
+        // select a reward
+        $SQ('#sayso-starbar .sb_rewards')
+            .find('.sb_rewardItem')
+            .not('.sb_rewardItem_disabled')
+            .unbind('click').bind('click', function(e){
+                
+                var container = $SQ(this).dataContainer();
+                
+                $SQ.ajaxWithAuth({
+                    url : 'http://' + sayso.baseDomain + '/starbar/hellomusic/reward-redeem',
+                    data : { good_id : container.getId() },
+                    success : function (response) {
+                        overlay.html(response.data.html).show();
+                        // open color box
+                        $SQ.sb_colorbox({
+                            width:"220px", height:'400px',
+                            inline: true, initialWidth: 50, initialHeight: 50,
+                            speed: 500, overflow: 'hidden', transition: 'fade',
+                            href:"#sb_rewardsOverlay"
+                        });
+                    }
+                });
         });
     });
-    
-    rewards
-        .find('.sb_rewardItem')
-        .not('.sb_rewardItem_disabled')
-        .unbind('click').bind('click', function(e){
-            
-		    var container = $SQ(this).dataContainer(), // the selected reward HTML
-                reward = container.getObject(), // reward JSON object
-                isToken = (reward._attributes.giveaway_token ? true : false);
-
-            sayso.log(reward);
-
-            // get correct user currency (based on reward currency)
-            var userCurrencies = window.sayso.starbar.game._gamer._currencies.collection,
-                currencyId = reward.currency_id,
-                currency = null;  
-            
-            for (var i in userCurrencies) {
-                if (userCurrencies[i].id === currencyId) {
-                    currency = userCurrencies[i];
-                    break;
-                }
-            }
-               
-	        // update titles and descriptions
-            overlay.find('div.sb_rewardHeader span').text(reward.title);
-            overlay.find('div.sb_rewardImg img').attr('src', reward.url_full).attr('alt', reward.description);
-
-            // step 1 
-
-            // progress bar (same as the item progress bar)
-            var itemProgressBar = container.find('.sb_user-points-box').html();
-            overlay.find('.sb_user-points-box').html(itemProgressBar);
-
-            // reward description
-            var rewardDescription;
-            if (isToken) {
-                rewardDescription = 'Redeem your Notes for an entry Token to win <strong>' + reward.description + '</strong>. The more tokens you purchase the better your chance of winning.';
-            } else {
-                rewardDescription = 'Redeem your Notes for <strong>' + reward.description + '</strong>.';
-            }
-            overlay.find('#sb_reward_step1 .sb_rewardBase p.rewardDescription').html(rewardDescription);
-
-            // step 2
-            
-            // current balance
-            var userPoints = step2.find('.sb_user-points-box'),
-                userPointsBefore = userPoints.eq(0),
-                userPointsAfter =  userPoints.eq(1);
-
-            userPointsBefore.find('span.sb_currency_percent').css('width', '100%');
-            userPoints.css('margin', '0 !important');
-            
-            updateBalances();
-            
-            function updateBalances (quantity) {
-                if (!quantity) quantity = 1;
-                var rewardCost = reward.cost * quantity;
-                // update users current balance as text e.g. 1200
-                userPointsBefore.find('span.sb_progressBarValue span').text(currency.current_balance);
-                // user points after purchase
-                var pointsRemaining = currency.current_balance - rewardCost;
-                // .. update as text e.g. 1100 
-                userPointsAfter.find('span.sb_progressBarValue span').text(currency.current_balance - rewardCost);
-                // .. update progress bar
-                userPointsAfter.find('span.sb_currency_percent').css('width', Math.round((pointsRemaining / currency.current_balance) * 100) + '%');
-                
-                sayso.log(currency.current_balance, reward.cost, pointsRemaining, Math.round((pointsRemaining / currency.current_balance) * 100));
-            }
-            
-            var step2TokenMarkup = '<p style="position: relative; top: -10px;"><strong>Choose Quantity:</strong><br /><select><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select><br />Tokens will appear in your account and you will be automatically entered into the giveaway</p>';
-
-            if (isToken) {
-                step2.find('.sb_step2Actions').html(step2TokenMarkup);
-                setTimeout(function () {
-                    step2.find('.sb_step2Actions select').bind('change', function () {
-                        updateBalances($SQ(this).val());
-                    });
-                }, 100);
-            }
-
-            var step3TokenMarkup = '<p align="center"><strong><small>The giveaway will be drawn on Nov. 21, 2011</small></strong></p><p>Remember, you can enter as many times as you want and increase your likelihood of winning.</p><br clear="all" /><p align="center"><a href="#" class="sb_theme_button sb_closeColorbox">Back to Rewards Center</a></p>';
-            if (isToken) {
-                step3.find('.sb_rewardOrder').html(step3TokenMarkup);
-            }
-            
-            sayso.log(window.sayso.starbar.game._gamer._currencies.collection);
-
-            //
-            // where i got to: other two progress bars are for current users notes, and notes after purchase (respectively)
-            // get these from the sayso.starbar.user.gaming
-
-            // email order to ?
-            // shipping address OR quantity
-            // 
-
-            // open color box
-            $SQ.sb_colorbox({
-                width:"220px", 
-                height:'400px',
-                inline: true, 
-                initialWidth: 50,
-                initialHeight: 50,
-                speed: 500,
-                overflow: 'hidden',
-                transition: 'fade',
-                href:"#sb_rewardsOverlay"
-            });
-            
-	});
-	
-});
 </script>

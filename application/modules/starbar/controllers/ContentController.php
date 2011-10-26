@@ -38,18 +38,26 @@ class Starbar_ContentController extends Api_GlobalController
     public function rewardsAction ()
     {
         $game = Game_Starbar::getInstance();
-        $client = $game->getHttpClient();
-        $client->setCustomParameters(array(
-        	'attribute_friendly_id' => 'bdm-product-variant', 
-        	'verbosity' => 9,
-            'max_records' => 100
-        ));
-        $client->getNamedTransactionGroup('store');
-        $data = $client->getData();
+        $cache = Api_Registry::getCache();
+	    $cacheId = 'BigDoor_getNamedTransactionGroup_store';
+	    if ($cache->test($cacheId)) {
+	        $data = $cache->load($cacheId);
+	    } else {
+	        $client = $game->getHttpClient();
+            $client->setCustomParameters(array(
+            	'attribute_friendly_id' => 'bdm-product-variant', 
+            	'verbosity' => 9,
+                'max_records' => 100
+            ));
+            $client->getNamedTransactionGroup('store');
+            $data = $client->getData();
+            $cache->save($data, $cacheId);
+	    }
+	    
         $goods = new Collection(); 
         foreach ($data as $goodData) {
             $good = new Gaming_BigDoor_Good();
-            $good->setPrimaryCurrencyId(67384);
+            $good->setPrimaryCurrencyId($game->getPurchaseCurrencyId());
             $good->build($goodData);
             $good->accept($game);
             $goods[] = $good;
@@ -72,6 +80,88 @@ class Starbar_ContentController extends Api_GlobalController
         }
         // http://local.sayso.com/starbar/hellomusic/rewards/user_key/r3nouttk6om52u18ba154mc4j4/user_id/46/auth_key/309e34632c2ca9cd5edaf2388f5fa3db
         
+	}
+	
+	/**
+	 * Get reward redemption view
+	 * 
+	 * @todo put API logic in the API, and use Api_Adapter to retreive 
+	 * @throws Api_Exception
+	 */
+	public function rewardRedeemAction () {
+	    
+	    $this->_validateRequiredParameters(array('good_id'));
+	    $game = Game_Starbar::getInstance();
+	    
+	    $cache = Api_Registry::getCache();
+	    $cacheId = 'BigDoor_getNamedTransactionGroup_store';
+	    if ($cache->test($cacheId)) {
+	        $data = $cache->load($cacheId);
+	    } else {
+	        $client = $game->getHttpClient();
+            $client->setCustomParameters(array(
+            	'attribute_friendly_id' => 'bdm-product-variant', 
+            	'verbosity' => 9,
+                'max_records' => 100
+            ));
+            $client->getNamedTransactionGroup('store');
+            $data = $client->getData();
+            $cache->save($data, $cacheId);
+	    }
+        
+        $good = new Gaming_BigDoor_Good();
+        // @todo better way of doing this?
+        $good->setPrimaryCurrencyId($game->getPurchaseCurrencyId());
+        foreach ($data as $goodData) {
+            if ((int) $goodData->goods[0]->named_good_id === (int) $this->good_id) {
+                $good->build($goodData);
+                $good->accept($game);
+                break;
+            }
+        }
+        if (!$good->hasId()) {
+            throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Good ID ' . $this->good_id . ' not found in store'));
+        }
+        $this->view->assign(array('good' => $good, 'game' => $game));
+        return $this->_resultType($good);
+	}
+	
+	public function rewardRedeemedAction () {
+	    // call above does everything we need for the good
+	    $good = $this->rewardRedeemAction();
+	    /* @var $good Gaming_BigDoor_Good */
+	    
+	    $this->_validateRequiredParameters(array('quantity'));
+	    
+	    $game = Game_Starbar::getInstance();
+	    $client = $game->getHttpClient();
+        $client->postNamedTransactionGroup($good->getTransactionId());
+        $game->loadGamerProfile();
+        
+//        $data = $client->getData();
+	    
+	    if (isset($this->first_name)) {
+	        // shippable item
+	        // @todo validate
+	        // @todo add this record to user_address
+	        try {
+	            
+	            $message = 'Say.so redemption made for ' . $good->title;
+    	        $config = Api_Registry::getConfig();
+                $mail = new Zend_Mail();
+                $mail->setFrom($config->noReplyEmail)
+                     ->addTo('david@say.so')
+                     ->setSubject('Test');
+                $mail->setBodyText($message);
+                $mail->send(new Zend_Mail_Transport_Smtp());
+	        } catch (Exception $e) {
+	            quickLog($message);
+	        }
+	    } else {
+	        
+	    }
+	   
+	    return $this->_resultType($good);
 	}
 	
     public function aboutSaysoAction ()

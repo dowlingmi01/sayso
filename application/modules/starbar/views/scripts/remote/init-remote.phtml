@@ -48,10 +48,7 @@ $game = $this->game;
                 key : '<?= Api_UserSession::getInstance()->getKey() ?>'
             },
             <? if ($game && $game->getGamer() && $game->getLevels()) { ?>
-            	game : {
-                	_gamer : <?= $this->game->getGamer()->export(new ObjectExporter_Json()) ?>,
-                	_levels : <?= $this->game->getLevels()->export(new ObjectExporter_Json()) ?>
-				},
+            	game : <?= $this->game->export(new ObjectExporter_Json()) ?>,
             <? } ?>
             state : {
                 visibility : 'starbar-visOpen',

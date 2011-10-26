@@ -4,7 +4,7 @@
 		$SQ('#sb-survey-disqualified').fadeIn(500)
 		$SQ.remoteControl.updateGame(null);
 		$SQ.remoteControl.hideOverlay();
-	}, 500);
+	}, 200);
 
 	$SQ.getScript("http://platform.twitter.com/widgets.js", function(){
 		function handleTweetEvent(event){
@@ -16,10 +16,12 @@
 	});
 </script>
 <div id="sayso-starbar-embed">
-	Sorry, it appears that you do not qualify for the <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong> survey. Don't worry, we'll still give you some notes and chops for trying!<br /><br />
+	<? if (!$this->survey->premium) { ?>
+		Sorry, it appears that you do not qualify for the <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong> survey. Don't worry, we'll still give you some notes and chops for trying!<br /><br />
+	<? } ?>
 	<div id="sb-survey-disqualified">
 		<? if ($this->survey->premium) { ?>
-			<p>You earned <strong class="sb_theme_textHighlight_alt">200 Notes</strong> &amp;  <strong class="sb_theme_textHighlight_alt">2000 Chops</strong></p>
+			<p>Nice! You still banked <strong class="sb_theme_textHighlight_alt">200 Notes</strong> &amp; <strong class="sb_theme_textHighlight_alt">2000 Chops</strong>. Remember to check out the Rewards Center to redeem your Notes for stuff!</p>
 		<? } else { ?>
 			<p>You earned <strong class="sb_theme_textHighlight">25 Notes</strong> &amp;  <strong class="sb_theme_textHighlight">250 Chops</strong></p>
 		<? } ?>

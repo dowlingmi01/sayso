@@ -1138,6 +1138,8 @@ $SQ(function(){
 	function activateOverlay(target){
 		var overlay = $SQ('.sb_overlay', target);
 		if (overlay.length == 1){
+			sayso.log('Overlay');
+			sayso.log(overlay);
 			enableConfirmBeforeUnload();
 			overlay.unbind();
 			overlay.bind('click', function (event) {

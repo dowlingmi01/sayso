@@ -1380,6 +1380,7 @@ $SQ(function(){
 				overlay.annihilate();
 			}, 200);
 		}
+		revertConfirmBeforeUnload();
 	}
 
 	// Starbar state

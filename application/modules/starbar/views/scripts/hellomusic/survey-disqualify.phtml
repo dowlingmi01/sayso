@@ -4,7 +4,7 @@
 		$SQ('#sb-survey-disqualified').fadeIn(500)
 	}, 500);
 
-	$SQ.remoteControl.updateGame('ajax');
+	$SQ.remoteControl.updateGame(null);
 
 	$SQ.getScript("http://platform.twitter.com/widgets.js", function(){
 		function handleTweetEvent(event){

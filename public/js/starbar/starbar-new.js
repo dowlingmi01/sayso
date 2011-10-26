@@ -777,6 +777,7 @@ $SQ(function(){
 
 	function updateGame (loadSource, setGlobalUpdate, animate) {
 		if (loadSource == "ajax") {
+			sayso.log('Updating game from AJAX');
 			$SQ.ajaxWithAuth({
 				url : 'http://'+sayso.baseDomain+'/api/gaming/get-game?renderer=jsonp',
 				success : function (response, status, jqXHR) {
@@ -784,8 +785,11 @@ $SQ(function(){
     			}
 			});
 		} else if (loadSource == "cache") {
+			sayso.log('Updating game from Cache');
 			activateGameElements(null, animate);
 		} else { // loadSource object is a game object, load from there
+			sayso.log('Updating game from Object');
+			sayso.log(loadSource);
 			sayso.starbar.game = loadSource;
 			activateGameElements(null, animate);
 		}

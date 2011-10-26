@@ -20,6 +20,7 @@ class Api_GamingController extends Api_GlobalController
     
     public function getGameAction () {
         $game = Game_Starbar::getInstance();
+        $game->loadGamerProfile(); // get latest points after transaction
         return $this->_resultType($game);
     }
     

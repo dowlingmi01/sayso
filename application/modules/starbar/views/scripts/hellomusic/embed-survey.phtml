@@ -13,7 +13,7 @@
 	<br />
 	You have already completed this survey.
 	<script type="text/javascript">
-		$SQ('#sayso-starbar').trigger('frameCommunication', ['hideOverlay']);
+		$SQ('#sayso-starbar').trigger('frameCommunication', ['hideOverlay', {}]);
 	</script>
 <? } else { ?>
 	<div id="starbar-survey-<?= $this->survey->id ?>" class="sb_survey_container"></div>

@@ -379,7 +379,6 @@ $SQ(function(){
 		
 		if (!keepNotifications) updateAlerts(false);
 
-		revertConfirmBeforeUnload(); // for overlays, etc.
 		return;
 	}
 
@@ -1283,14 +1282,11 @@ $SQ(function(){
 
 	function hideOverlay() {
 		var overlay = $SQ('.sb_overlay', starbarElem);
-		if (overlay.length > 0) {
-			overlay.each(function() {
-				var $SQthis = $SQ(this);
-				$SQthis.fadeTo(200, 0);
-				setTimeout(function () {
-					$SQthis.annihilate();
-				}, 200);
-			});
+		if (overlay.length == 1) {
+			overlay.fadeTo(200, 0);
+			setTimeout(function () {
+				overlay.annihilate();
+			}, 200);
 		}
 		revertConfirmBeforeUnload();
 	}

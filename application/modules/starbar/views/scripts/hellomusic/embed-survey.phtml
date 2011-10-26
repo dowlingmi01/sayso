@@ -1,4 +1,6 @@
-<div class="sb_overlay"></div>
+<? if (!$this->survey_already_completed) { ?>
+	<div class="sb_overlay"></div>
+<? } ?>
 <div class="sb_header">
 	<h2 class="sb_title"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/logo_hellomusic.png" alt="Hello Music logo" /> Surveys</h2>
 </div><!-- .sb_header -->
@@ -12,9 +14,6 @@
 <? if ($this->survey_already_completed) { ?>
 	<br />
 	You have already completed this survey.
-	<script type="text/javascript">
-		$SQ('#sayso-starbar').trigger('frameCommunication', ['hideOverlay', {}]);
-	</script>
 <? } else { ?>
 	<div id="starbar-survey-<?= $this->survey->id ?>" class="sb_survey_container"></div>
 	<script type="text/javascript">

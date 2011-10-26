@@ -19,8 +19,8 @@ class Survey extends Record
 			$surveys->loadSurveysForStarbarAndUser($startSurvey->starbar_id, $userId, 'survey', $surveyUserStatus);
 			$i = 0;
 			$numberOfSurveys = count($surveys);
-			while ($i < $numberOfSurveys) {
-				if ($surveys[$i]->id == $startSurvey->id && ($i < $numberOfSurveys - 1)) {
+			while ($i < $numberOfSurveys) { // the last survey has no next survey
+				if ($surveys[$i]->id == $startSurvey->id) {
 					return $surveys[$i+1];
 				}
 				$i++;

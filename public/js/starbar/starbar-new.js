@@ -402,6 +402,7 @@ $SQ(function(){
 			});
 		}
 		
+		hideOverlay();
 		closePopBox(keepNotificationsOpen);
 		
 		// if there's a colorbox open, close it
@@ -1137,12 +1138,13 @@ $SQ(function(){
 	function activateOverlay(target){
 		var overlay = $SQ('.sb_overlay', target);
 		if (overlay.length == 1){
-			sayso.log('Overlay');
-			sayso.log(overlay);
 			enableConfirmBeforeUnload();
 			overlay.unbind();
 			overlay.bind('click', function (event) {
-				if (confirm("If you leave this survey, you will lose any unsaved progress. Are you sure you want to leave this survey?")) closePopBox();
+				if (confirm("If you leave this survey, you will lose any unsaved progress. Are you sure you want to leave this survey?")) {
+					hideOverlay();
+					closePopBox();
+				}
 			});
 		}
 	}
@@ -1251,9 +1253,7 @@ $SQ(function(){
 	} // end FUNCTION ANIMATEBAR
 
 	function enableConfirmBeforeUnload () {
-		sayso.log('enableConfirmBeforeUnload');
 		if (!sayso.overwrite_onbeforeunload) {
-			sayso.log('Enabling');
 			if (window.onbeforeunload) {
 				sayso.old_onbeforeunload = window.onbeforeunload;
 			}
@@ -1267,9 +1267,7 @@ $SQ(function(){
 	}
 	
 	function revertConfirmBeforeUnload () {
-		sayso.log('revertConfirmBeforeUnload');
 		if (sayso.overwrite_onbeforeunload) {
-			sayso.log('Reverting');
 			if (sayso.old_onbeforeunload) {
 				window.onbeforeunload = sayso.old_onbeforeunload;
 				sayso.old_onbeforeunload = null;
@@ -1283,12 +1281,12 @@ $SQ(function(){
 	function hideOverlay() {
 		var overlay = $SQ('.sb_overlay', starbarElem);
 		if (overlay.length == 1) {
+			revertConfirmBeforeUnload();
 			overlay.fadeTo(200, 0);
 			setTimeout(function () {
 				overlay.annihilate();
 			}, 200);
 		}
-		revertConfirmBeforeUnload();
 	}
 
 	// Starbar state

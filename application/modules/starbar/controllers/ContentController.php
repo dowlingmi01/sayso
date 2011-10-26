@@ -513,7 +513,6 @@ class Starbar_ContentController extends Api_GlobalController
         $config = Api_Registry::getConfig();
 		
 		$this->view->assign('facebook_app_id', $config->facebook->app_id);
-		$this->view->assign('facebook_share_image_url', $config->facebook->share_image_url);
 		$this->view->assign('twitter_share_via_user', $config->twitter->share_via_user);
 		$this->view->assign('twitter_share_related_users', $config->twitter->share_related_users);
 		$this->view->assign('twitter_share_hashtags', $config->twitter->share_hashtags);

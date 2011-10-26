@@ -88,4 +88,9 @@ class Starbar_HellomusicController extends Starbar_ContentController
 		}
     	parent::userProfileAction();
 	}
+
+	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null) {
+		parent::_assignShareInfoToView($shareLink, $twitterShareText, $facebookShareCaption, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
+		$this->view->assign('facebook_share_image_url', 'http://media.saysollc.com/media/hellomusic/logo_hellomusic.png');
+	}
 }

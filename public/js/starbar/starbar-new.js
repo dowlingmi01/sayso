@@ -1192,8 +1192,8 @@ $SQ(function(){
 			}
 
 			closePopBox(true);
-	        elemStarbarMain.fadeOut('fast');
-            elemPopBoxVisControl.fadeOut('fast');
+	        elemStarbarMain.fadeTo('fast', 0);
+            elemPopBoxVisControl.fadeTo('fast', 0);
             btnToggleVis.attr('class','').addClass('sb_btnStarbar-closed');
             btnSaySoLogo.css('backgroundPosition','3px 0px');
             elemPlayerConsole.animate(
@@ -1241,8 +1241,8 @@ $SQ(function(){
             	function() {
                     // Animation complete.
                     $SQ(this).attr('class','').addClass('sb_starbar-visOpen');
-                    elemStarbarMain.fadeIn('fast');
-                    elemVisControls.fadeIn('fast');
+                    elemStarbarMain.fadeTo('fast', 1);
+                    elemVisControls.fadeTo('fast', 1);
                     btnToggleVis.attr('class','').addClass('sb_btnStarbar-open');
                     showAlerts();
             	}

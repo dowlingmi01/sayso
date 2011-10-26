@@ -1254,6 +1254,7 @@ $SQ(function(){
 	function enableConfirmBeforeUnload () {
 		sayso.log('enableConfirmBeforeUnload');
 		if (!sayso.overwrite_onbeforeunload) {
+			sayso.log('Enabling');
 			if (window.onbeforeunload) {
 				sayso.old_onbeforeunload = window.onbeforeunload;
 			}
@@ -1267,8 +1268,9 @@ $SQ(function(){
 	}
 	
 	function revertConfirmBeforeUnload () {
-		sayso.log('enableConfirmBeforeUnload');
+		sayso.log('revertConfirmBeforeUnload');
 		if (sayso.overwrite_onbeforeunload) {
+			sayso.log('Reverting');
 			if (sayso.old_onbeforeunload) {
 				window.onbeforeunload = sayso.old_onbeforeunload;
 				sayso.old_onbeforeunload = null;

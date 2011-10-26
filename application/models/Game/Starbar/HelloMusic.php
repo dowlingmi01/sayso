@@ -29,7 +29,7 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
             $currencyPrimarySurveyId = $this->_economy->getCurrencyId('PRIMARY_SURVEY_POINTS');
             $currencyPrimarySurvey = $profile->getCurrencies()->find('id', $currencyPrimarySurveyId)->getFirst();
             $currentLevel = $profile->getHighestLevel();
-            if ((int) $currencyPrimarySurvey->current_balance < 2 || 
+            if ((int) $currencyPrimarySurvey->current_balance < 1 || 
                 $currentLevel->ordinal < $buskerLevel->ordinal) {
                 $good->isRedeemable(false);
             }

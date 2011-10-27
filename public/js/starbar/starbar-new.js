@@ -1369,6 +1369,8 @@ $SQ(function(){
 
 	// Update the cross-domain state variables
 	starbar.state.update = function (){
+		sayso.log('update');
+		sayso.log(starbar.state.visibility);
         var app = KOBJ.get_application(starbar.kynetxAppId);
         app.raise_event('update_state', { 
             'visibility' : starbar.state.visibility,
@@ -1391,7 +1393,11 @@ $SQ(function(){
 
 	// Refresh the Starbar to respond to state changes, if any
 	starbar.state.refresh = function () {
+		sayso.log('refresh');
+		sayso.log(starbar.state.visibility);
         starbar.state.callback = function () { 
+			sayso.log('refresh callback');
+			sayso.log(starbar.state.visibility);
     		// @ todo remove this once krl is updated to use 'open' and 'stowed'...
 		    if (starbar.state.visibility == 'sb_starbar-visOpen') starbar.state.visibility = 'open';
 		    else if (starbar.state.visibility == 'sb_starbar-visStowed') starbar.state.visibility = 'stowed';

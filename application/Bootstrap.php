@@ -80,7 +80,7 @@ class Bootstrap extends App_Bootstrap
         // Try to iniialize db conncetion 
         // and return the created handler
         try {
-            $dbSessionHandler = Zend_Session_SaveHandler_DbTable($config);
+            $dbSessionHandler = new Zend_Session_SaveHandler_DbTable($config);
         }
         catch (Exception $e) {
             return false;

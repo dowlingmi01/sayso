@@ -1301,6 +1301,8 @@ $SQ(function(){
 	}
 
 	function stowBar (needToUpdateState) {
+		sayso.log('stowBar');
+		sayso.log(starbar.state.visibility);
 		starbar.state.local.visibility = 'stowed';
 		if (needToUpdateState) {
 			starbar.state.visibility = 'sb_starbar-visStowed';
@@ -1342,6 +1344,8 @@ $SQ(function(){
 	}
 
 	function openBar (needToUpdateState) {
+		sayso.log('openBar');
+		sayso.log(starbar.state.visibility);
 		starbar.state.local.visibility = 'open';
 		if (needToUpdateState) {
 			starbar.state.visibility = 'sb_starbar-visOpened';
@@ -1380,7 +1384,7 @@ $SQ(function(){
         });
     }
 
-    // @ todo remove this once krl is updated to use 'open' and 'stowed'... do krl files need to be compiled?
+    // @todo remove this once krl is updated to use 'open' and 'stowed'... do krl files need to be compiled?
     if (starbar.state.visibility == 'sb_starbar-visOpen') starbar.state.visibility = 'open';
     else if (starbar.state.visibility == 'sb_starbar-visStowed') starbar.state.visibility = 'stowed';
 
@@ -1398,7 +1402,7 @@ $SQ(function(){
         starbar.state.callback = function () { 
 			sayso.log('refresh callback');
 			sayso.log(starbar.state.visibility);
-    		// @ todo remove this once krl is updated to use 'open' and 'stowed'...
+    		// @todo remove this once krl is updated to use 'open' and 'stowed'...
 		    if (starbar.state.visibility == 'sb_starbar-visOpen') starbar.state.visibility = 'open';
 		    else if (starbar.state.visibility == 'sb_starbar-visStowed') starbar.state.visibility = 'stowed';
             // logic here to determine if/what should be fired to "refresh"

@@ -45,12 +45,11 @@ class Bootstrap extends App_Bootstrap
         Zend_Controller_Front::getInstance()->registerPlugin(new BootstrapPlugin(), 1);
     }
 
-
     /**
      * Setup bootstrap resource returning a usable link
      * to table holding session data
      *
-     * @return Zend_Session_SaveHandler_DbTable || null
+     * @return Zend_Session_SaveHandler_DbTable
      * @author alecksmart
      */
     public function _initDbSessionHandler()
@@ -63,9 +62,9 @@ class Bootstrap extends App_Bootstrap
         }
         $db         = Zend_Db::factory('Pdo_Mysql', array(
             'host'        	=> $options['sessionDbHandler']['host'],
-            'username'    	=> $options['sessionDbHandler']['host'],
-            'password'    	=> $options['sessionDbHandler']['host'],
-            'dbname'    	=> $options['sessionDbHandler']['host'])
+            'username'    	=> $options['sessionDbHandler']['username'],
+            'password'    	=> $options['sessionDbHandler']['password'],
+            'dbname'    	=> $options['sessionDbHandler']['dbname'])
         );
         $config     = array(
             'name'           => 'session',
@@ -76,18 +75,18 @@ class Bootstrap extends App_Bootstrap
             'db'             => $db
         );
 
-        $dbTableSessionHandler = false;
+        $dbSessionHandler = false;
 
         // Try to iniialize db conncetion 
         // and return the created handler
         try {
-            $dbTableSessionHandler = Zend_Session_SaveHandler_DbTable($config);
+            $dbSessionHandler = Zend_Session_SaveHandler_DbTable($config);
         }
         catch (Exception $e) {
             return false;
         }
 
-        return $dbTableSessionHandler;
+        return $dbSessionHandler;
     }
 }
 

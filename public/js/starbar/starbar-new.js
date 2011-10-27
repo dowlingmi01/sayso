@@ -1305,7 +1305,7 @@ $SQ(function(){
 		sayso.log(starbar.state.visibility);
 		starbar.state.local.visibility = 'stowed';
 		if (needToUpdateState) {
-			starbar.state.visibility = 'sb_starbar-visStowed';
+			starbar.state.visibility = starbar.state.local.visibility;
 			starbar.state.update();
 		}
 
@@ -1348,7 +1348,7 @@ $SQ(function(){
 		sayso.log(starbar.state.visibility);
 		starbar.state.local.visibility = 'open';
 		if (needToUpdateState) {
-			starbar.state.visibility = 'sb_starbar-visOpened';
+			starbar.state.visibility = starbar.state.local.visibility;
             starbar.state.update();
 		}
 

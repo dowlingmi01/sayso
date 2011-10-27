@@ -21,7 +21,7 @@ $user = $this->user;
         <?php else : ?>
             <p align="center"><strong><small>Your order will arrive via USPS in 2-4 weeks</small></strong></p>
             <p><strong>Shipping Address:</strong></p> 
-            <p>Jane wynter<br />
+            <p><?= $user->first_name . ' ' . $user->last_name ?><br />
             121 Simpson Ave<br />
             Suite 201<br />
             Boston, MA 01720</p>

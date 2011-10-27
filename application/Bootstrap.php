@@ -18,7 +18,7 @@ class Bootstrap extends App_Bootstrap
         Api_UserSession::setup('User', '', 'Gamer');
 
         Game_Abstract::$_enabled = true;
-
+        
         // API logging will be necessary since requests
         // are coming from mobile, it's hard to see what's going on
         $apiLog = new Zend_Log();
@@ -86,6 +86,8 @@ class Bootstrap extends App_Bootstrap
             return false;
         }
 
+        // @todo this is hackish, intent is that sessions are permanent (no gc)
+        $dbSessionHandler->setLifetime(31500000);  // 1 year
         return $dbSessionHandler;
     }
 }

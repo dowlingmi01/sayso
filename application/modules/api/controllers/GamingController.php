@@ -58,7 +58,7 @@ class Api_GamingController extends Api_GlobalController
         $client = new Gaming_BigDoor_HttpClient('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
         $client->getNamedLevelCollection(43352);
         $data = $client->getData();
-        $levels = new Collection();
+        $levels = new ItemCollection();
         foreach ($data->named_levels as $levelData) {
             $level = new Gaming_BigDoor_Level();
             $level->setId($levelData->id);
@@ -78,10 +78,6 @@ class Api_GamingController extends Api_GlobalController
         $game = Game_Starbar::getInstance();
         $client = $game->getHttpClient();
         
-        // better approach.. first try to get a specific good via store
-        // and use that data since it better reflects "purchasable" goods
-        // If you can't just get one then get them all.. this will
-        // improve with caching
         $client->getNamedGood($this->good_id);
         $data = $client->getData();
         $good = new Gaming_BigDoor_Good();
@@ -90,28 +86,52 @@ class Api_GamingController extends Api_GlobalController
         return $this->_resultType($good);
     }
     
+    /**
+     * 
+     * @return Gaming_BigDoor_Good
+     */
     public function getGoodFromStoreAction () {
         $this->_validateRequiredParameters(array('good_id'));
-        $game = Game_Starbar::getInstance();
-        $client = $game->getHttpClient();
-        $client->setCustomParameters(array(
-        	'attribute_friendly_id' => 'bdm-product-variant', 
-        	'verbosity' => 9,
-            'max_records' => 100
-        ));
-        $client->getNamedTransactionGroup('store');
-        $data = $client->getData();
-        foreach ($data as $goodData) {
-            if ((int) $goodData->goods[0]->named_good_id === (int) $this->good_id) {
-                $good = new Gaming_BigDoor_Good();
-                $good->setPrimaryCurrencyId($game->getPurchaseCurrencyId());
-                $good->build($goodData);
-                $good->accept($game);
-                return $this->_resultType($good);
-            }
+        $goods = $this->getGoodsFromStoreAction();
+        $good = $goods->getItem($this->good_id); 
+        if (isNull($good)) {
+            throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Good ID ' . $this->good_id . ' not found in store'));
         }
-        throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Good ID ' . $this->good_id . ' not found in store'));
+        return $this->_resultType($good);
     } 
+    
+    /**
+     * 
+     * @return ItemCollection
+     */
+    public function getGoodsFromStoreAction () {
+        $game = Game_Starbar::getInstance();
+        $cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store', Api_Cache::LIFETIME_WEEK);
+	    if ($cache->test()) {
+	        $data = $cache->load();
+	    } else {
+	        $client = $game->getHttpClient();
+            $client->setCustomParameters(array(
+            	'attribute_friendly_id' => 'bdm-product-variant', 
+            	'verbosity' => 9,
+                'max_records' => 100
+            ));
+            $client->getNamedTransactionGroup('store');
+            $data = $client->getData();
+            $cache->save($data);
+	    }
+	    
+        $goods = new ItemCollection(); 
+        foreach ($data as $goodData) {
+            $good = new Gaming_BigDoor_Good();
+            $good->setPrimaryCurrencyId($game->getPurchaseCurrencyId());
+            $good->build($goodData);
+            $good->accept($game);
+            $goods[] = $good;
+        }
+        
+        return $this->_resultType($goods);
+    }
     
     public function shareAction () {
         $this->_validateRequiredParameters(array('shared_type', 'shared_id'));

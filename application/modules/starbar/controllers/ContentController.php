@@ -37,48 +37,19 @@ class Starbar_ContentController extends Api_GlobalController
 
     public function rewardsAction ()
     {
-        $game = Game_Starbar::getInstance();
-        $cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store', Api_Cache::LIFETIME_WEEK);
-	    if ($cache->test()) {
-	        $data = $cache->load();
-	    } else {
-	        $client = $game->getHttpClient();
-            $client->setCustomParameters(array(
-            	'attribute_friendly_id' => 'bdm-product-variant', 
-            	'verbosity' => 9,
-                'max_records' => 100
-            ));
-            $client->getNamedTransactionGroup('store');
-            $data = $client->getData();
-            $cache->save($data);
-	    }
-	    
-        $goods = new Collection(); 
-        foreach ($data as $goodData) {
-            $good = new Gaming_BigDoor_Good();
-            $good->setPrimaryCurrencyId($game->getPurchaseCurrencyId());
-            $good->build($goodData);
-            $good->accept($game);
-            $goods[] = $good;
-        }
-//        Debug::exitNicely($goods);
+        $goods = Api_Adapter::getInstance()->call('Gaming', 'getGoodsFromStore');
+
         if ($this->test) {
             // get the raw reward data for dev purposes
             $this->_usingJsonPRenderer = false;
             $this->_enableRenderer(new Api_Plugin_JsonRenderer());
-            if ($this->test === 'raw') {
-                $result = $client->getData();
-                return $this->_resultType(new Object($result));
-            } else {
-                foreach ($goods as $good) unset($good->object);
-                return $this->_resultType($goods);
-            }
+            foreach ($goods as $good) unset($good->object);
+            return $this->_resultType($goods);
             
         } else { 
             $this->view->rewards = $goods;
         }
         // http://local.sayso.com/starbar/hellomusic/rewards/user_key/r3nouttk6om52u18ba154mc4j4/user_id/46/auth_key/309e34632c2ca9cd5edaf2388f5fa3db
-        
 	}
 	
 	/**
@@ -88,59 +59,21 @@ class Starbar_ContentController extends Api_GlobalController
 	 * @throws Api_Exception
 	 */
 	public function rewardRedeemAction () {
-	    
-	    $this->_validateRequiredParameters(array('good_id'));
-	    $game = Game_Starbar::getInstance();
-	    
-	    $cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store', Api_Cache::LIFETIME_WEEK);
-	    if ($cache->test()) {
-	        $data = $cache->load();
-	    } else {
-	        $client = $game->getHttpClient();
-            $client->setCustomParameters(array(
-            	'attribute_friendly_id' => 'bdm-product-variant', 
-            	'verbosity' => 9,
-                'max_records' => 100
-            ));
-            $client->getNamedTransactionGroup('store');
-            $data = $client->getData();
-            $cache->save($data);
-	    }
-        
-        $good = new Gaming_BigDoor_Good();
-        // @todo better way of doing this?
-        $good->setPrimaryCurrencyId($game->getPurchaseCurrencyId());
-        foreach ($data as $goodData) {
-            if ((int) $goodData->goods[0]->named_good_id === (int) $this->good_id) {
-                $good->build($goodData);
-                $good->accept($game);
-                break;
-            }
-        }
-        if (!$good->hasId()) {
-            throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Good ID ' . $this->good_id . ' not found in store'));
-        }
-        $this->view->assign(array('good' => $good, 'game' => $game));
+	    $good = Api_Adapter::getInstance()->call('Gaming', 'getGoodFromStore');
+        $this->view->assign(array('good' => $good, 'game' => Game_Starbar::getInstance()));
         return $this->_resultType($good);
 	}
 	
 	public function rewardRedeemedAction () {
 	    // call above does everything we need for the good
-	    $good = $this->rewardRedeemAction();
+	    $good = Api_Adapter::getInstance()->call('Gaming', 'getGoodFromStore');
 	    /* @var $good Gaming_BigDoor_Good */
 	    
 	    $this->_validateRequiredParameters(array('quantity'));
 	    
 	    $game = Game_Starbar::getInstance();
-	    $client = $game->getHttpClient();
-	    for ($i = 0; $i < (int) $this->quantity; $i++) {
-            $client->namedTransactionGroup($good->getTransactionId())->postExecute($game->getGamer(false)->getGamingId());
-	    }
-        quickLog($client->getData(true));
-        $game->loadGamerProfile(true);
+	    $game->purchaseGood($good, $this->quantity);
         
-//        $data = $client->getData();
-	    
 	    if (isset($this->first_name)) {
 	        // shippable item
 	        // @todo validate
@@ -161,7 +94,8 @@ class Starbar_ContentController extends Api_GlobalController
 	    } else {
 	        
 	    }
-	   
+	    $user = Api_UserSession::getInstance()->getUser();
+	    $this->view->assign(array('game' => $game, 'good' => $good, 'user' => $user));
 	    return $this->_resultType($good);
 	}
 	

@@ -1299,7 +1299,14 @@ $SQ(function(){
 		    else if (starbar.state.visibility == 'sb_starbar-visStowed') starbar.state.visibility = 'stowed';
             // logic here to determine if/what should be fired to "refresh"
             if (starbar.state.visibility != starbar.state.local.visibility) {
-            	toggleBar();
+            	switch (starbar.state.visibility) {
+            		case 'open':
+            			openBar(false);
+            			break;
+            		case 'stowed':
+            			stowBar(false);
+            			break;
+				}
 			}
 
             updateAlerts(false);

@@ -38,10 +38,9 @@ class Starbar_ContentController extends Api_GlobalController
     public function rewardsAction ()
     {
         $game = Game_Starbar::getInstance();
-        $cache = Api_Registry::getCache();
-	    $cacheId = 'BigDoor_getNamedTransactionGroup_store';
-	    if ($cache->test($cacheId)) {
-	        $data = $cache->load($cacheId);
+        $cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store', Api_Cache::LIFETIME_WEEK);
+	    if ($cache->test()) {
+	        $data = $cache->load();
 	    } else {
 	        $client = $game->getHttpClient();
             $client->setCustomParameters(array(
@@ -51,7 +50,7 @@ class Starbar_ContentController extends Api_GlobalController
             ));
             $client->getNamedTransactionGroup('store');
             $data = $client->getData();
-            $cache->save($data, $cacheId);
+            $cache->save($data);
 	    }
 	    
         $goods = new Collection(); 
@@ -93,10 +92,9 @@ class Starbar_ContentController extends Api_GlobalController
 	    $this->_validateRequiredParameters(array('good_id'));
 	    $game = Game_Starbar::getInstance();
 	    
-	    $cache = Api_Registry::getCache();
-	    $cacheId = 'BigDoor_getNamedTransactionGroup_store';
-	    if ($cache->test($cacheId)) {
-	        $data = $cache->load($cacheId);
+	    $cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store', Api_Cache::LIFETIME_WEEK);
+	    if ($cache->test()) {
+	        $data = $cache->load();
 	    } else {
 	        $client = $game->getHttpClient();
             $client->setCustomParameters(array(
@@ -106,7 +104,7 @@ class Starbar_ContentController extends Api_GlobalController
             ));
             $client->getNamedTransactionGroup('store');
             $data = $client->getData();
-            $cache->save($data, $cacheId);
+            $cache->save($data);
 	    }
         
         $good = new Gaming_BigDoor_Good();

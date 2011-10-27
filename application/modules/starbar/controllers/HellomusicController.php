@@ -18,21 +18,16 @@ class Starbar_HellomusicController extends Starbar_ContentController
 		$feedUrl = "http://www.hellomusic.com/ec/Interpret.aspx?auth=uyskCsCO5jeS2d1fc5";
 
 		$feed = null;
-		$cache = Api_Registry::get('cache');
-		$key = 'dailydeals';
+		$cache = Api_Cache::getInstance('Client_HelloMusic_dailyDeals');
 
-		if ($cache->test($key)) {
-			$feed = $cache->load($key);
+		if ($cache->test()) {
+			$feed = $cache->load();
 		}
 
 		// if the feed is no longer cached, or if it's empty for whatever reason, re-set the cache
 		if (!$feed) {
 			$handle = fopen($feedUrl, 'r');
 			$feed = stream_get_contents($handle);
-
-			// cache until the next update
-			$cache->setLifetime(3600);
-
 			$cache->save($feed);
 		}
 

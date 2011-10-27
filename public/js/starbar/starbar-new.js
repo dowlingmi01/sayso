@@ -1281,8 +1281,9 @@ $SQ(function(){
     }
 
     // @ todo remove this once krl is updated to use 'open' and 'stowed'... do krl files need to be compiled?
-    if (starbar.state.visibility != 'stowed') starbar.state.visibility = 'open';
-    
+    if (starbar.state.visibility == 'sb_starbar-visOpen') starbar.state.visibility = 'open';
+    else if (starbar.state.visibility == 'sb_starbar-visStowed') starbar.state.visibility = 'stowed';
+
 	// Starbar state
 	starbar.state.local = {
         profile : Math.round(new Date().getTime() / 1000),

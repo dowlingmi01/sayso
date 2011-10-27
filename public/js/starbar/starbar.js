@@ -261,7 +261,7 @@ setTimeout(function(){
 		if (clickPoint == 'button'){
 			switch (playerClass){
 				case 'starbar-visOpen':
-					$SQ('#sayso-starbar #starbar-mainContent').fadeOut('fast');
+					$SQ('#sayso-starbar #starbar-mainContent').fadeTo('fast', 0);
 					$SQ('#sayso-starbar #starbar-toggleVis').attr('class','');
 					$SQ('#sayso-starbar #starbar-toggleVis').addClass('close');
 					$SQ('#sayso-starbar #starbar-player-console').animate({
@@ -300,7 +300,7 @@ setTimeout(function(){
 						}, 500, function() {
 							// Animation complete.
 							$SQ(this).attr('class','').addClass('starbar-visOpen');
-							$SQ('#starbar-mainContent').fadeIn('fast');			
+							$SQ('#starbar-mainContent').fadeTo('fast', 1);
 							updateState();
 					});
 					starBarStatusHeight = 'starbar-open';
@@ -317,12 +317,12 @@ setTimeout(function(){
 					$SQ('#sayso-starbar #starbar-toggleVis').addClass('starbar-hide');
 					$SQ('#sayso-starbar #starbar-logoBorder').hide();
 					$SQ('#sayso-starbar #starbar-player-console').attr('class','').addClass('starbar-visOpen').show();
-					$SQ('#sayso-starbar #starbar-mainContent').fadeIn('fast');
+					$SQ('#sayso-starbar #starbar-mainContent').fadeTo('fast', 1);
 					starBarStatusWidth = 'starbar-visOpen';
 					break;
 				case 'starbar-visClosed': 					
 					$SQ('#sayso-starbar #starbar-player-console').hide();
-					$SQ('#sayso-starbar #starbar-mainContent').fadeOut('fast');
+					$SQ('#sayso-starbar #starbar-mainContent').fadeTo('fast', 0);
 					$SQ('#sayso-starbar #starbar-toggleVis').attr('class','');
 					$SQ('#sayso-starbar #starbar-toggleVis').addClass('close');
 					$SQ('#sayso-starbar #starbar-player-console').attr('class','').addClass('starbar-visClosed').show();
@@ -354,13 +354,13 @@ setTimeout(function(){
                         }, 500, function() {
                             // Animation complete.
                             $SQ(this).attr('class','').addClass('starbar-visOpen');
-                            $SQ('#starbar-mainContent').fadeIn('fast');          
+                            $SQ('#starbar-mainContent').fadeTo('fast', 1);          
                     });
                     starBarStatusHeight = 'starbar-open';
                     starBarStatusWidth = 'starbar-visOpen';
                     break;
                 case 'starbar-visClosed':
-                    $SQ('#sayso-starbar #starbar-mainContent').fadeOut('fast');
+                    $SQ('#sayso-starbar #starbar-mainContent').fadeTo('fast', 0);
                     $SQ('#sayso-starbar #starbar-toggleVis').attr('class','');
                     $SQ('#sayso-starbar #starbar-toggleVis').addClass('close');
                     $SQ('#sayso-starbar #starbar-player-console').animate({
@@ -375,7 +375,7 @@ setTimeout(function(){
                     break;
                 case 'starbar-visStowed':
                     if (!$SQ('#starbar-mainContent').is(':hidden')) {
-                        $SQ('#sayso-starbar #starbar-mainContent').fadeOut('fast');
+                        $SQ('#sayso-starbar #starbar-mainContent').fadeTo('fast', 0);
                     }
                     $SQ('#sayso-starbar #starbar-toggleVis').attr('class','');
                     $SQ('#sayso-starbar #starbar-toggleVis').addClass('starbar-closed');
@@ -405,7 +405,7 @@ setTimeout(function(){
 					// Animation complete.
 					$SQ(this).attr('class','');
 					$SQ(this).addClass('starbar-visOpen');
-					$SQ('#starbar-mainContent').fadeIn('fast');
+					$SQ('#starbar-mainContent').fadeTo('fast', 1);
 					updateState();
 				});
 			starBarStatusHeight = 'starbar-closed';

@@ -95,7 +95,7 @@
                     setTimeout(function () {
                         // overlay
                         container.html(response.data.html);
-                        container.fadeIn('slow');
+                        container.fadeTo('slow', 1);
                     }, 1000);
                 }
             });

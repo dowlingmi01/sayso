@@ -154,7 +154,7 @@ $SQ.ajaxWithAuth = function (options) {
 	         * Remove the data container completely
 	         */
 	        _container.removeNow = function () {
-	            _container.fadeOut(function() {
+	            _container.fadeTo(400, 0, function() {
 	                _container.remove();
 	            });
 	        };

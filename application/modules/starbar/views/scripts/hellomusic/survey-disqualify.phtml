@@ -1,7 +1,7 @@
 <?= $this->partial('remote/init-remote.phtml', null, array('starbar' => $this->starbar)); ?>
 <script type="text/javascript">
 	setTimeout(function() {
-		$SQ('#sb-survey-disqualified').fadeIn(500)
+		$SQ('#sb-survey-disqualified').fadeTo(500, 1);
 		$SQ.remoteControl.updateGame(null);
 		$SQ.remoteControl.hideOverlay();
 	}, 200);

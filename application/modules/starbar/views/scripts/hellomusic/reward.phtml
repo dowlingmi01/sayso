@@ -27,8 +27,10 @@ if ($percentUserBalanceToCost > 100) $percentUserBalanceToCost = 100;
         </div><!-- .user-points-box -->
         <?php if (!$good->isRedeemable()) : ?>
         <p class="sb_reward_levelReq"><span>Survey Requirement</span></p>
-        <?php endif ?>
         <span class="sb_theme_button sb_theme_button_grey">Redeem</span>
+        <?php else : ?>
+        <span class="sb_theme_button">Redeem</span>
+        <?php endif ?>
     </div><!-- .sb_rewardBase -->
 </div><!-- .sb_rewardItem -->
 <script type="text/javascript">

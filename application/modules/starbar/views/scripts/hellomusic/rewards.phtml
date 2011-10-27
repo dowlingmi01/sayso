@@ -1,6 +1,6 @@
 <div id="sb_innerOverlay">
-	<div class="sb_innerOverlayBackground"></div>
-	<div class="sb_innerOverlayContent"></div>
+    <div class="sb_innerOverlayBackground"></div>
+    <div class="sb_innerOverlayContent"></div>
 </div>
 <div class="sb_header">
     <h2 class="sb_title">Rewards Center</h2>
@@ -8,7 +8,7 @@
 <div class="sb_scrollPane">
     <p>Make sure to get your tokens for the weekly giveaways and keep earning to be eligible for the final giveaway.</p>
     <p><strong class="sb_theme_textHighlight">Select an item below</strong></p>
-  
+
   <div class="sb_rewards">   
     <?= $this->partialLoop('hellomusic/reward.phtml', $this->rewards) ?>
   </div><!-- .sb_rewards -->
@@ -24,14 +24,13 @@
         $SQ(document).bind('sb_cbox_cleanup', function () {
             overlay.hide();
         });
-				
+
         // select a reward
         $SQ('#sayso-starbar .sb_rewards')
             .find('.sb_rewardItem')
             .not('.sb_rewardItem_disabled')
             .unbind('click').bind('click', function(e){
                 
-				overlayContent.fadeOut(0);
                 overlay.fadeIn(500);
 
                 var container = $SQ(this).dataContainer();
@@ -40,8 +39,9 @@
                     url : 'http://' + sayso.baseDomain + '/starbar/hellomusic/reward-redeem',
                     data : { good_id : container.getId() },
                     success : function (response) {
+                        overlayContent.fadeOut(0);
                         overlayContent.html(response.data.html);
-		                //overlayContent.fadeIn(500);
+                        overlayContent.fadeIn(500);
                     }
                 });
             });

@@ -78,13 +78,13 @@ $SQ(function(){
 	    var _container;
 	    if (typeof parentIndex === 'number') {
 	        // if parent is explicitly set
-	        _container = this.parents('[data-id]').eq(parentIndex);
+	        _container = $SQ(this).parents('[data-id]').eq(parentIndex);
 	    } else if (this.attr('data-id').length) {
 	        // if the data-id exists on *this* element
-	        _container = this;
+	        _container = $SQ(this);
 	    } else {
 	        // otherwise default to first parent
-	        _container = this.parents('[data-id]').eq(0);
+	        _container = $SQ(this).parents('[data-id]').eq(0);
 	    }
 	    
 	    if (!_container.length) {
@@ -193,7 +193,6 @@ $SQ(function(){
 	var elemAlerts; // = $SQ('#sayso-starbar #starbar-player-console .sb_starbar-alert');
 	var elemPopBoxVisControl; // = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
 	var elemExternalConnect; // = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
-	var elemRewardItem; // = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem');
 	var elemTooltip; // = $SQ('#sayso-starbar .sb_Tooltip');
 
 	// initialize the starbar
@@ -456,7 +455,7 @@ $SQ(function(){
 			$SQ(this).unbind();
 			$SQ(this).bind({
 				click: function(event){
-					$SQ.sb_colorbox.close();
+					$SQ.colorbox.close();
 					return false;
 				}			
 			});									 
@@ -473,6 +472,9 @@ $SQ(function(){
 			// remove hover class from all nav items
 			$SQ('span.sb_nav_border').removeClass('sb_theme_navOnGradient');
 		});
+
+		// if there's a colorbox open, close it
+		if ($SQ.colorbox) $SQ.colorbox.close();
 		
 		if (!keepNotifications) updateAlerts(false);
 
@@ -502,9 +504,6 @@ $SQ(function(){
 		hideOverlay();
 		closePopBox(keepNotificationsOpen);
 		
-		// if there's a colorbox open, close it
-		$SQ.sb_colorbox.close();
-
 		if (src && withLoadingElement) {  // insert loading elements into popBox, then load content into inner container
 			// fill in the container with loading div and container divs
 			popBox.html('<div class="sb_popBoxInner"><div class="sb_popContent"></div></div>');

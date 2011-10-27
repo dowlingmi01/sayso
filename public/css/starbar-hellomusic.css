@@ -504,6 +504,7 @@
 #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li img.sb_dealImage{
 	position: relative;
 	width: 185px;
+	height: 97px;
 }
 #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_itemName{
 	height: 34px;

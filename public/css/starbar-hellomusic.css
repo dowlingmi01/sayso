@@ -863,7 +863,7 @@
 	z-index: 1;
 }
 
-#sayso-starbar #sb_colorbox .sb_rewardItem{
+#sayso-starbar #sb_innerOverlay .sb_rewardItem{
 	cursor: auto;
 	width: auto;
 	height: 100%;
@@ -881,7 +881,7 @@
 	height: 30px;
 }
 
-#sayso-starbar #sb_colorbox .sb_rewardItem .sb_rewardHeader{
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_rewardHeader{
 	font-size: 16px;
 	height: auto;
 	padding: 20px 10px 5px 10px;
@@ -894,7 +894,7 @@
 	background-color: #fff;
 }
 
-#sayso-starbar #sb_colorbox .sb_rewardItem .sb_rewardImg{
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_rewardImg{
 	height: auto;
 }
 
@@ -905,18 +905,15 @@
 	padding: 0px 5px 10px 5px;
 }
 
-#sayso-starbar #sb_colorbox #sb_reward_step1{
-	height: 420px;
-}
-
-#sayso-starbar #sb_colorbox .sb_rewardItem .sb_rewardBase{
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_rewardBase{
 	background-color: #383838;
+	color: #fff;
 }
 
-#sayso-starbar #sb_colorbox .sb_rewardItem .sb_rewardOrder{
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_rewardOrder{
 	background-color: #fff;
 	color: #222;
-	padding: 5px 10px;
+	padding: 5px 6px;
 }
 
 #sayso-starbar .sb_rewardItem .sb_theme_button{
@@ -929,25 +926,29 @@
 	width: 135px;
 }
 
-#sayso-starbar #sb_colorbox .sb_rewardItem .sb_user-points-box .sb_progress_bar{
-	width: 85%;
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_user-points-box .sb_progress_bar{
+	width: 75%;
 }
 
-#sayso-starbar #sb_colorbox .sb_rewardItem .sb_user-points-box{
-	margin: 10px 0px;
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_user-points-box{
 	width: 100%;
 }
 
-#sayso-starbar #sb_colorbox .sb_rewardItem .sb_column50{
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_column50{
 	font-size: 10px;
 	line-height: 15px;
+	text-align: center;
 }
 
-#sayso-starbar #sb_colorbox .sb_rewardItem .sb_column50 .sb_user-points-box .sb_progress_bar{
-	margin: -5px 0px 0px 0px;
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_column50 .sb_user-points-box{
+	text-align: center;
 }
 
-#sayso-starbar #sb_colorbox .sb_rewardItem p{
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_column50 .sb_user-points-box .sb_progress_bar{
+	margin: -5px 7px 0px 7px;
+}
+
+#sayso-starbar #sb_innerOverlay .sb_rewardItem p{
 	font-size: 11px;
 	line-height: 15px;
 	margin: 10px 0px;

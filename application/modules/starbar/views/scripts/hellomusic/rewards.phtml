@@ -1,3 +1,7 @@
+<div id="sb_innerOverlay">
+	<div class="sb_innerOverlayBackground"></div>
+	<div class="sb_innerOverlayContent"></div>
+</div>
 <div class="sb_header">
     <h2 class="sb_title">Rewards Center</h2>
 </div><!-- .sb_header -->
@@ -10,12 +14,13 @@
   </div><!-- .sb_rewards -->
 </div><!-- .sb_scrollPane -->
 
-<div id="sb_rewardsOverlay"></div>
 <script language="javascript">
     $SQ(function(){
         var sayso = window.sayso;
-        var overlay = $SQ('#sayso-starbar #sb_rewardsOverlay');
+        var overlay = $SQ('#sayso-starbar #sb_innerOverlay');
 
+        var overlayContent = $SQ('.sb_innerOverlayContent', overlay);
+        
         $SQ(document).bind('sb_cbox_cleanup', function () {
             overlay.hide();
         });
@@ -26,22 +31,19 @@
             .not('.sb_rewardItem_disabled')
             .unbind('click').bind('click', function(e){
                 
+				overlayContent.fadeOut(0);
+                overlay.fadeIn(500);
+
                 var container = $SQ(this).dataContainer();
                 
                 $SQ.ajaxWithAuth({
                     url : 'http://' + sayso.baseDomain + '/starbar/hellomusic/reward-redeem',
                     data : { good_id : container.getId() },
                     success : function (response) {
-                        overlay.html(response.data.html).show();
-                        // open color box
-                        $SQ.sb_colorbox({
-                            width:"220px", height:'450px',
-                            inline: true, initialWidth: 50, initialHeight: 50,
-                            speed: 500, overflow: 'hidden', transition: 'fade',
-                            href:"#sb_rewardsOverlay"
-                        });
+                        overlayContent.html(response.data.html);
+		                //overlayContent.fadeIn(500);
                     }
                 });
+            });
         });
-    });
 </script>

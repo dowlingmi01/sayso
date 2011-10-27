@@ -29,14 +29,12 @@ class Starbar_IndexController extends Api_GlobalController
         if (!in_array($this->_request->getActionName(), array('index', 'gaga'))) {
             // i.e. for everything based on Generic Starbar, use these includes
             $this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
-            $this->view->headLink()->appendStylesheet('/css/colorbox.css');
             $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
             $this->view->headScript()->appendFile('/js/starbar/jquery-ui-1.8.16.custom.min.js');
             $this->view->headScript()->appendFile('/js/starbar/jquery.jscrollpane.min.js');
             $this->view->headScript()->appendFile('/js/starbar/jquery.cookie.js');
             $this->view->headScript()->appendFile('/js/starbar/jquery.jeip.js');
             $this->view->headScript()->appendFile('/js/starbar/jquery.cycle.lite.js');
-            $this->view->headScript()->appendFile('/js/starbar/jquery.colorbox-min.js');
             $this->view->headScript()->appendFile('/js/starbar/jquery.easyTooltip.js');
         }
     }

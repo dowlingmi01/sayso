@@ -38,8 +38,8 @@ $SQ(function(){
 
 	// close if you click outside the starbar while in the iframe
 	$SQ(document).click(function(e) {
-		// don't close if they just right-clicked OR were clicking inside of a colorbox
-		if ((e.button != 2) && ($SQ('#sb_cboxOverlay').css('display') != 'block')){
+		// don't close if they just right-clicked
+		if (e.button != 2){
 			closePopBox();
 		}
 	});
@@ -179,7 +179,6 @@ $SQ(function(){
 	// clickable elements that ppl will interact with
 	var btnToggleVis; //  = $SQ('#sayso-starbar #starbar-visControls #starbar-toggleVis');
 	var btnSaySoLogo; // = $SQ('#sayso-starbar #starbar-visControls #sb_starbar-logo');
-	var btnCloseColorbox; // = $SQ('#sayso-starbar .sb_closeColorbox');
 
 	// container elements
 	var elemSaySoLogoBorder; // = $SQ('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
@@ -219,7 +218,6 @@ $SQ(function(){
 		btnSaySoLogo = $SQ('#starbar-visControls #sb_starbar-logo', starbarElem);
 
 		// container elements
-		btnCloseColorbox = $SQ('.sb_closeColorbox', starbarElem);
 		elemTooltip = $SQ('.sb_tooltip', starbarElem);
 		elemSaySoLogoSemiStowed = $SQ('#sb_starbar-logoSemiStowed', starbarElem);
 		elemPlayerConsole = $SQ('#starbar-player-console', starbarElem);
@@ -451,16 +449,6 @@ $SQ(function(){
 			});
 		});
 
-		btnCloseColorbox.each(function(){
-			$SQ(this).unbind();
-			$SQ(this).bind({
-				click: function(event){
-					$SQ.colorbox.close();
-					return false;
-				}			
-			});									 
-		});
-
 	} // end initElements()
 
 	function closePopBox(keepNotifications){
@@ -473,9 +461,6 @@ $SQ(function(){
 			$SQ('span.sb_nav_border').removeClass('sb_theme_navOnGradient');
 		});
 
-		// if there's a colorbox open, close it
-		if ($SQ.colorbox) $SQ.colorbox.close();
-		
 		if (!keepNotifications) updateAlerts(false);
 
 		return;
@@ -1232,7 +1217,7 @@ $SQ(function(){
 	}
 
 	function activateOverlay(target){
-		var overlay = $SQ('.sb_overlay', target);
+		var overlay = $SQ('.sb_outerOverlay', target);
 		if (overlay.length == 1){
 			enableConfirmBeforeUnload();
 			overlay.unbind();
@@ -1241,6 +1226,13 @@ $SQ(function(){
 					hideOverlay();
 					closePopBox();
 				}
+			});
+		}
+		overlay = $SQ('#sb_innerOverlay', target);
+		if (overlay.length == 1){
+			overlayBackground = $SQ('.sb_innerOverlayBackground', overlay);
+			overlayBackground.bind('click', function (event) {
+				overlay.fadeOut(200);
 			});
 		}
 	}
@@ -1277,7 +1269,7 @@ $SQ(function(){
 	}
 
 	function hideOverlay() {
-		var overlay = $SQ('.sb_overlay', starbarElem);
+		var overlay = $SQ('.sb_outerOverlay', starbarElem);
 		if (overlay.length == 1) {
 			revertConfirmBeforeUnload();
 			overlay.fadeTo(200, 0);

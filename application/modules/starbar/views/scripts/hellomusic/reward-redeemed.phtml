@@ -27,14 +27,14 @@ $user = $this->user;
             Boston, MA 01720</p>
         <?php endif ?>
         <br clear="all" />
-        <p align="center"><span class="sb_theme_button sb_closeColorbox">Back to Rewards Center</span></p>
+        <p align="center"><span class="sb_theme_button">Back to Rewards Center</span></p>
     </div><!-- .sb_rewardOrder -->
     <!-- END ORDER COMPLETE - SHIPPING -->
 </div><!-- #sb_reward_step3 -->
 <script type="text/javascript">
     $SQ(function () {
         $SQ('#sb_reward_step3 .sb_theme_button').bind('click', function () {
-            $SQ.colorbox.close();
+        	 $SQ('#sb_innerOverlay').fadeOut(200);
         });
     });
 </script>

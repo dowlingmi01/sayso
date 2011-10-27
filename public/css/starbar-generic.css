@@ -608,7 +608,7 @@ html {
 	width: 500px;
 }
 #sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent p,
-#sayso-starbar #sb_colorbox p{
+#sayso-starbar #sb_innerOverlay p{
 	margin: 5px 0px 5px 0px;
 	line-height: 18px;
 }
@@ -1527,15 +1527,43 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 
 /* // Easy Tooltip */
 
-/* click-prevention overlay */
-#sayso-starbar .sb_overlay{
+/* overlays */
+#sayso-starbar .sb_outerOverlay{
 	top: 0;
 	left: 0;
 	position: fixed;
 	width: 100%;
 	height: 100%;
 	background-color: black;
-	filter: alpha(opacity=25);
-	opacity: 0.25;
+	filter: alpha(opacity=50);
+	opacity: 0.50;
 	z-index: -1;
+}
+
+#sayso-starbar #sb_innerOverlay{
+	top: 0;
+	left: 0;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: none;
+	z-index: 10;
+}
+
+#sayso-starbar #sb_innerOverlay .sb_innerOverlayBackground{
+	top: 0;
+	left: 0;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	filter: alpha(opacity=50);
+	opacity: 0.50;
+	z-index: -1;
+}
+
+#sayso-starbar #sb_innerOverlay .sb_innerOverlayContent{
+	margin: auto;
+	width: 150px;
+	z-index: 20;
 }

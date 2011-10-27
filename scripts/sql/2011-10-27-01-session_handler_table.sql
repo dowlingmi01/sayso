@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS `session`;
 /**
  * Use ENGINE=MyISAM to boost up speed
  * This table should not be a part of any transactions or PK/FK relations,
- * the charset must NOT be utf8 for the
+ * the charset must NOT be utf8 for the id field
 */
 
 CREATE TABLE IF NOT EXISTS `session` (

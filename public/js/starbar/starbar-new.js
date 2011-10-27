@@ -179,7 +179,7 @@ $SQ(function(){
 			event.preventDefault();
 			event.stopPropagation();
 			var playerClass = elemPlayerConsole.attr('class');
-			animateBar(playerClass, 'button');
+			toggleBar();
 			//popBoxClose();
 		});
 
@@ -192,10 +192,9 @@ $SQ(function(){
 			click: function(e) {
 				e.preventDefault();
 				e.stopPropagation();
-				var playerClass = elemPlayerConsole.attr('class');
-				if (playerClass != 'sb_starbar-visOpen'){
+				if (starbar.state.local.visibility != 'open'){
 					// manual override to have any click re-open starbar to original state
-					animateBar('sb_starbar-visStowed', 'button');
+					openBar(true);
 				}else{
 					var thisPopBox = btnSaySoLogo.next('.sb_popBox');
 
@@ -519,7 +518,7 @@ $SQ(function(){
 
 	function updateAlerts(reverseOrder) {
 		var starbarStowed = "false";
-		if (starbar.state.visibility == 'sb_starbar-visStowed') starbarStowed = "true";
+		if (starbar.state.visibility == 'stowed') starbarStowed = "true";
 
 		$SQ.ajaxWithAuth({
 			url : 'http://'+sayso.baseDomain+'/api/notification/get-all?renderer=jsonp&starbar_stowed='+starbarStowed+'&starbar_id='+sayso.starbar.id,
@@ -1155,102 +1154,83 @@ $SQ(function(){
 	}
 
 	// animates the starbar-player-console bar based on current state
-	function animateBar(playerClass, clickPoint){
-
-	    if (!playerClass) playerClass = sayso.starbar.state.visibility;
-
-	    switch(clickPoint){
-            // if we're clicking from a button, determine what state we're in and how to shrink / grow
-            case 'button':
-                switch (playerClass){
-                    case 'sb_starbar-visOpen':
-                        _stowBar(true);
-                        break;
-                    case 'sb_starbar-visStowed':
-                        _openBar(true);
-                        break;
-                }
+	function toggleBar(){
+        switch (starbar.state.local.visibility){
+            case 'open':
+                stowBar(true);
                 break;
-            // if refreshing based on current state, then update bar to match
-            case 'refresh' :
-                switch (playerClass) {
-                    case 'sb_starbar-visOpen':
-                        if (!btnToggleVis.hasClass('sb_btnStarbar-open')) _openBar(false);
-                        break;
-                    case 'sb_starbar-visStowed':
-                        if (!btnToggleVis.hasClass('sb_btnStarbar-stowed')) _stowBar(false);
-                        break;
-                }
+            case 'stowed':
+                openBar(true);
                 break;
+        }
+	}
 
-	    } // end switch clickpoint
+	function stowBar (needToUpdateState) {
+		starbar.state.local.visibility = 'stowed';
+		if (needToUpdateState) {
+			starbar.state.visibility = starbar.state.local.visibility;
+			starbar.state.update();
+		}
 
-	    function _stowBar (needToUpdateState) {
-			if (needToUpdateState) {
-			    starbar.state.visibility = 'sb_starbar-visStowed';
-			    starbar.state.update();
-			}
+		closePopBox(true);
+	    elemStarbarMain.fadeTo('fast', 0);
+        elemPopBoxVisControl.fadeTo('fast', 0);
+        btnToggleVis.attr('class','').addClass('sb_btnStarbar-closed');
+        btnSaySoLogo.css('backgroundPosition','3px 0px');
+        elemPlayerConsole.animate(
+            { width: '100' },
+            500,
+            function() {
+                // Animation complete.
+                elemPlayerConsole.attr('class','').addClass('sb_starbar-visClosed');
+                elemSaySoLogoSemiStowed.parent().show();
+                elemSaySoLogoSemiStowed.fadeTo(0, 1);
+                elemPlayerConsole.fadeTo(500, 0);
+                hideAlerts();
+                setTimeout(function () {
+                    elemPlayerConsole.hide();
+				}, 510);
+                setTimeout(function () {
+			        btnToggleVis.attr('class','').addClass('sb_btnStarbar-stowed');
+            		btnSaySoLogo.css('backgroundPosition','');
+                    elemPlayerConsole.css('width','');
+                    elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
+                    elemPlayerConsole.show();
+                    elemPlayerConsole.fadeTo(157, 1); // 157 found to work best for some bizarre reason
+                    elemSaySoLogoSemiStowed.fadeTo(500, 0);
+				}, 1000);
+                setTimeout(function () {
+					elemSaySoLogoSemiStowed.parent().hide();
+				}, 1500);
+            }
+        );
+	}
 
-			closePopBox(true);
-	        elemStarbarMain.fadeTo('fast', 0);
-            elemPopBoxVisControl.fadeTo('fast', 0);
-            btnToggleVis.attr('class','').addClass('sb_btnStarbar-closed');
-            btnSaySoLogo.css('backgroundPosition','3px 0px');
-            elemPlayerConsole.animate(
-            	{ width: '100' },
-                500,
-                function() {
-                    // Animation complete.
-                    $SQ(this).attr('class','').addClass('sb_starbar-visClosed');
-                    elemSaySoLogoSemiStowed.parent().show();
-                    elemSaySoLogoSemiStowed.fadeTo(0, 1);
-                    $SQ(this).fadeTo(500, 0);
-                    hideAlerts();
-                    setTimeout(function () {
-                    	elemPlayerConsole.hide();
-					}, 510);
-                    setTimeout(function () {
-			            btnToggleVis.attr('class','').addClass('sb_btnStarbar-stowed');
-            			btnSaySoLogo.css('backgroundPosition','');
-                    	elemPlayerConsole.css('width','');
-                    	elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
-                    	elemPlayerConsole.show();
-                    	elemPlayerConsole.fadeTo(157, 1); // 157 found to work best for some bizarre reason
-                    	elemSaySoLogoSemiStowed.fadeTo(500, 0);
-					}, 1000);
-                    setTimeout(function () {
-						elemSaySoLogoSemiStowed.parent().hide();
-					}, 1500);
-            	}
-            );
-	    }
-	    function _openBar (needToUpdateState) {
-			if (needToUpdateState) {
-			    starbar.state.visibility = 'sb_starbar-visOpen';
-                starbar.state.update();
-			}
+	function openBar (needToUpdateState) {
+		starbar.state.local.visibility = 'open';
+		if (needToUpdateState) {
+			starbar.state.visibility = starbar.state.local.visibility;
+            starbar.state.update();
+		}
 
-	        btnToggleVis.attr('class','');
-            elemSaySoLogoBorder.hide();
-            elemVisControls.hide();
-			elemPlayerConsole.addClass('sb_starbar-visBG');
-            hideAlerts();
-            elemPlayerConsole.animate(
-            	{ width: '100%' },
-            	500,
-            	function() {
-                    // Animation complete.
-                    $SQ(this).attr('class','').addClass('sb_starbar-visOpen');
-                    elemStarbarMain.fadeTo('fast', 1);
-                    elemVisControls.fadeTo('fast', 1);
-                    btnToggleVis.attr('class','').addClass('sb_btnStarbar-open');
-                    showAlerts();
-            	}
-            );
-	    }
-		return false;
-
-	} // end FUNCTION ANIMATEBAR
+	    btnToggleVis.attr('class','');
+        elemSaySoLogoBorder.hide();
+        elemVisControls.hide();
+		elemPlayerConsole.addClass('sb_starbar-visBG');
+        hideAlerts();
+        elemPlayerConsole.animate(
+            { width: '100%' },
+            500,
+            function() {
+                // Animation complete.
+                elemPlayerConsole.attr('class','').addClass('sb_starbar-visOpen');
+                elemStarbarMain.fadeTo('fast', 1);
+                elemVisControls.fadeTo('fast', 1);
+                btnToggleVis.attr('class','').addClass('sb_btnStarbar-open');
+                showAlerts();
+            }
+        );
+	}
 
 	function enableConfirmBeforeUnload () {
 		if (!sayso.overwrite_onbeforeunload) {
@@ -1289,12 +1269,6 @@ $SQ(function(){
 		}
 	}
 
-	// Starbar state
-	starbar.state.local = {
-        'profile' : Math.round(new Date().getTime() / 1000),
-        'game' : Math.round(new Date().getTime() / 1000)
-	}
-
 	// Update the cross-domain state variables
 	starbar.state.update = function (){
         var app = KOBJ.get_application(starbar.kynetxAppId);
@@ -1306,11 +1280,32 @@ $SQ(function(){
         });
     }
 
+    // @ todo remove this once krl is updated to use 'open' and 'stowed'... do krl files need to be compiled?
+    if (starbar.state.visibility != 'stowed') starbar.state.visibility = 'open';
+    
+	// Starbar state
+	starbar.state.local = {
+        profile : Math.round(new Date().getTime() / 1000),
+        game : Math.round(new Date().getTime() / 1000),
+        visibility : starbar.state.visibility
+	}
+
 	// Refresh the Starbar to respond to state changes, if any
 	starbar.state.refresh = function () {
         starbar.state.callback = function () { 
             // logic here to determine if/what should be fired to "refresh"
-            animateBar(null, 'refresh'); 
+            if (starbar.state.visibility != starbar.state.local.visibility) {
+            	switch (starbar.state.visibility) {
+            		case 'open':
+            			openBar(false);
+            			break;
+            			
+            		case 'stowed':
+            			stowBar(false);
+            			break;
+				}
+			}
+
             updateAlerts(false);
             
             if (starbar.state.profile > starbar.state.local.profile) {

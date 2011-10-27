@@ -7,13 +7,13 @@
 	/* @var $user User */
 
 	switch ($starbar->getVisibility()){
-		case 'sb_starbar-visClosed':
+		case 'closed':
 			$buttonVisibility = 'sb_btnStarbar-closed';
 			break;
-		case 'sb_starbar-visStowed':
+		case 'stowed':
 			$buttonVisibility = 'sb_btnStarbar-stowed';
 			break;
-		case 'sb_starbar-visOpen':
+		case 'open':
 		default :
 			$buttonVisibility = 'sb_btnStarbar-open';
 			break;

@@ -179,7 +179,7 @@ $SQ(function(){
 			event.preventDefault();
 			event.stopPropagation();
 			var playerClass = elemPlayerConsole.attr('class');
-			toggleBar();
+			toggleBar(true);
 			//popBoxClose();
 		});
 
@@ -1154,13 +1154,13 @@ $SQ(function(){
 	}
 
 	// animates the starbar-player-console bar based on current state
-	function toggleBar(){
+	function toggleBar(needToUpdateState){
         switch (starbar.state.local.visibility){
             case 'open':
-                stowBar(true);
+                stowBar(needToUpdateState);
                 break;
             case 'stowed':
-                openBar(true);
+                openBar(needToUpdateState);
                 break;
         }
 	}
@@ -1299,14 +1299,7 @@ $SQ(function(){
 		    else if (starbar.state.visibility == 'sb_starbar-visStowed') starbar.state.visibility = 'stowed';
             // logic here to determine if/what should be fired to "refresh"
             if (starbar.state.visibility != starbar.state.local.visibility) {
-            	switch (starbar.state.visibility) {
-            		case 'open':
-            			openBar(false);
-            			break;
-            		case 'stowed':
-            			stowBar(false);
-            			break;
-				}
+            	toggleBar(false);
 			}
 
             updateAlerts(false);

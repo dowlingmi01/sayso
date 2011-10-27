@@ -94,7 +94,7 @@ class Starbar_ContentController extends Api_GlobalController
 	    } else {
 	        
 	    }
-	    $user = Api_UserSession::getInstance()->getUser();
+	    $user = Api_UserSession::getInstance($this->user_key)->getUser();
 	    $this->view->assign(array('game' => $game, 'good' => $good, 'user' => $user));
 	    return $this->_resultType($good);
 	}

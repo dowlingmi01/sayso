@@ -66,7 +66,7 @@ class Starbar_IndexController extends Api_GlobalController
     	$this->view->starbar = $starbar;
     	
     	// User
-    	$session = Api_UserSession::getInstance();
+    	$session = Api_UserSession::getInstance($this->user_key);
     	$user = $session->getUser();
 		$this->view->user = $user;
 		

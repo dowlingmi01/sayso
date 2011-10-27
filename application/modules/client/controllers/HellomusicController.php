@@ -13,7 +13,7 @@ class Client_HellomusicController extends Client_GlobalController
 {
     
     protected $_uuidCookieName = 'MyEmail';
-    protected $_loggedInCookieName = 'CHOMPUID';
+    protected $_loggedInCookieName = 'HMID';
     protected $_uuidType = 'email';
     
     /**

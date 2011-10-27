@@ -11,10 +11,10 @@ ini_set('session.use_only_cookies', '0');
 ini_set('session.use_cookies', '0');
 ini_set('session.use_trans_sid', '0');
 
-if (!isset($_COOKIE['CHOMPUID']) || !isset($_COOKIE['MyEmail'])) {
+if (!isset($_COOKIE['HMID']) || !isset($_COOKIE['MyEmail'])) {
     $randomEmail = substr(str_shuffle('bcdfghjklmnpqrstvwxz'), 0, 1) . substr(str_shuffle('aeiouy'), 0, 1) . substr(str_shuffle('bcdfghjklmnpqrstvwxz'), 0, 2) . substr(str_shuffle('aeiouy'), 0, 1) . substr(str_shuffle('bcdfghjklmnpqrstvwxz'), 0, 1) . substr(str_shuffle('123456789'), 0, 1);
     $randomEmail .= '@hellomusic.com';
-    setcookie('CHOMPUID', md5($randomEmail), mktime(0,0,0,12,31,2030), '/');
+    setcookie('HMID', md5($randomEmail), mktime(0,0,0,12,31,2030), '/');
     setcookie('MyEmail', $randomEmail, mktime(0,0,0,12,31,2030), '/');
 } else {
     $randomEmail = $_COOKIE['MyEmail'];

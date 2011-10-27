@@ -1376,7 +1376,7 @@ $SQ(function(){
 		sayso.log('update');
 		sayso.log(starbar.state.visibility);
         var app = KOBJ.get_application(starbar.kynetxAppId);
-        //starbar.state.callback = null;
+        starbar.state.callback = null;
         app.raise_event('update_state', { 
             'visibility' : starbar.state.visibility,
             'notifications' : starbar.state.notifications,

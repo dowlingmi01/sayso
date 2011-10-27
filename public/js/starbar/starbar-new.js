@@ -1251,6 +1251,43 @@ $SQ(function(){
 
 	}
 
+	function enableConfirmBeforeUnload () {
+		if (!sayso.overwrite_onbeforeunload) {
+			if (window.onbeforeunload) {
+				sayso.old_onbeforeunload = window.onbeforeunload;
+			}
+			sayso.overwrite_onbeforeunload = true;
+			window.onbeforeunload = confirmBeforeLeavingSurvey;
+		}
+	}
+
+	function confirmBeforeLeavingSurvey () {
+		return "If you leave this survey, you will lose any unsaved progress.";
+	}
+	
+	function revertConfirmBeforeUnload () {
+		if (sayso.overwrite_onbeforeunload) {
+			if (sayso.old_onbeforeunload) {
+				window.onbeforeunload = sayso.old_onbeforeunload;
+				sayso.old_onbeforeunload = null;
+			} else {
+				window.onbeforeunload = null;
+			}
+			sayso.overwrite_onbeforeunload = false;
+		}
+	}
+
+	function hideOverlay() {
+		var overlay = $SQ('.sb_overlay', starbarElem);
+		if (overlay.length == 1) {
+			revertConfirmBeforeUnload();
+			overlay.fadeTo(200, 0);
+			setTimeout(function () {
+				overlay.annihilate();
+			}, 200);
+		}
+	}
+
 	// animates the starbar-player-console bar based on current state
 	function toggleBar(needToUpdateState){
         switch (starbar.state.local.visibility){
@@ -1266,7 +1303,7 @@ $SQ(function(){
 	function stowBar (needToUpdateState) {
 		starbar.state.local.visibility = 'stowed';
 		if (needToUpdateState) {
-			starbar.state.visibility = starbar.state.local.visibility;
+			starbar.state.visibility = 'sb_starbar-visStowed';
 			starbar.state.update();
 		}
 
@@ -1307,7 +1344,7 @@ $SQ(function(){
 	function openBar (needToUpdateState) {
 		starbar.state.local.visibility = 'open';
 		if (needToUpdateState) {
-			starbar.state.visibility = starbar.state.local.visibility;
+			starbar.state.visibility = 'sb_starbar-visOpened';
             starbar.state.update();
 		}
 
@@ -1328,43 +1365,6 @@ $SQ(function(){
                 showAlerts();
             }
         );
-	}
-
-	function enableConfirmBeforeUnload () {
-		if (!sayso.overwrite_onbeforeunload) {
-			if (window.onbeforeunload) {
-				sayso.old_onbeforeunload = window.onbeforeunload;
-			}
-			sayso.overwrite_onbeforeunload = true;
-			window.onbeforeunload = confirmBeforeLeavingSurvey;
-		}
-	}
-
-	function confirmBeforeLeavingSurvey () {
-		return "If you leave this survey, you will lose any unsaved progress.";
-	}
-	
-	function revertConfirmBeforeUnload () {
-		if (sayso.overwrite_onbeforeunload) {
-			if (sayso.old_onbeforeunload) {
-				window.onbeforeunload = sayso.old_onbeforeunload;
-				sayso.old_onbeforeunload = null;
-			} else {
-				window.onbeforeunload = null;
-			}
-			sayso.overwrite_onbeforeunload = false;
-		}
-	}
-
-	function hideOverlay() {
-		var overlay = $SQ('.sb_overlay', starbarElem);
-		if (overlay.length == 1) {
-			revertConfirmBeforeUnload();
-			overlay.fadeTo(200, 0);
-			setTimeout(function () {
-				overlay.annihilate();
-			}, 200);
-		}
 	}
 
 	// Update the cross-domain state variables

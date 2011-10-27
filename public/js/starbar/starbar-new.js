@@ -1294,6 +1294,9 @@ $SQ(function(){
 	// Refresh the Starbar to respond to state changes, if any
 	starbar.state.refresh = function () {
         starbar.state.callback = function () { 
+    		// @ todo remove this once krl is updated to use 'open' and 'stowed'...
+		    if (starbar.state.visibility == 'sb_starbar-visOpen') starbar.state.visibility = 'open';
+		    else if (starbar.state.visibility == 'sb_starbar-visStowed') starbar.state.visibility = 'stowed';
             // logic here to determine if/what should be fired to "refresh"
             if (starbar.state.visibility != starbar.state.local.visibility) {
             	switch (starbar.state.visibility) {

@@ -1499,7 +1499,8 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 
 #sayso-starbar .sb_popBox #sb_personalInfo input[type=text]{
 	font-size: 10px;
-	line-height: 15px;
+	padding: 1px;
+	line-height: 13px;
 }
 
 /* Easy Tooltip */

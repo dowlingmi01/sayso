@@ -29,7 +29,7 @@ class Cli_IncrementalController extends Zend_Controller_Action
         }
         // printf("Using logfile %s", $logfile);
 
-        $options            = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOptions();
+        $options = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOptions();
 
         // prepare array of former updates
         $existingUpdates    = file($logfile);
@@ -37,9 +37,10 @@ class Cli_IncrementalController extends Zend_Controller_Action
         {
             $existingUpdates[$k] = trim($v);
         }
-        
-        $mysqlBinary        = trim(`which mysql`);
-        $command            = sprintf('%s -h %s --user=%s --password=%s %s < %%s',
+
+        // create command template for myqsl
+        $mysqlBinary    = trim(`which mysql`);
+        $command        = sprintf('%s -h %s --user=%s --password=%s %s < %%s',
             $mysqlBinary,
             $options['database']['params']['host'],
             $options['database']['params']['username'],
@@ -50,7 +51,7 @@ class Cli_IncrementalController extends Zend_Controller_Action
         // use nice SPL goodie to get needed files
         $files  = new GlobIterator(dirname(APPLICATION_PATH).'/scripts/sql/*.sql', FilesystemIterator::KEY_AS_FILENAME);
         $handle = fopen($logfile, 'a+');
-        
+
         // do updates in a loop, break on error
         foreach ($files as $name => $path)
         {
@@ -59,19 +60,22 @@ class Cli_IncrementalController extends Zend_Controller_Action
             {
                 continue;
             }
-            $execute    = sprintf($command, $path);
-            //echo $execute, "\n";
-            $error      = trim(`$execute`);
+            // ok, we can try your sql, dude...
+            $output     = array();
+            $error      = 0;
+            exec(sprintf($command, $path), $output, $error);
             if($error)
             {
+                // something has gone wrong?
+                // get out of here!
+                fclose($handle);
                 die($error . "\n");
             }
-            fwrite($handle, $name."\n");            
+            fwrite($handle, $name."\n");
         }
         fclose($handle);
 
         // always do that at the end of action...
         exit(0);
     }
-
 }

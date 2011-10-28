@@ -1,0 +1,45 @@
+#!/bin/bash
+
+green()
+{
+echo -e "\n\e[32m$1\e[39;49m"
+}
+red()
+{
+echo -e "\n\e[31m$1\e[39;49m"
+}
+
+OWNDIR=`pwd`
+SVN=`which svn`
+
+echo ""
+green "Cleaning cache..."
+echo ""
+
+rm -rfv ../cache/*
+
+echo ""
+green "Updating library..."
+echo ""
+
+cd ../../library
+$SVN up
+
+echo ""
+green "Updating application..."
+echo ""
+
+cd "$OWNDIR"
+cd ..
+$SVN up
+
+echo ""
+green "Launching database update..."
+echo ""
+
+cd "$OWNDIR"
+./sayso incremental
+
+echo ""
+red "All done"
+echo ""

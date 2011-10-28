@@ -30,7 +30,14 @@ class Cli_IncrementalController extends Zend_Controller_Action
         // printf("Using logfile %s", $logfile);
 
         $options            = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOptions();
+
+        // prepare array of former updates
         $existingUpdates    = file($logfile);
+        foreach($existingUpdates as $k => $v)
+        {
+            $existingUpdates[$k] = trim($v);
+        }
+        
         $mysqlBinary        = trim(`which mysql`);
         $command            = sprintf('%s -h %s --user=%s --password=%s %s < %%s',
             $mysqlBinary,
@@ -48,7 +55,7 @@ class Cli_IncrementalController extends Zend_Controller_Action
         foreach ($files as $name => $path)
         {
             $fileDate = substr($name, 0, 10);
-            if($fileDate <= self::UPDATES_ONLY_AFTER)
+            if($fileDate <= self::UPDATES_ONLY_AFTER || in_array($name, $existingUpdates))
             {
                 continue;
             }

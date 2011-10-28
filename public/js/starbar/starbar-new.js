@@ -27,13 +27,8 @@ $SQ(function(){
 	$SQ(document).bind('onboarding-display', function () {
 	    var onboarding = $SQ('#sb_popBox_onboard');
 	    openPopBox(onboarding, onboarding.attr('href'), false, true);
-	    setTimeout(function () {
-	        // once the onboarding is displayed, bind click on the last step 
-	        // to trigger completion of the onboarding 
-	        $SQ('#sb_popBox_onboard a.sb_surveyLaunch').bind('click', function () {
-	            $SQ(document).trigger('onboarding-complete');
-	        });
-	    }, 500);
+	    // trigger onboarding complete (see starbar-loader.js where this is handled)
+	    $SQ(document).trigger('onboarding-complete');
 	});
 
 	// close if you click outside the starbar while in the iframe

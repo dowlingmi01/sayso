@@ -26,7 +26,7 @@ class Task_Router_Cli extends Zend_Controller_Router_Abstract
                 $dispatcher->setModuleName('cli');
                 $dispatcher->setControllerName($command);
                 $dispatcher->setActionName('run');
-                unset($_SERVER ['argv'][1]);
+                unset($_SERVER['argv'][1]);
                 return $dispatcher;
             }
             echo "Invalid command.\n", exit;
@@ -42,9 +42,5 @@ class Task_Router_Cli extends Zend_Controller_Router_Abstract
      * @param bool $reset
      * @param bool $encode
      */
-    public function assemble($userParams, $name = null, $reset = false, $encode = true){
-
-        echo "CALLED\n";exit(0);
-
-    }
+    public function assemble($userParams, $name = null, $reset = false, $encode = true){}
 }

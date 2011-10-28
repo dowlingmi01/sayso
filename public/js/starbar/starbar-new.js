@@ -4,13 +4,13 @@
 
 $SQ(function(){
 
-    var sayso = window.sayso,
-        starbar = sayso.starbar;
-    
-    easyXDM.DomHelper.requiresJSON("http://"+sayso.baseDomain+"/js/starbar/json2.min.js");
+	var sayso = window.sayso,
+		starbar = sayso.starbar;
+	
+	easyXDM.DomHelper.requiresJSON("http://"+sayso.baseDomain+"/js/starbar/json2.min.js");
 
 	// global var
-    var themeColor = '#de40b2';
+	var themeColor = '#de40b2';
 
 	/*
 	Set up some extra bits to handle closing windows if the user clicks outside the starbar or hits ESC key
@@ -25,10 +25,10 @@ $SQ(function(){
 	// display onboarding if the user has not already seen it
 	// and the user is on the Starbar's base domain (e.g. hellomusic.com)
 	$SQ(document).bind('onboarding-display', function () {
-	    var onboarding = $SQ('#sb_popBox_onboard');
-	    openPopBox(onboarding, onboarding.attr('href'), false, true);
-	    // trigger onboarding complete (see starbar-loader.js where this is handled)
-	    $SQ(document).trigger('onboarding-complete');
+		var onboarding = $SQ('#sb_popBox_onboard');
+		openPopBox(onboarding, onboarding.attr('href'), false, true);
+		// trigger onboarding complete (see starbar-loader.js where this is handled)
+		$SQ(document).trigger('onboarding-complete');
 	});
 
 	// close if you click outside the starbar while in the iframe
@@ -40,131 +40,131 @@ $SQ(function(){
 	});
 	
 	/**
-     * Get the data container of a given DOM object
-     * - a "data container" (per this convention) is any DOM object
-     *   with the HTML5 data attribute "data-id", indicating
-     *   an identifiable record, within which the current object
-     *   is a child
-     * - default is to return the *first* parent container (index 0)
-     *   but can be specified via parentIndex param (e.g. *second* (outer) parent == 1)
-     * - you can also access the data container even if the current element
-     *   IS the data container (i.e. it contains the "data-id" attr)
-     * 
-     * - example: $('a.facebook').dataContainer().find('.button').show()
-     * - example: $('a.facebook').dataContainer(1).getId() <-- get the id of an outer container
-     * - example:
-     *     <div class="reward" data-id="<?= $reward->getId() ?>">
-     *         <a>Redeem!</a>
-     *     </div>
-     *     <script type="text/javascript">
-     *         $SQ('div.reward a').click(function () {
-     *             var rewardId = $SQ(this).dataContainer().getId();
-     *             // redeem this reward
-     *         });
-     *     </script>
-     * 
-     * @author davidbjames
-     * 
-     * @param integer parentIndex OPTIONAL defaults to 0 (first parent)
-     * @return jQuery object of the data/parent element
-     */
-    $SQ.fn.dataContainer = function (parentIndex) {
-        
-	    var _container;
-	    if (typeof parentIndex === 'number') {
-	        // if parent is explicitly set
-	        _container = $SQ(this).parents('[data-id]').eq(parentIndex);
-	    } else if (this.attr('data-id').length) {
-	        // if the data-id exists on *this* element
-	        _container = $SQ(this);
-	    } else {
-	        // otherwise default to first parent
-	        _container = $SQ(this).parents('[data-id]').eq(0);
-	    }
-	    
-	    if (!_container.length) {
-	        // if none found provide harmless object
-	        return {
-	            getId : function () { return 0; },
-	            setObject : function () { return this; },
-	            getObject : function () { return this; },
-	            reset : function () {},
-	            removeNow : function () {}
-	        };
-	    }
-	    
-	    // store off the id
-	    var _id = _container.attr('data-id');
-	    
-	    /**
-	     * Get the ID of the object
-	     * - this usually corresponds to the record ID
-	     * @returns integer
-	     */
-	    _container.getId = function () {
-	        return typeof _id === 'undefined' ? 0 : parseInt(_id);
-	    };
-	    
-	    /**
-	     * Attach an object to this data container
-	     * @param object|string object
-	     */
-	    _container.setObject = function (object) {
-	        _container.data('object', typeof(object) === 'string' ? object : JSON.stringify(object));
-	        return _container;
-	    };
-	    
-	    /**
-	     * Get the object from this data container
-	     * @returns object
-	     */
-	    _container.getObject = function () {
-	        return JSON.parse(_container.data('object'));
-	    };
-	    
-	    /**
-	     * Copy the current data container to another DOM node
-	     * @param target
-	     * @returns object "data container"
-	     */
-	    _container.copy = function (target) {
-	        if (typeof _container.data('object') !== 'undefined') {
-	            target.data('object', _container.data('object'));
-	        }
-	        target.attr('data-id', _container.getId());
-	        return target.dataContainer(); // the new data container
-	    };
-	    
-	    /**
-	     * Move the current data container to another DOM node
-	     * @param target
-	     * @returns object "data container"
-	     */
-	    _container.move = function (target) {
-	        var newContainer = _container.copy(target);
-	        _container.reset();
-	        return newContainer;
-	    };
-	    
-	    /**
-	     * Reset the data container (remove id and object)
-	     */
-	    _container.reset = function () {
-	        _container.removeAttr('data-id');
-	        _container.removeData('object');
-	        return _container;
-	    };
-	    
-	    /**
-	     * Remove the data container completely
-	     */
-	    _container.removeNow = function () {
-	        _container.fadeTo(400, 0, function() {
-	            _container.remove();
-	        });
-	    };
-	    
-	    return _container;
+	 * Get the data container of a given DOM object
+	 * - a "data container" (per this convention) is any DOM object
+	 *   with the HTML5 data attribute "data-id", indicating
+	 *   an identifiable record, within which the current object
+	 *   is a child
+	 * - default is to return the *first* parent container (index 0)
+	 *   but can be specified via parentIndex param (e.g. *second* (outer) parent == 1)
+	 * - you can also access the data container even if the current element
+	 *   IS the data container (i.e. it contains the "data-id" attr)
+	 * 
+	 * - example: $('a.facebook').dataContainer().find('.button').show()
+	 * - example: $('a.facebook').dataContainer(1).getId() <-- get the id of an outer container
+	 * - example:
+	 *	 <div class="reward" data-id="<?= $reward->getId() ?>">
+	 *		 <a>Redeem!</a>
+	 *	 </div>
+	 *	 <script type="text/javascript">
+	 *		 $SQ('div.reward a').click(function () {
+	 *			 var rewardId = $SQ(this).dataContainer().getId();
+	 *			 // redeem this reward
+	 *		 });
+	 *	 </script>
+	 * 
+	 * @author davidbjames
+	 * 
+	 * @param integer parentIndex OPTIONAL defaults to 0 (first parent)
+	 * @return jQuery object of the data/parent element
+	 */
+	$SQ.fn.dataContainer = function (parentIndex) {
+		
+		var _container;
+		if (typeof parentIndex === 'number') {
+			// if parent is explicitly set
+			_container = $SQ(this).parents('[data-id]').eq(parentIndex);
+		} else if (this.attr('data-id').length) {
+			// if the data-id exists on *this* element
+			_container = $SQ(this);
+		} else {
+			// otherwise default to first parent
+			_container = $SQ(this).parents('[data-id]').eq(0);
+		}
+		
+		if (!_container.length) {
+			// if none found provide harmless object
+			return {
+				getId : function () { return 0; },
+				setObject : function () { return this; },
+				getObject : function () { return this; },
+				reset : function () {},
+				removeNow : function () {}
+			};
+		}
+		
+		// store off the id
+		var _id = _container.attr('data-id');
+		
+		/**
+		 * Get the ID of the object
+		 * - this usually corresponds to the record ID
+		 * @returns integer
+		 */
+		_container.getId = function () {
+			return typeof _id === 'undefined' ? 0 : parseInt(_id);
+		};
+		
+		/**
+		 * Attach an object to this data container
+		 * @param object|string object
+		 */
+		_container.setObject = function (object) {
+			_container.data('object', typeof(object) === 'string' ? object : JSON.stringify(object));
+			return _container;
+		};
+		
+		/**
+		 * Get the object from this data container
+		 * @returns object
+		 */
+		_container.getObject = function () {
+			return JSON.parse(_container.data('object'));
+		};
+		
+		/**
+		 * Copy the current data container to another DOM node
+		 * @param target
+		 * @returns object "data container"
+		 */
+		_container.copy = function (target) {
+			if (typeof _container.data('object') !== 'undefined') {
+				target.data('object', _container.data('object'));
+			}
+			target.attr('data-id', _container.getId());
+			return target.dataContainer(); // the new data container
+		};
+		
+		/**
+		 * Move the current data container to another DOM node
+		 * @param target
+		 * @returns object "data container"
+		 */
+		_container.move = function (target) {
+			var newContainer = _container.copy(target);
+			_container.reset();
+			return newContainer;
+		};
+		
+		/**
+		 * Reset the data container (remove id and object)
+		 */
+		_container.reset = function () {
+			_container.removeAttr('data-id');
+			_container.removeData('object');
+			return _container;
+		};
+		
+		/**
+		 * Remove the data container completely
+		 */
+		_container.removeNow = function () {
+			_container.fadeTo(400, 0, function() {
+				_container.remove();
+			});
+		};
+		
+		return _container;
 	}
 
 	// LETS USE VARS!
@@ -239,7 +239,7 @@ $SQ(function(){
 
 		elemPlayerConsole.unbind();
 		elemPlayerConsole.click(function(e) {
-		    e.stopPropagation();
+			e.stopPropagation();
 		});
 		
 		// tooltip binding
@@ -293,7 +293,7 @@ $SQ(function(){
 						closePopBox();
 					}else{
 						// check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
-            			var thisPopBoxSrc = $SQ(this).attr('href');
+						var thisPopBoxSrc = $SQ(this).attr('href');
 						openPopBox(thisPopBox, thisPopBoxSrc, false);
 					}
 				}
@@ -401,7 +401,7 @@ $SQ(function(){
 				click: function(event){
 					var $tabs = $SQ('.sb_popBoxActive .sb_tabs').tabs();
 					$tabs.tabs('select', $SQ(this).attr('rel')-1); // switch to third tab
-    				return false;
+					return false;
 				}
 			});
 		});
@@ -517,7 +517,7 @@ $SQ(function(){
 					
 					initElements();
 					showPopBoxContents(popBox, loadingElement, ajaxContentContainer);
-    			}
+				}
 			});
 		} else {
 			showPopBoxContents(popBox, false, ajaxContentContainer);
@@ -669,7 +669,7 @@ $SQ(function(){
 						showAlerts();
 					}
 				}
-    		}
+			}
 		});
 	}
 
@@ -688,7 +688,7 @@ $SQ(function(){
 				url : 'http://'+sayso.baseDomain+'/api/gaming/share?renderer=jsonp&shared_type='+shared_type+'&shared_id='+shared_id,
 				success : function (response, status, jqXHR) {
 					updateGame(response.game, true, true);
-    			}
+				}
 			});
 		}
 	}
@@ -715,13 +715,13 @@ $SQ(function(){
 						var paneHandle = scrollPane.data('jsp');
 
 						var accordionHeader = openFrameContainerParent.prev('h3');
-					    var currentScroll = paneHandle.getContentPositionY();
-					    var topOfOpenAccordion = accordionHeader.position().top;
-					    var bottomOfOpenAccordion = topOfOpenAccordion+accordionHeader.totalHeight()+openFrameContainerParent.totalHeight();
-					    var sizeOfPane = scrollPane.height();
+						var currentScroll = paneHandle.getContentPositionY();
+						var topOfOpenAccordion = accordionHeader.position().top;
+						var bottomOfOpenAccordion = topOfOpenAccordion+accordionHeader.totalHeight()+openFrameContainerParent.totalHeight();
+						var sizeOfPane = scrollPane.height();
 
-					    if ((bottomOfOpenAccordion - currentScroll) > (sizeOfPane - 10)) { // - 24 for the extra padding
-					        paneHandle.scrollByY((bottomOfOpenAccordion - currentScroll) - (sizeOfPane - 10)); // scroll by the difference
+						if ((bottomOfOpenAccordion - currentScroll) > (sizeOfPane - 10)) { // - 24 for the extra padding
+							paneHandle.scrollByY((bottomOfOpenAccordion - currentScroll) - (sizeOfPane - 10)); // scroll by the difference
 						}
 					}
 				}
@@ -770,7 +770,7 @@ $SQ(function(){
 				url : 'http://'+sayso.baseDomain+'/api/gaming/get-game?renderer=jsonp',
 				success : function (response, status, jqXHR) {
 					updateGame(response.data, setGlobalUpdate, animate);
-    			}
+				}
 			});
 		} else if (loadSource == "cache") {
 			sayso.log('Updating game from Cache');
@@ -797,15 +797,22 @@ $SQ(function(){
 		var progressBarElems = $SQ('.sb_progress_bar', target);
 		var userLevelNumberElems = $SQ('.sb_user_level_number', target);
 		var userLevelTitleElems = $SQ('.sb_user_level_title', target);
-
 		var animationDuration = 2000; // milliseconds
+		var justInitialized = false;
+
+		if (! sayso.starbar.previous_game) {
+			sayso.starbar.previous_game = sayso.starbar.game;
+			justInitialized = true;
+			animate = false;
+		}
 
 		var allLevels = sayso.starbar.game._levels.collection;
 		var userLevels = sayso.starbar.game._gamer._levels.collection;
+		var userPreviousLevels = sayso.starbar.previous_game._gamer._levels.collection;
+
 		// The current level is the first level in the collection (it is sorted by the gaming API!)
 		var userCurrentLevel = userLevels[0];
 		var userNextLevel;
-		var justLeveledUp = false;
 
 		if (allLevels && userLevels) {
 			$SQ.each(allLevels, function (index, level) {
@@ -819,28 +826,23 @@ $SQ(function(){
 			userNextLevel = { ordinal : userCurrentLevel.ordinal + 50000 }
 		}
 
-		if (currencyBalanceNextLevelElems.length > 0) {
-			currencyBalanceNextLevelElems.each(function() {
-				$SQ(this).html(userNextLevel.ordinal);
-			});
+		var justLeveledUp = false;
+		var currentLevel = userPreviousLevels.length - 1;
+		var newLevel = userLevels.length - 1;
+		if (currentLevel != newLevel) {
+			justLeveledUp = true;
 		}
 
-		if (userLevelNumberElems.length > 0) {
-			userLevelNumberElems.each(function() {
-				var currentLevel = $SQ(this).cleanHtml();
-				currentLevel = parseInt(currentLevel);
-				var newLevel = userLevels.length - 1;
-				if (currentLevel != newLevel) {
+		if (justInitialized || justLeveledUp) {
+			if (userLevelNumberElems.length > 0) {
+				userLevelNumberElems.each(function() {
 					$SQ(this).html(newLevel);
-					justLeveledUp = true;
 					if (animate) {
 						$SQ(this).effect("pulsate", { times:3 }, parseInt(animationDuration/3));
 					}
-				}
-			});
-		}
+				});
+			}
 
-		if (justLeveledUp) {
 			if (userLevelTitleElems.length > 0) {
 				userLevelTitleElems.each(function() {
 					$SQ(this).html(userCurrentLevel.title);
@@ -849,6 +851,12 @@ $SQ(function(){
 					}
 				});
 			}
+		}
+
+		if (currencyBalanceNextLevelElems.length > 0) {
+			currencyBalanceNextLevelElems.each(function() {
+				$SQ(this).html(userNextLevel.ordinal);
+			});
 		}
 
 		if (levelIconsContainerElems.length > 0) {
@@ -898,124 +906,148 @@ $SQ(function(){
 		$SQ.each(sayso.starbar.game._gamer._currencies.collection, function (index, currency) {
 			var currencyTitle = currency.title.toLowerCase();
 			var currencyBalance = parseInt(currency.current_balance);
-
-			if (currencyBalanceElems.length > 0) {
-				currencyBalanceElems.each(function() {
-					var $SQthis = $SQ(this);
-					if ($SQthis.attr('data-currency') == currencyTitle) {
-						var currentCurrencyBalance = parseInt($SQthis.cleanHtml())
-						if (animate && currencyBalance != currentCurrencyBalance) { // New value, play animation
-							var originalColor = $SQthis.css('color');
-							// total duration is doubled when leveling up
-							var durationMultiplier = 4/5;
-							if (justLeveledUp) {
-								durationMultiplier = 9/5;
-							}
-							// Prepare the element for numeric 'animation' (i.e. tweening the number)
-							$SQthis.animate(
-								{ animationCurrencyBalance: currentCurrencyBalance },
-								{ duration : 0 }
-							).animate(
-								{
-									color : 'red',
-									animationCurrencyBalance : currencyBalance
-								},
-								{ 
-									duration : parseInt(animationDuration*durationMultiplier),
-									step : function (now, fx) {
-										$SQthis.html(parseInt(now));
-									},
-									complete : function () {
-										$SQthis.html(currencyBalance);
-										$SQthis.css('color', originalColor);
-									}
-								}
-							).animate(
-								{ color : originalColor },
-								{ duration : parseInt(animationDuration/5) }
-							);
-						} else {
-							$SQthis.html(currencyBalance);
-						}
-					}
-				});
-			}
-
-			if (currencyPercentElems.length > 0) {
-				if (userNextLevel && userNextLevel.ordinal && currencyBalance > userCurrentLevel.ordinal) {
-					currencyPercent = Math.round((currencyBalance - userCurrentLevel.ordinal)/(userNextLevel.ordinal - userCurrentLevel.ordinal)*100);
-				} else {
-					currencyPercent = 0;
-				}
-				
-				if (currencyPercent > 100) currencyPercent = 100; // technically this should never happen
+			var previousCurrency = null;
+			var currencyNeedsUpdate = false;
 			
-				currencyPercentElems.each(function() {
-					var $SQthis = $SQ(this);
-					var startingWidth = $SQthis.width();
-					var availableWidth = $SQthis.parent().width();
-					var newWidth = Math.round(availableWidth * currencyPercent/100);
-					if (!$SQthis.hasClass('sb_ui-progressbar-value')) {
-						$SQthis.addClass('sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left');
-					}
-					if ($SQthis.attr('data-currency') == currencyTitle) {
-						if (animate && !justLeveledUp) {
-							var animatingBarElem = $SQ(document.createElement('div'));
-							var fadingBarElem = $SQ(document.createElement('div'));
-							var progressBarElem = $SQthis; // so it can be accessed from setTimeout()
-							animatingBarElem.addClass('sb_ui-progressbar-value-animating sb_ui-widget-header sb_ui-corner-left');
-							animatingBarElem.css('width', startingWidth+'px');
-							fadingBarElem.addClass('sb_ui-progressbar-value-fading sb_ui-widget-header sb_ui-corner-left');
-							fadingBarElem.css('width', newWidth+'px');
-							
-							animatingBarElem.insertBefore($SQthis);
-							fadingBarElem.insertBefore($SQthis);
-							fadingBarElem.fadeTo(0, 0);
-							
-							animatingBarElem.animate(
-								{ width : newWidth+'px' },
-								{ duration : parseInt(animationDuration*2/5) }
-							);
-							setTimeout(function() {
-								fadingBarElem.fadeTo(parseInt(animationDuration*3/5), 1);
-							}, parseInt(animationDuration*2/5));
-							
-							setTimeout(function() {
-								progressBarElem.css('width', newWidth+'px');
-								animatingBarElem.annihilate();
-								fadingBarElem.annihilate();
-							}, animationDuration);
-						} else if (animate && justLeveledUp) {
-							var animatingBarElem = $SQ(document.createElement('div'));
-							var progressBarElem = $SQthis; // so it can be accessed from setTimeout()
-							animatingBarElem.addClass('sb_ui-progressbar-value-animating sb_ui-widget-header sb_ui-corner-left');
-							animatingBarElem.css('width', startingWidth+'px');
-							
-							animatingBarElem.insertBefore($SQthis);
-							
-							animatingBarElem.animate(
-								{ width : availableWidth+'px' },
-								{ duration : parseInt(animationDuration*2/5) }
-							);
-							setTimeout(function() {
-								progressBarElem.fadeTo(parseInt(animationDuration), 0);
-							}, parseInt(animationDuration*2/5));
-							setTimeout(function() {
-								progressBarElem.css('width', newWidth+'px');
-								progressBarElem.fadeTo(parseInt(animationDuration*3/5), 1);
-								animatingBarElem.fadeTo(parseInt(animationDuration*3/5), 0);
-							}, parseInt(animationDuration*7/5));
-							setTimeout(function() {
-								animatingBarElem.annihilate();
-							}, animationDuration*2);
-						} else { // No animation
-							$SQthis.css('width', newWidth+'px');
+			var i = 0;
+			while (i < sayso.starbar.previous_game._gamer._currencies.collection.length) {
+				if (currencyTitle == sayso.starbar.previous_game._gamer._currencies.collection[i].title.toLowerCase()) {
+					previousCurrency = sayso.starbar.previous_game._gamer._currencies.collection[i];
+					break;
+				}
+				i++;
+			}
+			
+			if (!previousCurrency) {
+				previousCurrency = currency; 
+				currencyNeedsUpdate = true;
+			}
+			
+			var previousCurrencyBalance = parseInt(previousCurrency.current_balance);
+			
+			if (justInitialized || currencyBalance != previousCurrencyBalance) currencyNeedsUpdate = true;
+			
+			if (currencyNeedsUpdate) {
+				if (currencyBalanceElems.length > 0) {
+					currencyBalanceElems.each(function() {
+						var $SQthis = $SQ(this);
+						if ($SQthis.attr('data-currency') == currencyTitle) {
+							if (animate) { // New value, play animation
+								var originalColor = $SQthis.css('color');
+								// total duration is doubled when leveling up
+								var durationMultiplier = 4/5;
+								if (justLeveledUp) {
+									durationMultiplier = 9/5;
+								}
+								// Prepare the element for numeric 'animation' (i.e. tweening the number)
+								$SQthis.animate(
+									{ animationCurrencyBalance: previousCurrencyBalance },
+									{ duration : 0 }
+								).animate(
+									{
+										color : 'red',
+										animationCurrencyBalance : currencyBalance
+									},
+									{ 
+										duration : parseInt(animationDuration*durationMultiplier),
+										step : function (now, fx) {
+											$SQthis.html(parseInt(now));
+										},
+										complete : function () {
+											$SQthis.html(currencyBalance);
+											$SQthis.css('color', originalColor);
+										}
+									}
+								).animate(
+									{ color : originalColor },
+									{ duration : parseInt(animationDuration/5) }
+								);
+							} else {
+								$SQthis.html(currencyBalance);
+							}
 						}
+					});
+				}
+
+				if (currencyPercentElems.length > 0) {
+					if (userNextLevel && userNextLevel.ordinal && currencyBalance > userCurrentLevel.ordinal) {
+						currencyPercent = Math.round((currencyBalance - userCurrentLevel.ordinal)/(userNextLevel.ordinal - userCurrentLevel.ordinal)*100);
+					} else {
+						currencyPercent = 0;
 					}
-				});
+					
+					if (currencyPercent > 100) currencyPercent = 100; // technically this should never happen
+				
+					currencyPercentElems.each(function() {
+						var $SQthis = $SQ(this);
+						var startingWidth = $SQthis.width();
+						var availableWidth = $SQthis.parent().width();
+						var newWidth = Math.round(availableWidth * currencyPercent/100);
+						if (!$SQthis.hasClass('sb_ui-progressbar-value')) {
+							$SQthis.addClass('sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left');
+						}
+						if ($SQthis.attr('data-currency') == currencyTitle) {
+							if (animate && !justLeveledUp) {
+								var animatingBarElem = $SQ(document.createElement('div'));
+								var fadingBarElem = $SQ(document.createElement('div'));
+								var progressBarElem = $SQthis; // so it can be accessed from setTimeout()
+								animatingBarElem.addClass('sb_ui-progressbar-value-animating sb_ui-widget-header sb_ui-corner-left');
+								animatingBarElem.css('width', startingWidth+'px');
+								fadingBarElem.addClass('sb_ui-progressbar-value-fading sb_ui-widget-header sb_ui-corner-left');
+								fadingBarElem.css('width', newWidth+'px');
+								
+								animatingBarElem.insertBefore($SQthis);
+								fadingBarElem.insertBefore($SQthis);
+								fadingBarElem.fadeTo(0, 0);
+								
+								animatingBarElem.animate(
+									{ width : newWidth+'px' },
+									{ duration : parseInt(animationDuration*2/5) }
+								);
+								setTimeout(function() {
+									fadingBarElem.fadeTo(parseInt(animationDuration*3/5), 1);
+								}, parseInt(animationDuration*2/5));
+								
+								setTimeout(function() {
+									progressBarElem.css('width', newWidth+'px');
+									animatingBarElem.annihilate();
+									fadingBarElem.annihilate();
+								}, animationDuration);
+							} else if (animate && justLeveledUp) {
+								var animatingBarElem = $SQ(document.createElement('div'));
+								var progressBarElem = $SQthis; // so it can be accessed from setTimeout()
+								animatingBarElem.addClass('sb_ui-progressbar-value-animating sb_ui-widget-header sb_ui-corner-left');
+								animatingBarElem.css('width', startingWidth+'px');
+								
+								animatingBarElem.insertBefore($SQthis);
+								
+								animatingBarElem.animate(
+									{ width : availableWidth+'px' },
+									{ duration : parseInt(animationDuration*2/5) }
+								);
+								setTimeout(function() {
+									progressBarElem.fadeTo(parseInt(animationDuration), 0);
+								}, parseInt(animationDuration*2/5));
+								setTimeout(function() {
+									progressBarElem.css('width', newWidth+'px');
+									progressBarElem.fadeTo(parseInt(animationDuration*3/5), 1);
+									animatingBarElem.fadeTo(parseInt(animationDuration*3/5), 0);
+								}, parseInt(animationDuration*7/5));
+								setTimeout(function() {
+									animatingBarElem.annihilate();
+								}, animationDuration*2);
+							} else { // No animation
+								$SQthis.css('width', newWidth+'px');
+							}
+						}
+					});
+				}
 			}
 		}); // each currency
-	}
+
+		// So the next time activateGameElements is called, we don't assume the user just got the points/level-ups
+		sayso.starbar.previous_game = sayso.starbar.game;		
+	} // activateGameElements
 
 	function updateProfile(setGlobalUpdate, userInitiated) {
 		$SQ.ajaxWithAuth({
@@ -1059,7 +1091,7 @@ $SQ(function(){
 						$SQ(this).html(user['username']);
 					});
 				}
-    		}
+			}
 		});
 
 		if (setGlobalUpdate) { // tell the starbars in other tabs to update profile info
@@ -1134,24 +1166,24 @@ $SQ(function(){
 				$SQ('.sb_accordion',this).accordion({
 					collapsible: true, // Accordion can have all its divs be closed simultaneously
 					active: false, // All accordion divs are closed by default
-                    // find the link that caused the accordian to open, take the href, and set the src of the inner iframe to it
-                    changestart: function(event, ui){
-                        var activeLink = ui.newHeader.find('a');
-                        var frameHeight = parseInt(activeLink.attr('iframeHeight'));
-                        var activeFooter = ui.newContent.find('.sb_nextPoll');
-                        var link = "";
+					// find the link that caused the accordian to open, take the href, and set the src of the inner iframe to it
+					changestart: function(event, ui){
+						var activeLink = ui.newHeader.find('a');
+						var frameHeight = parseInt(activeLink.attr('iframeHeight'));
+						var activeFooter = ui.newContent.find('.sb_nextPoll');
+						var link = "";
 
-                        // Hide the footer (share links, next survey links)
-                        if (activeFooter){
+						// Hide the footer (share links, next survey links)
+						if (activeFooter){
 							activeFooter.fadeTo(0, 0);
 						}
 						
 						// Load the iframe if not already loaded
-                        if (activeLink.length > 0 && activeLink.attr('loaded') != "true") {
+						if (activeLink.length > 0 && activeLink.attr('loaded') != "true") {
 							// The iframe's height is calculated and set by the controller, use it to set the size of the accordion
 							ui.newContent.css('height', frameHeight+5);
 
-                        	// Add the authentication info to the request
+							// Add the authentication info to the request
 							link = activeLink.attr('href');
 							if (link.indexOf("?") == -1)
 								link += "?";
@@ -1166,26 +1198,26 @@ $SQ(function(){
 							activeLink.attr('loaded', 'true');
 						}
 
-                        // Fade in the footer
-                        if (activeFooter){
-	                        setTimeout(function(){
+						// Fade in the footer
+						if (activeFooter){
+							setTimeout(function(){
 								activeFooter.fadeTo(500, 1);
-	                        }, 2000);
+							}, 2000);
 						}
-                    },
-                    change: function (event, ui){
-                    	var scrollPane = $SQ(this).parents('.sb_scrollPane')
-                    	scrollPane.jScrollPane(); // re-initialize the scroll pane now that the content size may be different
-                    	if (ui.newHeader.position()) {  // if the accordion is open
+					},
+					change: function (event, ui){
+						var scrollPane = $SQ(this).parents('.sb_scrollPane')
+						scrollPane.jScrollPane(); // re-initialize the scroll pane now that the content size may be different
+						if (ui.newHeader.position()) {  // if the accordion is open
 							var paneHandle = scrollPane.data('jsp');
 
-                    		var currentScroll = paneHandle.getContentPositionY();
-                    		var topOfOpenAccordion = ui.newHeader.position().top;
-                    		var bottomOfOpenAccordion = topOfOpenAccordion+ui.newHeader.totalHeight()+ui.newContent.totalHeight();
-                    		var sizeOfPane = scrollPane.height();
+							var currentScroll = paneHandle.getContentPositionY();
+							var topOfOpenAccordion = ui.newHeader.position().top;
+							var bottomOfOpenAccordion = topOfOpenAccordion+ui.newHeader.totalHeight()+ui.newContent.totalHeight();
+							var sizeOfPane = scrollPane.height();
 
-                    		if ((bottomOfOpenAccordion - currentScroll) > (sizeOfPane - 10)) { // - 24 for the extra padding
-                    			paneHandle.scrollByY((bottomOfOpenAccordion - currentScroll) - (sizeOfPane - 10)); // scroll by the difference
+							if ((bottomOfOpenAccordion - currentScroll) > (sizeOfPane - 10)) { // - 24 for the extra padding
+								paneHandle.scrollByY((bottomOfOpenAccordion - currentScroll) - (sizeOfPane - 10)); // scroll by the difference
 							}
 						}
 					}
@@ -1276,19 +1308,17 @@ $SQ(function(){
 
 	// animates the starbar-player-console bar based on current state
 	function toggleBar(needToUpdateState){
-        switch (starbar.state.local.visibility){
-            case 'open':
-                stowBar(needToUpdateState);
-                break;
-            case 'stowed':
-                openBar(needToUpdateState);
-                break;
-        }
+		switch (starbar.state.local.visibility){
+			case 'open':
+				stowBar(needToUpdateState);
+				break;
+			case 'stowed':
+				openBar(needToUpdateState);
+				break;
+		}
 	}
 
 	function stowBar (needToUpdateState) {
-		sayso.log('stowBar');
-		sayso.log(starbar.state.visibility);
 		starbar.state.local.visibility = 'stowed';
 		if (needToUpdateState) {
 			starbar.state.visibility = starbar.state.local.visibility;
@@ -1296,127 +1326,119 @@ $SQ(function(){
 		}
 
 		closePopBox(true);
-	    elemStarbarMain.fadeTo('fast', 0);
-        elemPopBoxVisControl.fadeTo('fast', 0);
-        btnToggleVis.attr('class','').addClass('sb_btnStarbar-closed');
-        btnSaySoLogo.css('backgroundPosition','3px 0px');
-        elemPlayerConsole.animate(
-            { width: '100' },
-            500,
-            function() {
-                // Animation complete.
-                elemPlayerConsole.attr('class','').addClass('sb_starbar-visClosed');
-                elemSaySoLogoSemiStowed.parent().show();
-                elemSaySoLogoSemiStowed.fadeTo(0, 1);
-                elemPlayerConsole.fadeTo(500, 0);
-                hideAlerts();
-                setTimeout(function () {
-                    elemPlayerConsole.hide();
+		elemStarbarMain.fadeTo('fast', 0);
+		elemPopBoxVisControl.fadeTo('fast', 0);
+		btnToggleVis.attr('class','').addClass('sb_btnStarbar-closed');
+		btnSaySoLogo.css('backgroundPosition','3px 0px');
+		elemPlayerConsole.animate(
+			{ width: '100' },
+			500,
+			function() {
+				// Animation complete.
+				elemPlayerConsole.attr('class','').addClass('sb_starbar-visClosed');
+				elemSaySoLogoSemiStowed.parent().show();
+				elemSaySoLogoSemiStowed.fadeTo(0, 1);
+				elemPlayerConsole.fadeTo(500, 0);
+				hideAlerts();
+				setTimeout(function () {
+					elemPlayerConsole.hide();
 				}, 510);
-                setTimeout(function () {
-			        btnToggleVis.attr('class','').addClass('sb_btnStarbar-stowed');
-            		btnSaySoLogo.css('backgroundPosition','');
-                    elemPlayerConsole.css('width','');
-                    elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
-                    elemPlayerConsole.show();
-                    elemPlayerConsole.fadeTo(157, 1); // 157 found to work best for some bizarre reason
-                    elemSaySoLogoSemiStowed.fadeTo(500, 0);
+				setTimeout(function () {
+					btnToggleVis.attr('class','').addClass('sb_btnStarbar-stowed');
+					btnSaySoLogo.css('backgroundPosition','');
+					elemPlayerConsole.css('width','');
+					elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
+					elemPlayerConsole.show();
+					elemPlayerConsole.fadeTo(157, 1); // 157 found to work best for some bizarre reason
+					elemSaySoLogoSemiStowed.fadeTo(500, 0);
 				}, 1000);
-                setTimeout(function () {
+				setTimeout(function () {
 					elemSaySoLogoSemiStowed.parent().hide();
 				}, 1500);
-            }
-        );
+			}
+		);
 	}
 
 	function openBar (needToUpdateState) {
-		sayso.log('openBar');
-		sayso.log(starbar.state.visibility);
 		starbar.state.local.visibility = 'open';
 		if (needToUpdateState) {
 			starbar.state.visibility = starbar.state.local.visibility;
-            starbar.state.update();
+			starbar.state.update();
 		}
 
-	    btnToggleVis.attr('class','');
-        elemSaySoLogoBorder.hide();
-        elemVisControls.hide();
+		btnToggleVis.attr('class','');
+		elemSaySoLogoBorder.hide();
+		elemVisControls.hide();
 		elemPlayerConsole.addClass('sb_starbar-visBG');
-        hideAlerts();
-        elemPlayerConsole.animate(
-            { width: '100%' },
-            500,
-            function() {
-                // Animation complete.
-                elemPlayerConsole.attr('class','').addClass('sb_starbar-visOpen');
-                elemStarbarMain.fadeTo('fast', 1);
-                elemVisControls.fadeTo('fast', 1);
-                btnToggleVis.attr('class','').addClass('sb_btnStarbar-open');
-                showAlerts();
-            }
-        );
+		hideAlerts();
+		elemPlayerConsole.animate(
+			{ width: '100%' },
+			500,
+			function() {
+				// Animation complete.
+				elemPlayerConsole.attr('class','').addClass('sb_starbar-visOpen');
+				elemStarbarMain.fadeTo('fast', 1);
+				elemVisControls.fadeTo('fast', 1);
+				btnToggleVis.attr('class','').addClass('sb_btnStarbar-open');
+				showAlerts();
+			}
+		);
 	}
 
 	// Update the cross-domain state variables
 	starbar.state.update = function (){
-		sayso.log('update');
-		sayso.log(starbar.state.visibility);
-        var app = KOBJ.get_application(starbar.kynetxAppId);
-        starbar.state.callback = null;
-        app.raise_event('update_state', { 
-            'visibility' : starbar.state.visibility,
-            'notifications' : starbar.state.notifications,
-            'profile' : starbar.state.profile,
-            'game' : starbar.state.game
-        });
-    }
+		var app = KOBJ.get_application(starbar.kynetxAppId);
+		starbar.state.callback = null;
+		app.raise_event('update_state', { 
+			'visibility' : starbar.state.visibility,
+			'notifications' : starbar.state.notifications,
+			'profile' : starbar.state.profile,
+			'game' : starbar.state.game
+		});
+	}
 
 	// Starbar state
 	starbar.state.local = {
-        profile : Math.round(new Date().getTime() / 1000),
-        game : Math.round(new Date().getTime() / 1000),
-        visibility : starbar.state.visibility
+		profile : Math.round(new Date().getTime() / 1000),
+		game : Math.round(new Date().getTime() / 1000),
+		visibility : starbar.state.visibility
 	}
 
 	// Refresh the Starbar to respond to state changes, if any
 	starbar.state.refresh = function () {
-		sayso.log('refresh');
-		sayso.log(starbar.state.visibility);
-        starbar.state.callback = function () { 
-			sayso.log('refresh callback');
-			sayso.log(starbar.state.visibility);
-            // logic here to determine if/what should be fired to "refresh"
-            if (starbar.state.visibility != starbar.state.local.visibility) {
-            	toggleBar(false);
+		starbar.state.callback = function () { 
+			// logic here to determine if/what should be fired to "refresh"
+			if (starbar.state.visibility != starbar.state.local.visibility) {
+				toggleBar(false);
 			}
 
-            updateAlerts(false);
-            
-            if (starbar.state.profile > starbar.state.local.profile) {
-            	updateProfile(false);
+			updateAlerts(false);
+			
+			if (starbar.state.profile > starbar.state.local.profile) {
+				updateProfile(false);
 			}
 
-            if (starbar.state.game > starbar.state.local.game) {
-            	updateGame('ajax', false, false);
+			if (starbar.state.game > starbar.state.local.game) {
+				updateGame('ajax', false, false);
 			}
-            // example:
-            // if (starbar.state.notifications === 'update') updateAlerts();
-            // also, in updateAlerts() or wherever, don't forget to reset the
-            // value back to 'ready' and call starbar.state.update() again
-        };
-        var app = KOBJ.get_application(starbar.kynetxAppId);
-        app.raise_event('refresh_state');
-    }
+			// example:
+			// if (starbar.state.notifications === 'update') updateAlerts();
+			// also, in updateAlerts() or wherever, don't forget to reset the
+			// value back to 'ready' and call starbar.state.update() again
+		};
+		var app = KOBJ.get_application(starbar.kynetxAppId);
+		app.raise_event('refresh_state');
+	}
 
-    if (/*@cc_on!@*/false) { // check for Internet Explorer
-        var oldOnFocus = document.onfocusin && typeof document.onfocusin === 'function' ? document.onfocusin : function () {};
-        document.onfocusin = function () { oldOnFocus(); starbar.state.refresh(); };
-    } else {
-        var oldOnFocus = window.onfocus && typeof window.onfocus === 'function' ? window.onfocus : function () {};
-        window.onfocus = function () { oldOnFocus(); starbar.state.refresh(); };
-    }
-    
-    // flag so we know this file has loaded
-    sayso.starbar.loaded = true;
+	if (/*@cc_on!@*/false) { // check for Internet Explorer
+		var oldOnFocus = document.onfocusin && typeof document.onfocusin === 'function' ? document.onfocusin : function () {};
+		document.onfocusin = function () { oldOnFocus(); starbar.state.refresh(); };
+	} else {
+		var oldOnFocus = window.onfocus && typeof window.onfocus === 'function' ? window.onfocus : function () {};
+		window.onfocus = function () { oldOnFocus(); starbar.state.refresh(); };
+	}
+	
+	// flag so we know this file has loaded
+	sayso.starbar.loaded = true;
 });
 

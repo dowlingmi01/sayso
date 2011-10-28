@@ -34,7 +34,7 @@
             $SQ('span.sso_textError').fadeOut('slow');
             if (!sayso.client.userLoggedIn) return;
             $SQ('#sayso-get-app').removeClass('sso_theme_button_disabled');
-            if (navigator.userAgent.match('Chrome')) {
+            if (navigator.userAgent.match('Firefox') || navigator.userAgent.match('Chrome')) {
                 $SQ('#sayso-install-tip').text('TIP: refresh this page after install.').fadeIn(1500);
             }
         });
@@ -61,6 +61,7 @@
                 } else {
                     // INSTALLING!
                     $SQ(this).addClass('sso_theme_button_disabled');
+                    setCookie('sayso-installing', 1, 1);
                 }
             } else {
                 e.preventDefault();

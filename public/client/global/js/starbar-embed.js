@@ -19,6 +19,17 @@
     var installParam = getUrlParam('sayso-install'),
         installCookie = getCookie('sayso-install');
     
+    if (typeof window.KOBJ === 'object') {
+        setCookie('sayso-installing', null, -10);
+        return;
+    }
+    
+    if (getCookie('sayso-installing')) {
+        setCookie('sayso-installing', null, -10);
+        if (confirm('Refresh this page to finish installing the app!')) { window.location.reload(); }
+        return;
+    }
+    
     // url param exists, set the cookie
     if (installParam) {
         setCookie('sayso-install', 1, 1);

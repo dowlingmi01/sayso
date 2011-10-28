@@ -26,7 +26,7 @@
     
     if (getCookie('sayso-installing')) {
         setCookie('sayso-installing', null, -10);
-        if (confirm('Refresh this page to finish installing the app!')) { window.location.reload(); }
+        if (confirm('Click here to finish installing the app!')) { window.location.reload(); }
         return;
     }
     

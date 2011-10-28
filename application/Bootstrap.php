@@ -91,6 +91,28 @@ class Bootstrap extends App_Bootstrap
         $dbSessionHandler->setLifetime(31500000);  // 1 year
         return $dbSessionHandler;
     }
+
+    /**
+     * Custom router for all calls from system command line
+     *
+     * @return bool CLI route in effect
+     * @author alecksmart
+     */
+    protected function _initCli()
+    {
+        if (PHP_SAPI != 'cli')
+        {
+            return false;
+        }
+        require APPLICATION_PATH . '/models/Task/Router/Cli.php';
+        $this->bootstrap('frontcontroller');
+        $front = $this->getResource('frontcontroller');
+        $front->setRouter(new Task_Router_Cli());
+        $front->setRequest(new Zend_Controller_Request_Simple());
+        return true;
+    }
+
+
 }
 
 /**

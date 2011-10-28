@@ -1,7 +1,15 @@
 <?php
-
+/**
+ * Controller to handle mysql development updates
+ *
+ * The script is aimed to produce any CLI output only in case of errors,
+ * the succesful execution should end up silently
+ *
+ * @author alecksmart
+ */
 class Cli_IncrementalController extends Zend_Controller_Action
 {
+
     const UPDATES_ONLY_AFTER = '2011-10-27';
 
     /**
@@ -38,7 +46,7 @@ class Cli_IncrementalController extends Zend_Controller_Action
             $existingUpdates[$k] = trim($v);
         }
 
-        // create command template for myqsl
+        // create command template autodetecting myqsl
         $mysqlBinary    = trim(`which mysql`);
         $command        = sprintf('%s -h %s --user=%s --password=%s %s < %%s',
             $mysqlBinary,
@@ -61,14 +69,15 @@ class Cli_IncrementalController extends Zend_Controller_Action
                 continue;
             }
             // ok, we can try your sql, dude...
-            $output     = array();
-            $error      = 0;
+            $output = array();
+            $error  = 0;
             exec(sprintf($command, $path), $output, $error);
             if($error)
             {
                 // something has gone wrong?
                 // get out of here!
                 fclose($handle);
+                echo "UPDATE FAILED!\n";
                 die($error . "\n");
             }
             fwrite($handle, $name."\n");

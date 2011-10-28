@@ -9,8 +9,18 @@ red()
 echo -e "\n\e[31m$1\e[39;49m"
 }
 
+red "SAYSO automatic updater running..."
+echo ""
+
+
 OWNDIR=`pwd`
 SVN=`which svn`
+
+echo ""
+green "Creating maintainance lock file..."
+echo ""
+
+touch ../public/.maintainance
 
 echo ""
 green "Cleaning cache..."
@@ -18,19 +28,21 @@ echo ""
 
 rm -rfv ../cache/*
 
-echo ""
-green "Updating library..."
-echo ""
-
 cd ../../library
-$SVN up
+IN=`pwd`
+echo ""
+green "Updating library in \"$IN\"..."
+echo ""
 
-echo ""
-green "Updating application..."
-echo ""
+$SVN up
 
 cd "$OWNDIR"
 cd ..
+IN=`pwd`
+echo ""
+green "Updating application in \"$IN\"..."
+echo ""
+
 $SVN up
 
 echo ""
@@ -39,6 +51,12 @@ echo ""
 
 cd "$OWNDIR"
 ./sayso incremental
+
+echo ""
+green "Removing maintainance lock file..."
+echo ""
+
+rm -fv ../public/.maintainance
 
 echo ""
 red "All done"

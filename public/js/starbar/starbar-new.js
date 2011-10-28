@@ -800,7 +800,7 @@ $SQ(function(){
 		var animationDuration = 2000; // milliseconds
 		var justInitialized = false;
 
-		if (! sayso.starbar.previous_game) {
+		if (target || ! sayso.starbar.previous_game) {
 			sayso.starbar.previous_game = sayso.starbar.game;
 			justInitialized = true;
 			animate = false;

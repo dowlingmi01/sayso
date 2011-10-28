@@ -7,3 +7,8 @@ SUPPORTED COMMANDS:
 
     cd [sayso_root]/bin
     export APPLICATION_ENV=development && ./sayso incremental
+
+2. ALL updates with SVN update
+
+    cd [sayso_root]/bin
+    export APPLICATION_ENV=development && ./sayso-update-all

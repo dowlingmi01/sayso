@@ -9,13 +9,16 @@
 	switch ($starbar->getVisibility()){
 		case 'closed':
 			$buttonVisibility = 'sb_btnStarbar-closed';
+			$starbarVisibility = 'sb_starbar-visClosed';
 			break;
 		case 'stowed':
 			$buttonVisibility = 'sb_btnStarbar-stowed';
+			$starbarVisibility = 'sb_starbar-visStowed';
 			break;
 		case 'open':
 		default :
 			$buttonVisibility = 'sb_btnStarbar-open';
+			$starbarVisibility = 'sb_starbar-visOpen';
 			break;
 	}
 ?>
@@ -25,7 +28,7 @@
 		<span class="sb_starbar-logo"></span>
 	</div><!-- #starbar-toggleVis -->
 </div>
-<div id="starbar-player-console" class="<?= $starbar->getVisibility() ?>">
+<div id="starbar-player-console" class="<?= $starbarVisibility ?>">
 	<div id="starbar-wrapper">
 		<div id="starbar-visControls">
 			<div id="starbar-toggleVis" class="<?= $buttonVisibility ?>"></div><!-- #starbar-toggleVis -->

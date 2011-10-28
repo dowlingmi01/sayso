@@ -189,16 +189,19 @@ html {
 #sayso-onboard #sso_wrapper{
 	width: 600px;
 	height: 430px;
-	background-image: url('../images/bg_box.png');
-	background-position: 0px 0px;
-	background-repeat: repeat-x;
+	background-image: url('../images/bg_box.jpg');
+	background-position: 0px bottom;
+	background-repeat: no-repeat;
 	background-color: #000;
-	border: 1px solid #bdd93b;
+	border: 1px solid #0081c5;
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	margin: -215px 0px 0px -300px;
 	display: none;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
 }
 
 #sayso-onboard #sso_wrapper .sso_main-image{
@@ -213,7 +216,7 @@ html {
 }
 
 #sayso-onboard #sso_wrapper .sso_content{
-	padding: 45px 80px 0px 80px;
+	padding: 60px 80px 0px 80px;
 	position: relative;
 	text-align: center;
 }

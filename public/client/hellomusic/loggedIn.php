@@ -37,12 +37,12 @@ if (!isset($_COOKIE['HMID']) || !isset($_COOKIE['MyEmail'])) {
             	<a href=""><img src="images/logo_hello-music.png" alt="HelloMusic&trade; Logo" /></a>
             </div><!-- #sso_logo -->
           	<div class="sso_content">
-                <h1>Keep The Beat!<br />With the BeatBar</h1>
+                <h1>Your Opinion Counts!</h1>
                 <h4>You've been selected as a member of the rhythm<br />
                 section keeping Hello Music products and deals in<br />
                 sync with you, our customers.</h4>
-                <h3><span class="sso_textHighlight">GRAB</span> the BeatBar. <span class="sso_textHighlight">GIVE</span> your opinion.</h3>
-                <h2><span class="sso_textHighlight">GET</span> FREE GEAR.</h2>
+                <h3><strong>GRAB</strong> the BeatBar. <strong>GIVE</strong> your opinion.</h3>
+                <h2><strong>GET</strong> FREE GEAR.</h2>
                 <h4 style="height: 50px;">
                 <span class="sso_textError" style="display: none;">Whoops. Make sure you agree to the terms<br />
                 and conditions before you download.</span>
@@ -54,7 +54,7 @@ if (!isset($_COOKIE['HMID']) || !isset($_COOKIE['MyEmail'])) {
                     
                 </form>
             </div><!-- .sso_content -->
-            <div class="sso_main-image"></div><!-- .sso_main-image -->
+            <!--<div class="sso_main-image"></div>--><!-- .sso_main-image -->
         </div><!-- #sso_wraper -->
         <script type="text/javascript" src="js/starbar-onboard.js"></script>
     </div><!-- #sayso-onboard -->

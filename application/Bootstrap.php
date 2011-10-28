@@ -19,7 +19,7 @@ class Bootstrap extends App_Bootstrap
         Api_UserSession::$regenerateMissingSessionId = true;
 
         Game_Abstract::$_enabled = true;
-        
+
         // API logging will be necessary since requests
         // are coming from mobile, it's hard to see what's going on
         $apiLog = new Zend_Log();
@@ -78,7 +78,7 @@ class Bootstrap extends App_Bootstrap
 
         $dbSessionHandler = false;
 
-        // Try to iniialize db conncetion 
+        // Try to iniialize db conncetion
         // and return the created handler
         try {
             $dbSessionHandler = new Zend_Session_SaveHandler_DbTable($config);
@@ -127,6 +127,11 @@ class Bootstrap extends App_Bootstrap
 class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
 {
     public function routeShutdown(Zend_Controller_Request_Abstract $request) {
+
+        // Are we using a command line?
+        if (PHP_SAPI == 'cli'){
+            return;
+        }
 
         if (strpos($_SERVER['SERVER_NAME'], 'client.') === 0) {
             $request->setModuleName('client');

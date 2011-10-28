@@ -1,4 +1,9 @@
 Description of the shell scripts in the bin directory
 =====================================================
 
-Please do not use yet...
+SUPPORTED COMMANDS:
+
+1. Incremental database updates (set APPLICATION_ENV to your environment):
+
+    cd [sayso_root]/bin
+    export APPLICATION_ENV=development && ./sayso incremental

@@ -22,7 +22,7 @@ class Task_Router_Cli extends Zend_Controller_Router_Abstract
         {
             $command = array_shift($arguments);
             if (!preg_match('~\W~', $command))
-            {
+            {                
                 $dispatcher->setModuleName('cli');
                 $dispatcher->setControllerName($command);
                 $dispatcher->setActionName('run');
@@ -42,5 +42,9 @@ class Task_Router_Cli extends Zend_Controller_Router_Abstract
      * @param bool $reset
      * @param bool $encode
      */
-    public function assemble($userParams, $name = null, $reset = false, $encode = true){}
+    public function assemble($userParams, $name = null, $reset = false, $encode = true){
+
+        echo "CALLED\n";exit(0);
+
+    }
 }

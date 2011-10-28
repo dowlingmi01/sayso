@@ -28,18 +28,50 @@ class Cli_IncrementalController extends Zend_Controller_Action
      */
     public function runAction()
     {
-        // .. start processing...
+        // create all files we need
         $logfile = dirname(APPLICATION_PATH) . sprintf('/log/incremental-%s.log', getenv('APPLICATION_ENV'));
         @touch($logfile);
         if(!file_exists($logfile) || !is_writable($logfile))
         {
-            die(sprintf("Path %s not writable!\n", $logfile));
+            echo sprintf("Path %s not writable!\n", $logfile);
+            exit(1);
         }
-        // printf("Using logfile %s", $logfile);
+
+        $backupfile = dirname(APPLICATION_PATH) . sprintf('/log/backup-%s-%s.sql', getenv('APPLICATION_ENV'), date('YmdHis'));
+        @touch($backupfile);
+        if(!file_exists($backupfile) || !is_writable($backupfile))
+        {
+            echo sprintf("Backup %s not writable!\n", $backupfile);
+            exit(1);
+        }
 
         $options = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOptions();
 
-        // prepare array of former updates
+        // create myqsl backup command autodetecting myqsldump binary
+        $mysqlDumpBinary    = trim(`which mysqldump`);
+        $command            = sprintf('%s -h %s --user=%s --password=%s --force --opt --routines --single-transaction --databases %s > %s',
+            $mysqlDumpBinary,
+            $options['database']['params']['host'],
+            $options['database']['params']['username'],
+            $options['database']['params']['password'],
+            $options['database']['params']['dbname'],
+            $backupfile
+        );
+
+        // create the backup ...
+        $output = array();
+        $error  = 0;
+        exec($command, $output, $error);
+        if($error)
+        {
+            // something has gone wrong?
+            // get out of here!
+            echo "BACKUP FAILED!\n";
+            echo implode("\n", $output) . "\n";
+            exit(1);
+        }
+
+        // prepare array of the former updates
         $existingUpdates    = file($logfile);
         foreach($existingUpdates as $k => $v)
         {
@@ -63,11 +95,13 @@ class Cli_IncrementalController extends Zend_Controller_Action
         // do updates in a loop, break on error
         foreach ($files as $name => $path)
         {
+            // older files trapped?
             $fileDate = substr($name, 0, 10);
             if($fileDate <= self::UPDATES_ONLY_AFTER || in_array($name, $existingUpdates))
             {
                 continue;
             }
+
             // ok, we can try your sql, dude...
             $output = array();
             $error  = 0;
@@ -78,7 +112,8 @@ class Cli_IncrementalController extends Zend_Controller_Action
                 // get out of here!
                 fclose($handle);
                 echo "UPDATE FAILED!\n";
-                die($error . "\n");
+                echo implode("\n", $output) . "\n";
+                exit(1);
             }
             fwrite($handle, $name."\n");
         }

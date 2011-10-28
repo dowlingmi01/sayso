@@ -16,6 +16,7 @@ class Bootstrap extends App_Bootstrap
 
         Record::$defaultModifiedColumn = 'modified';
         Api_UserSession::setup('User', '', 'Gamer');
+        Api_UserSession::$regenerateMissingSessionId = true;
 
         Game_Abstract::$_enabled = true;
         

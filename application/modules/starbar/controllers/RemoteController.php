@@ -334,7 +334,10 @@ class Starbar_RemoteController extends Api_GlobalController
         $results = Db_Pdo::fetchAll('SELECT * FROM external_user WHERE install_ip_address = ? AND install_user_agent = ?', $ipAddress, $userAgent);
         
         if (!$results) {
-            throw new Api_Exception(Api_Error::create(Api_Error::APPLICATION_ERROR, 'Attempt to lookup external user from IP address (' . $ipAddress . ') and user agent (' . $userAgent . ') failed. Cannot determine Starbar.'));
+            // this error happens frequently during installations with multiple tabs
+            $exception = new Api_Exception(Api_Error::create(Api_Error::APPLICATION_ERROR, 'Attempt to lookup external user from IP address (' . $ipAddress . ') and user agent (' . $userAgent . ') failed. Cannot determine Starbar.'));
+            Api_Error::log($exception, $this->_request, null, true); // true = do not email errors
+            exit();
         }
         if (count($results) > 1) {
             throw new Api_Exception(Api_Error::create(Api_Error::APPLICATION_ERROR, 'More than one external user with the same IP address and user agent! IP: ' . $ipAddress . ', user agent: ' . $userAgent . ' for ' . count($results) . ' users'));

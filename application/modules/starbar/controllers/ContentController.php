@@ -65,11 +65,11 @@ class Starbar_ContentController extends Api_GlobalController
 	}
 	
 	public function rewardRedeemedAction () {
-	    // call above does everything we need for the good
+	    
+	    $this->_validateRequiredParameters(array('quantity', 'good_id', 'user_key'));
+	    
 	    $good = Api_Adapter::getInstance()->call('Gaming', 'getGoodFromStore');
 	    /* @var $good Gaming_BigDoor_Good */
-	    
-	    $this->_validateRequiredParameters(array('quantity'));
 	    
 	    $game = Game_Starbar::getInstance();
 	    $game->purchaseGood($good, $this->quantity);

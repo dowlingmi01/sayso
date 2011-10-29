@@ -274,6 +274,10 @@ abstract class Game_Starbar extends Game_Abstract {
         if (Game_Abstract::$_enabled) {
             if (!$game) {
                 $request = Zend_Controller_Front::getInstance()->getRequest();
+                // check for user_key actually has a value across the board, otherwise throw exception
+                if (!$request->getParam('user_key')) {
+                    throw new Api_Exception(Api_Error::create(Api_Error::USER_KEY_MISSING));
+                }
                 $gamer = Api_UserSession::getInstance($request->getParam('user_key'))->getGamingUser();
         		$game = Game_Starbar::create($gamer, $request);
             }

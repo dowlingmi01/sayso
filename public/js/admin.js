@@ -34,8 +34,8 @@ $(function () {
      *         <a>Redeem!</a>
      *     </div>
      *     <script type="text/javascript">
-     *         $SQ('div.reward a').click(function () {
-     *             var rewardId = $SQ(this).dataContainer().getId();
+     *         $('div.reward a').click(function () {
+     *             var rewardId = $(this).dataContainer().getId();
      *             // redeem this reward
      *         });
      *     </script>
@@ -45,7 +45,7 @@ $(function () {
      * @param integer parentIndex OPTIONAL defaults to 0 (first parent)
      * @return jQuery object of the parent element
      */
-    $SQ.fn.dataContainer = function (parentIndex) {
+    $.fn.dataContainer = function (parentIndex) {
         // get the parent container
         var _container;
         if (typeof parentIndex === 'number') {

@@ -11,6 +11,27 @@ $SQ(function(){
 
 	// global var
 	var themeColor = '#de40b2';
+	
+    // NOTE: These variables are initialized in initElements()
+    var starbarElem; //  = $SQ('#sayso-starbar');
+
+    // clickable elements that ppl will interact with
+    var btnToggleVis; //  = $SQ('#sayso-starbar #starbar-visControls #starbar-toggleVis');
+    var btnSaySoLogo; // = $SQ('#sayso-starbar #starbar-visControls #sb_starbar-logo');
+
+    // container elements
+    var elemSaySoLogoBorder; // = $SQ('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
+    var elemSaySoLogoSemiStowed; // = $SQ('#sayso-starbar #sb_starbar-logoSemiStowed');
+    var elemStarbarWrapper; // = $SQ('#sayso-starbar #starbar-player-console #starbar-wrapper');
+    var elemPlayerConsole; // = $SQ('#sayso-starbar #starbar-player-console');
+    var elemStarbarMain; // = $SQ('#sayso-starbar #starbar-player-console #starbar-main');
+    var elemVisControls; // = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls');
+    var elemStarbarClickable; // = $SQ('#sayso-starbar #starbar-player-console .sb_nav_element');
+    var elemPopBox; // = $SQ('#sayso-starbar #starbar-player-console .sb_popBox');
+    var elemAlerts; // = $SQ('#sayso-starbar #starbar-player-console .sb_starbar-alert');
+    var elemPopBoxVisControl; // = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
+    var elemExternalConnect; // = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
+    var elemTooltip; // = $SQ('#sayso-starbar .sb_Tooltip');
 
 	/*
 	Set up some extra bits to handle closing windows if the user clicks outside the starbar or hits ESC key
@@ -34,8 +55,8 @@ $SQ(function(){
 	// close if you click outside the starbar while in the iframe
 	$SQ(document).click(function(e) {
 		// don't close if they just right-clicked
-		if (e.button != 2){
-			closePopBox();
+		if (e.button === 0){
+		    closePopBox();
 		}
 	});
 	
@@ -166,28 +187,6 @@ $SQ(function(){
 		
 		return _container;
 	}
-
-	// LETS USE VARS!
-	// NOTE: The variables below are initialized in initElements()
-	var starbarElem; //  = $SQ('#sayso-starbar');
-
-	// clickable elements that ppl will interact with
-	var btnToggleVis; //  = $SQ('#sayso-starbar #starbar-visControls #starbar-toggleVis');
-	var btnSaySoLogo; // = $SQ('#sayso-starbar #starbar-visControls #sb_starbar-logo');
-
-	// container elements
-	var elemSaySoLogoBorder; // = $SQ('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
-	var elemSaySoLogoSemiStowed; // = $SQ('#sayso-starbar #sb_starbar-logoSemiStowed');
-	var elemStarbarWrapper; // = $SQ('#sayso-starbar #starbar-player-console #starbar-wrapper');
-	var elemPlayerConsole; // = $SQ('#sayso-starbar #starbar-player-console');
-	var elemStarbarMain; // = $SQ('#sayso-starbar #starbar-player-console #starbar-main');
-	var elemVisControls; // = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls');
-	var elemStarbarClickable; // = $SQ('#sayso-starbar #starbar-player-console .sb_nav_element');
-	var elemPopBox; // = $SQ('#sayso-starbar #starbar-player-console .sb_popBox');
-	var elemAlerts; // = $SQ('#sayso-starbar #starbar-player-console .sb_starbar-alert');
-	var elemPopBoxVisControl; // = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
-	var elemExternalConnect; // = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
-	var elemTooltip; // = $SQ('#sayso-starbar .sb_Tooltip');
 
 	// initialize the starbar
 	initStarBar();
@@ -447,6 +446,7 @@ $SQ(function(){
 	} // end initElements()
 
 	function closePopBox(keepNotifications){
+	    if (!elemPopBox.is(':visible')) return; // all pop boxes are already closed
 		elemPopBox.each(function(){
 			$SQ(this).removeClass('sb_popBoxActive');
 			$SQ(this).hide();

@@ -94,18 +94,19 @@ $SQ(function(){
 		var _container;
 		if (typeof parentIndex === 'number') {
 			// if parent is explicitly set
-			_container = $SQ(this).parents('[data-id]').eq(parentIndex);
-		} else if (this.attr('data-id').length) {
+			_container = this.parents('[data-id]').eq(parentIndex);
+		} else if (typeof this.attr('data-id') !== 'undefined') {
 			// if the data-id exists on *this* element
-			_container = $SQ(this);
+			_container = this;
 		} else {
 			// otherwise default to first parent
-			_container = $SQ(this).parents('[data-id]').eq(0);
+			_container = this.parents('[data-id]').eq(0);
 		}
 		
 		if (!_container.length) {
 			// if none found provide harmless object
 			return {
+			    attr : function () { return null; },
 				getId : function () { return 0; },
 				setObject : function () { return this; },
 				getObject : function () { return this; },

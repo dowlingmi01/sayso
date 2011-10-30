@@ -46,15 +46,15 @@ $(function () {
      * @return jQuery object of the parent element
      */
     $.fn.dataContainer = function (parentIndex) {
-        // get the parent container
+        
         var _container;
         if (typeof parentIndex === 'number') {
             // if parent is explicitly set
             _container = this.parents('[data-id]').eq(parentIndex);
-        } else if (this.attr('data-id').length) {
+        } else if (typeof this.attr('data-id') !== 'undefined') {
             // if the data-id exists on *this* element
             _container = this;
-        } else{
+        } else {
             // otherwise default to first parent
             _container = this.parents('[data-id]').eq(0);
         }
@@ -62,6 +62,7 @@ $(function () {
         if (!_container.length) {
             // if none found provide harmless object
             return {
+                attr : function () { return null; },
                 getId : function () { return 0; },
                 setObject : function () { return this; },
                 getObject : function () { return this; },
@@ -72,6 +73,7 @@ $(function () {
         
         // store off the id
         var _id = _container.attr('data-id');
+        
         /**
          * Get the ID of the object
          * - this usually corresponds to the record ID
@@ -83,7 +85,6 @@ $(function () {
         
         /**
          * Attach an object to this data container
-         * 
          * @param object|string object
          */
         _container.setObject = function (object) {
@@ -93,11 +94,34 @@ $(function () {
         
         /**
          * Get the object from this data container
-         * 
          * @returns object
          */
         _container.getObject = function () {
             return JSON.parse(_container.data('object'));
+        };
+        
+        /**
+         * Copy the current data container to another DOM node
+         * @param target
+         * @returns object "data container"
+         */
+        _container.copy = function (target) {
+            if (typeof _container.data('object') !== 'undefined') {
+                target.data('object', _container.data('object'));
+            }
+            target.attr('data-id', _container.getId());
+            return target.dataContainer(); // the new data container
+        };
+        
+        /**
+         * Move the current data container to another DOM node
+         * @param target
+         * @returns object "data container"
+         */
+        _container.move = function (target) {
+            var newContainer = _container.copy(target);
+            _container.reset();
+            return newContainer;
         };
         
         /**
@@ -106,17 +130,18 @@ $(function () {
         _container.reset = function () {
             _container.removeAttr('data-id');
             _container.removeData('object');
+            return _container;
         };
         
         /**
          * Remove the data container completely
          */
         _container.removeNow = function () {
-            _container.fadeOut(function() {
+            _container.fadeTo(400, 0, function() {
                 _container.remove();
             });
         };
-        // return the container
+        
         return _container;
     };
     

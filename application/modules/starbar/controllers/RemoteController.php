@@ -435,6 +435,12 @@ class Starbar_RemoteController extends Api_GlobalController
         
         $starbar->setUserMap($starbarUserMap->reload());
 
+        // Add the four "important" ids to the request 
+		$this->starbar_id = $starbar->getId();
+		$this->user_id = $user->getId();
+		$this->user_key = $userSession->getKey();
+		$this->auth_key = $starbar->auth_key;
+		
         // Game
         
         $gamer = Gamer::create($user->getId(), $starbar->getId());
@@ -443,11 +449,9 @@ class Starbar_RemoteController extends Api_GlobalController
         // save gaming user to session for easy retreival
         $userSession->setGamingUser($gamer);
         
-        
         // trigger game transaction: *install* 
-		$this->_request->setParam('starbar_id', $starbar->getId());
         Game_Starbar::create($gamer, $this->_request, $starbar)->install();
-            
+        
         // now we know which starbar, route to the appropriate starbar action:
         return $this->_forward(
             $starbar->short_name, 

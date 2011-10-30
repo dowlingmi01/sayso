@@ -43,6 +43,14 @@ class Bootstrap extends App_Bootstrap
         );
 
         Api_Registry::set('log', $apiLog);
+        
+        if (APPLICATION_ENV === 'development') {
+            Api_Error::getLogger()->log(
+                PHP_EOL. PHP_EOL . str_repeat('=', 100) .
+                PHP_EOL, Zend_Log::INFO
+            );
+        }
+        
         Zend_Controller_Front::getInstance()->registerPlugin(new BootstrapPlugin(), 1);
     }
 

@@ -282,23 +282,23 @@ $(function () {
             switch (span.text()) {
                 case 'ADgregator' :
                     index = 0;
-                    if ($('#ad-tags').is(':hidden')) {
-                        $('#domains-creative').fadeOut(function () {
-                            $('#ad-tags').fadeIn();
-                            _updateLinkStyle();
-                        });
-                    }
+                    $('#ad-tags').fadeIn();
+                    $('#domains-creative').fadeOut();
+                    _updateLinkStyle();
                     break;
                 case 'ADjuster' :
                     index = 1;
-                    if ($('#domains-creative').is(':hidden')) {
-                        $('#ad-tags').fadeOut(function () {
-                            $('#domains-creative').fadeIn();
-                            _updateLinkStyle();
-                        });
-                    }
+                    $('#domains-creative').fadeIn();
+                    $('#ad-tags').fadeOut();
+                    _updateLinkStyle();
                     break;
-            }  
+                case 'BTracker' :
+                    index = 2;
+                    $('#ad-tags').fadeOut();
+                    $('#domains-creative').fadeOut();
+                    _updateLinkStyle();
+                    break;
+            }
             // replace any product-specific text
             $('*[data-text-replace]').each(function () {
                 $(this).text(JSON.parse($(this).attr('data-text-replace'))[index]);

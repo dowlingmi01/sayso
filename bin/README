@@ -13,3 +13,12 @@ SUPPORTED COMMANDS:
 
     cd [sayso_root]/bin
     export APPLICATION_ENV=development && ./sayso-update-all
+
+    Alternatively, use shortcuts for each server environment:
+
+    ./update-development
+    ./update-sandbox
+    ./update-testing
+    ./update-staging
+    ./update-production
+

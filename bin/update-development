@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export APPLICATION_ENV=development
+./sayso-update-all

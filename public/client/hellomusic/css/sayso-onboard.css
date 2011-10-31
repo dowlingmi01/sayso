@@ -189,7 +189,7 @@ html {
 #sayso-onboard #sso_wrapper{
 	width: 600px;
 	height: 430px;
-	background-image: url('../images/bg_box.png');
+	background-image: url('../images/bg_box.jpg');
 	background-position: 0px bottom;
 	background-repeat: no-repeat;
 	background-color: #000;
@@ -202,6 +202,24 @@ html {
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	border-radius: 8px;
+}
+
+#sayso-onboard #sso_wrapper #sso_close{
+	width: 14px;
+	height: 13px;
+	position: absolute;
+	font-size: 11px;
+	top: 10px;
+	right: 10px;
+	background-color: #666;
+	color: #fff;
+	line-height: 11px;
+	text-align: center;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	cursor: pointer;
+	z-index: 9999;
 }
 
 #sayso-onboard #sso_wrapper .sso_main-image{
@@ -258,6 +276,12 @@ html {
 	font-weight: bold;
 	line-height: normal;
 	margin: 5px 0px;
+}
+
+#sayso-onboard #sso_wrapper h3 strong,
+#sayso-onboard #sso_wrapper h2 strong{
+	font-size: inherit;
+	font-weight: bold;
 }
 
 #sayso-onboard #sso_wrapper h4{

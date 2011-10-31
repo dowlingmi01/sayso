@@ -15,6 +15,7 @@
         
         var elemPage = $SQ('#sayso-onboard');
         var elemOverlay = $SQ('#sayso-onboard #sso_wrapper');
+				var elemClose = $SQ('#sayso-onboard #sso_wrapper #sso_close');
 
         elemPage.height($SQ(window).height());
         elemPage.width($SQ(window).width());
@@ -23,6 +24,12 @@
             elemOverlay.css('left','50%');
             elemOverlay.css('margin-left','-300px');
         });
+				
+				// close button for overlay
+				elemClose.live('click',function(){
+					elemPage.hide();
+					elemOverlay.hide();
+				});
             
         elemOverlay.css('display','block');
         

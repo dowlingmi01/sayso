@@ -30,8 +30,6 @@ $SQ(function(){
     var elemPopBox; // = $SQ('#sayso-starbar #starbar-player-console .sb_popBox');
     var elemAlerts; // = $SQ('#sayso-starbar #starbar-player-console .sb_starbar-alert');
     var elemPopBoxVisControl; // = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
-    var elemExternalConnect; // = $SQ('#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_unconnected');
-    var elemTooltip; // = $SQ('#sayso-starbar .sb_Tooltip');
 
 	/*
 	Set up some extra bits to handle closing windows if the user clicks outside the starbar or hits ESC key
@@ -213,7 +211,6 @@ $SQ(function(){
 		btnSaySoLogo = $SQ('#starbar-visControls #sb_starbar-logo', starbarElem);
 
 		// container elements
-		elemTooltip = $SQ('.sb_tooltip', starbarElem);
 		elemSaySoLogoSemiStowed = $SQ('#sb_starbar-logoSemiStowed', starbarElem);
 		elemPlayerConsole = $SQ('#starbar-player-console', starbarElem);
 
@@ -225,7 +222,6 @@ $SQ(function(){
 		elemPopBox = $SQ('.sb_popBox', elemPlayerConsole);
 		elemPopBoxVisControl = $SQ('#starbar-visControls .sb_popBox', elemPlayerConsole);
 		elemTabClick = $SQ('.sb_nav_tabs', elemPlayerConsole);
-		elemExternalConnect = $SQ('#sb_popBox_user-profile .sb_unconnected', elemPlayerConsole);
 
 		starbarElem.unbind();
 		starbarElem.bind('frameCommunication', function (event, functionName, functionParameters) {
@@ -234,19 +230,11 @@ $SQ(function(){
 			frameCommunicationFunctions[functionName](functionParameters);
 		});
 
-		// jquery edit in place
-		elemJEIP = $SQ('.sb_jeip', starbarElem);
-
 		elemPlayerConsole.unbind();
 		elemPlayerConsole.click(function(e) {
 			e.stopPropagation();
 		});
 		
-		// tooltip binding
-		elemTooltip.each(function(){
-		 	$SQ(this).easyTooltip();
-		});
-
 
 		/* prevent default for any link with # as the href */
 		$SQ('a', starbarElem).each(function(){
@@ -406,44 +394,6 @@ $SQ(function(){
 			});
 		});
 		
-		// set up the EIP elements
-		elemJEIP.each(function(){
-			$SQ(this).eip( "http://"+sayso.baseDomain+"/api/user/save-in-place?renderer=jsonp", {
-				savebutton_text		: "save",
-				savebutton_class	: "sb_theme_button",
-				cancelbutton_text	: "cancel",
-				cancelbutton_class	: "sb_theme_button sb_theme_button_grey",
-				after_save			: function() { updateProfile(true, true); }
-			});									 
-		
-		});
-		
-		// connect with facebook or twitter
-		elemExternalConnect.each(function(){
-			$SQ(this).unbind();
-			$SQ(this).bind({
-				click: function(event){
-					var windowParameters = 'location=1,status=1,scrollbars=0';
-					switch($SQ(this).attr('id')) {
-						case "sb_profile_facebook":
-			  				windowParameters += ',width=981,height=440';
-							break;
-							
-						case "sb_profile_twitter":
-			  				windowParameters += ',width=750,height=550';
-							break;
-					}
-					var link = $SQ(this).attr('href');
-					if (link.indexOf("?") == -1)
-						link += "?";
-					else
-						link += "&";
-					link += "user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&auth_key="+sayso.starbar.authKey;
-			  		window.open(link, 'sb_window_open', windowParameters);
-				}
-			});
-		});
-
 	} // end initElements()
 
 	function closePopBox(keepNotifications){
@@ -532,6 +482,9 @@ $SQ(function(){
 		activateTabs(popBox);
 		activateSlideshow(popBox);
 		activateOverlay(popBox);
+		activateToolTips(popBox);
+		activateEditInPlaceElems(popBox);
+		activateExternalConnectElems(popBox);
 
 		// if we're a regular nav item, turn on the highlight
 		var parentClick = popBox.parent();
@@ -794,7 +747,20 @@ $SQ(function(){
 		}
 	}
 
+	/* This function activates/updates several game-related elements:
+	 * 1. Progress bars (with or without an actual progress bar), e.g.
+	   * With: <div class="sb_progress_bar"><span class="sb_currency_percent" data-currency="chops"></span><span class="sb_progressBarValue sb_currency_balance" data-currency="chops"></span></div>
+	   * Without: <div class="sb_progress_bar"><span class="sb_currency_percent"></span><span class="sb_progressBarValue sb_currency_balance" data-currency="notes"></span></div>
+	   * (note the lack of a data-currency attribute for the sb_currency_percent span in the second example, thus the percent is always "" or 0)
+	 * 2. Elements that contain a currency's balance only, e.g. <span class="sb_currency_balance" data-currency="notes"></span>
+	 * 3. Elements that contain the user's level number, e.g. <span class="sb_user_level_number"></span>
+	 * 4. Elements that contain the user's level title, e.g. <span class="sb_user_level_title"></span>
+	 * 5. Elements that contain the level icons for the user, e.g. <div class="sb_user_level_icons_container"></div>
+	 * 6. Elements that contain the leveling currency balance required to reach the next level, e.g. <span class="sb_currency_balance_next_level"></span>
+	 * 7. Elements that contain the user's purchased items, e.g. <div class="sb_user_purchases"></div>
+	 */
 	function activateGameElements (target, animate) {
+		var userPurchasesContainerElems = $SQ('.sb_user_purchases', target);
 		var levelIconsContainerElems = $SQ('.sb_user_level_icons_container', target);
 		var currencyBalanceNextLevelElems = $SQ('.sb_currency_balance_next_level', target);
 		var currencyBalanceElems = $SQ('.sb_currency_balance', target);
@@ -814,6 +780,8 @@ $SQ(function(){
 		var allLevels = sayso.starbar.game._levels.collection;
 		var userLevels = sayso.starbar.game._gamer._levels.collection;
 		var userPreviousLevels = sayso.starbar.previous_game._gamer._levels.collection;
+		var userGoods = sayso.starbar.game._gamer._goods.collection;
+		var xpCurrency = "Chops"; // @todo get this from the game object
 
 		// The current level is the first level in the collection (it is sorted by the gaming API!)
 		var userCurrentLevel = userLevels[0];
@@ -864,6 +832,32 @@ $SQ(function(){
 			});
 		}
 
+		if (userPurchasesContainerElems.length > 0) {
+			userPurchasesContainerElems.each(function() {
+				if (userGoods) {
+					$SQ(this).html('');
+					$SQ.each(userGoods, function (index, good) {
+						var goodDiv = $SQ(document.createElement('div'));
+						var goodHtml;
+						var goodImageSrc = good.url_preview;
+						if (good.url_preview_bought != '') goodImageSrc = good.url_preview_bought;
+
+						goodDiv.addClass('sb_user_purchase');
+						if (good.title.toLowerCase().indexOf('token') != -1) {
+							goodHtml = '<img src="'+goodImageSrc+'" class="sb_user_purchase_img sb_tooltip" title="'+good.title+' - '+good.quantity+' Tokens Purchased" />';
+							goodHtml += '<span class="sb_user_puchase_quantity sb_tooltip" title="'+good.title+' - '+good.quantity+' Tokens Purchased">'+good.quantity+'</span>';
+						} else {
+							goodHtml = '<img src="'+goodImageSrc+'" class="sb_user_purchase_img sb_tooltip" title="'+good.description+'" />';
+						}
+						goodDiv.html(goodHtml);
+						userPurchasesContainerElems.append(goodDiv);
+					});
+				} else {
+					$SQ(this).html('Head to the reward center to redeem your notes for awesome gear!');
+				}
+			});
+		}
+
 		if (levelIconsContainerElems.length > 0) {
 			levelIconsContainerElems.each(function() {
 				$SQ(this).html('');
@@ -879,14 +873,14 @@ $SQ(function(){
 						levelIcon.addClass('sb_userLevelIcons');
 						if (level.ordinal == userCurrentLevel.ordinal) {
 							levelIcon.addClass('sb_userLevel_current');
-							levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+bigImageUrl+'\')"></div><p><strong class="sb_theme_textHighlight">'+level.title+'</strong><br /><small class="sb_chopsEarned">'+level.ordinal+' Chops</small></p>');
+							levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+bigImageUrl+'\')"></div><p><strong class="sb_theme_textHighlight">'+level.title+'</strong><br /><small class="sb_xpEarned">'+level.ordinal+' '+xpCurrency+'</small></p>');
 						} else {
 							if (level.ordinal < userCurrentLevel.ordinal) {
 								levelIcon.addClass('sb_userLevel_earned');
 							} else { // level.ordinal > userCurrentLevel.ordinal
 								levelIcon.addClass('sb_userLevel_next');
 							}
-							levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+smallImageUrl+'\')"></div><p>'+level.title+'<br /><small class="sb_chopsEarned">'+level.ordinal+' Chops</small></p>');
+							levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+smallImageUrl+'\')"></div><p>'+level.title+'<br /><small class="sb_xpEarned">'+level.ordinal+' '+xpCurrency+'</small></p>');
 						}
 						levelIconsContainerElems.append(levelIcon);
 					});
@@ -1267,6 +1261,62 @@ $SQ(function(){
 				overlay.fadeOut(200);
 			});
 		}
+	}
+
+	function activateToolTips(target){
+
+		elemTooltip = $SQ('.sb_tooltip', target);
+
+		// tooltip binding
+		elemTooltip.each(function(){
+		 	$SQ(this).easyTooltip();
+		});
+	}
+	
+	function activateEditInPlaceElems(target) {
+		// jquery edit in place
+		var elemJEIP = $SQ('.sb_jeip', target);
+
+		// set up the EIP elements
+		elemJEIP.each(function(){
+			$SQ(this).eip( "http://"+sayso.baseDomain+"/api/user/save-in-place?renderer=jsonp", {
+				savebutton_text		: "save",
+				savebutton_class	: "sb_theme_button",
+				cancelbutton_text	: "cancel",
+				cancelbutton_class	: "sb_theme_button sb_theme_button_grey",
+				after_save			: function() { updateProfile(true, true); }
+			});									 
+		});
+	}
+
+	function activateExternalConnectElems(target) {
+		var elemExternalConnect = $SQ('#sb_popBox_user-profile .sb_unconnected', target);
+
+		// connect with facebook or twitter
+		elemExternalConnect.each(function(){
+			$SQ(this).unbind();
+			$SQ(this).bind({
+				click: function(event){
+					var windowParameters = 'location=1,status=1,scrollbars=0';
+					switch($SQ(this).attr('id')) {
+						case "sb_profile_facebook":
+			  				windowParameters += ',width=981,height=440';
+							break;
+							
+						case "sb_profile_twitter":
+			  				windowParameters += ',width=750,height=550';
+							break;
+					}
+					var link = $SQ(this).attr('href');
+					if (link.indexOf("?") == -1)
+						link += "?";
+					else
+						link += "&";
+					link += "user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&auth_key="+sayso.starbar.authKey;
+			  		window.open(link, 'sb_window_open', windowParameters);
+				}
+			});
+		});
 	}
 
 	function devInit(){

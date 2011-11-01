@@ -411,7 +411,7 @@
 	display: block;
 }
 
-#sayso-starbar #starbar-player-console .sb_chopsEarned{
+#sayso-starbar #starbar-player-console .sb_xpEarned{
 	background-image: url('../images/hellomusic/img_star_sm.png');
 	background-repeat: no-repeat;
 	background-position: 3px 3px;
@@ -636,9 +636,29 @@
 	margin: 16px 0px 0px 0px;
 }
 
-#sayso-starbar #sb_popBox_user-level .sb_img_purchase{
+#sayso-starbar #sb_popBox_user-level .sb_user_purchase {
 	float: left;
+	position: relative;
 	margin: 10px 15px 10px 0px;
+	width: 80px;
+	height: 52px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_user_purchase .sb_user_puchase_quantity {
+	position: absolute;
+	top: -3px;
+	right: 2px;
+	background-image: url('../images/generic/black_dot.png');
+	padding: 5px 2px 0 0;
+	width: 24px;
+	height: 21px;
+	font-size: 11px;
+	line-height: 18px;
+	color: #fff;
+	text-align: center;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_user_purchase_img{
 	width: 80px;
 	height: 52px;
 }

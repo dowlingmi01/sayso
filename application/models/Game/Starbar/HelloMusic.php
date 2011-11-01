@@ -28,7 +28,10 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
 		$currencyPrimarySurvey = $profile->getCurrencies()->find('id', $currencyPrimarySurveyId)->getFirst();
 		$currentLevel = $profile->getHighestLevel();
 
-		if ($good->inventory_total != -1 && $good->inventory_sold >= $good->inventory_total) {
+		if (!$good->isToken() && $good->isInGoodsCollection($profile->getGoods())) {
+			$good->setNonRedeemReason('You have already<br />purchased this item.');
+			$good->setCommentForUser('Purchased');
+		} elseif (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
 			$good->setNonRedeemReason('Sorry, this item was sold out.');
 			$good->setCommentForUser('Sold Out');
 		} elseif ((int) $currencyPrimarySurvey->current_balance < 1 && $good->getId() !== $this->_economy->getGoodId('WEEK_ONE_GIVEAWAY')) {
@@ -38,12 +41,9 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
 			$good->setNonRedeemReason('Must reach Level 2:<br /><strong>Busker Level</strong>');
 			$good->setCommentForUser('Level Requirement');
 		} elseif ($profile->getCurrencyByTitle('notes')->current_balance < $good->cost) {
-			$good->setNonRedeemReason('Earn more notes by completing polls and surveys!');
+			$good->setNonRedeemReason('Earn more notes by<br />completing polls and surveys!');
 			$good->setCommentForUser('Insufficient Notes');
-		}/* elseif () {
-			$good->setNonRedeemReason('Nice! You have purchased this item.');
-			$good->setCommentForUser('Purchased');
-		}*/
+		}
 
 		if ($good->inventory_total > $good->inventory_sold && (($good->inventory_total - $good->inventory_sold) < 4)) {
 			$good->setCommentForUser('Only '.($good->inventory_total - $good->inventory_sold).' left!');

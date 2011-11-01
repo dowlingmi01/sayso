@@ -1,8 +1,17 @@
 /**
  * @author alecksmart
  */
+div#poll-time
+{
+    font-size:  smaller;
+    text-align: left;
+    width:50%;
+    float:left;
+}
 div#last-updated
 {
     font-size:  smaller;
     text-align: right;
+    width:50%;
+    float:left;
 }

@@ -192,15 +192,23 @@ body
     height:     400px;
     min-height: 400px;
 }
+header
+{
+    padding:    10px 0 0 0;
+}
 header h1
 {
     display:    none;
 }
 div.panel
 {
-    margin:10px;
+    margin:     10px;    
 }
 div.panel h1
 {
     margin: 5px 0 10px 0;
+}
+.clear
+{
+    clear:both;
 }

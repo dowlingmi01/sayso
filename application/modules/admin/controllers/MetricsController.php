@@ -1,9 +1,7 @@
 <?php
-
 /**
  * @author alecksmart
  */
-
 class Admin_MetricsController extends Api_AbstractController
 {
 
@@ -23,12 +21,21 @@ class Admin_MetricsController extends Api_AbstractController
 
     public function indexAction()
     {
+        $this->view->headScript()->appendFile('/js/jquery.ba-dotimeout.min.js');
         $this->view->headScript()->appendFile('/modules/admin/metrics/index.js');
         $this->view->headLink()->appendStylesheet('/modules/admin/metrics/index.css', 'screen');
     }
 
-    public function poll()
-    {
-
+    public function pollAction()
+    {        
+        $lastRowId      = 0;
+        $lastFromPost   = intval($this->_getParam('lastRowId'));
+        if($lastFromPost > 0)
+        {
+            $lastRowId = $lastFromPost;
+        }
+        $content = array('lastRowId' => $lastRowId, 'lastUpdated' => date('h:i:s a'));
+        echo json_encode($content);
+        exit(0);
     }
 }

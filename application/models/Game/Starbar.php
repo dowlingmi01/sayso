@@ -161,7 +161,7 @@ abstract class Game_Starbar extends Game_Abstract {
             
             if (!Game_Abstract::$_enabled) return false;
             parent::submitAction($actionId, $customAmount);
-            $this->loadGamerProfile(); // get latest points after transaction
+            $this->loadGamerProfile(true); // get latest points after transaction
             
             $gamer = $this->getGamer(false);
             if ($gamer->justLeveledUp()) {

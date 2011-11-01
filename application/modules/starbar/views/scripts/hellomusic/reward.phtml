@@ -8,12 +8,12 @@ $percentUserBalanceToCost = round(((int) $notes / (int) $good->cost) * 100);
 if ($percentUserBalanceToCost > 100) $percentUserBalanceToCost = 100; 
 
 ?>
-<div class="sb_rewardItem <?= $good->isRedeemable() ? '' : 'sb_rewardItem_disabled' ?>" data-id="<?= $good->getId() ?>">
-    <?php if (!$good->isRedeemable()) : ?>
-    <div class="sb_rewardItem_disabledMsg">
-        <h1 class="sb_textError">!</h1>
-        <p>Must complete<br /><a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey?survey_id=1" class="sb_nav_element" rel="sb_popBox_surveys_hg" title="Take influencer survey now!" style="position: relative; top: -5px;">Influencer Survey</a></p>
-    </div><!-- .sb_rewardItem_disabledMsg -->
+<div class="sb_rewardItem <?= ($good->isRedeemable() ? '' : 'sb_rewardItem_disabled') ?>" data-id="<?= $good->getId() ?>">
+    <?php if ($good->getNonRedeemReason()) : ?>
+	    <div class="sb_rewardItem_disabledMsg">
+	        <h1 class="sb_textError">!</h1>
+	        <p><?= $good->getNonRedeemReason()?></p>
+	    </div><!-- .sb_rewardItem_disabledMsg -->
     <?php endif ?>
     <div class="sb_rewardHeader">
         <?= $good->title ?>
@@ -25,11 +25,17 @@ if ($percentUserBalanceToCost > 100) $percentUserBalanceToCost = 100;
         <div class="sb_user-points-box">                    
             <div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentUserBalanceToCost ?>%"></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $good->cost ?></span></span></div>
         </div><!-- .user-points-box -->
-        <?php if (!$good->isRedeemable()) : ?>
-        <p class="sb_reward_levelReq"><span>Survey Requirement</span></p>
-        <span class="sb_theme_button sb_theme_button_grey">Redeem</span>
+        <?php if ($good->getCommentForUser()) : ?>
+	        <?php if ($good->isRedeemable()) : ?>
+		        <p class="sb_reward_comment"><span><?= $good->getCommentForUser() ?></span></p>
+	        <?php else : ?>
+		        <p class="sb_reward_levelReq"><span><?= $good->getCommentForUser() ?></span></p>
+	        <?php endif ?>
+        <?php endif ?>
+        <?php if ($good->isRedeemable()) : ?>
+	        <span class="sb_theme_button">Redeem</span>
         <?php else : ?>
-        <span class="sb_theme_button">Redeem</span>
+	        <span class="sb_theme_button sb_theme_button_grey">Redeem</span>
         <?php endif ?>
     </div><!-- .sb_rewardBase -->
 </div><!-- .sb_rewardItem -->

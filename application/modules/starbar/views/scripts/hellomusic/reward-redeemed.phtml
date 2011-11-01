@@ -33,8 +33,14 @@ $user = $this->user;
 </div><!-- #sb_reward_step3 -->
 <script type="text/javascript">
     $SQ(function () {
-        $SQ('#sb_reward_step3 .sb_theme_button').bind('click', function () {
-        	 $SQ('#sb_innerOverlay').fadeOut(200);
+        $SQ('#sb_reward_step3 .sb_theme_button').unbind().bind('click', function (e) {
+			$SQ('#sayso-starbar').trigger('frameCommunication', ['refreshRewardCenter', {}]);
         });
+        overlayBackground = $SQ('#sayso-starbar #sb_innerOverlay .sb_innerOverlayBackground');
+		if (overlayBackground.length == 1){
+			overlayBackground.unbind().bind('click', function (e) {
+				$SQ('#sayso-starbar').trigger('frameCommunication', ['refreshRewardCenter', {}]);
+			});
+		}
     });
 </script>

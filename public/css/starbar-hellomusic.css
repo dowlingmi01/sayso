@@ -1006,6 +1006,21 @@
 	margin: 0px auto;
 }
 
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem p.sb_reward_comment{
+	height: 14px;
+	margin: -10px 0px 10px 0px;
+	display: block;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem p.sb_reward_comment span{
+	text-transform: uppercase;
+	color: #fff;
+	font-size: 10px;
+	padding: 2px 0 0 0;
+	display: inline-block;
+	margin: 0px auto;
+}
+
 /* share starber */
 
 #sayso-starbar #sb_popBox_user-share textarea{

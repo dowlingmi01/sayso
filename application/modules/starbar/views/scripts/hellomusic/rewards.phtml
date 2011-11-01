@@ -31,7 +31,8 @@
             .not('.sb_rewardItem_disabled')
             .unbind('click').bind('click', function(e){
                 
-                overlay.fadeIn(500);
+                overlayContent.fadeOut(0);
+                overlay.fadeOut(0).fadeIn(500);
 
                 var container = $SQ(this).dataContainer();
                 
@@ -39,9 +40,8 @@
                     url : 'http://' + sayso.baseDomain + '/starbar/hellomusic/reward-redeem',
                     data : { good_id : container.getId() },
                     success : function (response) {
-                        overlayContent.fadeOut(0);
                         overlayContent.html(response.data.html);
-                        overlayContent.fadeIn(500);
+                        setTimeout(function(){overlayContent.fadeIn(500)}, 200); // Give the html time to render properly
                     }
                 });
             });

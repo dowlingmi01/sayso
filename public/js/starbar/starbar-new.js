@@ -198,7 +198,7 @@ $SQ(function(){
 	function initStarBar(){
 		initElements();
 		updateAlerts(true);
-		activateGameElements(null, false);
+		activateGameElements(starbarElem, false);
 		// initializes development-only jquery
 		devInit();
 		sayso.log('Loaded and Ready');
@@ -757,6 +757,10 @@ $SQ(function(){
 		},
 		'hideOverlay': function () {
 			hideOverlay();
+		},
+		'refreshRewardCenter': function () {
+			closePopBox();
+			openPopBox($SQ('#sb_popBox_rewards'), 'http://'+sayso.baseDomain+'/starbar/hellomusic/rewards', true, true);
 		},
 		'alertMessage': function (parameters) {
 			var msg = parameters['msg'];

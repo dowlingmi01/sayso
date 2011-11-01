@@ -5,12 +5,36 @@
 
 function prependRows()
 {
+    if($('#update-marker').length > 0)
+    {
+        $('#update-marker').remove();
+    }
     if(window._adminPoller.rows.length > 0)
     {
         var rows = window._adminPoller.rows;
         window._adminPoller.rows = [];
+        var html = '';
         $.each(rows, function(i, v){
-
+            var html = '';
+            html += '<div class="updates-entry alt_'+ (window._adminPoller.alt++ & 1 ? 2 : 1) +'">';
+                html += '<div class="updates-entry-user">';
+                    html += v.userName + ' (User Id '+ v.userId + ')';
+                html += '</div>';
+                html += '<div class="updates-entry-starbar">';
+                    html += v.starbar ;
+                html += '</div>';
+                html += '<div class="updates-entry-metricsType">';
+                    html += v.metricsType ;
+                html += '</div>';
+                html += '<div class="updates-entry-dateTime">';
+                    html += v.dateTime ;
+                html += '</div>';
+                html += '<div class="clear"></div>';
+                html += '<div class="updates-entry-data">';
+                    html += v.data ;
+                html += '</div>';
+            html += '</div>';
+            $('#updates').prepend(html);
         });
     }
 }
@@ -59,10 +83,9 @@ function doPoll()
                     $('.new-data-available').unbind('click').bind('click', function()
                     {
                         prependRows();
-                        $('#update-marker').remove();
                     });
                 }
-                
+
             }
         }
     });
@@ -83,7 +106,7 @@ function bindPoll()
 
 function bindAll()
 {
-    window._adminPoller = {lastRowId : 0, isInit : true,  rows : []};
+    window._adminPoller = {lastRowId : 0, isInit : true,  rows : [], alt : 0};
 
     // disallow dummy submits
     $('#dummy').submit(function(){return false;});

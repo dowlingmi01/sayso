@@ -36,3 +36,33 @@ div#update-marker a:hover
 {
     color: #0057AE;
 }
+
+div.updates-entry
+{
+    padding: 4px;
+    font-size: small;
+}
+div.updates-entry-user
+{
+    width:40%;
+    float:left;
+}
+div.updates-entry-starbar
+{
+    width:15%;
+    float:left;
+}
+div.updates-entry-metricsType
+{
+    width:20%;
+    float:left;
+}
+div.updates-entry-dateTime
+{
+    width:25%;
+    float:left;
+}
+div.updates-entry-data
+{
+    font-size: smaller;
+}

@@ -44,7 +44,7 @@ class Admin_MetricsController extends Api_AbstractController
                 'userName'      => 'Some User Name',
                 'metricsType'   => 'Page View',
                 'starbar'       => 'Starbar',
-                'dateTime'      => '2011-10-10 10:10:10',
+                'dateTime'      => date('Y-m-d H:i:s'),
                 'data'          => 'Some data to show',
             ),
         );
@@ -61,6 +61,10 @@ class Admin_MetricsController extends Api_AbstractController
         echo json_encode($content);
         exit(0);
     }
+
+    /**
+     * Data formatting functions for JSON poller
+     */
 
     private function pollPageViews(&$result, &$lastRowId)
     {
@@ -79,6 +83,16 @@ class Admin_MetricsController extends Api_AbstractController
 
     private function formatPollResult(&$result, $data)
     {
-
+        if(!empty($data))
+        {
+            $result[] = array(
+                'userId'        => $data['userId'],
+                'userName'      => $data['userName'],
+                'metricsType'   => $data['metricsType'],
+                'starbar'       => $data['starbar'],
+                'dateTime'      => $data['dateTime'],
+                'data'          => $data['data'],
+            );
+        }
     }
 }

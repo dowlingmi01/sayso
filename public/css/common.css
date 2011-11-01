@@ -188,9 +188,8 @@ body
     width:      800px;
     margin:     0 auto;
     pading:     10px;
-    border:     1px solid #CCCCCC;
-    height:     400px;
-    min-height: 400px;
+    border:     1px solid #CCCCCC;    
+    min-height: 700px;
 }
 header
 {
@@ -211,4 +210,12 @@ div.panel h1
 .clear
 {
     clear:both;
+}
+.alt_1
+{
+    background: #DDDDDD;
+}
+.alt_2
+{
+    background: #D3D7CF;
 }

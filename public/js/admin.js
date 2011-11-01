@@ -260,6 +260,12 @@ $(function () {
     
     // tabs
     $('nav.main a').click(function(e){
+
+        if($(this).hasClass('return-true'))
+        {
+            return true;
+        }
+
         e.preventDefault();
         var _this = $(this),
             span = _this.find('span');

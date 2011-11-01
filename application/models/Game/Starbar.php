@@ -159,14 +159,19 @@ abstract class Game_Starbar extends Game_Abstract {
         
         try {
             
+            $gamer = $this->getGamer(); // get level before transaction
+    		$previousUserLevel = count($gamer->getLevels()) - 1;
+
             if (!Game_Abstract::$_enabled) return false;
             parent::submitAction($actionId, $customAmount);
 
-            $gamer = $this->getGamer();  // get latest points after transaction
+            $this->loadGamerProfile(true); // get latest level and points after transaction
+            $gamer = $this->getGamer(false);
 
-            if ($gamer->justLeveledUp()) {
-    			// Show user congrats notification
-    			$userLevel = count($gamer->getLevels()) - 1;
+    		$userLevel = count($gamer->getLevels()) - 1;
+
+    		// Show user congrats notification
+            if ($userLevel > $previousUserLevel) {
     			$message = new Notification_Message();
     			$message->loadDataByUniqueFields(array('short_name' => 'Level Up to '.$userLevel));
 

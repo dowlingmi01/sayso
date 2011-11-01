@@ -196,3 +196,11 @@ header h1
 {
     display:    none;
 }
+div.panel
+{
+    margin:10px;
+}
+div.panel h1
+{
+    margin: 5px 0 10px 0;
+}

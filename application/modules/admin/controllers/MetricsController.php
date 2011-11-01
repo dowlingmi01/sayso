@@ -23,8 +23,12 @@ class Admin_MetricsController extends Api_AbstractController
 
     public function indexAction()
     {
-        
+        $this->view->headScript()->appendFile('/modules/admin/metrics/index.js');
+        $this->view->headLink()->appendStylesheet('/modules/admin/metrics/index.css', 'screen');
+    }
+
+    public function poll()
+    {
+
     }
 }
-
-

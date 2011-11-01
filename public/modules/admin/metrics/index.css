@@ -15,3 +15,24 @@ div#last-updated
     width:50%;
     float:left;
 }
+div#updates
+{
+    margin: 4px 0;
+}
+div#update-marker
+{
+    font-size:  smaller;    
+    background: #A4C0E4;
+    padding:20px 0;
+    text-align:center;
+}
+div#update-marker a
+{
+    color: #6193CF;
+    text-decoration: none;
+    border-bottom: 1px dotted #2C72C7;
+}
+div#update-marker a:hover
+{
+    color: #0057AE;
+}

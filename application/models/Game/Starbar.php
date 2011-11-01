@@ -159,7 +159,10 @@ abstract class Game_Starbar extends Game_Abstract {
         
         try {
             
-            $gamer = $this->getGamer(); // get level before transaction
+            // @todo justLeveledUp() is not working as intended (it's not true when it should be)
+            // currently, this is very inefficient. Using this will be fine once caching is implemented...
+            $this->loadGamerProfile(true);  // get level before transaction
+            $gamer = $this->getGamer(false);
     		$previousUserLevel = count($gamer->getLevels()) - 1;
 
             if (!Game_Abstract::$_enabled) return false;

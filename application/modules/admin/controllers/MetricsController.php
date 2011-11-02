@@ -26,6 +26,10 @@ class Admin_MetricsController extends Api_AbstractController
         $this->view->headLink()->appendStylesheet('/modules/admin/metrics/index.css', 'screen');
     }
 
+    /**
+     * Check the database for new metrics data and create a JSON response
+     * Called with AJAX
+     */
     public function pollAction()
     {
         // format input parameters
@@ -68,6 +72,13 @@ class Admin_MetricsController extends Api_AbstractController
         exit(0);
     }
 
+    /**
+     * Format a row for JSON before diplaying it
+     *
+     * @param array $rows
+     * @param array $entry
+     * @param array $lastRowId
+     */
     private function formatPollResult(&$rows, &$entry, &$lastRowId)
     {
         $index = 'lastSearchId';

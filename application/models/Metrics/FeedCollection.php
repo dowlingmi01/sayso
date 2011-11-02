@@ -159,7 +159,11 @@ EOT;
         }
     }
 
-
+    /**
+     * Set data if polling was performed before in this session
+     *
+     * @param array $criteria
+     */
     public function setLastIds(array $criteria)
     {
         $this->lastSearchId         = isset($criteria['lastSearchId']) ? intval($criteria['lastSearchId']) : 0;

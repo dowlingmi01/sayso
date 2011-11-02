@@ -82,15 +82,16 @@ class Starbar_ContentController extends Api_GlobalController
 		$user = new User();
 		$user->loadData($this->user_id);
 
-		$userAddress = $user->getPrimaryAddress();
-
 		if (isset($this->order_first_name)) {
 			// shippable item
 			// validation done in JS
 
-			$user->first_name = $this->order_first_name;
-			$user->last_name = $this->order_last_name;
-			$user->save();
+			$userAddress = new User_address();
+			if ($user->primary_address_id) {
+				$userAddress->loadData($user->primary_address_id);
+			} else {
+				$userAddress->user_id = $this->user_id;
+			}
 
 			$userAddress->street1 = $this->order_address_1;
 			$userAddress->street2 = $this->order_address_2;
@@ -99,6 +100,15 @@ class Starbar_ContentController extends Api_GlobalController
 			$userAddress->postalCode = $this->order_zip;
 			$userAddress->country = $this->order_country;
 			$userAddress->save();
+
+			if (!$user->primary_address_id) {
+				$user->primary_address_id = $userAddress->id;
+			}
+			
+			$user->first_name = $this->order_first_name;
+			$user->last_name = $this->order_last_name;
+			$user->save();
+
 
 	        try {
 				$message = 'Beat Bar redemption made for ' . $good->title . '\n';

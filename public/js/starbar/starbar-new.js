@@ -1290,12 +1290,12 @@ $SQ(function(){
 	}
 
 	function activateExternalConnectElems(target) {
-		var elemExternalConnect = $SQ('#sb_popBox_user-profile .sb_unconnected', target);
+		var elemExternalConnect = $SQ('.sb_unconnected', target);
 
 		// connect with facebook or twitter
 		elemExternalConnect.each(function(){
-			$SQ(this).unbind();
-			$SQ(this).bind({
+			$SQthis = $SQ(this);
+			$SQthis.unbind().bind({
 				click: function(event){
 					var windowParameters = 'location=1,status=1,scrollbars=0';
 					switch($SQ(this).attr('id')) {
@@ -1307,7 +1307,7 @@ $SQ(function(){
 			  				windowParameters += ',width=750,height=550';
 							break;
 					}
-					var link = $SQ(this).attr('href');
+					var link = $SQthis.attr('href');
 					if (link.indexOf("?") == -1)
 						link += "?";
 					else

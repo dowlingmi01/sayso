@@ -29,57 +29,81 @@ class Admin_MetricsController extends Api_AbstractController
     public function pollAction()
     {
         // format input parameters
-        
+
         $rows           = array();
         $lastRowId      = $this->_getParam('lastRowId');
-        
-        // get data
-
-        $collection = $this->getMetricsFeed($rows, $lastRowId);
-        
-        // send out
-
-        $collection->lastRowId = $lastRowId;
-        $collection->lastUpdated = date('h:i:s a');
-        
-        $this->_enableRenderer(new Api_Plugin_JsonRenderer());
-        
-        return $this->_resultType($collection);
-//        $content = array('lastRowId' => $lastRowId, 'lastUpdated' => date('h:i:s a'), 'rows' => $rows);
-//        echo json_encode($content);
-//        exit(0);
-    }
-
-    /**
-     * Data formatting functions for JSON poller
-     */
-
-    private function getMetricsFeed(&$result, &$lastRowId)
-    {
-        $data = array();
+        $firstRun       = false;
+        $error          = '';
         if(!is_array($lastRowId))
         {
-            $lastRowId = array('lastSearchId' => 0, 'lastPageViewId' => 0, 'lastSocialActivityId' => 0);
+            $firstRun   = true;
+            $lastRowId  = array('lastSearchId' => 0, 'lastPageViewId' => 0, 'lastSocialActivityId' => 0);
         }
-        /**
-         *  GetMetricsFeed ?
-         */
-        $builder = new Sql_GetMetricsFeed();
-        return $builder->run();
+
+        // get data
+
+        $builder    = new Sql_GetMetricsFeed();
+        $rows       = array();
+        
+        try{
+            if(!$firstRun)
+            {
+                $builder->setLastIds($lastRowId);
+            }
+            $collection = $builder->run();
+
+            foreach($collection as $entry)
+            {
+                $this->formatPollResult($rows, $entry, $lastRowId);
+            }
+        }
+        catch(Exception $e)
+        {
+            $error = $e->getMessage();
+        }
+
+        // send out
+
+        /*$this->_enableRenderer(new Api_Plugin_JsonRenderer());
+        return $this->_resultType(
+            array(
+                'lastRowId'     => $lastRowId,
+                'lastUpdated'   => date('h:i:s a'),
+                'rows'          => $rows,
+                'lastError'     => $error
+            )
+        );*/
+        
+        $content = array('lastRowId' => $lastRowId, 'lastUpdated' => date('h:i:s a'), 'rows' => $rows, 'lastError' => $error);
+        echo json_encode($content);
+        exit(0);
     }
 
-    private function formatPollResult(&$result, $data)
+    private function formatPollResult(&$rows, $entry, $lastRowId)
     {
-        if(!empty($data))
+        $index = 'lastSearchId';
+        switch($entry->metricsType)
         {
-            $result[] = array(
-                'userId'        => $data['userId'],
-                'userName'      => $data['userName'],
-                'metricsType'   => $data['metricsType'],
-                'starbar'       => $data['starbar'],
-                'dateTime'      => $data['dateTime'],
-                'data'          => $data['data'],
-            );
+            case 'Page View':
+                $index = 'lastPageViewId';
+                break;
+            case 'Social Activity':
+                $index = 'lastSocialActivityId';
+                break;
+            default:
+                break;
         }
+
+        $lastRowId[$index] = $entry->lastId > $lastRowId[$index] ? $entry->userId : $lastRowId[$index];
+        
+        $rows[] = array
+        (
+            'userId'        => $entry->userId,
+            'userName'      => $entry->userName,
+            'metricsType'   => $entry->metricsType,
+            'starbar'       => $entry->starbar,
+            'dateTime'      => $entry->dateTime,
+            'data'          => $entry->data,
+        );
     }
 }

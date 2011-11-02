@@ -1,5 +1,6 @@
 (
     SELECT
+        ms.id               AS lastId,
         ms.user_id          AS userId,
         u1.username         AS userName,
         ms.starbar_id       AS starbarId,
@@ -18,6 +19,7 @@
 UNION
 (
     SELECT
+        mpv.id              AS lastId,
         mpv.user_id         AS userId,
         u2.username         AS userName,
         mpv.starbar_id      AS starbarId,
@@ -35,6 +37,7 @@ UNION
 UNION
 (
     SELECT
+        msa.id              AS lastId,
         msa.user_id         AS userId,
         u3.username         AS userName,
         msa.starbar_id      AS starbarId,

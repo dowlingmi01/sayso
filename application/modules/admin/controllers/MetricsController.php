@@ -42,7 +42,7 @@ class Admin_MetricsController extends Api_AbstractController
 
         // get data
 
-        $builder    = new Sql_GetMetricsFeed();
+        $builder    = new Metrics_FeedCollection();        
         $rows       = array();
         
         try{
@@ -51,7 +51,6 @@ class Admin_MetricsController extends Api_AbstractController
                 $builder->setLastIds($lastRowId);
             }
             $collection = $builder->run();
-
             foreach($collection as $entry)
             {
                 $this->formatPollResult($rows, $entry, $lastRowId);
@@ -79,10 +78,10 @@ class Admin_MetricsController extends Api_AbstractController
         exit(0);
     }
 
-    private function formatPollResult(&$rows, $entry, $lastRowId)
+    private function formatPollResult(&$rows, &$entry, &$lastRowId)
     {
         $index = 'lastSearchId';
-        switch($entry->metricsType)
+        switch($entry['metricsType'])
         {
             case 'Page View':
                 $index = 'lastPageViewId';
@@ -94,16 +93,16 @@ class Admin_MetricsController extends Api_AbstractController
                 break;
         }
 
-        $lastRowId[$index] = $entry->lastId > $lastRowId[$index] ? $entry->userId : $lastRowId[$index];
+        $lastRowId[$index] = $entry['lastId'] > $lastRowId[$index] ? $entry['lastId'] : $lastRowId[$index];
         
         $rows[] = array
         (
-            'userId'        => $entry->userId,
-            'userName'      => $entry->userName,
-            'metricsType'   => $entry->metricsType,
-            'starbar'       => $entry->starbar,
-            'dateTime'      => $entry->dateTime,
-            'data'          => $entry->data,
+            'userId'        => $entry['userId'],
+            'userName'      => $entry['userName'],
+            'metricsType'   => $entry['metricsType'],
+            'starbar'       => $entry['starbar'],
+            'dateTime'      => $entry['dateTime'],
+            'data'          => $entry['data'],
         );
     }
 }

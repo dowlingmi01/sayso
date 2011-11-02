@@ -9,10 +9,10 @@ class Sql_GetMetricsFeed extends Sql_Abstract
 {
     /**
      * Number of records to get during the first run
-     * 
+     *
      * @var int
      */
-    private $limitFirstRun  = 100;
+    public $limitFirstRun  = 100;
 
     /**
      * Limit getting a number of records for all subsequent runs
@@ -21,7 +21,13 @@ class Sql_GetMetricsFeed extends Sql_Abstract
      *
      * @var int
      */
-    private $limitLiveFeed  = 1000;
+    public $limitLiveFeed  = 1000;
+
+    public $lastSearchId;
+
+    public $lastPageViewId;
+
+    public $lastSocialActivityId;
 
     /*public function __construct()
     {
@@ -38,7 +44,7 @@ class Sql_GetMetricsFeed extends Sql_Abstract
     {
         $this->lastSearchId             = isset($criteria['lastSearchId']) ? intval($criteria['lastSearchId']) : 0;
         $this->lastPageViewId           = isset($criteria['lastPageViewId']) ? intval($criteria['lastPageViewId']) : 0;
-        $this->lastSocialActivityId     = isset($criteria['lastSocialActivityId']) ? intval($criteria['lastSocialActivityId']) : 0;        
+        $this->lastSocialActivityId     = isset($criteria['lastSocialActivityId']) ? intval($criteria['lastSocialActivityId']) : 0;
         $this->setTemplate(new Template_Sql(dirname(__FILE__) . '/' . str_replace('Sql_', '', get_class($this)) . 'Live.sql'));
     }
 

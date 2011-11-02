@@ -1067,7 +1067,6 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 }
 #sayso-starbar .sb_ui-progressbar .sb_progressBarValue {
 	position: absolute;
-	z-index: 2147483647;
 	text-align: center;
 	width: 100%;
 	font-size: 11px !important;

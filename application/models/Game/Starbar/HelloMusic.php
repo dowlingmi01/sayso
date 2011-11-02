@@ -29,7 +29,7 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
 		$currentLevel = $profile->getHighestLevel();
 
 		if (!$good->isToken() && $profile->getGoods()->hasItem($good->getId())) {
-			$good->setNonRedeemReason('You have already<br />purchased this item.');
+			$good->setNonRedeemReason('You have already<br />purchased this item.<br /><br />You can always buy<br />more tokens for the giveaways!<br />');
 			$good->setCommentForUser('Purchased');
 		} elseif (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
 			$good->setNonRedeemReason('Sorry, this item was sold out.');

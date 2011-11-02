@@ -88,7 +88,7 @@ UNION
         AND msa.starbar_id = s3.id
         AND msa.social_activity_type_id = sat.id
 )
-ORDER BY dateTime DESC
+ORDER BY dateTime ASC
 LIMIT ?
 EOT;
         }
@@ -153,7 +153,7 @@ UNION
         AND msa.social_activity_type_id = sat.id
         AND msa.id > ?
 )
-ORDER BY dateTime DESC
+ORDER BY dateTime ASC
 LIMIT ?
 EOT;
         }

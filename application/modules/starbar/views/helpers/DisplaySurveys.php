@@ -90,7 +90,7 @@ class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 				<? } else { // User cannot take this survey ?>
 					<li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
 						<div class="sb_pointsEarnedTotal">
-							<span class="sb_chopsEarned">+<?= $numberOfChops ?></span>
+							<span class="sb_xpEarned">+<?= $numberOfChops ?></span>
 							<span class="sb_notesEarned">+<?= $numberOfNotes ?></span>
 						</div><!-- .sb_pointsEarnedTotal -->
 					</li>

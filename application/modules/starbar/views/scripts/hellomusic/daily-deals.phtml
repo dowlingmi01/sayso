@@ -16,7 +16,9 @@
 </div><!-- .sb_header -->
 <p>Act fast, deals don't last long! And remember to keep earning <strong class="sb_theme_textHighlight sb_tooltip" title="Notes - are almost as good as cash and can be redeemed for goods in the Rewards Center.">Notes</strong> &amp; <strong class="sb_theme_textHighlight sb_tooltip" title="Chops - determine your access to increasingly important levels of influence.">Chops</strong> by sharing.</p>
 <ul class="sb_listDeals">
+	<? $i = 1 ?>
 	<? foreach ($this->deals as $deal) { ?>
+		<? if ($i > 4) break ?>
 		<li>
 			<a href="<?= $deal->itemURL ?>"><img src="<?= $deal->itemImageURL ?>" alt="" class="sb_dealImage" />
 				<? if ($deal->status == "SOLD OUT") { ?>
@@ -65,5 +67,6 @@
 				<span class="sb_mini-note-reward">+25</span>
 			</div>
 		</li>
+		<? $i++ ?>
 	<? } ?>
 </ul><!-- .sb_dailyDeal -->

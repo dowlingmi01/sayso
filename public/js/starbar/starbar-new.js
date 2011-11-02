@@ -1294,8 +1294,7 @@ $SQ(function(){
 
 		// connect with facebook or twitter
 		elemExternalConnect.each(function(){
-			$SQthis = $SQ(this);
-			$SQthis.unbind().bind({
+			$SQ(this).unbind().bind({
 				click: function(event){
 					var windowParameters = 'location=1,status=1,scrollbars=0';
 					switch($SQ(this).attr('id')) {
@@ -1307,7 +1306,7 @@ $SQ(function(){
 			  				windowParameters += ',width=750,height=550';
 							break;
 					}
-					var link = $SQthis.attr('href');
+					var link = $SQ(this).attr('href');
 					if (link.indexOf("?") == -1)
 						link += "?";
 					else

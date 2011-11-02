@@ -120,7 +120,7 @@
                 
                 var postInstallUrl = 'http://' + sayso.baseDomain + '/starbar/remote/post-install-setup';
                 
-                if (sayso.client) { // we must be on a client site, so provide client vars
+                if (sayso.client && sayso.client.uuid) { // we must be on a client site, so provide client vars
                     postInstallUrl += 
                         '?client_name=' + sayso.client.name + 
                         '&client_uuid=' + sayso.client.uuid + 

@@ -271,7 +271,7 @@ class Starbar_RemoteController extends Api_GlobalController
             Db_Pdo::execute('UPDATE external_user SET install_begin_time = now() WHERE id = ? AND install_begin_time IS NULL', $externalUser->getId());
         
             
-        } else if ($this->client_uuid) { // on customer site 
+        } else if ($this->client_uuid && strlen($this->client_uuid)) { // on customer site 
             
             Api_Registry::getLogger()->log('On customer site / no cookies', Zend_Log::INFO);
             $starbar = new Starbar();

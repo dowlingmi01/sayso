@@ -95,8 +95,10 @@ class Admin_MetricsController extends Api_AbstractController
         }
 
         $lastRowId[$index] = $entry['lastId'] > $lastRowId[$index] ? $entry['lastId'] : $lastRowId[$index];
-        array_unshift($rows, array
-        (
+
+        // use unshift to send feed in the reverse order
+        // for feed formatter
+        array_unshift($rows, array(
             'userId'        => $entry['userId'],
             'userName'      => (is_null($entry['userName']) ? 'NAME UNSPECIFIED' : $entry['userName']),
             'metricsType'   => $entry['metricsType'],

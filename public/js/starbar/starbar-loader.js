@@ -130,8 +130,8 @@
                 
                 // load iframe to pass pre-install cookies to sayso
                 // along with IP and user agent headers
-                var iframe = $SQ('<iframe src="'+postInstallUrl+'" width="0" height="0" border="0" scrolling="no">');
-                iframe.css('width', '0px').css('height', '0px').css('border', '0px');
+                var iframe = document.createElement('iframe');
+                iframe.src = postInstallUrl;
                 starbarContainer.appendChild(iframe);
                 
                 // after a short delay, continue loading starbar

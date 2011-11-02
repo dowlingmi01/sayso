@@ -58,7 +58,7 @@
                 if (navigator.userAgent.match('Chrome')) {
                     // For Chrome users, prompt to reload the page
                     setTimeout(function(){ 
-                        $SQ(this).text(sayso.client.meta.customStartMessage);
+                    	if (sayso.client.meta.customStartMessage) $SQ(this).text(sayso.client.meta.customStartMessage);
                         $SQ(this).unbind('click').click(function (e) {
                             e.preventDefault();
                             location.reload();

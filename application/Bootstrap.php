@@ -51,17 +51,19 @@ class Bootstrap extends App_Bootstrap
             );
         }
         
-        Zend_Controller_Front::getInstance()->registerPlugin(new BootstrapPlugin(), 1);
+        Zend_Controller_Front::getInstance()->registerPlugin(new BootstrapPlugin($this), 1);
     }
 
     /**
      * Setup bootstrap resource returning a usable link
      * to table holding session data
+     * - this method is now a "callback style" init - first must determine module(s)
+     *   see BootstrapPlugin below
      *
      * @return Zend_Session_SaveHandler_DbTable
      * @author alecksmart
      */
-    public function _initDbSessionHandler()
+    public function initDbSessionHandler()
     {
         // Get values we supplied in application.ini
         $options    = $this->getOptions();
@@ -134,6 +136,15 @@ class Bootstrap extends App_Bootstrap
  */
 class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
 {
+    /**
+     * @var Bootstrap
+     */
+    protected $_bootstrap = null;
+    
+    public function __construct(Bootstrap $bootstrap) {
+        $this->_bootstrap = $bootstrap;
+    }
+    
     public function routeShutdown(Zend_Controller_Request_Abstract $request) {
 
         // Are we using a command line?
@@ -164,6 +175,9 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
             ini_set('session.save_path', realpath(APPLICATION_PATH . '/../session'));
             ini_set('session.gc_probability', 0); // no garbage collection please
             ini_set('session.gc_maxlifetime', 7700000); // aprox. 3 months
+            
+            // setup session handler
+            $this->_bootstrap->initDbSessionHandler();
         }
 
 		/*

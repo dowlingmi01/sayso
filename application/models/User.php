@@ -202,8 +202,9 @@ class User extends Record implements Titled
 	public function getPrimaryAddress() {
 		if ($this->id) {
 			$userAddress = new User_Address();
-			$userAddress->loadDataByUniqueFields(array('user_id' => $this->id));
-			if (!$userAddress->id) {
+			if ($this->primary_address_id) {
+				$userAddress->loadData($this->primary_address_id);
+			} else {
 				$userAddress->user_id = $this->id;
 				$userAddress->save();
 				$this->primary_address_id = $userAddress->id;

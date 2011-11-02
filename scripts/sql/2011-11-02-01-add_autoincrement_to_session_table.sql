@@ -1,0 +1,1 @@
+ALTER TABLE session DROP PRIMARY KEY, ADD UNIQUE KEY unique_session_id (id), ADD id_auto INT(10) auto_increment NOT NULL PRIMARY KEY after id;

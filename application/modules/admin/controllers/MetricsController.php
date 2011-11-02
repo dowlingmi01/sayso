@@ -95,8 +95,7 @@ class Admin_MetricsController extends Api_AbstractController
         }
 
         $lastRowId[$index] = $entry['lastId'] > $lastRowId[$index] ? $entry['lastId'] : $lastRowId[$index];
-        
-        $rows[] = array
+        array_unshift($rows, array
         (
             'userId'        => $entry['userId'],
             'userName'      => (is_null($entry['userName']) ? 'NAME UNSPECIFIED' : $entry['userName']),
@@ -104,6 +103,6 @@ class Admin_MetricsController extends Api_AbstractController
             'starbar'       => $entry['starbar'],
             'dateTime'      => $entry['dateTime'],
             'data'          => $entry['data'],
-        );
+        ));
     }
 }

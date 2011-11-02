@@ -35,13 +35,19 @@ class Admin_MetricsController extends Api_AbstractController
         
         // get data
 
-        $this->getMetricsFeed($rows, $lastRowId);
+        $collection = $this->getMetricsFeed($rows, $lastRowId);
         
         // send out
 
-        $content = array('lastRowId' => $lastRowId, 'lastUpdated' => date('h:i:s a'), 'rows' => $rows);
-        echo json_encode($content);
-        exit(0);
+        $collection->lastRowId = $lastRowId;
+        $collection->lastUpdated = date('h:i:s a');
+        
+        $this->_enableRenderer(new Api_Plugin_JsonRenderer());
+        
+        return $this->_resultType($collection);
+//        $content = array('lastRowId' => $lastRowId, 'lastUpdated' => date('h:i:s a'), 'rows' => $rows);
+//        echo json_encode($content);
+//        exit(0);
     }
 
     /**
@@ -58,6 +64,8 @@ class Admin_MetricsController extends Api_AbstractController
         /**
          *  GetMetricsFeed ?
          */
+        $builder = new Sql_GetMetricsFeed();
+        return $builder->run();
     }
 
     private function formatPollResult(&$result, $data)

@@ -63,16 +63,6 @@ class Admin_MetricsController extends Api_AbstractController
 
         // send out
 
-        /*$this->_enableRenderer(new Api_Plugin_JsonRenderer());
-        return $this->_resultType(
-            array(
-                'lastRowId'     => $lastRowId,
-                'lastUpdated'   => date('h:i:s a'),
-                'rows'          => $rows,
-                'lastError'     => $error
-            )
-        );*/
-        
         $content = array('lastRowId' => $lastRowId, 'lastUpdated' => date('h:i:s a'), 'rows' => $rows, 'lastError' => $error);
         echo json_encode($content);
         exit(0);
@@ -98,7 +88,7 @@ class Admin_MetricsController extends Api_AbstractController
         $rows[] = array
         (
             'userId'        => $entry['userId'],
-            'userName'      => $entry['userName'],
+            'userName'      => (is_null($entry['userName']) ? 'NAME UNSPECIFIED' : $entry['userName']),
             'metricsType'   => $entry['metricsType'],
             'starbar'       => $entry['starbar'],
             'dateTime'      => $entry['dateTime'],

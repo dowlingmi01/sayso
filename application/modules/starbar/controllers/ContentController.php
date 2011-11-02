@@ -86,7 +86,7 @@ class Starbar_ContentController extends Api_GlobalController
 			// shippable item
 			// validation done in JS
 
-			$userAddress = new User_address();
+			$userAddress = new User_Address();
 			if ($user->primary_address_id) {
 				$userAddress->loadData($user->primary_address_id);
 			} else {

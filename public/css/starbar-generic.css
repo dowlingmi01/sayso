@@ -1498,9 +1498,16 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 }
 
 #sayso-starbar .sb_popBox #sb_personalInfo input[type=text]{
+	width: 100px;
+	margin-right: 5px;
 	font-size: 10px;
 	padding: 1px;
 	line-height: 13px;
+}
+
+#sayso-starbar .sb_popBox #sb_personalInfo input[type=text].sb_wide_input{
+	width: 209px;
+	margin: 0;
 }
 
 /* Easy Tooltip */
@@ -1569,7 +1576,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 }
 
 #sayso-starbar #sb_innerOverlay .sb_innerOverlayContent{
-	margin: auto;
-	width: 150px;
+	margin: 10px auto;
+	width: 250px;
 	z-index: 20;
 }

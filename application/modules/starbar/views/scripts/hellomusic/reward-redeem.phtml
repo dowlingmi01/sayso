@@ -61,14 +61,14 @@ if ($goodIsToken) {
         <div class="sb_rewardOrder">
             <div class="sb_column_5050BG">
                 <div class="sb_column50">
-                    Current Balance<br clear="all" />
-                    <div class="sb_user-points-box" style="margin-top: 0px">                    
+                    Current Balance&nbsp;<br clear="all" />
+                    <div class="sb_user-points-box">                    
                         <div class="sb_progress_bar sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all"><span class="sb_currency_percent sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left" style="width: 100%"></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $currentBalance ?></span></span></div>
                     </div><!-- .user-points-box -->
                 </div><!-- .sb_column50 -->
                 <div class="sb_column50">
-                    Ending Balance<br clear="all" />
-                    <div class="sb_user-points-box" style="margin-top: 0px">                    
+                    Ending Balance&nbsp;<br clear="all" />
+                    <div class="sb_user-points-box">
                         <div class="sb_progress_bar sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all"><span class="sb_currency_percent sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left" style="width: <?= $percentUserBalanceRemaining ?>%"></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $balanceAfter ?></span></span></div>
                     </div><!-- .user-points-box -->
                 </div><!-- .sb_column50 -->
@@ -87,11 +87,11 @@ if ($goodIsToken) {
                 <?php else : ?>
                     <p><strong>Shipping Address</strong></p> 
                     <p id="sb_personalInfo">
-                    	<input name="sb_first_name" type="text" placeholder="First Name" value="<?= $user->first_name ?>" /> <input name="sb_last_name" type="text" placeholder="Last Name" value="<?= $user->last_name ?>" /><br />
-                    	<input name="sb_address_1" type="text" placeholder="Address" value="<?= $userAddress->street1 ?>" /><br />
-                    	<input name="sb_address_2" type="text" value="<?= $userAddress->street2 ?>" /><br />
-                    	<input name="sb_city" type="text" placeholder="City" value="<?= $userAddress->locality ?>" />, <input name="sb_state" type="text" placeholder="State/Region" value="<?= $userAddress->region ?>" />
-                    	<input name="sb_country" type="text" value="USA" placeholder="Country" value="<?= ($userAddress->country ? $userAddress->country : 'USA') ?>" /> <input name="sb_zip" type="text" placeholder="Zip" value="<?= $userAddress->postalCode ?>" />
+                    	<input name="sb_first_name" type="text" placeholder="First Name" value="<?= $user->first_name ?>" /><input name="sb_last_name" type="text" placeholder="Last Name" value="<?= $user->last_name ?>" /><br />
+                    	<input name="sb_address_1" class="sb_wide_input" type="text" placeholder="Address" value="<?= $userAddress->street1 ?>" /><br />
+                    	<input name="sb_address_2" class="sb_wide_input" type="text" value="<?= $userAddress->street2 ?>" /><br />
+                    	<input name="sb_city" type="text" placeholder="City" value="<?= $userAddress->locality ?>" /><input name="sb_state" type="text" placeholder="State/Region" value="<?= $userAddress->region ?>" />
+                    	<input name="sb_country" type="text" value="USA" placeholder="Country" value="<?= ($userAddress->country ? $userAddress->country : 'USA') ?>" /><input name="sb_zip" type="text" placeholder="Zip/Postal Code" value="<?= $userAddress->postalCode ?>" />
                     </p>
                 <?php endif ?>
             </div>

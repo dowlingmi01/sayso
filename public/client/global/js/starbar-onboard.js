@@ -57,9 +57,10 @@
                 
                 if (navigator.userAgent.match('Chrome')) {
                     // For Chrome users, prompt to reload the page
+                    $SQthis = $SQ(this);
                     setTimeout(function(){ 
-                    	if (sayso.client.meta.customStartMessage) $SQ(this).text(sayso.client.meta.customStartMessage);
-                        $SQ(this).unbind('click').click(function (e) {
+                    	$SQthis.text(sayso.client.meta.customStartMessage);
+                        $SQthis.unbind('click').click(function (e) {
                             e.preventDefault();
                             location.reload();
                         });

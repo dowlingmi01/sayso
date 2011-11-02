@@ -29,32 +29,14 @@ class Admin_MetricsController extends Api_AbstractController
     public function pollAction()
     {
         // format input parameters
-
-        $lastRowId      = 0;
+        
         $rows           = array();
-        $lastFromPost   = $this->_getParam('lastRowId');
-        if($lastFromPost > 0)
-        {
-            $lastRowId = $lastFromPost;
-        }
-
-        $rows = array(
-            array(
-                'userId'        => '1',
-                'userName'      => 'Some User Name',
-                'metricsType'   => 'Page View',
-                'starbar'       => 'Starbar',
-                'dateTime'      => date('Y-m-d H:i:s'),
-                'data'          => 'Some data to show',
-            ),
-        );
-
+        $lastRowId      = $this->_getParam('lastRowId');
+        
         // get data
 
-        $this->pollPageViews($rows, $lastRowId);
-        $this->pollSearches($rows, $lastRowId);
-        $this->pollSocialActivity($rows, $lastRowId);
-
+        $this->getMetricsFeed($rows, $lastRowId);
+        
         // send out
 
         $content = array('lastRowId' => $lastRowId, 'lastUpdated' => date('h:i:s a'), 'rows' => $rows);
@@ -66,19 +48,16 @@ class Admin_MetricsController extends Api_AbstractController
      * Data formatting functions for JSON poller
      */
 
-    private function pollPageViews(&$result, &$lastRowId)
+    private function getMetricsFeed(&$result, &$lastRowId)
     {
-
-    }
-
-    private function pollSearches(&$result, &$lastRowId)
-    {
-
-    }
-
-    private function pollSocialActivity(&$result, &$lastRowId)
-    {
-
+        $data = array();
+        if(!is_array($lastRowId))
+        {
+            $lastRowId = array('lastSearchId' => 0, 'lastPageViewId' => 0, 'lastSocialActivityId' => 0);
+        }
+        /**
+         *  GetMetricsFeed ?
+         */
     }
 
     private function formatPollResult(&$result, $data)

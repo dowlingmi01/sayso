@@ -11,9 +11,10 @@ function prependRows()
     }
     if(window._adminPoller.rows.length > 0)
     {
+        // reset to an empty array
         var rows = window._adminPoller.rows;
         window._adminPoller.rows = [];
-        var html = '';
+        // populate the rows
         $.each(rows, function(i, v){
             var html = '';
             html += '<div class="updates-entry alt_'+ (window._adminPoller.alt++ & 1 ? 2 : 1) +'">';
@@ -36,6 +37,11 @@ function prependRows()
             html += '</div>';
             $('#updates').prepend(html);
         });
+        // too long? truncate up to 100 rows...
+        while($('.updates-entry').length > 100)
+        {
+            $('#updates .updates-entry:last').remove();
+        }
     }
 }
 
@@ -49,31 +55,31 @@ function doPoll()
         data        : data,
         success     : function(data)
         {
-            window._adminPoller.lastRowId = data.lastRowId;
             //console.debug(data);
+            window._adminPoller.lastRowId = data.lastRowId;            
             $('#last-updated').html('Last updated: ' + (data.lastUpdated != undefined ? data.lastUpdated : ''));
             if(data.rows.length > 0)
             {
                 window._adminPoller.rows = $.merge(window._adminPoller.rows, data.rows);
             }
-            //console.debug(window._adminPoller.rows);
             if(window._adminPoller.rows.length > 0)
             {
                 if(window._adminPoller.isInit)
                 {
-                    // we do it only oince at page load
+                    // we do it only once at page load
                     prependRows();
                     window._adminPoller.isInit = false;
                 }
                 else
                 {
                     // twitter-style updater:
-                    // add clickable div if not exists or update count otherwise
+                    // add a clickable div if not exists
+                    // or update the count otherwise
                     if($('#update-marker').length == 0)
                     {
                         $('#updates').prepend('<div id="update-marker">'
                             +'<a href="javascript:void(null)" class="new-data-available">'
-                                +'New data rows (<span id="new-data-available-count">'
+                                +'New updates are available (<span id="new-data-available-count">'
                                     + window._adminPoller.rows.length + '</span>)</a></div>');
                     }
                     else
@@ -115,7 +121,8 @@ function bindAll()
     bindPoll();
 
     // rebind when changed
-    $('#dummy select').change(function(){
+    $('#dummy select').change(function()
+    {
         bindPoll();
     });
 }

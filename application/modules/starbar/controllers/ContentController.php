@@ -60,7 +60,13 @@ class Starbar_ContentController extends Api_GlobalController
 	 */
 	public function rewardRedeemAction () {
 	    $good = Api_Adapter::getInstance()->call('Gaming', 'getGoodFromStore');
-        $this->view->assign(array('good' => $good, 'game' => Game_Starbar::getInstance()));
+
+		$user = Api_UserSession::getInstance($this->user_key)->getUser();
+
+		$userAddress = new User_Address();
+		$userAddress->loadOrPrepareForUser($this->user_id
+
+		$this->view->assign(array('good' => $good, 'game' => Game_Starbar::getInstance(), 'user' => $user, 'user_address' => $userAddress));
         return $this->_resultType($good);
 	}
 	
@@ -73,19 +79,52 @@ class Starbar_ContentController extends Api_GlobalController
 	    
 	    $game = Game_Starbar::getInstance();
 	    $game->purchaseGood($good, $this->quantity);
-        
-	    if (isset($this->first_name)) {
-	        // shippable item
-	        // @todo validate
-	        // @todo add this record to user_address
+
+		$user = new User();
+		$user->loadData($this->user_id);
+
+		$userAddress = new User_Address();
+		$userAddress->loadOrPrepareForUser($this->user_id);
+
+		if (isset($this->order_first_name)) {
+			// shippable item
+			// validation done in JS
+
+			$user->first_name = $this->order_first_name;
+			$user->last_name = $this->order_last_name;
+			$user->save();
+
+			$userAddress->street1 = $this->order_address_1;
+			$userAddress->street2 = $this->order_address_2;
+			$userAddress->locality = $this->order_city;
+			$userAddress->region = $this->order_state;
+			$userAddress->postalCode = $this->order_zip;
+			$userAddress->country = $this->order_country;
+			$userAddress->save();
+
 	        try {
-	            
-	            $message = 'Say.so redemption made for ' . $good->title;
+				$message = 'Beat Bar redemption made for ' . $good->title . '\n';
+				$message .= '\n';
+				$message .= 'Order Details\n';
+				$message .= '=============\n';
+				$message .= 'First Name: ' . $this->order_first_name . '\n';
+				$message .= 'Last Name: ' . $this->order_last_name . '\n';
+				$message .= 'Street Address 1: ' . $this->order_address_1 . '\n';
+				$message .= 'Street Address 2: ' . $this->order_address_2 . '\n';
+				$message .= 'City: ' . $this->order_city . '\n';
+				$message .= 'State/Region: ' . $this->order_state . '\n';
+				$message .= 'Postal Code: ' . $this->order_zip . '\n';
+				$message .= 'Country: ' . $this->order_country . '\n';
+				$message .= '=============\n';
+				$message .= 'Thank you,\n';
+				$message .= 'Say.So Mailer v3.4\n';
+
     	        $config = Api_Registry::getConfig();
                 $mail = new Zend_Mail();
                 $mail->setFrom($config->noReplyEmail)
                      ->addTo('david@say.so')
-                     ->setSubject('Test');
+                     ->addTo('hamza@say.so')
+                     ->setSubject('Redemption');
                 $mail->setBodyText($message);
                 $mail->send(new Zend_Mail_Transport_Smtp());
 	        } catch (Exception $e) {
@@ -94,8 +133,7 @@ class Starbar_ContentController extends Api_GlobalController
 	    } else {
 	        
 	    }
-	    $user = Api_UserSession::getInstance($this->user_key)->getUser();
-	    $this->view->assign(array('game' => $game, 'good' => $good, 'user' => $user));
+		$this->view->assign(array('game' => $game, 'good' => $good, 'user' => $user, 'user_address' => $userAddress));
 	    return $this->_resultType($good);
 	}
 	

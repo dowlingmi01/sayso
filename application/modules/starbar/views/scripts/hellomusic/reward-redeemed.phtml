@@ -6,6 +6,8 @@ $good = $this->good;
 /* @var $good Gaming_BigDoor_Good */
 $user = $this->user;
 /* @var $user User */
+$userAddress = $this->user_address;
+/* @var $userAddress User_Address */
 
 ?>
 <div id="sb_reward_step3" class="sb_reward_step">
@@ -21,10 +23,13 @@ $user = $this->user;
         <?php else : ?>
             <p align="center"><strong><small>Your order will arrive via USPS in 2-4 weeks</small></strong></p>
             <p><strong>Shipping Address:</strong></p> 
-            <p><?= $user->first_name . ' ' . $user->last_name ?><br />
-            121 Simpson Ave<br />
-            Suite 201<br />
-            Boston, MA 01720</p>
+            <p>
+	            <?= $user->first_name . ' ' . $user->last_name ?><br />
+	            <?= $userAddress->street1 ?><br />
+	            <?= ($userAddress->street2 ? $userAddress->street2 . '<br />' : '') ?>
+	            <?= $userAddress->locality ?><?= ($userAddress->region ? ', ' . $userAddress->region : '') ?><?= ($userAddress->country == 'USA' ? ' ' . $userAddress->postalCode : '<br />') ?>
+	            <?= ($userAddress->country != 'USA' ? $userAddress->country . ' &nbsp;' . $userAddress->postalCode : '') ?>
+            </p>
         <?php endif ?>
         <br clear="all" />
         <p align="center"><span class="sb_theme_button">Back to Rewards Center</span></p>

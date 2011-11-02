@@ -199,6 +199,19 @@ class User extends Record implements Titled
         return array_merge(parent::exportProperties($parentObject), $props);
     }
 
+	public function getPrimaryAddress() {
+		if ($this->id) {
+			$userAddress = new User_Address();
+			$userAddress->loadDataByUniqueFields(array('user_id' => $this->id));
+			if (!$userAddress->id) {
+				$userAddress->user_id = $this->id;
+				$userAddress->save();
+				$this->primary_address_id = $userAddress->id;
+				$this->save();
+			}
+			return $userAddress;
+		}
+	}
     
 
 }

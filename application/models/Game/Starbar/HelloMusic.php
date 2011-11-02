@@ -28,7 +28,7 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
 		$currencyPrimarySurvey = $profile->getCurrencies()->find('id', $currencyPrimarySurveyId)->getFirst();
 		$currentLevel = $profile->getHighestLevel();
 
-		if (!$good->isToken() && $good->isInGoodsCollection($profile->getGoods())) {
+		if (!$good->isToken() && $profile->getGoods()->hasItem($good->getId())) {
 			$good->setNonRedeemReason('You have already<br />purchased this item.');
 			$good->setCommentForUser('Purchased');
 		} elseif (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {

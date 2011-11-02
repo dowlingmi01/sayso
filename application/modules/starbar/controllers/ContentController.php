@@ -63,8 +63,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 		$user = Api_UserSession::getInstance($this->user_key)->getUser();
 
-		$userAddress = new User_Address();
-		$userAddress->loadOrPrepareForUser($this->user_id);
+		$userAddress = $user->getPrimaryAddress();
 
 		$this->view->assign(array('good' => $good, 'game' => Game_Starbar::getInstance(), 'user' => $user, 'user_address' => $userAddress));
         return $this->_resultType($good);
@@ -83,8 +82,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$user = new User();
 		$user->loadData($this->user_id);
 
-		$userAddress = new User_Address();
-		$userAddress->loadOrPrepareForUser($this->user_id);
+		$userAddress = $user->getPrimaryAddress();
 
 		if (isset($this->order_first_name)) {
 			// shippable item

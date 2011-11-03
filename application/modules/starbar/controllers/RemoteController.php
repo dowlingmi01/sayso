@@ -113,8 +113,14 @@ class Starbar_RemoteController extends Api_GlobalController
                     // everything is ok, carry on.
                 }
             } else {
-                // user id missing!
-                throw new Api_Exception(Api_Error::create(Api_Error::SESSION_USER_MISSING));
+                if ($this->user_key === $this->_getUserKey($this->user_id)) {
+                    // user key validates with user id (via md5 hash), so just reset it on the session and carry on..
+                    quickLog('user id (' . $this->user_id . ') missing from session but validates against user key, so just reset...');
+                    $session->setId($this->user_id);
+                } else {
+                    // does not validate
+                    throw new Api_Exception(Api_Error::create(Api_Error::SESSION_USER_MISSING, 'User id is missing from session and incoming user id (' . $this->user_id . ') does not validate against incoming user key (' . $this->user_key . ')'));
+                }
             }
             
             $user = new User();
@@ -396,10 +402,10 @@ class Starbar_RemoteController extends Api_GlobalController
         
         // start a NEW session
         // Important: this could get hit multiple times during install
-        // which is safe, AS LONG AS all session values are re-entered (the same)
-        // A new user key will be created but will reference the same
-        // values within the session
-        $userSession = Api_UserSession::getInstance(); 
+        // which is safe: a) if the user id is the same it will be the same
+        // session key, b) we re-set all session variables each time 
+        
+        $userSession = Api_UserSession::getInstance($this->_getUserKey($user->getId())); 
         
         // (In rare cases the user_key may already be included and the session started. see BootstrapPlugin)
         if ($userSession->hasId() && $userSession->getId() !== $user->getId()) { 
@@ -517,6 +523,10 @@ class Starbar_RemoteController extends Api_GlobalController
         } else {
             throw new Exception('Remote starbar actions cannot be accessed directly. Use /starbar/remote with id or short_name.');
         }
+    }
+    
+    private function _getUserKey ($id) {
+        return md5('User ' . $id . ' rocks!');
     }
     
 }

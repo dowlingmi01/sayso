@@ -1,9 +1,8 @@
 <?php
-
 /**
  * @author alecksmart
  */
-class Admin_CommonController extends Zend_Controller_Action
+abstract class Admin_CommonController extends Zend_Controller_Action
 {
     /**
      * @var Zend_Auth
@@ -25,7 +24,7 @@ class Admin_CommonController extends Zend_Controller_Action
      * @var AdmiUser
      */
     protected $currentUser;
-    
+
     /**
      *
      * @var User
@@ -61,16 +60,13 @@ class Admin_CommonController extends Zend_Controller_Action
         {
             $this->auth->clearIdentity();
         }
-
-        // do other routines
-        parent::init();
     }
 
     /**
      * Checks if a role is connected to an Admin User
-     * 
+     *
      * @param AdminUser $user
-     * @param array $roles - array of roles names 
+     * @param array $roles - array of roles names
      */
     protected function checkAccess(AdminUser $user, array $roles = array())
 	{

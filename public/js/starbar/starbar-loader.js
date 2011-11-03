@@ -64,14 +64,14 @@
         '(?:sayso.com|saysollc.com)/html/communicator', '(?:sayso.com|saysollc.com)/starbar/remote'
     ];
     
-    /*var bi = 0;
+    var bi = 0;
     for (; bi < blackList.length; bi++) {
         if (currentUrl.match(urlMatchPrepend + blackList[bi])) {
             // do not load starbar for this page
             sayso.log('iFrame: ' + blackList[bi] + ' - Not loading Starbar');
             return;
         }
-    }*/
+    }
     // --- end starbar display conditions
     
     var validUrlTimer = new jsLoadTimer();

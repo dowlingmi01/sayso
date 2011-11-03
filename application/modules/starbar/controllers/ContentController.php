@@ -55,7 +55,6 @@ class Starbar_ContentController extends Api_GlobalController
 	/**
 	 * Get reward redemption view
 	 * 
-	 * @todo put API logic in the API, and use Api_Adapter to retreive 
 	 * @throws Api_Exception
 	 */
 	public function rewardRedeemAction () {

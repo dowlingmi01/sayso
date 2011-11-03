@@ -159,24 +159,18 @@ abstract class Game_Starbar extends Game_Abstract {
         
         try {
             
-            // @todo justLeveledUp() is not working as intended (it's not true when it should be)
-            // currently, this is very inefficient. Using this will be fine once caching is implemented...
-            $this->loadGamerProfile(true);  // get level before transaction
-            $gamer = $this->getGamer(false);
-    		$previousUserLevel = count($gamer->getLevels()) - 1;
-
             if (!Game_Abstract::$_enabled) return false;
+            
             parent::submitAction($actionId, $customAmount);
 
-            $this->loadGamerProfile(true); // get latest level and points after transaction
-            $gamer = $this->getGamer(false);
+            $gamer = $this->getGamer();
 
-    		$userLevel = count($gamer->getLevels()) - 1;
-
-    		// Show user congrats notification
-            if ($userLevel > $previousUserLevel) {
+    		// if user just leveled up, congratulate via notification
+            if ($gamer->justLeveledUp()) {
     			$message = new Notification_Message();
-    			$message->loadDataByUniqueFields(array('short_name' => 'Level Up to '.$userLevel));
+    			$shortName = 'Level Up to ' . $gamer->getLevels()->count();
+    			quickLog('Just leveled up: ' . $shortName);
+    			$message->loadDataByUniqueFields(array('short_name' => $shortName));
 
     			if ($message->id) {
     				$messageUserMap = new Notification_MessageUserMap();

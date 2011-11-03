@@ -54,7 +54,7 @@ class Api_GamingController extends Api_GlobalController
      * 
      */
     public function levelsAction () {
-        
+        throw new Exception('api/gaming/levels method is hard-coded to Hello Music economy. Fix it to use the HTTP Client from the current Game class');
         $client = new Gaming_BigDoor_HttpClient('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
         $client->getNamedLevelCollection(43352);
         $data = $client->getData();
@@ -106,7 +106,7 @@ class Api_GamingController extends Api_GlobalController
      */
     public function getGoodsFromStoreAction () {
         $game = Game_Starbar::getInstance();
-        $cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store', Api_Cache::LIFETIME_WEEK);
+        $cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
 	    if ($cache->test()) {
 	        $data = $cache->load();
 	    } else {
@@ -143,7 +143,13 @@ class Api_GamingController extends Api_GlobalController
     public function checkinAction () {
     	Game_Starbar::getInstance()->checkin();
         return $this->_resultType(true);
-	}
+    }
+    
+    public function resetAction () {
+        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
+        $newGamer = Gamer::reset($this->user_id, $this->user_key, $this->starbar_id);
+        return $this->_resultType($newGamer);
+    }
     
     public function testBigDoorAction () {
         $this->_validateRequiredParameters(array('user_id', 'starbar_id'));

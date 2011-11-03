@@ -9,10 +9,14 @@
             authKey : '309e34632c2ca9cd5edaf2388f5fa3db',
             meta : {
                 uuidKey : 'MyEmail',
-                userLoggedInKey : 'HMID',
+                userLoggedInKey : 'CHOMPUID',
                 customStartMessage : 'Start the Music!'
             }    
         };
+    }
+    if (!window.sayso.baseDomain) {
+        window.sayso.baseDomain = 'app-qa.saysollc.com';
+        window.sayso.environment = 'TEST';
     }
 </script>
 <script type="text/javascript" src="http://<?= Registry::getConfig()->baseDomain ?>/client/global/js/starbar-embed.js"></script>

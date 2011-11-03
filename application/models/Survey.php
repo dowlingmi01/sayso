@@ -7,8 +7,8 @@ class Survey extends Record
     public static function getNextSurveyForUser($startSurvey, $userId) {
     	// Figure out what the status of this survey is for this user
     	$surveyUserMap = new Survey_UserMap();
-    	$surveyUserMap->loadDataForSurveyAndUser($startSurvey->id, $userId);
-    	if ($surveyUserMap->id) {
+    	$surveyUserMap->loadDataByUniqueFields(array('survey_id' => $startSurvey->id, 'user_id' => $userId));
+    	if ($surveyUserMap->status) {
     		$surveyUserStatus = $surveyUserMap->status;
 		} else {
 			$surveyUserStatus = 'new';
@@ -17,15 +17,13 @@ class Survey extends Record
 		if ($surveyUserStatus == 'new' || $surveyUserStatus == 'archived') {
 			$surveys = new SurveyCollection();
 			$surveys->loadSurveysForStarbarAndUser($startSurvey->starbar_id, $userId, 'survey', $surveyUserStatus);
-			$i = 0;
-			$numberOfSurveys = count($surveys);
-			while ($i < $numberOfSurveys) { // the last survey has no next survey
-				if ($surveys[$i]->id == $startSurvey->id) {
-					return $surveys[$i+1];
-				}
-				$i++;
+			$returnNextSurvey = false;
+			foreach($surveys as $survey) {
+				if ($returnNextSurvey) return $survey;
+				if ($survey->id == $startSurvey->id) $returnNextSurvey = true;
 			}
 		}
+		return new Survey();
 	}
 }
 

@@ -6,4 +6,5 @@
  */
 class Form_AdminUser_Login extends Zend_Form
 {
+    
 }

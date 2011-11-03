@@ -6,14 +6,14 @@ DROP TABLE IF EXISTS admin_user_admin_role;
 
 CREATE TABLE IF NOT EXISTS admin_user (
   id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  username VARCHAR(100) DEFAULT NULL,
+  email VARCHAR(100) DEFAULT NULL,
   password VARCHAR(32) DEFAULT NULL,
   first_name VARCHAR(64) DEFAULT NULL,
   last_name VARCHAR(64) DEFAULT NULL,
   created datetime NOT NULL,
   modified datetime DEFAULT NULL,
   PRIMARY KEY (id),
-  UNIQUE KEY username (username)
+  UNIQUE KEY email (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS admin_role (
@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS admin_user_admin_role (
 ALTER TABLE admin_user_admin_role ADD FOREIGN KEY ( admin_role_id ) REFERENCES sayso.admin_role (id) ON DELETE RESTRICT ON UPDATE RESTRICT ;
 ALTER TABLE admin_user_admin_role ADD FOREIGN KEY ( admin_user_id ) REFERENCES sayso.admin_user (id) ON DELETE RESTRICT ON UPDATE RESTRICT ;
 
-REPLACE INTO admin_user (id, username, `password`, first_name, last_name, created, modified)
-    VALUES ('1', 'admin', MD5( '12345' ) , 'Super', 'Admin', NOW( ) , NULL);
+REPLACE INTO admin_user (id, email, `password`, first_name, last_name, created, modified)
+    VALUES ('1', 'admin@email.com', MD5( '12345' ) , 'Super', 'Admin', NOW( ) , NULL);
 
 REPLACE INTO admin_role (id , `name`, description, created, modified)
     VALUES ('1', 'superuser', 'Administrator with all privileges', NOW() , NULL);

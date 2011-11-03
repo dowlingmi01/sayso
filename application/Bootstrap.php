@@ -161,25 +161,27 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
         $currentController = strtolower($request->getControllerName());
         $currentAction = strtolower($request->getActionName());
 
-        if ($currentModule === 'api' || $currentModule === 'starbar') {
+        if (in_array($currentModule, array('api', 'starbar', 'client'))) {
             // Prevent PHP from creating PHPSESSID cookie so that we don't
             // inadvertently overwrite a user's session on a site that uses PHP!
             // Instead, we will manage keeping the session alive via kobj.net cookie
             // and pass that as user_key.
-            ini_set('session.use_only_cookies', '0');
-            ini_set('session.use_cookies', '0');
-            ini_set('session.use_trans_sid', '0');
-
+            
             // Protect our sessions from garbage collection.
             // We want our user sessions to be permanent.
             // Only destroy sessions if the user changes on the client
-            ini_set('session.save_path', realpath(APPLICATION_PATH . '/../session'));
-            ini_set('session.gc_probability', 0); // no garbage collection please
-            ini_set('session.gc_maxlifetime', 7700000); // aprox. 3 months
-            
-            // setup session handler
-            $this->_bootstrap->initDbSessionHandler();
+            Zend_Session::setOptions(array(
+                'use_only_cookies' => 0,
+                'use_cookies' => 0,
+                'use_trans_sid' => 0,
+                'gc_probability' => 0,
+                'gc_maxlifetime' => 31536000,
+                'save_path' => realpath(APPLICATION_PATH . '/../session')
+            ));
         }
+        
+        // setup session handler
+        $this->_bootstrap->initDbSessionHandler();
 
 		/*
 		* bundle_of_joy is the variable sent to and from SurveyGizmo.

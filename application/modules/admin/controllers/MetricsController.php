@@ -44,9 +44,9 @@ class Admin_MetricsController extends Admin_CommonController
 
         // get data
 
-        $builder    = new Metrics_FeedCollection();        
+        $builder    = new Metrics_FeedCollection();
         $rows       = array();
-        
+
         try{
             if(!$firstRun)
             {

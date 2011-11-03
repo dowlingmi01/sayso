@@ -3,10 +3,10 @@
  * Class for handling administrative users
  * @author alecksmart
  */
-class AdminUser extends Record
+class AdminRole extends Record
 {
 
-    protected $_tableName = 'user';
+    protected $_tableName = 'admin_role';
 
 
 

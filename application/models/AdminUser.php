@@ -6,6 +6,6 @@
 class AdminUser extends Record
 {
 
-    protected $_tableName = 'admin_role';
+    protected $_tableName = 'admin_user';
 
 }

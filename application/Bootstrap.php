@@ -1,3 +1,4 @@
+
 <?php
 require_once 'App/Bootstrap.php';
 /**
@@ -64,7 +65,7 @@ class Bootstrap extends App_Bootstrap
      * @return Zend_Session_SaveHandler_DbTable
      * @author alecksmart
      */
-    public function initDbSessionHandler()
+    public function _initDbSessionHandler()
     {
         // Get values we supplied in application.ini
         $options    = $this->getOptions();
@@ -181,7 +182,7 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
         }
         
         // setup session handler
-        $this->_bootstrap->initDbSessionHandler();
+        //$this->_bootstrap->initDbSessionHandler();
 
 		/*
 		* bundle_of_joy is the variable sent to and from SurveyGizmo.

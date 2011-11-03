@@ -91,7 +91,7 @@ ul.sg-list-vertical li {
 }
 
 /* !----- Buttons ----- */
-.sg-button {
+.sg-button, #sGizmoSaveButtonX {
 	background-image: -webkit-gradient(
     linear,
     left top,
@@ -239,3 +239,6 @@ h1.sg-title {
 	border-top: 1px solid #FFF !important;
 	border-left: 1px solid #888 !important;
 	}
+#sg-snc-form {
+	width: 80%;
+}

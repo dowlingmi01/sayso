@@ -46,10 +46,10 @@ abstract class Admin_CommonController extends Zend_Controller_Action
         }
 
         // see if we have a logged in user
-        $this->currentUser = null;
+        $this->currentUser          = null;
         if ($this->auth->hasIdentity())
 		{
-            $this->currentUser = AdminUser::getByEmail($this->auth->getIdentity());
+            $this->currentUser = AdminUser::getByEmail($this->auth->getIdentity());            
         }
         else
         {

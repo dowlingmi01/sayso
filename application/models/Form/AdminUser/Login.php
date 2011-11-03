@@ -6,7 +6,6 @@
  */
 class Form_AdminUser_Login extends Zend_Form
 {
-
     public function init()
     {
         $this->setAttrib('id', 'user-login')
@@ -17,11 +16,16 @@ class Form_AdminUser_Login extends Zend_Form
             ->setLabel('Login:')
             ->addValidator(new Zend_Validate_EmailAddress())
             ->setRequired(true);
+        
         $passwPassword =
             $this->createElement('password', 'passwPassword')
             ->setLabel('Password:')
             ->addValidator(new Zend_Validate_NotEmpty())
             ->setRequired(true);
+
+        $submitBtn =
+            $this->createElement('submit', 'submitBtn')
+                ->setLabel('Logon');
 
         $this->addElements(
             array
@@ -40,6 +44,12 @@ class Form_AdminUser_Login extends Zend_Form
             'group-login',
             array('Legend' => 'Login')
         );
+
+        $this->addElements(
+            array
+            (
+                $submitBtn,
+            )
+        );
     }
-    
 }

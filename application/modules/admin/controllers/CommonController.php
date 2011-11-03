@@ -21,13 +21,7 @@ abstract class Admin_CommonController extends Zend_Controller_Action
 
     /**
      *
-     * @var AdmiUser
-     */
-    protected $currentUser;
-
-    /**
-     *
-     * @var User
+     * @var AdminUser
      */
     protected $currentUser;
 
@@ -61,7 +55,6 @@ abstract class Admin_CommonController extends Zend_Controller_Action
             $this->auth->clearIdentity();
         }
     }
-
     /**
      * Checks if a role is connected to an Admin User
      *

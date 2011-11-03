@@ -15,20 +15,27 @@ class Form_AdminUser_Login extends Zend_Form
         $txtLogin =
             $this->createElement('text', 'txtLogin')
             ->setLabel('Login:')
-            ->addValidator()
+            ->addValidator(new Zend_Validate_EmailAddress())
+            ->setRequired(true);
+        $passwPassword =
+            $this->createElement('password', 'passwPassword')
+            ->setLabel('Password:')
+            ->addValidator(new Zend_Validate_NotEmpty())
             ->setRequired(true);
 
         $this->addElements(
             array
             (
-                $txtLogin
+                $txtLogin,
+                $passwPassword,
             )
         );
 
         $this->addDisplayGroup(
             array
                 (
-                    $txtLogin
+                    $txtLogin,
+                    $passwPassword,
                 ),
             'group-login',
             array('Legend' => 'Login')

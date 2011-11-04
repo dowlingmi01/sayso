@@ -13,7 +13,7 @@ class Form_AdminUser_Login extends Zend_Form
 
         $txtLogin =
             $this->createElement('text', 'txtLogin')
-            ->setLabel('Login:')
+            ->setLabel('Email address:')
             ->addValidator(new Zend_Validate_EmailAddress())
             ->setRequired(true);
         
@@ -25,7 +25,7 @@ class Form_AdminUser_Login extends Zend_Form
 
         $submitBtn =
             $this->createElement('submit', 'submitBtn')
-                ->setLabel('Logon');
+                ->setLabel('Submit');
 
         $this->addElements(
             array
@@ -35,7 +35,7 @@ class Form_AdminUser_Login extends Zend_Form
             )
         );
 
-        $this->addDisplayGroup(
+        /*$this->addDisplayGroup(
             array
                 (
                     $txtLogin,
@@ -43,7 +43,7 @@ class Form_AdminUser_Login extends Zend_Form
                 ),
             'group-login',
             array('Legend' => 'Login')
-        );
+        );*/
 
         $this->addElements(
             array

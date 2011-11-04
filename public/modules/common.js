@@ -4,7 +4,13 @@
 
 function loadLoginDialog()
 {
-
+    $.ajax({
+        url         : '/admin/user/login',
+        success     : function(data)
+        {
+            $('#login-dialog').html(data);
+        }
+    });
 }
 
 function bindDefaults()

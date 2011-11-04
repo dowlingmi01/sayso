@@ -1,4 +1,3 @@
-
 <?php
 require_once 'App/Bootstrap.php';
 /**
@@ -162,6 +161,9 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
         $currentController = strtolower($request->getControllerName());
         $currentAction = strtolower($request->getActionName());
 
+        /*
+         * Should go to local modules bootstraps
+
         if (in_array($currentModule, array('api', 'starbar', 'client'))) {
             // Prevent PHP from creating PHPSESSID cookie so that we don't
             // inadvertently overwrite a user's session on a site that uses PHP!
@@ -179,7 +181,7 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
                 'gc_maxlifetime' => 31536000,
                 'save_path' => realpath(APPLICATION_PATH . '/../session')
             ));
-        }
+        }*/
         
         // setup session handler
         //$this->_bootstrap->initDbSessionHandler();

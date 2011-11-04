@@ -37,7 +37,7 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
 		} elseif ((int) $currencyPrimarySurvey->current_balance < 1 && $good->getId() !== $this->_economy->getGoodId('WEEK_ONE_GIVEAWAY')) {
 			$good->setNonRedeemReason('Must complete<br /><a href="http://'.BASE_DOMAIN.'/starbar/hellomusic/embed-survey?survey_id=1" class="sb_nav_element" rel="sb_popBox_surveys_hg" title="Take influencer survey now!" style="position: relative; top: -5px;">Influencer Survey</a>');
 			$good->setCommentForUser('Survey Requirement');
-		} elseif ($currentLevel->ordinal < $buskerLevel->ordinal) {
+		} elseif ($currentLevel->ordinal < $buskerLevel->ordinal && $good->getId() !== $this->_economy->getGoodId('WEEK_ONE_GIVEAWAY')) {
 			$good->setNonRedeemReason('Must reach Level 2:<br /><strong>Busker Level</strong>');
 			$good->setCommentForUser('Level Requirement');
 		} elseif ($profile->getCurrencyByTitle('notes')->current_balance < $good->cost) {

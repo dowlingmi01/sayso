@@ -22,6 +22,11 @@ class Admin_IndexController extends Api_AbstractController
             $scripts->appendFile('/js/main.js');
             $scripts->appendFile('/js/admin.js');
             $scripts->appendScript('a.api.authKey = "' . $config->api->authKey . '"; a.api.imageKey = "' . $config->api->imageKey . '";');
+
+            // new login
+            // @todo - get rid of this layout and use admin.phtml
+            //$this->view->headLink()->appendStylesheet('/modules/common.css', 'screen');
+            $this->view->headScript()->appendFile('/modules/common.js');
         }
         parent::init();
     }

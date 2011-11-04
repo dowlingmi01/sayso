@@ -3,9 +3,8 @@
  */
 
 
-/**
- * Login section
- */
+// Login section begin
+
 function bindLoginForm()
 {
     $('#user-login').unbind('submit').bind('submit', function()
@@ -20,12 +19,9 @@ function bindLoginForm()
             success     : function(data)
             {
                 $('#login-dialog').html(data);
-                if(loginResult != undefined && loginResult.ok)
-                {
-                    // suport for other functions
-                    window._lastLoginSuccess_ = true;
-                    //$('#login').html('Logout').attr('rel', '1');
-                    //bindLogout();
+                if(loginResult != undefined
+                    && loginResult.ok)
+                {                                        
                     $('#login-dialog').dialog("close");
                     self.location.reload();
                     return;
@@ -52,14 +48,8 @@ function loadLoginDialog()
         }
     });
 }
+// Login section end
 
-function bindLogout()
-{
-    $('#login').unbind().bind('click', function()
-    {
-        alert('Logging out not implemented yet!');
-    });
-}
 
 function bindDefaults()
 {
@@ -67,7 +57,13 @@ function bindDefaults()
     {
         if($(this).attr('rel') > '0')
         {
-            bindLogout();
+            $.ajax({
+                url         : '/admin/user/logout',
+                success     : function(data)
+                {
+                    self.location.reload();
+                }
+            });
         }
         else
         {
@@ -79,15 +75,4 @@ function bindDefaults()
     });
 }
 
-/**
- * Login section end
- */
-
-$(function()
-{
-    /**
-     * Login section
-     */
-    window._lastLoginSuccess_ = false;
-    bindDefaults();
-});
+$(function(){ bindDefaults();});

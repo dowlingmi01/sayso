@@ -233,13 +233,13 @@ nav.main #common-auth
 {
     width:30%;
     float:left;
-    text-align: right;    
-}
-nav.main #common-auth a
-{
+    text-align: right;
     font-size:smaller;
     line-height: 40px;
     vertical-align: middle;
+}
+nav.main #common-auth a
+{    
     padding: 0 10px 0 0;
     text-decoration: none;
 }

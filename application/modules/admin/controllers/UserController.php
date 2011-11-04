@@ -31,7 +31,7 @@ class Admin_UserController extends Admin_CommonController
                 $emailAddress = $form->getValue('txtLogin');
                 $password = $form->getValue('passwPassword');
 
-                $adapter = new Zend_Auth_Adapter_DbTable(null, 'admin_user', 'email', 'password', 'MD5(?)');
+                $adapter = new Zend_Auth_Adapter_DbTable(Zend_Registry::get('db'), 'admin_user', 'email', 'password', 'MD5(?)');
                 $adapter->setIdentity($emailAddress)->setCredential($password);
                 $result = $this->auth->authenticate($adapter);
 
@@ -56,4 +56,14 @@ class Admin_UserController extends Admin_CommonController
 
         $this->view->form = $form;
     }
+
+    public function logoutAction()
+    {
+        if(!$this->_request->isXmlHttpRequest())
+        {
+            $this->rd->gotoSimple('index', 'index', 'admin');
+        }
+        $this->auth->clearIdentity();
+    }
+
 }

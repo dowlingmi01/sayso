@@ -12,6 +12,39 @@
             sayso.baseDomain = "<?= BASE_DOMAIN ?>";
         </script>
         <?= $this->headScript() ?>
+        <style>
+/**
+ * @todo This is a temporary solution...
+*/
+
+nav.main ul
+{
+    width:70%;
+    float:left;
+}
+nav.main #common-auth
+{
+    width:30%;
+    float:left;
+    text-align: right;
+    font-size:smaller;
+    line-height: 40px;
+    vertical-align: middle;
+}
+nav.main #common-auth a
+{
+    padding: 0 10px 0 0;
+    text-decoration: none;
+}
+.clear
+{
+    clear:both;
+}
+#passwPassword
+{
+    width:100%
+}
+        </style>
     </head>
     <body>
         <div id="modal-window" class="modal-window" style="display: none;"></div>
@@ -25,14 +58,14 @@
                     <li><a href="#" title="Behavioral Tracking"><span>BTracker</span>&trade;</a></li>
                     <li><a href="/admin/metrics/" class="return-true" title="Real-Time Metrics"><span>Metrics</span></a></li>
                 </ul>
-                <?= $this->partial('partials/user-login.phtml', 'default') ?>
+                <?php echo $this->partial('partials/common-auth.phtml', 'admin') ?>
+                <div class="clear"></a>
             </nav>
         </header>
         <div id="main" role="main">
             <?php echo $this->layout()->content ?>
         </div>
-        <footer></footer>
-        
+        <footer></footer>        
     </body>
 </html>
   

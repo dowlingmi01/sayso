@@ -113,7 +113,7 @@ class Starbar_RemoteController extends Api_GlobalController
                     // everything is ok, carry on.
                 }
             } else {
-                if ($this->user_key === $this->_getUserKey($this->user_id)) {
+                if ($this->user_key === User::getHash($this->user_id)) {
                     // user key validates with user id (via md5 hash), so just reset it on the session and carry on..
                     quickLog('user id (' . $this->user_id . ') missing from session but validates against user key, so just reset...');
                     $session->setId($this->user_id);
@@ -404,7 +404,7 @@ class Starbar_RemoteController extends Api_GlobalController
         // which is safe: a) if the user id is the same it will be the same
         // session key, b) we re-set all session variables each time 
         
-        $userSession = Api_UserSession::getInstance($this->_getUserKey($user->getId())); 
+        $userSession = Api_UserSession::getInstance(User::getHash($user->getId())); 
         
         // (In rare cases the user_key may already be included and the session started. see BootstrapPlugin)
         if ($userSession->hasId() && $userSession->getId() !== $user->getId()) { 
@@ -522,10 +522,6 @@ class Starbar_RemoteController extends Api_GlobalController
         } else {
             throw new Exception('Remote starbar actions cannot be accessed directly. Use /starbar/remote with id or short_name.');
         }
-    }
-    
-    private function _getUserKey ($id) {
-        return md5('User ' . $id . ' rocks!');
     }
     
 }

@@ -21,7 +21,7 @@ class Starbar_IndexController extends Api_GlobalController
             if (isset($_COOKIE['simulated_starbar_user_key'])) {
                 $this->user_key = $_COOKIE['simulated_starbar_user_key'];
             } else {
-                $this->user_key = md5(str_shuffle('abcdefghijklmnopqrstuvwxyz1234567890') . time());
+                $this->user_key = User::getHash($this->user_id);
                 setcookie('simulated_starbar_user_key', $this->user_key);
             }
         } 
@@ -37,6 +37,8 @@ class Starbar_IndexController extends Api_GlobalController
             $this->view->headScript()->appendFile('/js/starbar/jquery.cycle.lite.js');
             $this->view->headScript()->appendFile('/js/starbar/jquery.easyTooltip.js');
         }
+        
+        
     }
 
     public function indexAction () {
@@ -81,5 +83,9 @@ class Starbar_IndexController extends Api_GlobalController
 		$this->_request->setParam('starbar_id', $starbar->getId());
 		$game = Game_Starbar::getInstance();
 		$this->view->assign('game', $game);
+		
+        if ($this->install) {
+            $game->install();
+        }
 	}
 }

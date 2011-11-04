@@ -176,6 +176,9 @@ abstract class Game_Starbar extends Game_Abstract {
     				$messageUserMap = new Notification_MessageUserMap();
     				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->_request->getParam('user_id'));
 				}
+				
+				// remove cache so "just leveled up" logic is not re-used
+				$gamer->getProfileCache()->remove();
 			}
             
         } catch (Exception $exception) {

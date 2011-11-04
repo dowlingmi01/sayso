@@ -206,5 +206,9 @@ class User extends Record implements Titled
 		}
 		return $userAddress;
 	}
+	
+	public static function getHash ($userId) {
+        return md5('User ' . $userId . ' rocks!');
+	}
 }
 

@@ -1,13 +1,12 @@
 <?php
-//var_dump($this->view->currentUser);
-?>
 
+?>
 <div id="common-auth">
 <?php if ($this->logged): ?>
-    <a href="javascript:void(null);" id="login">Logout</a>
+    <a href="javascript:void(null);" id="login" rel="1">Logout</a>
 <?php else: ?>
-    <a href="javascript:void(null);" id="login">Login</a>
+    <a href="javascript:void(null);" id="login" rel="0">Login</a>
 <?php endif; ?>
 </div>
+<div id="login-dialog" title="Login" style="display:none"></div>
 <?php
-//var_dump(get_class($this->view));

@@ -170,7 +170,7 @@ nav.main li a {
     font-weight: bold;
     text-decoration: none;
 }
-  
+
 
 /**
  * This part is used for new pages.
@@ -188,7 +188,7 @@ body
     width:      800px;
     margin:     0 auto;
     pading:     10px;
-    border:     1px solid #CCCCCC;    
+    border:     1px solid #CCCCCC;
     min-height: 700px;
 }
 header
@@ -201,7 +201,7 @@ header h1
 }
 div.panel
 {
-    margin:     10px;    
+    margin:     10px;
 }
 div.panel h1
 {
@@ -218,4 +218,28 @@ div.panel h1
 .alt_2
 {
     background: #D3D7CF;
+}
+
+/**
+ * Admin login support
+*/
+
+nav.main ul
+{
+    width:70%;
+    float:left;
+}
+nav.main #common-auth
+{
+    width:30%;
+    float:left;
+    text-align: right;    
+}
+nav.main #common-auth a
+{
+    font-size:smaller;
+    line-height: 40px;
+    vertical-align: middle;
+    padding: 0 10px 0 0;
+    text-decoration: none;
 }

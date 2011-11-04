@@ -1,6 +1,31 @@
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @author alecksmart
  */
 
-// still nothing here, coming up very soon...
+function loadLoginDialog()
+{
+
+}
+
+function bindDefaults()
+{
+    $('#login').unbind().bind('click', function()
+    {
+        if($(this).attr('rel') > '0')
+        {
+            alert('Logging out not implemented yet!')
+        }
+        else
+        {
+            $('#login-dialog').dialog({
+                modal: true,
+                open: function(){loadLoginDialog();}
+            });
+        }
+    });
+}
+
+$(function()
+{
+    bindDefaults();
+});

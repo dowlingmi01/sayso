@@ -12,7 +12,7 @@
 						<img class="sb_userImg sb_alignLeft" src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="<?= $this->user->getTitle() ?>" />
 					<? } ?>
 					<p class="sb_nextToUserImage">
-						<strong>Username:</strong> <span id="sb_profile_username" class="sb_user_title <? if (!$this->user->username) { ?> sb_jeip<? } ?>"><?= $this->user->getTitle() ?></span><br />
+						<strong>Username:</strong> <span id="sb_profile_username" class="sb_user_title <? if (!$this->user->username) { ?> sb_user_level_title sb_jeip<? } ?>"><?= $this->user->getTitle() ?></span><br />
 						<?= $this->user_email->email ?>
 					</p>
 				</li>

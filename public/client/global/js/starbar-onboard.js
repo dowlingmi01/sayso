@@ -64,7 +64,7 @@
                             e.preventDefault();
                             location.reload();
                         });
-                    }, 3000);
+                    }, 6000);
                     
                 } else {
                     // INSTALLING!

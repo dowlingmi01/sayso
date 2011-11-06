@@ -38,7 +38,6 @@
 	<? if ($this->count_completed_surveys || $this->count_disqualified_surveys) { ?>
 		<div id="surveys_tabs_2" class="sb_tabPane">
 			<p class="sb_tabHeader">All of your completed surveys are listed below.</p>
-			<p class="sb_tabHeader"><a href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/reset-surveys-and-polls", success : function (r, s) {} })'>Reset surveys and polls</a></p>
 			<div class="sb_scrollPane">
 				<ul class="sb_outlineList">
 					<? $this->displaySurveys('completed') ?>

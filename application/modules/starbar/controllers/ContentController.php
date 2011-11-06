@@ -110,29 +110,31 @@ class Starbar_ContentController extends Api_GlobalController
 
 
 	        try {
-				$message = 'Beat Bar redemption made for ' . $good->title . '\n';
-				$message .= '\n';
-				$message .= 'Order Details\n';
-				$message .= '=============\n';
-				$message .= 'First Name: ' . $this->order_first_name . '\n';
-				$message .= 'Last Name: ' . $this->order_last_name . '\n';
-				$message .= 'Street Address 1: ' . $this->order_address_1 . '\n';
-				$message .= 'Street Address 2: ' . $this->order_address_2 . '\n';
-				$message .= 'City: ' . $this->order_city . '\n';
-				$message .= 'State/Region: ' . $this->order_state . '\n';
-				$message .= 'Postal Code: ' . $this->order_zip . '\n';
-				$message .= 'Country: ' . $this->order_country . '\n';
-				$message .= '=============\n';
-				$message .= 'Thank you,\n';
-				$message .= 'Say.So Mailer v3.4\n';
+				$message = '
+					Beat Bar redemption made for ' . $good->title . '
+
+					Order Details
+					=============
+					First Name: ' . $this->order_first_name . '
+					Last Name: ' . $this->order_last_name . '
+					Street Address 1: ' . $this->order_address_1 . '
+					Street Address 2: ' . $this->order_address_2 . '
+					City: ' . $this->order_city . '
+					State/Region: ' . $this->order_state . '
+					Postal Code: ' . $this->order_zip . '
+					Country: ' . $this->order_country . '
+					=============
+					Thank you,
+					Say.So Mailer v3.4
+				';
 
     	        $config = Api_Registry::getConfig();
-                $mail = new Zend_Mail();
+                $mail = new Mailer();
                 $mail->setFrom($config->noReplyEmail)
                      ->addTo('david@say.so')
                      ->addTo('hamza@say.so')
                      ->setSubject('Redemption');
-                $mail->setBodyText($message);
+                $mail->setBodyMultilineText($message);
                 $mail->send(new Zend_Mail_Transport_Smtp());
 	        } catch (Exception $e) {
 	            quickLog($message);

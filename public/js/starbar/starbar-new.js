@@ -814,6 +814,7 @@ $SQ(function(){
 		var newLevel = userLevels.length - 1;
 		if (currentLevel != newLevel) {
 			justLeveledUp = true;
+			updateAlerts(true);
 		}
 
 		// When there is no game data for this user

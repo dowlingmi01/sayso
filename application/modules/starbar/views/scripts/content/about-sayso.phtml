@@ -9,6 +9,7 @@
 				<li><a href="#about_tabs_2">Help</a></li>
 				<li><a href="#about_tabs_3">FAQs</a></li>
 				<li><a href="#about_tabs_4">Feedback</a></li>
+				<li><a href="#about_tabs_5">Testing</a></li>
 			</ul>
 			<div id="about_tabs_1" class="sb_tabPane">
 				<div class="sb_scrollPane">
@@ -184,7 +185,18 @@
 						}, 200);
 					</script>
 				</div><!-- .sb_scrollPane -->
-			</div><!-- #tab_3 -->
+			</div><!-- #tab_4 -->
+			<div id="about_tabs_5" class="sb_tabPane">
+				<div class="sb_scrollPane">
+					<h2 class="sb_title">Top Secret Testing Functions</h2>
+					<p><a href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/test-complete-primary-survey?renderer=jsonp", success : function (r, s) {  if (r.game) $SQ("#sayso-starbar").trigger("frameCommunication", ["updateGame", { newGame: r.game }]);  }})'>Simulate completing the primary</a></p>
+					<p><a href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/test-reset-surveys-and-polls?renderer=jsonp", success : function (r, s) {} })'>Reset surveys and polls</a></p>
+					<p><a href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/test-reset-external?renderer=jsonp", success : function (r, s) {} })'>Reset Facebook and Twitter External accounts and username</a></p>
+					<p><a href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/test-reset-notifications?renderer=jsonp", success : function (r, s) {} })'>Reset Notifications and User Creation Time</a></p>
+					<p><a href="#" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/test-reset-gamer?renderer=jsonp", success : function (r, s) {  if (r.game) $SQ("#sayso-starbar").trigger("frameCommunication", ["updateGame", { newGame: r.game }]);  }})'>Reset Game info to just after install (1000 chops, 100 notes)</a></p>
+					<p><a href="#" style="color: red;" onclick='$SQ.ajaxWithAuth({url : "http://<?= BASE_DOMAIN ?>/api/user/test-reset-all?renderer=jsonp", success : function (r, s) {  if (r.game) $SQ("#sayso-starbar").trigger("frameCommunication", ["updateGame", { newGame: r.game }]);  } })'>Reset this user to 'just created, just installed' state (i.e. All of the Above)</a></p>
+				</div><!-- .sb_scrollPane -->
+			</div><!-- #tab_5 -->
 		</div><!-- .sb_tabs -->
 	</div><!-- .sb_popContent -->
 </div><!-- .sb_popBoxInner -->

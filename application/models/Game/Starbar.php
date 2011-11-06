@@ -168,8 +168,7 @@ abstract class Game_Starbar extends Game_Abstract {
     		// if user just leveled up, congratulate via notification
             if ($gamer->justLeveledUp()) {
     			$message = new Notification_Message();
-    			$shortName = 'Level Up to ' . $gamer->getLevels()->count();
-    			quickLog('Just leveled up: ' . $shortName);
+    			$shortName = 'Level Up to ' . ($gamer->getLevels()->count() - 1);
     			$message->loadDataByUniqueFields(array('short_name' => $shortName));
 
     			if ($message->id) {

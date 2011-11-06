@@ -54,6 +54,47 @@ class Starbar_IndexController extends Api_GlobalController
     public function genericAction () {
     }
 
+	public function inventoryAction () {
+		// Starbar
+		$starbar = new Starbar();
+		$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));
+		$starbar->setVisibility('stowed');
+		$this->view->starbar = $starbar;
+
+		$request = $this->getRequest();
+		$goodId = $request->getParam('named_good_id');
+		$newInventory = $request->getParam('new_inventory');
+
+		$client = new Gaming_BigDoor_HttpClient('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
+		$client->getNamedGoodCollection(788);
+		$data = $client->getData();
+		$goods = $data->named_goods;
+
+		$remainingInventory = "";
+		$soldInventory = "";
+
+		if ($goodId) {
+			$client->namedGoodCollection(788)->namedGood($goodId)->getInventory();
+			$data = $client->getData();
+			if ($data) {
+				$soldInventory = $data->sold_inventory;
+				$remainingInventory = $data->total_inventory - $soldInventory;
+				if ($newInventory != "") {
+					$newInventory = abs($newInventory);
+					$remainingInventory = $newInventory;
+					$client->setParameterPost('total_inventory', $newInventory);
+					$client->namedGoodCollection(788)->namedGood($goodId)->putInventory();
+					$data = $client->getData();
+				}
+			}
+		}
+
+		$this->view->named_goods = $goods;
+		$this->view->named_good_id = $goodId;
+		$this->view->remaining_inventory = $remainingInventory;
+		$this->view->sold_inventory = $soldInventory;
+	}
+
     public function hellomusicAction () {
         $this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');
 

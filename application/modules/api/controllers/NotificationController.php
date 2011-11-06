@@ -7,7 +7,7 @@ class Api_NotificationController extends Api_GlobalController
 	public function getAllAction() {
         $this->_validateRequiredParameters(array('starbar_id', 'starbar_stowed', 'user_id', 'user_key'));
 
-        if ($this->starbar_stowed = "true") $this->starbar_stowed = true;
+        if ($this->starbar_stowed == "true") $this->starbar_stowed = true;
         else $this->starbar_stowed = false;
         
 	    $messages = new Notification_MessageCollection();

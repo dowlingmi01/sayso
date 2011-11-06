@@ -35,7 +35,7 @@ class Notification_MessageCollection extends RecordCollection
 	*/
 	public function loadPreviouslyUnscheduledMessagesForStarbarAndUser ($starbarId, $starbarStowed, $userId) {
 		$starbarStowedClause = "";
-		if ((int) $starbarStowed == 1) { // Don't get check-in notifications in stowed state
+		if ($starbarStowed) { // Don't get check-in notifications in stowed state
 			$starbarStowedClause = " AND nm.short_name <> 'Checking in' ";
 		}
 

@@ -1,0 +1,20 @@
+<?= $this->partial('remote/init-remote.phtml', null, array('starbar' => $this->starbar)); ?>
+<br />
+<form id="inventoryForm" method="post">
+	<select name="named_good_id" onchange="$SQ('#new_inventory').attr('value', ''); $SQ('#inventoryForm').submit();">
+		<option value="0">Choose a good, any good</option>
+		<? foreach ($this->named_goods as $good) { ?>
+			<? if (strpos($good->end_user_title, '(Variant)') !== false) { ?>
+				<? $title = str_replace('(Variant)', '', $good->end_user_title) ?>
+				<option value="<?= $good->id ?>" <? if ($this->named_good_id == $good->id) { echo 'selected'; } ?>><?= $title ?></option>
+			<? } ?>
+		<? } ?>
+	</select>
+	<? if ($this->named_good_id) { ?>
+		<br />
+		Remaining Inventory: <input type="text" name="new_inventory" id="new_inventory" value="<?= $this->remaining_inventory ?>" />
+		<input type="submit" value="Save" name="Save">
+		<input type="button" value="Reset" name="Reset" onclick="$SQ('#new_inventory').attr('value', ''); $SQ('#inventoryForm').submit();"><br /><br />
+		Sold Inventory: <?= $this->sold_inventory ?><br />
+	<? } ?>
+</form>

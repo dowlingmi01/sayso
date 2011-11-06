@@ -165,7 +165,7 @@ class Api_GamingController extends Api_GlobalController
     }
     
     public function testBigDoorAction () {
-        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id''));
+        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
         
         $gamer = Gamer::create($this->user_id, $this->starbar_id);
         Game_Starbar::create($gamer, $this->_request)->trigger();

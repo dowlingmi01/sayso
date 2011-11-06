@@ -254,23 +254,87 @@ class Api_UserController extends Api_GlobalController
         Game_Starbar::getInstance()->completeProfile($user);
 		return $this->_resultType(new Object($response));
 	}
-    
-    public function resetSurveysAndPollsAction() {
+
+	// Functions to assist with testing
+    public function testCompletePrimarySurveyAction() {
         if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
-            $this->_validateRequiredParameters(array('user_id', 'user_key'));
+	        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
+
+			$survey = new Survey();
+			$survey->loadData(1);
+	        Game_Starbar::getInstance()->completeSurvey($survey);
+			
+			Db_Pdo::execute("DELETE FROM survey_user_map WHERE survey_id = 1 AND user_id = ?", $this->user_id);
+	        $surveyUserMap = new Survey_UserMap();
+			$surveyUserMap->survey_id = 1;
+			$surveyUserMap->user_id = $this->user_id;
+			$surveyUserMap->status = 'completed';
+			$surveyUserMap->save();
+			
+		    return $this->_resultType(true);
+        } else {
+    		return $this->_resultType(false);
+        }
+	}
+
+    public function testResetSurveysAndPollsAction() {
+        if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
+	        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
 			Db_Pdo::execute("DELETE FROM survey_user_map WHERE user_id = ?", $this->user_id);
 		    return $this->_resultType(true);
         } else {
     		return $this->_resultType(false);
-            
+        }
+	}
+
+    public function testResetGamerAction() {
+        if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
+	        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
+	        $newGamer = Gamer::reset($this->user_id, $this->user_key, $this->starbar_id);
+    		Game_Starbar::getInstance()->install();
+		    return $this->_resultType(true);
+        } else {
+    		return $this->_resultType(false);
         }
 	}
 
     public function resetExternalAction() {		
         if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
-            $this->_validateRequiredParameters(array('user_id', 'user_key'));
+	        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
 			Db_Pdo::execute("DELETE FROM user_social WHERE user_id = ?", $this->user_id);
+			Db_Pdo::execute("UPDATE user SET username = '' WHERE id = ?", $this->user_id);
     		return $this->_resultType(true);
+        } else {
+    		return $this->_resultType(false);
+        }
+	}
+
+    public function resetNotificationsAction() {		
+        if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
+	        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
+			Db_Pdo::execute("DELETE FROM notification_message_user_map WHERE user_id = ?", $this->user_id);
+			Db_Pdo::execute("UPDATE user SET created = now() WHERE id = ?", $this->user_id);
+    		return $this->_resultType(true);
+        } else {
+    		return $this->_resultType(false);
+        }
+	}
+
+    public function testResetAllAction() {
+        if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
+	        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
+			Db_Pdo::execute("DELETE FROM survey_user_map WHERE user_id = ?", $this->user_id);
+			Db_Pdo::execute("DELETE FROM notification_message_user_map WHERE user_id = ?", $this->user_id);
+			Db_Pdo::execute("DELETE FROM user_social WHERE user_id = ?", $this->user_id);
+			Db_Pdo::execute("DELETE FROM user_address WHERE user_id = ?", $this->user_id);
+			Db_Pdo::execute("UPDATE user SET created = now(), username = '' WHERE id = ?", $this->user_id);
+
+	        $newGamer = Gamer::reset($this->user_id, $this->user_key, $this->starbar_id);
+    		Game_Starbar::getInstance()->install();
+
+    		$user = new User();
+    		$user->loadData($this->user_id);
+		    return $this->_resultType($user);
         } else {
     		return $this->_resultType(false);
         }

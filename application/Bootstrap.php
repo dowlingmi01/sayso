@@ -160,7 +160,6 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
         $currentModule = strtolower($request->getModuleName());
         $currentController = strtolower($request->getControllerName());
         $currentAction = strtolower($request->getActionName());
-
         
 		/*
 		* bundle_of_joy is the variable sent to and from SurveyGizmo.
@@ -173,19 +172,6 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
             foreach (explode('^|^', $request->getParam('bundle_of_joy')) as $keyValue) {
                 $parts = explode('^-^', $keyValue);
                 $request->setParam($parts[0], $parts[1]);
-            }
-        }
-
-        // @hack
-        // make sure api requests has user_key
-        if ($currentModule === 'api' && (!$request->getParam('user_key') || $request->getParam('user_key') === 'undefined')) {
-            if ($currentController === 'user' && in_array($currentAction, array('register', 'login'))) {
-                // don't require user_key for registration and login
-            } else {
-                $message = 'SaySo API requires user_key in every request.';
-                if ($request->getParam('user_key') === 'undefined') $message .= ' (user_key === "undefined")'; // probably need to delete kobj.net cookie
-                $message .= ' URI: ' . $_SERVER['REQUEST_URI'];
-                throw new Exception($message);
             }
         }
 

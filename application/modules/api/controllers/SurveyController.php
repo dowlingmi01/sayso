@@ -15,7 +15,7 @@ class Api_SurveyController extends Api_GlobalController
     
     public function surveyGizmoSubmitAction ()
     {
-        $this->_validateRequiredParameters(array('survey_id', 'user_id'));
+        $this->_validateRequiredParameters(array('survey_id', 'user_id', 'user_key'));
 		$result = $this->_updateSurveyUserMapStatus($this->survey_id, $this->user_id, 'completed');
 
         // success
@@ -24,7 +24,7 @@ class Api_SurveyController extends Api_GlobalController
 
     public function surveyGizmoDisqualifyAction ()
     {
-        $this->_validateRequiredParameters(array('survey_id', 'user_id'));
+        $this->_validateRequiredParameters(array('survey_id', 'user_id', 'user_key'));
 		$result = $this->_updateSurveyUserMapStatus($this->survey_id, $this->user_id, 'disqualified');
 
         // success
@@ -32,7 +32,7 @@ class Api_SurveyController extends Api_GlobalController
     }
 
     public function userPollSubmitAction () {
-        $this->_validateRequiredParameters(array('survey_id', 'user_id'));
+        $this->_validateRequiredParameters(array('survey_id', 'user_id', 'user_key'));
 		$result = $this->_updateSurveyUserMapStatus($this->survey_id, $this->user_id, 'completed');
 
         // success

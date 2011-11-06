@@ -1,7 +1,18 @@
 <?php
 
 require_once APPLICATION_PATH . '/modules/api/controllers/GlobalController.php';
-
+/**
+ * Sayso "mini" Gaming API
+ * 
+ * - starbar_id is optional to this controller since we can
+ *   determine the "game" from the auth_key which is always 
+ *   required for API requests
+ * - user_key is required on most calls since we get the user's
+ * 	 gaming id from their session
+ * 
+ * @author davidbjames
+ *
+ */
 class Api_GamingController extends Api_GlobalController
 {
     
@@ -12,15 +23,14 @@ class Api_GamingController extends Api_GlobalController
 
     public function indexAction()
     {
-        // possibly use this controller as the mini-gaming API for stuff
-        // that is purely client side, such as Twitter sharing
     }
     
     // http://local.sayso.com/api/gaming/user-profile/starbar_id/1/user_id/46/user_key/r3nouttk6om52u18ba154mc4j4/auth_key/309e34632c2ca9cd5edaf2388f5fa3db
     
     public function getGameAction () {
+        $this->_validateRequiredParameters(array('user_id', 'user_key'));
         $game = Game_Starbar::getInstance();
-        $game->loadGamerProfile(); // get latest points after transaction
+        $game->loadGamerProfile();
         return $this->_resultType($game);
     }
     
@@ -30,6 +40,7 @@ class Api_GamingController extends Api_GlobalController
      * 
      */
     public function userProfileRawAction () {
+        $this->_validateRequiredParameters(array('user_id', 'user_key'));
         $game = Game_Starbar::getInstance();
         $gamer = $game->getGamer(false);
         $client = $game->getHttpClient();
@@ -39,10 +50,10 @@ class Api_GamingController extends Api_GlobalController
     
     /**
      * Get User profile via our own objects
-     * Enter description here ...
+     * 
      */
     public function userProfileAction () {
-        $this->_validateRequiredParameters(array('user_id', 'starbar_id'));
+        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
         $gamer = Gamer::create($this->user_id, $this->starbar_id);
         $game = Game_Starbar::create($gamer, $this->_request);
         $gamer->loadProfile($game->getHttpClient());
@@ -74,7 +85,7 @@ class Api_GamingController extends Api_GlobalController
     }
     
     public function getGoodAction () {
-        $this->_validateRequiredParameters(array('good_id'));
+        $this->_validateRequiredParameters(array('good_id', 'user_key'));
         $game = Game_Starbar::getInstance();
         $client = $game->getHttpClient();
         
@@ -91,7 +102,7 @@ class Api_GamingController extends Api_GlobalController
      * @return Gaming_BigDoor_Good
      */
     public function getGoodFromStoreAction () {
-        $this->_validateRequiredParameters(array('good_id'));
+        $this->_validateRequiredParameters(array('good_id', 'user_key'));
         $goods = $this->getGoodsFromStoreAction();
         $good = $goods->getItem($this->good_id); 
         if (isNull($good)) {
@@ -105,6 +116,7 @@ class Api_GamingController extends Api_GlobalController
      * @return ItemCollection
      */
     public function getGoodsFromStoreAction () {
+        $this->_validateRequiredParameters(array('user_key'));
         $game = Game_Starbar::getInstance();
         $cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
 	    if ($cache->test()) {
@@ -134,13 +146,14 @@ class Api_GamingController extends Api_GlobalController
     }
     
     public function shareAction () {
-        $this->_validateRequiredParameters(array('shared_type', 'shared_id'));
+        $this->_validateRequiredParameters(array('shared_type', 'shared_id', 'user_key'));
         
     	Game_Starbar::getInstance()->share($this->shared_type, @$this->shared_id);
         return $this->_resultType(true);
 	}
     
     public function checkinAction () {
+        $this->_validateRequiredParameters(array('user_key'));
     	Game_Starbar::getInstance()->checkin();
         return $this->_resultType(true);
     }
@@ -152,7 +165,7 @@ class Api_GamingController extends Api_GlobalController
     }
     
     public function testBigDoorAction () {
-        $this->_validateRequiredParameters(array('user_id', 'starbar_id'));
+        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id''));
         
         $gamer = Gamer::create($this->user_id, $this->starbar_id);
         Game_Starbar::create($gamer, $this->_request)->trigger();

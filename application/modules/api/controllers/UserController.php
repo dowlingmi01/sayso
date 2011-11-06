@@ -223,7 +223,7 @@ class Api_UserController extends Api_GlobalController
 	}
 
     public function saveInPlaceAction() {	
-        $this->_validateRequiredParameters(array('user_id'));	
+        $this->_validateRequiredParameters(array('user_id', 'user_key'));	
 		$response = array();
 		$response["is_error"] = true;
 		$response["error_text"] = "Edit Failed.";
@@ -257,7 +257,7 @@ class Api_UserController extends Api_GlobalController
     
     public function resetSurveysAndPollsAction() {
         if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
-            $this->_validateRequiredParameters(array('user_id'));
+            $this->_validateRequiredParameters(array('user_id', 'user_key'));
 			Db_Pdo::execute("DELETE FROM survey_user_map WHERE user_id = ?", $this->user_id);
 		    return $this->_resultType(true);
         } else {
@@ -268,7 +268,7 @@ class Api_UserController extends Api_GlobalController
 
     public function resetExternalAction() {		
         if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
-            $this->_validateRequiredParameters(array('user_id'));
+            $this->_validateRequiredParameters(array('user_id', 'user_key'));
 			Db_Pdo::execute("DELETE FROM user_social WHERE user_id = ?", $this->user_id);
     		return $this->_resultType(true);
         } else {

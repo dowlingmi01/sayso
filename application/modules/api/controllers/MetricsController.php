@@ -19,7 +19,7 @@ class Api_MetricsController extends Api_GlobalController
     }
     
     public function pageViewSubmitAction () {
-        $this->_validateRequiredParameters(array('user_id', 'starbar_id', 'url'));
+        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'url'));
 //        $this->_authenticateUser(true);
         $metric = new Metrics_PageView();
         $metric->user_id = $this->user_id;
@@ -32,7 +32,7 @@ class Api_MetricsController extends Api_GlobalController
     }
     
     public function searchEngineSubmitAction () {
-        $this->_validateRequiredParameters(array('user_id', 'starbar_id', 'query', 'type_id'));
+        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'query', 'type_id'));
         
         $metric = new Metrics_Search();
         $metric->user_id = $this->user_id;
@@ -45,7 +45,7 @@ class Api_MetricsController extends Api_GlobalController
     }
 
     public function socialActivitySubmitAction () {
-        $this->_validateRequiredParameters(array('user_id', 'starbar_id', 'type_id'));
+        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'type_id'));
         
         $metric = new Metrics_SocialActivity();
         $metric->user_id = $this->user_id;

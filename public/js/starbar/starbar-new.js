@@ -564,19 +564,31 @@ $SQ(function(){
 					});
 				}
 				
-				if (response.data.collection.length > 0) {
-					$SQ.each(response.data.collection, function (index, message) {
+				if (response.data.items.length > 0) {
+					$SQ.each(response.data.items, function (index, message) {
 						// Check if an alert with that message already exists, if so, do nothing
-						var currentAlert = $SQ('#starbar-alert-'+message['id']);
+						var currentAlert = $SQ('#starbar-alert-'+message.id);
 						if (currentAlert.length == 0) { // New Alert
-							if (message['notification_area']) {
-								var elemAlertContainer = $SQ('#starbar-alert-container-'+message['notification_area']);
+							if (message.notification_area) {
+								// Update profile if we've just received a notification regarding FB or TW getting connected.
+								if (message.short_name == 'FB Account Connected' || message.short_name == 'TW Account Connected') {
+									updateProfile(true, true);
+									updateGame('ajax', true, true);
+								} else if (message.short_name == 'Checking in') { // This notification is set up to only be sent when the starbar is open (i.e. not stowed)
+									gameCheckin();
+								} else if (message.short_name == 'Level Up') {
+									var userCurrentLevel = sayso.starbar.game._gamer._levels.items[0];
+									message.message = userCurrentLevel.description;
+								}
+								
 
-								var newAlertHtml = '<div class="sb_starbar-alert sb_starbar-alert-'+message['notification_area']+'" id="starbar-alert-'+message['id']+'"><div class="sb_inner"><div class="sb_content sb_theme_bgAlert'+message['color']+'">';
+								var elemAlertContainer = $SQ('#starbar-alert-container-'+message.notification_area);
+
+								var newAlertHtml = '<div class="sb_starbar-alert sb_starbar-alert-'+message.notification_area+'" id="starbar-alert-'+message.id+'"><div class="sb_inner"><div class="sb_content sb_theme_bgAlert'+message.color+'">';
 								if (message['popbox_to_open']) {
-									newAlertHtml += '<a href="http://'+sayso.baseDomain+'/starbar/'+sayso.starbar.shortName+'/'+message['popbox_to_open']+'" class="sb_nav_element sb_alert" rel="sb_popBox_'+message['popbox_to_open']+'">'+message['message']+'</a>'
+									newAlertHtml += '<a href="http://'+sayso.baseDomain+'/starbar/'+sayso.starbar.shortName+'/'+message.popbox_to_open+'" class="sb_nav_element sb_alert" rel="sb_popBox_'+message.popbox_to_open+'">'+message.message+'</a>'
 								} else {
-									newAlertHtml += '<a href="#" class="sb_nav_element sb_alert" rel="">'+message['message']+'</a>';
+									newAlertHtml += '<a href="#" class="sb_nav_element sb_alert" rel="">'+message.message+'</a>';
 								}
 
 								newAlertHtml += '</div><!-- .sb_content --></div><!-- .sb_inner --></div><!-- #sb_alert-new -->';
@@ -586,22 +598,14 @@ $SQ(function(){
 									elemAlertContainer.append(newAlertHtml);
 								}
 
-								// Update profile if we've just received a notification regarding FB or TW getting connected.
-								if (message['short_name'] == 'FB Account Connected' || message['short_name'] == 'TW Account Connected') {
-									updateProfile(true, true);
-									updateGame('ajax', true, true);
-								} else if (message['short_name'] == 'Checking in') { // This notification is set up to only be sent when the starbar is open (i.e. not stowed)
-									gameCheckin();
-								}
-								
 								newAlerts = true;
 							} else {
 								// Messages with no notification area should not be shown, they are sent silently to initiate certain actions
-								if (message['short_name'] == 'Update Game') {
+								if (message.short_name == 'Update Game') {
 									updateGame('ajax', true, true);
 								}
 								$SQ.ajaxWithAuth({ // Mark closed, those notifications are meant to be received only once.
-									url : 'http://'+sayso.baseDomain+'/api/notification/close?renderer=jsonp&message_id='+message['id'],
+									url : 'http://'+sayso.baseDomain+'/api/notification/close?renderer=jsonp&message_id='+message.id,
 									success : function (response, status) {}
 								});
 							}
@@ -777,15 +781,15 @@ $SQ(function(){
 			animate = false;
 		}
 
-		var allLevels = sayso.starbar.game._levels.collection;
-		var userLevels = sayso.starbar.game._gamer._levels.collection;
-		var userPreviousLevels = sayso.starbar.previous_game._gamer._levels.collection;
-		var userGoods = sayso.starbar.game._gamer._goods.collection;
-		var userCurrencies = sayso.starbar.game._gamer._currencies.collection;
+		var allLevels = sayso.starbar.game._levels.items;
+		var userLevels = sayso.starbar.game._gamer._levels.items;
+		var userPreviousLevels = sayso.starbar.previous_game._gamer._levels.items;
+		var userGoods = sayso.starbar.game._gamer._goods.items;
+		var userCurrencies = sayso.starbar.game._gamer._currencies.items;
 		var xpCurrency = "Chops"; // @todo get this from the game object
 		var redeemableCurrency = "Notes"; // @todo get this from the game object
 
-		// The current level is the first level in the collection (it is sorted by the gaming API!)
+		// The current level is the first level in the items (it is sorted by the gaming API!)
 		var userCurrentLevel = userLevels[0];
 		var userNextLevel;
 
@@ -880,7 +884,7 @@ $SQ(function(){
 				if (allLevels && userCurrentLevel) {
 					$SQ.each(allLevels, function (index, level) {
 						var smallImageUrl, bigImageUrl;
-						$SQ.each(level.urls.collection, function (index, url) {
+						$SQ.each(level.urls.items, function (index, url) {
 							if (url.url.indexOf('_b.png') != -1) bigImageUrl = url.url;
 							if (url.url.indexOf('_sm.png') != -1) smallImageUrl = url.url;
 						});
@@ -932,9 +936,9 @@ $SQ(function(){
 				var currencyNeedsUpdate = false;
 				
 				var i = 0;
-				while (i < sayso.starbar.previous_game._gamer._currencies.collection.length) {
-					if (currencyTitle == sayso.starbar.previous_game._gamer._currencies.collection[i].title.toLowerCase()) {
-						previousCurrency = sayso.starbar.previous_game._gamer._currencies.collection[i];
+				while (i < sayso.starbar.previous_game._gamer._currencies.items.length) {
+					if (currencyTitle == sayso.starbar.previous_game._gamer._currencies.items[i].title.toLowerCase()) {
+						previousCurrency = sayso.starbar.previous_game._gamer._currencies.items[i];
 						break;
 					}
 					i++;
@@ -1079,8 +1083,8 @@ $SQ(function(){
 				var user = response.data;
 				var userSocials;
 
-				if (user && user['_user_socials'] && user['_user_socials']['collection'])
-					userSocials = user['_user_socials']['collection'];
+				if (user && user._user_socials && user._user_socials.items)
+					userSocials = user._user_socials.items;
 
 				// Update Profile Image and connect icons
 				if (userSocials) {

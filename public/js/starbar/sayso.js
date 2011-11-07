@@ -63,27 +63,40 @@ $SQ(function () {
         success : function (response) {
             log('Track page view', response);
         }
-    });
-    
+    });    
+
     // search
-    
+        
     var searchType = 0,
         searchRegex = '';
-    
-    if (location.href.match('bing.com/search')) {
+
+    var googleEngineRegexp = /google(\..{2,3})+(\..{2,3})?\//;
+
+    //sayso.log('debug >>> ' + location.href);
+    //sayso.log('----- >>> ' + googleEngineRegexp.test(location.href));
+
+    if (location.href.match('bing.com/search'))
+    {
         searchType = 1; // bing (these ids match lookup_search_engines table)
         searchRegex = /q=([^&]+)&/g;
-    } else if (location.href.match('google.com/search')) {
+    } 
+    else if (googleEngineRegexp.test(location.href))
+    {
         searchType = 2; // google
-        searchRegex = /&q=([^&]+)&/g;
-    } else if (location.href.match('search.yahoo.com')) {
+        searchRegex = /&q=([^&]+)&?.*$/g;
+    } 
+    else if (location.href.match('search.yahoo.com'))
+    {
         searchType = 3; // yahoo
         searchRegex = /&p=([^&]+)&/g;
-    }
+    }   
     
     if (searchType) {
         var searchQueryArray = searchRegex.exec(location.href);
-        if (searchQueryArray.length > 1) {
+        if (searchQueryArray != null && searchQueryArray.length > 1) {
+
+            //sayso.log(searchQueryArray);
+
             var searchQuery = searchQueryArray[1]; 
             ajax({
                 url : 'http://' + sayso.baseDomain + '/api/metrics/search-engine-submit',
@@ -151,6 +164,34 @@ $SQ(function () {
             });
         });
     }
+
+    /*$SQ('input[name=q]').bind('change', function(){
+
+        if($SQ(this).saysoBound == undefined)
+        {
+            $SQ(this).saysoBound = true;
+        }
+        else
+        {
+            return;
+        }
+    });
+
+
+    $SQ(document).ajaxComplete(function() {
+        alert("AJAX call completed...");
+    });
+     
+     
+    function onSearchEven(terms)
+    {
+
+    } 
+     
+     */
+
+
+
 });
 
 

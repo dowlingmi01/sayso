@@ -38,6 +38,9 @@ class Starbar_ContentController extends Api_GlobalController
     public function rewardsAction ()
     {
         $goods = Api_Adapter::getInstance()->call('Gaming', 'getGoodsFromStore');
+		$request = $this->getRequest();
+
+		$this->view->assign('chosen_good_id', $request->getParam('chosen_good_id'));
 
         if ($this->test) {
             // get the raw reward data for dev purposes

@@ -26,8 +26,7 @@
         });
 
         // select a reward
-        $SQ('#sayso-starbar .sb_rewards')
-            .find('.sb_rewardItem')
+        $SQ('#sayso-starbar .sb_rewards .sb_rewardItem')
             .not('.sb_rewardItem_disabled')
             .unbind('click').bind('click', function(e){
                 
@@ -45,4 +44,12 @@
                 });
             });
         });
+        
+        <? if ($this->chosen_good_id) { ?>
+        	$SQ('#sayso-starbar .sb_rewards .sb_rewardItem').not('.sb_rewardItem_disabled').each(function (index) {
+        		if (parseInt($SQ(this).attr('data-id')) == parseInt(<?= $this->chosen_good_id ?>)) {
+        			$SQ(this).trigger('click');
+				}
+			});
+        <? } ?>
 </script>

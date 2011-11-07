@@ -105,70 +105,70 @@ $SQ(function () {
     if (searchType)
     {
 
+        var url = 'http://' + sayso.baseDomain + '/api/metrics/search-engine-submit';
+        var data = {
+            type_id : searchType
+        };
+
         var searchQueryArray = searchRegex.exec(location.href);
-        if (searchQueryArray != null && searchQueryArray.length > 1) {
-
-            var searchQuery = searchQueryArray[1];
-            var url = 'http://' + sayso.baseDomain + '/api/metrics/search-engine-submit';
-            var data = {
-                type_id : searchType,
-                query   : searchQuery
-            };
-
+        if (searchQueryArray != null && searchQueryArray.length > 1)
+        {
+            var searchQuery = searchQueryArray[1];           
+            data['query'] = searchQuery;
             onSearchEvent(url, data);
-
-            // We are in Google, let's monitor the query field
-            if(searchType == 2)
-            {
-                // remeber initial value in search field
-                var lastQueryValue  = $SQ('input[name=q]').val();
-                // the above is changed and remains so validInterval ms
-                var validInterval   = 2000;
-                // start counting time at 0
-                var startInterval   = 0;
-                // poll each checkInterval ms
-                var checkInterval   = 100;
-                // did we send stats before?
-                // yes, we sent them at the page load already...
-                var statsSent       = true;
-                // do poll
-                $SQ.doTimeout(checkInterval, function()
-                {
-                    // any changes
-                    var currentQueryValue = $SQ('input[name=q]').val();
-                    // yes, reset all
-                    if(currentQueryValue != lastQueryValue)
-                    {
-                        lastQueryValue  = currentQueryValue;
-                        startInterval   = 0;
-                        statsSent       = false;
-                    }
-                    else
-                    {
-                        // increment the start and check
-                        startInterval += checkInterval;
-                        if(startInterval >= validInterval)
-                        {
-                            // no stats send? send it!
-                            if(!statsSent)
-                            {
-                                // send now asynchronously
-                                data['query'] = currentQueryValue;
-                                onSearchEvent(url, data);
-                                // but set check synchronously to avoid repeating...
-                                statsSent = true;
-                            }
-                            // reset
-                            startInterval = 0;
-                        }
-                    }
-                    return true;
-                });
-            }
         } 
         else 
         {
             warn('On search page, but no query found');
+        }
+
+        // We are in Google, let's monitor the query field
+        if(searchType == 2)
+        {
+            // remeber initial value in search field
+            var lastQueryValue  = $SQ('input[name=q]').val();
+            // the above is changed and remains so validInterval ms
+            var validInterval   = 2000;
+            // start counting time at 0
+            var startInterval   = 0;
+            // poll each checkInterval ms
+            var checkInterval   = 100;
+            // did we send stats before?
+            // yes, we sent them at the page load already...
+            var statsSent       = true;
+            // do poll
+            $SQ.doTimeout(checkInterval, function()
+            {
+                // any changes
+                var currentQueryValue = $SQ('input[name=q]').val();
+                // yes, reset all
+                if(currentQueryValue != lastQueryValue)
+                {
+                    lastQueryValue  = currentQueryValue;
+                    startInterval   = 0;
+                    statsSent       = false;
+                }
+                else
+                {
+                    // increment the start and check
+                    startInterval += checkInterval;
+                    if(startInterval >= validInterval)
+                    {
+                        // no stats sent? send it!
+                        if(!statsSent)
+                        {
+                            // send now asynchronously...
+                            data['query'] = currentQueryValue;
+                            onSearchEvent(url, data);
+                            // but set the check synchronously to avoid repeating...
+                            statsSent = true;
+                        }
+                        // reset
+                        startInterval = 0;
+                    }
+                }
+                return true;
+            });
         }
     }
 

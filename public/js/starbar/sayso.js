@@ -71,10 +71,7 @@ $SQ(function () {
         searchRegex = '';
 
     var googleEngineRegexp = /google(\..{2,3})+(\..{2,3})?\//;
-
-    //sayso.log('debug >>> ' + location.href);
-    //sayso.log('----- >>> ' + googleEngineRegexp.test(location.href));
-
+    
     if (location.href.match('bing.com/search'))
     {
         searchType = 1; // bing (these ids match lookup_search_engines table)
@@ -88,8 +85,11 @@ $SQ(function () {
     else if (location.href.match('search.yahoo.com'))
     {
         searchType = 3; // yahoo
-        searchRegex = /&p=([^&]+)&/g;
-    }   
+        searchRegex = /[\?&]?p=([^&]+)&/g;
+    }
+
+    //sayso.log('debug >>> ' + location.href);
+    //sayso.log('----- >>> ' + location.href.match('search.yahoo.com'));
     
     if (searchType) {
         var searchQueryArray = searchRegex.exec(location.href);

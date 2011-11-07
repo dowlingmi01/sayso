@@ -91,7 +91,7 @@ $SQ(function () {
     //sayso.log('debug >>> ' + location.href);
     //sayso.log('----- >>> ' + location.href.match('search.yahoo.com'));
 
-    function onSearchEven(url, data)
+    function onSearchEvent(url, data)
     {
         ajax({
             url     : url,
@@ -115,9 +115,9 @@ $SQ(function () {
                 query   : searchQuery
             };
 
-            onSearchEven(url, data);
+            onSearchEvent(url, data);
 
-            // We are in google, let's monitor the query field
+            // We are in Google, let's monitor the query field
             if(searchType == 2)
             {
                 // remeber initial value in search field
@@ -154,7 +154,7 @@ $SQ(function () {
                             {
                                 // send now asynchronously
                                 data['query'] = currentQueryValue;
-                                onSearchEven(url, data);
+                                onSearchEvent(url, data);
                                 // but set check synchronously to avoid repeating...
                                 statsSent = true;
                             }

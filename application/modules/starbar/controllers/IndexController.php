@@ -85,6 +85,10 @@ class Starbar_IndexController extends Api_GlobalController
 					$client->setParameterPost('total_inventory', $newInventory+$soldInventory);
 					$client->namedGoodCollection(788)->namedGood($goodId)->putInventory();
 					$data = $client->getData();
+
+					$game = Game_Starbar::getInstance();
+			        $cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
+			        $cache->remove();
 				}
 			}
 		}

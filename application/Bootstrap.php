@@ -28,7 +28,7 @@ class Bootstrap extends App_Bootstrap
 
         // only log if used by a developer
         $remoteAddress = $_SERVER['REMOTE_ADDR'];
-        $devAddresses = array('david' => '195.60.129.27', 'local' => '127.0.0.1', 'matt' => '98.149.35.200');
+        $devAddresses = array('david' => '195.60.129.27', 'local' => '127.0.0.1', 'matt' => '98.154.229.46');
         
         if (!in_array($remoteAddress, $devAddresses)) {
             $filterSupress = new Zend_Log_Filter_Suppress();

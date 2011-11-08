@@ -239,7 +239,21 @@ nav.main #common-auth
     vertical-align: middle;
 }
 nav.main #common-auth a
-{    
+{
     padding: 0 10px 0 0;
     text-decoration: none;
 }
+
+.updates-row-social
+{
+    background: #D8E8C2;
+}
+.updates-row-search
+{
+    background: #F8FFBF;
+}
+.updates-row-page-view
+{
+    background: #BFD9FF;
+}
+

@@ -16,10 +16,21 @@ function prependRows()
         window._adminPoller.rows = [];
         // populate the rows
         $.each(rows, function(i, v){
-            var html = '';
-            html += '<div class="updates-entry alt_'+ (window._adminPoller.alt++ & 1 ? 2 : 1) +'">';
+            var html        = '';
+            var rowStyle    = 'updates-row-social';
+            switch(v.metricsType)
+            {
+                case 'Metrics Search':
+                    rowStyle = 'updates-row-search';
+                    break;
+                case 'Page View':
+                    rowStyle = 'updates-row-page-view';
+                    break;
+            }
+
+            html += '<div class="updates-entry ' + rowStyle + '">';
                 html += '<div class="updates-entry-user">';
-                    html += v.userName + ' (User Id '+ v.userId + ')';
+                    html += 'User Id '+ v.userId ;
                 html += '</div>';
                 html += '<div class="updates-entry-starbar">';
                     html += v.starbar ;

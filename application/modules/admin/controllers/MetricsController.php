@@ -19,9 +19,10 @@ class Admin_MetricsController extends Admin_CommonController
 
     public function indexAction()
     {
-        $this->view->headScript()->appendFile('/js/jquery.ba-dotimeout.min.js');
-        $this->view->headScript()->appendFile('/modules/admin/metrics/index.js');
         $this->view->headLink()->appendStylesheet('/modules/admin/metrics/index.css', 'screen');
+        $this->view->headScript()->appendFile('/js/jquery.cookie.min.js');
+        $this->view->headScript()->appendFile('/js/jquery.ba-dotimeout.min.js');
+        $this->view->headScript()->appendFile('/modules/admin/metrics/index.js');        
     }
 
     /**
@@ -98,7 +99,7 @@ class Admin_MetricsController extends Admin_CommonController
         // for feed formatter
         array_unshift($rows, array(
             'userId'        => $entry['userId'],
-            'userName'      => (is_null($entry['userName']) ? 'NAME UNSPECIFIED' : $entry['userName']),
+            //'userName'      => (is_null($entry['userName']) ? 'NAME UNSPECIFIED' : $entry['userName']),
             'metricsType'   => $entry['metricsType'],
             'starbar'       => $entry['starbar'],
             'dateTime'      => $entry['dateTime'],

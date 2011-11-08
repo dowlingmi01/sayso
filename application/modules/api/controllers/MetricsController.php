@@ -58,6 +58,7 @@ class Api_MetricsController extends Api_GlobalController
             case 1:
                 // facebook "Like"
                 $metric->url        = $this->url;
+                $metric->content    = 'Facebook\'s "Like" button clicked';
                 break;
             default:
                 // currently it is twitter only

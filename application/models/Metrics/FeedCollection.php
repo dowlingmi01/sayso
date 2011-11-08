@@ -9,16 +9,14 @@ class Metrics_FeedCollection
      *
      * @var int
      */
-    private $limitFirstRun  = 100;
+    private $limitFirstRun  = 40;
 
     /**
-     * Limit getting a number of records for all subsequent runs
-     * Set it to a quite big number of rows,
-     * this is needed mostly to prever some attacks
+     * Limit getting a number of records for all subsequent runs     
      *
      * @var int
      */
-    private $limitLiveFeed  = 1000;
+    private $limitLiveFeed  = 40;
 
     private $lastSearchId;
 
@@ -26,13 +24,44 @@ class Metrics_FeedCollection
 
     private $lastSocialActivityId;
 
-    private $isFirstCall = true;
+    private $isFirstCall    = true;
 
-    public function getSQL()
+    private $pollMetrics    = false;
+
+    private $pollPageView   = false;
+
+    private $pollSocial     = false;
+
+    private $sql            = '';
+
+    private $sqlParams      = array();
+
+
+    public function setTypes(array $types)
     {
+        if(isset($types['social']) && $types['social'] == 1)
+        {
+            $this->pollSocial = true;
+        }
+        if(isset($types['pageView']) && $types['pageView'] == 1)
+        {
+            $this->pollPageView = true;
+        }
+        if(isset($types['metrics']) && $types['metrics'] == 1)
+        {
+            $this->pollMetrics = true;
+        }
+    }
+
+    private function _setSQL()
+    {
+        $sqlChunks = array();
+
         if($this->isFirstCall)
         {
-return <<<EOT
+            if($this->pollMetrics)
+            {
+                $sqlChunks[]=<<<EOT
 (
     SELECT
         ms.id               AS lastId,
@@ -51,7 +80,11 @@ return <<<EOT
         AND ms.starbar_id = s1.id
         AND ms.search_engine_id = lsa.id
 )
-UNION
+EOT;
+            }
+            if($this->pollPageView)
+            {
+                $sqlChunks[]=<<<EOT
 (
     SELECT
         mpv.id              AS lastId,
@@ -69,7 +102,11 @@ UNION
         AND mpv.starbar_id = s2.id
 
 )
-UNION
+EOT;
+            }
+            if($this->pollSocial)
+            {
+                $sqlChunks[]=<<<EOT
 (
     SELECT
         msa.id              AS lastId,
@@ -88,13 +125,23 @@ UNION
         AND msa.starbar_id = s3.id
         AND msa.social_activity_type_id = sat.id
 )
+EOT;
+            }
+
+            $sql = implode(' UNION ', $sqlChunks);
+            $sql .=<<<EOT
+
 ORDER BY dateTime DESC
 LIMIT ?
 EOT;
+            $this->sqlParams[]  = $this->limitFirstRun;
+            $this->sql          = $sql;
         }
         else
         {
-            return <<<EOT
+            if($this->pollMetrics)
+            {
+                $sqlChunks[] = <<<EOT
 (
     SELECT
         ms.id               AS lastId,
@@ -110,11 +157,18 @@ EOT;
         metrics_search ms, `user` u1, starbar s1, lookup_search_engines lsa
     WHERE
         ms.user_id = u1.id
+        AND ms.created > ?
         AND ms.starbar_id = s1.id
         AND ms.search_engine_id = lsa.id
         AND ms.id > ?
 )
-UNION
+EOT;
+                $this->sqlParams[] = $this->rowsAfter;
+                $this->sqlParams[] = $this->lastSearchId;
+            }
+            if($this->pollPageView)
+            {
+                $sqlChunks[]=<<<EOT
 (
     SELECT
         mpv.id              AS lastId,
@@ -129,11 +183,18 @@ UNION
         metrics_page_view mpv, `user` u2, starbar s2
     WHERE
         mpv.user_id = u2.id
+        AND mpv.created > ?
         AND mpv.starbar_id = s2.id
         AND mpv.id > ?
 
 )
-UNION
+EOT;
+                $this->sqlParams[] = $this->rowsAfter;
+                $this->sqlParams[] = $this->lastPageViewId;
+            }
+            if($this->pollSocial)
+            {
+                $sqlChunks[]=<<<EOT
 (
     SELECT
         msa.id              AS lastId,
@@ -149,13 +210,24 @@ UNION
         metrics_social_activity msa, `user` u3, starbar s3, lookup_social_activity_type sat
     WHERE
         msa.user_id = u3.id
+        AND msa.created > ?
         AND msa.starbar_id = s3.id
         AND msa.social_activity_type_id = sat.id
         AND msa.id > ?
 )
+EOT;
+                $this->sqlParams[] = $this->rowsAfter;
+                $this->sqlParams[] = $this->lastSocialActivityId;
+            }
+
+            $sql = implode(' UNION ', $sqlChunks);
+            $sql .=<<<EOT
+
 ORDER BY dateTime DESC
 LIMIT ?
 EOT;
+            $this->sqlParams[] = $this->limitLiveFeed;
+            $this->sql = $sql;
         }
     }
 
@@ -169,30 +241,29 @@ EOT;
         $this->lastSearchId         = isset($criteria['lastSearchId']) ? intval($criteria['lastSearchId']) : 0;
         $this->lastPageViewId       = isset($criteria['lastPageViewId']) ? intval($criteria['lastPageViewId']) : 0;
         $this->lastSocialActivityId = isset($criteria['lastSocialActivityId']) ? intval($criteria['lastSocialActivityId']) : 0;
+        $this->rowsAfter            = isset($criteria['rowsAfter']) ? $criteria['rowsAfter'] : '0000-00-00 00:00:00' ;
         $this->isFirstCall          = false;
     }
 
     /**
-     * Get data from sql
+     * Crate sql and get data
      */
     public function run()
     {
-        $results = array();
-        if($this->isFirstCall)
+        // Nothing to poll for?
+        if(!$this->pollMetrics && !$this->pollSocial && !$this->pollPageView)
         {
-            $results = Db_Pdo::fetchAll($this->getSQL(), $this->limitFirstRun);
-        }
-        else
-        {
-            $results = Db_Pdo::fetchAll(
-                $this->getSQL(), 
-                $this->lastSearchId,
-                $this->lastPageViewId,
-                $this->lastSocialActivityId,
-                $this->limitLiveFeed
-            );
+            return new ArrayObject(array());
         }
 
+        // Create sql and params array
+        $this->_setSQL();
+
+        // Prepare params array
+        $sql = array($this->sql);
+
+        // Call dynamically
+        $results = call_user_func_array(array('Db_Pdo', 'fetchAll'), array_merge($sql, $this->sqlParams));
         return new ArrayObject($results);
     }
 }

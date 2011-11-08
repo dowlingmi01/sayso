@@ -58,7 +58,18 @@ function prependRows()
 
 function doPoll()
 {
-    var data = {lastRowId : window._adminPoller.lastRowId};
+    var data            = {lastRowId : window._adminPoller.lastRowId};
+    var pollSocial      = $('#control-social').attr('checked') ? 1 : 0;
+    var pollPageView    = $('#control-page-view').attr('checked') ? 1 : 0;
+    var pollMetrics     = $('#control-metrics').attr('checked') ? 1 : 0;
+    
+    // nothing to poll for...
+    if(!pollSocial && !pollPageView && !pollMetrics)
+    {
+        return;
+    }
+
+    data['pollForTypes'] = {'social' : pollSocial, 'pageView' : pollPageView, 'metrics' : pollMetrics};
 
     $.ajax({
         url         : '/admin/metrics/poll',
@@ -67,7 +78,7 @@ function doPoll()
         success     : function(data)
         {
             //console.debug(data);
-            window._adminPoller.lastRowId = data.lastRowId;            
+            window._adminPoller.lastRowId = data.lastRowId;
             $('#last-updated').html('Last updated: ' + (data.lastUpdated != undefined ? data.lastUpdated : ''));
             if(data.rows.length > 0)
             {
@@ -102,7 +113,6 @@ function doPoll()
                         prependRows();
                     });
                 }
-
             }
         }
     });
@@ -121,9 +131,35 @@ function bindPoll()
     });
 }
 
+function bindControls()
+{
+    $.cookie('controlSocial') == undefined || $.cookie('controlSocial') == 'on'
+        ? $('#control-social').attr('checked', 'checked')
+        : $('#control-social').removeAttr('checked');
+    $.cookie('controlPageView') == undefined || $.cookie('controlPageView') == 'on'
+        ? $('#control-page-view').attr('checked', 'checked')
+        : $('#control-page-view').removeAttr('checked');
+    $.cookie('controlMetrics') == undefined || $.cookie('controlMetrics') == 'on'
+        ? $('#control-metrics').attr('checked', 'checked')
+        : $('#control-metrics').removeAttr('checked');
+
+    $('#control-social').unbind().bind('click', function(){
+        $.cookie('controlSocial', $(this).attr('checked') ? 'on' : 'off')
+    });
+    $('#control-page-view').unbind().bind('click', function(){
+        $.cookie('controlPageView', $(this).attr('checked') ? 'on' : 'off')
+    });
+    $('#control-metrics').unbind().bind('click', function(){
+        $.cookie('controlMetrics', $(this).attr('checked') ? 'on' : 'off')
+    });
+}
+
 function bindAll()
 {
     window._adminPoller = {lastRowId : 0, isInit : true,  rows : [], alt : 0};
+
+    // set checkboxes according to cookies
+    bindControls();
 
     // disallow dummy submits
     $('#dummy').submit(function(){return false;});

@@ -22,21 +22,39 @@ div#updates
 }
 div#update-marker
 {
-    font-size:  smaller;    
-    background: #A4C0E4;
+    font-size: smaller;    
+    background: #fcca8e;
     padding:20px 0;
     text-align:center;
     border-bottom: 1px dotted #555;
 }
 div#update-marker a
 {
-    color: #6193CF;
+    color: #BF5E00;
     text-decoration: none;
-    border-bottom: 1px dotted #2C72C7;
+    border-bottom: 1px dotted #BF5E00;
+}
+div#update-marker a:hover
+{
+    color: #FF7E00 !important;
+    border-bottom: 1px dotted #FF7E00 !important;
 }
 div#update-marker a:hover
 {
     color: #0057AE;
+}
+
+.updates-row-social
+{
+    background: #0cbae3;
+}
+.updates-row-search
+{
+    background: #7a81c6;
+}
+.updates-row-page-view
+{
+    background: #c0e276;
 }
 
 div.updates-entry
@@ -68,4 +86,5 @@ div.updates-entry-dateTime
 div.updates-entry-data
 {
     font-size: smaller;
+    overflow: hidden;
 }

@@ -187,7 +187,6 @@ body
     background: #FFF;
     width:      800px;
     margin:     0 auto;
-    pading:     10px;
     border:     1px solid #CCCCCC;
     min-height: 700px;
 }
@@ -223,7 +222,6 @@ div.panel h1
 /**
  * Admin login support
 */
-
 nav.main ul
 {
     width:70%;
@@ -243,17 +241,3 @@ nav.main #common-auth a
     padding: 0 10px 0 0;
     text-decoration: none;
 }
-
-.updates-row-social
-{
-    background: #D8E8C2;
-}
-.updates-row-search
-{
-    background: #F8FFBF;
-}
-.updates-row-page-view
-{
-    background: #BFD9FF;
-}
-

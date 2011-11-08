@@ -35,12 +35,16 @@ class Admin_MetricsController extends Admin_CommonController
 
         $rows           = array();
         $lastRowId      = $this->_getParam('lastRowId');
+        $pollForTypes   = $this->_getParam('pollForTypes');
+
+        //var_dump($pollForTypes);exit(0);
+
         $firstRun       = false;
         $error          = '';
         if(!is_array($lastRowId))
         {
             $firstRun   = true;
-            $lastRowId  = array('lastSearchId' => 0, 'lastPageViewId' => 0, 'lastSocialActivityId' => 0);
+            $lastRowId  = array('lastSearchId' => 0, 'lastPageViewId' => 0, 'lastSocialActivityId' => 0, 'rowsAfter' => '0000-00-00 00:00:00');
         }
 
         // get data
@@ -53,6 +57,7 @@ class Admin_MetricsController extends Admin_CommonController
             {
                 $builder->setLastIds($lastRowId);
             }
+            $builder->setTypes($pollForTypes);
             $collection = $builder->run();
             foreach($collection as $entry)
             {
@@ -93,7 +98,8 @@ class Admin_MetricsController extends Admin_CommonController
                 break;
         }
 
-        $lastRowId[$index] = $entry['lastId'] > $lastRowId[$index] ? $entry['lastId'] : $lastRowId[$index];
+        $lastRowId[$index]      = $entry['lastId'] > $lastRowId[$index] ? $entry['lastId'] : $lastRowId[$index];
+        $lastRowId['rowsAfter'] = $entry['dateTime'] > $lastRowId['rowsAfter'] ? $entry['dateTime'] : $lastRowId['rowsAfter'];
 
         // use unshift to send feed in the reverse order
         // for feed formatter

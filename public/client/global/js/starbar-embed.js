@@ -63,7 +63,7 @@
             var iframe = document.createElement('iframe');
             iframe.src = 'http://' + sayso.baseDomain + '/starbar/remote/pre-install?auth_key=' + sayso.client.authKey + '&client_name=' + sayso.client.name + '&client_uuid=' + sayso.client.uuid + '&client_uuid_type=' + sayso.client.uuidType + '&client_user_logged_in=' + (sayso.client.userLoggedIn ? 'true' : '') + '&install_token=' + getRandomToken();
             iframe.width= '0'; iframe.height = '0'; 
-            iframe.scrolling='0';
+            iframe.scrolling='no';
             // note 'style' property cannot be set directly. must use it's individual properties instead
             iframe.style.width = '0'; iframe.style.height = '0'; iframe.style.border = 'none'; iframe.style.display = 'none';
             document.getElementsByTagName('body')[0].appendChild(iframe);

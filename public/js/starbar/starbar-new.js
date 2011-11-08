@@ -506,6 +506,7 @@ $SQ(function(){
 		}
 		// Fade in the content (container)
 		ajaxContentContainer.fadeTo(200, 1);
+		if ($SQ.fx.off) ajaxContentContainer.css('filter', ''); // Fix for IE8 and below
 	}
 
 	function showAlerts(target){

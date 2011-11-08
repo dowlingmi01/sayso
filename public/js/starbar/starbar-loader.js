@@ -61,7 +61,7 @@
         'facebook.com/dialog', 'facebook.com/plugins', 'twitter.com/intent', 'twitter.com/widgets', 
         'stumbleupon.com/badge', 'reddit.com/static', 'static.addtoany.com/menu',
         'plusone.google.com', 'intensedebate/empty',
-        '(?:sayso.com|saysollc.com)/html/communicator', '(?:sayso.com|saysollc.com)/starbar/remote'
+        '(?:sayso.com|saysollc.com)/html/communicator', '(?:sayso.com|saysollc.com)/starbar'
     ];
     
     var bi = 0;

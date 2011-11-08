@@ -505,7 +505,8 @@ $SQ(function(){
 			ajaxContentContainer.css('display', 'block');
 		}
 		// Fade in the content (container)
-		ajaxContentContainer.fadeTo(200, 1).fadeTo(0, 1);
+		ajaxContentContainer.css('filter', 'alpha(opacity=0)'); // Fix for IE
+		ajaxContentContainer.fadeTo(200, 1);
 	}
 
 	function showAlerts(target){

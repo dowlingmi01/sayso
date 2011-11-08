@@ -399,17 +399,34 @@ class Starbar_RemoteController extends Api_GlobalController
                 // do nothing for now
         }
         
-        // start a NEW session
-        // Important: this could get hit multiple times during install
-        // which is safe: a) if the user id is the same it will be the same
-        // session key, b) we re-set all session variables each time 
+        // start session
         
-        $userSession = Api_UserSession::getInstance(User::getHash($user->getId())); 
-        
-        // (In rare cases the user_key may already be included and the session started. see BootstrapPlugin)
-        if ($userSession->hasId() && $userSession->getId() !== $user->getId()) { 
-            // user ID is already set on session but the user is different than the one we just created!!
-            throw new Api_Exception(Api_Error::create(Api_Error::APPLICATION_ERROR, 'User session (via key: ' . $userSession->getkey() . ') is for user id: ' . $userSession->getId() . ', however the user we just ' . ($newUser ? 'created' : 'retreived (via external user ' . $externalUser->getId() . ')') . ' is id: ' . $user->getId()));
+        if (Zend_Session::isStarted()) { // may already be started via BootstrapPlugin
+            
+            $userSession = Api_UserSession::getInstance();
+            
+            if ($userSession->hasId()) {
+                if ($userSession->getId() !== $user->getId()) { 
+                    // session has a different user id, so use that one instead
+                    quickLog('User session (via key: ' . $userSession->getkey() . ') is for user id: ' . $userSession->getId() . ', however the user we just ' . ($newUser ? 'created' : 'retreived (via external user ' . $externalUser->getId() . ')') . ' is id: ' . $user->getId() . '. Deleting user record ' . $user->getId() . ' and using ' . $userSession->getId() . ' instead');
+                    
+                    // delete the user we just created
+                    $user->delete();
+                    // instantiate based on session user id
+                    $user = new User();
+                    $user->loadData($userSession->getId());
+                } 
+                // else session user id matches the one created.. good
+            } else {
+                throw new Api_Exception(Api_Error::create(Api_Error::SESSION_USER_MISSING));
+            }
+            // @todo check if session is started at the beginning of this function and just
+            // use that user instaed of UI/IP method. only caveat is that the external user
+            // holds the reference to the starbar. <-- should this id be in the session??
+            // possibly move this condition to just before new User() above (after externalUserExists)
+        } else {
+            // brand new session. start it with the special hash key
+            $userSession = Api_UserSession::getInstance(User::getHash($user->getId())); 
         }
         
         // set the user id on the session

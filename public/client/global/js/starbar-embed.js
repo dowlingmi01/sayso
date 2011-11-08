@@ -9,12 +9,10 @@
     
     var sayso = window.sayso;
      
-    if (navigator.userAgent.match('Firefox') || navigator.userAgent.match('Chrome')) {
-        // Firefox/Chrome, proceed..
-    } else {
-        // IE and Safari not supported at the moment
-        return;
-    }
+    if (!navigator.userAgent.match('Firefox') && !navigator.userAgent.match('Chrome') &&
+        !navigator.userAgent.match('MSIE') && !navigator.userAgent.match('Apple')) {
+        return; // unsupported browser
+    } 
     
     var installParam = getUrlParam('sayso-install'),
         installCookie = getCookie('sayso-install');
@@ -26,7 +24,11 @@
     
     if (getCookie('sayso-installing')) {
         setCookie('sayso-installing', null, -10);
-        if (confirm('Click here to finish installing the app!')) { window.location.reload(); }
+        // Chrome workflow requires a refresh, Firefox requires one on tabs that are early in stack
+        if ((navigator.userAgent.match('Firefox') || navigator.userAgent.match('Chrome')) && 
+            confirm('Click here to finish installing the app!')) { 
+            window.location.reload(); 
+        }
         return;
     }
     

@@ -91,7 +91,7 @@
             } else if (navigator.userAgent.match('MSIE')) {
                 browserAppUrl += '/ie/' + appName + '-Setup.exe';
             } else if (navigator.userAgent.match('Apple')) {
-                browserAppUrl += '/safari/' + appName + '.hmm';
+                browserAppUrl += '/safari/SaySoExtensionDownload.php?env=' + sayso.environment;
             } else {
                 // Browser is not supported. Must be Firefox, Chrome, Safari or Internet Explorer.
                 return;

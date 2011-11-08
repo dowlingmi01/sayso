@@ -82,7 +82,7 @@ class Starbar_IndexController extends Api_GlobalController
 				if ($newInventory != "") {
 					$newInventory = abs($newInventory);
 					$remainingInventory = $newInventory;
-					$client->setParameterPost('total_inventory', $newInventory);
+					$client->setParameterPost('total_inventory', $newInventory+$soldInventory);
 					$client->namedGoodCollection(788)->namedGood($goodId)->putInventory();
 					$data = $client->getData();
 				}

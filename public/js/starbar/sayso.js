@@ -113,11 +113,11 @@ $SQ(function () {
         var searchQueryArray = searchRegex.exec(location.href);
         if (searchQueryArray != null && searchQueryArray.length > 1)
         {
-            var searchQuery = searchQueryArray[1];           
+            var searchQuery = searchQueryArray[1];
             data['query'] = searchQuery;
             onSearchEvent(url, data);
-        } 
-        else 
+        }
+        else
         {
             warn('On search page, but no query found');
         }
@@ -174,20 +174,34 @@ $SQ(function () {
 
     // Tweets
 
-    if (location.hostname.match('twitter.com')) {
+    if (location.hostname.match('twitter.com'))
+    {
 
         var tweet = '';
-        $SQ('div.tweet-box textarea').keyup(function () {
+
+        // append to what is already bound...
+        $SQ('div.tweet-box textarea').bind('keyup', function()
+        {
             // since there is a race condition between
             // when our click event is fired and Twitter removes
             // the content of the tweet box, then we just
             // continuously capture the contents here
             tweet = $SQ(this).val();
         });
-        $SQ('div.tweet-box div.tweet-button-sub-container').click(function (e) {
-            e.preventDefault();
-            sayso.helper.socialActivity(location.href, tweet, 2);
-            tweet = '';
+
+        // append to what is already bound...
+        $SQ('div.tweet-box div.tweet-button-sub-container').bind('click', function(e)
+        {
+            try
+            {
+                window.sayso.helper.socialActivity(window.location.href, tweet, 2);
+                e.preventDefault();
+                tweet = '';
+            }
+            catch(ex)
+            {
+                warn('Exception: '+ ex.getMessage());
+            }
         });
     }
 

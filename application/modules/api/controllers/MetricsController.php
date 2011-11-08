@@ -44,21 +44,28 @@ class Api_MetricsController extends Api_GlobalController
         return $this->_resultType($metric);
     }
 
-    public function socialActivitySubmitAction () {
+    public function socialActivitySubmitAction ()
+    {
         $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'type_id'));
         
-        $metric = new Metrics_SocialActivity();
-        $metric->user_id = $this->user_id;
-        $metric->starbar_id = $this->starbar_id;
-        $metric->social_activity_type_id = $this->type_id;
+        $metric                             = new Metrics_SocialActivity();
+        $metric->user_id                    = $this->user_id;
+        $metric->starbar_id                 = $this->starbar_id;
+        $metric->social_activity_type_id    = $this->type_id;
         
-        if ((int) $this->type_id === 1) {
-            // facebook_like
-            $metric->url = $this->url;
-        } else {
-            // tweet
-            $metric->content = $this->content;
+        switch(intval($this->type_id))
+        {
+            case 1:
+                // facebook "Like"
+                $metric->url        = $this->url;
+                break;
+            default:
+                // currently it is twitter only
+                $metric->url        = $this->url;
+                $metric->content    = $this->content;
+                break;
         }
+
         $metric->save();
         
         return $this->_resultType($metric);

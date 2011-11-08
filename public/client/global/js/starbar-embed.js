@@ -1,6 +1,13 @@
 
 (function () {
 
+	// add trim function if needed
+	if(typeof String.prototype.trim !== 'function') {
+		String.prototype.trim = function() {
+			return this.replace(/^\s+|\s+$/g, ''); 
+		}
+	}
+
     if (!window.sayso) window.sayso = {};
     if (!window.sayso.baseDomain) {
         window.sayso.baseDomain = 'app.saysollc.com';
@@ -116,10 +123,6 @@
     }
 
     // functions
-    
-    String.prototype.trim = function() {
-        return this.replace(/^\s+|\s+$/g,'');
-    };
     
     function jsLoadTimer(){function d(){i++<=b&&(c=setTimeout(e,f))}function e(){try{if(eval(g)){c&&clearTimeout(c);try{h()}catch(a){sayso.warn(a)}}else d()}catch(b){d()}}var i=0,b=400,f=50,g="",h=null,c=null;this.setMaxCount=function(a){b=a};this.setInterval=function(a){f=a};this.setLocalReference=function(){};this.start=function(a,b){g=a;h=b;e()}};
 

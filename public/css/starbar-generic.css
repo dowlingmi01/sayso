@@ -601,10 +601,10 @@ html {
 	color: #404040;
 }
 #sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent {
-	padding: 5px 5px 5px 10px !important;
 	background-color: #f3f3f3;
 	height: 350px;
 	width: 500px;
+	padding: 5px 5px 5px 10px !important;
 }
 #sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent p,
 #sayso-starbar #sb_innerOverlay p{

@@ -98,7 +98,7 @@
     
         // bring in namespaced jQuery $SQ 
         
-        if (!window.hasOwnProperty('$SQ')) {
+        if (!window.$SQ) {
             if (!sayso.loading || sayso.loading !== 'jquery') {
                 var jsJQuery = document.createElement('script'); 
                 jsJQuery.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';

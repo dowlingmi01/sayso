@@ -1,4 +1,3 @@
-
 $SQ(function () {
 
     // setup
@@ -48,7 +47,20 @@ $SQ(function () {
         };
     };
 
-    // behavioral tracking
+    // Blacklist sayso domains before any tracking
+    //sayso.log('debug >>> ' + location.href);
+    var trackerBlackList = ['sayso.com', 'saysollc.com'];
+    for (var i = 0, ln = trackerBlackList.length; i < ln; i++)
+    {
+        if (location.href.match(trackerBlackList[i]))
+        {
+            log('Disabling tracking on own domains...');
+            return;
+        }
+    }
+    // ... end blacklist...
+
+    // Behavioral tracking
 
     // NOTE: these are currently *always* firing. In the future these should fire only
     // if the current study is set to include them. @todo add conditional logic for that
@@ -87,9 +99,6 @@ $SQ(function () {
         searchType = 3; // yahoo
         searchRegex = /[\?&]?p=([^&]+)&/g;
     }
-
-    //sayso.log('debug >>> ' + location.href);
-    //sayso.log('----- >>> ' + location.href.match('search.yahoo.com'));
 
     function onSearchEvent(url, data)
     {

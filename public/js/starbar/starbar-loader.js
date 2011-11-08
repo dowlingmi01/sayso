@@ -57,6 +57,11 @@
         }
     }
     
+    if (top !== self) {
+        sayso.log('iFrame - Not loading Starbar');
+        return;
+    }
+    
     var blackList = [
         'facebook.com/dialog', 'facebook.com/plugins', 'twitter.com/intent', 'twitter.com/widgets', 
         'stumbleupon.com/badge', 'reddit.com/static', 'static.addtoany.com/menu',
@@ -68,7 +73,7 @@
     for (; bi < blackList.length; bi++) {
         if (currentUrl.match(urlMatchPrepend + blackList[bi])) {
             // do not load starbar for this page
-            sayso.log('iFrame: ' + blackList[bi] + ' - Not loading Starbar');
+            sayso.log('Blacklisted: ' + blackList[bi] + ' - Not loading Starbar');
             return;
         }
     }

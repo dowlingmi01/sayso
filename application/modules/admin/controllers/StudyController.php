@@ -4,6 +4,12 @@ require_once APPLICATION_PATH . '/modules/admin/controllers/CommonController.php
 
 class Admin_StudyController extends Admin_CommonController
 {
+
+    public function init()
+    {
+        parent::init();
+    }
+
     public function createNewAction () {
         
         $this->_validateRequiredParameters(array('data'));

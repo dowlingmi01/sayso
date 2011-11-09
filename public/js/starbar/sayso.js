@@ -48,13 +48,13 @@ $SQ(function () {
     };
 
     // Blacklist sayso domains before any tracking
-    //sayso.log('debug >>> ' + location.href);
-    var trackerBlackList = ['sayso.com', 'saysollc.com'];
+    //sayso.log('debug >>> ' + location.href);    
+    var trackerBlackList = [/(sayso|saysollc)\.com/];
     for (var i = 0, ln = trackerBlackList.length; i < ln; i++)
     {
-        if (location.href.match(trackerBlackList[i]))
+        if (trackerBlackList[i].test(location.href))
         {
-            log('Disabling tracking on own domains...');
+            warn('Disabling tracking on own domains...');
             return;
         }
     }

@@ -41,7 +41,7 @@ class Bootstrap extends App_Bootstrap
 
         // all dev logging begins with the IP of the client
         $apiLog->log(
-            PHP_EOL. PHP_EOL . 'IP: ' . $remoteAddress . ' (' . $devAddresses[$remoteAddress] . ')' .
+            PHP_EOL. PHP_EOL . 'IP: ' . $remoteAddress . ' (' . @$devAddresses[$remoteAddress] . ')' .
         	' ' . str_repeat('-', 100) .
             PHP_EOL, Zend_Log::INFO
         );

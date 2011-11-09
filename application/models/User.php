@@ -208,7 +208,10 @@ class User extends Record implements Titled
 	}
 	
 	public static function getHash ($userId) {
-        return md5('User ' . $userId . ' rocks!');
+	    // the official hash representing a specific user
+	    // this is used with sessions and authentication
+	    // User 5 (on production) rocks!
+        return md5('User ' . $userId . ' (on ' . APPLICATION_ENV . ') rocks!');
 	}
 }
 

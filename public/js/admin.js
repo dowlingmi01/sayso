@@ -1064,7 +1064,7 @@ $(function () {
         localStorage.setItem('sayso', jsonString);
         
         a.ajax({
-            url : 'http://' + sayso.baseDomain + '/api/study/submit',
+            url : 'http://' + sayso.baseDomain + '/admin/study/create-new',
             data : { data : jsonString },
             type : 'POST',
             dataType: 'json',
@@ -1074,16 +1074,16 @@ $(function () {
         });
         
         // reset form fields and return "changes pending" to false
-        //resetForm();
+        resetForm();
         
         // reset data object for new data
-        //resetData();
+        resetData();
         
         // notify the user
         alert('Survey saved!');
         
         // finally, scroll the view back to the top
-        //$('html,body').animate({scrollTop:0}, 600);
+        $('html,body').animate({scrollTop:0}, 600);
     });
     
     

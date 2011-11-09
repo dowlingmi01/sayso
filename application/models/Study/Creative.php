@@ -56,5 +56,25 @@ class Study_Creative extends Record
             }
         }
     }
+    
+    public function exportData() {
+        $fields = array(
+            'user_id',
+            'mime_type_id',
+            'name',
+            'url',
+            'target_url'
+        );
+        return array_intersect_key($this->getData(), array_flip($fields));
+    }
+    
+    public function exportProperties($parentObject = null) {
+        $props = array();
+        if ($this->_tags && $this->_tags->count()) {
+            $props['_tags'] = $this->_tags;
+        }
+        return array_merge(parent::exportProperties($parentObject), $props);
+    }
+    
 }
 

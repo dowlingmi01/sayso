@@ -12,11 +12,31 @@ class Study_Tag extends Record
      */
     protected $_domains;
     
+    /**
+     * @var Study_Collection_Creative
+     */
+    protected $_creatives;
+    
+    public function init () {
+        $this->_domains = new Study_Collection_Domain();
+        $this->_creatives = new Study_Collection_Creative();
+        parent::init();
+    }
+    
     public function addDomain (Study_Domain $domain) {
-        if (!$this->_domains) {
-            $this->_domains = new Study_Collection_Domain();
-        }
         $this->_domains->addItem($domain);
+    }
+    
+    public function getDomains () {
+        return $this->_domains;
+    }
+    
+    public function addCreative (Study_Creative $creative) {
+        $this->_creatives->addItem($creative);
+    }
+    
+    public function getCreatives () {
+        return $this->_creatives;
     }
     
     /**
@@ -37,9 +57,20 @@ class Study_Tag extends Record
         }
     }
     
+    public function exportData() {
+        $fields = array(
+            'user_id',
+            'name',
+            'tag'
+        );
+        return array_intersect_key($this->getData(), array_flip($fields));
+    }
+    
     public function exportProperties($parentObject = null) {
-        $props = array();
-        if ($this->_domains) $props['_domains'] = $this->_domains;
+        $props = array(
+            '_domains' => $this->_domains,
+            '_creatives' => $this->_creatives
+        );
         return array_merge(parent::exportProperties($parentObject), $props);
     }
 }

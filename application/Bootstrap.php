@@ -28,9 +28,12 @@ class Bootstrap extends App_Bootstrap
 
         // only log if used by a developer
         $remoteAddress = $_SERVER['REMOTE_ADDR'];
-        $devAddresses = array('david' => '195.60.129.27', 'local' => '127.0.0.1', 'matt' => '98.154.229.46');
+        $devAddresses = array(
+        	'195.60.129.27' => 'david', '127.0.0.1' => 'local', '98.154.229.46' => 'matt',
+            '24.2.88.78' => 'jim', '72.10.153.136' => 'hamza'
+        );
         
-        if (!in_array($remoteAddress, $devAddresses)) {
+        if (!array_key_exists($remoteAddress, $devAddresses)) {
             $filterSupress = new Zend_Log_Filter_Suppress();
             $filterSupress->suppress(true);
             $apiLogWriter->addFilter($filterSupress);
@@ -38,7 +41,7 @@ class Bootstrap extends App_Bootstrap
 
         // all dev logging begins with the IP of the client
         $apiLog->log(
-            PHP_EOL. PHP_EOL . 'IP: ' . $remoteAddress . ' (' . array_search($remoteAddress, $devAddresses) . ')' .
+            PHP_EOL. PHP_EOL . 'IP: ' . $remoteAddress . ' (' . $devAddresses[$remoteAddress] . ')' .
         	' ' . str_repeat('-', 100) .
             PHP_EOL, Zend_Log::INFO
         );

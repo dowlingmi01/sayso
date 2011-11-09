@@ -269,3 +269,8 @@ h1.sg-title {
 .sg-wrapper textarea:focus {
 	background-color: #feffaf !important;
 	}
+
+/* Do not change the next rule! It is used to check if this file is fully loaded */
+#sayso-starbar-external {
+	display: inline-table;
+}

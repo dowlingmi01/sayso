@@ -617,7 +617,7 @@
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next{
 	opacity:0.5;
-	filter:alpha(opacity=50);
+	filter:alpha(opacity=50) !important;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_empty{

@@ -270,6 +270,8 @@ html {
 	width: 30px;
 }
 #sayso-starbar #starbar-player-console.sb_starbar-visClosed {
+	background: none;
+	background-image: none;
 	width: 100px;
 }
 

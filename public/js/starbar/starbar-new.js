@@ -238,12 +238,16 @@ $SQ(function(){
 
 		/* prevent default for any link with # as the href */
 		$SQ('a', starbarElem).each(function(){
-			$SQ(this).unbind();
-			if ($SQ(this).attr('href')=='#'){
-				$SQ(this).bind({
+			$SQthis = $SQ(this);
+			$SQthis.unbind();
+			if ($SQthis.attr('href')=='#'){
+				$SQthis.removeAttr('href')
+				.unbind()
+				.bind({
 					click: function(e){
 						e.preventDefault();
 						e.stopPropagation();
+						return false;
 					}
 				});
 			}			

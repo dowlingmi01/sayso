@@ -20,7 +20,10 @@ class Gamer extends Gaming_User {
      * @return Gamer
      */
     public static function create ($userId, $starbarId) {
-        $gamer = new self;
+        if (!$userId || !$starbarId) {
+            throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Gamer::create() requires user id (' . $userId . ') and starbar id (' . $starbarId . ')'));
+        }
+        $gamer = new static;
         $gamer->loadDataByUniqueFields(array('user_id' => (int) $userId, 'starbar_id' => (int) $starbarId));
         if (!$gamer->hasId()) {
             // new gaming user, so generate a unique gaming ID and save
@@ -40,7 +43,7 @@ class Gamer extends Gaming_User {
      * @return Gamer
      */
     public static function reset ($userId, $userKey, $starbarId) {
-        $gamer = new self;
+        $gamer = new static;
         $gamer->loadDataByUniqueFields(array('user_id' => (int) $userId, 'starbar_id' => (int) $starbarId));
         $gamer->delete();
         

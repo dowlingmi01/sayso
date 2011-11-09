@@ -6,7 +6,7 @@ class Admin_StudyController extends Admin_CommonController
 {
     public function createNewAction () {
         
-        $this->_validateRequiredParameters(array('data', 'user_id'));
+        $this->_validateRequiredParameters(array('data'));
         
         $data = json_decode($this->data);
         $type = $data->type;
@@ -26,7 +26,7 @@ class Admin_StudyController extends Admin_CommonController
         // study
         
         $study = new Study();
-        $study->user_id = $this->user_id;
+        $study->user_id = $this->currentUser->id;
         $study->name = $data->basic->name;
         $study->size = $data->basic->size;
         $study->size_minimum = $data->basic->minimum;
@@ -76,7 +76,7 @@ class Admin_StudyController extends Admin_CommonController
             $tag = new Study_Tag();
             $tag->name = $tagDomainData->label;
             $tag->tag = $tagDomainData->tag;
-            $tag->user_id = $this->user_id;
+            $tag->user_id = $this->currentUser->id;
             $tags->addItem($tag);
             // this is used below for ADjuster to grab the correct mapped tag
             $tagsByClientIds[$tagClientId] = $tag;
@@ -85,7 +85,7 @@ class Admin_StudyController extends Admin_CommonController
                 foreach ($tagDomainData->domain as $domainData) {
                     $domain = new Study_Domain();
                     $domain->domain = $domainData->name;
-                    $domain->user_id = $this->user_id;
+                    $domain->user_id = $this->currentUser->id;
                     $tag->addDomain($domain);
                 }
             }
@@ -100,7 +100,7 @@ class Admin_StudyController extends Admin_CommonController
             Study_Creative::$saveTagsOnSave = false; 
             foreach ($data->creative as $creativeData) {
                 $creative = new Study_Creative();
-                $creative->user_id = $this->user_id;
+                $creative->user_id = $this->currentUser->id;
                 $creative->mime_type_id = $creativeData->contentType;
                 $creative->name = $creativeData->name;
                 $creative->url = $creativeData->creativeUrl;

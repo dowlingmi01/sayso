@@ -293,7 +293,7 @@
                 params.client_user_logged_in = (sayso.client.userLoggedIn ? 'true' : '');
             }
             
-			/*function getInternetExplorerVersion() {
+			function getInternetExplorerVersion() {
 				var rv = -1; // Return value assumes failure.
 				if (navigator.appName == 'Microsoft Internet Explorer') {
 					var ua = navigator.userAgent;
@@ -305,7 +305,7 @@
 			}
 			
 			var ieVersion = getInternetExplorerVersion();
-			if (ieVersion > -1 && ieVersion < 9) $SQ.fx.off = true;*/
+			if (ieVersion > -1 && ieVersion < 9) $SQ.fx.off = true;
 			
             $SQ.ajax({
                 dataType: 'jsonp',

@@ -20,7 +20,7 @@ function prependRows()
             var rowStyle    = 'updates-row-social';
             switch(v.metricsType)
             {
-                case 'Metrics Search':
+                case 'Search':
                     rowStyle = 'updates-row-search';
                     break;
                 case 'Page View':

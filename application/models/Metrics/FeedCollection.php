@@ -70,7 +70,7 @@ class Metrics_FeedCollection
         ms.starbar_id       AS starbarId,
         s1.label            AS starbar,
         ms.created          AS dateTime,
-        'Metrics Search'    AS metricsType,
+        'Search'    AS metricsType,
         concat(lsa.label, ', query: ', ms.query)
                             AS `data`
     FROM
@@ -150,7 +150,7 @@ EOT;
         ms.starbar_id       AS starbarId,
         s1.label            AS starbar,
         ms.created          AS dateTime,
-        'Metrics Search'    AS metricsType,
+        'Search'    AS metricsType,
         concat(lsa.label, ', query: ', ms.query)
                             AS `data`
     FROM

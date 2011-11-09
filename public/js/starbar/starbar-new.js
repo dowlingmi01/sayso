@@ -1510,6 +1510,10 @@ $SQ(function(){
 				sayso.log('AJAX GAME UPDATE: game state updated in another tab');
 				updateGame('ajax', false, false);
 			}
+
+			// Done refreshing everything, set our local state to most recent
+			starbar.state.local = starbar.state;
+
 			// example:
 			// if (starbar.state.notifications === 'update') updateAlerts();
 			// also, in updateAlerts() or wherever, don't forget to reset the

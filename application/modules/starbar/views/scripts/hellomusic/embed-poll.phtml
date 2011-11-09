@@ -21,13 +21,13 @@
 
 				$(document).ready(function() { // Wait for SG css to load
 					$SQ('<link>')
-					    .insertBefore('.sg-body')
 					    .attr({
 						  href: '/css/surveygizmo-polls-hellomusic.css',
 						  media: 'all',
 						  rel:  'stylesheet',
 						  type: 'text/css'
-						});
+						})
+						.insertBefore('.sg-body');
 
 					$(document).ready(function() { // wait for our css to be rendered before calculating height
 						$SQ.remoteControl.loadComplete(true, 62+$SQ('.sg-survey-form').outerHeight());

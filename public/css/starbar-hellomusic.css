@@ -65,6 +65,7 @@
 
 #sayso-starbar #starbar-player-console .sb_theme_bgGradient,
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value,
+#sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value-fading,
 #sayso-starbar .sb_theme_button{
 	background-image: -webkit-gradient(
     linear,

@@ -47,12 +47,6 @@ class Starbar_HellomusicController extends Starbar_ContentController
 		}
     }
 
-	public function embedPollAction ()
-	{
-		$this->view->headLink()->appendStylesheet('/css/surveygizmo-polls-hellomusic.css');
-		parent::embedPollAction();
-	}
-
     public function pollsAction ()
     {
     	$surveyUserMap = new Survey_UserMap();

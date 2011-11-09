@@ -274,7 +274,7 @@ $SQ(function(){
 			click: function(e) {
 				e.preventDefault();
 				e.stopPropagation();
-				if (starbar.state.local.visibility != 'open'){
+				if (starbar.state.local.visibility == 'stowed'){
 					// manual override to have any click re-open starbar to original state
 					openBar(true);
 				}else{
@@ -291,20 +291,15 @@ $SQ(function(){
 				}
 			},
 			mouseenter: function() {
-				if (elemPlayerConsole.hasClass('sb_starbar-visClosed')){
+				if (starbar.state.local.visibility == 'stowed'){
 					// if it's closed
 					elemSaySoLogoBorder.addClass('sb_theme_bgGradient sb_theme_bgGlow').show();
 				}
-				else{
-				}
 			},
 			mouseleave: function(){
-				if (elemPlayerConsole.hasClass('sb_starbar-visClosed')){
+				if (starbar.state.local.visibility == 'stowed'){
 					// if it's closed
-					elemSaySoLogoBorder.removeClass('sb_theme_bgGradient sb_theme_bgGlow');
-				}
-				else{
-
+					elemSaySoLogoBorder.removeClass('sb_theme_bgGradient sb_theme_bgGlow').hide();
 				}
 			}
 		}); // end logo hover + click actions

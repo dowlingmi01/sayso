@@ -163,7 +163,7 @@ abstract class Game_Starbar extends Game_Abstract {
             
             parent::submitAction($actionId, $customAmount);
 
-            $gamer = $this->getGamer();
+            $gamer = $this->getGamer(/* load profile */);
 
     		// if user just leveled up, congratulate via notification
     		// FYI $currentUserLevel = $gamer->getLevels()->count() - 1; since the user starts with 2 levels
@@ -178,7 +178,7 @@ abstract class Game_Starbar extends Game_Abstract {
 				}
 				
 				// remove cache so "just leveled up" logic is not re-used
-				$gamer->getProfileCache()->remove();
+				$gamer->removeProfileCache();
 			}
             
         } catch (Exception $exception) {

@@ -22,7 +22,10 @@ class Admin_MetricsController extends Admin_CommonController
         $this->view->headLink()->appendStylesheet('/modules/admin/metrics/index.css', 'screen');
         $this->view->headScript()->appendFile('/js/jquery.cookie.min.js');
         $this->view->headScript()->appendFile('/js/jquery.ba-dotimeout.min.js');
-        $this->view->headScript()->appendFile('/modules/admin/metrics/index.js');        
+        $this->view->headScript()->appendFile('/modules/admin/metrics/index.js');
+
+        //$options = array();
+        //$tableTest = new Bvb_Grid_Deploy_Table($options);
     }
 
     /**

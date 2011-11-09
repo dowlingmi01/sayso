@@ -19,7 +19,7 @@
 				// If we've made it this far, everything has loaded properly.
 				clearInterval(repeatUntilEmbedLoads);
 				setTimeout(function() { // add delay to frame resizing, otherwise height is calculated while elements are being rendered, causing funky behaviour
-					$SQ.remoteControl.loadComplete(true, 62+$SQ('.sayso-starbar-external').outerHeight(false));
+					$SQ.remoteControl.loadComplete(true, 62+$SQ('#sayso-starbar-external').outerHeight(false));
 				}, 300);
 
 				// Make the radio buttons clickable

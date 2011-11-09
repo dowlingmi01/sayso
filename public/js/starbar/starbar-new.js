@@ -676,7 +676,7 @@ $SQ(function(){
 						var accordionHeader = openFrameContainerParent.prev('h3');
 						var currentScroll = paneHandle.getContentPositionY();
 						var topOfOpenAccordion = accordionHeader.position().top;
-						var bottomOfOpenAccordion = topOfOpenAccordion+accordionHeader.totalHeight()+openFrameContainerParent.totalHeight();
+						var bottomOfOpenAccordion = topOfOpenAccordion+accordionHeader.outerHeight(true)+openFrameContainerParent.outerHeight(true);
 						var sizeOfPane = scrollPane.height();
 
 						if ((bottomOfOpenAccordion - currentScroll) > (sizeOfPane - 10)) { // - 24 for the extra padding
@@ -1155,18 +1155,18 @@ $SQ(function(){
 
 		// add height of the header + any margins / paddings
 		if ($SQ('.sb_popContent .sb_header', target).length > 0){
-			var headerHeight = $SQ('.sb_popContent .sb_header',target).totalHeight();
+			var headerHeight = $SQ('.sb_popContent .sb_header',target).outerHeight(true);
 		}else{
 			var headerHeight = 0;
 		}
 		
 		// recalculate if we're using 2 column layout. 
 		if ($SQ('.sb_popContent .sb_column60', target).length > 0){
-			var headerHeight = $SQ('.sb_popContent  .sb_column60 .sb_header',target).totalHeight();
+			var headerHeight = $SQ('.sb_popContent  .sb_column60 .sb_header',target).outerHeight(true);
 		}
 		
 		if ($SQ('.sb_popContent .sb_column40', target).length > 0){
-			var headerHeight = $SQ('.sb_popContent  .sb_column60 .sb_header',target).totalHeight();
+			var headerHeight = $SQ('.sb_popContent  .sb_column60 .sb_header',target).outerHeight(true);
 		}
 		
 		var panes = $SQ('.sb_scrollPane',target);
@@ -1174,7 +1174,7 @@ $SQ(function(){
 			// Add height of all the paragraphs (or anything with the class "sb_tabHeader" really)
 			var paragraphs = $SQ('.sb_tabHeader', $SQ(this).parent());
 			var paragraphHeight = 0;
-			paragraphs.each(function(i) {paragraphHeight += $SQ(this).totalHeight();});		
+			paragraphs.each(function(i) {paragraphHeight += $SQ(this).outerHeight(true);});		
 						
 			// special rule to handle if there are 2 columns in a popbox, check to see if any doesn't have a header, if it doesn't, change the height of the scroll.
 			var parent = $SQ(this).parent();
@@ -1240,7 +1240,7 @@ $SQ(function(){
 
 							var currentScroll = paneHandle.getContentPositionY();
 							var topOfOpenAccordion = ui.newHeader.position().top;
-							var bottomOfOpenAccordion = topOfOpenAccordion+ui.newHeader.totalHeight()+ui.newContent.totalHeight();
+							var bottomOfOpenAccordion = topOfOpenAccordion+ui.newHeader.outerHeight(true)+ui.newContent.outerHeight(true);
 							var sizeOfPane = scrollPane.height();
 
 							if ((bottomOfOpenAccordion - currentScroll) > (sizeOfPane - 10)) { // - 24 for the extra padding

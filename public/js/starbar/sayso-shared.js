@@ -48,15 +48,6 @@ $SQ.ajaxWithAuth = function (options) {
 
 (function($$SQ){
 	$$SQ.fn.extend({
-		totalHeight: function() {
-			return (
-				this.height() +
-				eval(this.css('margin-top').replace('px','')) +
-				eval(this.css('margin-bottom').replace('px','')) +
-				eval(this.css('padding-top').replace('px','')) +
-				eval(this.css('padding-bottom').replace('px',''))
-			);
-		},
 
 		percentWidth: function() {
 			return Math.round(this.width() * 100 / this.parent().width());

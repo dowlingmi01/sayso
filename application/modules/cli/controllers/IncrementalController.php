@@ -116,8 +116,10 @@ class Cli_IncrementalController extends Zend_Controller_Action
                 exit(1);
             }
             fwrite($handle, $name."\n");
+            echo "Updates in $name ............ SUCCESS\n";
         }
         fclose($handle);
+        echo "\nDatabase updates done...\n";
 
         // always do that at the end of action...
         exit(0);

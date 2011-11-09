@@ -111,7 +111,7 @@ class Cli_IncrementalController extends Zend_Controller_Action
                 // something has gone wrong?
                 // get out of here!
                 fclose($handle);
-                echo "UPDATE FAILED!\n";
+                echo "UPDATE FAILED in $name:\n";
                 echo implode("\n", $output) . "\n";
                 exit(1);
             }

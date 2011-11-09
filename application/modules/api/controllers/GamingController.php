@@ -42,7 +42,7 @@ class Api_GamingController extends Api_GlobalController
     public function userProfileRawAction () {
         $this->_validateRequiredParameters(array('user_id', 'user_key'));
         $game = Game_Starbar::getInstance();
-        $gamer = $game->getGamer(false);
+        $gamer = $game->getGamer(false /* don't load profile */);
         $client = $game->getHttpClient();
         $client->getEndUser($gamer->getGamingId());
         return $this->_resultType($client->getData(true));
@@ -53,10 +53,16 @@ class Api_GamingController extends Api_GlobalController
      * 
      */
     public function userProfileAction () {
-        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
-        $gamer = Gamer::create($this->user_id, $this->starbar_id);
-        $game = Game_Starbar::create($gamer, $this->_request);
-        $gamer->loadProfile($game->getHttpClient());
+        if ($this->gaming_id && $this->starbar_id) {
+            $gamer = Gamer::createByGamingId($this->gaming_id);
+            $game = Game_Starbar::create($gamer, $this->_request);
+            $game->loadGamerProfile();
+        } else {
+            $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
+            $gamer = Gamer::create($this->user_id, $this->starbar_id);
+            $game = Game_Starbar::create($gamer, $this->_request);
+            $gamer->loadProfile($game->getHttpClient());
+        }
         return $this->_resultType($gamer);
     }
     

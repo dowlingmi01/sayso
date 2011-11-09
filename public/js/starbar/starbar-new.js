@@ -578,6 +578,7 @@ $SQ(function(){
 								// Update profile if we've just received a notification regarding FB or TW getting connected.
 								if (message.short_name == 'FB Account Connected' || message.short_name == 'TW Account Connected') {
 									updateProfile(true, true);
+									sayso.log('AJAX GAME UPDATE: \'External Account Connected\' notification received');
 									updateGame('ajax', true, true);
 								} else if (message.short_name == 'Checking in') { // This notification is set up to only be sent when the starbar is open (i.e. not stowed)
 									gameCheckin();
@@ -607,6 +608,7 @@ $SQ(function(){
 							} else {
 								// Messages with no notification area should not be shown, they are sent silently to initiate certain actions
 								if (message.short_name == 'Update Game') {
+									sayso.log('AJAX GAME UPDATE: \'Update Game\' notification received');
 									updateGame('ajax', true, true);
 								}
 								$SQ.ajaxWithAuth({ // Mark closed, those notifications are meant to be received only once.
@@ -1505,6 +1507,7 @@ $SQ(function(){
 			}
 
 			if (starbar.state.game > starbar.state.local.game) {
+				sayso.log('AJAX GAME UPDATE: game state updated in another tab');
 				updateGame('ajax', false, false);
 			}
 			// example:

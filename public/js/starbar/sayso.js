@@ -49,7 +49,7 @@ $SQ(function () {
 
     // Blacklist sayso domains before any tracking
     //sayso.log('debug >>> ' + location.href);    
-    var trackerBlackList = [/(sayso|saysollc)\.com/];
+    var trackerBlackList = [/(sayso|saysollc)\.com/, /say\.so/];
     for (var i = 0, ln = trackerBlackList.length; i < ln; i++)
     {
         if (trackerBlackList[i].test(location.href))

@@ -62,7 +62,7 @@ abstract class Admin_CommonController extends Zend_Controller_Action
      */
     protected function setLayoutBasics()
     {
-        $this->_helper->layout->setLayout('admin');
+        //$this->_helper->layout->setLayout('admin');
         $this->view->headLink()->appendStylesheet('/modules/common.css', 'screen');
         $this->view->headLink()->appendStylesheet('/css/smoothness/jquery-ui-1.8.13.custom.css', 'screen');
         $this->view->headScript()->appendFile('/js/jquery-1.6.1.min.js');

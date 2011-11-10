@@ -1,0 +1,71 @@
+<?= $this->doctype() . PHP_EOL ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Say.So | Survey Administration</title>
+        <meta name="description" content="">
+        <meta name="author" content="Sayso LLC">
+        <?= $this->headLink() . PHP_EOL ?>
+        <script type="text/javascript">
+            if (!window.sayso) sayso = {};
+            sayso.baseDomain = "<?= BASE_DOMAIN ?>";
+        </script>
+        <?= $this->headScript() ?>
+        <style>
+/**
+ * @todo This is a temporary solution...
+*/
+
+nav.main ul
+{
+    width:70%;
+    float:left;
+}
+nav.main #common-auth
+{
+    width:30%;
+    float:left;
+    text-align: right;
+    font-size:smaller;
+    line-height: 40px;
+    vertical-align: middle;
+}
+nav.main #common-auth a
+{
+    padding: 0 10px 0 0;
+    text-decoration: none;
+}
+.clear
+{
+    clear:both;
+}
+#passwPassword
+{
+    width:100%
+}
+        </style>
+    </head>
+    <body>
+        <div id="modal-window" class="modal-window" style="display: none;"></div>
+        <header>
+            <h1>Say.So</h1>
+            <img src="img/say-so.png" alt="Say.So Logo" width="230" height="60">
+            <nav class="main">
+                <ul>
+                    <li><a href="#" title="Ad Effectiveness"><span>ADgregator</span>&trade;</a></li>
+                    <li><a href="#" title="Ad Pre-testing"><span>ADjuster</span>&trade;</a></li>
+                    <li><a href="#" title="Behavioral Tracking"><span>BTracker</span>&trade;</a></li>
+                    <li><a href="/admin/metrics/" class="return-true" title="Real-Time Metrics"><span>Metrics</span></a></li>
+                </ul>
+                <?php echo $this->partial('partials/common-auth.phtml', 'admin') ?>
+                <div class="clear"></a>
+            </nav>
+        </header>
+        <div id="main" role="main">
+            <?php echo $this->layout()->content ?>
+        </div>
+        <footer></footer>        
+    </body>
+</html>
+  

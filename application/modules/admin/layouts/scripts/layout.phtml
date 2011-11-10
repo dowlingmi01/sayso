@@ -1,71 +1,29 @@
-<?= $this->doctype() . PHP_EOL ?>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Say.So | Survey Administration</title>
-        <meta name="description" content="">
-        <meta name="author" content="Sayso LLC">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Say.So | App</title>
         <?= $this->headLink() . PHP_EOL ?>
-        <script type="text/javascript">
-            if (!window.sayso) sayso = {};
-            sayso.baseDomain = "<?= BASE_DOMAIN ?>";
-        </script>
-        <?= $this->headScript() ?>
-        <style>
-/**
- * @todo This is a temporary solution...
-*/
-
-nav.main ul
-{
-    width:70%;
-    float:left;
-}
-nav.main #common-auth
-{
-    width:30%;
-    float:left;
-    text-align: right;
-    font-size:smaller;
-    line-height: 40px;
-    vertical-align: middle;
-}
-nav.main #common-auth a
-{
-    padding: 0 10px 0 0;
-    text-decoration: none;
-}
-.clear
-{
-    clear:both;
-}
-#passwPassword
-{
-    width:100%
-}
-        </style>
+        <?= $this->headScript() . PHP_EOL ?>
     </head>
     <body>
-        <div id="modal-window" class="modal-window" style="display: none;"></div>
-        <header>
-            <h1>Say.So</h1>
-            <img src="img/say-so.png" alt="Say.So Logo" width="230" height="60">
-            <nav class="main">
-                <ul>
-                    <li><a href="#" title="Ad Effectiveness"><span>ADgregator</span>&trade;</a></li>
-                    <li><a href="#" title="Ad Pre-testing"><span>ADjuster</span>&trade;</a></li>
-                    <li><a href="#" title="Behavioral Tracking"><span>BTracker</span>&trade;</a></li>
-                    <li><a href="/admin/metrics/" class="return-true" title="Real-Time Metrics"><span>Metrics</span></a></li>
-                </ul>
-                <?php echo $this->partial('partials/common-auth.phtml', 'admin') ?>
-                <div class="clear"></a>
-            </nav>
-        </header>
-        <div id="main" role="main">
-            <?php echo $this->layout()->content ?>
+        <div id="layout">
+            <header>
+                <h1>Say.So</h1>
+                <img height="60" width="230" alt="Say.So Logo" src="/img/say-so.png" style="width: 230px; height: 60px;">
+                <nav class="common">
+                    <ul>
+                        <li><a id="menu-products" href="/admin/" title="Products"><span>Products</span></a></li>
+                        <li><a id="menu-metrics" href="/admin/metrics/" title="Real-Time Metrics"><span>Metrics</span></a></li>
+                    </ul>
+                    <?php echo $this->partial('partials/common-auth.phtml', 'admin') ?>
+                    <div class="clear"></div>
+                </nav>                
+            </header>
+            <div id="main" role="main">
+                <?= $this->layout()->content ?>
+            </div>
+            <footer></footer>
         </div>
-        <footer></footer>        
     </body>
 </html>
-  

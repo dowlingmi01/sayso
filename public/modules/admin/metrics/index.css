@@ -1,19 +1,16 @@
 /**
  * @author alecksmart
  */
+#menu-metrics
+{
+    color:blue !important;
+    text-decoration: underline;
+}
+
 div#poll-time
 {
     font-size:  smaller;
     text-align: left;
-    width:50%;
-    float:left;
-}
-div#last-updated
-{
-    font-size:  smaller;
-    text-align: right;
-    width:50%;
-    float:left;
 }
 div#updates
 {
@@ -22,7 +19,7 @@ div#updates
 }
 div#update-marker
 {
-    font-size: smaller;    
+    font-size: smaller;
     background: #fcca8e;
     padding:20px 0;
     text-align:center;
@@ -87,4 +84,49 @@ div.updates-entry-data
 {
     font-size: smaller;
     overflow: hidden;
+}
+
+div#poll-time
+{
+    background-color: #F2F2F2;
+    box-shadow: 0 1px 0 white inset;
+    margin: 10px 0 20px 0;
+    padding:10px 0;
+    position: relative;
+    text-align: center;
+}
+
+div#controls
+{
+    width:auto;
+    float:left;
+    text-align: left;
+    margin-top:2px;
+    margin-left:16px;
+}
+div#last-updated
+{
+    font-size:  smaller;
+    text-align: right;
+    width:auto;
+    float:right;
+    margin-top:4px;
+    margin-right:16px;
+}
+
+div#controls, div#last-updated
+{
+    font-size:12px;
+}
+div#controls select
+{
+    margin: 0 0 0 0;
+}
+div#controls label
+{
+    display:inline;
+}
+#control-social
+{
+    magin-left:20px;
 }

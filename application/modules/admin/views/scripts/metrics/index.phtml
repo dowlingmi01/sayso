@@ -1,7 +1,6 @@
-<div class="panel">
-    <h1>Real-Time Metrics</h1>
-    <div id="poll-time">
-        <form id="dummy">
+<div id="poll-time">
+    <form id="dummy">
+        <div id="controls">
             Poll time <select>
                 <option selected>5</option>
                 <option>10</option>
@@ -13,17 +12,15 @@
                 <option>300</option>
                 <option>450</option>
             </select> s.
-
-            <div id="controls">
-                <input type="checkbox" id="control-social" /> Social activity
-                <input type="checkbox" id="control-page-view" /> Page views
-                <input type="checkbox" id="control-metrics" /> Searches
-            </div>
-
-        </form>
-    </div>
-
-    <div id="last-updated"></div>
+            <label for="control-social"><input type="checkbox" id="control-social" /> Social activity</label>
+            <label for="control-page-view"><input type="checkbox" id="control-page-view" /> Page views</label>
+            <label for="control-metrics"><input type="checkbox" id="control-metrics" /> Searches</label>
+        </div>
+        <div id="last-updated"></div>
+        <div class="clear"></div>
+    </form>
+</div>
+<div class="panel">    
     <div class="clear"></div>
     <div id="updates"></div>
     <div class="clear"></div>

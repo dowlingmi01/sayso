@@ -1135,9 +1135,13 @@ $SQ(function(){
 				$SQ(this).tabs({
 					show: function(event, ui){
 							// re-call the scrollbar to re-initialize to avoid the "flash" of narrow content.
-							activateScroll(target);							
-							window.location.hash = '';
-							
+							activateScroll(target);		
+
+							// Why was this line here? Hmmmm... anyway, disabled to 
+							// fix IE issues, doesn't seem to have any negative effect
+							// -- Hamza
+							//window.location.hash = '';
+
 							// adding ID to determine which tab is selected
 							$SQ('ul.sb_ui-tabs-nav', this).attr('id','');
 							$SQ('ul.sb_ui-tabs-nav', this).attr('id','sb_ui-tabs-nav_'+eval(ui.index+1));

@@ -20,13 +20,17 @@
 				// If we've made it this far, everything has loaded properly.
 				clearInterval(repeatUntilEmbedLoads);
 
+				$i = 15; // Check if CSS has loaded a maximum of 15 times, i.e. for 3000 ms, or 3 seconds
+				// After that assume it has (or give up regardless) and show the poll
 				var cssCheckInterval = setInterval(function(){
 					if (externalContentElem.css('display') == 'inline-table') { // Our css is loaded!
 						clearInterval(cssCheckInterval);
 						externalContentElem.css('display', 'block');
 						$SQ.remoteControl.loadComplete(true, 62+$SQ('.sg-survey-form').outerHeight());
 					}
-				}, 100);
+					$i--;
+					if ($i < 1) externalContentElem.css('display', 'inline-table');
+				}, 200);
 
 				// Make the radio buttons clickable
 				var elemRadios = $SQ('input:radio');

@@ -1,0 +1,58 @@
+#!/bin/bash
+
+blue()
+{
+echo -e "\e[34m$1\e[39;49m"
+}
+
+echo ""
+blue "UPDATE ALL: Choose Environment:"
+echo ""
+echo "1. Sandbox"
+echo "2. Development"
+echo "3. Testing"
+echo "4. Staging"
+echo "5. Production"
+echo "6. Exit"
+echo ""
+
+read choice
+
+if [ $choice -eq 1 ]
+    then
+        export APPLICATION_ENV=sandbox
+        echo ""
+        blue "Initializing SANDBOX environment ..."
+        echo ""
+elif [ $choice -eq 2 ]
+    then
+        export APPLICATION_ENV=development
+        echo ""
+        blue "Initializing DEVELOPMENT environment ..."
+        echo ""
+elif [ $choice -eq 3 ]
+    then
+        export APPLICATION_ENV=testing
+        echo ""
+        blue "Initializing TESTING environment ..."
+        echo ""
+elif [ $choice -eq 4 ]
+    then
+        export APPLICATION_ENV=staging
+        echo ""
+        blue "Initializing STAGING environment ..."
+        echo ""
+elif [ $choice -eq 5 ]
+    then
+        export APPLICATION_ENV=production
+        echo ""
+        blue "Initializing PRODUCTION environment ..."
+        echo ""
+elif [ $choice -eq 6 ]
+    then
+        exit
+else
+    echo "Please press '1' - '6'..."
+fi
+
+./sayso-update-all

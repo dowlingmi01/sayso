@@ -1,4 +1,0 @@
-#!/bin/bash
-
-export APPLICATION_ENV=staging
-./sayso-update-all

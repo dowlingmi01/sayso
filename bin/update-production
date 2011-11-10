@@ -1,4 +1,0 @@
-#!/bin/bash
-
-export APPLICATION_ENV=production
-./sayso-update-all

@@ -12,13 +12,9 @@ SUPPORTED COMMANDS:
 2. ALL updates with SVN update
 
     cd [sayso_root]/bin
-    export APPLICATION_ENV=development && ./sayso-update-all
+    ./update
 
-    Alternatively, use shortcuts for each server environment:
+3. Rebuild application from scratch
 
-    ./update-development
-    ./update-sandbox
-    ./update-testing
-    ./update-staging
-    ./update-production
-
+    cd [sayso_root]/bin
+    ./rebuild

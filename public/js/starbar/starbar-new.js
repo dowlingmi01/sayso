@@ -187,6 +187,56 @@ $SQ(function(){
 		return _container;
 	}
 
+	// Update the cross-domain state variables
+    starbar.state.update = function (){
+        var app = KOBJ.get_application(starbar.kynetxAppId);
+        starbar.state.callback = null;
+        app.raise_event('update_state', { 
+            'visibility' : starbar.state.visibility,
+            'notifications' : starbar.state.notifications,
+            'profile' : starbar.state.profile,
+            'game' : starbar.state.game
+        });
+    };
+
+    // Starbar state
+    starbar.state.local = {
+        profile : Math.round(new Date().getTime() / 1000),
+        game : Math.round(new Date().getTime() / 1000),
+        visibility : starbar.state.visibility
+    };
+
+    // Refresh the Starbar to respond to state changes, if any
+    starbar.state.refresh = function () {
+        starbar.state.callback = function () { 
+            // logic here to determine if/what should be fired to "refresh"
+            if (starbar.state.visibility != starbar.state.local.visibility) {
+                toggleBar(false);
+            }
+
+            updateAlerts(false);
+            
+            if (starbar.state.profile > starbar.state.local.profile) {
+                updateProfile(false);
+            }
+
+            if (starbar.state.game > starbar.state.local.game) {
+                sayso.log('AJAX GAME UPDATE: game state updated in another tab');
+                updateGame('ajax', false, false);
+            }
+
+            // Done refreshing everything, set our local state to most recent
+            starbar.state.local = starbar.state;
+
+            // example:
+            // if (starbar.state.notifications === 'update') updateAlerts();
+            // also, in updateAlerts() or wherever, don't forget to reset the
+            // value back to 'ready' and call starbar.state.update() again
+        };
+        var app = KOBJ.get_application(starbar.kynetxAppId);
+        app.raise_event('refresh_state');
+    };
+
 	// initialize the starbar
 	initStarBar();
 
@@ -1471,57 +1521,7 @@ $SQ(function(){
 			}
 		);
 	}
-
-	// Update the cross-domain state variables
-	starbar.state.update = function (){
-		var app = KOBJ.get_application(starbar.kynetxAppId);
-		starbar.state.callback = null;
-		app.raise_event('update_state', { 
-			'visibility' : starbar.state.visibility,
-			'notifications' : starbar.state.notifications,
-			'profile' : starbar.state.profile,
-			'game' : starbar.state.game
-		});
-	}
-
-	// Starbar state
-	starbar.state.local = {
-		profile : Math.round(new Date().getTime() / 1000),
-		game : Math.round(new Date().getTime() / 1000),
-		visibility : starbar.state.visibility
-	}
-
-	// Refresh the Starbar to respond to state changes, if any
-	starbar.state.refresh = function () {
-		starbar.state.callback = function () { 
-			// logic here to determine if/what should be fired to "refresh"
-			if (starbar.state.visibility != starbar.state.local.visibility) {
-				toggleBar(false);
-			}
-
-			updateAlerts(false);
-			
-			if (starbar.state.profile > starbar.state.local.profile) {
-				updateProfile(false);
-			}
-
-			if (starbar.state.game > starbar.state.local.game) {
-				sayso.log('AJAX GAME UPDATE: game state updated in another tab');
-				updateGame('ajax', false, false);
-			}
-
-			// Done refreshing everything, set our local state to most recent
-			starbar.state.local = starbar.state;
-
-			// example:
-			// if (starbar.state.notifications === 'update') updateAlerts();
-			// also, in updateAlerts() or wherever, don't forget to reset the
-			// value back to 'ready' and call starbar.state.update() again
-		};
-		var app = KOBJ.get_application(starbar.kynetxAppId);
-		app.raise_event('refresh_state');
-	}
-
+	
 	if (/*@cc_on!@*/false) { // check for Internet Explorer
 		var oldOnFocus = document.onfocusin && typeof document.onfocusin === 'function' ? document.onfocusin : function () {};
 		document.onfocusin = function () { oldOnFocus(); starbar.state.refresh(); };

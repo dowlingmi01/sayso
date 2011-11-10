@@ -4,17 +4,12 @@ The below scripts are intended to run on Linux servers
 
 SUPPORTED COMMANDS:
 
-1. Incremental database updates (set APPLICATION_ENV to your environment):
-
-    cd [sayso_root]/bin
-    export APPLICATION_ENV=development && ./sayso incremental
-
-2. ALL updates with SVN update
+1. Incremental updates with SVN update
 
     cd [sayso_root]/bin
     ./update
 
-3. Rebuild application from scratch
+2. SVN update + rebuild application from scratch
 
     cd [sayso_root]/bin
     ./rebuild

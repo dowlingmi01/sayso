@@ -1,3 +1,23 @@
 #!/bin/bash
 
-echo "Not implemented yet"
+. ./common
+
+OWNDIR=`pwd`
+SVN=`which svn`
+
+echo ""
+green "Creating maintainance lock file..."
+echo ""
+
+touch ../public/.maintainance
+
+
+echo ""
+green "Removing maintainance lock file..."
+echo ""
+
+rm -fv ../public/.maintainance
+
+echo ""
+green "All done"
+echo ""

@@ -1,9 +1,9 @@
 #!/bin/bash
 
-blue()
-{
-echo -e "\e[34m$1\e[39;49m"
-}
+. ./common
+
+green "*** SAYSO automatic updater running... ***"
+echo ""
 
 echo ""
 blue "REBUILD ALL: Choose Environment:"
@@ -52,7 +52,8 @@ elif [ $choice -eq 6 ]
     then
         exit
 else
-    echo "Please press '1' - '6'..."
+    echo "Please choose '1' to '6'..."
+    exit
 fi
 
 ./sayso-rebuild-all

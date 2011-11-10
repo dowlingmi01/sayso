@@ -16,8 +16,8 @@
     
     var sayso = window.sayso;
      
-    if (!navigator.userAgent.match('Firefox') && !navigator.userAgent.match('Chrome') &&
-        !navigator.userAgent.match('MSIE') && !navigator.userAgent.match('Apple')) {
+    if (!navigator.userAgent.match('Mozilla.*Gecko.*Firefox') && !navigator.userAgent.match('Chrome') &&
+        !navigator.userAgent.match('MSIE') && !navigator.userAgent.match('AppleWebKit((?!Mobile).)*Safari')) {
         return; // unsupported browser
     } 
     

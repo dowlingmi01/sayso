@@ -1093,6 +1093,11 @@ input[type=password]
   h2, h3 {
     page-break-after: avoid; } }
 
+#layout
+{
+    min-height:700px;
+}
+
 
 /**
  * This part is used for new pages.

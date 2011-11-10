@@ -46,10 +46,10 @@ abstract class Admin_CommonController extends Zend_Controller_Action
         }
 
         // see if we have a logged in user
-        $this->currentUser          = null;
+        $this->currentUser = null;
         if ($this->auth->hasIdentity())
 		{
-            $this->currentUser = AdminUser::getByEmail($this->auth->getIdentity());            
+            $this->currentUser = AdminUser::getByEmail($this->auth->getIdentity());
         }
         else
         {
@@ -74,12 +74,31 @@ abstract class Admin_CommonController extends Zend_Controller_Action
     /**
      * Checks if a role is connected to an Admin User
      *
-     * @param AdminUser $user
      * @param array $roles - array of roles names
      */
-    protected function checkAccess(AdminUser $user, array $roles = array())
-	{
-
-	}
+    protected function checkAccess(array $roles = array())
+    {
+        if (!($this->currentUser instanceof AdminUser))
+        {
+            return false;
+        }
+        if (empty($roles))
+        {
+            return true;
+        }
+        $userRoles = $this->currentUser->getAdminRoles();
+        //var_dump($userRoles->count());exit(0);
+        foreach ($userRoles as $role)
+        {
+            foreach ($roles as $requiredRole)
+            {
+                if ($role->name == $requiredRole)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }

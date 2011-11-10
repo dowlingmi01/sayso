@@ -8,6 +8,10 @@ class Admin_StudyController extends Admin_CommonController
     public function init()
     {
         parent::init();
+        if(!$this->checkAccess(array('superuser')))
+        {
+            die('Access denied!');
+        }
     }
 
     public function createNewAction () {

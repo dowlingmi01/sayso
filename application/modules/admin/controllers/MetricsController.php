@@ -19,6 +19,12 @@ class Admin_MetricsController extends Admin_CommonController
 
     public function indexAction()
     {
+
+        if(!$this->checkAccess(array('superuser')))
+        {
+            $this->_helper->viewRenderer->setNoRender(true);
+        }
+
         $this->view->headLink()->appendStylesheet('/modules/admin/metrics/index.css', 'screen');
         $this->view->headScript()->appendFile('/js/jquery.cookie.min.js');
         $this->view->headScript()->appendFile('/js/jquery.ba-dotimeout.min.js');
@@ -37,6 +43,11 @@ class Admin_MetricsController extends Admin_CommonController
      */
     public function pollAction()
     {
+        if(!$this->checkAccess(array('superuser')))
+        {
+            die('Access denied!');
+        }
+
         // format input parameters
 
         $rows           = array();

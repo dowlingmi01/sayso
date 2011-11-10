@@ -9,10 +9,12 @@ class AdminUser extends Record
 
     protected $_tableName = 'admin_user';
 
+    private $_roles;
+
     /**
-     * Prepare for writing to database 
-     * 
-     * @param string $password 
+     * Prepare for writing to database
+     *
+     * @param string $password
      */
     public function setPassword($password)
     {
@@ -22,29 +24,23 @@ class AdminUser extends Record
     /**
      * Get instance according to unique email address
      * @param string $identity email address
+     * @return AdminUser
      */
     public static function getByEmail($email)
     {
-        return null;
+        $user = new AdminUser();
+		$user->loadDataByUniqueFields(array('email' => $email));
+        return $user->id > 0 ? $user : null;
     }
 
-    /**
-     * Perform login
-     *
-     * @param type $email
-     * @param type $password
-     */
-    public static function login($email, $password)
+    public function getAdminRoles()
     {
-        
-    }
-
-    /**
-     * Perform logout
-     */
-    public static function logout()
-    {
-        
+        if (is_null($this->_roles)) {
+        	$_roles = new AdminUser_AdminRoleCollection();
+        	$_roles->loadForUser($this->getId());
+            $this->_roles = $_roles;
+        }
+        return $this->_roles;
     }
 
 }

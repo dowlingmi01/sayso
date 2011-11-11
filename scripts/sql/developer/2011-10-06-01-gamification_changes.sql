@@ -1,0 +1,1 @@
+UPDATE developer.application SET game = 'Starbar_HelloMusic' WHERE app_key = 'ede421a1d0e08aa672c552e8883e645f';

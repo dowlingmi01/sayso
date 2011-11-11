@@ -1,11 +1,5 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
-DROP DATABASE IF EXISTS developer;
-
-CREATE DATABASE developer;
-
-USE developer;
-
 CREATE TABLE application (
 	id int(11) NOT NULL AUTO_INCREMENT,
 	developer_id int(11) DEFAULT NULL,
@@ -46,6 +40,5 @@ INSERT model VALUES (1, 'sayso', 'sayso', 'saysollc.com');
 
 INSERT application values (null, 1, 1, 'SaySo App', @appkey, @appsecret, 'Main', null, null);
 
-SET FOREIGN_KEY_CHECKS = 0;
+SET FOREIGN_KEY_CHECKS = 1;
 
-USE sayso;

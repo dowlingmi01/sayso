@@ -292,6 +292,7 @@ $SQ(function(){
 			$SQthis.unbind();
 			if ($SQthis.attr('href')=='#'){
 				$SQthis.removeAttr('href')
+				.css('cursor', 'pointer')
 				.unbind()
 				.bind({
 					click: function(e){
@@ -781,8 +782,8 @@ $SQ(function(){
 			}
 		},
 		'alertMessage': function (parameters) {
-			var msg = parameters['msg'];
-			sayso.log(msg);
+			var alertMessage = parameters['alert_message'];
+			sayso.log(alertMessage);
 		}
 	};
 

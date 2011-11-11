@@ -81,23 +81,23 @@ $SQ.frameCommunicationFunctions = {
 			newGame: newGame
 		}]);
 	},
-	handleTweet: function (shared_type, shared_id) {
+	handleTweet: function (sharedType, sharedId) {
 		$SQ('#sayso-starbar').trigger('frameCommunication', ['handleTweet', {
-			shared_type: shared_type,
-			shared_id: shared_id
+			shared_type: sharedType,
+			shared_id: sharedId
 		}]);
 	},
-	openSurvey: function (survey_id) {
+	openSurvey: function (surveyId) {
 		$SQ('#sayso-starbar').trigger('frameCommunication', ['openSurvey', {
-			survey_id: survey_id
+			survey_id: surveyId
 		}]);
 	},
-	hideOverlay: function (survey_id) {
+	hideOverlay: function () {
 		$SQ('#sayso-starbar').trigger('frameCommunication', ['hideOverlay']);
 	},
 	alertMessage: function (alertMessage) {
 		$SQ('#sayso-starbar').trigger('frameCommunication', ['alertMessage', {
-			alertMessage: alertMessage
+			alert_message: alertMessage
 		}]);
 	}
 };

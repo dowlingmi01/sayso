@@ -57,6 +57,12 @@ abstract class Game_Starbar extends Game_Abstract {
         $this->submitAction('STARBAR_CHECKIN');
     }
     
+    public function testRewardNotes () {
+        if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
+            $this->submitAction('TEST_REWARD_NOTES');
+        }
+    }
+    
     public function completeSurvey (Survey $survey, Survey_UserMap $surveyUserMap = null) {
         
         switch ($survey->type) {

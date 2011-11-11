@@ -256,20 +256,33 @@ class Api_UserController extends Api_GlobalController
 	}
 
 	// Functions to assist with testing
-    public function testCompletePrimarySurveyAction() {
+    public function testCompleteSurveyAction() {
         if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
-	        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
+	        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'survey_type', 'survey_premium'));
 
 			$survey = new Survey();
-			$survey->loadData(1);
+			$survey->type = $this->survey_type;
+			$survey->premium = ( $this->survey_premium == "true" ? true : false );
 	        Game_Starbar::getInstance()->completeSurvey($survey);
-			
-			Db_Pdo::execute("DELETE FROM survey_user_map WHERE survey_id = 1 AND user_id = ?", $this->user_id);
-	        $surveyUserMap = new Survey_UserMap();
-			$surveyUserMap->survey_id = 1;
-			$surveyUserMap->user_id = $this->user_id;
-			$surveyUserMap->status = 'completed';
-			$surveyUserMap->save();
+
+			if ($survey->survey_type == 'survey' && $survey->survey_premium) {
+				Db_Pdo::execute("DELETE FROM survey_user_map WHERE survey_id = 1 AND user_id = ?", $this->user_id);
+		        $surveyUserMap = new Survey_UserMap();
+				$surveyUserMap->survey_id = 1;
+				$surveyUserMap->user_id = $this->user_id;
+				$surveyUserMap->status = 'completed';
+				$surveyUserMap->save();
+			}
+
+		    return $this->_resultType(true);
+        } else {
+    		return $this->_resultType(false);
+        }
+	}
+
+    public function testRewardNotesAction() {
+        if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
+	        Game_Starbar::getInstance()->testRewardNotes($survey);
 			
 		    return $this->_resultType(true);
         } else {
@@ -298,7 +311,7 @@ class Api_UserController extends Api_GlobalController
         }
 	}
 
-    public function resetExternalAction() {		
+    public function testResetExternalAction() {		
         if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
 	        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
 			Db_Pdo::execute("DELETE FROM user_social WHERE user_id = ?", $this->user_id);
@@ -309,7 +322,7 @@ class Api_UserController extends Api_GlobalController
         }
 	}
 
-    public function resetNotificationsAction() {		
+    public function testResetNotificationsAction() {		
         if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
 	        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
 			Db_Pdo::execute("DELETE FROM notification_message_user_map WHERE user_id = ?", $this->user_id);

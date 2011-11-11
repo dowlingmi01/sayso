@@ -617,7 +617,7 @@
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_current{
-	width: 122px;
+	width: 112px;
 	height: 139px; /* fixed height to allow scrollPane to have correct height */
 }
 

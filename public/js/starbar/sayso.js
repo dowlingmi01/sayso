@@ -1,7 +1,23 @@
+/*
+ * jQuery doTimeout: Like setTimeout, but better! - v1.0 - 3/3/2010
+ * http://benalman.com/projects/jquery-dotimeout-plugin/
+ *
+ * Copyright (c) 2010 "Cowboy" Ben Alman
+ * Dual licensed under the MIT and GPL licenses.
+ * http://benalman.com/about/license/
+ */
+(function($){var a={},c="doTimeout",d=Array.prototype.slice;$[c]=function(){return b.apply(window,[0].concat(d.call(arguments)))};$.fn[c]=function(){var f=d.call(arguments),e=b.apply(this,[c+f[0]].concat(f));return typeof f[0]==="number"||typeof f[1]==="number"?this:e};function b(l){var m=this,h,k={},g=l?$.fn:$,n=arguments,i=4,f=n[1],j=n[2],p=n[3];if(typeof f!=="string"){i--;f=l=0;j=n[1];p=n[2]}if(l){h=m.eq(0);h.data(l,k=h.data(l)||{})}else{if(f){k=a[f]||(a[f]={})}}k.id&&clearTimeout(k.id);delete k.id;function e(){if(l){h.removeData(l)}else{if(f){delete a[f]}}}function o(){k.id=setTimeout(function(){k.fn()},j)}if(p){k.fn=function(q){if(typeof p==="string"){p=g[p]}p.apply(m,d.call(n,i))===true&&!q?o():e()};o()}else{if(k.fn){j===undefined?e():k.fn(j===false);return true}else{e()}}}})($SQ);
+
+
 $SQ(function () {
 
     // setup
+    
+    // PENDING: how does this factor in to iframes. Does the sayso object get transferred correctly between the iframe's window?? if not, how to handle that??
+    // what if anything needs to be communicated to the 'top' window??
 
+    if (!window.sayso.study) window.sayso.study = {};
+    
     var sayso = window.sayso,
         starbar = window.sayso.starbar,
         log = window.sayso.log,
@@ -18,7 +34,21 @@ $SQ(function () {
         options.dataType = 'jsonp';
         return $SQ.ajax(options);
     };
+    
+    // get Study data
+    
+    ajax({
+        url : 'http://' + sayso.baseDomain + '/api/study/get-all',
+        data : {
+            page_number : 1,
+            page_size : 10
+        },
+        success : function (response) {
+            sayso.study.studies = response.data;
+        } 
+    });
 
+    
     /**
      * Helper function which can be used outside this context (e.g. in KRL)
      *
@@ -65,7 +95,8 @@ $SQ(function () {
     // NOTE: these are currently *always* firing. In the future these should fire only
     // if the current study is set to include them. @todo add conditional logic for that
 
-    // page view
+    // ================================================================
+    // Page View
 
     ajax({
         url : 'http://' + sayso.baseDomain + '/api/metrics/page-view-submit',
@@ -77,7 +108,8 @@ $SQ(function () {
         }
     });
 
-    // search
+    // ================================================================
+    // Search
 
     var searchType = 0,
         searchRegex = '';
@@ -181,6 +213,7 @@ $SQ(function () {
         }
     }
 
+    // ================================================================
     // Tweets
 
     if (location.hostname.match('twitter.com'))
@@ -214,6 +247,7 @@ $SQ(function () {
         });
     }
 
+    // ================================================================
     // Facebook Like
 
     var likeButtons = $SQ('iframe[src*="facebook.com/plugins/like.php"],iframe[src*="facebook.com/widgets/like.php"]');

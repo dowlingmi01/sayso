@@ -7,7 +7,7 @@
             domain : 'hellomusic.com',
             idCookieName : 'MyEmail',
             idType : 'email',
-            loggedInCookieName : 'HMID'
+            loggedInCookieName : 'CHOMPUID'
         }
     };
     

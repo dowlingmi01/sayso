@@ -11,6 +11,45 @@ echo ""
 
 touch ../public/.maintainance
 
+echo ""
+blue "Cleaning cache..."
+echo ""
+
+rm -rfv ../cache/*
+
+cd ../../library
+IN=`pwd`
+echo ""
+blue "Updating library in \"$IN\"..."
+echo ""
+
+$SVN up
+
+cd "$OWNDIR"
+cd ..
+IN=`pwd`
+echo ""
+blue "Updating application in \"$IN\"..."
+echo ""
+
+$SVN up
+
+echo ""
+blue "Purging logs..."
+echo ""
+
+cd "$OWNDIR"
+for f in `find ../log/ -name "*.log"`
+do
+    echo "  Cleaning $f..."
+    echo "" > "$f"
+done;
+
+echo ""
+blue "Dropping all database tables and running all SQL scripts..."
+echo ""
+
+./sayso rebuild
 
 echo ""
 green "Removing maintainance lock file..."

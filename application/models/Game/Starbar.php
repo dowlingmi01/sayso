@@ -198,8 +198,8 @@ abstract class Game_Starbar extends Game_Abstract {
      * Override so we can attach the gamer profile to the request
      * 
      */
-    public function loadGamerProfile ($forceReload = false) {
-        parent::loadGamerProfile($forceReload);
+    public function loadGamerProfile () {
+        parent::loadGamerProfile();
         $this->_request->setParam(Api_AbstractController::GAME, $this);
     }
     

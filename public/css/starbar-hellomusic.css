@@ -429,6 +429,19 @@
 	height: 40%;
 }
 
+#sayso-starbar #starbar-player-console .sb_xpRequired{
+	background-image: url('../images/hellomusic/img_star_sm.png');
+	background-repeat: no-repeat;
+	background-position: 0px 3px;
+	height: 20px;
+	padding: 7px 7px 3px 23px;
+	font-size: 11px;
+	line-height: 22px;
+	color: #333;
+	display: inline;
+}
+
+
 #sayso-starbar #starbar-player-console .sb_imgNote{
 	background-image: url('../images/hellomusic/img_note.png');
 	width: 26px;

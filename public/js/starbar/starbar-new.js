@@ -953,14 +953,14 @@ $SQ(function(){
 						levelIcon.addClass('sb_userLevelIcons');
 						if (level.ordinal == userCurrentLevel.ordinal) {
 							levelIcon.addClass('sb_userLevel_current');
-							levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+bigImageUrl+'\')"></div><p><strong class="sb_theme_textHighlight">'+level.title+'</strong><br /><small class="sb_xpEarned">'+level.ordinal+'</small></p>');
+							levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+bigImageUrl+'\')"></div><p><strong class="sb_theme_textHighlight">'+level.title+'</strong><br /><small class="sb_xpRequired">'+level.ordinal+'</small></p>');
 						} else {
 							if (level.ordinal < userCurrentLevel.ordinal) {
 								levelIcon.addClass('sb_userLevel_earned');
 							} else { // level.ordinal > userCurrentLevel.ordinal
 								levelIcon.addClass('sb_userLevel_next');
 							}
-							levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+smallImageUrl+'\')"></div><p>'+level.title+'<br /><small class="sb_xpEarned">'+level.ordinal+'</small></p>');
+							levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+smallImageUrl+'\')"></div><p>'+level.title+'<br /><small class="sb_xpRequired">'+level.ordinal+'</small></p>');
 						}
 						levelIconsContainerElems.append(levelIcon);
 					});

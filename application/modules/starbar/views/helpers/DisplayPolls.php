@@ -1,9 +1,9 @@
 <?php
 class Starbar_View_Helper_DisplayPolls extends Zend_View_Helper_Abstract
 {
-	function displayPolls($type) {
+	function displayPolls($status) {
 
-		switch ($type) {
+		switch ($status) {
 			case "new":
 				$polls = $this->view->new_polls;
 				$numberToShow= $this->view->count_new_polls;
@@ -28,13 +28,13 @@ class Starbar_View_Helper_DisplayPolls extends Zend_View_Helper_Abstract
 				return;
 		}
 
-		if ($polls) {
+		if ($numberToShow) {
 			$i = 0;
 			foreach ($polls as $survey) {
 				// The numberToShow can be smaller than the size of the list
 				if ($i >= $numberToShow) break;
 				?>
-				<? if ($type == 'new' || $type == 'archived') { // User can take this poll ?>
+				<? if ($status == 'new' || $status == 'archived') { // User can take this poll ?>
 					<h3>
 						<? $iframeHeight = 62 + (ceil($survey->number_of_answers / 2.0) * 32); // 62 base height + 32 per row of answers -- Note that this height estimate is updated after the iframe loads ?>
 						<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>" rel="starbar-poll-<?= $survey->id ?>" iframeHeight="<?= $iframeHeight ?>">
@@ -72,6 +72,14 @@ class Starbar_View_Helper_DisplayPolls extends Zend_View_Helper_Abstract
 				<? 
 				$i++;
 			}
+		} elseif ($status == 'new') { // No new polls, show a message!
+			?>
+			<? if ($this->view->count_archived_polls) { ?>
+				No new polls today, but you still have <?= $this->view->count_archived_polls ?> polls to complete in the <a href="#polls_tabs_3">archives</a>.
+			<? } else { ?>
+				No new polls today, check back soon to earn more notes and chops!
+			<? } ?>
+			<?
 		}
 	}
 }

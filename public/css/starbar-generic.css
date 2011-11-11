@@ -1191,16 +1191,6 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	font-size: 12px;
 	padding: 0px 13px 0px 0px;
 }
-#sayso-starbar #starbar-player-console .sb_theme_iconComplete {
-	background-image: url('../images/generic/img_complete.png');
-	background-repeat: no-repeat;
-	background-position: 0px 0px;
-	width: 24px;
-	height: 24px;
-	display: inline-block;
-	float: left;
-	margin: -2px 10px 0px 0px;
-}
 #sayso-starbar #starbar-player-console h3.sb_theme_iconComplete {
 	background-image: url('../images/generic/img_complete.png');
 	background-repeat: no-repeat;
@@ -1210,7 +1200,9 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	float: left;
 	position: absolute;
 	padding: 3px 0px 3px 35px;
-	margin: 15px 0px 0px 0px;
+	margin: 15px 0px 15px 0px;
+	width: 373px;
+	line-height: 18px;
 }
 #sayso-starbar #starbar-player-console .sb_pointsEarned {
 	background-repeat: no-repeat;

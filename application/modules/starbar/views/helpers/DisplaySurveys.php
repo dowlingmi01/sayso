@@ -38,7 +38,7 @@ class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 				return;
 		}
 
-		if ($surveys) {
+		if ($numberToShow) {
 			$i = 0;
 			foreach ($surveys as $survey) {
 				// The numberToShow can be smaller than the size of the list
@@ -98,6 +98,14 @@ class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 				<? 
 				$i++;
 			}
+		} elseif ($status == 'new') { // No new surveys, show a message!
+			?>
+			<? if ($this->view->count_archived_surveys) { ?>
+				No new surveys today, but you still have <?= $this->view->count_archived_surveys ?> surveys to complete in the <a href="#surveys_tabs_3">archives</a>.
+			<? } else { ?>
+				No new surveys today, check back soon to earn more notes and chops!
+			<? } ?>
+			<?
 		}
 	}
 }

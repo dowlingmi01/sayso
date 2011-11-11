@@ -408,10 +408,9 @@
 #sayso-starbar #starbar-player-console .sb_notesEarned{
 	background-image: url('../images/hellomusic/img_note_sm.png');
 	background-repeat: no-repeat;
-	background-position: 3px 3px;
-	height: 20px;
-	padding: 3px 5px 3px 28px;
-	line-height: 23px;
+	background-position: 5px 3px;
+	padding: 3px 5px 3px 24px;
+	line-height: 21px;
 	font-size: 11px;
 	color: #333;
 	display: block;
@@ -420,13 +419,14 @@
 #sayso-starbar #starbar-player-console .sb_xpEarned{
 	background-image: url('../images/hellomusic/img_star_sm.png');
 	background-repeat: no-repeat;
-	background-position: 0 3px;
-	height: 20px;
-	width: 80px;
-	padding: 7px 5px 3px 21px;
+	background-position: 2px 3px;
+	padding: 3px 7px 3px 24px;
 	font-size: 11px;
-	line-height: 22px;
+	line-height: 21px;
+	border-bottom: 1px solid #c2c2c2;
 	color: #333;
+	display: block;
+	height: 40%;
 }
 
 #sayso-starbar #starbar-player-console .sb_imgNote{
@@ -438,7 +438,10 @@
 
 #sayso-starbar #starbar-player-console .sb_pointsEarnedTotal{
 	width: 65px;
-	float: right;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	position: absolute;
 	border-left: 1px solid #c2c2c2;
 	background-color: #e4e4e4;
 }

@@ -289,19 +289,19 @@ $(function () {
             var index = 0;
             sayso.data.type = span.text();
             switch (span.text()) {
-                case 'ADgregator' :
+                case 'ADjuster Campaign' :
                     index = 0;
                     $('#ad-tags').fadeIn();
                     $('#domains-creative').fadeOut();
                     _updateLinkStyle();
                     break;
-                case 'ADjuster' :
+                case 'ADjuster Creative' :
                     index = 1;
                     $('#domains-creative').fadeIn();
                     $('#ad-tags').fadeOut();
                     _updateLinkStyle();
                     break;
-                case 'BTracker' :
+                case 'ADjuster Behavioral' :
                     index = 2;
                     $('#ad-tags').fadeOut();
                     $('#domains-creative').fadeOut();

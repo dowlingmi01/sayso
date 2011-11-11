@@ -62,7 +62,10 @@
 				$SQ.getScript("http://platform.twitter.com/widgets.js", function(){
 					function handleTweetEvent(event){
 						if (event) {
-							$SQ.remoteControl.handleTweet('poll', <?= $this->survey->id ?>);
+							$SQ('#sayso-starbar').trigger('frameCommunication', ['handleTweet', {
+								shared_type: 'poll',
+								shared_id: <?= $this->survey->id ?>
+							}]);
 						}
 					}
 					twttr.events.bind('tweet', handleTweetEvent);

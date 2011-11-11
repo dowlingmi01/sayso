@@ -4,7 +4,10 @@
 			if (event) {
 				matches = event.target.src.match(/%3Fdid%3D(\d+)&/i);
 				if (matches && matches.length == 2) {
-					$SQ.handleTweet('promos', matches[1]);
+					$SQ('#sayso-starbar').trigger('frameCommunication', ['handleTweet', {
+						shared_type: 'promos',
+						shared_id: matches[1]
+					}]);
 				}
 			}
 		}

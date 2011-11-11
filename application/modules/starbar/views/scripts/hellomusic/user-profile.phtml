@@ -85,7 +85,10 @@
 				$SQ.getScript("http://platform.twitter.com/widgets.js", function(){
 					function handleTweetEvent(event){
 						if (event) {
-							$SQ.handleTweet('starbar', window.sayso.starbar.id);
+							$SQ('#sayso-starbar').trigger('frameCommunication', ['handleTweet', {
+								shared_type: 'starbar',
+								shared_id: window.sayso.starbar.id
+							}]);
 						}
 					}
 					twttr.events.bind('tweet', handleTweetEvent);

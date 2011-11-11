@@ -271,6 +271,11 @@
 	text-align: center;
 }
 
+#sayso-starbar #starbar-player-console #starbar-level .sb_popBoxInner .sb_popContent{
+	width: 570px;
+	height: 360px;
+}
+
 #sayso-starbar #starbar-player-console #starbar-level .sb_popContent .sb_user-level{
 	text-align: center;
 }
@@ -415,13 +420,13 @@
 #sayso-starbar #starbar-player-console .sb_xpEarned{
 	background-image: url('../images/hellomusic/img_star_sm.png');
 	background-repeat: no-repeat;
-	background-position: 3px 3px;
+	background-position: 0 3px;
 	height: 20px;
-	padding: 3px 5px 3px 26px;
+	width: 80px;
+	padding: 7px 5px 3px 21px;
 	font-size: 11px;
 	line-height: 22px;
 	color: #333;
-	display: block;
 }
 
 #sayso-starbar #starbar-player-console .sb_imgNote{
@@ -592,11 +597,11 @@
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_earned,
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next{
-	width: 95px;
+	width: 112px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_current{
-	width: 95px;
+	width: 122px;
 	height: 139px; /* fixed height to allow scrollPane to have correct height */
 }
 
@@ -1126,17 +1131,17 @@
 /* user levels */
 
 #sayso-starbar #starbar-player-console #sb_popBox_user-level.sb_popBox{
-	left: -307px;
+	left: -380px;
 }
 
 #sayso-starbar #sb_popBox_user-level.sb_triangle-border:before{
-	left: 370px;
+	left: 447px;
 }
 #sayso-starbar #sb_popBox_user-level.sb_triangle-border:after{
-	left: 371px;
+	left: 448px;
 }
 #sayso-starbar #sb_popBox_user-level .sb_triangle-solid:after{
-	left: 368px;
+	left: 445px;
 }
 
 /* promo */

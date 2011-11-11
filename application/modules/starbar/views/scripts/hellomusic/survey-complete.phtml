@@ -11,11 +11,11 @@
 			if (event) {
 				$SQ('#sayso-starbar').trigger('frameCommunication', ['handleTweet', {
 					shared_type: 'survey',
-					shared_id: <?= $this->survey->id ?>
+					shared_id: "<?= $this->survey->id ?>"
 				}]);
 			}
 		}
-		twttr.events.bind('tweet', handleTweetEvent);
+		twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
 	});
 </script>
 <div id="sayso-starbar-embed">

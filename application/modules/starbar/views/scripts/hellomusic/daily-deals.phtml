@@ -11,8 +11,14 @@
 				}
 			}
 		}
-		twttr.events.bind('tweet', handleTweetEvent);
+		twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
 	});
+	
+	$SQ('#sayso-starbar').trigger('frameCommunication', ['hideAlertByNotificationMessageId', {
+		message_id: 9,
+		animate: true,
+		perform_ajax_call: true
+	}]);
 </script>
 <div class="sb_header">
 	<h2 class="sb_title"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/logo_hellomusic.png" alt="HelloMusic logo" width="70" /> Deals</h2>

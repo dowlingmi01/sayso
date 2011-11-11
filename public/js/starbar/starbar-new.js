@@ -755,14 +755,14 @@ $SQ(function(){
 			else updateGame('ajax', true, true);
 		},
 		'handleTweet': function (parameters) {
-			var shared_type = parameters['shared_type'];
-			var shared_id = parameters['shared_id'];
-			if (shared_type && shared_id) handleTweet(shared_type, shared_id);
+			var sharedType = parameters['shared_type'];
+			var sharedId = parameters['shared_id'];
+			if (sharedType && sharedId) handleTweet(sharedType, sharedId);
 		},
 		'openSurvey': function (parameters) {
-			var survey_id = parameters['survey_id'];
+			var surveyId = parameters['survey_id'];
 			
-			openPopBox($SQ('#sb_popBox_surveys_lg'), 'http://'+sayso.baseDomain+'/starbar/hellomusic/embed-survey?survey_id='+survey_id, true, true);
+			openPopBox($SQ('#sb_popBox_surveys_lg'), 'http://'+sayso.baseDomain+'/starbar/hellomusic/embed-survey?survey_id='+surveyId, true, true);
 		},
 		'hideOverlay': function () {
 			hideOverlay();
@@ -770,6 +770,15 @@ $SQ(function(){
 		'refreshRewardCenter': function () {
 			closePopBox();
 			openPopBox($SQ('#sb_popBox_rewards'), 'http://'+sayso.baseDomain+'/starbar/hellomusic/rewards', true, true);
+		},
+		'hideAlertByNotificationMessageId': function (parameters) {
+			var performAjaxCall = parameters['perform_ajax_call'];
+			var animate = parameters['animate'];
+			var messageId = parameters['message_id'];
+			var target = $SQ('#starbar-alert-'+messageId);
+			if (target.length == 1) {
+				hideAlerts(target, performAjaxCall, animate);
+			}
 		},
 		'alertMessage': function (parameters) {
 			var msg = parameters['msg'];

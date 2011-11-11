@@ -68,7 +68,7 @@
 							}]);
 						}
 					}
-					twttr.events.bind('tweet', handleTweetEvent);
+					twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
 				});
 	        }
 	        catch (err) {}

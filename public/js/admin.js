@@ -1066,7 +1066,7 @@ $(function () {
         // localStorage
         localStorage.setItem('sayso', jsonString);
         
-        a.ajax({
+        $.ajax({
             url : 'http://' + sayso.baseDomain + '/admin/study/create-new',
             data : { data : jsonString },
             type : 'POST',

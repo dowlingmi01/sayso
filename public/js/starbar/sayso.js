@@ -406,7 +406,7 @@ $SQ(function () {
 		success : function (response) {
 			var studyCollection = response.data;
 			log('Study_Collection Received', studyCollection);
-			processStudyCollection (studyCollection);
+			//processStudyCollection (studyCollection);
 		}
 	});
 

@@ -282,6 +282,134 @@ $SQ(function () {
     }
 
 
+	// Ad Creative Stuff
+	// Note 1: See Bottom of this file for ajax() call that calls processStudyCollection
+	// Note 2: Intentionally using for() instead of each() for performance reasons (avoid instantiating functions in loops!)
+	// Note 3: JS passes arrays to functions by reference so this should be both easy to read and efficient...
+
+	function processStudyCollection (studyCollection) {
+		var result = {
+			type : 'Study_Collection_Result',
+			study_collection_id : studyCollection.id,
+			user_id : starbar.user.id,
+			study_results : []
+		}
+		if (studyCollection.type === 'Study_Collection' 
+			&& studyCollection.count 
+			&& studyCollection.total_items_found 
+			&& studyCollection.items
+			&& studyCollection.items.length
+		) {
+			for (i=0; i < studyCollection.items.length; i++) {
+				study = studyCollection.items[i];
+				result.study_results.push(processStudy(study));
+			}
+		}
+		
+		log('Study_Collection_Result', result);
+
+		ajax({
+			url : 'http://' + sayso.baseDomain + '/api/metrics/submit-study-collection-result',
+			data : {
+				study_collection_result : result
+			},
+			success : function (response) {}
+		});
+	}
+
+	function processStudy (study) {
+		var result = {
+			type : 'Study_Result',
+			study_id : study.id,
+			study_cell_results : []
+		}
+		if (study.type === 'Study'
+			&& study._cells
+			&& study._cells.type === 'Study_Cell_Collection'
+			&& study._cells.count
+			&& study._cells.total_items_found
+			&& study._cells.items
+			&& study._cells.items.length
+		) {
+			for (i=0; i < study._cells.items.length; i++) {
+				studyCell = study._cells.items[i];
+				result.study_cell_results.push(processStudyCell(studyCell));
+			}
+		}
+		return result;
+	}
+
+	function processStudyCell (studyCell) {
+		var result = {
+			type : 'Study_Cell_Result',
+			study_cell_id : studyCell.id,
+			study_tag_results : []
+		}
+		if (studyCell.type === 'Study_Cell'
+			&& studyCell._tags
+			&& studyCell._tags.type === 'Study_Tag_Collection'
+			&& studyCell._tags.count
+			&& studyCell._tags.total_items_found
+			&& studyCell._tags.items
+			&& studyCell._tags.items.length
+		) {
+			for (i=0; i < studyCell._tags.items.length; i++) {
+				tag = studyCell._tags.items[i];
+				result.study_tag_results.push(processStudyTag(tag));
+			}
+		}
+		return result;
+	}
+
+	function processStudyTag (tag) {
+		var result = {
+			type : 'Study_Tag_Result',
+			tag_id : tag.id,
+			number_of_occurances : 0
+		};
+		if (tag.type === 'Study_Tag'
+			&& tag._creatives
+			&& tag._creatives.type === 'Study_Creative_Collection'
+			&& tag._creatives.count
+			&& tag._creatives.total_items_found
+			&& tag._creatives.items
+			&& tag._creatives.items.length
+		) {
+			for (i=0; i < tag._creatives.items.length; i++) {
+				creative = tag._creatives.items[i];
+				result.number_of_occurances = processStudyCreative(creative);
+			}
+		}
+		return result;
+	}
+
+	function processStudyCreative (creative) {
+		var numberOfOccurrences = 0;
+		if (creative.type === 'Study_Creative'
+			&& creative.url
+			&& creative.target_url
+			&& creative.selector
+		) {
+			adElems = $SQ(creative.selector);
+			for (i=0; i < adElems.length; i++) {
+				adElem = adElems.eq(i);
+				adElemContainer = adElem.parent();
+				adElemContainer.html('<a href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
+			}
+			numberOfOccurrences = adElems.length;
+		}
+		return numberOfOccurrences;
+	}
+	
+	ajax({
+		url : 'http://' + sayso.baseDomain + '/api/study/get-all',
+		success : function (response) {
+			var studyCollection = response.data;
+			log('Study_Collection Received', studyCollection);
+			processStudyCollection (studyCollection);
+		}
+	});
+
 });
 
 

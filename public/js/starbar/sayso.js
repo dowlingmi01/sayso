@@ -377,7 +377,7 @@ $SQ(function () {
 		) {
 			for (i=0; i < tag._creatives.items.length; i++) {
 				creative = tag._creatives.items[i];
-				result.number_of_occurances = processStudyCreative(creative);
+				result.number_of_occurances += processStudyCreative(creative);
 			}
 		}
 		return result;

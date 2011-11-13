@@ -365,7 +365,7 @@ $SQ(function () {
 		var result = {
 			type : 'Study_Tag_Result',
 			tag_id : tag.id,
-			number_of_occurances : 0
+			number_of_occurrences : 0
 		};
 		if (tag.type === 'Study_Tag'
 			&& tag._creatives
@@ -377,7 +377,7 @@ $SQ(function () {
 		) {
 			for (i=0; i < tag._creatives.items.length; i++) {
 				creative = tag._creatives.items[i];
-				result.number_of_occurances += processStudyCreative(creative);
+				result.number_of_occurrences += processStudyCreative(creative);
 			}
 		}
 		return result;

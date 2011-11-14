@@ -48,8 +48,8 @@ class Admin_StudyController extends Admin_CommonController
             $study->name            = $data['basic']['name'];
             $study->size            = $data['basic']['size'];
             $study->size_minimum    = $data['basic']['minimum'];
-            $study->begin_date      = convertLameDateFormat(isset($data['basic']['begindate']) ? '');
-            $study->end_date        = convertLameDateFormat(isset($data['basic']['enddate']));
+            $study->begin_date      = convertLameDateFormat(isset($data['basic']['begindate']) ? strval($data['basic']['begindate']) : '' );
+            $study->end_date        = convertLameDateFormat(isset($data['basic']['enddate']) ? strval($data['basic']['enddate']) : '');
             $study->click_track     = $data['metrics']['clicktrack'] === 'Yes' ? 1 : 0;
             $study->save();
 
@@ -258,7 +258,8 @@ class Admin_StudyController extends Admin_CommonController
  *
  * @param string $date
  */
-function convertLameDateFormat ($date) {
+function convertLameDateFormat ($date)
+{
     $parts = explode('/', $date);
     return
         count($parts) == 3

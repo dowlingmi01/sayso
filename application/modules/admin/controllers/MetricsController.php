@@ -53,6 +53,9 @@ class Admin_MetricsController extends Admin_CommonController
         $rows           = array();
         $lastRowId      = $this->_getParam('lastRowId');
         $pollForTypes   = $this->_getParam('pollForTypes');
+        $onlyUser       = isset($_COOKIE['control-metrics-user-only'])
+                            ? intval($_COOKIE['control-metrics-user-only'])
+                            : 0;
 
         //var_dump($pollForTypes);exit(0);
 
@@ -70,6 +73,10 @@ class Admin_MetricsController extends Admin_CommonController
         $rows       = array();
 
         try{
+            
+            $criteria = array('onlyUser' => $onlyUser);
+            $builder->setCriteria($criteria);
+
             if(!$firstRun)
             {
                 $builder->setLastIds($lastRowId);

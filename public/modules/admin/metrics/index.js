@@ -30,7 +30,8 @@ function prependRows()
 
             html += '<div class="updates-entry ' + rowStyle + '">';
                 html += '<div class="updates-entry-user">';
-                    html += 'User Id '+ v.userId ;
+                    html += '<a href="javascript:void(null)" rel="'+ v.userId +'" class="filterUserOnly"'
+                            +' title="Filter this user only">User Id '+ v.userId +'</a>';
                 html += '</div>';
                 html += '<div class="updates-entry-starbar">';
                     html += v.starbar ;
@@ -53,6 +54,12 @@ function prependRows()
         {
             $('#updates .updates-entry:last').remove();
         }
+        // bind filetr user only
+        $('.filterUserOnly').unbind('click').bind('click', function()
+        {
+            $.cookie('control-metrics-user-only', $(this).attr('rel'));
+            self.location.reload();
+        });
     }
 }
 
@@ -61,8 +68,8 @@ function doPoll()
     var data            = {lastRowId : window._adminPoller.lastRowId};
     var pollSocial      = $('#control-social').attr('checked') ? 1 : 0;
     var pollPageView    = $('#control-page-view').attr('checked') ? 1 : 0;
-    var pollMetrics     = $('#control-metrics').attr('checked') ? 1 : 0;
-    
+    var pollMetrics     = $('#control-metrics').attr('checked') ? 1 : 0;   
+
     // nothing to poll for...
     if(!pollSocial && !pollPageView && !pollMetrics)
     {
@@ -155,6 +162,21 @@ function bindControls()
         $.cookie('controlMetrics', $(this).attr('checked') ? 'on' : 'off');
         self.location.reload();
     });
+
+    // handle setting a user filter
+    if($.cookie('control-metrics-user-only') != undefined && $.cookie('control-metrics-user-only') > 0)
+    {
+        var html = '<label for="control-metrics-remove-user-filter"><input id="control-metrics-remove-user-filter" '
+                    +'type="checkbox" value="'+$.cookie('control-metrics-user-only')
+                    +'" checked="checked">User Id '+$.cookie('control-metrics-user-only')+'</label>';
+        $('#controls').append(html);
+        $('#control-metrics-remove-user-filter').unbind().bind('click', function()
+        {
+            $.cookie('control-metrics-user-only', null);
+            self.location.reload();
+        });
+    }
+
 }
 
 function bindAll()

@@ -36,6 +36,8 @@ class Metrics_FeedCollection
 
     private $sqlParams      = array();
 
+    private $onlyUser       = 0 ;
+
 
     public function setTypes(array $types)
     {
@@ -61,6 +63,12 @@ class Metrics_FeedCollection
         {
             if($this->pollMetrics)
             {
+                $addOnlyUserSQL = "";
+                if($this->onlyUser > 0)
+                {
+                    $addOnlyUserSQL     = "AND ms.user_id = ?";
+                    $this->sqlParams[]  = $this->onlyUser;
+                }
                 $sqlChunks[]=<<<EOT
 (
     SELECT
@@ -77,6 +85,7 @@ class Metrics_FeedCollection
         metrics_search ms, `user` u1, starbar s1, lookup_search_engines lsa
     WHERE
         ms.user_id = u1.id
+        $addOnlyUserSQL
         AND ms.starbar_id = s1.id
         AND ms.search_engine_id = lsa.id
 )
@@ -84,6 +93,12 @@ EOT;
             }
             if($this->pollPageView)
             {
+                $addOnlyUserSQL = "";
+                if($this->onlyUser > 0)
+                {
+                    $addOnlyUserSQL     = "AND mpv.user_id = ?";
+                    $this->sqlParams[]  = $this->onlyUser;
+                }
                 $sqlChunks[]=<<<EOT
 (
     SELECT
@@ -99,13 +114,19 @@ EOT;
         metrics_page_view mpv, `user` u2, starbar s2
     WHERE
         mpv.user_id = u2.id
+        $addOnlyUserSQL
         AND mpv.starbar_id = s2.id
-
 )
 EOT;
             }
             if($this->pollSocial)
             {
+                $addOnlyUserSQL = "";
+                if($this->onlyUser > 0)
+                {
+                    $addOnlyUserSQL     = "AND msa.user_id = ?";
+                    $this->sqlParams[]  = $this->onlyUser;
+                }
                 $sqlChunks[]=<<<EOT
 (
     SELECT
@@ -122,6 +143,7 @@ EOT;
         metrics_social_activity msa, `user` u3, starbar s3, lookup_social_activity_type sat
     WHERE
         msa.user_id = u3.id
+        $addOnlyUserSQL
         AND msa.starbar_id = s3.id
         AND msa.social_activity_type_id = sat.id
 )
@@ -141,6 +163,12 @@ EOT;
         {
             if($this->pollMetrics)
             {
+                $addOnlyUserSQL = "";
+                if($this->onlyUser > 0)
+                {
+                    $addOnlyUserSQL     = "AND ms.user_id = ?";
+                    $this->sqlParams[]  = $this->onlyUser;
+                }
                 $sqlChunks[] = <<<EOT
 (
     SELECT
@@ -157,6 +185,7 @@ EOT;
         metrics_search ms, `user` u1, starbar s1, lookup_search_engines lsa
     WHERE
         ms.user_id = u1.id
+        $addOnlyUserSQL
         AND ms.created > ?
         AND ms.starbar_id = s1.id
         AND ms.search_engine_id = lsa.id
@@ -168,6 +197,12 @@ EOT;
             }
             if($this->pollPageView)
             {
+                $addOnlyUserSQL = "";
+                if($this->onlyUser > 0)
+                {
+                    $addOnlyUserSQL     = "AND mpv.user_id = ?";
+                    $this->sqlParams[]  = $this->onlyUser;
+                }
                 $sqlChunks[]=<<<EOT
 (
     SELECT
@@ -183,10 +218,10 @@ EOT;
         metrics_page_view mpv, `user` u2, starbar s2
     WHERE
         mpv.user_id = u2.id
+        $addOnlyUserSQL
         AND mpv.created > ?
         AND mpv.starbar_id = s2.id
         AND mpv.id > ?
-
 )
 EOT;
                 $this->sqlParams[] = $this->rowsAfter;
@@ -194,6 +229,12 @@ EOT;
             }
             if($this->pollSocial)
             {
+                $addOnlyUserSQL = "";
+                if($this->onlyUser > 0)
+                {
+                    $addOnlyUserSQL     = "AND msa.user_id = ?";
+                    $this->sqlParams[]  = $this->onlyUser;
+                }
                 $sqlChunks[]=<<<EOT
 (
     SELECT
@@ -210,6 +251,7 @@ EOT;
         metrics_social_activity msa, `user` u3, starbar s3, lookup_social_activity_type sat
     WHERE
         msa.user_id = u3.id
+        $addOnlyUserSQL
         AND msa.created > ?
         AND msa.starbar_id = s3.id
         AND msa.social_activity_type_id = sat.id
@@ -242,7 +284,18 @@ EOT;
         $this->lastPageViewId       = isset($criteria['lastPageViewId']) ? intval($criteria['lastPageViewId']) : 0;
         $this->lastSocialActivityId = isset($criteria['lastSocialActivityId']) ? intval($criteria['lastSocialActivityId']) : 0;
         $this->rowsAfter            = isset($criteria['rowsAfter']) ? $criteria['rowsAfter'] : '0000-00-00 00:00:00' ;
+        $this->onlyUser             = isset($criteria['onlyUser']) ? intval($criteria['onlyUser']) : 0 ;
         $this->isFirstCall          = false;
+    }
+
+    /**
+     * Set main settings
+     *
+     * @param array $criteria
+     */
+    public function setCriteria(array $criteria)
+    {
+        $this->onlyUser = isset($criteria['onlyUser']) ? intval($criteria['onlyUser']) : 0 ;
     }
 
     /**
@@ -261,7 +314,6 @@ EOT;
 
         // Prepare params array
         $sql = array($this->sql);
-
         // Call dynamically
         $results = call_user_func_array(array('Db_Pdo', 'fetchAll'), array_merge($sql, $this->sqlParams));
         return new ArrayObject($results);

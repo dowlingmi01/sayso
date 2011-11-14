@@ -172,7 +172,7 @@ class Admin_StudyController extends Admin_CommonController
                 $cell->cell_type    = $cellData['type'];
                 $cell->save();
 
-                foreach ($cellData->adtag as $adTagId)
+                foreach ($cellData['adtag'] as $adTagId)
                 {
                     $tag = $tagsByClientIds[$adTagId];
                     /* @var $tag Study_Tag */
@@ -185,7 +185,7 @@ class Admin_StudyController extends Admin_CommonController
                 {
                     if ($cellData['qualifier']['browse'])
                     {
-                        foreach ($cellData->qualifier->browse as $browseQualifierData)
+                        foreach ($cellData['qualifier']['browse'] as $browseQualifierData)
                         {
                             $browseQualifier            = new Study_CellBrowsingQualifier();
                             $browseQualifier->cell_id   = $cell->getId();
@@ -219,7 +219,7 @@ class Admin_StudyController extends Admin_CommonController
                             $searchQualifier->save();
                             if ($searchQualifierData['whichIds'])
                             {
-                                foreach ($searchQualifierData->whichIds as $searchEngineId)
+                                foreach ($searchQualifierData['whichIds'] as $searchEngineId)
                                 {
                                     $map                            = new Study_CellSearchQualifierMap();
                                     $map->cell_qualifier_search_id  = $searchQualifier->getId();

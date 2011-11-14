@@ -1062,7 +1062,7 @@ $(function () {
         $.getJSON(url, data, function(response)
         {            
             $('html,body').animate({scrollTop:0}, 2000);
-            if(response.messages.result)
+            if(response.messages.result > 0)
             {
                 /**
                  * @todo legacy stuff does not work yet...

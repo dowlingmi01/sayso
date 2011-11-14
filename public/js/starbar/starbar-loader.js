@@ -102,18 +102,23 @@
             _waitTime = 50,
             _symbol = '',
             _callback = null,
+            _elseCallback = null,
             _timeout = null,
             _instance = this,
             ref = null;
         
-        function _check () {
+        function _checkAgain () {
             if (_counter++ <= _maxCount) {
                 _timeout = setTimeout(_waitUntilJsLoaded, _waitTime);
+            } else {
+                if (typeof _elseCallback === 'function') {
+                    _elseCallback();
+                }
             }
         }
         function _waitUntilJsLoaded () {
             try {
-                if (eval(_symbol)) {
+                if ((typeof _symbol === 'function' && _symbol()) || (typeof _symbol === 'string' && eval(_symbol))) {
                     if (_timeout) clearTimeout(_timeout);
                     try {
                         _callback();
@@ -122,25 +127,30 @@
                     }
                     return;
                 } else {
-                    _check();
+                    _checkAgain();
                 }
             } catch (exception) { 
-                _check();
+                _checkAgain();
             } 
         }
         this.setMaxCount = function (max) {
             _maxCount = max;
+            return this;
         };
         this.setInterval = function (interval) {
             _waitTime = interval;
+            return this;
         };
         this.setLocalReference = function (reference) {
             ref = reference;
+            return this;
         };
-        this.start = function (symbol, callback) {
+        this.start = function (symbol, callback, elseCallback) {
             _symbol = symbol;
             _callback = callback;
+            _elseCallback = elseCallback;
             _waitUntilJsLoaded();
+            return this;
         };
     }
     
@@ -184,6 +194,9 @@
         // bring in the Starbar
         var jQueryLoadTimer = new jsLoadTimer();
         jQueryLoadTimer.start('window.$SQ', function () {
+            
+            $SQ.jsLoadTimer = jsLoadTimer;
+            $SQ.cssLoadTimer = cssLoadTimer;
             
             var params = {
                 starbar_id : sayso.starbar.id,

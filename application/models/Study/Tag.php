@@ -8,18 +8,18 @@ class Study_Tag extends Record
     protected $_uniqueFields = array('tag' => '');
     
     /**
-     * @var Study_Collection_Domain
+     * @var Study_DomainCollection
      */
     protected $_domains;
     
     /**
-     * @var Study_Collection_Creative
+     * @var Study_CreativeCollection
      */
     protected $_creatives;
     
     public function init () {
-        $this->_domains = new Study_Collection_Domain();
-        $this->_creatives = new Study_Collection_Creative();
+        $this->_domains = new Study_DomainCollection();
+        $this->_creatives = new Study_CreativeCollection();
         parent::init();
     }
     
@@ -61,7 +61,8 @@ class Study_Tag extends Record
         $fields = array(
             'user_id',
             'name',
-            'tag'
+            'tag',
+            'target_url'
         );
         return array_intersect_key($this->getData(), array_flip($fields));
     }

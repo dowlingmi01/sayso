@@ -13,7 +13,7 @@ class Study_Survey extends Record
     protected $_study;
     
     /**
-     * @var Study_Collection_SurveyCriteria
+     * @var Study_SurveyCriteriaCollection
      */
     protected $_criteria;
     
@@ -23,7 +23,7 @@ class Study_Survey extends Record
     
     public function addCriterion (Study_SurveyCriterion $criterion) {
         if (!$this->_criteria) {
-            $this->_criteria = new Study_Collection_SurveyCriteria();
+            $this->_criteria = new Study_SurveyCriteriaCollection();
         }
         $this->_criteria->addItem($criterion);
     }

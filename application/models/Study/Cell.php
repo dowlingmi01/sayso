@@ -6,12 +6,12 @@ class Study_Cell extends Record
     protected $_tableName = 'study_cell';
     
     /**
-     * @var Study_Collection_Tag
+     * @var Study_TagCollection
      */
     protected $_tags;
     
     public function init () {
-        $this->_tags = new Study_Collection_Tag();
+        $this->_tags = new Study_TagCollection();
         parent::init();
     }
     

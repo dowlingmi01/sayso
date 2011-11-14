@@ -8,20 +8,24 @@
  */
 (function($){var a={},c="doTimeout",d=Array.prototype.slice;$[c]=function(){return b.apply(window,[0].concat(d.call(arguments)))};$.fn[c]=function(){var f=d.call(arguments),e=b.apply(this,[c+f[0]].concat(f));return typeof f[0]==="number"||typeof f[1]==="number"?this:e};function b(l){var m=this,h,k={},g=l?$.fn:$,n=arguments,i=4,f=n[1],j=n[2],p=n[3];if(typeof f!=="string"){i--;f=l=0;j=n[1];p=n[2]}if(l){h=m.eq(0);h.data(l,k=h.data(l)||{})}else{if(f){k=a[f]||(a[f]={})}}k.id&&clearTimeout(k.id);delete k.id;function e(){if(l){h.removeData(l)}else{if(f){delete a[f]}}}function o(){k.id=setTimeout(function(){k.fn()},j)}if(p){k.fn=function(q){if(typeof p==="string"){p=g[p]}p.apply(m,d.call(n,i))===true&&!q?o():e()};o()}else{if(k.fn){j===undefined?e():k.fn(j===false);return true}else{e()}}}})($SQ);
 
+// available to this script:
+//     $SQ.jsLoadTimer
+//     $SQ.cssLoadTimer
+// (see starbar-loader.js)
 
 $SQ(function () {
 
-    // setup
-    
-    // PENDING: how does this factor in to iframes. Does the sayso object get transferred correctly between the iframe's window?? if not, how to handle that??
-    // what if anything needs to be communicated to the 'top' window??
+    if (top !== self) return; // <-- hack to prevent iframe processing until we are ready for this (pending NY demos)
+    // NOTE: implement caching (per @todo below) before implementing iframe support
 
-    if (!window.sayso.study) window.sayso.study = {};
-    
+    // setup
+
     var sayso = window.sayso,
         starbar = window.sayso.starbar,
         log = window.sayso.log,
         warn = window.sayso.warn;
+    
+    if (!sayso.study) sayso.study = {};
 
     var ajax = function (options) {
         options.data = $SQ.extend(options.data || {}, {
@@ -34,20 +38,6 @@ $SQ(function () {
         options.dataType = 'jsonp';
         return $SQ.ajax(options);
     };
-    
-    // get Study data
-    
-    ajax({
-        url : 'http://' + sayso.baseDomain + '/api/study/get-all',
-        data : {
-            page_number : 1,
-            page_size : 10
-        },
-        success : function (response) {
-            sayso.study.studies = response.data;
-        } 
-    });
-
     
     /**
      * Helper function which can be used outside this context (e.g. in KRL)
@@ -84,16 +74,16 @@ $SQ(function () {
     {
         if (trackerBlackList[i].test(location.href))
         {
-            warn('Disabling tracking on own domains...');
-            return;
+//            warn('Disabling tracking on own domains...');
+//            return;
         }
     }
     // ... end blacklist...
 
     // Behavioral tracking
 
-    // NOTE: these are currently *always* firing. In the future these should fire only
-    // if the current study is set to include them. @todo add conditional logic for that
+    // NOTE: basic behavioral tracking (i.e. not ad tracking) fires
+    // continuously regardless of study behavioral settings
 
     // ================================================================
     // Page View
@@ -281,145 +271,111 @@ $SQ(function () {
         });
     }
 
-
-	// Ad Creative Stuff
-	// Note 1: See Bottom of this file for ajax() call that calls processStudyCollection
-	// Note 2: Intentionally using for() instead of each() for performance reasons (avoid instantiating functions in loops!)
-	// Note 3: JS passes arrays to functions by reference so this should be both easy to read and efficient...
-
-	function processStudyCollection (studyCollection) {
-		var result = {
-			type : 'Study_Collection_Result',
-			study_collection_id : studyCollection.id,
-			user_id : starbar.user.id,
-			study_results : []
-		}
-		if (studyCollection.type === 'Study_Collection' 
-			&& studyCollection.count 
-			&& studyCollection.total_items_found 
-			&& studyCollection.items
-			&& studyCollection.items.length
-		) {
-			for (i=0; i < studyCollection.items.length; i++) {
-				study = studyCollection.items[i];
-				result.study_results.push(processStudy(study));
+    // @todo optimize the retreival of active studies for the current user.
+    // this will likely include a combination of a server-side daemon for handling
+    // study cell assignments, server-side caching (which the daemon will also
+    // manage the state of depending on assignments) and client-side caching.
+    // For now, we just retreive all studies on every page load (though not every iframe)
+    
+    ajax({
+        url : 'http://' + sayso.baseDomain + '/api/study/get-all',
+        data : {
+            page_number : 1,
+            page_size : 10
+        },
+        success : function (response) {
+            studies = response.data;
+            log(studies);
+            processStudyCollection(studies);
+        } 
+    });
+    
+	function processStudyCollection (studies) {
+	    
+	    var cellAdActivity = {}, // { id : 1, tagViews : [], creativeViews : []}
+	        adsFound = 0,
+	        replacements = 0,
+	        numStudies = studies.items.length;
+	    
+		if (numStudies) { 
+		    
+		    // studies
+			for (var s = 0; s < numStudies; s++) {
+			    var study = studies.items[s];
+			    var numCells = study._cells.items.length;
+	            if (numCells) {
+	                
+	                // cells
+	                for (var c = 0; c < numCells; c++) {
+	                    var cell = study._cells.items[c];
+	                    var currentActivity = cellAdActivity[cell.id] = {
+	                        tagViews : [],
+	                        creativeViews : []
+	                    };
+	                    var numTags = cell._tags.items.length;
+	                    if (numTags) {
+	                        
+	                        // tags
+	                        for (var t = 0; t < numTags; t++) {
+	                            var tag = cell._tags.items[t];
+	                            var jTag = $SQ(tag.tag);
+	                            if (jTag.length) { // tag exists
+	                                
+	                                adsFound++;
+	                                
+	                                var numCreatives = tag._creatives.items.length;
+	                                if (numCreatives) { // ADjuster Creative ------------
+	                                    
+	                                    replacements++;
+	                                    
+	                                    // @hack just grab the first creative for now
+	                                    // @todo enable cycling through each creative
+	                                    var creative = tag._creatives.items[0];
+	                                    
+	                                    // replace ad
+	                                    jTag.parent().html('<a href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
+	                                    
+	                                    // record view of the creative
+	                                    currentActivity.creativeViews.push(creative.id);
+	                                    
+	                                    // @todo store creative.target_url to check for click-thru
+	                                    
+	                                } else { // ADjuster Campaign ------------------------
+	                                    
+	                                    // track ad view
+	                                    currentActivity.tagViews.push(tag.id);
+	                                    
+	                                    // @todo store tag.target_url to check for click-thru
+	                                }
+	                            }
+	                        }
+	                    }
+	                }
+	            }
 			}
+			new $SQ.jsLoadTimer().setMaxCount(50).start(
+			    function () { return numStudies === s && adsFound; }, // condition
+			    function () {                                         // callback
+			        log('Ads found ' + adsFound + '. Replacements ' + replacements);
+    			    ajax({
+                        url : 'http://' + sayso.baseDomain + '/api/metrics/track-ad-views',
+                        data : {
+                            // note: user_id, starbar_id are included in ajax() wrapper
+                            // study_id is associated via cell id, which is included in cellAdActivity
+                            cell_activity : JSON.stringify(cellAdActivity)
+                        },
+                        success : function (response) {
+                             
+                        }
+                    });
+			    },
+			    function () {
+			        log('No ads found');
+			    }
+			);
 		}
-		
-		log('Study_Collection_Result', result);
-
-		ajax({
-			url : 'http://' + sayso.baseDomain + '/api/metrics/submit-study-collection-result',
-			data : {
-				study_collection_result : result
-			},
-			success : function (response) {}
-		});
 	}
-
-	function processStudy (study) {
-		var result = {
-			type : 'Study_Result',
-			study_id : study.id,
-			study_cell_results : []
-		}
-		if (study.type === 'Study'
-			&& study._cells
-			&& study._cells.type === 'Study_Cell_Collection'
-			&& study._cells.count
-			&& study._cells.total_items_found
-			&& study._cells.items
-			&& study._cells.items.length
-		) {
-			for (i=0; i < study._cells.items.length; i++) {
-				studyCell = study._cells.items[i];
-				result.study_cell_results.push(processStudyCell(studyCell));
-			}
-		}
-		return result;
-	}
-
-	function processStudyCell (studyCell) {
-		var result = {
-			type : 'Study_Cell_Result',
-			study_cell_id : studyCell.id,
-			study_tag_results : []
-		}
-		if (studyCell.type === 'Study_Cell'
-			&& studyCell._tags
-			&& studyCell._tags.type === 'Study_Tag_Collection'
-			&& studyCell._tags.count
-			&& studyCell._tags.total_items_found
-			&& studyCell._tags.items
-			&& studyCell._tags.items.length
-		) {
-			for (i=0; i < studyCell._tags.items.length; i++) {
-				tag = studyCell._tags.items[i];
-				result.study_tag_results.push(processStudyTag(tag));
-			}
-		}
-		return result;
-	}
-
-	function processStudyTag (tag) {
-		var result = {
-			type : 'Study_Tag_Result',
-			tag_id : tag.id,
-			number_of_occurrences : 0
-		};
-		if (tag.type === 'Study_Tag'
-			&& tag._creatives
-			&& tag._creatives.type === 'Study_Creative_Collection'
-			&& tag._creatives.count
-			&& tag._creatives.total_items_found
-			&& tag._creatives.items
-			&& tag._creatives.items.length
-		) {
-			for (i=0; i < tag._creatives.items.length; i++) {
-				creative = tag._creatives.items[i];
-				result.number_of_occurrences += processStudyCreative(creative);
-			}
-		}
-		return result;
-	}
-
-	function processStudyCreative (creative) {
-		var numberOfOccurrences = 0;
-		if (creative.type === 'Study_Creative'
-			&& creative.url
-			&& creative.target_url
-			&& creative.selector
-		) {
-			adElems = $SQ(creative.selector);
-			for (i=0; i < adElems.length; i++) {
-				adElem = adElems.eq(i);
-				adElemContainer = adElem.parent();
-				adElemContainer.html('<a href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
-			}
-			numberOfOccurrences = adElems.length;
-		}
-		return numberOfOccurrences;
-	}
-	
-	ajax({
-		url : 'http://' + sayso.baseDomain + '/api/study/get-all',
-		success : function (response) {
-			var studyCollection = response.data;
-			log('Study_Collection Received', studyCollection);
-			//processStudyCollection (studyCollection);
-		}
-	});
-
 });
-
-
-
-
-
-
-
-
-
 
 
 

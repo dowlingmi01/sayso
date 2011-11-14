@@ -80,7 +80,7 @@ class Admin_StudyController extends Admin_CommonController
         
         // tags / domains
         
-        $tags = new Study_Collection_Tag();
+        $tags = new Study_TagCollection();
         $tagsByClientIds = array(); // Tag objects by client side guids 
         foreach ($tagsDomainsData as $tagClientId => $tagDomainData) {
             $tag = new Study_Tag();
@@ -105,7 +105,7 @@ class Admin_StudyController extends Admin_CommonController
         // creatives
         
         if ($type === 'ADjuster') {
-            $creatives = new Study_Collection_Creative();
+            $creatives = new Study_CreativeCollection();
             // don't resave the tags, just the mappings see Study_Creative 
             Study_Creative::$saveTagsOnSave = false; 
             foreach ($data->creative as $creativeData) {

@@ -22,7 +22,7 @@ class Study_Creative extends Record
     protected $_study;
     
     /**
-     * @var Study_Collection_Tag
+     * @var Study_TagCollection
      */
     protected $_tags;
     
@@ -32,7 +32,7 @@ class Study_Creative extends Record
     
     public function addTag (Study_Tag $tag) {
         if (!$this->_tags) {
-            $this->_tags = new Study_Collection_Tag();
+            $this->_tags = new Study_TagCollection();
         }
         $this->_tags->addItem($tag);
     }

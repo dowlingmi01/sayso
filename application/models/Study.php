@@ -6,12 +6,12 @@ class Study extends Record
     protected $_tableName = 'study';
     
     /**
-     * @var Study_Collection_Cell
+     * @var Study_CellCollection
      */
     protected $_cells;
     
     public function init () {
-        $this->_cells = new Study_Collection_Cell();
+        $this->_cells = new Study_CellCollection();
         parent::init();
     }
     
@@ -20,7 +20,7 @@ class Study extends Record
     }
     
     /**
-     * @var Study_Collection_Cell
+     * @var Study_CellCollection
      */
     public function getCells () {
         return $this->_cells;

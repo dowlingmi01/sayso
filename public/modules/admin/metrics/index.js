@@ -168,7 +168,7 @@ function bindControls()
     {
         var html = '<label for="control-metrics-remove-user-filter"><input id="control-metrics-remove-user-filter" '
                     +'type="checkbox" value="'+$.cookie('control-metrics-user-only')
-                    +'" checked="checked">User Id '+$.cookie('control-metrics-user-only')+'</label>';
+                    +'" checked="checked"> User Id '+$.cookie('control-metrics-user-only')+'</label>';
         $('#controls').append(html);
         $('#control-metrics-remove-user-filter').unbind().bind('click', function()
         {

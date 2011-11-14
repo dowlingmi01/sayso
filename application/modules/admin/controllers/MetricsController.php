@@ -57,7 +57,7 @@ class Admin_MetricsController extends Admin_CommonController
                             ? intval($_COOKIE['control-metrics-user-only'])
                             : 0;
 
-        //var_dump($pollForTypes);exit(0);
+        //var_dump($onlyUser);exit(0);
 
         $firstRun       = false;
         $error          = '';

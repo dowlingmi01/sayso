@@ -48,8 +48,8 @@ class Admin_StudyController extends Admin_CommonController
             $study->name            = $data['basic']['name'];
             $study->size            = $data['basic']['size'];
             $study->size_minimum    = $data['basic']['minimum'];
-            $study->begin_date      = convertLameDateFormat($data['basic']['begindate']);
-            $study->end_date        = convertLameDateFormat($data['basic']['enddate']);
+            $study->begin_date      = convertLameDateFormat(isset($data['basic']['begindate']) ? '');
+            $study->end_date        = convertLameDateFormat(isset($data['basic']['enddate']));
             $study->click_track     = $data['metrics']['clicktrack'] === 'Yes' ? 1 : 0;
             $study->save();
 
@@ -76,7 +76,7 @@ class Admin_StudyController extends Admin_CommonController
             // survey
 
             // for now only support surveys with urls
-            if ($data['surveyinfo'] && $data['surveyinfo']['url'])
+            if (isset($data['surveyinfo']) && isset($data['surveyinfo']['url']))
             {
                 $survey             = new Study_Survey();
                 $survey->url        = $data['surveyinfo']['url'];
@@ -181,9 +181,9 @@ class Admin_StudyController extends Admin_CommonController
                     $map->tag_id    = $tag->getId();
                     $map->save();
                 }
-                if ($cellData['qualifier'])
+                if (isset($cellData['qualifier']))
                 {
-                    if ($cellData['qualifier']['browse'])
+                    if (isset($cellData['qualifier']['browse']))
                     {
                         foreach ($cellData['qualifier']['browse'] as $browseQualifierData)
                         {
@@ -201,7 +201,7 @@ class Admin_StudyController extends Admin_CommonController
                             $browseQualifier->save();
                         }
                     }
-                    if ($cellData['qualifier']['search'])
+                    if (isset($cellData['qualifier']['search']))
                     {
                         foreach ($cellData['qualifier']['search'] as $searchQualifierData)
                         {
@@ -260,5 +260,8 @@ class Admin_StudyController extends Admin_CommonController
  */
 function convertLameDateFormat ($date) {
     $parts = explode('/', $date);
-    return $parts[2] . '-' . $parts[0] . '-' . $parts[1];
+    return
+        count($parts) == 3
+        ? ($parts[2] . '-' . $parts[0] . '-' . $parts[1])
+        : '0000-00-00';
 }

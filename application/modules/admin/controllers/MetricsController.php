@@ -64,7 +64,17 @@ class Admin_MetricsController extends Admin_CommonController
         if(!is_array($lastRowId))
         {
             $firstRun   = true;
-            $lastRowId  = array('lastSearchId' => 0, 'lastPageViewId' => 0, 'lastSocialActivityId' => 0, 'rowsAfter' => '0000-00-00 00:00:00');
+            $lastRowId  = array
+            (
+                'lastSearchId'          => 0,
+                'lastPageViewId'        => 0,
+                'lastSocialActivityId'  => 0,
+                'lastTagId'             => 0,
+                'lastTagViewId'         => 0,
+                'lastCreativeId'        => 0,
+                'lastCreativeViewId'    => 0,
+                'rowsAfter'             => '0000-00-00 00:00:00'
+            );
         }
 
         // get data
@@ -73,7 +83,7 @@ class Admin_MetricsController extends Admin_CommonController
         $rows       = array();
 
         try{
-            
+
             $criteria = array('onlyUser' => $onlyUser);
             $builder->setCriteria($criteria);
 
@@ -117,6 +127,19 @@ class Admin_MetricsController extends Admin_CommonController
                 break;
             case 'Social Activity':
                 $index = 'lastSocialActivityId';
+                break;
+            case 'Tag':
+                if($entry['selectType'] == 1)
+                {
+                    $index = 'lastTagId';
+                }
+                else
+                {
+                    $index = 'lastTagViewId';
+                }
+                break;
+            case 'Creative':
+                $index = 'lastCreative';
                 break;
             default:
                 break;

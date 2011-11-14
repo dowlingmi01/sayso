@@ -53,6 +53,14 @@ div#update-marker a:hover
 {
     background: #c0e276;
 }
+.updates-row-tag
+{
+    background: #DFBFFF;
+}
+.updates-row-creative
+{
+    background: #E8B7D7;
+}
 
 div.updates-entry
 {
@@ -90,7 +98,7 @@ div#poll-time
 {
     background-color: #F2F2F2;
     box-shadow: 0 1px 0 white inset;
-    margin: 10px 0 20px 0;
+    margin: 0 0 20px 0;
     padding:10px 0;
     position: relative;
     text-align: center;
@@ -106,12 +114,18 @@ div#controls
 }
 div#last-updated
 {
-    font-size:  smaller;
+    font-size: smaller;
+    font-style: italic;
     text-align: right;
     width:auto;
     float:right;
     margin-top:4px;
     margin-right:16px;
+    padding:10px;
+    background-color: #ECECEC;
+    border-top: 1px dotted #CCC;
+    border-left: 1px dotted #CCC;
+    border-right: 1px dotted #CCC;
 }
 
 div#controls, div#last-updated

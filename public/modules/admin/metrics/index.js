@@ -26,6 +26,12 @@ function prependRows()
                 case 'Page View':
                     rowStyle = 'updates-row-page-view';
                     break;
+                case 'Tag':
+                    rowStyle = 'updates-row-tag';
+                    break;
+                case 'Creative':
+                    rowStyle = 'updates-row-creative';
+                    break;
             }
 
             html += '<div class="updates-entry ' + rowStyle + '">';
@@ -66,17 +72,31 @@ function prependRows()
 function doPoll()
 {
     var data            = {lastRowId : window._adminPoller.lastRowId};
+    
     var pollSocial      = $('#control-social').attr('checked') ? 1 : 0;
     var pollPageView    = $('#control-page-view').attr('checked') ? 1 : 0;
     var pollMetrics     = $('#control-metrics').attr('checked') ? 1 : 0;   
+    var pollTags        = $('#control-tags').attr('checked') ? 1 : 0;
+    var pollCreatives   = $('#control-creatives').attr('checked') ? 1 : 0;
 
     // nothing to poll for...
-    if(!pollSocial && !pollPageView && !pollMetrics)
+    if(!pollSocial && !pollPageView && !pollMetrics && !pollTags && !pollCreatives)
     {
         return;
     }
 
-    data['pollForTypes'] = {'social' : pollSocial, 'pageView' : pollPageView, 'metrics' : pollMetrics};
+    /**
+     * @todo
+     * Recognize through coolkies
+     */
+    data['pollForTypes'] =
+    {
+        'social'        : pollSocial,
+        'pageView'      : pollPageView,
+        'metrics'       : pollMetrics,
+        'tags'          : pollTags,
+        'creatives'     : pollCreatives
+    };
 
     $.ajax({
         url         : '/admin/metrics/poll',
@@ -149,6 +169,12 @@ function bindControls()
     $.cookie('controlMetrics') == undefined || $.cookie('controlMetrics') == 'on'
         ? $('#control-metrics').attr('checked', 'checked')
         : $('#control-metrics').removeAttr('checked');
+    $.cookie('controlTags') == undefined || $.cookie('controlTags') == 'on'
+        ? $('#control-tags').attr('checked', 'checked')
+        : $('#control-tags').removeAttr('checked');
+    $.cookie('controlCreatives') == undefined || $.cookie('controlCreatives') == 'on'
+        ? $('#control-creatives').attr('checked', 'checked')
+        : $('#control-creatives').removeAttr('checked');
 
     $('#control-social').unbind().bind('click', function(){
         $.cookie('controlSocial', $(this).attr('checked') ? 'on' : 'off');
@@ -160,6 +186,14 @@ function bindControls()
     });
     $('#control-metrics').unbind().bind('click', function(){
         $.cookie('controlMetrics', $(this).attr('checked') ? 'on' : 'off');
+        self.location.reload();
+    });
+    $('#control-tags').unbind().bind('click', function(){
+        $.cookie('controlTags', $(this).attr('checked') ? 'on' : 'off');
+        self.location.reload();
+    });
+    $('#control-creatives').unbind().bind('click', function(){
+        $.cookie('controlCreatives', $(this).attr('checked') ? 'on' : 'off');
         self.location.reload();
     });
 

@@ -24,6 +24,14 @@ class Metrics_FeedCollection
 
     private $lastSocialActivityId;
 
+    private $lastTagId;
+
+    private $lastTagViewId;
+
+    private $lastCreativeId;
+
+    private $lastCreativeViewId;
+
     private $isFirstCall    = true;
 
     private $pollMetrics    = false;
@@ -31,6 +39,10 @@ class Metrics_FeedCollection
     private $pollPageView   = false;
 
     private $pollSocial     = false;
+
+    private $pollTags       = false;
+
+    private $pollCreatives  = false;
 
     private $sql            = '';
 
@@ -53,8 +65,20 @@ class Metrics_FeedCollection
         {
             $this->pollMetrics = true;
         }
+        if(isset($types['tags']) && $types['tags'] == 1)
+        {
+            $this->pollTags = true;
+        }
+        if(isset($types['creatives']) && $types['creatives'] == 1)
+        {
+            $this->pollCreatives = true;
+        }
     }
 
+    /**
+     * @todo
+     * Better refactoring: add functions for chunks to process with passing by reference
+     */
     private function _setSQL()
     {
         $sqlChunks = array();
@@ -78,7 +102,8 @@ class Metrics_FeedCollection
         ms.starbar_id       AS starbarId,
         s1.label            AS starbar,
         ms.created          AS dateTime,
-        'Search'    AS metricsType,
+        'Search'            AS metricsType,
+        0                   AS selectType,
         concat(lsa.label, ', query: ', ms.query)
                             AS `data`
     FROM
@@ -109,6 +134,7 @@ EOT;
         s2.label            AS starbar,
         mpv.created         AS dateTime,
         'Page View'         AS metricsType,
+        0                   AS selectType,
         mpv.url             AS `data`
     FROM
         metrics_page_view mpv, `user` u2, starbar s2
@@ -137,6 +163,7 @@ EOT;
         s3.label            AS starbar,
         msa.created         AS dateTime,
         'Social Activity'   AS metricsType,
+        0                   AS selectType,
         concat(sat.short_name, ', url: ', msa.url , ', content: ', msa.content)
                             AS `data`
     FROM
@@ -150,6 +177,76 @@ EOT;
 EOT;
             }
 
+            if($this->pollTags)
+            {
+                // metrics_tag_view
+
+                $addOnlyUserSQL = "";
+                if($this->onlyUser > 0)
+                {
+                    $addOnlyUserSQL     = "AND mtv.user_id = ?";
+                    $this->sqlParams[]  = $this->onlyUser;
+                }
+                $sqlChunks[]=<<<EOT
+(
+    SELECT
+        mtv.id              AS lastId,
+        mtv.user_id         AS userId,
+        u4.username         AS userName,
+        mtv.starbar_id      AS starbarId,
+        s4.label            AS starbar,
+        mtv.created         AS dateTime,
+        'Tag'               AS metricsType,
+        1                   AS selectType,
+        concat('Cell: ', c4.cell_type , ', tag: ', t4.name)
+                            AS `data`
+    FROM
+        metrics_tag_view mtv, `user` u4, starbar s4,
+                study_tag as t4, study_cell c4
+    WHERE
+        mtv.user_id = u4.id
+        $addOnlyUserSQL
+        AND mtv.starbar_id = s4.id
+        AND mtv.tag_id = t4.id
+        AND mtv.cell_id = c4.id
+)
+EOT;
+                // metrics_tag_click_thru
+
+                $addOnlyUserSQL = "";
+                if($this->onlyUser > 0)
+                {
+                    $addOnlyUserSQL     = "AND mtv5.user_id = ?";
+                    $this->sqlParams[]  = $this->onlyUser;
+                }
+                $sqlChunks[]=<<<EOT
+(
+    SELECT
+        mct.id              AS lastId,
+        mtv5.user_id        AS userId,
+        u5.username         AS userName,
+        mtv5.starbar_id     AS starbarId,
+        s5.label            AS starbar,
+        mtv5.created        AS dateTime,
+        'Tag'               AS metricsType,
+        2                   AS selectType,
+        concat('Click through for cell: ', c5.cell_type , ', tag: ', t5.name)
+                            AS `data`
+    FROM
+        metrics_tag_click_thru mct, metrics_tag_view mtv5, `user` u5, starbar s5,
+                study_tag as t5, study_cell c5
+    WHERE
+        mct.metrics_tag_view_id = mtv5.id
+        AND mtv5.user_id = u5.id
+        $addOnlyUserSQL
+        AND mtv5.starbar_id = s5.id
+        AND mtv5.tag_id = t5.id
+        AND mtv5.cell_id = c5.id
+)
+EOT;
+
+            }
+
             $sql = implode(' UNION ', $sqlChunks);
             $sql .=<<<EOT
 
@@ -159,7 +256,13 @@ EOT;
             $this->sqlParams[]  = $this->limitFirstRun;
             $this->sql          = $sql;
         }
+
+        /**
+         * Consequent call
+         */
+
         else
+
         {
             if($this->pollMetrics)
             {
@@ -178,7 +281,8 @@ EOT;
         ms.starbar_id       AS starbarId,
         s1.label            AS starbar,
         ms.created          AS dateTime,
-        'Search'    AS metricsType,
+        'Search'            AS metricsType,
+        0                   AS selectType,
         concat(lsa.label, ', query: ', ms.query)
                             AS `data`
     FROM
@@ -213,6 +317,7 @@ EOT;
         s2.label            AS starbar,
         mpv.created         AS dateTime,
         'Page View'         AS metricsType,
+        0                   AS selectType,
         mpv.url             AS `data`
     FROM
         metrics_page_view mpv, `user` u2, starbar s2
@@ -245,6 +350,7 @@ EOT;
         s3.label            AS starbar,
         msa.created         AS dateTime,
         'Social Activity'   AS metricsType,
+        0                   AS selectType,
         concat(sat.short_name, ', url: ', msa.url , ', content: ', msa.content)
                             AS `data`
     FROM
@@ -260,6 +366,84 @@ EOT;
 EOT;
                 $this->sqlParams[] = $this->rowsAfter;
                 $this->sqlParams[] = $this->lastSocialActivityId;
+            }
+            
+            if($this->pollTags)
+            {
+                // metrics_tag_view
+
+                $addOnlyUserSQL = "";
+                if($this->onlyUser > 0)
+                {
+                    $addOnlyUserSQL     = "AND mtv.user_id = ?";
+                    $this->sqlParams[]  = $this->onlyUser;
+                }
+                $sqlChunks[]=<<<EOT
+(
+    SELECT
+        mtv.id              AS lastId,
+        mtv.user_id         AS userId,
+        u4.username         AS userName,
+        mtv.starbar_id      AS starbarId,
+        s4.label            AS starbar,
+        mtv.created         AS dateTime,
+        'Tag'               AS metricsType,
+        1                   AS selectType,
+        concat('Cell: ', c4.cell_type , ', tag: ', t4.name)
+                            AS `data`
+    FROM
+        metrics_tag_view mtv, `user` u4, starbar s4,
+                study_tag as t4, study_cell c4
+    WHERE
+        mtv.user_id = u4.id
+        $addOnlyUserSQL
+        AND mtv.created > ?
+        AND mtv.starbar_id = s4.id
+        AND mtv.tag_id = t4.id
+        AND mtv.cell_id = c4.id
+        AND mtv.id > ?
+)
+EOT;
+                $this->sqlParams[] = $this->rowsAfter;
+                $this->sqlParams[] = $this->lastTagId;
+
+                // metrics_tag_click_thru
+
+                $addOnlyUserSQL = "";
+                if($this->onlyUser > 0)
+                {
+                    $addOnlyUserSQL     = "AND mtv5.user_id = ?";
+                    $this->sqlParams[]  = $this->onlyUser;
+                }
+                $sqlChunks[]=<<<EOT
+(
+    SELECT
+        mct5.id             AS lastId,
+        mtv5.user_id        AS userId,
+        u5.username         AS userName,
+        mtv5.starbar_id     AS starbarId,
+        s5.label            AS starbar,
+        mtv5.created        AS dateTime,
+        'Tag'               AS metricsType,
+        2                   AS selectType,
+        concat('Click through for cell: ', c5.cell_type , ', tag: ', t5.name)
+                            AS `data`
+    FROM
+        metrics_tag_click_thru mct5, metrics_tag_view mtv5, `user` u5, starbar s5,
+                study_tag as t5, study_cell c5
+    WHERE
+        mct5.metrics_tag_view_id = mtv5.id
+        AND mct5.created > ?
+        AND mtv5.user_id = u5.id
+        $addOnlyUserSQL
+        AND mtv5.starbar_id = s5.id
+        AND mtv5.tag_id = t5.id
+        AND mtv5.cell_id = c5.id
+        AND mct5.id > ?
+)
+EOT;
+                $this->sqlParams[] = $this->rowsAfter;
+                $this->sqlParams[] = $this->lastTagViewId;
             }
 
             $sql = implode(' UNION ', $sqlChunks);
@@ -283,6 +467,14 @@ EOT;
         $this->lastSearchId         = isset($criteria['lastSearchId']) ? intval($criteria['lastSearchId']) : 0;
         $this->lastPageViewId       = isset($criteria['lastPageViewId']) ? intval($criteria['lastPageViewId']) : 0;
         $this->lastSocialActivityId = isset($criteria['lastSocialActivityId']) ? intval($criteria['lastSocialActivityId']) : 0;
+
+        $this->lastTagId        = isset($criteria['lastTagId']) ? intval($criteria['lastTagId']) : 0;
+        $this->lastTagViewId    = isset($criteria['lastTagViewId']) ? intval($criteria['lastTagViewId']) : 0;
+
+        $this->lastCreativeId           = isset($criteria['lastCreativeId']) ? intval($criteria['lastCreativeId']) : 0;
+        $this->lastCreativeViewId       = isset($criteria['lastCreativeViewId']) ? intval($criteria['lastCreativeViewId']) : 0;
+
+
         $this->rowsAfter            = isset($criteria['rowsAfter']) ? $criteria['rowsAfter'] : '0000-00-00 00:00:00' ;
         $this->isFirstCall          = false;
     }

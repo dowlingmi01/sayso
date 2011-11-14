@@ -144,13 +144,16 @@ function bindControls()
         : $('#control-metrics').removeAttr('checked');
 
     $('#control-social').unbind().bind('click', function(){
-        $.cookie('controlSocial', $(this).attr('checked') ? 'on' : 'off')
+        $.cookie('controlSocial', $(this).attr('checked') ? 'on' : 'off');
+        self.location.reload();
     });
     $('#control-page-view').unbind().bind('click', function(){
-        $.cookie('controlPageView', $(this).attr('checked') ? 'on' : 'off')
+        $.cookie('controlPageView', $(this).attr('checked') ? 'on' : 'off');
+        self.location.reload();
     });
     $('#control-metrics').unbind().bind('click', function(){
-        $.cookie('controlMetrics', $(this).attr('checked') ? 'on' : 'off')
+        $.cookie('controlMetrics', $(this).attr('checked') ? 'on' : 'off');
+        self.location.reload();
     });
 }
 

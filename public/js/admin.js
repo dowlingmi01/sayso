@@ -5,10 +5,10 @@
 $(function () {
 
     if (typeof sayso === 'undefined') sayso = {};
-    
+
     // ==============================================================
     // functions/helpers
-    
+
     if (!Array.prototype.indexOf)
     {
         Array.prototype.indexOf = function(obj, start) {
@@ -18,7 +18,7 @@ $(function () {
             return -1;
        };
     }
-    
+
     /**
      * Get the data container of a given DOM object
      * - a "data container" (per this convention) is any DOM object
@@ -29,7 +29,7 @@ $(function () {
      *   but can be specified via parentIndex param (e.g. *second* (outer) parent == 1)
      * - you can also access the data container even if the current element
      *   IS the data container (i.e. it contains the "data-id" attr)
-     * 
+     *
      * - example: $('a.facebook').dataContainer().find('.button').show()
      * - example: $('a.facebook').dataContainer(1).getId() <-- get the id of an outer container
      * - example:
@@ -42,14 +42,14 @@ $(function () {
      *             // redeem this reward
      *         });
      *     </script>
-     * 
+     *
      * @author davidbjames
-     * 
+     *
      * @param integer parentIndex OPTIONAL defaults to 0 (first parent)
      * @return jQuery object of the parent element
      */
     $.fn.dataContainer = function (parentIndex) {
-        
+
         var _container;
         if (typeof parentIndex === 'number') {
             // if parent is explicitly set
@@ -61,7 +61,7 @@ $(function () {
             // otherwise default to first parent
             _container = this.parents('[data-id]').eq(0);
         }
-        
+
         if (!_container.length) {
             // if none found provide harmless object
             return {
@@ -73,10 +73,10 @@ $(function () {
                 removeNow : function () {}
             };
         }
-        
+
         // store off the id
         var _id = _container.attr('data-id');
-        
+
         /**
          * Get the ID of the object
          * - this usually corresponds to the record ID
@@ -85,7 +85,7 @@ $(function () {
         _container.getId = function () {
             return typeof _id === 'undefined' ? 0 : parseInt(_id);
         };
-        
+
         /**
          * Attach an object to this data container
          * @param object|string object
@@ -94,7 +94,7 @@ $(function () {
             _container.data('object', typeof(object) === 'string' ? object : JSON.stringify(object));
             return _container;
         };
-        
+
         /**
          * Get the object from this data container
          * @returns object
@@ -102,7 +102,7 @@ $(function () {
         _container.getObject = function () {
             return JSON.parse(_container.data('object'));
         };
-        
+
         /**
          * Copy the current data container to another DOM node
          * @param target
@@ -115,7 +115,7 @@ $(function () {
             target.attr('data-id', _container.getId());
             return target.dataContainer(); // the new data container
         };
-        
+
         /**
          * Move the current data container to another DOM node
          * @param target
@@ -126,7 +126,7 @@ $(function () {
             _container.reset();
             return newContainer;
         };
-        
+
         /**
          * Reset the data container (remove id and object)
          */
@@ -135,7 +135,7 @@ $(function () {
             _container.removeData('object');
             return _container;
         };
-        
+
         /**
          * Remove the data container completely
          */
@@ -144,20 +144,20 @@ $(function () {
                 _container.remove();
             });
         };
-        
+
         return _container;
     };
-    
+
     $.fn.makeDataContainer = function (id) {
         $(this).attr('data-id', id);
     };
-    
+
     function tpl ( tpl, obj, extra ) {
         if (!extra) extra = {};
         var data = $.extend({}, obj, extra);
         return Mustache.to_html( sayso.templates[tpl], data );
     }
-    
+
     function uniqueId () {
         if (typeof uniqueId.ids === 'undefined') {
             uniqueId.ids = [];
@@ -170,22 +170,22 @@ $(function () {
             return uniqueId();
         }
     }
-    
+
     function isEmpty (object) {
         for (var key in object) {
             return false;
         }
         return true;
     }
-    
+
     // ==============================================================
     // sayso data + localstorage
-    
+
     function resetData () {
-        
+
         sayso.data = {
             type : 'ADgregator', // or 'ADjuster'
-            tagdomain : {}, 
+            tagdomain : {},
             domainAvail : {},
             creative : {},
             basic : {
@@ -197,7 +197,7 @@ $(function () {
                 enddate: '',
                 issurvey: 'no'
             },
-            metrics : { 
+            metrics : {
                 clicktrack : 'No',
                 searchengines : {},
                 searchengineIds : [],
@@ -212,8 +212,8 @@ $(function () {
             quota : {},
             cells : {}
         };
-        
-        // temporary object for storing list data 
+
+        // temporary object for storing list data
         // prior to aggregation into sayso.data
         sayso.temp = {
             qualifier : {
@@ -223,33 +223,33 @@ $(function () {
             domain : {}
         };
     }
-    
+
     // initialize the data object
     resetData();
-    
+
     // on page load reset local storage
     localStorage.clear();
-    
+
     // if data exists in localStorage, restore
     // NOTE: currently doesn't apply
 //    if (localStorage.getItem('sayso')) {
 //        sayso.data = JSON.parse(localStorage.getItem('sayso'));
-//    } 
-    
-    // setup change tracking to warn if user attempts to 
+//    }
+
+    // setup change tracking to warn if user attempts to
     // switch products with unsaved changes
     var _changesPending = false;
     $('input, select').not('[type=submit]').change(function (e) {
         if ($(this).val().length) _changesPending = true;
     })
-        
+
     function resetForm () {
         // reset the form
         $('input[type=checkbox],input[type=radio]').removeAttr('checked');
         $('input[type=text],textarea,input.input-date').val('');
         $('select').val(false);
         // remove any row data displayed in the dom
-        $('ul.data-list').empty(); 
+        $('ul.data-list').empty();
         $('table.cell-lists tbody').empty();
         $('#fieldset-cell-adtags div.radios-labeled').empty();
         $('#fieldset-creative-adtags div.radios-labeled').empty();
@@ -257,10 +257,10 @@ $(function () {
         // reset flag, nothing pending (therefore allow navigating away)
         _changesPending = false;
     }
-    
+
     // ==============================================================
     // UI Controls
-    
+
     // tabs
     $('nav.main a').click(function(e){
 
@@ -272,7 +272,7 @@ $(function () {
         e.preventDefault();
         var _this = $(this),
             span = _this.find('span');
-        
+
         function _updateLinkStyle () {
             _this.closest('ul')
                 .find('a').css('color','#444444')
@@ -280,12 +280,12 @@ $(function () {
             _this.css('color', 'blue');
             span.css('text-decoration', 'underline');
         }
-        
+
         if (!_changesPending || confirm('There are unsaved changes. Continue anyways?')) {
-            
+
             resetForm();
             resetData();
-            
+
             var index = 0;
             sayso.data.type = span.text();
             switch (span.text()) {
@@ -313,9 +313,9 @@ $(function () {
                 $(this).text(JSON.parse($(this).attr('data-text-replace'))[index]);
             });
         }
-        
+
     });
-    
+
     // lock/min/max
     $('nav.lock').delegate( 'a.minimize, a.maximize', 'click', function(e) {
 
@@ -343,11 +343,11 @@ $(function () {
     $('nav.lock .lock').click(function(e) {
         e.preventDefault();
     });
-    
+
     // =============================================================================
     // Ad Tags (ADgregator) (NOTE: first two functions also handle ADjuster domains)
-    
-    $('button.add-domain').click(function(e) { 
+
+    $('button.add-domain').click(function(e) {
         e.preventDefault();
         // since this is the *first* button in the "form", this is the
         // one that is triggered if the user hits enter/return in any
@@ -374,7 +374,7 @@ $(function () {
         $(tpl('domains', data)).appendTo($(this).next()); // next s/b the <ul> with the domain list
         domain.val('');
     });
-    
+
     $('ul.list-domains a.delete').live('click', function (e) {
         e.preventDefault();
         var container = $(this).dataContainer(),
@@ -382,7 +382,7 @@ $(function () {
         delete sayso.temp.domain[id];
         container.removeNow();
     });
-    
+
     $('button.add-pair').click(function(e){
         e.preventDefault();
         if (e.keyCode == '13') return;
@@ -404,7 +404,7 @@ $(function () {
             // grab and remove the id
             data.id = container.getId();
             container.reset();
-            // replace the list item 
+            // replace the list item
             $('#list-tag-domain-pair li[data-id=' + data.id + ']').replaceWith(tpl('tagDomainPairs', data));
             // also replace the ad tags listed below in cells
             $('#fieldset-cell-adtags div.radios-labeled div[data-id=' + data.id + ']').replaceWith(tpl('adTag', data));
@@ -425,7 +425,7 @@ $(function () {
         adtag.val('');
         $('ul.list-domains li').remove();
     });
-    
+
     $('#list-tag-domain-pair a.edit').live('click', function(e){
         e.preventDefault();
         var id = $(this).dataContainer().getId(),
@@ -445,7 +445,7 @@ $(function () {
         }
         $('button.add-pair').text('Update');
     });
-    
+
     $('#list-tag-domain-pair a.delete').live('click', function(e){
         e.preventDefault();
         var container = $(this).dataContainer(),
@@ -457,16 +457,16 @@ $(function () {
             $('#fieldset-cell-adtags div.radios-labeled div[data-id=' + id + ']').remove();
         }
     });
-    
+
     // ==============================================================
     // Domains & Creative (ADjuster)
-    
+
     $('#domains-avails button.add-tag-domain-pair').click(function (e) {
         e.preventDefault();
         if (!e.clientX && !e.clientY) return; // see above for why
         var label = $('#domains-avails-label'),
             tag = $('#domains-avails-tag');
-        
+
         if (!label.val().length || !tag.val().length || isEmpty(sayso.temp.domain)) {
             alert('Requires a label, ad tag content and at least one domain');
             return;
@@ -505,10 +505,10 @@ $(function () {
         label.val(''); tag.val('');
         $('ul.list-domains li').remove();
     });
-    
+
     $('#list-domains-avails a.edit').live('click', function(e) {
         e.preventDefault();
-        var container = $(this).dataContainer(), 
+        var container = $(this).dataContainer(),
             id = container.getId(),
             domainAvail = sayso.data.domainAvail[id];
         $('#domains-avails').makeDataContainer(id);
@@ -524,7 +524,7 @@ $(function () {
             }
         }
     });
-    
+
     $('#list-domains-avails a.delete').live('click', function (e){
         e.preventDefault();
         var container = $(this).dataContainer(),
@@ -555,10 +555,10 @@ $(function () {
             if (warn) {
                 alert('Deleting this avail has invalidated ' + warn + ' of the creatives -- i.e. no avail(s) associated. Please review and fix your creatives.');
             }
-            
+
         }
     });
-    
+
     $('#creative button.add-creative').click(function (e) {
         e.preventDefault();
         var name = $('#creative-name'),
@@ -602,7 +602,7 @@ $(function () {
         name.val(''); contentType.val(false); creativeUrl.val(''); targetUrl.val('');
         $('#fieldset-creative-adtags input[type=checkbox]').removeAttr('checked');
     });
-    
+
     $('#list-creative a.edit').live('click', function (e) {
         e.preventDefault();
         var container = $(this).dataContainer(),
@@ -617,7 +617,7 @@ $(function () {
             $('#fieldset-creative-adtags div[data-id=' + creative.domainAvail[i] + '] input').attr('checked', true);
         }
     });
-    
+
     $('#list-creative a.delete').live('click', function (e) {
         e.preventDefault();
         var container = $(this).dataContainer(),
@@ -627,7 +627,7 @@ $(function () {
             container.removeNow();
         }
     });
-    
+
     // no target URL for certain types (such as HTML)
     $('#creative-type').live('change', function (e) {
         if ($(this).val() == 8) {
@@ -636,10 +636,10 @@ $(function () {
             $('#creative-target-url').removeAttr('disabled');
         }
     });
-    
+
     // ==============================================================
     // Survey
-    
+
     $('input[name=type-survey]').change(function(){
         if ($(this).val() === 'Custom Survey') {
             $('label.paste-iframe-label, input#type-iframe').fadeIn('slow');
@@ -647,24 +647,24 @@ $(function () {
             $('label.paste-iframe-label, input#type-iframe').fadeOut('slow');
         }
     });
-    
+
     $('#add-delivery-criteria').click(function(e) {
         e.preventDefault();
         if (!$('#type-survey-2, #type-survey-3').is(':checked')) {
             alert('Please select a Survey Type first');
             return;
         }
-        
+
         var domain = $('#delivery-domain'),
             timeframe = $('#delivery-timeframe');
-        
+
         // if no domain in the text field, look in the history drop down
         if (!domain.val().length) domain = $('#delivery-domain-history');
-        
+
         if (!domain.val().length || !timeframe.val().length) {
             alert('Delivery Criteria requires a domain and a time frame');
             return;
-        } 
+        }
         var data = {
             domain : domain.val(),
             timeframe : timeframe.find(':checked').text(),
@@ -678,7 +678,7 @@ $(function () {
         $('#delivery-domain-history').val(false);
         timeframe.val(false);
     });
-    
+
     $('#list-survey-delivery-criteria a.delete').live('click', function (e) {
         e.preventDefault();
         var container = $(this).dataContainer(),
@@ -686,15 +686,15 @@ $(function () {
         delete sayso.data.surveyinfo.deliverIf[id];
         container.removeNow();
     });
-    
+
     // ==============================================================
     // Ad Effectiveness
-    
+
     $('input.input-date').datepicker();
-    
+
     // ==============================================================
     // Quotas
-    
+
     $('#add-quota').click(function(e) {
         e.preventDefault();
         var gender = $('#study-gender'),
@@ -732,7 +732,7 @@ $(function () {
         $(tpl('quotas', data)).appendTo('#list-study-quota');
         gender.val(false); age.val(false); ethnicity.val(false); percent.val(false);
     });
-    
+
     $('#list-study-quota a.delete').live('click', function (e) {
         e.preventDefault();
         var container = $(this).dataContainer(),
@@ -742,10 +742,10 @@ $(function () {
             container.removeNow();
         }
     });
-    
+
     // ==============================================================
     // Cells
-    
+
     // online browsing
     $('#add-browsing-qualifier').click(function(e) {
         e.preventDefault();
@@ -773,7 +773,7 @@ $(function () {
         // reset fields
         includeExclude.val(false); domainName.val(''); timeframe.val(false);
     });
-    
+
     $('#list-browsing-qualifier a.delete').live('click', function (e) {
         e.preventDefault();
         var container = $(this).dataContainer(),
@@ -783,7 +783,7 @@ $(function () {
             container.removeNow();
         }
     });
-    
+
     // search actions
     $('#add-search-qualifier').click(function(e) {
         e.preventDefault();
@@ -799,7 +799,7 @@ $(function () {
             alert('Search qualifier must have at least one criteria (search term, time frame or search engines)');
             return;
         }
-        
+
         var data = {
             include : includeExclude.val(),
             term : domainName.val(),
@@ -814,7 +814,7 @@ $(function () {
         };
         // add the search engine ids to an array
         $('input.select-search-engines:checked').each(function () { data.whichIds.push($(this).val()); })
-        
+
         data.id = uniqueId();
         sayso.temp.qualifier.search[data.id] = data;
         // @todo handle missing data required by templates
@@ -822,7 +822,7 @@ $(function () {
         // reset fields
         includeExclude.val(false); domainName.val(''); timeframe.val(false); searchEngines.removeAttr('checked');
     });
-    
+
     $('#list-search-qualifier a.delete').live('click', function (e) {
         e.preventDefault();
         var container = $(this).dataContainer(),
@@ -832,11 +832,11 @@ $(function () {
             container.removeNow();
         }
     });
-    
-    // cells 
+
+    // cells
     $('button.build-cell').click(function(e) {
         e.preventDefault();
-        
+
         if (!$('#cell-description').val()) {
             alert('Study cell must have a description');
             return;
@@ -883,14 +883,14 @@ $(function () {
                 search : sayso.temp.qualifier.search
             }
         };
-        
+
         var container = $(this).dataContainer();
         // are we editing?
         if (container.getId()) {
             // grab and remove the id (so that it's ready for a new record)
             cell.id = container.getId();
             container.reset();
-            // replace the list item 
+            // replace the list item
             $('table.cell-lists tbody tr[data-id=' + cell.id + ']').replaceWith(tpl('cellTableRow', cell));
         // or creating a new one?
         } else {
@@ -900,28 +900,28 @@ $(function () {
             $('table.cell-lists tbody').append(tpl('cellTableRow', cell));
         }
         sayso.data.cells[cell.id] = cell;
-        
+
         sayso.temp.qualifier.browse = {};
         sayso.temp.qualifier.search = {};
-        
+
         // this effect doesn't work quite right atm
-//        $('#build-cells div.section-container').fadeOut(function() { 
+//        $('#build-cells div.section-container').fadeOut(function() {
             $('#build-cells button.reset-input').click();
-//            $(this).fadeIn(); 
-//        }); 
+//            $(this).fadeIn();
+//        });
         // reset the cell area
     });
-    
+
     $('#build-cells button.reset-input').click(function(e){
         e.preventDefault();
         $('#build-cells input[type=text]').val('');
         $('#build-cells input[type=radio]').removeAttr('checked');
         $('#build-cells select').val(false);
         $('#build-cells input[type=checkbox]').removeAttr('checked');
-        
+
         $('#list-browsing-qualifier').empty();
         $('#list-search-qualifier').empty();
-        
+
         $('button.build-cell').text('Build Cell');
     });
 
@@ -968,7 +968,7 @@ $(function () {
               .html(tpl('dialogCellView', templateData))
               .dialog('open');
     });
-    
+
     $('table.cell-lists a.edit').live('click', function (e) {
         e.preventDefault();
         var container = $(this).dataContainer(),
@@ -996,7 +996,7 @@ $(function () {
         }
         $('button.build-cell').text('Update Cell');
     });
-    
+
     $('table.cell-lists a.delete').live('click', function (e) {
         e.preventDefault();
         var container = $(this).dataContainer(),
@@ -1006,14 +1006,14 @@ $(function () {
             container.removeNow();
         }
     });
-    
+
     // submit the form
     $('#do-ze-build').click(function (e) {
         e.preventDefault();
-        
-        // ad tags 
+
+        // ad tags
         // (see above)
-        
+
         // metrics
         if ($('input[name=record-click-track]:checked').length) {
             sayso.data.metrics.clicktrack = $('input[name=record-click-track]:checked').val();
@@ -1026,46 +1026,46 @@ $(function () {
             sayso.data.metrics.social[$(this).parent().find('label').text()] = $(this).is(':checked') ? 'Yes' : 'No';
             sayso.data.metrics.socialIds.push($(this).val());
         });
-        
+
         // survey
         if ($('input[name=type-survey]:checked').length) {
             sayso.data.surveyinfo.type = $('input[name=type-survey]:checked').val();
-        } 
+        }
         if ($('input[name=type-survey]:checked').val() === 'Custom Survey') {
             sayso.data.surveyinfo.url = $('#type-iframe').val();
         }
-        
+
         // basic (ad effectiveness)
         if ($('#study-name').val().length) {
-            sayso.data.basic.name = $('#study-name').val(); 
+            sayso.data.basic.name = $('#study-name').val();
         }
         if ($('#study-id').val().length) {
-            sayso.data.basic.id = $('#study-id').val(); 
+            sayso.data.basic.id = $('#study-id').val();
         }
         if ($('#study-sample-size').val().length) {
-            sayso.data.basic.size = $('#study-sample-size').val(); 
+            sayso.data.basic.size = $('#study-sample-size').val();
         }
         if ($('#study-min-threshold').val().length) {
-            sayso.data.basic.minimum = $('#study-min-threshold').val(); 
+            sayso.data.basic.minimum = $('#study-min-threshold').val();
         }
         if ($('#study-start-date').val().length) {
-            sayso.data.basic.begindate = $('#study-start-date').val(); 
+            sayso.data.basic.begindate = $('#study-start-date').val();
         }
         if ($('#study-end-date').val().length) {
-            sayso.data.basic.enddate = $('#study-end-date').val(); 
+            sayso.data.basic.enddate = $('#study-end-date').val();
         }
         if ($('input[name=study-is-survey]:checked').length) {
             sayso.data.basic.issurvey = $('input[name=study-is-survey]:checked').val();
         }
-        
+
         // cells
         // (see above)
-        
+
         var jsonString = JSON.stringify(sayso.data);
-        
+
         // localStorage
         localStorage.setItem('sayso', jsonString);
-        
+
         $.ajax({
             url : 'http://' + sayso.baseDomain + '/admin/study/create-new',
             data : { data : jsonString },
@@ -1075,21 +1075,26 @@ $(function () {
                 console.log(response);
             }
         });
-        
+
+        /*
+
         // reset form fields and return "changes pending" to false
         resetForm();
-        
+
         // reset data object for new data
         resetData();
-        
+
         // notify the user
         alert('Survey saved!');
-        
+
         // finally, scroll the view back to the top
         $('html,body').animate({scrollTop:0}, 600);
+
+        */
+
     });
-    
-    
+
+
     $('#clear-local-data').click(function(e) {
         e.preventDefault();
         if (confirm('Are you sure you want to clear local data?')) {
@@ -1100,7 +1105,7 @@ $(function () {
             location.reload();
           }
     });
-    
+
     //    sayso.tagdomain[1].label
     //    sayso.tagdomain[1].tag
     //    sayso.surveyinfo.type

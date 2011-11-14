@@ -271,6 +271,9 @@ $SQ(function () {
         });
     }
 
+    // ================================================================
+    // ADjuster Ad-Tracking/Replacement
+    
     // @todo optimize the retreival of active studies for the current user.
     // this will likely include a combination of a server-side daemon for handling
     // study cell assignments, server-side caching (which the daemon will also
@@ -286,94 +289,127 @@ $SQ(function () {
         success : function (response) {
             studies = response.data;
             log(studies);
-            processStudyCollection(studies);
+            if (studies.items.length) {
+                processStudyCollection(studies);
+            }
         } 
     });
     
+    /**
+     * Process all studies
+     */
 	function processStudyCollection (studies) {
 	    
 	    var cellAdActivity = {}, // { id : 1, tagViews : [], creativeViews : []}
+	        currentActivity = null,
 	        adsFound = 0,
 	        replacements = 0,
 	        numStudies = studies.items.length;
-	    
-		if (numStudies) { 
 		    
-		    // studies
-			for (var s = 0; s < numStudies; s++) {
-			    var study = studies.items[s];
-			    var numCells = study._cells.items.length;
-	            if (numCells) {
-	                
-	                // cells
-	                for (var c = 0; c < numCells; c++) {
-	                    var cell = study._cells.items[c];
-	                    var currentActivity = cellAdActivity[cell.id] = {
-	                        tagViews : [],
-	                        creativeViews : []
-	                    };
-	                    var numTags = cell._tags.items.length;
-	                    if (numTags) {
-	                        
-	                        // tags
-	                        for (var t = 0; t < numTags; t++) {
-	                            var tag = cell._tags.items[t];
-	                            var jTag = $SQ(tag.tag);
-	                            if (jTag.length) { // tag exists
-	                                
-	                                adsFound++;
-	                                
-	                                var numCreatives = tag._creatives.items.length;
-	                                if (numCreatives) { // ADjuster Creative ------------
-	                                    
-	                                    replacements++;
-	                                    
-	                                    // @hack just grab the first creative for now
-	                                    // @todo enable cycling through each creative
-	                                    var creative = tag._creatives.items[0];
-	                                    
-	                                    // replace ad
-	                                    jTag.parent().html('<a href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
-	                                    
-	                                    // record view of the creative
-	                                    currentActivity.creativeViews.push(creative.id);
-	                                    
-	                                    // @todo store creative.target_url to check for click-thru
-	                                    
-	                                } else { // ADjuster Campaign ------------------------
-	                                    
-	                                    // track ad view
-	                                    currentActivity.tagViews.push(tag.id);
-	                                    
-	                                    // @todo store tag.target_url to check for click-thru
-	                                }
-	                            }
-	                        }
-	                    }
-	                }
-	            }
-			}
-			new $SQ.jsLoadTimer().setMaxCount(50).start(
-			    function () { return numStudies === s && adsFound; }, // condition
-			    function () {                                         // callback
-			        log('Ads found ' + adsFound + '. Replacements ' + replacements);
-    			    ajax({
-                        url : 'http://' + sayso.baseDomain + '/api/metrics/track-ad-views',
-                        data : {
-                            // note: user_id, starbar_id are included in ajax() wrapper
-                            // study_id is associated via cell id, which is included in cellAdActivity
-                            cell_activity : JSON.stringify(cellAdActivity)
-                        },
-                        success : function (response) {
-                             
+	    // studies
+		for (var s = 0; s < numStudies; s++) {
+		    var study = studies.items[s];
+		    
+		    var numCells = study._cells.items.length;
+            if (!numCells) continue;
+                
+            // cells
+            for (var c = 0; c < numCells; c++) {
+                var cell = study._cells.items[c];
+                
+                // setup the object that will be sent back
+                // to the server, where cell id is the top
+                // level key for each group of tag/creative views
+                currentActivity = cellAdActivity[cell.id] = {
+                    tagViews : [],
+                    creativeViews : []
+                };
+                
+                var numTags = cell._tags.items.length;
+                if (!numTags) continue; 
+                    
+                // tags
+                for (var t = 0; t < numTags; t++) {
+                    var tag = cell._tags.items[t];
+                    
+                    var numDomains = tag._domains.items.length;
+                    
+                    // domains (look for valid before processing tag)
+                    for (var d = 0; d < numDomains; d++) {
+                        var domain = tag._domains.items[d];
+                        if (location.host.match(domain.domain)) {
+                            processTag(tag);
+                            break; // go no further
                         }
-                    });
-			    },
-			    function () {
-			        log('No ads found');
-			    }
-			);
-		}
+                    } // domains
+                } // tags
+            } // cells
+		} // studies
+		
+		/**
+         * Process each tag including ad detection and/or replacement
+         * - running this method assumes a domain matches for the current URL
+         * - this function inherits currentActivity for the current cell
+         */
+        function processTag (tag) {
+            
+            var jTag = $SQ(tag.tag);
+            if (jTag.length) { // tag exists
+                
+                adsFound++;
+                
+                var numCreatives = tag._creatives.items.length;
+                if (numCreatives) { // ADjuster Creative ------------
+                    
+                    replacements++;
+                    
+                    // @hack just grab the first creative for now
+                    // @todo enable cycling through each creative
+                    var creative = tag._creatives.items[0];
+                    
+                    // replace ad
+                    jTag.parent().html('<a href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
+                    
+                    // record view of the creative
+                    currentActivity.creativeViews.push(creative.id);
+                    
+                    // @todo store creative.target_url to check for click-thru
+                    
+                } else { // ADjuster Campaign ------------------------
+                    
+                    // track ad view
+                    currentActivity.tagViews.push(tag.id);
+                    
+                    // @todo store tag.target_url to check for click-thru
+                }
+            }
+        }
+        
+        // Track ad views!
+        
+		// load timer is used so that asynchronous JS does not run this Ajax call too early
+		// and to prevent the need for deeply nested callbacks
+        
+		new $SQ.jsLoadTimer().setMaxCount(50).start(
+		    function () { return numStudies === s && adsFound; }, // condition
+		    function () {                                         // callback
+		        log('Ads found ' + adsFound + '. Replacements ' + replacements);
+			    ajax({
+                    url : 'http://' + sayso.baseDomain + '/api/metrics/track-ad-views',
+                    data : {
+                        // note: user_id, starbar_id are included in ajax() wrapper
+                        // study_id is associated via cell id, which is included in cellAdActivity
+                        cell_activity : JSON.stringify(cellAdActivity)
+                    },
+                    success : function (response) {
+                         
+                    }
+                });
+		    },
+		    function () {
+		        log('No ads found');
+		    }
+		);
 	}
 });
 

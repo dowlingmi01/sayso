@@ -1,4 +1,7 @@
-
+/**
+ * @deprecated It is safe to delete this file
+ *
+ */
 $(function () {
 
     if (typeof sayso === 'undefined') sayso = {};
@@ -286,19 +289,19 @@ $(function () {
             var index = 0;
             sayso.data.type = span.text();
             switch (span.text()) {
-                case 'ADgregator' :
+                case 'ADjuster Campaign' :
                     index = 0;
                     $('#ad-tags').fadeIn();
                     $('#domains-creative').fadeOut();
                     _updateLinkStyle();
                     break;
-                case 'ADjuster' :
+                case 'ADjuster Creative' :
                     index = 1;
                     $('#domains-creative').fadeIn();
                     $('#ad-tags').fadeOut();
                     _updateLinkStyle();
                     break;
-                case 'BTracker' :
+                case 'ADjuster Behavioral' :
                     index = 2;
                     $('#ad-tags').fadeOut();
                     $('#domains-creative').fadeOut();
@@ -1063,7 +1066,7 @@ $(function () {
         // localStorage
         localStorage.setItem('sayso', jsonString);
 
-        ajax({
+        $.ajax({
             url : 'http://' + sayso.baseDomain + '/admin/study/create-new',
             data : { data : jsonString },
             type : 'POST',
@@ -1072,6 +1075,8 @@ $(function () {
                 console.log(response);
             }
         });
+
+        /*
 
         // reset form fields and return "changes pending" to false
         resetForm();
@@ -1084,6 +1089,9 @@ $(function () {
 
         // finally, scroll the view back to the top
         $('html,body').animate({scrollTop:0}, 600);
+
+        */
+
     });
 
 

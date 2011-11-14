@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.1.52, for redhat-linux-gnu (x86_64)
 --
--- Host: localhost    Database: temp_db
+-- Host: localhost    Database: tempdb
 -- ------------------------------------------------------
 -- Server version	5.1.52
 
@@ -507,6 +507,69 @@ INSERT INTO `lookup_timeframe` VALUES (1,'one_hour','1 Hour','3600',NULL,'0000-0
 UNLOCK TABLES;
 
 --
+-- Table structure for table `metrics_creative_click_thru`
+--
+
+DROP TABLE IF EXISTS `metrics_creative_click_thru`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `metrics_creative_click_thru` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `metrics_creative_view_id` int(10) DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `metrics_creative_click_thru_metrics_creative_view_id` (`metrics_creative_view_id`),
+  CONSTRAINT `metrics_creative_click_thru_metrics_creative_view_id` FOREIGN KEY (`metrics_creative_view_id`) REFERENCES `metrics_creative_view` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `metrics_creative_click_thru`
+--
+
+LOCK TABLES `metrics_creative_click_thru` WRITE;
+/*!40000 ALTER TABLE `metrics_creative_click_thru` DISABLE KEYS */;
+/*!40000 ALTER TABLE `metrics_creative_click_thru` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `metrics_creative_view`
+--
+
+DROP TABLE IF EXISTS `metrics_creative_view`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `metrics_creative_view` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) DEFAULT NULL,
+  `starbar_id` int(10) DEFAULT NULL,
+  `cell_id` int(10) DEFAULT NULL COMMENT 'There may be multiple creatives (user/ad) recorded for each ''active'' cell (study) for which the creative is referenced.',
+  `creative_id` int(10) DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `metrics_creative_view_user_id` (`user_id`),
+  KEY `metrics_creative_view_starbar_id` (`starbar_id`),
+  KEY `metrics_creative_view_cell_id` (`cell_id`),
+  KEY `metrics_creative_view_creative_id` (`creative_id`),
+  CONSTRAINT `metrics_creative_view_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `metrics_creative_view_starbar_id` FOREIGN KEY (`starbar_id`) REFERENCES `starbar` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `metrics_creative_view_cell_id` FOREIGN KEY (`cell_id`) REFERENCES `study_cell` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `metrics_creative_view_creative_id` FOREIGN KEY (`creative_id`) REFERENCES `study_creative` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `metrics_creative_view`
+--
+
+LOCK TABLES `metrics_creative_view` WRITE;
+/*!40000 ALTER TABLE `metrics_creative_view` DISABLE KEYS */;
+/*!40000 ALTER TABLE `metrics_creative_view` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `metrics_page_view`
 --
 
@@ -604,6 +667,69 @@ CREATE TABLE `metrics_social_activity` (
 LOCK TABLES `metrics_social_activity` WRITE;
 /*!40000 ALTER TABLE `metrics_social_activity` DISABLE KEYS */;
 /*!40000 ALTER TABLE `metrics_social_activity` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `metrics_tag_click_thru`
+--
+
+DROP TABLE IF EXISTS `metrics_tag_click_thru`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `metrics_tag_click_thru` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `metrics_tag_view_id` int(10) DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `metrics_tag_click_thru_metrics_tag_view_id` (`metrics_tag_view_id`),
+  CONSTRAINT `metrics_tag_click_thru_metrics_tag_view_id` FOREIGN KEY (`metrics_tag_view_id`) REFERENCES `metrics_tag_view` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `metrics_tag_click_thru`
+--
+
+LOCK TABLES `metrics_tag_click_thru` WRITE;
+/*!40000 ALTER TABLE `metrics_tag_click_thru` DISABLE KEYS */;
+/*!40000 ALTER TABLE `metrics_tag_click_thru` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `metrics_tag_view`
+--
+
+DROP TABLE IF EXISTS `metrics_tag_view`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `metrics_tag_view` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) DEFAULT NULL,
+  `starbar_id` int(10) DEFAULT NULL,
+  `cell_id` int(10) DEFAULT NULL COMMENT 'There may be multiple views (user/ad) recorded for each ''active'' cell (study) for which the tag is referenced.',
+  `tag_id` int(10) DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `metrics_tag_view_user_id` (`user_id`),
+  KEY `metrics_tag_view_starbar_id` (`starbar_id`),
+  KEY `metrics_tag_view_cell_id` (`cell_id`),
+  KEY `metrics_tag_view_tag_id` (`tag_id`),
+  CONSTRAINT `metrics_tag_view_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `metrics_tag_view_starbar_id` FOREIGN KEY (`starbar_id`) REFERENCES `starbar` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `metrics_tag_view_cell_id` FOREIGN KEY (`cell_id`) REFERENCES `study_cell` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `metrics_tag_view_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `study_tag` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `metrics_tag_view`
+--
+
+LOCK TABLES `metrics_tag_view` WRITE;
+/*!40000 ALTER TABLE `metrics_tag_view` DISABLE KEYS */;
+/*!40000 ALTER TABLE `metrics_tag_view` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1472,6 +1598,7 @@ CREATE TABLE `study_tag` (
   `user_id` int(10) unsigned DEFAULT NULL,
   `name` varchar(100) NOT NULL COMMENT 'label',
   `tag` varchar(255) DEFAULT NULL,
+  `target_url` varchar(255) DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
@@ -1890,4 +2017,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-11-13 23:47:23
+-- Dump completed on 2011-11-14 17:31:00

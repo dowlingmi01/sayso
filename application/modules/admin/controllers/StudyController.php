@@ -100,6 +100,7 @@ class Admin_StudyController extends Admin_CommonController
                 $tag = new Study_Tag();
                 $tag->name      = $tagDomainData['label'];
                 $tag->tag       = $tagDomainData['tag'];
+                $tag->target_url = $tagDomainData['targetUrl'];
                 $tag->user_id   = $this->currentUser->id;
                 $tags->addItem($tag);
 

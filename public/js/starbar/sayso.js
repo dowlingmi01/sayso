@@ -307,7 +307,7 @@ $SQ(function () {
 	    var cellAdActivity = {}, // { id : 1, tagViews : [], creativeViews : []}
 	        currentActivity = null,
 	        adsFound = 0,
-	        replacements = 0,
+	        replacements = 0;
 		    
 	    // studies
 		for (numStudiesProcessed = 0; numStudiesProcessed < numStudies; numStudiesProcessed++) {

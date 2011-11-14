@@ -284,7 +284,6 @@ EOT;
         $this->lastPageViewId       = isset($criteria['lastPageViewId']) ? intval($criteria['lastPageViewId']) : 0;
         $this->lastSocialActivityId = isset($criteria['lastSocialActivityId']) ? intval($criteria['lastSocialActivityId']) : 0;
         $this->rowsAfter            = isset($criteria['rowsAfter']) ? $criteria['rowsAfter'] : '0000-00-00 00:00:00' ;
-        $this->onlyUser             = isset($criteria['onlyUser']) ? intval($criteria['onlyUser']) : 0 ;
         $this->isFirstCall          = false;
     }
 
@@ -295,7 +294,7 @@ EOT;
      */
     public function setCriteria(array $criteria)
     {
-        $this->onlyUser = isset($criteria['onlyUser']) ? intval($criteria['onlyUser']) : 0 ;
+        $this->onlyUser = isset($criteria['onlyUser']) && intval($criteria['onlyUser']) > 0 ? intval($criteria['onlyUser']) : 0 ;
     }
 
     /**

@@ -228,7 +228,7 @@ $(function () {
     resetData();
 
     // on page load reset local storage
-    localStorage.clear();
+    //localStorage.clear();
 
     // if data exists in localStorage, restore
     // NOTE: currently doesn't apply
@@ -1007,13 +1007,10 @@ $(function () {
         }
     });
 
+    $('form.main-survey').submit(function(){return false;});
+
     // submit the form
     $('#do-ze-build').click(function (e) {
-
-        e.preventDefault();
-
-        // ad tags
-        // (see above)
 
         // metrics
         if ($('input[name=record-click-track]:checked').length) {
@@ -1059,52 +1056,32 @@ $(function () {
             sayso.data.basic.issurvey = $('input[name=study-is-survey]:checked').val();
         }
 
-        // cells
-        // (see above)
+        var data    = {data: sayso.data};
+        var url     = '/admin/study/create-new';
 
-        var jsonString = JSON.stringify(sayso.data);
-
-        //console.log(jsonString); return false;
-
-        // localStorage
-        //localStorage.setItem('sayso', jsonString);
-
-        alert('before send')
-
-        $.ajax({
-            url : 'http://' + sayso.baseDomain + '/admin/study/create-new',
-            data : {data : jsonString},
-            type : 'POST',
-            dataType: 'json',
-            success : function (response) {
-                alert('success')
-                console.log(response);                
+        $.getJSON(url, data, function(response)
+        {
+            if(response.messages.length > 0)
+            {
+                alert(response.messages.join("\n"));
             }
+            if(response.messages.result)
+            {
+                resetForm();
+                resetData();
+                $('html,body').animate({scrollTop:0}, 600);
+            }
+            return false;
         });
-
-        /*
-
-        // reset form fields and return "changes pending" to false
-        resetForm();
-
-        // reset data object for new data
-        resetData();
-
-        // notify the user
-        alert('Survey saved!');
-
-        // finally, scroll the view back to the top
-        $('html,body').animate({scrollTop:0}, 600);
-
-        */       
-
+        
+        return false;
     });
 
 
     $('#clear-local-data').click(function(e) {
         e.preventDefault();
         if (confirm('Are you sure you want to clear local data?')) {
-            localStorage.clear();
+            //localStorage.clear();
             // reset radios so browsers don't "remember" the last selection
             $('input[type=radio]').attr('checked',false);
             $('input[type=text]').val('');

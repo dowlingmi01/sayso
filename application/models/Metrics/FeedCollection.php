@@ -267,7 +267,7 @@ EOT;
         mcv.created         AS dateTime,
         'Creative'          AS metricsType,
         1                   AS selectType,
-        concat('Cell: ', c6.cell_type , ', creative: ', t6.name, 
+        concat('Cell: ', c6.cell_type , ', creative: ', t6.name,
                 CASE WHEN t6.url IS NOT NULL THEN CONCAT(', url: ', t6.url) ELSE '' END ) AS `data`
     FROM
         metrics_creative_view mcv, `user` u6, starbar s6,
@@ -299,7 +299,7 @@ EOT;
         mcv7.created        AS dateTime,
         'Creative'          AS metricsType,
         2                   AS selectType,
-        concat('Click through for cell: ', c7.cell_type , ', creative: ', t7.name, 
+        concat('Click through for cell: ', c7.cell_type , ', creative: ', t7.name,
                 CASE WHEN t7.url IS NOT NULL THEN CONCAT(', url: ', t7.url) ELSE '' END ) AS `data`
     FROM
         metrics_creative_click_thru mzt, metrics_creative_view mcv7, `user` u7, starbar s7,
@@ -578,7 +578,7 @@ EOT;
         2                   AS selectType,
         concat('Click through for cell: ', c7.cell_type , ', creative: ', t7.name,
                 CASE WHEN t7.url IS NOT NULL THEN CONCAT(', url: ', t7.url) ELSE '' END ) AS `data`
-                            
+
     FROM
         metrics_creative_click_thru mzt, metrics_creative_view mcv7, `user` u7, starbar s7,
                 study_creative as t7, study_cell c7
@@ -622,12 +622,11 @@ EOT;
         $this->lastTagId        = isset($criteria['lastTagId']) ? intval($criteria['lastTagId']) : 0;
         $this->lastTagViewId    = isset($criteria['lastTagViewId']) ? intval($criteria['lastTagViewId']) : 0;
 
-        $this->lastCreativeId           = isset($criteria['lastCreativeId']) ? intval($criteria['lastCreativeId']) : 0;
-        $this->lastCreativeViewId       = isset($criteria['lastCreativeViewId']) ? intval($criteria['lastCreativeViewId']) : 0;
+        $this->lastCreativeId       = isset($criteria['lastCreativeId']) ? intval($criteria['lastCreativeId']) : 0;
+        $this->lastCreativeViewId   = isset($criteria['lastCreativeViewId']) ? intval($criteria['lastCreativeViewId']) : 0;
 
-
-        $this->rowsAfter            = isset($criteria['rowsAfter']) ? $criteria['rowsAfter'] : '0000-00-00 00:00:00' ;
-        $this->isFirstCall          = false;
+        $this->rowsAfter    = isset($criteria['rowsAfter']) ? $criteria['rowsAfter'] : '0000-00-00 00:00:00' ;
+        $this->isFirstCall  = false;
     }
 
     /**
@@ -645,7 +644,7 @@ EOT;
      */
     public function run()
     {
-        
+
         // Nothing to poll for?
         if(!$this->pollMetrics && !$this->pollSocial && !$this->pollPageView && !$this->pollTags && !$this->pollCreatives)
         {
@@ -653,7 +652,6 @@ EOT;
         }
 
         // Create sql and params array
-        
         $this->_setSQL();
 
         // Prepare params array
@@ -661,7 +659,7 @@ EOT;
 
         // Call dynamically
         $results = call_user_func_array(array('Db_Pdo', 'fetchAll'), array_merge($sql, $this->sqlParams));
-        
+
         return new ArrayObject($results);
     }
 }

@@ -1060,17 +1060,17 @@ $(function () {
         var url     = '/admin/study/create-new';
 
         $.getJSON(url, data, function(response)
-        {
-            if(response.messages.length > 0)
-            {
-                alert(response.messages.join("\n"));
-            }
+        {            
+            $('html,body').animate({scrollTop:0}, 2000);
             if(response.messages.result)
             {
                 resetForm();
-                resetData();
-                $('html,body').animate({scrollTop:0}, 600);
+                resetData();                
             }
+            if(response.messages.length > 0)
+            {
+                alert(response.messages.join("\n"));
+            }            
             return false;
         });
         

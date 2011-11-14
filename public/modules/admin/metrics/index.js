@@ -172,7 +172,9 @@ function bindControls()
         $('#controls').append(html);
         $('#control-metrics-remove-user-filter').unbind().bind('click', function()
         {
-            $.cookie('control-metrics-user-only', null);
+            $.cookie('control-metrics-user-only', 0);
+            // strange bug, the above does not always work...
+            delete document.cookie['control-metrics-user-only'];
             self.location.reload();
         });
     }

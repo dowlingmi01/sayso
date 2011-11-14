@@ -1064,6 +1064,9 @@ $(function () {
             $('html,body').animate({scrollTop:0}, 2000);
             if(response.messages.result)
             {
+                /**
+                 * @todo legacy stuff does not work yet...
+                 */
                 resetForm();
                 resetData();                
             }

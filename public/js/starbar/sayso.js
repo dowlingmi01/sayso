@@ -280,6 +280,9 @@ $SQ(function () {
     // manage the state of depending on assignments) and client-side caching.
     // For now, we just retreive all studies on every page load (though not every iframe)
     
+    var numStudies = -1;
+    var numStudiesProcessed = 0;
+    
     ajax({
         url : 'http://' + sayso.baseDomain + '/api/study/get-all',
         data : {
@@ -289,7 +292,8 @@ $SQ(function () {
         success : function (response) {
             studies = response.data;
             log(studies);
-            if (studies.items.length) {
+            numStudies = studies.items.length;
+            if (numStudies) {
                 processStudyCollection(studies);
             }
         } 
@@ -304,10 +308,9 @@ $SQ(function () {
 	        currentActivity = null,
 	        adsFound = 0,
 	        replacements = 0,
-	        numStudies = studies.items.length;
 		    
 	    // studies
-		for (var s = 0; s < numStudies; s++) {
+		for (numStudiesProcessed = 0; numStudiesProcessed < numStudies; numStudiesProcessed++) {
 		    var study = studies.items[s];
 		    
 		    var numCells = study._cells.items.length;
@@ -391,7 +394,7 @@ $SQ(function () {
 		// and to prevent the need for deeply nested callbacks
         
 		new $SQ.jsLoadTimer().setMaxCount(50).start(
-		    function () { return numStudies === s && adsFound; }, // condition
+		    function () { return numStudies === numStudiesProcessed && adsFound; }, // condition
 		    function () {                                         // callback
 		        log('Ads found ' + adsFound + '. Replacements ' + replacements);
 			    ajax({

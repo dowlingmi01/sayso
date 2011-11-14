@@ -12,7 +12,7 @@ class Metrics_FeedCollection
     private $limitFirstRun  = 40;
 
     /**
-     * Limit getting a number of records for all subsequent runs     
+     * Limit getting a number of records for all subsequent runs
      *
      * @var int
      */
@@ -198,7 +198,7 @@ EOT;
         mtv.created         AS dateTime,
         'Tag'               AS metricsType,
         1                   AS selectType,
-        concat('Cell: ', c4.cell_type , ', tag: ', t4.name)
+        concat('Cell: ', c4.cell_type , ', tag: ', t4.name, ', url: ', t4.target_url)
                             AS `data`
     FROM
         metrics_tag_view mtv, `user` u4, starbar s4,
@@ -230,7 +230,7 @@ EOT;
         mtv5.created        AS dateTime,
         'Tag'               AS metricsType,
         2                   AS selectType,
-        concat('Click through for cell: ', c5.cell_type , ', tag: ', t5.name)
+        concat('Click through for cell: ', c5.cell_type , ', tag: ', t5.name, ', url: ', t5.target_url)
                             AS `data`
     FROM
         metrics_tag_click_thru mct, metrics_tag_view mtv5, `user` u5, starbar s5,
@@ -246,6 +246,74 @@ EOT;
 EOT;
 
             }
+            if($this->pollCreatives)
+            {
+                // metrics_creative_view
+
+                $addOnlyUserSQL = "";
+                if($this->onlyUser > 0)
+                {
+                    $addOnlyUserSQL     = "AND mcv.user_id = ?";
+                    $this->sqlParams[]  = $this->onlyUser;
+                }
+                $sqlChunks[]=<<<EOT
+(
+    SELECT
+        mcv.id              AS lastId,
+        mcv.user_id         AS userId,
+        u6.username         AS userName,
+        mcv.starbar_id      AS starbarId,
+        s6.label            AS starbar,
+        mcv.created         AS dateTime,
+        'Creative'          AS metricsType,
+        1                   AS selectType,
+        concat('Cell: ', c6.cell_type , ', creative: ', t6.name, 
+                CASE WHEN t6.url IS NOT NULL THEN CONCAT(', url: ', t6.url) ELSE '' END ) AS `data`
+    FROM
+        metrics_creative_view mcv, `user` u6, starbar s6,
+                study_creative as t6, study_cell c6
+    WHERE
+        mcv.user_id = u6.id
+        $addOnlyUserSQL
+        AND mcv.starbar_id = s6.id
+        AND mcv.creative_id = t6.id
+        AND mcv.cell_id = c6.id
+)
+EOT;
+                // metrics_creative_click_thru
+
+                $addOnlyUserSQL = "";
+                if($this->onlyUser > 0)
+                {
+                    $addOnlyUserSQL     = "AND mcv7.user_id = ?";
+                    $this->sqlParams[]  = $this->onlyUser;
+                }
+                $sqlChunks[]=<<<EOT
+(
+    SELECT
+        mzt.id              AS lastId,
+        mcv7.user_id        AS userId,
+        u7.username         AS userName,
+        mcv7.starbar_id     AS starbarId,
+        s7.label            AS starbar,
+        mcv7.created        AS dateTime,
+        'Creative'          AS metricsType,
+        2                   AS selectType,
+        concat('Click through for cell: ', c7.cell_type , ', creative: ', t7.name, 
+                CASE WHEN t7.url IS NOT NULL THEN CONCAT(', url: ', t7.url) ELSE '' END ) AS `data`
+    FROM
+        metrics_creative_click_thru mzt, metrics_creative_view mcv7, `user` u7, starbar s7,
+                study_creative as t7, study_cell c7
+    WHERE
+        mzt.metrics_creative_view_id = mcv7.id
+        AND mcv7.user_id = u7.id
+        $addOnlyUserSQL
+        AND mcv7.starbar_id = s7.id
+        AND mcv7.creative_id = t7.id
+        AND mcv7.cell_id = c7.id
+)
+EOT;
+            }
 
             $sql = implode(' UNION ', $sqlChunks);
             $sql .=<<<EOT
@@ -255,6 +323,9 @@ LIMIT ?
 EOT;
             $this->sqlParams[]  = $this->limitFirstRun;
             $this->sql          = $sql;
+
+            //var_dump($this->sql);exit(0);
+
         }
 
         /**
@@ -332,6 +403,7 @@ EOT;
                 $this->sqlParams[] = $this->rowsAfter;
                 $this->sqlParams[] = $this->lastPageViewId;
             }
+
             if($this->pollSocial)
             {
                 $addOnlyUserSQL = "";
@@ -367,7 +439,7 @@ EOT;
                 $this->sqlParams[] = $this->rowsAfter;
                 $this->sqlParams[] = $this->lastSocialActivityId;
             }
-            
+
             if($this->pollTags)
             {
                 // metrics_tag_view
@@ -389,7 +461,7 @@ EOT;
         mtv.created         AS dateTime,
         'Tag'               AS metricsType,
         1                   AS selectType,
-        concat('Cell: ', c4.cell_type , ', tag: ', t4.name)
+        concat('Cell: ', c4.cell_type , ', tag: ', t4.name, ', url: ', t4.target_url)
                             AS `data`
     FROM
         metrics_tag_view mtv, `user` u4, starbar s4,
@@ -426,7 +498,7 @@ EOT;
         mtv5.created        AS dateTime,
         'Tag'               AS metricsType,
         2                   AS selectType,
-        concat('Click through for cell: ', c5.cell_type , ', tag: ', t5.name)
+        concat('Click through for cell: ', c5.cell_type , ', tag: ', t5.name, ', url: ', t5.target_url)
                             AS `data`
     FROM
         metrics_tag_click_thru mct5, metrics_tag_view mtv5, `user` u5, starbar s5,
@@ -444,6 +516,85 @@ EOT;
 EOT;
                 $this->sqlParams[] = $this->rowsAfter;
                 $this->sqlParams[] = $this->lastTagViewId;
+            }
+
+            if($this->pollCreatives)
+            {
+                // metrics_creative_view
+
+                $addOnlyUserSQL = "";
+                if($this->onlyUser > 0)
+                {
+                    $addOnlyUserSQL     = "AND mcv.user_id = ?";
+                    $this->sqlParams[]  = $this->onlyUser;
+                }
+                $sqlChunks[]=<<<EOT
+(
+    SELECT
+        mcv.id              AS lastId,
+        mcv.user_id         AS userId,
+        u6.username         AS userName,
+        mcv.starbar_id      AS starbarId,
+        s6.label            AS starbar,
+        mcv.created         AS dateTime,
+        'Creative'          AS metricsType,
+        1                   AS selectType,
+        concat('Cell: ', c6.cell_type , ', creative: ', t6.name,
+                CASE WHEN t6.url IS NOT NULL THEN CONCAT(', url: ', t6.url) ELSE '' END ) AS `data`
+    FROM
+        metrics_creative_view mcv, `user` u6, starbar s6,
+                study_creative as t6, study_cell c6
+    WHERE
+        mcv.user_id = u6.id
+        AND mcv.created > ?
+        $addOnlyUserSQL
+        AND mcv.starbar_id = s6.id
+        AND mcv.creative_id = t6.id
+        AND mcv.cell_id = c6.id
+        AND mcv.id > ?
+)
+EOT;
+                $this->sqlParams[] = $this->rowsAfter;
+                $this->sqlParams[] = $this->lastCreativeId;
+
+                // metrics_creative_click_thru
+
+                $addOnlyUserSQL = "";
+                if($this->onlyUser > 0)
+                {
+                    $addOnlyUserSQL     = "AND mcv7.user_id = ?";
+                    $this->sqlParams[]  = $this->onlyUser;
+                }
+                $sqlChunks[]=<<<EOT
+(
+    SELECT
+        mzt.id              AS lastId,
+        mcv7.user_id        AS userId,
+        u7.username         AS userName,
+        mcv7.starbar_id     AS starbarId,
+        s7.label            AS starbar,
+        mcv7.created        AS dateTime,
+        'Creative'          AS metricsType,
+        2                   AS selectType,
+        concat('Click through for cell: ', c7.cell_type , ', creative: ', t7.name,
+                CASE WHEN t7.url IS NOT NULL THEN CONCAT(', url: ', t7.url) ELSE '' END ) AS `data`
+                            
+    FROM
+        metrics_creative_click_thru mzt, metrics_creative_view mcv7, `user` u7, starbar s7,
+                study_creative as t7, study_cell c7
+    WHERE
+        mzt.metrics_creative_view_id = mcv7.id
+        AND mzt.created > ?
+        AND mcv7.user_id = u7.id
+        $addOnlyUserSQL
+        AND mcv7.starbar_id = s7.id
+        AND mcv7.creative_id = t7.id
+        AND mcv7.cell_id = c7.id
+        AND mzt.id > ?
+)
+EOT;
+                $this->sqlParams[] = $this->rowsAfter;
+                $this->sqlParams[] = $this->lastCreativeViewId;
             }
 
             $sql = implode(' UNION ', $sqlChunks);
@@ -494,19 +645,23 @@ EOT;
      */
     public function run()
     {
+        
         // Nothing to poll for?
-        if(!$this->pollMetrics && !$this->pollSocial && !$this->pollPageView)
+        if(!$this->pollMetrics && !$this->pollSocial && !$this->pollPageView && !$this->pollTags && !$this->pollCreatives)
         {
             return new ArrayObject(array());
         }
 
         // Create sql and params array
+        
         $this->_setSQL();
 
         // Prepare params array
         $sql = array($this->sql);
+
         // Call dynamically
         $results = call_user_func_array(array('Db_Pdo', 'fetchAll'), array_merge($sql, $this->sqlParams));
+        
         return new ArrayObject($results);
     }
 }

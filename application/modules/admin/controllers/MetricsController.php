@@ -120,6 +120,7 @@ class Admin_MetricsController extends Admin_CommonController
     private function formatPollResult(&$rows, &$entry, &$lastRowId)
     {
         $index = 'lastSearchId';
+        
         switch($entry['metricsType'])
         {
             case 'Page View':
@@ -139,7 +140,14 @@ class Admin_MetricsController extends Admin_CommonController
                 }
                 break;
             case 'Creative':
-                $index = 'lastCreative';
+                if($entry['selectType'] == 1)
+                {
+                    $index = 'lastCreativeId';
+                }
+                else
+                {
+                    $index = 'lastCreativeViewId';
+                }
                 break;
             default:
                 break;

@@ -1009,6 +1009,7 @@ $(function () {
 
     // submit the form
     $('#do-ze-build').click(function (e) {
+
         e.preventDefault();
 
         // ad tags
@@ -1063,16 +1064,21 @@ $(function () {
 
         var jsonString = JSON.stringify(sayso.data);
 
+        //console.log(jsonString); return false;
+
         // localStorage
-        localStorage.setItem('sayso', jsonString);
+        //localStorage.setItem('sayso', jsonString);
+
+        alert('before send')
 
         $.ajax({
             url : 'http://' + sayso.baseDomain + '/admin/study/create-new',
-            data : { data : jsonString },
+            data : {data : jsonString},
             type : 'POST',
             dataType: 'json',
             success : function (response) {
-                console.log(response);
+                alert('success')
+                console.log(response);                
             }
         });
 
@@ -1090,7 +1096,7 @@ $(function () {
         // finally, scroll the view back to the top
         $('html,body').animate({scrollTop:0}, 600);
 
-        */
+        */       
 
     });
 

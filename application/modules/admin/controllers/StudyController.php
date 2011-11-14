@@ -19,6 +19,9 @@ class Admin_StudyController extends Admin_CommonController
         $this->_validateRequiredParameters(array('data'));
         
         $data = json_decode($this->data);
+
+        //print_r($data);exit(0);
+        
         $type = $data->type;
         
         switch ($type) {

@@ -18,7 +18,7 @@ class Admin_IndexController extends Admin_CommonController
             $scripts->appendFile('/js/mustache.js');
             $scripts->appendFile('/js/templates.js');
             $scripts->appendFile('/js/bind.js');
-            $scripts->appendFile('/js/admin.js');
+            $scripts->appendFile('/modules/admin/index/index.js');
             $this->view->headLink()->appendStylesheet('/modules/admin/index/index.css', 'screen');
         }
     }

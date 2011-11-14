@@ -55,22 +55,28 @@ class Admin_StudyController extends Admin_CommonController
 
             // search engines
 
-            foreach ($data['metrics']['searchengineIds'] as $searchEngineId)
+            if(isset($data['metrics']) && isset($data['metrics']['searchengineIds']) && !empty($data['metrics']['searchengineIds']))
             {
-                $map                    = new Study_SearchEnginesMap();
-                $map->study_id          = $study->getId();
-                $map->search_engines_id = $searchEngineId;
-                $map->save();
+                foreach ($data['metrics']['searchengineIds'] as $searchEngineId)
+                {
+                    $map                    = new Study_SearchEnginesMap();
+                    $map->study_id          = $study->getId();
+                    $map->search_engines_id = $searchEngineId;
+                    $map->save();
+                }
             }
 
             // social activity types
 
-            foreach ($data['metrics']['socialIds'] as $socialId)
+            if(isset($data['metrics']) && isset($data['metrics']['socialIds']) && !empty($data['metrics']['socialIds']))
             {
-                $map                            = new Study_SocialActivityTypeMap();
-                $map->study_id                  = $study->getId();
-                $map->social_activity_type_id   = $socialId;
-                $map->save();
+                foreach ($data['metrics']['socialIds'] as $socialId)
+                {
+                    $map                            = new Study_SocialActivityTypeMap();
+                    $map->study_id                  = $study->getId();
+                    $map->social_activity_type_id   = $socialId;
+                    $map->save();
+                }
             }
 
             // survey
@@ -95,30 +101,33 @@ class Admin_StudyController extends Admin_CommonController
 
             $tags = new Study_TagCollection();
             $tagsByClientIds = array(); // Tag objects by client side guids
-            foreach ($tagsDomainsData as $tagClientId => $tagDomainData)
+            if(!empty($tagsDomainsData))
             {
-                $tag = new Study_Tag();
-                $tag->name      = $tagDomainData['label'];
-                $tag->tag       = $tagDomainData['tag'];
-                $tag->target_url = $tagDomainData['targetUrl'];
-                $tag->user_id   = $this->currentUser->id;
-                $tags->addItem($tag);
-
-                // this is used below for ADjuster to grab the correct mapped tag
-                $tagsByClientIds[$tagClientId] = $tag;
-                if (!empty($tagDomainData['domain']))
+                foreach ($tagsDomainsData as $tagClientId => $tagDomainData)
                 {
-                    // add domains for this Tag
-                    foreach ($tagDomainData['domain'] as $domainData)
+                    $tag = new Study_Tag();
+                    $tag->name      = $tagDomainData['label'];
+                    $tag->tag       = $tagDomainData['tag'];
+                    $tag->target_url = $tagDomainData['targetUrl'];
+                    $tag->user_id   = $this->currentUser->id;
+                    $tags->addItem($tag);
+
+                    // this is used below for ADjuster to grab the correct mapped tag
+                    $tagsByClientIds[$tagClientId] = $tag;
+                    if (!empty($tagDomainData['domain']))
                     {
-                        $domain             = new Study_Domain();
-                        $domain->domain     = $domainData['name'];
-                        $domain->user_id    = $this->currentUser->id;
-                        $tag->addDomain($domain);
+                        // add domains for this Tag
+                        foreach ($tagDomainData['domain'] as $domainData)
+                        {
+                            $domain             = new Study_Domain();
+                            $domain->domain     = $domainData['name'];
+                            $domain->user_id    = $this->currentUser->id;
+                            $tag->addDomain($domain);
+                        }
                     }
                 }
-            }
-            $tags->save();
+                $tags->save();
+            }            
 
             // creatives
 

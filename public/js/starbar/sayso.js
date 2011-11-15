@@ -377,14 +377,10 @@ $SQ(function () {
                     adHeight = jTagContainer.innerHeight();
 					jTag = $SQ(document.createElement('div'));
 					jTag.css({
-						'position': 'absolute',
-						'top': 0,
-						'right': 0,
-						'bottom': 0,
-						'left': 0,
 						'width': adWidth+'px',
 						'height': adHeight+'px',
-						'overflow': 'hidden'
+						'overflow': 'hidden',
+						'display': 'block'
 					});
 					jTag.html('<a id="sayso-adcreative-'+creative.id+'" href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
                     jTagContainer.html('').append(jTag);
@@ -434,7 +430,8 @@ $SQ(function () {
 							},
 							success : function (response) {
 								// Recording complete, propagate the click manually!
-								jTag.trigger(e);
+								clickDetectionElem.css('display', 'none');
+								jTagContainer.trigger(e);
 							}
 						});
 					}

@@ -418,9 +418,9 @@ $SQ(function () {
 
 				clickDetectionElem.bind({
 					click: function(e) {
-						e.preventDefault();
 						e.stopPropagation();
 						log('Click detected at X='+e.pageX+', Y='+e.pageY);
+						log('Click offset detected at X='+e.offsetX+', Y='+e.offsetY);
 						ajax({
 							// Replace this with proper ajax call to record the click
 							url : 'http://' + sayso.baseDomain + '/api/study/get-all',
@@ -431,7 +431,8 @@ $SQ(function () {
 							success : function (response) {
 								// Recording complete, propagate the click manually!
 								clickDetectionElem.css('display', 'none');
-								e.isDefaultPrevented = false;
+								log('event', e);
+								e.isPropagationStopped = false;
 								log('event', e);
 								clickDetectionElem.simulate('click', jTagContainer, e, true);
 							}

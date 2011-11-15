@@ -1,7 +1,4 @@
-/**
- * @deprecated It is safe to delete this file
- *
- */
+
 $(function () {
 
     if (typeof sayso === 'undefined') sayso = {};

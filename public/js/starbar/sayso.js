@@ -373,6 +373,8 @@ $SQ(function () {
                     var creative = tag._creatives.items[0];
                     
                     // replace ad
+                    adWidth = jTagContainer.innerWidth();
+                    adHeight = jTagContainer.innerHeight();
 					jTag = $SQ(document.createElement('div'));
 					jTag.css({
 						'position': 'absolute',
@@ -380,6 +382,8 @@ $SQ(function () {
 						'right': 0,
 						'bottom': 0,
 						'left': 0,
+						'width': adWidth+'px',
+						'height': adHeight+'px',
 						'overflow': 'hidden'
 					});
 					jTag.html('<a id="sayso-adcreative-'+creative.id+'" href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');

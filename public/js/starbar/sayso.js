@@ -357,8 +357,16 @@ $SQ(function () {
             if (jTag.length) { // tag exists
                 
                 jTagContainer = jTag.parent();
-                // If we found an embed tag inside an <object> tag, we want the parent of *that*
-                if (jTagContainer.is("object")) jTagContainer = jTagContainer.parent();
+                if (jTag.is('embed')) { // Flash; set wmode to transparent to track the click (this probably won't work...)
+                    jTag.attr('wmode', 'transparent');
+                	// If we found an embed tag inside an <object> tag, we want the parent of *that*
+                    if (jTagContainer.is('object')) {
+                    	jTagContainer.prepend('<param name="wmode" value="transparent" />');
+                    	jTagContainer = jTagContainer.parent();
+					}
+				}
+                
+                    
                 jTagContainer.css('position', 'relative');
                 
                 adsFound++;
@@ -391,11 +399,6 @@ $SQ(function () {
                     // @todo store creative.target_url to check for click-thru
                     
                 } else { // ADjuster Campaign ------------------------
-                    
-                    if (jTag.is("embed")) { // Flash; set wmode to transparent to track the click (this probably won't work...)
-                    	jTag.parent().prepend('<param name="wmode" value="transparent" />');
-                    	jTag.attr('wmode', 'transparent');
-					}
                     
                     // track ad view
                     currentActivity.tagViews.push(tag.id);

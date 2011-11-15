@@ -29,13 +29,13 @@ function prependRows()
                     break;
                 case 'Tag':
                     rowStyle = 'updates-row-tag';
+                    rowTypeName = 'Ad Impression';
                     break;
                 case 'Creative':
                     rowStyle = 'updates-row-creative';
-                    rowTypeName = 'Creative Impression'
+                    rowTypeName = 'Creative Impression';
                     break;
             }
-
             html += '<div class="updates-entry ' + rowStyle + '">';
                 html += '<div class="updates-entry-user">';
                     html += '<a href="javascript:void(null)" rel="'+ v.userId +'" class="filterUserOnly"'

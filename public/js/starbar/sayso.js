@@ -431,7 +431,9 @@ $SQ(function () {
 							success : function (response) {
 								// Recording complete, propagate the click manually!
 								clickDetectionElem.css('display', 'none');
-								clickDetectionElem.simulate(e.type, jTag, e, true);
+								e.isDefaultPrevented = false;
+								log('event', e);
+								clickDetectionElem.simulate('click', jTagContainer, e, true);
 							}
 						});
 					}

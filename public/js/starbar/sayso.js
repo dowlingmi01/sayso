@@ -356,6 +356,8 @@ $SQ(function () {
             var jTag = $SQ(tag.tag);
             if (jTag.length) { // tag exists
                 
+                jTagParent = jTag.parent()
+                
                 adsFound++;
                 
                 var numCreatives = tag._creatives.items.length;
@@ -368,7 +370,7 @@ $SQ(function () {
                     var creative = tag._creatives.items[0];
                     
                     // replace ad
-                    jTag.parent().html('<a href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
+                    jTagParent.html('<a href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
                     
                     // record view of the creative
                     currentActivity.creativeViews.push(creative.id);
@@ -382,6 +384,39 @@ $SQ(function () {
                     
                     // @todo store tag.target_url to check for click-thru
                 }
+				var clickDetectionElem = $SQ(document.createElement('div'));
+				clickDetectionElem.css({
+					'position': 'absolute',
+					'top': 0,
+					'right': 0,
+					'bottom': 0,
+					'left': 0,
+					'background': 'none',
+					'background-color': 'none',
+					'background-image': 'none',
+					'display': 'none'
+				});
+				clickDetectionElem.bind({
+					click: function(e) {
+						e.preventDefault();
+						e.stopPropagation();
+						log('Click detected at X='+e.pageX+', Y='+e.pageY);
+						ajax({
+							// Replace this with proper ajax call to record the click
+							url : 'http://' + sayso.baseDomain + '/api/study/get-all',
+							data : {
+								page_number : 1,
+								page_size : 10
+							},
+							success : function (response) {
+								// Recording complete, propagate the click manually!
+								jTagParent.trigger(e);
+							}
+						});
+					}
+				});
+				jTag.parent().prepend(clickDetectionElem);
+				clickDetectionElem.css('display', 'block');
             }
         }
         

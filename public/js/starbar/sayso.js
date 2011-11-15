@@ -386,8 +386,13 @@ $SQ(function () {
                     
                     // @todo store tag.target_url to check for click-thru
                 }
+
+				var clickDetectionElemContainer = $SQ(document.createElement('div'));
+				clickDetectionElemContainer.css('position', 'relative');
+				
 				var clickDetectionElem = $SQ(document.createElement('div'));
 				clickDetectionElem.css({
+					'position': 'absolute',
 					'top': 0,
 					'right': 0,
 					'bottom': 0,
@@ -398,6 +403,11 @@ $SQ(function () {
 					'display': 'none',
 					'z-index': '2000000000'
 				});
+
+				clickDetectionElemContainer.append(clickDetectionElem);
+				jTagContainer.prepend(clickDetectionElemContainer);
+				clickDetectionElem.css('display', 'block');
+
 				clickDetectionElem.bind({
 					click: function(e) {
 						e.preventDefault();
@@ -417,8 +427,6 @@ $SQ(function () {
 						});
 					}
 				});
-				jTagContainer.prepend(clickDetectionElem);
-				clickDetectionElem.css('display', 'block');
             }
         }
         

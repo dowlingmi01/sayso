@@ -418,7 +418,6 @@ $SQ(function () {
 
 				clickDetectionElem.bind({
 					click: function(e) {
-						e.stopPropagation();
 						log('Click detected at X='+e.pageX+', Y='+e.pageY);
 						log('Click offset detected at X='+e.offsetX+', Y='+e.offsetY);
 						ajax({
@@ -429,14 +428,6 @@ $SQ(function () {
 								page_size : 10
 							},
 							success : function (response) {
-								// Recording complete, propagate the click manually!
-								clickDetectionElem.css('display', 'none');
-								log('event before', e);
-								e.isPropagationStopped = false;
-								e.srcElement = jTag;
-								e.toElement = jTag;
-								log('event after', e);
-								jTag.trigger(e);
 							}
 						});
 					}

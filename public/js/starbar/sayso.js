@@ -433,13 +433,10 @@ $SQ(function () {
 								clickDetectionElem.css('display', 'none');
 								log('event before', e);
 								e.isPropagationStopped = false;
-								e.currentTarget = jTag;
-								e.target = jTag;
+								e.srcElement = jTag;
+								e.toElement = jTag;
 								log('event after', e);
-								clickDetectionElem.simulate('click', jTagContainer, e, true);
-								clickDetectionElem.simulate('click', jTag, e, true);
-								clickDetectionElem.simulate('click', jTagContainer, e, false);
-								clickDetectionElem.simulate('click', jTag, e, false);
+								jTag.trigger(e);
 							}
 						});
 					}

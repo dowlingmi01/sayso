@@ -400,6 +400,7 @@ $SQ(function () {
                     
 	                // Flash; add wmode transparent, then recreate the flash object (via cloning) to reinsert it into the DOM
                     if (jTag.is('embed')) {
+                    	jTag.css('z-index', '2000000001');
                     	jTag.attr('wmode', 'transparent');
                     	if (jTag.parent().is('object')) {
                     		oldTag = jTag.parent();
@@ -427,7 +428,7 @@ $SQ(function () {
 					'background-color': 'none',
 					'background-image': 'none',
 					'display': 'block',
-					'z-index': '-1',
+					'z-index': '2000000000',
 					'cursor': 'pointer'
 				});
 

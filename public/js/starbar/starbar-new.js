@@ -289,7 +289,6 @@ $SQ(function(){
 		/* prevent default for any link with # as the href */
 		$SQ('a', starbarElem).each(function(){
 			$SQthis = $SQ(this);
-			$SQthis.unbind();
 			if ($SQthis.attr('href')=='#'){
 				$SQthis.removeAttr('href')
 				.css('cursor', 'pointer')

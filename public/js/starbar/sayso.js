@@ -356,7 +356,9 @@ $SQ(function () {
             var jTag = $SQ(tag.tag);
             if (jTag.length) { // tag exists
                 
-                jTagParent = jTag.parent()
+                jTagContainer = jTag.parent();
+                // If we found an embed tag inside an <object> tag, we want the parent of *that*
+                if (jTagContainer.is("object")) jTagContainer = jTagContainer.parent();
                 
                 adsFound++;
                 
@@ -370,7 +372,7 @@ $SQ(function () {
                     var creative = tag._creatives.items[0];
                     
                     // replace ad
-                    jTagParent.html('<a href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
+                    jTagContainer.html('<a href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
                     
                     // record view of the creative
                     currentActivity.creativeViews.push(creative.id);
@@ -386,7 +388,6 @@ $SQ(function () {
                 }
 				var clickDetectionElem = $SQ(document.createElement('div'));
 				clickDetectionElem.css({
-					'position': 'absolute',
 					'top': 0,
 					'right': 0,
 					'bottom': 0,
@@ -394,7 +395,8 @@ $SQ(function () {
 					'background': 'none',
 					'background-color': 'none',
 					'background-image': 'none',
-					'display': 'none'
+					'display': 'none',
+					'z-index': '2000000000'
 				});
 				clickDetectionElem.bind({
 					click: function(e) {
@@ -410,12 +412,12 @@ $SQ(function () {
 							},
 							success : function (response) {
 								// Recording complete, propagate the click manually!
-								jTagParent.trigger(e);
+								jTagContainer.trigger(e);
 							}
 						});
 					}
 				});
-				jTag.parent().prepend(clickDetectionElem);
+				jTagContainer.prepend(clickDetectionElem);
 				clickDetectionElem.css('display', 'block');
             }
         }

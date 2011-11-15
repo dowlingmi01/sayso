@@ -357,16 +357,12 @@ $SQ(function () {
             if (jTag.length) { // tag exists
                 
                 jTagContainer = jTag.parent();
-                if (jTag.is('embed')) { // Flash; set wmode to transparent to track the click (this probably won't work...)
-                    jTag.attr('wmode', 'transparent');
+                if (jTag.is('embed') && jTagContainer.is('object')) {
                 	// If we found an embed tag inside an <object> tag, we want the parent of *that*
-                    if (jTagContainer.is('object')) {
-                    	jTagContainer.prepend('<param name="wmode" value="transparent" />');
                     	jTagContainer = jTagContainer.parent();
 					}
 				}
-                
-                    
+
                 jTagContainer.css('position', 'relative');
                 
                 adsFound++;
@@ -402,6 +398,21 @@ $SQ(function () {
                     
                     // track ad view
                     currentActivity.tagViews.push(tag.id);
+                    
+	                // Flash; add wmode transparent, then recreate the flash object (via cloning) to reinsert it into the DOM
+                    if (jTag.is('embed')) {
+                    	jTag.attr('wmode', 'transparent');
+                    	if (jTag.parent().is('object')) {
+                    		oldTag = jTag.parent();
+                    		oldTag.prepend('<param name="wmode" value="transparent" />');
+                    		newTag = oldTag.clone(true, true);
+						} else {
+							oldTag = jTag;
+							newTag = jTag.clone(true, true);
+						}
+						oldTag.replaceWith(newTag);
+					}
+
                     
                     // @todo store tag.target_url to check for click-thru
                 }

@@ -417,7 +417,7 @@ $SQ(function () {
 				clickDetectionElem.css('display', 'block');
 
 				clickDetectionElem.bind({
-					click: function(e) {
+					'mousedown': function(e) {
 						log('Click detected at X='+e.pageX+', Y='+e.pageY);
 						log('Click offset detected at X='+e.offsetX+', Y='+e.offsetY);
 						ajax({
@@ -430,6 +430,7 @@ $SQ(function () {
 							success : function (response) {
 							}
 						});
+						clickDetectionElem.css('display', 'none');
 					}
 				});
             }

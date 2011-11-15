@@ -458,9 +458,7 @@ $SQ(function () {
                 // update list of ad targets so we can later verify click throughs
                 // see Page View section above where this is checked
                 
-                if (!adTargets[adTargetId]) {
-                    adTargets[adTargetId] = adTarget;
-                }
+                adTargets[adTargetId] = adTarget;
                 
                 var app = KOBJ.get_application(sayso.starbar.kynetxAppId);
                 app.raise_event(

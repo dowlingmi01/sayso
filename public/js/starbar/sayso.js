@@ -413,11 +413,11 @@ $SQ(function () {
 					'cursor': 'pointer'
 				});
 
-				jTagContainer.prepend(clickDetectionElem);
-				clickDetectionElem.css('display', 'block');
+				//jTagContainer.prepend(clickDetectionElem);
+				//clickDetectionElem.css('display', 'block');
 
-				clickDetectionElem.bind({
-					'mousedown': function(e) {
+				jTag.bind({
+					'click': function(e) {
 						log('Click detected at X='+e.pageX+', Y='+e.pageY);
 						log('Click offset detected at X='+e.offsetX+', Y='+e.offsetY);
 						ajax({
@@ -430,7 +430,7 @@ $SQ(function () {
 							success : function (response) {
 							}
 						});
-						clickDetectionElem.css('display', 'none');
+						//clickDetectionElem.css('display', 'none');
 					}
 				});
             }

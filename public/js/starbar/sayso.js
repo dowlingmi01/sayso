@@ -431,10 +431,15 @@ $SQ(function () {
 							success : function (response) {
 								// Recording complete, propagate the click manually!
 								clickDetectionElem.css('display', 'none');
-								log('event', e);
+								log('event before', e);
 								e.isPropagationStopped = false;
-								log('event', e);
+								e.currentTarget = jTag;
+								e.target = jTag;
+								log('event after', e);
 								clickDetectionElem.simulate('click', jTagContainer, e, true);
+								clickDetectionElem.simulate('click', jTag, e, true);
+								clickDetectionElem.simulate('click', jTagContainer, e, false);
+								clickDetectionElem.simulate('click', jTag, e, false);
 							}
 						});
 					}

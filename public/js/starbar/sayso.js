@@ -83,7 +83,8 @@ $SQ(function () {
     // Behavioral tracking
 
     // NOTE: basic behavioral tracking (i.e. not ad tracking) fires
-    // continuously regardless of study behavioral settings
+    // continuously regardless of study behavioral settings (filtering will
+    // done later based on study settings)
 
     // ================================================================
     // Page View
@@ -272,7 +273,7 @@ $SQ(function () {
     }
 
     // ================================================================
-    // ADjuster Ad-Tracking/Replacement
+    // ADjuster Ad-Tracking/Replacement/Click-Thrus
 
     // @todo optimize the retreival of active studies for the current user.
     // this will likely include a combination of a server-side daemon for handling
@@ -295,6 +296,29 @@ $SQ(function () {
         }
     });
 
+    // ADjuster Click-Thrus ------------------------
+    
+    var adTargets = JSON.parse(sayso.study.adTargets);
+    log(adTargets);
+    for (var key in adTargets) {
+        var adTarget = adTargets[key];
+        if (location.href.match(adTarget.urlSegment)) {
+            // click thru!
+            ajax({
+                url : 'http://' + sayso.baseDomain + '/api/metrics/track-click-thru',
+                data : {
+                    url_segment : adTarget.urlSegment,
+                    type : adTarget.type,
+                    type_id : adTarget.typeId
+                },
+                success : function (response) {
+                    log('Tracked click thru for ' + adTarget.type + ' (' + adTarget.typeId + ')');
+                }
+            });
+            break;
+        }
+    }
+    
     /**
      * Process all studies
      */
@@ -365,7 +389,9 @@ $SQ(function () {
                 jTagContainer.css('position', 'relative');
 
                 adsFound++;
-
+                var adTarget = null,
+                    adTargetId = ''; // used as a JS optimization for searching the adTargets object
+                
                 var numCreatives = tag._creatives.items.length;
                 if (numCreatives) { // ADjuster Creative ------------
 
@@ -391,7 +417,12 @@ $SQ(function () {
                     // record view of the creative
                     currentActivity.creativeViews.push(creative.id);
 
-                    // @todo store creative.target_url to check for click-thru
+                    adTarget = {
+                        urlSegment : creative.target_url,
+                        type : 'creative',
+                        typeId : creative.id
+                    };
+                    adTargetId = 'creative' + creative.id;
 
                 } else { // ADjuster Campaign ------------------------
 
@@ -399,6 +430,7 @@ $SQ(function () {
                     currentActivity.tagViews.push(tag.id);
 
 	                // Flash; add wmode transparent, then recreate the flash object (via cloning) to reinsert it into the DOM
+                    /*
                     if (jTag.is('embed')) {
                     	jTag.css('z-index', '2000000001');
                     	jTag.attr('wmode', 'transparent');
@@ -412,11 +444,33 @@ $SQ(function () {
 						}
 						oldTag.replaceWith(newTag);
 					}
+					*/
 
-
-                    // @todo store tag.target_url to check for click-thru
+                    adTarget = {
+                        urlSegment : tag.target_url,
+                        type : 'campaign',
+                        typeId : tag.id
+                    };
+                    adTargetId = 'campaign' + tag.id;
+                    
                 }
-
+                
+                // update list of ad targets so we can later verify click throughs
+                // see Page View section above where this is checked
+                
+                if (!adTargets[adTargetId]) {
+                    adTargets[adTargetId] = adTarget;
+                }
+                
+                var app = KOBJ.get_application(sayso.starbar.kynetxAppId);
+                app.raise_event(
+                    'update_ad_targets', 
+                    { 
+                        'ad_targets' : JSON.stringify(adTargets)
+                    }
+                );
+                
+				/*
 				var clickDetectionElem = $SQ(document.createElement('div'));
 				clickDetectionElem.css({
 					'position': 'absolute',
@@ -452,6 +506,7 @@ $SQ(function () {
 						//clickDetectionElem.css('display', 'none');
 					}
 				});
+				*/
             }
         }
 

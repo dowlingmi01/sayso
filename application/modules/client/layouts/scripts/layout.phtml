@@ -8,6 +8,8 @@
         <meta name="description" content="">
     </head>
     <body style="margin: 0; padding: 0; background: url('<?= $this->screenshot ?>') top center no-repeat;">
+        <div id="my_ad" style="background: url('/images/hellomusic/img_reward.jpg'); width: 100px; height: 100px; margin: 0px; border: solid 3px black; font-weight: bold;">My Ad!</div>
+        <div id="my_other_ad" style="background: url('/images/hellomusic/img_reward.jpg'); width: 100px; height: 100px; margin: 0px; border: solid 3px black; font-weight: bold;">My Other Ad!</div>
         <?php echo $this->layout()->content; ?>
         <?= $this->headScript() . PHP_EOL ?>
     </body>

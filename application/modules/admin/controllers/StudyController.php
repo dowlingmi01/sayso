@@ -26,11 +26,10 @@ class Admin_StudyController extends Admin_CommonController
         $response   = array('result' => false, 'messages' => array());
 
         switch ($type) {
-            case 'ADjuster Campaign' :
             case 'ADjuster Creative' :
                 $tagsDomainsData = $data['domainAvail'];
                 break;
-            case 'ADgregator Campaign' :
+            case 'ADjuster Campaign' :
             default :
                 $tagsDomainsData = $data['tagdomain'];
                 break;
@@ -109,7 +108,7 @@ class Admin_StudyController extends Admin_CommonController
                     $tag = new Study_Tag();
                     $tag->name      = $tagDomainData['label'];
                     $tag->tag       = $tagDomainData['tag'];
-                    //$tag->target_url = $tagDomainData['targetUrl'];
+                    $tag->target_url = $tagDomainData['targetUrl'];
                     $tag->user_id   = $this->currentUser->id;
                     $tags->addItem($tag);
 

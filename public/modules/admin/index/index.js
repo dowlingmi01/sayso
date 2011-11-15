@@ -184,7 +184,7 @@ $(function () {
     function resetData () {
 
         sayso.data = {
-            type : 'ADgregator', // or 'ADjuster'
+            type : 'ADjuster Campaign', // or 'ADjuster Creative'
             tagdomain : {},
             domainAvail : {},
             creative : {},
@@ -388,13 +388,15 @@ $(function () {
         if (e.keyCode == '13') return;
         var label = $('#pairs-label');
         var adtag = $('#pairs-ad-tag');
-        if (!label.val().length || !adtag.val().length || isEmpty(sayso.temp.domain)) {
-            alert('Ad tags require a label, ad tag content and at least one domain');
+        var targetUrl = $('#tag-target-url');
+        if (!label.val().length || !adtag.val().length || !targetUrl.val().length || isEmpty(sayso.temp.domain)) {
+            alert('Ad tags require a label, ad tag content, target URL and at least one domain');
             return;
         }
         var data = {
             label : label.val(),
             tag : adtag.val(),
+            targetUrl : targetUrl.val(),
             domain : sayso.temp.domain
         };
         sayso.temp.domain = {};
@@ -423,6 +425,7 @@ $(function () {
         // reset the fields
         label.val('');
         adtag.val('');
+        targetUrl.val('');
         $('ul.list-domains li').remove();
     });
 
@@ -435,6 +438,7 @@ $(function () {
         // populate the fields
         $('#pairs-label').val(tagdomain.label);
         $('#pairs-ad-tag').val(tagdomain.tag);
+        $('#tag-target-url').val(tagdomain.targetUrl);
         if (!isEmpty(tagdomain.domain)) {
             // empty the list, just in case the user was already in the middle of editing another row
             $('#fieldset-tag-domain-pair ul.list-domains li').remove();
@@ -1064,11 +1068,8 @@ $(function () {
             $('html,body').animate({scrollTop:0}, 2000);
             if(response.messages.result > 0)
             {
-                /**
-                 * @todo legacy stuff does not work yet...
-                 */
                 resetForm();
-                resetData();                
+                resetData(); 
             }
             if(response.messages.length > 0)
             {

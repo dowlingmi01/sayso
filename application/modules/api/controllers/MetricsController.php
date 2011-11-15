@@ -102,6 +102,13 @@ class Api_MetricsController extends Api_GlobalController
         
         return $this->_resultType(true);
     }
+    
+    public function trackClickThruAction () {
+        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'url_segment', 'type', 'type_id'));
+        
+        return $this->_resultType(true);
+//        $sql = 'SELECT * FROM metrics_tag_view v LEFT JOIN '
+    }
 }
 
 

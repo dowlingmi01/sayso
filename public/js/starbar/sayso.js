@@ -24,7 +24,7 @@ $SQ(function () {
         starbar = window.sayso.starbar,
         log = window.sayso.log,
         warn = window.sayso.warn;
-    
+
     if (!sayso.study) sayso.study = {};
 
     var ajax = function (options) {
@@ -38,7 +38,7 @@ $SQ(function () {
         options.dataType = 'jsonp';
         return $SQ.ajax(options);
     };
-    
+
     /**
      * Helper function which can be used outside this context (e.g. in KRL)
      *
@@ -68,14 +68,14 @@ $SQ(function () {
     };
 
     // Blacklist sayso domains before any tracking
-    //sayso.log('debug >>> ' + location.href);    
+    //sayso.log('debug >>> ' + location.href);
     var trackerBlackList = [/(sayso|saysollc)\.com/, /say\.so/];
     for (var i = 0, ln = trackerBlackList.length; i < ln; i++)
     {
         if (trackerBlackList[i].test(location.href))
         {
-//            warn('Disabling tracking on own domains...');
-//            return;
+            warn('Disabling tracking on own domains...');
+            return;
         }
     }
     // ... end blacklist...
@@ -273,13 +273,13 @@ $SQ(function () {
 
     // ================================================================
     // ADjuster Ad-Tracking/Replacement
-    
+
     // @todo optimize the retreival of active studies for the current user.
     // this will likely include a combination of a server-side daemon for handling
     // study cell assignments, server-side caching (which the daemon will also
     // manage the state of depending on assignments) and client-side caching.
     // For now, we just retreive all studies on every page load (though not every iframe)
-    
+
     ajax({
         url : 'http://' + sayso.baseDomain + '/api/study/get-all',
         data : {
@@ -292,31 +292,31 @@ $SQ(function () {
             if (studies.items.length) {
                 processStudyCollection(studies);
             }
-        } 
+        }
     });
-    
+
     /**
      * Process all studies
      */
 	function processStudyCollection (studies) {
-	    
+
 	    var cellAdActivity = {}, // { id : 1, tagViews : [], creativeViews : []}
 	        currentActivity = null,
 	        adsFound = 0,
 	        replacements = 0,
 	        numStudies = studies.items.length;
-	    
+
 	    // studies
 		for (var s = 0; s < numStudies; s++) {
 		    var study = studies.items[s];
-		    
+
 		    var numCells = study._cells.items.length;
             if (!numCells) continue;
-                
+
             // cells
             for (var c = 0; c < numCells; c++) {
                 var cell = study._cells.items[c];
-                
+
                 // setup the object that will be sent back
                 // to the server, where cell id is the top
                 // level key for each group of tag/creative views
@@ -324,16 +324,16 @@ $SQ(function () {
                     tagViews : [],
                     creativeViews : []
                 };
-                
+
                 var numTags = cell._tags.items.length;
-                if (!numTags) continue; 
-                    
+                if (!numTags) continue;
+
                 // tags
                 for (var t = 0; t < numTags; t++) {
                     var tag = cell._tags.items[t];
-                    
+
                     var numDomains = tag._domains.items.length;
-                    
+
                     // domains (look for valid before processing tag)
                     for (var d = 0; d < numDomains; d++) {
                         var domain = tag._domains.items[d];
@@ -345,17 +345,17 @@ $SQ(function () {
                 } // tags
             } // cells
 		} // studies
-		
+
 		/**
          * Process each tag including ad detection and/or replacement
          * - running this method assumes a domain matches for the current URL
          * - this function inherits currentActivity for the current cell
          */
         function processTag (tag) {
-            
+
             var jTag = $SQ(tag.tag);
             if (jTag.length) { // tag exists
-                
+
                 jTagContainer = jTag.parent();
                 if (jTag.is('embed') && jTagContainer.is('object')) {
                 	// If we found an embed tag inside an <object> tag, we want the parent of *that*
@@ -363,18 +363,18 @@ $SQ(function () {
 				}
 
                 jTagContainer.css('position', 'relative');
-                
+
                 adsFound++;
-                
+
                 var numCreatives = tag._creatives.items.length;
                 if (numCreatives) { // ADjuster Creative ------------
-                    
+
                     replacements++;
-                    
+
                     // @hack just grab the first creative for now
                     // @todo enable cycling through each creative
                     var creative = tag._creatives.items[0];
-                    
+
                     // replace ad
                     adWidth = jTagContainer.innerWidth();
                     adHeight = jTagContainer.innerHeight();
@@ -387,17 +387,17 @@ $SQ(function () {
 					});
 					jTag.html('<a id="sayso-adcreative-'+creative.id+'" href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
                     jTagContainer.html('').append(jTag);
-                    
+
                     // record view of the creative
                     currentActivity.creativeViews.push(creative.id);
-                    
+
                     // @todo store creative.target_url to check for click-thru
-                    
+
                 } else { // ADjuster Campaign ------------------------
-                    
+
                     // track ad view
                     currentActivity.tagViews.push(tag.id);
-                    
+
 	                // Flash; add wmode transparent, then recreate the flash object (via cloning) to reinsert it into the DOM
                     if (jTag.is('embed')) {
                     	jTag.css('z-index', '2000000001');
@@ -413,7 +413,7 @@ $SQ(function () {
 						oldTag.replaceWith(newTag);
 					}
 
-                    
+
                     // @todo store tag.target_url to check for click-thru
                 }
 
@@ -454,12 +454,12 @@ $SQ(function () {
 				});
             }
         }
-        
+
         // Track ad views!
-        
+
 		// load timer is used so that asynchronous JS does not run this Ajax call too early
 		// and to prevent the need for deeply nested callbacks
-        
+
 		new $SQ.jsLoadTimer().setMaxCount(50).start(
 		    function () { return numStudies === s && adsFound; }, // condition
 		    function () {                                         // callback
@@ -472,7 +472,7 @@ $SQ(function () {
                         cell_activity : JSON.stringify(cellAdActivity)
                     },
                     success : function (response) {
-                         
+
                     }
                 });
 		    },

@@ -18,6 +18,7 @@ function prependRows()
         $.each(rows, function(i, v){
             var html        = '';
             var rowStyle    = 'updates-row-social';
+            var rowTypeName = v.metricsType;
             switch(v.metricsType)
             {
                 case 'Search':
@@ -31,6 +32,7 @@ function prependRows()
                     break;
                 case 'Creative':
                     rowStyle = 'updates-row-creative';
+                    rowTypeName = 'Creative Impression'
                     break;
             }
 
@@ -43,7 +45,7 @@ function prependRows()
                     html += v.starbar ;
                 html += '</div>';
                 html += '<div class="updates-entry-metricsType">';
-                    html += v.metricsType ;
+                    html += rowTypeName ;
                 html += '</div>';
                 html += '<div class="updates-entry-dateTime">';
                     html += v.dateTime ;

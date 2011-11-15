@@ -3,8 +3,10 @@
 --
 
 DROP TABLE IF EXISTS metrics;
+
 CREATE TABLE metrics (
   id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  legacy_id int(10) NOT NULL,
   created datetime NOT NULL,
   user_id int(10) unsigned NOT NULL,
   metrics_type tinyint(3) unsigned NOT NULL,

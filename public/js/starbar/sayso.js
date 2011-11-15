@@ -359,8 +359,7 @@ $SQ(function () {
                 jTagContainer = jTag.parent();
                 if (jTag.is('embed') && jTagContainer.is('object')) {
                 	// If we found an embed tag inside an <object> tag, we want the parent of *that*
-                    	jTagContainer = jTagContainer.parent();
-					}
+                    jTagContainer = jTagContainer.parent();
 				}
 
                 jTagContainer.css('position', 'relative');

@@ -359,6 +359,7 @@ $SQ(function () {
                 jTagContainer = jTag.parent();
                 // If we found an embed tag inside an <object> tag, we want the parent of *that*
                 if (jTagContainer.is("object")) jTagContainer = jTagContainer.parent();
+                jTagContainer.css('position', 'relative');
                 
                 adsFound++;
                 
@@ -372,7 +373,17 @@ $SQ(function () {
                     var creative = tag._creatives.items[0];
                     
                     // replace ad
-                    jTagContainer.html('<a href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
+					jTag = $SQ(document.createElement('div'));
+					jTag.css({
+						'position': 'absolute',
+						'top': 0,
+						'right': 0,
+						'bottom': 0,
+						'left': 0,
+						'overflow': 'hidden'
+					});
+					jTag.html('<a id="sayso-adcreative-'+creative.id+'" href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
+                    jTagContainer.html('').append(jTag);
                     
                     // record view of the creative
                     currentActivity.creativeViews.push(creative.id);
@@ -387,9 +398,6 @@ $SQ(function () {
                     // @todo store tag.target_url to check for click-thru
                 }
 
-				var clickDetectionElemContainer = $SQ(document.createElement('div'));
-				clickDetectionElemContainer.css('position', 'relative');
-				
 				var clickDetectionElem = $SQ(document.createElement('div'));
 				clickDetectionElem.css({
 					'position': 'absolute',
@@ -404,8 +412,7 @@ $SQ(function () {
 					'z-index': '2000000000'
 				});
 
-				clickDetectionElemContainer.append(clickDetectionElem);
-				jTagContainer.prepend(clickDetectionElemContainer);
+				jTagContainer.prepend(clickDetectionElem);
 				clickDetectionElem.css('display', 'block');
 
 				clickDetectionElem.bind({

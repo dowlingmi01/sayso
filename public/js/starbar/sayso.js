@@ -413,7 +413,8 @@ $SQ(function () {
 					'background-color': 'none',
 					'background-image': 'none',
 					'display': 'none',
-					'z-index': '2000000000'
+					'z-index': '2000000000',
+					'cursor': 'pointer'
 				});
 
 				jTagContainer.prepend(clickDetectionElem);
@@ -433,7 +434,7 @@ $SQ(function () {
 							},
 							success : function (response) {
 								// Recording complete, propagate the click manually!
-								jTagContainer.trigger(e);
+								jTag.trigger(e);
 							}
 						});
 					}

@@ -3,6 +3,11 @@
  * @see Timeouts: http://benalman.com/projects/jquery-dotimeout-plugin/
  */
 
+function drawSingleRow(v)
+{
+
+}
+
 function prependRows()
 {
     if($('#update-marker').length > 0)
@@ -16,6 +21,9 @@ function prependRows()
         window._adminPoller.rows = [];
         // populate the rows
         $.each(rows, function(i, v){
+
+            //console.debug(decodeURIComponent($.param(v)));
+
             var html        = '';
             var rowStyle    = 'updates-row-social';
             var rowTypeName = v.metricsType;
@@ -29,14 +37,14 @@ function prependRows()
                     break;
                 case 'Tag':
                     rowStyle = 'updates-row-tag';
-                    rowTypeName = 'Ad Impression';
+                    rowTypeName = 'Campaign Impression';
                     break;
                 case 'Creative':
                     rowStyle = 'updates-row-creative';
                     rowTypeName = 'Creative Impression';
                     break;
             }
-            html += '<div class="updates-entry ' + rowStyle + '">';
+            html += '<div class="updates-entry ' + rowStyle + '" data-serialized="'+$.param(v)+'">';
                 html += '<div class="updates-entry-user">';
                     html += '<a href="javascript:void(null)" rel="'+ v.userId +'" class="filterUserOnly"'
                             +' title="Filter this user only">User Id '+ v.userId +'</a>';
@@ -57,11 +65,13 @@ function prependRows()
             html += '</div>';
             $('#updates').prepend(html);
         });
+        /**
+        // The feature below does not seem to be needed
         // too long? truncate up to 100 rows...
         while($('.updates-entry').length > 100)
         {
             $('#updates .updates-entry:last').remove();
-        }
+        }*/
         // bind filetr user only
         $('.filterUserOnly').unbind('click').bind('click', function()
         {
@@ -235,6 +245,18 @@ function bindAll()
     {
         bindPoll();
     });
+
+    // detect window scroll
+    var allowPixels = 50;
+
+    $(window).scroll(function()
+    {
+        if($(window).scrollTop() > $(document).height() - $(window).height()  - allowPixels)
+        {
+           
+        }
+    });
+
 }
 
 $(function(){bindAll();});

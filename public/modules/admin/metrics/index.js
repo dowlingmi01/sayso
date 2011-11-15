@@ -5,7 +5,46 @@
 
 function drawSingleRow(v)
 {
-
+    var html        = '';
+    var rowStyle    = 'updates-row-social';
+    var rowTypeName = v.metricsType;
+    switch(v.metricsType)
+    {
+        case 'Search':
+            rowStyle = 'updates-row-search';
+            break;
+        case 'Page View':
+            rowStyle = 'updates-row-page-view';
+            break;
+        case 'Tag':
+            rowStyle = 'updates-row-tag';
+            rowTypeName = 'Campaign Impression';
+            break;
+        case 'Creative':
+            rowStyle = 'updates-row-creative';
+            rowTypeName = 'Creative Impression';
+            break;
+    }
+    html += '<div class="updates-entry ' + rowStyle + '" data-serialized="'+$.param(v)+'">';
+        html += '<div class="updates-entry-user">';
+            html += '<a href="javascript:void(null)" rel="'+ v.userId +'" class="filterUserOnly"'
+                    +' title="Filter this user only">User Id '+ v.userId +'</a>';
+        html += '</div>';
+        html += '<div class="updates-entry-starbar">';
+            html += v.starbar ;
+        html += '</div>';
+        html += '<div class="updates-entry-metricsType">';
+            html += rowTypeName ;
+        html += '</div>';
+        html += '<div class="updates-entry-dateTime">';
+            html += v.dateTime ;
+        html += '</div>';
+        html += '<div class="clear"></div>';
+        html += '<div class="updates-entry-data">';
+            html += v.data ;
+        html += '</div>';
+    html += '</div>';
+    $('#updates').prepend(html);
 }
 
 function prependRows()
@@ -19,52 +58,12 @@ function prependRows()
         // reset to an empty array
         var rows = window._adminPoller.rows;
         window._adminPoller.rows = [];
+
         // populate the rows
-        $.each(rows, function(i, v){
-
-            //console.debug(decodeURIComponent($.param(v)));
-
-            var html        = '';
-            var rowStyle    = 'updates-row-social';
-            var rowTypeName = v.metricsType;
-            switch(v.metricsType)
-            {
-                case 'Search':
-                    rowStyle = 'updates-row-search';
-                    break;
-                case 'Page View':
-                    rowStyle = 'updates-row-page-view';
-                    break;
-                case 'Tag':
-                    rowStyle = 'updates-row-tag';
-                    rowTypeName = 'Campaign Impression';
-                    break;
-                case 'Creative':
-                    rowStyle = 'updates-row-creative';
-                    rowTypeName = 'Creative Impression';
-                    break;
-            }
-            html += '<div class="updates-entry ' + rowStyle + '" data-serialized="'+$.param(v)+'">';
-                html += '<div class="updates-entry-user">';
-                    html += '<a href="javascript:void(null)" rel="'+ v.userId +'" class="filterUserOnly"'
-                            +' title="Filter this user only">User Id '+ v.userId +'</a>';
-                html += '</div>';
-                html += '<div class="updates-entry-starbar">';
-                    html += v.starbar ;
-                html += '</div>';
-                html += '<div class="updates-entry-metricsType">';
-                    html += rowTypeName ;
-                html += '</div>';
-                html += '<div class="updates-entry-dateTime">';
-                    html += v.dateTime ;
-                html += '</div>';
-                html += '<div class="clear"></div>';
-                html += '<div class="updates-entry-data">';
-                    html += v.data ;
-                html += '</div>';
-            html += '</div>';
-            $('#updates').prepend(html);
+        $.each(rows, function(i, v){           
+            drawSingleRow(v);
         });
+
         /**
         // The feature below does not seem to be needed
         // too long? truncate up to 100 rows...
@@ -72,7 +71,8 @@ function prependRows()
         {
             $('#updates .updates-entry:last').remove();
         }*/
-        // bind filetr user only
+
+        // re-bind filter for only user...
         $('.filterUserOnly').unbind('click').bind('click', function()
         {
             $.cookie('control-metrics-user-only', $(this).attr('rel'));
@@ -84,10 +84,10 @@ function prependRows()
 function doPoll()
 {
     var data            = {lastRowId : window._adminPoller.lastRowId};
-    
+
     var pollSocial      = $('#control-social').attr('checked') ? 1 : 0;
     var pollPageView    = $('#control-page-view').attr('checked') ? 1 : 0;
-    var pollMetrics     = $('#control-metrics').attr('checked') ? 1 : 0;   
+    var pollMetrics     = $('#control-metrics').attr('checked') ? 1 : 0;
     var pollTags        = $('#control-tags').attr('checked') ? 1 : 0;
     var pollCreatives   = $('#control-creatives').attr('checked') ? 1 : 0;
 
@@ -229,7 +229,7 @@ function bindControls()
 
 function bindAll()
 {
-    window._adminPoller = {lastRowId : 0, isInit : true,  rows : [], alt : 0};
+    window._adminPoller = {lastRowId : 0, isInit : true,  rows : [], alt : 0, lockScrollRequest : false};
 
     // set checkboxes according to cookies
     bindControls();
@@ -247,16 +247,15 @@ function bindAll()
     });
 
     // detect window scroll
-    var allowPixels = 50;
-
-    $(window).scroll(function()
+    /*var allowPixels = 50;
+    $(window).unbind('scroll').bind('scroll', function()
     {
-        if($(window).scrollTop() > $(document).height() - $(window).height()  - allowPixels)
+        if($(window).scrollTop() > $(document).height() - $(window).height() - allowPixels)
         {
-           
+            window._adminPoller.lockScrollRequest = true;
+            doPollBackwards();
         }
-    });
-
+    });*/
 }
 
 $(function(){bindAll();});

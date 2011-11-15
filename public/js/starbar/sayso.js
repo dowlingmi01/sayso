@@ -392,6 +392,11 @@ $SQ(function () {
                     
                 } else { // ADjuster Campaign ------------------------
                     
+                    if (jTag.is("embed")) { // Flash; set wmode to transparent to track the click (this probably won't work...)
+                    	jTag.parent().prepend('<param name="wmode" value="transparent" />');
+                    	jTag.attr('wmode', 'transparent');
+					}
+                    
                     // track ad view
                     currentActivity.tagViews.push(tag.id);
                     
@@ -416,7 +421,7 @@ $SQ(function () {
 				//jTagContainer.prepend(clickDetectionElem);
 				//clickDetectionElem.css('display', 'block');
 
-				jTag.bind({
+				jTagContainer.bind({
 					'click': function(e) {
 						log('Click detected at X='+e.pageX+', Y='+e.pageY);
 						log('Click offset detected at X='+e.offsetX+', Y='+e.offsetY);

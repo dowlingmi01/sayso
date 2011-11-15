@@ -427,12 +427,12 @@ $SQ(function () {
 					'background': 'none',
 					'background-color': 'none',
 					'background-image': 'none',
-					'display': 'none',
-					'z-index': '2000000000',
+					'display': 'block',
+					'z-index': '-1',
 					'cursor': 'pointer'
 				});
 
-				//jTagContainer.prepend(clickDetectionElem);
+				jTagContainer.prepend(clickDetectionElem);
 				//clickDetectionElem.css('display', 'block');
 
 				jTagContainer.bind({

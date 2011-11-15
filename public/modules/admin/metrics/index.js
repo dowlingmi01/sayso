@@ -153,7 +153,7 @@ function bindPoll()
     doPoll();
 
     // poll with timeout
-    $('#last-updated').doTimeout('main-poll', parseInt($('#dummy select option:selected').text())*1000, function()
+    $('#last-updated').doTimeout('main-poll', parseInt($('#poll-freq select option:selected').text())*1000, function()
     {
         doPoll();
         return true;
@@ -231,7 +231,7 @@ function bindAll()
     bindPoll();
 
     // rebind when changed
-    $('#dummy select').change(function()
+    $('#poll-freq select').change(function()
     {
         bindPoll();
     });

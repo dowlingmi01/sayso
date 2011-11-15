@@ -93,6 +93,11 @@ div.updates-entry-data
     font-size: smaller;
     overflow: hidden;
 }
+div#last-updated, div#poll-time
+{
+    line-height: 20px;
+    font-size:12px;
+}
 
 div#poll-time
 {
@@ -103,14 +108,37 @@ div#poll-time
     position: relative;
     text-align: center;
 }
-
 div#controls
 {
     width:auto;
     float:left;
-    text-align: left;
+    text-align: center;
     margin-top:2px;
+    margin-left:16px;    
+}
+div#controls input
+{
+    margin:0 0 4px 0;
+}
+
+div#poll-freq select
+{
+    margin:0;
+}
+div#poll-freq
+{
+    font-size: smaller;
+    font-style: italic;
+    text-align: left;
+    width:auto;
+    float:left;
+    margin-top:4px;
     margin-left:16px;
+    padding:10px;
+    background-color: #ECECEC;
+    border-top: 1px dotted #CCC;
+    border-left: 1px dotted #CCC;
+    border-right: 1px dotted #CCC;
 }
 div#last-updated
 {
@@ -126,11 +154,6 @@ div#last-updated
     border-top: 1px dotted #CCC;
     border-left: 1px dotted #CCC;
     border-right: 1px dotted #CCC;
-}
-
-div#controls, div#last-updated
-{
-    font-size:12px;
 }
 div#controls select
 {

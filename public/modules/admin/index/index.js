@@ -1063,10 +1063,13 @@ $(function () {
         $.getJSON(url, data, function(response)
         {            
             if(response.messages.length > 0)
-            {                
+            {
+                $.fx.speeds._default = 500;
                 $('#system-message').html(response.messages.join("<br />"));
                 $('#system-message').dialog({
                     modal   : true,
+                    show    : "blind",
+                    hide    : "explode",
                     buttons : {
                         'Ok': function()
                             {
@@ -1078,7 +1081,7 @@ $(function () {
                 {
                     resetForm();
                     resetData();
-                    $('html,body').animate({scrollTop:0}, 2000);
+                    $('html,body').animate({scrollTop:0}, 800);
                 });
             }
             return false;

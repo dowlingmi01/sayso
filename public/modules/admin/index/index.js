@@ -871,6 +871,9 @@ $(function () {
                 adtags.splice(adtags.indexOf(id), 1);
             }
         });
+        if (!adtags.length && !confirm('No Ad Tags associated with this Cell. Are you sure you want to continue?')) {
+            return;
+        }
         // build out the data for the cell
         var cell = {
             description : $('#cell-description').val(),

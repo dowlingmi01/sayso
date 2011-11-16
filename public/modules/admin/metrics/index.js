@@ -80,22 +80,16 @@ function prependRows(rows)
     {
         var html = drawSingleRow(v);
         $('#updates').prepend(html);
-    });
-    /*for(var i=rows.length-1; i >=0; i--)
-    {
-        //console.debug(rows[i])
-        var html = drawSingleRow(rows[i]);
-        $('#updates').prepend(html);
-    }*/
+    });    
 }
 
 function appendRows(rows)
 {
-    $.each(rows, function(i, v)
+    for(var i=rows.length-1; i >=0; i--)
     {
-        //var html = drawSingleRow(v);
-        //$('#updates').prepend(html);
-    });
+        var html = drawSingleRow(rows[i]);
+        $('#updates').append(html);
+    }
 }
 
 function doPoll()
@@ -129,7 +123,7 @@ function doPoll()
 
     if(dir == 'down')
     {
-        rowId = $('#updates .updates-entry:last').attr('data-rowid') || 0;
+        rowId = $('#updates .updates-entry:last').attr('data-rowid') || 0;        
     }
 
     // crate poll request
@@ -161,8 +155,6 @@ function doPoll()
                 // redefine id for next poll                
                 prependRows(data.rows);
                 window.poll.rowId = $('#updates .updates-entry:first').attr('data-rowid');                
-                //console.debug(window.poll.rowId);
-                
             }
             else
             {
@@ -180,7 +172,6 @@ function doPoll()
                                 window.poll.rowId = v.id;
                             }
                         });
-                        //console.debug(window.poll.rowId);
                         // twitter-style updater: add a clickable div if not exists
                         // or update the count otherwise
                         if($('#update-marker').length == 0)
@@ -315,7 +306,7 @@ function bindAll()
     $(window).unbind('scroll').bind('scroll', function()
     {
         if($(window).scrollTop() > $(document).height() - $(window).height() - allowPixels)
-        {
+        {            
             doPoll({dir : 'down'});
         }
     });

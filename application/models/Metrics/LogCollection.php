@@ -87,7 +87,6 @@ class Metrics_LogCollection
         {
             $this->direction = $criteria['direction'];
         }
-        //var_dump($this->isFirstCall);exit(0);
     }
 
     /**
@@ -171,7 +170,8 @@ EOT;
         }
         else
         {
-            $this->sqlParams[]  = $this->limitLiveFeed;
+            // scrolling down is like the first page
+            $this->sqlParams[]  = $this->direction == 'up' ? $this->limitLiveFeed : $this->limitFirstRun ;
         }
     }
 

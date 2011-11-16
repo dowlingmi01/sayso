@@ -16,7 +16,7 @@ class Metrics_LogCollection
      *
      * @var int
      */
-    private $limitLiveFeed  = 40;
+    private $limitLiveFeed  = 1000;
 
     private $rowId          = 0;
 
@@ -160,7 +160,7 @@ FROM
 WHERE
     $where
 ORDER BY
-    created DESC
+    id DESC
 LIMIT
     ?
 EOT;

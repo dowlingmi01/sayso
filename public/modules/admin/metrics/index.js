@@ -51,7 +51,7 @@ function drawSingleRow(v)
             break;
     }
 
-    html += '<div class="updates-entry ' + rowStyle + '" data-rowId="'+v.id+'">';
+    html += '<div class="updates-entry ' + rowStyle + '" data-rowid="'+v.id+'">';
         html += '<div class="updates-entry-user">';
             html += '<a href="javascript:void(null)" rel="'+ v.user_id +'" class="filterUserOnly"'
                     +' title="Filter this user only">User Id '+ v.user_id +'</a>';
@@ -80,16 +80,22 @@ function prependRows(rows)
     {
         var html = drawSingleRow(v);
         $('#updates').prepend(html);
-    })
+    });
+    /*for(var i=rows.length-1; i >=0; i--)
+    {
+        //console.debug(rows[i])
+        var html = drawSingleRow(rows[i]);
+        $('#updates').prepend(html);
+    }*/
 }
 
 function appendRows(rows)
 {
-    for(var i=rows.length; i >=0; i--)
+    $.each(rows, function(i, v)
     {
-        var html = drawSingleRow(rows(i));
-        $('#updates').append(html);
-    }
+        //var html = drawSingleRow(v);
+        //$('#updates').prepend(html);
+    });
 }
 
 function doPoll()
@@ -123,7 +129,7 @@ function doPoll()
 
     if(dir == 'down')
     {
-        rowId = $('#updates .updates-entry:last').attr('data-rowId') || 0;
+        rowId = $('#updates .updates-entry:last').attr('data-rowid') || 0;
     }
 
     // crate poll request
@@ -151,10 +157,12 @@ function doPoll()
             $('#last-updated').html('Last updated: ' + (data.lastUpdated != undefined ? data.lastUpdated : ''));
 
             if(dir == 'up' && rowId == 0)
-            {
+            {                
+                // redefine id for next poll                
                 prependRows(data.rows);
-                // redefine for next poll
-                window.poll.rowId =  $('#updates .updates-entry:first').attr('data-rowId');
+                window.poll.rowId = $('#updates .updates-entry:first').attr('data-rowid');                
+                //console.debug(window.poll.rowId);
+                
             }
             else
             {
@@ -172,6 +180,7 @@ function doPoll()
                                 window.poll.rowId = v.id;
                             }
                         });
+                        //console.debug(window.poll.rowId);
                         // twitter-style updater: add a clickable div if not exists
                         // or update the count otherwise
                         if($('#update-marker').length == 0)
@@ -284,7 +293,7 @@ function bindControls()
 
 function bindAll()
 {
-    window.poll = {cache:[], rowId : 0};
+    window.poll = {cache:[], rowId : '0'};
 
     // set checkboxes according to cookies
     bindControls();
@@ -307,7 +316,7 @@ function bindAll()
     {
         if($(window).scrollTop() > $(document).height() - $(window).height() - allowPixels)
         {
-            //doPoll({dir : 'down'});
+            doPoll({dir : 'down'});
         }
     });
 }

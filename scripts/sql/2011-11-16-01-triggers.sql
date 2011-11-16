@@ -65,7 +65,7 @@ CREATE TRIGGER `metrics_tag_click_thru_to_metrics_log` AFTER INSERT ON `metrics_
         (legacy_id, created, user_id, metrics_type, starbar_id, content)
         (
             SELECT
-                mct.id, mtv.created, mtv.user_id, 5, mtv.starbar_id,
+                mct.id, mct.created, mtv.user_id, 5, mtv.starbar_id,
                     concat('Click through for cell: ', c.cell_type , ', tag: ', t.`name`, ', url: ', t.target_url)
             FROM
                 metrics_tag_click_thru mct, metrics_tag_view mtv, `user` u, starbar s, study_tag t, study_cell c
@@ -121,7 +121,7 @@ CREATE TRIGGER `metrics_creative_click_thru_to_metrics_log` AFTER INSERT ON `met
         (legacy_id, created, user_id, metrics_type, starbar_id, content)
         (
             SELECT
-                mzt.id, mcv.created, mcv.user_id, 7, mcv.starbar_id,
+                mzt.id, mzt.created, mcv.user_id, 7, mcv.starbar_id,
                     concat('Click through for cell: ', c.cell_type , ', creative: ', t.name,
                         CASE WHEN t.url IS NOT NULL THEN CONCAT(', url: ', t.url) ELSE '' END )
             FROM

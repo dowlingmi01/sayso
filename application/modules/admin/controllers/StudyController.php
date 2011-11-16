@@ -267,6 +267,9 @@ class Admin_StudyController extends Admin_CommonController
  * (used in the above class)
  *
  * @param string $date
+ *
+ * @todo Create tools repo under application/models/Data/Tools, set as a static method and refactor usage
+ *
  */
 function convertLameDateFormat ($date)
 {

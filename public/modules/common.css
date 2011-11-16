@@ -1143,3 +1143,8 @@ nav.common #common-auth a
     padding: 0 10px 0 0;
     text-decoration: none;
 }
+
+#system-message
+{
+    font-weight:bold;
+}

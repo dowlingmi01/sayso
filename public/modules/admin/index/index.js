@@ -1062,16 +1062,25 @@ $(function () {
 
         $.getJSON(url, data, function(response)
         {            
-            $('html,body').animate({scrollTop:0}, 2000);
-//            if(response.messages.result > 0)
-//            {
-                resetForm();
-                resetData(); 
-//            }
             if(response.messages.length > 0)
-            {
-                alert(response.messages.join("\n"));
-            }            
+            {                
+                $('#system-message').html(response.messages.join("<br />"));
+                $('#system-message').dialog({
+                    modal   : true,
+                    buttons : {
+                        'Ok': function()
+                            {
+                                $(this).dialog( "close" );
+                            }
+                    }
+                });
+                $('#system-message').bind("dialogclose", function(event, ui)
+                {
+                    resetForm();
+                    resetData();
+                    $('html,body').animate({scrollTop:0}, 2000);
+                });
+            }
             return false;
         });
         

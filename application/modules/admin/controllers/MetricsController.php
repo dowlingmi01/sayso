@@ -43,6 +43,7 @@ class Admin_MetricsController extends Admin_CommonController
      */
     public function pollAction()
     {
+
         if(!$this->checkAccess(array('superuser')))
         {
             die('Access denied!');
@@ -51,51 +52,28 @@ class Admin_MetricsController extends Admin_CommonController
         // format input parameters
 
         $rows           = array();
-        $lastRowId      = $this->_getParam('lastRowId');
-        $pollForTypes   = $this->_getParam('pollForTypes');
-        $onlyUser       = isset($_COOKIE['control-metrics-user-only'])
-                            ? intval($_COOKIE['control-metrics-user-only'])
-                            : 0;
-
-        //var_dump($onlyUser);exit(0);
-
-        $firstRun       = false;
+        $onlyUser       = isset($_COOKIE['control-metrics-user-only']) ? intval($_COOKIE['control-metrics-user-only']) : 0;
         $error          = '';
-        if(!is_array($lastRowId))
-        {
-            $firstRun   = true;
-            $lastRowId  = array
-            (
-                'lastSearchId'          => 0,
-                'lastPageViewId'        => 0,
-                'lastSocialActivityId'  => 0,
-                'lastTagId'             => 0,
-                'lastTagViewId'         => 0,
-                'lastCreativeId'        => 0,
-                'lastCreativeViewId'    => 0,
-                'rowsAfter'             => '0000-00-00 00:00:00'
-            );
-        }
 
         // get data
 
-        $builder    = new Metrics_FeedCollection();
-        $rows       = array();
+        $builder    = new Metrics_LogCollection();
 
-        try{
-
-            $criteria = array('onlyUser' => $onlyUser);
+        try
+        {
+            $criteria = array
+            (
+                'onlyUser'      => $onlyUser,
+                'rowId'         => $this->_getParam('rowId'),
+                'direction'     => $this->_getParam('dir'),
+            );
             $builder->setCriteria($criteria);
-
-            if(!$firstRun)
-            {
-                $builder->setLastIds($lastRowId);
-            }
-            $builder->setTypes($pollForTypes);
+            $builder->setTypes($this->_getParam('pollForTypes'));
             $collection = $builder->run();
+
             foreach($collection as $entry)
             {
-                $this->formatPollResult($rows, $entry, $lastRowId);
+                $this->formatPollResult($rows, $entry);
             }
         }
         catch(Exception $e)
@@ -105,7 +83,7 @@ class Admin_MetricsController extends Admin_CommonController
 
         // send out
 
-        $content = array('lastRowId' => $lastRowId, 'lastUpdated' => date('h:i:s a'), 'rows' => $rows, 'lastError' => $error);
+        $content = array('lastUpdated' => date('h:i:s a'), 'rows' => $rows, 'lastError' => $error);
         echo json_encode($content);
         exit(0);
     }
@@ -115,56 +93,9 @@ class Admin_MetricsController extends Admin_CommonController
      *
      * @param array $rows
      * @param array $entry
-     * @param array $lastRowId
      */
-    private function formatPollResult(&$rows, &$entry, &$lastRowId)
+    private function formatPollResult(&$rows, &$entry)
     {
-        $index = 'lastSearchId';
-        
-        switch($entry['metricsType'])
-        {
-            case 'Page View':
-                $index = 'lastPageViewId';
-                break;
-            case 'Social Activity':
-                $index = 'lastSocialActivityId';
-                break;
-            case 'Tag':
-                if($entry['selectType'] == 1)
-                {
-                    $index = 'lastTagId';
-                }
-                else
-                {
-                    $index = 'lastTagViewId';
-                }
-                break;
-            case 'Creative':
-                if($entry['selectType'] == 1)
-                {
-                    $index = 'lastCreativeId';
-                }
-                else
-                {
-                    $index = 'lastCreativeViewId';
-                }
-                break;
-            default:
-                break;
-        }
-
-        $lastRowId[$index]      = $entry['lastId'] > $lastRowId[$index] ? $entry['lastId'] : $lastRowId[$index];
-        $lastRowId['rowsAfter'] = $entry['dateTime'] > $lastRowId['rowsAfter'] ? $entry['dateTime'] : $lastRowId['rowsAfter'];
-
-        // use unshift to send feed in the reverse order
-        // for feed formatter
-        array_unshift($rows, array(
-            'userId'        => $entry['userId'],
-            //'userName'      => (is_null($entry['userName']) ? 'NAME UNSPECIFIED' : $entry['userName']),
-            'metricsType'   => $entry['metricsType'],
-            'starbar'       => $entry['starbar'],
-            'dateTime'      => $entry['dateTime'],
-            'data'          => $entry['data'],
-        ));
+        array_unshift($rows, $entry);
     }
 }

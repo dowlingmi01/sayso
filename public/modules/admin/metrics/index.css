@@ -41,10 +41,6 @@ div#update-marker a:hover
     color: #0057AE;
 }
 
-.updates-row-social
-{
-    background: #0cbae3;
-}
 .updates-row-search
 {
     background: #7a81c6;
@@ -53,14 +49,28 @@ div#update-marker a:hover
 {
     background: #c0e276;
 }
-.updates-row-tag
+.updates-row-social-activity
+{
+    background: #0cbae3;
+}
+.updates-row-campaign-impression
 {
     background: #DFBFFF;
 }
-.updates-row-creative
+.updates-row-campaign-click-thru
+{
+    background: #BA9FD4;
+}
+.updates-row-creative-impression
 {
     background: #E8B7D7;
 }
+.updates-row-creative-click-thru
+{
+    background: #B790AA;
+}
+
+
 
 div.updates-entry
 {

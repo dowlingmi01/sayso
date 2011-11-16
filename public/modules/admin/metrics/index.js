@@ -6,84 +6,95 @@
 function drawSingleRow(v)
 {
     var html        = '';
-    var rowStyle    = 'updates-row-social';
-    var rowTypeName = v.metricsType;
-    switch(v.metricsType)
+    var rowStyle    = '';
+    var rowTypeName = '';
+
+    /**
+     * 1 metrics_search
+     * 2 metrics_page_view
+     * 3 metrics_social_activity
+     * 4 metrics_tag_view
+     * 5 metrics_tag_click_thru
+     * 6 metrics_creative_view
+     * 7 metrics_creative_click_thru
+     */
+
+    switch(parseInt(v.metrics_type))
     {
-        case 'Search':
-            rowStyle = 'updates-row-search';
+        case 1:
+            rowTypeName = 'Search';
+            rowStyle    = 'updates-row-search';
             break;
-        case 'Page View':
-            rowStyle = 'updates-row-page-view';
+        case 2:
+            rowTypeName = 'Page View';
+            rowStyle    = 'updates-row-page-view';
             break;
-        case 'Tag':
-            rowStyle = 'updates-row-tag';
+        case 3:
+            rowTypeName = 'Social Activity';
+            rowStyle    = 'updates-row-social-activity';
+            break;
+        case 4:
             rowTypeName = 'Campaign Impression';
+            rowStyle    = 'updates-row-campaign-impression';
             break;
-        case 'Creative':
-            rowStyle = 'updates-row-creative';
+        case 5:
+            rowTypeName = 'Campaign Click-Thru';
+            rowStyle    = 'updates-row-campaign-click-thru';
+            break;
+        case 6:
             rowTypeName = 'Creative Impression';
+            rowStyle    = 'updates-row-creative-impression';
+            break;
+        case 7:
+            rowTypeName = 'Creative Click-Thru ';
+            rowStyle    = 'updates-row-creative-click-thru';
             break;
     }
-    html += '<div class="updates-entry ' + rowStyle + '" data-serialized="'+$.param(v)+'">';
+
+    html += '<div class="updates-entry ' + rowStyle + '" data-rowId="'+v.id+'">';
         html += '<div class="updates-entry-user">';
-            html += '<a href="javascript:void(null)" rel="'+ v.userId +'" class="filterUserOnly"'
-                    +' title="Filter this user only">User Id '+ v.userId +'</a>';
+            html += '<a href="javascript:void(null)" rel="'+ v.user_id +'" class="filterUserOnly"'
+                    +' title="Filter this user only">User Id '+ v.user_id +'</a>';
         html += '</div>';
         html += '<div class="updates-entry-starbar">';
-            html += v.starbar ;
+            html += v.starbar_name ;
         html += '</div>';
         html += '<div class="updates-entry-metricsType">';
             html += rowTypeName ;
         html += '</div>';
         html += '<div class="updates-entry-dateTime">';
-            html += v.dateTime ;
+            html += v.created ;
         html += '</div>';
         html += '<div class="clear"></div>';
         html += '<div class="updates-entry-data">';
-            html += v.data ;
+            html += v.content ;
         html += '</div>';
     html += '</div>';
-    $('#updates').prepend(html);
+
+    return html;
 }
 
-function prependRows()
+function prependRows(rows)
 {
-    if($('#update-marker').length > 0)
+    $.each(rows, function(i, v)
     {
-        $('#update-marker').remove();
-    }
-    if(window._adminPoller.rows.length > 0)
+        var html = drawSingleRow(v);
+        $('#updates').prepend(html);
+    })
+}
+
+function appendRows(rows)
+{
+    for(var i=rows.length; i >=0; i--)
     {
-        // reset to an empty array
-        var rows = window._adminPoller.rows;
-        window._adminPoller.rows = [];
-
-        // populate the rows
-        $.each(rows, function(i, v){           
-            drawSingleRow(v);
-        });
-
-        /**
-        // The feature below does not seem to be needed
-        // too long? truncate up to 100 rows...
-        while($('.updates-entry').length > 100)
-        {
-            $('#updates .updates-entry:last').remove();
-        }*/
-
-        // re-bind filter for only user...
-        $('.filterUserOnly').unbind('click').bind('click', function()
-        {
-            $.cookie('control-metrics-user-only', $(this).attr('rel'));
-            self.location.reload();
-        });
+        var html = drawSingleRow(rows(i));
+        $('#updates').append(html);
     }
 }
 
 function doPoll()
 {
-    var data            = {lastRowId : window._adminPoller.lastRowId};
+    var data            = {};
 
     var pollSocial      = $('#control-social').attr('checked') ? 1 : 0;
     var pollPageView    = $('#control-page-view').attr('checked') ? 1 : 0;
@@ -97,11 +108,28 @@ function doPoll()
         return;
     }
 
-    /**
-     * @todo
-     * Recognize through coolkies
-     */
-    data['pollForTypes'] =
+    var dir = 'up';
+
+    // expect arguments as hash
+    if(arguments.length > 0)
+    {
+        if(arguments[0].dir != undefined)
+        {
+            dir = arguments[0].dir;
+        }
+    }
+
+    var rowId = window.poll.rowId ;
+
+    if(dir == 'down')
+    {
+        rowId = $('#updates .updates-entry:last').attr('data-rowId') || 0;
+    }
+
+    // crate poll request
+    data['rowId']           = rowId;
+    data['dir']             = dir;
+    data['pollForTypes']    =
     {
         'social'        : pollSocial,
         'pageView'      : pollPageView,
@@ -110,6 +138,8 @@ function doPoll()
         'creatives'     : pollCreatives
     };
 
+    //console.debug(data);
+
     $.ajax({
         url         : '/admin/metrics/poll',
         dataType    : 'json',
@@ -117,42 +147,67 @@ function doPoll()
         success     : function(data)
         {
             //console.debug(data);
-            window._adminPoller.lastRowId = data.lastRowId;
+
             $('#last-updated').html('Last updated: ' + (data.lastUpdated != undefined ? data.lastUpdated : ''));
-            if(data.rows.length > 0)
+
+            if(dir == 'up' && rowId == 0)
             {
-                window._adminPoller.rows = $.merge(window._adminPoller.rows, data.rows);
+                prependRows(data.rows);
+                // redefine for next poll
+                window.poll.rowId =  $('#updates .updates-entry:first').attr('data-rowId');
             }
-            if(window._adminPoller.rows.length > 0)
+            else
             {
-                if(window._adminPoller.isInit)
+                if(dir == 'up')
                 {
-                    // we do it only once at page load
-                    prependRows();
-                    window._adminPoller.isInit = false;
+                    if(data.rows.length > 0)
+                    {
+                        // pull to cache
+                        window.poll.cache = $.merge(window.poll.cache, data.rows);
+                        // redefine id for next poll
+                        $.each(data.rows, function(i, v)
+                        {
+                            if(v.id > window.poll.rowId)
+                            {
+                                window.poll.rowId = v.id;
+                            }
+                        });
+                        // twitter-style updater: add a clickable div if not exists
+                        // or update the count otherwise
+                        if($('#update-marker').length == 0)
+                        {
+                            $('#updates').prepend('<div id="update-marker">'
+                                +'<a href="javascript:void(null)" class="new-data-available">'
+                                    +'New updates are available (<span id="new-data-available-count">'
+                                        + window.poll.cache.length + '</span>)</a></div>');
+                        }
+                        else
+                        {
+                            $('#new-data-available-count').html(window.poll.cache.length);
+                        }
+                    }
                 }
                 else
                 {
-                    // twitter-style updater:
-                    // add a clickable div if not exists
-                    // or update the count otherwise
-                    if($('#update-marker').length == 0)
-                    {
-                        $('#updates').prepend('<div id="update-marker">'
-                            +'<a href="javascript:void(null)" class="new-data-available">'
-                                +'New updates are available (<span id="new-data-available-count">'
-                                    + window._adminPoller.rows.length + '</span>)</a></div>');
-                    }
-                    else
-                    {
-                        $('#new-data-available-count').html(window._adminPoller.rows.length);
-                    }
-                    $('.new-data-available').unbind('click').bind('click', function()
-                    {
-                        prependRows();
-                    });
+                    appendRows(data.rows);
                 }
             }
+
+            // re-bind cache
+            $('.new-data-available').unbind('click').bind('click', function()
+            {
+                var cache = window.poll.cache
+                window.poll.cache = [];
+                $('#update-marker').remove();
+                prependRows(cache);
+            });
+
+            // re-bind filter for only user...
+            $('.filterUserOnly').unbind('click').bind('click', function()
+            {
+                $.cookie('control-metrics-user-only', $(this).attr('rel'));
+                self.location.reload();
+            });
         }
     });
 }
@@ -229,7 +284,7 @@ function bindControls()
 
 function bindAll()
 {
-    window._adminPoller = {lastRowId : 0, isInit : true,  rows : [], alt : 0, lockScrollRequest : false};
+    window.poll = {cache:[], rowId : 0};
 
     // set checkboxes according to cookies
     bindControls();
@@ -247,15 +302,14 @@ function bindAll()
     });
 
     // detect window scroll
-    /*var allowPixels = 50;
+    var allowPixels = 50;
     $(window).unbind('scroll').bind('scroll', function()
     {
         if($(window).scrollTop() > $(document).height() - $(window).height() - allowPixels)
         {
-            window._adminPoller.lockScrollRequest = true;
-            doPollBackwards();
+            //doPoll({dir : 'down'});
         }
-    });*/
+    });
 }
 
 $(function(){bindAll();});

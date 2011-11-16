@@ -1068,7 +1068,7 @@ $(function () {
                 $('#system-message').html(response.messages.join("<br />"));
                 $('#system-message').dialog({
                     modal   : true,
-                    show    : "blind",
+                    //show    : "blind",
                     hide    : "explode",
                     buttons : {
                         'Ok': function()

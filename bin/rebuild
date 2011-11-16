@@ -12,8 +12,7 @@ echo "1. Sandbox"
 echo "2. Development"
 echo "3. Testing"
 echo "4. Staging"
-echo "5. Production"
-echo "6. Exit"
+echo "5. Exit"
 echo ""
 
 read choice
@@ -43,12 +42,6 @@ elif [ $choice -eq 4 ]
         blue "Initializing STAGING environment ..."
         echo ""
 elif [ $choice -eq 5 ]
-    then
-        export APPLICATION_ENV=production
-        echo ""
-        blue "Initializing PRODUCTION environment ..."
-        echo ""
-elif [ $choice -eq 6 ]
     then
         exit
 else

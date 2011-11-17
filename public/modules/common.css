@@ -1161,3 +1161,36 @@ nav.common #common-auth a
     font-weight:bold;
     color: #00316E;
 }
+
+
+/**
+ * Admin menu
+ */
+
+nav.admin_menu
+{
+    background-color: #f2f2f2;
+    margin: 10px 0 20px 0;
+    box-shadow: inset 0 1px 0 white;
+}
+nav.admin_menu li
+{
+    display: -moz-inline-stack;
+    display: inline-block;
+    *display: inline;
+    vertical-align: top;
+    zoom: 1;
+    margin: 4px 10px;
+    text-align: left;
+}
+nav.admin_menu li a
+{
+    color: #777;
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: none;
+}
+nav.admin_menu li a:hover
+{
+    color: #000080;
+}

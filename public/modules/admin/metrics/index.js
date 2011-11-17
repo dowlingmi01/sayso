@@ -302,7 +302,7 @@ function bindControls()
 
 function bindAll()
 {
-    window.poll = {cache:[], rowId : '0', lastLiveFeedId : '0'};
+    window.poll = {cache:[], rowId : '0'};
 
     // set checkboxes according to cookies
     bindControls();

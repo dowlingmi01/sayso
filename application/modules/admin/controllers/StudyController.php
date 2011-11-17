@@ -30,9 +30,28 @@ class Admin_StudyController extends Admin_CommonController
         $grid       = new Data_Markup_Grid();
         $select     = Zend_Registry::get('db')->select()->from('study');
         $grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
-        $grid->setGridColumns(array('id', 'name', 'created'));
+        $grid->setGridColumns(array('id', 'name', 'begin_date', 'end_date', 'created'));
+
+        $grid->updateColumn('name',
+			array(
+				'callback' => array(
+					'function' => array($this, 'generateEditLink'),
+					'params' => array('{{id}}', '{{name}}')
+				),
+                'class' => 'align-left'
+			)
+		);
 
         $this->view->grid = $grid->deploy();
+    }
+
+    public function generateEditLink($id, $name)
+    {
+        $filter = new Zend_Filter_Alnum(true);
+        $name = $filter->filter($name);
+
+        return '<a href="' . $this->view->url(array('action' => 'edit', 'study_id' => intval($id))) . '">'.
+            ($name ? $name : '<span class="disabled">name malformed</span>') .'</a>';
     }
 
     public function addAction()

@@ -1090,6 +1090,45 @@ input[type=password]
  * @author alecksmart
  */
 
+ a
+ {
+     color: blue;
+ }
+ a:hover
+ {
+     color: red;
+ }
+
+ /**
+  * Common self-speaking things...
+  */
+.align-left
+{
+    text-align: left !important;
+}
+.align-right
+{
+    text-align: right !important;
+}
+.align-center
+{
+    text-align: center !important;
+}
+.align-justify
+{
+    text-align: justify !important;
+}
+.disabled
+{
+    color: #999999;
+    font-style: italic;
+}
+span.disabled
+{
+    color: #999999;
+    text-decoration: none !important;
+    border-bottom: 1px dotted #999999;
+}
 #layout
 {
     min-height:700px;
@@ -1240,11 +1279,6 @@ nav.admin_menu li a:hover
     padding: 0 0.5em;
 }
 
-#list table td:first-child
-{
-    width: 190px;
-}
-
 #list table td+td {
     border-left: 1px solid #CCC;
     text-align: center;
@@ -1253,4 +1287,24 @@ nav.admin_menu li a:hover
 #list input:not([type="checkbox"]), select, textarea
 {
     margin: 0;
+}
+
+#list table tr:last-child
+{
+    color: #777;
+    text-align: center;
+}
+#list table tr:last-child a
+{
+    color: red;
+    text-decoration: none;
+    border-bottom: 1px dotted red;
+}
+#list table tr:last-child a:hover
+{
+    color: green;
+}
+#list table tr:last-child select option
+{
+    color: #777;
 }

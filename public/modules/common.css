@@ -1095,6 +1095,11 @@ input[type=password]
     min-height:700px;
 }
 
+#main p
+{
+    padding:4px 4px 0 4px;
+}
+
 h1{
     font-size: 20px;
 }
@@ -1199,4 +1204,46 @@ nav.admin_menu li a
 nav.admin_menu li a:hover
 {
     color: #000080;
+}
+
+/* List table */
+#list
+{
+
+}
+#list table
+{
+    font: 11px/24px Verdana, Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#list table tr:first-child th {
+    border-top: 1px solid #FB7A31;
+    border-bottom: 1px solid #FB7A31;
+    background: #FFC;
+    font-weight: bold;
+}
+
+#list table tr
+{
+    background: #DDDDDD;
+}
+#list table tr.alt
+{
+    background: #D3D7CF;
+}
+
+#list table td {
+    border-bottom: 1px solid #CCC;
+    padding: 0 0.5em;
+}
+
+#list table td:first-child {
+    width: 190px;
+}
+
+#list table td+td {
+    border-left: 1px solid #CCC;
+    text-align: center;
 }

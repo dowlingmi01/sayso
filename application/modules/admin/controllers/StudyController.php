@@ -18,9 +18,11 @@ class Admin_StudyController extends Admin_CommonController
 
     public function indexAction()
     {
-        error_reporting(255);
-        ini_set('display_errors', 'On');
-
+        if(getenv('APPLICATION_ENV') != 'production')
+        {
+            error_reporting(255);
+            ini_set('display_errors', 'On');
+        }
         if(!$this->checkAccess(array('superuser')))
         {
             $this->_helper->viewRenderer->setNoRender(true);
@@ -29,19 +31,11 @@ class Admin_StudyController extends Admin_CommonController
         $this->view->headLink()->appendStylesheet('/modules/admin/study/module.css', 'screen');
         $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Add New</a>';
 
-        $options = array();
-        $tableTest = new Data_Markup_Grid($options);
-        var_dump(get_class($tableTest));
-        $this->view->grid = $tableTest->deploy();
-
-try{
-    
-}
-catch(Exception $e)
-{
-    var_dump($e);
-}
-        
+        $columns    = array();
+        $source     = array();
+        $grid       = new Data_Markup_Grid();
+        $grid->setCollectionSource($source, $columns);
+        $this->view->grid = $grid->deploy();
     }
 
     public function addAction()

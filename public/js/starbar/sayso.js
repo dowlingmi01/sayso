@@ -534,6 +534,19 @@ $SQ(function () {
 		    }
 		);
 	}
+	
+	// Detect and log flash files on this page (chrome only) to assist admin find tags
+	if (top === self && navigator.userAgent.toLowerCase().indexOf('chrome') > -1) { // Not in iframe, using Chrome
+		log('Detected '+$SQ('embed').length+' flash file(s) on this page.');
+		$SQ('embed').each(function(index) {
+			var embedElem = $SQ(this);
+			var filename = embedElem.attr('src').match(/[^/]+$/)[0];
+			if (embedElem.parent().is('object')) {
+				embedElem = embedElem.parent(); // just for logging purposes, since chrome will only highlight the embed if it is NOT contained in an <object>
+			}
+			log('Selector '+(index+1)+' (copy and paste this): embed[src*="'+filename+'"]\nElement '+(index+1)+' (roll over this to visually confirm): ', embedElem);
+		});
+	}
 });
 
 

@@ -41,8 +41,8 @@ class Data_Markup_Grid extends Bvb_Grid_Deploy_Table
         }
         if(!$count)
         {
-            $columns    = array('Warning');
-            $source     = array(array('Warning'=>'This list is empty...'));
+            $columns    = array('No data');
+            $source     = array(array('No data'=>'This list is empty...'));
         }
         else
         {

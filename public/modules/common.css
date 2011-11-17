@@ -1303,6 +1303,7 @@ nav.admin_menu li a:hover
 #list table tr:last-child a:hover
 {
     color: green;
+    border-bottom: 1px dotted green;
 }
 #list table tr:last-child select option
 {

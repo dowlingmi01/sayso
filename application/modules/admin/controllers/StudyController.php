@@ -27,11 +27,16 @@ class Admin_StudyController extends Admin_CommonController
         $this->view->headLink()->appendStylesheet('/modules/admin/study/module.css', 'screen');
         $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Add New</a>';
         
-        $grid       = new Data_Markup_Grid();
-        $select     = Zend_Registry::get('db')->select()->from('study');
+        $grid   = new Data_Markup_Grid();
+        $select = Zend_Registry::get('db')->select()->from('study');
         $grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
         $grid->setGridColumns(array('id', 'name', 'begin_date', 'end_date', 'created'));
 
+        $grid->updateColumn('id',
+			array(				
+                'class' => 'align-right'
+			)
+		);
         $grid->updateColumn('name',
 			array(
 				'callback' => array(

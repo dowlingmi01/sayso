@@ -18,11 +18,6 @@ class Admin_StudyController extends Admin_CommonController
 
     public function indexAction()
     {
-        if(getenv('APPLICATION_ENV') != 'production')
-        {
-            error_reporting(255);
-            ini_set('display_errors', 'On');
-        }
         if(!$this->checkAccess(array('superuser')))
         {
             $this->_helper->viewRenderer->setNoRender(true);

@@ -80,7 +80,7 @@ function prependRows(rows)
     {
         var html = drawSingleRow(v);
         $('#updates').prepend(html);
-    });    
+    });
 }
 
 function appendRows(rows)
@@ -123,7 +123,7 @@ function doPoll()
 
     if(dir == 'down')
     {
-        rowId = $('#updates .updates-entry:last').attr('data-rowid') || 0;        
+        rowId = $('#updates .updates-entry:last').attr('data-rowid') || 0;
     }
 
     // crate poll request
@@ -148,13 +148,31 @@ function doPoll()
         {
             //console.debug(data);
 
+            // AJAX is so AJAX... now check data for validity
+            // break if it is in cache already for live feed
+            if(dir == 'up' && rowId > 0 && data.rows.length > 0)
+            {
+                for(var i=0;i<data.rows.length;i++)
+                {
+                    //console.debug(data.rows[i].id);
+                    for(var j=0;j<window.poll.cache.length;j++)
+                    {                        
+                        if(data.rows[i].id == window.poll.cache[j].id)
+                        {
+                            console.debug('Data already in cache!');
+                            return;
+                        }
+                    }
+                }
+            }
+
             $('#last-updated').html('Last updated: ' + (data.lastUpdated != undefined ? data.lastUpdated : ''));
 
             if(dir == 'up' && rowId == 0)
-            {                
-                // redefine id for next poll                
+            {
+                // redefine id for next poll
                 prependRows(data.rows);
-                window.poll.rowId = $('#updates .updates-entry:first').attr('data-rowid');                
+                window.poll.rowId = $('#updates .updates-entry:first').attr('data-rowid');
             }
             else
             {
@@ -284,7 +302,7 @@ function bindControls()
 
 function bindAll()
 {
-    window.poll = {cache:[], rowId : '0'};
+    window.poll = {cache:[], rowId : '0', lastLiveFeedId : '0'};
 
     // set checkboxes according to cookies
     bindControls();
@@ -306,7 +324,7 @@ function bindAll()
     $(window).unbind('scroll').bind('scroll', function()
     {
         if($(window).scrollTop() > $(document).height() - $(window).height() - allowPixels)
-        {            
+        {
             doPoll({dir : 'down'});
         }
     });

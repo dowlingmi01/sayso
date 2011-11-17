@@ -26,11 +26,12 @@ class Admin_StudyController extends Admin_CommonController
         $this->view->headScript()->appendFile('/modules/admin/study/index.js');
         $this->view->headLink()->appendStylesheet('/modules/admin/study/module.css', 'screen');
         $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Add New</a>';
-
-        $columns    = array();
-        $source     = new Collection();
+        
         $grid       = new Data_Markup_Grid();
-        $grid->setCustomSource($source, $columns);
+        $select     = Zend_Registry::get('db')->select()->from('study');
+        $grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
+        $grid->setGridColumns(array('id', 'name', 'created'));
+
         $this->view->grid = $grid->deploy();
     }
 

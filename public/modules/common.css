@@ -1234,16 +1234,23 @@ nav.admin_menu li a:hover
     background: #D3D7CF;
 }
 
-#list table td {
+#list table td
+{
     border-bottom: 1px solid #CCC;
     padding: 0 0.5em;
 }
 
-#list table td:first-child {
+#list table td:first-child
+{
     width: 190px;
 }
 
 #list table td+td {
     border-left: 1px solid #CCC;
     text-align: center;
+}
+/* fixes weird legace styling */
+#list input:not([type="checkbox"]), select, textarea
+{
+    margin: 0;
 }

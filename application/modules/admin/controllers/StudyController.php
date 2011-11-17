@@ -23,7 +23,8 @@ class Admin_StudyController extends Admin_CommonController
             $this->_helper->viewRenderer->setNoRender(true);
         }
         $this->view->headScript()->appendFile('/modules/admin/study/index.js');
-        $this->view->headLink()->appendStylesheet('/modules/admin/study/common.css', 'screen');
+        $this->view->headLink()->appendStylesheet('/modules/admin/study/module.css', 'screen');
+        $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Add New</a>';
     }
 
     public function addAction()
@@ -33,7 +34,8 @@ class Admin_StudyController extends Admin_CommonController
             $this->_helper->viewRenderer->setNoRender(true);
         }
         $this->view->headScript()->appendFile('/modules/admin/study/add.js');
-        $this->view->headLink()->appendStylesheet('/modules/admin/study/common.css', 'screen');
+        $this->view->headLink()->appendStylesheet('/modules/admin/study/module.css', 'screen');
+        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">List Studies</a>';
     }
 
     public function editAction()
@@ -43,7 +45,9 @@ class Admin_StudyController extends Admin_CommonController
             $this->_helper->viewRenderer->setNoRender(true);
         }
         $this->view->headScript()->appendFile('/modules/admin/study/edit.js');
-        $this->view->headLink()->appendStylesheet('/modules/admin/study/common.css', 'screen');
+        $this->view->headLink()->appendStylesheet('/modules/admin/study/module.css', 'screen');
+        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">List Studies</a>';
+        $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Add New</a>';
     }
 
     public function deleteAction()

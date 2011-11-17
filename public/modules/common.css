@@ -1078,17 +1078,23 @@ input[type=password]
   h2, h3 {
     page-break-after: avoid; } }
 
-#layout
+/* Legacy fix */
+#main header h1, #main header h2, #main header h3, #main header h4
 {
-    min-height:700px;
+    padding: 0px;
 }
-
 
 /**
  * This part is used for new pages.
  *   Redesing is welcome.
  * @author alecksmart
  */
+
+#layout
+{
+    min-height:700px;
+}
+
 h1{
     font-size: 20px;
 }

@@ -18,6 +18,9 @@ class Admin_StudyController extends Admin_CommonController
 
     public function indexAction()
     {
+        error_reporting(255);
+        ini_set('display_errors', 'On');
+
         if(!$this->checkAccess(array('superuser')))
         {
             $this->_helper->viewRenderer->setNoRender(true);
@@ -25,6 +28,20 @@ class Admin_StudyController extends Admin_CommonController
         $this->view->headScript()->appendFile('/modules/admin/study/index.js');
         $this->view->headLink()->appendStylesheet('/modules/admin/study/module.css', 'screen');
         $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Add New</a>';
+
+        $options = array();
+        $tableTest = new Data_Markup_Grid($options);
+        var_dump(get_class($tableTest));
+        $this->view->grid = $tableTest->deploy();
+
+try{
+    
+}
+catch(Exception $e)
+{
+    var_dump($e);
+}
+        
     }
 
     public function addAction()
@@ -58,7 +75,9 @@ class Admin_StudyController extends Admin_CommonController
         }
     }
 
-
+    /**
+     * @deprecated To be deleted after addAction is done ...
+     */
     public function createNewAction ()
     {
         if(!$this->checkAccess(array('superuser')))

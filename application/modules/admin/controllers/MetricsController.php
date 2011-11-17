@@ -30,11 +30,6 @@ class Admin_MetricsController extends Admin_CommonController
         $this->view->headScript()->appendFile('/js/jquery.ba-dotimeout.min.js');
         $this->view->headScript()->appendFile('/modules/admin/metrics/index.js');
 
-        /*
-        $options = array();
-        $tableTest = new Data_Markup_Grid($options);
-        var_dump(get_class($tableTest));
-         */
     }
 
     /**

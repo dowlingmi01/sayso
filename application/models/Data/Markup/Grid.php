@@ -25,10 +25,21 @@ class Data_Markup_Grid extends Bvb_Grid_Deploy_Table
 		$this->setNoOrder(true);
 	}
 
-    public function setCollectionSource($items, $columns)
+    public function setCustomSource($items, $columns)
 	{
+        
 		$source = array();
-        if(empty($items))
+
+        $count = 0;
+        if(is_array($items))
+        {
+            $count = count($items);
+        }
+        elseif($items instanceof Countable)
+        {
+            $count = $items->count();
+        }
+        if(!$count)
         {
             $columns    = array('Warning');
             $source     = array(array('Warning'=>'This list is empty...'));

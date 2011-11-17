@@ -17,19 +17,20 @@ class Admin_StudyController extends Admin_CommonController
     }
 
     public function indexAction()
-    {
+    {        
         if(!$this->checkAccess(array('superuser')))
         {
             $this->_helper->viewRenderer->setNoRender(true);
         }
+        
         $this->view->headScript()->appendFile('/modules/admin/study/index.js');
         $this->view->headLink()->appendStylesheet('/modules/admin/study/module.css', 'screen');
         $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Add New</a>';
 
         $columns    = array();
-        $source     = array();
+        $source     = new Collection();
         $grid       = new Data_Markup_Grid();
-        $grid->setCollectionSource($source, $columns);
+        $grid->setCustomSource($source, $columns);
         $this->view->grid = $grid->deploy();
     }
 

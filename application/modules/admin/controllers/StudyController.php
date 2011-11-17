@@ -43,7 +43,7 @@ class Admin_StudyController extends Admin_CommonController
 					'function' => array($this, 'generateEditLink'),
 					'params' => array('{{id}}', '{{name}}')
 				),
-                'class' => 'align-left'
+                'class' => 'align-left important'
 			)
 		);
 

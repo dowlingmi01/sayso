@@ -1089,7 +1089,9 @@ input[type=password]
  *   Redesing is welcome.
  * @author alecksmart
  */
-
+/**
+  * Most common stuff...
+  */
  a
  {
      color: blue;
@@ -1100,7 +1102,7 @@ input[type=password]
  }
 
  /**
-  * Common self-speaking things...
+  * Common semantic things...
   */
 .align-left
 {
@@ -1129,6 +1131,13 @@ span.disabled
     text-decoration: none !important;
     border-bottom: 1px dotted #999999;
 }
+.important
+{
+    font-weight: bold;
+}
+/**
+ * Layout
+*/
 #layout
 {
     min-height:700px;

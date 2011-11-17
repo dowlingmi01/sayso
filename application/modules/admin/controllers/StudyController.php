@@ -8,14 +8,59 @@ class Admin_StudyController extends Admin_CommonController
     public function init()
     {
         parent::init();
+
+        if (!$this->_request->isXmlHttpRequest())
+        {
+            $this->setLayoutBasics();
+        }
+
+    }
+
+    public function indexAction()
+    {
+        if(!$this->checkAccess(array('superuser')))
+        {
+            $this->_helper->viewRenderer->setNoRender(true);
+        }
+        $this->view->headScript()->appendFile('/modules/admin/study/index.js');
+        $this->view->headLink()->appendStylesheet('/modules/admin/study/common.css', 'screen');
+    }
+
+    public function addAction()
+    {
+        if(!$this->checkAccess(array('superuser')))
+        {
+            $this->_helper->viewRenderer->setNoRender(true);
+        }
+        $this->view->headScript()->appendFile('/modules/admin/study/add.js');
+        $this->view->headLink()->appendStylesheet('/modules/admin/study/common.css', 'screen');
+    }
+
+    public function editAction()
+    {
+        if(!$this->checkAccess(array('superuser')))
+        {
+            $this->_helper->viewRenderer->setNoRender(true);
+        }
+        $this->view->headScript()->appendFile('/modules/admin/study/edit.js');
+        $this->view->headLink()->appendStylesheet('/modules/admin/study/common.css', 'screen');
+    }
+
+    public function deleteAction()
+    {
+        if(!$this->checkAccess(array('superuser')))
+        {
+            $this->_helper->viewRenderer->setNoRender(true);
+        }
+    }
+
+
+    public function createNewAction ()
+    {
         if(!$this->checkAccess(array('superuser')))
         {
             die('Access denied!');
         }
-    }
-
-    public function createNewAction ()
-    {
 
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
@@ -127,7 +172,7 @@ class Admin_StudyController extends Admin_CommonController
                     }
                 }
                 $tags->save();
-            }            
+            }
 
             // creatives
 

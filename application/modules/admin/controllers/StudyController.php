@@ -135,7 +135,7 @@ class Admin_StudyController extends Admin_CommonController
             $study->loadData(intval($this->_getParam('study_id')));
             if(false === $study->id > 0)
             {
-                throw new Exception('Bad parameters, possible security breach!');
+                throw new Exception('Bad parameters, possibly a security issue..!');
             }
             $study->delete();
         }
@@ -149,7 +149,7 @@ class Admin_StudyController extends Admin_CommonController
             $this->rd->gotoSimple('index');
         }
         
-        $this->msg->addMessage('Study deleted!');
+        $this->msg->addMessage('Entry deleted!');
         $this->rd->gotoSimple('index');
     }
 

@@ -1,7 +1,49 @@
 /**
  * @author alecksmart
  */
+// Common stuff
 
+(function($) {
+    var cache = [];
+    $.preLoadImages = function()
+    {
+        for (var i = 0; i < arguments.length; i++) {
+            var cacheImage = document.createElement('img');
+            cacheImage.src = arguments[i];
+            cache.push(cacheImage);
+        }
+    };
+
+    $.rand = function(x)
+    {
+        var str = '';
+        if(!x) {
+            return str;
+        }
+        while(x){
+            str += Math.floor(Math.random()*10);
+            x--;
+        }
+        return str;
+    };
+
+    $.srand = function(x)
+    {
+        var str = '';
+        var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+        for (var i = 0; i < x; i++) {
+            var y = Math.floor(Math.random() * chars.length);
+            str += chars.substring(y,y+1);
+        }
+        return str;
+    };
+
+    $.preLoadImages
+    (
+        '/images/icons-actions.gif'
+    );
+
+})(jQuery);
 
 // Login section begin
 

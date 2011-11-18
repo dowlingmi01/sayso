@@ -1318,3 +1318,21 @@ nav.admin_menu li a:hover
 {
     color: #777;
 }
+
+/* admin icons*/
+a.button-delete
+{
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 2px 16px 0 0;
+    background:transparent url('/images/icons-actions.gif') no-repeat -202px -42px;
+}
+a.button-edit
+{
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 2px 16px 0 0;
+    background:transparent url('/images/icons-actions.gif') no-repeat -302px -102px;
+}

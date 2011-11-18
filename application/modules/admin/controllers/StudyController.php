@@ -30,7 +30,33 @@ class Admin_StudyController extends Admin_CommonController
         $grid   = new Data_Markup_Grid();
         $select = Zend_Registry::get('db')->select()->from('study');
         $grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
-        $grid->setGridColumns(array('id', 'name', 'begin_date', 'end_date', 'created'));
+        $grid->setGridColumns(array('id', 'name', 'begin_date', 'end_date', 'created', 'edit', 'delete'));
+
+        $extraColumnEdit = new Bvb_Grid_Extra_Column();
+		$extraColumnEdit
+			->position('right')
+			->name('edit')
+			->title(' ')
+			->callback(
+                array(
+                    'function'  => array($this, 'generateEditButtonLink'),
+                    'params'    => array('{{id}}')
+                )
+            );
+        $grid->addExtraColumns($extraColumnEdit);
+
+        $extraColumnDelete = new Bvb_Grid_Extra_Column();
+		$extraColumnDelete
+			->position('right')
+			->name('delete')
+			->title(' ')
+			->callback(
+                array(
+                    'function'  => array($this, 'generateDeleteButtonLink'),
+                    'params'    => array('{{id}}')
+                )
+            );
+        $grid->addExtraColumns($extraColumnDelete);
 
         $grid->updateColumn('id',
 			array(				
@@ -40,8 +66,8 @@ class Admin_StudyController extends Admin_CommonController
         $grid->updateColumn('name',
 			array(
 				'callback' => array(
-					'function' => array($this, 'generateEditLink'),
-					'params' => array('{{id}}', '{{name}}')
+					'function'  => array($this, 'generateEditLink'),
+					'params'    => array('{{id}}', '{{name}}')
 				),
                 'class' => 'align-left important'
 			)
@@ -57,6 +83,17 @@ class Admin_StudyController extends Admin_CommonController
 
         return '<a href="' . $this->view->url(array('action' => 'edit', 'study_id' => intval($id))) . '">'.
             ($name ? $name : '<span class="disabled">name malformed</span>') .'</a>';
+    }
+
+    public function generateEditButtonLink($id)
+    {
+        return  '<a href="' . $this->view->url(array('action' => 'edit', 'study_id' => intval($id)))
+                    . '" class="button-edit"></a>';
+    }
+    public function generateDeleteButtonLink($id)
+    {
+        return  '<a href="' . $this->view->url(array('action' => 'delete', 'study_id' => intval($id)))
+                    . '" class="button-delete"></a>';
     }
 
     public function addAction()

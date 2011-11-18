@@ -88,12 +88,12 @@ class Admin_StudyController extends Admin_CommonController
     public function generateEditButtonLink($id)
     {
         return  '<a href="' . $this->view->url(array('action' => 'edit', 'study_id' => intval($id)))
-                    . '" class="button-edit"></a>';
+                    . '" class="button-edit" title="Edit"></a>';
     }
     public function generateDeleteButtonLink($id)
     {
         return  '<a href="' . $this->view->url(array('action' => 'delete', 'study_id' => intval($id)))
-                    . '" class="button-delete"></a>';
+                    . '" class="button-delete" title="Delete"></a>';
     }
 
     public function addAction()
@@ -125,6 +125,12 @@ class Admin_StudyController extends Admin_CommonController
         {
             $this->_helper->viewRenderer->setNoRender(true);
         }
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+
+        $this->msg->addMessage('Study deleted!');
+        $this->rd->gotoSimple('index');
+
     }
 
     /**

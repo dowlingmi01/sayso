@@ -19,7 +19,7 @@
                     </ul>
                     <?php echo $this->partial('partials/common-auth.phtml', 'admin') ?>
                     <div class="clear"></div>
-                </nav>                
+                </nav>
             </header>
             <div id="main" role="main">
                 <?= $this->layout()->content ?>
@@ -27,5 +27,17 @@
             <footer></footer>
         </div>
         <div id="system-message" title="System message"></div>
+<?php
+$flashMessenger = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
+$messages       = $flashMessenger->getMessages();
+if (sizeof($messages) > 0)
+{
+    $messages = $flashMessenger->getMessages();
+    if(!empty($messages))
+    {
+        echo "\n<script>\nwindow._saysoMessages = ['",  implode("','", $messages) , "'];\n</script>\n";
+    }
+}
+?>
     </body>
 </html>

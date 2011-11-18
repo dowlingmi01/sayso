@@ -63,7 +63,7 @@ function bindLoginForm()
                 $('#login-dialog').html(data);
                 if(loginResult != undefined
                     && loginResult.ok)
-                {                                        
+                {
                     $('#login-dialog').dialog("close");
                     self.location.reload();
                     return;
@@ -95,6 +95,9 @@ function loadLoginDialog()
 
 function bindDefaults()
 {
+
+    // handle login
+
     $('#login').unbind().bind('click', function()
     {
         if($(this).attr('rel') > '0')
@@ -115,6 +118,22 @@ function bindDefaults()
             });
         }
     });
+
+    // handle unified messaging
+
+    if(window._saysoMessages != undefined && window._saysoMessages.length > 0)
+    {
+        $.fx.speeds._default = 500;
+        $('#system-message').html(window._saysoMessages.join("<br />"));
+        window._saysoMessages = [];
+        $('#system-message').dialog({
+            modal   : true,
+            hide    : "explode",
+            buttons : {
+                'Ok': function(){$(this).dialog( "close" );}
+            }
+        });
+    }
 }
 
 $(function(){ bindDefaults();});

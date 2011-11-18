@@ -21,7 +21,6 @@ abstract class Admin_CommonController extends Zend_Controller_Action
     protected $msg;
 
     /**
-     *
      * @var AdminUser
      */
     protected $currentUser;
@@ -66,7 +65,7 @@ abstract class Admin_CommonController extends Zend_Controller_Action
         $this->view->headLink()->appendStylesheet('/modules/common.css', 'screen');
         if(get_class($this) == 'Admin_IndexController')
         {
-            // legacy styling
+            // legacy styling, should be deleted soon...
             $this->view->headLink()->appendStylesheet('/css/smoothness/jquery-ui-1.8.13.custom.css', 'screen');
         }
         else

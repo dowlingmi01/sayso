@@ -67,7 +67,7 @@ abstract class Admin_CommonController extends Zend_Controller_Action
         $this->view->headLink()->appendStylesheet('/css/smoothness/jquery-ui-1.8.13.custom.css', 'screen');
         $this->view->headScript()->appendFile('/js/jquery-1.6.1.min.js');
         $this->view->headScript()->appendFile('/js/jquery.form.min.js');
-        $this->view->headScript()->appendFile('/js/jquery-ui-1.8.13.custom.min.js');
+        $this->view->headScript()->appendFile('/modules/jquery-ui-1.8.16.full.min.js');
         $this->view->headScript()->appendFile('/modules/common.js');
     }
 

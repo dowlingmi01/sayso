@@ -64,7 +64,15 @@ abstract class Admin_CommonController extends Zend_Controller_Action
     {
         //$this->_helper->layout->setLayout('admin');
         $this->view->headLink()->appendStylesheet('/modules/common.css', 'screen');
-        $this->view->headLink()->appendStylesheet('/css/smoothness/jquery-ui-1.8.13.custom.css', 'screen');
+        if(get_class($this) == 'Admin_IndexController')
+        {
+            // legacy styling
+            $this->view->headLink()->appendStylesheet('/css/smoothness/jquery-ui-1.8.13.custom.css', 'screen');
+        }
+        else
+        {
+            $this->view->headLink()->appendStylesheet('/css/absolution/absolution.blue.css', 'screen');
+        }
         $this->view->headScript()->appendFile('/js/jquery-1.6.1.min.js');
         $this->view->headScript()->appendFile('/js/jquery.form.min.js');
         $this->view->headScript()->appendFile('/modules/jquery-ui-1.8.16.full.min.js');

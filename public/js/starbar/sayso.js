@@ -15,7 +15,6 @@
 
 $SQ(function () {
 
-    if (top !== self) return; // <-- hack to prevent iframe processing until we are ready for this (pending NY demos)
     // NOTE: implement caching (per @todo below) before implementing iframe support
 
     // setup
@@ -23,7 +22,8 @@ $SQ(function () {
     var sayso = window.sayso,
         starbar = window.sayso.starbar,
         log = window.sayso.log,
-        warn = window.sayso.warn;
+        warn = window.sayso.warn,
+        inIframe = (top !== self);
 
     if (!sayso.study) sayso.study = {};
 
@@ -61,20 +61,19 @@ $SQ(function () {
                     content : content
                 },
                 success : function (response) {
-                    log('Social activity', response);
+                    log('Behavioral: ' + (type_id === 1 ? 'Facebook' : 'Twitter'));
                 }
             });
         };
     };
 
     // Blacklist sayso domains before any tracking
-    //sayso.log('debug >>> ' + location.href);
+    
     var trackerBlackList = [/(sayso|saysollc)\.com/, /say\.so/];
     for (var i = 0, ln = trackerBlackList.length; i < ln; i++)
     {
         if (trackerBlackList[i].test(location.href))
         {
-            warn('Disabling tracking on own domains...');
             return;
         }
     }
@@ -94,9 +93,7 @@ $SQ(function () {
         data : {
             url : encodeURIComponent(location.href)
         },
-        success : function (response) {
-            log('Track page view', response);
-        }
+        success : function (response) {}
     });
 
     // ================================================================
@@ -129,7 +126,7 @@ $SQ(function () {
             url     : url,
             data    : data,
             success : function (response) {
-                log('Search', response);
+                log('Behavioral: Search');
             }
         });
     }
@@ -246,7 +243,6 @@ $SQ(function () {
     if (likeButtons.length) {
         var liked = false;
         likeButtons.bind('mouseover', function (eventOver) {
-            //sayso.log('Over Like');
 
             // only register 1 Like event per page
             if (liked) return;
@@ -258,7 +254,6 @@ $SQ(function () {
             var mouseOutTimer = setTimeout(function () {
                 timerRunning= false;
                 liked = true;
-                //sayso.log('Like!');
                 sayso.helper.socialActivity(location.href, '', 1);
             }, 700); // aim + click + feedback
 
@@ -273,7 +268,7 @@ $SQ(function () {
     }
 
     // ================================================================
-    // ADjuster Ad-Tracking/Replacement/Click-Thrus
+    // ADjuster 
 
     // @todo optimize the retreival of active studies for the current user.
     // this will likely include a combination of a server-side daemon for handling
@@ -281,6 +276,8 @@ $SQ(function () {
     // manage the state of depending on assignments) and client-side caching.
     // For now, we just retreive all studies on every page load (though not every iframe)
 
+    log(top !== self ? 'In iFrame: ' : 'Main Page: ', self.location.href);
+    
     ajax({
         url : 'http://' + sayso.baseDomain + '/api/study/get-all',
         data : {
@@ -289,7 +286,6 @@ $SQ(function () {
         },
         success : function (response) {
             studies = response.data;
-            log(studies);
             if (studies.items.length) {
                 processStudyCollection(studies);
             }
@@ -299,7 +295,7 @@ $SQ(function () {
     // ADjuster Click-Thrus ------------------------
     
     var adTargets = JSON.parse(sayso.study.adTargets);
-    log(adTargets);
+    log('Ad Targets: ', adTargets);
     for (var key in adTargets) {
         var adTarget = adTargets[key];
         if (location.href.match(adTarget.urlSegment)) {
@@ -307,12 +303,13 @@ $SQ(function () {
             ajax({
                 url : 'http://' + sayso.baseDomain + '/api/metrics/track-click-thru',
                 data : {
+                    url : location.href,
                     url_segment : adTarget.urlSegment,
                     type : adTarget.type,
                     type_id : adTarget.typeId
                 },
                 success : function (response) {
-                    log('Tracked click thru for ' + adTarget.type + ' (' + adTarget.typeId + ')');
+                    log('ADjuster: Click Through (' + adTarget.type + '/' + adTarget.typeId + ')');
                 }
             });
             break;
@@ -423,6 +420,8 @@ $SQ(function () {
                         typeId : creative.id
                     };
                     adTargetId = 'creative' + creative.id;
+                    
+                    log('ADjuster: Creative Replacement');
 
                 } else { // ADjuster Campaign ------------------------
 
@@ -452,6 +451,8 @@ $SQ(function () {
                         typeId : tag.id
                     };
                     adTargetId = 'campaign' + tag.id;
+                    
+                    log('ADjuster: Campaign View');
                     
                 }
                 
@@ -534,18 +535,20 @@ $SQ(function () {
 		    }
 		);
 	}
+
+	adminFunctions(); // not sure how to approach this just yet. Probably need to pass a user role id (e.g. admin+) in the request, and check that first.
 	
-	// Detect and log flash files on this page (chrome only) to assist admin find tags
-	if (top === self && navigator.userAgent.toLowerCase().indexOf('chrome') > -1) { // Not in iframe, using Chrome
-		log('Detected '+$SQ('embed').length+' flash file(s) on this page.');
-		$SQ('embed').each(function(index) {
-			var embedElem = $SQ(this);
-			var filename = embedElem.attr('src').match(/[^/]+$/)[0];
-			if (embedElem.parent().is('object')) {
-				embedElem = embedElem.parent(); // just for logging purposes, since chrome will only highlight the embed if it is NOT contained in an <object>
-			}
-			log('Selector '+(index+1)+' (copy and paste this): embed[src*="'+filename+'"]\nElement '+(index+1)+' (roll over this to visually confirm): ', embedElem);
-		});
+	function adminFunctions () {
+    	// Detect and log flash files on this page to assist admin find tags
+    	log('Detected '+$SQ('embed').length+' flash file(s) ' + (inIframe ? 'in this iframe' : 'on this page'));
+    	$SQ('embed').each(function(index) {
+    		var embedElem = $SQ(this);
+    		var filename = embedElem.attr('src').match(/[^/]+$/)[0];
+    		if (embedElem.parent().is('object')) {
+    			embedElem = embedElem.parent(); // just for logging purposes, since chrome will only highlight the embed if it is NOT contained in an <object>
+    		}
+    		log('Selector '+(index+1)+' (copy and paste this): embed[src*="'+filename+'"]\nElement '+(index+1)+' (roll over this to visually confirm): ', embedElem);
+    	});
 	}
 });
 

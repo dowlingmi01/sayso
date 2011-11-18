@@ -104,21 +104,23 @@ class Api_MetricsController extends Api_GlobalController
     }
     
     public function trackClickThruAction () {
-        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'url_segment', 'type', 'type_id'));
+        $this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'url', 'url_segment', 'type', 'type_id'));
         
         switch ($this->type) {
             case 'creative' :
-                $sql = 'select v.id from metrics_creative_view v where v.creative_id = ? and v.user_id = ? order by v.created desc limit 1';
+                $sql = 'SELECT v.id FROM metrics_creative_view v WHERE v.creative_id = ? AND v.user_id = ? ORDER BY v.created DESC LIMIT 1';
                 $result = Db_Pdo::fetch($sql, $this->type_id, $this->user_id);
                 $metric = new Metrics_CreativeClickThru();
                 $metric->metrics_creative_view_id = $result['id'];
+                $metric->url = $this->url;
                 $metric->save();
                 break;
             case 'campaign' :
-                $sql = 'select v.id from metrics_tag_view v where v.tag_id = ? and v.user_id = ? order by v.created desc limit 1';
+                $sql = 'SELECT v.id FROM metrics_tag_view v WHERE v.tag_id = ? AND v.user_id = ? ORDER BY v.created DESC LIMIT 1';
                 $result = Db_Pdo::fetch($sql, $this->type_id, $this->user_id);
                 $metric = new Metrics_TagClickThru();
                 $metric->metrics_tag_view_id = $result['id'];
+                $metric->url = $this->url;
                 $metric->save();
                 break;
         }

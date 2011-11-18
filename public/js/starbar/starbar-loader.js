@@ -14,7 +14,8 @@
         starbarContainer = document.getElementById('sayso-starbar'),
         
         urlMatchPrepend = '^(?:http|https){1}://(?:[\\w.-]+)?',
-        currentUrl = window.location.href;
+        currentUrl = window.location.href,
+        inIframe = (top !== self);
     
     // setup global "safe" logging functions
     if (!sayso.log) {
@@ -193,8 +194,6 @@
    
     function loadStarbar () {
         
-        sayso.log('Loading App');
-        
         // bring in the Starbar
         var jQueryLoadTimer = new jsLoadTimer();
         jQueryLoadTimer.start('window.$SQ', function () {
@@ -207,7 +206,8 @@
                 auth_key : sayso.starbar.authKey,
                 user_id : sayso.starbar.user.id,
                 user_key : sayso.starbar.user.key,
-                visibility : sayso.starbar.state.visibility
+                visibility : sayso.starbar.state.visibility,
+                is_console_app : (inIframe ? 0 : 1)
             };
             
             if (sayso.client) { // we must be on the customer's page
@@ -234,7 +234,7 @@
                     
                     // load server data for this Starbar
                     var starbar = response.data;
-                    sayso.log('Received - ' + starbar.label + ' App', starbar);
+                    sayso.log(starbar.label + ' App', starbar);
                     
                     sayso.starbar.id = starbar.id;
                     sayso.starbar.shortName = starbar.short_name;
@@ -242,7 +242,6 @@
                     sayso.starbar.user.id = starbar._user.id;
                     sayso.starbar.user.key = starbar._user._key;
                     if (response.game) {
-                        sayso.log(response.game);
                         sayso.starbar.game = response.game;
 					}
                     
@@ -282,13 +281,13 @@
                         }
                         if (skip) {
                             // do not load starbar for this page
-                            sayso.log('Popup - Not loading Starbar');
+                            sayso.log('Popup detected');
                             return;
                         }
                     }
                     
                     if (top !== self) {
-                        sayso.log('iFrame - Not loading Starbar');
+                        sayso.log('iFrame detected');
                         return;
                     }
                     
@@ -309,8 +308,6 @@
                     }
                     
                     setTimeout(function () {
-                        
-                        sayso.log('Initializing console');
                         
                         // ===========================================
                         // Begin handling the visible console
@@ -384,8 +381,6 @@
                             
                             var jQueryLibraryLoadTimer = new jsLoadTimer();
                             jQueryLibraryLoadTimer.start('window.jQueryUILoaded', function () {
-                                
-                                sayso.log('Dependencies loaded');
                                 
                                 // finally, inject the HTML!
                                 $SQ('#sayso-starbar').append(starbar._html);

@@ -908,7 +908,7 @@ section.study-list ul.study-list.under-full {
   section.study-list ul.study-list.under-full li:nth-child(even) {
     background: #f2f2f2; }
 
-#list-domains-avails li {
+.admin-table-domains-avails li {
   background-color: #f2f2f2;
   border: solid 1px lightgrey;
   padding: 8px;
@@ -916,14 +916,14 @@ section.study-list ul.study-list.under-full {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px; }
-  #list-domains-avails li nav {
+  .admin-table-domains-avails li nav {
     float: right; }
-  #list-domains-avails li:hover {
+  .admin-table-domains-avails li:hover {
     background-color: #fafafa; }
 
-#list-creative li {
+.admin-table-creative li {
   margin-bottom: 8px; }
-  #list-creative li div {
+  .admin-table-creative li div {
     background-color: #f2f2f2;
     border: solid 1px lightgrey;
     padding: 8px;
@@ -934,21 +934,21 @@ section.study-list ul.study-list.under-full {
     margin-left: 10px;
     width: 222px;
     min-height: 54px; }
-    #list-creative li div:hover {
+    .admin-table-creative li div:hover {
       background-color: #fafafa; }
-    #list-creative li div span {
+    .admin-table-creative li div span {
       padding-bottom: 4px; }
-      #list-creative li div span.creative-name {
+      .admin-table-creative li div span.creative-name {
         font-weight: bold;
         display: block; }
-      #list-creative li div span.creative-url {
+      .admin-table-creative li div span.creative-url {
         display: block;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis; }
-    #list-creative li div nav {
+    .admin-table-creative li div nav {
       float: right; }
-  #list-creative li img {
+  .admin-table-creative li img {
     background-color: #f2f2f2;
     background-position: center;
     background-size: 70px;
@@ -1255,66 +1255,66 @@ nav.admin_menu li a:hover
 }
 
 /* List table */
-#list
+.admin-table
 {
 
 }
-#list table
+.admin-table table
 {
     font: 11px/24px Verdana, Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
 
-#list table tr:first-child th {
+.admin-table table tr:first-child th {
     border-top: 1px solid #FB7A31;
     border-bottom: 1px solid #FB7A31;
     background: #FFC;
     font-weight: bold;
 }
 
-#list table tr
+.admin-table table tr
 {
     background: #DDDDDD;
 }
-#list table tr.alt
+.admin-table table tr.alt
 {
     background: #D3D7CF;
 }
 
-#list table td
+.admin-table table td
 {
     border-bottom: 1px solid #CCC;
     padding: 0 0.5em;
 }
 
-#list table td+td {
+.admin-table table td+td {
     border-left: 1px solid #CCC;
     text-align: center;
 }
 /* fixes weird legace styling */
-#list input:not([type="checkbox"]), select, textarea
+.admin-table input:not([type="checkbox"]), select, textarea
 {
     margin: 0;
 }
 
-#list table tr:last-child
+.admin-table table tr:last-child
 {
     color: #777;
     text-align: center;
 }
-#list table tr:last-child a
+.admin-table table tr:last-child a
 {
     color: red;
     text-decoration: none;
     border-bottom: 1px dotted red;
 }
-#list table tr:last-child a:hover
+.admin-table table tr:last-child a:hover
 {
     color: green;
     border-bottom: 1px dotted green;
 }
-#list table tr:last-child select option
+.admin-table table tr:last-child select option
 {
     color: #777;
 }

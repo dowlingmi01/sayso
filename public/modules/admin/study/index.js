@@ -4,6 +4,9 @@
 
 function bindLocal()
 {
+
+    $('#list').addClass('admin-table');
+
     // delete action needs confirmation...
     $('.button-delete').click(function()
     {

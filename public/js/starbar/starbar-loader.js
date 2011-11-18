@@ -81,6 +81,10 @@
             // along with IP and user agent headers
             var iframe = document.createElement('iframe');
             iframe.src = postInstallUrl;
+            iframe.width = '0';
+            iframe.height = '0';
+            iframe.scrolling = 'no';
+            iframe.style.cssText = 'width: 0px; height: 0px; border: 0px;';
             starbarContainer.appendChild(iframe);
             
             // after a short delay, continue loading starbar

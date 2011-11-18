@@ -125,12 +125,32 @@ class Admin_StudyController extends Admin_CommonController
         {
             $this->_helper->viewRenderer->setNoRender(true);
         }
+
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
 
+        try
+        {
+            $study = new Study();
+            $study->loadData(intval($this->_getParam('study_id')));
+            if(false === $study->id > 0)
+            {
+                throw new Exception('Bad parameters, possible security breach!');
+            }
+            $study->delete();
+        }
+        catch(Exception $e)
+        {
+            $this->msg->addMessage('Operation caused exception!');
+            if(getenv('APPLICATION_ENV') != 'production')
+            {
+                $this->msg->addMessage($e->getMessage());
+            }
+            $this->rd->gotoSimple('index');
+        }
+        
         $this->msg->addMessage('Study deleted!');
         $this->rd->gotoSimple('index');
-
     }
 
     /**

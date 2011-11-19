@@ -1529,7 +1529,8 @@ $SQ(function(){
 		document.onfocusin = function () { oldOnFocus(); starbar.state.refresh(); };
 	} else {
 		var oldOnFocus = window.onfocus && typeof window.onfocus === 'function' ? window.onfocus : function () {};
-		window.onfocus = function () { oldOnFocus(); starbar.state.refresh(); };
+		$SQ(window).bind('focus', function () { oldOnFocus(); starbar.state.refresh(); });
+//		window.onfocus = function () { oldOnFocus(); starbar.state.refresh(); };
 	}
 	
 	// flag so we know this file has loaded

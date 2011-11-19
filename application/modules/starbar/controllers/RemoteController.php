@@ -520,15 +520,12 @@ class Starbar_RemoteController extends Api_GlobalController
 		$facebookSocial->loadByUserIdAndProvider($user->id, 'facebook');
 		$this->view->assign('facebook_social', $facebookSocial);
 
-		if ($this->is_console_app) {
-		    
-		    // render the view manually, we will pass it back in the JSON
-            $this->render();
-            
-            // setup Hello Music specific data
-            $starbar->setCssUrl('http://' . BASE_DOMAIN . '/css/starbar-hellomusic.css');
-            $starbar->setHtml($this->getResponse()->getBody());
-		}
+	    // render the view manually, we will pass it back in the JSON
+        $this->render();
+        
+        // setup Hello Music specific data
+        $starbar->setCssUrl('http://' . BASE_DOMAIN . '/css/starbar-hellomusic.css');
+        $starbar->setHtml($this->getResponse()->getBody());
 
         // return Starbar via JSON-P
         $this->_enableRenderer(new Api_Plugin_JsonPRenderer());

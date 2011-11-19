@@ -390,7 +390,7 @@ class Admin_StudyController extends Admin_CommonController
 
             Record::commitTransaction();
             $response['result'] = true;
-            $response['messages'][] = 'Survey saved!';
+            $response['messages'][] = 'Study saved!';
         }
         catch(Exception $e)
         {

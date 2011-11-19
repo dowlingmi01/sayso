@@ -331,7 +331,12 @@
                         }
                         
                         var ieVersion = getInternetExplorerVersion();
-                        if (ieVersion > -1 && ieVersion < 9) $SQ.fx.off = true;
+                        if (ieVersion > -1 && ieVersion < 9) {
+                            $SQ.fx.off = true;
+                            var jsJson = document.createElement('script'); 
+                            jsJson.src = 'http://' + sayso.baseDomain + '/js/starbar/json2.min.js';
+                            starbarContainer.appendChild(jsJson);
+                        }
                         
                         // load JS dependencies
                         

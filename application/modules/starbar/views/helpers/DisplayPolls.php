@@ -30,6 +30,9 @@ class Starbar_View_Helper_DisplayPolls extends Zend_View_Helper_Abstract
 
 		if ($numberToShow) {
 			$i = 0;
+			if ($status == 'new' || $status == 'archived') {
+				echo '<div class="sb_accordion">';
+			}
 			foreach ($polls as $survey) {
 				// The numberToShow can be smaller than the size of the list
 				if ($i >= $numberToShow) break;
@@ -72,12 +75,16 @@ class Starbar_View_Helper_DisplayPolls extends Zend_View_Helper_Abstract
 				<? 
 				$i++;
 			}
+			if ($status == 'new' || $status == 'archived') {
+				echo '</div><!-- .accordion -->';
+			}
+
 		} elseif ($status == 'new') { // No new polls, show a message!
 			?>
 			<? if ($this->view->count_archived_polls) { ?>
-				No new polls today, but you still have <?= $this->view->count_archived_polls ?> polls to complete in the <a href="#polls_tabs_3">archives</a>.
+				<p>No new polls today, but you still have <?= $this->view->count_archived_polls ?> polls to complete in the <a href="#" class="sb_nav_tabs" rel="<?= (($this->view->count_completed_polls || $this->view->count_disqualified_polls) ? 3 : 2) ?>">archives</a>.</p>
 			<? } else { ?>
-				No new polls today, check back soon to earn more notes and chops!
+				<p>No new polls today, check back soon to earn more notes and chops!</p>
 			<? } ?>
 			<?
 		}

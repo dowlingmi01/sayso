@@ -7,8 +7,6 @@ $SQ(function(){
 	var sayso = window.sayso,
 		starbar = sayso.starbar;
 	
-	easyXDM.DomHelper.requiresJSON("http://"+sayso.baseDomain+"/js/starbar/json2.min.js");
-
 	// global var
 	var themeColor = '#de40b2';
 	
@@ -1195,11 +1193,6 @@ $SQ(function(){
 					show: function(event, ui){
 							// re-call the scrollbar to re-initialize to avoid the "flash" of narrow content.
 							activateScroll(target);		
-
-							// Why was this line here? Hmmmm... anyway, disabled to 
-							// fix IE issues, doesn't seem to have any negative effect
-							// -- Hamza
-							//window.location.hash = '';
 
 							// adding ID to determine which tab is selected
 							$SQ('ul.sb_ui-tabs-nav', this).attr('id','');

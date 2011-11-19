@@ -40,6 +40,9 @@ class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 
 		if ($numberToShow) {
 			$i = 0;
+			if ($status == 'new' || $status == 'archived') {
+				echo '<ul class="sb_solidList">';
+			}
 			foreach ($surveys as $survey) {
 				// The numberToShow can be smaller than the size of the list
 				if ($i >= $numberToShow) break;
@@ -98,12 +101,15 @@ class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 				<? 
 				$i++;
 			}
-		} elseif ($status == 'new') { // No new surveys, show a message!
+			if ($status == 'new' || $status == 'archived') {
+				echo '</ul>';
+			}
+		} elseif ($status == 'new') { // No new surveys, show a message! -- and keep the p tag or scrollpane fails.
 			?>
 			<? if ($this->view->count_archived_surveys) { ?>
-				No new surveys today, but you still have <?= $this->view->count_archived_surveys ?> surveys to complete in the <a href="#surveys_tabs_3">archives</a>.
+				<p>No new surveys today, but you still have <?= $this->view->count_archived_surveys ?> surveys to complete in the <a href="#" class="sb_nav_tabs" rel="<?= (($this->view->count_completed_surveys || $this->view->count_disqualified_surveys) ? 3 : 2) ?>">archives</a>.</p>
 			<? } else { ?>
-				No new surveys today, check back soon to earn more notes and chops!
+				<p>No new surveys today, check back soon to earn more notes and chops!</p>
 			<? } ?>
 			<?
 		}

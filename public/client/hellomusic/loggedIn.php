@@ -41,7 +41,7 @@ if (!isset($_COOKIE['HMID']) || !isset($_COOKIE['MyEmail'])) {
                 <h4>You've been selected as a member of the rhythm<br />
                 section keeping Hello Music products and deals in<br />
                 sync with you, our customers.</h4>
-                <h3><strong>GRAB</strong> the BeatBar. <strong>GIVE</strong> your opinion.</h3>
+                <h3><strong>GRAB</strong> the Say.So Music Bar. <strong>GIVE</strong> your opinion.</h3>
                 <h2><strong>GET</strong> FREE GEAR.</h2>
                 <h4 style="height: 50px;">
                 <span class="sso_textError" style="display: none;">Whoops. Make sure you agree to the terms<br />

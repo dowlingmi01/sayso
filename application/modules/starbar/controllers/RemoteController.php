@@ -505,7 +505,7 @@ class Starbar_RemoteController extends Api_GlobalController
     }
 
     /**
-     * Hello Music "BeatBar"
+     * Hello Music "Say.So Music Bar"
      */
     public function hellomusicAction () {
         

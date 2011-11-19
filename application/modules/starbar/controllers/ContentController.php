@@ -114,7 +114,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 	        try {
 				$message = '
-					Beat Bar redemption made for ' . $good->title . '
+					Say.So Music Bar redemption made for ' . $good->title . '
 
 					Order Details
 					=============
@@ -170,11 +170,11 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('bundle_of_joy', $bundleOfJoy);
 
 		// @todo point this to onboarding
-		$shareLink = "http://hellomusic.com/landing.aspx?sayso-install=true";
+		$shareLink = "http://bb.say.so/";
 		
-		$shareText = "Poll time! Just took the '".$survey->title."' poll on Hello Music's Say.So Beat Bar";
+		$shareText = "Poll time! Just took the '".$survey->title."' poll on the Say.So Music Bar";
 		$facebookTitle = $survey->title;
-		$facebookDescription = "Like Music? You can get the Beat Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
+		$facebookDescription = "Like Music? You can get the Say.So Music Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
 		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=poll&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
 		$this->_assignShareInfoToView($shareLink, $shareText, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
     }
@@ -235,11 +235,11 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('next_survey', $nextSurvey);
 
 		// @todo point this to onboarding
-		$shareLink = "http://hellomusic.com/landing.aspx?sayso-install=true";
+		$shareLink = "http://bb.say.so/";
 		// @todo share text to vary based on starbar_id?
-		$shareText = "Survey time! Just filled out '".$survey->title."' on Hello Music's Say.So Beat Bar";
+		$shareText = "Survey time! Just filled out '".$survey->title."' on the Say.So Music Bar";
 		$facebookTitle = $survey->title;
-		$facebookDescription = "Like Music? You can get the Beat Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
+		$facebookDescription = "Like Music? You can get the Say.So Music Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
 		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
 		$this->_assignShareInfoToView($shareLink, $shareText, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
 	}
@@ -263,11 +263,11 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('next_survey', $nextSurvey);
 
 		// @todo point this to onboarding
-		$shareLink = "http://hellomusic.com/landing.aspx?sayso-install=true";
+		$shareLink = "http://bb.say.so/";
 		// @todo share text to vary based on starbar_id?
-		$shareText = "Survey time! Just filled out '".$survey->title."' on Hello Music's Say.So Beat Bar";
+		$shareText = "Survey time! Just filled out '".$survey->title."' on the Say.So Music Bar";
 		$facebookTitle = $survey->title;
-		$facebookDescription = "Like Music? You can get the Beat Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
+		$facebookDescription = "Like Music? You can get the Say.So Music Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
 		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
 		$this->_assignShareInfoToView($shareLink, $shareText, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
 	}
@@ -339,11 +339,11 @@ class Starbar_ContentController extends Api_GlobalController
     	$this->_assignSurveysToView('surveys');
 
 		// @todo point this to onboarding
-		$shareLink = "http://www.hellomusic.com/landing.aspx?sayso-install=true";
+		$shareLink = "http://bb.say.so/";
 		// @todo share text to vary based on starbar_id?
-		$twitterShareText = "Join me in Hello Music's Beat Bar app. Get access to sweet gear deals and a chance to win a Takamine Guitar";
-		$facebookTitle = "Hello Music's Say.So Beat Bar";
-		$facebookCaption = "If you're a Musician or dig music gear, you should join me in Hello Music's Beat Bar app. We get access to some sweet gear deals and get awesome odds on walking away with one of their big giveaways like a Takamine Acoustic, a Full Midi Kit, and others. We just give our opinion on a few things and they give us Notes we can redeem for stuff. Sweet deal. Only lasts a month. Want in?";
+		$twitterShareText = "Join me in the Say.So Music Bar app. Get access to sweet gear deals and a chance to win a Takamine Guitar";
+		$facebookTitle = "Say.So Music Bar";
+		$facebookCaption = "If you're a Musician or dig music gear, you should join me in the Say.So Music Bar from Hello Music. We get access to some sweet gear deals and get awesome odds on walking away with one of their big giveaways like a Takamine Acoustic, a Full Midi Kit, and others. We just give our opinion on a few things and they give us Notes we can redeem for stuff. Sweet deal. Only lasts a month. Want in?";
 		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=starbar&shared_id=".$this->starbar_id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
 		$this->_assignShareInfoToView($shareLink, $twitterShareText, $facebookCaption,  $facebookCallbackUrl, $facebookTitle, null);
 	}

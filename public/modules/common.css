@@ -1135,6 +1135,11 @@ span.disabled
 {
     font-weight: bold;
 }
+.italic
+{
+    font-style:italic;
+}
+
 /**
  * Layout
 */
@@ -1298,6 +1303,7 @@ nav.admin_menu li a:hover
     margin: 0;
 }
 
+/* - does not work as needed yet
 .admin-table table tr:last-child
 {
     color: #777;
@@ -1318,6 +1324,7 @@ nav.admin_menu li a:hover
 {
     color: #777;
 }
+*/
 
 /* admin icons*/
 a.button-delete
@@ -1335,4 +1342,38 @@ a.button-edit
     margin: 0;
     padding: 2px 16px 0 0;
     background:transparent url('/images/icons-actions.gif') no-repeat -302px -102px;
+}
+
+/* form decorators */
+.f-deco-left-col
+{
+    width:49%;
+    float:left;
+}
+.f-deco-right-col
+{
+    width:49%;
+    float:right;    
+}
+.f-deco-right-col label, .f-deco-left-col label
+{
+    width:auto;
+    display: inline;
+}
+ul.errors li
+{
+    margin:0 0 10px 0;
+    color:red;
+    font-style: italic;
+}
+
+/* fixing form legace styling */
+.panel input[type=text]
+{
+    width:97%;
+}
+.panel input[type=radio]
+{
+    top:3px;
+    margin:5px;
 }

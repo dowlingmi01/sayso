@@ -17,16 +17,16 @@ class Admin_StudyController extends Admin_CommonController
     }
 
     public function indexAction()
-    {        
+    {
         if(!$this->checkAccess(array('superuser')))
         {
             $this->_helper->viewRenderer->setNoRender(true);
         }
-        
+
         $this->view->headScript()->appendFile('/modules/admin/study/index.js');
         $this->view->headLink()->appendStylesheet('/modules/admin/study/module.css', 'screen');
         $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Add New</a>';
-        
+
         $grid   = new Data_Markup_Grid();
         $select = Zend_Registry::get('db')->select()->from('study');
         $grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
@@ -59,7 +59,7 @@ class Admin_StudyController extends Admin_CommonController
         $grid->addExtraColumns($extraColumnDelete);
 
         $grid->updateColumn('id',
-			array(				
+			array(
                 'class' => 'align-right'
 			)
 		);
@@ -90,6 +90,7 @@ class Admin_StudyController extends Admin_CommonController
         return  '<a href="' . $this->view->url(array('action' => 'edit', 'study_id' => intval($id)))
                     . '" class="button-edit" title="Edit"></a>';
     }
+
     public function generateDeleteButtonLink($id)
     {
         return  '<a href="' . $this->view->url(array('action' => 'delete', 'study_id' => intval($id)))
@@ -102,9 +103,34 @@ class Admin_StudyController extends Admin_CommonController
         {
             $this->_helper->viewRenderer->setNoRender(true);
         }
+
+        $this->view->headScript()->appendFile('/js/jquery.form.min.js');
+        $this->view->headScript()->appendFile('/modules/admin/study/study.js');
         $this->view->headScript()->appendFile('/modules/admin/study/add.js');
         $this->view->headLink()->appendStylesheet('/modules/admin/study/module.css', 'screen');
+
         $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">List Studies</a>';
+
+        $this->view->form = new Form_Study_AddEdit();
+        $this->view->form->buildDeferred();
+
+        if ($this->_request->isPost() && $this->view->form->isValid($_POST))
+        {
+            Record::beginTransaction();
+            try
+            {
+                $study  = new Study();
+                $values = $this->view->form->getValues();
+                Study::saveStudyFromValues($study, $this->currentUser, $values);
+                Record::commitTransaction();
+                $this->msg->addMessage('Success: entry saved!');
+                $this->rd->gotoSimple('index');
+            }
+            catch(Exception $e)
+            {
+                $this->msg->addMessage('Error: entry cannot be saved!');
+            }
+        }
     }
 
     public function editAction()
@@ -113,10 +139,64 @@ class Admin_StudyController extends Admin_CommonController
         {
             $this->_helper->viewRenderer->setNoRender(true);
         }
+
+        $this->view->headScript()->appendFile('/js/jquery.form.min.js');
+        $this->view->headScript()->appendFile('/modules/admin/study/study.js');
         $this->view->headScript()->appendFile('/modules/admin/study/edit.js');
         $this->view->headLink()->appendStylesheet('/modules/admin/study/module.css', 'screen');
+
         $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">List Studies</a>';
         $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Add New</a>';
+
+        $study = new Study();       
+        
+        $study->loadData(intval($this->_getParam('study_id')));
+        if(false === $study->id > 0)
+        {
+            throw new Exception('Bad parameters, possibly a security issue..!');
+            $this->rd->gotoSimple('index');
+        }
+        $this->view->study = $study;
+
+        $this->view->form = new Form_Study_AddEdit();        
+        $this->view->form->setStudy($study);
+        $this->view->form->setActionURL(
+            $this->view->url(array('action' => 'edit', 'study_id' => $study->id))
+        );
+        $this->view->form->buildDeferred();
+
+        if ($this->_request->isPost() && $this->view->form->isValid($_POST))
+        {
+            Record::beginTransaction();
+            try
+            {
+                $values = $this->view->form->getValues();
+                Study::saveStudyFromValues($study, $this->currentUser, $values, 'update');
+                Record::commitTransaction();
+                $this->msg->addMessage('Success: entry saved!');
+                $this->rd->gotoSimple('index');
+            }
+            catch(Exception $e)
+            {
+                $this->msg->addMessage('Error: entry cannot be saved!');
+            }
+        }
+        else
+        {
+            $details = array(
+                // type
+                'radioProduct'      => $study->study_type,
+                // basics
+                'txtStudyName'      => $study->name,
+                'txtStudyId'        => $study->study_id,
+                'txtSampleSize'     => $study->size,
+                'txtMinThreshold'   => $study->size_minimum,                
+                'txtBegin'          => Data_FormatTools::mysqlDateToDisplay($study->begin_date),
+                'txtEnd'            => Data_FormatTools::mysqlDateToDisplay($study->end_date),
+                'radioIsSurvey'     => $study->click_track,
+			);
+			$this->view->form->populate($details);
+        }
     }
 
     public function deleteAction()
@@ -148,7 +228,7 @@ class Admin_StudyController extends Admin_CommonController
             }
             $this->rd->gotoSimple('index');
         }
-        
+
         $this->msg->addMessage('Entry deleted!');
         $this->rd->gotoSimple('index');
     }

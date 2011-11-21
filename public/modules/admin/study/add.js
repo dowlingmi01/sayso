@@ -4,7 +4,7 @@
 
 function bindLocal()
 {
-    bindStydyFrom();
+    bindStudyFromActions();
 }
 
 $(function(){ bindLocal();});

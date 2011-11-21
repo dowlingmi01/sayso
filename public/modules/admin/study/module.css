@@ -6,3 +6,12 @@
     color:blue !important;
     text-decoration: underline;
 }
+/**
+ * The Form
+ */
+#txtBegin, #txtEnd
+{
+    cursor: pointer;
+    width: 40%;
+    display: block;
+}

@@ -6,7 +6,47 @@
 
 function submitMain()
 {    
-    //alert('Not implemented yet!');return false;
+    //Select Product
+    if(!parseInt($('input[name=radioProduct]').val()))
+    {
+        dialogAlert('Please choose product!'); 
+        return false;
+    }
+    //Study Name*
+    if(!$('#txtStudyName').val())
+    {
+        dialogAlert('Please fill in Study Name!');        
+        return false;
+    }
+    //Sample Size
+    if(false === parseInt($('#txtSampleSize').val()) > 0)
+    {
+        dialogAlert('Please fill in Sample Size (must be > 0)!');
+        return false;
+    }
+    //Min. Threshold
+    if(false === parseInt($('#txtMinThreshold').val()) > 0)
+    {
+        dialogAlert('Please fill in Min. Threshold (must be > 0)!');
+        return false;
+    }
+    //Begin
+    if(!$('#txtBegin').val())
+    {
+        dialogAlert('Please fill in Begin Date!');
+        return false;
+    }
+    //End
+    if(!$('#txtEnd').val())
+    {
+        dialogAlert('Please fill in End Date!');
+        return false;
+    }
+    
+    // rebind form submit and submit
+    $("#mainForm").unbind().bind('submit', function(){
+        return true;
+    });    
     $("#mainForm").submit();
 }
 
@@ -52,7 +92,12 @@ function bindStudyFromActions()
             switchProduct();
         });
     });
+
     switchProduct();
+
+    $("#mainForm").unbind().bind('submit', function(){
+        return false;
+    });
     
     $('#submitBtn').button().unbind().click(function(){
         submitMain();
@@ -64,4 +109,9 @@ function bindStudyFromActions()
     
     //fix datepicker bug in absolution theme...
     $('.ui-datepicker').css({width : '0px'});
+
+    $("#mainForm").unbind().bind('submit', function(){
+        return false;
+    });
+
 }

@@ -104,11 +104,9 @@ class Admin_StudyController extends Admin_CommonController
             $this->_helper->viewRenderer->setNoRender(true);
         }
 
-        $this->view->headScript()->appendFile('/js/jquery.form.min.js');
+        $this->view->headLink()->appendStylesheet('/modules/admin/study/module.css', 'screen');
         $this->view->headScript()->appendFile('/modules/admin/study/study.js');
         $this->view->headScript()->appendFile('/modules/admin/study/add.js');
-        $this->view->headLink()->appendStylesheet('/modules/admin/study/module.css', 'screen');
-
         $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">List Studies</a>';
 
         $this->view->form = new Form_Study_AddEdit();
@@ -148,8 +146,8 @@ class Admin_StudyController extends Admin_CommonController
         $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">List Studies</a>';
         $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Add New</a>';
 
-        $study = new Study();       
-        
+        $study = new Study();
+
         $study->loadData(intval($this->_getParam('study_id')));
         if(false === $study->id > 0)
         {
@@ -158,7 +156,7 @@ class Admin_StudyController extends Admin_CommonController
         }
         $this->view->study = $study;
 
-        $this->view->form = new Form_Study_AddEdit();        
+        $this->view->form = new Form_Study_AddEdit();
         $this->view->form->setStudy($study);
         $this->view->form->setActionURL(
             $this->view->url(array('action' => 'edit', 'study_id' => $study->id))
@@ -190,7 +188,7 @@ class Admin_StudyController extends Admin_CommonController
                 'txtStudyName'      => $study->name,
                 'txtStudyId'        => $study->study_id,
                 'txtSampleSize'     => $study->size,
-                'txtMinThreshold'   => $study->size_minimum,                
+                'txtMinThreshold'   => $study->size_minimum,
                 'txtBegin'          => Data_FormatTools::mysqlDateToDisplay($study->begin_date),
                 'txtEnd'            => Data_FormatTools::mysqlDateToDisplay($study->end_date),
                 'radioIsSurvey'     => $study->click_track,

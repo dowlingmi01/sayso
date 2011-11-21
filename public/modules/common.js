@@ -92,6 +92,14 @@ function loadLoginDialog()
 }
 // Login section end
 
+function dialogAlert($html)
+{
+    $('#system-message').html($html).dialog({
+        modal   : true,
+        hide    : "explode",
+        buttons : {'Ok': function(){$(this).dialog( "close" );}}
+    });
+}
 
 function bindDefaults()
 {

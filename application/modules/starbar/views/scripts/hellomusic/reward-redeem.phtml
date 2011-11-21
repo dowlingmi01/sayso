@@ -117,21 +117,27 @@ if ($goodIsToken) {
             step2 = rewardSteps.eq(1),
             step3 = rewardSteps.eq(2);
 
-				// set up the progress bars (copied from starbar-new.js)
-				var reward_progressBarElems = $SQ('.sb_progress_bar', rewardSteps);
-				var reward_currencyPercentElems = $SQ('.sb_currency_percent', rewardSteps);
-				reward_progressBarElems.each(function(){
-						if (!$SQ(this).hasClass('sb_ui-progressbar')) {
-							$SQ(this).addClass('sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all');
-						}
-				});
-			
-				reward_currencyPercentElems.each(function() {
-					var $SQthis = $SQ(this);
-					if (!$SQthis.hasClass('sb_ui-progressbar-value')) {
-						$SQthis.addClass('sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left');
-					}
-				});
+		// set up the progress bars (copied from starbar-new.js)
+		var reward_progressBarElems = $SQ('.sb_progress_bar', rewardSteps);
+		var reward_currencyPercentElems = $SQ('.sb_currency_percent', rewardSteps);
+		reward_progressBarElems.each(function(){
+				if (!$SQ(this).hasClass('sb_ui-progressbar')) {
+					$SQ(this).addClass('sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all');
+				}
+		});
+
+		reward_currencyPercentElems.each(function() {
+			var $SQthis = $SQ(this);
+			if (!$SQthis.hasClass('sb_ui-progressbar-value')) {
+				$SQthis.addClass('sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left');
+			}
+		});
+
+		if (sayso.placeholderSupportMissing) {
+			$SQ('#sayso-starbar').trigger('frameCommunication', ['fixPlaceholders', {
+				target : step2
+			}]);
+		}
 
         $SQ('#sb_rewardItem .sb_theme_button').each(function(){
             $SQ(this).click(function(e){
@@ -157,6 +163,16 @@ if ($goodIsToken) {
 						var inputElems = new Array();
 						var fields = ['first_name', 'last_name', 'address_1', 'address_2', 'city', 'state', 'country', 'zip'];
 						var required_fields = ['first_name', 'last_name', 'address_1', 'city', 'country', 'zip'];
+
+						if (sayso.placeholderSupportMissing) {
+							$SQ("input[placeholder]", step2).each(function(index){
+								var inputElem = $SQ(this);
+								var placeholder = inputElem.attr('placeholder');
+								if (inputElem.val() === placeholder) {
+									inputElem.val('');
+								}
+							});
+						}
 
 						if (personalInfo.length) {
 							for (i = 0; i < fields.length; i++) {
@@ -195,6 +211,17 @@ if ($goodIsToken) {
 								}
 							});
 						}
+
+						if (sayso.placeholderSupportMissing) {
+							$SQ("input[placeholder]", step2).each(function(index){
+								var inputElem = $SQ(this);
+								var placeholder = inputElem.attr('placeholder');
+								if (! inputElem.val()) {
+									inputElem.val(placeholder);
+								}
+							});
+						}
+
 						break;
                 }
                 

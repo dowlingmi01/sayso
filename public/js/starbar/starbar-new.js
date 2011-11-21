@@ -532,6 +532,9 @@ $SQ(function(){
 		activateToolTips(popBox);
 		activateEditInPlaceElems(popBox);
 		activateExternalConnectElems(popBox);
+		if (sayso.placeholderSupportMissing) {
+			fixPlaceholders(popBox);
+		}
 
 		// if we're a regular nav item, turn on the highlight
 		var parentClick = popBox.parent();
@@ -777,6 +780,10 @@ $SQ(function(){
 			if (target.length == 1) {
 				hideAlerts(target, performAjaxCall, animate);
 			}
+		},
+		'fixPlaceholders': function (parameters) {
+			var target = parameters['target'];
+			fixPlaceholders(target);
 		},
 		'alertMessage': function (parameters) {
 			var alertMessage = parameters['alert_message'];
@@ -1403,6 +1410,32 @@ $SQ(function(){
 		});
 	}
 
+	function fixPlaceholders (target) {
+		$SQ("input[placeholder]", target).each(function(index){
+			var inputElem = $SQ(this);
+			var placeholder = inputElem.attr('placeholder');
+
+			if (! inputElem.val()) {
+				inputElem.css('color', '#AAA');
+				inputElem.val(placeholder);
+			}
+
+			inputElem.focus(function() {
+				if (inputElem.val() === placeholder) {
+					inputElem.val('');
+					inputElem.css('color', 'black');
+				}
+			});
+
+			inputElem.blur(function() {
+				if (! inputElem.val()) {
+					inputElem.css('color', '#AAA');
+					inputElem.val(placeholder);
+				}
+			});
+		});
+	}
+
 	function devInit(){
 
 
@@ -1465,37 +1498,46 @@ $SQ(function(){
 		}
 
 		closePopBox(true);
+		hideAlerts();
 		elemStarbarMain.fadeTo('fast', 0);
 		elemPopBoxVisControl.fadeTo('fast', 0);
 		btnToggleVis.attr('class','').addClass('sb_btnStarbar-closed');
 		btnSaySoLogo.css('backgroundPosition','3px 0px');
-		elemPlayerConsole.animate(
-			{ width: '100' },
-			500,
-			function() {
-				// Animation complete.
-				elemPlayerConsole.attr('class','').addClass('sb_starbar-visClosed');
-				elemSaySoLogoSemiStowed.parent().show();
-				elemSaySoLogoSemiStowed.fadeTo(0, 1);
-				elemPlayerConsole.fadeTo(500, 0);
-				hideAlerts();
-				setTimeout(function () {
-					elemPlayerConsole.hide();
-				}, 510);
-				setTimeout(function () {
-					btnToggleVis.attr('class','').addClass('sb_btnStarbar-stowed');
-					btnSaySoLogo.css('backgroundPosition','');
-					elemPlayerConsole.css('width','');
-					elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
-					elemPlayerConsole.show();
-					elemPlayerConsole.fadeTo(157, 1); // 157 found to work best for some bizarre reason
-					elemSaySoLogoSemiStowed.fadeTo(500, 0);
-				}, 1000);
-				setTimeout(function () {
-					elemSaySoLogoSemiStowed.parent().hide();
-				}, 1500);
-			}
-		);
+
+		if (sayso.disableJqueryEffects) {
+			elemPlayerConsole.attr('class','').addClass('sb_starbar-visClosed');
+			setTimeout(function () {
+				btnToggleVis.attr('class','').addClass('sb_btnStarbar-stowed');
+				elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
+			}, 1000);
+		} else {
+			elemPlayerConsole.animate(
+				{ width: '100' },
+				500,
+				function() {
+					// Animation complete.
+					elemPlayerConsole.attr('class','').addClass('sb_starbar-visClosed');
+					elemSaySoLogoSemiStowed.parent().show();
+					elemSaySoLogoSemiStowed.fadeTo(0, 1);
+					elemPlayerConsole.fadeTo(500, 0);
+					setTimeout(function () {
+						elemPlayerConsole.hide();
+					}, 510);
+					setTimeout(function () {
+						btnToggleVis.attr('class','').addClass('sb_btnStarbar-stowed');
+						btnSaySoLogo.css('backgroundPosition','');
+						elemPlayerConsole.css('width','');
+						elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
+						elemPlayerConsole.show();
+						elemPlayerConsole.fadeTo(157, 1); // 157 found to work best for some bizarre reason
+						elemSaySoLogoSemiStowed.fadeTo(500, 0);
+					}, 1000);
+					setTimeout(function () {
+						elemSaySoLogoSemiStowed.parent().hide();
+					}, 1500);
+				}
+			);
+		}
 	}
 
 	function openBar (needToUpdateState) {
@@ -1510,18 +1552,26 @@ $SQ(function(){
 		elemVisControls.hide();
 		elemPlayerConsole.addClass('sb_starbar-visBG');
 		hideAlerts();
-		elemPlayerConsole.animate(
-			{ width: '100%' },
-			500,
-			function() {
-				// Animation complete.
-				elemPlayerConsole.attr('class','').addClass('sb_starbar-visOpen');
-				elemStarbarMain.fadeTo('fast', 1);
-				elemVisControls.fadeTo('fast', 1);
-				btnToggleVis.attr('class','').addClass('sb_btnStarbar-open');
-				showAlerts();
-			}
-		);
+		if (sayso.disableJqueryEffects) {
+			elemPlayerConsole.attr('class','').addClass('sb_starbar-visOpen');
+			elemStarbarMain.fadeTo('fast', 1);
+			elemVisControls.fadeTo('fast', 1);
+			btnToggleVis.attr('class','').addClass('sb_btnStarbar-open');
+			showAlerts();
+		} else {
+			elemPlayerConsole.animate(
+				{ width: '100%' },
+				500,
+				function() {
+					// Animation complete.
+					elemPlayerConsole.attr('class','').addClass('sb_starbar-visOpen');
+					elemStarbarMain.fadeTo('fast', 1);
+					elemVisControls.fadeTo('fast', 1);
+					btnToggleVis.attr('class','').addClass('sb_btnStarbar-open');
+					showAlerts();
+				}
+			);
+		}
 	}
 	
 	if (/*@cc_on!@*/false) { // check for Internet Explorer

@@ -49,6 +49,47 @@
         }
     }
     
+
+	// Support for stupid browsers
+
+	function getInternetExplorerVersion() {
+		var rv = -1; // Return value assumes failure.
+		if (navigator.appName == 'Microsoft Internet Explorer') {
+			var ua = navigator.userAgent;
+			var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+			if (re.exec(ua) != null)
+				rv = parseFloat(RegExp.$1);
+		}
+		return rv;
+	}
+
+	function getGeckoVersion() {
+		var rv = -1; // Return value assumes failure.
+		fullVersion = navigator.userAgent.replace(/^Mozilla.*rv:|\).*$/g, '' ) || ( /^rv\:¦\).*$/g, '' );
+		if (fullVersion) {
+			rv = fullVersion.substring(0,3);
+		}
+		return rv;
+	}
+
+	var ieVersion = getInternetExplorerVersion();
+	var geckoVersion = getGeckoVersion();
+	if (ieVersion > -1 && ieVersion < 9) {
+		sayso.disableJqueryEffects = true;
+		sayso.jsonSupportMissing = true;
+	} else {
+		sayso.disableJqueryEffects = false;
+		sayso.jsonSupportMissing = false;
+	}
+
+	// test if HTML5 placeholder is supported or not
+	if (ieVersion > -1 && (geckoVersion > -1 && geckoVersion < 4)) {
+		sayso.placeholderSupportMissing = true;
+	} else {
+		sayso.placeholderSupportMissing = false;
+	}
+
+    
     new jsLoadTimer().start('window.$SQ', function () {
         
         $SQ.jsLoadTimer = jsLoadTimer;
@@ -105,7 +146,15 @@
                 } 
             });
         }
-        
+
+		// JSON support for stupid browsers
+
+		if (sayso.addJsonSupport) {
+			var jsJson = document.createElement('script'); 
+			jsJson.src = 'http://' + sayso.baseDomain + '/js/starbar/json2.min.js';
+			starbarContainer.appendChild(jsJson);
+		}
+
         // ADjuster 
         
         var jsSayso = document.createElement('script'); 
@@ -133,6 +182,10 @@
             params.client_user_logged_in = (sayso.client.userLoggedIn ? 'true' : '');
         }
         
+		if (sayso.disableJqueryEffects) {
+			$SQ.fx.off = true;
+		}
+
         $SQ.ajax({
             dataType: 'jsonp',
             data : params,
@@ -221,20 +274,6 @@
                     cssGeneric.rel = 'stylesheet';
                     cssGeneric.href = 'http://' + sayso.baseDomain + '/css/starbar-generic.css';
                     starbarContainer.appendChild(cssGeneric);
-                    
-                    function getInternetExplorerVersion() {
-                        var rv = -1; // Return value assumes failure.
-                        if (navigator.appName == 'Microsoft Internet Explorer') {
-                            var ua = navigator.userAgent;
-                            var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-                            if (re.exec(ua) != null)
-                                rv = parseFloat(RegExp.$1);
-                        }
-                        return rv;
-                    }
-                    
-                    var ieVersion = getInternetExplorerVersion();
-                    if (ieVersion > -1 && ieVersion < 9) $SQ.fx.off = true;
                     
                     // load JS dependencies
                     

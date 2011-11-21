@@ -83,7 +83,7 @@
 	}
 
 	// test if HTML5 placeholder is supported or not
-	if (ieVersion > -1 && (geckoVersion > -1 && geckoVersion < 4)) {
+	if (ieVersion > -1 || (geckoVersion > -1 && geckoVersion < 4)) {
 		sayso.placeholderSupportMissing = true;
 	} else {
 		sayso.placeholderSupportMissing = false;

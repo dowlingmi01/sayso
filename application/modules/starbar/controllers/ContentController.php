@@ -170,7 +170,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('bundle_of_joy', $bundleOfJoy);
 
 		// @todo point this to onboarding
-		$shareLink = "http://bb.say.so/";
+		$shareLink = "http://music.say.so/";
 		
 		$shareText = "Poll time! Just took the '".$survey->title."' poll on the Say.So Music Bar";
 		$facebookTitle = $survey->title;
@@ -235,7 +235,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('next_survey', $nextSurvey);
 
 		// @todo point this to onboarding
-		$shareLink = "http://bb.say.so/";
+		$shareLink = "http://music.say.so/";
 		// @todo share text to vary based on starbar_id?
 		$shareText = "Survey time! Just filled out '".$survey->title."' on the Say.So Music Bar";
 		$facebookTitle = $survey->title;
@@ -263,7 +263,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('next_survey', $nextSurvey);
 
 		// @todo point this to onboarding
-		$shareLink = "http://bb.say.so/";
+		$shareLink = "http://music.say.so/";
 		// @todo share text to vary based on starbar_id?
 		$shareText = "Survey time! Just filled out '".$survey->title."' on the Say.So Music Bar";
 		$facebookTitle = $survey->title;
@@ -339,7 +339,7 @@ class Starbar_ContentController extends Api_GlobalController
     	$this->_assignSurveysToView('surveys');
 
 		// @todo point this to onboarding
-		$shareLink = "http://bb.say.so/";
+		$shareLink = "http://music.say.so/";
 		// @todo share text to vary based on starbar_id?
 		$twitterShareText = "Join me in the Say.So Music Bar app. Get access to sweet gear deals and a chance to win a Takamine Guitar";
 		$facebookTitle = "Say.So Music Bar";

@@ -127,6 +127,10 @@ class Admin_StudyController extends Admin_CommonController
             catch(Exception $e)
             {
                 $this->msg->addMessage('Error: entry cannot be saved!');
+                if(getenv('APPLICATION_ENV') != 'production')
+                {
+                    $this->msg->addMessage($e->getMessage());
+                }
             }
         }
     }
@@ -177,6 +181,10 @@ class Admin_StudyController extends Admin_CommonController
             catch(Exception $e)
             {
                 $this->msg->addMessage('Error: entry cannot be saved!');
+                if(getenv('APPLICATION_ENV') != 'production')
+                {
+                    $this->msg->addMessage($e->getMessage());
+                }
             }
         }
         else

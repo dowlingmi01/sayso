@@ -104,7 +104,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
         {
             //var_dump($this->study->id);exit(0);
             $hiddenStudyId =
-                $this->createElement('hidden', 'hiddenStudyId')                    
+                $this->createElement('hidden', 'hiddenStudyId')
                     ->setValue($this->study->id)
                     ->setDecorators(array('ViewHelper', 'Errors'));
             $this->addElement($hiddenStudyId);
@@ -175,7 +175,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
                 ->addFilters($commonTxtFilters)
                 ->setDecorators($alignRight);
 
-        $radioIsSurveyValue = 1;
+        /*$radioIsSurveyValue = 1;
         $radioIsSurvey = new Zend_Form_Element_Radio('radioIsSurvey');
             $radioIsSurvey
                 ->setMultiOptions(array(1=>'Yes',2=>'No'))
@@ -185,12 +185,105 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
                 ->addFilters($commonIntFilters)
                 ->setDecorators($alignLeft)
                 ->setSeparator(' ')
-                ->setValue($radioIsSurveyValue);
+                ->setValue($radioIsSurveyValue);*/
 
-        $subforms[0]->addElements(array($txtStudyName, $txtStudyId, $txtSampleSize, $txtMinThreshold, $txtBegin, $txtEnd, $radioIsSurvey));
+        $subforms[0]->addElements(array($txtStudyName, $txtStudyId, $txtSampleSize, $txtMinThreshold, $txtBegin, $txtEnd));
         $subforms[0]->addDisplayGroup(
-            array($txtStudyName, $txtStudyId, $txtSampleSize, $txtMinThreshold, $txtBegin, $txtEnd, $radioIsSurvey),
+            array($txtStudyName, $txtStudyId, $txtSampleSize, $txtMinThreshold, $txtBegin, $txtEnd),
             'group-basic', array('Legend' => 'Basic Options')
         );
+
+        /**
+         * Social
+         */
+
+        $radioOnlineValue = 1;
+        $radioOnline = new Zend_Form_Element_Radio('radioOnline');
+            $radioOnline
+                ->setMultiOptions(array(1=>'Yes',0=>'No'))
+                ->setRequired(true)
+                ->addValidator(new Zend_Validate_Int())
+                ->addFilters($commonIntFilters)
+                //->setDecorators($alignLeft)
+                //->removeDecorator('Label')
+                ->setSeparator(' ')
+                ->setLabel('Record Full Click-Track?')
+                ->setValue($radioOnlineValue);
+
+        $subforms[3]->addElements(array($radioOnline));
+        $subforms[3]->addDisplayGroup(
+            array($radioOnline),
+            'group-online', array('Legend' => 'Online')
+        );
+
+
+        $elements = array();
+        $lookupSearchEngines = new Lookup_Collection_SearchEngine();
+        $lookupSearchEngines->lookup();
+
+        foreach ($lookupSearchEngines as $engine)
+        {
+            $elements[$engine->id] = $engine->label;
+        }
+
+        $cbSearchEngines = new Zend_Form_Element_MultiCheckbox('cbSearchEngines', array('multiOptions' => $elements));
+            $cbSearchEngines->setLabel('Record Search Behavior?')
+                ->setSeparator(' ');
+
+            if($this->study instanceof Study)
+            {
+                $collection = new Study_SearchEnginesMapCollection();
+                $collection->loadForStudy($this->study->id);
+                $values = array();
+                if($collection->count())
+                {
+                    foreach ($collection as $entry)
+                    {
+                        $values[] = $entry->search_engines_id;
+                    }
+                }
+                $cbSearchEngines->setValue($values);
+            }
+
+        $subforms[3]->addElements(array($cbSearchEngines));
+        $subforms[3]->addDisplayGroup(
+            array($cbSearchEngines),
+            'group-engines', array('Legend' => 'Search')
+        );
+
+        $elements = array();
+        $socialMetrics = new Lookup_Collection_SocialActivityType();
+        $socialMetrics->lookup();
+
+        foreach ($socialMetrics as $engine)
+        {
+            $elements[$engine->id] = $engine->label;
+        }
+
+        $cbSocialMetrics = new Zend_Form_Element_MultiCheckbox('cbSocialMetrics', array('multiOptions' => $elements));
+            $cbSocialMetrics->setLabel('Record Social Behavior?')
+                ->setSeparator(' ');
+
+            if($this->study instanceof Study)
+            {
+                $collection = new Study_SocialActivityTypeMapCollection();
+                $collection->loadForStudy($this->study->id);
+                $values = array();
+                if($collection->count())
+                {
+                    foreach ($collection as $entry)
+                    {
+                        $values[] = $entry->social_activity_type_id;
+                    }
+                }                
+                $cbSocialMetrics->setValue($values);
+            }
+            
+        $subforms[3]->addElements(array($cbSocialMetrics));
+        $subforms[3]->addDisplayGroup(
+            array($cbSocialMetrics),
+            'group-social', array('Legend' => 'Social')
+        );
+
     }
 }

@@ -5,7 +5,7 @@
 	if(typeof String.prototype.trim !== 'function') {
 		String.prototype.trim = function() {
 			return this.replace(/^\s+|\s+$/g, ''); 
-		}
+		};
 	}
 
     if (!window.sayso) window.sayso = {};
@@ -24,7 +24,7 @@
     var installParam = getUrlParam('sayso-install'),
         installCookie = getCookie('sayso-install');
     
-    if (typeof window.KOBJ === 'object') {
+    if (typeof window.KOBJ === 'object' && sayso.starbar.kynetxAppId) { // app already installed
         setCookie('sayso-installing', null, -10);
         return;
     }
@@ -70,6 +70,14 @@
             
             // delete the install cookie
             setCookie('sayso-install', null, -10);
+        } else {
+            setTimeout(function () {
+                if (confirm('Please log in first to install the Say.So app')) {
+                    $SQ('#sayso-onboard,#sso_wrapper').hide();
+                    // fire login callback 
+                    if (sayso.client.loginCallback) sayso.client.loginCallback();
+                } 
+            }, 3000);
         }
     
         var div = document.createElement('div');

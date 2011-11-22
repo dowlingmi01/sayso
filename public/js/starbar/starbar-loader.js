@@ -263,7 +263,7 @@
                     }
                 }
                 
-                setTimeout(function () {
+                new jsLoadTimer().start(function () { return bi === blackList.length; }, function () {
                     
                     // ===========================================
                     // Begin handling the visible console

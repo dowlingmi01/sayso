@@ -130,7 +130,8 @@ class Study extends Record
                 $map->save();
             }
         }
-        // Surveys
+        
+        // Surveys NOT SUPPORTED YET!
         if(!empty($values['criteria']))
         {
             

@@ -287,8 +287,16 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 
 
         /**
-         * Surver tab
+         * Survey tab
          */
+
+        $freeLabel0 = new Form_Markup_Element_AnyHtml('freeLabel0');
+            $freeLabel0->setValue('<p style="color:red;font-weight:bold;">SURVEYS ARE IN DEMO MODE, NO SAVING TO DB AVAILABLE YET</p>')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'style'=>'margin:10px 4px 20px 4px;'))
+        ));
         
         $radioSurveyCreate = new Zend_Form_Element_Radio('radioSurveyCreate');
             $radioSurveyCreate
@@ -308,11 +316,13 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
                 ));
 
         $subforms[4]->addElements(array(
+            $freeLabel0,
             $radioSurveyCreate,
             $txtPasteIframeUrl,
         ));
         $subforms[4]->addDisplayGroup(
             array(
+                $freeLabel0,
                 $radioSurveyCreate,
                 $txtPasteIframeUrl,
             ),

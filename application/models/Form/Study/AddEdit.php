@@ -297,7 +297,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
                     'ViewHelper',
                     array('HtmlTag', array('tag' => 'div', 'style'=>'margin:10px 4px 20px 4px;'))
         ));
-        
+
         $radioSurveyCreate = new Zend_Form_Element_Radio('radioSurveyCreate');
             $radioSurveyCreate
                 ->setMultiOptions(array(0=>'No Survey',1=>'Standard Survey', 2 => 'Custom Survey'))
@@ -419,6 +419,169 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
            array('HtmlTag', array('tag' => 'div', 'class'=>'clear'))
         ));
         $this->addElements(array($hiddenPlaceholder1));*/
+
+        /**
+         * Quotas
+         */
+        $collection = new Lookup_Collection_Gender();
+        $collection->lookup();
+        $multiOptions = array('' =>'-- choose --');
+        foreach($collection as $entry)
+        {
+            $multiOptions[$entry->id] = $entry->short_name;
+        }
+        $selectQuotaGender =
+            $this->createElement('select', 'selectQuotaGender')
+                ->setMultiOptions($multiOptions)
+                ->setLabel('M/F');
+
+        $collection = new Lookup_Collection_AgeRange();
+        $collection->lookup();
+        $multiOptions = array('' =>'-- choose --');
+        foreach($collection as $entry)
+        {
+            $multiOptions[$entry->id] = $entry->getTitle();
+        }
+        $selectQuotaAge =
+            $this->createElement('select', 'selectQuotaAge')
+                ->setMultiOptions($multiOptions)
+                ->setLabel('Age');
+
+        $collection = new Lookup_Collection_EthnicBackground();
+        $collection->lookup();
+        $multiOptions = array('' =>'-- choose --');
+        foreach($collection as $entry)
+        {
+            $multiOptions[$entry->id] = $entry->label;
+        }
+        $selectQuotaEthnicity =
+            $this->createElement('select', 'selectQuotaEthnicity')
+                ->setMultiOptions($multiOptions)
+                ->setLabel('Ethnicity');
+
+        $collection = new Lookup_Collection_QuotaPercentile();
+        $collection->lookup();
+        $multiOptions = array('' =>'-- choose --');
+        foreach($collection as $entry)
+        {
+            $multiOptions[$entry->id] = $entry->getTitle();
+        }
+        $selectQuotaCellPerc =
+            $this->createElement('select', 'selectQuotaCellPerc')
+                ->setMultiOptions($multiOptions)
+                ->setLabel('Cell %');
+
+        $btnAddQuota =
+            $this->createElement('button', 'btnAddQuota')
+                ->setLabel('Add This Quota')
+                ->setAttrib('class', 'add-fieldset-data styled-button');
+
+        $subforms[5]->addElements(array(
+            $selectQuotaGender,
+            $selectQuotaAge,
+            $selectQuotaEthnicity,
+            $selectQuotaCellPerc,
+            $btnAddQuota,
+        ));
+        $subforms[5]->addDisplayGroup(
+            array(
+                $selectQuotaGender,
+                $selectQuotaAge,
+                $selectQuotaEthnicity,
+                $selectQuotaCellPerc,
+                $btnAddQuota,
+            ),
+            'group-survey-quotas', array('Legend' => 'Who will qualify for the study?')
+        );
+        
+        $htmlFromStydy = '';
+        if($this->study instanceof Study)
+        {
+            $quotas = new Study_QuotaCollection();
+            $quotas->loadForStudy($this->study->getId());
+            if($quotas->count())
+            {
+                $cnt = 0; $uniqKey = substr(uniqid(md5(rand(0,1000))), 0, 8);
+                foreach ($quotas as $quota)
+                {
+                    $value = '-'; $numVal = 0;
+                    if(!is_null($quota->gender_id))
+                    {
+                        $p = new Lookup_Gender();
+                        $p->loadData($quota->gender_id);
+                        $value = $p->short_name;
+                        $numVal = $p->id;
+                    }
+                    $tds = sprintf('<td class="align-center">%s</td>', $value);
+                    $tds .= sprintf('<input type="hidden" name="quotas[%s][gender]" value="%s" class="hidden-quota-%s" />',
+                        $uniqKey, $numVal, $uniqKey);
+
+
+                    $value = '-';$numVal = 0;
+                    if(!is_null($quota->age_range_id))
+                    {
+                        $p = new Lookup_AgeRange();
+                        $p->loadData($quota->age_range_id);
+                        $value = $p->getTitle();
+                        $numVal = $p->id;
+                    }
+                    $tds .= sprintf('<td class="align-center">%s</td>', $value);
+                    $tds .= sprintf('<input type="hidden" name="quotas[%s][age]" value="%s" class="hidden-quota-%s" />',
+                        $uniqKey, $numVal, $uniqKey);
+
+                    $value = '-';$numVal = 0;
+                    if(!is_null($quota->ethnicity_id))
+                    {
+                        $p = new Lookup_EthnicBackground();
+                        $p->loadData($quota->ethnicity_id);
+                        $value = $p->label;
+                        $numVal = $p->id;
+                    }
+                    $tds .= sprintf('<td class="align-center">%s</td>', $value);
+                    $tds .= sprintf('<input type="hidden" name="quotas[%s][eth]" value="%s" class="hidden-quota-%s" />',
+                        $uniqKey, $numVal, $uniqKey);
+
+                    $value = '-';$numVal = 0;
+                    if(!is_null($quota->percentile_id))
+                    {
+                        $p = new Lookup_QuotaPercentile();
+                        $p->loadData($quota->percentile_id);
+                        $value = $p->getTitle();
+                        $numVal = $p->id;
+                    }
+                    $tds .= sprintf('<td class="align-center">%s</td>', $value);
+                    $tds .= sprintf('<input type="hidden" name="quotas[%s][cell]" value="%s" class="hidden-quota-%s" />',
+                        $uniqKey, $numVal, $uniqKey);
+
+                    $tds .= sprintf('<td style="width:20px"><a title="Delete" class="button-delete delete-quota" '
+                                            . 'href="javascript:void(null)" rel="%s"></a></td>', $uniqKey);
+
+                    $class = ++$cnt & 1 ? ' class="alt"' : '';
+                    $htmlFromStydy .= '<tr'.$class.' id="row-quota-'.$uniqKey.'">'.$tds.'</tr>';
+                }
+            }
+        }
+
+        $freeLabel3 = new Form_Markup_Element_AnyHtml('freeLabel3');
+            $freeLabel3->setValue('<table id="existing-quotas" cellspacing="0" cellpadding="0" align="center"><tbody>'
+                    .'<tr><th>M/F</th><th>Age</th><th>Ethnicity</th><th>Cell %</th><th> </th></tr>'
+                    . $htmlFromStydy
+                    .'</tbody></table>')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'class'=>'admin-table'))
+        ));
+
+        $subforms[5]->addElements(array(
+            $freeLabel3,
+        ));
+        $subforms[5]->addDisplayGroup(
+            array(
+                $freeLabel3,
+            ),
+            'group-survey-criteria-added', array('Legend' => 'Existing Quotas', 'style' => '')
+        );
 
     }
 }

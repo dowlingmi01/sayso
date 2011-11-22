@@ -177,6 +177,65 @@ function bindDeleteCriteria()
     });
 }
 
+function buildQuota()
+{
+    var gender = $('#selectQuotaGender').val() || 0;
+    var age = $('#selectQuotaAge').val() || 0;
+    var eth = $('#selectQuotaEthnicity').val() || 0;
+    var cell = $('#selectQuotaCellPerc').val() || 0;
+
+    if((!gender && !age && !eth) || !cell)
+    {
+        dialogAlert('Please choose at least one criterion and / or cell percentile!');
+        return;
+    }
+
+    var uniqKey = $.srand(8);
+    hiddens =[];
+    hiddens[hiddens.length] = {'name': 'gender', 'value': gender};
+    hiddens[hiddens.length] = {'name': 'age', 'value': age};
+    hiddens[hiddens.length] = {'name': 'eth', 'value': eth};
+    hiddens[hiddens.length] = {'name': 'cell', 'value': cell};
+
+
+    // append data
+    $.each(hiddens, function(i, v)
+    {
+        var html = '<input type="hidden" name="quotas['
+                + uniqKey + ']['+v.name+']" value="'
+                + v.value + '" class="hidden-quota-'+uniqKey+'" />';
+        $('#tabContainer-frag-6 div.subForm').append(html);
+    });
+
+    // append row
+    var cellOne     ='<td style="align-center">'+(gender ? $('#selectQuotaGender option[value='+gender+']').text() : '-')+'</td>';
+    var cellTwo     ='<td>'+(age ? $('#selectQuotaAge option[value='+age+']').text() : '-' )+'</td>';
+    var cellThree   ='<td>'+(eth  ? $('#selectQuotaEthnicity option[value='+eth+']').text() : '-' )+'</td>';
+    var cellFour    ='<td>'+(cell ? $('#selectQuotaCellPerc option[value='+cell+']').text() : '-' )+'</td>';
+    var cellDelete  ='<td style="width:20px"><a title="Delete" class="button-delete delete-quota" '
+                        +'href="javascript:void(null)" rel="'+uniqKey+'"></a></td>';
+    var row = $('<tr id="row-quota-'+uniqKey+'">'+cellOne+cellTwo+cellThree+cellFour+cellDelete+'</tr>');
+    $('#existing-quotas').append(row);
+
+    // recolor rows
+    var c = 0;
+    $('#existing-quotas tbody tr').each(function(){
+        ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+    });
+
+    // rebind delete actions
+    bindDeleteQuota();
+}
+
+function bindDeleteQuota()
+{
+    $('.delete-quota').unbind().bind('click', function(){
+        var uniqKey = $(this).attr('rel');
+        $('#row-quota-'+uniqKey).remove();
+        $('.hidden-quota-'+uniqKey).remove();
+    });
+}
+
 /**
  * (Re)bind all actions at startup
  */
@@ -225,6 +284,13 @@ function bindStudyFromActions()
     $('#btnAddCriteria').unbind('click').bind('click', function()
     {
         buildCriteria();
-    })
+    });
+    bindDeleteCriteria()
+
+    $('#btnAddQuota').unbind('click').bind('click', function()
+    {
+        buildQuota();
+    });
+    bindDeleteQuota();
 
 }

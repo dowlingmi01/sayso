@@ -68,6 +68,10 @@ class Study extends Record
         {
             $merged = array_merge($merged, array('criteria' => $_POST['criteria']));
         }
+        if(isset($_POST['quotas']) && is_array($_POST['quotas']) && !empty($_POST['quotas']))
+        {
+            $merged = array_merge($merged, array('quotas' => $_POST['quotas']));
+        }
         $values = $merged;
 
         //echo '<pre>';var_dump($_POST);exit(0);
@@ -107,6 +111,11 @@ class Study extends Record
             {
                 throw new Exception("PDO exception: " . $error);
             }
+            $error = Study_QuotaCollection::dropForStudy($study->getId());
+            if($error)
+            {
+                throw new Exception("PDO exception: " . $error);
+            }
         }
         // Search Engines
         if(isset($values['cbSearchEngines']) && !empty($values['cbSearchEngines']))
@@ -135,6 +144,35 @@ class Study extends Record
         if(!empty($values['criteria']))
         {
             
+        }
+
+        // Quotas
+        $quotaFilter = new Zend_Filter_Int();
+
+        if(!empty($values['quotas']))
+        {
+            foreach ($values['quotas'] as $quotaData)
+            {
+                $quota = new Study_Quota();
+                $quota->study_id = $study->getId();
+                if(intval($quotaData['cell']))
+                {
+                    $quota->percentile_id = $quotaFilter->filter(intval($quotaData['cell']));
+                }
+                if(intval($quotaData['gender']))
+                {
+                    $quota->gender_id = $quotaFilter->filter(intval($quotaData['gender']));
+                }
+                if(intval($quotaData['age']))
+                {
+                    $quota->age_range_id = $quotaFilter->filter(intval($quotaData['age']));
+                }
+                if(intval($quotaData['eth']))
+                {
+                    $quota->ethnicity_id = $quotaFilter->filter(intval($quotaData['eth']));
+                }
+                $quota->save();
+            }
         }
     }
 }

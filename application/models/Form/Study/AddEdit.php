@@ -513,7 +513,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
                         $numVal = $p->id;
                     }
                     $tds = sprintf('<td class="align-center">%s</td>', $value);
-                    $tds .= sprintf('<input type="hidden" name="quotas[%s][gender]" value="%s" class="hidden-quota-%s" />',
+                    $tds .= sprintf('<input type="hidden" name="quotas[%s][gender]" value="%s" class="hidden-quota-%s data-gender" />',
                         $uniqKey, $numVal, $uniqKey);
 
 
@@ -526,7 +526,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
                         $numVal = $p->id;
                     }
                     $tds .= sprintf('<td class="align-center">%s</td>', $value);
-                    $tds .= sprintf('<input type="hidden" name="quotas[%s][age]" value="%s" class="hidden-quota-%s" />',
+                    $tds .= sprintf('<input type="hidden" name="quotas[%s][age]" value="%s" class="hidden-quota-%s data-age" />',
                         $uniqKey, $numVal, $uniqKey);
 
                     $value = '-';$numVal = 0;
@@ -538,7 +538,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
                         $numVal = $p->id;
                     }
                     $tds .= sprintf('<td class="align-center">%s</td>', $value);
-                    $tds .= sprintf('<input type="hidden" name="quotas[%s][eth]" value="%s" class="hidden-quota-%s" />',
+                    $tds .= sprintf('<input type="hidden" name="quotas[%s][eth]" value="%s" class="hidden-quota-%s data-eth" />',
                         $uniqKey, $numVal, $uniqKey);
 
                     $value = '-';$numVal = 0;
@@ -549,8 +549,8 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
                         $value = $p->getTitle();
                         $numVal = $p->id;
                     }
-                    $tds .= sprintf('<td class="align-center">%s</td>', $value);
-                    $tds .= sprintf('<input type="hidden" name="quotas[%s][cell]" value="%s" class="hidden-quota-%s" />',
+                    $tds .= sprintf('<td class="align-center data-cell-percentile">%s</td>', $value);
+                    $tds .= sprintf('<input type="hidden" name="quotas[%s][cell]" value="%s" class="hidden-quota-%s data-cell" />',
                         $uniqKey, $numVal, $uniqKey);
 
                     $tds .= sprintf('<td style="width:20px"><a title="Delete" class="button-delete delete-quota" '

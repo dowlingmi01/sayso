@@ -6,6 +6,7 @@
 
 function submitMain()
 {
+
     //Select Product
     if(!parseInt($('input[name=radioProduct]').val()))
     {
@@ -40,6 +41,17 @@ function submitMain()
     if(!$('#txtEnd').val())
     {
         dialogAlert('Please fill in End Date!');
+        return false;
+    }
+
+    // Check for sum in quotas not > 100%
+    var dataCellTotal = 0;
+    $('.data-cell-percentile').each(function(){
+        dataCellTotal += parseInt($(this).text());
+    });
+    if(dataCellTotal > 100)
+    {
+        dialogAlert('Quotas percentile cannot be more than 100%!');
         return false;
     }
 
@@ -144,7 +156,7 @@ function buildCriteria()
     {
         var html = '<input type="hidden" name="criteria['
                 + criteria + ']['+v.name+']" value="'
-                + v.value + '" class="hidden-criteria-'+criteria+'" />';
+                + v.value + '" class="hidden-criteria-'+criteria+' data-'+v.name+'" />';
         $('#tabContainer-frag-5 div.subForm').append(html);
     });
 
@@ -203,7 +215,7 @@ function buildQuota()
     {
         var html = '<input type="hidden" name="quotas['
                 + uniqKey + ']['+v.name+']" value="'
-                + v.value + '" class="hidden-quota-'+uniqKey+'" />';
+                + v.value + '" class="hidden-quota-'+uniqKey+' data-'+v.name+'" />';
         $('#tabContainer-frag-6 div.subForm').append(html);
     });
 
@@ -211,7 +223,7 @@ function buildQuota()
     var cellOne     ='<td style="align-center">'+(gender ? $('#selectQuotaGender option[value='+gender+']').text() : '-')+'</td>';
     var cellTwo     ='<td>'+(age ? $('#selectQuotaAge option[value='+age+']').text() : '-' )+'</td>';
     var cellThree   ='<td>'+(eth  ? $('#selectQuotaEthnicity option[value='+eth+']').text() : '-' )+'</td>';
-    var cellFour    ='<td>'+(cell ? $('#selectQuotaCellPerc option[value='+cell+']').text() : '-' )+'</td>';
+    var cellFour    ='<td class="data-cell-percentile">'+(cell ? $('#selectQuotaCellPerc option[value='+cell+']').text() : '-' )+'</td>';
     var cellDelete  ='<td style="width:20px"><a title="Delete" class="button-delete delete-quota" '
                         +'href="javascript:void(null)" rel="'+uniqKey+'"></a></td>';
     var row = $('<tr id="row-quota-'+uniqKey+'">'+cellOne+cellTwo+cellThree+cellFour+cellDelete+'</tr>');

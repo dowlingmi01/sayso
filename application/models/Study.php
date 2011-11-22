@@ -64,8 +64,13 @@ class Study extends Record
                 }
             }
         }
+        if(isset($_POST['criteria']) && is_array($_POST['criteria']) && !empty($_POST['criteria']))
+        {
+            $merged = array_merge($merged, array('criteria' => $_POST['criteria']));
+        }
         $values = $merged;
 
+        //echo '<pre>';var_dump($_POST);exit(0);
         //echo '<pre>';var_dump($values);exit(0);
 
         //Main
@@ -86,7 +91,7 @@ class Study extends Record
         // Metrics tab
         $study->click_track     = $values['radioOnline'];
 
-        // Save before savind associations
+        // Save before saving associations
         $study->save();
 
         // Associations
@@ -103,6 +108,7 @@ class Study extends Record
                 throw new Exception("PDO exception: " . $error);
             }
         }
+        // Search Engines
         if(isset($values['cbSearchEngines']) && !empty($values['cbSearchEngines']))
         {
             foreach ($values['cbSearchEngines'] as $engineId)
@@ -113,6 +119,7 @@ class Study extends Record
                 $map->save();
             }
         }
+        // Social Metrics
         if(isset($values['cbSocialMetrics']) && !empty($values['cbSocialMetrics']))
         {
             foreach ($values['cbSocialMetrics'] as $socialId)
@@ -122,6 +129,11 @@ class Study extends Record
                 $map->social_activity_type_id   = $socialId;
                 $map->save();
             }
+        }
+        // Surveys
+        if(!empty($values['criteria']))
+        {
+            
         }
     }
 }

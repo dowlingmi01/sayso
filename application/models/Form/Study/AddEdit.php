@@ -275,15 +275,140 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
                     {
                         $values[] = $entry->social_activity_type_id;
                     }
-                }                
+                }
                 $cbSocialMetrics->setValue($values);
             }
-            
+
         $subforms[3]->addElements(array($cbSocialMetrics));
         $subforms[3]->addDisplayGroup(
             array($cbSocialMetrics),
             'group-social', array('Legend' => 'Social')
         );
+
+
+        /**
+         * Surver tab
+         */
+        
+        $radioSurveyCreate = new Zend_Form_Element_Radio('radioSurveyCreate');
+            $radioSurveyCreate
+                ->setMultiOptions(array(0=>'No Survey',1=>'Standard Survey', 2 => 'Custom Survey'))
+                ->setRequired(false)
+                ->setSeparator(' ')
+                ->setValue(0)
+                ->setLabel('Standard Ad Effectiveness Survey or Customized?');
+
+        $txtPasteIframeUrl =
+            $this->createElement('text', 'txtPasteIframeUrl')
+                ->setLabel('Paste iFrame URL Here*:')
+                ->setDecorators(array(
+                    'ViewHelper',
+                    'Label',
+                    array('HtmlTag', array('tag' => 'div', 'style'=>'display:none'))
+                ));
+
+        $subforms[4]->addElements(array(
+            $radioSurveyCreate,
+            $txtPasteIframeUrl,
+        ));
+        $subforms[4]->addDisplayGroup(
+            array(
+                $radioSurveyCreate,
+                $txtPasteIframeUrl,
+            ),
+            'group-survey-type', array('Legend' => 'Survey Type')
+        );
+
+
+        $freeLabel1 = new Form_Markup_Element_AnyHtml('freeLabel1');
+            $freeLabel1->setValue('<p>When should the survey be delivered?</p>')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'style'=>'margin:10px 4px 20px 4px;'))
+        ));
+
+        $txtDeliverSurvey =
+            $this->createElement('text', 'txtDeliverSurvey')
+                ->setLabel('Deliver survey to those that visit:');
+
+        $selectSurveySite =
+            $this->createElement('select', 'selectSurveySite')
+                ->setMultiOptions(array(
+                    '' =>'-- choose --',
+                    'Facebook.com'=>'Facebook.com',
+                    'CNN.com' => 'CNN.com',
+                    'ESPN.com'=> 'ESPN.com'
+                    )
+                )
+                ->setLabel('or')
+                ->setDecorators($alignLeft);
+
+        $selectSurveyTimeframe =
+            $this->createElement('select', 'selectSurveyTimeframe')
+                ->setMultiOptions(array(
+                        '1' =>'1 Hour',
+                        '2' =>'1 Day',
+                        '3' =>'1 Week',
+                        '4' =>'1 Month',
+                    )
+                )
+                ->setLabel('within such time of seeing targeted ad(s):')
+                ->setDecorators($alignLeft);
+
+        $btnAddCriteria =
+            $this->createElement('button', 'btnAddCriteria')
+                ->setLabel('Add Criteria')
+                ->setAttrib('class', 'add-fieldset-data styled-button');
+
+        $subforms[4]->addElements(array(
+            $freeLabel1,
+            $txtDeliverSurvey,
+            $selectSurveySite,
+            $selectSurveyTimeframe,
+            $btnAddCriteria,
+        ));
+        $subforms[4]->addDisplayGroup(
+            array(
+                $freeLabel1,
+                $txtDeliverSurvey,
+                $selectSurveySite,
+                $selectSurveyTimeframe,
+                $btnAddCriteria,
+            ),
+            'group-survey-delivery', array('Legend' => 'Create New Criteria', 'style' => 'display:none')
+        );
+
+        $htmlFromStydy = '';
+
+        $freeLabel2 = new Form_Markup_Element_AnyHtml('freeLabel2');
+            $freeLabel2->setValue('<table id="existing-criteria" cellspacing="0" cellpadding="0" align="center"><tbody>'
+                    .'<tr><th>Type</th><th>Iframe</th><th>Site</th><th>Timeframe</th><th> </th></tr>'
+                    . $htmlFromStydy
+                    .'</tbody></table>')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'class'=>'admin-table'))
+        ));
+
+        $subforms[4]->addElements(array(
+            $freeLabel2,
+        ));
+        $subforms[4]->addDisplayGroup(
+            array(
+                $freeLabel2,
+            ),
+            'group-survey-criteria-added', array('Legend' => 'Existing Criteria', 'style' => '')
+        );
+
+        /*$hiddenPlaceholder1 = new Form_Markup_Element_AnyHtml('note');
+        $hiddenPlaceholder1->setValue('<p>Some notes...</p>');
+        $hiddenPlaceholder1->addDecorators(array(
+           'ViewHelper',
+           array('HtmlTag', array('tag' => 'div', 'class'=>'clear'))
+        ));
+        $this->addElements(array($hiddenPlaceholder1));*/
 
     }
 }

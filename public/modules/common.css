@@ -1139,6 +1139,10 @@ span.disabled
 {
     font-style:italic;
 }
+.break-word
+{
+    word-wrap: break-word;
+}
 
 /**
  * Layout

@@ -8,4 +8,10 @@
 class Form_Markup_Element_AnyHtml extends Zend_Form_Element_Xhtml
 {
     public $helper = 'formNote';
+
+    public function isValid($value)
+    {
+        return true;
+    }
+
 }

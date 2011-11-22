@@ -82,7 +82,7 @@
     
         var div = document.createElement('div');
         div.id = 'sayso-container';
-        div.style.display = 'none'; div.style.width = '100%'; div.style.height = '100%'; div.style.position = 'absolute';
+        div.style.display = 'none'; div.style.width = '100%'; div.style.height = '100%'; div.style.position = 'absolute'; div.style.top = '0px';
         document.getElementsByTagName('body')[0].appendChild(div); 
         
         var sayso = window.sayso;

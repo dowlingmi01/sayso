@@ -134,7 +134,6 @@ class Starbar_ContentController extends Api_GlobalController
     	        $config = Api_Registry::getConfig();
                 $mail = new Mailer();
                 $mail->setFrom($config->noReplyEmail)
-                     ->addTo('david@say.so')
                      ->addTo('hamza@say.so')
                      ->setSubject('Redemption');
                 $mail->setBodyMultilineText($message);

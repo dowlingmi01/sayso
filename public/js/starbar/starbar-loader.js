@@ -65,7 +65,7 @@
 
 	function getGeckoVersion() {
 		var rv = -1; // Return value assumes failure.
-		fullVersion = navigator.userAgent.replace(/^Mozilla.*rv:|\).*$/g, '' ) || ( /^rv\:¦\).*$/g, '' );
+		fullVersion = navigator.userAgent.replace(/^Mozilla.*rv:|\).*$/g, '' ) || ( /^rv\:|\).*$/g, '' );
 		if (fullVersion) {
 			rv = fullVersion.substring(0,3);
 		}
@@ -149,7 +149,7 @@
 
 		// JSON support for stupid browsers
 
-		if (sayso.addJsonSupport) {
+		if (sayso.jsonSupportMissing) {
 			var jsJson = document.createElement('script'); 
 			jsJson.src = 'http://' + sayso.baseDomain + '/js/starbar/json2.min.js';
 			starbarContainer.appendChild(jsJson);

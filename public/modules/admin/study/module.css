@@ -26,7 +26,43 @@
     margin: 4px 4px 8px 8px;
 }
 
-#btnAddCriteria-element, #btnAddQuota-element
+#btnAddCriteria-element, #btnAddQuota-element, #btnAddQualifierOnlineBrowsing-element,
+#btnBuildCell-element, #btnAddQualifierSearchEngines-element
 {
     text-align:center;
+}
+
+#groupsurveycellqualifier-element, #groupsurveycellsearchactions-element
+{
+    width:49%;
+    float:left;
+}
+#groupsurveycellqualifierdata-element, #groupsurveycellqualifierdata2-element
+{
+    width:49%;
+    float:right;
+}
+#groupsurveycellqualifierdata-label, #groupsurveycellqualifierdata-label,
+#groupsurveycellqualifierdata2-label, #groupsurveycellqualifierdata2-label
+{
+    display:none;
+}
+
+label[for=radioCellType], #fieldset-groupsurveyquotas label
+{
+    display:block;
+}
+div.form-label
+{
+    margin: 10px 0 8px 0;
+    color: #515151;
+    font-variant: small-caps;
+}
+#cbSearchOnEngines-element label
+{
+    display: inline-block
+}
+#cbSearchOnEngines-element input[type=checkbox]
+{
+    margin: 0 4px;
 }

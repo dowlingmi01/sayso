@@ -4,6 +4,7 @@
  * Tabbed form
  *
  * @author alecksmart
+ * @todo refactor with using partials and better practices
  */
 
 final class Form_Study_AddEdit extends ZendX_JQuery_Form
@@ -102,7 +103,6 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 
         if($this->study instanceof Study)
         {
-            //var_dump($this->study->id);exit(0);
             $hiddenStudyId =
                 $this->createElement('hidden', 'hiddenStudyId')
                     ->setValue($this->study->id)
@@ -110,7 +110,6 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
             $this->addElement($hiddenStudyId);
 
             $this->setAction($this->action);
-            //var_dump($this->action);exit(0);
         }
 
         $radioProductValue = 1;
@@ -389,12 +388,12 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
             'group-survey-delivery', array('Legend' => 'Create New Criteria', 'style' => 'display:none')
         );
 
-        $htmlFromStydy = '';
+        $htmlFromStudy = '';
 
         $freeLabel2 = new Form_Markup_Element_AnyHtml('freeLabel2');
             $freeLabel2->setValue('<table id="existing-criteria" cellspacing="0" cellpadding="0" align="center"><tbody>'
                     .'<tr><th>Type</th><th>Iframe</th><th>Site</th><th>Timeframe</th><th> </th></tr>'
-                    . $htmlFromStydy
+                    . $htmlFromStudy
                     .'</tbody></table>')
                 ->removeDecorator('Label')
                 ->addDecorators(array(
@@ -412,14 +411,6 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
             'group-survey-criteria-added', array('Legend' => 'Existing Criteria', 'style' => '')
         );
 
-        /*$hiddenPlaceholder1 = new Form_Markup_Element_AnyHtml('note');
-        $hiddenPlaceholder1->setValue('<p>Some notes...</p>');
-        $hiddenPlaceholder1->addDecorators(array(
-           'ViewHelper',
-           array('HtmlTag', array('tag' => 'div', 'class'=>'clear'))
-        ));
-        $this->addElements(array($hiddenPlaceholder1));*/
-
         /**
          * Quotas
          */
@@ -433,7 +424,8 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
         $selectQuotaGender =
             $this->createElement('select', 'selectQuotaGender')
                 ->setMultiOptions($multiOptions)
-                ->setLabel('M/F');
+                ->setLabel('M/F')
+                ->setDecorators($alignLeft);
 
         $collection = new Lookup_Collection_AgeRange();
         $collection->lookup();
@@ -445,7 +437,8 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
         $selectQuotaAge =
             $this->createElement('select', 'selectQuotaAge')
                 ->setMultiOptions($multiOptions)
-                ->setLabel('Age');
+                ->setLabel('Age')
+                ->setDecorators($alignRight);
 
         $collection = new Lookup_Collection_EthnicBackground();
         $collection->lookup();
@@ -457,7 +450,8 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
         $selectQuotaEthnicity =
             $this->createElement('select', 'selectQuotaEthnicity')
                 ->setMultiOptions($multiOptions)
-                ->setLabel('Ethnicity');
+                ->setLabel('Ethnicity')
+                ->setDecorators($alignLeft);
 
         $collection = new Lookup_Collection_QuotaPercentile();
         $collection->lookup();
@@ -469,7 +463,8 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
         $selectQuotaCellPerc =
             $this->createElement('select', 'selectQuotaCellPerc')
                 ->setMultiOptions($multiOptions)
-                ->setLabel('Cell %');
+                ->setLabel('Cell %')
+                ->setDecorators($alignRight);
 
         $btnAddQuota =
             $this->createElement('button', 'btnAddQuota')
@@ -493,8 +488,9 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
             ),
             'group-survey-quotas', array('Legend' => 'Who will qualify for the study?')
         );
-        
-        $htmlFromStydy = '';
+
+        // build quotas table from database data
+        $htmlFromStudy = '';
         if($this->study instanceof Study)
         {
             $quotas = new Study_QuotaCollection();
@@ -557,7 +553,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
                                             . 'href="javascript:void(null)" rel="%s"></a></td>', $uniqKey);
 
                     $class = ++$cnt & 1 ? ' class="alt"' : '';
-                    $htmlFromStydy .= '<tr'.$class.' id="row-quota-'.$uniqKey.'">'.$tds.'</tr>';
+                    $htmlFromStudy .= '<tr'.$class.' id="row-quota-'.$uniqKey.'">'.$tds.'</tr>';
                 }
             }
         }
@@ -565,7 +561,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
         $freeLabel3 = new Form_Markup_Element_AnyHtml('freeLabel3');
             $freeLabel3->setValue('<table id="existing-quotas" cellspacing="0" cellpadding="0" align="center"><tbody>'
                     .'<tr><th>M/F</th><th>Age</th><th>Ethnicity</th><th>Cell %</th><th> </th></tr>'
-                    . $htmlFromStydy
+                    . $htmlFromStudy
                     .'</tbody></table>')
                 ->removeDecorator('Label')
                 ->addDecorators(array(
@@ -583,5 +579,384 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
             'group-survey-criteria-added', array('Legend' => 'Existing Quotas', 'style' => '')
         );
 
+        /**
+         * Build Cells
+         */
+
+        // common
+
+        $freeLabel4 = new Form_Markup_Element_AnyHtml('freeLabel4');
+            $freeLabel4->setValue('<p>General information about the study cell</p>')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'class'=>'form-label')),
+        ));
+
+
+        $txtCellDescription =
+            $this->createElement('text', 'txtCellDescription')
+                ->setLabel('Cell Description')
+                ->addDecorators(array(
+
+                ));
+
+        $txtCellSize =
+            $this->createElement('text', 'txtCellSize')
+                ->setLabel('Cell Size')
+                ->setDecorators($alignLeft);
+
+        $radioCellType = new Zend_Form_Element_Radio('radioCellType');
+            $radioCellType
+                ->setMultiOptions(array(1=>'Control', 2 => 'Test'))
+                ->setSeparator(' ')
+                ->setValue(1)
+                ->setLabel('Type of Cell')
+                ->setDecorators($alignRight);
+
+        $subforms[6]->addElements(array(
+            $freeLabel4,
+            $txtCellDescription,
+            $txtCellSize,
+            $radioCellType,
+        ));
+        $subforms[6]->addDisplayGroup(
+            array(
+                $txtCellDescription,
+                $txtCellSize,
+                $radioCellType,
+            ),
+            'group-survey-cell-info', array('Legend' => 'Cell Information', 'style' => '')
+        );
+
+        // Online Browsing
+
+        $freeLabel5 = new Form_Markup_Element_AnyHtml('freeLabel5');
+            $freeLabel5->setValue('<p>What behavioral qualifiers apply?</p>')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'class'=>'form-label'))
+        ));
+
+        $selectOnlineBrowsing =
+            $this->createElement('select', 'selectOnlineBrowsing')
+                ->setMultiOptions(
+                    array(
+                        '' => 'Include/Exclude',
+                        'Include' => 'Include',
+                        'Exclude' => 'Exclude',
+                    )
+                )
+                ->setLabel(' ')
+                ->addDecorators(array(
+                    $alignLeft,
+                ));
+
+        $txtWhoVisited =
+            $this->createElement('text', 'txtWhoVisited')
+                ->setLabel('those who visited')
+                ->addDecorators(array(
+                    $alignLeft,
+                ));
+
+        $collectionTimeframe = new Lookup_Collection_TimeFrame();
+        $collectionTimeframe->lookup();
+        $multiOptionsTimeFrame = array('' =>'-- choose --');
+        foreach($collectionTimeframe as $entry)
+        {
+            $multiOptionsTimeFrame[$entry->id] = $entry->label;
+        }
+        $selectTimeframe =
+            $this->createElement('select', 'selectTimeframe')
+                ->setMultiOptions($multiOptionsTimeFrame)
+                ->setLabel('in the last');
+
+        $btnAddQualifierOnlineBrowsing =
+            $this->createElement('button', 'btnAddQualifierOnlineBrowsing')
+                ->setLabel('Add Qualifier')
+                ->setAttrib('class', 'add-fieldset-data styled-button');
+
+        $subforms[6]->addElements(array(
+            $freeLabel5,
+            $selectOnlineBrowsing,
+            $txtWhoVisited,
+            $selectTimeframe,
+            $btnAddQualifierOnlineBrowsing,
+        ));
+        $subforms[6]->addDisplayGroup(
+            array(
+                $selectOnlineBrowsing,
+                $txtWhoVisited,
+                $selectTimeframe,
+                $btnAddQualifierOnlineBrowsing,
+            ),
+            'group-survey-cell-qualifier', array('Legend' => 'Online Browsing', 'style' => '')
+        );
+
+        $htmlFromStudy = '';
+
+        $freeLabel7 = new Form_Markup_Element_AnyHtml('freeLabel7');
+            $freeLabel7->setValue('<table id="cell-qf-online" cellspacing="0" cellpadding="0" align="center"><tbody>'
+                    .'<tr><th>Action</th><th>Url</th><th>Timeframe</th><th> </th></tr>'
+                    . $htmlFromStudy
+                    .'</tbody></table>')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'class'=>'admin-table'))
+        ));
+
+
+        $subforms[6]->addElements(array(
+            $freeLabel7,
+        ));
+        $subforms[6]->addDisplayGroup(
+            array(
+                $freeLabel7,
+            ),
+            'group-survey-cell-qualifier-data', array('Legend' => 'Qualifiers in Cell', 'style' => '')
+        );
+
+        // separator
+
+        $freeLabel8 = new Form_Markup_Element_AnyHtml('freeLabel8');
+            $freeLabel8->setValue(' ')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'class'=>'clear'))
+        ));
+
+        $subforms[6]->addElements(array(
+            $freeLabel8,
+        ));
+
+        // Search Actions
+
+        $selectSearchActions =
+            $this->createElement('select', 'selectSearchActions')
+                ->setMultiOptions(
+                    array(
+                        '' => 'Include/Exclude',
+                        'Include' => 'Include',
+                        'Exclude' => 'Exclude',
+                    )
+                )
+                ->setLabel(' ')
+                ->addDecorators(array(
+                    $alignLeft,
+                ));
+
+        $txtWhoSearchedFor =
+            $this->createElement('text', 'txtWhoSearchedFor')
+                ->setLabel('those who searched for')
+                ->addDecorators(array(
+                    $alignLeft,
+                ));
+
+        $selectTimeframeSearch =
+            $this->createElement('select', 'selectTimeframeSearch')
+                ->setMultiOptions($multiOptionsTimeFrame)
+                ->setLabel('in the last');
+
+        $collectionSearchEngines = new Lookup_Collection_SearchEngine();
+        $collectionSearchEngines->lookup();
+        $multiOptionsSearchEngines = array();
+        foreach($collectionSearchEngines as $entry)
+        {
+            $multiOptionsSearchEngines[$entry->id] = $entry->label;
+        }
+        $cbSearchOnEngines = new Zend_Form_Element_MultiCheckbox('cbSearchOnEngines');
+                $cbSearchOnEngines->setMultiOptions($multiOptionsSearchEngines)
+                ->setLabel('on')
+                ->setSeparator(' ')
+                ->setAttrib('class', 'cb-search-on-engines');
+
+        $btnAddQualifierSearchEngines =
+            $this->createElement('button', 'btnAddQualifierSearchEngines')
+                ->setLabel('Add Qualifier')
+                ->setAttrib('class', 'add-fieldset-data styled-button');
+
+        $subforms[6]->addElements(array(
+            $selectSearchActions,
+            $txtWhoSearchedFor,
+            $cbSearchOnEngines,
+            $selectTimeframeSearch,
+            $btnAddQualifierSearchEngines,
+        ));
+        $subforms[6]->addDisplayGroup(
+            array(
+                $selectSearchActions,
+                $txtWhoSearchedFor,
+                $cbSearchOnEngines,
+                $selectTimeframeSearch,
+                $btnAddQualifierSearchEngines,
+            ),
+            'group-survey-cell-search-actions', array('Legend' => 'Search Actions', 'style' => '')
+        );
+
+        $htmlFromStudy = '';
+
+        $freeLabel10 = new Form_Markup_Element_AnyHtml('freeLabel10');
+            $freeLabel10->setValue('<table id="cell-qf-search" cellspacing="0" cellpadding="0" align="center"><tbody>'
+                    .'<tr><th>Action</th><th>Query</th><th>Timeframe</th><th>Engines</th><th> </th></tr>'
+                    . $htmlFromStudy
+                    .'</tbody></table>')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'class'=>'admin-table'))
+        ));
+
+
+        $subforms[6]->addElements(array(
+            $freeLabel10,
+        ));
+        $subforms[6]->addDisplayGroup(
+            array(
+                $freeLabel10,
+            ),
+            'group-survey-cell-qualifier-data-2', array('Legend' => 'Qualifiers in Cell', 'style' => '')
+        );
+
+
+        // separator and button
+
+        $freeLabel9 = new Form_Markup_Element_AnyHtml('freeLabel9');
+            $freeLabel9->setValue(' ')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'class'=>'clear'))
+        ));
+
+        $subforms[6]->addElements(array(
+            $freeLabel9,
+        ));
+
+
+        $btnBuildCell =
+            $this->createElement('button', 'btnBuildCell')
+                ->setLabel('Build New Cell')
+                ->setAttrib('class', 'add-fieldset-data styled-button');
+
+
+        // existing cells
+
+        // build quotas table from database data
+        $htmlFromStudy = '';
+        if($this->study instanceof Study)
+        {
+
+            $cells = new Study_CellCollection();
+            $cells->loadForStudy($this->study->getId());
+            if(!empty($cells))
+            {
+                $cnt =0;
+                foreach ($cells as $cell)
+                {
+                    // cells
+                    $cellKey = substr(uniqid(md5(rand(0,1000))), 0, 8);
+                    $class = ++$cnt & 1 ? ' class="alt"' : '';
+
+                    $tds = '';
+                    $tds .= sprintf('<td class="align-center">%s</td>', $cell->description);
+                    $tds .= sprintf('<td class="align-center">%s</td>', $cell->size);
+                    $tds .= sprintf('<td class="align-center">%s</td>', ($cell->cell_type == 'control' ? 'Control' : 'Test'));
+                    $tds .= sprintf('<td style="width:20px"><a title="Delete" class="button-delete delete-cell" '
+                                            . 'href="javascript:void(null)" rel="%s"></a></td>', $cellKey);
+                    // row
+                    $htmlFromStudy .= '<tr'.$class.' id="cell-row-'.$cellKey.'">'.$tds.'</tr>';
+
+                    // common meta
+                    $htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][description]" class="cell-%s" value="%s" />',
+                            $cellKey, $cellKey, $cell->description);
+                    $htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][size]" class="cell-%s" value="%s" />',
+                            $cellKey, $cellKey, $cell->size);
+                    $htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][type]" class="cell-%s" value="%s" />',
+                            $cellKey, $cellKey, ($cell->cell_type == 'control' ? 1 : 2));
+
+                    // browser qualifiers
+                    $qBrowsing = new Study_CellBrowsingQualifierCollection();
+                    $qBrowsing->loadForCell($cell->getId());                    
+                    foreach($qBrowsing as $qualifier)
+                    {
+                        $rowKey = substr(uniqid(md5(rand(0,1000))), 0, 8);
+                        // common link
+                        $htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][qualifiers][]" class="cell-%s" value="%s" />',
+                            $cellKey, $cellKey, $rowKey);
+                        // data
+                        $htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][%s][qftype]" '.
+                            'value="online-browsing" class="cell-%s cell-row-%s cell-data-ob-qftype" />',
+                            $cellKey, $rowKey, $cellKey, $rowKey);
+                        $htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][%s][action]" '.
+                            'value="%s" class="cell-%s cell-row-%s cell-data-ob-action" />',
+                            $cellKey, $rowKey, (!is_null($qualifier->exclude) ? 'Exclude' : 'Include'), $cellKey, $rowKey);
+                        $htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][%s][url]" '.
+                            'value="%s" class="cell-%s cell-row-%s cell-data-ob-url" />',
+                            $cellKey, $rowKey, $qualifier->site, $cellKey, $rowKey);                        
+                        $htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][%s][timeframe]" '.
+                            'value="%s" class="cell-%s cell-row-%s cell-data-ob-timeframe" />',
+                            $cellKey, $rowKey, $qualifier->timeframe_id, $cellKey, $rowKey);
+                    }
+
+                    // search qualifiers
+                    $sBrowsing = new Study_CellSearchQualifierCollection();
+                    $sBrowsing->loadForCell($cell->getId());
+                    foreach($sBrowsing as $qualifier)
+                    {
+                        $rowKey = substr(uniqid(md5(rand(0,1000))), 0, 8);
+                        // common link
+                        $htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][qualifiers][]" class="cell-%s" value="%s" />',
+                            $cellKey, $cellKey, $rowKey);
+                        // data
+                        $htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][%s][qftype]" '.
+                            'value="search-action" class="cell-%s cell-row-%s cell-data-se-qftype" />',
+                            $cellKey, $rowKey, $cellKey, $rowKey);
+                        $htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][%s][action]" '.
+                            'value="%s" class="cell-%s cell-row-%s cell-data-se-action" />',
+                            $cellKey, $rowKey, (!is_null($qualifier->exclude) ? 'Exclude' : 'Include'), $cellKey, $rowKey);
+                        $htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][%s][qs]" '.
+                            'value="%s" class="cell-%s cell-row-%s cell-data-se-qs" />',
+                            $cellKey, $rowKey, $qualifier->term, $cellKey, $rowKey);
+                        $htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][%s][timeframe]" '.
+                            'value="%s" class="cell-%s cell-row-%s cell-data-se-timeframe" />',
+                            $cellKey, $rowKey, $qualifier->timeframe_id, $cellKey, $rowKey);
+                        // engines
+                        $engines = new Study_CellSearchQualifierMapCollection();
+                        $engines->loadForQualifier($qualifier->getId());
+                        foreach($engines as $engine)
+                        {                            
+                            $htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][%s][engines][]" '.
+                                'value="%s" class="cell-%s cell-row-%s cell-data-se-engines" />',
+                                $cellKey, $rowKey, $engine->search_engines_id, $cellKey, $rowKey);
+                        }
+                    }
+                }
+            }
+        }
+
+        $freeLabel6 = new Form_Markup_Element_AnyHtml('freeLabel6');
+            $freeLabel6->setValue('<table id="existing-cells" cellspacing="0" cellpadding="0" align="center"><tbody>'
+                    .'<tr><th>Description</th><th>Size</th><th>Type</th><th> </th></tr>'
+                    . $htmlFromStudy
+                    .'</tbody></table>')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'class'=>'admin-table'))
+        ));
+
+        $subforms[6]->addElements(array(
+            $btnBuildCell,
+            $freeLabel6,
+        ));
+        $subforms[6]->addDisplayGroup(
+            array(
+                $freeLabel6,
+            ),
+            'group-survey-cell-table', array('Legend' => 'Existing Cells', 'style' => '')
+        );
     }
 }

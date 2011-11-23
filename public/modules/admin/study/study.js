@@ -6,7 +6,6 @@
 
 function submitMain()
 {
-
     //Select Product
     if(!parseInt($('input[name=radioProduct]').val()))
     {
@@ -55,11 +54,30 @@ function submitMain()
         return false;
     }
 
+    // Check for both cell types
+    var hasTest = false, hasControl = false;
+    $('#existing-cells tbody tr td:nth-child(3)').each(function(){
+        if($(this).text() == 'Test')
+        {
+            hasTest = true;
+        }
+        if($(this).text() == 'Control')
+        {
+            hasControl = true;
+        }
+    });
+    if(!hasTest || !hasControl)
+    {
+        dialogAlert('A study must contail at least one Control cell and at least one Test cell!');
+        return false;
+    }
+
     // rebind form submit and submit
     $("#mainForm").unbind().bind('submit', function(){
         return true;
     });
     $("#mainForm").submit();
+    return true;
 }
 
 /**
@@ -113,7 +131,6 @@ function buildCriteria()
     var ifrCustomUrl    = $('#txtPasteIframeUrl').val();
     var timeframe       = $('#selectSurveyTimeframe').val();
     var cText = '', visitUrl = '';
-    var hiddens = [];
     switch(cType)
     {
         case 1:
@@ -146,6 +163,7 @@ function buildCriteria()
     }
 
     var criteria = $.srand(8);
+    var hiddens = [];
     hiddens[hiddens.length] = {'name': 'cType', 'value': cType};
     hiddens[hiddens.length] = {'name': 'iframeCustomUrl', 'value': ifrCustomUrl};
     hiddens[hiddens.length] = {'name': 'visitUrl', 'value': visitUrl};
@@ -160,7 +178,7 @@ function buildCriteria()
         $('#tabContainer-frag-5 div.subForm').append(html);
     });
 
-    // append row    
+    // append row
     var cellType    ='<td style="width:50px">'+cText+'</td>';
     var cellIframe  ='<td class="align-left break-word">'+ifrCustomUrl+'</td>';
     var cellSite    ='<td class="align-left break-word">'+visitUrl+'</td>';
@@ -175,7 +193,7 @@ function buildCriteria()
     $('#existing-criteria tbody tr').each(function(){
         ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
     });
-    
+
     // rebind delete actions
     bindDeleteCriteria();
 }
@@ -203,7 +221,7 @@ function buildQuota()
     }
 
     var uniqKey = $.srand(8);
-    hiddens =[];
+    var hiddens =[];
     hiddens[hiddens.length] = {'name': 'gender', 'value': gender};
     hiddens[hiddens.length] = {'name': 'age', 'value': age};
     hiddens[hiddens.length] = {'name': 'eth', 'value': eth};
@@ -245,6 +263,238 @@ function bindDeleteQuota()
         var uniqKey = $(this).attr('rel');
         $('#row-quota-'+uniqKey).remove();
         $('.hidden-quota-'+uniqKey).remove();
+
+        var c = 0;
+        $('#existing-quotas tbody tr').each(function(){
+            ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+        });
+
+    });
+}
+
+function buildOnlineBrowsing()
+{
+    // init
+    var action      = $('#selectOnlineBrowsing').val();
+    var url         = $('#txtWhoVisited').val();
+    var timeframe   = $('#selectTimeframe').val();
+
+    if(!action || !url || !timeframe)
+    {
+        dialogAlert('Please set/choose all criteria for online browsing!');
+        return;
+    }
+
+    // create metadata
+    var uniqKey = $.srand(8);
+    var hiddens =[];
+    hiddens[hiddens.length] = {'name': 'qftype', 'value': 'online-browsing'};
+    hiddens[hiddens.length] = {'name': 'action', 'value': action};
+    hiddens[hiddens.length] = {'name': 'url', 'value': url};
+    hiddens[hiddens.length] = {'name': 'timeframe', 'value': timeframe};
+
+    // append data
+    $.each(hiddens, function(i, v)
+    {
+        var html = '<input type="hidden" name="cell['+ window._cell + ']['
+                + uniqKey + '][' + v.name + ']" value="'
+                + v.value + '" class="cell-' + window._cell + ' cell-row-' + uniqKey + ' cell-data-ob-'+ v.name + '" />';
+        $('#tabContainer-frag-7 div.subForm').append(html);
+    });
+
+    // append row
+    var cellOne     ='<td style="align-center">'+(action ? $('#selectOnlineBrowsing option[value='+action+']').text() : '-')+'</td>';
+    var cellTwo     ='<td>'+url+'</td>';
+    var cellThree   ='<td>'+(timeframe ? $('#selectTimeframe option[value='+timeframe+']').text() : '-')+'</td>';
+    var cellDelete  ='<td style="width:20px"><a title="Delete" class="button-delete delete-ob-row" '
+                        +'href="javascript:void(null)" rel="' + uniqKey + '"></a></td>';
+    var row = $('<tr id="cell-tb-row-'+uniqKey+'">'+cellOne+cellTwo+cellThree+cellDelete+'</tr>');
+    $('#cell-qf-online').append(row);
+
+    // recolor rows
+    var c = 0;
+    $('#cell-qf-online tbody tr').each(function(){
+        ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+    });
+
+    // rebind delete actions
+    bindDeleteOnlineBrowsing();
+
+}
+
+function bindDeleteOnlineBrowsing()
+{
+    $('.delete-ob-row').unbind().bind('click', function(){
+        var uniqKey = $(this).attr('rel');
+        $('#cell-tb-row-'+uniqKey).remove();
+        $('.cell-row-'+uniqKey).remove();
+
+        var c = 0;
+        $('#cell-qf-online tbody tr').each(function(){
+            ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+        });
+    });
+}
+
+function buildSearchActions()
+{
+    // init
+    var action      = $('#selectSearchActions').val();
+    var qs          = $('#txtWhoSearchedFor').val();
+    var timeframe   = $('#selectTimeframeSearch').val();
+    var engines     = $('.cb-search-on-engines:checked');
+
+    if(!action || !qs || !timeframe || !engines.length)
+    {
+        dialogAlert('Please set/choose all criteria for search actions!');
+        return;
+    }
+
+    // create metadata
+    var uniqKey = $.srand(8);
+    var hiddens =[];
+    hiddens[hiddens.length] = {'name': 'qftype', 'value': 'search-action'};
+    hiddens[hiddens.length] = {'name': 'action', 'value': action};
+    hiddens[hiddens.length] = {'name': 'qs', 'value': qs};
+    hiddens[hiddens.length] = {'name': 'timeframe', 'value': timeframe};
+
+    // append metadata
+    $.each(hiddens, function(i, v)
+    {
+        var html = '<input type="hidden" name="cell['+ window._cell + ']['
+                + uniqKey + '][' + v.name + ']" value="'
+                + v.value + '" class="cell-' + window._cell + ' cell-row-se-' + uniqKey + ' cell-data-se-'+ v.name + '" />';
+        $('#tabContainer-frag-7 div.subForm').append(html);
+    });
+    // add engines array
+    var seNames = [];    
+    $(engines).each(function()
+    {
+        seNames[seNames.length] = $('label[for=cbSearchOnEngines-'+$(this).val()+']').text();
+        var html = '<input type="hidden" name="cell['+ window._cell + ']['
+                + uniqKey + '][engines][]" value="'
+                + $(this).val() + '" class="cell-' + window._cell + ' cell-row-se-' + uniqKey + ' cell-data-se-engines" />';
+        $('#tabContainer-frag-7 div.subForm').append(html);
+    });
+
+    // append row
+    var cellOne     ='<td style="align-center">'+(action ? $('#selectSearchActions option[value='+action+']').text() : '-')+'</td>';
+    var cellTwo     ='<td>'+qs+'</td>';
+    var cellThree   ='<td>'+(timeframe ? $('#selectTimeframeSearch option[value='+timeframe+']').text() : '-')+'</td>';
+    var cellFour    ='<td>'+(seNames.join(', '))+'</td>';
+    var cellDelete  ='<td style="width:20px"><a title="Delete" class="button-delete delete-se-row" '
+                        +'href="javascript:void(null)" rel="' + uniqKey + '"></a></td>';
+    var row = $('<tr id="cell-tb-row-se-'+uniqKey+'">'+cellOne+cellTwo+cellThree+cellFour+cellDelete+'</tr>');
+    $('#cell-qf-search').append(row);
+
+    // recolor rows
+    var c = 0;
+    $('#cell-qf-search tbody tr').each(function(){
+        ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+    });
+
+    // rebind delete actions
+    bindDeleteSearchActions();
+}
+
+function bindDeleteSearchActions()
+{
+    $('.delete-se-row').unbind().bind('click', function(){
+        var uniqKey = $(this).attr('rel');
+        $('#cell-tb-row-se-'+uniqKey).remove();
+        $('.cell-row-se-'+uniqKey).remove();
+
+        var c = 0;
+        $('#cell-qf-search tbody tr').each(function(){
+            ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+        });
+    });
+}
+
+function buildCell()
+{
+    // add common features
+    var desc = $('#txtCellDescription').val();
+    var size = parseInt($('#txtCellSize').val());
+    var type = parseInt($('input[name=radioCellType]:checked').val());
+
+    if(!desc || !size || !(type == 1 || type == 2))
+    {
+        dialogAlert('Please fill in all necessary general cell information!');
+        return;
+    }
+    if($('#cell-qf-online tbody tr').length <= 1 && $('#cell-qf-search tbody tr').length <= 1)
+    {
+        dialogAlert('At least one qualifier is required!');
+        return;
+    }
+
+    var hiddens = [];
+
+    hiddens[hiddens.length] = {'name': 'cell['+window._cell+'][description]', 'value': desc};
+    hiddens[hiddens.length] = {'name': 'cell['+window._cell+'][size]', 'value': size};
+    hiddens[hiddens.length] = {'name': 'cell['+window._cell+'][type]', 'value': type};
+
+    // add and delete visible rows in qualifiers but leave the metadata
+    // create metadata for the cell
+    var c = 0;
+    $('#cell-qf-online tbody tr').each(function(){
+        if(c++ > 0)
+        {
+            hiddens[hiddens.length] = {'name': 'cell['+window._cell+'][qualifiers][]',
+                'value': $(this).find('a.delete-ob-row').attr('rel')};
+            $(this).remove();
+        }
+    });
+    c =0;
+    $('#cell-qf-search tbody tr').each(function(){
+        if(c++ > 0)
+        {
+            hiddens[hiddens.length] = {'name': 'cell['+window._cell+'][qualifiers][]',
+                'value': $(this).find('a.delete-se-row').attr('rel')};
+            $(this).remove();
+        }
+    });
+
+    // append metadata
+    $.each(hiddens, function(i, v)
+    {
+        var html = '<input type="hidden" name="'+ v.name + '" class="cell-' + window._cell + '" value="'+v.value+'" />';
+        $('#tabContainer-frag-7 div.subForm').append(html);
+    });
+
+    // create a table row for the cell
+    var cellOne     ='<td style="align-center">'+desc+'</td>';
+    var cellTwo     ='<td>'+size+'</td>';
+    var cellThree   ='<td>'+($('#radioCellType-'+type).parent().text())+'</td>';
+
+    var cellDelete  ='<td style="width:20px"><a title="Delete" class="button-delete delete-cell" '
+                        +'href="javascript:void(null)" rel="' + window._cell + '"></a></td>';
+    var row = $('<tr id="cell-row-'+window._cell+'">'+cellOne+cellTwo+cellThree+cellDelete+'</tr>');
+    $('#existing-cells tbody').append(row);
+
+    // recolor rows
+    c = 0;
+    $('#existing-cells tbody tr').each(function(){
+        ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+    });
+
+    //re-assing and rebind all
+    window._cell = $.srand(8);
+    bindDeleteCell();
+}
+
+function bindDeleteCell()
+{
+    $('.delete-cell').unbind().bind('click', function(){
+        var uniqKey = $(this).attr('rel');
+        $('#cell-row-'+uniqKey).remove();
+        $('.cell-'+uniqKey).remove();
+
+        var c = 0;
+        $('#existing-cells tbody tr').each(function(){
+            ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+        });
     });
 }
 
@@ -305,4 +555,29 @@ function bindStudyFromActions()
     });
     bindDeleteQuota();
 
+    // cells
+
+    window._cell = $.srand(8);
+
+    $('#btnBuildCell').unbind('click').bind('click', function()
+    {
+        buildCell();
+    });
+    bindDeleteCell();
+
+    // online browsing
+
+    $('#btnAddQualifierOnlineBrowsing').unbind('click').bind('click', function()
+    {
+        buildOnlineBrowsing();
+    });
+    bindDeleteOnlineBrowsing();
+
+    // search action
+
+    $('#btnAddQualifierSearchEngines').unbind('click').bind('click', function()
+    {
+        buildSearchActions();
+    });
+    bindDeleteSearchActions();
 }

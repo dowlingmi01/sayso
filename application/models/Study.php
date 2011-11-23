@@ -72,10 +72,21 @@ class Study extends Record
         {
             $merged = array_merge($merged, array('quotas' => $_POST['quotas']));
         }
+        if(isset($_POST['cell']) && is_array($_POST['cell']) && !empty($_POST['cell']))
+        {
+            $merged = array_merge($merged, array('cell' => $_POST['cell']));
+        }
         $values = $merged;
 
         //echo '<pre>';var_dump($_POST);exit(0);
         //echo '<pre>';var_dump($values);exit(0);
+        /*echo '<pre>';
+        foreach ($values['cell'] as $cell)
+        {
+            echo "------------------------------------\n";
+            var_dump($cell);
+        }
+        exit(0);*/
 
         //Main
         if($action == 'save')
@@ -100,7 +111,7 @@ class Study extends Record
 
         // Associations
         if($action == 'update')
-        {            
+        {
             $error = Study_SearchEnginesMapCollection::dropForStudy($study->getId());
             if($error)
             {
@@ -112,6 +123,11 @@ class Study extends Record
                 throw new Exception("PDO exception: " . $error);
             }
             $error = Study_QuotaCollection::dropForStudy($study->getId());
+            if($error)
+            {
+                throw new Exception("PDO exception: " . $error);
+            }
+            $error = Study_CellCollection::dropForStudy($study->getId());
             if($error)
             {
                 throw new Exception("PDO exception: " . $error);
@@ -139,11 +155,11 @@ class Study extends Record
                 $map->save();
             }
         }
-        
+
         // Surveys NOT SUPPORTED YET!
         if(!empty($values['criteria']))
         {
-            
+
         }
 
         // Quotas
@@ -174,6 +190,91 @@ class Study extends Record
                 $quota->save();
             }
         }
+
+        // Cells
+
+        if(empty($values['cell']))
+        {
+            throw new Exception('Cell data not available!');
+        }
+
+        // Check validity
+        foreach ($values['cell'] as $cell)
+        {
+            if(!isset($cell['qualifiers']) || !is_array($cell['qualifiers']) || empty($cell['qualifiers']))
+            {
+                throw new Exception('Cell information passed is invalid!');
+            }
+        }
+
+        // Drop existing cells...
+
+
+        /**
+         * @todo add check for containing both types of cells
+         */
+
+        // Save new cells
+        foreach ($values['cell'] as $cellData)
+        {
+            /**
+             * @todo verify data with Zend_Filter*
+             */
+            $cell               = new Study_Cell();
+            $cell->study_id     = $study->getId();
+            $cell->description  = $cellData['description'];
+            $cell->size         = $cellData['size'];
+            $cell->cell_type    = $cellData['type'] == 1 ? 'control' : 'test';
+            $cell->save();
+
+            foreach ($cellData['qualifiers'] as $qualifier)
+            {
+                $qa = &$cellData[$qualifier];
+                //echo '<pre>'; var_dump($qa);echo '</pre>';
+
+                switch($qa['qftype'])
+                {
+                    case 'online-browsing':
+
+                        $browseQualifier            = new Study_CellBrowsingQualifier();
+                        $browseQualifier->cell_id   = $cell->getId();
+                        if ($qa['action'] === 'Exclude')
+                        {
+                            $browseQualifier->exclude = 1;
+                        }
+                        $browseQualifier->site          = $qa['url'];
+                        $browseQualifier->timeframe_id  = $qa['timeframe'];
+                        $browseQualifier->save();
+
+                        break;
+                    case 'search-action':
+
+                        $searchQualifier            = new Study_CellSearchQualifier();
+                        $searchQualifier->cell_id   = $cell->getId();
+                        if ($qa['action'] === 'Exclude')
+                        {
+                            $searchQualifier->exclude = 1;
+                        }
+                        $searchQualifier->term          = $qa['qs'];
+                        $searchQualifier->timeframe_id  = $qa['timeframe'];
+                        $searchQualifier->save();
+
+                        foreach ($qa['engines'] as $engine)
+                        {
+                            //echo '<pre>'; var_dump($engine);echo '</pre>';
+                            $map = new Study_CellSearchQualifierMap();
+                            $map->cell_qualifier_search_id  = $searchQualifier->getId();
+                            $map->search_engines_id         = $engine;
+                            $map->save();
+                        }
+                        
+                        break;
+                }
+            }
+            //exit(0);
+        }
+
+
     }
 }
 

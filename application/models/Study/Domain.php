@@ -14,5 +14,11 @@ class Study_Domain extends Record
         );
         return array_intersect_key($this->getData(), array_flip($fields));
     }
+
+    public function getByNameAndUserId($name, $userId)
+    {        
+        $this->loadDataByUniqueFields(array('domain' => $name, 'user_id' => $userId));
+    }
+
 }
 

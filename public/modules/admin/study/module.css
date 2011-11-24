@@ -27,23 +27,30 @@
 }
 
 #btnAddCriteria-element, #btnAddQuota-element, #btnAddQualifierOnlineBrowsing-element,
-#btnBuildCell-element, #btnAddQualifierSearchEngines-element
+#btnBuildCell-element, #btnAddQualifierSearchEngines-element,
+#btnAddDomain-element, #btnAddTag-element, #btnAddDomainCreative-element, #btnAddTagCreative-element
 {
     text-align:center;
 }
 
-#groupsurveycellqualifier-element, #groupsurveycellsearchactions-element
+#groupsurveycellqualifier-element, #groupsurveycellsearchactions-element,
+#groupajcampdomains-element, #groupajcreativedomains-element
 {
     width:49%;
     float:left;
 }
-#groupsurveycellqualifierdata-element, #groupsurveycellqualifierdata2-element
+#groupsurveycellqualifierdata-element, #groupsurveycellqualifierdata2-element,
+#groupajcamptags-element, #groupajcreativetags-element
 {
     width:49%;
     float:right;
 }
+
 #groupsurveycellqualifierdata-label, #groupsurveycellqualifierdata-label,
-#groupsurveycellqualifierdata2-label, #groupsurveycellqualifierdata2-label
+#groupsurveycellqualifierdata2-label, #groupsurveycellqualifierdata2-label,
+#groupajcampdomains-label, #btnAddDomain-label,
+#groupajcamptags-label,
+#groupajcreativedomains-label, #groupajcreativetags-label
 {
     display:none;
 }

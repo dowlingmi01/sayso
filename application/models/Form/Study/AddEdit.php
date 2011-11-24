@@ -835,7 +835,6 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
             $freeLabel9,
         ));
 
-
         $btnBuildCell =
             $this->createElement('button', 'btnBuildCell')
                 ->setLabel('Build New Cell')
@@ -861,7 +860,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
                     $class = ++$cnt & 1 ? ' class="alt"' : '';
 
                     $tds = '';
-                    $tds .= sprintf('<td class="align-center">%s</td>', $cell->description);
+                    $tds .= sprintf('<td class="align-left">%s</td>', $cell->description);
                     $tds .= sprintf('<td class="align-center">%s</td>', $cell->size);
                     $tds .= sprintf('<td class="align-center">%s</td>', ($cell->cell_type == 'control' ? 'Control' : 'Test'));
                     $tds .= sprintf('<td style="width:20px"><a title="Delete" class="button-delete delete-cell" '
@@ -879,7 +878,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 
                     // browser qualifiers
                     $qBrowsing = new Study_CellBrowsingQualifierCollection();
-                    $qBrowsing->loadForCell($cell->getId());                    
+                    $qBrowsing->loadForCell($cell->getId());
                     foreach($qBrowsing as $qualifier)
                     {
                         $rowKey = substr(uniqid(md5(rand(0,1000))), 0, 8);
@@ -895,7 +894,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
                             $cellKey, $rowKey, (!is_null($qualifier->exclude) ? 'Exclude' : 'Include'), $cellKey, $rowKey);
                         $htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][%s][url]" '.
                             'value="%s" class="cell-%s cell-row-%s cell-data-ob-url" />',
-                            $cellKey, $rowKey, $qualifier->site, $cellKey, $rowKey);                        
+                            $cellKey, $rowKey, $qualifier->site, $cellKey, $rowKey);
                         $htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][%s][timeframe]" '.
                             'value="%s" class="cell-%s cell-row-%s cell-data-ob-timeframe" />',
                             $cellKey, $rowKey, $qualifier->timeframe_id, $cellKey, $rowKey);
@@ -927,7 +926,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
                         $engines = new Study_CellSearchQualifierMapCollection();
                         $engines->loadForQualifier($qualifier->getId());
                         foreach($engines as $engine)
-                        {                            
+                        {
                             $htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][%s][engines][]" '.
                                 'value="%s" class="cell-%s cell-row-%s cell-data-se-engines" />',
                                 $cellKey, $rowKey, $engine->search_engines_id, $cellKey, $rowKey);
@@ -958,5 +957,280 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
             ),
             'group-survey-cell-table', array('Legend' => 'Existing Cells', 'style' => '')
         );
+
+        /**
+         * Adjuster Campapign
+         */
+
+
+        $txtLabelIt =
+            $this->createElement('text', 'txtLabelIt')
+                ->setLabel('Label It');
+
+        $taJQUERYSelector =
+            $this->createElement('textarea', 'taJQUERYSelector')
+                ->setLabel('Provide jQuery Selector for the Ad')
+                ->setAttrib('style', 'width:97%;height:50px;');
+
+        $txtTargetURLSegment =
+            $this->createElement('text', 'txtTargetURLSegment')
+                ->setLabel('Target URL Segment');
+
+
+        $subforms[1]->addElements(array(
+            $txtLabelIt,
+            $taJQUERYSelector,
+            $txtTargetURLSegment,
+        ));
+
+        $subforms[1]->addDisplayGroup(
+            array(
+                $txtLabelIt,
+                $taJQUERYSelector,
+                $txtTargetURLSegment,
+            ),
+            'group-aj-camp-basics', array('Legend' => 'Tag-Domain Pairs')
+        );
+
+
+        $txtDomains =
+            $this->createElement('text', 'txtDomains')
+                ->setLabel('Domains:');
+
+        $btnAddDomain =
+            $this->createElement('button', 'btnAddDomain')
+                ->setLabel('Add Domain')
+                ->setAttrib('class', 'add-fieldset-data styled-button');
+
+        $htmlFromStudy = '';
+        $freeLabel11 = new Form_Markup_Element_AnyHtml('freeLabel11');
+            $freeLabel11->setValue('<table id="ac-camp-domains" cellspacing="0" cellpadding="0" align="center"><tbody>'
+                    .'<tr><th>Domain</th><th> </th></tr>'
+                    . $htmlFromStudy
+                    .'</tbody></table>')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'class'=>'admin-table'))
+        ));
+
+        $subforms[1]->addElements(array(
+            $txtDomains,
+            $btnAddDomain,
+            $freeLabel11,
+        ));
+
+        $subforms[1]->addDisplayGroup(
+            array(
+                $txtDomains,
+                $btnAddDomain,
+                $freeLabel11,
+            ),
+            'group-aj-camp-domains', array('Legend' => 'Add Domains')
+        );
+
+        $htmlFromStudy = '';
+
+        if($this->study instanceof Study)
+        {
+            $tags = new Study_TagCollection();
+            $tags->loadForStudy($this->study->getId());
+            if($tags->count() > 0)
+            {
+                $cnt =0;
+                foreach ($tags as $tag)
+                {
+                    $cellKey = substr(uniqid(md5(rand(0,1000))), 0, 8);
+                    $class = ++$cnt & 1 ? ' class="alt"' : '';
+
+                    // cells
+
+                    $tds        = '';
+                    $names      = array();
+                    $domains    = new Study_DomainCollection();
+                    $domains->loadForTag($tag->getId());
+
+                    $meta = '';
+                    if(!empty($domains))
+                    {
+                        foreach($domains as $domain)
+                        {
+                            $names[] = $domain->domain;
+                            $meta .= sprintf('<input type="hidden" name="tag[%s][domain][]" value="%s" class="tag-%s tag-data-ac-domain" />',
+                                $cellKey, $domain->getId(), $cellKey);
+                        }                        
+                    }
+                    $tds .= sprintf('<td class="align-left">%s</td>', $tag->name);
+                    $tds .= sprintf('<td class="align-left">%s</td>', implode(', ', $names));
+                    $tds .= sprintf('<td style="width:20px"><a title="Delete" class="button-delete delete-ac-tag" '
+                        . 'href="javascript:void(null)" rel="%s"></a></td>', $cellKey);
+
+                    $meta .= sprintf('<input type="hidden" name="tag[%s][label]" value="%s" class="tag-%s tag-data-ac-label" />',
+                            $cellKey, $tag->name, $cellKey);
+                    $meta .= sprintf('<input type="hidden" name="tag[%s][jq]" value="%s" class="tag-%s tag-data-ac-jq" />',
+                            $cellKey, $tag->tag, $cellKey);
+                    $meta .= sprintf('<input type="hidden" name="tag[%s][target]" value="%s" class="tag-%s tag-data-ac-target" />',
+                            $cellKey, $tag->target_url, $cellKey);
+                   
+                    // row
+                    $htmlFromStudy .= '<tr'.$class.' id="ac-tag-row-'.$cellKey.'">'.$tds.'</tr>';
+                    $htmlFromStudy .= $meta;
+                }
+            }
+        }
+
+
+
+
+        $freeLabel12 = new Form_Markup_Element_AnyHtml('freeLabel12');
+            $freeLabel12->setValue('<table id="ac-camp-tags" cellspacing="0" cellpadding="0" align="center"><tbody>'
+                    .'<tr><th>Label</th><th>Domains</th><th> </th></tr>'
+                    . $htmlFromStudy
+                    .'</tbody></table>')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'class'=>'admin-table'))
+        ));
+
+        $subforms[1]->addElements(array(
+            $freeLabel12,
+        ));
+
+        $subforms[1]->addDisplayGroup(
+            array(
+                $freeLabel12,
+            ),
+            'group-aj-camp-tags', array('Legend' => 'Tags')
+        );
+
+        $freeLabel13 = new Form_Markup_Element_AnyHtml('freeLabel13');
+            $freeLabel13->setValue(' ')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'class'=>'clear'))
+        ));
+        $btnAddTag =
+            $this->createElement('button', 'btnAddTag')
+                ->setLabel('Add Tag')
+                ->setAttrib('class', 'add-fieldset-data styled-button');
+
+        $subforms[1]->addElements(array(
+            $freeLabel13,
+            $btnAddTag,
+        ));
+
+        /**
+         * Adjuster Creative
+         */
+
+
+        $txtLabelItCreative =
+            $this->createElement('text', 'txtLabelItCreative')
+                ->setLabel('Label It');
+
+        $taJQUERYSelectorCreative =
+            $this->createElement('textarea', 'taJQUERYSelectorCreative')
+                ->setLabel('Provide jQuery Selector for the Ad')
+                ->setAttrib('style', 'width:97%;height:50px;');
+
+        $txtTargetURLSegmentCreative =
+            $this->createElement('text', 'txtTargetURLSegmentCreative')
+                ->setLabel('Target URL Segment');
+
+
+        $subforms[2]->addElements(array(
+            $txtLabelItCreative,
+            $taJQUERYSelectorCreative,
+            $txtTargetURLSegmentCreative,
+        ));
+
+        $subforms[2]->addDisplayGroup(
+            array(
+                $txtLabelItCreative,
+                $taJQUERYSelectorCreative,
+                $txtTargetURLSegmentCreative,
+            ),
+            'group-aj-creat-basics', array('Legend' => 'Domains')
+        );
+
+
+        $txtDomainsCreative =
+            $this->createElement('text', 'txtDomainsCreative')
+                ->setLabel('Domains:');
+
+        $btnAddDomainCreative =
+            $this->createElement('button', 'btnAddDomainCreative')
+                ->setLabel('Add Domain')
+                ->setAttrib('class', 'add-fieldset-data styled-button');
+
+        $htmlFromStudy = '';
+        $freeLabel14 = new Form_Markup_Element_AnyHtml('freeLabel14');
+            $freeLabel14->setValue('<table id="ac-creative-domains" cellspacing="0" cellpadding="0" align="center"><tbody>'
+                    .'<tr><th>Domain</th><th> </th></tr>'
+                    . $htmlFromStudy
+                    .'</tbody></table>')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'class'=>'admin-table'))
+        ));
+
+        $subforms[2]->addElements(array(
+            $txtDomainsCreative,
+            $btnAddDomainCreative,
+            $freeLabel14,
+        ));
+
+        $subforms[2]->addDisplayGroup(
+            array(
+                $txtDomainsCreative,
+                $btnAddDomainCreative,
+                $freeLabel14,
+            ),
+            'group-aj-creative-domains', array('Legend' => 'Add Domains')
+        );
+
+        $htmlFromStudy = '';
+        $freeLabel15 = new Form_Markup_Element_AnyHtml('freeLabel15');
+            $freeLabel15->setValue('<table id="ac-creative-tags" cellspacing="0" cellpadding="0" align="center"><tbody>'
+                    .'<tr><th>Label</th><th>Domains</th><th> </th></tr>'
+                    . $htmlFromStudy
+                    .'</tbody></table>')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'class'=>'admin-table'))
+        ));
+
+        $subforms[2]->addElements(array(
+            $freeLabel15,
+        ));
+
+        $subforms[2]->addDisplayGroup(
+            array(
+                $freeLabel15,
+            ),
+            'group-aj-creative-tags', array('Legend' => 'Avails')
+        );
+
+        $freeLabel16 = new Form_Markup_Element_AnyHtml('freeLabel16');
+            $freeLabel16->setValue(' ')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'class'=>'clear'))
+        ));
+        $btnAddTagCreative =
+            $this->createElement('button', 'btnAddTagCreative')
+                ->setLabel('Add Avails')
+                ->setAttrib('class', 'add-fieldset-data styled-button');
+
+        $subforms[2]->addElements(array(
+            $freeLabel16,
+            $btnAddTagCreative,
+        ));
+
     }
 }

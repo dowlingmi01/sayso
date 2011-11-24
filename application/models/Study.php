@@ -76,12 +76,16 @@ class Study extends Record
         {
             $merged = array_merge($merged, array('cell' => $_POST['cell']));
         }
+        if(isset($_POST['tag']) && is_array($_POST['tag']) && !empty($_POST['tag']))
+        {
+            $merged = array_merge($merged, array('tag' => $_POST['tag']));
+        }
         $values = $merged;
 
         //echo '<pre>';var_dump($_POST);exit(0);
         //echo '<pre>';var_dump($values);exit(0);
         /*echo '<pre>';
-        foreach ($values['cell'] as $cell)
+        foreach ($values['tag'] as $cell)
         {
             echo "------------------------------------\n";
             var_dump($cell);
@@ -128,6 +132,11 @@ class Study extends Record
                 throw new Exception("PDO exception: " . $error);
             }
             $error = Study_CellCollection::dropForStudy($study->getId());
+            if($error)
+            {
+                throw new Exception("PDO exception: " . $error);
+            }
+            $error = Study_TagCollection::dropForStudy($study->getId());
             if($error)
             {
                 throw new Exception("PDO exception: " . $error);
@@ -267,14 +276,65 @@ class Study extends Record
                             $map->search_engines_id         = $engine;
                             $map->save();
                         }
-                        
+
                         break;
                 }
             }
-            //exit(0);
         }
 
+        // Adjuster Campaign
+        if($study->study_type == 2 && empty($values['tag']))
+        {
+            throw new Exception('At leat one tag must be created forAdjuster Campaign!');
+        }
 
+        foreach ($values['tag'] as $tagData)
+        {
+            $tag = new Study_Tag();
+            $tag->name          = $tagData['label'];
+            $tag->tag           = $tagData['jq'];
+            $tag->target_url    = $tagData['target'];
+            $tag->study_id      = $study->getId();
+            /**
+             * @todo why is this here?
+             */
+            $tag->user_id       = $user->id;
+            $tag->save();
+
+            foreach($tagData['domain'] as $domainData)
+            {
+                $domain = new Study_Domain();
+
+                // when numeric, check if exists and re-associate
+                if(is_numeric($domainData))
+                {
+                    $domain->loadData($domainData);
+                    if(false === $domain->getId() > 0)
+                    {
+                        $domain->domain     = $domainData;
+                        $domain->user_id    = $user->id;
+                        $domain->save();
+                    }
+                }
+                // when string, check it, create new if not existing
+                elseif(is_string($domainData))
+                {
+                    $domain->getByNameAndUserId($domainData, $user->id);
+                    if(false === $domain->getId() > 0)
+                    {
+                        $domain->domain     = $domainData;
+                        $domain->user_id    = $user->id;
+                        $domain->save();
+                    }
+                }
+
+                // associate
+                $dm                 = new Study_TagDomainMap();
+                $dm->tag_id         = $tag->getId();
+                $dm->domain_id      = $domain->getId();
+                $dm->save();
+            }
+        }
     }
 }
 

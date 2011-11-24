@@ -7,7 +7,8 @@
 function submitMain()
 {
     //Select Product
-    if(!parseInt($('input[name=radioProduct]').val()))
+    var product = parseInt($('input[name=radioProduct]:checked').val());
+    if(!product)
     {
         dialogAlert('Please choose product!');
         return false;
@@ -52,6 +53,20 @@ function submitMain()
     {
         dialogAlert('Quotas percentile cannot be more than 100%!');
         return false;
+    }
+        
+    switch(product)
+    {
+        case 2:// Adj Campaign needs at least one Tag
+            if($('#ac-camp-tags tr').length <= 1)
+            {
+                dialogAlert('At leat one tag must be created at Adjuster Campaign tab!');
+                return false;
+            }
+            break;
+        case 3:// Adj Creative needs at least one Creative
+
+            break;
     }
 
     // Check for both cell types
@@ -179,10 +194,10 @@ function buildCriteria()
     });
 
     // append row
-    var cellType    ='<td style="width:50px">'+cText+'</td>';
-    var cellIframe  ='<td class="align-left break-word">'+ifrCustomUrl+'</td>';
-    var cellSite    ='<td class="align-left break-word">'+visitUrl+'</td>';
-    var cellTime    ='<td>'+( $('#selectSurveyTimeframe option[value='+timeframe+']').text() )+'</td>';
+    var cellType    ='<td style="width:50px" class="align-left">'+cText+'</td>';
+    var cellIframe  ='<td class="align-center break-word">'+ifrCustomUrl+'</td>';
+    var cellSite    ='<td class="align-center break-word">'+visitUrl+'</td>';
+    var cellTime    ='<td class="align-center">'+( $('#selectSurveyTimeframe option[value='+timeframe+']').text() )+'</td>';
     var cellDelete  ='<td style="width:20px"><a title="Delete" class="button-delete delete-criteria" '
                         +'href="javascript:void(null)" rel="'+criteria+'"></a></td>';
     var row = $('<tr id="row-criteria-'+criteria+'">'+cellType+cellIframe+cellSite+cellTime+cellDelete+'</tr>');
@@ -238,7 +253,7 @@ function buildQuota()
     });
 
     // append row
-    var cellOne     ='<td style="align-center">'+(gender ? $('#selectQuotaGender option[value='+gender+']').text() : '-')+'</td>';
+    var cellOne     ='<td style="align-left">'+(gender ? $('#selectQuotaGender option[value='+gender+']').text() : '-')+'</td>';
     var cellTwo     ='<td>'+(age ? $('#selectQuotaAge option[value='+age+']').text() : '-' )+'</td>';
     var cellThree   ='<td>'+(eth  ? $('#selectQuotaEthnicity option[value='+eth+']').text() : '-' )+'</td>';
     var cellFour    ='<td class="data-cell-percentile">'+(cell ? $('#selectQuotaCellPerc option[value='+cell+']').text() : '-' )+'</td>';
@@ -367,7 +382,7 @@ function buildSearchActions()
         $('#tabContainer-frag-7 div.subForm').append(html);
     });
     // add engines array
-    var seNames = [];    
+    var seNames = [];
     $(engines).each(function()
     {
         seNames[seNames.length] = $('label[for=cbSearchOnEngines-'+$(this).val()+']').text();
@@ -498,6 +513,123 @@ function bindDeleteCell()
     });
 }
 
+function buildDomain()
+{
+    var name = $.trim($('#txtDomains').val());
+    if(!name)
+    {
+        dialogAlert('Please supply domain name!');
+        return;
+    }
+
+    // create a table row for the cell
+    var cellOne     ='<td style="align-center" class="ac-domain-name">'+name+'</td>';
+    var cellDelete  ='<td style="width:20px"><a title="Delete" class="button-delete delete-ac-domain" '
+                        +'href="javascript:void(null)" rel="' + ($('#ac-camp-domains tr').length) + '"></a></td>';
+    var row = $('<tr id="ac-domains-row-'+($('#ac-camp-domains tr').length)+'">'+cellOne+cellDelete+'</tr>');
+    $('#ac-camp-domains tbody').append(row);
+
+    // recolor rows
+    c = 0;
+    $('#ac-camp-domains tbody tr').each(function(){
+        ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+    });
+    bindDeleteDomain();
+}
+
+function bindDeleteDomain()
+{
+    $('.delete-ac-domain').unbind().bind('click', function(){
+        var uniqKey = $(this).attr('rel');
+        $('#ac-domains-row-'+uniqKey).remove();
+        var c = 0;
+        $('#ac-camp-domains tbody tr').each(function(){
+            ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+        });
+    });
+}
+
+function buildTag()
+{
+    var rows = $('#ac-camp-domains tbody tr:not(:first)');
+    if(!rows.length)
+    {
+        dialogAlert('Please supply domains!');
+        return;
+    }
+
+    var label   = $('#txtLabelIt').val();
+    var jq      = $('#taJQUERYSelector').val();
+    var target  = $('#txtTargetURLSegment').val();
+
+    if(!label || !jq || !target)
+    {
+        alert('Please supply all values for Tag-Domain Pairs!');
+        return;
+    }
+
+    var hiddens = [], uniqKey = $.srand(8);
+
+    hiddens[hiddens.length] = {'name': 'tag['+uniqKey+'][label]', 'value': label};
+    hiddens[hiddens.length] = {'name': 'tag['+uniqKey+'][jq]', 'value': jq};
+    hiddens[hiddens.length] = {'name': 'tag['+uniqKey+'][target]', 'value': target};
+
+    // append metadata
+    $.each(hiddens, function(i, v)
+    {
+        var html = '<input type="hidden" name="'+v.name+'" value="'+v.value
+            +'" class="tag-' + uniqKey + ' tag-data-ac-'+ v.name + '" />';
+        $('#tabContainer-frag-2 div.subForm').append(html);
+    });
+
+    // add domains array
+    var dNames = [];
+    $(rows).each(function()
+    {
+        var domainName = $(this).find('td:first').text();
+        dNames[dNames.length] = domainName;
+        var html = '<input type="hidden" name="tag['+uniqKey+'][domain][]" value="'
+                + domainName + '" class="tag-' + uniqKey + ' tag-data-ac-domain" />';
+        $('#tabContainer-frag-2 div.subForm').append(html);
+        $(this).remove();
+    });
+
+    // create a table row for the cell
+    var cellOne     ='<td style="align-left" class="ac-label">'+label+'</td>';
+    var cellTwo     ='<td style="align-left" class="ac-domains-list">'+(dNames.join(', '))+'</td>';
+    var cellDelete  ='<td style="width:20px"><a title="Delete" class="button-delete delete-ac-tag" '
+                        +'href="javascript:void(null)" rel="' + uniqKey + '"></a></td>';
+    var row = $('<tr id="ac-tag-row-'+uniqKey+'">'+cellOne+cellTwo+cellDelete+'</tr>');
+    $('#ac-camp-tags tbody').append(row);
+
+    // recolor rows
+    var c = 0;
+    $('#ac-camp-tags tbody tr').each(function(){
+        ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+    });
+
+    // clear all for next tag
+    $('#txtLabelIt').val('');
+    $('#taJQUERYSelector').val('');
+    $('#txtTargetURLSegment').val('');
+
+    bindDeleteTag();
+}
+
+function bindDeleteTag()
+{
+    $('.delete-ac-tag').unbind().bind('click', function(){
+        var uniqKey = $(this).attr('rel');
+        $('#ac-tag-row-'+uniqKey).remove();
+        $('.tag-'+uniqKey).remove();
+
+        var c = 0;
+        $('#ac-camp-tags tbody tr').each(function(){
+            ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+        });
+    });
+}
+
 /**
  * (Re)bind all actions at startup
  */
@@ -520,14 +652,6 @@ function bindStudyFromActions()
     });
 
     switchProduct();
-
-    $("#mainForm").unbind().bind('submit', function(){
-        return false;
-    });
-
-    $('#submitBtn').button().unbind().click(function(){
-        submitMain();
-    });
 
     // show tabs and add effects
     $("#tabContainer").tabs();
@@ -580,4 +704,28 @@ function bindStudyFromActions()
         buildSearchActions();
     });
     bindDeleteSearchActions();
+
+    // aj campaign
+
+    $('#btnAddDomain').unbind('click').bind('click', function()
+    {
+        buildDomain();
+    });
+    bindDeleteDomain();
+
+    $('#btnAddTag').unbind('click').bind('click', function()
+    {
+        buildTag();
+    });
+    bindDeleteTag();
+
+    // main form submit
+    $("#mainForm").unbind().bind('submit', function(){
+        return false;
+    });
+
+    $('#submitBtn').unbind().click(function(){
+        submitMain();
+    }).button();
+
 }

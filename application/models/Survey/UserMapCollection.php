@@ -48,6 +48,7 @@ class Survey_UserMapCollection extends RecordCollection
 						ON s.id = sum.survey_id
 						AND s.type = ?
 						AND s.starbar_id = ?
+						AND s.premium IS NOT TRUE
 					SET status = 'archived'
 					WHERE sum.user_id = ?
 						AND status = 'new'

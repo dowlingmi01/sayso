@@ -8,7 +8,7 @@ class Notification_MessageCollection extends RecordCollection
 	/* 1. Notifications queued for the user (e.g. for user actions) -- those are notification_message_user_map records 
 	*     with an unset 'closed' timestamp ('0000-00-00 00:00:00')
 	*/
-    public function loadQueuedMessagesForStarbarAndUser ($starbarId, $userId) {
+	public function loadQueuedMessagesForStarbarAndUser ($starbarId, $userId) {
 		$sql = "
 			SELECT nm.*
 			FROM notification_message nm
@@ -22,10 +22,10 @@ class Notification_MessageCollection extends RecordCollection
 			ORDER BY nm.ordinal ASC, nmum.id DESC
 		";
 		
-        $data = Db_Pdo::fetchAll($sql, $starbarId, $userId);
+		$data = Db_Pdo::fetchAll($sql, $starbarId, $userId);
 
 		if ($data) {
-        	$this->build($data, new Notification_Message());
+			$this->build($data, new Notification_Message());
 		}
 	}
 	
@@ -98,8 +98,8 @@ class Notification_MessageCollection extends RecordCollection
 				if ($nextMessage->id) {
 					$this->addItem($nextMessage);
 					// add user_map
-    				$messageUserMap = new Notification_MessageUserMap();
-    				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($nextMessage->id, $userId, false);
+					$messageUserMap = new Notification_MessageUserMap();
+					$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($nextMessage->id, $userId, false);
 				}
 			}
 		}
@@ -144,13 +144,16 @@ class Notification_MessageCollection extends RecordCollection
 	}
 	
 	// === Now put them all together (see above), and filter and add user maps when necessary
-	public function loadAllNotificationMessagesForStarbarAndUser($starbarId, $starbarStowed, $userId) {
+	public function loadAllNotificationMessagesForStarbarAndUser($starbarId, $starbarStowed, $userId, $request) {
 		// (see function comments for descritions of those message collections)
 
 		$messageGroup = new Notification_MessageGroup();
 		$messageUserMap = new Notification_MessageUserMap();
 
 		// 1. queuedMessages -- those are already filtered, and already have user maps made, start here
+		// Before grabbing the queued messages, process the new ones (i.e. mark them as notified, and include
+		// the game/gamer objects in the request
+		$this->processNewQueuedMessagesForStarbarAndUser($starbarId, $userId, $request);
 		$this->loadQueuedMessagesForStarbarAndUser($starbarId, $userId);
 		$queuedMessages = new Notification_MessageCollection();
 		$queuedMessages->loadQueuedMessagesForStarbarAndUser($starbarId, $userId);
@@ -170,8 +173,8 @@ class Notification_MessageCollection extends RecordCollection
 			if ($message->validateForUser($userId)) { // user should see this message, so append to collection
 				$this->addItem($message);
 				// add user_map
-    			$messageUserMap = new Notification_MessageUserMap();
-    			$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId, false);
+				$messageUserMap = new Notification_MessageUserMap();
+				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId, false);
 			} else {
 				$messageGroup->loadData($message->notification_message_group_id);
 				$nextMessage = new Notification_Message();
@@ -181,8 +184,8 @@ class Notification_MessageCollection extends RecordCollection
 				if ($nextMessage->id) {
 					$this->addItem($nextMessage);
 					// add user_map
-    				$messageUserMap = new Notification_MessageUserMap();
-    				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($nextMessage->id, $userId, false);
+					$messageUserMap = new Notification_MessageUserMap();
+					$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($nextMessage->id, $userId, false);
 				}
 			}
 		}
@@ -194,4 +197,59 @@ class Notification_MessageCollection extends RecordCollection
 			$this->addItem($message);
 		}
 	}
+
+	/* Notifications queued for the user (e.g. for user actions) sent to the user for the *first* time
+	*/
+	public function processNewQueuedMessagesForStarbarAndUser ($starbarId, $userId, $request) {
+		$messageUserMap = new Notification_MessageUserMap();
+		$game = Game_Starbar::getInstance();
+
+		$sql = "
+			SELECT nm.*
+			FROM notification_message nm
+				INNER JOIN notification_message_group nmg
+					ON nmg.id = nm.notification_message_group_id
+						AND nmg.starbar_id = ?
+				INNER JOIN notification_message_user_map nmum 
+					ON nmum.notification_message_id = nm.id
+						AND nmum.user_id = ?
+						AND notified = '0000-00-00 00:00:00'
+			ORDER BY nm.ordinal ASC, nmum.id DESC
+		";
+		
+		$data = Db_Pdo::fetchAll($sql, $starbarId, $userId);
+
+		$loadGame = false;
+
+		if ($data) {
+			$newMessages = new Notification_MessageCollection();
+			$newMessages->build($data, new Notification_Message());
+
+			foreach ($newMessages as $message) {
+				switch ($message->short_name) {
+					case 'Update Game':
+						$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId, true);
+						$loadGame = true;
+						break;
+					case 'Checking in':
+						$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId);
+						$game->checkin();
+						break;
+					case 'FB Account Connected':
+					case 'TW Account Connected':
+						$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId);
+						$loadGame = true;
+						break;
+					default:
+						$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId);
+				}
+			}
+		}
+
+		if ($loadGame) {
+			$game->loadGamerProfile();
+			$request->setParam(Api_AbstractController::GAME, $game);
+		}
+	}
+	
 }

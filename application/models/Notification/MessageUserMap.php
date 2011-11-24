@@ -23,14 +23,13 @@ class Notification_MessageUserMap extends Record
     		// If it's an update, set the closed time (if we are closing) and update the notified time (if it's not set) 
     		if ($this->id && ($userJustClosed || !strtotime($this->notified))) {
     			if (!strtotime($this->notified)) $this->notified = date('Y-m-d H:i:s');
-    			$this->closed = date('Y-m-d H:i:s');
+    			if ($userJustClosed) $this->closed = date('Y-m-d H:i:s');
     			$this->save();
 
     		// Otherwise insert!
 			} elseif (! $this->id){
 				$this->notification_message_id = $messageId;
 				$this->user_id = $userId;
-				$this->notified = date('Y-m-d H:i:s');
 				if ($userJustClosed) $this->closed = date('Y-m-d H:i:s');
     			$this->save();
 			}

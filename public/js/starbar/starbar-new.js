@@ -191,7 +191,6 @@ $SQ(function(){
         starbar.state.callback = null;
         app.raise_event('update_state', { 
             'visibility' : starbar.state.visibility,
-            'notifications' : starbar.state.notifications,
             'profile' : starbar.state.profile,
             'game' : starbar.state.game
         });
@@ -607,32 +606,32 @@ $SQ(function(){
 			success : function (response, status, jqXHR) {
 				var randomString = $SQ.randomString(10);
 				var newAlerts = false;
-				
+
 				elemAlerts = $SQ('.sb_starbar-alert', elemPlayerConsole);
 				if (elemAlerts.length > 0) {
 					elemAlerts.each(function(){
 						$SQ(this).addClass('sb_starbar-alert_'+randomString);
 					});
 				}
-				
+
+				if (response.game) {
+					updateGame(response.game, true, true);
+				}
+
 				if (response.data.items.length > 0) {
 					$SQ.each(response.data.items, function (index, message) {
 						// Check if an alert with that message already exists, if so, do nothing
 						var currentAlert = $SQ('#starbar-alert-'+message.id);
 						if (currentAlert.length == 0) { // New Alert
 							if (message.notification_area) {
+
 								// Update profile if we've just received a notification regarding FB or TW getting connected.
 								if (message.short_name == 'FB Account Connected' || message.short_name == 'TW Account Connected') {
 									updateProfile(true, true);
-									sayso.log('AJAX GAME UPDATE: \'External Account Connected\' notification received');
-									updateGame('ajax', true, true);
-								} else if (message.short_name == 'Checking in') { // This notification is set up to only be sent when the starbar is open (i.e. not stowed)
-									gameCheckin();
 								} else if (message.short_name == 'Level Up') {
 									var userCurrentLevel = sayso.starbar.game._gamer._levels.items[0];
 									message.message = userCurrentLevel.description;
 								}
-								
 
 								var elemAlertContainer = $SQ('#starbar-alert-container-'+message.notification_area);
 
@@ -653,14 +652,15 @@ $SQ(function(){
 								newAlerts = true;
 							} else {
 								// Messages with no notification area should not be shown, they are sent silently to initiate certain actions
-								if (message.short_name == 'Update Game') {
+
+								/*if (message.short_name == 'Update Game') {
 									sayso.log('AJAX GAME UPDATE: \'Update Game\' notification received');
 									updateGame('ajax', true, true);
 								}
 								$SQ.ajaxWithAuth({ // Mark closed, those notifications are meant to be received only once.
 									url : 'http://'+sayso.baseDomain+'/api/notification/close?renderer=jsonp&message_id='+message.id,
 									success : function (response, status) {}
-								});
+								});*/
 							}
 						} else { // Alert already exist, remove the class with the random string that we just added
 							currentAlert.removeClass('sb_starbar-alert_'+randomString);
@@ -674,7 +674,7 @@ $SQ(function(){
 							}
 						});
 					}
-				
+
 					if (newAlerts) {
 						initElements();
 						showAlerts();

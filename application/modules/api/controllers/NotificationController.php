@@ -11,7 +11,7 @@ class Api_NotificationController extends Api_GlobalController
         else $this->starbar_stowed = false;
         
 	    $messages = new Notification_MessageCollection();
-	    $messages->loadAllNotificationMessagesForStarbarAndUser($this->starbar_id, $this->starbar_stowed, $this->user_id);
+	    $messages->loadAllNotificationMessagesForStarbarAndUser($this->starbar_id, $this->starbar_stowed, $this->user_id, $this->_request);
 
 		return $this->_resultType($messages);
 	}

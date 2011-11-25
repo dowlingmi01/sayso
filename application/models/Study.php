@@ -80,12 +80,16 @@ class Study extends Record
         {
             $merged = array_merge($merged, array('tag' => $_POST['tag']));
         }
+        if(isset($_POST['creative']) && is_array($_POST['creative']) && !empty($_POST['creative']))
+        {
+            $merged = array_merge($merged, array('creative' => $_POST['creative']));
+        }
         $values = $merged;
 
         //echo '<pre>';var_dump($_POST);exit(0);
         //echo '<pre>';var_dump($values);exit(0);
         /*echo '<pre>';
-        foreach ($values['tag'] as $cell)
+        foreach ($values['creative'] as $cell)
         {
             echo "------------------------------------\n";
             var_dump($cell);
@@ -137,6 +141,11 @@ class Study extends Record
                 throw new Exception("PDO exception: " . $error);
             }
             $error = Study_TagCollection::dropForStudy($study->getId());
+            if($error)
+            {
+                throw new Exception("PDO exception: " . $error);
+            }            
+            $error = Study_CreativeCollection::dropForStudy($study->getId());            
             if($error)
             {
                 throw new Exception("PDO exception: " . $error);
@@ -335,6 +344,98 @@ class Study extends Record
                 $dm->save();
             }
         }
+
+        // Adjuster Creative
+        if($study->study_type == 3 && empty($values['creative']))
+        {
+            throw new Exception('At leat one creative must be created forAdjuster Creative!');
+        }
+
+        
+        
+        // Check validity
+        foreach ($values['creative'] as $creative)
+        {
+            if(!isset($creative['avails']) || !is_array($creative['avails']) || empty($creative['avails']))
+            {
+                throw new Exception('Avails information passed is invalid!');
+            }
+        }
+        
+        // Save new cells
+        foreach ($values['creative'] as $creativeData)
+        {
+            /**
+             * @todo verify data with Zend_Filter*
+             */
+
+            // create ..khm .. a creative
+            $creative               = new Study_Creative();
+            $creative->user_id      = $user->getId();
+            $creative->mime_type_id = $creativeData['mimetype'];
+            $creative->name         = $creativeData['name'];
+            $creative->url          = $creativeData['url'];
+            $creative->target_url   = $creativeData['segment'];
+
+            $creative->save();
+
+            // associate to study
+            $creativeAssoc              = new Study_CreativeMap();
+            $creativeAssoc->study_id    = $study->getId();
+            $creativeAssoc->creative_id = $creative->getId();
+
+            $creativeAssoc->save();
+
+            // add avails
+            foreach ($creativeData['avails'] as $availIndex)
+            {
+
+                $availData = &$creativeData[$availIndex];
+
+                $avail                          = new Study_Avail();
+                $avail->creative_id             = $creative->getId();
+                $avail->label                   = $availData['label'];
+                $avail->selector                = $availData['jq'];
+                $avail->save();
+
+                foreach ($availData['domain'] as $domainData)
+                {
+                    $domain = new Study_Domain();
+
+                    // when numeric, check if exists and re-associate
+                    if(is_numeric($domainData))
+                    {
+                        $domain->loadData($domainData);
+                        if(false === $domain->getId() > 0)
+                        {
+                            $domain->domain     = $domainData;
+                            $domain->user_id    = $user->id;
+                            $domain->save();
+                        }
+                    }
+                    // when string, check it, create new if not existing
+                    elseif(is_string($domainData))
+                    {
+                        $domain->getByNameAndUserId($domainData, $user->id);
+                        if(false === $domain->getId() > 0)
+                        {
+                            $domain->domain     = $domainData;
+                            $domain->user_id    = $user->id;
+                            $domain->save();
+                        }
+                    }
+
+                    // associate
+                    $dm                 = new Study_AvailDomainMap();
+                    $dm->study_avail_id = $avail->getId();
+                    $dm->domain_id      = $domain->getId();
+                    $dm->save();
+                }
+
+            }
+        }
+
+
     }
 }
 

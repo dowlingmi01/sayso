@@ -28,7 +28,8 @@
 
 #btnAddCriteria-element, #btnAddQuota-element, #btnAddQualifierOnlineBrowsing-element,
 #btnBuildCell-element, #btnAddQualifierSearchEngines-element,
-#btnAddDomain-element, #btnAddTag-element, #btnAddDomainCreative-element, #btnAddTagCreative-element
+#btnAddDomain-element, #btnAddTag-element, #btnAddDomainCreative-element, #btnAddTagCreative-element,
+#btnAddDomainAvail-element, #btnAddAvail-element, #btnAddCreative-element
 {
     text-align:center;
 }

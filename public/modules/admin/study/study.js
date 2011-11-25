@@ -2,6 +2,8 @@
  * Functions for creating and editing a study
  *
  * @author alecksmart
+ * @todo refactor messy html generation to use functions tor table rows and hiddens
+ *
  */
 
 function submitMain()
@@ -65,7 +67,11 @@ function submitMain()
             }
             break;
         case 3:// Adj Creative needs at least one Creative
-
+            if($('#ac-creatives tr').length <= 1)
+            {
+                dialogAlert('At least one creative must be created at the Adjuster Creative tab!');
+                return false;
+            }
             break;
     }
 
@@ -522,11 +528,13 @@ function buildDomain()
         return;
     }
 
+    var uniqKey = $.srand(8);
+
     // create a table row for the cell
     var cellOne     ='<td style="align-center" class="ac-domain-name">'+name+'</td>';
     var cellDelete  ='<td style="width:20px"><a title="Delete" class="button-delete delete-ac-domain" '
-                        +'href="javascript:void(null)" rel="' + ($('#ac-camp-domains tr').length) + '"></a></td>';
-    var row = $('<tr id="ac-domains-row-'+($('#ac-camp-domains tr').length)+'">'+cellOne+cellDelete+'</tr>');
+                        +'href="javascript:void(null)" rel="' + uniqKey + '"></a></td>';
+    var row = $('<tr id="ac-domains-row-'+uniqKey+'">'+cellOne+cellDelete+'</tr>');
     $('#ac-camp-domains tbody').append(row);
 
     // recolor rows
@@ -564,7 +572,7 @@ function buildTag()
 
     if(!label || !jq || !target)
     {
-        alert('Please supply all values for Tag-Domain Pairs!');
+        dialogAlert('Please supply all values for Tag-Domain Pairs!');
         return;
     }
 
@@ -630,6 +638,211 @@ function bindDeleteTag()
     });
 }
 
+function buildDomainAvail()
+{
+    var name = $.trim($('#txtDomainsAvail').val());
+    if(!name)
+    {
+        dialogAlert('Please supply domain name!');
+        return;
+    }
+
+    var uniqKey = $.srand(8);
+
+    // create a table row for the cell
+    var cellOne     ='<td style="align-center" class="avail-domain-name">'+name+'</td>';
+    var cellDelete  ='<td style="width:20px"><a title="Delete" class="button-delete delete-avail-domain" '
+                        +'href="javascript:void(null)" rel="' + uniqKey + '"></a></td>';
+    var row = $('<tr id="avail-domains-row-'+uniqKey+'">'+cellOne+cellDelete+'</tr>');
+    $('#ac-avail-domains tbody').append(row);
+
+    // recolor rows
+    c = 0;
+    $('#ac-avail-domains tbody tr').each(function(){
+        ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+    });
+    bindDeleteDomainAvail();
+}
+
+function bindDeleteDomainAvail()
+{
+    $('.delete-avail-domain').unbind().bind('click', function(){
+        var uniqKey = $(this).attr('rel');
+        $('#avail-domains-row-'+uniqKey).remove();
+        var c = 0;
+        $('#ac-avail-domains tbody tr').each(function(){
+            ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+        });
+    });
+}
+
+function buildAvail()
+{
+    var rows = $('#ac-avail-domains tbody tr:not(:first)');
+    if(!rows.length)
+    {
+        dialogAlert('Please supply domains!');
+        return;
+    }
+
+    var label   = $('#txtLabelItAvail').val();
+    var jq      = $('#taJQUERYSelectorAvail').val();
+
+    if(!label || !jq)
+    {
+        dialogAlert('Please supply all values for Build Avails!');
+        return;
+    }
+
+    var hiddens = [], uniqKey = $.srand(8);
+
+    hiddens[hiddens.length] = {'name': 'creative['+window._creative+']['+uniqKey+'][label]', 'value': label};
+    hiddens[hiddens.length] = {'name': 'creative['+window._creative+']['+uniqKey+'][jq]', 'value': jq};
+
+    // append metadata
+    $.each(hiddens, function(i, v)
+    {
+        var html = '<input type="hidden" name="'+v.name+'" value="'+v.value
+            +'" class="creative-' + window._creative + ' avail-' + uniqKey + ' avail-data-'+ v.name + '" />';
+        $('#tabContainer-frag-3 div.subForm').append(html);
+    });
+
+    // add domains array
+    var dNames = [];
+    $(rows).each(function()
+    {
+        var domainName = $(this).find('td:first').text();
+        dNames[dNames.length] = domainName;
+        var html = '<input type="hidden" name="creative['+window._creative+']['+uniqKey+'][domain][]" value="'
+                + domainName + '" class="creative-' + window._creative + ' avail-' + uniqKey + ' avail-data-domain" />';
+        $('#tabContainer-frag-3 div.subForm').append(html);
+        $(this).remove();
+    });
+
+    // create a table row for the cell
+    var cellOne     ='<td style="align-left" class="avail-label">'+label+'</td>';
+    var cellTwo     ='<td style="align-left" class="avail-domains-list">'+(dNames.join(', '))+'</td>';
+    var cellDelete  ='<td style="width:20px"><a title="Delete" class="button-delete delete-avail" '
+                        +'href="javascript:void(null)" rel="' + uniqKey + '"></a></td>';
+    var row = $('<tr id="avail-row-'+uniqKey+'">'+cellOne+cellTwo+cellDelete+'</tr>');
+    $('#ac-avails tbody').append(row);
+
+    // recolor rows
+    var c = 0;
+    $('#ac-avails tbody tr').each(function(){
+        ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+    });
+
+    // clear all for next tag
+    $('#txtLabelItAvail').val('');
+    $('#taJQUERYSelectorAvail').val('');
+    $('#txtTargetURLSegmentAvail').val('');
+
+    bindDeleteAvail();
+}
+
+function bindDeleteAvail()
+{
+    $('.delete-avail').unbind().bind('click', function(){
+        var uniqKey = $(this).attr('rel');
+        $('#avail-row-'+uniqKey).remove();
+        $('.avail-'+uniqKey).remove();
+
+        var c = 0;
+        $('#ac-avails tbody tr').each(function(){
+            ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+        });
+    });
+}
+
+function buildCreative()
+{
+
+    // add common features
+    var name        = $('#txtAvailName').val();
+    var url         = $('#txtAvailCreativeUrl').val();
+    var segment     = $('#txtAvailTargetURLSegment').val();
+    var mimetype    = $('#selectCreativeMimeType').val();
+
+
+    if(!name || !url || !segment || !mimetype)
+    {
+        dialogAlert('Please fill in all necessary creative information!');
+        return;
+    }
+    if($('#ac-avails tbody tr').length <= 1)
+    {
+        dialogAlert('Please create more avails!');
+        return;
+    }
+
+    var hiddens = [];
+
+    hiddens[hiddens.length] = {'name': 'creative['+window._creative+'][name]', 'value': name};
+    hiddens[hiddens.length] = {'name': 'creative['+window._creative+'][url]', 'value': url};
+    hiddens[hiddens.length] = {'name': 'creative['+window._creative+'][segment]', 'value': segment};
+    hiddens[hiddens.length] = {'name': 'creative['+window._creative+'][mimetype]', 'value': mimetype};
+
+    // add and delete visible rows in avails but leave the metadata
+    // create metadata for the creative
+    var c = 0;
+    $('#ac-avails tbody tr').each(function(){
+        if(c++ > 0)
+        {
+            hiddens[hiddens.length] = {'name': 'creative['+window._creative+'][avails][]',
+                'value': $(this).find('a.delete-avail').attr('rel')};
+            $(this).remove();
+        }
+    });
+
+    // append metadata
+    $.each(hiddens, function(i, v)
+    {
+        var html = '<input type="hidden" name="'+ v.name + '" class="creative-' + window._creative + '" value="'+v.value+'" />';
+        $('#tabContainer-frag-3 div.subForm').append(html);
+    });
+
+    // create a table row for the cell
+    var cellOne     ='<td style="align-left">'+name+'</td>';
+    var cellTwo     ='<td style="align-left">'+($('#selectCreativeMimeType option:selected').text())+'</td>';
+    var cellThree   ='<td style="align-left">'+url+'</td>';
+    
+
+    var cellDelete  ='<td style="width:20px"><a title="Delete" class="button-delete delete-creative" '
+                        +'href="javascript:void(null)" rel="' + window._cell + '"></a></td>';
+    var row = $('<tr id="creative-row-'+window._cell+'">'+cellOne+cellTwo+cellThree+cellDelete+'</tr>');
+    $('#ac-creatives tbody').append(row);
+
+    // recolor rows
+    c = 0;
+    $('#ac-creatives tbody tr').each(function(){
+        ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+    });
+    
+    // ready for new id
+    window._creative = $.srand(8);
+
+    $('#txtAvailName').val('');
+    $('#txtAvailCreativeUrl').val('');
+    $('#txtAvailTargetURLSegment').val('');
+
+    bindDeleteCreative();
+}
+
+function bindDeleteCreative()
+{
+    $('.delete-creative').unbind().bind('click', function(){
+        var uniqKey = $(this).attr('rel');
+        $('#creative-row-'+uniqKey).remove();
+        $('.creative-'+uniqKey).remove();
+
+        var c = 0;
+        $('#ac-creatives tbody tr').each(function(){
+            ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
+        });
+    });
+}
+
 /**
  * (Re)bind all actions at startup
  */
@@ -681,7 +894,8 @@ function bindStudyFromActions()
 
     // cells
 
-    window._cell = $.srand(8);
+    window._cell        = $.srand(8);
+    window._creative    = $.srand(8);
 
     $('#btnBuildCell').unbind('click').bind('click', function()
     {
@@ -718,6 +932,24 @@ function bindStudyFromActions()
         buildTag();
     });
     bindDeleteTag();
+
+    $('#btnAddDomainAvail').unbind('click').bind('click', function()
+    {
+        buildDomainAvail();
+    });
+    bindDeleteDomainAvail();
+
+    $('#btnAddAvail').unbind('click').bind('click', function()
+    {
+        buildAvail();
+    });
+    bindDeleteAvail();
+
+    $('#btnAddCreative').unbind('click').bind('click', function()
+    {
+        buildCreative();
+    });
+    bindDeleteCreative();
 
     // main form submit
     $("#mainForm").unbind().bind('submit', function(){

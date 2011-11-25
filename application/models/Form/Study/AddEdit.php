@@ -4,7 +4,7 @@
  * Tabbed form
  *
  * @author alecksmart
- * @todo refactor with using partials and better practices
+ * @todo refactor html generation with using functions
  */
 
 final class Form_Study_AddEdit extends ZendX_JQuery_Form
@@ -341,6 +341,10 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
             $this->createElement('text', 'txtDeliverSurvey')
                 ->setLabel('Deliver survey to those that visit:');
 
+        /**
+         * @todo refactor to pick up from a database table
+         */
+
         $selectSurveySite =
             $this->createElement('select', 'selectSurveySite')
                 ->setMultiOptions(array(
@@ -352,6 +356,10 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
                 )
                 ->setLabel('or')
                 ->setDecorators($alignLeft);
+
+        /**
+         * @todo refactor to pick up from a database table
+         */
 
         $selectSurveyTimeframe =
             $this->createElement('select', 'selectSurveyTimeframe')
@@ -1058,7 +1066,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
                             $names[] = $domain->domain;
                             $meta .= sprintf('<input type="hidden" name="tag[%s][domain][]" value="%s" class="tag-%s tag-data-ac-domain" />',
                                 $cellKey, $domain->getId(), $cellKey);
-                        }                        
+                        }
                     }
                     $tds .= sprintf('<td class="align-left">%s</td>', $tag->name);
                     $tds .= sprintf('<td class="align-left">%s</td>', implode(', ', $names));
@@ -1071,16 +1079,13 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
                             $cellKey, $tag->tag, $cellKey);
                     $meta .= sprintf('<input type="hidden" name="tag[%s][target]" value="%s" class="tag-%s tag-data-ac-target" />',
                             $cellKey, $tag->target_url, $cellKey);
-                   
+
                     // row
                     $htmlFromStudy .= '<tr'.$class.' id="ac-tag-row-'.$cellKey.'">'.$tds.'</tr>';
                     $htmlFromStudy .= $meta;
                 }
             }
         }
-
-
-
 
         $freeLabel12 = new Form_Markup_Element_AnyHtml('freeLabel12');
             $freeLabel12->setValue('<table id="ac-camp-tags" cellspacing="0" cellpadding="0" align="center"><tbody>'
@@ -1126,48 +1131,41 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
          */
 
 
-        $txtLabelItCreative =
-            $this->createElement('text', 'txtLabelItCreative')
+        $txtLabelItAvail =
+            $this->createElement('text', 'txtLabelItAvail')
                 ->setLabel('Label It');
 
-        $taJQUERYSelectorCreative =
-            $this->createElement('textarea', 'taJQUERYSelectorCreative')
-                ->setLabel('Provide jQuery Selector for the Ad')
+        $taJQUERYSelectorAvail =
+            $this->createElement('textarea', 'taJQUERYSelectorAvail')
+                ->setLabel('Provide jQuery Selector for the Avail')
                 ->setAttrib('style', 'width:97%;height:50px;');
 
-        $txtTargetURLSegmentCreative =
-            $this->createElement('text', 'txtTargetURLSegmentCreative')
-                ->setLabel('Target URL Segment');
-
-
         $subforms[2]->addElements(array(
-            $txtLabelItCreative,
-            $taJQUERYSelectorCreative,
-            $txtTargetURLSegmentCreative,
+            $txtLabelItAvail,
+            $taJQUERYSelectorAvail,
         ));
 
         $subforms[2]->addDisplayGroup(
             array(
-                $txtLabelItCreative,
-                $taJQUERYSelectorCreative,
-                $txtTargetURLSegmentCreative,
+                $txtLabelItAvail,
+                $taJQUERYSelectorAvail,
             ),
-            'group-aj-creat-basics', array('Legend' => 'Domains')
+            'group-aj-creat-basics', array('Legend' => 'Build Avails')
         );
 
 
-        $txtDomainsCreative =
-            $this->createElement('text', 'txtDomainsCreative')
+        $txtDomainsAvail =
+            $this->createElement('text', 'txtDomainsAvail')
                 ->setLabel('Domains:');
 
-        $btnAddDomainCreative =
-            $this->createElement('button', 'btnAddDomainCreative')
+        $btnAddDomainAvail =
+            $this->createElement('button', 'btnAddDomainAvail')
                 ->setLabel('Add Domain')
                 ->setAttrib('class', 'add-fieldset-data styled-button');
 
         $htmlFromStudy = '';
         $freeLabel14 = new Form_Markup_Element_AnyHtml('freeLabel14');
-            $freeLabel14->setValue('<table id="ac-creative-domains" cellspacing="0" cellpadding="0" align="center"><tbody>'
+            $freeLabel14->setValue('<table id="ac-avail-domains" cellspacing="0" cellpadding="0" align="center"><tbody>'
                     .'<tr><th>Domain</th><th> </th></tr>'
                     . $htmlFromStudy
                     .'</tbody></table>')
@@ -1178,15 +1176,15 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
         ));
 
         $subforms[2]->addElements(array(
-            $txtDomainsCreative,
-            $btnAddDomainCreative,
+            $txtDomainsAvail,
+            $btnAddDomainAvail,
             $freeLabel14,
         ));
 
         $subforms[2]->addDisplayGroup(
             array(
-                $txtDomainsCreative,
-                $btnAddDomainCreative,
+                $txtDomainsAvail,
+                $btnAddDomainAvail,
                 $freeLabel14,
             ),
             'group-aj-creative-domains', array('Legend' => 'Add Domains')
@@ -1194,7 +1192,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 
         $htmlFromStudy = '';
         $freeLabel15 = new Form_Markup_Element_AnyHtml('freeLabel15');
-            $freeLabel15->setValue('<table id="ac-creative-tags" cellspacing="0" cellpadding="0" align="center"><tbody>'
+            $freeLabel15->setValue('<table id="ac-avails" cellspacing="0" cellpadding="0" align="center"><tbody>'
                     .'<tr><th>Label</th><th>Domains</th><th> </th></tr>'
                     . $htmlFromStudy
                     .'</tbody></table>')
@@ -1222,15 +1220,155 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
                     'ViewHelper',
                     array('HtmlTag', array('tag' => 'div', 'class'=>'clear'))
         ));
-        $btnAddTagCreative =
-            $this->createElement('button', 'btnAddTagCreative')
-                ->setLabel('Add Avails')
+        $btnAddAvail =
+            $this->createElement('button', 'btnAddAvail')
+                ->setLabel('Add Avail')
                 ->setAttrib('class', 'add-fieldset-data styled-button');
 
         $subforms[2]->addElements(array(
             $freeLabel16,
-            $btnAddTagCreative,
+            $btnAddAvail,
         ));
 
+
+        // creatives
+
+        $txtAvailName =
+            $this->createElement('text', 'txtAvailName')
+                ->setLabel('Name');
+
+        $txtAvailCreativeUrl =
+            $this->createElement('text', 'txtAvailCreativeUrl')
+                ->setLabel('AD creative URL');
+
+        $collection = new Lookup_Collection_MimeType();
+        $collection->lookup();
+        $values = array();
+        if($collection->count())
+        {
+            foreach ($collection as $entry)
+            {
+                $values[$entry->id] = $entry->label;
+            }
+        }
+
+        $selectCreativeMimeType =
+            $this->createElement('select', 'selectCreativeMimeType')
+                ->setMultiOptions($values)
+                ->setLabel('Type');
+
+        $txtAvailTargetURLSegment =
+            $this->createElement('text', 'txtAvailTargetURLSegment')
+                ->setLabel('Target URL Segment');
+
+        $btnAddCreative =
+            $this->createElement('button', 'btnAddCreative')
+                ->setLabel('Add Creative')
+                ->setAttrib('class', 'add-fieldset-data styled-button');
+
+        $htmlFromStudy = '';
+        if($this->study instanceof Study)
+        {
+            $collection = new Study_CreativeCollection();
+            $collection->loadForStudy($this->study->getId());
+            if($collection->count() > 0)
+            {
+                $cnt =0;
+                foreach ($collection as $creative)
+                {
+                    $creativeKey = substr(uniqid(md5(rand(0,1000))), 0, 8);
+                    $class = ++$cnt & 1 ? ' class="alt"' : '';
+                    $meta = '';
+
+                    $meta .= sprintf('<input type="hidden" name="creative[%s][name]" class="creative-%s" value="%s" />',
+                        $creativeKey, $creativeKey, $creative->name);
+                    $meta .= sprintf('<input type="hidden" name="creative[%s][url]" class="creative-%s" value="%s" />',
+                        $creativeKey, $creativeKey, $creative->url);
+                    $meta .= sprintf('<input type="hidden" name="creative[%s][segment]" class="creative-%s" value="%s" />',
+                        $creativeKey, $creativeKey, $creative->target_url);
+                    $meta .= sprintf('<input type="hidden" name="creative[%s][mimetype]" class="creative-%s" value="%s" />',
+                        $creativeKey, $creativeKey, $creative->mime_type_id);
+
+                    $mimeType = new Lookup_MimeType();
+                    $mimeType->loadData($creative->mime_type_id);
+
+                    $avails = new Study_AvailCollection();
+                    $avails->loadForCreative($creative->getId());
+                    foreach ($avails as $avail)
+                    {
+                        $availKey = substr(uniqid(md5(rand(0,1000))), 0, 8);
+
+                        // link
+                        $meta .= sprintf('<input type="hidden" name="creative[%s][avails][]" class="creative-%s" value="%s" />',
+                            $creativeKey, $creativeKey, $availKey);
+
+                        // properties
+                        $meta .= sprintf('<input type="hidden" name="creative[%s][%s][label]" class="creative-%s avail-%s avail-data-label" '
+                                .'value="%s" />',
+                            $creativeKey, $availKey, $creativeKey, $availKey, $avail->label);
+                        $meta .= sprintf('<input type="hidden" name="creative[%s][%s][jq]" class="creative-%s avail-%s avail-data-jq" '
+                                .'value="%s" />',
+                            $creativeKey, $availKey, $creativeKey, $availKey, $avail->selector);
+
+                        // domains
+                        $domains    = new Study_DomainCollection();
+                        $domains->loadForAvail($avail->getId());
+                        if(!empty($domains))
+                        {
+                            foreach($domains as $domain)
+                            {
+                                $meta .= sprintf('<input type="hidden" name="creative[%s][%s][domain][]" class="creative-%s '
+                                    . 'avail-%s avail-data-domain" value="%s" />',
+                                        $creativeKey, $availKey, $creativeKey, $availKey, $domain->getId());
+                            }
+                        }
+                    }
+
+                    // cells
+                    $tds        = '';
+                    $tds .= sprintf('<td class="align-left">%s</td>', $creative->name);
+                    $tds .= sprintf('<td class="align-left">%s</td>', $mimeType->label);
+                    $tds .= sprintf('<td class="align-left">%s</td>', $creative->url);
+                    $tds .= sprintf('<td style="width:20px"><a title="Delete" class="button-delete delete-creative" '
+                        . 'href="javascript:void(null)" rel="%s"></a></td>', $creativeKey);
+
+                    // row
+                    $htmlFromStudy .= '<tr'.$class.' id="creative-row-'.$creativeKey.'">'.$tds.'</tr>';
+                    $htmlFromStudy .= $meta;
+                }
+            }
+        }
+
+        $freeLabel18 = new Form_Markup_Element_AnyHtml('freeLabel18');
+            $freeLabel18->setValue('<table id="ac-creatives" cellspacing="0" cellpadding="0" align="center"><tbody>'
+                    .'<tr><th>Name</th><th>Type</th><th>Url</th><th> </th></tr>'
+                    . $htmlFromStudy
+                    .'</tbody></table>')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'class'=>'admin-table'))
+        ));
+
+        $subforms[2]->addElements(array(
+            $txtAvailName,
+            $txtAvailCreativeUrl,
+            $txtAvailTargetURLSegment,
+            $selectCreativeMimeType,
+            $btnAddCreative,
+            $freeLabel18,
+        ));
+
+        $subforms[2]->addDisplayGroup(
+            array(
+                $txtAvailName,
+                $txtAvailCreativeUrl,
+                $txtAvailTargetURLSegment,
+                $selectCreativeMimeType,
+                $btnAddCreative,
+                $freeLabel18,
+            ),
+            'group-aj-all-creatives', array('Legend' => 'Creatives')
+        );
     }
 }

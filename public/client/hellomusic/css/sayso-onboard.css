@@ -234,7 +234,7 @@ html {
 }
 
 #sayso-onboard #sso_wrapper .sso_content{
-	padding: 60px 80px 0px 80px;
+	padding: 80px 80px 0px 80px;
 	position: relative;
 	text-align: center;
 }
@@ -255,9 +255,9 @@ html {
 }
 
 #sayso-onboard #sso_wrapper h1{
-	font-size: 35px;
+	font-size: 38px;
 	color: #fff;
-	font-weight: normal;
+	font-weight: bold;
 	line-height: normal;
 	margin: 5px 0px;
 }
@@ -275,7 +275,7 @@ html {
 	color: #fff;
 	font-weight: bold;
 	line-height: normal;
-	margin: 5px 0px;
+	margin: 15px 0 0 0;
 }
 
 #sayso-onboard #sso_wrapper h3 strong,
@@ -288,7 +288,8 @@ html {
 	font-size: 15px;
 	color: #fff;
 	font-weight: bold;
-	line-height: normal;
+	line-height: 19px;
+	letter-spacing: 1px;
 	margin: 5px 0px;
 }
 
@@ -383,7 +384,9 @@ html {
 
 #sayso-onboard #sso_wrapper .sso_textError{
 	color: #F00;
-	font-size: inherit;
-	font-family: inherit;
-	font-weight: inherit;
+	font-size: 11px;
+	letter-spacing: 0px;
+	line-height: normal !important;
+	font-weight: normal;
+	margin: 0px;
 }

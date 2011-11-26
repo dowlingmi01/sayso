@@ -36,7 +36,7 @@
                 var container = $SQ(this).dataContainer();
                 
                 $SQ.ajaxWithAuth({
-                    url : 'http://' + sayso.baseDomain + '/starbar/hellomusic/reward-redeem',
+                    url : '//' + sayso.baseDomain + '/starbar/hellomusic/reward-redeem',
                     data : { good_id : container.getId() },
                     success : function (response) {
                         overlayContent.html(response.data.html).fadeTo(200, 1);

@@ -61,7 +61,7 @@
             // and in return set cookies on the client
             
             var iframe = document.createElement('iframe');
-            iframe.src = 'http://' + sayso.baseDomain + '/starbar/remote/pre-install?auth_key=' + sayso.client.authKey + '&client_name=' + sayso.client.name + '&client_uuid=' + sayso.client.uuid + '&client_uuid_type=' + sayso.client.uuidType + '&client_user_logged_in=' + (sayso.client.userLoggedIn ? 'true' : '') + '&install_token=' + getRandomToken();
+            iframe.src = '//' + sayso.baseDomain + '/starbar/remote/pre-install?auth_key=' + sayso.client.authKey + '&client_name=' + sayso.client.name + '&client_uuid=' + sayso.client.uuid + '&client_uuid_type=' + sayso.client.uuidType + '&client_user_logged_in=' + (sayso.client.userLoggedIn ? 'true' : '') + '&install_token=' + getRandomToken();
             iframe.width= '0'; iframe.height = '0'; 
             iframe.scrolling='no';
             // note 'style' property cannot be set directly. must use it's individual properties instead
@@ -91,7 +91,7 @@
         
         if (!window.$SQ) {
             var jQueryInclude = document.createElement('script');         
-            jQueryInclude.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
+            jQueryInclude.src = '//' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
             document.getElementsByTagName('body')[0].appendChild(jQueryInclude);
         }
         
@@ -105,18 +105,18 @@
             
             var cssGeneric = document.createElement('link'); 
             cssGeneric.rel = 'stylesheet';
-            cssGeneric.href = 'http://' + sayso.baseDomain + '/client/' + sayso.client.name + '/css/sayso-onboard.css';
+            cssGeneric.href = '//' + sayso.baseDomain + '/client/' + sayso.client.name + '/css/sayso-onboard.css';
             body.appendChild(cssGeneric);
             
             var cssColorbox = document.createElement('link'); 
             cssColorbox.rel = 'stylesheet';
-            cssColorbox.href = 'http://' + sayso.baseDomain + '/client/global/css/colorbox.css';
+            cssColorbox.href = '//' + sayso.baseDomain + '/client/global/css/colorbox.css';
             body.appendChild(cssColorbox);
     
             // overlay
             
             $SQ.ajax({
-                url : 'http://' + sayso.baseDomain + '/client/' + sayso.client.name + '/install',
+                url : '//' + sayso.baseDomain + '/client/' + sayso.client.name + '/install',
                 dataType : 'jsonp',
                 success : function (response) {
     

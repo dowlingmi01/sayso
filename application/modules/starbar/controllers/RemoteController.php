@@ -524,7 +524,7 @@ class Starbar_RemoteController extends Api_GlobalController
         $this->render();
         
         // setup Hello Music specific data
-        $starbar->setCssUrl('http://' . BASE_DOMAIN . '/css/starbar-hellomusic.css');
+        $starbar->setCssUrl('//' . BASE_DOMAIN . '/css/starbar-hellomusic.css');
         $starbar->setHtml($this->getResponse()->getBody());
 
         // return Starbar via JSON-P

@@ -44,7 +44,7 @@
     if (!window.$SQ) {
         if (!sayso.loading || sayso.loading !== 'jquery') {
             var jsJQuery = document.createElement('script'); 
-            jsJQuery.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
+            jsJQuery.src = '//' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
             starbarContainer.appendChild(jsJQuery);
         }
     }
@@ -100,7 +100,7 @@
             // client site detection
             
             var clientSetup = document.createElement('script'); 
-            clientSetup.src = 'http://' + sayso.baseDomain + '/js/starbar/client-setup.js';
+            clientSetup.src = '//' + sayso.baseDomain + '/js/starbar/client-setup.js';
             starbarContainer.appendChild(clientSetup);
             
             // start loading app
@@ -116,7 +116,7 @@
                 
                     sayso.log('****** Installing NEW App ******');
                     
-                    var postInstallUrl = 'http://' + sayso.baseDomain + '/starbar/remote/post-install-setup';
+                    var postInstallUrl = '//' + sayso.baseDomain + '/starbar/remote/post-install-setup';
                     
                     if (sayso.client && sayso.client.uuid) { // we must be on a client site, so provide client vars
                         postInstallUrl += 
@@ -151,14 +151,14 @@
 
 		if (sayso.jsonSupportMissing) {
 			var jsJson = document.createElement('script'); 
-			jsJson.src = 'http://' + sayso.baseDomain + '/js/starbar/json2.min.js';
+			jsJson.src = '//' + sayso.baseDomain + '/js/starbar/json2.min.js';
 			starbarContainer.appendChild(jsJson);
 		}
 
         // ADjuster 
         
         var jsSayso = document.createElement('script'); 
-        jsSayso.src = 'http://' + sayso.baseDomain + '/js/starbar/sayso.js';
+        jsSayso.src = '//' + sayso.baseDomain + '/js/starbar/sayso.js';
         starbarContainer.appendChild(jsSayso);
     
     });
@@ -189,7 +189,7 @@
         $SQ.ajax({
             dataType: 'jsonp',
             data : params,
-            url : 'http://' + sayso.baseDomain + '/starbar/remote',
+            url : '//' + sayso.baseDomain + '/starbar/remote',
             success : function (response, status) {
                 
                 if (response.status === 'error') {
@@ -272,42 +272,42 @@
                     
                     var cssGeneric = document.createElement('link'); 
                     cssGeneric.rel = 'stylesheet';
-                    cssGeneric.href = 'http://' + sayso.baseDomain + '/css/starbar-generic.css';
+                    cssGeneric.href = '//' + sayso.baseDomain + '/css/starbar-generic.css';
                     starbarContainer.appendChild(cssGeneric);
                     
                     // load JS dependencies
                     
                     var jsUi = document.createElement('script'); 
-                    jsUi.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-ui-1.8.16.custom.min.js';
+                    jsUi.src = '//' + sayso.baseDomain + '/js/starbar/jquery-ui-1.8.16.custom.min.js';
                     starbarContainer.appendChild(jsUi);
                     
                     var jsScroll = document.createElement('script'); 
-                    jsScroll.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.jscrollpane.min.js';
+                    jsScroll.src = '//' + sayso.baseDomain + '/js/starbar/jquery.jscrollpane.min.js';
                     starbarContainer.appendChild(jsScroll);
                     
                     var jsCookie = document.createElement('script'); 
-                    jsCookie.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.cookie.js';
+                    jsCookie.src = '//' + sayso.baseDomain + '/js/starbar/jquery.cookie.js';
                     starbarContainer.appendChild(jsCookie);
                     
                     var jsJeip = document.createElement('script'); 
-                    jsJeip.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.jeip.js';
+                    jsJeip.src = '//' + sayso.baseDomain + '/js/starbar/jquery.jeip.js';
                     starbarContainer.appendChild(jsJeip);
                     
                     var jsEasyTooltip = document.createElement('script'); 
-                    jsEasyTooltip.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.easyTooltip.js';
+                    jsEasyTooltip.src = '//' + sayso.baseDomain + '/js/starbar/jquery.easyTooltip.js';
                     starbarContainer.appendChild(jsEasyTooltip);
                     
                     var jsCycle = document.createElement('script'); 
-                    jsCycle.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery.cycle.lite.js';
+                    jsCycle.src = '//' + sayso.baseDomain + '/js/starbar/jquery.cycle.lite.js';
                     starbarContainer.appendChild(jsCycle);
                     
                     var jsEasyXDM = document.createElement('script'); 
-                    jsEasyXDM.src = 'http://' + sayso.baseDomain + '/js/starbar/easyXDM.min.js';
+                    jsEasyXDM.src = '//' + sayso.baseDomain + '/js/starbar/easyXDM.min.js';
                     starbarContainer.appendChild(jsEasyXDM);
                     
                     // load SaySo Shared Javascript (which depends on the above data settings)
                     var jsSaysoShared = document.createElement('script'); 
-                    jsSaysoShared.src = 'http://' + sayso.baseDomain + '/js/starbar/sayso-shared.js';
+                    jsSaysoShared.src = '//' + sayso.baseDomain + '/js/starbar/sayso-shared.js';
                     starbarContainer.appendChild(jsSaysoShared);
                     
                     // load the specific CSS for this Starbar
@@ -329,7 +329,7 @@
                             
                             // load Starbar Javascript (which depends on the above data settings)
                             var jsStarbar = document.createElement('script'); 
-                            jsStarbar.src = 'http://' + sayso.baseDomain + '/js/starbar/starbar-new.js';
+                            jsStarbar.src = '//' + sayso.baseDomain + '/js/starbar/starbar-new.js';
                             starbarContainer.appendChild(jsStarbar);
                             
                             var starbarJsTimer = new jsLoadTimer();
@@ -358,7 +358,7 @@
                                                 renderer : 'jsonp',
                                                 status : 1 // complete
                                             },
-                                            url : 'http://' + sayso.baseDomain + '/api/starbar/set-onboard-status',
+                                            url : '//' + sayso.baseDomain + '/api/starbar/set-onboard-status',
                                             success : function (response, status) {
                                                 sayso.log('Onboarding complete.', response.data);
                                             }

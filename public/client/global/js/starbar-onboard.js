@@ -6,7 +6,7 @@
 
     if (!window.$SQ) {
         var jQueryInclude = document.createElement('script');         
-        jQueryInclude.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
+        jQueryInclude.src = '//' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
         document.getElementsByTagName('body')[0].appendChild(jQueryInclude);
     }
     
@@ -80,7 +80,7 @@
         if (sayso.client.userLoggedIn) {
         
             // detect browser and provide appropriate install link
-            var browserAppUrl = 'http://' + sayso.baseDomain + '/install';
+            var browserAppUrl = '//' + sayso.baseDomain + '/install';
             
             var appName = sayso.environment === 'PROD' ? 'Say.So Starbar' : 'SaySo-' + sayso.environment;
             

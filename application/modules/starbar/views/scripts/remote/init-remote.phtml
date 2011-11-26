@@ -119,15 +119,17 @@ $game = $this->game;
 
 	$SQ('body').css('margin', 0);
 </script>
-<script src="http://<?= BASE_DOMAIN ?>/js/starbar/json2.min.js" type="text/javascript"></script>
-<script src="http://<?= BASE_DOMAIN ?>/js/starbar/easyXDM.min.js" type="text/javascript"></script>
-<script src="http://<?= BASE_DOMAIN ?>/js/starbar/sayso-shared.js" type="text/javascript"></script>
+<script src="//<?= BASE_DOMAIN ?>/js/starbar/json2.min.js" type="text/javascript"></script>
+<script src="//<?= BASE_DOMAIN ?>/js/starbar/easyXDM.min.js" type="text/javascript"></script>
+<script src="//<?= BASE_DOMAIN ?>/js/starbar/sayso-shared.js" type="text/javascript"></script>
 <script type="text/javascript">
 
+	var protocol = ('https:' == document.location.protocol ? 'https:' : 'http:');
+
 	$SQ.remoteControl = new easyXDM.Rpc({
-		remote: "http://<?= BASE_DOMAIN ?>/html/communicator.html",
-		local: "http://<?= BASE_DOMAIN ?>/html/communicator.html",
-		swf: "http://<?= BASE_DOMAIN ?>/swf/easyxdm.swf"
+		remote: protocol+"//<?= BASE_DOMAIN ?>/html/communicator.html",
+		local: protocol+"//<?= BASE_DOMAIN ?>/html/communicator.html",
+		swf: protocol+"//<?= BASE_DOMAIN ?>/swf/easyxdm.swf"
 	}, {
 		// functions available to remote pages
 		remote: {

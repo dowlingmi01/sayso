@@ -40,7 +40,7 @@ if ($goodIsToken) {
         </div><!-- .sb_rewardImg -->
         <div class="sb_rewardBase">
             <div class="sb_user-points-box">                    
-                <div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentUserBalanceToCost ?>%"></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $itemCost ?></span></span></div>
+                <div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentUserBalanceToCost ?>%"></span><span class="sb_progressBarValue"><img src="//<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $itemCost ?></span></span></div>
             </div><!-- .user-points-box -->
             <?php if ($goodIsToken) : ?>
                 <p class="sb_rewardDescription">Redeem your Notes for Entry Tokens to win<br /><strong><?= $good->description ?></strong></p>
@@ -63,13 +63,13 @@ if ($goodIsToken) {
                 <div class="sb_column50">
                     Current Balance&nbsp;<br clear="all" />
                     <div class="sb_user-points-box">                    
-                        <div class="sb_progress_bar sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all"><span class="sb_currency_percent sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left" style="width: 100%"></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $currentBalance ?></span></span></div>
+                        <div class="sb_progress_bar sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all"><span class="sb_currency_percent sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left" style="width: 100%"></span><span class="sb_progressBarValue"><img src="//<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $currentBalance ?></span></span></div>
                     </div><!-- .user-points-box -->
                 </div><!-- .sb_column50 -->
                 <div class="sb_column50">
                     Ending Balance&nbsp;<br clear="all" />
                     <div class="sb_user-points-box">
-                        <div class="sb_progress_bar sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all"><span class="sb_currency_percent sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left" style="width: <?= $percentUserBalanceRemaining ?>%"></span><span class="sb_progressBarValue"><img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $balanceAfter ?></span></span></div>
+                        <div class="sb_progress_bar sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all"><span class="sb_currency_percent sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left" style="width: <?= $percentUserBalanceRemaining ?>%"></span><span class="sb_progressBarValue"><img src="//<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $balanceAfter ?></span></span></div>
                     </div><!-- .user-points-box -->
                 </div><!-- .sb_column50 -->
             </div><!-- .column_5050BG -->
@@ -102,7 +102,7 @@ if ($goodIsToken) {
     </div><!-- #sb_reward_step2 -->
 
     <div id="sb_reward_step3" class="sb_reward_step" style="display: none;">        
-         <img src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_ajax-loader.gif" alt="Loading..." id="sb_img-loading" style="margin: 50px auto; display:block; text-align: center;" />
+         <img src="//<?= BASE_DOMAIN ?>/images/hellomusic/img_ajax-loader.gif" alt="Loading..." id="sb_img-loading" style="margin: 50px auto; display:block; text-align: center;" />
         <!-- ajax loaded after order is complete -->
     </div><!-- #sb_reward_step3 -->
    
@@ -195,7 +195,7 @@ if ($goodIsToken) {
 							$SQ('.sb_rewardOrder',currentBox).html(loadingImg);
 
 							$SQ.ajaxWithAuth({
-								url : 'http://' + sayso.baseDomain + '/starbar/hellomusic/reward-redeemed',
+								url : '//' + sayso.baseDomain + '/starbar/hellomusic/reward-redeemed',
 								data : params,
 								beforeSend: function(){
 

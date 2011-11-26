@@ -94,8 +94,8 @@ $SQ.insertCommunicationIframe = function(link, container, width, height, scrolli
 	// This function inserts the iframe (with x-domain communication enabled!)
 	// The id of the container is placed inside the 'ref' attribute at the top of the accordion
 	new easyXDM.Rpc({
-		local: "http://"+sayso.baseDomain+"/html/communicator.html",
-		swf: "http://"+sayso.baseDomain+"/swf/easyxdm.swf",
+		local: "https://"+sayso.baseDomain+"/html/communicator.html",
+		swf: "https://"+sayso.baseDomain+"/swf/easyxdm.swf",
 		remote: link,
 		remoteHelper: "http://"+sayso.baseDomain+"/html/communicator.html",
         container: container,

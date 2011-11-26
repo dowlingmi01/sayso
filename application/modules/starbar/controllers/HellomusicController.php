@@ -41,7 +41,7 @@ class Starbar_HellomusicController extends Starbar_ContentController
 			// award the user
 		    Game_Starbar::getInstance()->viewPromos();
 			
-			$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=promos&shared_id=THE_DEAL_ID&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
+			$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=promos&shared_id=THE_DEAL_ID&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
 			$facebookDescription = "Like Music? You can get the Say.So Music Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
 			$this->_assignShareInfoToView(null, null, null, $facebookCallbackUrl, null, $facebookDescription);
 		}
@@ -86,6 +86,6 @@ class Starbar_HellomusicController extends Starbar_ContentController
 
 	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null) {
 		parent::_assignShareInfoToView($shareLink, $twitterShareText, $facebookShareCaption, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
-		$this->view->assign('facebook_share_image_url', 'http://media.saysollc.com/media/hellomusic/logo_hellomusic.png');
+		$this->view->assign('facebook_share_image_url', 'https://s3.amazonaws.com/say.so/media/hellomusic/logo_hellomusic.png');
 	}
 }

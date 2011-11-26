@@ -54,7 +54,7 @@ $shortName = strtolower(Zend_Controller_Front::getInstance()->getRequest()->getC
         var f = sayso.functions;
         
         var jQueryInclude = document.createElement('script');         
-        jQueryInclude.src = 'http://' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
+        jQueryInclude.src = '//' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
         document.getElementsByTagName('body')[0].appendChild(jQueryInclude);
         
 
@@ -68,7 +68,7 @@ $shortName = strtolower(Zend_Controller_Front::getInstance()->getRequest()->getC
             jQuery = $ = $SQ; 
             
             var jQueryForm = document.createElement('script');         
-            jQueryForm.src = 'http://' + sayso.baseDomain + '/js/jquery.form.min.js';
+            jQueryForm.src = '//' + sayso.baseDomain + '/js/jquery.form.min.js';
             document.getElementsByTagName('body')[0].appendChild(jQueryForm);
     
             var timer2 = new f.jsLoadTimer();

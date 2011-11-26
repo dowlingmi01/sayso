@@ -174,7 +174,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$shareText = "Poll time! Just took the '".$survey->title."' poll on the Say.So Music Bar";
 		$facebookTitle = $survey->title;
 		$facebookDescription = "Like Music? You can get the Say.So Music Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
-		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=poll&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
+		$facebookCallbackUrl = "https//".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=poll&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
 		$this->_assignShareInfoToView($shareLink, $shareText, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
     }
 
@@ -239,7 +239,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$shareText = "Survey time! Just filled out '".$survey->title."' on the Say.So Music Bar";
 		$facebookTitle = $survey->title;
 		$facebookDescription = "Like Music? You can get the Say.So Music Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
-		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
+		$facebookCallbackUrl = "https//".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
 		$this->_assignShareInfoToView($shareLink, $shareText, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
 	}
 
@@ -267,7 +267,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$shareText = "Survey time! Just filled out '".$survey->title."' on the Say.So Music Bar";
 		$facebookTitle = $survey->title;
 		$facebookDescription = "Like Music? You can get the Say.So Music Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
-		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
+		$facebookCallbackUrl = "https//".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
 		$this->_assignShareInfoToView($shareLink, $shareText, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
 	}
 
@@ -281,7 +281,11 @@ class Starbar_ContentController extends Api_GlobalController
 		$survey->loadData($this->survey_id);
 
 		$bundleOfJoy = $this->_getBundleOfJoy($this->survey_id, $this->next_survey_id);
-		$this->_redirect("http://www.surveygizmo.com/s3/".$survey->external_id."/".$survey->external_key."?bundle_of_joy=".$bundleOfJoy);
+		$redirectAddress = ($_SERVER['HTTPS'] ? 'https:' : 'http:')
+							. "//www.surveygizmo.com/s3/"
+							. $survey->external_id . "/" . $survey->external_key
+							. "?bundle_of_joy=" . $bundleOfJoy;
+		$this->_redirect($redirectAddress);
 	}
 
     // Fetches polls for the current user for display
@@ -343,7 +347,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$twitterShareText = "Join me in the Say.So Music Bar app. Get access to sweet gear deals and a chance to win a Takamine Guitar";
 		$facebookTitle = "Say.So Music Bar";
 		$facebookCaption = "If you're a Musician or dig music gear, you should join me in the Say.So Music Bar from Hello Music. We get access to some sweet gear deals and get awesome odds on walking away with one of their big giveaways like a Takamine Acoustic, a Full Midi Kit, and others. We just give our opinion on a few things and they give us Notes we can redeem for stuff. Sweet deal. Only lasts a month. Want in?";
-		$facebookCallbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=starbar&shared_id=".$this->starbar_id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
+		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=starbar&shared_id=".$this->starbar_id."&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
 		$this->_assignShareInfoToView($shareLink, $twitterShareText, $facebookCaption,  $facebookCallbackUrl, $facebookTitle, null);
 	}
 	
@@ -380,7 +384,7 @@ class Starbar_ContentController extends Api_GlobalController
 			}
 		}
 
-		$callbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/facebook-connect?user_id=".$this->user_id."&user_key=".$this->user_key;
+		$callbackUrl = "https://".BASE_DOMAIN."/starbar/hellomusic/facebook-connect?user_id=".$this->user_id."&user_key=".$this->user_key;
 
 		if ($fbUser) {
 			if ($this->user_key && (int)$this->user_id === (int)Api_UserSession::getInstance($this->user_key)->getId()) {
@@ -425,7 +429,7 @@ class Starbar_ContentController extends Api_GlobalController
 			/* Build TwitterOAuth object with client credentials. */
 			$connection = new TwitterOAuth($config->twitter->consumer_key, $config->twitter->consumer_secret);
 
-			$callbackUrl = "http://".BASE_DOMAIN."/starbar/hellomusic/twitter-connect-result?user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
+			$callbackUrl = "https://".BASE_DOMAIN."/starbar/hellomusic/twitter-connect-result?user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
 			
 			/* Get temporary credentials and set the callback URL. */
 			$twitterRequestToken = $connection->getRequestToken($callbackUrl);
@@ -438,7 +442,7 @@ class Starbar_ContentController extends Api_GlobalController
 		} catch (Exception $e) {}
 
 		if ($success) {
-			$this->_redirect("http://api.twitter.com/oauth/authorize?oauth_token=".$twitterRequestToken['oauth_token']);
+			$this->_redirect("https://api.twitter.com/oauth/authorize?oauth_token=".$twitterRequestToken['oauth_token']);
 		}
 	}
 
@@ -578,7 +582,7 @@ class Starbar_ContentController extends Api_GlobalController
             $currentPage = $_SERVER['REQUEST_URI'];
 			if (strpos($currentPage, "?") !== false) $currentPage = reset(explode("?", $currentPage));
 
-			$this->_redirect('http://' . BASE_DOMAIN . $currentPage . $queryString);
+			$this->_redirect(($_SERVER['HTTPS'] ? 'https' : 'http') . '://' . BASE_DOMAIN . $currentPage . $queryString);
         }
 	}
 

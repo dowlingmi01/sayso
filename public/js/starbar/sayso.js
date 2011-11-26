@@ -54,7 +54,7 @@ $SQ(function () {
 
         this.socialActivity = function (url, content, type_id) {
             ajax({
-                url : 'http://' + sayso.baseDomain + '/api/metrics/social-activity-submit',
+                url : '//' + sayso.baseDomain + '/api/metrics/social-activity-submit',
                 data : {
                     type_id : type_id,
                     url : url,
@@ -89,7 +89,7 @@ $SQ(function () {
     // Page View
 
     ajax({
-        url : 'http://' + sayso.baseDomain + '/api/metrics/page-view-submit',
+        url : '//' + sayso.baseDomain + '/api/metrics/page-view-submit',
         data : {
             url : encodeURIComponent(location.href)
         },
@@ -134,7 +134,7 @@ $SQ(function () {
     if (searchType)
     {
 
-        var url = 'http://' + sayso.baseDomain + '/api/metrics/search-engine-submit';
+        var url = '//' + sayso.baseDomain + '/api/metrics/search-engine-submit';
         var data = {
             type_id : searchType
         };
@@ -279,7 +279,7 @@ $SQ(function () {
     log(top !== self ? 'In iFrame: ' : 'Main Page: ', self.location.href);
     
     ajax({
-        url : 'http://' + sayso.baseDomain + '/api/study/get-all',
+        url : '//' + sayso.baseDomain + '/api/study/get-all',
         data : {
             page_number : 1,
             page_size : 10
@@ -301,7 +301,7 @@ $SQ(function () {
         if (location.href.match(adTarget.urlSegment)) {
             // click thru!
             ajax({
-                url : 'http://' + sayso.baseDomain + '/api/metrics/track-click-thru',
+                url : '//' + sayso.baseDomain + '/api/metrics/track-click-thru',
                 data : {
                     url : location.href,
                     url_segment : adTarget.urlSegment,
@@ -494,7 +494,7 @@ $SQ(function () {
 						log('Click offset detected at X='+e.offsetX+', Y='+e.offsetY);
 						ajax({
 							// Replace this with proper ajax call to record the click
-							url : 'http://' + sayso.baseDomain + '/api/study/get-all',
+							url : '//' + sayso.baseDomain + '/api/study/get-all',
 							data : {
 								page_number : 1,
 								page_size : 10
@@ -519,7 +519,7 @@ $SQ(function () {
 		    function () {                                         // callback
 		        log('Ads found ' + adsFound + '. Replacements ' + replacements);
 			    ajax({
-                    url : 'http://' + sayso.baseDomain + '/api/metrics/track-ad-views',
+                    url : '//' + sayso.baseDomain + '/api/metrics/track-ad-views',
                     data : {
                         // note: user_id, starbar_id are included in ajax() wrapper
                         // study_id is associated via cell id, which is included in cellAdActivity

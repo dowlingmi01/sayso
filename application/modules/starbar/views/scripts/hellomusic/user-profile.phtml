@@ -1,15 +1,15 @@
 <div class="sb_column6040BG">
 	<div class="sb_column60">
 		<div class="sb_header">
-			<h2 class="sb_titlePlain">Welcome Back, <strong><a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element sb_user_title <?= ($this->user->username ? "" : "sb_user_level_title") ?>" rel="sb_popBox_user-level"><?= $this->user->getTitle() ?></a></strong></h2>
+			<h2 class="sb_titlePlain">Welcome Back, <strong><a href="//<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element sb_user_title <?= ($this->user->username ? "" : "sb_user_level_title") ?>" rel="sb_popBox_user-level"><?= $this->user->getTitle() ?></a></strong></h2>
 		</div><!-- .sb_header -->
 		<div>
 			<ul class="sb_lineList">
 				<li>
 					<? if ($this->facebook_social->identifier) { ?>
-						<img class="sb_userImg sb_alignLeft" src="http://graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $this->user->getTitle() ?>" />
+						<img class="sb_userImg sb_alignLeft" src="//graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $this->user->getTitle() ?>" />
 					<? } else { ?>
-						<img class="sb_userImg sb_alignLeft" src="http://<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="<?= $this->user->getTitle() ?>" />
+						<img class="sb_userImg sb_alignLeft" src="//<?= BASE_DOMAIN ?>/images/hellomusic/img_user.jpg" alt="<?= $this->user->getTitle() ?>" />
 					<? } ?>
 					<p class="sb_nextToUserImage">
 						<strong>Username:</strong> <span id="sb_profile_username" class="sb_user_title <? if (!$this->user->username) { ?> sb_user_level_title sb_jeip<? } ?>"><?= $this->user->getTitle() ?></span><br />
@@ -17,7 +17,7 @@
 					</p>
 				</li>
 				<li style="padding: 10px 0 0 0;">
-			        <iframe src="http://www.facebook.com/plugins/like.php?locale=en_US&amp;href=http://www.facebook.com/pages/SaySo/114746621967610&amp;layout=standard&amp;show_faces=false&amp;width=240&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:290px; height:35px;" allowTransparency="true"></iframe>
+			        <iframe src="//www.facebook.com/plugins/like.php?locale=en_US&amp;href=http://www.facebook.com/pages/SaySo/114746621967610&amp;layout=standard&amp;show_faces=false&amp;width=240&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:290px; height:35px;" allowTransparency="true"></iframe>
 				</li>
 				<li>
 					<h2 class="sb_titlePlain">Link Your Accounts</h2>
@@ -25,12 +25,12 @@
 						<? if ($this->facebook_social->user_id) { ?>
 							<span id="sb_profile_facebook" class="sb_connect_facebook sb_connected">http://www.facebook.com</span>
 						<? } else { ?>
-							<span href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/facebook-connect" id="sb_profile_facebook" class="sb_connect_facebook sb_unconnected">http://www.facebook.com</span>
+							<span href="//<?= BASE_DOMAIN ?>/starbar/hellomusic/facebook-connect" id="sb_profile_facebook" class="sb_connect_facebook sb_unconnected">http://www.facebook.com</span>
 						<? } ?>
 						<? if ($this->twitter_social->user_id) { ?>
 							<span id="sb_profile_twitter" class="sb_connect_twitter sb_connected">http://www.twitter.com</span>
 						<? } else { ?>
-							<span href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/twitter-connect-redirect" id="sb_profile_twitter" class="sb_connect_twitter sb_unconnected">http://www.twitter.com</span>
+							<span href="//<?= BASE_DOMAIN ?>/starbar/hellomusic/twitter-connect-redirect" id="sb_profile_twitter" class="sb_connect_twitter sb_unconnected">http://www.twitter.com</span>
 						<? } ?>
 						<br />
 					</p>
@@ -52,9 +52,9 @@
 		</div><!-- .sb_header -->
 		<ul class="sb_lineList">
 			<li>
-				<? if ($this->count_new_polls) { ?><a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/polls" class="sb_nav_element" rel="sb_popBox_polls"><?= $this->count_new_polls ?> New Polls</a><br /><? } ?>
-				<? if ($this->count_new_surveys) { ?><a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/surveys" class="sb_nav_element" rel="sb_popBox_surveys"><?= $this->count_new_surveys ?> New Surveys</a><br /><? } ?>
-				<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/daily-deals" class="sb_nav_element" rel="sb_popBox_daily-deals">4 New Daily Deals</a>
+				<? if ($this->count_new_polls) { ?><a href="//<?= BASE_DOMAIN ?>/starbar/hellomusic/polls" class="sb_nav_element" rel="sb_popBox_polls"><?= $this->count_new_polls ?> New Polls</a><br /><? } ?>
+				<? if ($this->count_new_surveys) { ?><a href="//<?= BASE_DOMAIN ?>/starbar/hellomusic/surveys" class="sb_nav_element" rel="sb_popBox_surveys"><?= $this->count_new_surveys ?> New Surveys</a><br /><? } ?>
+				<a href="//<?= BASE_DOMAIN ?>/starbar/hellomusic/daily-deals" class="sb_nav_element" rel="sb_popBox_daily-deals">4 New Daily Deals</a>
 			</li>
 			<li>
 		<div class="sb_header">
@@ -65,9 +65,9 @@
 			<strong>Level <span class="sb_user_level_number"></span>. <span class="sb_userLevelColor1 sb_user_level_title"></span></strong>
 		</p>
 		<p>
-			<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><span class="sb_currency_balance" data-currency="notes"></span>&nbsp;Notes</a><br />
-			<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><span class="sb_currency_balance" data-currency="chops"></span>&nbsp;Chops</a><br />
-			<a href="http://<?= BASE_DOMAIN ?>/starbar/hellomusic/rewards" class="sb_nav_element" rel="sb_popBox_rewards">Redeem Rewards</a>
+			<a href="//<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><span class="sb_currency_balance" data-currency="notes"></span>&nbsp;Notes</a><br />
+			<a href="//<?= BASE_DOMAIN ?>/starbar/hellomusic/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><span class="sb_currency_balance" data-currency="chops"></span>&nbsp;Chops</a><br />
+			<a href="//<?= BASE_DOMAIN ?>/starbar/hellomusic/rewards" class="sb_nav_element" rel="sb_popBox_rewards">Redeem Rewards</a>
 		</p>
     </li>
     <li style="border: none;">
@@ -77,12 +77,12 @@
 		<span class="sb_tiny_note">Earn extra credit for sharing!</span>
 	    <div class="sb_externalShares">
 			<a class="sb_externalShare" href="#" 
-				onclick="window.open('http://www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($this->share_link) ?>&caption=<?= urlencode($this->facebook_share_caption) ?>&picture=<?= urlencode($this->facebook_share_image_url) ?>&redirect_uri=<?= urlencode($this->facebook_share_callback_url) ?>&name=<?= urlencode($this->facebook_title) ?>&description=<?= urlencode($this->facebook_description) ?>', 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450'); return false;">
-				<img src="http://<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
+				onclick="window.open('//www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($this->share_link) ?>&caption=<?= urlencode($this->facebook_share_caption) ?>&picture=<?= urlencode($this->facebook_share_image_url) ?>&redirect_uri=<?= urlencode($this->facebook_share_callback_url) ?>&name=<?= urlencode($this->facebook_title) ?>&description=<?= urlencode($this->facebook_description) ?>', 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450'); return false;">
+				<img src="//<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
 			</a>
 			<span class="sb_mini-note-reward">+50</span>
 			<script type="text/javascript">
-				$SQ.getScript("http://platform.twitter.com/widgets.js", function(){
+				$SQ.getScript("//platform.twitter.com/widgets.js", function(){
 					function handleTweetEvent(event){
 						if (event) {
 							$SQ('#sayso-starbar').trigger('frameCommunication', ['handleTweet', {
@@ -102,7 +102,7 @@
 				data-text="<?= $this->twitter_share_text ?>"
 				data-count="none"
 				href="https://twitter.com/intent/tweet">
-					<img src="http://<?= BASE_DOMAIN ?>/images/generic/logo_twitter.png" alt="Twitter" />
+					<img src="//<?= BASE_DOMAIN ?>/images/generic/logo_twitter.png" alt="Twitter" />
 			</a>
 			<span class="sb_mini-note-reward">+50</span>
 	    </div>

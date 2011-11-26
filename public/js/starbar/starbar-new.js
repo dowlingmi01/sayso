@@ -577,7 +577,7 @@ $SQ(function(){
 			if (performAjaxCall) {
 				var notification_id = target.attr('id').match(/(?:[0-9]+)/);
 				$SQ.ajaxWithAuth({
-					url : 'http://'+sayso.baseDomain+'/api/notification/close?renderer=jsonp&message_id='+notification_id,
+					url : '//'+sayso.baseDomain+'/api/notification/close?renderer=jsonp&message_id='+notification_id,
 					success : function (response, status) {}
 				});
 			}
@@ -602,7 +602,7 @@ $SQ(function(){
 		if (starbar.state.visibility == 'stowed') starbarStowed = "true";
 
 		$SQ.ajaxWithAuth({
-			url : 'http://'+sayso.baseDomain+'/api/notification/get-all?renderer=jsonp&starbar_stowed='+starbarStowed+'&starbar_id='+sayso.starbar.id,
+			url : '//'+sayso.baseDomain+'/api/notification/get-all?renderer=jsonp&starbar_stowed='+starbarStowed+'&starbar_id='+sayso.starbar.id,
 			success : function (response, status, jqXHR) {
 				var randomString = $SQ.randomString(10);
 				var newAlerts = false;
@@ -637,7 +637,7 @@ $SQ(function(){
 
 								var newAlertHtml = '<div class="sb_starbar-alert sb_starbar-alert-'+message.notification_area+'" id="starbar-alert-'+message.id+'"><div class="sb_inner"><div class="sb_content sb_theme_bgAlert'+message.color+'">';
 								if (message['popbox_to_open']) {
-									newAlertHtml += '<a href="http://'+sayso.baseDomain+'/starbar/'+sayso.starbar.shortName+'/'+message.popbox_to_open+'" class="sb_nav_element sb_alert" rel="sb_popBox_'+message.popbox_to_open+'">'+message.message+'</a>'
+									newAlertHtml += '<a href="//'+sayso.baseDomain+'/starbar/'+sayso.starbar.shortName+'/'+message.popbox_to_open+'" class="sb_nav_element sb_alert" rel="sb_popBox_'+message.popbox_to_open+'">'+message.message+'</a>'
 								} else {
 									newAlertHtml += '<a href="#" class="sb_nav_element sb_alert" rel="">'+message.message+'</a>';
 								}
@@ -658,7 +658,7 @@ $SQ(function(){
 									updateGame('ajax', true, true);
 								}
 								$SQ.ajaxWithAuth({ // Mark closed, those notifications are meant to be received only once.
-									url : 'http://'+sayso.baseDomain+'/api/notification/close?renderer=jsonp&message_id='+message.id,
+									url : '//'+sayso.baseDomain+'/api/notification/close?renderer=jsonp&message_id='+message.id,
 									success : function (response, status) {}
 								});*/
 							}
@@ -686,7 +686,7 @@ $SQ(function(){
 
 	function gameCheckin() {
 		$SQ.ajaxWithAuth({
-			url : 'http://'+sayso.baseDomain+'/api/gaming/checkin?renderer=jsonp',
+			url : '//'+sayso.baseDomain+'/api/gaming/checkin?renderer=jsonp',
 			success : function (response, status, jqXHR) {
 				updateGame(response.game, true, true);
 			}
@@ -696,7 +696,7 @@ $SQ(function(){
 	function handleTweet (shared_type, shared_id) {
 		if (shared_type && shared_id) {
 			$SQ.ajaxWithAuth({
-				url : 'http://'+sayso.baseDomain+'/api/gaming/share?renderer=jsonp&shared_type='+shared_type+'&shared_id='+shared_id,
+				url : '//'+sayso.baseDomain+'/api/gaming/share?renderer=jsonp&shared_type='+shared_type+'&shared_id='+shared_id,
 				success : function (response, status, jqXHR) {
 					updateGame(response.game, true, true);
 				}
@@ -763,14 +763,14 @@ $SQ(function(){
 		'openSurvey': function (parameters) {
 			var surveyId = parameters['survey_id'];
 			
-			openPopBox($SQ('#sb_popBox_surveys_lg'), 'http://'+sayso.baseDomain+'/starbar/hellomusic/embed-survey?survey_id='+surveyId, true, true);
+			openPopBox($SQ('#sb_popBox_surveys_lg'), '//'+sayso.baseDomain+'/starbar/hellomusic/embed-survey?survey_id='+surveyId, true, true);
 		},
 		'hideOverlay': function () {
 			hideOverlay();
 		},
 		'refreshRewardCenter': function () {
 			closePopBox();
-			openPopBox($SQ('#sb_popBox_rewards'), 'http://'+sayso.baseDomain+'/starbar/hellomusic/rewards', true, true);
+			openPopBox($SQ('#sb_popBox_rewards'), '//'+sayso.baseDomain+'/starbar/hellomusic/rewards', true, true);
 		},
 		'hideAlertByNotificationMessageId': function (parameters) {
 			var performAjaxCall = parameters['perform_ajax_call'];
@@ -795,7 +795,7 @@ $SQ(function(){
 		if (loadSource == "ajax") {
 			sayso.log('Updating game from AJAX');
 			$SQ.ajaxWithAuth({
-				url : 'http://'+sayso.baseDomain+'/api/gaming/get-game?renderer=jsonp',
+				url : '//'+sayso.baseDomain+'/api/gaming/get-game?renderer=jsonp',
 				success : function (response, status, jqXHR) {
 					updateGame(response.data, setGlobalUpdate, animate);
 				}
@@ -1143,7 +1143,7 @@ $SQ(function(){
 
 	function updateProfile(setGlobalUpdate, userInitiated) {
 		$SQ.ajaxWithAuth({
-			url : 'http://'+sayso.baseDomain+'/api/user/get?renderer=jsonp',
+			url : '//'+sayso.baseDomain+'/api/user/get?renderer=jsonp',
 			success : function (response, status, jqXHR) {
 				var user = response.data;
 				var userSocials;
@@ -1165,7 +1165,7 @@ $SQ(function(){
 							var profileImages = $SQ('img.sb_userImg');
 							if (profileImages.length > 0) {
 								profileImages.each(function(){
-		 							$SQ(this).attr('src', 'http://graph.facebook.com/'+userSocial['identifier']+'/picture?type=square');
+		 							$SQ(this).attr('src', '//graph.facebook.com/'+userSocial['identifier']+'/picture?type=square');
 								});
 							}
 						}
@@ -1276,6 +1276,7 @@ $SQ(function(){
 
 							// Add the authentication info to the request
 							link = activeLink.attr('href');
+							link = ('https:' == document.location.protocol ? 'https:' : 'http:') + link; // Add http: or https:
 							if (link.indexOf("?") == -1)
 								link += "?";
 							else
@@ -1371,7 +1372,7 @@ $SQ(function(){
 
 		// set up the EIP elements
 		elemJEIP.each(function(){
-			$SQ(this).eip( "http://"+sayso.baseDomain+"/api/user/save-in-place?renderer=jsonp", {
+			$SQ(this).eip( "//"+sayso.baseDomain+"/api/user/save-in-place?renderer=jsonp", {
 				savebutton_text		: "save",
 				savebutton_class	: "sb_theme_button",
 				cancelbutton_text	: "cancel",

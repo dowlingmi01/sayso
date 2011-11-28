@@ -13,7 +13,7 @@ class Notification_MessageUserMap extends Record
     	if ($data) $this->build($data);
 	}
 	
-	public function updateOrInsertMapForNotificationMessageAndUser($messageId, $userId, $userJustClosed = false) {
+	public function updateOrInsertMapForNotificationMessageAndUser($messageId, $userId, $markClosed = false, $markNotified = false) {
     	if ($messageId && $userId) {
     		// Since we are updating or inserting to the map, exclude mappings that already exist as 'closed'
     		// since this instance would be a recurrence of that notification, not the same mapping
@@ -21,16 +21,22 @@ class Notification_MessageUserMap extends Record
     		$this->loadMapForNotificationMessageAndUser($messageId, $userId, true);
 
     		// If it's an update, set the closed time (if we are closing) and update the notified time (if it's not set) 
-    		if ($this->id && ($userJustClosed || !strtotime($this->notified))) {
-    			if (!strtotime($this->notified)) $this->notified = date('Y-m-d H:i:s');
-    			if ($userJustClosed) $this->closed = date('Y-m-d H:i:s');
+    		if ($this->id
+    			&& (
+    				$markClosed
+    				|| (!strtotime($this->notified) && $markNotified)
+    			)
+    		) {
+    			if (!strtotime($this->notified) && $markNotified) $this->notified = date('Y-m-d H:i:s');
+    			if ($markClosed) $this->closed = date('Y-m-d H:i:s');
     			$this->save();
 
     		// Otherwise insert!
 			} elseif (! $this->id){
 				$this->notification_message_id = $messageId;
 				$this->user_id = $userId;
-				if ($userJustClosed) $this->closed = date('Y-m-d H:i:s');
+				if ($markNotified) $this->notified = date('Y-m-d H:i:s');
+				if ($markClosed) $this->closed = date('Y-m-d H:i:s');
     			$this->save();
 			}
 		}

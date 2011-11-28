@@ -99,7 +99,7 @@ class Notification_MessageCollection extends RecordCollection
 					$this->addItem($nextMessage);
 					// add user_map
 					$messageUserMap = new Notification_MessageUserMap();
-					$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($nextMessage->id, $userId, false);
+					$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($nextMessage->id, $userId, false, true);
 				}
 			}
 		}
@@ -159,10 +159,11 @@ class Notification_MessageCollection extends RecordCollection
 		$queuedMessages->loadQueuedMessagesForStarbarAndUser($starbarId, $userId);
 		foreach ($queuedMessages as $message) {
 			if ($message->validateForUser($userId)) {
+				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId, false, true); // Mark notified if needed
 				$this->addItem($message);
 			} else {
 				// Close the message so it is no longer queued
-				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId, true);
+				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId, true, false);
 			}
 		}
 
@@ -174,7 +175,7 @@ class Notification_MessageCollection extends RecordCollection
 				$this->addItem($message);
 				// add user_map
 				$messageUserMap = new Notification_MessageUserMap();
-				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId, false);
+				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId, false, true);
 			} else {
 				$messageGroup->loadData($message->notification_message_group_id);
 				$nextMessage = new Notification_Message();
@@ -185,7 +186,7 @@ class Notification_MessageCollection extends RecordCollection
 					$this->addItem($nextMessage);
 					// add user_map
 					$messageUserMap = new Notification_MessageUserMap();
-					$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($nextMessage->id, $userId, false);
+					$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($nextMessage->id, $userId, false, true);
 				}
 			}
 		}
@@ -213,7 +214,8 @@ class Notification_MessageCollection extends RecordCollection
 				INNER JOIN notification_message_user_map nmum 
 					ON nmum.notification_message_id = nm.id
 						AND nmum.user_id = ?
-						AND notified = '0000-00-00 00:00:00'
+						AND nmum.notified = '0000-00-00 00:00:00'
+						AND nmum.closed = '0000-00-00 00:00:00'
 			ORDER BY nm.ordinal ASC, nmum.id DESC
 		";
 		

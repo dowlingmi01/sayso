@@ -279,7 +279,6 @@ class Starbar_RemoteController extends Api_GlobalController
             
         } else if ($this->client_uuid && strlen($this->client_uuid)) { // on customer site 
             
-            Api_Registry::getLogger()->log('On customer site / no cookies', Zend_Log::INFO);
             $starbar = new Starbar();
             $starbar->loadDataByUniqueFields(array('short_name' => $this->client_name));
             

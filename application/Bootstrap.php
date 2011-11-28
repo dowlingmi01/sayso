@@ -20,12 +20,6 @@ class Bootstrap extends App_Bootstrap
 
         Game_Abstract::$_enabled = true;
 
-        // API logging will be necessary since requests
-        // are coming from mobile, it's hard to see what's going on
-        $apiLog = new Zend_Log();
-        $apiLogWriter = new Zend_Log_Writer_Stream(realpath(APPLICATION_PATH . '/../log/api.log'));
-        $apiLog->addWriter($apiLogWriter);
-
         // only log if used by a developer
         $remoteAddress = $_SERVER['REMOTE_ADDR'];
         $devAddresses = array(
@@ -33,27 +27,14 @@ class Bootstrap extends App_Bootstrap
             '24.2.88.78' => 'jim', '72.10.153.136' => 'hamza'
         );
         
-        if (!array_key_exists($remoteAddress, $devAddresses)) {
-            $filterSupress = new Zend_Log_Filter_Suppress();
-            $filterSupress->suppress(true);
-            $apiLogWriter->addFilter($filterSupress);
-        }
-
-        // all dev logging begins with the IP of the client
-        $apiLog->log(
-            PHP_EOL. PHP_EOL . 'IP: ' . $remoteAddress . ' (' . @$devAddresses[$remoteAddress] . ')' .
-        	' ' . str_repeat('-', 100) .
-            PHP_EOL, Zend_Log::INFO
-        );
-
-        Api_Registry::set('log', $apiLog);
-        
-        if (APPLICATION_ENV === 'development') {
-            Api_Error::getLogger()->log(
-                PHP_EOL. PHP_EOL . str_repeat('=', 100) .
-                PHP_EOL, Zend_Log::INFO
-            );
-        }
+        if (array_key_exists($remoteAddress, $devAddresses)) {
+            
+            $apiLog = new Zend_Log();
+            $apiLogWriter = new Zend_Log_Writer_Stream(realpath(APPLICATION_PATH . '/../log/api.log'));
+            $apiLog->addWriter($apiLogWriter);
+            Api_Registry::set('log', $apiLog);
+            
+        } 
         
         Zend_Controller_Front::getInstance()->registerPlugin(new BootstrapPlugin($this), 1);
     }
@@ -182,7 +163,6 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
 
         $userKey = $request->getParam(Api_Constant::USER_KEY);
         if ($userKey) {
-            quickLog('Starting session with user key: ' . $userKey);
             Api_UserSession::init($userKey);
         }
 

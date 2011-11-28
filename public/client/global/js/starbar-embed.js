@@ -77,7 +77,7 @@
                     // fire login callback 
                     if (sayso.client.loginCallback) sayso.client.loginCallback();
                 } 
-            }, 3000);
+            }, 500);
         }
     
         var div = document.createElement('div');

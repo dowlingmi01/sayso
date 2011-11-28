@@ -16,12 +16,13 @@
         };
     }
     if (!window.sayso.baseDomain) {
-        window.sayso.baseDomain = 'app-staging.saysollc.com';
-        window.sayso.environment = 'STAGE';
+        window.sayso.baseDomain = 'app.saysollc.com';
+        window.sayso.environment = 'PROD';
     }
 </script>
 <script type="text/javascript">
-    // ** customer changes to above config go here ***
+    // Hello Music customization
+    // loginCallback can be used to open a login modal or re-direct a user to a login page
     window.sayso.client.loginCallback = function () {};
 </script>
 <script type="text/javascript" src="//<?= Registry::getConfig()->baseDomain ?>/client/global/js/starbar-embed.js"></script>

@@ -10,6 +10,22 @@ class Admin_UserController extends Admin_CommonController
     public function init()
     {
         parent::init();
+
+        if (!$this->_request->isXmlHttpRequest())
+        {
+            $this->setLayoutBasics();
+        }
+    }
+
+    public function indexAction()
+    {
+        if(!$this->checkAccess(array('superuser')))
+        {
+            $this->_helper->viewRenderer->setNoRender(true);
+        }
+
+        $this->view->headScript()->appendFile('/modules/admin/user/index.js');        
+        $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Add New</a>';
     }
 
     public function loginAction()

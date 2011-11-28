@@ -74,5 +74,30 @@ class Study_Tag extends Record
         );
         return array_merge(parent::exportProperties($parentObject), $props);
     }
+    
+	/**
+     * Get properties (used for serialization)
+     * 
+     * @see Object::serialize
+     * @return array
+     */
+    protected function _getProperties() {
+        return array_merge(array(
+        	'_domains' => $this->_domains,
+        	'_creatives' => $this->_creatives
+        ), parent::_getProperties());
+    }
+    
+    /**
+     * Restore properties from array (used with serialization)
+     * 
+     * @see Object::unserialize
+     * @param array $properties
+     */
+    protected function _restoreProperties (array $properties) {
+        $this->_domains = $properties['_domains'];
+        $this->_creatives = $properties['_creatives'];
+        parent::_restoreProperties($properties);
+    }
 }
 

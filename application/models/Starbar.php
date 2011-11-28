@@ -78,6 +78,14 @@ class Starbar extends Record
         return $this->_visibility;
     }
     
+    /**
+     * Are Adjuster ads enabled for this instance?
+     * @return boolean
+     */
+    public function adjusterAdsEnabled () {
+        return in_array('adjuster_ads', explode(',', $this->flags));
+    }
+    
     public function exportData() {
         $fields = array(
             'short_name',
@@ -85,7 +93,8 @@ class Starbar extends Record
             'description',
             'user_pseudonym',
             'domain',
-            'auth_key'
+            'auth_key',
+            'flags'
         );
         return array_intersect_key($this->getData(), array_flip($fields));
     }

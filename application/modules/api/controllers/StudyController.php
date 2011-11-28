@@ -26,10 +26,21 @@ class Api_StudyController extends Api_GlobalController
     }
     
     public function getAllAction () {
-        $sql = new Sql_GetStudies();
-        $sql->setOrderBy(array('s.created' => 'DESC'));
-        $sql->setPagination($this->getPageNumber(), $this->getPageSize());
-        $studies = $sql->run();
+        
+        // @todo when new studies are created, delete the cache(s) via:
+        // Api_Cache::clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array('studies'));
+        
+        $cache = Api_Cache::getInstance('Studies_GetAll_RecentOrder', Api_Cache::LIFETIME_HOUR);
+        if ($cache->test()) {
+            $studies = $cache->load();
+        } else {
+            $sql = new Sql_GetStudies();
+            $sql->setOrderBy(array('s.created' => 'DESC'));
+            $sql->setPagination($this->getPageNumber(), $this->getPageSize());
+            $studies = $sql->run();
+            $cache->save($studies, array('studies')); // <-- note 'studies' tag used for cleaning
+        }
+        ObjectExporter_Array::$escapeQuotes = true;
         return $this->_resultType($studies);
     }
     

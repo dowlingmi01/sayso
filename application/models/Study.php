@@ -45,6 +45,29 @@ class Study extends Record
         );
         return array_merge(parent::exportProperties($parentObject), $props);
     }
+    
+	/**
+     * Get properties (used for serialization)
+     * 
+     * @see Object::serialize
+     * @return array
+     */
+    protected function _getProperties() {
+        return array_merge(array(
+        	'_cells' => $this->_cells
+        ), parent::_getProperties());
+    }
+    
+    /**
+     * Restore properties from array (used with serialization)
+     * 
+     * @see Object::unserialize
+     * @param array $properties
+     */
+    protected function _restoreProperties (array $properties) {
+        $this->_cells = $properties['_cells'];
+        parent::_restoreProperties($properties);
+    }
 
     /**
      * @param Study $study

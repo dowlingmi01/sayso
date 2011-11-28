@@ -26,6 +26,9 @@ $SQ(function () {
         }
     }
     
+    // required params
+    if (!starbar.id || !starbar.user.id || !starbar.user.key || !starbar.authKey) return;
+    
     // setup
     
     var sayso = window.sayso,

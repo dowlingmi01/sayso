@@ -15,7 +15,7 @@
         
         var elemPage = $SQ('#sayso-onboard');
         var elemOverlay = $SQ('#sayso-onboard #sso_wrapper');
-				var elemClose = $SQ('#sayso-onboard #sso_wrapper #sso_close');
+		var elemClose = $SQ('#sayso-onboard #sso_wrapper #sso_close');
 
         elemPage.height($SQ(window).height());
         elemPage.width($SQ(window).width());
@@ -55,20 +55,31 @@
             }
             if ($SQ('#sso_wrapper input[type=radio]').is(':checked')) {
                 
+                var _this = $SQ(this);
                 if (navigator.userAgent.match('Chrome')) {
                     // For Chrome users, prompt to reload the page
-                    $SQthis = $SQ(this);
                     setTimeout(function(){ 
-                    	$SQthis.text(sayso.client.meta.customStartMessage);
-                        $SQthis.unbind('click').click(function (e) {
+                        _this.text(sayso.client.meta.customStartMessage);
+                        _this.unbind('click').click(function (e) {
                             e.preventDefault();
                             location.reload();
                         });
                     }, 10000);
-                    
+                } else if (navigator.userAgent.match('Safari')) {
+                    _this.addClass('sso_theme_button_disabled');
+                    _this.closest('form').find('p:first').hide();
+                    elemOverlay.find('span.sso_main_content').fadeOut('fast', function () { 
+                        $SQ(this).html('<h3 style="font-size: 2.2em; position: relative; top: 10px;">Open the app from<br/>your downloads panel,<br/>install it and then<br/>click Start the Music.</h3><br/><br/><br/><br/>');
+                        _this.text(sayso.client.meta.customStartMessage);
+                        _this.removeClass('sso_theme_button_disabled');
+                        _this.unbind('click').click(function (e) {
+                            e.preventDefault();
+                            location.reload();
+                        });
+                    });
                 } else {
                     // INSTALLING!
-                    $SQ(this).addClass('sso_theme_button_disabled');
+                    _this.addClass('sso_theme_button_disabled');
                     setCookie('sayso-installing', 1, 1);
                 }
             } else {

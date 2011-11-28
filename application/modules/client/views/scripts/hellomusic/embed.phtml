@@ -12,12 +12,16 @@
                 userLoggedInKey : 'CHOMPUID',
                 customStartMessage : 'Start the Music!'
             },
-            loginCallback : function () { }
+            loginCallback : null
         };
     }
     if (!window.sayso.baseDomain) {
         window.sayso.baseDomain = 'app-staging.saysollc.com';
         window.sayso.environment = 'STAGE';
     }
+</script>
+<script type="text/javascript">
+    // ** customer changes to above config go here ***
+    window.sayso.client.loginCallback = function () {};
 </script>
 <script type="text/javascript" src="//<?= Registry::getConfig()->baseDomain ?>/client/global/js/starbar-embed.js"></script>

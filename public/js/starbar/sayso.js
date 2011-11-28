@@ -314,7 +314,7 @@ $SQ(function () {
     // ADjuster Setup Studies ------------------------
 
     if (sayso.study.studies && 
-        ((new Date().getTime()) - sayso.study.studiesTimestamp) < 60000) { // study data is cached
+        ((new Date().getTime()) - sayso.study.studiesTimestamp) < (60 * 10 /* minutes */ * 1000)) { // study data is cached
         
         if (sayso.study.studies && sayso.study.studies !== 'none') {
             // valid studies 

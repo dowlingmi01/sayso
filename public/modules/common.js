@@ -142,6 +142,10 @@ function bindDefaults()
             }
         });
     }
+
+    // all menu becomes buttons
+    $('nav.admin_menu li a').button({});
+
 }
 
 $(function(){ bindDefaults();});

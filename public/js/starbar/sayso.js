@@ -15,6 +15,9 @@
 
 $SQ(function () {
 
+    var sayso = window.sayso,
+        starbar = window.sayso.starbar;
+    
     // Check required params
     
     if (!starbar.id || !starbar.user.id || !starbar.user.key || !starbar.authKey) return;
@@ -32,9 +35,7 @@ $SQ(function () {
     
     // setup
     
-    var sayso = window.sayso,
-        starbar = window.sayso.starbar,
-        log = window.sayso.log,
+    var log = window.sayso.log,
         warn = window.sayso.warn,
         inIframe = (top !== self);
 

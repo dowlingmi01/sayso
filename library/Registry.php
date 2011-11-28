@@ -26,6 +26,8 @@ class Registry extends Api_Registry
                 $env = 'TEST'; break;
             case 'staging' :
                 $env = 'STAGE'; break;
+            case 'demo' :
+                $env = 'DEMO'; break;
             case 'production' :
             default :
                 $env = 'PROD'; break;

@@ -95,6 +95,22 @@
         $SQ.jsLoadTimer = jsLoadTimer;
         $SQ.cssLoadTimer = cssLoadTimer;
         
+        // JSON support for stupid browsers
+
+        if (sayso.jsonSupportMissing && !window.JSON) {
+            var jsJson = document.createElement('script'); 
+            jsJson.src = '//' + sayso.baseDomain + '/js/starbar/json2.min.js';
+            starbarContainer.appendChild(jsJson);
+        }
+        
+        // ADjuster 
+        
+        var jsSayso = document.createElement('script'); 
+        jsSayso.src = '//' + sayso.baseDomain + '/js/starbar/sayso.js';
+        starbarContainer.appendChild(jsSayso);
+        
+        // App loading
+        
         if (!inIframe) {
             
             // client site detection
@@ -146,20 +162,6 @@
                 } 
             });
         }
-
-		// JSON support for stupid browsers
-
-		if (sayso.jsonSupportMissing) {
-			var jsJson = document.createElement('script'); 
-			jsJson.src = '//' + sayso.baseDomain + '/js/starbar/json2.min.js';
-			starbarContainer.appendChild(jsJson);
-		}
-
-        // ADjuster 
-        
-        var jsSayso = document.createElement('script'); 
-        jsSayso.src = '//' + sayso.baseDomain + '/js/starbar/sayso.js';
-        starbarContainer.appendChild(jsSayso);
     
     });
     
@@ -214,6 +216,14 @@
                     sayso.starbar.game = response.game;
 				}
                 
+                // sayso.flags can be used anywhere via sayso.flags.match('<flag_name>')
+                // see starbar table, flags column
+                if (starbar.flags) {
+                    sayso.flags = starbar.flags;
+                } else {
+                    sayso.flags = 'none';
+                }
+                
                 // update global/persistent vars on kobj.net
                 var app = KOBJ.get_application(sayso.starbar.kynetxAppId);
                 app.raise_event(
@@ -222,7 +232,8 @@
                         'starbar_id' : starbar.id, 
                         'auth_key' : starbar.auth_key,
                         'user_id' : starbar._user.id,
-                        'user_key' : starbar._user._key
+                        'user_key' : starbar._user._key,
+                        'flags' : sayso.flags
                     }
                 );
                 

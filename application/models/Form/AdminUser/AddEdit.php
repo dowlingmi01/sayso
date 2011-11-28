@@ -6,7 +6,17 @@
  */
 class Form_AdminUser_AddEdit extends Zend_Form
 {
-        
+
+    /**
+     * @var AdminUser
+     */
+    private $user;
+
+    public function setUser(AdminUser $user)
+    {
+        $this->user = $user;
+    }
+
     public function buildDeferred()
     {
         $this->setAttrib('id', 'formEntity');
@@ -19,9 +29,15 @@ class Form_AdminUser_AddEdit extends Zend_Form
         
         $passwPassword =
             $this->createElement('password', 'passwPassword')
-            ->setLabel('Password:')
-            ->addValidator(new Zend_Validate_NotEmpty())
-            ->setRequired(true);
+            ->setLabel('Password:');
+
+        // Password needed for new users
+        if(!($this->user instanceof AdminUser))
+        {
+            $passwPassword
+                ->addValidator(new Zend_Validate_NotEmpty())
+                ->setRequired(true);
+        }
 
         $txtFirstName =
             $this->createElement('text', 'txtFirstName')

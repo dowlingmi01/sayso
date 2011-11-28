@@ -84,7 +84,7 @@ class Admin_UserController extends Admin_CommonController
             return '<a href="javascript:alert(\'You cannot edit yourself...\');void(null);">'.
                 ($email ? $email : '<span class="disabled">email malformed</span>') .'</a>';
         }
-        return '<a href="' . $this->view->url(array('action' => 'edit', 'study_id' => intval($id))) . '">'.
+        return '<a href="' . $this->view->url(array('action' => 'edit', 'entry_id' => intval($id))) . '">'.
             ($email ? $email : '<span class="disabled">email malformed</span>') .'</a>';
     }
 
@@ -94,7 +94,7 @@ class Admin_UserController extends Admin_CommonController
         {
             return '-';
         }
-        return  '<a href="' . $this->view->url(array('action' => 'edit', 'study_id' => intval($id)))
+        return  '<a href="' . $this->view->url(array('action' => 'edit', 'entry_id' => intval($id)))
                     . '" class="button-edit" title="Edit"></a>';
     }
 
@@ -104,7 +104,7 @@ class Admin_UserController extends Admin_CommonController
         {
             return '-';
         }
-        return  '<a href="' . $this->view->url(array('action' => 'delete', 'study_id' => intval($id)))
+        return  '<a href="' . $this->view->url(array('action' => 'delete', 'entry_id' => intval($id)))
                     . '" class="button-delete" title="Delete"></a>';
     }
 
@@ -146,7 +146,59 @@ class Admin_UserController extends Admin_CommonController
 
     public function editAction()
     {
+        if(!$this->checkAccess(array('superuser')))
+        {
+            $this->_helper->viewRenderer->setNoRender(true);
+        }
 
+        $this->view->headScript()->appendFile('/modules/admin/user/add.js');
+
+        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">List Studies</a>';
+        $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Add New</a>';
+
+        $entry = new AdminUser();
+        $entry->loadData(intval($this->_getParam('entry_id')));
+        if(false === $entry->id > 0)
+        {
+            throw new Exception('Bad parameters, possibly a security issue..!');
+            $this->rd->gotoSimple('index');
+        }
+        $this->view->entry = $entry;
+        $this->view->form   = new Form_AdminUser_AddEdit();
+        $this->view->form->setUser($entry);
+        $this->view->form->buildDeferred();
+
+        if ($this->_request->isPost() && $this->view->form->isValid($_POST))
+        {
+            Record::beginTransaction();
+            try
+            {
+                $values = $this->view->form->getValues();
+                AdminUser::saveUserFromValues($entry, $values, 'update');
+                Record::commitTransaction();
+                $this->msg->addMessage('Success: entry saved!');
+                $this->rd->gotoSimple('index');
+            }
+            catch(Exception $e)
+            {
+                $this->msg->addMessage('Error: entry cannot be saved!');
+                if(getenv('APPLICATION_ENV') != 'production')
+                {
+                    $this->msg->addMessage($e->getMessage());
+                    $this->view->render('user/edit.phtml');
+                }
+            }
+        }
+        else
+        {
+            $details = array(
+                'txtLogin'      => $entry->email,
+                'passwPassword' => '',
+                'txtFirstName'  => $entry->first_name,
+                'txtLastName'   => $entry->last_name ,
+			);
+			$this->view->form->populate($details);
+        }
     }
 
 

@@ -50,18 +50,21 @@ class AdminUser extends Record
      */
     public static function saveUserFromValues(AdminUser $adminUser, array $values, $action = 'create')
     {
-        if($adminUser->getId() > 0 && self::findCountByEmail($values['txtLogin']))
+        if($adminUser->getId() > 0 && self::findCountByEmail($values['txtLogin'], $adminUser->getId()))
         {
            throw new Exception('This email is already used!');
         }
-        elseif(self::findCountByEmail($values['txtLogin'], $adminUser->getId()))
+        elseif(!$adminUser->getId() && self::findCountByEmail($values['txtLogin']))
         {
            throw new Exception('This email is already used!');
         }
         $adminUser->first_name  = $values['txtFirstName'];
         $adminUser->last_name   = $values['txtLastName'];
         $adminUser->email       = $values['txtLogin'];
-        $adminUser->password    = $values['passwPassword'];
+        if($values['passwPassword'] > '')
+        {
+            $adminUser->password = md5($values['passwPassword']);
+        }
         $adminUser->save();
     }
 
@@ -79,8 +82,7 @@ class AdminUser extends Record
             $query      .= " AND id != ? ";
             $params[]   = $excludeId;
         }
-
-        $results = call_user_func_array(array('Db_Pdo', 'fetch'), array_merge(array($query), $params));
+        $results = call_user_func_array(array('Db_Pdo', 'fetch'), array_merge(array($query), $params));        
         return intval($results['cnt']);
     }
 

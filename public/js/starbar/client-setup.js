@@ -1,6 +1,7 @@
 (function () {
     
     if (window.saysoClientSetup) return;
+    if (top !== self) return;
     
     var partners = {
         hellomusic : {

@@ -158,6 +158,13 @@ class Admin_UserController extends Admin_CommonController
 
         $entry = new AdminUser();
         $entry->loadData(intval($this->_getParam('entry_id')));
+
+        if($entry->getId() == $this->currentUser->getId())
+        {
+            $this->msg->addMessage('Error: you cannot edit yourself!');
+            $this->rd->gotoSimple('index');
+        }
+
         if(false === $entry->id > 0)
         {
             throw new Exception('Bad parameters, possibly a security issue..!');
@@ -201,6 +208,46 @@ class Admin_UserController extends Admin_CommonController
         }
     }
 
+    public function deleteAction()
+    {
+        if(!$this->checkAccess(array('superuser')))
+        {
+            $this->_helper->viewRenderer->setNoRender(true);
+        }
+
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+
+        try
+        {
+            $entry = new AdminUser();
+            $entry->loadData(intval($this->_getParam('entry_id')));
+
+            if($entry->getId() == $this->currentUser->getId())
+            {
+                $this->msg->addMessage('Error: you cannot delete yourself!');
+                $this->rd->gotoSimple('index');
+            }
+
+            if(false === $entry->id > 0)
+            {
+                throw new Exception('Bad parameters, possibly a security issue..!');
+            }
+            $entry->delete();
+        }
+        catch(Exception $e)
+        {
+            $this->msg->addMessage('Operation caused exception!');
+            if(getenv('APPLICATION_ENV') != 'production')
+            {
+                $this->msg->addMessage($e->getMessage());
+            }
+            $this->rd->gotoSimple('index');
+        }
+
+        $this->msg->addMessage('Entry deleted!');
+        $this->rd->gotoSimple('index');
+    }
 
     public function loginAction()
     {

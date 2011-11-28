@@ -43,4 +43,45 @@ class AdminUser extends Record
         return $this->_roles;
     }
 
+    /**
+     * Save user
+     * @param AdminUser $adminUser
+     * @param array $values
+     */
+    public static function saveUserFromValues(AdminUser $adminUser, array $values, $action = 'create')
+    {
+        if($adminUser->getId() > 0 && self::findCountByEmail($values['txtLogin']))
+        {
+           throw new Exception('This email is already used!');
+        }
+        elseif(self::findCountByEmail($values['txtLogin'], $adminUser->getId()))
+        {
+           throw new Exception('This email is already used!');
+        }
+        $adminUser->first_name  = $values['txtFirstName'];
+        $adminUser->last_name   = $values['txtLastName'];
+        $adminUser->email       = $values['txtLogin'];
+        $adminUser->password    = $values['passwPassword'];
+        $adminUser->save();
+    }
+
+    /**
+     * Check if email is unique
+     * @param type $email
+     * @param type $excludeId
+     */
+    public static function findCountByEmail($email, $excludeId = 0)
+    {
+        $query  = "SELECT COUNT(*) AS cnt FROM admin_user WHERE email = ?";
+        $params = array($email);
+        if($excludeId)
+        {
+            $query      .= " AND id != ? ";
+            $params[]   = $excludeId;
+        }
+
+        $results = call_user_func_array(array('Db_Pdo', 'fetch'), array_merge(array($query), $params));
+        return intval($results['cnt']);
+    }
+
 }

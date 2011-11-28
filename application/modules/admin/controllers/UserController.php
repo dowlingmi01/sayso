@@ -79,22 +79,76 @@ class Admin_UserController extends Admin_CommonController
     public function generateEditLink($id, $email)
     {
         $email = filter_var($email, FILTER_VALIDATE_EMAIL) ? $email : '';
-        
+        if($this->currentUser->getId() == $id)
+        {
+            return '<a href="javascript:alert(\'You cannot edit yourself...\');void(null);">'.
+                ($email ? $email : '<span class="disabled">email malformed</span>') .'</a>';
+        }
         return '<a href="' . $this->view->url(array('action' => 'edit', 'study_id' => intval($id))) . '">'.
             ($email ? $email : '<span class="disabled">email malformed</span>') .'</a>';
     }
 
     public function generateEditButtonLink($id)
     {
+        if($this->currentUser->getId() == $id)
+        {
+            return '-';
+        }
         return  '<a href="' . $this->view->url(array('action' => 'edit', 'study_id' => intval($id)))
                     . '" class="button-edit" title="Edit"></a>';
     }
 
     public function generateDeleteButtonLink($id)
     {
+        if($this->currentUser->getId() == $id)
+        {
+            return '-';
+        }
         return  '<a href="' . $this->view->url(array('action' => 'delete', 'study_id' => intval($id)))
                     . '" class="button-delete" title="Delete"></a>';
     }
+
+    public function addAction()
+    {
+        if(!$this->checkAccess(array('superuser')))
+        {
+            $this->_helper->viewRenderer->setNoRender(true);
+        }
+
+        $this->view->headScript()->appendFile('/modules/admin/user/add.js');
+        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">List Admins</a>';
+
+        $this->view->form = new Form_AdminUser_AddEdit();
+        $this->view->form->buildDeferred();
+
+        if ($this->_request->isPost() && $this->view->form->isValid($_POST))
+        {
+            Record::beginTransaction();
+            try
+            {
+                $adminUser = new AdminUser();
+                $values = $this->view->form->getValues();
+                AdminUser::saveUserFromValues($adminUser, $values);
+                Record::commitTransaction();
+                $this->msg->addMessage('Success: entry saved!');
+                $this->rd->gotoSimple('index');
+            }
+            catch(Exception $e)
+            {
+                $this->msg->addMessage('Error: entry cannot be saved!');
+                if(getenv('APPLICATION_ENV') != 'production')
+                {
+                    $this->msg->addMessage($e->getMessage());
+                }
+            }
+        }
+    }
+
+    public function editAction()
+    {
+
+    }
+
 
     public function loginAction()
     {

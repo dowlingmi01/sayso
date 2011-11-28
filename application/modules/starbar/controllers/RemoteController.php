@@ -338,13 +338,10 @@ class Starbar_RemoteController extends Api_GlobalController
         
         $results = Db_Pdo::fetchAll('SELECT * FROM external_user WHERE install_ip_address = ? AND install_user_agent = ?', $ipAddress, $userAgent);
         
-        if (!$results) {
-            // this error happens frequently during installations with multiple tabs
-            $exception = new Api_Exception(Api_Error::create(Api_Error::APPLICATION_ERROR, 'Attempt to lookup external user from IP address (' . $ipAddress . ') and user agent (' . $userAgent . ') failed. Cannot determine Starbar.'));
-            Api_Error::log($exception, $this->_request, null, true); // true = do not email errors
-            exit();
-        }
+        if (!$results) exit(); // invalid request, ignore. IP/UA either were never inserted correctly or (more likely) have already been cleaned up
+        
         if (count($results) > 1) {
+            // keep throwing this and sending email since it is fairly rare and may indicate other problems
             throw new Api_Exception(Api_Error::create(Api_Error::APPLICATION_ERROR, 'More than one external user with the same IP address and user agent! IP: ' . $ipAddress . ', user agent: ' . $userAgent . ' for ' . count($results) . ' users'));
         }
             
@@ -408,7 +405,7 @@ class Starbar_RemoteController extends Api_GlobalController
             if ($userSession->hasId()) {
                 if ($userSession->getId() !== $user->getId()) { 
                     // session has a different user id, so use that one instead
-                    quickLog('User session (via key: ' . $userSession->getkey() . ') is for user id: ' . $userSession->getId() . ', however the user we just ' . ($newUser ? 'created' : 'retreived (via external user ' . $externalUser->getId() . ')') . ' is id: ' . $user->getId() . '. Deleting user record ' . $user->getId() . ' and using ' . $userSession->getId() . ' instead');
+                    quickLog('User session (via key: ' . $userSession->getkey() . ') is for user id: ' . $userSession->getId() . ', however the user we just ' . ($newUser ? 'created' : 'retreived (via external user ' . $externalUser->getId() . ')') . ' is id: ' . $user->getId() . '. Deleting user record ' . $user->getId() . ' and using session user ' . $userSession->getId() . ' instead');
                     
                     // delete the user we just created
                     $user->delete();

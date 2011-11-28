@@ -15,6 +15,10 @@
 
 $SQ(function () {
 
+    // Check required params
+    
+    if (!starbar.id || !starbar.user.id || !starbar.user.key || !starbar.authKey) return;
+    
     // ADjuster blacklist
     
     var trackerBlackList = [/(sayso|saysollc)\.com/, /say\.so/];
@@ -25,9 +29,6 @@ $SQ(function () {
             return;
         }
     }
-    
-    // required params
-    if (!starbar.id || !starbar.user.id || !starbar.user.key || !starbar.authKey) return;
     
     // setup
     
@@ -52,7 +53,6 @@ $SQ(function () {
     };
 
     if (inIframe) log('iFrame');
-    
     
     /**
      * Helper function which can be used outside this context

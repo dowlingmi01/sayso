@@ -80,9 +80,8 @@
                 } else if (navigator.userAgent.match('MSIE')) {
                     // For IE users, prompt to restart browser
                     setTimeout(function(){ 
-                        elemOverlay.find('span.sso_main_content').fadeOut('fast', function () { 
-                            $SQ(this).html('<h3 style="font-size: 2.2em; position: relative; top: 10px;">Please restart Internet Explorer after installing the app to complete the installation.</h3><br/><br/><br/><br/>');
-                        });
+                        elemOverlay.find('span.sso_main_content').html('<h3>Please restart Internet Explorer after installing the app to complete the installation.</h3><br/><br/><br/><br/>');
+                        elemOverlay.find('form').html('');
                     }, 10000);
                 } else {
                     // INSTALLING!

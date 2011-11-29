@@ -61,7 +61,7 @@
 	        alert('Sorry, your web browser ('+navigator.appName+appVersion+') doesn\'t support the cool features of the Say.So Music Bar. For the optimal experience, please use Google Chrome (www.google.com/chrome), Mozilla Firefox (www.getfirefox.com) or Safari (http://www.apple.com/safari/download/). And we support Internet Explorer 8 and above.');
 	        return; // unsupported browser
 	    }
-        setCookie('sayso-install', 1, 1);
+        setCookie('sayso-install', installParam, 1);
     }
     
     if (!installCookie && !installParam) {
@@ -81,7 +81,15 @@
             // and in return set cookies on the client
             
             var iframe = document.createElement('iframe');
-            iframe.src = '//' + sayso.baseDomain + '/starbar/remote/pre-install?auth_key=' + sayso.client.authKey + '&client_name=' + sayso.client.name + '&client_uuid=' + sayso.client.uuid + '&client_uuid_type=' + sayso.client.uuidType + '&client_user_logged_in=' + (sayso.client.userLoggedIn ? 'true' : '') + '&install_token=' + getRandomToken();
+            iframe.src = 
+                '//' + sayso.baseDomain + '/starbar/remote/pre-install' + 
+                '?auth_key=' + sayso.client.authKey + 
+                '&client_name=' + sayso.client.name + 
+                '&client_uuid=' + sayso.client.uuid + 
+                '&client_uuid_type=' + sayso.client.uuidType + 
+                '&client_user_logged_in=' + (sayso.client.userLoggedIn ? 'true' : '') + 
+                '&install_token=' + getRandomToken() + 
+                '&install_origination=' + (installParam ? installParam : installCookie);
             iframe.width= '0'; iframe.height = '0'; 
             iframe.scrolling='no';
             // note 'style' property cannot be set directly. must use it's individual properties instead
@@ -136,7 +144,7 @@
                         // overlay
                         container.html(response.data.html);
                         container.fadeTo('slow', 1, function () {
-                            if ((!loginCookie || !userUniqueId) && confirm('Please log in first to install the Say.So app')) {
+                            if ((!loginCookie || !userUniqueId) && confirm('Please log in first to install the app')) {
                                 $SQ('#sayso-onboard,#sso_wrapper').hide();
                                 // fire login callback 
                                 if (sayso.client.loginCallback) sayso.client.loginCallback();

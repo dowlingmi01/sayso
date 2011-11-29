@@ -15,6 +15,7 @@ class External_User extends Record
             'starbar_id',
             'install_token',
             'install_ip_address',
+            'install_origination',
             'email',
             'username',
             'first_name',

@@ -1,0 +1,1 @@
+ALTER TABLE external_user ADD install_origination varchar(64) DEFAULT NULL AFTER install_begin_time;

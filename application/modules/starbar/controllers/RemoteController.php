@@ -165,7 +165,7 @@ class Starbar_RemoteController extends Api_GlobalController
         if (!$this->client_uuid) return; 
         
         // validate
-        $this->_validateRequiredParameters(array('auth_key', 'client_name', 'client_uuid', 'client_uuid_type', 'install_token'));
+        $this->_validateRequiredParameters(array('auth_key', 'client_name', 'client_uuid', 'client_uuid_type', 'install_token', 'install_origination'));
         
         // authorize the app. This just checks that the key exists
         // and if not, throws an API exception
@@ -201,6 +201,7 @@ class Starbar_RemoteController extends Api_GlobalController
         $externalUser->uuid_type = $this->client_uuid_type;
         $externalUser->starbar_id = $starbarData['id']; // unique
         $externalUser->install_token = $this->install_token;
+        $externalUser->install_origination = $this->install_origination;
         $externalUser->save();
         
         // set cookies (to be retreived in post-install)

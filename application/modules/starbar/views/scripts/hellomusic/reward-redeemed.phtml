@@ -18,7 +18,29 @@ $userAddress = $this->user_address;
     </div><!-- .sb_rewardImg -->
     <div class="sb_rewardOrder">
         <?php if ($good->hasAttribute('giveaway_token')) : ?>
-            <p align="center"><strong><small>The giveaway will be drawn on Nov. 21, 2011</small></strong></p>
+			<?
+			switch((int)$good->id) {
+				case 2036:
+					$drawDate = "Dec. 12, 2011";
+					break;
+
+				case 2038:
+					$drawDate = "Dec. 19, 2011";
+					break;
+
+				case 2044:
+					$drawDate = "Dec. 26, 2011";
+					break;
+
+				case 2054:
+					$drawDate = "Jan. 2, 2012";
+					break;
+
+				default:
+					$drawDate = "(Date TBD)";
+			}
+			?>
+            <p align="center"><strong><small>The giveaway will be drawn on <?= $drawDate ?></small></strong></p>
             <p>Remember, you can enter as many times as you want and increase your likelihood of winning.</p>
         <?php else : ?>
             <p align="center"><strong><small>Your order will arrive via USPS in 2-4 weeks</small></strong></p>

@@ -76,10 +76,8 @@
 	var geckoVersion = getGeckoVersion();
 	if (ieVersion > -1 && ieVersion < 9) {
 		sayso.disableJqueryEffects = true;
-		sayso.jsonSupportMissing = true;
 	} else {
 		sayso.disableJqueryEffects = false;
-		sayso.jsonSupportMissing = false;
 	}
 
 	// test if HTML5 placeholder is supported or not
@@ -97,7 +95,7 @@
         
         // JSON support for stupid browsers
 
-        if (sayso.jsonSupportMissing && !window.JSON) {
+        if (!window.JSON || !window.JSON.stringify || !window.JSON.parse) {
             var jsJson = document.createElement('script'); 
             jsJson.src = '//' + sayso.baseDomain + '/js/starbar/json2.min.js';
             starbarContainer.appendChild(jsJson);

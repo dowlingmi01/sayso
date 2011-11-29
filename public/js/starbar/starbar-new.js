@@ -55,7 +55,28 @@ $SQ(function(){
 		    closePopBox();
 		}
 	});
-	
+
+	// fix FLASH
+	$SQ('embed').each(function(index) {
+		$SQembed = $SQ(this);
+		$SQparent = $SQ(this).parent();
+
+		if ($SQparent.is('object')) {
+			$SQwmodeParam = $SQ('param[name="wmode"]', $SQparent);
+			if ($SQwmodeParam.length == 1) {
+				if ($SQwmodeParam.attr('value') != 'transparent' && $SQwmodeParam.attr('value') != 'opaque') {
+					$SQwmodeParam.attr('value', 'transparent');
+				}
+			} else {
+				$SQparent.append('<param name="wmode" value="transparent" />');
+			}
+			$SQparent.css('z-index', '2000000001');
+		}
+
+		$SQembed.attr('wmode', 'transparent');
+		$SQembed.css('z-index', '2000000001');
+	});
+
 	/**
 	 * Get the data container of a given DOM object
 	 * - a "data container" (per this convention) is any DOM object

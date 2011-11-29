@@ -223,12 +223,10 @@ $SQ(function(){
             }
 
             // Done refreshing everything, set our local state to most recent
-            starbar.state.local = starbar.state;
+            starbar.state.local.profile = starbar.state.profile;
+            starbar.state.local.game = starbar.state.game;
+            starbar.state.local.visibility = starbar.state.visibility;
 
-            // example:
-            // if (starbar.state.notifications === 'update') updateAlerts();
-            // also, in updateAlerts() or wherever, don't forget to reset the
-            // value back to 'ready' and call starbar.state.update() again
         };
         var app = KOBJ.get_application(starbar.kynetxAppId);
         app.raise_event('refresh_state');

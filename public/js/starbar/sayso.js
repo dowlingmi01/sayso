@@ -213,6 +213,7 @@ $SQ(function () {
     // ================================================================
     // Tweets
     // @todo handle iframe'd tweets
+    // twitter.com/intent/tweet .. watch #update-form submit
     
     if (location.hostname.match('twitter.com'))
     {
@@ -248,6 +249,8 @@ $SQ(function () {
     // ================================================================
     // Facebook Like
     // @todo handle iframe'd likes, shares, reccomends, etc
+    // watch when current page (iframe) is one of the following URLs
+    // then: watch for .connect_widget_like_button click (for example)
     // @hack the following JS uses mouseover/mouseout to predict clicking 
     //       Like until we get the iframe'd version done
 

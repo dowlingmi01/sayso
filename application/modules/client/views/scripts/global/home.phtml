@@ -19,7 +19,7 @@ $shortName = strtolower(Zend_Controller_Front::getInstance()->getRequest()->getC
 <!-- SIMULATED customer login (popup) -->
 
 
-<div id="simulate-login" style="background: white; opacity: 1; padding: 10px; margin: 15px; border: solid 2px black; width: 300px; font-family: Verdana; font-size: .8em; z-index: 10000; position: absolute; display: none;">
+<div id="simulate-login" style="background: white; opacity: 1; padding: 10px; margin: auto; border: solid 2px black; width: 300px; font-family: Verdana; font-size: .8em; z-index: 10000; position: relative; display: none;">
     <h2 style="margin: 2px;">Login <small id="simulate-login-status" style="font-size: .6em; color: green;"><?= $this->userLoggedIn ? '(logged in)' : '' ?></small></h2>
     <p style="margin: 2px;">Enter <strong>email</strong> to simulate user login</p>
     <small style="margin: 2px;">Changing email addresses (while the app is installed) simulates logging in as a different user</small>
@@ -75,7 +75,7 @@ $shortName = strtolower(Zend_Controller_Front::getInstance()->getRequest()->getC
             timer2.start('typeof $.fn.ajaxForm === "function"', function () {
                 
                 // login popup
-                setTimeout(function () {
+                sayso.client.loginCallback = function () {
                     $('#simulate-login').show();
                     
                     // ajax form
@@ -84,15 +84,10 @@ $shortName = strtolower(Zend_Controller_Front::getInstance()->getRequest()->getC
                         type : 'post',
                         dataType : 'jsonp',
                         success : function (response) {
-                            $('#simulate-login-status').text('(logged in)');
-                            
-                            // refresh page    
-                            setTimeout(function () {
-                                window.location.reload();
-                            }, 1000);
+                            window.location.reload();
                         }
                     });
-                }, 1500);
+                };
             });
         });
 

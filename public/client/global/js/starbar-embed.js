@@ -70,15 +70,7 @@
             
             // delete the install cookie
             setCookie('sayso-install', null, -10);
-        } else {
-            setTimeout(function () {
-                if (confirm('Please log in first to install the Say.So app')) {
-                    $SQ('#sayso-onboard,#sso_wrapper').hide();
-                    // fire login callback 
-                    if (sayso.client.loginCallback) sayso.client.loginCallback();
-                } 
-            }, 500);
-        }
+        } 
     
         var div = document.createElement('div');
         div.id = 'sayso-container';
@@ -123,7 +115,13 @@
                     setTimeout(function () {
                         // overlay
                         container.html(response.data.html);
-                        container.fadeTo('slow', 1);
+                        container.fadeTo('slow', 1, function () {
+                            if ((!loginCookie || !userUniqueId) && confirm('Please log in first to install the Say.So app')) {
+                                $SQ('#sayso-onboard,#sso_wrapper').hide();
+                                // fire login callback 
+                                if (sayso.client.loginCallback) sayso.client.loginCallback();
+                            }
+                        });
                     }, 1000);
                 }
             });

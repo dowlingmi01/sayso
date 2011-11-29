@@ -16,10 +16,28 @@
     
     var sayso = window.sayso;
      
-    if (!navigator.userAgent.match('Mozilla.*Gecko.*Firefox') && !navigator.userAgent.match('Chrome') &&
-        !navigator.userAgent.match('MSIE') && !navigator.userAgent.match('AppleWebKit((?!Mobile).)*Safari')) {
+	function getInternetExplorerVersion() {
+		var rv = -1; // Return value assumes failure.
+		if (navigator.appName == 'Microsoft Internet Explorer') {
+			var ua = navigator.userAgent;
+			var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+			if (re.exec(ua) != null)
+				rv = parseFloat(RegExp.$1);
+		}
+		return rv;
+	}
+
+	var ieVersion = getInternetExplorerVersion();
+
+    if (
+        (!navigator.userAgent.match('Mozilla.*Gecko.*Firefox') && !navigator.userAgent.match('Chrome') &&
+        !navigator.userAgent.match('MSIE') && !navigator.userAgent.match('AppleWebKit((?!Mobile).)*Safari'))
+       || 
+        (ieVersion > -1 && ieVersion < 8)
+    ) {
+        alert('Sorry, your web browser ('+navigator.userAgent+') is not currently supported by the Say.So Music Bar. For the optimal experience, please install Google Chrome (www.google.com/chrome) or Mozilla Firefox (www.getfirefox.com).');
         return; // unsupported browser
-    } 
+    }
     
     var installParam = getUrlParam('sayso-install'),
         installCookie = getCookie('sayso-install');

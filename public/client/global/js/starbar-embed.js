@@ -58,7 +58,11 @@
 	       || 
 	        (ieVersion > -1 && ieVersion < 8)
 	    ) {
-	        alert('Sorry, your web browser ('+navigator.appName+appVersion+') doesn\'t support the cool features of the Say.So Music Bar. For the optimal experience, please use Google Chrome (www.google.com/chrome), Mozilla Firefox (www.getfirefox.com) or Safari (http://www.apple.com/safari/download/). And we support Internet Explorer 8 and above.');
+	        if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i)) {
+	        	alert('Sorry! The Say.So Music Bar isn\'t yet available for mobile browsers. Join us via your computer when you can!');
+			} else {
+	        	alert('Sorry, your web browser ('+navigator.appName+appVersion+') doesn\'t support the cool features of the Say.So Music Bar. For an optimal experience, use Chrome (www.google.com/chrome), Firefox (www.getfirefox.com) or Safari (www.apple.com/safari). And we support Internet Explorer 8 and above.');
+			}
 	        return; // unsupported browser
 	    }
         setCookie('sayso-install', installParam, 1);

@@ -25,7 +25,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
         $this->setAttrib('id', 'mainForm')
             ->setAttrib('style', 'display:none;');
 
-        $nextBtn = $this->createElement('submit', 'nextBtn')
+        $nextBtn = $this->createElement('button', 'nextBtn')
             ->setLabel('Next  >')
             ->addDecorators(array(array('HtmlTag', array('tag' => 'div', 'class' => 'btn-bottom-left'))));
 
@@ -34,7 +34,17 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
             ->addDecorators(array(array('HtmlTag', array('tag' => 'div', 'class' => 'btn-bottom-right'))));
         
         $this->addElement($nextBtn);
-        $this->addElement($submitBtn);
+        $this->addElement($submitBtn);        
+
+        $freeLabel19 = new Form_Markup_Element_AnyHtml('freeLabel19');
+            $freeLabel19->setValue(' ')
+                ->removeDecorator('Label')
+                ->addDecorators(array(
+                    'ViewHelper',
+                    array('HtmlTag', array('tag' => 'div', 'class'=>'clear'))
+        ));
+
+        $this->addElement($freeLabel19);
 
         $this->setDecorators(array
             (

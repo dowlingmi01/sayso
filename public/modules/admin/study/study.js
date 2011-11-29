@@ -3,83 +3,157 @@
  *
  * @author alecksmart
  * @todo refactor messy html generation to use functions tor table rows and hiddens
- *
  */
 
 function advanceMain()
 {
-    
+    var product = parseInt($('input[name=radioProduct]:checked').val());
+    var error;
+
+    switch($.trim($('.ui-tabs-selected a span').text()))
+    {
+        case 'Basics':
+            error = validateTabsBasics();
+            if(error)
+            {
+                dialogAlert(error);
+                return;
+            }
+            switch(product)
+            {
+                case 1:
+                    $("#tabContainer").tabs('select', 3);
+                    break;
+                case 2:
+                    $("#tabContainer").tabs('select', 1);
+                    break;
+                case 3:
+                    $("#tabContainer").tabs('select', 2);
+                    break;
+            }
+            break;
+        case 'Behavioral Metrics':
+            error = validateTabsMetrics();
+            if(error)
+            {
+                dialogAlert(error);
+                return;
+            }
+            $("#tabContainer").tabs('select', 4);
+            break;
+        case 'Survey':
+            error = validateTabsSurvey()
+            if(error)
+            {
+                dialogAlert(error);
+                return;
+            }
+            $("#tabContainer").tabs('select', 5);
+            break;
+        case 'Quotas':
+            error = validateTabsQuotas();
+            if(error)
+            {
+                dialogAlert(error);
+                return;
+            }
+            $("#tabContainer").tabs('select', 6);
+            break;
+        case 'Cells':
+            error = validateTabsCells();
+            if(error)
+            {
+                dialogAlert(error);
+                return;
+            }
+            alert('Press Save Study button to submit the form!');
+            break;
+        case 'ADjuster Campaign':
+            error = validateTabsADCampaign();
+            if(error)
+            {
+                dialogAlert(error);
+                return;
+            }
+            $("#tabContainer").tabs('select', 3);
+            break;
+        case 'ADjuster Creative':
+            error = validateTabsADCreative();
+            if(error)
+            {
+                dialogAlert(error);
+                return;
+            }
+            $("#tabContainer").tabs('select', 3);
+            break;
+    }
 }
 
-function submitMain()
+function validateTabsBasics()
 {
     //Select Product
     var product = parseInt($('input[name=radioProduct]:checked').val());
     if(!product)
     {
-        dialogAlert('Please choose product!');
-        return false;
+        return 'Please choose product!';
     }
     //Study Name*
     if(!$('#txtStudyName').val())
     {
-        dialogAlert('Please fill in Study Name!');
-        return false;
+        return 'Please fill in Study Name!';
     }
     //Sample Size
     if(false === parseInt($('#txtSampleSize').val()) > 0)
     {
-        dialogAlert('Please fill in Sample Size (must be > 0)!');
-        return false;
+        return 'Please fill in Sample Size (must be > 0)!';
     }
     //Min. Threshold
     if(false === parseInt($('#txtMinThreshold').val()) > 0)
     {
-        dialogAlert('Please fill in Min. Threshold (must be > 0)!');
-        return false;
+        return 'Please fill in Min. Threshold (must be > 0)!';
     }
     //Begin
     if(!$('#txtBegin').val())
     {
-        dialogAlert('Please fill in Begin Date!');
-        return false;
+        return 'Please fill in Begin Date!';
     }
     //End
     if(!$('#txtEnd').val())
     {
-        dialogAlert('Please fill in End Date!');
-        return false;
+        return 'Please fill in End Date!';
     }
+    return '';
+}
 
+function validateTabsMetrics()
+{
+    // nothing to check here?
+    return '';
+}
+
+function validateTabsSurvey()
+{
+    // nothing to check here?
+    return '';
+}
+
+function validateTabsQuotas()
+{    
     // Check for sum in quotas not > 100%
     var dataCellTotal = 0;
     $('.data-cell-percentile').each(function(){
         dataCellTotal += parseInt($(this).text());
     });
+    // do not bother if dataCellTotal >= 0 ... but ...
     if(dataCellTotal > 100)
     {
-        dialogAlert('Quotas percentile cannot be more than 100%!');
-        return false;
+        return 'Quotas percentile cannot be more than 100%!';
     }
-        
-    switch(product)
-    {
-        case 2:// Adj Campaign needs at least one Tag
-            if($('#ac-camp-tags tr').length <= 1)
-            {
-                dialogAlert('At leat one tag must be created at Adjuster Campaign tab!');
-                return false;
-            }
-            break;
-        case 3:// Adj Creative needs at least one Creative
-            if($('#ac-creatives tr').length <= 1)
-            {
-                dialogAlert('At least one creative must be created at the Adjuster Creative tab!');
-                return false;
-            }
-            break;
-    }
+    return '';
+}
 
+function validateTabsCells()
+{
     // Check for both cell types
     var hasTest = false, hasControl = false;
     $('#existing-cells tbody tr td:nth-child(3)').each(function(){
@@ -94,14 +168,90 @@ function submitMain()
     });
     if(!hasTest || !hasControl)
     {
-        dialogAlert('A study must contail at least one Control cell and at least one Test cell!');
+        return 'A study must contail at least one Control cell and at least one Test cell!';
+    }
+    return '';
+}
+
+function validateTabsADCampaign()
+{
+    if($('#ac-camp-tags tr').length <= 1)
+    {
+        return 'At leat one tag must be created at Adjuster Campaign tab!';
+    }
+    return '';
+}
+
+function validateTabsADCreative()
+{
+    if($('#ac-creatives tr').length <= 1)
+    {
+        return 'At least one creative must be created at the Adjuster Creative tab!';
+    }
+    return '';
+}
+
+function monitorTabs(event, ui)
+{
+    // anything needed here?
+}
+
+function submitMain()
+{
+    var error = validateTabsBasics();
+    if(error)
+    {
+        dialogAlert(error);
         return false;
     }
 
+    error = validateTabsMetrics();
+    if(error)
+    {
+        dialogAlert(error);
+        return false;
+    }
+
+    error = validateTabsSurvey();
+    if(error)
+    {
+        dialogAlert(error);
+        return false;
+    }
+
+    error = validateTabsQuotas();
+    if(error)
+    {
+        dialogAlert(error);
+        return false;
+    }
+
+    error = validateTabsCells();
+    if(error)
+    {
+        dialogAlert(error);
+        return false;
+    }
+
+    error = validateTabsADCampaign();
+    if(error)
+    {
+        dialogAlert(error);
+        return false;
+    }
+
+    error = validateTabsADCreative();
+    if(error)
+    {
+        dialogAlert(error);
+        return false;
+    }
+    
     // rebind form submit and submit
     $("#mainForm").unbind().bind('submit', function(){
         return true;
     });
+    
     $("#mainForm").submit();
     return true;
 }
@@ -811,7 +961,7 @@ function buildCreative()
     var cellOne     ='<td style="align-left">'+name+'</td>';
     var cellTwo     ='<td style="align-left">'+($('#selectCreativeMimeType option:selected').text())+'</td>';
     var cellThree   ='<td style="align-left">'+url+'</td>';
-    
+
 
     var cellDelete  ='<td style="width:20px"><a title="Delete" class="button-delete delete-creative" '
                         +'href="javascript:void(null)" rel="' + window._cell + '"></a></td>';
@@ -823,7 +973,7 @@ function buildCreative()
     $('#ac-creatives tbody tr').each(function(){
         ++c & 1 ? $(this).removeClass('alt') : $(this).addClass('alt');
     });
-    
+
     // ready for new id
     window._creative = $.srand(8);
 
@@ -872,7 +1022,13 @@ function bindStudyFromActions()
     switchProduct();
 
     // show tabs and add effects
-    $("#tabContainer").tabs();
+    $("#tabContainer").tabs(
+        {
+            select: function(event, ui) {
+                monitorTabs(event, ui);
+            }
+        }
+    );
     $("#mainForm").show('slow');
 
     //fix datepicker bug in absolution theme...

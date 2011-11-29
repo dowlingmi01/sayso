@@ -38,7 +38,7 @@
        || 
         (ieVersion > -1 && ieVersion < 8)
     ) {
-        alert('Sorry, your web browser ('+navigator.appName+appVersion+') is not currently supported by the Say.So Music Bar. For the optimal experience, please install Google Chrome (www.google.com/chrome) or Mozilla Firefox (www.getfirefox.com).');
+        alert('Sorry, your web browser ('+navigator.appName+appVersion+') doesn\'t support the cool features of the Say.So Music Bar. For the optimal experience, please use Google Chrome (www.google.com/chrome), Mozilla Firefox (www.getfirefox.com) or Safari (http://www.apple.com/safari/download/). And we support Internet Explorer 8 and above.');
         return; // unsupported browser
     }
     

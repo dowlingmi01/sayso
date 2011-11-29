@@ -31,7 +31,7 @@
 #btnAddDomain-element, #btnAddTag-element, #btnAddDomainCreative-element, #btnAddTagCreative-element,
 #btnAddDomainAvail-element, #btnAddAvail-element, #btnAddCreative-element
 {
-    text-align:center;
+    text-align:left;
 }
 
 #groupsurveycellqualifier-element, #groupsurveycellsearchactions-element,
@@ -73,4 +73,15 @@ div.form-label
 #cbSearchOnEngines-element input[type=checkbox]
 {
     margin: 0 4px;
+}
+
+#mainForm legend
+{
+    color:#00C4CC;
+    font-weight: bold;
+}
+
+.admin-table table *
+{
+    text-shadow: none;
 }

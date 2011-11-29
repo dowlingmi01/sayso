@@ -1276,10 +1276,11 @@ nav.admin_menu li a:hover
 }
 
 .admin-table table tr:first-child th {
-    border-top: 1px solid #FB7A31;
-    border-bottom: 1px solid #FB7A31;
-    background: #FFC;
+    border-top: 1px solid #00484D;
+    border-bottom: 1px solid #00484D;
+    background: #00A7B3;
     font-weight: bold;
+    color:#515151;
 }
 
 .admin-table table tr

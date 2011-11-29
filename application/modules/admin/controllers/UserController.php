@@ -22,6 +22,7 @@ class Admin_UserController extends Admin_CommonController
         if(!$this->checkAccess(array('superuser')))
         {
             $this->_helper->viewRenderer->setNoRender(true);
+            return;
         }
 
         $this->view->headScript()->appendFile('/modules/admin/user/index.js');
@@ -113,6 +114,7 @@ class Admin_UserController extends Admin_CommonController
         if(!$this->checkAccess(array('superuser')))
         {
             $this->_helper->viewRenderer->setNoRender(true);
+            return;
         }
 
         $this->view->headScript()->appendFile('/modules/admin/user/add.js');
@@ -149,6 +151,7 @@ class Admin_UserController extends Admin_CommonController
         if(!$this->checkAccess(array('superuser')))
         {
             $this->_helper->viewRenderer->setNoRender(true);
+            return;
         }
 
         $this->view->headScript()->appendFile('/modules/admin/user/add.js');
@@ -213,6 +216,7 @@ class Admin_UserController extends Admin_CommonController
         if(!$this->checkAccess(array('superuser')))
         {
             $this->_helper->viewRenderer->setNoRender(true);
+            return;
         }
 
         $this->_helper->layout->disableLayout();
@@ -301,6 +305,7 @@ class Admin_UserController extends Admin_CommonController
             $this->rd->gotoSimple('index', 'index', 'admin');
         }
         $this->auth->clearIdentity();
+        exit(0);
     }
 
 }

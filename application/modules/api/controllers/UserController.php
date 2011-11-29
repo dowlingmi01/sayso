@@ -265,7 +265,7 @@ class Api_UserController extends Api_GlobalController
 			$survey->premium = ( $this->survey_premium == "true" ? true : false );
 	        Game_Starbar::getInstance()->completeSurvey($survey);
 
-			if ($survey->survey_type == 'survey' && $survey->survey_premium) {
+			if ($survey->type == 'survey' && $survey->premium) {
 				Db_Pdo::execute("DELETE FROM survey_user_map WHERE survey_id = 1 AND user_id = ?", $this->user_id);
 		        $surveyUserMap = new Survey_UserMap();
 				$surveyUserMap->survey_id = 1;

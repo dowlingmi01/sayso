@@ -82,9 +82,19 @@ class Starbar_IndexController extends Api_GlobalController
 				if ($newInventory != "") {
 					$newInventory = abs($newInventory);
 					$remainingInventory = $newInventory;
-					$client->setParameterPost('total_inventory', $newInventory+$soldInventory);
+					$client->setParameterPost('total_inventory', $remainingInventory+$soldInventory);
 					$client->namedGoodCollection(788)->namedGood($goodId)->putInventory();
-					$data = $client->getData();
+
+					$game = Game_Starbar::getInstance();
+			        $cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
+			        $cache->remove();
+				}
+			} else {
+				if ($newInventory != "") {
+					$newInventory = abs($newInventory);
+					$remainingInventory = $newInventory;
+					$client->setParameterPost('total_inventory', $remainingInventory);
+					$client->namedGoodCollection(788)->namedGood($goodId)->postInventory(); // post CREATES inventory
 
 					$game = Game_Starbar::getInstance();
 			        $cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);

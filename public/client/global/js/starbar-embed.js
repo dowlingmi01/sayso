@@ -16,32 +16,6 @@
     
     var sayso = window.sayso;
      
-	function getInternetExplorerVersion() {
-		var rv = -1; // Return value assumes failure.
-		if (navigator.appName == 'Microsoft Internet Explorer') {
-			var ua = navigator.userAgent;
-			var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-			if (re.exec(ua) != null)
-				rv = parseFloat(RegExp.$1);
-		}
-		return rv;
-	}
-
-	var ieVersion = getInternetExplorerVersion();
-	var appVersion = '';
-	
-	if (ieVersion > -1 && ieVersion < 8) appVersion = ' ' + ieVersion;
-
-    if (
-        (!navigator.userAgent.match('Mozilla.*Gecko.*Firefox') && !navigator.userAgent.match('Chrome') &&
-        !navigator.userAgent.match('MSIE') && !navigator.userAgent.match('AppleWebKit((?!Mobile).)*Safari'))
-       || 
-        (ieVersion > -1 && ieVersion < 8)
-    ) {
-        alert('Sorry, your web browser ('+navigator.appName+appVersion+') doesn\'t support the cool features of the Say.So Music Bar. For the optimal experience, please use Google Chrome (www.google.com/chrome), Mozilla Firefox (www.getfirefox.com) or Safari (http://www.apple.com/safari/download/). And we support Internet Explorer 8 and above.');
-        return; // unsupported browser
-    }
-    
     var installParam = getUrlParam('sayso-install'),
         installCookie = getCookie('sayso-install');
     
@@ -62,6 +36,31 @@
     
     // url param exists, set the cookie
     if (installParam) {
+		function getInternetExplorerVersion() {
+			var rv = -1; // Return value assumes failure.
+			if (navigator.appName == 'Microsoft Internet Explorer') {
+				var ua = navigator.userAgent;
+				var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+				if (re.exec(ua) != null)
+					rv = parseFloat(RegExp.$1);
+			}
+			return rv;
+		}
+
+		var ieVersion = getInternetExplorerVersion();
+		var appVersion = '';
+		
+		if (ieVersion > -1 && ieVersion < 8) appVersion = ' ' + ieVersion;
+
+	    if (
+	        (!navigator.userAgent.match('Mozilla.*Gecko.*Firefox') && !navigator.userAgent.match('Chrome') &&
+	        !navigator.userAgent.match('MSIE') && !navigator.userAgent.match('AppleWebKit((?!Mobile).)*Safari'))
+	       || 
+	        (ieVersion > -1 && ieVersion < 8)
+	    ) {
+	        alert('Sorry, your web browser ('+navigator.appName+appVersion+') doesn\'t support the cool features of the Say.So Music Bar. For the optimal experience, please use Google Chrome (www.google.com/chrome), Mozilla Firefox (www.getfirefox.com) or Safari (http://www.apple.com/safari/download/). And we support Internet Explorer 8 and above.');
+	        return; // unsupported browser
+	    }
         setCookie('sayso-install', 1, 1);
     }
     

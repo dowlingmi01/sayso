@@ -6,6 +6,11 @@
  *
  */
 
+function advanceMain()
+{
+    
+}
+
 function submitMain()
 {
     //Select Product
@@ -958,6 +963,10 @@ function bindStudyFromActions()
 
     $('#submitBtn').unbind().click(function(){
         submitMain();
+    }).button();
+
+    $('#nextBtn').unbind().click(function(){
+        advanceMain();
     }).button();
 
 }

@@ -25,8 +25,15 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
         $this->setAttrib('id', 'mainForm')
             ->setAttrib('style', 'display:none;');
 
+        $nextBtn = $this->createElement('submit', 'nextBtn')
+            ->setLabel('Next  >')
+            ->addDecorators(array(array('HtmlTag', array('tag' => 'div', 'class' => 'btn-bottom-left'))));
 
-        $submitBtn = $this->createElement('submit', 'submitBtn')->setLabel('Save Study');
+        $submitBtn = $this->createElement('submit', 'submitBtn')
+            ->setLabel('Save Study')
+            ->addDecorators(array(array('HtmlTag', array('tag' => 'div', 'class' => 'btn-bottom-right'))));
+        
+        $this->addElement($nextBtn);
         $this->addElement($submitBtn);
 
         $this->setDecorators(array

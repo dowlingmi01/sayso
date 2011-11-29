@@ -1237,10 +1237,23 @@ nav.common #common-auth a
 
 nav.admin_menu
 {
-    background-color: #f2f2f2;
+    /*background-color: #f2f2f2;*/
     margin: 0;
     box-shadow: inset 0 1px 0 white;
 }
+nav.admin_menu ul#leftMenuNav
+{
+    float:left;
+    width:auto;
+    margin:4px 0 ;
+}
+nav.admin_menu ul#rightMenuNav
+{
+    float:right;
+    width:auto;
+    margin:12px 12px 8px 0;
+}
+
 nav.admin_menu li
 {
     display: -moz-inline-stack;
@@ -1253,14 +1266,14 @@ nav.admin_menu li
 }
 nav.admin_menu li a
 {
-    color: #777;
+    color: #00C4CC;
     font-size: 12px;
     font-weight: bold;
     text-decoration: none;
 }
 nav.admin_menu li a:hover
 {
-    color: #000080;
+    color: #006066;
 }
 
 /* List table */
@@ -1360,6 +1373,18 @@ a.button-edit
     width:49%;
     float:right;    
 }
+
+.btn-bottom-left
+{
+    width:auto;
+    float:left;
+}
+.btn-bottom-right
+{
+    width:auto;
+    float:right;
+}
+
 .f-deco-right-col label, .f-deco-left-col label
 {
     width:auto;

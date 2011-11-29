@@ -25,7 +25,7 @@ class Admin_StudyController extends Admin_CommonController
 
         $this->view->headScript()->appendFile('/modules/admin/study/index.js');
         $this->view->headLink()->appendStylesheet('/modules/admin/study/module.css', 'screen');
-        $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Add New</a>';
+        $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Create A New Study</a>';
 
         $grid   = new Data_Markup_Grid();
         $select = Zend_Registry::get('db')->select()->from('study');
@@ -107,7 +107,7 @@ class Admin_StudyController extends Admin_CommonController
         $this->view->headLink()->appendStylesheet('/modules/admin/study/module.css', 'screen');
         $this->view->headScript()->appendFile('/modules/admin/study/study.js');
         $this->view->headScript()->appendFile('/modules/admin/study/add.js');
-        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">List Studies</a>';
+        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">Back to All Studies</a>';
 
         $this->view->form = new Form_Study_AddEdit();
         $this->view->form->buildDeferred();
@@ -147,8 +147,8 @@ class Admin_StudyController extends Admin_CommonController
         $this->view->headScript()->appendFile('/modules/admin/study/edit.js');
         $this->view->headLink()->appendStylesheet('/modules/admin/study/module.css', 'screen');
 
-        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">List Studies</a>';
-        $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Add New</a>';
+        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">Back to All Studies</a>';
+        $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Create A New Study</a>';
 
         $study = new Study();
 

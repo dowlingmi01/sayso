@@ -144,7 +144,7 @@ function bindDefaults()
     }
 
     // all menu becomes buttons
-    $('nav.admin_menu li a').button({});
+    $('nav.admin_menu ul#leftMenuNav li a').button({});
 
 }
 

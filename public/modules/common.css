@@ -1361,6 +1361,14 @@ a.button-edit
     padding: 2px 16px 0 0;
     background:transparent url('/images/icons-actions.gif') no-repeat -302px -102px;
 }
+a.button-roles
+{
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 2px 16px 0 0;
+    background:transparent url('/images/icons-actions.gif') no-repeat -322px -22px;
+}
 
 /* form decorators */
 .f-deco-left-col

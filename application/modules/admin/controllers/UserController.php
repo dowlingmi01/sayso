@@ -31,7 +31,7 @@ class Admin_UserController extends Admin_CommonController
         $grid   = new Data_Markup_Grid();
         $select = Zend_Registry::get('db')->select()->from('admin_user');
         $grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
-        $grid->setGridColumns(array('id', 'email', 'first_name', 'last_name', 'created', 'modified', 'edit', 'delete'));
+        $grid->setGridColumns(array('id', 'email', 'first_name', 'last_name', 'created', 'modified', 'edit', 'roles', 'delete'));
 
         $extraColumnEdit = new Bvb_Grid_Extra_Column();
 		$extraColumnEdit
@@ -45,6 +45,19 @@ class Admin_UserController extends Admin_CommonController
                 )
             );
         $grid->addExtraColumns($extraColumnEdit);
+
+        $extraColumnEditRoles = new Bvb_Grid_Extra_Column();
+		$extraColumnEditRoles
+			->position('right')
+			->name('roles')
+			->title(' ')
+			->callback(
+                array(
+                    'function'  => array($this, 'generateEditRolesLink'),
+                    'params'    => array('{{id}}')
+                )
+            );
+        $grid->addExtraColumns($extraColumnEditRoles);
 
         $extraColumnDelete = new Bvb_Grid_Extra_Column();
 		$extraColumnDelete
@@ -87,6 +100,17 @@ class Admin_UserController extends Admin_CommonController
         }
         return '<a href="' . $this->view->url(array('action' => 'edit', 'entry_id' => intval($id))) . '">'.
             ($email ? $email : '<span class="disabled">email malformed</span>') .'</a>';
+    }
+
+    public function generateEditRolesLink($id)
+    {
+        if($this->currentUser->getId() == $id)
+        {
+            return '-';
+        }
+        return '<a href="'
+            . $this->view->url(array('controller' => 'roles', 'action' => 'edit', 'entry_id' => intval($id)))
+            . '" class="button-roles" title="Edit Roles"></a>';
     }
 
     public function generateEditButtonLink($id)

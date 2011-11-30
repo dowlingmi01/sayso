@@ -1,7 +1,7 @@
 <? if ($this->success) { ?>
-	<script type="text/javascript">window.close();</script>
+	<script type="text/javascript">window.opener='X';window.close();return false;</script>
 <? } else { ?>
 	Sorry, we can't connect you to Twitter at this time. Please try again later.
 
-	<a href="#" onclick="window.close(); return false;">Take me back!</span>
+	<a href="#" onclick="window.opener='X';window.close();return false;">Take me back!</span>
 <? } ?>

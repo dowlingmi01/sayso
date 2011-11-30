@@ -147,13 +147,18 @@
                     setTimeout(function () {
                         // overlay
                         container.html(response.data.html);
-                        container.fadeTo('slow', 1, function () {
-                            if ((!loginCookie || !userUniqueId) && confirm('Please log in first to install the app')) {
-                                $SQ('#sayso-onboard,#sso_wrapper').hide();
-                                // fire login callback 
-                                if (sayso.client.loginCallback) sayso.client.loginCallback();
-                            }
-                        });
+                        if ((loginCookie && userUniqueId) || installParam) {
+	                        container.fadeTo('slow', 1, function () {
+	                            if (!loginCookie || !userUniqueId) {
+                            		alert('Please log in first to install the app');
+						            // delete the install cookie
+						            setCookie('sayso-install', null, -10);
+	                                $SQ('#sayso-onboard,#sso_wrapper').hide();
+	                                // fire login callback 
+	                                if (sayso.client.loginCallback) sayso.client.loginCallback();
+	                            }
+	                        });
+						}
                     }, 1000);
                 }
             });

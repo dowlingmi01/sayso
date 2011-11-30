@@ -203,7 +203,10 @@ class Starbar_RemoteController extends Api_GlobalController
         $externalUser->install_token = $this->install_token;
         $externalUser->install_origination = $this->install_origination;
         $externalUser->save();
-        
+       
+        // privacy header needed by IE to allow these 3rd party cookies to work 
+        header('P3P: CP="NOI ADM DEV PSAi COM NAV OUR OTR STP IND DEM"');
+
         // set cookies (to be retreived in post-install)
         setcookie('starbar_setup_auth_key', $this->auth_key, mktime(0,0,0,12,31,2030), '/');
         setcookie('starbar_setup_external_user_id', $externalUser->getId(), mktime(0,0,0,12,31,2030), '/');
@@ -237,7 +240,7 @@ class Starbar_RemoteController extends Api_GlobalController
         }
         
         $externalUser = new External_User();
-        
+       
         // Two routes here:
         // 1. the user has our special cookies present to authenticate with
         // 2. no cookies, but the user is on the client site so automatically authenticate

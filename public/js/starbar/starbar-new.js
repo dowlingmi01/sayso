@@ -1387,14 +1387,17 @@ $SQ(function(){
 		elemExternalConnect.each(function(){
 			$SQ(this).unbind().bind({
 				click: function(event){
+					event.preventDefault();
+					event.stopPropagation();
+
 					var windowParameters = 'location=1,status=1,scrollbars=0';
 					switch($SQ(this).attr('id')) {
 						case "sb_profile_facebook":
-			  				windowParameters += ',width=981,height=440';
+							windowParameters += ',width=981,height=440';
 							break;
 							
 						case "sb_profile_twitter":
-			  				windowParameters += ',width=750,height=550';
+							windowParameters += ',width=750,height=550';
 							break;
 					}
 					var link = $SQ(this).attr('href');
@@ -1403,7 +1406,8 @@ $SQ(function(){
 					else
 						link += "&";
 					link += "user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&auth_key="+sayso.starbar.authKey;
-			  		fbWin = window.open(link, 'sb_window_open', windowParameters);
+
+					return $SQ.openWindow(link, 'sb_window_open', windowParameters);
 				}
 			});
 		});

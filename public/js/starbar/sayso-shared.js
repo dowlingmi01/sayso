@@ -142,3 +142,15 @@ $SQ.randomString = function (length, special) {
 	}
 	return randomString;
 }
+
+$SQ.newWin = false;
+
+$SQ.openWindow = function (url, name, parameters) {
+	if ($SQ.newWin && !$SQ.newWin.closed) {
+		$SQ.newWin.location.href = url;
+	} else {
+		$SQ.newWin = window.open(url, name, parameters);
+	}
+	if (window.focus) $SQ.newWin.focus();
+	return false;
+}

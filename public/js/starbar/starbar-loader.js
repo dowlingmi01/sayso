@@ -291,7 +291,9 @@
 								$SQembed.replaceWith(newElem);
 							}
 						} else if ($SQembed.is('param') && $SQembed.attr('name').toLowerCase() == 'movie') {
-							if (! $SQembed.attr('value').match("\.swf")) return;
+							if (! $SQembed.attr('value').match("\.swf")) $SQparent = $SQembed; // Skip the next part
+						} else {
+							$SQparent = $SQembed; // Skip the next part
 						}
 
 						if ($SQparent.is('object')) {
@@ -307,7 +309,6 @@
 							
 							newElem = $SQparent.clone(true, true);
 							$SQparent.replaceWith(newElem);
-						} else if ($SQembed.is('embed')) {
 						}
 					});
 

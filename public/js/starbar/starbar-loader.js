@@ -291,7 +291,7 @@
 								$SQembed.replaceWith(newElem);
 							}
 						} else if ($SQembed.is('param') && $SQembed.attr('name').toLowerCase() == 'movie') {
-							if (! $SQembed.attr('value').match("\.swf")) $SQparent = $SQembed; // Skip the next part
+							if (! $SQembed.attr('value').match(".swf")) $SQparent = $SQembed; // Skip the next part
 						} else {
 							$SQparent = $SQembed; // Skip the next part
 						}

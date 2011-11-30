@@ -284,6 +284,7 @@
                     'facebook.com/dialog', 'facebook.com/plugins', 'facebook.com/login', 'twitter.com/intent', 'twitter.com/widgets', 
                     'stumbleupon.com/badge', 'reddit.com/static', 'static.addtoany.com/menu',
                     'plusone.google.com', 'intensedebate/empty',
+                    'thesaurus.com', 'reference.com', 'dictionary.com',
                     '(?:sayso.com|saysollc.com)/html/communicator', '(?:sayso.com|saysollc.com)/starbar'
                 ];
                 

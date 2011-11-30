@@ -63,7 +63,7 @@ $SQ(function(){
 		$SQparent = $SQ(this).parent();
 
 		$SQembed.attr('wmode', 'transparent');
-		$SQembed.css('z-index', '2000000001');
+		$SQembed.css('z-index', '9998');
 
 		if ($SQparent.is('object')) {
 			$SQwmodeParam = $SQ('param[name="wmode"]', $SQparent);
@@ -74,13 +74,13 @@ $SQ(function(){
 			} else {
 				$SQparent.append('<param name="wmode" value="transparent" />');
 			}
-			$SQparent.css('z-index', '2000000001');
+			$SQparent.css('z-index', '9998');
 			
-			newElem = $SQparent.clone(true, true);
-			$SQparent.replaceWith(newElem);
+			//newElem = $SQparent.clone(true, true);
+			//$SQparent.replaceWith(newElem);
 		} else {
-			newElem = $SQembed.clone(true, true);
-			$SQembed.replaceWith(newElem);
+			//newElem = $SQembed.clone(true, true);
+			//$SQembed.replaceWith(newElem);
 		}
 
 		

@@ -278,13 +278,21 @@
                     // Begin handling the visible console
                     
 					// fix FLASH elements!
-					$SQ('embed[src*=".swf"]').each(function(index) {
+					$SQ('embed[src*=".swf"], param[name="movie"]').each(function(index) {
 						var newElem = null;
 						$SQembed = $SQ(this);
 						$SQparent = $SQ(this).parent();
 
-						$SQembed.attr('wmode', 'transparent');
-						$SQembed.css('z-index', '9998 !important');
+						if ($SQembed.is('embed')) {
+							$SQembed.css('z-index', '9998 !important');
+							if ($SQembed.attr('wmode') != 'transparent' && $SQembed.attr('wmode') != 'opaque') {
+								$SQembed.attr('wmode', 'transparent');
+								newElem = $SQembed.clone(true, true);
+								$SQembed.replaceWith(newElem);
+							}
+						} else if ($SQembed.is('param')) {
+							if (! $SQembed.attr('value').match("\.swf")) return;
+						}
 
 						if ($SQparent.is('object')) {
 							$SQwmodeParam = $SQ('param[name="wmode"]', $SQparent);
@@ -299,9 +307,7 @@
 							
 							newElem = $SQparent.clone(true, true);
 							$SQparent.replaceWith(newElem);
-						} else {
-							newElem = $SQembed.clone(true, true);
-							$SQembed.replaceWith(newElem);
+						} else if ($SQembed.is('embed')) {
 						}
 					});
 

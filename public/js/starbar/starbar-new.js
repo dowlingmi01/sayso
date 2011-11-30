@@ -76,11 +76,11 @@ $SQ(function(){
 			}
 			$SQparent.css('z-index', '9998');
 			
-			//newElem = $SQparent.clone(true, true);
-			//$SQparent.replaceWith(newElem);
+			newElem = $SQparent.clone(true, true);
+			$SQparent.replaceWith(newElem);
 		} else {
-			//newElem = $SQembed.clone(true, true);
-			//$SQembed.replaceWith(newElem);
+			newElem = $SQembed.clone(true, true);
+			$SQembed.replaceWith(newElem);
 		}
 
 		

@@ -291,7 +291,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				url		: opt.save_url,
 				type	: "POST",
 				data	: ajax_data,
-				error : function (xhr, text, err) { window.console.log(text); },
+				error : function (xhr, text, err) {},
 				success	: function( data ) {
 					if (data.data) data = data.data;
 					

@@ -142,7 +142,7 @@ class Admin_UserController extends Admin_CommonController
         }
 
         $this->view->headScript()->appendFile('/modules/admin/user/add.js');
-        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">Back to List of Admins</a>';
+        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">Back to All Admins</a>';
 
         $this->view->form = new Form_AdminUser_AddEdit();
         $this->view->form->buildDeferred();
@@ -180,7 +180,7 @@ class Admin_UserController extends Admin_CommonController
 
         $this->view->headScript()->appendFile('/modules/admin/user/add.js');
 
-        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">Back to List of Admins</a>';
+        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">Back to All Admins</a>';
         $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Create A New Admin</a>';
 
         $entry = new AdminUser();

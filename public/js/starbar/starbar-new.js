@@ -1370,13 +1370,16 @@ $SQ(function(){
 
 		// set up the EIP elements
 		elemJEIP.each(function(){
-			$SQ(this).eip( "//"+sayso.baseDomain+"/api/user/save-in-place?renderer=jsonp", {
-				savebutton_text		: "save",
-				savebutton_class	: "sb_theme_button",
-				cancelbutton_text	: "cancel",
-				cancelbutton_class	: "sb_theme_button sb_theme_button_grey",
-				after_save			: function() { updateProfile(true, true); }
-			});									 
+			$SQ(this).eip(
+				"//"+sayso.baseDomain+"/api/user/save-in-place?renderer=jsonp&user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&auth_key="+sayso.starbar.authKey,
+				{
+					savebutton_text		: "save",
+					savebutton_class	: "sb_theme_button",
+					cancelbutton_text	: "cancel",
+					cancelbutton_class	: "sb_theme_button sb_theme_button_grey",
+					after_save			: function() { updateProfile(true, true); }
+				}
+			);									 
 		});
 	}
 

@@ -229,25 +229,25 @@ class Api_UserController extends Api_GlobalController
 		$response["error_text"] = "Edit Failed.";
 		$response["html"] = "";
 		
-		$user = new User();
-		$user->loadData($this->user_id);
-
 		$request = $this->getRequest();
 		$editedElementId = $request->getParam('id');
 		
 		switch ($editedElementId) {
 			case "sb_profile_username":
-				$origUsername = $request->getParam('orig_value');
+				$user = new User();
+				$user->loadData($this->user_id);
 				$newUsername = $request->getParam('new_value');
 				
-				if ($newUsername && ($origUsername == $user->username)) {
+				if ($newUsername) {
 					$user->username = $newUsername;
 					$user->save();
-
-					$response["is_error"] = false;
-					$response["error_text"] = "";
-					$response["html"] = $newUsername;
+				} else {
+					$user->username = null;
+					$user->save();
 				}
+				$response["is_error"] = false;
+				$response["error_text"] = "";
+				$response["html"] = $newUsername;
 				
 				break;
 		}

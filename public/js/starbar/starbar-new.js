@@ -1355,7 +1355,6 @@ $SQ(function(){
 	}
 
 	function activateToolTips(target){
-
 		elemTooltip = $SQ('.sb_tooltip', target);
 
 		// tooltip binding

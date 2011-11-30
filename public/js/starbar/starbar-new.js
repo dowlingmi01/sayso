@@ -56,36 +56,6 @@ $SQ(function(){
 		}
 	});
 
-	// fix FLASH
-	$SQ('embed').each(function(index) {
-		var newElem = null;
-		$SQembed = $SQ(this);
-		$SQparent = $SQ(this).parent();
-
-		$SQembed.attr('wmode', 'transparent');
-		$SQembed.css('z-index', '9998');
-
-		if ($SQparent.is('object')) {
-			$SQwmodeParam = $SQ('param[name="wmode"]', $SQparent);
-			if ($SQwmodeParam.length == 1) {
-				if ($SQwmodeParam.attr('value') != 'transparent' && $SQwmodeParam.attr('value') != 'opaque') {
-					$SQwmodeParam.attr('value', 'transparent');
-				}
-			} else {
-				$SQparent.append('<param name="wmode" value="transparent" />');
-			}
-			$SQparent.css('z-index', '9998');
-			
-			newElem = $SQparent.clone(true, true);
-			$SQparent.replaceWith(newElem);
-		} else {
-			newElem = $SQembed.clone(true, true);
-			$SQembed.replaceWith(newElem);
-		}
-
-		
-	});
-
 	/**
 	 * Get the data container of a given DOM object
 	 * - a "data container" (per this convention) is any DOM object

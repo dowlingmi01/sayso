@@ -292,29 +292,36 @@
 						}
 					});
 
-					$SQ('object').each(function(index) {
-						$SQobject = $SQ(this);
-						$SQwmodeParam = $SQ('param[name="wmode"]', $SQobject);
-						if ($SQwmodeParam.length == 1) {
-							if ($SQwmodeParam.attr('value') == 'transparent' || $SQwmodeParam.attr('value') == 'opaque') {
-								return true; // no fix needed, go to next <object>
+					// fix FLASH elements for IE!
+					if (ieVersion > -1) {
+						$SQ('object').each(function(index) {
+							$SQobject = $SQ(this);
+							$SQwmodeParam = $SQ('param[name="wmode"]', $SQobject);
+							if ($SQwmodeParam.length == 1) {
+								if ($SQwmodeParam.attr('value') == 'transparent' || $SQwmodeParam.attr('value') == 'opaque') {
+									return true; // no fix needed, go to next <object>
+								} else {
+									$SQwmodeParam.attr('value', 'transparent');
+								}
 							} else {
-								$SQwmodeParam.attr('value', 'transparent');
+								// Check if this <object> is flash, if so add the wmode parameter
+								$SQmovieParam = $SQ('param[name="movie"]', $SQobject);
+								if ($SQmovieParam.length == 1 && $SQmovieParam.attr('value').match(/.swf/)) {
+									newParam = document.createElement('param');
+									newParam.setAttribute('name', 'wmode');
+									newParam.setAttribute('value', 'transparent');
+								} else {
+									return true; // not flash, go to next <object>
+								}
 							}
-						} else {
-							// Check if this <object> is flash, if so add the wmode parameter
-							$SQmovieParam = $SQ('param[name="movie"]', $SQobject);
-							if ($SQmovieParam.length == 1 && $SQmovieParam.attr('value').match(/.swf/)) {
-								$SQobject.append('<param name="wmode" value="transparent" />');
-							} else {
-								return true; // not flash, go to next <object>
-							}
-						}
-						$SQobject.css('z-index', '9998 !important');
-						
-						newElem = $SQobject.clone(true, true);
-						$SQobject.replaceWith(newElem);
-					});
+							$SQobject.css('z-index', '9998 !important');
+							
+							container = $SQobject.parent();
+							newElem = $SQobject.clone(true);
+							$SQobject.remove();
+							container.html(newElem);
+						});
+					}
 
                     // bring in the GENERIC CSS
                     

@@ -61,17 +61,17 @@ class Admin_AdminroleController extends Admin_CommonController
             {
                 // validate
                 $roles = !isset($_POST['admin_roles']) || !is_array($_POST['admin_roles'])
-                ? array() :
-                $_POST['admin_roles'];
+                    ? array()
+                    : $_POST['admin_roles'];
                 if(!$form->validateRoles($select, $roles))
                 {
                     throw new Exception("Error: The form data cannot pass validation!");
                 }
+
                 //  write
-                /*Record::beginTransaction();
-                $values = $this->view->form->getValues();
-                $entry->setAdminRoles($roles);
-                Record::commitTransaction();*/
+                Record::beginTransaction();
+                $entry->saveAdminRoles($roles);
+                Record::commitTransaction();
                 $this->msg->addMessage('Success: user roles updated!');
                 $this->rd->gotoSimple('index', 'user');
             }
@@ -80,15 +80,15 @@ class Admin_AdminroleController extends Admin_CommonController
                 $this->msg->addMessage('Error: user roles cannot be updated!');
                 if(getenv('APPLICATION_ENV') != 'production')
                 {
-                    $this->msg->addMessage($e->getMessage());
-                    $this->view->render('user/edit.phtml');
+                    $this->msg->addMessage($e->getMessage());                    
                 }
+                $this->rd->gotoSimple('adminuser', 'adminrole', 'admin', array('entry_id'=>$userId));
             }
         }
 
         $this->allAdminUserRoles = $entry->getAdminRoles();
 
-        $grid   = new Data_Markup_Grid();        
+        $grid = new Data_Markup_Grid();        
         $grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
         $grid->setGridColumns(array('id', 'name', 'description', 'action'));
 

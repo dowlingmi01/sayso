@@ -13,4 +13,19 @@ class AdminUser_AdminRoleCollection extends RecordCollection
         	$this->build($entities, new AdminRole());
 		}
     }
+
+    public static function dropForUser($userId)
+    {
+        $sql = "DELETE FROM admin_user_admin_role WHERE admin_user_id = ?";
+        try
+        {
+            Db_Pdo::execute($sql, $userId);
+        }
+        catch (Exception $e)
+        {
+            return $e->getMessage();
+        }
+        return false;
+    }
+
 }

@@ -43,9 +43,23 @@ class AdminUser extends Record
         return $this->_roles;
     }
 
-    public function setAdminRoles(array $roles)
+    public function saveAdminRoles(array $roles)
     {
-        
+        $error = AdminUser_AdminRoleCollection::dropForUser($this->getId());
+        if($error)
+        {
+            throw new Exception("PDO exception: " . $error);
+        }
+        if(!empty($roles))
+        {
+            foreach ($roles as $roleId)
+            {
+                $role = new AdminUser_AdminRole();
+                $role->admin_user_id = $this->getId();
+                $role->admin_role_id = $roleId;
+                $role->save();
+            }
+        }
     }
 
     /**
@@ -87,7 +101,7 @@ class AdminUser extends Record
             $query      .= " AND id != ? ";
             $params[]   = $excludeId;
         }
-        $results = call_user_func_array(array('Db_Pdo', 'fetch'), array_merge(array($query), $params));        
+        $results = call_user_func_array(array('Db_Pdo', 'fetch'), array_merge(array($query), $params));
         return intval($results['cnt']);
     }
 

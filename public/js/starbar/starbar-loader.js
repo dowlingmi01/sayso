@@ -310,6 +310,7 @@
 									newParam = document.createElement('param');
 									newParam.setAttribute('name', 'wmode');
 									newParam.setAttribute('value', 'transparent');
+									$SQobject.append(newParam);
 								} else {
 									return true; // not flash, go to next <object>
 								}

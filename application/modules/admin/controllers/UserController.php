@@ -26,7 +26,7 @@ class Admin_UserController extends Admin_CommonController
         }
 
         $this->view->headScript()->appendFile('/modules/admin/user/index.js');
-        $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Add New</a>';
+        $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Create A New Admin</a>';
 
         $grid   = new Data_Markup_Grid();
         $select = Zend_Registry::get('db')->select()->from('admin_user');
@@ -142,7 +142,7 @@ class Admin_UserController extends Admin_CommonController
         }
 
         $this->view->headScript()->appendFile('/modules/admin/user/add.js');
-        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">List Admins</a>';
+        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">Back to List of Admins</a>';
 
         $this->view->form = new Form_AdminUser_AddEdit();
         $this->view->form->buildDeferred();
@@ -180,8 +180,8 @@ class Admin_UserController extends Admin_CommonController
 
         $this->view->headScript()->appendFile('/modules/admin/user/add.js');
 
-        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">List Studies</a>';
-        $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Add New</a>';
+        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">Back to List of Admins</a>';
+        $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Create A New Admin</a>';
 
         $entry = new AdminUser();
         $entry->loadData(intval($this->_getParam('entry_id')));

@@ -1200,6 +1200,7 @@
 
 #sayso-starbar #starbar-player-console #sb_popBox_user-profile.sb_popBox .sb_popContent,
 #sayso-starbar #starbar-player-console #sb_popBox_user-share.sb_popBox .sb_popContent{
+	width: 520px;
 	height: 280px;
 }
 

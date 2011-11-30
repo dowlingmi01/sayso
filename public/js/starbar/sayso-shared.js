@@ -147,14 +147,23 @@ $SQ.newWin = false;
 
 $SQ.openWindow = function (url, name, parameters) {
 	var newWin = $SQ.newWin;
-	
+
 	if (newWin && !newWin.closed) {
 		newWin.location.href = url;
 	} else {
 		newWin = window.open(url, 'newWin', parameters);
 	}
+
 	if (window.focus) newWin.focus();
-	
+
+	$SQ.doTimeout( 200, function(){
+		if (newWin.location.href.match('close_say_so_me')) {
+			newWin.close();
+			return false;
+		}
+		return true;
+	});
+
 	$SQ.newWin = newWin;
 	return false;
 }

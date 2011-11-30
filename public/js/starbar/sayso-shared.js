@@ -146,11 +146,15 @@ $SQ.randomString = function (length, special) {
 $SQ.newWin = false;
 
 $SQ.openWindow = function (url, name, parameters) {
-	if ($SQ.newWin && !$SQ.newWin.closed) {
-		$SQ.newWin.location.href = url;
+	var newWin = $SQ.newWin;
+	
+	if (newWin && !newWin.closed) {
+		newWin.location.href = url;
 	} else {
-		$SQ.newWin = window.open(url, name, parameters);
+		newWin = window.open(url, 'newWin', parameters);
 	}
-	if (window.focus) $SQ.newWin.focus();
+	if (window.focus) newWin.focus();
+	
+	$SQ.newWin = newWin;
 	return false;
 }

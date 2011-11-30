@@ -1403,7 +1403,7 @@ $SQ(function(){
 					else
 						link += "&";
 					link += "user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&auth_key="+sayso.starbar.authKey;
-			  		window.open(link, 'sb_window_open', windowParameters);
+			  		fbWin = window.open(link, 'sb_window_open', windowParameters);
 				}
 			});
 		});

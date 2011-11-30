@@ -18,9 +18,11 @@
         
         if (location.host.match(partners[partner].domain)) {
             
-            String.prototype.trim = function() {
-                return this.replace(/^\s+|\s+$/g,'');
-            };
+            if (!String.prototype.trim) {
+                String.prototype.trim = function() {
+                    return this.replace(/^\s+|\s+$/g,'');
+                };
+            }
 
             function getCookie (find) {
                 var cookies = document.cookie.split(';');

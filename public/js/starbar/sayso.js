@@ -56,13 +56,9 @@ $SQ(function () {
     if (inIframe) log('iFrame');
     
     /**
-     * Helper function which can be used outside this context
-     *
-     * @example window.sayso.behaviors.socialActivity('foo.com', 'blah blah', 1)
+     * Helper function for recording behaviors on the server
      */
-    window.sayso.behaviors = new function () {
-
-        var _instance = this;
+    var behaviorTracker = new function () {
 
         this.pageView = function () {
             ajax({
@@ -110,7 +106,7 @@ $SQ(function () {
     // Page View
 
     if (!inIframe) {
-        sayso.behaviors.pageView();
+        behaviorTracker.pageView();
     }
 
     // ================================================================
@@ -152,7 +148,7 @@ $SQ(function () {
             {
                 var searchQuery = searchQueryArray[1];
                 data['query'] = searchQuery;
-                sayso.behaviors.search(url, data);
+                behaviorTracker.search(url, data);
             }
             else
             {
@@ -196,7 +192,7 @@ $SQ(function () {
                             {
                                 // send now asynchronously...
                                 data['query'] = currentQueryValue;
-                                sayso.behaviors.search(url, data);
+                                behaviorTracker.search(url, data);
                                 // but set the check synchronously to avoid repeating...
                                 statsSent = true;
                             }
@@ -235,7 +231,7 @@ $SQ(function () {
         {
             try
             {
-                window.sayso.behaviors.socialActivity(window.location.href, tweet, 2);
+                behaviorTracker.socialActivity(window.location.href, tweet, 2);
                 e.preventDefault();
                 tweet = '';
             }
@@ -248,38 +244,11 @@ $SQ(function () {
 
     // ================================================================
     // Facebook Like
-    // @todo handle iframe'd likes, shares, reccomends, etc
-    // watch when current page (iframe) is one of the following URLs
-    // then: watch for .connect_widget_like_button click (for example)
-    // @hack the following JS uses mouseover/mouseout to predict clicking 
-    //       Like until we get the iframe'd version done
 
-    var likeButtons = $SQ('iframe[src*="facebook.com/plugins/like.php"],iframe[src*="facebook.com/widgets/like.php"]');
-
-    if (likeButtons.length) {
-        var liked = false;
-        likeButtons.bind('mouseover', function (eventOver) {
-
-            // only register 1 Like event per page
-            if (liked) return;
-
-            var timerRunning = true;
-
-            // register Like if mouse stays over for enough time
-            // to aim, click and get feedback (button changes)
-            var mouseOutTimer = setTimeout(function () {
-                timerRunning= false;
-                liked = true;
-                sayso.behaviors.socialActivity(location.href, '', 1);
-            }, 700); // aim + click + feedback
-
-            // cancel Like if mouse passes back out quickly
-            $SQ(this).unbind('mouseout').bind('mouseout', function (eventOut) {
-                if (timerRunning) {
-                    timerRunning = false;
-                    clearTimeout(mouseOutTimer);
-                }
-            });
+    if (inIframe && location.href.match('facebook.com/plugins|facebook.com/widgets')) {
+        $SQ('a.connect_widget_like_button').unbind('click').click(function () {
+            var likedUrl = decodeURIComponent(/href=([^&]*)/g.exec(window.location.search)[1]);
+            behaviorTracker.socialActivity(likedUrl, '', 1)
         });
     }
 
@@ -287,6 +256,7 @@ $SQ(function () {
     // ADjuster 
     
     if (!sayso.flags.match('adjuster_ads')) return; // globally disabled ad detection/replacement
+    
     log('ADjuster ad handling enabled');
     
     // ADjuster Click-Thrus ------------------------

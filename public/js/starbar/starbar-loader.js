@@ -278,7 +278,7 @@
                     // Begin handling the visible console
                     
 					// fix FLASH elements!
-					$SQ('embed[src*=".swf"]', 'param[name="movie"]').each(function(index) {
+					$SQ('embed[src*=".swf"]', 'param').each(function(index) {
 						var newElem = null;
 						$SQembed = $SQ(this);
 						$SQparent = $SQ(this).parent();
@@ -290,7 +290,7 @@
 								newElem = $SQembed.clone(true, true);
 								$SQembed.replaceWith(newElem);
 							}
-						} else if ($SQembed.is('param')) {
+						} else if ($SQembed.is('param') && $SQembed.attr('name').toLowerCase() == 'movie') {
 							if (! $SQembed.attr('value').match("\.swf")) return;
 						}
 

@@ -6,6 +6,11 @@ require_once APPLICATION_PATH . '/modules/admin/controllers/CommonController.php
 
 class Admin_AdminroleController extends Admin_CommonController
 {
+    /**
+     * @var AdminUser_AdminRoleCollection
+     */
+    private $allAdminUserRoles;
+
     public function init()
     {
         parent::init();
@@ -47,68 +52,78 @@ class Admin_AdminroleController extends Admin_CommonController
         $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add', 'controller'=>'user'))
             . '">Create A New Admin</a>';
 
+        $form   = new Form_AdminUser_Role();
+        $select = Zend_Registry::get('db')->select()->from('admin_role');
 
+        if ($this->_request->isPost())
+        {            
+            try
+            {
+                // validate
+                $roles = !isset($_POST['admin_roles']) || !is_array($_POST['admin_roles'])
+                ? array() :
+                $_POST['admin_roles'];
+                if(!$form->validateRoles($select, $roles))
+                {
+                    throw new Exception("Error: The form data cannot pass validation!");
+                }
+                //  write
+                /*Record::beginTransaction();
+                $values = $this->view->form->getValues();
+                $entry->setAdminRoles($roles);
+                Record::commitTransaction();*/
+                $this->msg->addMessage('Success: user roles updated!');
+                $this->rd->gotoSimple('index', 'user');
+            }
+            catch(Exception $e)
+            {
+                $this->msg->addMessage('Error: user roles cannot be updated!');
+                if(getenv('APPLICATION_ENV') != 'production')
+                {
+                    $this->msg->addMessage($e->getMessage());
+                    $this->view->render('user/edit.phtml');
+                }
+            }
+        }
 
-        /*$grid   = new Data_Markup_Grid();
-        $select = Zend_Registry::get('db')->select()->from('admin_user');
+        $this->allAdminUserRoles = $entry->getAdminRoles();
+
+        $grid   = new Data_Markup_Grid();        
         $grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
-        $grid->setGridColumns(array('id', 'email', 'first_name', 'last_name', 'created', 'modified', 'edit', 'roles', 'delete'));
+        $grid->setGridColumns(array('id', 'name', 'description', 'action'));
 
         $extraColumnEdit = new Bvb_Grid_Extra_Column();
 		$extraColumnEdit
 			->position('right')
-			->name('edit')
+			->name('action')
 			->title(' ')
 			->callback(
                 array(
-                    'function'  => array($this, 'generateEditButtonLink'),
+                    'function'  => array($this, 'generateCbSelected'),
                     'params'    => array('{{id}}')
                 )
             );
         $grid->addExtraColumns($extraColumnEdit);
+        
+        $form->setGrid($grid);
+        $form->initDeferred();
+        $this->view->form = $form;
+    }
 
-        $extraColumnEditRoles = new Bvb_Grid_Extra_Column();
-		$extraColumnEditRoles
-			->position('right')
-			->name('roles')
-			->title(' ')
-			->callback(
-                array(
-                    'function'  => array($this, 'generateEditRolesLink'),
-                    'params'    => array('{{id}}')
-                )
-            );
-        $grid->addExtraColumns($extraColumnEditRoles);
-
-        $extraColumnDelete = new Bvb_Grid_Extra_Column();
-		$extraColumnDelete
-			->position('right')
-			->name('delete')
-			->title(' ')
-			->callback(
-                array(
-                    'function'  => array($this, 'generateDeleteButtonLink'),
-                    'params'    => array('{{id}}')
-                )
-            );
-        $grid->addExtraColumns($extraColumnDelete);
-
-        $grid->updateColumn('id',
-			array(
-                'class' => 'align-right'
-			)
-		);
-        $grid->updateColumn('email',
-			array(
-				'callback' => array(
-					'function'  => array($this, 'generateEditLink'),
-					'params'    => array('{{id}}', '{{email}}')
-				),
-                'class' => 'align-left important'
-			)
-		);
-
-        $this->view->grid = $grid->deploy();*/
+    public function generateCbSelected($id)
+    {
+        $checked = '';
+        if(!empty($this->allAdminUserRoles))
+        {
+            foreach($this->allAdminUserRoles as $role)
+            {
+                if($role->getId() == $id)
+                {
+                    $checked = ' checked="checked"';
+                }
+            }
+        }
+        return sprintf('<input type="checkbox" name="admin_roles[]" value="%d" id="admin_role_%s"%s />', $id, $id, $checked);
     }
 
 }

@@ -43,6 +43,11 @@ class AdminUser extends Record
         return $this->_roles;
     }
 
+    public function setAdminRoles(array $roles)
+    {
+        
+    }
+
     /**
      * Save user
      * @param AdminUser $adminUser

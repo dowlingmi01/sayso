@@ -86,7 +86,10 @@
 	} else {
 		sayso.placeholderSupportMissing = false;
 	}
-
+	
+	String.prototype.trim = function() {
+        return this.replace(/^\s+|\s+$/g,'');
+    };
     
     new jsLoadTimer().start('window.$SQ', function () {
         

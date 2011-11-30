@@ -33,6 +33,12 @@ class Admin_AdminroleController extends Admin_CommonController
             $this->msg->addMessage('Error: user not found!');
             $this->rd->gotoSimple('index');
         }
+        if($entry->getId() == $this->currentUser->getId())
+        {
+            $this->msg->addMessage('Error: you cannot edit yourself!');
+            $this->rd->gotoSimple('index', 'user');
+        }
+
         $this->view->entry = $entry;
 
         $this->view->headScript()->appendFile('/modules/admin/adminrole/adminuser.js');

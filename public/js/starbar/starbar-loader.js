@@ -278,8 +278,7 @@
                     // Begin handling the visible console
                     
 					// fix FLASH elements!
-					$SQ('embed[src*=".swf"]').add('param').each(function(index) {
-						var newElem = null;
+					$SQ('embed[src*=".swf"]').each(function(index) {
 						$SQembed = $SQ(this);
 						$SQparent = $SQ(this).parent();
 
@@ -290,26 +289,31 @@
 								newElem = $SQembed.clone(true, true);
 								$SQembed.replaceWith(newElem);
 							}
-						} else if ($SQembed.is('param') && $SQembed.attr('name').toLowerCase() == 'movie') {
-							if (! $SQembed.attr('value').match(".swf")) $SQparent = $SQembed; // Skip the next part
-						} else {
-							$SQparent = $SQembed; // Skip the next part
 						}
+					});
 
-						if ($SQparent.is('object')) {
-							$SQwmodeParam = $SQ('param[name="wmode"]', $SQparent);
-							if ($SQwmodeParam.length == 1) {
-								if ($SQwmodeParam.attr('value') != 'transparent' && $SQwmodeParam.attr('value') != 'opaque') {
-									$SQwmodeParam.attr('value', 'transparent');
-								}
+					$SQ('object').each(function(index) {
+						$SQobject = $SQ(this);
+						$SQwmodeParam = $SQ('param[name="wmode"]', $SQobject);
+						if ($SQwmodeParam.length == 1) {
+							if ($SQwmodeParam.attr('value') == 'transparent' || $SQwmodeParam.attr('value') == 'opaque') {
+								return true; // no fix needed, go to next <object>
 							} else {
-								$SQparent.append('<param name="wmode" value="transparent" />');
+								$SQwmodeParam.attr('value', 'transparent');
 							}
-							$SQparent.css('z-index', '9998 !important');
-							
-							newElem = $SQparent.clone(true, true);
-							$SQparent.replaceWith(newElem);
+						} else {
+							// Check if this <object> is flash, if so add the wmode parameter
+							$SQmovieParam = $SQ('param[name="movie"]', $SQobject);
+							if ($SQmovieParam.length == 1 && $SQmovieParam.attr('value').match(/.swf/)) {
+								$SQobject.append('<param name="wmode" value="transparent" />');
+							} else {
+								return true; // not flash, go to next <object>
+							}
 						}
+						$SQobject.css('z-index', '9998 !important');
+						
+						newElem = $SQobject.clone(true, true);
+						$SQobject.replaceWith(newElem);
 					});
 
                     // bring in the GENERIC CSS

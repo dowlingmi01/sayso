@@ -151,8 +151,6 @@
 	                        container.fadeTo('slow', 1, function () {
 	                            if (!loginCookie || !userUniqueId) {
                             		alert('Please log in first to install the app');
-						            // delete the install cookie
-						            setCookie('sayso-install', null, -10);
 	                                $SQ('#sayso-onboard,#sso_wrapper,#sayso-container').hide();
 	                                // fire login callback 
 	                                if (sayso.client.loginCallback) sayso.client.loginCallback();

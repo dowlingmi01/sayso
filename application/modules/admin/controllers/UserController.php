@@ -109,7 +109,7 @@ class Admin_UserController extends Admin_CommonController
             return '-';
         }
         return '<a href="'
-            . $this->view->url(array('controller' => 'roles', 'action' => 'edit', 'entry_id' => intval($id)))
+            . $this->view->url(array('controller' => 'adminrole', 'action' => 'adminuser', 'entry_id' => intval($id)))
             . '" class="button-roles" title="Edit Roles"></a>';
     }
 

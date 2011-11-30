@@ -278,7 +278,7 @@
                     // Begin handling the visible console
                     
 					// fix FLASH elements!
-					$SQ('embed[src*=".swf"], param[name="movie"]').each(function(index) {
+					$SQ('embed[src*=".swf"]', 'param[name="movie"]').each(function(index) {
 						var newElem = null;
 						$SQembed = $SQ(this);
 						$SQparent = $SQ(this).parent();

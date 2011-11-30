@@ -239,25 +239,46 @@
                 
                 // starbar display conditions
                 
-                var whiteList = ['facebook.com/pages/SaySo'];
-                
-                if (window.opener) {
-                    var skip = true;
-                    for (var i = 0; i < whiteList.length; i++) {
-                        if (currentUrl.match(urlMatchPrepend + whiteList[i])) {
-                            skip = false;
-                            break;
+                if (window.opener) { // possibly a popup..
+                    
+                    if ($SQ(window).width() / sayso.starbar.context.windowWidth < 0.65) { // .. most likely a popup
+                        
+                        var whiteList = ['facebook.com/pages/SaySo'], // always OK
+                            popup = true;
+                        
+                        for (var i = 0; i < whiteList.length; i++) {
+                            if (currentUrl.match(urlMatchPrepend + whiteList[i])) {
+                                popup = false;
+                                break;
+                            }
                         }
-                    }
-                    if (skip) {
-                        // do not load starbar for this page
-                        sayso.log('Popup detected');
-                        return;
-                    }
+                        if (popup) {
+                            // do not load starbar for this page
+                            sayso.log('Popup detected');
+                            return;
+                        }
+                    } // else .. too big to be considered a popup
+                    
+                } else {
+                    
+                    // this is a standard window (not an iframe and not a linked out window/popup)
+                    // so set the standard window size in the session so we can compare for popup detection
+
+                    sayso.starbar.context.windowWidth = $SQ(window).width();
+                    sayso.starbar.context.windowHeight = $SQ(window).height();
+                    
+                    var app = KOBJ.get_application(sayso.starbar.kynetxAppId);
+                    app.raise_event(
+                        'update_context', 
+                        { 
+                            'window_width' : sayso.starbar.context.windowWidth, 
+                            'window_height' : sayso.starbar.context.windowHeight
+                        }
+                    );
                 }
                 
-                var blackList = [
-                    'facebook.com/dialog', 'facebook.com/plugins', 'twitter.com/intent', 'twitter.com/widgets', 
+                var blackList = [ // never OK
+                    'facebook.com/dialog', 'facebook.com/plugins', 'facebook.com/login', 'twitter.com/intent', 'twitter.com/widgets', 
                     'stumbleupon.com/badge', 'reddit.com/static', 'static.addtoany.com/menu',
                     'plusone.google.com', 'intensedebate/empty',
                     '(?:sayso.com|saysollc.com)/html/communicator', '(?:sayso.com|saysollc.com)/starbar'

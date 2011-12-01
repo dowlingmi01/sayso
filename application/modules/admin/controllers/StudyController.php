@@ -43,7 +43,7 @@ class Admin_StudyController extends Admin_CommonController
                     'function'  => array($this, 'generateProgress'),
                     'params'    => array('{{begin_date}}', '{{end_date}}')
                 )
-            );        
+            );
         $grid->addExtraColumns($extraColumnProgress);
 
         $extraColumnEdit = new Bvb_Grid_Extra_Column();

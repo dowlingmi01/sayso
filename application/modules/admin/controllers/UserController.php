@@ -37,6 +37,7 @@ class Admin_UserController extends Admin_CommonController
 		$extraColumnEdit
 			->position('right')
 			->name('edit')
+            ->class('td-buttons')
 			->title(' ')
 			->callback(
                 array(
@@ -50,6 +51,7 @@ class Admin_UserController extends Admin_CommonController
 		$extraColumnEditRoles
 			->position('right')
 			->name('roles')
+            ->class('td-buttons')
 			->title(' ')
 			->callback(
                 array(
@@ -63,6 +65,7 @@ class Admin_UserController extends Admin_CommonController
 		$extraColumnDelete
 			->position('right')
 			->name('delete')
+            ->class('td-buttons')
 			->title(' ')
 			->callback(
                 array(

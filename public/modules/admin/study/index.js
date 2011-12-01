@@ -20,6 +20,10 @@ function bindLocal()
 		});
     });
 
+    $('.change-status').unbind('click').bind('click', function(){
+
+    });
+
 }
 
 $(function(){ bindLocal();});

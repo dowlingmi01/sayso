@@ -24,6 +24,42 @@ function bindLocal()
 
     });
 
+    $('.button-datepicker').each(function(){
+        var _this = this;
+        $(this).datetimepicker({
+            dateFormat: 'yy-mm-dd',
+            timeFormat: 'hh:mm:ss',
+            stepHour: 2,
+            stepMinute: 10,
+            showOn: "button",
+            buttonImage: "/images/calendar.gif",
+            buttonImageOnly: true,
+            onClose: function(dateText, inst)
+            {
+                $(this).val(dateText);
+                $(this).parent().find('img.ui-datepicker-trigger').attr('src', '/images/spinners/spinner-16x16.gif');
+                $(this).parent().find('span.admin-date').text(dateText);
+                var data = {
+                    field       : ($(_this).hasClass('date-begin-visible') ? 'begin_date' : 'end_date'),
+                    date        : dateText,
+                    study_id    : $(this).parent().find('span.admin-date').attr('data-id')
+                };
+                $.ajax({
+                    url         : '/admin/study/set-time',
+                    dataType    : 'json',
+                    data        : data,
+                    success     : function(data)
+                    {
+                        $(_this).parent().find('img.ui-datepicker-trigger').attr('src', '/images/calendar.gif');
+                        /**
+                         * @todo show messages on errors
+                         */
+                    }
+                });
+            }
+        });
+    });
+
 }
 
 $(function(){ bindLocal();});

@@ -154,14 +154,14 @@ class Admin_StudyController extends Admin_CommonController
 
     public function generateBeginDate($id, $beginDate)
     {
-        return  $beginDate . ' &nbsp; <a href="javascript:void(null);" class="button-dropdown button-edit-begin-date" rel="'
-            . $beginDate . '" title="Edit begin date"></a>';
+        return  '<span class="admin-date" data-id="'.$id.'">' . $beginDate . '</span>'
+            . ' &nbsp; <input type="hidden" class="date-begin-visible button-datepicker" value="'.$beginDate.'" />';
     }
 
     public function generateEndDate($id, $endDate)
     {
-        return  $endDate . ' &nbsp; <a href="javascript:void(null);" class="button-dropdown button-edit-end-date" rel="'
-            . $endDate . '" title="Edit end date"></a>';
+        return  '<span class="admin-date" data-id="'.$id.'">' . $endDate . '</span>'
+            . ' &nbsp; <input type="hidden" class="date-end-visible button-datepicker" value="'.$endDate.'" />';
     }
 
     public function generateStatusButtonLink($id, $status)
@@ -170,6 +170,47 @@ class Admin_StudyController extends Admin_CommonController
         return  '<a href="javascript:void(null);" rel="'.$id.'"'
                     . '" class="'. $allStatuses[$status]['icon-class'] .' change-status" title="'
                     . $allStatuses[$status]['label'] .'"></a>';
+    }
+
+    public function setTimeAction()
+    {
+        if(!$this->checkAccess(array('superuser')))
+        {
+            die('Access denied!');
+        }        
+        $messages = array();
+
+        /**
+         * @todo filter input
+         */
+
+        $field      = $this->_getParam('field');
+        $value      = $this->_getParam('date');
+        $study_id   = $this->_getParam('study_id');
+        
+        if (in_array($field, array('begin_date', 'end_date')) && $value && $study_id)
+        {
+            Record::beginTransaction();
+            try
+            {
+                $study  = new Study();
+                $study->loadData($study_id);
+                $study->$field = $value;
+                $study->save();
+                Record::commitTransaction();
+            }
+            catch(Exception $e)
+            {
+                $messages[] = 'Error: entry cannot be saved!';
+                if(getenv('APPLICATION_ENV') != 'production')
+                {
+                    $messages[] = $e->getMessage();
+                }
+            }
+        }
+        $content = array('messages' => $messages);
+        echo json_encode($content);
+        exit(0);
     }
 
     public function addAction()

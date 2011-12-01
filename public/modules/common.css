@@ -1422,6 +1422,11 @@ td.td-progress
     padding-top: 1px !important;
 }
 
+img.ui-datepicker-trigger
+{
+    vertical-align: text-bottom;
+}
+
 /* form decorators */
 .f-deco-left-col
 {

@@ -359,7 +359,6 @@ class Study extends Record
                         $domain->save();
                     }
                 }
-
                 // associate
                 $dm                 = new Study_TagDomainMap();
                 $dm->tag_id         = $tag->getId();
@@ -412,7 +411,6 @@ class Study extends Record
             // add avails
             foreach ($creativeData['avails'] as $availIndex)
             {
-
                 $availData = &$creativeData[$availIndex];
 
                 $avail                          = new Study_Avail();
@@ -454,7 +452,6 @@ class Study extends Record
                     $dm->domain_id      = $domain->getId();
                     $dm->save();
                 }
-
             }
         }
 

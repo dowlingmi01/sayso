@@ -90,8 +90,7 @@ function advanceMain()
 }
 
 function validateTabsBasics()
-{
-    //Select Product
+{    
     var product = parseInt($('input[name=radioProduct]:checked').val());
     if(!product)
     {
@@ -193,11 +192,16 @@ function validateTabsADCreative()
 
 function monitorTabs(event, ui)
 {
-    // anything needed here?
+    // Anything needed here...?
 }
 
 function submitMain()
 {
+    // Disable sanity check... temporarily...
+
+    /**
+    var product = parseInt($('input[name=radioProduct]:checked').val());
+
     var error = validateTabsBasics();
     if(error)
     {
@@ -233,19 +237,26 @@ function submitMain()
         return false;
     }
 
-    error = validateTabsADCampaign();
-    if(error)
+    if(product == 2)
     {
-        dialogAlert(error);
-        return false;
+        error = validateTabsADCampaign();
+        if(error)
+        {
+            dialogAlert(error);
+            return false;
+        }
     }
 
-    error = validateTabsADCreative();
-    if(error)
+    if(product == 3)
     {
-        dialogAlert(error);
-        return false;
+        error = validateTabsADCreative();
+        if(error)
+        {
+            dialogAlert(error);
+            return false;
+        }
     }
+    */
     
     // rebind form submit and submit
     $("#mainForm").unbind().bind('submit', function(){

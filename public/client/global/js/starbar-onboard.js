@@ -72,7 +72,7 @@
                             e.preventDefault();
                             location.href = location.protocol + '//' + location.host + location.pathname;
                         });
-                    }, 10000);
+                    }, 8000);
                 } else if (navigator.userAgent.match('Safari')) {
                     _this.addClass('sso_theme_button_disabled');
                     _this.closest('form').find('p:first').hide();

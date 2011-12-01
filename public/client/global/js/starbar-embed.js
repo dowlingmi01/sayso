@@ -179,7 +179,7 @@
 
     // functions
     
-    function jsLoadTimer(){function d(){i++<=b&&(c=setTimeout(e,f))}function e(){try{if(eval(g)){c&&clearTimeout(c);try{h()}catch(a){sayso.warn(a)}}else d()}catch(b){d()}}var i=0,b=400,f=50,g="",h=null,c=null;this.setMaxCount=function(a){b=a};this.setInterval=function(a){f=a};this.setLocalReference=function(){};this.start=function(a,b){g=a;h=b;e()}};
+    function jsLoadTimer(){function d(){j++<=f?b=setTimeout(g,h):"function"===typeof e&&e()}function g(){try{if("function"===typeof c&&c()||"string"===typeof c&&eval(c)){b&&clearTimeout(b);try{i()}catch(a){sayso.warn(a)}}else d()}catch(e){d()}}var j=0,f=400,h=50,c="",i=null,e=null,b=null;this.setMaxCount=function(a){f=a;return this};this.setInterval=function(a){h=a;return this};this.setLocalReference=function(){return this};this.start=function(a,b,d){c=a;i=b;e=d;g();return this}};
 
     function getCookie (find) {
         var cookies = document.cookie.split(';');

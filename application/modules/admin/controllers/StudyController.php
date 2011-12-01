@@ -30,13 +30,28 @@ class Admin_StudyController extends Admin_CommonController
         $grid   = new Data_Markup_Grid();
         $select = Zend_Registry::get('db')->select()->from('study');
         $grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
-        $grid->setGridColumns(array('id', 'name', 'begin_date', 'end_date', 'created', 'status', 'edit', 'delete'));
+        $grid->setGridColumns(array('id', 'name', 'begin_date', 'end_date', 'created', 'progress', 'status', 'edit', 'delete'));
+
+        $extraColumnProgress = new Bvb_Grid_Extra_Column();
+		$extraColumnProgress
+			->position('right')
+			->name('progress')
+			->title(' ')
+			->class('td-progress')
+			->callback(
+                array(
+                    'function'  => array($this, 'generateProgress'),
+                    'params'    => array('{{begin_date}}', '{{end_date}}')
+                )
+            );        
+        $grid->addExtraColumns($extraColumnProgress);
 
         $extraColumnEdit = new Bvb_Grid_Extra_Column();
 		$extraColumnEdit
 			->position('right')
 			->name('edit')
 			->title(' ')
+            ->class('td-buttons')
 			->callback(
                 array(
                     'function'  => array($this, 'generateEditButtonLink'),
@@ -50,6 +65,7 @@ class Admin_StudyController extends Admin_CommonController
 			->position('right')
 			->name('delete')
 			->title(' ')
+            ->class('td-buttons')
 			->callback(
                 array(
                     'function'  => array($this, 'generateDeleteButtonLink'),
@@ -85,11 +101,16 @@ class Admin_StudyController extends Admin_CommonController
 					'function'  => array($this, 'generateStatusButtonLink'),
 					'params'    => array('{{id}}', '{{status}}')
 				),
-                'class'     => 'align-center'
+                'class'     => 'td-buttons align-center'
 			)
 		);
 
         $this->view->grid = $grid->deploy();
+    }
+
+    public function generateProgress($beginDate, $endDate)
+    {
+        return '<div class="button-show-progress" data-rel="25" title="Demo progress: 25%"></div>';
     }
 
     public function generateEditLink($id, $name)

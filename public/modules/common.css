@@ -1401,7 +1401,23 @@ a.button-study-status-complete
     padding: 2px 16px 0 0;
     background:transparent url('/images/icons-actions.gif') no-repeat -202px -182px;
 }
-
+div.button-show-progress
+{
+    width:120px;    
+    height: 12px !important;
+}
+td.td-buttons
+{
+    vertical-align: middle;
+    padding-top: 4px !important;
+    text-align: center;
+    width: 20px;
+}
+td.td-progress
+{
+    vertical-align: middle;
+    padding-top: 2px !important;    
+}
 
 /* form decorators */
 .f-deco-left-col

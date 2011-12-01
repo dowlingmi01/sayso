@@ -12,6 +12,14 @@ function bindLocal()
     {
         return confirm('Delete this entry?') ? true : false;
     });
+
+    $('.button-show-progress').each(function(){
+        var v = parseInt($(this).attr('data-rel'));
+        $(this).progressbar({
+			value: v
+		});
+    });
+
 }
 
 $(function(){ bindLocal();});

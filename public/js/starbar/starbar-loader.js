@@ -115,15 +115,14 @@
 		// fix FLASH elements!
 		$SQ('embed[src*=".swf"]').each(function(index) {
 			$SQembed = $SQ(this);
-			$SQparent = $SQ(this).parent();
 
-			if ($SQembed.is('embed') && $SQembed.attr('id') != 'sm2movie') {
-				$SQembed.css('z-index', '9998 !important');
-				if ($SQembed.attr('wmode') != 'transparent' && $SQembed.attr('wmode') != 'opaque') {
-					$SQembed.attr('wmode', 'transparent');
-					newElem = $SQembed.clone(true, true);
-					$SQembed.replaceWith(newElem);
-				}
+			if ($SQembed.attr('id') == 'sm2movie') return true; // no fix needed, go to next <embed>
+
+			$SQembed.css('z-index', '9998 !important');
+			if ($SQembed.attr('wmode') != 'transparent' && $SQembed.attr('wmode') != 'opaque') {
+				$SQembed.attr('wmode', 'transparent');
+				newElem = $SQembed.clone(true, true);
+				$SQembed.replaceWith(newElem);
 			}
 		});
 
@@ -131,6 +130,7 @@
 		if (ieVersion > -1) {
 			$SQ('object').each(function(index) {
 				$SQobject = $SQ(this);
+				if ($SQobject.attr('id') == 'sm2movie') return true; // no fix needed, go to next <object>
 				$SQwmodeParam = $SQ('param[name="wmode"]', $SQobject);
 				if ($SQwmodeParam.length == 1) {
 					if ($SQwmodeParam.attr('value') == 'transparent' || $SQwmodeParam.attr('value') == 'opaque') {

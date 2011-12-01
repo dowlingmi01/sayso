@@ -21,11 +21,20 @@
     var installParam = getUrlParam('sayso-install'),
         installCookie = getCookie('sayso-install');
     
+    // if app is already loaded, go no further
+    
     if (typeof window.KOBJ === 'object' && sayso.starbar.kynetxAppId) { // app already installed
         setCookie('sayso-installing', null, -10);
-        setCookie('sayso-installed', 1, 30);
         return;
     }
+    
+    // sanity check.. since the app loads LATE in the DOM,
+    // we setup a timer now to fire when loaded and set the installed cookie
+    // (which the above condition checks and returns)
+    new jsLoadTimer().setMaxCount(1000).start('window.sayso.starbar.loaded', function () {
+        setCookie('sayso-installing', null, -10);
+        setCookie('sayso-installed', 1, 30);
+    });
     
     if (getCookie('sayso-installing')) {
         setCookie('sayso-installing', null, -10);

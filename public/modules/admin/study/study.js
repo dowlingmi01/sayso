@@ -197,9 +197,9 @@ function monitorTabs(event, ui)
 
 function submitMain()
 {
-    // Disable sanity check... temporarily...
+    // Disable sanity check almost everywhere ...
 
-    /**
+    
     var product = parseInt($('input[name=radioProduct]:checked').val());
 
     var error = validateTabsBasics();
@@ -209,6 +209,7 @@ function submitMain()
         return false;
     }
 
+    /**
     error = validateTabsMetrics();
     if(error)
     {

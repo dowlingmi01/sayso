@@ -2,6 +2,12 @@
 
 class Study extends Record
 {
+
+    const STATUS_IN_DESIGN  = 0;
+    const STATUS_LAUNCHED   = 10;
+    const STATUS_LIVE       = 20;
+    const STATUS_COMPLETE   = 30;
+
     protected $_tableName = 'study';
 
     /**
@@ -9,23 +15,43 @@ class Study extends Record
      */
     protected $_cells;
 
-    public function init () {
+    public function init ()
+    {
         $this->_cells = new Study_CellCollection();
         parent::init();
     }
 
-    public function addCell (Study_Cell $cell) {
+    public function addCell (Study_Cell $cell)
+    {
         $this->_cells->addItem($cell);
+    }
+
+    /**
+     * Get status properties hash
+     * 
+     * @return array
+     */
+    public function getStatusArray()
+    {
+        return array
+        (
+            STATUS_IN_DESIGN    => array('label' => 'In-Design'),
+            STATUS_LAUNCHED     => array('label' => 'Launched'),
+            STATUS_LIVE         => array('label' => 'Live'),
+            STATUS_COMPLETE     => array('label' => 'Complete'),
+        );
     }
 
     /**
      * @var Study_CellCollection
      */
-    public function getCells () {
+    public function getCells ()
+    {
         return $this->_cells;
     }
 
-    public function exportData() {
+    public function exportData()
+    {
         $fields = array(
             'user_id',
             'name',
@@ -39,32 +65,35 @@ class Study extends Record
         return array_intersect_key($this->getData(), array_flip($fields));
     }
 
-    public function exportProperties($parentObject = null) {
+    public function exportProperties($parentObject = null)
+    {
         $props = array(
             '_cells' => $this->_cells
         );
         return array_merge(parent::exportProperties($parentObject), $props);
     }
-    
+
 	/**
      * Get properties (used for serialization)
-     * 
+     *
      * @see Object::serialize
      * @return array
      */
-    protected function _getProperties() {
+    protected function _getProperties()
+    {
         return array_merge(array(
         	'_cells' => $this->_cells
         ), parent::_getProperties());
     }
-    
+
     /**
      * Restore properties from array (used with serialization)
-     * 
+     *
      * @see Object::unserialize
      * @param array $properties
      */
-    protected function _restoreProperties (array $properties) {
+    protected function _restoreProperties (array $properties)
+    {
         $this->_cells = $properties['_cells'];
         parent::_restoreProperties($properties);
     }
@@ -167,8 +196,8 @@ class Study extends Record
             if($error)
             {
                 throw new Exception("PDO exception: " . $error);
-            }            
-            $error = Study_CreativeCollection::dropForStudy($study->getId());            
+            }
+            $error = Study_CreativeCollection::dropForStudy($study->getId());
             if($error)
             {
                 throw new Exception("PDO exception: " . $error);
@@ -234,6 +263,8 @@ class Study extends Record
 
         // Cells
 
+        // Validity check temporarily disabled - DO NOT DELETE THE COMMENTED BLOCK BELOW!
+        /*
         if(empty($values['cell']))
         {
             throw new Exception('Cell data not available!');
@@ -247,134 +278,150 @@ class Study extends Record
                 throw new Exception('Cell information passed is invalid!');
             }
         }
-
-        // Drop existing cells...
-
+         */
 
         /**
          * @todo add check for containing both types of cells
          */
 
         // Save new cells
-        foreach ($values['cell'] as $cellData)
+        if(!empty($values['cell']))
         {
-            /**
-             * @todo verify data with Zend_Filter*
-             */
-            $cell               = new Study_Cell();
-            $cell->study_id     = $study->getId();
-            $cell->description  = $cellData['description'];
-            $cell->size         = $cellData['size'];
-            $cell->cell_type    = $cellData['type'] == 1 ? 'control' : 'test';
-            $cell->save();
-
-            foreach ($cellData['qualifiers'] as $qualifier)
+            foreach ($values['cell'] as $cellData)
             {
-                $qa = &$cellData[$qualifier];
-                //echo '<pre>'; var_dump($qa);echo '</pre>';
+                /**
+                 * @todo verify data with Zend_Filter*
+                 */
+                $cell               = new Study_Cell();
+                $cell->study_id     = $study->getId();
+                $cell->description  = $cellData['description'];
+                $cell->size         = $cellData['size'];
+                $cell->cell_type    = $cellData['type'] == 1 ? 'control' : 'test';
+                $cell->save();
 
-                switch($qa['qftype'])
+                if(!empty($cellData['qualifiers']))
                 {
-                    case 'online-browsing':
+                    foreach ($cellData['qualifiers'] as $qualifier)
+                    {
+                        $qa = &$cellData[$qualifier];
+                        //echo '<pre>'; var_dump($qa);echo '</pre>';
 
-                        $browseQualifier            = new Study_CellBrowsingQualifier();
-                        $browseQualifier->cell_id   = $cell->getId();
-                        if ($qa['action'] === 'Exclude')
+                        switch($qa['qftype'])
                         {
-                            $browseQualifier->exclude = 1;
+                            case 'online-browsing':
+
+                                $browseQualifier            = new Study_CellBrowsingQualifier();
+                                $browseQualifier->cell_id   = $cell->getId();
+                                if ($qa['action'] === 'Exclude')
+                                {
+                                    $browseQualifier->exclude = 1;
+                                }
+                                $browseQualifier->site          = $qa['url'];
+                                $browseQualifier->timeframe_id  = $qa['timeframe'];
+                                $browseQualifier->save();
+
+                                break;
+                            case 'search-action':
+
+                                $searchQualifier            = new Study_CellSearchQualifier();
+                                $searchQualifier->cell_id   = $cell->getId();
+                                if ($qa['action'] === 'Exclude')
+                                {
+                                    $searchQualifier->exclude = 1;
+                                }
+                                $searchQualifier->term          = $qa['qs'];
+                                $searchQualifier->timeframe_id  = $qa['timeframe'];
+                                $searchQualifier->save();
+
+                                foreach ($qa['engines'] as $engine)
+                                {
+                                    //echo '<pre>'; var_dump($engine);echo '</pre>';
+                                    $map = new Study_CellSearchQualifierMap();
+                                    $map->cell_qualifier_search_id  = $searchQualifier->getId();
+                                    $map->search_engines_id         = $engine;
+                                    $map->save();
+                                }
+
+                                break;
                         }
-                        $browseQualifier->site          = $qa['url'];
-                        $browseQualifier->timeframe_id  = $qa['timeframe'];
-                        $browseQualifier->save();
-
-                        break;
-                    case 'search-action':
-
-                        $searchQualifier            = new Study_CellSearchQualifier();
-                        $searchQualifier->cell_id   = $cell->getId();
-                        if ($qa['action'] === 'Exclude')
-                        {
-                            $searchQualifier->exclude = 1;
-                        }
-                        $searchQualifier->term          = $qa['qs'];
-                        $searchQualifier->timeframe_id  = $qa['timeframe'];
-                        $searchQualifier->save();
-
-                        foreach ($qa['engines'] as $engine)
-                        {
-                            //echo '<pre>'; var_dump($engine);echo '</pre>';
-                            $map = new Study_CellSearchQualifierMap();
-                            $map->cell_qualifier_search_id  = $searchQualifier->getId();
-                            $map->search_engines_id         = $engine;
-                            $map->save();
-                        }
-
-                        break;
+                    }
                 }
             }
         }
 
         // Adjuster Campaign
+
+        // Validity check temporarily disabled - DO NOT DELETE THE COMMENTED BLOCK BELOW!
+        /*
         if($study->study_type == 2 && empty($values['tag']))
         {
             throw new Exception('At leat one tag must be created forAdjuster Campaign!');
         }
+         */
 
-        foreach ($values['tag'] as $tagData)
+        if(!empty($values['tag']))
         {
-            $tag = new Study_Tag();
-            $tag->name          = $tagData['label'];
-            $tag->tag           = $tagData['jq'];
-            $tag->target_url    = $tagData['target'];
-            $tag->study_id      = $study->getId();
-            /**
-             * @todo why is this here?
-             */
-            $tag->user_id       = $user->id;
-            $tag->save();
-
-            foreach($tagData['domain'] as $domainData)
+            foreach ($values['tag'] as $tagData)
             {
-                $domain = new Study_Domain();
+                $tag = new Study_Tag();
+                $tag->name          = $tagData['label'];
+                $tag->tag           = $tagData['jq'];
+                $tag->target_url    = $tagData['target'];
+                $tag->study_id      = $study->getId();
+                /**
+                 * @todo why is this here?
+                 */
+                $tag->user_id       = $user->id;
+                $tag->save();
 
-                // when numeric, check if exists and re-associate
-                if(is_numeric($domainData))
+                if(!empty($tagData['domain']))
                 {
-                    $domain->loadData($domainData);
-                    if(false === $domain->getId() > 0)
+                    foreach($tagData['domain'] as $domainData)
                     {
-                        $domain->domain     = $domainData;
-                        $domain->user_id    = $user->id;
-                        $domain->save();
+                        $domain = new Study_Domain();
+
+                        // when numeric, check if exists and re-associate
+                        if(is_numeric($domainData))
+                        {
+                            $domain->loadData($domainData);
+                            if(false === $domain->getId() > 0)
+                            {
+                                $domain->domain     = $domainData;
+                                $domain->user_id    = $user->id;
+                                $domain->save();
+                            }
+                        }
+                        // when string, check it, create new if not existing
+                        elseif(is_string($domainData))
+                        {
+                            $domain->getByNameAndUserId($domainData, $user->id);
+                            if(false === $domain->getId() > 0)
+                            {
+                                $domain->domain     = $domainData;
+                                $domain->user_id    = $user->id;
+                                $domain->save();
+                            }
+                        }
+                        // associate
+                        $dm                 = new Study_TagDomainMap();
+                        $dm->tag_id         = $tag->getId();
+                        $dm->domain_id      = $domain->getId();
+                        $dm->save();
                     }
                 }
-                // when string, check it, create new if not existing
-                elseif(is_string($domainData))
-                {
-                    $domain->getByNameAndUserId($domainData, $user->id);
-                    if(false === $domain->getId() > 0)
-                    {
-                        $domain->domain     = $domainData;
-                        $domain->user_id    = $user->id;
-                        $domain->save();
-                    }
-                }
-                // associate
-                $dm                 = new Study_TagDomainMap();
-                $dm->tag_id         = $tag->getId();
-                $dm->domain_id      = $domain->getId();
-                $dm->save();
             }
         }
 
         // Adjuster Creative
+
+        // Validity check temporarily disabled - DO NOT DELETE THE COMMENTED BLOCK BELOW!
+        /**
+
         if($study->study_type == 3 && empty($values['creative']))
         {
             throw new Exception('At leat one creative must be created forAdjuster Creative!');
         }
 
-        
-        
         // Check validity
         foreach ($values['creative'] as $creative)
         {
@@ -383,79 +430,88 @@ class Study extends Record
                 throw new Exception('Avails information passed is invalid!');
             }
         }
-        
+         */
+
         // Save new cells
-        foreach ($values['creative'] as $creativeData)
+        if(!empty($values['creative']))
         {
-            /**
-             * @todo verify data with Zend_Filter*
-             */
 
-            // create ..khm .. a creative
-            $creative               = new Study_Creative();
-            $creative->user_id      = $user->getId();
-            $creative->mime_type_id = $creativeData['mimetype'];
-            $creative->name         = $creativeData['name'];
-            $creative->url          = $creativeData['url'];
-            $creative->target_url   = $creativeData['segment'];
-
-            $creative->save();
-
-            // associate to study
-            $creativeAssoc              = new Study_CreativeMap();
-            $creativeAssoc->study_id    = $study->getId();
-            $creativeAssoc->creative_id = $creative->getId();
-
-            $creativeAssoc->save();
-
-            // add avails
-            foreach ($creativeData['avails'] as $availIndex)
+            foreach ($values['creative'] as $creativeData)
             {
-                $availData = &$creativeData[$availIndex];
+                /**
+                 * @todo verify data with Zend_Filter*
+                 */
 
-                $avail                          = new Study_Avail();
-                $avail->creative_id             = $creative->getId();
-                $avail->label                   = $availData['label'];
-                $avail->selector                = $availData['jq'];
-                $avail->save();
+                // create ..khm .. a creative
+                $creative               = new Study_Creative();
+                $creative->user_id      = $user->getId();
+                $creative->mime_type_id = $creativeData['mimetype'];
+                $creative->name         = $creativeData['name'];
+                $creative->url          = $creativeData['url'];
+                $creative->target_url   = $creativeData['segment'];
 
-                foreach ($availData['domain'] as $domainData)
+                $creative->save();
+
+                // associate to study
+                $creativeAssoc              = new Study_CreativeMap();
+                $creativeAssoc->study_id    = $study->getId();
+                $creativeAssoc->creative_id = $creative->getId();
+
+                $creativeAssoc->save();
+
+                // add avails
+                if(!empty($creativeData['avails']))
                 {
-                    $domain = new Study_Domain();
-
-                    // when numeric, check if exists and re-associate
-                    if(is_numeric($domainData))
+                    foreach ($creativeData['avails'] as $availIndex)
                     {
-                        $domain->loadData($domainData);
-                        if(false === $domain->getId() > 0)
+                        $availData = &$creativeData[$availIndex];
+
+                        $avail                          = new Study_Avail();
+                        $avail->creative_id             = $creative->getId();
+                        $avail->label                   = $availData['label'];
+                        $avail->selector                = $availData['jq'];
+                        $avail->save();
+
+                        if(!empty($availData['domain']))
                         {
-                            $domain->domain     = $domainData;
-                            $domain->user_id    = $user->id;
-                            $domain->save();
+                            foreach ($availData['domain'] as $domainData)
+                            {
+                                $domain = new Study_Domain();
+
+                                // when numeric, check if exists and re-associate
+                                if(is_numeric($domainData))
+                                {
+                                    $domain->loadData($domainData);
+                                    if(false === $domain->getId() > 0)
+                                    {
+                                        $domain->domain     = $domainData;
+                                        $domain->user_id    = $user->id;
+                                        $domain->save();
+                                    }
+                                }
+                                // when string, check it, create new if not existing
+                                elseif(is_string($domainData))
+                                {
+                                    $domain->getByNameAndUserId($domainData, $user->id);
+                                    if(false === $domain->getId() > 0)
+                                    {
+                                        $domain->domain     = $domainData;
+                                        $domain->user_id    = $user->id;
+                                        $domain->save();
+                                    }
+                                }
+
+                                // associate
+                                $dm                 = new Study_AvailDomainMap();
+                                $dm->study_avail_id = $avail->getId();
+                                $dm->domain_id      = $domain->getId();
+                                $dm->save();
+                            }
                         }
                     }
-                    // when string, check it, create new if not existing
-                    elseif(is_string($domainData))
-                    {
-                        $domain->getByNameAndUserId($domainData, $user->id);
-                        if(false === $domain->getId() > 0)
-                        {
-                            $domain->domain     = $domainData;
-                            $domain->user_id    = $user->id;
-                            $domain->save();
-                        }
-                    }
-
-                    // associate
-                    $dm                 = new Study_AvailDomainMap();
-                    $dm->study_avail_id = $avail->getId();
-                    $dm->domain_id      = $domain->getId();
-                    $dm->save();
                 }
             }
         }
-
-
     }
 }
 

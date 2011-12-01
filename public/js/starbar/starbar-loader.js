@@ -117,7 +117,7 @@
 			$SQembed = $SQ(this);
 			$SQparent = $SQ(this).parent();
 
-			if ($SQembed.is('embed')) {
+			if ($SQembed.is('embed') && $SQembed.attr('id') != 'sm2movie') {
 				$SQembed.css('z-index', '9998 !important');
 				if ($SQembed.attr('wmode') != 'transparent' && $SQembed.attr('wmode') != 'opaque') {
 					$SQembed.attr('wmode', 'transparent');

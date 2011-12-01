@@ -7,13 +7,15 @@
 			return this.replace(/^\s+|\s+$/g, ''); 
 		};
 	}
+	
+	if (getCookie('sayso-installed')) return;
 
     if (!window.sayso) window.sayso = {};
     if (!window.sayso.baseDomain) {
         window.sayso.baseDomain = 'app.saysollc.com';
         window.sayso.environment = 'PROD';
     }
-    
+
     var sayso = window.sayso;
      
     var installParam = getUrlParam('sayso-install'),
@@ -21,6 +23,7 @@
     
     if (typeof window.KOBJ === 'object' && sayso.starbar.kynetxAppId) { // app already installed
         setCookie('sayso-installing', null, -10);
+        setCookie('sayso-installed', 1, 30);
         return;
     }
     

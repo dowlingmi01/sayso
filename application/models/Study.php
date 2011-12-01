@@ -8,7 +8,9 @@ class Study extends Record
     const STATUS_LIVE       = 20;
     const STATUS_COMPLETE   = 30;
 
-    protected $_tableName = 'study';
+    protected $_tableName   = 'study';
+
+    private static $statusArray    = array();
 
     /**
      * @var Study_CellCollection
@@ -31,15 +33,19 @@ class Study extends Record
      * 
      * @return array
      */
-    public function getStatusArray()
+    public static function getStatusArray()
     {
-        return array
-        (
-            STATUS_IN_DESIGN    => array('label' => 'In-Design'),
-            STATUS_LAUNCHED     => array('label' => 'Launched'),
-            STATUS_LIVE         => array('label' => 'Live'),
-            STATUS_COMPLETE     => array('label' => 'Complete'),
-        );
+        if(empty(self::$statusArray))
+        {
+            self::$statusArray = array
+            (
+                self::STATUS_IN_DESIGN    => array('label' => 'In-Design', 'icon-class' => 'button-stydy-status-indesign'),
+                self::STATUS_LAUNCHED     => array('label' => 'Launched', 'icon-class' => 'button-stydy-status-launched'),
+                self::STATUS_LIVE         => array('label' => 'Live', 'icon-class' => 'button-stydy-status-live'),
+                self::STATUS_COMPLETE     => array('label' => 'Complete', 'icon-class' => 'button-stydy-status-complete'),
+            );
+        }
+        return self::$statusArray;
     }
 
     /**

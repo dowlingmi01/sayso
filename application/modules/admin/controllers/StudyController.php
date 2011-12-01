@@ -30,7 +30,7 @@ class Admin_StudyController extends Admin_CommonController
         $grid   = new Data_Markup_Grid();
         $select = Zend_Registry::get('db')->select()->from('study');
         $grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
-        $grid->setGridColumns(array('id', 'name', 'begin_date', 'end_date', 'created', 'edit', 'delete'));
+        $grid->setGridColumns(array('id', 'name', 'begin_date', 'end_date', 'created', 'status', 'edit', 'delete'));
 
         $extraColumnEdit = new Bvb_Grid_Extra_Column();
 		$extraColumnEdit
@@ -63,6 +63,7 @@ class Admin_StudyController extends Admin_CommonController
                 'class' => 'align-right'
 			)
 		);
+
         $grid->updateColumn('name',
 			array(
 				'callback' => array(
@@ -70,6 +71,21 @@ class Admin_StudyController extends Admin_CommonController
 					'params'    => array('{{id}}', '{{name}}')
 				),
                 'class' => 'align-left important'
+			)
+		);
+
+        /**
+         * @see http://code.google.com/p/zfdatagrid/wiki/GridOptions
+         */
+        $grid->updateColumn('status',
+			array(
+                'position'  =>'last',
+                'title'     => '',
+				'callback'  => array(
+					'function'  => array($this, 'generateStatusButtonLink'),
+					'params'    => array('{{id}}', '{{status}}')
+				),
+                'class'     => 'align-center'
 			)
 		);
 
@@ -95,6 +111,14 @@ class Admin_StudyController extends Admin_CommonController
     {
         return  '<a href="' . $this->view->url(array('action' => 'delete', 'study_id' => intval($id)))
                     . '" class="button-delete" title="Delete"></a>';
+    }
+
+    public function generateStatusButtonLink($id, $status)
+    {
+        $allStatuses = Study::getStatusArray();
+        return  '<a href="javascript:void(null);" rel="'.$id.'"'
+                    . '" class="'. $allStatuses[$status]['icon-class'] .' change-status" title="'
+                    . $allStatuses[$status]['label'] .'"></a>';
     }
 
     public function addAction()

@@ -23,15 +23,12 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
             $buskerLevel = $this->getLevels()->find('title', 'busker')->getFirst();
         }
         $profile = $this->getGamer();
-        
+
 		$currencyPrimarySurveyId = $this->_economy->getCurrencyId('PRIMARY_SURVEY_POINTS');
 		$currencyPrimarySurvey = $profile->getCurrencies()->find('id', $currencyPrimarySurveyId)->getFirst();
 		$currentLevel = $profile->getHighestLevel();
 
-		if (!$good->isToken() && $profile->getGoods()->hasItem($good->getId())) {
-			$good->setNonRedeemReason('You have already<br />purchased this item.<br /><br />You can always buy<br />more tokens for the giveaways!<br />');
-			$good->setCommentForUser('Purchased');
-		} elseif (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
+		if (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
 			$good->setNonRedeemReason('Sorry, this item was sold out.');
 			$good->setCommentForUser('Sold Out');
 		} elseif ((int) $currencyPrimarySurvey->current_balance < 1 && $good->getId() !== $this->_economy->getGoodId('WEEK_ONE_GIVEAWAY')) {
@@ -48,7 +45,12 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
 		if ($good->inventory_total > $good->inventory_sold && (($good->inventory_total - $good->inventory_sold) < 4)) {
 			$good->setCommentForUser('Only '.($good->inventory_total - $good->inventory_sold).' left!');
 		}
-        
+
+		if (!$good->isToken() && $profile->getGoods()->hasItem($good->getId())) {
+			$good->setNonRedeemReason('You have already<br />purchased this item.<br /><br />You can always buy<br />more tokens for the giveaways!<br />');
+			$good->setCommentForUser('Purchased');
+		}
+
         parent::_visitGood($good);
     }
     

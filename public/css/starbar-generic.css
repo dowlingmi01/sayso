@@ -779,6 +779,18 @@ html {
 	margin: 10px 0 0 0;
 }
 
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo ul {
+}
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo ul li {
+	margin: 0 0 5px 20px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo ol {
+}
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo ol li {
+	margin: 0 0 5px 20px;
+}
+
 #sayso-starbar #starbar-player-console .sb_theme_button:hover,
 #sayso-starbar #starbar-player-console .sb_theme_button:active {
 	cursor : pointer;

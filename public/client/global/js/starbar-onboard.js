@@ -70,7 +70,7 @@
                         _this.text(sayso.client.meta.customStartMessage);
                         _this.unbind('click').click(function (e) {
                             e.preventDefault();
-                            location.reload();
+                            location.href = location.protocol + '//' + location.host + location.pathname;
                         });
                     }, 10000);
                 } else if (navigator.userAgent.match('Safari')) {
@@ -82,7 +82,7 @@
                         _this.removeClass('sso_theme_button_disabled');
                         _this.unbind('click').click(function (e) {
                             e.preventDefault();
-                            location.reload();
+                            location.href = location.protocol + '//' + location.host + location.pathname;
                         });
                     });
                 } else if (navigator.userAgent.match('MSIE')) {

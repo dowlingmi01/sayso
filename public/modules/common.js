@@ -40,7 +40,14 @@
 
     $.preLoadImages
     (
-        '/images/icons-actions.gif'
+        '/images/icons-actions.gif',
+        '/images/spinners/spinner-10x10.gif',
+        '/images/spinners/spinner-12x12.gif',
+        '/images/spinners/spinner-16x16.gif',
+        '/images/spinners/spinner-24x24.gif',
+        '/images/spinners/spinner-32x32.gif',
+        '/images/spinners/spinner-48x48.gif',
+        '/images/spinners/spinner-64x64.gif'
     );
 
 })(jQuery);

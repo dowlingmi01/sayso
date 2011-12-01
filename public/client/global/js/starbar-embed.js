@@ -29,7 +29,8 @@
         // Chrome workflow requires a refresh, Firefox requires one on tabs that are early in stack
         if ((navigator.userAgent.match('Firefox') || navigator.userAgent.match('Chrome')) && 
             confirm('Click here to finish installing the app!')) { 
-            window.location.reload(); 
+            // reload page WITHOUT the install param
+            location.href = location.protocol + '//' + location.host + location.pathname;
         }
         return;
     }
@@ -64,8 +65,9 @@
 	        	alert('Sorry, your web browser ('+navigator.appName+appVersion+') doesn\'t support the cool features of the Say.So Music Bar. For an optimal experience, use Chrome (www.google.com/chrome), Firefox (www.getfirefox.com) or Safari (www.apple.com/safari). And we support Internet Explorer 8 and above.');
 			}
 	        return; // unsupported browser
+	    } else {
+	        setCookie('sayso-install', installParam, 1);
 	    }
-        setCookie('sayso-install', installParam, 1);
     }
     
     if (!installCookie && !installParam) {

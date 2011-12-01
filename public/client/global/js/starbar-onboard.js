@@ -33,18 +33,26 @@
             
         elemOverlay.css('display','block');
         
-        $SQ('#sso_wrapper input[type=radio]').attr('checked', false);
-        
         // Agree to terms
         
+        if ($SQ('#sso_wrapper input[type=radio]').is(':checked')) {
+            agreedToTerms();
+        }
+        
         $SQ('#sso_wrapper input[type=radio]').bind('change', function () {
+            if ($SQ(this).is(':checked')) {
+                agreedToTerms();
+            }
+        });
+        
+        function agreedToTerms () {
             $SQ('span.sso_textError').fadeOut('slow');
             if (!sayso.client.userLoggedIn) return;
             $SQ('#sayso-get-app').removeClass('sso_theme_button_disabled');
             if (navigator.userAgent.match('Firefox') || navigator.userAgent.match('Chrome')) {
                 $SQ('#sayso-install-tip').text('TIP: refresh this page after install.').fadeIn(1500);
             }
-        });
+        }
         
         // Get the App!
         
@@ -124,8 +132,7 @@
             }
         }
         
-        var starbarLoadTimer = new jsLoadTimer();
-        starbarLoadTimer.start('window.sayso.starbar.loaded', function () {
+        new jsLoadTimer().setMaxCount(1000).start('window.sayso.starbar.loaded', function () {
             // starbar loaded. make sure this whole overlay goes away
             $SQ('#sayso-get-app')
                 .addClass('sso_theme_button_disabled')

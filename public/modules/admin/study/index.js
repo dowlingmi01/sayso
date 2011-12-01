@@ -24,7 +24,9 @@ function bindLocal()
 
     });
 
-    $('.button-datepicker').each(function(){
+    // save dates with ajax
+    $('.button-datepicker').each(function()
+    {
         var _this = this;
         $(this).datetimepicker({
             dateFormat: 'yy-mm-dd',
@@ -59,6 +61,9 @@ function bindLocal()
             }
         });
     });
+
+    // absolution theme bugfix
+    $('#ui-datepicker-div').hide();
 
 }
 

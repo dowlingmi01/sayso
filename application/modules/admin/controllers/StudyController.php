@@ -51,7 +51,6 @@ class Admin_StudyController extends Admin_CommonController
 			->position('right')
 			->name('edit')
 			->title(' ')
-            ->class('td-buttons')
 			->callback(
                 array(
                     'function'  => array($this, 'generateEditButtonLink'),
@@ -65,7 +64,6 @@ class Admin_StudyController extends Admin_CommonController
 			->position('right')
 			->name('delete')
 			->title(' ')
-            ->class('td-buttons')
 			->callback(
                 array(
                     'function'  => array($this, 'generateDeleteButtonLink'),
@@ -90,6 +88,26 @@ class Admin_StudyController extends Admin_CommonController
 			)
 		);
 
+        $grid->updateColumn('begin_date',
+			array(
+				'callback' => array(
+					'function'  => array($this, 'generateBeginDate'),
+					'params'    => array('{{id}}', '{{begin_date}}')
+				),
+                'class' => 'align-left important'
+			)
+		);
+
+        $grid->updateColumn('end_date',
+			array(
+				'callback' => array(
+					'function'  => array($this, 'generateEndDate'),
+					'params'    => array('{{id}}', '{{end_date}}')
+				),
+                'class' => 'align-left important'
+			)
+		);
+
         /**
          * @see http://code.google.com/p/zfdatagrid/wiki/GridOptions
          */
@@ -101,7 +119,7 @@ class Admin_StudyController extends Admin_CommonController
 					'function'  => array($this, 'generateStatusButtonLink'),
 					'params'    => array('{{id}}', '{{status}}')
 				),
-                'class'     => 'td-buttons align-center'
+                'class'     => 'align-center'
 			)
 		);
 
@@ -132,6 +150,18 @@ class Admin_StudyController extends Admin_CommonController
     {
         return  '<a href="' . $this->view->url(array('action' => 'delete', 'study_id' => intval($id)))
                     . '" class="button-delete" title="Delete"></a>';
+    }
+
+    public function generateBeginDate($id, $beginDate)
+    {
+        return  $beginDate . ' &nbsp; <a href="javascript:void(null);" class="button-dropdown button-edit-begin-date" rel="'
+            . $beginDate . '" title="Edit begin date"></a>';
+    }
+
+    public function generateEndDate($id, $endDate)
+    {
+        return  $endDate . ' &nbsp; <a href="javascript:void(null);" class="button-dropdown button-edit-end-date" rel="'
+            . $endDate . '" title="Edit end date"></a>';
     }
 
     public function generateStatusButtonLink($id, $status)

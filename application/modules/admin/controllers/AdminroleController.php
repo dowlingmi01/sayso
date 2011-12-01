@@ -96,7 +96,6 @@ class Admin_AdminroleController extends Admin_CommonController
 		$extraColumnEdit
 			->position('right')
 			->name('action')
-            ->class('td-buttons')
 			->title(' ')
 			->callback(
                 array(

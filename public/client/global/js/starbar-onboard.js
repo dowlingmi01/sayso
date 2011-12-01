@@ -13,6 +13,7 @@
     var loadTimer = new jsLoadTimer();
     loadTimer.start('typeof window.$SQ === "function"', function () {
         
+        var elemSaysoContainer = $SQ('#sayso-container');
         var elemPage = $SQ('#sayso-onboard');
         var elemOverlay = $SQ('#sayso-onboard #sso_wrapper');
 		var elemClose = $SQ('#sayso-onboard #sso_wrapper #sso_close');
@@ -25,11 +26,10 @@
             elemOverlay.css('margin-left','-300px');
         });
 				
-				// close button for overlay
-				elemClose.live('click',function(){
-					elemPage.hide();
-					elemOverlay.hide();
-				});
+		// close button for overlay
+		elemClose.live('click',function(){
+			elemSaysoContainer.hide();
+		});
             
         elemOverlay.css('display','block');
         

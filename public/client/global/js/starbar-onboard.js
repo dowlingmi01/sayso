@@ -64,7 +64,6 @@
             if ($SQ('#sso_wrapper input[type=radio]').is(':checked')) {
                 
                 var _this = $SQ(this);
-                setCookie('sayso-installing', 1, 1);
                 if (navigator.userAgent.match('Chrome')) {
                     // For Chrome users, prompt to reload the page
                     setTimeout(function(){ 
@@ -95,6 +94,7 @@
                 } else {
                     // INSTALLING!
                     _this.addClass('sso_theme_button_disabled');
+                    setCookie('sayso-installing', 1, 1);
                 }
             } else {
                 e.preventDefault();

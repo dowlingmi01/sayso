@@ -1369,7 +1369,7 @@ a.button-roles
     padding: 2px 16px 0 0;
     background:transparent url('/images/icons-actions.gif') no-repeat -322px -22px;
 }
-a.button-stydy-status-indesign
+a.button-study-status-indesign
 {
     width: 16px;
     height: 16px;
@@ -1377,7 +1377,7 @@ a.button-stydy-status-indesign
     padding: 2px 16px 0 0;
     background:transparent url('/images/icons-actions.gif') no-repeat -302px -302px;
 }
-a.button-stydy-status-launched
+a.button-study-status-launched
 {
     width: 16px;
     height: 16px;
@@ -1385,7 +1385,7 @@ a.button-stydy-status-launched
     padding: 2px 16px 0 0;
     background:transparent url('/images/icons-actions.gif') no-repeat -202px -462px;
 }
-a.button-stydy-status-live
+a.button-study-status-live
 {
     width: 16px;
     height: 16px;
@@ -1393,7 +1393,7 @@ a.button-stydy-status-live
     padding: 2px 16px 0 0;
     background:transparent url('/images/icons-actions.gif') no-repeat -62px -202px;
 }
-a.button-stydy-status-complete
+a.button-study-status-complete
 {
     width: 16px;
     height: 16px;

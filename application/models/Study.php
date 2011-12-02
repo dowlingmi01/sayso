@@ -30,7 +30,7 @@ class Study extends Record
 
     /**
      * Get status properties hash
-     * 
+     *
      * @return array
      */
     public static function getStatusArray()
@@ -53,9 +53,88 @@ class Study extends Record
      */
     public function checkLaunchValidity()
     {
+        // main properties
+
         if(!$this->getId())
         {
-            //throw new Exception('Study is not loaded!');
+            throw new Exception('Study is not loaded!');
+        }
+        if(!in_array($this->study_type, array(1,2,3)))
+        {
+            throw new Exception('Study product is not selected or wrong!');
+        }
+        if(!$this->user_id)
+        {
+            throw new Exception('Study owner user is not defined!');
+        }        
+        if(false === $this->size > 0)
+        {
+            throw new Exception('Study size must be > 0!');
+        }
+        if(false === $this->size_minimum > 0)
+        {
+            throw new Exception('Study min.threshhold must be > 0!');
+        }
+        if(!$this->begin_date || $this->begin_date == '0000-00-00 00:00:00')
+        {
+            throw new Exception('Study begin date is wrong!');
+        }
+        if(!$this->end_date || $this->end_date == '0000-00-00 00:00:00')
+        {
+            throw new Exception('Study end date is wrong!');
+        }
+        if(!$this->begin_date >= $this->end_date)
+        {
+            throw new Exception('Study begin date and/or study end date is wrong!');
+        }
+
+        //Cells - Must have both Control and Test
+
+        $cells = new Study_CellCollection();
+        $cells->loadForStudy($this->getId());
+        if($cells->count() == 0)
+        {
+            throw new Exception('Cannot find sells in study, please create cells first!');
+        }
+        $hasControl = $hasTest = false;
+        foreach ($cells as $cell)
+        {
+            if($cell->cell_type == 'control')
+            {
+                $hasControl = true;
+            }
+            if($cell->cell_type == 'test')
+            {
+                $hasTest = true;
+            }
+        }
+        if($hasControl || $hasTest)
+        {
+            throw new Exception('Cannot find sells of both types in study, please create cells of both `Control` and `Test` types first!');
+        }
+
+        //ADjuster Campaign - at least one tag must be present
+
+        if($this->study_type == 2)
+        {
+            $tags = new Study_TagCollection();
+            $tags->loadForStudy($this->getId());
+            if(false === $tags->count() > 0)
+            {
+                throw new Exception('ADjuster Campaign requires at least one tag to be created, please create some tags first!');
+            }
+        }
+
+        //ADjuster Creative - at least one creative must be present
+
+        if($this->study_type == 3)
+        {
+            $creatives = new Study_CreativeCollection();
+            $creatives->loadForStudy($this->getId());
+            if(false === $creatives->count() > 0)
+            {
+                throw new Exception('ADjuster Creative requires at least one creative to be created, please design some creatives first!');
+            }
         }
     }
 

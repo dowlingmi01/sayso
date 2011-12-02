@@ -75,7 +75,7 @@ function bindLocal()
         {
             var _this = this;
             var data = {
-                status      : status,
+                status      : 10,//status, - currently is set statically
                 study_id    : $(this).attr('rel')
             };
             

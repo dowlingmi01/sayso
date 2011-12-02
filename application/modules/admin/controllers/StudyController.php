@@ -30,7 +30,13 @@ class Admin_StudyController extends Admin_CommonController
         $grid   = new Data_Markup_Grid();
         $select = Zend_Registry::get('db')->select()->from('study');
         $grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
-        $grid->setGridColumns(array('id', 'name', 'begin_date', 'end_date', 'created', 'show_status', 'progress', 'edit', 'delete'));
+        $grid->setGridColumns(
+            array(
+                'id', 'name', 'begin_date', 'end_date',
+                'created', 'show_status', 'progress',
+                'edit', 'delete'
+            )
+        );
 
         $extraColumnStatus = new Bvb_Grid_Extra_Column();
 		$extraColumnStatus
@@ -40,7 +46,7 @@ class Admin_StudyController extends Admin_CommonController
 			->callback(
                 array(
                     'function'  => array($this, 'generateStatusButtonLink'),
-                    'params'    => array('{{id}}', '{{status}}')
+                    'params'    => array('{{id}}', '{{status}}', '{{begin_date}}', '{{end_date}}')
                 )
             );
         $grid->addExtraColumns($extraColumnStatus);
@@ -180,9 +186,23 @@ class Admin_StudyController extends Admin_CommonController
             . ($status ? '' : ' &nbsp; <input type="hidden" class="date-end-visible button-datepicker" value="'.$endDate.'" />');
     }
 
-    public function generateStatusButtonLink($id, $status)
+    public function generateStatusButtonLink($id, $status, $begin, $end)
     {
         $allStatuses = Study::getStatusArray();
+
+        // check for non-database status
+        if($status == Study::STATUS_LAUNCHED)
+        {
+            if(Study::hasStatusLive($begin, $end))
+            {
+                $status = Study::STATUS_LIVE;
+            }
+            if(Study::hasStatusComplete($end))
+            {
+                $status = Study::STATUS_COMPLETE;
+            }
+        }
+
         return  '<a href="javascript:void(null);" rel="'.$id.'" data-status="'.$status.'"'
                     . ' class="'. $allStatuses[$status]['icon-class'] .' change-status" title="'
                     . $allStatuses[$status]['label'] .'"></a>';

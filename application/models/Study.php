@@ -139,6 +139,27 @@ class Study extends Record
     }
 
     /**
+     * @param string $begin_date
+     * @param string $end_date
+     * @return bool
+     */
+    public static function hasStatusLive($begin_date, $end_date)
+    {
+        $now = new DateTime();
+        return $now->format('Y-m-d H:i:s') > $begin_date && $now->format('Y-m-d H:i:s') < $end_date;
+    }
+
+    /**
+     * @param string $end_date
+     * @return bool
+     */
+    public static function hasStatusComplete($end_date)
+    {
+        $now = new DateTime();
+        return $now->format('Y-m-d H:i:s') > $end_date;
+    }
+    
+    /**
      * @var Study_CellCollection
      */
     public function getCells ()

@@ -215,6 +215,8 @@
     
     function loadStarbar () {
         
+        if ($SQ('embed[type*="pdf"')) return; // Don't load on Google Docs
+        
         // bring in the Starbar
             
         var params = {

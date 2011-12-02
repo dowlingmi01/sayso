@@ -20,7 +20,7 @@ $SQ.extend($SQ.expr[":"],
 	<a href="#" onclick="$SQ('#named_good_id').val(2038); $SQ('#raffleForm').submit(); return false;">Token 2</a> |
 	<a href="#" onclick="$SQ('#named_good_id').val(2044); $SQ('#raffleForm').submit(); return false;">Token 3</a> |
 	<a href="#" onclick="$SQ('#named_good_id').val(2054); $SQ('#raffleForm').submit(); return false;">Monthly Token</a>
-	<? if ($this->named_good_id) { ?>
+	<? if ($this->named_good_id && $this->transactions) { ?>
 		<div id='winner' style='width: 500px; margin: 20px;'></div>
 		&nbsp; &nbsp; <a href="#" onclick="$SQ('#winner').html($SQ('.ticket:random').clone()).css('border', '5px solid green');$SQ(this).hide(); return false;">Pick a random winner!</a>
 		<?

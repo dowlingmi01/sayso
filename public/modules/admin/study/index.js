@@ -63,13 +63,55 @@ function bindLocal()
         });
     });
 
-    // absolution theme bugfix
-    $('#ui-datepicker-div').hide();
-
     $('.change-status').unbind().bind('click', function()
     {
-
+        var status = $(this).attr('data-status');
+        // silently exit when you cannot change it
+        if(status > 0)
+        {
+            return false;
+        }
+        if(confirm('Launch the study now?\nYou will not be able to edit the study any more...'))
+        {
+            var _this = this;
+            var data = {
+                status      : status,
+                study_id    : $(this).attr('rel')
+            };
+            
+            $(_this).removeClass('button-study-status-indesign').addClass('button-spinner-16');
+            
+            $.ajax({
+                url         : '/admin/study/set-status',
+                dataType    : 'json',
+                data        : data,
+                success     : function(data)
+                {
+                    if(data.result)
+                    {
+                        // show changed status
+                        $(_this).removeClass('button-spinner-16')
+                            .addClass('button-study-status-launched')
+                            .attr('data-status', 10);
+                    }
+                    else
+                    {
+                        // set status back
+                        $(_this).removeClass('button-spinner-16')
+                            .addClass('button-study-status-indesign');
+                    }
+                    if(data.messages.length > 0)
+                    {
+                        dialogAlert(data.messages.join("<br />"));
+                    }
+                }
+            });
+        }
+        return false;
     });
+
+    // absolution theme bugfix
+    $('#ui-datepicker-div').hide();
 
 }
 

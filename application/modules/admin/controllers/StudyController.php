@@ -167,8 +167,8 @@ class Admin_StudyController extends Admin_CommonController
     public function generateStatusButtonLink($id, $status)
     {
         $allStatuses = Study::getStatusArray();
-        return  '<a href="javascript:void(null);" rel="'.$id.'"'
-                    . '" class="'. $allStatuses[$status]['icon-class'] .' change-status" title="'
+        return  '<a href="javascript:void(null);" rel="'.$id.'" data-status="'.$status.'"'
+                    . ' class="'. $allStatuses[$status]['icon-class'] .' change-status" title="'
                     . $allStatuses[$status]['label'] .'"></a>';
     }
 
@@ -177,7 +177,7 @@ class Admin_StudyController extends Admin_CommonController
         if(!$this->checkAccess(array('superuser')))
         {
             die('Access denied!');
-        }        
+        }
         $messages = array();
 
         /**
@@ -187,7 +187,7 @@ class Admin_StudyController extends Admin_CommonController
         $field      = $this->_getParam('field');
         $value      = $this->_getParam('date');
         $study_id   = $this->_getParam('study_id');
-        
+
         if (in_array($field, array('begin_date', 'end_date')) && $value && $study_id)
         {
             Record::beginTransaction();
@@ -209,6 +209,55 @@ class Admin_StudyController extends Admin_CommonController
             }
         }
         $content = array('messages' => $messages);
+        echo json_encode($content);
+        exit(0);
+    }
+
+    public function setStatusAction()
+    {
+        if(!$this->checkAccess(array('superuser')))
+        {
+            die('Access denied!');
+        }
+
+        $messages   = array();
+        $result     = false;
+
+        /**
+         * @todo filter input
+         */
+
+        // currently the status is set to 10, all the rest statuses are auto
+        // left for scalability
+        $status     = $this->_getParam('status');
+        $study_id   = $this->_getParam('study_id');
+        $study      = new Study();
+        $study->loadData($study_id);
+
+        if ($study->getId() > 0)
+        {
+            Record::beginTransaction();
+            try
+            {
+                // the below will throw a meaningful error
+                // if the data in study is not good for launching
+                $study->checkLaunchValidity();
+                // all good, continue...
+                $study->status = $status;
+                $study->save();
+                Record::commitTransaction();
+                $result = true;
+            }
+            catch(Exception $e)
+            {
+                $messages[] = 'Error: entry cannot be saved!';
+                if(getenv('APPLICATION_ENV') != 'production')
+                {
+                    $messages[] = $e->getMessage();
+                }
+            }
+        }
+        $content = array('messages' => $messages, 'result' => $result);
         echo json_encode($content);
         exit(0);
     }
@@ -263,7 +312,7 @@ class Admin_StudyController extends Admin_CommonController
         $this->view->headScript()->appendFile('/modules/admin/study/edit.js');
         $this->view->headLink()->appendStylesheet('/modules/admin/study/module.css', 'screen');
 
-        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index')) . '">Back to All Studies</a>';
+        $this->view->indexLink = '<a href="' . $this->view->url(array('action' => 'index', 'study_id' =>null)) . '">Back to All Studies</a>';
         $this->view->addLink = '<a href="' . $this->view->url(array('action' => 'add')) . '">Create A New Study</a>';
 
         $study = new Study();

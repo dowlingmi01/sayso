@@ -1409,6 +1409,14 @@ a.button-dropdown
     padding: 2px 16px 0 0;
     background:transparent url('/images/icons-actions.gif') no-repeat -22px -2px;
 }
+a.button-spinner-16
+{
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 2px 16px 0 0;
+    background:transparent url('/images/spinners/spinner-16x16.gif') no-repeat;
+}
 div.button-show-progress
 {
     width:120px;

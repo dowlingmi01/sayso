@@ -39,13 +39,24 @@ class Study extends Record
         {
             self::$statusArray = array
             (
-                self::STATUS_IN_DESIGN    => array('label' => 'In-Design', 'icon-class' => 'button-study-status-indesign'),
-                self::STATUS_LAUNCHED     => array('label' => 'Launched', 'icon-class' => 'button-study-status-launched'),
-                self::STATUS_LIVE         => array('label' => 'Live', 'icon-class' => 'button-study-status-live'),
-                self::STATUS_COMPLETE     => array('label' => 'Complete', 'icon-class' => 'button-study-status-complete'),
+                self::STATUS_IN_DESIGN    => array('label' => 'In-Design',  'icon-class' => 'button-study-status-indesign'),
+                self::STATUS_LAUNCHED     => array('label' => 'Launched',   'icon-class' => 'button-study-status-launched'),
+                self::STATUS_LIVE         => array('label' => 'Live',       'icon-class' => 'button-study-status-live'),
+                self::STATUS_COMPLETE     => array('label' => 'Complete',   'icon-class' => 'button-study-status-complete'),
             );
         }
         return self::$statusArray;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function checkLaunchValidity()
+    {
+        if(!$this->getId())
+        {
+            //throw new Exception('Study is not loaded!');
+        }
     }
 
     /**

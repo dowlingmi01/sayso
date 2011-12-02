@@ -43,7 +43,7 @@ $SQ(function () {
         return $SQ.ajax(options);
     };
 
-    if (inIframe) log('iFrame');
+    if (inIframe) log('iFrame', location.host);
     
     /**
      * Helper function for recording behaviors on the server
@@ -198,11 +198,25 @@ $SQ(function () {
 
     // ================================================================
     // Tweets
-    // @todo handle iframe'd tweets
-    // twitter.com/intent/tweet .. watch #update-form submit
     
-    if (location.hostname.match('twitter.com'))
-    {
+    // popup/x-domain Tweet tracking
+    if (location.href.match('twitter.com/intent')) {
+        
+        var tweetUrl = decodeURIComponent(/&url=([^&]+)/.exec(location.search)[1]);
+//        var tweet = '';
+//        $SQ('#status').keyup(function () {
+//            // this is an optimization so that the ajax call
+//            // (via next mousedown event) goes through as quickly as possible
+//            tweet = $SQ(this).val();
+//        });
+        // use mousedown, not click. click is not reliable because the window
+        // is closed very quickly after submitting the tweet which kills the ajax call
+        $SQ('#update-form input.submit').mousedown(function () {
+            behaviorTracker.socialActivity(tweetUrl, $SQ(this).val(), 2);
+            $SQ(this).unbind('mousedown');
+        });
+    // Tweet tracking on Twitter.com
+    } else if (location.hostname.match('twitter.com') && $SQ('div.tweet-box textarea').length) {
 
         var tweet = '';
 

@@ -231,6 +231,12 @@ class Admin_StudyController extends Admin_CommonController
             {
                 $study  = new Study();
                 $study->loadData($study_id);
+
+                if($study->status)
+                {
+                    throw new Exception('You cannot edit study with the status other than in-design!');
+                }
+
                 $study->$field = $value;
                 $study->save();
                 Record::commitTransaction();
@@ -275,6 +281,12 @@ class Admin_StudyController extends Admin_CommonController
             Record::beginTransaction();
             try
             {
+
+                if($study->status)
+                {
+                    throw new Exception('Status already set!');
+                }
+
                 // the below will throw a meaningful error
                 // if the data in study is not good for launching
                 $study->checkLaunchValidity();

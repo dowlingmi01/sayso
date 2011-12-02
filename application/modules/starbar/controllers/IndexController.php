@@ -109,6 +109,90 @@ class Starbar_IndexController extends Api_GlobalController
 		$this->view->sold_inventory = $soldInventory;
 	}
 
+	public function raffleMeisterAction () {
+		// Starbar
+		$starbar = new Starbar();
+		$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));
+		$starbar->setVisibility('stowed');
+		$this->view->starbar = $starbar;
+
+		$request = $this->getRequest();
+		$request = $this->getRequest();
+		$goodId = (int) $request->getParam('named_good_id');
+		
+		switch ($goodId) {
+			case 2036:
+				$startTime = mktime(0, 0, 0, 12, 2, 2011);
+				$endTime = mktime(23, 59, 59, 12, 11, 2011);
+				break;
+			case 2038:
+				$startTime = mktime(0, 0, 0, 12, 2, 2011);
+				$endTime = mktime(23, 59, 59, 18, 11, 2011);
+				break;
+			case 2044:
+				$startTime = mktime(0, 0, 0, 12, 2, 2011);
+				$endTime = mktime(23, 59, 59, 12, 25, 2011);
+				break;
+			case 2054:
+				$startTime = mktime(0, 0, 0, 12, 2, 2011);
+				$endTime = mktime(23, 59, 59, 1, 2, 2012);
+				break;
+			default:
+				$goodId = false;
+		}
+
+		if ($goodId) {
+			$client = new Gaming_BigDoor_HttpClient('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
+			$client->setParameterGet('max_records', 10000);
+			$client->setParameterGet('named_good', $goodId);
+			$client->setParameterGet('start_time', $startTime);
+			$client->setParameterGet('end_time', $endTime);
+			$client->getGoodSummary();
+			$transactions = $client->getData();
+			$this->view->transactions = $transactions;
+
+			$uniqueGamers = new ItemCollection();
+			if (count($transactions)) {
+				foreach ($transactions as $transaction) {
+					$gamerId = $transaction->good_sender;
+					if (!$uniqueGamers->hasItem($gamerId)) {
+						$uniqueGamer = new Item();
+						$uniqueGamer->setId($gamerId);
+						$uniqueGamers->addItem($uniqueGamer);
+					}
+				}
+				$uniqueGamersString = "";
+				foreach ($uniqueGamers as $uniqueGamer) {
+					if ($uniqueGamersString) $uniqueGamersString .= ",";
+					$uniqueGamersString .= "'".$uniqueGamer->getId()."'";
+				}
+				$sql = "
+					SELECT user.id AS user_id, user_email.email AS email, user_gaming.gaming_id AS id
+					FROM user, user_email, user_gaming
+					WHERE user.primary_email_id = user_email.id
+						AND user_gaming.user_id = user.id
+						AND user_gaming.gaming_id IN (".$uniqueGamersString.")
+					ORDER BY FIELD (user_gaming.gaming_id, ".$uniqueGamersString.")
+				";
+				$results = Db_Pdo::fetchAll($sql);
+				$matchedGamers = new ItemCollection();
+				foreach ($results as $result) {
+					$matchedGamer = new Item();
+					$matchedGamer->setId($result['id']);
+					$matchedGamer->user_id = $result['user_id'];
+					$matchedGamer->email = $result['email'];
+					$matchedGamers->addItem($matchedGamer);
+				}
+				$this->view->matched_gamers = $matchedGamers;
+			}
+		}
+		
+		$this->view->named_good_id = $goodId;
+		/*$this->view->named_goods = $goods;
+		$this->view->remaining_inventory = $remainingInventory;
+		$this->view->sold_inventory = $soldInventory;*/
+	}
+
     public function hellomusicAction () {
         $this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');
 

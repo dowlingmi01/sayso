@@ -1,0 +1,44 @@
+<?= $this->partial('remote/init-remote.phtml', null, array('starbar' => $this->starbar)); ?>
+<br />
+<script type="text/javascript">
+$SQ.jQueryRandom = 0;
+$SQ.extend($SQ.expr[":"],
+{
+    random: function(a, i, m, r) {
+        if (i == 0) {
+            $SQ.jQueryRandom = Math.floor(Math.random() * r.length);
+        };
+        return i == $SQ.jQueryRandom;
+    }
+});
+</script>
+<form id="raffleForm" method="get">
+	<input type="hidden" id="named_good_id" name="named_good_id" value="<?= $this->named_good_id ?>">
+	&nbsp; &nbsp; <b>RaffleMeister Pro 2011 Ultimate v7.002.325</b><br />
+	&nbsp; &nbsp;
+	<a href="#" onclick="$SQ('#named_good_id').val(2036); $SQ('#raffleForm').submit(); return false;">Token 1</a> |
+	<a href="#" onclick="$SQ('#named_good_id').val(2038); $SQ('#raffleForm').submit(); return false;">Token 2</a> |
+	<a href="#" onclick="$SQ('#named_good_id').val(2044); $SQ('#raffleForm').submit(); return false;">Token 3</a> |
+	<a href="#" onclick="$SQ('#named_good_id').val(2054); $SQ('#raffleForm').submit(); return false;">Monthly Token</a>
+	<div id='winner' style='width: 500px; margin: 20px;'></div>
+	&nbsp; &nbsp; <a href="#" onclick="$SQ('#winner').html($SQ('.ticket:random').clone()).css('border', '5px solid green');$SQ(this).hide(); return false;">Pick a random winner!</a>
+	<?
+	if ($this->named_good_id) {
+		$i = 1;
+		foreach ($this->transactions AS $transaction) {
+			if ($this->matched_gamers->hasItem($transaction->good_sender)) {
+				$matchedGamer = $this->matched_gamers->getItem($transaction->good_sender);
+				$ticketNumber = str_pad($i,6, "0", STR_PAD_LEFT);
+				echo "<div class='ticket' id='".$ticketNumber."' style='width: 400px; margin: 20px;'>";
+				echo "<hr />";
+				echo "Raffle Ticket #".$ticketNumber."<br />";
+				echo "Local User ID: ".$matchedGamer->user_id."<br />";
+				echo "Local User Email: ".$matchedGamer->email."<br />";
+				echo "Big Door User ID: ".$matchedGamer->id."<br />";
+				echo "</div>";
+			}
+			$i++;
+		}
+	}
+	?>
+</form>

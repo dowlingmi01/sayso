@@ -32,9 +32,10 @@ $SQ.extend($SQ.expr[":"],
 				echo "<div class='ticket' id='".$ticketNumber."' style='width: 400px; margin: 20px;'>";
 				echo "<hr />";
 				echo "Raffle Ticket #".$ticketNumber."<br />";
+				echo "Big Door User ID: ".$matchedGamer->id."<br />";
+				echo "Purchase Date: ".date('d F Y, h:i:sa', $transaction->created_timestamp-(8*60*60))." PST<br />";
 				echo "Local User ID: ".$matchedGamer->user_id."<br />";
 				echo "Local User Email: ".$matchedGamer->email."<br />";
-				echo "Big Door User ID: ".$matchedGamer->id."<br />";
 				echo "</div>";
 			}
 			$i++;

@@ -16,13 +16,21 @@
         };
     }
     if (!window.sayso.baseDomain) {
-        window.sayso.baseDomain = 'app.saysollc.com';
-        window.sayso.environment = 'PROD';
+        if (location.host.match('staging.hellomusic.com')) {
+            window.sayso.baseDomain = 'app-staging.saysollc.com';
+            window.sayso.environment = 'STAGE';
+        } else {
+            window.sayso.baseDomain = 'app.saysollc.com';
+            window.sayso.environment = 'PROD';
+        }
     }
+    var embed = document.createElement('script'); 
+    embed.src = '//' + window.sayso.baseDomain + '/client/global/js/starbar-embed.js';
+    document.getElementsByTagName('body')[0].appendChild(embed);
 </script>
 <script type="text/javascript">
-    // Hello Music customization
-    // loginCallback can be used to open a login modal or re-direct a user to a login page
+    // ==== customization here ====
+    // loginCallback can be used to open a login modal, re-direct
+    // a user to a login page, focus on field, or whatever
     window.sayso.client.loginCallback = function () {};
 </script>
-<script type="text/javascript" src="//<?= Registry::getConfig()->baseDomain ?>/client/global/js/starbar-embed.js"></script>

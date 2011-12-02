@@ -30,7 +30,21 @@ class Admin_StudyController extends Admin_CommonController
         $grid   = new Data_Markup_Grid();
         $select = Zend_Registry::get('db')->select()->from('study');
         $grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
-        $grid->setGridColumns(array('id', 'name', 'begin_date', 'end_date', 'created', 'progress', 'status', 'edit', 'delete'));
+        $grid->setGridColumns(array('id', 'name', 'begin_date', 'end_date', 'created', 'show_status', 'progress', 'edit', 'delete'));
+
+        $extraColumnStatus = new Bvb_Grid_Extra_Column();
+		$extraColumnStatus
+			->position('right')
+			->name('show_status')
+			->title(' ')
+			->callback(
+                array(
+                    'function'  => array($this, 'generateStatusButtonLink'),
+                    'params'    => array('{{id}}', '{{status}}')
+                )
+            );
+        $grid->addExtraColumns($extraColumnStatus);
+
 
         $extraColumnProgress = new Bvb_Grid_Extra_Column();
 		$extraColumnProgress
@@ -54,7 +68,7 @@ class Admin_StudyController extends Admin_CommonController
 			->callback(
                 array(
                     'function'  => array($this, 'generateEditButtonLink'),
-                    'params'    => array('{{id}}')
+                    'params'    => array('{{id}}', '{{status}}')
                 )
             );
         $grid->addExtraColumns($extraColumnEdit);
@@ -67,7 +81,7 @@ class Admin_StudyController extends Admin_CommonController
 			->callback(
                 array(
                     'function'  => array($this, 'generateDeleteButtonLink'),
-                    'params'    => array('{{id}}')
+                    'params'    => array('{{id}}', '{{status}}')
                 )
             );
         $grid->addExtraColumns($extraColumnDelete);
@@ -82,7 +96,7 @@ class Admin_StudyController extends Admin_CommonController
 			array(
 				'callback' => array(
 					'function'  => array($this, 'generateEditLink'),
-					'params'    => array('{{id}}', '{{name}}')
+					'params'    => array('{{id}}', '{{name}}', '{{status}}')
 				),
                 'class' => 'align-left important'
 			)
@@ -92,7 +106,7 @@ class Admin_StudyController extends Admin_CommonController
 			array(
 				'callback' => array(
 					'function'  => array($this, 'generateBeginDate'),
-					'params'    => array('{{id}}', '{{begin_date}}')
+					'params'    => array('{{id}}', '{{begin_date}}', '{{status}}')
 				),
                 'class' => 'align-left important'
 			)
@@ -102,7 +116,7 @@ class Admin_StudyController extends Admin_CommonController
 			array(
 				'callback' => array(
 					'function'  => array($this, 'generateEndDate'),
-					'params'    => array('{{id}}', '{{end_date}}')
+					'params'    => array('{{id}}', '{{end_date}}', '{{status}}')
 				),
                 'class' => 'align-left important'
 			)
@@ -111,17 +125,6 @@ class Admin_StudyController extends Admin_CommonController
         /**
          * @see http://code.google.com/p/zfdatagrid/wiki/GridOptions
          */
-        $grid->updateColumn('status',
-			array(
-                'position'  =>'last',
-                'title'     => '',
-				'callback'  => array(
-					'function'  => array($this, 'generateStatusButtonLink'),
-					'params'    => array('{{id}}', '{{status}}')
-				),
-                'class'     => 'align-center'
-			)
-		);
 
         $this->view->grid = $grid->deploy();
     }
@@ -131,37 +134,50 @@ class Admin_StudyController extends Admin_CommonController
         return '<div class="button-show-progress" data-rel="25" title="Demo progress: 25%"></div>';
     }
 
-    public function generateEditLink($id, $name)
+    public function generateEditLink($id, $name, $status)
     {
         $filter = new Zend_Filter_Alnum(true);
         $name = $filter->filter($name);
+
+        if($status)
+        {
+            return $name ? $name : '<span class="disabled">name malformed</span>';
+        }
 
         return '<a href="' . $this->view->url(array('action' => 'edit', 'study_id' => intval($id))) . '">'.
             ($name ? $name : '<span class="disabled">name malformed</span>') .'</a>';
     }
 
-    public function generateEditButtonLink($id)
+    public function generateEditButtonLink($id, $status)
     {
+        if($status)
+        {
+            return '<div class="align-center">-</div>';
+        }
         return  '<a href="' . $this->view->url(array('action' => 'edit', 'study_id' => intval($id)))
                     . '" class="button-edit" title="Edit"></a>';
     }
 
-    public function generateDeleteButtonLink($id)
+    public function generateDeleteButtonLink($id, $status)
     {
+        if($status)
+        {
+            return '<div class="align-center">-</div>';
+        }
         return  '<a href="' . $this->view->url(array('action' => 'delete', 'study_id' => intval($id)))
                     . '" class="button-delete" title="Delete"></a>';
     }
 
-    public function generateBeginDate($id, $beginDate)
+    public function generateBeginDate($id, $beginDate, $status)
     {
         return  '<span class="admin-date" data-id="'.$id.'">' . $beginDate . '</span>'
-            . ' &nbsp; <input type="hidden" class="date-begin-visible button-datepicker" value="'.$beginDate.'" />';
+            . ($status ? '' : ' &nbsp; <input type="hidden" class="date-begin-visible button-datepicker" value="'.$beginDate.'" />');
     }
 
-    public function generateEndDate($id, $endDate)
+    public function generateEndDate($id, $endDate, $status)
     {
         return  '<span class="admin-date" data-id="'.$id.'">' . $endDate . '</span>'
-            . ' &nbsp; <input type="hidden" class="date-end-visible button-datepicker" value="'.$endDate.'" />';
+            . ($status ? '' : ' &nbsp; <input type="hidden" class="date-end-visible button-datepicker" value="'.$endDate.'" />');
     }
 
     public function generateStatusButtonLink($id, $status)
@@ -318,6 +334,13 @@ class Admin_StudyController extends Admin_CommonController
         $study = new Study();
 
         $study->loadData(intval($this->_getParam('study_id')));
+
+        if($study->status)
+        {
+            $this->msg->addMessage('You can edit studies with in-design status only!');
+            $this->rd->gotoSimple('index');
+        }
+
         if(false === $study->id > 0)
         {
             throw new Exception('Bad parameters, possibly a security issue..!');
@@ -384,6 +407,13 @@ class Admin_StudyController extends Admin_CommonController
         {
             $study = new Study();
             $study->loadData(intval($this->_getParam('study_id')));
+
+            if($study->status)
+            {
+                $this->msg->addMessage('You can delete studies with in-design status only!');
+                $this->rd->gotoSimple('index');
+            }
+
             if(false === $study->id > 0)
             {
                 throw new Exception('Bad parameters, possibly a security issue..!');

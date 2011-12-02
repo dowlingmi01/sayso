@@ -66,7 +66,7 @@ class Study extends Record
         if(!$this->user_id)
         {
             throw new Exception('Study owner user is not defined!');
-        }        
+        }
         if(false === $this->size > 0)
         {
             throw new Exception('Study size must be > 0!');
@@ -158,7 +158,29 @@ class Study extends Record
         $now = new DateTime();
         return $now->format('Y-m-d H:i:s') > $end_date;
     }
-    
+
+
+    /**
+     * @param string $begin_date
+     * @param string $end_date
+     * @return int
+     */
+    public static function getProgressPercentile($begin_date, $end_date)
+    {
+        if(!static::hasStatusLive($begin_date, $end_date) && !static::hasStatusComplete($end_date))
+        {
+            return 0;
+        }
+
+        if(static::hasStatusComplete($end_date))
+        {
+            return 100;
+        }
+
+        // use seconds to be most precise...
+        return ((time() - strtotime($begin_date)) / (strtotime($end_date) - strtotime($begin_date))) * 100;
+    }
+
     /**
      * @var Study_CellCollection
      */

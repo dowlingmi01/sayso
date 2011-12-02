@@ -32,11 +32,40 @@ class Admin_StudyController extends Admin_CommonController
         $grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
         $grid->setGridColumns(
             array(
-                'id', 'name', 'begin_date', 'end_date',
+                'id', 'name', 'show_begin_date', 'show_end_date',
                 'created', 'show_status', 'progress',
                 'edit', 'delete'
             )
         );
+
+
+        $extraColumnBegin = new Bvb_Grid_Extra_Column();
+		$extraColumnBegin
+			->position('right')
+			->name('show_begin_date')
+			->title('Begin Date')
+            ->class('align-left important')
+			->callback(
+                array(
+                    'function'  => array($this, 'generateBeginDate'),
+                    'params'    => array('{{id}}', '{{begin_date}}', '{{status}}')
+                )
+            );
+        $grid->addExtraColumns($extraColumnBegin);
+
+        $extraColumnEnd = new Bvb_Grid_Extra_Column();
+		$extraColumnEnd
+			->position('right')
+			->name('show_end_date')
+			->title('End Date')
+            ->class('align-left important')
+			->callback(
+                array(
+                    'function'  => array($this, 'generateEndDate'),
+                    'params'    => array('{{id}}', '{{end_date}}', '{{status}}')
+                )
+            );
+        $grid->addExtraColumns($extraColumnEnd);
 
         $extraColumnStatus = new Bvb_Grid_Extra_Column();
 		$extraColumnStatus
@@ -51,7 +80,6 @@ class Admin_StudyController extends Admin_CommonController
             );
         $grid->addExtraColumns($extraColumnStatus);
 
-
         $extraColumnProgress = new Bvb_Grid_Extra_Column();
 		$extraColumnProgress
 			->position('right')
@@ -61,7 +89,7 @@ class Admin_StudyController extends Admin_CommonController
 			->callback(
                 array(
                     'function'  => array($this, 'generateProgress'),
-                    'params'    => array('{{begin_date}}', '{{end_date}}')
+                    'params'    => array('{{begin_date}}', '{{end_date}}', '{{status}}')
                 )
             );
         $grid->addExtraColumns($extraColumnProgress);
@@ -108,25 +136,7 @@ class Admin_StudyController extends Admin_CommonController
 			)
 		);
 
-        $grid->updateColumn('begin_date',
-			array(
-				'callback' => array(
-					'function'  => array($this, 'generateBeginDate'),
-					'params'    => array('{{id}}', '{{begin_date}}', '{{status}}')
-				),
-                'class' => 'align-left important'
-			)
-		);
-
-        $grid->updateColumn('end_date',
-			array(
-				'callback' => array(
-					'function'  => array($this, 'generateEndDate'),
-					'params'    => array('{{id}}', '{{end_date}}', '{{status}}')
-				),
-                'class' => 'align-left important'
-			)
-		);
+        
 
         /**
          * @see http://code.google.com/p/zfdatagrid/wiki/GridOptions
@@ -135,9 +145,14 @@ class Admin_StudyController extends Admin_CommonController
         $this->view->grid = $grid->deploy();
     }
 
-    public function generateProgress($beginDate, $endDate)
+    public function generateProgress($beginDate, $endDate, $status)
     {
-        return '<div class="button-show-progress" data-rel="25" title="Demo progress: 25%"></div>';
+        $progress = 0;
+        if($status)
+        {
+            $progress = Study::getProgressPercentile($beginDate, $endDate);
+        }
+        return sprintf('<div class="button-show-progress" data-rel="%d" title="Total Progress: %d%%"></div>', $progress, $progress);
     }
 
     public function generateEditLink($id, $name, $status)
@@ -188,6 +203,9 @@ class Admin_StudyController extends Admin_CommonController
 
     public function generateStatusButtonLink($id, $status, $begin, $end)
     {
+
+        
+
         $allStatuses = Study::getStatusArray();
 
         // check for non-database status

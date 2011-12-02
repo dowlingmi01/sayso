@@ -53,9 +53,10 @@ function bindLocal()
                     success     : function(data)
                     {
                         $(_this).parent().find('img.ui-datepicker-trigger').attr('src', '/images/calendar.gif');
-                        /**
-                         * @todo show messages on errors
-                         */
+                        if(data.messages.length > 0)
+                        {
+                            dialogAlert(data.messages.join("<br />"));
+                        }
                     }
                 });
             }
@@ -64,6 +65,11 @@ function bindLocal()
 
     // absolution theme bugfix
     $('#ui-datepicker-div').hide();
+
+    $('.change-status').unbind().bind('click', function()
+    {
+
+    });
 
 }
 

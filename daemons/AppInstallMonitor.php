@@ -129,8 +129,8 @@ try {
     while (!System_Daemon::isDying()) {
         
         // lookup all external users that who have just done installs
-        // and more than 60 seconds has elapsed 
-        $externalUsers = Db_Pdo::fetchAll('SELECT * FROM external_user WHERE install_begin_time AND timestampdiff(SECOND, install_begin_time, now()) >= 60');
+        // and more than 120 seconds has elapsed 
+        $externalUsers = Db_Pdo::fetchAll('SELECT * FROM external_user WHERE install_begin_time AND timestampdiff(SECOND, install_begin_time, now()) >= 120');
         
         if ($externalUsers) {
             

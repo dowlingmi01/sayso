@@ -54,7 +54,7 @@ $SQ(function () {
             ajax({
                 url : '//' + sayso.baseDomain + '/api/metrics/page-view-submit',
                 data : {
-                    url : encodeURIComponent(location.href)
+                    url : encodeURIComponent(location.protocol + '//' + location.host + location.pathname)
                 },
                 success : function (response) {}
             });

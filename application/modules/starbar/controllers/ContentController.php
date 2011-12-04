@@ -493,12 +493,13 @@ class Starbar_ContentController extends Api_GlobalController
     {
 
     }
-    
-    public function closeWindowAction ()
-    {
 
-    }
-    
+	public function closeWindowAction ()
+	{
+		// this page is fetched in a popup, not via ajax
+		$this->_usingJsonPRenderer = false;
+	}
+
     public function facebookPostResultAction ()
     {
         // @todo re-enable this validation as necessary and remove the if() condition below

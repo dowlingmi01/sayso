@@ -386,34 +386,33 @@ class Starbar_ContentController extends Api_GlobalController
 
 		$callbackUrl = "https://".BASE_DOMAIN."/starbar/hellomusic/facebook-connect?user_id=".$this->user_id."&user_key=".$this->user_key;
 
-		if ($fbUser) {
-			if ($this->user_key && (int)$this->user_id === (int)Api_UserSession::getInstance($this->user_key)->getId()) {
-    			$userSocial = new User_Social();
-    			$userSocial->user_id = $this->user_id;
-    			$userSocial->provider = "facebook";
-    			$userSocial->identifier = $fbUser;
-    			$userSocial->save();
-                
-    			if (isset($fbProfile['first_name'])) {
-    				$user = new User();
-    				$user->loadData($this->user_id);
-    				if (!$user->username) {
-    					$user->username = $fbProfile['first_name'];
-    					$user->save();
-					}
-				}
-
-    			Game_Starbar::getInstance()->associateSocialNetwork($userSocial);
-                
-    			// Show user congrats notification
-    			$message = new Notification_Message();
-    			$message->loadDataByUniqueFields(array('short_name' => 'FB Account Connected'));
-
-    			if ($message->id) {
-    				$messageUserMap = new Notification_MessageUserMap();
-    				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, false);
+		if ($fbUser && $this->user_key && (int)$this->user_id === (int)Api_UserSession::getInstance($this->user_key)->getId()) {
+    		$userSocial = new User_Social();
+    		$userSocial->user_id = $this->user_id;
+    		$userSocial->provider = "facebook";
+    		$userSocial->identifier = $fbUser;
+    		$userSocial->save();
+            
+    		if (isset($fbProfile['first_name'])) {
+    			$user = new User();
+    			$user->loadData($this->user_id);
+    			if (!$user->username) {
+    				$user->username = $fbProfile['first_name'];
+    				$user->save();
 				}
 			}
+
+    		Game_Starbar::getInstance()->associateSocialNetwork($userSocial);
+            
+    		// Show user congrats notification
+    		$message = new Notification_Message();
+    		$message->loadDataByUniqueFields(array('short_name' => 'FB Account Connected'));
+
+    		if ($message->id) {
+    			$messageUserMap = new Notification_MessageUserMap();
+    			$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, false);
+			}
+			$this->_redirect('/starbar/hellomusic/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key.'&auth_key='.$this->auth_key);
 		} else {
 			$this->_redirect($facebook->getLoginUrl());
 		}
@@ -429,7 +428,7 @@ class Starbar_ContentController extends Api_GlobalController
 			/* Build TwitterOAuth object with client credentials. */
 			$connection = new TwitterOAuth($config->twitter->consumer_key, $config->twitter->consumer_secret);
 
-			$callbackUrl = "https://".BASE_DOMAIN."/starbar/hellomusic/twitter-connect-result?user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
+			$callbackUrl = 'https://'.BASE_DOMAIN.'/starbar/hellomusic/twitter-connect-result?user_id='.$this->user_id.'&user_key='.$this->user_key.'&auth_key='.$this->auth_key;
 			
 			/* Get temporary credentials and set the callback URL. */
 			$twitterRequestToken = $connection->getRequestToken($callbackUrl);
@@ -459,8 +458,6 @@ class Starbar_ContentController extends Api_GlobalController
 			$this->_redirect("/starbar/hellomusic/twitter-connect-redirect?user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key);
 		}
 
-        $success = false;
-        
         try {
 			/* Create TwitteroAuth object with app key/secret and token key/secret from default phase */
 			$connection = new TwitterOAuth($config->twitter->consumer_key, $config->twitter->consumer_secret, $_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
@@ -488,13 +485,16 @@ class Starbar_ContentController extends Api_GlobalController
 				}
 			}
 
-			$success = true;
+			$this->_redirect('/starbar/hellomusic/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key.'&auth_key='.$this->auth_key);
 		} catch (Exception $e) {}
-
-		$this->view->assign('success', $success);
 	}
 
     public function onboardAction ()
+    {
+
+    }
+    
+    public function closeWindowAction ()
     {
 
     }
@@ -510,11 +510,8 @@ class Starbar_ContentController extends Api_GlobalController
 
 		$request = $this->getRequest();
 
-        $success = false;
-
 		/* Facebook wall post successful */
 		if ($request->getParam('post_id')) {
-			$success = true;
 			Game_Starbar::getInstance()->share($this->shared_type, @$this->shared_id);
     		
     		// Send hidden game update notification to make the user request an update
@@ -526,8 +523,7 @@ class Starbar_ContentController extends Api_GlobalController
     			$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, false);
 			}
 		}
-
-		$this->view->assign('success', $success);
+		$this->_redirect('/starbar/hellomusic/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key.'&auth_key='.$this->auth_key);
 	}
 
     protected function _getBundleOfJoy ($surveyId, $nextSurveyId = -1)

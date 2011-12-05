@@ -1480,3 +1480,10 @@ ul.errors li
     top:3px;
     margin:5px;
 }
+
+/* flag switch */
+.y-n
+{
+    text-align: center;
+}
+

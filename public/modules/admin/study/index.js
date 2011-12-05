@@ -113,6 +113,34 @@ function bindLocal()
     // absolution theme bugfix
     $('#ui-datepicker-div').hide();
 
+    // stop controls
+    $('.y-n input[type=checkbox]').css({cursor:'pointer'}).each(function(){
+        $(this).unbind().bind('click', function()
+        {
+            $(this).hide();
+            $(this).parent().append('<img src="/images/spinners/spinner-16x16.gif" width="16" height="16" style="vertical-align:middle" />');
+            var _this = this;
+            var data = {
+                study_id    : $(this).val()
+            };
+            $.ajax({
+                url         : '/admin/study/set-stopped',
+                dataType    : 'json',
+                data        : data,
+                success     : function(data)
+                {
+                    if(data.messages.length > 0)
+                    {
+                        dialogAlert(data.messages.join("<br />"));
+                    }
+                    $(_this).show();
+                    $(_this).parent().find('img').remove();
+                }
+            });
+
+        });
+    });
+
 }
 
 $(function(){ bindLocal();});

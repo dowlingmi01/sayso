@@ -32,8 +32,8 @@ class Admin_StudyController extends Admin_CommonController
         $grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
         $grid->setGridColumns(
             array(
-                'id', 'name', 'show_begin_date', 'show_end_date',
-                'created', 'show_status', 'progress',
+                'id', 'name', 'show_begin_date', 'show_end_date', 'show_is_stopped',
+                'show_status', 'progress',
                 'edit', 'delete'
             )
         );
@@ -71,7 +71,7 @@ class Admin_StudyController extends Admin_CommonController
 		$extraColumnStatus
 			->position('right')
 			->name('show_status')
-			->title(' ')
+			->title('Status')
 			->callback(
                 array(
                     'function'  => array($this, 'generateStatusButtonLink'),
@@ -79,6 +79,20 @@ class Admin_StudyController extends Admin_CommonController
                 )
             );
         $grid->addExtraColumns($extraColumnStatus);
+
+        $extraColumnIsStopped = new Bvb_Grid_Extra_Column();
+		$extraColumnIsStopped
+			->position('right')
+			->name('show_is_stopped')
+			->title('Stopped')
+            ->class('align-left important')
+			->callback(
+                array(
+                    'function'  => array($this, 'generateStoppedControls'),
+                    'params'    => array('{{id}}', '{{is_stopped}}')
+                )
+            );
+        $grid->addExtraColumns($extraColumnIsStopped);
 
         $extraColumnProgress = new Bvb_Grid_Extra_Column();
 		$extraColumnProgress
@@ -135,8 +149,6 @@ class Admin_StudyController extends Admin_CommonController
                 'class' => 'align-left important'
 			)
 		);
-
-        
 
         /**
          * @see http://code.google.com/p/zfdatagrid/wiki/GridOptions
@@ -203,9 +215,6 @@ class Admin_StudyController extends Admin_CommonController
 
     public function generateStatusButtonLink($id, $status, $begin, $end)
     {
-
-        
-
         $allStatuses = Study::getStatusArray();
 
         // check for non-database status
@@ -224,6 +233,15 @@ class Admin_StudyController extends Admin_CommonController
         return  '<a href="javascript:void(null);" rel="'.$id.'" data-status="'.$status.'"'
                     . ' class="'. $allStatuses[$status]['icon-class'] .' change-status" title="'
                     . $allStatuses[$status]['label'] .'"></a>';
+    }
+
+    public function generateStoppedControls($id, $is_stopped)
+    {
+        return  '<div class="y-n">'
+            . sprintf('<input type="checkbox" class="y-n-switch" id="yn-%d"%s '
+                .'title="Click to toggle stopped status (currently %s)" value="%d" />',
+                    $id, ($is_stopped ? ' checked="checked"' : ''), ($is_stopped ? 'stopped' : 'live'), $id)
+        .'</div>';
     }
 
     public function setTimeAction()
@@ -310,6 +328,48 @@ class Admin_StudyController extends Admin_CommonController
                 $study->checkLaunchValidity();
                 // all good, continue...
                 $study->status = $status;
+                $study->save();
+                Record::commitTransaction();
+                $result = true;
+            }
+            catch(Exception $e)
+            {
+                $messages[] = 'Error: entry cannot be saved!';
+                if(getenv('APPLICATION_ENV') != 'production')
+                {
+                    $messages[] = $e->getMessage();
+                }
+            }
+        }
+        $content = array('messages' => $messages, 'result' => $result);
+        echo json_encode($content);
+        exit(0);
+    }
+
+    public function setStoppedAction()
+    {
+        if(!$this->checkAccess(array('superuser')))
+        {
+            die('Access denied!');
+        }
+
+        $messages   = array();
+        $result     = false;
+
+        /**
+         * @todo filter input
+         */
+
+        $study_id   = $this->_getParam('study_id');
+        $study      = new Study();
+        $study->loadData($study_id);
+
+        if ($study->getId() > 0)
+        {
+            Record::beginTransaction();
+            try
+            {
+                $study->is_stopped = !$study->is_stopped;
                 $study->save();
                 Record::commitTransaction();
                 $result = true;

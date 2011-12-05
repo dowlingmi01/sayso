@@ -1201,23 +1201,24 @@ h4
 /**
  * Admin login support
  */
-nav.common ul
+
+ nav.common ul
+ {
+     margin-bottom:10px;
+ }
+
+#common-auth
 {
-    width:70%;
-    float:left;
-}
-nav.common #common-auth
-{
-    width:30%;
-    float:left;
+    width:auto;
+    float:right;
     text-align: right;
-    font-size:smaller;
     line-height: 40px;
     vertical-align: middle;
+    margin:40px 8px 0 0 ;    
 }
-nav.common #common-auth a
+#common-auth a
 {
-    padding: 0 10px 0 0;
+    color:#00A7B3;
     text-decoration: none;
 }
 

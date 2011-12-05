@@ -32,14 +32,14 @@ class Admin_StudyController extends Admin_CommonController
         $grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
         $grid->setGridColumns(
             array(
-                'id', 'name', 'show_begin_date', 'show_end_date', 'show_is_stopped',
+                'id', 'name', 'show_timeline', 'show_is_stopped',
                 'show_status', 'progress',
                 'edit', 'delete'
             )
         );
 
 
-        $extraColumnBegin = new Bvb_Grid_Extra_Column();
+        /*$extraColumnBegin = new Bvb_Grid_Extra_Column();
 		$extraColumnBegin
 			->position('right')
 			->name('show_begin_date')
@@ -65,7 +65,35 @@ class Admin_StudyController extends Admin_CommonController
                     'params'    => array('{{id}}', '{{end_date}}', '{{status}}')
                 )
             );
-        $grid->addExtraColumns($extraColumnEnd);
+        $grid->addExtraColumns($extraColumnEnd);*/
+
+        $extraColumnTimeline = new Bvb_Grid_Extra_Column();
+		$extraColumnTimeline
+			->position('right')
+			->name('show_timeline')
+			->title('Timeline')
+            ->class('align-left important')
+			->callback(
+                array(
+                    'function'  => array($this, 'generateTimeline'),
+                    'params'    => array('{{id}}', '{{begin_date}}', '{{end_date}}', '{{status}}')
+                )
+            );
+        $grid->addExtraColumns($extraColumnTimeline);
+
+        $extraColumnProgress = new Bvb_Grid_Extra_Column();
+		$extraColumnProgress
+			->position('right')
+			->name('progress')
+			->title('Progress')
+			->class('align-left')
+			->callback(
+                array(
+                    'function'  => array($this, 'generateProgressLinks'),
+                    'params'    => array('{{id}}')
+                )
+            );
+        $grid->addExtraColumns($extraColumnProgress);
 
         $extraColumnStatus = new Bvb_Grid_Extra_Column();
 		$extraColumnStatus
@@ -84,7 +112,7 @@ class Admin_StudyController extends Admin_CommonController
 		$extraColumnIsStopped
 			->position('right')
 			->name('show_is_stopped')
-			->title('Stopped')
+			->title(' ')
             ->class('align-left important')
 			->callback(
                 array(
@@ -94,7 +122,7 @@ class Admin_StudyController extends Admin_CommonController
             );
         $grid->addExtraColumns($extraColumnIsStopped);
 
-        $extraColumnProgress = new Bvb_Grid_Extra_Column();
+        /*$extraColumnProgress = new Bvb_Grid_Extra_Column();
 		$extraColumnProgress
 			->position('right')
 			->name('progress')
@@ -106,7 +134,7 @@ class Admin_StudyController extends Admin_CommonController
                     'params'    => array('{{begin_date}}', '{{end_date}}', '{{status}}')
                 )
             );
-        $grid->addExtraColumns($extraColumnProgress);
+        $grid->addExtraColumns($extraColumnProgress);*/
 
         $extraColumnEdit = new Bvb_Grid_Extra_Column();
 		$extraColumnEdit
@@ -167,6 +195,15 @@ class Admin_StudyController extends Admin_CommonController
         return sprintf('<div class="button-show-progress" data-rel="%d" title="Total Progress: %d%%"></div>', $progress, $progress);
     }
 
+    public function generateProgressLinks($id)
+    {
+        return
+            '<a href="javascript:void(null)" class="study-progress">Quotas</a>'
+            . ' <a href="javascript:void(null)" class="study-progress">Cells</a>'
+            . ' <a href="javascript:void(null)" class="study-progress">Surveys</a>'
+            . ' <a href="javascript:void(null)" class="study-progress">Reports</a>' ;
+    }
+
     public function generateEditLink($id, $name, $status)
     {
         $filter = new Zend_Filter_Alnum(true);
@@ -211,6 +248,14 @@ class Admin_StudyController extends Admin_CommonController
     {
         return  '<span class="admin-date" data-id="'.$id.'">' . $endDate . '</span>'
             . ($status ? '' : ' &nbsp; <input type="hidden" class="date-end-visible button-datepicker" value="'.$endDate.'" />');
+    }
+
+    public function generateTimeline($id, $beginDate, $endDate, $status)
+    {
+        return  '<span><span class="admin-date" data-id="'.$id.'">' . substr($beginDate, 0, 10) . '</span>'
+            . ($status ? '' : ' <input type="hidden" class="date-begin-visible button-datepicker" value="'.$beginDate.'" /></span>')
+            . ' - <span><span class="admin-date" data-id="'.$id.'">' . substr($endDate, 0, 10) . '</span>'
+            . ($status ? '' : ' <input type="hidden" class="date-end-visible button-datepicker" value="'.$endDate.'" /></span>');
     }
 
     public function generateStatusButtonLink($id, $status, $begin, $end)

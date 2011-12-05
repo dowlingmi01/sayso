@@ -1289,12 +1289,13 @@ nav.admin_menu li a:hover
     width: 100%;
 }
 
-.admin-table table tr:first-child th {
+.admin-table table th {
     border-top: 1px solid #00484D;
     border-bottom: 1px solid #00484D;
     background: #00A7B3;
     font-weight: bold;
     color:#515151;
+    text-align: left;
 }
 
 .admin-table table tr
@@ -1320,6 +1321,11 @@ nav.admin_menu li a:hover
 .admin-table input:not([type="checkbox"]), select, textarea
 {
     margin: 0;
+}
+
+.admin-table a
+{
+    color:#00A7B3;
 }
 
 /* - does not work as needed yet

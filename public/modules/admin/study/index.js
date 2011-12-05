@@ -13,16 +13,12 @@ function bindLocal()
         return confirm('Delete this entry?') ? true : false;
     });
 
-    $('.button-show-progress').each(function(){
+    /*$('.button-show-progress').each(function(){
         var v = parseInt($(this).attr('data-rel'));
         $(this).progressbar({
 			value: v
 		});
-    });
-
-    $('.change-status').unbind('click').bind('click', function(){
-
-    });
+    });*/
 
     // save dates with ajax
     $('.button-datepicker').each(function()
@@ -40,7 +36,7 @@ function bindLocal()
             {
                 $(this).val(dateText);
                 $(this).parent().find('img.ui-datepicker-trigger').attr('src', '/images/spinners/spinner-16x16.gif');
-                $(this).parent().find('span.admin-date').text(dateText);
+                $(this).parent().find('span.admin-date').text(dateText.substr(0, 10));
                 var data = {
                     field       : ($(_this).hasClass('date-begin-visible') ? 'begin_date' : 'end_date'),
                     date        : dateText,
@@ -143,4 +139,4 @@ function bindLocal()
 
 }
 
-$(function(){ bindLocal();});
+$(function(){bindLocal();});

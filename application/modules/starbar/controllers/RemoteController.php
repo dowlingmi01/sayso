@@ -269,7 +269,7 @@ class Starbar_RemoteController extends Api_GlobalController
             
             // make sure user and install token match (in case user is trying to hack)
             if ($externalUser->install_token !== $_COOKIE['starbar_setup_install_token']) {
-                throw new Api_Exception(Api_Error::create(Api_Error::APPLICATION_ERROR, 'Install token does not match for this client. Should be: ' . $externalUser->install_token . '. Instead it\'s: ' . $_COOKIE['starbar_setup_install_token']));
+                throw new Api_Exception(Api_Error::create(Api_Error::APPLICATION_ERROR, 'Install token does not match for this client'));
             }
             
             // save IP / user agent to external user

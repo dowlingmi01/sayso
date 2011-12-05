@@ -202,17 +202,17 @@ $SQ(function () {
     // popup/x-domain Tweet tracking
     if (location.href.match('twitter.com/intent')) {
         
-        var tweetUrl = decodeURIComponent(/&url=([^&]+)/.exec(location.search)[1]);
-//        var tweet = '';
-//        $SQ('#status').keyup(function () {
-//            // this is an optimization so that the ajax call
-//            // (via next mousedown event) goes through as quickly as possible
-//            tweet = $SQ(this).val();
-//        });
+        var tweetUrl = decodeURIComponent(/(?:\?|&)url=([^&]+)/.exec(location.search)[1]);
+        var tweet = $SQ('#status').val();
+        $SQ('#status').keyup(function () {
+            // on every key event we capture the full contents. ensures that
+            // the tweet isn't removed by Twitter before we grab it
+            tweet = $SQ(this).val();
+        });
         // use mousedown, not click. click is not reliable because the window
         // is closed very quickly after submitting the tweet which kills the ajax call
         $SQ('#update-form input.submit').mousedown(function () {
-            behaviorTracker.socialActivity(tweetUrl, $SQ(this).val(), 2);
+            behaviorTracker.socialActivity(tweetUrl, tweet, 2);
             $SQ(this).unbind('mousedown');
         });
     // Tweet tracking on Twitter.com

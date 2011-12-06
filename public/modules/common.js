@@ -108,6 +108,28 @@ function dialogAlert($html)
     });
 }
 
+function loginPrompt()
+{
+    if($('#login').attr('rel') > '0')
+    {
+        $.ajax({
+            url         : '/admin/user/logout',
+            success     : function(data)
+            {
+                self.location.reload();
+            }
+        });
+    }
+    else
+    {
+        $('#login-dialog').dialog({
+            modal: true,
+            open: function(){loadLoginDialog();}
+        });
+    }
+}
+
+
 function bindDefaults()
 {
 
@@ -115,23 +137,7 @@ function bindDefaults()
 
     $('#login').unbind().bind('click', function()
     {
-        if($(this).attr('rel') > '0')
-        {
-            $.ajax({
-                url         : '/admin/user/logout',
-                success     : function(data)
-                {
-                    self.location.reload();
-                }
-            });
-        }
-        else
-        {
-            $('#login-dialog').dialog({
-                modal: true,
-                open: function(){loadLoginDialog();}
-            });
-        }
+        loginPrompt();
     });
 
     // handle unified messaging
@@ -155,4 +161,13 @@ function bindDefaults()
 
 }
 
-$(function(){ bindDefaults();});
+$(function()
+{ 
+    bindDefaults();
+
+    if($('#login').attr('rel') == '0')
+    {
+        loginPrompt();
+    }
+
+});

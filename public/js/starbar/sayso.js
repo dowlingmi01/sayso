@@ -117,7 +117,7 @@ $SQ(function () {
         else if (googleEngineRegexp.test(location.href))
         {
             searchType = 2; // google
-            searchRegex = /&q=([^&]+)&?.*$/g;
+            searchRegex = /(?:\?|&)q=([^&]+)/;
         }
         else if (location.href.match('search.yahoo.com'))
         {
@@ -249,11 +249,32 @@ $SQ(function () {
     // ================================================================
     // Facebook Like
 
-    if (inIframe && location.href.match('facebook.com/plugins|facebook.com/widgets')) {
-        $SQ('a.connect_widget_like_button').unbind('click').click(function () {
-            var likedUrl = decodeURIComponent(/href=([^&]*)/g.exec(window.location.search)[1]);
-            behaviorTracker.socialActivity(likedUrl, '', 1)
-        });
+    if (inIframe) {
+        if (location.href.match('facebook.com/sharer/sharer')) {
+            
+            var textArea = $SQ('textarea').first(),
+                comment = textArea.val(),
+                url = decodeURIComponent(/(?:\?|&)u=([^&]+)/.exec(location.search)[1]);
+            
+            textarea.keyup(function () {
+                comment = $SQ(this).val();
+            });
+            
+            $SQ('input[name=share]').click(function () {
+                if (comment.length && comment !== 'Write Something...') {
+                    behaviorTracker.socialActivity(url, comment, 1);
+                }
+            });
+        } else if (location.href.match('facebook.com/plugins/comment_widget_shell')) {
+            sayso.log('In comment widget!!'); // can't get this working, iframe loads into a hidden div ?
+            var comment = $SQ('textarea.connect_comment_widget_full_input_textarea').val();
+            sayso.log(comment);
+        } else { // location.href.match('facebook.com/plugins|facebook.com/widgets')
+            $SQ('a.connect_widget_like_button').unbind('click').click(function () {
+                var likedUrl = decodeURIComponent(/href=([^&]*)/g.exec(window.location.search)[1]);
+                behaviorTracker.socialActivity(likedUrl, '', 1)
+            });
+        }
     }
 
     // ================================================================

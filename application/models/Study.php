@@ -88,7 +88,7 @@ class Study extends Record
             throw new Exception('Study begin date and/or study end date is wrong!');
         }
 
-        //Cells - Must have both Control and Test
+        //Cells - Must have Control or Test
 
         $cells = new Study_CellCollection();
         $cells->loadForStudy($this->getId());
@@ -108,9 +108,9 @@ class Study extends Record
                 $hasTest = true;
             }
         }
-        if($hasControl || $hasTest)
+        if(!$hasControl && !$hasTest)
         {
-            throw new Exception('Cannot find sells of both types in study, please create cells of both `Control` and `Test` types first!');
+            throw new Exception('Cannot find cell of type "Control" or "Test". Please create first.');
         }
 
         //ADjuster Campaign - at least one tag must be present

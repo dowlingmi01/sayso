@@ -132,7 +132,7 @@
 		if (ieVersion > -1) {
 			$SQ('object').each(function(index) {
 				$SQobject = $SQ(this);
-				if ($SQobject.attr('id') == 'sm2movie') return true; // no fix needed, go to next <object>
+				if ($SQobject.attr('id') == 'sm2movie' || $SQobject.attr('id') == 'FS') return true; // no fix needed, go to next <object>
 				$SQwmodeParam = $SQ('param[name="wmode"]', $SQobject);
 				if ($SQwmodeParam.length == 1) {
 					if ($SQwmodeParam.attr('value') == 'transparent' || $SQwmodeParam.attr('value') == 'opaque') {

@@ -26,7 +26,7 @@
 					if (externalContentElem.css('display') == 'inline-table') { // Our css is loaded!
 						clearInterval(cssCheckInterval);
 						externalContentElem.css('display', 'block');
-						$SQ.remoteControl.loadComplete(true, 62+$SQ('.sg-survey-form').outerHeight());
+						//$SQ.remoteControl.loadComplete(true, 62+$SQ('.sg-survey-form').outerHeight());
 					}
 					$i--;
 					if ($i < 1) externalContentElem.css('display', 'inline-table');

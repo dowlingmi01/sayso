@@ -20,8 +20,6 @@ $game = $this->game;
         window.sayso.debug = true;
         window.sayso.baseDomain = '<?= BASE_DOMAIN ?>';
         window.sayso.environment = '<?= Registry::getPseudoEnvironmentName() ?>';
-        window.sayso.log = function() {};
-        window.sayso.warn = function() {};
         window.sayso.starbar = {
             id : <?= $starbar->getId() ?>, 
             shortName : '<?= $starbar->short_name ?>',
@@ -90,7 +88,7 @@ $game = $this->game;
         if (typeof(KOBJ) === 'undefined') {
             KOBJ = { 
                 warn : function () { 
-                    if (window.console) window.console.warn('Requested action has limited functionality outside of browser app.'); 
+                    //if (window.console) window.console.warn('Requested action has limited functionality outside of browser app.'); 
                 },
                 get_application : function () { 
                     return { 

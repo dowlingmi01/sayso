@@ -59,7 +59,7 @@
 				<? $deal->itemURL = str_replace("\"", "'", $deal->itemURL) ?>
 				<? $deal->shareText = str_replace("\"", "'", $deal->shareText) ?>
 				<a class="sb_externalShare" href="#"
-					onclick='return $SQ.openWindow("//www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($deal->itemURL) ?>&caption=<?= urlencode($deal->shareText) ?>&picture=<?= urlencode($deal->itemImageURL) ?>&redirect_uri=<?= urlencode($facebookCallbackUrl) ?>&name=<?= $deal->name ?>&description=<?= urlencode($this->facebook_description) ?>", "sb_window_open", "location=1,status=1,scrollbars=0,width=981,height=450"); return false;'>
+					onclick='$SQ.openWindow("//www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($deal->itemURL) ?>&caption=<?= urlencode($deal->shareText) ?>&picture=<?= urlencode($deal->itemImageURL) ?>&redirect_uri=<?= urlencode($facebookCallbackUrl) ?>&name=<?= $deal->name ?>&description=<?= urlencode($this->facebook_description) ?>", "sb_window_open", "location=1,status=1,scrollbars=0,width=981,height=450"); return false;'>
 					<img src="//<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
 				</a>
 				<span class="sb_mini-note-reward">+25</span>

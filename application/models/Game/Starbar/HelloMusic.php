@@ -29,7 +29,7 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
 		$currentLevel = $profile->getHighestLevel();
 
 		if (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
-			$good->setNonRedeemReason('SOLD OUT? There\'s more<br />gear coming! Check back and keep earning!<br /><br />And remember to get your tokens for the weekly giveaways!');
+			$good->setNonRedeemReason('SOLD OUT? There\'s more<br />gear coming! Check back and keep earning!');
 			$good->setCommentForUser('Sold Out');
 		} elseif ((int) $currencyPrimarySurvey->current_balance < 1 && $good->getId() !== $this->_economy->getGoodId('WEEK_ONE_GIVEAWAY')) {
 			$good->setNonRedeemReason('Must complete<br /><a href="//'.BASE_DOMAIN.'/starbar/hellomusic/embed-survey?survey_id=1" class="sb_nav_element" rel="sb_popBox_surveys_hg" title="Take influencer survey now!" style="position: relative; top: -5px;">Influencer Survey</a>');

@@ -37,9 +37,9 @@
         };
         //sayso.log = _log('log'); 
         //sayso.warn = _log('warn');
-        sayso.log = function(){};
-        sayso.warn = function(){};
     }
+    sayso.log = function(){};
+    sayso.warn = function(){};
     
     // bring in namespaced jQuery $SQ 
     

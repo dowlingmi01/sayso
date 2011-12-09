@@ -112,7 +112,9 @@ class Starbar_ContentController extends Api_GlobalController
 			$user->save();
 
 
-	        try {
+			try {
+				$userEmail = new User_Email();
+				$userEmail->loadData($user->primary_email_id);
 				$message = '
 					Say.So Music Bar redemption made for ' . $good->title . '
 
@@ -126,6 +128,9 @@ class Starbar_ContentController extends Api_GlobalController
 					State/Region: ' . $this->order_state . '
 					Postal Code: ' . $this->order_zip . '
 					Country: ' . $this->order_country . '
+
+					User ID: ' . $this->user_id . '
+					User Email: ' . $userEmail->email . '
 					=============
 					Thank you,
 					Say.So Mailer v3.4

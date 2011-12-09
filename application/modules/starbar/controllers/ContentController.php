@@ -173,6 +173,10 @@ class Starbar_ContentController extends Api_GlobalController
 		$bundleOfJoy = $this->_getBundleOfJoy($this->survey_id);
 		$this->view->assign('bundle_of_joy', $bundleOfJoy);
 
+		$this->view->user_id = $this->user_id;
+		$this->view->user_key = $this->user_key;
+		$this->view->auth_key = $this->auth_key;
+
 		// @todo point this to onboarding
 		$shareLink = "http://music.say.so/";
 		

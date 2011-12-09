@@ -44,8 +44,14 @@
 							var link=["//",domain,"/s3/polljs/<?= $this->survey->external_id ?>-<?= $this->survey->external_key ?>?_vote=",escape(vote)].join("");
 							$SQ.ajax({url:link,dataType:"jsonp"});
 							
-							$SQ.ajaxWithAuth({
-								url : "//<?= BASE_DOMAIN ?>/api/survey/user-poll-submit?renderer=jsonp&survey_id=<?= $this->survey->id ?>",
+							$SQ.ajax({
+								dataType:"jsonp",
+								url : "//<?= BASE_DOMAIN ?>/api/survey/user-poll-submit?renderer=jsonp&survey_id=<?= $this->survey->id ?>&user_id=<?= $this->user_id ?>&user_key=<?= $this->user_key ?>&auth_key=<?= $this->auth_key ?>",
+								beforeSend : function(x) {
+									if (x && x.overrideMimeType) {
+										x.overrideMimeType("application/j-son;charset=UTF-8");
+									}
+								},
 								success : function (response, status, jqXHR) {
 									$SQ.remoteControl.updateGame(response.game);
 								}

@@ -12,7 +12,7 @@ class Notification_Message extends Record
 		$sql = "
 			SELECT *
 			FROM notification_message nm
-				INNER JOIN notification_message_group nmg 
+				INNER JOIN notification_message_group nmg
 					ON nmg.id = nm.notification_message_group_id
 					AND nmg.id = ?
 			WHERE nm.ordinal > ?
@@ -30,15 +30,15 @@ class Notification_Message extends Record
 			$sql = "
 				SELECT nm.*
 				FROM notification_message nm
-					INNER JOIN notification_message_group nmg 
+					INNER JOIN notification_message_group nmg
 						ON nmg.id = nm.notification_message_group_id
 						AND nmg.id = ?
 				ORDER BY nm.ordinal ASC
 				LIMIT 1
 			";
 			$data = Db_Pdo::fetch($sql, $messageGroup->id);
-			
-			if ($data) {		
+
+			if ($data) {
 				$this->build($data);
 			}
 		}
@@ -79,6 +79,11 @@ class Notification_Message extends Record
 			case 'Take Survey':
 				$surveyUserMap = new Survey_UserMap();
 				if ($surveyUserMap->checkIfUserHasCompletedSurvey($userId, $this->survey_id)) return false;
+				break;
+
+			case 'Taken Survey':
+				$surveyUserMap = new Survey_UserMap();
+				if (! $surveyUserMap->checkIfUserHasCompletedSurvey($userId, $this->survey_id)) return false;
 				break;
 		}
 

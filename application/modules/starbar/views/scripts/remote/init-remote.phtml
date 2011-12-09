@@ -106,7 +106,7 @@ $game = $this->game;
         if (typeof(KOBJ) === 'undefined') {
             KOBJ = { 
                 warn : function () { 
-                    if (window.console) window.console.warn('Requested action has limited functionality outside of browser app.'); 
+                    if (sayso.debug && window.console) window.console.warn('Requested action has limited functionality outside of browser app.'); 
                 },
                 get_application : function () { 
                     return { 

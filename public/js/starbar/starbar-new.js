@@ -1274,7 +1274,6 @@ $SQ(function(){
 
 							// Add the authentication info to the request
 							link = activeLink.attr('href');
-							link = ('https:' == document.location.protocol ? 'https:' : 'http:') + link; // Add http: or https:
 							if (link.indexOf("?") == -1)
 								link += "?";
 							else

@@ -40,7 +40,7 @@ class Starbar_View_Helper_DisplayPolls extends Zend_View_Helper_Abstract
 				<? if ($status == 'new' || $status == 'archived') { // User can take this poll ?>
 					<h3>
 						<? $iframeHeight = 62 + (ceil($survey->number_of_answers / 2.0) * 32); // 62 base height + 32 per row of answers -- Note that this height estimate is updated after the iframe loads ?>
-						<a href="https://<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>" rel="starbar-poll-<?= $survey->id ?>" iframeHeight="<?= $iframeHeight ?>">
+						<a href="//<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-poll?survey_id=<?= $survey->id ?>" rel="starbar-poll-<?= $survey->id ?>" iframeHeight="<?= $iframeHeight ?>">
 							<? if ($survey->premium) { ?>
 								<span class="sb_img_doubleValue"></span>
 							<? } ?>
@@ -72,7 +72,7 @@ class Starbar_View_Helper_DisplayPolls extends Zend_View_Helper_Abstract
 						</div><!-- .sb_pointsEarnedTotal -->
 					</li>
 				<? } ?>
-				<? 
+				<?
 				$i++;
 			}
 			if ($status == 'new' || $status == 'archived') {
@@ -90,4 +90,3 @@ class Starbar_View_Helper_DisplayPolls extends Zend_View_Helper_Abstract
 		}
 	}
 }
-	

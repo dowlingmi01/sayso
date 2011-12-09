@@ -6,10 +6,10 @@ $SQ(function(){
 
 	var sayso = window.sayso,
 		starbar = sayso.starbar;
-	
+
 	// global var
 	var themeColor = '#de40b2';
-	
+
     // NOTE: These variables are initialized in initElements()
     var starbarElem; //  = $SQ('#sayso-starbar');
 
@@ -37,8 +37,8 @@ $SQ(function(){
 			closePopBox();
 		}  // esc
 	});
-	
-	// setup event binding to allow starbar-loader.js to 
+
+	// setup event binding to allow starbar-loader.js to
 	// display onboarding if the user has not already seen it
 	// and the user is on the Starbar's base domain (e.g. hellomusic.com)
 	$SQ(document).bind('onboarding-display', function () {
@@ -66,7 +66,7 @@ $SQ(function(){
 	 *   but can be specified via parentIndex param (e.g. *second* (outer) parent == 1)
 	 * - you can also access the data container even if the current element
 	 *   IS the data container (i.e. it contains the "data-id" attr)
-	 * 
+	 *
 	 * - example: $('a.facebook').dataContainer().find('.button').show()
 	 * - example: $('a.facebook').dataContainer(1).getId() <-- get the id of an outer container
 	 * - example:
@@ -79,14 +79,14 @@ $SQ(function(){
 	 *			 // redeem this reward
 	 *		 });
 	 *	 </script>
-	 * 
+	 *
 	 * @author davidbjames
-	 * 
+	 *
 	 * @param integer parentIndex OPTIONAL defaults to 0 (first parent)
 	 * @return jQuery object of the data/parent element
 	 */
 	$SQ.fn.dataContainer = function (parentIndex) {
-		
+
 		var _container;
 		if (typeof parentIndex === 'number') {
 			// if parent is explicitly set
@@ -98,7 +98,7 @@ $SQ(function(){
 			// otherwise default to first parent
 			_container = this.parents('[data-id]').eq(0);
 		}
-		
+
 		if (!_container.length) {
 			// if none found provide harmless object
 			return {
@@ -110,10 +110,10 @@ $SQ(function(){
 				removeNow : function () {}
 			};
 		}
-		
+
 		// store off the id
 		var _id = _container.attr('data-id');
-		
+
 		/**
 		 * Get the ID of the object
 		 * - this usually corresponds to the record ID
@@ -122,7 +122,7 @@ $SQ(function(){
 		_container.getId = function () {
 			return typeof _id === 'undefined' ? 0 : parseInt(_id);
 		};
-		
+
 		/**
 		 * Attach an object to this data container
 		 * @param object|string object
@@ -131,7 +131,7 @@ $SQ(function(){
 			_container.data('object', typeof(object) === 'string' ? object : JSON.stringify(object));
 			return _container;
 		};
-		
+
 		/**
 		 * Get the object from this data container
 		 * @returns object
@@ -139,7 +139,7 @@ $SQ(function(){
 		_container.getObject = function () {
 			return JSON.parse(_container.data('object'));
 		};
-		
+
 		/**
 		 * Copy the current data container to another DOM node
 		 * @param target
@@ -152,7 +152,7 @@ $SQ(function(){
 			target.attr('data-id', _container.getId());
 			return target.dataContainer(); // the new data container
 		};
-		
+
 		/**
 		 * Move the current data container to another DOM node
 		 * @param target
@@ -163,7 +163,7 @@ $SQ(function(){
 			_container.reset();
 			return newContainer;
 		};
-		
+
 		/**
 		 * Reset the data container (remove id and object)
 		 */
@@ -172,7 +172,7 @@ $SQ(function(){
 			_container.removeData('object');
 			return _container;
 		};
-		
+
 		/**
 		 * Remove the data container completely
 		 */
@@ -181,7 +181,7 @@ $SQ(function(){
 				_container.remove();
 			});
 		};
-		
+
 		return _container;
 	}
 
@@ -189,7 +189,7 @@ $SQ(function(){
     starbar.state.update = function (){
         var app = KOBJ.get_application(starbar.kynetxAppId);
         starbar.state.callback = null;
-        app.raise_event('update_state', { 
+        app.raise_event('update_state', {
             'visibility' : starbar.state.visibility,
             'profile' : starbar.state.profile,
             'game' : starbar.state.game
@@ -205,14 +205,14 @@ $SQ(function(){
 
     // Refresh the Starbar to respond to state changes, if any
     starbar.state.refresh = function () {
-        starbar.state.callback = function () { 
+        starbar.state.callback = function () {
             // logic here to determine if/what should be fired to "refresh"
             if (starbar.state.visibility != starbar.state.local.visibility) {
                 toggleBar(false);
             }
 
             updateAlerts(false);
-            
+
             if (starbar.state.profile > starbar.state.local.profile) {
                 updateProfile(false);
             }
@@ -279,7 +279,7 @@ $SQ(function(){
 		elemPlayerConsole.click(function(e) {
 			e.stopPropagation();
 		});
-		
+
 
 		/* prevent default for any link with # as the href */
 		$SQ('a', starbarElem).each(function(){
@@ -295,7 +295,7 @@ $SQ(function(){
 						return false;
 					}
 				});
-			}			
+			}
 		});
 
 
@@ -437,7 +437,7 @@ $SQ(function(){
 				}
 			});
 		});
-		
+
 	} // end initElements()
 
 	function closePopBox(keepNotifications){
@@ -465,7 +465,7 @@ $SQ(function(){
 		var ajaxContentContainer = null;
 		var loadingElement = null;
 		var alertContainers = $SQ('.sb_alerts_container');
-		
+
 		// Close the last (i.e. the visible) alert from each alert (notification) container if the user opens a popBox
 		// Unless the popBox is opening because the user clicked an alert
 		// If there is a popBox already open, don't close any notifications
@@ -475,10 +475,10 @@ $SQ(function(){
 		 		if (alertsInContainer.length > 0) hideAlerts(alertsInContainer.last(), true, true);
 			});
 		}
-		
+
 		hideOverlay();
 		closePopBox(keepNotificationsOpen);
-		
+
 		if (src && withLoadingElement) {  // insert loading elements into popBox, then load content into inner container
 			// fill in the container with loading div and container divs
 			popBox.html('<div class="sb_popBoxInner"><div class="sb_popContent"></div></div>');
@@ -493,11 +493,11 @@ $SQ(function(){
 		} else {
 			ajaxContentContainer = popBox; // insert into popBox directly
 		}
-		
+
 		if (src && withLoadingElement) {
 			popBox.fadeTo(200, 1); // fade in the loading element
 		}
-		
+
 		popBox.show();
 		popBox.addClass('sb_popBoxActive');
 
@@ -509,7 +509,7 @@ $SQ(function(){
 					// some pages perform game calls, e.g. daily deals
 					// update the game stuff if the request returns a game object
 					if (response.game) updateGame(response.game, true, true);
-					
+
 					initElements();
 					showPopBoxContents(popBox, loadingElement, ajaxContentContainer);
 				}
@@ -518,7 +518,7 @@ $SQ(function(){
 			showPopBoxContents(popBox, false, ajaxContentContainer);
 		}
 	}
-	
+
 	function showPopBoxContents(popBox, loadingElement, ajaxContentContainer) {
 		activateGameElements(popBox, false);
 		activateAccordion(popBox);
@@ -707,7 +707,7 @@ $SQ(function(){
 		'loadComplete': function (parameters) {
 			var hideLoadingElem = parameters['hideLoadingElem'];
 			var newFrameHeight = parameters['newFrameHeight'];
-	
+
 			var openFrame = sayso.starbar.openFrame;
 			var openFrameContainer = sayso.starbar.openFrameContainer;
 			var openFrameContainerParent = sayso.starbar.openFrameContainer.parent();
@@ -735,7 +735,7 @@ $SQ(function(){
 					}
 				}
 			}
-			
+
 			setTimeout(function() { // slight delay to allow the css to load and the page to render correctly
 				if (hideLoadingElem) {
 					var loadingElement = openFrameContainer.children('.sayso-starbar-loading-external');
@@ -760,7 +760,7 @@ $SQ(function(){
 		},
 		'openSurvey': function (parameters) {
 			var surveyId = parameters['survey_id'];
-			
+
 			openPopBox($SQ('#sb_popBox_surveys_lg'), '//'+sayso.baseDomain+'/starbar/hellomusic/embed-survey?survey_id='+surveyId, true, true);
 		},
 		'hideOverlay': function () {
@@ -871,7 +871,7 @@ $SQ(function(){
 				}
 			});
 		}
-		
+
 		if (!userNextLevel) { // There should always be a next level for the user, but just in case...
 			userNextLevel = { ordinal : userCurrentLevel.ordinal + 50000 }
 		}
@@ -997,7 +997,7 @@ $SQ(function(){
 				var currencyBalance = parseInt(currency.current_balance);
 				var previousCurrency = null;
 				var currencyNeedsUpdate = false;
-				
+
 				var i = 0;
 				while (i < sayso.starbar.previous_game._gamer._currencies.items.length) {
 					if (currencyTitle == sayso.starbar.previous_game._gamer._currencies.items[i].title.toLowerCase()) {
@@ -1006,16 +1006,16 @@ $SQ(function(){
 					}
 					i++;
 				}
-				
+
 				if (!previousCurrency) {
-					previousCurrency = currency; 
+					previousCurrency = currency;
 					currencyNeedsUpdate = true;
 				}
-				
+
 				var previousCurrencyBalance = parseInt(previousCurrency.current_balance);
-				
+
 				if (justInitialized || currencyBalance != previousCurrencyBalance) currencyNeedsUpdate = true;
-				
+
 				if (currencyNeedsUpdate) {
 					if (currencyBalanceElems.length > 0) {
 						currencyBalanceElems.each(function() {
@@ -1037,7 +1037,7 @@ $SQ(function(){
 											color : 'red',
 											animationCurrencyBalance : currencyBalance
 										},
-										{ 
+										{
 											duration : parseInt(animationDuration*durationMultiplier),
 											step : function (now, fx) {
 												$SQthis.html(parseInt(now));
@@ -1064,9 +1064,9 @@ $SQ(function(){
 						} else {
 							currencyPercent = 0;
 						}
-						
+
 						if (currencyPercent > 100) currencyPercent = 100; // technically this should never happen
-					
+
 						currencyPercentElems.each(function() {
 							var $SQthis = $SQ(this);
 							var startingWidth = $SQthis.width();
@@ -1084,11 +1084,11 @@ $SQ(function(){
 									animatingBarElem.css('width', startingWidth+'px');
 									fadingBarElem.addClass('sb_ui-progressbar-value-fading sb_ui-widget-header sb_ui-corner-left');
 									fadingBarElem.css('width', newWidth+'px');
-									
+
 									animatingBarElem.insertBefore($SQthis);
 									fadingBarElem.insertBefore($SQthis);
 									fadingBarElem.fadeTo(0, 0);
-									
+
 									animatingBarElem.animate(
 										{ width : newWidth+'px' },
 										{ duration : parseInt(animationDuration*2/5) }
@@ -1096,7 +1096,7 @@ $SQ(function(){
 									setTimeout(function() {
 										fadingBarElem.fadeTo(parseInt(animationDuration*3/5), 1);
 									}, parseInt(animationDuration*2/5));
-									
+
 									setTimeout(function() {
 										progressBarElem.css('width', newWidth+'px');
 										animatingBarElem.annihilate();
@@ -1107,9 +1107,9 @@ $SQ(function(){
 									var progressBarElem = $SQthis; // so it can be accessed from setTimeout()
 									animatingBarElem.addClass('sb_ui-progressbar-value-animating sb_ui-widget-header sb_ui-corner-left');
 									animatingBarElem.css('width', startingWidth+'px');
-									
+
 									animatingBarElem.insertBefore($SQthis);
-									
+
 									animatingBarElem.animate(
 										{ width : availableWidth+'px' },
 										{ duration : parseInt(animationDuration*2/5) }
@@ -1136,7 +1136,7 @@ $SQ(function(){
 		}
 
 		// So the next time activateGameElements is called, we don't assume the user just got the points/level-ups
-		sayso.starbar.previous_game = sayso.starbar.game;		
+		sayso.starbar.previous_game = sayso.starbar.game;
 	} // activateGameElements
 
 	function updateProfile(setGlobalUpdate, userInitiated) {
@@ -1197,12 +1197,12 @@ $SQ(function(){
 				$SQ(this).tabs({
 					show: function(event, ui){
 							// re-call the scrollbar to re-initialize to avoid the "flash" of narrow content.
-							activateScroll(target);		
+							activateScroll(target);
 
 							// adding ID to determine which tab is selected
 							$SQ('ul.sb_ui-tabs-nav', this).attr('id','');
 							$SQ('ul.sb_ui-tabs-nav', this).attr('id','sb_ui-tabs-nav_'+eval(ui.index+1));
-							
+
 							// reset child tabs to 0
 							$SQ('.sb_tabPane ul.sb_ui-tabs-nav', this).attr('id','');
 						}
@@ -1221,28 +1221,28 @@ $SQ(function(){
 		}else{
 			var headerHeight = 0;
 		}
-		
-		// recalculate if we're using 2 column layout. 
+
+		// recalculate if we're using 2 column layout.
 		if ($SQ('.sb_popContent .sb_column60', target).length > 0){
 			var headerHeight = $SQ('.sb_popContent  .sb_column60 .sb_header',target).outerHeight(true);
 		}
-		
+
 		if ($SQ('.sb_popContent .sb_column40', target).length > 0){
 			var headerHeight = $SQ('.sb_popContent  .sb_column60 .sb_header',target).outerHeight(true);
 		}
-		
+
 		var panes = $SQ('.sb_scrollPane',target);
 		panes.each(function(i) {
 			// Add height of all the paragraphs (or anything with the class "sb_tabHeader" really)
 			var paragraphs = $SQ('.sb_tabHeader', $SQ(this).parent());
 			var paragraphHeight = 0;
-			paragraphs.each(function(i) {paragraphHeight += $SQ(this).outerHeight(true);});		
-						
+			paragraphs.each(function(i) {paragraphHeight += $SQ(this).outerHeight(true);});
+
 			// special rule to handle if there are 2 columns in a popbox, check to see if any doesn't have a header, if it doesn't, change the height of the scroll.
 			var parent = $SQ(this).parent();
 			if (parent.children(':first').hasClass('sb_scrollPane')){
 				$SQ(this).css('height',contentHeight);
-			}else{	
+			}else{
 				$SQ(this).css('height',contentHeight-(headerHeight+paragraphHeight));
 			}
 			$SQ(this).jScrollPane();
@@ -1266,7 +1266,7 @@ $SQ(function(){
 						if (activeFooter){
 							activeFooter.fadeTo(0, 0);
 						}
-						
+
 						// Load the iframe if not already loaded
 						if (activeLink.length > 0 && activeLink.attr('loaded') != "true") {
 							// The iframe's height is calculated and set by the controller, use it to set the size of the accordion
@@ -1274,6 +1274,7 @@ $SQ(function(){
 
 							// Add the authentication info to the request
 							link = activeLink.attr('href');
+							link = ('https:' == document.location.protocol ? 'https:' : 'http:') + link; // Add http: or https:
 							if (link.indexOf("?") == -1)
 								link += "?";
 							else
@@ -1283,7 +1284,7 @@ $SQ(function(){
 							// The container for the new iFrame is in the link's 'ref' attribute
 							var iFrameContainerId = activeLink.attr('rel');
 							$SQ.insertCommunicationIframe(link, iFrameContainerId, 470, parseInt(activeLink.attr('iframeHeight')), "no");
-							
+
 							activeLink.attr('loaded', 'true');
 						}
 
@@ -1323,7 +1324,7 @@ $SQ(function(){
 
 	function activateSlideshow(target){
 		if ($SQ('#sb_slideshow', target).length > 0){
-			$SQ('#sb_slideshow', target).cycle({ 
+			$SQ('#sb_slideshow', target).cycle({
 				timeout: 0,
 				speed: 500,
 				next: '#sb_slideshow_nav .sb_next',
@@ -1361,7 +1362,7 @@ $SQ(function(){
 		 	$SQ(this).easyTooltip();
 		});
 	}
-	
+
 	function activateEditInPlaceElems(target) {
 		// jquery edit in place
 		var elemJEIP = $SQ('.sb_jeip', target);
@@ -1377,7 +1378,7 @@ $SQ(function(){
 					cancelbutton_class	: "sb_theme_button sb_theme_button_grey",
 					after_save			: function() { updateProfile(true, true); }
 				}
-			);									 
+			);
 		});
 	}
 
@@ -1396,7 +1397,7 @@ $SQ(function(){
 						case "sb_profile_facebook":
 							windowParameters += ',width=981,height=440';
 							break;
-							
+
 						case "sb_profile_twitter":
 							windowParameters += ',width=750,height=550';
 							break;
@@ -1458,7 +1459,7 @@ $SQ(function(){
 	function confirmBeforeLeavingSurvey () {
 		return "If you leave this survey, you will lose any unsaved progress.";
 	}
-	
+
 	function revertConfirmBeforeUnload () {
 		if (sayso.overwrite_onbeforeunload) {
 			if (sayso.old_onbeforeunload) {
@@ -1577,7 +1578,7 @@ $SQ(function(){
 			);
 		}
 	}
-	
+
 	if (/*@cc_on!@*/false) { // check for Internet Explorer
 		var oldOnFocus = document.onfocusin && typeof document.onfocusin === 'function' ? document.onfocusin : function () {};
 		document.onfocusin = function () { oldOnFocus(); starbar.state.refresh(); };
@@ -1586,7 +1587,7 @@ $SQ(function(){
 		$SQ(window).bind('focus', function () { oldOnFocus(); starbar.state.refresh(); });
 //		window.onfocus = function () { oldOnFocus(); starbar.state.refresh(); };
 	}
-	
+
 	// flag so we know this file has loaded
 	sayso.starbar.loaded = true;
 });

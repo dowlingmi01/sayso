@@ -17,7 +17,7 @@ $game = $this->game;
      */
     $SQ(function () {
         if (!window.sayso) window.sayso = {};
-        window.sayso.debug = true;
+        window.sayso.debug = false;
         window.sayso.baseDomain = '<?= BASE_DOMAIN ?>';
         window.sayso.environment = '<?= Registry::getPseudoEnvironmentName() ?>';
         window.sayso.log = _log('log');

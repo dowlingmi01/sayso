@@ -38,12 +38,12 @@
 					$SQ(this).bind({
 						click: function(event){
 							$SQ(this).attr('checked', 'checked');
-							
+
 							// Simulate what survey.Vote(domain) does... which is submit the vote via ajax
 							var vote=$SQ("#sg_FormFor<?= $this->survey->external_id ?>").serialize();
 							var link=["//",domain,"/s3/polljs/<?= $this->survey->external_id ?>-<?= $this->survey->external_key ?>?_vote=",escape(vote)].join("");
 							$SQ.ajax({url:link,dataType:"jsonp"});
-							
+
 							$SQ.ajax({
 								dataType:"jsonp",
 								url : "//<?= BASE_DOMAIN ?>/api/survey/user-poll-submit?renderer=jsonp&survey_id=<?= $this->survey->id ?>&user_id=<?= $this->user_id ?>&user_key=<?= $this->user_key ?>&auth_key=<?= $this->auth_key ?>",
@@ -65,14 +65,14 @@
 					});
 				});
 
-				/*$SQ.getScript("//platform.twitter.com/widgets.js", function(){
+				$SQ.getScript("//platform.twitter.com/widgets.js", function(){
 					function handleTweetEvent(event){
 						if (event) {
 							$SQ.remoteControl.handleTweet('poll', <?= $this->survey->id ?>);
 						}
 					}
 					twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
-				});*/
+				});
 	        }
 	        catch (err) {}
 		}

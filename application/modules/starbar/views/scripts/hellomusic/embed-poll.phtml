@@ -59,14 +59,14 @@
 					});
 				});
 
-				$SQ.getScript("//platform.twitter.com/widgets.js", function(){
+				/*$SQ.getScript("//platform.twitter.com/widgets.js", function(){
 					function handleTweetEvent(event){
 						if (event) {
 							$SQ.remoteControl.handleTweet('poll', <?= $this->survey->id ?>);
 						}
 					}
 					twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
-				});
+				});*/
 	        }
 	        catch (err) {}
 		}

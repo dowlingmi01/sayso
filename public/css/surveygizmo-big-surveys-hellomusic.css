@@ -21,3 +21,13 @@ ul.sg-list-vertical li {
 	margin-right: 155px;
 	float: right;
 }
+.sg-progress-bar {
+	display: block;
+	position: fixed;
+	left: 50%;
+	width: 150px;
+	height: 16px;
+	margin-left: -75px;
+	bottom: 14px;
+	clear: none;
+	}

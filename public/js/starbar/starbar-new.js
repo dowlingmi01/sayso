@@ -10,24 +10,24 @@ $SQ(function(){
 	// global var
 	var themeColor = '#de40b2';
 
-    // NOTE: These variables are initialized in initElements()
-    var starbarElem; //  = $SQ('#sayso-starbar');
+	// NOTE: These variables are initialized in initElements()
+	var starbarElem; //  = $SQ('#sayso-starbar');
 
-    // clickable elements that ppl will interact with
-    var btnToggleVis; //  = $SQ('#sayso-starbar #starbar-visControls #starbar-toggleVis');
-    var btnSaySoLogo; // = $SQ('#sayso-starbar #starbar-visControls #sb_starbar-logo');
+	// clickable elements that ppl will interact with
+	var btnToggleVis; //  = $SQ('#sayso-starbar #starbar-visControls #starbar-toggleVis');
+	var btnSaySoLogo; // = $SQ('#sayso-starbar #starbar-visControls #sb_starbar-logo');
 
-    // container elements
-    var elemSaySoLogoBorder; // = $SQ('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
-    var elemSaySoLogoSemiStowed; // = $SQ('#sayso-starbar #sb_starbar-logoSemiStowed');
-    var elemStarbarWrapper; // = $SQ('#sayso-starbar #starbar-player-console #starbar-wrapper');
-    var elemPlayerConsole; // = $SQ('#sayso-starbar #starbar-player-console');
-    var elemStarbarMain; // = $SQ('#sayso-starbar #starbar-player-console #starbar-main');
-    var elemVisControls; // = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls');
-    var elemStarbarClickable; // = $SQ('#sayso-starbar #starbar-player-console .sb_nav_element');
-    var elemPopBox; // = $SQ('#sayso-starbar #starbar-player-console .sb_popBox');
-    var elemAlerts; // = $SQ('#sayso-starbar #starbar-player-console .sb_starbar-alert');
-    var elemPopBoxVisControl; // = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
+	// container elements
+	var elemSaySoLogoBorder; // = $SQ('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
+	var elemSaySoLogoSemiStowed; // = $SQ('#sayso-starbar #sb_starbar-logoSemiStowed');
+	var elemStarbarWrapper; // = $SQ('#sayso-starbar #starbar-player-console #starbar-wrapper');
+	var elemPlayerConsole; // = $SQ('#sayso-starbar #starbar-player-console');
+	var elemStarbarMain; // = $SQ('#sayso-starbar #starbar-player-console #starbar-main');
+	var elemVisControls; // = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls');
+	var elemStarbarClickable; // = $SQ('#sayso-starbar #starbar-player-console .sb_nav_element');
+	var elemPopBox; // = $SQ('#sayso-starbar #starbar-player-console .sb_popBox');
+	var elemAlerts; // = $SQ('#sayso-starbar #starbar-player-console .sb_starbar-alert');
+	var elemPopBoxVisControl; // = $SQ('#sayso-starbar #starbar-player-console #starbar-visControls .sb_popBox');
 
 	/*
 	Set up some extra bits to handle closing windows if the user clicks outside the starbar or hits ESC key
@@ -52,7 +52,7 @@ $SQ(function(){
 	$SQ(document).click(function(e) {
 		// don't close if they just right-clicked
 		if (e.button === 0){
-		    closePopBox();
+			closePopBox();
 		}
 	});
 
@@ -102,7 +102,7 @@ $SQ(function(){
 		if (!_container.length) {
 			// if none found provide harmless object
 			return {
-			    attr : function () { return null; },
+				attr : function () { return null; },
 				getId : function () { return 0; },
 				setObject : function () { return this; },
 				getObject : function () { return this; },
@@ -186,51 +186,51 @@ $SQ(function(){
 	}
 
 	// Update the cross-domain state variables
-    starbar.state.update = function (){
-        var app = KOBJ.get_application(starbar.kynetxAppId);
-        starbar.state.callback = null;
-        app.raise_event('update_state', {
-            'visibility' : starbar.state.visibility,
-            'profile' : starbar.state.profile,
-            'game' : starbar.state.game
-        });
-    };
+	starbar.state.update = function (){
+		var app = KOBJ.get_application(starbar.kynetxAppId);
+		starbar.state.callback = null;
+		app.raise_event('update_state', {
+			'visibility' : starbar.state.visibility,
+			'profile' : starbar.state.profile,
+			'game' : starbar.state.game
+		});
+	};
 
-    // Starbar state
-    starbar.state.local = {
-        profile : Math.round(new Date().getTime() / 1000),
-        game : Math.round(new Date().getTime() / 1000),
-        visibility : starbar.state.visibility
-    };
+	// Starbar state
+	starbar.state.local = {
+		profile : Math.round(new Date().getTime() / 1000),
+		game : Math.round(new Date().getTime() / 1000),
+		visibility : starbar.state.visibility
+	};
 
-    // Refresh the Starbar to respond to state changes, if any
-    starbar.state.refresh = function () {
-        starbar.state.callback = function () {
-            // logic here to determine if/what should be fired to "refresh"
-            if (starbar.state.visibility != starbar.state.local.visibility) {
-                toggleBar(false);
-            }
+	// Refresh the Starbar to respond to state changes, if any
+	starbar.state.refresh = function () {
+		starbar.state.callback = function () {
+			// logic here to determine if/what should be fired to "refresh"
+			if (starbar.state.visibility != starbar.state.local.visibility) {
+				toggleBar(false);
+			}
 
-            updateAlerts(false);
+			updateAlerts(false);
 
-            if (starbar.state.profile > starbar.state.local.profile) {
-                updateProfile(false);
-            }
+			if (starbar.state.profile > starbar.state.local.profile) {
+				updateProfile(false);
+			}
 
-            if (starbar.state.game > starbar.state.local.game) {
-                sayso.log('AJAX GAME UPDATE: game state updated in another tab');
-                updateGame('ajax', false, false);
-            }
+			if (starbar.state.game > starbar.state.local.game) {
+				sayso.log('AJAX GAME UPDATE: game state updated in another tab');
+				updateGame('ajax', false, false);
+			}
 
-            // Done refreshing everything, set our local state to most recent
-            starbar.state.local.profile = starbar.state.profile;
-            starbar.state.local.game = starbar.state.game;
-            starbar.state.local.visibility = starbar.state.visibility;
+			// Done refreshing everything, set our local state to most recent
+			starbar.state.local.profile = starbar.state.profile;
+			starbar.state.local.game = starbar.state.game;
+			starbar.state.local.visibility = starbar.state.visibility;
 
-        };
-        var app = KOBJ.get_application(starbar.kynetxAppId);
-        app.raise_event('refresh_state');
-    };
+		};
+		var app = KOBJ.get_application(starbar.kynetxAppId);
+		app.raise_event('refresh_state');
+	};
 
 	// initialize the starbar
 	initStarBar();
@@ -331,7 +331,7 @@ $SQ(function(){
 					}else{
 						// check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
 						var thisPopBoxSrc = $SQ(this).attr('href');
-						openPopBox(thisPopBox, thisPopBoxSrc, false);
+						openPopBox(thisPopBox, thisPopBoxSrc, true);
 					}
 				}
 			},
@@ -441,7 +441,7 @@ $SQ(function(){
 	} // end initElements()
 
 	function closePopBox(keepNotifications){
-	    if (!elemPopBox.is(':visible')) return; // all pop boxes are already closed
+		if (!elemPopBox.is(':visible')) return; // all pop boxes are already closed
 		elemPopBox.each(function(){
 			$SQ(this).removeClass('sb_popBoxActive');
 			$SQ(this).hide();
@@ -1591,4 +1591,3 @@ $SQ(function(){
 	// flag so we know this file has loaded
 	sayso.starbar.loaded = true;
 });
-

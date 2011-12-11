@@ -215,7 +215,7 @@ html {
 	margin: 0px 0px 5px 0px;
 }
 #sayso-starbar h1:active, #sayso-starbar h1:focus {
-	
+
 }
 #sayso-starbar h2 {
 	color: #303030;
@@ -255,7 +255,7 @@ html {
 	right: 0;
 	position: fixed;
 }
-#sayso-starbar #starbar-player-console.sb_starbar-visBG{	
+#sayso-starbar #starbar-player-console.sb_starbar-visBG{
 	background-image: url('../images/bg_bar.png');
 	background-repeat: repeat-x;
 	background-position: 0px bottom;
@@ -291,7 +291,7 @@ html {
 
 /* STOWED */
 #sayso-starbar #starbar-player-console.sb_starbar-visStowed #starbar-visControls #starbar-toggleVis,
-#sayso-starbar #starbar-player-console.sb_starbar-visStowed .sb_starbar-alert, 
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed .sb_starbar-alert,
 #sayso-starbar #starbar-player-console.sb_starbar-visStowed .sb_popBox,
 #sayso-starbar #starbar-player-console.sb_starbar-visStowed #starbar-main{
 	display: none;
@@ -826,7 +826,7 @@ html {
 	border-style:solid;
 	border-color:#383838 transparent;
 	/* reduce the damage in FF3.sb_0 */
-    display:block;
+	display:block;
 	width:0;
 }
 #sayso-starbar #starbar-player-console .sb_triangle-solid {
@@ -1086,7 +1086,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 }
 #sayso-starbar .sb_ui-progressbar .sb_progressBarValue span {
 	font-size: 11px !important;
-}	
+}
 #sayso-starbar .sb_progress_bar {
 	position: relative;
 }
@@ -1163,7 +1163,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar .sb_column50BG .sb_column50 {
 	width: 48%;
 }
-#sayso-starbar .sb_column50BG .sb_column50:last-child, 
+#sayso-starbar .sb_column50BG .sb_column50:last-child,
 #sayso-starbar .sb_column5050 .sb_column50:last-child {
 	float: right;
 	width: 47%;
@@ -1518,11 +1518,11 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 
 #sayso-starbar #sb_easyTooltip{
 	background-image: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0.22, rgb(70,70,70)),
-    color-stop(0.61, rgb(55,55,55)));
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(70,70,70)),
+	color-stop(0.61, rgb(55,55,55)));
 	background-image: -moz-linear-gradient(
 			center top,
 			rgb(70,70,70) 22%,
@@ -1532,7 +1532,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	padding: 5px 10px;
 	z-index: 2147483647;
 	width: 200px;
-	border: 1px solid #333;	
+	border: 1px solid #333;
 	box-shadow: 0px 0px 3px #000000;
 	-moz-box-shadow: 0px 0px 3px #000000;
 	-webkit-box-shadow: 0px 0px 3px #000000;

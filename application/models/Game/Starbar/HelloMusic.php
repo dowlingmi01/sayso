@@ -1,19 +1,19 @@
-<?php 
+<?php
 
 /**
  * Game class for HelloMusic
- * 
+ *
  * This should only contain game logic specific to HelloMusic.
  * Game logic for starbars in general, should be in the parent
  * class Game_Starbar.
- * 
+ *
  * @author davidbjames
  *
  */
 class Game_Starbar_HelloMusic extends Game_Starbar {
-    
+
 	/**
-	 * 
+	 *
      * @see Game_Abstract::_visitGood()
      */
     protected function _visitGood (Gaming_BigDoor_Good $good)
@@ -28,7 +28,10 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
 		$currencyPrimarySurvey = $profile->getCurrencies()->find('id', $currencyPrimarySurveyId)->getFirst();
 		$currentLevel = $profile->getHighestLevel();
 
-		if (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
+		if ($good->getId() == $this->_economy->getGoodId('WEEK_ONE_GIVEAWAY')) {
+			$good->setNonRedeemReason('It\'s too late to buy tokens for week 1: we\'ll be announcing the winner soon!');
+			$good->setCommentForUser('Unavailable');
+		} elseif (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
 			$good->setNonRedeemReason('SOLD OUT? There\'s more<br />gear coming! Check back and keep earning!');
 			$good->setCommentForUser('Sold Out');
 		} elseif ((int) $currencyPrimarySurvey->current_balance < 1 && $good->getId() !== $this->_economy->getGoodId('WEEK_ONE_GIVEAWAY')) {
@@ -53,11 +56,11 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
 
         parent::_visitGood($good);
     }
-    
+
     public function getPurchaseCurrencyId() {
         static $currencyId = 0;
         if (!$currencyId) {
-            $currencyId = $this->_economy->getCurrencyId('NOTES'); 
+            $currencyId = $this->_economy->getCurrencyId('NOTES');
         }
         return $currencyId;
     }

@@ -44,22 +44,14 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function rewardsAction ()
 	{
+		$gamer = Game_Starbar::getInstance()->getGamer();
 		$goods = Api_Adapter::getInstance()->call('Gaming', 'getGoodsFromStore');
-		$request = $this->getRequest();
+		$sortedGoods = Api_GamingController::prepareGoodsForGamer($goods, $gamer);
 
+		$request = $this->getRequest();
 		$this->view->assign('chosen_good_id', $request->getParam('chosen_good_id'));
 
-		if ($this->test) {
-			// get the raw reward data for dev purposes
-			$this->_usingJsonPRenderer = false;
-			$this->_enableRenderer(new Api_Plugin_JsonRenderer());
-			foreach ($goods as $good) unset($good->object);
-			return $this->_resultType($goods);
-
-		} else {
-			$this->view->rewards = $goods;
-		}
-		// http://local.sayso.com/starbar/hellomusic/rewards/user_key/r3nouttk6om52u18ba154mc4j4/user_id/46/auth_key/309e34632c2ca9cd5edaf2388f5fa3db
+		$this->view->rewards = $sortedGoods;
 	}
 
 	/**

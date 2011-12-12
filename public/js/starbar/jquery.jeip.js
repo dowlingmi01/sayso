@@ -50,7 +50,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 			savebutton_text		: "SAVE",
 			savebutton_class	: "sb_jeip-savebutton",
-			cancelbutton_text	: "CANCEL",
+			cancelbutton_text	: "X",
 			cancelbutton_class	: "sb_jeip-cancelbutton",
 
 			mouseover_class		: "sb_jeip-mouseover",
@@ -63,7 +63,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			saving				: '<span id="saving-#{id}" class="#{saving_class}" style="display: none;">#{saving_text}</span>',
 
 			start_form			: '<span id="editor-#{id}" class="#{editor_class}" style="display: none;">',
-			form_buttons		: '<p align="right"><input type="button" id="save-#{id}" class="#{savebutton_class}" value="#{savebutton_text}" /> or <input type="button" id="cancel-#{id}" class="#{cancelbutton_class}" value="#{cancelbutton_text}" /></p>',
+			form_buttons		: '<span class="sb_alignRight" style="margin-top: 2px;"><input type="button" id="save-#{id}" class="#{savebutton_class}" value="#{savebutton_text}" /> <input type="button" id="cancel-#{id}" class="#{cancelbutton_class}" value="X" /></span>',
 			stop_form			: '</span>',
 
 			text_form			: '<input type="text" id="edit-#{id}" class="#{editfield_class}" value="#{value}" /> <br />',
@@ -117,6 +117,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				var form = _template( opt.start_form, {
 					id				: self.id,
 					editor_class	: opt.editor_class
+				} );
+
+				form += _template( opt.form_buttons, {
+					id					: self.id,
+					savebutton_class	: opt.savebutton_class,
+					savebutton_text		: opt.savebutton_text,
+					cancelbutton_class	: opt.cancelbutton_class,
+					cancelbutton_text	: opt.cancelbutton_text
 				} );
 
 				if( opt.form_type == 'text' ) {
@@ -179,14 +187,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					form += _template( opt.stop_select_form, { } );
 				} // select form
 
-				form += _template( opt.form_buttons, {
-					id					: self.id,
-					savebutton_class	: opt.savebutton_class,
-					savebutton_text		: opt.savebutton_text,
-					cancelbutton_class	: opt.cancelbutton_class,
-					cancelbutton_text	: opt.cancelbutton_text
-				} );
-
 				form += _template( opt.stop_form, { } );
 
 				$SQ( self ).after( form );
@@ -244,7 +244,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			$SQ( self ).removeClass( opt.mouseover_class );
 			$SQ( self ).fadeIn( "fast" );
 		};
-		
+
 		var _saveEdit = function( self, orig_option_value ) {
 			var orig_value = $SQ( self ).html( );
 			var new_value = $SQ( "#edit-" + self.id ).attr( "value" );
@@ -294,7 +294,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				error : function (xhr, text, err) {},
 				success	: function( data ) {
 					if (data.data) data = data.data;
-					
+
 					$SQ( "#editor-" + self.id ).fadeOut( "fast" );
 					$SQ( "#editor-" + self.id ).remove( );
 

@@ -3,7 +3,7 @@
 }
 
 
-#sayso-starbar #starbar-player-console.sb_starbar-visBG{	
+#sayso-starbar #starbar-player-console.sb_starbar-visBG{
 	background-image: url('../images/hellomusic/bg_bar.png');
 	background-repeat: repeat-x ;
 	background-position: 0px bottom;
@@ -687,6 +687,11 @@
 }
 
 /* user profile settings */
+#sayso-starbar #starbar-type #sb_popBox_user-profile #edit-sb_profile_username{
+	width: 100px;
+}
+
+
 #sayso-starbar #starbar-type #sb_popBox_user-profile h2.sb_title{
 	font-weight: normal;
 	font-size: 14px;
@@ -822,11 +827,11 @@
 	border: none;
 	color: #fff;
 	width: 120px;
-	text-align: center;	
+	text-align: center;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li a,
-#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul.sb_ui-tabs-nav li a{	
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul.sb_ui-tabs-nav li a{
 	color: #fff;
 	text-shadow: #000 0px 0px 4px;
 	font-size: 13px;
@@ -1006,7 +1011,7 @@
 }
 
 #sayso-starbar .sb_rewardItem .sb_user-points-box .sb_progress_bar img{
-	 margin: -10px 0px 0px -20px; 
+	 margin: -10px 0px 0px -20px;
 	 vertical-align: text-bottom;
 }
 

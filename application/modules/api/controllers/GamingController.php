@@ -157,6 +157,8 @@ class Api_GamingController extends Api_GlobalController
 		$availableGoods = new ItemCollection();
 		$soldOutGoods = new ItemCollection();
 		$results = new ItemCollection();
+		$goods->orderBy('title');
+		$goods->orderBy('cost');
 		foreach ($goods as $good) {
 			if ($good->isToken()) {
 				$tokens->addItem($good);

@@ -11,30 +11,30 @@
  * to geral@petala-azul.com so we can send you a copy immediately.
  *
  * @package   Bvb_Grid
- * @author    Bento Vilas Boas <geral@petala-azul.com>
+ * @author	Bento Vilas Boas <geral@petala-azul.com>
  * @copyright 2010 ZFDatagrid
  * @license   http://www.petala-azul.com/bsd.txt   New BSD License
  * @version   $Id: Column.php 1445 2010-09-10 17:05:54Z bento.vilas.boas@gmail.com $
- * @link      http://zfdatagrid.com
+ * @link	  http://zfdatagrid.com
  */
 
 class Bvb_Grid_Extra_Column
 {
-    /**
-     * Columns to be added
-     * @var array
-     */
-    public   $_field;
+	/**
+	 * Columns to be added
+	 * @var array
+	 */
+	public   $_field;
 
-    /**
-     * Add new extra columns
-     *
-     * @param string $name
-     * @param mixed  $args
-     */
-    public function __call($name, $args)
-    {
-        $this->_field[$name] = $args[0];
-        return $this;
-    }
+	/**
+	 * Add new extra columns
+	 *
+	 * @param string $name
+	 * @param mixed  $args
+	 */
+	public function __call($name, $args)
+	{
+		$this->_field[$name] = $args[0];
+		return $this;
+	}
 }

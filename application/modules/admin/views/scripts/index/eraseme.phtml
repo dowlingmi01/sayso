@@ -6,17 +6,17 @@ $json = '{"type":"ADjuster","tagdomain":{},"domainAvail":{"85256":{"label":"test
 ?>
 <button>Go</button>
 <script type="text/javascript">
-    $(function() {
-        $('button').click(function () {
-            a.ajax({
-                url : 'http://<?= BASE_DOMAIN ?>/api/study/submit',
-                data : { data : '<?= $json ?>' },
-                type : 'POST',
-                dataType : 'json',
-                success : function (response) {
-                    console.log(response);
-                }
-            });
-        });
-    });
+	$(function() {
+		$('button').click(function () {
+			a.ajax({
+				url : 'http://<?= BASE_DOMAIN ?>/api/study/submit',
+				data : { data : '<?= $json ?>' },
+				type : 'POST',
+				dataType : 'json',
+				success : function (response) {
+					console.log(response);
+				}
+			});
+		});
+	});
 </script>

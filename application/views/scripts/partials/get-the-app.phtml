@@ -5,43 +5,43 @@ $loggedIn = false;
 $user = new NullObject();
 if ($userSession->isValid())
 {
-    try 
-    {
-        $user = $userSession->getUser();
-        $loggedIn = true;
-    }
-    catch (Exception $e) {}
+	try 
+	{
+		$user = $userSession->getUser();
+		$loggedIn = true;
+	}
+	catch (Exception $e) {}
 }
 
 ?>
 <div id="get-the-app" style="display: <?= $loggedIn ? 'block' : 'none' ?>;">
-    <h2>Get the app!</h2>
-    <ul class="download">
-        <li>
-            <h3><a href="/install/SaySo-Firefox-DEV.xpi" title="Click to install the SaySo app in Firefox">SaySo for Firefox</a></h3>
-            <p></p>
-            <p><a href="/install/SaySo-Firefox-DEV.xpi" title="Click to install the SaySo app in Firefox">Install SaySo in Firefox</a></p>
-        </li>
-        <li>
-            <h3><a href="/install/SaySo-Chrome-DEV.xpi" title="Click to install the SaySo app in Chrome">SaySo for Chrome</a></h3>
-            <p></p>
-            <p><a href="/install/SaySo-Chrome-DEV.xpi" title="Click to install the SaySo app in Chrome">Install SaySo in Chrome</a></p>
-        </li>
-        <li>
-            <h3><a href="/install/SaySo-Internet-Explorer-DEV-Setup.exe" title="Click to install the SaySo app in Internet Explorer">SaySo for Internet Explorer</a></h3>
-            <p></p>
-            <p><a href="/install/SaySo-Internet-Explorer-DEV-Setup.exe" title="Click to install the SaySo app in Internet Explorer">Install SaySo in Internet Explorer</a></p>
-        </li>
-    </ul>
+	<h2>Get the app!</h2>
+	<ul class="download">
+		<li>
+			<h3><a href="/install/SaySo-Firefox-DEV.xpi" title="Click to install the SaySo app in Firefox">SaySo for Firefox</a></h3>
+			<p></p>
+			<p><a href="/install/SaySo-Firefox-DEV.xpi" title="Click to install the SaySo app in Firefox">Install SaySo in Firefox</a></p>
+		</li>
+		<li>
+			<h3><a href="/install/SaySo-Chrome-DEV.xpi" title="Click to install the SaySo app in Chrome">SaySo for Chrome</a></h3>
+			<p></p>
+			<p><a href="/install/SaySo-Chrome-DEV.xpi" title="Click to install the SaySo app in Chrome">Install SaySo in Chrome</a></p>
+		</li>
+		<li>
+			<h3><a href="/install/SaySo-Internet-Explorer-DEV-Setup.exe" title="Click to install the SaySo app in Internet Explorer">SaySo for Internet Explorer</a></h3>
+			<p></p>
+			<p><a href="/install/SaySo-Internet-Explorer-DEV-Setup.exe" title="Click to install the SaySo app in Internet Explorer">Install SaySo in Internet Explorer</a></p>
+		</li>
+	</ul>
 </div>
 <script type="text/javascript">
-    $(function () {
-        function showApps (user) {
-            if (!$('#get-the-app').is(':visible')) {
-                $('#get-the-app').fadeIn('slow');
-            }
-        }
-        $.subscribe('/user/create', showApps);
-        $.subscribe('/user/login', showApps);
-    });
+	$(function () {
+		function showApps (user) {
+			if (!$('#get-the-app').is(':visible')) {
+				$('#get-the-app').fadeIn('slow');
+			}
+		}
+		$.subscribe('/user/create', showApps);
+		$.subscribe('/user/login', showApps);
+	});
 </script>

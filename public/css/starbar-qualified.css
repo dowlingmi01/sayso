@@ -1323,7 +1323,7 @@ html {
 	border-style:solid;
 	border-color:#383838 transparent;
 	/* reduce the damage in FF3.0 */
-    display:block;
+	display:block;
 	width:0;
 }
 #sayso-starbar #starbar-player-console .triangle-solid {
@@ -1337,7 +1337,7 @@ html {
 	border-style:solid;
 	border-color:#f3f3f3 transparent;
 	/* reduce the damage in FF3.0 */
-    display:block;
+	display:block;
 	width:0;
 }
 /* REUSABLE STYLES */

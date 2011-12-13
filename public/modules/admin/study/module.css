@@ -3,27 +3,27 @@
  */
  #menu-studies
 {
-    color:blue !important;
-    text-decoration: underline;
+	color:blue !important;
+	text-decoration: underline;
 }
 /**
  * The Form
  */
 #txtBegin, #txtEnd
 {
-    cursor: pointer;
-    width: 40%;
-    display: block;
+	cursor: pointer;
+	width: 40%;
+	display: block;
 }
 
 #fieldset-groupsocial input[type=checkbox], #fieldset-groupengines input[type=checkbox]
 {
-    margin: 0 4px 0 4px;
+	margin: 0 4px 0 4px;
 }
 
 #fieldset-groupsocial label, #fieldset-groupengines label, #fieldset-grouponline label
 {
-    margin: 4px 4px 8px 8px;
+	margin: 4px 4px 8px 8px;
 }
 
 #btnAddCriteria-element, #btnAddQuota-element, #btnAddQualifierOnlineBrowsing-element,
@@ -31,20 +31,20 @@
 #btnAddDomain-element, #btnAddTag-element, #btnAddDomainCreative-element, #btnAddTagCreative-element,
 #btnAddDomainAvail-element, #btnAddAvail-element, #btnAddCreative-element
 {
-    text-align:left;
+	text-align:left;
 }
 
 #groupsurveycellqualifier-element, #groupsurveycellsearchactions-element,
 #groupajcampdomains-element, #groupajcreativedomains-element
 {
-    width:49%;
-    float:left;
+	width:49%;
+	float:left;
 }
 #groupsurveycellqualifierdata-element, #groupsurveycellqualifierdata2-element,
 #groupajcamptags-element, #groupajcreativetags-element
 {
-    width:49%;
-    float:right;
+	width:49%;
+	float:right;
 }
 
 #groupsurveycellqualifierdata-label, #groupsurveycellqualifierdata-label,
@@ -53,35 +53,35 @@
 #groupajcamptags-label,
 #groupajcreativedomains-label, #groupajcreativetags-label
 {
-    display:none;
+	display:none;
 }
 
 label[for=radioCellType], #fieldset-groupsurveyquotas label
 {
-    display:block;
+	display:block;
 }
 div.form-label
 {
-    margin: 10px 0 8px 0;
-    color: #515151;
-    font-variant: small-caps;
+	margin: 10px 0 8px 0;
+	color: #515151;
+	font-variant: small-caps;
 }
 #cbSearchOnEngines-element label
 {
-    display: inline-block
+	display: inline-block
 }
 #cbSearchOnEngines-element input[type=checkbox]
 {
-    margin: 0 4px;
+	margin: 0 4px;
 }
 
 #mainForm legend
 {
-    color:#00C4CC;
-    font-weight: bold;
+	color:#00C4CC;
+	font-weight: bold;
 }
 
 .admin-table table *
 {
-    text-shadow: none;
+	text-shadow: none;
 }

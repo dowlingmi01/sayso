@@ -11,29 +11,29 @@
  * to geral@petala-azul.com so we can send you a copy immediately.
  *
  * @package   Bvb_Grid
- * @author    Bento Vilas Boas <geral@petala-azul.com>
+ * @author	Bento Vilas Boas <geral@petala-azul.com>
  * @copyright 2010 ZFDatagrid
  * @license   http://www.petala-azul.com/bsd.txt   New BSD License
  * @version   $Id$
- * @link      http://zfdatagrid.com
+ * @link	  http://zfdatagrid.com
  */
 
 interface Bvb_Grid_Formatter_FormatterInterface
 {
 
 
-    /**
-     * Constructor.
-     *
-     * @param array $options
-     */
-    public function __construct ($options = array());
+	/**
+	 * Constructor.
+	 *
+	 * @param array $options
+	 */
+	public function __construct ($options = array());
 
 
-    /**
-     * Formats a given value
-     *
-     * @param $value
-     */
-    public function format ($value);
+	/**
+	 * Formats a given value
+	 *
+	 * @param $value
+	 */
+	public function format ($value);
 }

@@ -4,12 +4,12 @@
 $SQ.jQueryRandom = 0;
 $SQ.extend($SQ.expr[":"],
 {
-    random: function(a, i, m, r) {
-        if (i == 0) {
-            $SQ.jQueryRandom = Math.floor(Math.random() * r.length);
-        };
-        return i == $SQ.jQueryRandom;
-    }
+	random: function(a, i, m, r) {
+		if (i == 0) {
+			$SQ.jQueryRandom = Math.floor(Math.random() * r.length);
+		};
+		return i == $SQ.jQueryRandom;
+	}
 });
 </script>
 <form id="raffleForm" method="get">

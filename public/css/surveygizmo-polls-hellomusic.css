@@ -169,8 +169,8 @@
  
 /* !----- Question Titles ----- */
 .sg-question-title {
-    display: none;
-    position: relative;
+	display: none;
+	position: relative;
 	font-weight:bold;
 	color:black;
 	margin:0 ;

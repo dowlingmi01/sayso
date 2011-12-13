@@ -1,44 +1,49 @@
+<?php
+	$auth = Zend_Auth::getInstance();
+?>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Say.So | App</title>
-        <?= $this->headLink() . PHP_EOL ?>
-        <?= $this->headScript() . PHP_EOL ?>
-    </head>
-    <body>
-        <div id="layout">
-            <header>
-                <h1>Say.So</h1>
-                <img height="60" width="230" alt="Say.So Logo" src="/img/say-so.png" style="width: 230px; height: 60px;">
-                <?php echo $this->partial('partials/common-auth.phtml', 'admin') ?>
-                <nav class="common">
-                    <ul>
-                        <li><a id="menu-products" href="/admin/" title="Products"><span>Products</span></a></li>
-                        <li><a id="menu-studies" href="/admin/study/" title="Crate And Manage Studies"><span>Studies</span></a></li>
-                        <li><a id="menu-metrics" href="/admin/metrics/" title="Real-Time Metrics"><span>Metrics</span></a></li>
-                        <li><a id="menu-users" href="/admin/user/" title="User Management"><span>Admins</span></a></li>
-                    </ul>                    
-                    <div class="clear"></div>
-                </nav>
-            </header>
-            <div id="main" role="main">
-                <?= $this->layout()->content ?>
-            </div>
-            <footer></footer>
-        </div>
-        <div id="system-message" title="System message"></div>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Say.So | App</title>
+		<?= $this->headLink() . PHP_EOL ?>
+		<?= $this->headScript() . PHP_EOL ?>
+	</head>
+	<body>
+		<div id="layout">
+			<header>
+				<h1>Say.So</h1>
+				<img height="60" width="230" alt="Say.So Logo" src="/img/say-so.png" style="width: 230px; height: 60px;">
+				<?php echo $this->partial('partials/common-auth.phtml', 'admin') ?>
+				<?php if ($auth->hasIdentity()): ?>
+					<nav class="common">
+						<ul>
+							<li><a id="menu-products" href="/admin/" title="Products"><span>Products</span></a></li>
+							<li><a id="menu-studies" href="/admin/study/" title="Crate And Manage Studies"><span>Studies</span></a></li>
+							<li><a id="menu-metrics" href="/admin/metrics/" title="Real-Time Metrics"><span>Metrics</span></a></li>
+							<li><a id="menu-users" href="/admin/user/" title="User Management"><span>Admins</span></a></li>
+						</ul>					
+						<div class="clear"></div>
+					</nav>
+				<?php endif; ?>
+			</header>
+			<div id="main" role="main">
+				<?= $this->layout()->content ?>
+			</div>
+			<footer></footer>
+		</div>
+		<div id="system-message" title="System message"></div>
 <?php
 $flashMessenger = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
-$messages       = $flashMessenger->getMessages();
+$messages	   = $flashMessenger->getMessages();
 if (sizeof($messages) > 0)
 {
-    $messages = $flashMessenger->getMessages();
-    if(!empty($messages))
-    {
-        echo "\n<script>\nwindow._saysoMessages = ['",  implode("','", $messages) , "'];\n</script>\n";
-    }
+	$messages = $flashMessenger->getMessages();
+	if(!empty($messages))
+	{
+		echo "\n<script>\nwindow._saysoMessages = ['",  implode("','", $messages) , "'];\n</script>\n";
+	}
 }
 ?>
-    </body>
+	</body>
 </html>

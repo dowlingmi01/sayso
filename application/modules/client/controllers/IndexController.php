@@ -11,12 +11,12 @@ require_once APPLICATION_PATH . '/modules/api/controllers/GlobalController.php';
 
 class Client_IndexController extends Api_GlobalController
 {
-    
+	
 
-    public function indexAction () {
+	public function indexAction () {
 
-    }
+	}
 
-    
+	
 }
 

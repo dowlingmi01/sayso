@@ -4,7 +4,7 @@
 
 function bindLocal()
 {
-    $('#list').addClass('admin-table');
+	$('#list').addClass('admin-table');
 }
 
 $(function(){ bindLocal();});

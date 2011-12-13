@@ -3,6 +3,6 @@
 
 class Lookup_EthnicBackground extends LookupRecord
 {
-    protected $_tableName = 'lookup_ethnicity';
+	protected $_tableName = 'lookup_ethnicity';
 }
 

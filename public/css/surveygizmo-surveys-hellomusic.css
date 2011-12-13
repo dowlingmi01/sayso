@@ -57,7 +57,7 @@
 
 /* !----- Question Titles ----- */
 .sg-question-title {
-    position: relative;
+	position: relative;
 	color:black;
 	margin:0 ;
 	padding:3px 0;
@@ -93,11 +93,11 @@ ul.sg-list-vertical li {
 /* !----- Buttons ----- */
 .sg-button, #sGizmoSaveButtonX {
 	background-image: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0.22, rgb(22,141,202)),
-    color-stop(0.61, rgb(7,61,89)));
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(22,141,202)),
+	color-stop(0.61, rgb(7,61,89)));
 	background-image: -moz-linear-gradient(
 			center top,
 			rgb(22,141,202) 22%,

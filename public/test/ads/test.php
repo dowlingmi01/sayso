@@ -9,20 +9,20 @@ Zend_Loader_Autoloader::getInstance();
 
 // create a new ScriptAggregator with a chunk of DOM
 $aggregator = new ScriptAggregator('<script type="text/javascript"> 
-    if ("html" == "html"){ 
-    document.bgColor = "transparent";
-    }
+	if ("html" == "html"){ 
+	document.bgColor = "transparent";
+	}
 </script>
 <div style="text-align: center;"><!-- PubMatic ad tag (Javascript) : WebMD_Consumer_RON_728x90_ATF_INTL | http://www.WebMD.com/consumer/RON_INTL | 728 x 90 Leaderboard -->
-    <script type="text/javascript">
-    var pubId=26151;
-    var siteId=26177;
-    var kadId=21014;
-    var kadwidth=728;
-    var kadheight=90;
-    var kadtype=1;
-    </script>
-    <script type="text/javascript" src="http://ads.pubmatic.com/AdServer/js/showad.js">
+	<script type="text/javascript">
+	var pubId=26151;
+	var siteId=26177;
+	var kadId=21014;
+	var kadwidth=728;
+	var kadheight=90;
+	var kadtype=1;
+	</script>
+	<script type="text/javascript" src="http://ads.pubmatic.com/AdServer/js/showad.js">
 	</script>
 </div>');
 
@@ -33,18 +33,18 @@ $client->setUri(Zend_Uri::factory('http://localhost:8124'));
 
 // iterate over the scripts (pulled from the aggregator)
 foreach ($aggregator as $index => $script) {
-    /* @var $script Script */
-    // if it's an include type, then pull it via http request
-    if ($script->getType() === Script::TYPE_INCLUDE) {
-        $scriptClient = new Zend_Http_Client(Zend_Uri::factory((string) $script));
-        $rawScript = $scriptClient->request('GET')->getBody();
-        $script->setRawScript($rawScript);
-    } else {
-        // .. otherwise just print the script
-        $rawScript = (string) $script;
-    }
-    $client->setParameterPost('js' . $index, $rawScript); 
-    echo $script . PHP_EOL . PHP_EOL;
+	/* @var $script Script */
+	// if it's an include type, then pull it via http request
+	if ($script->getType() === Script::TYPE_INCLUDE) {
+		$scriptClient = new Zend_Http_Client(Zend_Uri::factory((string) $script));
+		$rawScript = $scriptClient->request('GET')->getBody();
+		$script->setRawScript($rawScript);
+	} else {
+		// .. otherwise just print the script
+		$rawScript = (string) $script;
+	}
+	$client->setParameterPost('js' . $index, $rawScript); 
+	echo $script . PHP_EOL . PHP_EOL;
 }
 
 $response = $client->request('POST');
@@ -58,5 +58,5 @@ echo $aggregator;
 
 
 function out($content) {
-    echo "<pre>$content</pre>" . PHP_EOL;
+	echo "<pre>$content</pre>" . PHP_EOL;
 }

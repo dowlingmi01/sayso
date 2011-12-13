@@ -10,13 +10,13 @@
  *
  */
 abstract class Sql_Abstract extends SqlAbstract {
-    
-    /**
-     * Get the SQL file path which is relative to this class
-     * - i.e. Sql_GetCommentsAggregate --> /path/to/this/dir/GetCommentsAggregate.sql
-     */
-    protected function _getSqlFilePath() {
-        return dirname(__FILE__) . '/' . str_replace('Sql_', '', get_class($this)) . '.sql';
-    }
+	
+	/**
+	 * Get the SQL file path which is relative to this class
+	 * - i.e. Sql_GetCommentsAggregate --> /path/to/this/dir/GetCommentsAggregate.sql
+	 */
+	protected function _getSqlFilePath() {
+		return dirname(__FILE__) . '/' . str_replace('Sql_', '', get_class($this)) . '.sql';
+	}
 }
 

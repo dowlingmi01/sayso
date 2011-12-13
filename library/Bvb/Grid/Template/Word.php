@@ -11,47 +11,47 @@
  * obtain it through the world-wide-web, please send an email
  * to geral@petala-azul.com so we can send you a copy immediately.
  *
- * @package    Bvb_Grid
+ * @package	Bvb_Grid
  * @copyright  Copyright (c)  (http://www.petala-azul.com)
- * @license    http://www.petala-azul.com/bsd.txt   New BSD License
- * @version    $Id: Word.php 1448 2010-09-11 14:43:43Z bento.vilas.boas@gmail.com $
- * @author     Bento Vilas Boas <geral@petala-azul.com >
+ * @license	http://www.petala-azul.com/bsd.txt   New BSD License
+ * @version	$Id: Word.php 1448 2010-09-11 14:43:43Z bento.vilas.boas@gmail.com $
+ * @author	 Bento Vilas Boas <geral@petala-azul.com >
  */
 
 class Bvb_Grid_Template_Word
 {
-    /**
-     * [PT] A colspan das td's. Este valor é recebido pelo classe mão.
-     *
-     * @var int
-     */
-    public $colSpan;
+	/**
+	 * [PT] A colspan das td's. Este valor é recebido pelo classe mão.
+	 *
+	 * @var int
+	 */
+	public $colSpan;
 
-    /**
-     * [PT] U array com as opções do documento
-     *
-     * possiveis: title
-     *
-     * @var array
-     */
-    public  $wordOptions;
+	/**
+	 * [PT] U array com as opções do documento
+	 *
+	 * possiveis: title
+	 *
+	 * @var array
+	 */
+	public  $wordOptions;
 
-    /**
-     * [PT] Valor para depois poder-mos fazer zebra na listagem de resultados
-     *
-     * @var array
-     */
-    public $i;
+	/**
+	 * [PT] Valor para depois poder-mos fazer zebra na listagem de resultados
+	 *
+	 * @var array
+	 */
+	public $i;
 
-    /**
-     * Options
-     * @var array
-     */
-    public $options;
+	/**
+	 * Options
+	 * @var array
+	 */
+	public $options;
 
-    public function globalStart()
-    {
-        $xml  = "<html xmlns:v=\"urn:schemas-microsoft-com:vml\"
+	public function globalStart()
+	{
+		$xml  = "<html xmlns:v=\"urn:schemas-microsoft-com:vml\"
 xmlns:o=\"urn:schemas-microsoft-com:office:office\"
 xmlns:w=\"urn:schemas-microsoft-com:office:word\"
 xmlns:m=\"http://schemas.microsoft.com/office/2004/12/omml\"
@@ -203,76 +203,76 @@ table.MsoNormalTable
 <tr><td colspan=\"{$this->options['colspan']}\" style='border-top:none; color:#FFFFFF; border-left:solid black 1.0pt; border-bottom:solid black 1.0pt;border-right:solid black 1.0pt; padding:3px; background:#666;'> <p  style='text-align:center' class=MsoNormal><span style='font-size:10.0pt;  font-family:Helvetica; '>{$this->options['title']}<o:p></o:p></span></p>
   </td></tr>";
 
-        return $xml;
-    }
+		return $xml;
+	}
 
-    public function globalEnd()
-    {
-        return "</table></div></body></html>";
-    }
+	public function globalEnd()
+	{
+		return "</table></div></body></html>";
+	}
 
-    public function titlesStart()
-    {
-        return "<tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>";
-    }
+	public function titlesStart()
+	{
+		return "<tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>";
+	}
 
-    public function titlesEnd()
-    {
-        return "</tr>";
-    }
+	public function titlesEnd()
+	{
+		return "</tr>";
+	}
 
-    public function titlesLoop()
-    {
-        return " <td style='border:solid black 1.0pt;background-color:black;color:#FFFFFF;padding:5px'>  <p align=center style='text-align:center'><b><span style='font-size:10.0pt;'>{{value}}<o:p></o:p></span></b></p>
+	public function titlesLoop()
+	{
+		return " <td style='border:solid black 1.0pt;background-color:black;color:#FFFFFF;padding:5px'>  <p align=center style='text-align:center'><b><span style='font-size:10.0pt;'>{{value}}<o:p></o:p></span></b></p>
   </td>";
-    }
+	}
 
-    public function noResults()
-    {
-        return "<tr><td colspan=\"{$this->options['colspan']}\" style='border-top:none; color:#FFFFFF; border-left:solid black 1.0pt; border-bottom:solid black 1.0pt;border-right:solid black 1.0pt; padding:3px; background:#666;'> <p  style='text-align:center' class=MsoNormal><span style='font-size:10.0pt;  font-family:Helvetica; '>{{value}}&nbsp;<o:p></o:p></span></p>
+	public function noResults()
+	{
+		return "<tr><td colspan=\"{$this->options['colspan']}\" style='border-top:none; color:#FFFFFF; border-left:solid black 1.0pt; border-bottom:solid black 1.0pt;border-right:solid black 1.0pt; padding:3px; background:#666;'> <p  style='text-align:center' class=MsoNormal><span style='font-size:10.0pt;  font-family:Helvetica; '>{{value}}&nbsp;<o:p></o:p></span></p>
   </td></tr>";
-    }
+	}
 
-    public function hRow()
-    {
-        return "<tr><td colspan=\"{$this->options['colspan']}\" style='border-top:none; color:#FFFFFF; border-left:solid black 1.0pt; border-bottom:solid black 1.0pt;border-right:solid black 1.0pt; padding:3px; background:#666;'> <p  style='text-align:center' class=MsoNormal><span style='font-size:10.0pt;  font-family:Helvetica; '>{{value}}<o:p></o:p></span></p>
+	public function hRow()
+	{
+		return "<tr><td colspan=\"{$this->options['colspan']}\" style='border-top:none; color:#FFFFFF; border-left:solid black 1.0pt; border-bottom:solid black 1.0pt;border-right:solid black 1.0pt; padding:3px; background:#666;'> <p  style='text-align:center' class=MsoNormal><span style='font-size:10.0pt;  font-family:Helvetica; '>{{value}}<o:p></o:p></span></p>
   </td></tr>";
-    }
+	}
 
-    public function loopStart()
-    {
-        $this->i++;
+	public function loopStart()
+	{
+		$this->i++;
 
-        return "<tr>";
-    }
+		return "<tr>";
+	}
 
-    public function loopEnd()
-    {
-        return "</tr>";
-    }
+	public function loopEnd()
+	{
+		return "</tr>";
+	}
 
-    public function loopLoop()
-    {
-        if ($this->i % 2) {
-            return "<td style='border-top:none;border-left:solid black 1.0pt;border-bottom:solid black 1.0pt; border-right:solid black 1.0pt; background:#E0E0E0;padding:3px'> <p><span><span style='font-size:8.0pt;font-family:Helvetica;'>{{value}}<o:p></o:p></span></p> </td>";
-        } else {
-            return "<td style='border-top:none;border-left:solid black 1.0pt; border-bottom:solid black 1.0pt;border-right:solid black 1.0pt; padding:3px'> <p class=MsoNormal><span style='font-size:8.0pt; font-family:Helvetica;'>{{value}}<o:p></o:p></span></p> </td>";
-        }
-    }
+	public function loopLoop()
+	{
+		if ($this->i % 2) {
+			return "<td style='border-top:none;border-left:solid black 1.0pt;border-bottom:solid black 1.0pt; border-right:solid black 1.0pt; background:#E0E0E0;padding:3px'> <p><span><span style='font-size:8.0pt;font-family:Helvetica;'>{{value}}<o:p></o:p></span></p> </td>";
+		} else {
+			return "<td style='border-top:none;border-left:solid black 1.0pt; border-bottom:solid black 1.0pt;border-right:solid black 1.0pt; padding:3px'> <p class=MsoNormal><span style='font-size:8.0pt; font-family:Helvetica;'>{{value}}<o:p></o:p></span></p> </td>";
+		}
+	}
 
-    public function sqlExpStart()
-    {
-        return "<tr>";
-    }
+	public function sqlExpStart()
+	{
+		return "<tr>";
+	}
 
-    public function sqlExpEnd()
-    {
-        return "</tr>";
-    }
+	public function sqlExpEnd()
+	{
+		return "</tr>";
+	}
 
-    public function sqlExpLoop()
-    {
-        return "<td  style='border-top:none;border-left:none;  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt; padding:5px;'> <p><span style='font-size:8.0pt; font-family:Helvetica;'>{{value}}<o:p></o:p></span></p>
+	public function sqlExpLoop()
+	{
+		return "<td  style='border-top:none;border-left:none;  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt; padding:5px;'> <p><span style='font-size:8.0pt; font-family:Helvetica;'>{{value}}<o:p></o:p></span></p>
   </td>";
-    }
+	}
 }

@@ -11,40 +11,40 @@
  * obtain it through the world-wide-web, please send an email
  * to geral@petala-azul.com so we can send you a copy immediately.
  *
- * @package    Bvb_Grid
+ * @package	Bvb_Grid
  * @copyright  Copyright (c)  (http://www.petala-azul.com)
- * @license    http://www.petala-azul.com/bsd.txt   New BSD License
- * @version    $Id: Odt.php 1372 2010-08-13 17:27:18Z thefaulkner $
- * @author     Bento Vilas Boas <geral@petala-azul.com >
+ * @license	http://www.petala-azul.com/bsd.txt   New BSD License
+ * @version	$Id: Odt.php 1372 2010-08-13 17:27:18Z thefaulkner $
+ * @author	 Bento Vilas Boas <geral@petala-azul.com >
  */
 
 class Bvb_Grid_Template_Odt
 {
-    public $options;
+	public $options;
 
-    public $colSpan;
+	public $colSpan;
 
-    public $odtOptions;
+	public $odtOptions;
 
-    public $i = 0;
+	public $i = 0;
 
-    public function __construct($options = array())
-    {
-        $this->odtOptions = $options;
-    }
+	public function __construct($options = array())
+	{
+		$this->odtOptions = $options;
+	}
 
-    public function info()
-    {
-        $pdf = array ('logo' => 'public/images/logo.png', 'title' => 'DataGrid Zend Framework', 'subtitle' => 'Easy and powerfull - (Demo document)', 'footer' => 'Downloaded from: http://www.petala-azul.com ');
+	public function info()
+	{
+		$pdf = array ('logo' => 'public/images/logo.png', 'title' => 'DataGrid Zend Framework', 'subtitle' => 'Easy and powerfull - (Demo document)', 'footer' => 'Downloaded from: http://www.petala-azul.com ');
 
-        $pdf = array_merge($pdf, $this->odtOptions);
+		$pdf = array_merge($pdf, $this->odtOptions);
 
-        return $pdf;
-    }
+		return $pdf;
+	}
 
-    public function globalStart()
-    {
-        return '<?xml version="1.0" encoding="UTF-8"?>
+	public function globalStart()
+	{
+		return '<?xml version="1.0" encoding="UTF-8"?>
 <office:document-content
 	xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 	xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
@@ -193,26 +193,26 @@ class Bvb_Grid_Template_Odt
 <table:table table:name="Table1" table:style-name="Table1">
 	<table:table-column table:style-name="Table1.A"
 		table:number-columns-repeated="' . $this->options['colspan']. '" />';
-    }
+	}
 
-    public function globalEnd()
-    {
-        return '</table:table><text:p text:style-name="Standard" />
+	public function globalEnd()
+	{
+		return '</table:table><text:p text:style-name="Standard" />
 		</office:text>
 	</office:body>
 </office:document-content>';
-    }
+	}
 
-    public function header()
-    {
-        if (isset($this->options['logo']) && is_file ($this->options['logo'])) {
-            if (strpos($this->options['logo'],'/')!==false) {
-                $arrayLogo = explode("/",$this->options['logo']);
-            } else {
-                $arrayLogo = array($this->options['logo']);
-            }
+	public function header()
+	{
+		if (isset($this->options['logo']) && is_file ($this->options['logo'])) {
+			if (strpos($this->options['logo'],'/')!==false) {
+				$arrayLogo = explode("/",$this->options['logo']);
+			} else {
+				$arrayLogo = array($this->options['logo']);
+			}
 
-            $header = '<?xml version="1.0" encoding="UTF-8"?>
+			$header = '<?xml version="1.0" encoding="UTF-8"?>
 <office:document-styles
 	xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 	xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
@@ -581,9 +581,9 @@ class Bvb_Grid_Template_Odt
 	</office:master-styles>
 </office:document-styles>';
 
-        } else {
+		} else {
 
-            $header = '<?xml version="1.0" encoding="UTF-8"?>
+			$header = '<?xml version="1.0" encoding="UTF-8"?>
 <office:document-styles
 	xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 	xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
@@ -938,107 +938,107 @@ class Bvb_Grid_Template_Odt
 	</office:master-styles>
 </office:document-styles>';
 
-        }
+		}
 
-        return $header;
-    }
+		return $header;
+	}
 
-    public function titlesStart()
-    {
-        return '<table:table-row>';
-    }
+	public function titlesStart()
+	{
+		return '<table:table-row>';
+	}
 
-    public function titlesEnd()
-    {
-        return '</table:table-row>';
-    }
+	public function titlesEnd()
+	{
+		return '</table:table-row>';
+	}
 
-    public function titlesLoop()
-    {
-        return '<table:table-cell table:style-name="Table1.D1"
+	public function titlesLoop()
+	{
+		return '<table:table-cell table:style-name="Table1.D1"
 			office:value-type="string">
 			<text:p text:style-name="P4"><![CDATA[{{value}}]]> </text:p>
 		</table:table-cell>';
-    }
+	}
 
-    public function noResults()
-    {
-        $return = '
+	public function noResults()
+	{
+		$return = '
 	<table:table-row>
 		<table:table-cell table:style-name="Table1.D2"
 			table:number-columns-spanned="' .  $this->options['colspan'] . '" office:value-type="string">
 			<text:p text:style-name="P5"><![CDATA[{{value}}]]></text:p>
 		</table:table-cell>';
 
-        for($i = 1; $i <  $this->options['colspan']; $i ++)
-        {
-            $return .= '<table:covered-table-cell />';
-        }
+		for($i = 1; $i <  $this->options['colspan']; $i ++)
+		{
+			$return .= '<table:covered-table-cell />';
+		}
 
-        $return .= '</table:table-row>';
+		$return .= '</table:table-row>';
 
-        return $return;
-    }
+		return $return;
+	}
 
-    public function hRow()
-    {
-        $return = '<table:table-row>
+	public function hRow()
+	{
+		$return = '<table:table-row>
 		<table:table-cell table:style-name="Table1.D2"
 			table:number-columns-spanned="' .  $this->options['colspan']. '" office:value-type="string">
 			<text:p text:style-name="P5"><![CDATA[{{value}}]]></text:p>
 		</table:table-cell>';
 
-        for ($i = 1; $i <  $this->options['colspan']; $i ++) {
-            $return .= '<table:covered-table-cell />';
-        }
+		for ($i = 1; $i <  $this->options['colspan']; $i ++) {
+			$return .= '<table:covered-table-cell />';
+		}
 
-        $return .= '</table:table-row>';
+		$return .= '</table:table-row>';
 
-        return $return;
-    }
+		return $return;
+	}
 
-    public function loopStart()
-    {
-        $this->i ++;
+	public function loopStart()
+	{
+		$this->i ++;
 
-        return '<table:table-row>';
-    }
+		return '<table:table-row>';
+	}
 
-    public function loopEnd()
-    {
-        return '</table:table-row>';
-    }
+	public function loopEnd()
+	{
+		return '</table:table-row>';
+	}
 
-    public function loopLoop()
-    {
-        if ($this->i % 2) {
-            return '<table:table-cell table:style-name="Table1.A2"
+	public function loopLoop()
+	{
+		if ($this->i % 2) {
+			return '<table:table-cell table:style-name="Table1.A2"
 			office:value-type="string">
 			<text:p text:style-name="Table_20_Contents"><![CDATA[{{value}}]]></text:p>
 		</table:table-cell>';
-        } else {
-            return '<table:table-cell table:style-name="Table1.A3"
+		} else {
+			return '<table:table-cell table:style-name="Table1.A3"
 			office:value-type="string">
 			<text:p text:style-name="Table_20_Contents"><![CDATA[{{value}}]]></text:p>
 		</table:table-cell>';
-        }
-    }
+		}
+	}
 
-    public function sqlExpStart()
-    {
-        return '<table:table-row>';
-    }
+	public function sqlExpStart()
+	{
+		return '<table:table-row>';
+	}
 
-    public function sqlExpEnd()
-    {
-        return '</table:table-row>';
-    }
+	public function sqlExpEnd()
+	{
+		return '</table:table-row>';
+	}
 
-    public function sqlExpLoop()
-    {
-        return '<table:table-cell table:style-name="Table1.A2"
+	public function sqlExpLoop()
+	{
+		return '<table:table-cell table:style-name="Table1.A2"
 			office:value-type="string">
 			<text:p text:style-name="Table_20_Contents"><![CDATA[{{value}}]]></text:p>
 		</table:table-cell>';
-    }
+	}
 }

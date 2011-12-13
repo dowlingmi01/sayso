@@ -4,6 +4,6 @@
  */
 
 class StudyCollection extends RecordCollection
-{    
+{	
 }
 

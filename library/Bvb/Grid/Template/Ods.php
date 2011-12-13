@@ -11,20 +11,20 @@
  * obtain it through the world-wide-web, please send an email
  * to geral@petala-azul.com so we can send you a copy immediately.
  *
- * @package    Bvb_Grid
+ * @package	Bvb_Grid
  * @copyright  Copyright (c)  (http://www.petala-azul.com)
- * @license    http://www.petala-azul.com/bsd.txt   New BSD License
- * @version    $Id: Ods.php 1372 2010-08-13 17:27:18Z thefaulkner $
- * @author     Bento Vilas Boas <geral@petala-azul.com >
+ * @license	http://www.petala-azul.com/bsd.txt   New BSD License
+ * @version	$Id: Ods.php 1372 2010-08-13 17:27:18Z thefaulkner $
+ * @author	 Bento Vilas Boas <geral@petala-azul.com >
  */
 
 class Bvb_Grid_Template_Ods
 {
-    public  $options;
+	public  $options;
 
-    public function globalStart()
-    {
-        return '<?xml version="1.0" encoding="UTF-8"?>
+	public function globalStart()
+	{
+		return '<?xml version="1.0" encoding="UTF-8"?>
 <office:document-content
 	xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 	xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
@@ -77,63 +77,63 @@ class Bvb_Grid_Template_Ods
 		<office:spreadsheet><table:table table:name="Sheet1" table:style-name="ta1"
 	table:print="false">
 	<table:table-column table:style-name="co1"  table:default-cell-style-name="Default" />';
-    }
+	}
 
-    public function globalEnd()
-    {
-        return '</table:table> </office:spreadsheet>
+	public function globalEnd()
+	{
+		return '</table:table> </office:spreadsheet>
 	</office:body>
 </office:document-content>';
-    }
+	}
 
-    public function titlesStart()
-    {
-        return '<table:table-row table:style-name="ro1">';
-    }
+	public function titlesStart()
+	{
+		return '<table:table-row table:style-name="ro1">';
+	}
 
-    public function titlesEnd()
-    {
-        return '</table:table-row>';
-    }
+	public function titlesEnd()
+	{
+		return '</table:table-row>';
+	}
 
-    public function titlesLoop()
-    {
-        return '<table:table-cell office:value-type="string">
+	public function titlesLoop()
+	{
+		return '<table:table-cell office:value-type="string">
 			<text:p><![CDATA[{{value}}]]></text:p>
 		</table:table-cell>';
-    }
+	}
 
-    public function loopStart()
-    {
-        return '<table:table-row table:style-name="ro1">';
-    }
+	public function loopStart()
+	{
+		return '<table:table-row table:style-name="ro1">';
+	}
 
-    public function loopEnd()
-    {
-        return '</table:table-row>';
-    }
+	public function loopEnd()
+	{
+		return '</table:table-row>';
+	}
 
-    public function loopLoop()
-    {
-        return '<table:table-cell office:value-type="string">
+	public function loopLoop()
+	{
+		return '<table:table-cell office:value-type="string">
 			<text:p><![CDATA[{{value}}]]></text:p>
 		</table:table-cell>';
-    }
+	}
 
-    public function sqlExpStart()
-    {
-        return '<table:table-row table:style-name="ro1">';
-    }
+	public function sqlExpStart()
+	{
+		return '<table:table-row table:style-name="ro1">';
+	}
 
-    public function sqlExpEnd()
-    {
-        return '</table:table-row>';
-    }
+	public function sqlExpEnd()
+	{
+		return '</table:table-row>';
+	}
 
-    public function sqlExpLoop()
-    {
-        return '<table:table-cell office:value-type="string">
+	public function sqlExpLoop()
+	{
+		return '<table:table-cell office:value-type="string">
 			<text:p><![CDATA[{{value}}]]></text:p>
 		</table:table-cell>';
-    }
+	}
 }

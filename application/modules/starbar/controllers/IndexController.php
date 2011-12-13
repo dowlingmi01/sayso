@@ -11,48 +11,48 @@ require_once APPLICATION_PATH . '/modules/api/controllers/GlobalController.php';
 
 class Starbar_IndexController extends Api_GlobalController
 {
-    public function preDispatch() {
-        // for the simulated app, we also have to simulate passing
-        // a user_key from the "client". This only applies here for the
-        // initial load. Other actions (ajax, etc) will still need to
-        // pass user_key, which can be retreived via sayso.starbar.user.key
-        if (!$this->user_id || !$this->user_key) {
-            $this->user_id = 1;
-            if (isset($_COOKIE['simulated_starbar_user_key'])) {
-                $this->user_key = $_COOKIE['simulated_starbar_user_key'];
-            } else {
-                $this->user_key = User::getHash($this->user_id);
-                setcookie('simulated_starbar_user_key', $this->user_key);
-            }
-        } 
-        Api_UserSession::getInstance($this->user_key)->setId($this->user_id);
-        if (!in_array($this->_request->getActionName(), array('index', 'gaga'))) {
-            // i.e. for everything based on Generic Starbar, use these includes
-            $this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
-            $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
-            $this->view->headScript()->appendFile('/js/starbar/jquery-ui-1.8.16.custom.min.js');
-            $this->view->headScript()->appendFile('/js/starbar/jquery.jscrollpane.min.js');
-            $this->view->headScript()->appendFile('/js/starbar/jquery.cookie.js');
-            $this->view->headScript()->appendFile('/js/starbar/jquery.jeip.js');
-            $this->view->headScript()->appendFile('/js/starbar/jquery.cycle.lite.js');
-            $this->view->headScript()->appendFile('/js/starbar/jquery.easyTooltip.js');
-        }
-        
-        
-    }
+	public function preDispatch() {
+		// for the simulated app, we also have to simulate passing
+		// a user_key from the "client". This only applies here for the
+		// initial load. Other actions (ajax, etc) will still need to
+		// pass user_key, which can be retreived via sayso.starbar.user.key
+		if (!$this->user_id || !$this->user_key) {
+			$this->user_id = 1;
+			if (isset($_COOKIE['simulated_starbar_user_key'])) {
+				$this->user_key = $_COOKIE['simulated_starbar_user_key'];
+			} else {
+				$this->user_key = User::getHash($this->user_id);
+				setcookie('simulated_starbar_user_key', $this->user_key);
+			}
+		} 
+		Api_UserSession::getInstance($this->user_key)->setId($this->user_id);
+		if (!in_array($this->_request->getActionName(), array('index', 'gaga'))) {
+			// i.e. for everything based on Generic Starbar, use these includes
+			$this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
+			$this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
+			$this->view->headScript()->appendFile('/js/starbar/jquery-ui-1.8.16.custom.min.js');
+			$this->view->headScript()->appendFile('/js/starbar/jquery.jscrollpane.min.js');
+			$this->view->headScript()->appendFile('/js/starbar/jquery.cookie.js');
+			$this->view->headScript()->appendFile('/js/starbar/jquery.jeip.js');
+			$this->view->headScript()->appendFile('/js/starbar/jquery.cycle.lite.js');
+			$this->view->headScript()->appendFile('/js/starbar/jquery.easyTooltip.js');
+		}
+		
+		
+	}
 
-    public function indexAction () {
+	public function indexAction () {
 
-    }
+	}
 
-    public function gagaAction()
-    {
-        $this->view->headLink()->appendStylesheet('/css/starbar-qualified.css');
-        $this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
-    }
+	public function gagaAction()
+	{
+		$this->view->headLink()->appendStylesheet('/css/starbar-qualified.css');
+		$this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
+	}
 
-    public function genericAction () {
-    }
+	public function genericAction () {
+	}
 
 	public function inventoryAction () {
 		// Starbar
@@ -86,8 +86,8 @@ class Starbar_IndexController extends Api_GlobalController
 					$client->namedGoodCollection(788)->namedGood($goodId)->putInventory();
 
 					$game = Game_Starbar::getInstance();
-			        $cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
-			        $cache->remove();
+					$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
+					$cache->remove();
 				}
 			} else {
 				if ($newInventory != "") {
@@ -97,8 +97,8 @@ class Starbar_IndexController extends Api_GlobalController
 					$client->namedGoodCollection(788)->namedGood($goodId)->postInventory(); // post CREATES inventory
 
 					$game = Game_Starbar::getInstance();
-			        $cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
-			        $cache->remove();
+					$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
+					$cache->remove();
 				}
 			}
 		}
@@ -196,20 +196,20 @@ class Starbar_IndexController extends Api_GlobalController
 		$this->view->sold_inventory = $soldInventory;*/
 	}
 
-    public function hellomusicAction () {
-        $this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');
+	public function hellomusicAction () {
+		$this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');
 
-    	$this->view->inlineScript()->appendFile('/js/starbar/starbar-new.js');
+		$this->view->inlineScript()->appendFile('/js/starbar/starbar-new.js');
 
-    	// Starbar
-    	$starbar = new Starbar();
-    	$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));
-    	$starbar->setVisibility('open');
-    	$this->view->starbar = $starbar;
-    	
-    	// User
-    	$session = Api_UserSession::getInstance($this->user_key);
-    	$user = $session->getUser();
+		// Starbar
+		$starbar = new Starbar();
+		$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));
+		$starbar->setVisibility('open');
+		$this->view->starbar = $starbar;
+		
+		// User
+		$session = Api_UserSession::getInstance($this->user_key);
+		$user = $session->getUser();
 		$this->view->user = $user;
 		
 		// Facebook Connection
@@ -226,8 +226,8 @@ class Starbar_IndexController extends Api_GlobalController
 		$game = Game_Starbar::getInstance();
 		$this->view->assign('game', $game);
 		
-        if ($this->install) {
-            $game->install();
-        }
+		if ($this->install) {
+			$game->install();
+		}
 	}
 }

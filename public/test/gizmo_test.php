@@ -3,8 +3,8 @@
 define('GLOBAL_LIBRARY_PATH', '/SpectrumDNA/library');
 
 set_include_path(implode(PATH_SEPARATOR, array(
-    GLOBAL_LIBRARY_PATH,
-    get_include_path(),
+	GLOBAL_LIBRARY_PATH,
+	get_include_path(),
 )));
 
 require_once 'Zend/Loader/Autoloader.php';
@@ -15,12 +15,12 @@ require_once 'Api/Autoloader.php';
 $autoloader->unshiftAutoloader(Api_Autoloader::getInstance());
 
 $config = array(
-    'callbackUrl' => 'http://local.sayso.com/test/gizmo_callback.php',
-    'siteUrl' => 'http://restapi.surveygizmo.com/head/oauth',
+	'callbackUrl' => 'http://local.sayso.com/test/gizmo_callback.php',
+	'siteUrl' => 'http://restapi.surveygizmo.com/head/oauth',
 
-    // http://local.sayso.com/test (gizmo_callback.php)
-    'consumerKey' => '790a9b057a8055c31d8594f03237d72204e1c55de',
-    'consumerSecret' => '9c56747c1505a21493f3ff13e2f94d00'
+	// http://local.sayso.com/test (gizmo_callback.php)
+	'consumerKey' => '790a9b057a8055c31d8594f03237d72204e1c55de',
+	'consumerSecret' => '9c56747c1505a21493f3ff13e2f94d00'
 );
 
 Zend_Session::start();

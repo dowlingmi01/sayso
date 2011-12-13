@@ -1,531 +1,531 @@
 <nav class="main">
-    <ul>
-        <li><a href="#" title="ADjuster Campaign - Ad Effectiveness"><span>ADjuster Campaign</span>&trade;</a></li>
-        <li><a href="#" title="ADjuster Creative - Ad Pre-testing"><span>ADjuster Creative</span>&trade;</a></li>
-        <li><a href="#" title="ADjuster Behavioral - Behavioral Tracking"><span>ADjuster Behavioral</span>&trade;</a></li>
-    </ul>
+	<ul>
+		<li><a href="#" title="ADjuster Campaign - Ad Effectiveness"><span>ADjuster Campaign</span>&trade;</a></li>
+		<li><a href="#" title="ADjuster Creative - Ad Pre-testing"><span>ADjuster Creative</span>&trade;</a></li>
+		<li><a href="#" title="ADjuster Behavioral - Behavioral Tracking"><span>ADjuster Behavioral</span>&trade;</a></li>
+	</ul>
 </nav>
-    <form action="/" class="main-survey" method="post">
-      <section class="main-criteria" id="ad-tags">
-        <header>
-          <h2>Ad Tags (ADjuster Campaign)</h2>
-          <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
-        </header>
-        <div class="section-container">
-          <section class="secondary-criteria tag-domain-pairs first padded-column-5" id="tag-domain-pairs">
-            <header class="under-full">
-              <h3>Tag-Domain Pairs</h3>
-              <p>What ad tags should be tested on which domains?</p>
-            </header>
-            
-            <fieldset class="under-full" id="fieldset-tag-domain-pair">
-              <label for="pairs-label">Label It</label>
-              <input type="text" name="pairs-label" id="pairs-label">
-              <label for="pairs-ad-tag">Provide <a href="http://api.jquery.com/category/selectors/" target="_blank" title="Open jQuery selector documentation in a new tab">jQuery Selector</a> for the Ad (<a href="http://codylindley.com/jqueryselectors/" target="_blank" title="Open additional documentation in new tab">see</a> <a href="http://www.pamaya.com/jquery-selectors-and-attribute-selectors-reference-and-examples/" target="_blank" title="Open additional documentation in new tab">also</a>)</label>
-              <textarea name="pairs-ad-tag" id="pairs-ad-tag" cols="40" rows="5"></textarea>
-              <label for="tag-target-url" title="URL base domain and path are generally preferred over full URLs, so: united.com/landing/home is better than http://us.united.com/landing/home.aspx?xyz=123">Target URL Segment<small> </label>
-              <input type="text" name="tag-target-url" id="tag-target-url">
-              <label for="pairs-domains">Domains:</label>
-              <fieldset id="fieldset-domains">
-                <input type="text" name="pairs-domains" id="pairs-domains" class="pairs-domains">
-              </fieldset>
-              <button class="add-fieldset-data add-domain">Add Domain</button>
-              <ul class="cell-lists empty data-list list-domains">
-              </ul>
-            </fieldset>
-            
-            <div class="button-holder">
-              <button class="add-fieldset-data add-pair styled-button">Add Tag</button>
-            </div>
-          </section><!-- end #tag-domain-pairs -->
-          <section class="secondary-criteria study-list padded-column-5 last" id="study-list" style="width: 355px;">
-            <header class="under-full">
-              <h3>Study List</h3>
-              <p>Active tag-domain pairs for this study</p>
-            </header>
-            <ul class="under-full study-list data-list" id="list-tag-domain-pair">
-            </ul>
-          </section><!-- end #study-list -->
-        </div><!-- end .section-container -->
-      </section><!-- end #ad-tags -->
-      
-      <section class="main-criteria" id="domains-creative" style="display: none;">
-        <header>
-          <h2>Avails &amp; Creative (ADjuster Creative)</h2>
-          <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
-        </header>
-        <div class="section-container">
-          <section class="secondary-criteria domains-avails first padded-column-5" id="domains-avails">
-            <header class="under-full">
-              <h3>Domains and Avails</h3>
-              <p style="font-size: .7em;">On which domains &amp; avails would you like to test your creative(s)?</p>
-            </header>
-            
-            <fieldset class="under-full" id="fieldset-domains-avails">
-              <label for="domains-avails-label">Label It</label>
-              <input type="text" name="domains-avails-label" id="domains-avails-label">
-              <label for="domains-avails-tag">Provide <a href="http://api.jquery.com/category/selectors/" target="_blank" title="Open jQuery selector documentation in a new tab">jQuery Selector</a> for the Avail</label>
-                <textarea name="domains-avails-tag" id="domains-avails-tag" cols="40" rows="5" style="width:225px"></textarea>
-              <label for="domains-avails-domain">Domains:</label>
-                <fieldset id="fieldset-domains-avails-domains">
-                <input type="text" name="domains-avails-domain" id="domains-avails-domain">
-                </fieldset>
-              <button class="add-fieldset-data add-domain">Add Domain</button>
-              <ul class="cell-lists empty data-list list-domains">
-              </ul>
-              <button class="add-fieldset-data add-tag-domain-pair styled-button">Add Avail</button>
-              <hr />
-              <ul class="cell-lists empty data-list" id="list-domains-avails">
-              </ul>
-            </fieldset>
-            
-          </section><!-- end #domains-avails -->
-          <section class="secondary-criteria creative padded-column-5 last" id="creative" style="width: 350px;">
-            <header class="under-full">
-              <h3>Creative</h3>
-              <p style="font-size: .7em;">Upload or link the creative you'd like to test</p>
-            </header>
-            <fieldset class="under-full" id="fieldset-creative">
-              <label for="creative-name">Name</label>
-                <input type="text" name="creative-name" id="creative-name">
-              <label for="creative-url">AD creative URL</label>
-                <input type="text" name="creative-url" id="creative-url" value="http://whereamiapp.com/image.php?key=959a6853f043ec34f0167250bfb5293c&id=187&size=100&max">
-              <label for="creative-type">Type</label>
-              <select name="creative-type" id="creative-type">
-                <option value="" selected>Choose</option>
-                <?php foreach (Lookup_Collection_MimeType::loadAll()->filter('common_ad_type', true) as $mimeType) : ?>
-                <option value="<?= $mimeType->getId() ?>"><?= $mimeType->getTitle() ?></option>
-                <?php endforeach ?>
-              </select>
-              <!--p>OR</p>
-              <label for="creative-file">AD creative UPLOAD</label>
-                <input type="file" name="creative-file" id="creative-file" /-->
-              <!--label for="creative-weight">Weighting</label>
-                <input type="text" name="creative-weight" id="creative-weight"-->
-              <label for="creative-target-url" title="URL base domain and path are generally preferred over full URLs, so: united.com/landing/home is better than http://us.united.com/landing/home.aspx?xyz=123">Target URL Segment</label>
-                <input type="text" name="creative-target-url" id="creative-target-url">
-              <div class="padded-column-4 first last ad-tag-list" style="border: 1px solid rgb(230,230,230); padding: 10px; width: 315px;">
-                <fieldset id="fieldset-creative-adtags">
-                  <legend>Domains/Avails</legend>
-                  <div class="radios-labeled">
-                  </div>
-                </fieldset>
-              </div>
-              <button class="add-fieldset-data add-creative styled-button">Add Creative</button>
-              <hr />
-              <ul class="cell-lists empty data-list" id="list-creative">
-              </ul>
-            </fieldset>
-          </section><!-- end #creative -->
-        </div><!-- end .section-container -->
-      </section><!-- end #domains-creative -->
-      
-      <section class="main-criteria study-base" id="study-base">
-        <header>
-          <h2>Study: Basics</h2>
-          <nav class="lock"><a href="" class="lock">Lock</a><a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
-        </header>
-        <div class="section-container">
-          <fieldset class="padded-column-5">
-            <legend class="hide-visual">Basic details about the survey</legend>
-            <ul>
-              <li>
-                <label for="study-name">Study Name</label>
-                <input type="text" name="study-name" id="study-name">
-              </li>
-              <li>
-                <label for="study-id">Study ID</label>
-                <input type="text" name="study-id" id="study-id">
-              </li>
-              <li>
-                <label for="study-sample-size">Sample Size (N)</label>
-                <input type="text" name="study-sample-size" id="study-sample-size">
-              </li>
-              <li>
-                <label for="study-min-threshold">Min. Threshold</label>
-                <input type="text" name="study-min-threshold" id="study-min-threshold">
-              </li>
-            </ul>
-          </fieldset><div class="padded-column-5">
-          <fieldset>
-            <legend class="hide-visual">Start and end dates for the survey</legend>
-            <ul>
-              <li>
-                <label for="study-start-date">Begin</label>
-                <input class="input-date" name="study-start-date" id="study-start-date">
-              </li>
-              <li>
-                <label for="study-end-date">End</label>
-                <input class="input-date" name="study-end-date" id="study-end-date">
-              </li>
-            </ul>
-          </fieldset>
-          <fieldset>
-            <legend>Is this going to be a survey?</legend>          
-            <div class="radios-labeled">
-              <input type="radio" name="study-is-survey" id="study-is-survey-1" value="yes">
-              <label for="study-is-survey-1">Yes</label> 
-              <input type="radio" name="study-is-survey" id="study-is-survey-2" value="no">
-              <label for="study-is-survey-2">No</label>
-            </div>
-          </fieldset></div><!-- end .padded-column-5 -->
-        </div><!-- end .section-container  -->
-      </section><!-- end #study-base -->
-      
-      <section class="main-criteria" id="behavioral-metrics">
-        <header>
-          <h2>Study: Behavioral Metrics</h2>
-          <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
-        </header>
-        <div class="section-container">
-          <section class="secondary-criteria padded-column-3 first behavior-online">
-            <header class="under-full">
-              <h3>Online</h3>
-              <p>Record Full Click-Track</p>
-            </header>
-            <fieldset class="under-full">
-              <div>
-                <input type="radio" name="record-click-track" id="record-click-track-1" value="Yes">
-                <label for="record-click-track-1">Yes</label>
-              </div>
-              <div>
-                <input type="radio" name="record-click-track" id="record-click-track-2" value="No">
-                <label for="record-click-track-2">No</label>
-              </div>
-            </fieldset>
-          </section><section class="secondary-criteria padded-column-4">
-            <header class="under-full">
-              <h3>Search</h3>
-              <p>Record Search Behavior</p>
-            </header>
-            <fieldset class="under-full">
-                <?php foreach (Lookup_Collection_SearchEngine::loadAll() as $searchEngine) : ?>
-              <div>
-                <input class="record-search-engines" type="checkbox" name="record-search-engines[]" id="record-search-engines-<?= $searchEngine->getId() ?>" value="<?= $searchEngine->getId() ?>">
-                <label for="record-search-engines-<?= $searchEngine->getId() ?>"><?= $searchEngine->getTitle() ?></label>
-              </div>
-              <?php endforeach ?>
-            </fieldset>
-          </section><section class="secondary-criteria padded-column-3 last">
-            <header class="under-full">
-              <h3>Social</h3>
-              <p>Record Social Behavior</p>
-            </header>
-            <fieldset class="under-full">
-                <?php foreach (Lookup_Collection_SocialActivityType::loadAll() as $socialActivityType) : ?>
-              <div>
-                <input class="record-social" id="record-social-<?= $socialActivityType->getId() ?>"
-                  name="record-social[]" type="checkbox" value="<?= $socialActivityType->getId() ?>" />
-                <label for="record-social-<?= $socialActivityType->getId() ?>"><?= $socialActivityType->getTitle() ?></label>
-              </div>
-              <?php endforeach ?>
-            </fieldset>
-          </section>
-        </div><!-- end .section-container -->
-      </section><!-- end #behavioral-metrics  -->
-      <section class="main-criteria" id="survey">
-        <header>
-          <h2>Study: Survey</h2>
-          <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
-        </header>
-        <div class="section-container">
-          <section class="secondary-criteria survey-type padded-column-5 first" id="survey-type">
-            <header class="under-full">
-              <h3>Survey Type</h3>
-              <p>Standard Ad <span data-text-replace='["Effectiveness", "Pre-Testing"]'>Effectiveness</span> Survey or Customized?</p>
-            </header>
-            <fieldset class="under-full">
-              <legend class="hide-visual">Survey Type</legend>
-              <fieldset>
-                <legend>Choose which type of survey you'll use</legend>
-                <div class="radios-labeled">
-                <input type="radio" name="type-survey" id="type-survey-1" value="No Survey">
-                <label for="type-survey-1">No Survey</label>
-                </div>
-                <div style="float: clear;">
-                <input type="radio" name="type-survey" id="type-survey-2" value="Standard Survey">
-                <label for="type-survey-2">Standard Survey</label>
-                </div>
-                <div style="float: clear;">
-                <input type="radio" name="type-survey" id="type-survey-3" value="Custom Survey">
-                <label for="type-survey-3">Custom Survey</label>
-                </div>
-              </fieldset>
-              <label for="type-iframe" class="paste-iframe-label">Paste iFrame URL Here</label>
-              <input type="text" name="type-iframe" id="type-iframe">
-            </fieldset>
-          </section><!-- end #survey-type --><section class="secondary-criteria survey-qualifiers padded-column-5 last" id="survey-qualifiers">
-            <header class="under-full">
-              <h3>Delivery Criteria</h3>
-              <p>When should the survey be delivered?</p>
-            </header>
-            <fieldset class="under-full" id="fieldset-survey-delivery-criteria">
-              <legend class="hide-visual">When and where to deliver surveys</legend>
-              <label for="delivery-domain">Deliver survey to those that visit</label>
-              <input type="text" name="delivery-domain" id="delivery-domain"><br><span style="position: relative; top: -5px; font-size: .9em">OR</span>&nbsp; 
-              <select name="delivery-domain-history" id="delivery-domain-history">
-                <option value="" selected>Choose</option>
-                <option value="Facebook.com">Facebook.com</option>
-                <option value="CNN.com">CNN.com</option>
-                <option value="ESPN.com">ESPN.com</option>
-              </select>
-              <label for="delivery-timeframe">within</label>
-              <select name="delivery-timeframe" id="delivery-timeframe">
-                <option value="" selected>Timeframe</option>
-                <?php foreach (Lookup_Collection_TimeFrame::loadAll() as $timeFrame) : ?>
-                <option value="<?= $timeFrame->getId() ?>"><?= $timeFrame->getTitle() ?></option>
-                <?php endforeach ?>
-              </select>
-              <p>of seeing targeted ad(s).</p>
-            </fieldset>
-            <div class="button-holder">
-              <button id="add-delivery-criteria" class="add-fieldset-data styled-button">Add Criteria</button>
-            </div>
-            <ul class="cell-lists empty data-list" id="list-survey-delivery-criteria">
-            </ul>
-          </section><!-- end #survey-qualifiers -->
-        </div><!-- end .section-container  -->
-      </section><!-- end #survey -->
-      
-      <section class="main-criteria study-base" id="study-quotas">
-        <header>
-          <h2>Study: Quotas</h2>
-          <nav class="lock"><a href="" class="lock">Lock</a><a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
-        </header>
-        <div class="section-container">
-          <section class="secondary-criteria full" id="study-quota">
-            <header>
-              <h3>Quotas</h3>
-              <p>Who will qualify for the study?</p>
-            </header>
-            <fieldset id="fieldset-study-quota">
-              <ul class="study-parameters">
-                <li class="padded-column-10 first">
-                  <ul>
-                    <li class="quota-select first">
-                      <label for="study-gender">M/F</label>
-                      <select name="study-gender" id="study-gender">
-                        <option value="" selected>Choose</option>
-                        <?php foreach (Lookup_Collection_Gender::loadAll() as $record) : ?>
-                        <option value="<?= $record->getId() ?>"><?= $record->getTitle() ?></option>
-                        <?php endforeach ?>
-                      </select>
-                    </li>
-                    <li class="quota-select">
-                      <label for="study-age">Age</label>
-                      <select name="study-age" id="study-age">
-                        <option value="" selected>Choose</option>
-                        <?php foreach (Lookup_Collection_AgeRange::loadAll() as $record) : ?>
-                        <option value="<?= $record->getId() ?>"><?= $record->getTitle() ?></option>
-                        <?php endforeach ?>
-                        
-                      </select>
-                    </li>
-                    <li class="quota-select">
-                      <label for="study-ethnicity">Ethnicity</label>
-                      <select name="study-ethnicity" id="study-ethnicity">
-                        <option value="" selected>Choose</option>
-                        <?php foreach (Lookup_Collection_EthnicBackground::loadAll() as $record) : ?>
-                        <option value="<?= $record->getId() ?>"><?= $record->getTitle() ?></option>
-                        <?php endforeach ?>
-                        
-                      </select>
-                    </li>
-                    <li class="quota-select">
-                      <label for="study-size-percent">Cell %</label>
-                      <select name="study-size-percent" id="study-size-percent">
-                        <option value="" selected>Choose</option>
-                        <?php foreach (Lookup_Collection_QuotaPercentile::loadAll()->find('quarter', true) as $record) : ?>
-                        <option value="<?= $record->getId() ?>" data-percent="<?= $record->quota ?>"><?= $record->getTitle() ?></option>
-                        <?php endforeach ?>
-                        
-                      </select>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </fieldset>
-            <div class="button-holder">
-              <button id="add-quota" class="add-fieldset-data styled-button">Add This Quota</button>
-            </div>            
-            <ul class="cell-lists empty data-list" id="list-study-quota">
-            </ul>
-          </section><!-- end #cell-quota -->
-        </div><!-- end .section-container  -->
-      </section><!-- end #study-base -->
-      
-      <section class="main-criteria" id="build-cells">
-        <header>
-          <h2>Study: Cells</h2>
-          <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
-        </header>
-        <div class="section-container">
-          <section class="secondary-criteria build-cells full" id="cell-information">
-            <header>
-              <h3>Cell Information</h3>
-              <p>General information about the study cell</p>
-            </header>
-            <fieldset>
-              <div class="padded-column-5 first" style="display: inline-block">
-                <label for="cell-description">Cell Description</label>
-                <input type="text" name="cell-description" id="cell-description">
-              </div>
-              <div class="padded-column-2">
-                <fieldset class="cell-type">
-                  <legend>Type of Cell</legend>
-                  <div class="radios-labeled">
-                    <input type="radio" name="cell-type" id="cell-type-1" value="Control">
-                    <label for="cell-type-1">Control</label>
-                  </div>
-                  <div>
-                    <input type="radio" name="cell-type" id="cell-type-2" value="Test">
-                    <label for="cell-type-2">Test</label>
-                  </div>
-                </fieldset>
-              </div>
-              <div class="padded-column-2" style="display: inline-block">
-                <label for="cell-size">Cell Size</label>
-                <input type="text" name="cell-size" id="cell-size">
-              </div>
-              <div class="padded-column-10 first last">
-                <fieldset id="fieldset-cell-adtags">
-                  <legend data-text-replace='["Ad Tags","Domains/Avails"]'>Ad Tags</legend>
-                  <div class="radios-labeled">
-                  </div>
-                </fieldset>
-                <ul class="cell-lists empty data-list" id="cell-adtag">
-                </ul>
-              </div>
-            </fieldset>
-          </section>
-          
-          <section class="secondary-criteria behavioral-qualifiers build-cells full" id="behavioral-qualifiers">
-            <header>
-              <h3>Behavioral & Delivery Qualifiers</h3>
-              <p>What behavioral qualifiers apply?</p>
-            </header>
-            <section class="tertiary-criteria padded-column-3 first online-browsing" id="online-browsing">
-              <header>
-                <h4>Online Browsing</h4>
-              </header>
-              <fieldset id="fieldset-browsing-qualifier">
-                <ul>
-                  <li>
-                    <select name="include-exclude" id="browsing-include-exclude">
-                      <option value="" selected>Include/Exclude</option>
-                      <option value="Include">Include panelists</option>
-                      <option value="Exclude">Exclude panelists</option>
-                    </select>
-                  </li>
-                  <li>
-                    <label for="browsing-domain-name">who have visited</label>
-                    <input type="text" name="browsing-domain-name" id="browsing-domain-name">
-                  </li>
-                  <li>
-                    <label for="browsing-timeframe">in the last</label>
-                    <select name="browsing-timeframe" id="browsing-timeframe">
-                      <option value="" selected>Timeframe</option>
-                      <?php foreach (Lookup_Collection_TimeFrame::loadAll() as $timeFrame) : ?>
-                      <option value="<?= $timeFrame->getId() ?>"><?= $timeFrame->getTitle() ?></option>
-                      <?php endforeach ?>
-                      
-                    </select>
-                  </li>
-                </ul>
-              </fieldset>
-              <div class="button-holder">
-                <!-- Add sayso-cells-n#-qualifier-browse-1 -->
-                <button id="add-browsing-qualifier" class="add-fieldset-data styled-button">Add Qualifier</button>
-              </div>
-              <ul class="cell-lists empty data-list" id="list-browsing-qualifier">
-              </ul>   
-            </section><section class="tertiary-criteria search-engines padded-column-3" id="search-engines">
-              <header>
-                <h4>Search Actions</h4>
-              </header>
-              <fieldset id="fieldset-search-qualifier">
-                <ul>
-                  <li>
-                    <label for="engine-include-exclude"></label>
-                    <select name="engine-include-exclude" id="engine-include-exclude">
-                      <option value="" selected>Include/Exclude</option>
-                      <option value="Include">Include panelists</option>
-                      <option value="Exclude">Exclude panelists</option>
-                    </select>
-                  </li>
-                  <li>
-                    <label for="engine-domain-name">who have searched for</label>
-                    <input type="text" name="engine-domain-name" id="engine-domain-name">
-                  </li>
-                  <li>
-                    <label>on</label>
-                    <?php foreach (Lookup_Collection_SearchEngine::loadAll() as $searchEngine) : ?>
-                    <div>
-                        <input class="select-search-engines" type="checkbox" name="select-search-engines[]" id="select-search-engines-<?= $searchEngine->getId() ?>" value="<?= $searchEngine->getId() ?>" data-short-name="<?= $searchEngine->short_name ?>">
-                        <label for="select-search-engines-<?= $searchEngine->getId() ?>"><?= $searchEngine->getTitle() ?></label>
-                    </div>
-                    <?php endforeach ?>
-                  </li>
-                  <li>
-                    <label for="engine-timeframe">in the last</label>
-                    <select name="engine-timeframe" id="engine-timeframe">
-                      <option value="" selected>Timeframe</option>
-                      <?php foreach (Lookup_Collection_TimeFrame::loadAll() as $timeFrame) : ?>
-                      <option value="<?= $timeFrame->getId() ?>"><?= $timeFrame->getTitle() ?></option>
-                      <?php endforeach ?>
-                    </select>
-                  </li>
-                </ul>                                          
-              </fieldset>
-              <div class="button-holder">
-                <button id="add-search-qualifier" class="add-fieldset-data styled-button" >Add Qualifier</button>
-              </div>
-              <ul class="cell-lists empty data-list" id="list-search-qualifier">
-              </ul>
-            </section><section class="tertiary-criteria delivery-qualifiers padded-column-4 last" id="delivery-qualifiers">
-              <header>
-                <h4>Deliver survey to those that</h4>
-              </header>
-              <fieldset>
-                <legend class="hide-visual">Deliver If</legend>
-                <div>
-                  <input type="radio" name="deliver-if" id="deliver-if-1" value="saw-target-ad" >
-                  <label for="deliver-if-1">Saw a targeted ad (test)</label>            
-                </div>
-                <div style="float: clear;">
-                  <input type="radio" name="deliver-if" id="deliver-if-2" value="visited-similar-site">
-                  <label for="deliver-if-2">Visited a similar site (control)</label>            
-                </div>
-                <div style="float: clear;">
-                  <input type="radio" name="deliver-if" id="deliver-if-3" value="visited-target-site">
-                  <label for="deliver-if-3">Visited a targeted site</label>
-                </div>
-              </fieldset>
-          </section><!-- end #delivery-qualifiers -->
-          <div class="button-holder">
-            <p>Once you've set your cell quotas and qualifiers, go ahead and build a cell. Or if you need to start over, reset the input.</p>
-            <button class="build-cell styled-button">Build Cell</button>
-            <button class="update-cell styled-button">Update Cell</button>
-            <button class="reset-input styled-button">Reset Input</button>
-          </div>
-          <table class="cell-lists">
-            <thead>
-              <tr>
-                <th class="description">Cell Description</th>
-                <th>Cell Size</th>
-                <th>Cell Type</th>
-                <th>Cell Id</th>
-                <th>Cell Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
-            </section><!-- end #behavioral-qualifiers -->
-        </div><!-- end .section-container  -->      
-      </section><!-- end #build-cells -->
-      <div class="button-holder">
-        <input type="submit" value="Build My Study" class="styled-button main-submit" id="do-ze-build">
-        <input type="submit" value="Clear Local Data" class="styled-button main-submit" id="clear-local-data">
-      </div>
+	<form action="/" class="main-survey" method="post">
+	  <section class="main-criteria" id="ad-tags">
+		<header>
+		  <h2>Ad Tags (ADjuster Campaign)</h2>
+		  <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
+		</header>
+		<div class="section-container">
+		  <section class="secondary-criteria tag-domain-pairs first padded-column-5" id="tag-domain-pairs">
+			<header class="under-full">
+			  <h3>Tag-Domain Pairs</h3>
+			  <p>What ad tags should be tested on which domains?</p>
+			</header>
+			
+			<fieldset class="under-full" id="fieldset-tag-domain-pair">
+			  <label for="pairs-label">Label It</label>
+			  <input type="text" name="pairs-label" id="pairs-label">
+			  <label for="pairs-ad-tag">Provide <a href="http://api.jquery.com/category/selectors/" target="_blank" title="Open jQuery selector documentation in a new tab">jQuery Selector</a> for the Ad (<a href="http://codylindley.com/jqueryselectors/" target="_blank" title="Open additional documentation in new tab">see</a> <a href="http://www.pamaya.com/jquery-selectors-and-attribute-selectors-reference-and-examples/" target="_blank" title="Open additional documentation in new tab">also</a>)</label>
+			  <textarea name="pairs-ad-tag" id="pairs-ad-tag" cols="40" rows="5"></textarea>
+			  <label for="tag-target-url" title="URL base domain and path are generally preferred over full URLs, so: united.com/landing/home is better than http://us.united.com/landing/home.aspx?xyz=123">Target URL Segment<small> </label>
+			  <input type="text" name="tag-target-url" id="tag-target-url">
+			  <label for="pairs-domains">Domains:</label>
+			  <fieldset id="fieldset-domains">
+				<input type="text" name="pairs-domains" id="pairs-domains" class="pairs-domains">
+			  </fieldset>
+			  <button class="add-fieldset-data add-domain">Add Domain</button>
+			  <ul class="cell-lists empty data-list list-domains">
+			  </ul>
+			</fieldset>
+			
+			<div class="button-holder">
+			  <button class="add-fieldset-data add-pair styled-button">Add Tag</button>
+			</div>
+		  </section><!-- end #tag-domain-pairs -->
+		  <section class="secondary-criteria study-list padded-column-5 last" id="study-list" style="width: 355px;">
+			<header class="under-full">
+			  <h3>Study List</h3>
+			  <p>Active tag-domain pairs for this study</p>
+			</header>
+			<ul class="under-full study-list data-list" id="list-tag-domain-pair">
+			</ul>
+		  </section><!-- end #study-list -->
+		</div><!-- end .section-container -->
+	  </section><!-- end #ad-tags -->
+	  
+	  <section class="main-criteria" id="domains-creative" style="display: none;">
+		<header>
+		  <h2>Avails &amp; Creative (ADjuster Creative)</h2>
+		  <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
+		</header>
+		<div class="section-container">
+		  <section class="secondary-criteria domains-avails first padded-column-5" id="domains-avails">
+			<header class="under-full">
+			  <h3>Domains and Avails</h3>
+			  <p style="font-size: .7em;">On which domains &amp; avails would you like to test your creative(s)?</p>
+			</header>
+			
+			<fieldset class="under-full" id="fieldset-domains-avails">
+			  <label for="domains-avails-label">Label It</label>
+			  <input type="text" name="domains-avails-label" id="domains-avails-label">
+			  <label for="domains-avails-tag">Provide <a href="http://api.jquery.com/category/selectors/" target="_blank" title="Open jQuery selector documentation in a new tab">jQuery Selector</a> for the Avail</label>
+				<textarea name="domains-avails-tag" id="domains-avails-tag" cols="40" rows="5" style="width:225px"></textarea>
+			  <label for="domains-avails-domain">Domains:</label>
+				<fieldset id="fieldset-domains-avails-domains">
+				<input type="text" name="domains-avails-domain" id="domains-avails-domain">
+				</fieldset>
+			  <button class="add-fieldset-data add-domain">Add Domain</button>
+			  <ul class="cell-lists empty data-list list-domains">
+			  </ul>
+			  <button class="add-fieldset-data add-tag-domain-pair styled-button">Add Avail</button>
+			  <hr />
+			  <ul class="cell-lists empty data-list" id="list-domains-avails">
+			  </ul>
+			</fieldset>
+			
+		  </section><!-- end #domains-avails -->
+		  <section class="secondary-criteria creative padded-column-5 last" id="creative" style="width: 350px;">
+			<header class="under-full">
+			  <h3>Creative</h3>
+			  <p style="font-size: .7em;">Upload or link the creative you'd like to test</p>
+			</header>
+			<fieldset class="under-full" id="fieldset-creative">
+			  <label for="creative-name">Name</label>
+				<input type="text" name="creative-name" id="creative-name">
+			  <label for="creative-url">AD creative URL</label>
+				<input type="text" name="creative-url" id="creative-url" value="http://whereamiapp.com/image.php?key=959a6853f043ec34f0167250bfb5293c&id=187&size=100&max">
+			  <label for="creative-type">Type</label>
+			  <select name="creative-type" id="creative-type">
+				<option value="" selected>Choose</option>
+				<?php foreach (Lookup_Collection_MimeType::loadAll()->filter('common_ad_type', true) as $mimeType) : ?>
+				<option value="<?= $mimeType->getId() ?>"><?= $mimeType->getTitle() ?></option>
+				<?php endforeach ?>
+			  </select>
+			  <!--p>OR</p>
+			  <label for="creative-file">AD creative UPLOAD</label>
+				<input type="file" name="creative-file" id="creative-file" /-->
+			  <!--label for="creative-weight">Weighting</label>
+				<input type="text" name="creative-weight" id="creative-weight"-->
+			  <label for="creative-target-url" title="URL base domain and path are generally preferred over full URLs, so: united.com/landing/home is better than http://us.united.com/landing/home.aspx?xyz=123">Target URL Segment</label>
+				<input type="text" name="creative-target-url" id="creative-target-url">
+			  <div class="padded-column-4 first last ad-tag-list" style="border: 1px solid rgb(230,230,230); padding: 10px; width: 315px;">
+				<fieldset id="fieldset-creative-adtags">
+				  <legend>Domains/Avails</legend>
+				  <div class="radios-labeled">
+				  </div>
+				</fieldset>
+			  </div>
+			  <button class="add-fieldset-data add-creative styled-button">Add Creative</button>
+			  <hr />
+			  <ul class="cell-lists empty data-list" id="list-creative">
+			  </ul>
+			</fieldset>
+		  </section><!-- end #creative -->
+		</div><!-- end .section-container -->
+	  </section><!-- end #domains-creative -->
+	  
+	  <section class="main-criteria study-base" id="study-base">
+		<header>
+		  <h2>Study: Basics</h2>
+		  <nav class="lock"><a href="" class="lock">Lock</a><a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
+		</header>
+		<div class="section-container">
+		  <fieldset class="padded-column-5">
+			<legend class="hide-visual">Basic details about the survey</legend>
+			<ul>
+			  <li>
+				<label for="study-name">Study Name</label>
+				<input type="text" name="study-name" id="study-name">
+			  </li>
+			  <li>
+				<label for="study-id">Study ID</label>
+				<input type="text" name="study-id" id="study-id">
+			  </li>
+			  <li>
+				<label for="study-sample-size">Sample Size (N)</label>
+				<input type="text" name="study-sample-size" id="study-sample-size">
+			  </li>
+			  <li>
+				<label for="study-min-threshold">Min. Threshold</label>
+				<input type="text" name="study-min-threshold" id="study-min-threshold">
+			  </li>
+			</ul>
+		  </fieldset><div class="padded-column-5">
+		  <fieldset>
+			<legend class="hide-visual">Start and end dates for the survey</legend>
+			<ul>
+			  <li>
+				<label for="study-start-date">Begin</label>
+				<input class="input-date" name="study-start-date" id="study-start-date">
+			  </li>
+			  <li>
+				<label for="study-end-date">End</label>
+				<input class="input-date" name="study-end-date" id="study-end-date">
+			  </li>
+			</ul>
+		  </fieldset>
+		  <fieldset>
+			<legend>Is this going to be a survey?</legend>		  
+			<div class="radios-labeled">
+			  <input type="radio" name="study-is-survey" id="study-is-survey-1" value="yes">
+			  <label for="study-is-survey-1">Yes</label> 
+			  <input type="radio" name="study-is-survey" id="study-is-survey-2" value="no">
+			  <label for="study-is-survey-2">No</label>
+			</div>
+		  </fieldset></div><!-- end .padded-column-5 -->
+		</div><!-- end .section-container  -->
+	  </section><!-- end #study-base -->
+	  
+	  <section class="main-criteria" id="behavioral-metrics">
+		<header>
+		  <h2>Study: Behavioral Metrics</h2>
+		  <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
+		</header>
+		<div class="section-container">
+		  <section class="secondary-criteria padded-column-3 first behavior-online">
+			<header class="under-full">
+			  <h3>Online</h3>
+			  <p>Record Full Click-Track</p>
+			</header>
+			<fieldset class="under-full">
+			  <div>
+				<input type="radio" name="record-click-track" id="record-click-track-1" value="Yes">
+				<label for="record-click-track-1">Yes</label>
+			  </div>
+			  <div>
+				<input type="radio" name="record-click-track" id="record-click-track-2" value="No">
+				<label for="record-click-track-2">No</label>
+			  </div>
+			</fieldset>
+		  </section><section class="secondary-criteria padded-column-4">
+			<header class="under-full">
+			  <h3>Search</h3>
+			  <p>Record Search Behavior</p>
+			</header>
+			<fieldset class="under-full">
+				<?php foreach (Lookup_Collection_SearchEngine::loadAll() as $searchEngine) : ?>
+			  <div>
+				<input class="record-search-engines" type="checkbox" name="record-search-engines[]" id="record-search-engines-<?= $searchEngine->getId() ?>" value="<?= $searchEngine->getId() ?>">
+				<label for="record-search-engines-<?= $searchEngine->getId() ?>"><?= $searchEngine->getTitle() ?></label>
+			  </div>
+			  <?php endforeach ?>
+			</fieldset>
+		  </section><section class="secondary-criteria padded-column-3 last">
+			<header class="under-full">
+			  <h3>Social</h3>
+			  <p>Record Social Behavior</p>
+			</header>
+			<fieldset class="under-full">
+				<?php foreach (Lookup_Collection_SocialActivityType::loadAll() as $socialActivityType) : ?>
+			  <div>
+				<input class="record-social" id="record-social-<?= $socialActivityType->getId() ?>"
+				  name="record-social[]" type="checkbox" value="<?= $socialActivityType->getId() ?>" />
+				<label for="record-social-<?= $socialActivityType->getId() ?>"><?= $socialActivityType->getTitle() ?></label>
+			  </div>
+			  <?php endforeach ?>
+			</fieldset>
+		  </section>
+		</div><!-- end .section-container -->
+	  </section><!-- end #behavioral-metrics  -->
+	  <section class="main-criteria" id="survey">
+		<header>
+		  <h2>Study: Survey</h2>
+		  <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
+		</header>
+		<div class="section-container">
+		  <section class="secondary-criteria survey-type padded-column-5 first" id="survey-type">
+			<header class="under-full">
+			  <h3>Survey Type</h3>
+			  <p>Standard Ad <span data-text-replace='["Effectiveness", "Pre-Testing"]'>Effectiveness</span> Survey or Customized?</p>
+			</header>
+			<fieldset class="under-full">
+			  <legend class="hide-visual">Survey Type</legend>
+			  <fieldset>
+				<legend>Choose which type of survey you'll use</legend>
+				<div class="radios-labeled">
+				<input type="radio" name="type-survey" id="type-survey-1" value="No Survey">
+				<label for="type-survey-1">No Survey</label>
+				</div>
+				<div style="float: clear;">
+				<input type="radio" name="type-survey" id="type-survey-2" value="Standard Survey">
+				<label for="type-survey-2">Standard Survey</label>
+				</div>
+				<div style="float: clear;">
+				<input type="radio" name="type-survey" id="type-survey-3" value="Custom Survey">
+				<label for="type-survey-3">Custom Survey</label>
+				</div>
+			  </fieldset>
+			  <label for="type-iframe" class="paste-iframe-label">Paste iFrame URL Here</label>
+			  <input type="text" name="type-iframe" id="type-iframe">
+			</fieldset>
+		  </section><!-- end #survey-type --><section class="secondary-criteria survey-qualifiers padded-column-5 last" id="survey-qualifiers">
+			<header class="under-full">
+			  <h3>Delivery Criteria</h3>
+			  <p>When should the survey be delivered?</p>
+			</header>
+			<fieldset class="under-full" id="fieldset-survey-delivery-criteria">
+			  <legend class="hide-visual">When and where to deliver surveys</legend>
+			  <label for="delivery-domain">Deliver survey to those that visit</label>
+			  <input type="text" name="delivery-domain" id="delivery-domain"><br><span style="position: relative; top: -5px; font-size: .9em">OR</span>&nbsp; 
+			  <select name="delivery-domain-history" id="delivery-domain-history">
+				<option value="" selected>Choose</option>
+				<option value="Facebook.com">Facebook.com</option>
+				<option value="CNN.com">CNN.com</option>
+				<option value="ESPN.com">ESPN.com</option>
+			  </select>
+			  <label for="delivery-timeframe">within</label>
+			  <select name="delivery-timeframe" id="delivery-timeframe">
+				<option value="" selected>Timeframe</option>
+				<?php foreach (Lookup_Collection_TimeFrame::loadAll() as $timeFrame) : ?>
+				<option value="<?= $timeFrame->getId() ?>"><?= $timeFrame->getTitle() ?></option>
+				<?php endforeach ?>
+			  </select>
+			  <p>of seeing targeted ad(s).</p>
+			</fieldset>
+			<div class="button-holder">
+			  <button id="add-delivery-criteria" class="add-fieldset-data styled-button">Add Criteria</button>
+			</div>
+			<ul class="cell-lists empty data-list" id="list-survey-delivery-criteria">
+			</ul>
+		  </section><!-- end #survey-qualifiers -->
+		</div><!-- end .section-container  -->
+	  </section><!-- end #survey -->
+	  
+	  <section class="main-criteria study-base" id="study-quotas">
+		<header>
+		  <h2>Study: Quotas</h2>
+		  <nav class="lock"><a href="" class="lock">Lock</a><a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
+		</header>
+		<div class="section-container">
+		  <section class="secondary-criteria full" id="study-quota">
+			<header>
+			  <h3>Quotas</h3>
+			  <p>Who will qualify for the study?</p>
+			</header>
+			<fieldset id="fieldset-study-quota">
+			  <ul class="study-parameters">
+				<li class="padded-column-10 first">
+				  <ul>
+					<li class="quota-select first">
+					  <label for="study-gender">M/F</label>
+					  <select name="study-gender" id="study-gender">
+						<option value="" selected>Choose</option>
+						<?php foreach (Lookup_Collection_Gender::loadAll() as $record) : ?>
+						<option value="<?= $record->getId() ?>"><?= $record->getTitle() ?></option>
+						<?php endforeach ?>
+					  </select>
+					</li>
+					<li class="quota-select">
+					  <label for="study-age">Age</label>
+					  <select name="study-age" id="study-age">
+						<option value="" selected>Choose</option>
+						<?php foreach (Lookup_Collection_AgeRange::loadAll() as $record) : ?>
+						<option value="<?= $record->getId() ?>"><?= $record->getTitle() ?></option>
+						<?php endforeach ?>
+						
+					  </select>
+					</li>
+					<li class="quota-select">
+					  <label for="study-ethnicity">Ethnicity</label>
+					  <select name="study-ethnicity" id="study-ethnicity">
+						<option value="" selected>Choose</option>
+						<?php foreach (Lookup_Collection_EthnicBackground::loadAll() as $record) : ?>
+						<option value="<?= $record->getId() ?>"><?= $record->getTitle() ?></option>
+						<?php endforeach ?>
+						
+					  </select>
+					</li>
+					<li class="quota-select">
+					  <label for="study-size-percent">Cell %</label>
+					  <select name="study-size-percent" id="study-size-percent">
+						<option value="" selected>Choose</option>
+						<?php foreach (Lookup_Collection_QuotaPercentile::loadAll()->find('quarter', true) as $record) : ?>
+						<option value="<?= $record->getId() ?>" data-percent="<?= $record->quota ?>"><?= $record->getTitle() ?></option>
+						<?php endforeach ?>
+						
+					  </select>
+					</li>
+				  </ul>
+				</li>
+			  </ul>
+			</fieldset>
+			<div class="button-holder">
+			  <button id="add-quota" class="add-fieldset-data styled-button">Add This Quota</button>
+			</div>			
+			<ul class="cell-lists empty data-list" id="list-study-quota">
+			</ul>
+		  </section><!-- end #cell-quota -->
+		</div><!-- end .section-container  -->
+	  </section><!-- end #study-base -->
+	  
+	  <section class="main-criteria" id="build-cells">
+		<header>
+		  <h2>Study: Cells</h2>
+		  <nav class="lock"><a href="" class="lock">Lock</a> <a href="" class="unlock">Unlock</a><a href="" class="minimize">-</a></nav>
+		</header>
+		<div class="section-container">
+		  <section class="secondary-criteria build-cells full" id="cell-information">
+			<header>
+			  <h3>Cell Information</h3>
+			  <p>General information about the study cell</p>
+			</header>
+			<fieldset>
+			  <div class="padded-column-5 first" style="display: inline-block">
+				<label for="cell-description">Cell Description</label>
+				<input type="text" name="cell-description" id="cell-description">
+			  </div>
+			  <div class="padded-column-2">
+				<fieldset class="cell-type">
+				  <legend>Type of Cell</legend>
+				  <div class="radios-labeled">
+					<input type="radio" name="cell-type" id="cell-type-1" value="Control">
+					<label for="cell-type-1">Control</label>
+				  </div>
+				  <div>
+					<input type="radio" name="cell-type" id="cell-type-2" value="Test">
+					<label for="cell-type-2">Test</label>
+				  </div>
+				</fieldset>
+			  </div>
+			  <div class="padded-column-2" style="display: inline-block">
+				<label for="cell-size">Cell Size</label>
+				<input type="text" name="cell-size" id="cell-size">
+			  </div>
+			  <div class="padded-column-10 first last">
+				<fieldset id="fieldset-cell-adtags">
+				  <legend data-text-replace='["Ad Tags","Domains/Avails"]'>Ad Tags</legend>
+				  <div class="radios-labeled">
+				  </div>
+				</fieldset>
+				<ul class="cell-lists empty data-list" id="cell-adtag">
+				</ul>
+			  </div>
+			</fieldset>
+		  </section>
+		  
+		  <section class="secondary-criteria behavioral-qualifiers build-cells full" id="behavioral-qualifiers">
+			<header>
+			  <h3>Behavioral & Delivery Qualifiers</h3>
+			  <p>What behavioral qualifiers apply?</p>
+			</header>
+			<section class="tertiary-criteria padded-column-3 first online-browsing" id="online-browsing">
+			  <header>
+				<h4>Online Browsing</h4>
+			  </header>
+			  <fieldset id="fieldset-browsing-qualifier">
+				<ul>
+				  <li>
+					<select name="include-exclude" id="browsing-include-exclude">
+					  <option value="" selected>Include/Exclude</option>
+					  <option value="Include">Include panelists</option>
+					  <option value="Exclude">Exclude panelists</option>
+					</select>
+				  </li>
+				  <li>
+					<label for="browsing-domain-name">who have visited</label>
+					<input type="text" name="browsing-domain-name" id="browsing-domain-name">
+				  </li>
+				  <li>
+					<label for="browsing-timeframe">in the last</label>
+					<select name="browsing-timeframe" id="browsing-timeframe">
+					  <option value="" selected>Timeframe</option>
+					  <?php foreach (Lookup_Collection_TimeFrame::loadAll() as $timeFrame) : ?>
+					  <option value="<?= $timeFrame->getId() ?>"><?= $timeFrame->getTitle() ?></option>
+					  <?php endforeach ?>
+					  
+					</select>
+				  </li>
+				</ul>
+			  </fieldset>
+			  <div class="button-holder">
+				<!-- Add sayso-cells-n#-qualifier-browse-1 -->
+				<button id="add-browsing-qualifier" class="add-fieldset-data styled-button">Add Qualifier</button>
+			  </div>
+			  <ul class="cell-lists empty data-list" id="list-browsing-qualifier">
+			  </ul>   
+			</section><section class="tertiary-criteria search-engines padded-column-3" id="search-engines">
+			  <header>
+				<h4>Search Actions</h4>
+			  </header>
+			  <fieldset id="fieldset-search-qualifier">
+				<ul>
+				  <li>
+					<label for="engine-include-exclude"></label>
+					<select name="engine-include-exclude" id="engine-include-exclude">
+					  <option value="" selected>Include/Exclude</option>
+					  <option value="Include">Include panelists</option>
+					  <option value="Exclude">Exclude panelists</option>
+					</select>
+				  </li>
+				  <li>
+					<label for="engine-domain-name">who have searched for</label>
+					<input type="text" name="engine-domain-name" id="engine-domain-name">
+				  </li>
+				  <li>
+					<label>on</label>
+					<?php foreach (Lookup_Collection_SearchEngine::loadAll() as $searchEngine) : ?>
+					<div>
+						<input class="select-search-engines" type="checkbox" name="select-search-engines[]" id="select-search-engines-<?= $searchEngine->getId() ?>" value="<?= $searchEngine->getId() ?>" data-short-name="<?= $searchEngine->short_name ?>">
+						<label for="select-search-engines-<?= $searchEngine->getId() ?>"><?= $searchEngine->getTitle() ?></label>
+					</div>
+					<?php endforeach ?>
+				  </li>
+				  <li>
+					<label for="engine-timeframe">in the last</label>
+					<select name="engine-timeframe" id="engine-timeframe">
+					  <option value="" selected>Timeframe</option>
+					  <?php foreach (Lookup_Collection_TimeFrame::loadAll() as $timeFrame) : ?>
+					  <option value="<?= $timeFrame->getId() ?>"><?= $timeFrame->getTitle() ?></option>
+					  <?php endforeach ?>
+					</select>
+				  </li>
+				</ul>										  
+			  </fieldset>
+			  <div class="button-holder">
+				<button id="add-search-qualifier" class="add-fieldset-data styled-button" >Add Qualifier</button>
+			  </div>
+			  <ul class="cell-lists empty data-list" id="list-search-qualifier">
+			  </ul>
+			</section><section class="tertiary-criteria delivery-qualifiers padded-column-4 last" id="delivery-qualifiers">
+			  <header>
+				<h4>Deliver survey to those that</h4>
+			  </header>
+			  <fieldset>
+				<legend class="hide-visual">Deliver If</legend>
+				<div>
+				  <input type="radio" name="deliver-if" id="deliver-if-1" value="saw-target-ad" >
+				  <label for="deliver-if-1">Saw a targeted ad (test)</label>			
+				</div>
+				<div style="float: clear;">
+				  <input type="radio" name="deliver-if" id="deliver-if-2" value="visited-similar-site">
+				  <label for="deliver-if-2">Visited a similar site (control)</label>			
+				</div>
+				<div style="float: clear;">
+				  <input type="radio" name="deliver-if" id="deliver-if-3" value="visited-target-site">
+				  <label for="deliver-if-3">Visited a targeted site</label>
+				</div>
+			  </fieldset>
+		  </section><!-- end #delivery-qualifiers -->
+		  <div class="button-holder">
+			<p>Once you've set your cell quotas and qualifiers, go ahead and build a cell. Or if you need to start over, reset the input.</p>
+			<button class="build-cell styled-button">Build Cell</button>
+			<button class="update-cell styled-button">Update Cell</button>
+			<button class="reset-input styled-button">Reset Input</button>
+		  </div>
+		  <table class="cell-lists">
+			<thead>
+			  <tr>
+				<th class="description">Cell Description</th>
+				<th>Cell Size</th>
+				<th>Cell Type</th>
+				<th>Cell Id</th>
+				<th>Cell Actions</th>
+			  </tr>
+			</thead>
+			<tbody>
+			</tbody>
+		  </table>
+			</section><!-- end #behavioral-qualifiers -->
+		</div><!-- end .section-container  -->	  
+	  </section><!-- end #build-cells -->
+	  <div class="button-holder">
+		<input type="submit" value="Build My Study" class="styled-button main-submit" id="do-ze-build">
+		<input type="submit" value="Clear Local Data" class="styled-button main-submit" id="clear-local-data">
+	  </div>
   </form>

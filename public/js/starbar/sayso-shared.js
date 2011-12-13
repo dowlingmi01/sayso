@@ -1,37 +1,37 @@
 $SQ.ajaxWithAuth = function (options) {
-    var starbar_id = null;
-    var auth_key = null;
-    var user_id = null;
-    var user_key = null;
+	var starbar_id = null;
+	var auth_key = null;
+	var user_id = null;
+	var user_key = null;
 
-    sayso = window.sayso;
-    
-    // Authenticated?
-    try
-    {
-        starbar_id = sayso.starbar.id;
-        user_id = sayso.starbar.user.id;
-        user_key = sayso.starbar.user.key;
-        auth_key = sayso.starbar.authKey;
-    }
-    catch (e) {}
-    
-    options.data = $SQ.extend(options.data || {}, {
-        starbar_id : starbar_id,
-        user_id : user_id,
-        user_key : user_key,
-        auth_key : auth_key
-    });
+	sayso = window.sayso;
+	
+	// Authenticated?
+	try
+	{
+		starbar_id = sayso.starbar.id;
+		user_id = sayso.starbar.user.id;
+		user_key = sayso.starbar.user.key;
+		auth_key = sayso.starbar.authKey;
+	}
+	catch (e) {}
+	
+	options.data = $SQ.extend(options.data || {}, {
+		starbar_id : starbar_id,
+		user_id : user_id,
+		user_key : user_key,
+		auth_key : auth_key
+	});
 
-    if (!options.dataType)
-    	options.dataType = 'jsonp';
+	if (!options.dataType)
+		options.dataType = 'jsonp';
 
 	options.beforeSend = function(x) {
 		if (x && x.overrideMimeType) {
 			x.overrideMimeType("application/j-son;charset=UTF-8");
 		}
 	};
-    return $SQ.ajax(options);
+	return $SQ.ajax(options);
 };
 
 (function($$SQ){
@@ -98,8 +98,8 @@ $SQ.insertCommunicationIframe = function(link, container, width, height, scrolli
 		swf: "https://"+sayso.baseDomain+"/swf/easyxdm.swf",
 		remote: link,
 		remoteHelper: "https://"+sayso.baseDomain+"/html/communicator.html",
-        container: container,
-        props: {
+		container: container,
+		props: {
 			scrolling: scrolling,
 			style: {
 				height: parseInt(height)+"px",

@@ -11,8 +11,8 @@
 			var survey = null;
 
 			// SG_init_page still fails sometimes, if poll.js is partially loaded
-	        try
-	        {
+			try
+			{
 				SG_init_page($SQ('#survey-wrapper-<?= $this->survey->external_id ?>'));
 				survey = new SGSurvey(SGAPI.surveyData["<?= $this->survey->external_id ?>"], false);
 				survey.InitPage(3);
@@ -73,8 +73,8 @@
 					}
 					twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
 				});
-	        }
-	        catch (err) {}
+			}
+			catch (err) {}
 		}
 	}
 

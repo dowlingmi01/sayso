@@ -2,14 +2,14 @@
 
 class Survey extends Record
 {
-    protected $_tableName = 'survey';
-    
-    public static function getNextSurveyForUser($startSurvey, $userId) {
-    	// Figure out what the status of this survey is for this user
-    	$surveyUserMap = new Survey_UserMap();
-    	$surveyUserMap->loadDataByUniqueFields(array('survey_id' => $startSurvey->id, 'user_id' => $userId));
-    	if ($surveyUserMap->status) {
-    		$surveyUserStatus = $surveyUserMap->status;
+	protected $_tableName = 'survey';
+	
+	public static function getNextSurveyForUser($startSurvey, $userId) {
+		// Figure out what the status of this survey is for this user
+		$surveyUserMap = new Survey_UserMap();
+		$surveyUserMap->loadDataByUniqueFields(array('survey_id' => $startSurvey->id, 'user_id' => $userId));
+		if ($surveyUserMap->status) {
+			$surveyUserStatus = $surveyUserMap->status;
 		} else {
 			$surveyUserStatus = 'new';
 		}

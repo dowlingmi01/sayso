@@ -1,25 +1,25 @@
 <script type="text/javascript">
-    $SQ(function () {
-        var baseDomain = "<?= BASE_DOMAIN ?>";
-        if (!window.sayso) window.sayso = {};
-        window.sayso.baseDomain = baseDomain;
-        window.sayso.starbar = {
-            state : {
-                visibility : 'open'
-            }
-        };
-        if (typeof(KOBJ) === 'undefined') {
-            KOBJ = { 
-                warn : function () { 
-                    console.warn('Requested action has limited functionality outside of browser app.'); 
-                },
-                get_application : function () { 
-                    return { 
-                        raise_event : function () { KOBJ.warn(); }
-                    } 
-                }
-            };
-        }
-    });
+	$SQ(function () {
+		var baseDomain = "<?= BASE_DOMAIN ?>";
+		if (!window.sayso) window.sayso = {};
+		window.sayso.baseDomain = baseDomain;
+		window.sayso.starbar = {
+			state : {
+				visibility : 'open'
+			}
+		};
+		if (typeof(KOBJ) === 'undefined') {
+			KOBJ = { 
+				warn : function () { 
+					console.warn('Requested action has limited functionality outside of browser app.'); 
+				},
+				get_application : function () { 
+					return { 
+						raise_event : function () { KOBJ.warn(); }
+					} 
+				}
+			};
+		}
+	});
 </script>
 <div id="sayso-starbar" style=""><?= $this->partial('remote/generic.phtml') ?></div>

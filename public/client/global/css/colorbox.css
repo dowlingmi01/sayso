@@ -1,5 +1,5 @@
 /*
-    ColorBox Core Style
+	ColorBox Core Style
 */
 #sb_colorbox, #sb_cboxOverlay, #sb_cboxWrapper {
 	position:absolute;
@@ -48,11 +48,11 @@
 }
 /* 
 
-    User Style:
+	User Style:
 
-    Change the following styles to modify the appearance of ColorBox.  They are
+	Change the following styles to modify the appearance of ColorBox.  They are
 
-    ordered & tabbed in a way that represents the nesting of the generated HTML.
+	ordered & tabbed in a way that represents the nesting of the generated HTML.
 
 */
 
@@ -95,7 +95,6 @@
 	top:50%;
 	left:5px;
 	margin-top:-32px;
-	background:url(../images/colorbox/controls.png) no-repeat top left;
 	width:28px;
 	height:65px;
 	text-indent:-9999px;
@@ -108,7 +107,6 @@
 	top:50%;
 	right:5px;
 	margin-top:-32px;
-	background:url(../images/colorbox/controls.png) no-repeat top right;
 	width:28px;
 	height:65px;
 	text-indent:-9999px;
@@ -127,7 +125,6 @@
 	top:5px;
 	right:5px;
 	display:block;
-	background:url(../images/colorbox/controls.png) no-repeat top center;
 	width:38px;
 	height:19px;
 	text-indent:-9999px;

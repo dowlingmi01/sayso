@@ -8,57 +8,57 @@ $game = $this->game;
 
 ?>
 <script type="text/javascript">
-    /**
-     * Purpose of this code is to represent the browser app for testing/development
-     * Whatever app state is set in the KRL, should be represented here.
-     * Starbar, auth key are hard coded to Hello Music
-     * User is hard-coded 
-     * User session is dynamic
-     */
-    $SQ(function () {
-        if (!window.sayso) window.sayso = {};
-        window.sayso.debug = false;
-        window.sayso.baseDomain = '<?= BASE_DOMAIN ?>';
-        window.sayso.environment = '<?= Registry::getPseudoEnvironmentName() ?>';
-        window.sayso.log = _log('log');
-        window.sayso.warn = _log('warn');
-        function _log (type) { // <-- closure here allows re-use for log() and warn()
-	        return function () {
-	            if (window.sayso.debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
-	                var args = Array.prototype.slice.call(arguments);
-	                if (typeof console.log.apply === 'function') {
-	                    args.unshift('SaySo:');
-	                    window.console[type].apply(window.console, args);
-	                } else {
-	                    // must be IE
-	                    if (typeof args[0] !== 'object') {
-	                        window.console.log(args[0]);
-	                    }
-	                }
-	            }
-	        }
-        };
-        window.sayso.starbar = {
-            id : <?= $starbar->getId() ?>, 
-            shortName : '<?= $starbar->short_name ?>',
-            kynetxAppId : 'a239x20', // <-- this doesn't matter in this context
-            authKey : '<?= $starbar->auth_key ?>',
-            user : {
-                id : <?= Api_UserSession::getInstance()->getId() ?>,
-                key : '<?= Api_UserSession::getInstance()->getKey() ?>'
-            },
-            <? if ($game && $game->getGamer() && $game->getLevels()) { ?>
-            	game : <?= $this->game->export(new ObjectExporter_Json()) ?>,
-            <? } ?>
-            state : {
-                visibility : 'open',
-            	local : {}
-            },
-            loaded : true
-        };
-        
+	/**
+	 * Purpose of this code is to represent the browser app for testing/development
+	 * Whatever app state is set in the KRL, should be represented here.
+	 * Starbar, auth key are hard coded to Hello Music
+	 * User is hard-coded 
+	 * User session is dynamic
+	 */
+	$SQ(function () {
+		if (!window.sayso) window.sayso = {};
+		window.sayso.debug = false;
+		window.sayso.baseDomain = '<?= BASE_DOMAIN ?>';
+		window.sayso.environment = '<?= Registry::getPseudoEnvironmentName() ?>';
+		window.sayso.log = _log('log');
+		window.sayso.warn = _log('warn');
+		function _log (type) { // <-- closure here allows re-use for log() and warn()
+			return function () {
+				if (window.sayso.debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
+					var args = Array.prototype.slice.call(arguments);
+					if (typeof console.log.apply === 'function') {
+						args.unshift('SaySo:');
+						window.console[type].apply(window.console, args);
+					} else {
+						// must be IE
+						if (typeof args[0] !== 'object') {
+							window.console.log(args[0]);
+						}
+					}
+				}
+			}
+		};
+		window.sayso.starbar = {
+			id : <?= $starbar->getId() ?>, 
+			shortName : '<?= $starbar->short_name ?>',
+			kynetxAppId : 'a239x20', // <-- this doesn't matter in this context
+			authKey : '<?= $starbar->auth_key ?>',
+			user : {
+				id : <?= Api_UserSession::getInstance()->getId() ?>,
+				key : '<?= Api_UserSession::getInstance()->getKey() ?>'
+			},
+			<? if ($game && $game->getGamer() && $game->getLevels()) { ?>
+				game : <?= $this->game->export(new ObjectExporter_Json()) ?>,
+			<? } ?>
+			state : {
+				visibility : 'open',
+				local : {}
+			},
+			loaded : true
+		};
+		
 
-	    // Support for stupid browsers
+		// Support for stupid browsers
 
 		function getInternetExplorerVersion() {
 			var rv = -1; // Return value assumes failure.
@@ -97,25 +97,25 @@ $game = $this->game;
 			sayso.placeholderSupportMissing = false;
 		}
 
-	    if (sayso.disableJqueryEffects) {
-	        $SQ.fx.off = true;
+		if (sayso.disableJqueryEffects) {
+			$SQ.fx.off = true;
 		}
 
-        sayso.log(window.sayso.starbar);
+		sayso.log(window.sayso.starbar);
 
-        if (typeof(KOBJ) === 'undefined') {
-            KOBJ = { 
-                warn : function () { 
-                    if (sayso.debug && window.console) window.console.warn('Requested action has limited functionality outside of browser app.'); 
-                },
-                get_application : function () { 
-                    return { 
-                        raise_event : function () { KOBJ.warn(); }
-                    } 
-                }
-            };
-        }
-    });
+		if (typeof(KOBJ) === 'undefined') {
+			KOBJ = { 
+				warn : function () { 
+					if (sayso.debug && window.console) window.console.warn('Requested action has limited functionality outside of browser app.'); 
+				},
+				get_application : function () { 
+					return { 
+						raise_event : function () { KOBJ.warn(); }
+					} 
+				}
+			};
+		}
+	});
 
 	$SQ('body').css('margin', 0);
 </script>

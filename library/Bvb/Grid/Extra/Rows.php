@@ -11,29 +11,29 @@
  * to geral@petala-azul.com so we can send you a copy immediately.
  *
  * @package   Bvb_Grid
- * @author    Bento Vilas Boas <geral@petala-azul.com>
+ * @author	Bento Vilas Boas <geral@petala-azul.com>
  * @copyright 2010 ZFDatagrid
  * @license   http://www.petala-azul.com/bsd.txt   New BSD License
  * @version   $Id$
- * @link      http://zfdatagrid.com
+ * @link	  http://zfdatagrid.com
  */
 
 class Bvb_Grid_Extra_Rows
 {
-    /**
-     * Rows to be added
-     * @var array
-     */
-    public   $_rows;
+	/**
+	 * Rows to be added
+	 * @var array
+	 */
+	public   $_rows;
 
-    /**
-     * Adds a new row
-     *
-     * @param string $position Row position
-     * @param array  $rows Rows properties
-     */
-    public function addRow($position,$rows)
-    {
-        $this->_rows[] = array('position'=>$position,'values'=>$rows);
-    }
+	/**
+	 * Adds a new row
+	 *
+	 * @param string $position Row position
+	 * @param array  $rows Rows properties
+	 */
+	public function addRow($position,$rows)
+	{
+		$this->_rows[] = array('position'=>$position,'values'=>$rows);
+	}
 }

@@ -4,17 +4,17 @@ require_once APPLICATION_PATH . '/modules/starbar/controllers/ContentController.
 
 class Starbar_HellomusicController extends Starbar_ContentController
 {
-    public function postDispatch() {
+	public function postDispatch() {
 		if (!$this->_usingJsonPRenderer) {
-        	$this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');
-        }
+			$this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');
+		}
 
-        parent::postDispatch();
+		parent::postDispatch();
 	}
 
 	// Daily deals is probably unique to each starbar
-    public function dailyDealsAction ()
-    {
+	public function dailyDealsAction ()
+	{
 		$feedUrl = "http://www.hellomusic.com/ec/Interpret.aspx?auth=uyskCsCO5jeS2d1fc5";
 
 		$feed = null;
@@ -32,56 +32,56 @@ class Starbar_HellomusicController extends Starbar_ContentController
 		}
 
 		$xml = simpleXML_load_string($feed, "SimpleXMLElement", LIBXML_NOCDATA);
-		
+
 		if($xml ===  FALSE) {
 
 		} else {
 			$this->view->assign('deals', $xml);
-			
+
 			// award the user
-		    Game_Starbar::getInstance()->viewPromos();
-			
+			Game_Starbar::getInstance()->viewPromos();
+
 			$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=promos&shared_id=THE_DEAL_ID&user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key;
 			$facebookDescription = "Like Music? You can get the Say.So Music Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
 			$this->_assignShareInfoToView(null, null, null, $facebookCallbackUrl, null, $facebookDescription);
 		}
-    }
-
-    public function pollsAction ()
-    {
-    	$surveyUserMap = new Survey_UserMap();
-    	$primarySurveyTaken = $surveyUserMap->checkIfUserHasCompletedSurvey($this->user_id, 1);
-    	$this->view->primary_survey_taken = $primarySurveyTaken;
-    	
-    	if (!$primarySurveyTaken) {
-    		$this->_maximumDisplayed['polls'] = 5;
-		}
-    	parent::pollsAction();
 	}
 
-    public function surveysAction ()
-    {
-    	$surveyUserMap = new Survey_UserMap();
-    	$primarySurveyTaken = $surveyUserMap->checkIfUserHasCompletedSurvey($this->user_id, 1);
-    	$this->view->primary_survey_taken = $primarySurveyTaken;
+	public function pollsAction ()
+	{
+		$surveyUserMap = new Survey_UserMap();
+		$primarySurveyTaken = $surveyUserMap->checkIfUserHasCompletedSurvey($this->user_id, 1);
+		$this->view->primary_survey_taken = $primarySurveyTaken;
 
-    	if (!$primarySurveyTaken) {
-    		$this->_maximumDisplayed['surveys'] = 4;
+		if (!$primarySurveyTaken) {
+			$this->_maximumDisplayed['polls'] = 5;
 		}
-    	parent::surveysAction();
+		parent::pollsAction();
 	}
 
-    public function userProfileAction ()
-    {
-    	$surveyUserMap = new Survey_UserMap();
-    	$primarySurveyTaken = $surveyUserMap->checkIfUserHasCompletedSurvey($this->user_id, 1);
-    	$this->view->primary_survey_taken = $primarySurveyTaken;
+	public function surveysAction ()
+	{
+		$surveyUserMap = new Survey_UserMap();
+		$primarySurveyTaken = $surveyUserMap->checkIfUserHasCompletedSurvey($this->user_id, 1);
+		$this->view->primary_survey_taken = $primarySurveyTaken;
 
-    	if (!$primarySurveyTaken) {
-    		$this->_maximumDisplayed['polls'] = 5;
-    		$this->_maximumDisplayed['surveys'] = 4;
+		if (!$primarySurveyTaken) {
+			$this->_maximumDisplayed['surveys'] = 4;
 		}
-    	parent::userProfileAction();
+		parent::surveysAction();
+	}
+
+	public function userProfileAction ()
+	{
+		$surveyUserMap = new Survey_UserMap();
+		$primarySurveyTaken = $surveyUserMap->checkIfUserHasCompletedSurvey($this->user_id, 1);
+		$this->view->primary_survey_taken = $primarySurveyTaken;
+
+		if (!$primarySurveyTaken) {
+			$this->_maximumDisplayed['polls'] = 5;
+			$this->_maximumDisplayed['surveys'] = 4;
+		}
+		parent::userProfileAction();
 	}
 
 	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null) {

@@ -11,56 +11,56 @@
  * to geral@petala-azul.com so we can send you a copy immediately.
  *
  * @package   Bvb_Grid
- * @author    Bento Vilas Boas <geral@petala-azul.com>
+ * @author	Bento Vilas Boas <geral@petala-azul.com>
  * @copyright 2010 ZFDatagrid
  * @license   http://www.petala-azul.com/bsd.txt   New BSD License
  * @version   $Id: Json.php 1446 2010-09-10 21:08:42Z bento.vilas.boas@gmail.com $
- * @link      http://zfdatagrid.com
+ * @link	  http://zfdatagrid.com
  */
 
 class Bvb_Grid_Source_Json extends Bvb_Grid_Source_Array
 {
-    public function __construct($array, $loop = null, $columns = null)
-    {
-        $array = trim($array);
+	public function __construct($array, $loop = null, $columns = null)
+	{
+		$array = trim($array);
 
-        if ($array[0] != '{') {
-            $result = file_get_contents($array);
-        } else {
-            $result = $array;
-        }
+		if ($array[0] != '{') {
+			$result = file_get_contents($array);
+		} else {
+			$result = $array;
+		}
 
-        $xml = Zend_Json::decode($result, true);
+		$xml = Zend_Json::decode($result, true);
 
-        $cols = explode(',', $loop);
-        if (is_array($cols)) {
-            foreach ($cols as $value) {
-                $xml = $xml[$value];
-            }
-        }
+		$cols = explode(',', $loop);
+		if (is_array($cols)) {
+			foreach ($cols as $value) {
+				$xml = $xml[$value];
+			}
+		}
 
-        //Remove possible arrays
-        for ($i = 0; $i < count($xml); $i ++) {
-            foreach ($xml[$i] as $key => $final) {
-                if (! is_string($final)) {
-                    unset($xml[$i][$key]);
-                }
-            }
-        }
+		//Remove possible arrays
+		for ($i = 0; $i < count($xml); $i ++) {
+			foreach ($xml[$i] as $key => $final) {
+				if (! is_string($final)) {
+					unset($xml[$i][$key]);
+				}
+			}
+		}
 
-        if (is_array($columns) && count($columns) == count($xml[0])) {
-            foreach ($columns as $value) {
-                if (is_string($value))
-                    $columns = $columns[$value];
-            }
-        } else {
-            $columns = array_keys($xml[0]);
-        }
+		if (is_array($columns) && count($columns) == count($xml[0])) {
+			foreach ($columns as $value) {
+				if (is_string($value))
+					$columns = $columns[$value];
+			}
+		} else {
+			$columns = array_keys($xml[0]);
+		}
 
-        $this->_fields = $columns;
-        $this->_rawResult = $xml;
-        $this->_sourceName = 'json';
+		$this->_fields = $columns;
+		$this->_rawResult = $xml;
+		$this->_sourceName = 'json';
 
-        return $this;
-    }
+		return $this;
+	}
 }

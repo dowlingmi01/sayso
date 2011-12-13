@@ -11,43 +11,43 @@
  * obtain it through the world-wide-web, please send an email
  * to geral@petala-azul.com so we can send you a copy immediately.
  *
- * @package    Bvb_Grid
+ * @package	Bvb_Grid
  * @copyright  Copyright (c)  (http://www.petala-azul.com)
- * @license    http://www.petala-azul.com/bsd.txt   New BSD License
- * @version    $Id: Wordx.php 1372 2010-08-13 17:27:18Z thefaulkner $
- * @author     Bento Vilas Boas <geral@petala-azul.com >
+ * @license	http://www.petala-azul.com/bsd.txt   New BSD License
+ * @version	$Id: Wordx.php 1372 2010-08-13 17:27:18Z thefaulkner $
+ * @author	 Bento Vilas Boas <geral@petala-azul.com >
  */
 
 class Bvb_Grid_Template_Wordx
 {
-    public $colSpan;
+	public $colSpan;
 
-    public $wordOptions;
+	public $wordOptions;
 
-    public $options;
+	public $options;
 
-    public function __construct($options = array())
-    {
-        $this->wordOptions = $options;
-    }
+	public function __construct($options = array())
+	{
+		$this->wordOptions = $options;
+	}
 
-    public function info()
-    {
-        $pdf = array(
-            'logo'=>'public/images/logo.png',
-            'title'=>'DataGrid Zend Framework',
-            'subtitle'=>'Easy and powerfull - (Demo document)',
-            'footer'=>'Downloaded from: http://www.petala-azul.com '
-        );
+	public function info()
+	{
+		$pdf = array(
+			'logo'=>'public/images/logo.png',
+			'title'=>'DataGrid Zend Framework',
+			'subtitle'=>'Easy and powerfull - (Demo document)',
+			'footer'=>'Downloaded from: http://www.petala-azul.com '
+		);
 
-        $pdf = array_merge($pdf,$this->wordOptions);
+		$pdf = array_merge($pdf,$this->wordOptions);
 
-        return $pdf;
-    }
+		return $pdf;
+	}
 
-    public function globalStart()
-    {
-        return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+	public function globalStart()
+	{
+		return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <w:document xmlns:mv="urn:schemas-microsoft-com:mac:vml"
 	xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main"
 	xmlns:ve="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -71,11 +71,11 @@ class Bvb_Grid_Template_Wordx
 				<w:gridCol w:w="2839" />
 				<w:gridCol w:w="2839" />
 			</w:tblGrid>';
-    }
+	}
 
-    public function globalEnd()
-    {
-        return '</w:tbl>
+	public function globalEnd()
+	{
+		return '</w:tbl>
 		<w:p w:rsidR="00B65C80" w:rsidRDefault="0034373E" />
 		<w:sectPr w:rsidR="00B65C80" w:rsidSect="00754DEF">
 			<w:headerReference w:type="default" r:id="rId4" />
@@ -88,28 +88,28 @@ class Bvb_Grid_Template_Wordx
 		</w:sectPr>
 	</w:body>
 </w:document>';
-    }
+	}
 
-    public function logo()
-    {
-    	$arrayLogo = explode("/",@$this->options['logo']);
-        return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+	public function logo()
+	{
+		$arrayLogo = explode("/",@$this->options['logo']);
+		return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
 <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/'.end($arrayLogo).'"/>
 </Relationships>';
-    }
+	}
 
-    public function header()
-    {
-        if (isset($this->options['logo']) && is_file($this->options['logo'])) {
-            $arrayLogo = explode("/",@$this->options['logo']);
+	public function header()
+	{
+		if (isset($this->options['logo']) && is_file($this->options['logo'])) {
+			$arrayLogo = explode("/",@$this->options['logo']);
 
-            $logo = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+			$logo = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
 <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/'.end($arrayLogo).'"/>
 </Relationships>';
 
-            $header = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+			$header = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <w:hdr xmlns:mv="urn:schemas-microsoft-com:mac:vml"
 	xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main"
 	xmlns:ve="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -217,9 +217,9 @@ class Bvb_Grid_Template_Wordx
 	</w:p>
 </w:hdr>';
 
-        }else{
+		}else{
 
-            $header = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+			$header = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <w:hdr xmlns:mv="urn:schemas-microsoft-com:mac:vml"
 	xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main"
 	xmlns:ve="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -273,27 +273,27 @@ class Bvb_Grid_Template_Wordx
 		<w:proofErr w:type="spellEnd" />
 	</w:p>
 </w:hdr>';
-        }
+		}
 
-        return $header;
-    }
+		return $header;
+	}
 
-    public function titlesStart()
-    {
-        return '<w:tr w:rsidR="006C2FDC">
+	public function titlesStart()
+	{
+		return '<w:tr w:rsidR="006C2FDC">
 				<w:trPr>
 					<w:cnfStyle w:val="000000100000" />
 				</w:trPr>';
-    }
+	}
 
-    public function titlesEnd()
-    {
-        return '</w:tr>';
-    }
+	public function titlesEnd()
+	{
+		return '</w:tr>';
+	}
 
-    public function titlesLoop()
-    {
-        return '<w:tc>
+	public function titlesLoop()
+	{
+		return '<w:tc>
 					<w:tcPr>
 						<w:tcW w:w="2838" w:type="dxa" />
 						<w:shd w:val="clear" w:color="auto" w:fill="3E3E3E"
@@ -316,11 +316,11 @@ class Bvb_Grid_Template_Wordx
 						</w:r>
 					</w:p>
 				</w:tc>';
-    }
+	}
 
-    public function noResults()
-    {
-        return '<w:tr w:rsidR="0034373E">
+	public function noResults()
+	{
+		return '<w:tr w:rsidR="0034373E">
 				<w:tc>
 					<w:tcPr>
 						<w:tcW w:w="8516" w:type="dxa" />
@@ -338,11 +338,11 @@ class Bvb_Grid_Template_Wordx
 					</w:p>
 				</w:tc>
 			</w:tr>';
-    }
+	}
 
-    public function hRow()
-    {
-        return '<w:tr w:rsidR="0034373E">
+	public function hRow()
+	{
+		return '<w:tr w:rsidR="0034373E">
 				<w:tc>
 					<w:tcPr>
 						<w:tcW w:w="8516" w:type="dxa" />
@@ -360,24 +360,24 @@ class Bvb_Grid_Template_Wordx
 					</w:p>
 				</w:tc>
 			</w:tr>';
-    }
+	}
 
-    public function loopStart()
-    {
-        return '<w:tr w:rsidR="006C2FDC">
+	public function loopStart()
+	{
+		return '<w:tr w:rsidR="006C2FDC">
 				<w:trPr>
 					<w:cnfStyle w:val="000000100000" />
 				</w:trPr>';
-    }
+	}
 
-    public function loopEnd()
-    {
-        return '</w:tr>';
-    }
+	public function loopEnd()
+	{
+		return '</w:tr>';
+	}
 
-    public function loopLoop()
-    {
-        return '<w:tc>
+	public function loopLoop()
+	{
+		return '<w:tc>
 					<w:tcPr>
 						<w:tcW w:w="2838" w:type="dxa" />
 					</w:tcPr>
@@ -390,24 +390,24 @@ class Bvb_Grid_Template_Wordx
 						</w:r>
 					</w:p>
 				</w:tc>';
-    }
+	}
 
-    public function sqlExpStart()
-    {
-        return '<w:tr w:rsidR="006C2FDC" w:rsidTr="0034373E">
+	public function sqlExpStart()
+	{
+		return '<w:tr w:rsidR="006C2FDC" w:rsidTr="0034373E">
 				<w:trPr>
 					<w:cnfStyle w:val="000000100000" />
 				</w:trPr>';
-    }
+	}
 
-    public function sqlExpEnd()
-    {
-        return '</w:tr>';
-    }
+	public function sqlExpEnd()
+	{
+		return '</w:tr>';
+	}
 
-    public function sqlExpLoop()
-    {
-        return '
+	public function sqlExpLoop()
+	{
+		return '
 				<w:tc>
 					<w:tcPr>
 						<w:tcW w:w="2839" w:type="dxa" />
@@ -423,11 +423,11 @@ class Bvb_Grid_Template_Wordx
 						</w:r>
 					</w:p>
 				</w:tc>';
-    }
+	}
 
-    public function footer()
-    {
-        return  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+	public function footer()
+	{
+		return  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <w:ftr xmlns:mv="urn:schemas-microsoft-com:mac:vml"
 	xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main"
 	xmlns:ve="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -516,5 +516,5 @@ class Bvb_Grid_Template_Wordx
 		</w:r>
 	</w:p>
 </w:ftr>';
-    }
+	}
 }

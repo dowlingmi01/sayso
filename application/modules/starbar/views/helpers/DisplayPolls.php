@@ -61,13 +61,13 @@ class Starbar_View_Helper_DisplayPolls extends Zend_View_Helper_Abstract
 					</div><!-- / END ACCORDION CONTENT -->
 				<? } else { // User cannot take this poll ?>
 					<li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
-              			<div class="sb_pointsEarnedTotal">
-              				<? if ($survey->premium) { ?>
-                				<span class="sb_xpEarned sb_theme_textHighlight_alt">+500</span>
-                				<span class="sb_notesEarned sb_theme_textHighlight_alt">+50</span>
+						<div class="sb_pointsEarnedTotal">
+							<? if ($survey->premium) { ?>
+								<span class="sb_xpEarned sb_theme_textHighlight_alt">+500</span>
+								<span class="sb_notesEarned sb_theme_textHighlight_alt">+50</span>
 							<? } else { ?>
-                				<span class="sb_xpEarned sb_theme_textHighlight">+250</span>
-                				<span class="sb_notesEarned sb_theme_textHighlight">+25</span>
+								<span class="sb_xpEarned sb_theme_textHighlight">+250</span>
+								<span class="sb_notesEarned sb_theme_textHighlight">+25</span>
 							<? } ?>
 						</div><!-- .sb_pointsEarnedTotal -->
 					</li>

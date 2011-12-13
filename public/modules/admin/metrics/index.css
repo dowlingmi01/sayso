@@ -3,177 +3,177 @@
  */
 #menu-metrics
 {
-    color:blue !important;
-    text-decoration: underline;
+	color:blue !important;
+	text-decoration: underline;
 }
 
 div#poll-time
 {
-    font-size:  smaller;
-    text-align: left;
+	font-size:  smaller;
+	text-align: left;
 }
 div#updates
 {
-    margin: 4px 0;
-    border-top: 1px dotted #fa0;
+	margin: 4px 0;
+	border-top: 1px dotted #fa0;
 }
 div#update-marker
 {
-    font-size: smaller;
-    background: #fcca8e;
-    padding:20px 0;
-    text-align:center;
-    border-bottom: 1px dotted #555;
+	font-size: smaller;
+	background: #fcca8e;
+	padding:20px 0;
+	text-align:center;
+	border-bottom: 1px dotted #555;
 }
 div#update-marker a
 {
-    color: #BF5E00;
-    text-decoration: none;
-    border-bottom: 1px dotted #BF5E00;
+	color: #BF5E00;
+	text-decoration: none;
+	border-bottom: 1px dotted #BF5E00;
 }
 div#update-marker a:hover
 {
-    color: #FF7E00 !important;
-    border-bottom: 1px dotted #FF7E00 !important;
+	color: #FF7E00 !important;
+	border-bottom: 1px dotted #FF7E00 !important;
 }
 div#update-marker a:hover
 {
-    color: #0057AE;
+	color: #0057AE;
 }
 
 .updates-row-search
 {
-    background: #7a81c6;
+	background: #7a81c6;
 }
 .updates-row-page-view
 {
-    background: #c0e276;
+	background: #c0e276;
 }
 .updates-row-social-activity
 {
-    background: #0cbae3;
+	background: #0cbae3;
 }
 .updates-row-campaign-impression
 {
-    background: #DFBFFF;
+	background: #DFBFFF;
 }
 .updates-row-campaign-click-thru
 {
-    background: #BA9FD4;
+	background: #BA9FD4;
 }
 .updates-row-creative-impression
 {
-    background: #E8B7D7;
+	background: #E8B7D7;
 }
 .updates-row-creative-click-thru
 {
-    background: #B790AA;
+	background: #B790AA;
 }
 
 
 
 div.updates-entry
 {
-    padding: 4px;
-    font-size: small;
-    border-bottom: 1px dotted #AAA;
+	padding: 4px;
+	font-size: small;
+	border-bottom: 1px dotted #AAA;
 }
 div.updates-entry-user
 {
-    width:40%;
-    float:left;
+	width:40%;
+	float:left;
 }
 div.updates-entry-starbar
 {
-    width:15%;
-    float:left;
+	width:15%;
+	float:left;
 }
 div.updates-entry-metricsType
 {
-    width:20%;
-    float:left;
+	width:20%;
+	float:left;
 }
 div.updates-entry-dateTime
 {
-    width:25%;
-    float:left;
+	width:25%;
+	float:left;
 }
 div.updates-entry-data
 {
-    font-size: smaller;
-    overflow: hidden;
+	font-size: smaller;
+	overflow: hidden;
 }
 div#last-updated, div#poll-time
 {
-    line-height: 20px;
-    font-size:12px;
+	line-height: 20px;
+	font-size:12px;
 }
 
 div#poll-time
 {
-    background-color: #F2F2F2;
-    box-shadow: 0 1px 0 white inset;
-    margin: 0 ;
-    padding:10px 0;
-    position: relative;
-    text-align: center;
+	background-color: #F2F2F2;
+	box-shadow: 0 1px 0 white inset;
+	margin: 0 ;
+	padding:10px 0;
+	position: relative;
+	text-align: center;
 }
 div#controls
 {
-    width:auto;
-    float:left;
-    text-align: center;
-    margin-top:2px;
-    margin-left:16px;    
+	width:auto;
+	float:left;
+	text-align: center;
+	margin-top:2px;
+	margin-left:16px;	
 }
 div#controls input
 {
-    margin:0 0 4px 0;
+	margin:0 0 4px 0;
 }
 
 div#poll-freq select
 {
-    margin:0;
+	margin:0;
 }
 div#poll-freq
 {
-    font-size: smaller;
-    font-style: italic;
-    text-align: left;
-    width:auto;
-    float:left;
-    margin-top:4px;
-    margin-left:16px;
-    padding:10px;
-    background-color: #ECECEC;
-    border-top: 1px dotted #CCC;
-    border-left: 1px dotted #CCC;
-    border-right: 1px dotted #CCC;
+	font-size: smaller;
+	font-style: italic;
+	text-align: left;
+	width:auto;
+	float:left;
+	margin-top:4px;
+	margin-left:16px;
+	padding:10px;
+	background-color: #ECECEC;
+	border-top: 1px dotted #CCC;
+	border-left: 1px dotted #CCC;
+	border-right: 1px dotted #CCC;
 }
 div#last-updated
 {
-    font-size: smaller;
-    font-style: italic;
-    text-align: right;
-    width:auto;
-    float:right;
-    margin-top:4px;
-    margin-right:16px;
-    padding:10px;
-    background-color: #ECECEC;
-    border-top: 1px dotted #CCC;
-    border-left: 1px dotted #CCC;
-    border-right: 1px dotted #CCC;
+	font-size: smaller;
+	font-style: italic;
+	text-align: right;
+	width:auto;
+	float:right;
+	margin-top:4px;
+	margin-right:16px;
+	padding:10px;
+	background-color: #ECECEC;
+	border-top: 1px dotted #CCC;
+	border-left: 1px dotted #CCC;
+	border-right: 1px dotted #CCC;
 }
 div#controls select
 {
-    margin: 0 0 0 0;
+	margin: 0 0 0 0;
 }
 div#controls label
 {
-    display:inline;
+	display:inline;
 }
 #control-social
 {
-    magin-left:20px;
+	magin-left:20px;
 }

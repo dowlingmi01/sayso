@@ -147,7 +147,8 @@ class Api_GamingController extends Api_GlobalController
 			$good->build($goodData);
 			$good->accept($game);
 			//if ($good->id > $maxId) $maxId = $good->id;
-			if ($good->id <= 2093 || getenv('APPLICATION_ENV') != 'production') $goods[] = $good; // Don't show new goods on production
+			//if ($good->id <= 2093 || getenv('APPLICATION_ENV') != 'production') $goods[] = $good; // Don't show new goods on production
+			$goods[] = $good;
 		}
 		//var_dump($maxId);exit;
 

@@ -24,7 +24,7 @@ class Starbar_IndexController extends Api_GlobalController
 				$this->user_key = User::getHash($this->user_id);
 				setcookie('simulated_starbar_user_key', $this->user_key);
 			}
-		} 
+		}
 		Api_UserSession::getInstance($this->user_key)->setId($this->user_id);
 		if (!in_array($this->_request->getActionName(), array('index', 'gaga'))) {
 			// i.e. for everything based on Generic Starbar, use these includes
@@ -37,8 +37,6 @@ class Starbar_IndexController extends Api_GlobalController
 			$this->view->headScript()->appendFile('/js/starbar/jquery.cycle.lite.js');
 			$this->view->headScript()->appendFile('/js/starbar/jquery.easyTooltip.js');
 		}
-		
-		
 	}
 
 	public function indexAction () {
@@ -119,7 +117,7 @@ class Starbar_IndexController extends Api_GlobalController
 		$request = $this->getRequest();
 		$request = $this->getRequest();
 		$goodId = (int) $request->getParam('named_good_id');
-		
+
 		switch ($goodId) {
 			case 2036:
 				$startTime = mktime(0, 0, 0, 12, 2, 2011);
@@ -142,16 +140,42 @@ class Starbar_IndexController extends Api_GlobalController
 		}
 
 		if ($goodId) {
-			// server is 8 hours ahead
+			// BD server is 8 hours ahead
 			$startTime = $startTime + (8*60*60);
 			$endTime = $endTime + (8*60*60);
-			$client = new Gaming_BigDoor_HttpClient('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
-			$client->setParameterGet('max_records', 10000);
-			$client->setParameterGet('named_good', $goodId);
-			$client->setParameterGet('start_time', $startTime);
-			$client->setParameterGet('end_time', $endTime);
-			$client->getGoodSummary();
-			$transactions = $client->getData();
+
+			//$client = new Gaming_BigDoor_HttpClient('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
+
+			$iterations = 60;
+			$step = (int) round(($endTime-$startTime)/$iterations);
+			$transactions = array();
+			for ( $i=0 ; $i<$iterations ; $i++ ) {
+				$stepStartTime = $startTime+($step*$i);
+				$stepEndTime = $startTime+($step*($i+1));
+				if ($i == $iterations - 1) $stepEndTime = $endTime;
+				$cacheId = 'Token_Cache_'.$goodId.'_'.$stepStartTime.'_'.$stepEndTime;
+				$cache = Api_Cache::getInstance($cacheId);
+
+				if ($cache->test()) {
+					$transactions = array_merge($transactions, $cache->load());
+				} else {
+					$client = Gaming_BigDoor_HttpClient::getInstance('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
+					$client->setParameterGet('max_records', 10000);
+					$client->setParameterGet('named_good', $goodId);
+					$client->setParameterGet('start_time', $stepStartTime);
+					$client->setParameterGet('end_time', $stepEndTime);
+					$client->getGoodSummary();
+					$data = $client->getData();
+					if ($stepEndTime < mktime() + (7*60*60)) { // Cache everything that has been purchased more than an hour ago (allow an hour for BD to be up to date)
+						$cache->save($data);
+					}
+					$transactions = array_merge($transactions, $data);
+				}
+				//echo "<br /><br />DUMP TRANSACTIONS ".$i;
+				//var_dump($transactions);
+			}
+			//var_dump(count($transactions));
+			//exit;
 			$this->view->transactions = $transactions;
 
 			$uniqueGamers = new ItemCollection();
@@ -189,7 +213,7 @@ class Starbar_IndexController extends Api_GlobalController
 				$this->view->matched_gamers = $matchedGamers;
 			}
 		}
-		
+
 		$this->view->named_good_id = $goodId;
 		/*$this->view->named_goods = $goods;
 		$this->view->remaining_inventory = $remainingInventory;
@@ -206,12 +230,12 @@ class Starbar_IndexController extends Api_GlobalController
 		$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));
 		$starbar->setVisibility('open');
 		$this->view->starbar = $starbar;
-		
+
 		// User
 		$session = Api_UserSession::getInstance($this->user_key);
 		$user = $session->getUser();
 		$this->view->user = $user;
-		
+
 		// Facebook Connection
 		$facebookSocial = new User_Social();
 		$facebookSocial->loadByUserIdAndProvider($user->id, 'facebook');
@@ -225,7 +249,7 @@ class Starbar_IndexController extends Api_GlobalController
 		$this->_request->setParam('starbar_id', $starbar->getId());
 		$game = Game_Starbar::getInstance();
 		$this->view->assign('game', $game);
-		
+
 		if ($this->install) {
 			$game->install();
 		}

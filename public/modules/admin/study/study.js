@@ -752,7 +752,7 @@ function buildTag()
 	// append metadata
 	$.each(hiddens, function(i, v)
 	{
-		var html = '<input type="hidden" name="'+v.name+'" value="'+v.value.replace('"', '&quot;')
+		var html = '<input type="hidden" name="'+v.name+'" value="'+v.value.replace(/"/, '&quot;')
 			+'" class="tag-' + uniqKey + ' tag-data-ac-'+ v.name + '" />';
 		$('#tabContainer-frag-2 div.subForm').append(html);
 	});
@@ -869,7 +869,7 @@ function buildAvail()
 	// append metadata
 	$.each(hiddens, function(i, v)
 	{
-		var html = '<input type="hidden" name="'+v.name+'" value="'+v.value.replace('"', '&quot;')
+		var html = '<input type="hidden" name="'+v.name+'" value="'+v.value.replace(/"/, '&quot;')
 			+'" class="creative-' + window._creative + ' avail-' + uniqKey + ' avail-data-'+ v.name + '" />';
 		$('#tabContainer-frag-3 div.subForm').append(html);
 	});

@@ -90,7 +90,7 @@ function advanceMain()
 }
 
 function validateTabsBasics()
-{	
+{
 	var product = parseInt($('input[name=radioProduct]:checked').val());
 	if(!product)
 	{
@@ -137,7 +137,7 @@ function validateTabsSurvey()
 }
 
 function validateTabsQuotas()
-{	
+{
 	// Check for sum in quotas not > 100%
 	var dataCellTotal = 0;
 	$('.data-cell-percentile').each(function(){
@@ -199,7 +199,7 @@ function submitMain()
 {
 	// Disable sanity check almost everywhere ...
 
-	
+
 	var product = parseInt($('input[name=radioProduct]:checked').val());
 
 	var error = validateTabsBasics();
@@ -258,12 +258,12 @@ function submitMain()
 		}
 	}
 	*/
-	
+
 	// rebind form submit and submit
 	$("#mainForm").unbind().bind('submit', function(){
 		return true;
 	});
-	
+
 	$("#mainForm").submit();
 	return true;
 }
@@ -752,7 +752,7 @@ function buildTag()
 	// append metadata
 	$.each(hiddens, function(i, v)
 	{
-		var html = '<input type="hidden" name="'+v.name+'" value="'+v.value
+		var html = '<input type="hidden" name="'+v.name+'" value="'+v.value.replace('"', '&quot;')
 			+'" class="tag-' + uniqKey + ' tag-data-ac-'+ v.name + '" />';
 		$('#tabContainer-frag-2 div.subForm').append(html);
 	});
@@ -869,7 +869,7 @@ function buildAvail()
 	// append metadata
 	$.each(hiddens, function(i, v)
 	{
-		var html = '<input type="hidden" name="'+v.name+'" value="'+v.value
+		var html = '<input type="hidden" name="'+v.name+'" value="'+v.value.replace('"', '&quot;')
 			+'" class="creative-' + window._creative + ' avail-' + uniqKey + ' avail-data-'+ v.name + '" />';
 		$('#tabContainer-frag-3 div.subForm').append(html);
 	});

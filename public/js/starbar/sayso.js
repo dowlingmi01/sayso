@@ -312,149 +312,111 @@ $SQ(function () {
 
 	// ADjuster Setup Studies ------------------------
 
-	if (sayso.study.studies &&
-		((new Date().getTime()) - sayso.study.studiesTimestamp) < (60 * 10 /* minutes */ * 1000)) { // study data is cached
+	// non-existent OR expired studies
+	ajax({
+		url : '//' + sayso.baseDomain + '/api/study/get-all',
+		data : {
+			page_number : 1,
+			page_size : 5
+		},
+		success : function (response) {
 
-		if (sayso.study.studies && sayso.study.studies !== 'none') {
-			// valid studies
-			processStudyCells(JSON.parse(sayso.study.studies));
-		} // else no studies for current user, wait till cache time expires to check again
-
-	} else {
-
-		// non-existent OR expired studies
-		ajax({
-			url : '//' + sayso.baseDomain + '/api/study/get-all',
-			data : {
-				page_number : 1,
-				page_size : 5
-			},
-			success : function (response) {
-
-				if (response.status === 'error') {
-					sayso.warn(response.data);
-					return;
-				}
-
-				if (!response.data.items || !response.data.items.length) {
-					// no studies for this user
-					var app = KOBJ.get_application(sayso.starbar.kynetxAppId);
-					app.raise_event(
-						'update_studies',
-						{
-							'studies' : 'none',
-							'studies_timestamp' : new Date().getTime()
-						}
-					);
-					return;
-				}
-
-				// Simplify server studies into something manageable (and storable)
-
-				/* Example study cells array
-
-				cells = [
-					 {
-						 id : 1,
-						 tags : [
-							 {
-								 id : 1,
-								 tag : 'embed*=blah',
-								 target_url : 'buystuff.com',
-								 domains : [
-									 'foo.com',
-									 'bar.com'
-								 ],
-								 creatives : [
-									 {
-										 id : 1,
-										 url : 'http/to/the/creative',
-										 target_url : 'buymorestuff.com'
-									 }
-								 ]
-							 }
-						 ]
-					 }
-				 ];
-				 */
-
-				var serverStudies = response.data,
-					numServerStudies = serverStudies.items.length,
-					cells = [];
-
-				// studies
-				for (var s = 0; s < numServerStudies; s++) {
-					var study = serverStudies.items[s];
-
-					numCells = study._cells.items.length;
-					if (!numCells) continue;
-
-					// cells
-					for (var c = 0; c < numCells; c++) {
-						var cell = study._cells.items[c];
-
-						var numTags = cell._tags.items.length;
-						if (!numTags) continue;
-
-						var cellIndex = cells.push({
-							id : cell.id,
-							tags : []
-						});
-						cellIndex--;
-
-						// tags
-						for (var t = 0; t < numTags; t++) {
-							var tag = cell._tags.items[t];
-
-							var tagIndex = cells[cellIndex].tags.push({
-								id : tag.id,
-								tag : tag.tag,
-								target_url : tag.target_url,
-								domains : '',
-								creatives : []
-							});
-							tagIndex--;
-
-							// domains
-							var numDomains = tag._domains.items.length;
-							for (var d = 0; d < numDomains; d++) {
-								var domain = tag._domains.items[d];
-								if (d > 0) cells[cellIndex].tags[tagIndex].domains += '|';
-								cells[cellIndex].tags[tagIndex].domains += domain.domain;
-							} // domains
-
-							var numCreatives = tag._creatives.items.length;
-							for (var cr = 0; cr < numCreatives; cr++) {
-								var creative = tag._creatives.items[cr];
-								cells[cellIndex].tags[tagIndex].creatives.push({
-									id : creative.id,
-									url : creative.url,
-									target_url : creative.target_url
-								});
-							} // creatives
-						} // tags
-					} // cells
-				} // studies
-
-				// process cells and update the cache
-
-				setTimeout(function () {
-
-					processStudyCells(cells);
-
-					var app = KOBJ.get_application(sayso.starbar.kynetxAppId);
-					app.raise_event(
-						'update_studies',
-						{
-							'studies' : JSON.stringify(cells),
-							'studies_timestamp' : new Date().getTime()
-						}
-					);
-				}, 2000);
-
+			if (response.status === 'error') {
+				sayso.warn(response.data);
+				return;
 			}
-		});
-	}
+
+			// Simplify server studies into something manageable (and storable)
+
+			/* Example study cells array
+
+			cells = [
+				 {
+					 id : 1,
+					 tags : [
+						 {
+							 id : 1,
+							 tag : 'embed*=blah',
+							 target_url : 'buystuff.com',
+							 domains : [
+								 'foo.com',
+								 'bar.com'
+							 ],
+							 creatives : [
+								 {
+									 id : 1,
+									 url : 'http/to/the/creative',
+									 target_url : 'buymorestuff.com'
+								 }
+							 ]
+						 }
+					 ]
+				 }
+			 ];
+			 */
+
+			var serverStudies = response.data,
+				numServerStudies = serverStudies.items.length,
+				cells = [];
+
+			// studies
+			for (var s = 0; s < numServerStudies; s++) {
+				var study = serverStudies.items[s];
+
+				numCells = study._cells.items.length;
+				if (!numCells) continue;
+
+				// cells
+				for (var c = 0; c < numCells; c++) {
+					var cell = study._cells.items[c];
+
+					var numTags = cell._tags.items.length;
+					if (!numTags) continue;
+
+					var cellIndex = cells.push({
+						id : cell.id,
+						tags : []
+					});
+					cellIndex--;
+
+					// tags
+					for (var t = 0; t < numTags; t++) {
+						var tag = cell._tags.items[t];
+
+						var tagIndex = cells[cellIndex].tags.push({
+							id : tag.id,
+							tag : tag.tag,
+							target_url : tag.target_url,
+							domains : '',
+							creatives : []
+						});
+						tagIndex--;
+
+						// domains
+						var numDomains = tag._domains.items.length;
+						for (var d = 0; d < numDomains; d++) {
+							var domain = tag._domains.items[d];
+							if (d > 0) cells[cellIndex].tags[tagIndex].domains += '|';
+							cells[cellIndex].tags[tagIndex].domains += domain.domain;
+						} // domains
+
+						var numCreatives = tag._creatives.items.length;
+						for (var cr = 0; cr < numCreatives; cr++) {
+							var creative = tag._creatives.items[cr];
+							cells[cellIndex].tags[tagIndex].creatives.push({
+								id : creative.id,
+								url : creative.url,
+								target_url : creative.target_url
+							});
+						} // creatives
+					} // tags
+				} // cells
+			} // studies
+
+			processStudyCells(cells);
+
+		}
+	});
 
 	/**
 	 * Process all study cells

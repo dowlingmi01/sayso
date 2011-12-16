@@ -3,10 +3,10 @@
 
 class Notification_Message extends Record
 {
-    protected $_tableName = 'notification_message';
+	protected $_tableName = 'notification_message';
 
-    public function loadNextMessageInGroupForUser($message, $messageGroup, $userId, $stopId = null) {
-    	if (!$stopId) $stopId = $message->id; // first run through, set $stopId to our starting point to avoid looping forever
+	public function loadNextMessageInGroupForUser($message, $messageGroup, $userId, $stopId = null) {
+		if (!$stopId) $stopId = $message->id; // first run through, set $stopId to our starting point to avoid looping forever
 
 		// Select the next message in the group
 		$sql = "

@@ -32,9 +32,9 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 		$submitBtn = $this->createElement('submit', 'submitBtn')
 			->setLabel('Save Study')
 			->addDecorators(array(array('HtmlTag', array('tag' => 'div', 'class' => 'btn-bottom-right'))));
-		
+
 		$this->addElement($nextBtn);
-		$this->addElement($submitBtn);		
+		$this->addElement($submitBtn);
 
 		$freeLabel19 = new Form_Markup_Element_AnyHtml('freeLabel19');
 			$freeLabel19->setValue(' ')

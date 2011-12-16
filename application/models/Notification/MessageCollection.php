@@ -5,8 +5,8 @@ class Notification_MessageCollection extends RecordCollection
 {
 	// === Functions to load notifications messages from their THREE (3) sources:
 
-	/* 1. Notifications queued for the user (e.g. for user actions) -- those are notification_message_user_map records 
-	*     with an unset 'closed' timestamp ('0000-00-00 00:00:00')
+	/* 1. Notifications queued for the user (e.g. for user actions) -- those are notification_message_user_map records
+	*	 with an unset 'closed' timestamp ('0000-00-00 00:00:00')
 	*/
 	public function loadQueuedMessagesForStarbarAndUser ($starbarId, $userId) {
 		$sql = "
@@ -15,23 +15,23 @@ class Notification_MessageCollection extends RecordCollection
 				INNER JOIN notification_message_group nmg
 					ON nmg.id = nm.notification_message_group_id
 						AND nmg.starbar_id = ?
-				INNER JOIN notification_message_user_map nmum 
+				INNER JOIN notification_message_user_map nmum
 					ON nmum.notification_message_id = nm.id
 						AND nmum.user_id = ?
 						AND closed = '0000-00-00 00:00:00'
 			ORDER BY nm.ordinal ASC, nmum.id DESC
 		";
-		
+
 		$data = Db_Pdo::fetchAll($sql, $starbarId, $userId);
 
 		if ($data) {
 			$this->build($data, new Notification_Message());
 		}
 	}
-	
+
 	/* 2. Notifications based on groups that are on schedules, that the user has never viewed
-	*     (i.e. no notification_message_user_map to any notification_message in a scheduled notification_message_group)
-	*     We want the first one (by ordinal) from each message group.
+	*	 (i.e. no notification_message_user_map to any notification_message in a scheduled notification_message_group)
+	*	 We want the first one (by ordinal) from each message group.
 	*/
 	public function loadPreviouslyUnscheduledMessagesForStarbarAndUser ($starbarId, $starbarStowed, $userId) {
 		$starbarStowedClause = "";
@@ -43,13 +43,13 @@ class Notification_MessageCollection extends RecordCollection
 			SELECT * FROM (
 				SELECT nm.*
 				FROM notification_message nm
-					INNER JOIN notification_message_group nmg 
+					INNER JOIN notification_message_group nmg
 						ON nmg.id = nm.notification_message_group_id
 							AND nmg.start_at < now()
 							AND (nmg.end_at > now() OR nmg.end_at = '0000-00-00 00:00:00')
 							AND nmg.starbar_id = ?
 							AND nmg.type = 'Scheduled'
-					INNER JOIN user 
+					INNER JOIN user
 						ON user.id = ?
 						AND ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(user.created)) > nmg.start_after
 							OR nmg.start_after IS NULL)
@@ -60,23 +60,23 @@ class Notification_MessageCollection extends RecordCollection
 				WHERE nmum.id IS NULL
 					".$starbarStowedClause."
 				ORDER BY nm.ordinal ASC, nmum.id DESC
-			) AS S 
+			) AS S
 			GROUP BY notification_message_group_id
-			ORDER BY ordinal ASC 
+			ORDER BY ordinal ASC
 		";
-		
+
 		$data = Db_Pdo::fetchAll($sql, $starbarId, $userId, $userId);
-		
+
 		if ($data) {
 			$this->build($data, new Notification_Message());
 		}
 	}
-	
+
 	/* 3. Notifications based on groups that are on schedules, that the user has viewed and/or closed.
-	*     (i.e. notification_message_user_map exists.. if more than group's schedule minimum_interval 
-	*     time has passed since the user has closed their most recent message from this group, get next 
-	*     message from group if there is one, the first message in the group if there isn't a next one 
-	*     and group repeats (loops), or view notification again if it was viewed but never closed)
+	*	 (i.e. notification_message_user_map exists.. if more than group's schedule minimum_interval
+	*	 time has passed since the user has closed their most recent message from this group, get next
+	*	 message from group if there is one, the first message in the group if there isn't a next one
+	*	 and group repeats (loops), or view notification again if it was viewed but never closed)
 	*/
 	public function loadNextInGroupMessagesForStarbarAndUser ($starbarId, $userId) {
 		$messageGroup = new Notification_MessageGroup();
@@ -104,45 +104,45 @@ class Notification_MessageCollection extends RecordCollection
 			}
 		}
 	}
-	
+
 	// For every group that the user has already received messages, get the latest message received
 	private function _loadMostRecentGroupMessagesForStarbarAndUser ($starbarId, $userId) {
 		$sql = "
 			SELECT * FROM (
 				SELECT nm.*
 				FROM notification_message nm
-					INNER JOIN notification_message_group nmg 
+					INNER JOIN notification_message_group nmg
 						ON nmg.id = nm.notification_message_group_id
 							AND nmg.start_at < now()
 							AND (nmg.end_at > now() OR nmg.end_at = '0000-00-00 00:00:00')
 							AND nmg.starbar_id = ?
 							AND nmg.type = 'Scheduled'
-					INNER JOIN user 
+					INNER JOIN user
 						ON user.id = ?
 						AND ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(user.created)) > nmg.start_after
 							OR nmg.start_after IS NULL)
 					LEFT JOIN notification_message_user_map nmum
 						ON nmum.notification_message_id = nm.id
 							AND nmum.user_id = ?
-				WHERE nm.id NOT IN 
-					(SELECT notification_message_id 
+				WHERE nm.id NOT IN
+					(SELECT notification_message_id
 						FROM notification_message_user_map nmum
 						WHERE nmum.user_id = ?
 							AND nmum.closed = '0000-00-00 00:00:00'
 					)
 				ORDER BY nm.ordinal ASC, nmum.id DESC
-			) AS S 
+			) AS S
 			GROUP BY notification_message_group_id
-			ORDER BY ordinal ASC 
+			ORDER BY ordinal ASC
 		";
-		
+
 		$data = Db_Pdo::fetchAll($sql, $starbarId, $userId, $userId, $userId);
-		
+
 		if ($data) {
 			$this->build($data, new Notification_Message());
 		}
 	}
-	
+
 	// === Now put them all together (see above), and filter and add user maps when necessary
 	public function loadAllNotificationMessagesForStarbarAndUser($starbarId, $starbarStowed, $userId, $request) {
 		// (see function comments for descritions of those message collections)
@@ -211,14 +211,14 @@ class Notification_MessageCollection extends RecordCollection
 				INNER JOIN notification_message_group nmg
 					ON nmg.id = nm.notification_message_group_id
 						AND nmg.starbar_id = ?
-				INNER JOIN notification_message_user_map nmum 
+				INNER JOIN notification_message_user_map nmum
 					ON nmum.notification_message_id = nm.id
 						AND nmum.user_id = ?
 						AND nmum.notified = '0000-00-00 00:00:00'
 						AND nmum.closed = '0000-00-00 00:00:00'
 			ORDER BY nm.ordinal ASC, nmum.id DESC
 		";
-		
+
 		$data = Db_Pdo::fetchAll($sql, $starbarId, $userId);
 
 		$loadGame = false;
@@ -253,5 +253,5 @@ class Notification_MessageCollection extends RecordCollection
 			$request->setParam(Api_AbstractController::GAME, $game);
 		}
 	}
-	
+
 }

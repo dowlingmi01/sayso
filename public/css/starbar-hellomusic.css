@@ -51,11 +51,11 @@
 /* special color classes */
 #sayso-starbar #starbar-player-console .sb_theme_navOnGradient{
 	background-image: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0.22, rgb(102,102,102)),
-    color-stop(0.61, rgb(255,255,255)));
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(102,102,102)),
+	color-stop(0.61, rgb(255,255,255)));
 	background-image: -moz-linear-gradient(
 			center top,
 			rgb(102,102,102) 22%,
@@ -68,11 +68,11 @@
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value-fading,
 #sayso-starbar .sb_theme_button{
 	background-image: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0.22, rgb(22,141,202)),
-    color-stop(0.61, rgb(7,61,89)));
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(22,141,202)),
+	color-stop(0.61, rgb(7,61,89)));
 	background-image: -moz-linear-gradient(
 			center top,
 			rgb(22,141,202) 22%,
@@ -82,11 +82,11 @@
 
 #sayso-starbar #starbar-player-console .sb_theme_button_alt{
 	background-image: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0.22, rgb(237,176,70)),
-    color-stop(0.61, rgb(206,146,41)));
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(237,176,70)),
+	color-stop(0.61, rgb(206,146,41)));
 	background-image: -moz-linear-gradient(
 			center top,
 			rgb(237,176,70) 22%,
@@ -97,11 +97,11 @@
 
 #sayso-starbar #starbar-player-console .sb_theme_button_grey{
 	background-image: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0.22, rgb(70,70,70)),
-    color-stop(0.61, rgb(55,55,55)));
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(70,70,70)),
+	color-stop(0.61, rgb(55,55,55)));
 	background-image: -moz-linear-gradient(
 			center top,
 			rgb(70,70,70) 22%,

@@ -31,7 +31,11 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
 		if ($good->getId() == $this->_economy->getGoodId('WEEK_ONE_GIVEAWAY')) {
 			$good->setNonRedeemReason('It\'s too late to buy tokens for week 1: we\'ll be announcing the winner soon!');
 			$good->setCommentForUser('Unavailable');
-		} elseif (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
+		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_TWO_GIVEAWAY')) {
+                        $good->setNonRedeemReason('It\'s too late to buy tokens for week 2: we\'ll be announcing the winner soon!');
+                        $good->setCommentForUser('Unavailable');
+                } elseif (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
+
 			$good->setNonRedeemReason('SOLD OUT? There\'s more<br />gear coming! Check back and keep earning!');
 			$good->setCommentForUser('Sold Out');
 		} elseif ((int) $currencyPrimarySurvey->current_balance < 1 && $good->getId() !== $this->_economy->getGoodId('WEEK_ONE_GIVEAWAY')) {

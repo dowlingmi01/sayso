@@ -228,7 +228,7 @@ class Starbar_IndexController extends Api_GlobalController
         $results = Db_Pdo::fetchAll($sql);
         $emails = "";
         foreach ($results as $result) {
-            $emails = $result['uuid'].",";
+            $emails .= $result['uuid'].",";
 		}
         $this->view->emails = $emails;
     }
@@ -241,7 +241,7 @@ class Starbar_IndexController extends Api_GlobalController
         $results = Db_Pdo::fetchAll($sql);
         $emails = "";
         foreach ($results as $result) {
-            $emails = $result['uuid'].",";
+            $emails .= $result['uuid'].",";
 		}
         $this->view->emails = $emails;
     }

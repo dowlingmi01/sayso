@@ -228,7 +228,7 @@ class Starbar_IndexController extends Api_GlobalController
         $results = Db_Pdo::fetchAll($sql);
         $emails = "";
         foreach ($results as $result) {
-        	if (strpos($result['uuid'], "say.so") === false && strpos($result['uuid'], "saysollc.com") === false && strpos($result['uuid'], "hellomusic.com") === false) {
+        	if (strpos($result['uuid'], "say.so") === false && strpos($result['uuid'], "saysollc.com") === false && strpos($result['uuid'], "hellomusic.com") === false && strpos($result['uuid'], "@") !== false) {
         		if ($emails) $emails .= ",";
             	$emails .= $result['uuid'];
         	}
@@ -244,7 +244,7 @@ class Starbar_IndexController extends Api_GlobalController
         $results = Db_Pdo::fetchAll($sql);
         $emails = "";
         foreach ($results as $result) {
-        	if (strpos($result['uuid'], "say.so") === false && strpos($result['uuid'], "saysollc.com") === false && strpos($result['uuid'], "hellomusic.com") === false) {
+        	if (strpos($result['uuid'], "say.so") === false && strpos($result['uuid'], "saysollc.com") === false && strpos($result['uuid'], "hellomusic.com") === false && strpos($result['uuid'], "@") !== false) {
         		if ($emails) $emails .= ",";
             	$emails .= $result['uuid'];
         	}

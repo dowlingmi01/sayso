@@ -131,7 +131,7 @@ function doPoll()
 	data['dir'] = dir;
 	data['pollForTypes'] =
 	{
-		'social : pollSocial,
+		'social' : pollSocial,
 		'pageView' : pollPageView,
 		'metrics' : pollMetrics,
 		'tags' : pollTags,

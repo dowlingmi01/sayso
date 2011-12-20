@@ -228,7 +228,10 @@ class Starbar_IndexController extends Api_GlobalController
         $results = Db_Pdo::fetchAll($sql);
         $emails = "";
         foreach ($results as $result) {
-            $emails .= $result['uuid'].",";
+        	if (strpos($result['uuid'], "say.so") === false && strpos($result['uuid'], "saysollc.com") === false && strpos($result['uuid'], "hellomusic.com") === false) {
+        		if ($emails) $emails .= ",";
+            	$emails .= $result['uuid'];
+        	}
 		}
         $this->view->emails = $emails;
     }
@@ -241,7 +244,10 @@ class Starbar_IndexController extends Api_GlobalController
         $results = Db_Pdo::fetchAll($sql);
         $emails = "";
         foreach ($results as $result) {
-            $emails .= $result['uuid'].",";
+        	if (strpos($result['uuid'], "say.so") === false && strpos($result['uuid'], "saysollc.com") === false && strpos($result['uuid'], "hellomusic.com") === false) {
+        		if ($emails) $emails .= ",";
+            	$emails .= $result['uuid'];
+        	}
 		}
         $this->view->emails = $emails;
     }

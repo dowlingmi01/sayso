@@ -144,8 +144,6 @@ class Starbar_IndexController extends Api_GlobalController
             $startTime = $startTime + (8*60*60);
             $endTime = $endTime + (8*60*60);
 
-            //$client = new Gaming_BigDoor_HttpClient('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
-
             $iterations = 60;
             $step = (int) round(($endTime-$startTime)/$iterations);
             $transactions = array();
@@ -153,29 +151,28 @@ class Starbar_IndexController extends Api_GlobalController
                 $stepStartTime = $startTime+($step*$i);
                 $stepEndTime = $startTime+($step*($i+1));
                 if ($i == $iterations - 1) $stepEndTime = $endTime;
-                $cacheId = 'Token_Cache_'.$goodId.'_'.$stepStartTime.'_'.$stepEndTime;
-                $cache = Api_Cache::getInstance($cacheId, Api_Cache::LIFETIME_MONTH);
 
-                if ($cache->test()) {
-                    $transactions = array_merge($transactions, $cache->load());
-                } else {
-                    $client = Gaming_BigDoor_HttpClient::getInstance('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
-                    $client->setParameterGet('max_records', 10000);
-                    $client->setParameterGet('named_good', $goodId);
-                    $client->setParameterGet('start_time', $stepStartTime);
-                    $client->setParameterGet('end_time', $stepEndTime);
-                    $client->getGoodSummary();
-                    $data = $client->getData();
-                    if ($stepEndTime < mktime() + (7*60*60)) { // Cache everything that has been purchased more than an hour ago (allow an hour for BD to be up to date)
-                        $cache->save($data);
-                    }
-                    $transactions = array_merge($transactions, $data);
-                }
-                //echo "<br /><br />DUMP TRANSACTIONS ".$i;
-                //var_dump($transactions);
+                if ($stepStartTime < mktime() + (9*60*60)) { // Don't check more than one hour into the future (one hour in case of discrepencies between BD and SS timing)
+	                $cacheId = 'Token_Cache_'.$goodId.'_'.$stepStartTime.'_'.$stepEndTime;
+	                $cache = Api_Cache::getInstance($cacheId, Api_Cache::LIFETIME_MONTH);
+
+	                if ($cache->test()) {
+	                    $transactions = array_merge($transactions, $cache->load());
+	                } else {
+	                    $client = Gaming_BigDoor_HttpClient::getInstance('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
+	                    $client->setParameterGet('max_records', 10000);
+	                    $client->setParameterGet('named_good', $goodId);
+	                    $client->setParameterGet('start_time', $stepStartTime);
+	                    $client->setParameterGet('end_time', $stepEndTime);
+	                    $client->getGoodSummary();
+	                    $data = $client->getData();
+	                    if ($stepEndTime < mktime() + (7*60*60)) { // Cache everything that has been purchased more than an hour ago (allow an hour for BD to be up to date)
+	                        $cache->save($data);
+	                    }
+	                    $transactions = array_merge($transactions, $data);
+	                }
+				}
             }
-            //var_dump(count($transactions));
-            //exit;
             $this->view->transactions = $transactions;
 
             $uniqueGamers = new ItemCollection();
@@ -215,9 +212,6 @@ class Starbar_IndexController extends Api_GlobalController
         }
 
         $this->view->named_good_id = $goodId;
-        /*$this->view->named_goods = $goods;
-        $this->view->remaining_inventory = $remainingInventory;
-        $this->view->sold_inventory = $soldInventory;*/
     }
 
     public function emailsInstalledAction () {

@@ -154,7 +154,7 @@ class Starbar_IndexController extends Api_GlobalController
                 $stepEndTime = $startTime+($step*($i+1));
                 if ($i == $iterations - 1) $stepEndTime = $endTime;
                 $cacheId = 'Token_Cache_'.$goodId.'_'.$stepStartTime.'_'.$stepEndTime;
-                $cache = Api_Cache::getInstance($cacheId);
+                $cache = Api_Cache::getInstance($cacheId, Api_Cache::LIFETIME_MONTH);
 
                 if ($cache->test()) {
                     $transactions = array_merge($transactions, $cache->load());

@@ -137,8 +137,10 @@ $SQ(function () {
 			if (searchQueryArray != null && searchQueryArray.length > 1)
 			{
 				var searchQuery = searchQueryArray[1];
-				data['query'] = searchQuery;
-				behaviorTracker.search(url, data);
+				if (searchQuery != null && searchQuery != "") {
+					data['query'] = searchQuery;
+					behaviorTracker.search(url, data);
+				}
 			}
 			else
 			{
@@ -164,6 +166,7 @@ $SQ(function () {
 				{
 					// any changes
 					var currentQueryValue = $SQ('input[name=q]').val();
+
 					// yes, reset all
 					if(currentQueryValue != lastQueryValue)
 					{
@@ -178,7 +181,7 @@ $SQ(function () {
 						if(startInterval >= validInterval)
 						{
 							// no stats sent? send it!
-							if(!statsSent)
+							if(!statsSent && currentQueryValue != null && currentQueryValue != "")
 							{
 								// send now asynchronously...
 								data['query'] = currentQueryValue;

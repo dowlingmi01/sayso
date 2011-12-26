@@ -102,8 +102,6 @@
 		}
 	}
 
-	$SQ('body').append('<div id="sayso-starbar" style="position: fixed; left: 0px; bottom: 0px; width: 100%; background: none; margin-bottom: -3px; z-index: 9999;"></div>');
-
 	// Support for stupid browsers
 
 	function getInternetExplorerVersion() {

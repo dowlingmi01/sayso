@@ -187,13 +187,9 @@ $SQ(function(){
 
 	// Update the cross-domain state variables
 	starbar.state.update = function (){
-		var app = KOBJ.get_application(starbar.kynetxAppId);
-		starbar.state.callback = null;
-		app.raise_event('update_state', {
-			'visibility' : starbar.state.visibility,
-			'profile' : starbar.state.profile,
-			'game' : starbar.state.game
-		});
+		appAPI.db.set("visibility", starbar.state.visibility);
+		appAPI.db.set("profile", starbar.state.profile);
+		appAPI.db.set("game", starbar.state.game);
 	};
 
 	// Starbar state
@@ -205,31 +201,30 @@ $SQ(function(){
 
 	// Refresh the Starbar to respond to state changes, if any
 	starbar.state.refresh = function () {
-		starbar.state.callback = function () {
-			// logic here to determine if/what should be fired to "refresh"
-			if (starbar.state.visibility != starbar.state.local.visibility) {
-				toggleBar(false);
-			}
+		starbar.state.visibility = appAPI.db.get("visibility");
+		starbar.state.profile = appAPI.db.get("profile");
+		starbar.state.game = appAPI.db.get("game");
 
-			updateAlerts(false);
+		// logic here to determine if/what should be fired to "refresh"
+		if (starbar.state.visibility != starbar.state.local.visibility) {
+			toggleBar(false);
+		}
 
-			if (starbar.state.profile > starbar.state.local.profile) {
-				updateProfile(false);
-			}
+		updateAlerts(false);
 
-			if (starbar.state.game > starbar.state.local.game) {
-				sayso.log('AJAX GAME UPDATE: game state updated in another tab');
-				updateGame('ajax', false, false);
-			}
+		if (starbar.state.profile > starbar.state.local.profile) {
+			updateProfile(false);
+		}
 
-			// Done refreshing everything, set our local state to most recent
-			starbar.state.local.profile = starbar.state.profile;
-			starbar.state.local.game = starbar.state.game;
-			starbar.state.local.visibility = starbar.state.visibility;
+		if (starbar.state.game > starbar.state.local.game) {
+			sayso.log('AJAX GAME UPDATE: game state updated in another tab');
+			updateGame('ajax', false, false);
+		}
 
-		};
-		var app = KOBJ.get_application(starbar.kynetxAppId);
-		app.raise_event('refresh_state');
+		// Done refreshing everything, set our local state to most recent
+		starbar.state.local.profile = starbar.state.profile;
+		starbar.state.local.game = starbar.state.game;
+		starbar.state.local.visibility = starbar.state.visibility;
 	};
 
 	// initialize the starbar

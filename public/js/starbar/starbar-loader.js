@@ -275,18 +275,11 @@
 					sayso.flags = 'none';
 				}
 
-				// update global/persistent vars on kobj.net
-				var app = KOBJ.get_application(sayso.starbar.kynetxAppId);
-				app.raise_event(
-					'update_global_variables',
-					{
-						'starbar_id' : starbar.id,
-						'auth_key' : starbar.auth_key,
-						'user_id' : starbar._user.id,
-						'user_key' : starbar._user._key,
-						'flags' : sayso.flags
-					}
-				);
+				appAPI.db.set('starbar_id', starbar.id);
+				appAPI.db.set('auth_key', starbar.auth_key);
+				appAPI.db.set('user_id', starbar._user.id);
+				appAPI.db.set('user_key', starbar._user._key);
+				appAPI.db.set('flags', sayso.flags);
 
 				if (!starbar._html.length) return; // for some reason, no markup was returned
 

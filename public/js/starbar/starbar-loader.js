@@ -10,8 +10,8 @@
  */
 (function () {
 
-	var baseDomain = appAPI.db.get('baseDomain');
-	var environment = appAPI.db.get('environment');
+	var baseDomain = appAPI.db.get('baseDomain') || "app-dev.saysollc.com";
+	var environment = appAPI.db.get('environment') || "DEV";
 
 	var starbarId = appAPI.db.get("starbarId") || 0;
 	var userId = appAPI.db.get("userId") || 0;

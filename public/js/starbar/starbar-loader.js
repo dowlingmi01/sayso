@@ -256,7 +256,7 @@
 				// load server data for this Starbar
 				var starbar = response.data;
 				if (response.game) {
-					starbar.game = response.game;
+					sayso.starbar.game = response.game;
 				}
 
 				sayso.log(starbar.label + ' App', starbar);

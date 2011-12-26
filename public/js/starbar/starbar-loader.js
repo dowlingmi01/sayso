@@ -255,6 +255,10 @@
 
 				// load server data for this Starbar
 				var starbar = response.data;
+				if (response.game) {
+					starbar.game = response.game;
+				}
+
 				sayso.log(starbar.label + ' App', starbar);
 
 				sayso.starbar.id = starbar.id;
@@ -262,9 +266,6 @@
 				sayso.starbar.authKey = starbar.auth_key;
 				sayso.starbar.user.id = starbar._user.id;
 				sayso.starbar.user.key = starbar._user._key;
-				if (response.game) {
-					sayso.starbar.game = response.game;
-				}
 
 				// sayso.flags can be used anywhere via sayso.flags.match('<flag_name>')
 				// see starbar table, flags column
@@ -404,7 +405,7 @@
 									(
 										currentUrl.match(urlMatchPrepend + starbar.domain) ||
 										currentUrl.match(urlMatchPrepend + 'saysollc.com') ||  // also trigger on our domains for testing purposes
-										currentUrl.match(urlMatchPrepend + 'sayso.com')
+										currentUrl.match(urlMatchPrepend + 'say.so')
 									)
 								) {
 									// trigger onboarding to display (see starbar-new.js where this is handled)

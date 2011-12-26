@@ -647,7 +647,7 @@ function buildCell()
 	// append metadata
 	$.each(hiddens, function(i, v)
 	{
-		var html = '<input type="hidden" name="'+ v.name + '" class="cell-' + window._cell + '" value="'+v.value+'" />';
+		var html = '<input type="hidden" name="'+ v.name + '" class="cell-' + window._cell + '" value="'+v.value.replace(/"/g, '&quot;')+'" />';
 		$('#tabContainer-frag-7 div.subForm').append(html);
 	});
 
@@ -965,7 +965,7 @@ function buildCreative()
 	// append metadata
 	$.each(hiddens, function(i, v)
 	{
-		var html = '<input type="hidden" name="'+ v.name + '" class="creative-' + window._creative + '" value="'+v.value+'" />';
+		var html = '<input type="hidden" name="'+ v.name + '" class="creative-' + window._creative + '" value="'+v.value.replace(/"/g, '&quot;')+'" />';
 		$('#tabContainer-frag-3 div.subForm').append(html);
 	});
 

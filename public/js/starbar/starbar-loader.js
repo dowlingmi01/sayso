@@ -11,6 +11,7 @@
 (function () {
 
 	var sayso = window.sayso;
+	var starbarContainer = document.getElementById('sayso-starbar');
 	var urlMatchPrepend = '^(?:http|https){1}://(?:[\\w.-]+)?';
 	var currentUrl = window.location.href;
 	var inIframe = (top !== self);

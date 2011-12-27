@@ -10,90 +10,14 @@
  */
 (function () {
 
-	var baseDomain = appAPI.db.get('baseDomain') || "app-dev.saysollc.com";
-	var environment = appAPI.db.get('environment') || "DEV";
+	var sayso = window.sayso,
+	starbarContainer = document.getElementById('sayso-starbar'),
 
-	var starbarId = appAPI.db.get("starbarId") || 0;
-	var userId = appAPI.db.get("userId") || 0;
-	var userKey = appAPI.db.get("userKey") || '';
-	var authKey = appAPI.db.get("authKey") || '';
-	var visibleState = appAPI.db.get("visibleState") || "open";
-	var notificationsState = appAPI.db.get("notificationsState") || 'ready';
-	var profileState = appAPI.db.get("profileState") || 'ready';
-	var gameState = appAPI.db.get("gameState") || 'ready';
-	var windowWidth = appAPI.db.get("windowWidth") || 1000;
-	var windowHeight = appAPI.db.get("windowHeight") || 1000;
-
-	var flags = appAPI.db.get("flags") || 'none';
-	var studies = appAPI.db.get("studies") || '';
-	var studiesTimestamp = appAPI.db.get("studiesTimestamp") || '';
-	var adTargets = appAPI.db.get("adTargets") || '{}';
-
-	// setup global variables/functions
-
-	if (!window.sayso) window.sayso = {};
-	window.sayso.debug = false;
-	window.sayso.baseDomain = baseDomain;
-	window.sayso.environment = environment;
-	window.sayso.flags = flags;
-	window.sayso.starbar = {
-		id : starbarId,
-		authKey : authKey,
-		user : {
-			id : userId,
-			key : userKey
-		},
-		state : {
-			visibility : visibleState,
-			notifications : notificationsState,
-			profile : profileState,
-			game : gameState
-		},
-		context : {
-			windowWidth : windowWidth,
-			windowHeight : windowHeight
-		},
-		loaded : false
-	};
-	window.sayso.study = {
-		studies : studies,
-		studiesTimestamp : studiesTimestamp,
-		adTargets : adTargets
-
-	};
-
-    // load the Starbar
-    	var sayso = window.sayso,
-		starbarContainer = document.getElementById('sayso-starbar'),
-
-		urlMatchPrepend = '^(?:http|https){1}://(?:[\\w.-]+)?',
-		currentUrl = window.location.href,
-		inIframe = (top !== self);
-
-	// setup global "safe" logging functions
-	if (!sayso.log) {
-		function _log (type) { // <-- closure here allows re-use for log() and warn()
-			return function () {
-				if (sayso.debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
-					var args = Array.prototype.slice.call(arguments);
-					if (typeof console.log.apply === 'function') {
-						args.unshift('SaySo:');
-						window.console[type].apply(window.console, args);
-					} else {
-						// must be IE
-						if (typeof args[0] !== 'object') {
-							window.console.log(args[0]);
-						}
-					}
-				}
-			};
-		};
-		sayso.log = _log('log');
-		sayso.warn = _log('warn');
-	}
+	urlMatchPrepend = '^(?:http|https){1}://(?:[\\w.-]+)?',
+	currentUrl = window.location.href,
+	inIframe = (top !== self);
 
 	// bring in namespaced jQuery $SQ
-
 	if (!window.$SQ) {
 		if (!sayso.loading || sayso.loading !== 'jquery') {
 			var jsJQuery = document.createElement('script');
@@ -102,51 +26,64 @@
 		}
 	}
 
-	// Support for stupid browsers
-
-	function getInternetExplorerVersion() {
-		var rv = -1; // Return value assumes failure.
-		if (navigator.appName == 'Microsoft Internet Explorer') {
-			var ua = navigator.userAgent;
-			var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-			if (re.exec(ua) != null)
-				rv = parseFloat(RegExp.$1);
-		}
-		return rv;
-	}
-
-	function getGeckoVersion() {
-		var rv = -1; // Return value assumes failure.
-		fullVersion = navigator.userAgent.replace(/^Mozilla.*rv:|\).*$/g, '' ) || ( /^rv\:|\).*$/g, '' );
-		if (fullVersion) {
-			rv = fullVersion.substring(0,3);
-		}
-		return rv;
-	}
-
-	var ieVersion = getInternetExplorerVersion();
-	var geckoVersion = getGeckoVersion();
-	if (ieVersion > -1 && ieVersion < 9) {
-		sayso.disableJqueryEffects = true;
-	} else {
-		sayso.disableJqueryEffects = false;
-	}
-
-	// test if HTML5 placeholder is supported or not
-	if (ieVersion > -1 || (geckoVersion > -1 && geckoVersion < 4)) {
-		sayso.placeholderSupportMissing = true;
-	} else {
-		sayso.placeholderSupportMissing = false;
-	}
-
-	String.prototype.trim = function() {
-		return this.replace(/^\s+|\s+$/g,'');
-	};
-
 	new jsLoadTimer().start('window.$SQ', function () {
 
 		$SQ.jsLoadTimer = jsLoadTimer;
 		$SQ.cssLoadTimer = cssLoadTimer;
+
+		$SQ.appAPI = window.appAPI;
+
+		var baseDomain = $SQ.appAPI.db.get('baseDomain') || "app-dev.saysollc.com";
+		var environment = $SQ.appAPI.db.get('environment') || "DEV";
+
+		var starbarId = $SQ.appAPI.db.get("starbarId") || 0;
+		var userId = $SQ.appAPI.db.get("userId") || 0;
+		var userKey = $SQ.appAPI.db.get("userKey") || '';
+		var authKey = $SQ.appAPI.db.get("authKey") || '';
+		var visibleState = $SQ.appAPI.db.get("visibleState") || "open";
+		var notificationsState = $SQ.appAPI.db.get("notificationsState") || 'ready';
+		var profileState = $SQ.appAPI.db.get("profileState") || 'ready';
+		var gameState = $SQ.appAPI.db.get("gameState") || 'ready';
+		var windowWidth = $SQ.appAPI.db.get("windowWidth") || 1000;
+		var windowHeight = $SQ.appAPI.db.get("windowHeight") || 1000;
+
+		var flags = $SQ.appAPI.db.get("flags") || 'none';
+		var studies = $SQ.appAPI.db.get("studies") || '';
+		var studiesTimestamp = $SQ.appAPI.db.get("studiesTimestamp") || '';
+		var adTargets = $SQ.appAPI.db.get("adTargets") || '{}';
+
+		// setup global variables/functions
+
+		if (!window.sayso) window.sayso = {};
+		window.sayso.debug = false;
+		window.sayso.baseDomain = baseDomain;
+		window.sayso.environment = environment;
+		window.sayso.flags = flags;
+		window.sayso.starbar = {
+			id : starbarId,
+			authKey : authKey,
+			user : {
+				id : userId,
+				key : userKey
+			},
+			state : {
+				visibility : visibleState,
+				notifications : notificationsState,
+				profile : profileState,
+				game : gameState
+			},
+			context : {
+				windowWidth : windowWidth,
+				windowHeight : windowHeight
+			},
+			loaded : false
+		};
+		window.sayso.study = {
+			studies : studies,
+			studiesTimestamp : studiesTimestamp,
+			adTargets : adTargets
+
+		};
 
 		// JSON support for stupid browsers
 
@@ -265,6 +202,70 @@
 
 	});
 
+	// setup global "safe" logging functions
+	if (!sayso.log) {
+		function _log (type) { // <-- closure here allows re-use for log() and warn()
+			return function () {
+				if (sayso.debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
+					var args = Array.prototype.slice.call(arguments);
+					if (typeof console.log.apply === 'function') {
+						args.unshift('SaySo:');
+						window.console[type].apply(window.console, args);
+					} else {
+						// must be IE
+						if (typeof args[0] !== 'object') {
+							window.console.log(args[0]);
+						}
+					}
+				}
+			};
+		};
+		sayso.log = _log('log');
+		sayso.warn = _log('warn');
+	}
+
+	// Support for stupid browsers
+
+	function getInternetExplorerVersion() {
+		var rv = -1; // Return value assumes failure.
+		if (navigator.appName == 'Microsoft Internet Explorer') {
+			var ua = navigator.userAgent;
+			var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+			if (re.exec(ua) != null)
+				rv = parseFloat(RegExp.$1);
+		}
+		return rv;
+	}
+
+	function getGeckoVersion() {
+		var rv = -1; // Return value assumes failure.
+		fullVersion = navigator.userAgent.replace(/^Mozilla.*rv:|\).*$/g, '' ) || ( /^rv\:|\).*$/g, '' );
+		if (fullVersion) {
+			rv = fullVersion.substring(0,3);
+		}
+		return rv;
+	}
+
+	var ieVersion = getInternetExplorerVersion();
+	var geckoVersion = getGeckoVersion();
+	if (ieVersion > -1 && ieVersion < 9) {
+		sayso.disableJqueryEffects = true;
+	} else {
+		sayso.disableJqueryEffects = false;
+	}
+
+	// test if HTML5 placeholder is supported or not
+	if (ieVersion > -1 || (geckoVersion > -1 && geckoVersion < 4)) {
+		sayso.placeholderSupportMissing = true;
+	} else {
+		sayso.placeholderSupportMissing = false;
+	}
+
+	String.prototype.trim = function() {
+		return this.replace(/^\s+|\s+$/g,'');
+	};
+
+
 	function loadStarbar () {
 
 		if ($SQ('embed[type*="pdf"]').length > 0) return; // Don't load on Google Docs
@@ -327,11 +328,11 @@
 					sayso.flags = 'none';
 				}
 
-				appAPI.db.set('starbar_id', starbar.id);
-				appAPI.db.set('auth_key', starbar.auth_key);
-				appAPI.db.set('user_id', starbar._user.id);
-				appAPI.db.set('user_key', starbar._user._key);
-				appAPI.db.set('flags', sayso.flags);
+				$SQ.appAPI.db.set('starbar_id', starbar.id);
+				$SQ.appAPI.db.set('auth_key', starbar.auth_key);
+				$SQ.appAPI.db.set('user_id', starbar._user.id);
+				$SQ.appAPI.db.set('user_key', starbar._user._key);
+				$SQ.appAPI.db.set('flags', sayso.flags);
 
 				if (!starbar._html.length) return; // for some reason, no markup was returned
 

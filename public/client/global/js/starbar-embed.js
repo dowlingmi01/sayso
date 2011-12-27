@@ -23,7 +23,7 @@
 
 	// if app is already loaded, go no further
 
-	if (typeof appAPI === 'object' && sayso.starbar.id) { // app already installed
+	if (typeof $SQ.appAPI === 'object' && sayso.starbar.id) { // app already installed
 		setCookie('sayso-installing', null, -10);
 		return;
 	}

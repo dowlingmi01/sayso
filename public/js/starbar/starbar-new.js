@@ -187,9 +187,9 @@ $SQ(function(){
 
 	// Update the cross-domain state variables
 	starbar.state.update = function (){
-		$SQ.appAPI.db.set("visibility", starbar.state.visibility);
-		$SQ.appAPI.db.set("profile", starbar.state.profile);
-		$SQ.appAPI.db.set("game", starbar.state.game);
+		$SQ.extensionDbSet("visibility", starbar.state.visibility);
+		$SQ.extensionDbSet("profile", starbar.state.profile);
+		$SQ.extensionDbSet("game", starbar.state.game);
 	};
 
 	// Starbar state
@@ -201,9 +201,9 @@ $SQ(function(){
 
 	// Refresh the Starbar to respond to state changes, if any
 	starbar.state.refresh = function () {
-		starbar.state.visibility = $SQ.appAPI.db.get("visibility");
-		starbar.state.profile = $SQ.appAPI.db.get("profile");
-		starbar.state.game = $SQ.appAPI.db.get("game");
+		starbar.state.visibility = $SQ.extensionDbGet("visibility");
+		starbar.state.profile = $SQ.extensionDbGet("profile");
+		starbar.state.game = $SQ.extensionDbGet("game");
 
 		// logic here to determine if/what should be fired to "refresh"
 		if (starbar.state.visibility != starbar.state.local.visibility) {

@@ -556,7 +556,7 @@ $SQ(function () {
 
 			adTargets[adTargetId] = adTarget;
 
-			$SQ.appAPI.db.set('ad_targets', JSON.stringify(adTargets));
+			$SQ.extensionDbSet('ad_targets', JSON.stringify(adTargets));
 
 			/*
 			var clickDetectionElem = $SQ(document.createElement('div'));

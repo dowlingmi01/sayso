@@ -17,8 +17,6 @@
 	currentUrl = window.location.href,
 	inIframe = (top !== self);
 
-	$SQ.appAPI = window.appAPI;
-
 	var baseDomain = window.appAPI.db.get('baseDomain') || "app-dev.saysollc.com";
 	var environment = window.appAPI.db.get('environment') || "DEV";
 
@@ -82,6 +80,8 @@
 
 		$SQ.jsLoadTimer = jsLoadTimer;
 		$SQ.cssLoadTimer = cssLoadTimer;
+
+		$SQ.appAPI = window.appAPI;
 
 		// JSON support for stupid browsers
 

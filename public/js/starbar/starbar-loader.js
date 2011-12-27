@@ -19,11 +19,9 @@
 
 	// bring in namespaced jQuery $SQ
 	if (!window.$SQ) {
-		if (!sayso.loading || sayso.loading !== 'jquery') {
-			var jsJQuery = document.createElement('script');
-			jsJQuery.src = '//' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
-			starbarContainer.appendChild(jsJQuery);
-		}
+		var jsJQuery = document.createElement('script');
+		jsJQuery.src = '//' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
+		starbarContainer.appendChild(jsJQuery);
 	}
 
 	new jsLoadTimer().start('window.$SQ', function () {

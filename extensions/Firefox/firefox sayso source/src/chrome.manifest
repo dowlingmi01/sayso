@@ -1,0 +1,4 @@
+content	kynetx-a239x18	jar:chrome/kynetx-a239x18.jar!/content/
+locale	kynetx-a239x18	en-US	jar:chrome/kynetx-a239x18.jar!/locale/en-US/
+skin	kynetx-a239x18	classic/1.0	jar:chrome/kynetx-a239x18.jar!/skin/
+overlay	chrome://browser/content/browser.xul	chrome://kynetx-a239x18/content/firefoxOverlay.xul

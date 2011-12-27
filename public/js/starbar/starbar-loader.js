@@ -17,6 +17,60 @@
 	currentUrl = window.location.href,
 	inIframe = (top !== self);
 
+	$SQ.appAPI = window.appAPI;
+
+	var baseDomain = window.appAPI.db.get('baseDomain') || "app-dev.saysollc.com";
+	var environment = window.appAPI.db.get('environment') || "DEV";
+
+	var starbarId = window.appAPI.db.get("starbarId") || 0;
+	var userId = window.appAPI.db.get("userId") || 0;
+	var userKey = window.appAPI.db.get("userKey") || '';
+	var authKey = window.appAPI.db.get("authKey") || '';
+	var visibleState = window.appAPI.db.get("visibleState") || "open";
+	var notificationsState = window.appAPI.db.get("notificationsState") || 'ready';
+	var profileState = window.appAPI.db.get("profileState") || 'ready';
+	var gameState = window.appAPI.db.get("gameState") || 'ready';
+	var windowWidth = window.appAPI.db.get("windowWidth") || 1000;
+	var windowHeight = window.appAPI.db.get("windowHeight") || 1000;
+
+	var flags = window.appAPI.db.get("flags") || 'none';
+	var studies = window.appAPI.db.get("studies") || '';
+	var studiesTimestamp = window.appAPI.db.get("studiesTimestamp") || '';
+	var adTargets = window.appAPI.db.get("adTargets") || '{}';
+
+	// setup global variables/functions
+
+	if (!window.sayso) window.sayso = {};
+	window.sayso.debug = false;
+	window.sayso.baseDomain = baseDomain;
+	window.sayso.environment = environment;
+	window.sayso.flags = flags;
+	window.sayso.starbar = {
+		id : starbarId,
+		authKey : authKey,
+		user : {
+			id : userId,
+			key : userKey
+		},
+		state : {
+			visibility : visibleState,
+			notifications : notificationsState,
+			profile : profileState,
+			game : gameState
+		},
+		context : {
+			windowWidth : windowWidth,
+			windowHeight : windowHeight
+		},
+		loaded : false
+	};
+	window.sayso.study = {
+		studies : studies,
+		studiesTimestamp : studiesTimestamp,
+		adTargets : adTargets
+
+	};
+
 	// bring in namespaced jQuery $SQ
 	if (!window.$SQ) {
 		var jsJQuery = document.createElement('script');
@@ -28,60 +82,6 @@
 
 		$SQ.jsLoadTimer = jsLoadTimer;
 		$SQ.cssLoadTimer = cssLoadTimer;
-
-		$SQ.appAPI = window.appAPI;
-
-		var baseDomain = $SQ.appAPI.db.get('baseDomain') || "app-dev.saysollc.com";
-		var environment = $SQ.appAPI.db.get('environment') || "DEV";
-
-		var starbarId = $SQ.appAPI.db.get("starbarId") || 0;
-		var userId = $SQ.appAPI.db.get("userId") || 0;
-		var userKey = $SQ.appAPI.db.get("userKey") || '';
-		var authKey = $SQ.appAPI.db.get("authKey") || '';
-		var visibleState = $SQ.appAPI.db.get("visibleState") || "open";
-		var notificationsState = $SQ.appAPI.db.get("notificationsState") || 'ready';
-		var profileState = $SQ.appAPI.db.get("profileState") || 'ready';
-		var gameState = $SQ.appAPI.db.get("gameState") || 'ready';
-		var windowWidth = $SQ.appAPI.db.get("windowWidth") || 1000;
-		var windowHeight = $SQ.appAPI.db.get("windowHeight") || 1000;
-
-		var flags = $SQ.appAPI.db.get("flags") || 'none';
-		var studies = $SQ.appAPI.db.get("studies") || '';
-		var studiesTimestamp = $SQ.appAPI.db.get("studiesTimestamp") || '';
-		var adTargets = $SQ.appAPI.db.get("adTargets") || '{}';
-
-		// setup global variables/functions
-
-		if (!window.sayso) window.sayso = {};
-		window.sayso.debug = false;
-		window.sayso.baseDomain = baseDomain;
-		window.sayso.environment = environment;
-		window.sayso.flags = flags;
-		window.sayso.starbar = {
-			id : starbarId,
-			authKey : authKey,
-			user : {
-				id : userId,
-				key : userKey
-			},
-			state : {
-				visibility : visibleState,
-				notifications : notificationsState,
-				profile : profileState,
-				game : gameState
-			},
-			context : {
-				windowWidth : windowWidth,
-				windowHeight : windowHeight
-			},
-			loaded : false
-		};
-		window.sayso.study = {
-			studies : studies,
-			studiesTimestamp : studiesTimestamp,
-			adTargets : adTargets
-
-		};
 
 		// JSON support for stupid browsers
 

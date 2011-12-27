@@ -1,0 +1,12 @@
+Say.So Safari Extensions
+
+SaySo Star Bar.safariextz  a239x21 "Say.So Star Bar"
+Sayso TEST.safariextz      a239x22 "Say.So TEST"
+SaySo DEV.safariextz       a239x18 "Say.So DEV"
+SaySo LOCAL.safariextz     a239x20 "Say.So LOCAL"
+
+The global.html and page.js contain the Safari extension source code for each browser extension. The only customization required to enable the extension code for a unique Kynetx Ruleset is to set the "appid" on line 7 within global.html, e.g.:
+
+appid = "a239x20";
+
+The remainder of the Safari extension configuration is performed within the Safari extension builder GUI.

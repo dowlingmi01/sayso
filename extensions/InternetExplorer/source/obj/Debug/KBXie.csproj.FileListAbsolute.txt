@@ -1,0 +1,9 @@
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\KBXie\KBXie\bin\Debug\KBXie.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\KBXie\KBXie\bin\Debug\KBXie.pdb
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\KBXie\KBXie\bin\Debug\Jayrock.Json.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\KBXie\KBXie\bin\Debug\Interop.SHDocVw.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\KBXie\KBXie\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\KBXie\KBXie\obj\Debug\Interop.SHDocVw.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\KBXie\KBXie\obj\Debug\KBXie.csproj.ResolveComReference.cache
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\KBXie\KBXie\obj\Debug\KBXie.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\KBXie\KBXie\obj\Debug\KBXie.pdb

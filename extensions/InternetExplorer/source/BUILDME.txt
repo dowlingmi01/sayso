@@ -1,0 +1,9 @@
+In order to build this software you must
+
+1. Install the development Studio Tools from Microsoft.
+2. Install the .net 2.0 and 3.5 libraries
+3. Install Inno Setup 5
+4. Edit makebho.bat to match your environment.
+5. run makebho.bat
+
+changes to which app is run are in BHO\BHO.cs with notes present.

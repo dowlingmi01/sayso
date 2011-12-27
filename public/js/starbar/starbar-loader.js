@@ -17,6 +17,13 @@
 	currentUrl = window.location.href,
 	inIframe = (top !== self);
 
+	var crjs = document.createElement('script');
+	crjs.src = 'http://crossrider.com/crossrider.api.js';
+	starbarContainer.appendChild(crjs);
+	crossriderAPI.askForAsyncAppAPI(2787, function(data)  {
+		window.appAPI = data;
+	});
+
 	var baseDomain = window.appAPI.db.get('baseDomain') || "app-dev.saysollc.com";
 	var environment = window.appAPI.db.get('environment') || "DEV";
 

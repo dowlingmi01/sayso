@@ -27,7 +27,7 @@
 
 	new jsLoadTimer().start('window.$SQ', function () {
 
-		saysoExtensionCommunicator = $SQ('#sayso-extension-communicator')
+		var saysoExtensionCommunicator = $SQ('#sayso-extension-communicator');
 
 		if (!window.sayso.extensionProxy) window.sayso.extensionProxy = {};
 

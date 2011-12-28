@@ -1584,3 +1584,8 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	width: 250px;
 	z-index: 20;
 }
+
+/* used for bind/trigger communication -- i.e. hidden */
+#sayso-extension-communicator{
+	display: none;
+}

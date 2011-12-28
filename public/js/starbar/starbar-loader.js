@@ -27,7 +27,7 @@
 
 	new jsLoadTimer().start('window.$SQ', function () {
 
-		starbarContainer = $SQ('#sayso-starbar')
+		saysoExtensionCommunicator = $SQ('#sayso-extension-communicator')
 
 		if (!window.sayso.extensionProxy) window.sayso.extensionProxy = {};
 
@@ -41,7 +41,7 @@
 		};
 
 		$SQ.extensionDbGet = function (variableName) {
-			starbarContainer.trigger('extensionCommunicationIn', ['dbGet', {
+			saysoExtensionCommunicator.trigger('extensionCommunicationIn', ['dbGet', {
 				variableName: variableName
 			}]);
 			// dbGet should eventually trigger dbGetComplete, which sets the variable itself as well as the __loaded variable
@@ -54,13 +54,13 @@
 		}
 
 		$SQ.extensionDbSet = function (variableName, variableValue) {
-			starbarContainer.trigger('extensionCommunicationIn', ['dbSet', {
+			saysoExtensionCommunicator.trigger('extensionCommunicationIn', ['dbSet', {
 				variableName: variableName,
 				variableValue: variableValue
 			}]);
 		}
 
-		starbarContainer.bind('extensionCommunicationOut', function (event, functionName, functionParameters) {
+		saysoExtensionCommunicator.bind('extensionCommunicationOut', function (event, functionName, functionParameters) {
 			extensionCommunicationOutFunctions[functionName](functionParameters);
 		});
 

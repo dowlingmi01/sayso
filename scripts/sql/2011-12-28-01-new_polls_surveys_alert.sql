@@ -1,6 +1,4 @@
 INSERT INTO survey (ordinal, user_id, type, origin, starbar_id, title, created, external_id, external_key, premium, number_of_questions)
-VALUES (120, 1, 'survey', 'SurveyGizmo', 1, 'Vintage Gear', now(), '762521', 'Vintage-Gear', null, 4);
-INSERT INTO survey (ordinal, user_id, type, origin, starbar_id, title, created, external_id, external_key, premium, number_of_questions)
 VALUES (130, 1, 'survey', 'SurveyGizmo', 1, 'Economy', now(), '749765', 'Econmoic-Outlook', null, 5);
 INSERT INTO survey (ordinal, user_id, type, origin, starbar_id, title, created, external_id, external_key, premium, number_of_questions)
 VALUES (140, 1, 'survey', 'SurveyGizmo', 1, 'Social Networking', now(), '749751', 'Social-Networking', null, 3);

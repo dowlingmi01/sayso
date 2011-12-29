@@ -32,10 +32,10 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
 			$good->setNonRedeemReason('It\'s too late to buy tokens for week 1: congrats to Jansen W. from Glen Allen, VA!');
 			$good->setCommentForUser('Unavailable');
 		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_TWO_GIVEAWAY')) {
-			$good->setNonRedeemReason('It\'s too late to buy tokens for week 2: we\'ll be announcing the winner soon!');
+			$good->setNonRedeemReason('It\'s too late to buy tokens for week 2: congrats to Mike B. from New York, NY!');
 			$good->setCommentForUser('Unavailable');
 		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_THREE_GIVEAWAY')) {
-			$good->setNonRedeemReason('It\'s too late to buy tokens for week 3: we\'ll be announcing the winner soon!');
+			$good->setNonRedeemReason('It\'s too late to buy tokens for week 3: congrats to Matthew L. from Black Mt, NC!');
 			$good->setCommentForUser('Unavailable');
 		} elseif (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
 			$good->setNonRedeemReason('SOLD OUT? There\'s more<br />gear coming! Check back and keep earning!');

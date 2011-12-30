@@ -52,6 +52,117 @@ class Starbar_IndexController extends Api_GlobalController
 	public function genericAction () {
 	}
 
+	public function notesReportAction () {
+		// Starbar
+		$starbar = new Starbar();
+		$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));
+		$starbar->setVisibility('stowed');
+		$this->view->starbar = $starbar;
+
+		$notesRemaining = array();
+		$notesTotal = array();
+		$notesSpent = array();
+
+		$notesRemainingPools = array();
+		$notesTotalPools = array();
+		$notesSpentPools = array();
+
+		$gamers = Db_Pdo::fetchAll("SELECT user_id, gaming_id FROM user_gaming");
+
+
+		foreach($gamers as $gamer) {
+			$gamerInfoCache = Api_Cache::getInstance('BigDoor_EndUser_' . $gamer['gaming_id'], Api_Cache::LIFETIME_DAY);
+
+			if ($gamerInfoCache->test()) {
+				$gamerInfo = $gamerInfoCache->load();
+			} else {
+				$client = Gaming_BigDoor_HttpClient::getInstance('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
+				$client->getEndUser($gamer['gaming_id']);
+				$gamerInfo = $client->getData();
+				$gamerInfoCache->save($gamerInfo);
+			}
+
+			foreach ($gamerInfo->currency_balances as $currency) {
+				switch ($currency->pub_title) {
+					case 'Notes':
+						$notesRemaining[$gamer['user_id']] = intval($currency->current_balance);
+						break;
+					case 'Chops':
+						$notesTotal[$gamer['user_id']] = intval($currency->current_balance/10);
+						break;
+					default:
+						break;
+				}
+			}
+
+			if (isset($notesRemaining[$gamer['user_id']]) && isset($notesTotal[$gamer['user_id']]) && $notesTotal[$gamer['user_id']] > $notesRemaining[$gamer['user_id']]) {
+				$notesSpent[$gamer['user_id']] = $notesTotal[$gamer['user_id']] - $notesRemaining[$gamer['user_id']];
+			}
+		}
+
+		foreach ($notesRemaining as $userNotesRemaining) {
+			$pool = $userNotesRemaining / 500;
+			if (isset($notesRemainingPools[$pool])) $notesRemainingPools[$pool]++;
+			else $notesRemainingPools[$pool] = 1;
+		}
+
+		foreach ($notesTotal as $userNotesTotal) {
+			$pool = $userNotesTotal / 500;
+			if (isset($notesTotalPools[$pool])) $notesTotalPools[$pool]++;
+			else $notesTotalPools[$pool] = 1;
+		}
+
+		foreach ($notesSpent as $userNotesSpent) {
+			$pool = $userNotesSpent / 500;
+			if (isset($notesSpentPools[$pool])) $notesSpentPools[$pool]++;
+			else $notesSpentPools[$pool] = 1;
+		}
+
+		$this->view->notesRemainingPools = $notesRemainingPools;
+		$this->view->notesTotalPools = $notesTotalPools;
+		$this->view->notesSpentPools = $notesSpentPools;
+
+		/*
+
+
+			// BD server is 8 hours ahead
+			$startTime = $startTime + (8*60*60);
+			$endTime = $endTime + (8*60*60);
+
+			$iterations = 60;
+			$step = (int) round(($endTime-$startTime)/$iterations);
+			$transactions = array();
+			for ( $i=0 ; $i<$iterations ; $i++ ) {
+				$stepStartTime = $startTime+($step*$i);
+				$stepEndTime = $startTime+($step*($i+1));
+				if ($i == $iterations - 1) $stepEndTime = $endTime;
+
+				if ($stepStartTime < mktime() + (9*60*60)) { // Don't check more than one hour into the future (one hour in case of discrepencies between BD and SS timing)
+					$cacheId = 'Token_Cache_'.$goodId.'_'.$stepStartTime.'_'.$stepEndTime;
+					$cache = Api_Cache::getInstance($cacheId, Api_Cache::LIFETIME_MONTH);
+
+					if ($cache->test()) {
+						$transactions = array_merge($transactions, $cache->load());
+					} else {
+						$client = Gaming_BigDoor_HttpClient::getInstance('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
+						$client->setParameterGet('max_records', 10000);
+						$client->setParameterGet('named_good', $goodId);
+						$client->setParameterGet('start_time', $stepStartTime);
+						$client->setParameterGet('end_time', $stepEndTime);
+						$client->getGoodSummary();
+						$data = $client->getData();
+						if ($stepEndTime < mktime() + (7*60*60)) { // Cache everything that has been purchased more than an hour ago (allow an hour for BD to be up to date)
+							$cache->save($data);
+						}
+						$transactions = array_merge($transactions, $data);
+					}
+				}
+			}
+			$this->view->transactions = $transactions;
+		}
+		*/
+	}
+
 	public function inventoryAction () {
 		// Starbar
 		$starbar = new Starbar();
@@ -107,144 +218,143 @@ class Starbar_IndexController extends Api_GlobalController
 		$this->view->sold_inventory = $soldInventory;
 	}
 
-    public function raffleMeisterAction () {
-        // Starbar
-        $starbar = new Starbar();
-        $starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));
-        $starbar->setVisibility('stowed');
-        $this->view->starbar = $starbar;
+	public function raffleMeisterAction () {
+		// Starbar
+		$starbar = new Starbar();
+		$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));
+		$starbar->setVisibility('stowed');
+		$this->view->starbar = $starbar;
 
-        $request = $this->getRequest();
-        $request = $this->getRequest();
-        $goodId = (int) $request->getParam('named_good_id');
+		$request = $this->getRequest();
+		$goodId = (int) $request->getParam('named_good_id');
 
-        switch ($goodId) {
-            case 2036:
-                $startTime = mktime(0, 0, 0, 12, 2, 2011);
-                $endTime = mktime(23, 59, 59, 12, 11, 2011);
-                break;
-            case 2038:
-                $startTime = mktime(0, 0, 0, 12, 2, 2011);
-                $endTime = mktime(23, 59, 59, 18, 11, 2011);
-                break;
-            case 2044:
-                $startTime = mktime(0, 0, 0, 12, 2, 2011);
-                $endTime = mktime(23, 59, 59, 12, 25, 2011);
-                break;
-            case 2054:
-                $startTime = mktime(0, 0, 0, 12, 2, 2011);
-                $endTime = mktime(23, 59, 59, 1, 2, 2012);
-                break;
-            default:
-                $goodId = false;
-        }
+		switch ($goodId) {
+			case 2036:
+				$startTime = mktime(0, 0, 0, 12, 2, 2011);
+				$endTime = mktime(23, 59, 59, 12, 11, 2011);
+				break;
+			case 2038:
+				$startTime = mktime(0, 0, 0, 12, 2, 2011);
+				$endTime = mktime(23, 59, 59, 18, 11, 2011);
+				break;
+			case 2044:
+				$startTime = mktime(0, 0, 0, 12, 2, 2011);
+				$endTime = mktime(23, 59, 59, 12, 25, 2011);
+				break;
+			case 2054:
+				$startTime = mktime(0, 0, 0, 12, 2, 2011);
+				$endTime = mktime(23, 59, 59, 1, 2, 2012);
+				break;
+			default:
+				$goodId = false;
+		}
 
-        if ($goodId) {
-            // BD server is 8 hours ahead
-            $startTime = $startTime + (8*60*60);
-            $endTime = $endTime + (8*60*60);
+		if ($goodId) {
+			// BD server is 8 hours ahead
+			$startTime = $startTime + (8*60*60);
+			$endTime = $endTime + (8*60*60);
 
-            $iterations = 60;
-            $step = (int) round(($endTime-$startTime)/$iterations);
-            $transactions = array();
-            for ( $i=0 ; $i<$iterations ; $i++ ) {
-                $stepStartTime = $startTime+($step*$i);
-                $stepEndTime = $startTime+($step*($i+1));
-                if ($i == $iterations - 1) $stepEndTime = $endTime;
+			$iterations = 60;
+			$step = (int) round(($endTime-$startTime)/$iterations);
+			$transactions = array();
+			for ( $i=0 ; $i<$iterations ; $i++ ) {
+				$stepStartTime = $startTime+($step*$i);
+				$stepEndTime = $startTime+($step*($i+1));
+				if ($i == $iterations - 1) $stepEndTime = $endTime;
 
-                if ($stepStartTime < mktime() + (9*60*60)) { // Don't check more than one hour into the future (one hour in case of discrepencies between BD and SS timing)
-	                $cacheId = 'Token_Cache_'.$goodId.'_'.$stepStartTime.'_'.$stepEndTime;
-	                $cache = Api_Cache::getInstance($cacheId, Api_Cache::LIFETIME_MONTH);
+				if ($stepStartTime < mktime() + (9*60*60)) { // Don't check more than one hour into the future (one hour in case of discrepencies between BD and SS timing)
+					$cacheId = 'Token_Cache_'.$goodId.'_'.$stepStartTime.'_'.$stepEndTime;
+					$cache = Api_Cache::getInstance($cacheId, Api_Cache::LIFETIME_MONTH);
 
-	                if ($cache->test()) {
-	                    $transactions = array_merge($transactions, $cache->load());
-	                } else {
-	                    $client = Gaming_BigDoor_HttpClient::getInstance('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
-	                    $client->setParameterGet('max_records', 10000);
-	                    $client->setParameterGet('named_good', $goodId);
-	                    $client->setParameterGet('start_time', $stepStartTime);
-	                    $client->setParameterGet('end_time', $stepEndTime);
-	                    $client->getGoodSummary();
-	                    $data = $client->getData();
-	                    if ($stepEndTime < mktime() + (7*60*60)) { // Cache everything that has been purchased more than an hour ago (allow an hour for BD to be up to date)
-	                        $cache->save($data);
-	                    }
-	                    $transactions = array_merge($transactions, $data);
-	                }
+					if ($cache->test()) {
+						$transactions = array_merge($transactions, $cache->load());
+					} else {
+						$client = Gaming_BigDoor_HttpClient::getInstance('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
+						$client->setParameterGet('max_records', 10000);
+						$client->setParameterGet('named_good', $goodId);
+						$client->setParameterGet('start_time', $stepStartTime);
+						$client->setParameterGet('end_time', $stepEndTime);
+						$client->getGoodSummary();
+						$data = $client->getData();
+						if ($stepEndTime < mktime() + (7*60*60)) { // Cache everything that has been purchased more than an hour ago (allow an hour for BD to be up to date)
+							$cache->save($data);
+						}
+						$transactions = array_merge($transactions, $data);
+					}
 				}
-            }
-            $this->view->transactions = $transactions;
+			}
+			$this->view->transactions = $transactions;
 
-            $uniqueGamers = new ItemCollection();
-            if (count($transactions)) {
-                foreach ($transactions as $transaction) {
-                    $gamerId = $transaction->good_sender;
-                    if (!$uniqueGamers->hasItem($gamerId)) {
-                        $uniqueGamer = new Item();
-                        $uniqueGamer->setId($gamerId);
-                        $uniqueGamers->addItem($uniqueGamer);
-                    }
-                }
-                $uniqueGamersString = "";
-                foreach ($uniqueGamers as $uniqueGamer) {
-                    if ($uniqueGamersString) $uniqueGamersString .= ",";
-                    $uniqueGamersString .= "'".$uniqueGamer->getId()."'";
-                }
-                $sql = "
-                    SELECT user.id AS user_id, user_email.email AS email, user_gaming.gaming_id AS id
-                    FROM user, user_email, user_gaming
-                    WHERE user.primary_email_id = user_email.id
-                        AND user_gaming.user_id = user.id
-                        AND user_gaming.gaming_id IN (".$uniqueGamersString.")
-                    ORDER BY FIELD (user_gaming.gaming_id, ".$uniqueGamersString.")
-                ";
-                $results = Db_Pdo::fetchAll($sql);
-                $matchedGamers = new ItemCollection();
-                foreach ($results as $result) {
-                    $matchedGamer = new Item();
-                    $matchedGamer->setId($result['id']);
-                    $matchedGamer->user_id = $result['user_id'];
-                    $matchedGamer->email = $result['email'];
-                    $matchedGamers->addItem($matchedGamer);
-                }
-                $this->view->matched_gamers = $matchedGamers;
-            }
-        }
-
-        $this->view->named_good_id = $goodId;
-    }
-
-    public function emailsInstalledAction () {
-        $sql = "
-            SELECT uuid FROM external_user
-            WHERE user_id IS NOT NULL
-        ";
-        $results = Db_Pdo::fetchAll($sql);
-        $emails = "";
-        foreach ($results as $result) {
-        	if (strpos($result['uuid'], "say.so") === false && strpos($result['uuid'], "saysollc.com") === false && strpos($result['uuid'], "hellomusic.com") === false && strpos($result['uuid'], "@") !== false) {
-        		if ($emails) $emails .= ",";
-            	$emails .= $result['uuid'];
-        	}
+			$uniqueGamers = new ItemCollection();
+			if (count($transactions)) {
+				foreach ($transactions as $transaction) {
+					$gamerId = $transaction->good_sender;
+					if (!$uniqueGamers->hasItem($gamerId)) {
+						$uniqueGamer = new Item();
+						$uniqueGamer->setId($gamerId);
+						$uniqueGamers->addItem($uniqueGamer);
+					}
+				}
+				$uniqueGamersString = "";
+				foreach ($uniqueGamers as $uniqueGamer) {
+					if ($uniqueGamersString) $uniqueGamersString .= ",";
+					$uniqueGamersString .= "'".$uniqueGamer->getId()."'";
+				}
+				$sql = "
+					SELECT user.id AS user_id, user_email.email AS email, user_gaming.gaming_id AS id
+					FROM user, user_email, user_gaming
+					WHERE user.primary_email_id = user_email.id
+						AND user_gaming.user_id = user.id
+						AND user_gaming.gaming_id IN (".$uniqueGamersString.")
+					ORDER BY FIELD (user_gaming.gaming_id, ".$uniqueGamersString.")
+				";
+				$results = Db_Pdo::fetchAll($sql);
+				$matchedGamers = new ItemCollection();
+				foreach ($results as $result) {
+					$matchedGamer = new Item();
+					$matchedGamer->setId($result['id']);
+					$matchedGamer->user_id = $result['user_id'];
+					$matchedGamer->email = $result['email'];
+					$matchedGamers->addItem($matchedGamer);
+				}
+				$this->view->matched_gamers = $matchedGamers;
+			}
 		}
-        $this->view->emails = $emails;
-    }
 
-    public function emailsNotInstalledAction () {
-        $sql = "
-            SELECT uuid FROM external_user
-            WHERE user_id IS NULL
-        ";
-        $results = Db_Pdo::fetchAll($sql);
-        $emails = "";
-        foreach ($results as $result) {
-        	if (strpos($result['uuid'], "say.so") === false && strpos($result['uuid'], "saysollc.com") === false && strpos($result['uuid'], "hellomusic.com") === false && strpos($result['uuid'], "@") !== false) {
-        		if ($emails) $emails .= ",";
-            	$emails .= $result['uuid'];
-        	}
+		$this->view->named_good_id = $goodId;
+	}
+
+	public function emailsInstalledAction () {
+		$sql = "
+			SELECT uuid FROM external_user
+			WHERE user_id IS NOT NULL
+		";
+		$results = Db_Pdo::fetchAll($sql);
+		$emails = "";
+		foreach ($results as $result) {
+			if (strpos($result['uuid'], "say.so") === false && strpos($result['uuid'], "saysollc.com") === false && strpos($result['uuid'], "hellomusic.com") === false && strpos($result['uuid'], "@") !== false) {
+				if ($emails) $emails .= ",";
+				$emails .= $result['uuid'];
+			}
 		}
-        $this->view->emails = $emails;
-    }
+		$this->view->emails = $emails;
+	}
+
+	public function emailsNotInstalledAction () {
+		$sql = "
+			SELECT uuid FROM external_user
+			WHERE user_id IS NULL
+		";
+		$results = Db_Pdo::fetchAll($sql);
+		$emails = "";
+		foreach ($results as $result) {
+			if (strpos($result['uuid'], "say.so") === false && strpos($result['uuid'], "saysollc.com") === false && strpos($result['uuid'], "hellomusic.com") === false && strpos($result['uuid'], "@") !== false) {
+				if ($emails) $emails .= ",";
+				$emails .= $result['uuid'];
+			}
+		}
+		$this->view->emails = $emails;
+	}
 
 	public function hellomusicAction () {
 		$this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');

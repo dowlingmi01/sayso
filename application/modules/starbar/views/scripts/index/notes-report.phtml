@@ -1,0 +1,62 @@
+<? if (count($this->notesRemainingPools)) { ?>
+	<br /><br />
+	Notes Remaining (Current Balance)
+	<table border=1 cellpadding=2 cellspacing=0>
+		<thead>
+			<tr>
+				<? for ($i=0 ; $i <= max(array_keys($this->notesRemainingPools)) ; $i++) { ?>
+					<td><?= ($i*500) ?>-<?= ($i*500)+499 ?></td>
+				<? } ?>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<? for ($i=0 ; $i <= max(array_keys($this->notesRemainingPools)) ; $i++) { ?>
+					<td><?= (isset($this->notesRemainingPools[$i]) ? $this->notesRemainingPools[$i] : "&nbsp;") ?></td>
+				<? } ?>
+			</tr>
+		</tbody>
+	</table>
+<? } ?>
+
+<? if (count($this->notesTotalPools)) { ?>
+	<br /><br />
+	Notes Total Earned
+	<table border=1 cellpadding=2 cellspacing=0>
+		<thead>
+			<tr>
+				<? for ($i=0 ; $i <= max(array_keys($this->notesTotalPools)) ; $i++) { ?>
+					<td><?= ($i*500) ?>-<?= ($i*500)+499 ?></td>
+				<? } ?>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<? for ($i=0 ; $i <= max(array_keys($this->notesTotalPools)) ; $i++) { ?>
+					<td><?= (isset($this->notesTotalPools[$i]) ? $this->notesTotalPools[$i] : "&nbsp;") ?></td>
+				<? } ?>
+			</tr>
+		</tbody>
+	</table>
+<? } ?>
+
+<? if (count($this->notesSpentPools)) { ?>
+	<br /><br />
+	Notes Spent
+	<table border=1 cellpadding=2 cellspacing=0>
+		<thead>
+			<tr>
+				<? for ($i=0 ; $i <= max(array_keys($this->notesSpentPools)) ; $i++) { ?>
+					<td><?= ($i*500) ?>-<?= ($i*500)+499 ?></td>
+				<? } ?>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<? for ($i=0 ; $i <= max(array_keys($this->notesSpentPools)) ; $i++) { ?>
+					<td><?= (isset($this->notesSpentPools[$i]) ? $this->notesSpentPools[$i] : "&nbsp;") ?></td>
+				<? } ?>
+			</tr>
+		</tbody>
+	</table>
+<? } ?>

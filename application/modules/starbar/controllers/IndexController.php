@@ -75,9 +75,12 @@ class Starbar_IndexController extends Api_GlobalController
 		foreach($gamers as $gamer) {
 			$gamerInfoCache = Api_Cache::getInstance('BigDoor_EndUser_' . $gamer['gaming_id'], Api_Cache::LIFETIME_DAY);
 
+			$gamerInfo = false;
 			if ($gamerInfoCache->test()) {
 				$gamerInfo = $gamerInfoCache->load();
-			} else {
+			}
+
+			if (!$gamerInfo || !$gamerInfo->currency_balances) {
 				$client = Gaming_BigDoor_HttpClient::getInstance('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
 				$client->getEndUser($gamer['gaming_id']);
 				$gamerInfo = $client->getData();

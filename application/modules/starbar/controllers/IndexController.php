@@ -85,12 +85,12 @@ class Starbar_IndexController extends Api_GlobalController
 			}
 
 			foreach ($gamerInfo->currency_balances as $currency) {
-				switch ($currency->pub_title) {
-					case 'Notes':
+				switch (strtolower($currency->title)) {
+					case 'notes':
 						$notesRemaining[$gamer['user_id']] = intval($currency->current_balance);
 						break;
-					case 'Chops':
-						$notesTotal[$gamer['user_id']] = intval($currency->current_balance/10);
+					case 'chops':
+						$notesTotal[$gamer['user_id']] = intval($currency->current_balance/10.0);
 						break;
 					default:
 						break;

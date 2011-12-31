@@ -32,7 +32,7 @@
 					categories: [
 						<? for ($i=0 ; $i <= max(array_keys($this->notesRemainingPools)) ; $i++) { ?>
 							<?= ($i ? "," : "") ?>
-							'<?= ($i*500) ?>-<?= ($i*500)+499 ?>'
+							'<?= ($i*500) ?>-<?= ($i*500)+499 ?> Notes'
 						<? } ?>
 					],
 					labels: {
@@ -97,7 +97,7 @@
 					categories: [
 						<? for ($i=0 ; $i <= max(array_keys($this->notesTotalPools)) ; $i++) { ?>
 							<?= ($i ? "," : "") ?>
-							'<?= ($i*500) ?>-<?= ($i*500)+499 ?>'
+							'<?= ($i*500) ?>-<?= ($i*500)+499 ?> Notes'
 						<? } ?>
 					],
 					labels: {
@@ -134,14 +134,16 @@
 	<table border=1 cellpadding=2 cellspacing=0>
 		<thead>
 			<tr>
-				<? for ($i=0 ; $i <= max(array_keys($this->notesSpentPools)) ; $i++) { ?>
+				<td>0</td>
+				<td>1-499</td>
+				<? for ($i=1 ; $i <= max(array_keys($this->notesSpentPools)) ; $i++) { ?>
 					<td><?= ($i*500) ?>-<?= ($i*500)+499 ?></td>
 				<? } ?>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<? for ($i=0 ; $i <= max(array_keys($this->notesSpentPools)) ; $i++) { ?>
+				<? for ($i=-1 ; $i <= max(array_keys($this->notesSpentPools)) ; $i++) { ?>
 					<td><?= (isset($this->notesSpentPools[$i]) ? $this->notesSpentPools[$i] : "&nbsp;") ?></td>
 				<? } ?>
 			</tr>
@@ -160,9 +162,9 @@
 				},
 				xAxis: {
 					categories: [
-						<? for ($i=0 ; $i <= max(array_keys($this->notesSpentPools)) ; $i++) { ?>
-							<?= ($i ? "," : "") ?>
-							'<?= ($i*500) ?>-<?= ($i*500)+499 ?>'
+						'0 Notes','1-499 Notes'
+						<? for ($i=1 ; $i <= max(array_keys($this->notesSpentPools)) ; $i++) { ?>
+							,'<?= ($i*500) ?>-<?= ($i*500)+499 ?> Notes'
 						<? } ?>
 					],
 					labels: {
@@ -181,8 +183,8 @@
 				series: [{
 					name: 'Users',
 					data: [
-						<? for ($i=0 ; $i <= max(array_keys($this->notesSpentPools)) ; $i++) { ?>
-							<?= ($i ? "," : "") ?>
+						<? for ($i=-1 ; $i <= max(array_keys($this->notesSpentPools)) ; $i++) { ?>
+							<?= ($i==-1 ? "," : "") ?>
 							<?= (isset($this->notesSpentPools[$i]) ? $this->notesSpentPools[$i] : '0') ?>
 						<? } ?>
 

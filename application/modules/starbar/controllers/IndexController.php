@@ -106,8 +106,10 @@ class Starbar_IndexController extends Api_GlobalController
 				}
 			}
 
-			if (isset($notesRemaining[$gamer['gaming_id']]) && isset($notesTotal[$gamer['gaming_id']]) && $notesTotal[$gamer['gaming_id']] >= $notesRemaining[$gamer['gaming_id']]) {
+			if (isset($notesRemaining[$gamer['gaming_id']]) && isset($notesTotal[$gamer['gaming_id']]) && $notesTotal[$gamer['gaming_id']] > $notesRemaining[$gamer['gaming_id']]) {
 				$notesSpent[$gamer['gaming_id']] = $notesTotal[$gamer['gaming_id']] - $notesRemaining[$gamer['gaming_id']];
+			} elseif (isset($notesRemaining[$gamer['gaming_id']]) && isset($notesTotal[$gamer['gaming_id']]) && $notesTotal[$gamer['gaming_id']] == $notesRemaining[$gamer['gaming_id']]) {
+				$notesSpent[$gamer['gaming_id']] = 0;
 			}
 		}
 
@@ -124,7 +126,11 @@ class Starbar_IndexController extends Api_GlobalController
 		}
 
 		foreach ($notesSpent as $userNotesSpent) {
-			$pool = $userNotesSpent / 500;
+			if ($userNotesSpent === 0) {
+				$pool = -1;
+			} else {
+				$pool = $userNotesSpent / 500;
+			}
 			if (isset($notesSpentPools[$pool])) $notesSpentPools[$pool]++;
 			else $notesSpentPools[$pool] = 1;
 		}

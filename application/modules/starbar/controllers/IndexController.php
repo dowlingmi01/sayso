@@ -53,6 +53,8 @@ class Starbar_IndexController extends Api_GlobalController
 	}
 
 	public function notesReportAction () {
+		$this->view->headScript()->appendFile('/js/starbar/highcharts.js');
+
 		// Starbar
 		$starbar = new Starbar();
 		$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));

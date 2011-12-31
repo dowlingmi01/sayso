@@ -184,7 +184,7 @@
 					name: 'Users',
 					data: [
 						<? for ($i=-1 ; $i <= max(array_keys($this->notesSpentPools)) ; $i++) { ?>
-							<?= ($i==-1 ? "," : "") ?>
+							<?= ($i>-1 ? "," : "") ?>
 							<?= (isset($this->notesSpentPools[$i]) ? $this->notesSpentPools[$i] : '0') ?>
 						<? } ?>
 

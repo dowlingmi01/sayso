@@ -69,7 +69,18 @@ class Starbar_IndexController extends Api_GlobalController
 		$notesTotalPools = array();
 		$notesSpentPools = array();
 
-		$gamers = Db_Pdo::fetchAll("SELECT user_id, gaming_id FROM user_gaming");
+		$sql = "
+			SELECT user_gaming.user_id, user_gaming.gaming_id
+			FROM user_gaming, user, user_email
+			WHERE user_gaming.user_id = user.id
+				AND user.primary_email_id = user_email.id
+				AND user_email.email NOT LIKE '%@say.so'
+				AND user_email.email NOT LIKE '%@saysollc.com'
+				AND user_email.email NOT LIKE '%@hellomusic.com'
+				AND user_email.email NOT LIKE '%@wilshiremedia.com'
+		";
+
+		$gamers = Db_Pdo::fetchAll();
 
 
 		foreach($gamers as $gamer) {

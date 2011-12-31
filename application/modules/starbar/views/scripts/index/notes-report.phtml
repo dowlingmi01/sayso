@@ -1,4 +1,22 @@
 <? if (count($this->notesRemainingPools)) { ?>
+	<br /><br />
+	Notes Remaining (Current Balance)
+	<table border=1 cellpadding=2 cellspacing=0>
+		<thead>
+			<tr>
+				<? for ($i=0 ; $i <= max(array_keys($this->notesRemainingPools)) ; $i++) { ?>
+					<td><?= ($i*500) ?>-<?= ($i*500)+499 ?></td>
+				<? } ?>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<? for ($i=0 ; $i <= max(array_keys($this->notesRemainingPools)) ; $i++) { ?>
+					<td><?= (isset($this->notesRemainingPools[$i]) ? $this->notesRemainingPools[$i] : "&nbsp;") ?></td>
+				<? } ?>
+			</tr>
+		</tbody>
+	</table>
 	<script type="text/javascript">
 		var chart1; // globally available
 		$SQ(document).ready(function() {
@@ -39,6 +57,24 @@
 	<div id="notes-remaining" style="margin-bottom: 20px;"></div>
 <? } ?>
 <? if (count($this->notesTotalPools)) { ?>
+	<br /><br />
+	Lifetime Notes Earned (* calculated from current chops balance)
+	<table border=1 cellpadding=2 cellspacing=0>
+		<thead>
+			<tr>
+				<? for ($i=0 ; $i <= max(array_keys($this->notesTotalPools)) ; $i++) { ?>
+					<td><?= ($i*500) ?>-<?= ($i*500)+499 ?></td>
+				<? } ?>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<? for ($i=0 ; $i <= max(array_keys($this->notesTotalPools)) ; $i++) { ?>
+					<td><?= (isset($this->notesTotalPools[$i]) ? $this->notesTotalPools[$i] : "&nbsp;") ?></td>
+				<? } ?>
+			</tr>
+		</tbody>
+	</table>
 	<script type="text/javascript">
 		var chart2; // globally available
 		$SQ(document).ready(function() {
@@ -48,7 +84,7 @@
 					type: 'column'
 				},
 				title: {
-					text: 'Notes Total Earned'
+					text: 'Lifetime Notes Earned (* calculated from current chops balance)'
 				},
 				xAxis: {
 					categories: [
@@ -79,6 +115,24 @@
 	<div id="notes-total" style="margin-bottom: 20px;"></div>
 <? } ?>
 <? if (count($this->notesSpentPools)) { ?>
+	<br /><br />
+	Lifetime Notes Spent (* calculated from current chops balance)
+	<table border=1 cellpadding=2 cellspacing=0>
+		<thead>
+			<tr>
+				<? for ($i=0 ; $i <= max(array_keys($this->notesSpentPools)) ; $i++) { ?>
+					<td><?= ($i*500) ?>-<?= ($i*500)+499 ?></td>
+				<? } ?>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<? for ($i=0 ; $i <= max(array_keys($this->notesSpentPools)) ; $i++) { ?>
+					<td><?= (isset($this->notesSpentPools[$i]) ? $this->notesSpentPools[$i] : "&nbsp;") ?></td>
+				<? } ?>
+			</tr>
+		</tbody>
+	</table>
 	<script type="text/javascript">
 		var chart3; // globally available
 		$SQ(document).ready(function() {
@@ -88,7 +142,7 @@
 					type: 'column'
 				},
 				title: {
-					text: 'Notes Spent'
+					text: 'Lifetime Notes Spent (* calculated from current chops balance)'
 				},
 				xAxis: {
 					categories: [

@@ -106,7 +106,7 @@ class Starbar_IndexController extends Api_GlobalController
 				}
 			}
 
-			if (isset($notesRemaining[$gamer['gaming_id']]) && isset($notesTotal[$gamer['gaming_id']]) && $notesTotal[$gamer['gaming_id']] > $notesRemaining[$gamer['gaming_id']]) {
+			if (isset($notesRemaining[$gamer['gaming_id']]) && isset($notesTotal[$gamer['gaming_id']]) && $notesTotal[$gamer['gaming_id']] >= $notesRemaining[$gamer['gaming_id']]) {
 				$notesSpent[$gamer['gaming_id']] = $notesTotal[$gamer['gaming_id']] - $notesRemaining[$gamer['gaming_id']];
 			}
 		}

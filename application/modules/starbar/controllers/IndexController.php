@@ -80,7 +80,7 @@ class Starbar_IndexController extends Api_GlobalController
 				AND user_email.email NOT LIKE '%@wilshiremedia.com'
 		";
 
-		$gamers = Db_Pdo::fetchAll();
+		$gamers = Db_Pdo::fetchAll($sql);
 
 
 		foreach($gamers as $gamer) {

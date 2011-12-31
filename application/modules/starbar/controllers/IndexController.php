@@ -53,6 +53,8 @@ class Starbar_IndexController extends Api_GlobalController
 	}
 
 	public function notesReportAction () {
+		echo "Disabled until further notice! - Hamza"; exit;
+
 		$this->view->headScript()->appendFile('/js/starbar/highcharts.js');
 
 		// Starbar

@@ -37,7 +37,7 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
 		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_THREE_GIVEAWAY')) {
 			$good->setNonRedeemReason('It\'s too late to buy tokens for week 3: congrats to Matthew L. from Black Mt, NC!');
 			$good->setCommentForUser('Unavailable');
-		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_FOUR_GIVEAWAY')) {
+		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_FOUR_GIVEAWAY') && time() > strtotime('3 January 2012 08:00')) {
 			$good->setNonRedeemReason('It\'s too late to buy tokens for the monthly giveaway: we\'ll be announcing the grand prize winner soon!');
 			$good->setCommentForUser('Unavailable');
 		} elseif (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {

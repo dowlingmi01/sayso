@@ -37,8 +37,11 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
 		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_THREE_GIVEAWAY')) {
 			$good->setNonRedeemReason('It\'s too late to buy tokens for week 3: congrats to Matthew L. from Black Mt, NC!');
 			$good->setCommentForUser('Unavailable');
+		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_FOUR_GIVEAWAY')) {
+			$good->setNonRedeemReason('It\'s too late to buy tokens for the monthly giveaway: we\'ll be announcing the grand prize winner soon!');
+			$good->setCommentForUser('Unavailable');
 		} elseif (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
-			$good->setNonRedeemReason('SOLD OUT? There\'s more<br />gear coming! Check back and keep earning!');
+			$good->setNonRedeemReason('Sorry, this item is sold out.');
 			$good->setCommentForUser('Sold Out');
 		} elseif ((int) $currencyPrimarySurvey->current_balance < 1 && $good->getId() !== $this->_economy->getGoodId('WEEK_ONE_GIVEAWAY')) {
 			$good->setNonRedeemReason('Must complete<br /><a href="//'.BASE_DOMAIN.'/starbar/hellomusic/embed-survey?survey_id=1" class="sb_nav_element" rel="sb_popBox_surveys_hg" title="Take influencer survey now!" style="position: relative; top: -5px;">Influencer Survey</a>');

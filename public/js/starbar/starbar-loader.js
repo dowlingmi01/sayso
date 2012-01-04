@@ -65,9 +65,6 @@
 			$SQ(document.body).fireExtensionEvent('extensionCommunicationIn', ['dbGet', {
 				variableName: variableName
 			}]);
-			saysoExtensionCommunicator.trigger('extensionCommunicationIn', ['dbGet', {
-				variableName: variableName
-			}]);
 			// dbGet should eventually trigger dbGetComplete, which sets the variable itself as well as the __loaded variable
 			if (window.sayso.extensionProxy[variableName+'__loaded']) {
 				window.sayso.extensionProxy[variableName+'__loaded'] = false;

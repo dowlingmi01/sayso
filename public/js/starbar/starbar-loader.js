@@ -10,6 +10,9 @@
  */
 (function () {
 
+	if (window.starbar_loaded) return;
+	else window.starbar_loaded = true;
+
 	var sayso = window.sayso;
 	var starbarContainer = document.getElementById('sayso-starbar');
 	var urlMatchPrepend = '^(?:http|https){1}://(?:[\\w.-]+)?';

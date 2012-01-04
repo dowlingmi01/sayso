@@ -25,13 +25,15 @@
 		starbarContainer.appendChild(jsJQuery);
 	}
 
-	if (!window.CrossriderAPI) {
+	/*if (!window.CrossriderAPI) {
 		var jsCrossriderApi = document.createElement('script');
 		jsCrossriderApi.src = 'https://crossrider.cotssl.net/plugins/javascripts/crossriderAPI.js';
 		starbarContainer.appendChild(jsCrossriderApi);
-	}
+	}*/
 
 	new jsLoadTimer().start('window.$SQ', function () {
+
+		/*sayso.scope = this;
 
 		// Add Crossrider functionality
 		$SQ.fn.fireExtensionEvent = function(evt, data) {
@@ -50,66 +52,60 @@
 			});
 		}
 
-		if (!window.sayso.extensionProxy) window.sayso.extensionProxy = {};
-
 		var extensionCommunicationOutFunctions = {
 			'dbGetCallback' : function (parameters) {
 				var variableName = parameters['variableName'];
 				var variableValue = parameters['variableValue'];
-				window.sayso.extensionProxy[variableName] = variableValue;
-				window.sayso.extensionProxy[variableName+'__loaded'] = true;
+				sayso.scope[variableName] = variableValue;
+				console.log(sayso.scope);
 			}
-		};
+		};*/
 
-		$SQ.extensionDbGet = function (variableName) {
-			$SQ(document.body).fireExtensionEvent('extensionCommunicationIn', ['dbGet', {
+		$SQ.extensionDbGet = function (variableName, defaultValue) {
+			return localStorage.getItem(variableName) || defaultValue;
+			/*$SQ(document.body).fireExtensionEvent('extensionCommunicationIn', ['dbGet', {
 				variableName: variableName
-			}]);
-			// dbGet should eventually trigger dbGetComplete, which sets the variable itself as well as the __loaded variable
-			if (window.sayso.extensionProxy[variableName+'__loaded']) {
-				window.sayso.extensionProxy[variableName+'__loaded'] = false;
-				return window.sayso.extensionProxy[variableName];
-			} else {
-				// Failed for some reason?
-			}
+			}]);*/
 		}
 
 		$SQ.extensionDbSet = function (variableName, variableValue) {
-			$SQ(document.body).fireExtensionEvent('extensionCommunicationIn', ['dbSet', {
+			localStorage.setItem(variableName, variableValue);
+			/*$SQ(document.body).fireExtensionEvent('extensionCommunicationIn', ['dbSet', {
 				variableName: variableName,
 				variableValue: variableValue
-			}]);
+			}]);*/
 		}
 
-		$SQ(document.body).bindExtensionEvent('extensionCommunicationOut', function (event, data) {
+		/*$SQ(document.body).bindExtensionEvent('extensionCommunicationOut', function (event, data) {
 			if (data && data.length == 2) {
 				var functionName = data[0];
 				var functionParameters = data[1];
 				extensionCommunicationOutFunctions[functionName](functionParameters);
 			}
-		});
+		});*/
 
-		var baseDomain = $SQ.extensionDbGet('baseDomain') || "app-dev.saysollc.com";
-		var environment = $SQ.extensionDbGet('environment') || "DEV";
+		$SQ.extensionDbGet('baseDomain', "app-dev.saysollc.com");
+		$SQ.extensionDbGet('environment', "DEV");
 
-		var starbarId = $SQ.extensionDbGet("starbarId") || 0;
-		var userId = $SQ.extensionDbGet("userId") || 0;
-		var userKey = $SQ.extensionDbGet("userKey") || '';
-		var authKey = $SQ.extensionDbGet("authKey") || '';
-		var visibleState = $SQ.extensionDbGet("visibleState") || "open";
-		var notificationsState = $SQ.extensionDbGet("notificationsState") || 'ready';
-		var profileState = $SQ.extensionDbGet("profileState") || 'ready';
-		var gameState = $SQ.extensionDbGet("gameState") || 'ready';
-		var windowWidth = $SQ.extensionDbGet("windowWidth") || 1000;
-		var windowHeight = $SQ.extensionDbGet("windowHeight") || 1000;
+		$SQ.extensionDbGet('starbarId', 0);
+		$SQ.extensionDbGet('userId', 0);
+		$SQ.extensionDbGet('userKey', '');
+		$SQ.extensionDbGet('authKey', '');
+		$SQ.extensionDbGet('visibleState', 'open');
+		$SQ.extensionDbGet('notificationsState', 'ready');
+		$SQ.extensionDbGet('profileState', 'ready');
+		$SQ.extensionDbGet('gameState', 'ready');
+		$SQ.extensionDbGet('windowWidth', 1000);
+		$SQ.extensionDbGet('windowHeight', 1000);
 
-		var flags = $SQ.extensionDbGet("flags") || 'none';
-		var studies = $SQ.extensionDbGet("studies") || '';
-		var studiesTimestamp = $SQ.extensionDbGet("studiesTimestamp") || '';
-		var adTargets = $SQ.extensionDbGet("adTargets") || '{}';
+		$SQ.extensionDbGet('flags', 'none');
+		$SQ.extensionDbGet('studies', '');
+		$SQ.extensionDbGet('studiesTimestamp', '');
+		$SQ.extensionDbGet('adTargets', {});
 
 		// setup global variables/functions
 
+		console.log('done getting variables');
 		window.sayso.debug = false;
 		window.sayso.baseDomain = baseDomain;
 		window.sayso.environment = environment;

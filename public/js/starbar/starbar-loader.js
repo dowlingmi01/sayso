@@ -96,6 +96,8 @@
 		$SQ.jsLoadTimer = jsLoadTimer;
 		$SQ.cssLoadTimer = cssLoadTimer;
 
+		$SQ.starbarElem = $SQ('#sayso-starbar');
+
 		// JSON support for stupid browsers
 
 		if (!window.JSON || !window.JSON.stringify || !window.JSON.parse) {
@@ -275,9 +277,8 @@
 					sayso.flags = 'none';
 				}
 
-				// update global/persistent vars on kobj.net
-				var app = KOBJ.get_application(sayso.starbar.kynetxAppId);
-				app.raise_event(
+				// update global/persistent vars
+				$SQ.starbarElem.fireExtensionEvent(
 					'update_global_variables',
 					{
 						'starbar_id' : starbar.id,

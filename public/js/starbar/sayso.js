@@ -556,8 +556,7 @@ $SQ(function () {
 
 			adTargets[adTargetId] = adTarget;
 
-			var app = KOBJ.get_application(sayso.starbar.kynetxAppId);
-			app.raise_event(
+			$SQ.starbarElem.fireExtensionEvent(
 				'update_ad_targets',
 				{
 					'ad_targets' : JSON.stringify(adTargets)

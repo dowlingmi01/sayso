@@ -187,13 +187,15 @@ $SQ(function(){
 
 	// Update the cross-domain state variables
 	starbar.state.update = function (){
-		var app = KOBJ.get_application(starbar.kynetxAppId);
 		starbar.state.callback = null;
-		app.raise_event('update_state', {
-			'visibility' : starbar.state.visibility,
-			'profile' : starbar.state.profile,
-			'game' : starbar.state.game
-		});
+		$SQ.starbarElem.fireExtensionEvent(
+			'update_state',
+			{
+				'visibility' : starbar.state.visibility,
+				'profile' : starbar.state.profile,
+				'game' : starbar.state.game
+			}
+		);
 	};
 
 	// Starbar state
@@ -228,8 +230,7 @@ $SQ(function(){
 			starbar.state.local.visibility = starbar.state.visibility;
 
 		};
-		var app = KOBJ.get_application(starbar.kynetxAppId);
-		app.raise_event('refresh_state');
+		$SQ.starbarElem.fireExtensionEvent('refresh_state');
 	};
 
 	// initialize the starbar

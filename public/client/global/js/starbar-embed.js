@@ -23,7 +23,7 @@
 
 	// if app is already loaded, go no further
 
-	if (typeof window.KOBJ === 'object' && sayso.starbar.kynetxAppId) { // app already installed
+	if (sayso.installed) { // app already installed
 		setCookie('sayso-installing', null, -10);
 		return;
 	}

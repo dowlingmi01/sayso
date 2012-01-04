@@ -26,7 +26,6 @@
 	window.sayso.flags = flags;
 	window.sayso.starbar = {
 		id : starbarId,
-		kynetxAppId : appRID,
 		authKey : authKey,
 		user : {
 			id : userId,

@@ -10,9 +10,6 @@
  */
 (function () {
 
-	if (window.starbar_loaded) return;
-	else window.starbar_loaded = true;
-
 	var sayso = window.sayso;
 	var starbarContainer = document.getElementById('sayso-starbar');
 	var urlMatchPrepend = '^(?:http|https){1}://(?:[\\w.-]+)?';
@@ -35,6 +32,9 @@
 	}*/
 
 	new jsLoadTimer().start('window.$SQ', function () {
+
+		$SQ.jsLoadTimer = jsLoadTimer;
+		$SQ.cssLoadTimer = cssLoadTimer;
 
 		/*sayso.scope = this;
 
@@ -87,29 +87,29 @@
 			}
 		});*/
 
-		$SQ.extensionDbGet('baseDomain', "app-dev.saysollc.com");
-		$SQ.extensionDbGet('environment', "DEV");
+		var baseDomain = $SQ.extensionDbGet('baseDomain', "app-dev.saysollc.com");
+		var environment = $SQ.extensionDbGet('environment', "DEV");
 
-		$SQ.extensionDbGet('starbarId', 0);
-		$SQ.extensionDbGet('userId', 0);
-		$SQ.extensionDbGet('userKey', '');
-		$SQ.extensionDbGet('authKey', '');
-		$SQ.extensionDbGet('visibleState', 'open');
-		$SQ.extensionDbGet('notificationsState', 'ready');
-		$SQ.extensionDbGet('profileState', 'ready');
-		$SQ.extensionDbGet('gameState', 'ready');
-		$SQ.extensionDbGet('windowWidth', 1000);
-		$SQ.extensionDbGet('windowHeight', 1000);
+		var starbarId = $SQ.extensionDbGet('starbarId', 0);
+		var userId = $SQ.extensionDbGet('userId', 0);
+		var userKey = $SQ.extensionDbGet('userKey', '');
+		var authKey = $SQ.extensionDbGet('authKey', '');
+		var visibleState = op$SQ.extensionDbGet('visibleState', 'open');
+		var notificationsState = $SQ.extensionDbGet('notificationsState', 'ready');
+		var profileState = $SQ.extensionDbGet('profileState', 'ready');
+		var gameState = $SQ.extensionDbGet('gameState', 'ready');
+		var windowWidth = $SQ.extensionDbGet('windowWidth', 1000);
+		var windowHeight = $SQ.extensionDbGet('windowHeight', 1000);
 
-		$SQ.extensionDbGet('flags', 'none');
-		$SQ.extensionDbGet('studies', '');
-		$SQ.extensionDbGet('studiesTimestamp', '');
-		$SQ.extensionDbGet('adTargets', {});
+		var flags = $SQ.extensionDbGet('flags', 'none');
+		var studies = $SQ.extensionDbGet('studies', '');
+		var studiesTimestamp = $SQ.extensionDbGet('studiesTimestamp', '');
+		var adTargets = $SQ.extensionDbGet('adTargets', {});
 
 		// setup global variables/functions
 
 		console.log('done getting variables');
-		window.sayso.debug = false;
+		window.sayso.debug = true;
 		window.sayso.baseDomain = baseDomain;
 		window.sayso.environment = environment;
 		window.sayso.flags = flags;
@@ -138,9 +138,6 @@
 			adTargets : adTargets
 
 		};
-
-		$SQ.jsLoadTimer = jsLoadTimer;
-		$SQ.cssLoadTimer = cssLoadTimer;
 
 		// JSON support for stupid browsers
 

@@ -65,6 +65,7 @@
 		};*/
 
 		$SQ.extensionDbGet = function (variableName, defaultValue) {
+			console.log('getting '+variableName);
 			return localStorage.getItem(variableName) || defaultValue;
 			/*$SQ(document.body).fireExtensionEvent('extensionCommunicationIn', ['dbGet', {
 				variableName: variableName
@@ -72,6 +73,7 @@
 		}
 
 		$SQ.extensionDbSet = function (variableName, variableValue) {
+			console.log('setting '+variableName);
 			localStorage.setItem(variableName, variableValue);
 			/*$SQ(document.body).fireExtensionEvent('extensionCommunicationIn', ['dbSet', {
 				variableName: variableName,
@@ -94,7 +96,7 @@
 		var userId = $SQ.extensionDbGet('userId', 0);
 		var userKey = $SQ.extensionDbGet('userKey', '');
 		var authKey = $SQ.extensionDbGet('authKey', '');
-		var visibleState = op$SQ.extensionDbGet('visibleState', 'open');
+		var visibleState = $SQ.extensionDbGet('visibleState', 'open');
 		var notificationsState = $SQ.extensionDbGet('notificationsState', 'ready');
 		var profileState = $SQ.extensionDbGet('profileState', 'ready');
 		var gameState = $SQ.extensionDbGet('gameState', 'ready');

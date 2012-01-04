@@ -25,14 +25,35 @@
 		starbarContainer.appendChild(jsJQuery);
 	}
 
+	if (!window.CrossriderAPI) {
+		var jsCrossriderApi = document.createElement('script');
+		jsCrossriderApi.src = 'https://crossrider.cotssl.net/plugins/javascripts/crossriderAPI.js';
+		starbarContainer.appendChild(jsCrossriderApi);
+	}
+
 	new jsLoadTimer().start('window.$SQ', function () {
 
-		var saysoExtensionCommunicator = $SQ('#sayso-extension-communicator');
+		// Add Crossrider functionality
+		$SQ.fn.fireExtensionEvent = function(evt, data) {
+			return this.each(function() {
+				CrossriderAPI.fireExtensionEvent(this, evt, data);
+			});
+		}
+
+		$SQ.fn.bindExtensionEvent = function(evt, callback) {
+			return this.each(function() {
+				var _callback = function (e, data) {
+					callback($SQ.event.fix(e), data);
+				}
+
+				CrossriderAPI.bindExtensionEvent(this, evt, _callback);
+			});
+		}
 
 		if (!window.sayso.extensionProxy) window.sayso.extensionProxy = {};
 
 		var extensionCommunicationOutFunctions = {
-			'dbGetComplete' : function (parameters) {
+			'dbGetCallback' : function (parameters) {
 				var variableName = parameters['variableName'];
 				var variableValue = parameters['variableValue'];
 				window.sayso.extensionProxy[variableName] = variableValue;
@@ -41,6 +62,9 @@
 		};
 
 		$SQ.extensionDbGet = function (variableName) {
+			$SQ(document.body).fireExtensionEvent('extensionCommunicationIn', ['dbGet', {
+				variableName: variableName
+			}]);
 			saysoExtensionCommunicator.trigger('extensionCommunicationIn', ['dbGet', {
 				variableName: variableName
 			}]);
@@ -54,17 +78,19 @@
 		}
 
 		$SQ.extensionDbSet = function (variableName, variableValue) {
-			saysoExtensionCommunicator.trigger('extensionCommunicationIn', ['dbSet', {
+			$SQ(document.body).fireExtensionEvent('extensionCommunicationIn', ['dbSet', {
 				variableName: variableName,
 				variableValue: variableValue
 			}]);
 		}
 
-		saysoExtensionCommunicator.bind('extensionCommunicationOut', function (event, functionName, functionParameters) {
-			extensionCommunicationOutFunctions[functionName](functionParameters);
+		$SQ(document.body).bindExtensionEvent('extensionCommunicationOut', function (event, data) {
+			if (data && data.length == 2) {
+				var functionName = data[0];
+				var functionParameters = data[1];
+				extensionCommunicationOutFunctions[functionName](functionParameters);
+			}
 		});
-
-
 
 		var baseDomain = $SQ.extensionDbGet('baseDomain') || "app-dev.saysollc.com";
 		var environment = $SQ.extensionDbGet('environment') || "DEV";

@@ -48,6 +48,6 @@
 	</div>
 		<br />
 		<? if ($this->next_survey->id) { ?>
-			Try the next survey: "<a href="#" onclick="$SQ.remoteControl.openSurvey(<?= $this->next_survey->id ?>)"><?= ($this->next_survey->title) ?></a>"
+			Try the next survey: "<a href="#" onclick="$SQ.remoteControl.openSurvey(<?= $this->next_survey->id ?>); return false;"><?= ($this->next_survey->title) ?></a>"
 		<? } ?>
 </div>

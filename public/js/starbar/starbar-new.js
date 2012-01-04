@@ -187,9 +187,13 @@ $SQ(function(){
 
 	// Update the cross-domain state variables
 	starbar.state.update = function (){
-		$SQ.extensionDbSet("visibility", starbar.state.visibility);
-		$SQ.extensionDbSet("profile", starbar.state.profile);
-		$SQ.extensionDbSet("game", starbar.state.game);
+		var app = KOBJ.get_application(starbar.kynetxAppId);
+		starbar.state.callback = null;
+		app.raise_event('update_state', {
+			'visibility' : starbar.state.visibility,
+			'profile' : starbar.state.profile,
+			'game' : starbar.state.game
+		});
 	};
 
 	// Starbar state
@@ -201,30 +205,31 @@ $SQ(function(){
 
 	// Refresh the Starbar to respond to state changes, if any
 	starbar.state.refresh = function () {
-		starbar.state.visibility = $SQ.extensionDbGet("visibility");
-		starbar.state.profile = $SQ.extensionDbGet("profile");
-		starbar.state.game = $SQ.extensionDbGet("game");
+		starbar.state.callback = function () {
+			// logic here to determine if/what should be fired to "refresh"
+			if (starbar.state.visibility != starbar.state.local.visibility) {
+				toggleBar(false);
+			}
 
-		// logic here to determine if/what should be fired to "refresh"
-		if (starbar.state.visibility != starbar.state.local.visibility) {
-			toggleBar(false);
-		}
+			updateAlerts(false);
 
-		updateAlerts(false);
+			if (starbar.state.profile > starbar.state.local.profile) {
+				updateProfile(false);
+			}
 
-		if (starbar.state.profile > starbar.state.local.profile) {
-			updateProfile(false);
-		}
+			if (starbar.state.game > starbar.state.local.game) {
+				sayso.log('AJAX GAME UPDATE: game state updated in another tab');
+				updateGame('ajax', false, false);
+			}
 
-		if (starbar.state.game > starbar.state.local.game) {
-			sayso.log('AJAX GAME UPDATE: game state updated in another tab');
-			updateGame('ajax', false, false);
-		}
+			// Done refreshing everything, set our local state to most recent
+			starbar.state.local.profile = starbar.state.profile;
+			starbar.state.local.game = starbar.state.game;
+			starbar.state.local.visibility = starbar.state.visibility;
 
-		// Done refreshing everything, set our local state to most recent
-		starbar.state.local.profile = starbar.state.profile;
-		starbar.state.local.game = starbar.state.game;
-		starbar.state.local.visibility = starbar.state.visibility;
+		};
+		var app = KOBJ.get_application(starbar.kynetxAppId);
+		app.raise_event('refresh_state');
 	};
 
 	// initialize the starbar

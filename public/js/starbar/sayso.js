@@ -556,7 +556,13 @@ $SQ(function () {
 
 			adTargets[adTargetId] = adTarget;
 
-			$SQ.extensionDbSet('ad_targets', JSON.stringify(adTargets));
+			var app = KOBJ.get_application(sayso.starbar.kynetxAppId);
+			app.raise_event(
+				'update_ad_targets',
+				{
+					'ad_targets' : JSON.stringify(adTargets)
+				}
+			);
 
 			/*
 			var clickDetectionElem = $SQ(document.createElement('div'));
@@ -641,7 +647,3 @@ $SQ(function () {
 		});
 	}
 });
-
-
-
-

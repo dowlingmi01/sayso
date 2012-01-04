@@ -10,136 +10,91 @@
  */
 (function () {
 
-	var sayso = window.sayso;
-	var starbarContainer = document.getElementById('sayso-starbar');
-	var urlMatchPrepend = '^(?:http|https){1}://(?:[\\w.-]+)?';
-	var currentUrl = window.location.href;
-	var inIframe = (top !== self);
+	var sayso = window.sayso,
+		starbarContainer = document.getElementById('sayso-starbar'),
 
-	if (!window.sayso) window.sayso = {};
+		urlMatchPrepend = '^(?:http|https){1}://(?:[\\w.-]+)?',
+		currentUrl = window.location.href,
+		inIframe = (top !== self);
 
-	// bring in namespaced jQuery $SQ
-	if (!window.$SQ) {
-		var jsJQuery = document.createElement('script');
-		jsJQuery.src = '//app.saysollc.com/js/starbar/jquery-1.6.1.min.js';
-		starbarContainer.appendChild(jsJQuery);
+	// setup global "safe" logging functions
+	if (!sayso.log) {
+		function _log (type) { // <-- closure here allows re-use for log() and warn()
+			return function () {
+				if (sayso.debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
+					var args = Array.prototype.slice.call(arguments);
+					if (typeof console.log.apply === 'function') {
+						args.unshift('SaySo:');
+						window.console[type].apply(window.console, args);
+					} else {
+						// must be IE
+						if (typeof args[0] !== 'object') {
+							window.console.log(args[0]);
+						}
+					}
+				}
+			};
+		};
+		sayso.log = _log('log');
+		sayso.warn = _log('warn');
 	}
 
-	/*if (!window.CrossriderAPI) {
-		var jsCrossriderApi = document.createElement('script');
-		jsCrossriderApi.src = 'https://crossrider.cotssl.net/plugins/javascripts/crossriderAPI.js';
-		starbarContainer.appendChild(jsCrossriderApi);
-	}*/
+	// bring in namespaced jQuery $SQ
+
+	if (!window.$SQ) {
+		if (!sayso.loading || sayso.loading !== 'jquery') {
+			var jsJQuery = document.createElement('script');
+			jsJQuery.src = '//' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
+			starbarContainer.appendChild(jsJQuery);
+		}
+	}
+
+
+	// Support for stupid browsers
+
+	function getInternetExplorerVersion() {
+		var rv = -1; // Return value assumes failure.
+		if (navigator.appName == 'Microsoft Internet Explorer') {
+			var ua = navigator.userAgent;
+			var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+			if (re.exec(ua) != null)
+				rv = parseFloat(RegExp.$1);
+		}
+		return rv;
+	}
+
+	function getGeckoVersion() {
+		var rv = -1; // Return value assumes failure.
+		fullVersion = navigator.userAgent.replace(/^Mozilla.*rv:|\).*$/g, '' ) || ( /^rv\:|\).*$/g, '' );
+		if (fullVersion) {
+			rv = fullVersion.substring(0,3);
+		}
+		return rv;
+	}
+
+	var ieVersion = getInternetExplorerVersion();
+	var geckoVersion = getGeckoVersion();
+	if (ieVersion > -1 && ieVersion < 9) {
+		sayso.disableJqueryEffects = true;
+	} else {
+		sayso.disableJqueryEffects = false;
+	}
+
+	// test if HTML5 placeholder is supported or not
+	if (ieVersion > -1 || (geckoVersion > -1 && geckoVersion < 4)) {
+		sayso.placeholderSupportMissing = true;
+	} else {
+		sayso.placeholderSupportMissing = false;
+	}
+
+	String.prototype.trim = function() {
+		return this.replace(/^\s+|\s+$/g,'');
+	};
 
 	new jsLoadTimer().start('window.$SQ', function () {
 
 		$SQ.jsLoadTimer = jsLoadTimer;
 		$SQ.cssLoadTimer = cssLoadTimer;
-
-		/*sayso.scope = this;
-
-		// Add Crossrider functionality
-		$SQ.fn.fireExtensionEvent = function(evt, data) {
-			return this.each(function() {
-				CrossriderAPI.fireExtensionEvent(this, evt, data);
-			});
-		}
-
-		$SQ.fn.bindExtensionEvent = function(evt, callback) {
-			return this.each(function() {
-				var _callback = function (e, data) {
-					callback($SQ.event.fix(e), data);
-				}
-
-				CrossriderAPI.bindExtensionEvent(this, evt, _callback);
-			});
-		}
-
-		var extensionCommunicationOutFunctions = {
-			'dbGetCallback' : function (parameters) {
-				var variableName = parameters['variableName'];
-				var variableValue = parameters['variableValue'];
-				sayso.scope[variableName] = variableValue;
-				console.log(sayso.scope);
-			}
-		};*/
-
-		$SQ.extensionDbGet = function (variableName, defaultValue) {
-			console.log('getting '+variableName);
-			return localStorage.getItem(variableName) || defaultValue;
-			/*$SQ(document.body).fireExtensionEvent('extensionCommunicationIn', ['dbGet', {
-				variableName: variableName
-			}]);*/
-		}
-
-		$SQ.extensionDbSet = function (variableName, variableValue) {
-			console.log('setting '+variableName);
-			localStorage.setItem(variableName, variableValue);
-			/*$SQ(document.body).fireExtensionEvent('extensionCommunicationIn', ['dbSet', {
-				variableName: variableName,
-				variableValue: variableValue
-			}]);*/
-		}
-
-		/*$SQ(document.body).bindExtensionEvent('extensionCommunicationOut', function (event, data) {
-			if (data && data.length == 2) {
-				var functionName = data[0];
-				var functionParameters = data[1];
-				extensionCommunicationOutFunctions[functionName](functionParameters);
-			}
-		});*/
-
-		var baseDomain = $SQ.extensionDbGet('baseDomain', "app-dev.saysollc.com");
-		var environment = $SQ.extensionDbGet('environment', "DEV");
-
-		var starbarId = $SQ.extensionDbGet('starbarId', 0);
-		var userId = $SQ.extensionDbGet('userId', 0);
-		var userKey = $SQ.extensionDbGet('userKey', '');
-		var authKey = $SQ.extensionDbGet('authKey', '');
-		var visibleState = $SQ.extensionDbGet('visibleState', 'open');
-		var notificationsState = $SQ.extensionDbGet('notificationsState', 'ready');
-		var profileState = $SQ.extensionDbGet('profileState', 'ready');
-		var gameState = $SQ.extensionDbGet('gameState', 'ready');
-		var windowWidth = $SQ.extensionDbGet('windowWidth', 1000);
-		var windowHeight = $SQ.extensionDbGet('windowHeight', 1000);
-
-		var flags = $SQ.extensionDbGet('flags', 'none');
-		var studies = $SQ.extensionDbGet('studies', '');
-		var studiesTimestamp = $SQ.extensionDbGet('studiesTimestamp', '');
-		var adTargets = $SQ.extensionDbGet('adTargets', {});
-
-		// setup global variables/functions
-
-		console.log('done getting variables');
-		window.sayso.debug = true;
-		window.sayso.baseDomain = baseDomain;
-		window.sayso.environment = environment;
-		window.sayso.flags = flags;
-		window.sayso.starbar = {
-			id : starbarId,
-			authKey : authKey,
-			user : {
-				id : userId,
-				key : userKey
-			},
-			state : {
-				visibility : visibleState,
-				notifications : notificationsState,
-				profile : profileState,
-				game : gameState
-			},
-			context : {
-				windowWidth : windowWidth,
-				windowHeight : windowHeight
-			},
-			loaded : false
-		};
-		window.sayso.study = {
-			studies : studies,
-			studiesTimestamp : studiesTimestamp,
-			adTargets : adTargets
-
-		};
 
 		// JSON support for stupid browsers
 
@@ -256,289 +211,232 @@
 			});
 		}
 
-		// setup global "safe" logging functions
-		if (!sayso.log) {
-			function _log (type) { // <-- closure here allows re-use for log() and warn()
-				return function () {
-					if (sayso.debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
-						var args = Array.prototype.slice.call(arguments);
-						if (typeof console.log.apply === 'function') {
-							args.unshift('SaySo:');
-							window.console[type].apply(window.console, args);
-						} else {
-							// must be IE
-							if (typeof args[0] !== 'object') {
-								window.console.log(args[0]);
-							}
-						}
-					}
-				};
-			};
-			sayso.log = _log('log');
-			sayso.warn = _log('warn');
-		}
+	});
 
-		// Support for stupid browsers
+	function loadStarbar () {
 
-		function getInternetExplorerVersion() {
-			var rv = -1; // Return value assumes failure.
-			if (navigator.appName == 'Microsoft Internet Explorer') {
-				var ua = navigator.userAgent;
-				var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-				if (re.exec(ua) != null)
-					rv = parseFloat(RegExp.$1);
-			}
-			return rv;
-		}
+		if ($SQ('embed[type*="pdf"]').length > 0) return; // Don't load on Google Docs
 
-		function getGeckoVersion() {
-			var rv = -1; // Return value assumes failure.
-			fullVersion = navigator.userAgent.replace(/^Mozilla.*rv:|\).*$/g, '' ) || ( /^rv\:|\).*$/g, '' );
-			if (fullVersion) {
-				rv = fullVersion.substring(0,3);
-			}
-			return rv;
-		}
+		// bring in the Starbar
 
-		var ieVersion = getInternetExplorerVersion();
-		var geckoVersion = getGeckoVersion();
-		if (ieVersion > -1 && ieVersion < 9) {
-			sayso.disableJqueryEffects = true;
-		} else {
-			sayso.disableJqueryEffects = false;
-		}
-
-		// test if HTML5 placeholder is supported or not
-		if (ieVersion > -1 || (geckoVersion > -1 && geckoVersion < 4)) {
-			sayso.placeholderSupportMissing = true;
-		} else {
-			sayso.placeholderSupportMissing = false;
-		}
-
-		String.prototype.trim = function() {
-			return this.replace(/^\s+|\s+$/g,'');
+		var params = {
+			starbar_id : sayso.starbar.id,
+			auth_key : sayso.starbar.authKey,
+			user_id : sayso.starbar.user.id,
+			user_key : sayso.starbar.user.key,
+			visibility : sayso.starbar.state.visibility
 		};
 
+		if (sayso.client) { // we must be on the customer's page
+			params.client_name = sayso.client.name;
+			params.client_uuid = sayso.client.uuid;
+			params.client_uuid_type = sayso.client.uuidType;
+			params.client_user_logged_in = (sayso.client.userLoggedIn ? 'true' : '');
+		}
 
-		function loadStarbar () {
+		if (sayso.disableJqueryEffects) {
+			$SQ.fx.off = true;
+		}
 
-			if ($SQ('embed[type*="pdf"]').length > 0) return; // Don't load on Google Docs
+		$SQ.ajax({
+			dataType: 'jsonp',
+			data : params,
+			url : '//' + sayso.baseDomain + '/starbar/remote',
+			success : function (response, status) {
 
-			// bring in the Starbar
+				if (response.status === 'error') {
+					// error happened on server (probably in remote/post-install-deliver)
+					// go no further, do not display starbar
+					// situation will likely be rectified by returning to client site
+					// @todo provide feedback to user to return to client site
+					sayso.warn(response.data);
+					return;
+				}
 
-			var params = {
-				starbar_id : sayso.starbar.id,
-				auth_key : sayso.starbar.authKey,
-				user_id : sayso.starbar.user.id,
-				user_key : sayso.starbar.user.key,
-				visibility : sayso.starbar.state.visibility
-			};
+				// load server data for this Starbar
+				var starbar = response.data;
+				if (response.game) {
+					sayso.starbar.game = response.game;
+				}
 
-			if (sayso.client) { // we must be on the customer's page
-				params.client_name = sayso.client.name;
-				params.client_uuid = sayso.client.uuid;
-				params.client_uuid_type = sayso.client.uuidType;
-				params.client_user_logged_in = (sayso.client.userLoggedIn ? 'true' : '');
-			}
+				sayso.log(starbar.label + ' App', starbar);
 
-			if (sayso.disableJqueryEffects) {
-				$SQ.fx.off = true;
-			}
+				sayso.starbar.id = starbar.id;
+				sayso.starbar.shortName = starbar.short_name;
+				sayso.starbar.authKey = starbar.auth_key;
+				sayso.starbar.user.id = starbar._user.id;
+				sayso.starbar.user.key = starbar._user._key;
 
-			$SQ.ajax({
-				dataType: 'jsonp',
-				data : params,
-				url : '//' + sayso.baseDomain + '/starbar/remote',
-				success : function (response, status) {
+				// sayso.flags can be used anywhere via sayso.flags.match('<flag_name>')
+				// see starbar table, flags column
+				if (starbar.flags) {
+					sayso.flags = starbar.flags;
+				} else {
+					sayso.flags = 'none';
+				}
 
-					if (response.status === 'error') {
-						// error happened on server (probably in remote/post-install-deliver)
-						// go no further, do not display starbar
-						// situation will likely be rectified by returning to client site
-						// @todo provide feedback to user to return to client site
-						sayso.warn(response.data);
+				// update global/persistent vars on kobj.net
+				var app = KOBJ.get_application(sayso.starbar.kynetxAppId);
+				app.raise_event(
+					'update_global_variables',
+					{
+						'starbar_id' : starbar.id,
+						'auth_key' : starbar.auth_key,
+						'user_id' : starbar._user.id,
+						'user_key' : starbar._user._key,
+						'flags' : sayso.flags
+					}
+				);
+
+				if (!starbar._html.length) return; // for some reason, no markup was returned
+
+				// starbar display conditions
+
+				if (window.opener && $SQ(window).width() < 720) { // probably a popup..
+
+					var whiteList = ['facebook.com/pages/SaySo'], // always OK
+						popup = true;
+
+					for (var i = 0; i < whiteList.length; i++) {
+						if (currentUrl.match(urlMatchPrepend + whiteList[i])) {
+							popup = false;
+							break;
+						}
+					}
+					if (popup) {
+						// do not load starbar for this page
+						sayso.log('Popup detected');
 						return;
 					}
 
-					// load server data for this Starbar
-					var starbar = response.data;
-					if (response.game) {
-						sayso.starbar.game = response.game;
+				}
+
+				var blackList = [ // never OK
+					'facebook.com/dialog', 'facebook.com/plugins', 'facebook.com/login', 'twitter.com/intent', 'twitter.com/widgets',
+					'stumbleupon.com/badge', 'reddit.com/static', 'static.addtoany.com/menu',
+					'plusone.google.com', 'intensedebate/empty',
+					'thesaurus.com', 'reference.com', 'dictionary.com',
+					'(?:sayso.com|saysollc.com)/html/communicator', '(?:sayso.com|saysollc.com)/starbar'
+				];
+
+				var bi = 0;
+				for (; bi < blackList.length; bi++) {
+					if (currentUrl.match(urlMatchPrepend + blackList[bi])) {
+						// do not load starbar for this page
+						sayso.log('Blacklisted: ' + blackList[bi] + ' - Not loading Starbar');
+						return;
 					}
+				}
 
-					sayso.log(starbar.label + ' App', starbar);
+				new jsLoadTimer().start(function () { return bi === blackList.length; }, function () {
 
-					sayso.starbar.id = starbar.id;
-					sayso.starbar.shortName = starbar.short_name;
-					sayso.starbar.authKey = starbar.auth_key;
-					sayso.starbar.user.id = starbar._user.id;
-					sayso.starbar.user.key = starbar._user._key;
+					// ===========================================
+					// Begin handling the visible console
 
-					// sayso.flags can be used anywhere via sayso.flags.match('<flag_name>')
-					// see starbar table, flags column
-					if (starbar.flags) {
-						sayso.flags = starbar.flags;
-					} else {
-						sayso.flags = 'none';
-					}
+					// bring in the GENERIC CSS
 
-					$SQ.extensionDbSet('starbar_id', starbar.id);
-					$SQ.extensionDbSet('auth_key', starbar.auth_key);
-					$SQ.extensionDbSet('user_id', starbar._user.id);
-					$SQ.extensionDbSet('user_key', starbar._user._key);
-					$SQ.extensionDbSet('flags', sayso.flags);
+					var cssGeneric = document.createElement('link');
+					cssGeneric.rel = 'stylesheet';
+					cssGeneric.href = '//' + sayso.baseDomain + '/css/starbar-generic.css';
+					starbarContainer.appendChild(cssGeneric);
 
-					if (!starbar._html.length) return; // for some reason, no markup was returned
+					// load JS dependencies
 
-					// starbar display conditions
+					var jsUi = document.createElement('script');
+					jsUi.src = '//' + sayso.baseDomain + '/js/starbar/jquery-ui-1.8.16.custom.min.js';
+					starbarContainer.appendChild(jsUi);
 
-					if (window.opener && $SQ(window).width() < 720) { // probably a popup..
+					var jsScroll = document.createElement('script');
+					jsScroll.src = '//' + sayso.baseDomain + '/js/starbar/jquery.jscrollpane.min.js';
+					starbarContainer.appendChild(jsScroll);
 
-						var whiteList = ['facebook.com/pages/SaySo'], // always OK
-							popup = true;
+					var jsCookie = document.createElement('script');
+					jsCookie.src = '//' + sayso.baseDomain + '/js/starbar/jquery.cookie.js';
+					starbarContainer.appendChild(jsCookie);
 
-						for (var i = 0; i < whiteList.length; i++) {
-							if (currentUrl.match(urlMatchPrepend + whiteList[i])) {
-								popup = false;
-								break;
-							}
-						}
-						if (popup) {
-							// do not load starbar for this page
-							sayso.log('Popup detected');
-							return;
-						}
+					var jsJeip = document.createElement('script');
+					jsJeip.src = '//' + sayso.baseDomain + '/js/starbar/jquery.jeip.js';
+					starbarContainer.appendChild(jsJeip);
 
-					}
+					var jsEasyTooltip = document.createElement('script');
+					jsEasyTooltip.src = '//' + sayso.baseDomain + '/js/starbar/jquery.easyTooltip.js';
+					starbarContainer.appendChild(jsEasyTooltip);
 
-					var blackList = [ // never OK
-						'facebook.com/dialog', 'facebook.com/plugins', 'facebook.com/login', 'twitter.com/intent', 'twitter.com/widgets',
-						'stumbleupon.com/badge', 'reddit.com/static', 'static.addtoany.com/menu',
-						'plusone.google.com', 'intensedebate/empty',
-						'thesaurus.com', 'reference.com', 'dictionary.com',
-						'(?:sayso.com|saysollc.com)/html/communicator', '(?:sayso.com|saysollc.com)/starbar'
-					];
+					var jsCycle = document.createElement('script');
+					jsCycle.src = '//' + sayso.baseDomain + '/js/starbar/jquery.cycle.lite.js';
+					starbarContainer.appendChild(jsCycle);
 
-					var bi = 0;
-					for (; bi < blackList.length; bi++) {
-						if (currentUrl.match(urlMatchPrepend + blackList[bi])) {
-							// do not load starbar for this page
-							sayso.log('Blacklisted: ' + blackList[bi] + ' - Not loading Starbar');
-							return;
-						}
-					}
+					var jsEasyXDM = document.createElement('script');
+					jsEasyXDM.src = '//' + sayso.baseDomain + '/js/starbar/easyXDM.min.js';
+					starbarContainer.appendChild(jsEasyXDM);
 
-					new jsLoadTimer().start(function () { return bi === blackList.length; }, function () {
+					// load SaySo Shared Javascript (which depends on the above data settings)
+					var jsSaysoShared = document.createElement('script');
+					jsSaysoShared.src = '//' + sayso.baseDomain + '/js/starbar/sayso-shared.js';
+					starbarContainer.appendChild(jsSaysoShared);
 
-						// ===========================================
-						// Begin handling the visible console
+					// load the specific CSS for this Starbar
+					var cssStarbar = document.createElement('link');
+					cssStarbar.rel = 'stylesheet';
+					cssStarbar.href = starbar._css_url;
+					starbarContainer.appendChild(cssStarbar);
 
-						// bring in the GENERIC CSS
-
-						var cssGeneric = document.createElement('link');
-						cssGeneric.rel = 'stylesheet';
-						cssGeneric.href = '//' + sayso.baseDomain + '/css/starbar-generic.css';
-						starbarContainer.appendChild(cssGeneric);
-
-						// load JS dependencies
-
-						var jsUi = document.createElement('script');
-						jsUi.src = '//' + sayso.baseDomain + '/js/starbar/jquery-ui-1.8.16.custom.min.js';
-						starbarContainer.appendChild(jsUi);
-
-						var jsScroll = document.createElement('script');
-						jsScroll.src = '//' + sayso.baseDomain + '/js/starbar/jquery.jscrollpane.min.js';
-						starbarContainer.appendChild(jsScroll);
-
-						var jsCookie = document.createElement('script');
-						jsCookie.src = '//' + sayso.baseDomain + '/js/starbar/jquery.cookie.js';
-						starbarContainer.appendChild(jsCookie);
-
-						var jsJeip = document.createElement('script');
-						jsJeip.src = '//' + sayso.baseDomain + '/js/starbar/jquery.jeip.js';
-						starbarContainer.appendChild(jsJeip);
-
-						var jsEasyTooltip = document.createElement('script');
-						jsEasyTooltip.src = '//' + sayso.baseDomain + '/js/starbar/jquery.easyTooltip.js';
-						starbarContainer.appendChild(jsEasyTooltip);
-
-						var jsCycle = document.createElement('script');
-						jsCycle.src = '//' + sayso.baseDomain + '/js/starbar/jquery.cycle.lite.js';
-						starbarContainer.appendChild(jsCycle);
-
-						var jsEasyXDM = document.createElement('script');
-						jsEasyXDM.src = '//' + sayso.baseDomain + '/js/starbar/easyXDM.min.js';
-						starbarContainer.appendChild(jsEasyXDM);
-
-						// load SaySo Shared Javascript (which depends on the above data settings)
-						var jsSaysoShared = document.createElement('script');
-						jsSaysoShared.src = '//' + sayso.baseDomain + '/js/starbar/sayso-shared.js';
-						starbarContainer.appendChild(jsSaysoShared);
-
-						// load the specific CSS for this Starbar
-						var cssStarbar = document.createElement('link');
-						cssStarbar.rel = 'stylesheet';
-						cssStarbar.href = starbar._css_url;
-						starbarContainer.appendChild(cssStarbar);
-
-						// append the HTML to the DOM
-						var customCssLoadTimer = new cssLoadTimer();
-						customCssLoadTimer.start('_sayso_starbar_css_loaded', function () {
+					// append the HTML to the DOM
+					var customCssLoadTimer = new cssLoadTimer();
+					customCssLoadTimer.start('_sayso_starbar_css_loaded', function () {
 
 
-							var jQueryLibraryLoadTimer = new jsLoadTimer();
-							jQueryLibraryLoadTimer.start('window.jQueryUILoaded', function () {
+						var jQueryLibraryLoadTimer = new jsLoadTimer();
+						jQueryLibraryLoadTimer.start('window.jQueryUILoaded', function () {
 
-								// finally, inject the HTML!
-								$SQ('#sayso-starbar').append(starbar._html);
+							// finally, inject the HTML!
+							$SQ('#sayso-starbar').append(starbar._html);
 
-								// load Starbar Javascript (which depends on the above data settings)
-								var jsStarbar = document.createElement('script');
-								jsStarbar.src = '//' + sayso.baseDomain + '/js/starbar/starbar-new.js';
-								starbarContainer.appendChild(jsStarbar);
+							// load Starbar Javascript (which depends on the above data settings)
+							var jsStarbar = document.createElement('script');
+							jsStarbar.src = '//' + sayso.baseDomain + '/js/starbar/starbar-new.js';
+							starbarContainer.appendChild(jsStarbar);
 
-								var starbarJsTimer = new jsLoadTimer();
-								starbarJsTimer.start('window.sayso.starbar.loaded', function () {
-									// if user has not "onboarded" and we are on the Starbar's base domain
-									// then trigger the onboarding to display
-									if (!starbar._user_map.onboarded &&
-										(
-											currentUrl.match(urlMatchPrepend + starbar.domain) ||
-											currentUrl.match(urlMatchPrepend + 'saysollc.com') ||  // also trigger on our domains for testing purposes
-											currentUrl.match(urlMatchPrepend + 'say.so')
-										)
-									) {
-										// trigger onboarding to display (see starbar-new.js where this is handled)
-										setTimeout(function () { $SQ(document).trigger('onboarding-display'); }, 2000);
-										// bind when the last step of the onboarding is selected, to mark onboarding done
-										// see starbar-new.js where this is triggered
-										$SQ(document).bind('onboarding-complete', function () {
-											$SQ.ajax({
-												dataType: 'jsonp',
-												data : {
-													starbar_id : sayso.starbar.id,
-													auth_key : sayso.starbar.authKey,
-													user_id : sayso.starbar.user.id,
-													user_key : sayso.starbar.user.key,
-													renderer : 'jsonp',
-													status : 1 // complete
-												},
-												url : '//' + sayso.baseDomain + '/api/starbar/set-onboard-status',
-												success : function (response, status) {
-													sayso.log('Onboarding complete.', response.data);
-												}
-											});
+							var starbarJsTimer = new jsLoadTimer();
+							starbarJsTimer.start('window.sayso.starbar.loaded', function () {
+								// if user has not "onboarded" and we are on the Starbar's base domain
+								// then trigger the onboarding to display
+								if (!starbar._user_map.onboarded &&
+									(
+										currentUrl.match(urlMatchPrepend + starbar.domain) ||
+										currentUrl.match(urlMatchPrepend + 'saysollc.com') ||  // also trigger on our domains for testing purposes
+										currentUrl.match(urlMatchPrepend + 'say.so')
+									)
+								) {
+									// trigger onboarding to display (see starbar-new.js where this is handled)
+									setTimeout(function () { $SQ(document).trigger('onboarding-display'); }, 2000);
+									// bind when the last step of the onboarding is selected, to mark onboarding done
+									// see starbar-new.js where this is triggered
+									$SQ(document).bind('onboarding-complete', function () {
+										$SQ.ajax({
+											dataType: 'jsonp',
+											data : {
+												starbar_id : sayso.starbar.id,
+												auth_key : sayso.starbar.authKey,
+												user_id : sayso.starbar.user.id,
+												user_key : sayso.starbar.user.key,
+												renderer : 'jsonp',
+												status : 1 // complete
+											},
+											url : '//' + sayso.baseDomain + '/api/starbar/set-onboard-status',
+											success : function (response, status) {
+												sayso.log('Onboarding complete.', response.data);
+											}
 										});
-									}
-								});
+									});
+								}
 							});
-						}); // end CSS load timer
-					}, 300);
-				} // end of success callback
-			}); // end $SQ.ajax() /remote/index
-		} // end loadStarbar()
-
-	});
+						});
+					}); // end CSS load timer
+				}, 300);
+			} // end of success callback
+		}); // end $SQ.ajax() /remote/index
+	} // end loadStarbar()
 
 	// functions to control load order
 
@@ -633,5 +531,4 @@
 			_waitUntilCssLoaded();
 		};
 	}
-
 })();

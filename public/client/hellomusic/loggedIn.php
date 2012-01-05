@@ -50,7 +50,7 @@ if (!isset($_COOKIE['HMID']) || !isset($_COOKIE['MyEmail'])) {
 				</h4>
 				<form action="" name="" method="">
 					<p><input type="radio" /> I agree to the <a href="../global/SaySo_TC.pdf" target="_blank">terms and conditions</a></p>
-					<p><a id="sayso-get-app" href="javascript:__CRI.install();" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL">GRAB IT</a></p>
+					<p><a id="sayso-get-app" href="#" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL" onclick="__CRI.install(); return false;">GRAB IT</a></p>
 					<p id="sayso-install-tip" style="font-size: 0.8em; position:relative; top: -3px; display: none;"></p>
 
 				</form>

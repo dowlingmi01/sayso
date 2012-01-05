@@ -18,7 +18,7 @@
 		currentUrl = window.location.href,
 		inIframe = (top !== self);
 
-	CrossriderAPI.bindExtensionEvent(starbarContainer, 'pass_sayso', function (e, data) {
+	CrossriderAPI.bindExtensionEvent(starbarContainer, 'sayso_callback', function (e, data) {
 
 		sayso = data['sayso'];
 		window.sayso = sayso;
@@ -539,4 +539,5 @@
 			};
 		}
 	});
+	CrossriderAPI.fireExtensionEvent(starbarContainer, 'sayso_request');
 })();

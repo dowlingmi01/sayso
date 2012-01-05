@@ -211,9 +211,9 @@ $SQ(function(){
 
 	$SQ.starbarElem.bindExtensionEvent('refresh_state_callback', function (e, data) {
 		var state = data['state'];
-		starbar.state.visibility = state.visibility;
-		starbar.state.profile = state.profile;
-		starbar.state.game = state.game;
+		if (state.visibility) starbar.state.visibility = state.visibility;
+		if (state.profile) starbar.state.profile = state.profile;
+		if (state.game) starbar.state.game = state.game;
 
 		// logic here to determine if/what should be fired to "refresh"
 		if (starbar.state.visibility != starbar.state.local.visibility) {

@@ -102,7 +102,23 @@
 			$SQ.jsLoadTimer = jsLoadTimer;
 			$SQ.cssLoadTimer = cssLoadTimer;
 
+			// Prepare some stuff for Crossrider support
 			$SQ.starbarElem = $SQ('#sayso-starbar');
+			$SQ.fn.fireExtensionEvent = function(evt, data) {
+				return this.each(function() {
+					CrossriderAPI.fireExtensionEvent(this, evt, data);
+				});
+			}
+
+			$SQ.fn.bindExtensionEvent = function(evt, callback) {
+				return this.each(function() {
+					var _callback = function (e, data) {
+						callback($SQ.event.fix(e), data);
+					}
+
+					CrossriderAPI.bindExtensionEvent(this, evt, _callback);
+				});
+			}
 
 			// JSON support for stupid browsers
 

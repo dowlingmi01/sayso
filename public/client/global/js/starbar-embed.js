@@ -163,6 +163,11 @@
 			cssColorbox.href = '//' + sayso.baseDomain + '/client/global/css/colorbox.css';
 			body.appendChild(cssColorbox);
 
+			$SQ.CrossriderInstaller = new crossriderInstaller({
+				app_id:2787,
+				app_name:'Say.So Dev CR'
+			});
+
 			// overlay
 
 			$SQ.ajax({

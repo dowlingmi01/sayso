@@ -187,7 +187,6 @@ $SQ(function(){
 
 	// Update the cross-domain state variables
 	starbar.state.update = function (){
-		starbar.state.callback = null;
 		$SQ.starbarElem.fireExtensionEvent(
 			'update_state',
 			{
@@ -207,31 +206,37 @@ $SQ(function(){
 
 	// Refresh the Starbar to respond to state changes, if any
 	starbar.state.refresh = function () {
-		starbar.state.callback = function () {
-			// logic here to determine if/what should be fired to "refresh"
-			if (starbar.state.visibility != starbar.state.local.visibility) {
-				toggleBar(false);
-			}
-
-			updateAlerts(false);
-
-			if (starbar.state.profile > starbar.state.local.profile) {
-				updateProfile(false);
-			}
-
-			if (starbar.state.game > starbar.state.local.game) {
-				sayso.log('AJAX GAME UPDATE: game state updated in another tab');
-				updateGame('ajax', false, false);
-			}
-
-			// Done refreshing everything, set our local state to most recent
-			starbar.state.local.profile = starbar.state.profile;
-			starbar.state.local.game = starbar.state.game;
-			starbar.state.local.visibility = starbar.state.visibility;
-
-		};
 		$SQ.starbarElem.fireExtensionEvent('refresh_state');
 	};
+
+	$SQ.starbarElem.bindExtensionEvent('refresh_state_callback', function (e, data) {
+		var state = data['state'];
+		starbar.state.visibility = state.visibility;
+		starbar.state.profile = state.profile;
+		starbar.state.game = state.game;
+
+		// logic here to determine if/what should be fired to "refresh"
+		if (starbar.state.visibility != starbar.state.local.visibility) {
+			toggleBar(false);
+		}
+
+		updateAlerts(false);
+
+		if (starbar.state.profile > starbar.state.local.profile) {
+			updateProfile(false);
+		}
+
+		if (starbar.state.game > starbar.state.local.game) {
+			sayso.log('AJAX GAME UPDATE: game state updated in another tab');
+			updateGame('ajax', false, false);
+		}
+
+		// Done refreshing everything, set our local state to most recent
+		starbar.state.local.profile = starbar.state.profile;
+		starbar.state.local.game = starbar.state.game;
+		starbar.state.local.visibility = starbar.state.visibility;
+	});
+
 
 	// initialize the starbar
 	initStarBar();
@@ -1588,6 +1593,8 @@ $SQ(function(){
 		$SQ(window).bind('focus', function () { oldOnFocus(); starbar.state.refresh(); });
 //		window.onfocus = function () { oldOnFocus(); starbar.state.refresh(); };
 	}
+
+	if ($SQ('#sayso-container').length == 1) $SQ('#sayso-container').fadeOut('fast'); // Hide 'grab it' dialog
 
 	// flag so we know this file has loaded
 	sayso.starbar.loaded = true;

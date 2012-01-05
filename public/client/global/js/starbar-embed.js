@@ -141,7 +141,7 @@
 
 		if (!window.CrossriderAPI) {
 			var jsCrossriderInstaller = document.createElement('script');
-			jsCrossriderInstaller.src = 'https://crossrider.cotssl.net/javascripts/installer/installer.js'
+			jsCrossriderInstaller.src = 'https://crossrider.cotssl.net/javascripts/installer/installer.js';
 			document.getElementById('sayso-container').appendChild(jsCrossriderInstaller);
 		}
 

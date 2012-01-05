@@ -61,6 +61,7 @@
 				e.preventDefault();
 				return;
 			}
+			/*
 			if ($SQ('#sso_wrapper input[type=radio]').is(':checked')) {
 
 				var _this = $SQ(this);
@@ -100,12 +101,13 @@
 				e.preventDefault();
 				$SQ('span.sso_textError').fadeIn('slow');
 			}
+			*/
 		});
 
 		if (sayso.client.userLoggedIn) {
 
 			// detect browser and provide appropriate install link
-			var browserAppUrl = '//' + sayso.baseDomain + '/install';
+			/*var browserAppUrl = '//' + sayso.baseDomain + '/install';
 
 			var appName = sayso.environment === 'PROD' ? 'Say.So Starbar' : 'SaySo-' + sayso.environment;
 
@@ -124,7 +126,7 @@
 				return;
 			}
 
-			$SQ('#sayso-get-app').attr('href', browserAppUrl);
+			$SQ('#sayso-get-app').attr('href', browserAppUrl);*/
 
 			// if terms already checked, then enable the install button
 			if ($SQ('#sso_wrapper input[type=radio]').is(':checked')) {

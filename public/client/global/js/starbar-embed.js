@@ -136,7 +136,13 @@
 		if (!window.$SQ) {
 			var jQueryInclude = document.createElement('script');
 			jQueryInclude.src = '//' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
-			document.getElementsByTagName('body')[0].appendChild(jQueryInclude);
+			document.getElementById('sayso-container').appendChild(jQueryInclude);
+		}
+
+		if (!window.CrossriderAPI) {
+			var jsCrossriderInstaller = document.createElement('script');
+			jsCrossriderInstaller.src = 'https://crossrider.cotssl.net/javascripts/installer/installer.js'
+			document.getElementById('sayso-container').appendChild(jsCrossriderInstaller);
 		}
 
 		var jQueryTimer = new jsLoadTimer();

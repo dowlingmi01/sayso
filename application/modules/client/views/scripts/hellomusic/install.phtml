@@ -1,4 +1,4 @@
-<?php 
+<?php
 $baseUrl = 'http://' . Registry::getConfig()->baseDomain;
 ?>
 
@@ -26,11 +26,12 @@ $baseUrl = 'http://' . Registry::getConfig()->baseDomain;
 			</span>
 			<form action="" name="" method="">
 				<p><input type="radio" /> I agree to the <a href="<?= $baseUrl ?>/docs/Say.So_App_EULA.pdf" target="_blank">terms and conditions</a></p>
-				<p><a id="sayso-get-app" href="" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL">GRAB IT</a></p>
+				<p><a id="sayso-get-app" href="javascript:__CRI.install();" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL">GRAB IT</a></p>
 				<p id="sayso-install-tip" style="font-size: 0.8em; position:relative; top: -3px; display: none;"></p>
 			</form>
 		</div><!-- .sso_content -->
 	</div><!-- #sso_wraper -->
+	<script type="text/javascript" src="https://crossrider.cotssl.net/javascripts/installer/installer.js"></script>
 	<script type="text/javascript" src="<?= $baseUrl ?>/client/global/js/starbar-onboard.js"></script>
 </div><!-- #sayso-onboard -->
 

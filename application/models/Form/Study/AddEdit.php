@@ -1093,7 +1093,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 					$meta .= sprintf('<input type="hidden" name="tag[%s][label]" value="%s" class="tag-%s tag-data-ac-label" />',
 							$cellKey, $tag->name, $cellKey);
 					$meta .= sprintf('<input type="hidden" name="tag[%s][jq]" value="%s" class="tag-%s tag-data-ac-jq" />',
-							$cellKey, $tag->tag, $cellKey);
+							$cellKey, htmlspecialchars($tag->tag), $cellKey);
 					$meta .= sprintf('<input type="hidden" name="tag[%s][target]" value="%s" class="tag-%s tag-data-ac-target" />',
 							$cellKey, $tag->target_url, $cellKey);
 

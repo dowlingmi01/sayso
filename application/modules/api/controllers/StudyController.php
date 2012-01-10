@@ -40,7 +40,7 @@ class Api_StudyController extends Api_GlobalController
 			$studies = $sql->run();
 			$cache->save($studies, array('studies')); // <-- note 'studies' tag used for cleaning
 		}
-		ObjectExporter_Array::$escapeQuotes = true;
+		//ObjectExporter_Array::$escapeQuotes = true;
 		return $this->_resultType($studies);
 	}
 	

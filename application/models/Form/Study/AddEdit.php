@@ -654,6 +654,30 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 			'group-survey-cell-info', array('Legend' => 'Cell Information', 'style' => '')
 		);
 
+		$htmlFromStudy = '';
+
+		$freeLabel27 = new Form_Markup_Element_AnyHtml('freeLabel27');
+			$freeLabel27->setValue('<table id="cell-adtags" cellspacing="0" cellpadding="0" align="center"><tbody>'
+					. $htmlFromStudy
+					.'</tbody></table>')
+				->removeDecorator('Label')
+				->addDecorators(array(
+					'ViewHelper',
+					array('HtmlTag', array('tag' => 'div', 'class'=>'admin-table'))
+		));
+
+		$subforms[6]->addElements(array(
+			$freeLabel27,
+		));
+		$subforms[6]->addDisplayGroup(
+			array(
+				$freeLabel27,
+			),
+			'group-cell-adtags-data', array('Legend' => 'Ad Tags', 'style' => '')
+		);
+
+		
+		
 		// Online Browsing
 
 		$freeLabel5 = new Form_Markup_Element_AnyHtml('freeLabel5');

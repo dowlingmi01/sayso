@@ -643,6 +643,12 @@ function buildCell()
 			$(this).remove();
 		}
 	});
+	
+	$('#cell-adtags input[type=checkbox]:checked').each(function() {
+		hiddens[hiddens.length] = {'name': 'cell['+window._cell+'][adtag][]',
+			'value': $(this).attr('id').substring('cbAdTag'.length)};
+		$(this).removeAttr("checked");
+	});
 
 	// append metadata
 	$.each(hiddens, function(i, v)
@@ -777,6 +783,9 @@ function buildTag()
 	var row = $('<tr id="ac-tag-row-'+uniqKey+'">'+cellOne+cellTwo+cellDelete+'</tr>');
 	$('#ac-camp-tags tbody').append(row);
 
+	row = '<tr><td><label for="cbAdTag'+ uniqKey+'"><input type="checkbox" class="cb" name="cbAdTag" id="cbAdTag' + uniqKey + '">' + label + '</label></td></tr>';
+	$('#cell-adtags tbody').append(row)
+	
 	// recolor rows
 	var c = 0;
 	$('#ac-camp-tags tbody tr').each(function(){

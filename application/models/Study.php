@@ -400,94 +400,6 @@ class Study extends Record
 			}
 		}
 
-		// Cells
-
-		// Validity check temporarily disabled - DO NOT DELETE THE COMMENTED BLOCK BELOW!
-		/*
-		if(empty($values['cell']))
-		{
-			throw new Exception('Cell data not available!');
-		}
-
-		// Check validity
-		foreach ($values['cell'] as $cell)
-		{
-			if(!isset($cell['qualifiers']) || !is_array($cell['qualifiers']) || empty($cell['qualifiers']))
-			{
-				throw new Exception('Cell information passed is invalid!');
-			}
-		}
-		 */
-
-		/**
-		 * @todo add check for containing both types of cells
-		 */
-
-		// Save new cells
-		if(!empty($values['cell']))
-		{
-			foreach ($values['cell'] as $cellData)
-			{
-				/**
-				 * @todo verify data with Zend_Filter*
-				 */
-				$cell			   = new Study_Cell();
-				$cell->study_id	 = $study->getId();
-				$cell->description  = $cellData['description'];
-				$cell->size		 = $cellData['size'];
-				$cell->cell_type	= $cellData['type'] == 1 ? 'control' : 'test';
-				$cell->save();
-
-				if(!empty($cellData['qualifiers']))
-				{
-					foreach ($cellData['qualifiers'] as $qualifier)
-					{
-						$qa = &$cellData[$qualifier];
-						//echo '<pre>'; var_dump($qa);echo '</pre>';
-
-						switch($qa['qftype'])
-						{
-							case 'online-browsing':
-
-								$browseQualifier			= new Study_CellBrowsingQualifier();
-								$browseQualifier->cell_id   = $cell->getId();
-								if ($qa['action'] === 'Exclude')
-								{
-									$browseQualifier->exclude = 1;
-								}
-								$browseQualifier->site		  = $qa['url'];
-								$browseQualifier->timeframe_id  = $qa['timeframe'];
-								$browseQualifier->save();
-
-								break;
-							case 'search-action':
-
-								$searchQualifier			= new Study_CellSearchQualifier();
-								$searchQualifier->cell_id   = $cell->getId();
-								if ($qa['action'] === 'Exclude')
-								{
-									$searchQualifier->exclude = 1;
-								}
-								$searchQualifier->term		  = $qa['qs'];
-								$searchQualifier->timeframe_id  = $qa['timeframe'];
-								$searchQualifier->save();
-
-								foreach ($qa['engines'] as $engine)
-								{
-									//echo '<pre>'; var_dump($engine);echo '</pre>';
-									$map = new Study_CellSearchQualifierMap();
-									$map->cell_qualifier_search_id  = $searchQualifier->getId();
-									$map->search_engines_id		 = $engine;
-									$map->save();
-								}
-
-								break;
-						}
-					}
-				}
-			}
-		}
-
 		// Adjuster Campaign
 
 		// Validity check temporarily disabled - DO NOT DELETE THE COMMENTED BLOCK BELOW!
@@ -500,7 +412,9 @@ class Study extends Record
 
 		if(!empty($values['tag']))
 		{
-			foreach ($values['tag'] as $tagData)
+			$tagsByClientIds = array(); // Tag objects by client side guids
+            
+			foreach ($values['tag'] as $tagClientId => $tagData)
 			{
 				$tag = new Study_Tag();
 				$tag->name		  = $tagData['label'];
@@ -512,6 +426,7 @@ class Study extends Record
 				 */
 				$tag->user_id	   = $user->id;
 				$tag->save();
+				$tagsByClientIds[$tagClientId] = $tag;
 
 				if(!empty($tagData['domain']))
 				{
@@ -651,6 +566,106 @@ class Study extends Record
 				}
 			}
 		}
+        // Cells
+
+        // Validity check temporarily disabled - DO NOT DELETE THE COMMENTED BLOCK BELOW!
+        /*
+        if(empty($values['cell']))
+        {
+            throw new Exception('Cell data not available!');
+        }
+
+        // Check validity
+        foreach ($values['cell'] as $cell)
+        {
+            if(!isset($cell['qualifiers']) || !is_array($cell['qualifiers']) || empty($cell['qualifiers']))
+            {
+                throw new Exception('Cell information passed is invalid!');
+            }
+        }
+         */
+
+        /**
+         * @todo add check for containing both types of cells
+         */
+
+        // Save new cells
+        if(!empty($values['cell']))
+        {
+            foreach ($values['cell'] as $cellData)
+            {
+                /**
+                 * @todo verify data with Zend_Filter*
+                 */
+                $cell               = new Study_Cell();
+                $cell->study_id     = $study->getId();
+                $cell->description  = $cellData['description'];
+                $cell->size         = $cellData['size'];
+                $cell->cell_type    = $cellData['type'] == 1 ? 'control' : 'test';
+                $cell->save();
+
+                if(!empty($cellData['adtag']))
+                {
+                    foreach ($cellData['adtag'] as $adTagId)
+                    {
+                        $tag = $tagsByClientIds[$adTagId];
+                        /* @var $tag Study_Tag */
+                        $map            = new Study_CellTagMap();
+                        $map->cell_id   = $cell->getId();
+                        $map->tag_id    = $tag->getId();
+                        $map->save();
+                    }
+                }
+                
+                if(!empty($cellData['qualifiers']))
+                {
+                    foreach ($cellData['qualifiers'] as $qualifier)
+                    {
+                        $qa = &$cellData[$qualifier];
+                        //echo '<pre>'; var_dump($qa);echo '</pre>';
+
+                        switch($qa['qftype'])
+                        {
+                            case 'online-browsing':
+
+                                $browseQualifier            = new Study_CellBrowsingQualifier();
+                                $browseQualifier->cell_id   = $cell->getId();
+                                if ($qa['action'] === 'Exclude')
+                                {
+                                    $browseQualifier->exclude = 1;
+                                }
+                                $browseQualifier->site          = $qa['url'];
+                                $browseQualifier->timeframe_id  = $qa['timeframe'];
+                                $browseQualifier->save();
+
+                                break;
+                            case 'search-action':
+
+                                $searchQualifier            = new Study_CellSearchQualifier();
+                                $searchQualifier->cell_id   = $cell->getId();
+                                if ($qa['action'] === 'Exclude')
+                                {
+                                    $searchQualifier->exclude = 1;
+                                }
+                                $searchQualifier->term          = $qa['qs'];
+                                $searchQualifier->timeframe_id  = $qa['timeframe'];
+                                $searchQualifier->save();
+
+                                foreach ($qa['engines'] as $engine)
+                                {
+                                    //echo '<pre>'; var_dump($engine);echo '</pre>';
+                                    $map = new Study_CellSearchQualifierMap();
+                                    $map->cell_qualifier_search_id  = $searchQualifier->getId();
+                                    $map->search_engines_id         = $engine;
+                                    $map->save();
+                                }
+
+                                break;
+                        }
+                    }
+                }
+            }
+        }
 	}
 }
 

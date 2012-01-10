@@ -556,7 +556,8 @@ $SQ(function () {
 
 			adTargets[adTargetId] = adTarget;
 
-			$SQ.starbarElem.fireExtensionEvent(
+			var app = KOBJ.get_application(sayso.starbar.kynetxAppId);
+			app.raise_event(
 				'update_ad_targets',
 				{
 					'ad_targets' : JSON.stringify(adTargets)
@@ -608,7 +609,7 @@ $SQ(function () {
 		// and to prevent the need for deeply nested callbacks
 
 		new $SQ.jsLoadTimer().setMaxCount(50).start(
-			function () { return numStudies === s && adsFound; }, // if
+			function () { return adsFound; }, // if
 			function () {										 // then
 				log('Ads matched ' + adsFound + '. Ads replaced ' + replacements);
 				ajax({

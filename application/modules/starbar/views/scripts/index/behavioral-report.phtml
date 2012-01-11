@@ -1,0 +1,18 @@
+<br />
+<form method="post">
+	Enter keywords below<br />
+	Use a | character for OR searches (i.e. a 'broken pipe', or shift \backslash\ on most keyboards).<br />
+	Do not use brackets, +/- or other weird characters.<br />
+	<br />
+	Examples:<br />
+	guitar center &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <i>returns results for users who have searched for (guitar AND center)</i><br />
+	guitar center | guitar centre &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i>returns results for users who have searched for ((guitar AND center) OR (guitar AND centre))</i><br />
+	<br />
+	<b>Important:</b> Please don't run this too often, it is server intensive and runs on our production server <br />
+	<br /><br />
+	Keywords: <input type="text" name="keywords" style="width: 400px;" value="<?= $this->keywords ?>" /> <input type="submit" value="Go!"><br />
+	<br />
+	<? if ($this->keywords) { ?>
+		<textarea cols="100" rows="40"><?= $this->csv ?></textarea><br />
+	<? } ?>
+</form>

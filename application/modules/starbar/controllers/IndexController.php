@@ -74,7 +74,7 @@ class Starbar_IndexController extends Api_GlobalController
 					if (substr($keywordClause, -1) != "(") {
 						$keywordClause .= " AND ";
 					}
-					$keywordClause .= "content LIKE '%".$keyword."%'";
+					$keywordClause .= "LOWER(content) LIKE '%".strtolower($keyword)."%'";
 				}
 			}
 			$keywordClause .= "))";

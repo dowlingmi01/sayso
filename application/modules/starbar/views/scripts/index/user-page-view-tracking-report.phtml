@@ -1,0 +1,19 @@
+<br />
+<form method="post">
+	Enter domains or URL segments below<br />
+	Use a | character for OR searches (i.e. a 'broken pipe', or shift \backslash\ on most keyboards).<br />
+	Do not use brackets, +/- or other weird characters.<br />
+	<br />
+	Examples:<br />
+	amazon.com &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i>returns results for users who have visited amazon.com, www.amazon.com/books, etc.</i><br />
+	amazon.com | ebay.com &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i>returns results for users who have visited amazon.com OR have visited ebay.com (or both)</i><br />
+	ebay &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <i>returns results for users who have visited a page with &quot;ebay&quot; in the URL (so ebay.com and ebay.ca would match, but so would www.blah.com/ebay)</i><br />
+	<br />
+	<b>Important:</b> Please don't run this *too* often, it is server intensive and runs on our production server. Once every 5-10 seconds is fine.<br />
+	<br /><br />
+	Domains: <input type="text" name="keywords" style="width: 400px;" value="<?= $this->keywords ?>" /> <input type="submit" value="Go!"><br />
+	<br />
+	<? if ($this->keywords) { ?>
+		<textarea cols="100" rows="40"><?= $this->csv ?></textarea><br />
+	<? } ?>
+</form>

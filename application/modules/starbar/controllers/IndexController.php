@@ -52,7 +52,45 @@ class Starbar_IndexController extends Api_GlobalController
 	public function genericAction () {
 	}
 
-	public function behavioralReportAction () {
+	public function userPageViewTrackingReportAction () {
+		// Starbar
+		$starbar = new Starbar();
+		$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));
+		$starbar->setVisibility('stowed');
+		$this->view->starbar = $starbar;
+
+		// SELECT user_id, COUNT(user_id) as total_visits FROM metrics_log WHERE user_id > 122 AND metrics_type = 1 AND ((content LIKE '%guitar%' AND content LIKE '%center%') OR (content LIKE '%guitar%' AND content LIKE '%centre%')) GROUP BY user_id ORDER BY user_id
+
+		$request = $this->getRequest();
+		$csv = "user_id,number_of_page_views\n";
+		$keywords = trim($request->getParam('keywords', ""));
+		if ($keywords) {
+			$keywordArray = explode(" ", $keywords);
+			$keywordClause = "((";
+			foreach ($keywordArray as $keyword) {
+				if ($keyword == "|") {
+					$keywordClause .= ") OR (";
+				} else {
+					if (substr($keywordClause, -1) != "(") {
+						$keywordClause .= " AND ";
+					}
+					$keywordClause .= "LOWER(content) LIKE '%".strtolower($keyword)."%'";
+				}
+			}
+			$keywordClause .= "))";
+
+			$sql = "SELECT user_id, COUNT(user_id) as page_views FROM metrics_log WHERE user_id > 122 AND metrics_type = 2 AND ".$keywordClause." GROUP BY user_id ORDER BY user_id";
+			$reportData = Db_Pdo::fetchAll($sql);
+			foreach ($reportData as $row) {
+				$csv .= $row['user_id'] . "," . $row['page_views'] . "\n";
+			}
+		}
+
+		$this->view->keywords = $keywords;
+		$this->view->csv = $csv;
+	}
+
+	public function userSearchTrackingReportAction () {
 		// Starbar
 		$starbar = new Starbar();
 		$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));

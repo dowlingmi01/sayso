@@ -128,6 +128,36 @@ class Starbar_IndexController extends Api_GlobalController
 		$this->view->csv = $csv;
 	}
 
+	public function testUserReportAction () {
+		// Starbar
+		$starbar = new Starbar();
+		$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));
+		$starbar->setVisibility('stowed');
+		$this->view->starbar = $starbar;
+
+		$csv = "user_id,email\n";
+
+		$sql = "
+			SELECT user.id, user_email.email
+			FROM user INNER JOIN user_email ON user.primary_email_id = user_email.id
+		    WHERE (user_email.email LIKE '%@say.so'
+					OR user_email.email LIKE '%@saysollc.com'
+					OR user_email.email LIKE '%@hellomusic.com'
+					OR user_email.email LIKE '%@wilshiremedia.com'
+				)
+				OR user.id < 123
+			ORDER BY user.id ASC
+		";
+
+		$users = Db_Pdo::fetchAll($sql);
+
+		foreach($users as $user) {
+			$csv .= $user['id'] . "," . $user['email'] . "\n";
+		}
+
+		$this->view->csv = $csv;
+	}
+
 	public function notesReportAction () {
 		// Starbar
 		$starbar = new Starbar();

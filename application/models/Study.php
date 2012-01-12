@@ -666,6 +666,7 @@ class Study extends Record
                 }
             }
         }
+        Api_Cache::getInstance('Studies_GetAll_RecentOrder')->remove();
 	}
 }
 

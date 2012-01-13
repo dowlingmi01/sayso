@@ -725,7 +725,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 					$htmlFromStudy .= '<tr'.$class.' id="ac-tag-row-'.$cellKey.'">'.$tds.'</tr>';
 					$htmlFromStudy .= $meta;
 					
-					$htmlForCellCB .= '<tr><td><label for="cbAdTag'. $cellKey.'"><input type="checkbox" class="cb" name="cbAdTag" id="cbAdTag' . $cellKey . '">' . $tag->name . '</label></td></tr>';
+					$htmlForCellCB .= '<tr id="cbAdTagContainer'. $cellKey.'"><td><label for="cbAdTag'. $cellKey.'"><input type="checkbox" class="cb" name="cbAdTag" id="cbAdTag' . $cellKey . '">' . $tag->name . '</label></td></tr>';
 				}
 			}
 		}

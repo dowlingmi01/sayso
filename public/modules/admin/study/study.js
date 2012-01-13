@@ -783,7 +783,7 @@ function buildTag()
 	var row = $('<tr id="ac-tag-row-'+uniqKey+'">'+cellOne+cellTwo+cellDelete+'</tr>');
 	$('#ac-camp-tags tbody').append(row);
 
-	row = '<tr><td><label for="cbAdTag'+ uniqKey+'"><input type="checkbox" class="cb" name="cbAdTag" id="cbAdTag' + uniqKey + '">' + label + '</label></td></tr>';
+	row = '<tr id="cbAdTagContainer'+ uniqKey+'"><td><label for="cbAdTag'+ uniqKey+'"><input type="checkbox" class="cb" name="cbAdTag" id="cbAdTag' + uniqKey + '">' + label + '</label></td></tr>';
 	$('#cell-adtags tbody').append(row)
 	
 	// recolor rows
@@ -806,6 +806,8 @@ function bindDeleteTag()
 		var uniqKey = $(this).attr('rel');
 		$('#ac-tag-row-'+uniqKey).remove();
 		$('.tag-'+uniqKey).remove();
+		$('#cbAdTagContainer'+uniqKey).remove();
+		$('input[name*="[adtag][]"][value="'+uniqKey+'"]').remove();
 
 		var c = 0;
 		$('#ac-camp-tags tbody tr').each(function(){

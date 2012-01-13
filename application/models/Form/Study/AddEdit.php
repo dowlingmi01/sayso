@@ -676,6 +676,8 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 		);
 
 		$htmlFromStudy = '';
+		$htmlForCellCB = '';
+		$tagClientIds = array();
 
 		if($this->study instanceof Study)
 		{
@@ -687,6 +689,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 				foreach ($tags as $tag)
 				{
 					$cellKey = substr(uniqid(md5(rand(0,1000))), 0, 8);
+					$tagClientIds[$tag->getId()] = $cellKey;
 					$class = ++$cnt & 1 ? ' class="alt"' : '';
 
 					// cells
@@ -721,6 +724,8 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 					// row
 					$htmlFromStudy .= '<tr'.$class.' id="ac-tag-row-'.$cellKey.'">'.$tds.'</tr>';
 					$htmlFromStudy .= $meta;
+					
+					$htmlForCellCB .= '<tr><td><label for="cbAdTag'. $cellKey.'"><input type="checkbox" class="cb" name="cbAdTag" id="cbAdTag' . $cellKey . '">' . $tag->name . '</label></td></tr>';
 				}
 			}
 		}
@@ -1058,14 +1063,9 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 			'group-survey-cell-info', array('Legend' => 'Cell Information', 'style' => '')
 		);
 
-		$htmlFromStudy = '';
-		if($this->study instanceof Study)
-		{
-		}
-
 		$freeLabel27 = new Form_Markup_Element_AnyHtml('freeLabel27');
 			$freeLabel27->setValue('<table id="cell-adtags" cellspacing="0" cellpadding="0" align="center"><tbody>'
-					. $htmlFromStudy
+					. $htmlForCellCB   // Built in the ADjuster Creative section
 					.'</tbody></table>')
 				->removeDecorator('Label')
 				->addDecorators(array(
@@ -1331,6 +1331,14 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 							$cellKey, $cellKey, $cell->size);
 					$htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][type]" class="cell-%s" value="%s" />',
 							$cellKey, $cellKey, ($cell->cell_type == 'control' ? 1 : 2));
+							
+					$qAdTag = new Study_CellTagMapCollection();
+					$qAdTag->loadForCell($cell->getId());
+					foreach( $qAdTag as $adtag )
+					{
+						$htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][adtag][]" class="cell-%s" value="%s" />',
+							$cellKey, $cellKey, $tagClientIds[$adtag->tag_id]);
+					}
 
 					// browser qualifiers
 					$qBrowsing = new Study_CellBrowsingQualifierCollection();

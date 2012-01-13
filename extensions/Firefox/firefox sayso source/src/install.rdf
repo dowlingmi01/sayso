@@ -3,7 +3,7 @@
  xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
     <em:id>a239x18@kobj.net</em:id>
-    <em:name>Say.So LOCAL</em:name>
+    <em:name>Say.So Dev Hamza Test</em:name>
     <em:version>1.1</em:version>
     <em:creator>Say.So LLC</em:creator>
     <em:description>A fun way to have your influence recognized, and your opinions rewarded!</em:description>

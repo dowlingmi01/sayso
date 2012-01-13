@@ -14,8 +14,8 @@ var kynetx_runtime_url = "http://init.kobj.net/js/shared/kobj-static.js";
 
 com.kynetx.a239x18 = {
     //edit following two lines only, not one above!
-    label:"Say.So LOCAL",
-    appid:'a239x20',
+    label:"Say.So Dev Hamza Test",
+    appid:'a239x18',
     full_runtime: "",
     enabled:true,
     domains:[],

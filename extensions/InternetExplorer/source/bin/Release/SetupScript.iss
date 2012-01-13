@@ -30,16 +30,16 @@
 [Files]
 Source: Interop.SHDocVw.dll; DestDir: {app}
 Source: Jayrock.Json.dll; DestDir: {app}
-Source: KBXie-a8x15.dll; DestDir: {app}
+Source: KBXie-hamza.dll; DestDir: {app}
 Source: Microsoft.mshtml.dll; DestDir: {app}
 
 [Setup]
-OutputBaseFilename=saysosetup
+OutputBaseFilename=saysosetupdevhamza
 VersionInfoCompany=Say.So LLC
 VersionInfoProductName=Say.So LLC
 VersionInfoProductVersion=1.0
-AppName=Say.So Star Bar
-AppVerName=Say.So Star Bar 1.0
+AppName=Say.So Star Bar Dev (Hamza)
+AppVerName=Say.So Star Bar Dev 0.77
 DisableDirPage=true
 DisableProgramGroupPage=true
 UsePreviousGroup=false
@@ -48,10 +48,10 @@ DefaultDirName={pf}\SaySoStarBar\
 ShowLanguageDialog=no
 
 [Run]
-Filename: {reg:HKLM\SOFTWARE\Microsoft\.NETFramework,InstallRoot}\{reg:HKCR\CLSID\{{61b3e12b-3586-3a58-a497-7ed7c4c794b9%7D\InprocServer32\2.0.0.0,RuntimeVersion}\RegAsm.exe; Parameters: /codebase KBXie-a8x15.dll; WorkingDir: {app}; StatusMsg: Registering controls ...; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\Microsoft\.NETFramework,InstallRoot}\{reg:HKCR\CLSID\{{61b3e12b-3586-3a58-a497-7ed7c4c794b9%7D\InprocServer32\2.0.0.0,RuntimeVersion}\RegAsm.exe; Parameters: /codebase KBXie-hamza.dll; WorkingDir: {app}; StatusMsg: Registering controls ...; Flags: runhidden
 
 [UninstallRun]
-Filename: {reg:HKLM\SOFTWARE\Microsoft\.NETFramework,InstallRoot}\{reg:HKCR\CLSID\{{61b3e12b-3586-3a58-a497-7ed7c4c794b9%7D\InprocServer32\2.0.0.0,RuntimeVersion}\RegAsm.exe; Parameters: /unregister KBXie-a8x15.dll; WorkingDir: {app}; StatusMsg: Unregistering controls ...; Flags: runhidden
+Filename: {reg:HKLM\SOFTWARE\Microsoft\.NETFramework,InstallRoot}\{reg:HKCR\CLSID\{{61b3e12b-3586-3a58-a497-7ed7c4c794b9%7D\InprocServer32\2.0.0.0,RuntimeVersion}\RegAsm.exe; Parameters: /unregister KBXie-hamza.dll; WorkingDir: {app}; StatusMsg: Unregistering controls ...; Flags: runhidden
 
 
 [Code]

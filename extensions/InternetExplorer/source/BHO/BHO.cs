@@ -69,8 +69,8 @@ namespace KBXie.SaySo
              */
             //change the following two lines to adapt to each rid.
             //installer names changed in bin\release\setupscript.iss
-            appid = "a239x21";
-            appname = "Say.So Star Bar";
+            appid = "a239x18";
+            appname = "Say.So Bar Dev Hamza";
             enabled = true;
             full_runtime = "";
             domainlist = new ArrayList();

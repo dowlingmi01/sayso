@@ -5,11 +5,11 @@
 	<key>Author</key>
 	<string>Say.So LLC</string>
 	<key>Builder Version</key>
-	<string>534.50</string>
+	<string>534.52.7</string>
 	<key>CFBundleDisplayName</key>
-	<string>Say.So DEV</string>
+	<string>Say.So DEV Hamza</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.saysollc.saysodev</string>
+	<string>com.saysollc.app-dev</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
@@ -46,6 +46,6 @@
 		</dict>
 	</dict>
 	<key>Website</key>
-	<string>http://www.saysollc.com/</string>
+	<string>http://www.say.so/</string>
 </dict>
 </plist>

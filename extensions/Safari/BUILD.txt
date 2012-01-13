@@ -10,3 +10,8 @@ The global.html and page.js contain the Safari extension source code for each br
 appid = "a239x20";
 
 The remainder of the Safari extension configuration is performed within the Safari extension builder GUI.
+
+To get to the extension builder GUI:
+1. Enable the developer menu, from preference -> advanced: http://d.pr/bCwb
+2. Go to Develop menu (with File, Edit, etc.) -> Show Extension Builder
+3. Choose build package and follow instructions

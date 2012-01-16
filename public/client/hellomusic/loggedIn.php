@@ -51,14 +51,14 @@ if (!isset($_COOKIE['HMID']) || !isset($_COOKIE['MyEmail'])) {
 					<p><input type="radio" /> I agree to the <a href="../global/SaySo_TC.pdf" target="_blank">terms and conditions</a></p>
 					<p><a id="sayso-get-app" href="" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL">GRAB IT</a></p>
 					<p id="sayso-install-tip" style="font-size: 0.8em; position:relative; top: -3px; display: none;"></p>
-
+					
 				</form>
 			</div><!-- .sso_content -->
 			<!--<div class="sso_main-image"></div>--><!-- .sso_main-image -->
 		</div><!-- #sso_wraper -->
 		<script type="text/javascript" src="js/starbar-onboard.js"></script>
 	</div><!-- #sayso-onboard -->
-
+	
 	<!-- the following is for testing purposes only, do not deliver to customer -->
 	<script type="text/javascript">
 		setTimeout(function () { if (typeof window.console !== 'undefined' && typeof window.console.log === 'function') { console.log('<?= $randomEmail ?>');} }, 2000);

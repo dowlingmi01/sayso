@@ -15,7 +15,10 @@
 	width: 40%;
 	display: block;
 }
-
+#fieldset-groupcelladtagsdata input[type=checkbox]
+{
+	margin-right: 4px;
+}
 #fieldset-groupsocial input[type=checkbox], #fieldset-groupengines input[type=checkbox]
 {
 	margin: 0 4px 0 4px;

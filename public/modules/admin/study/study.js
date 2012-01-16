@@ -273,7 +273,8 @@ function submitMain()
  */
 function switchProduct()
 {
-	switch(parseInt($('input[name=radioProduct]:checked').val()))
+	var product = parseInt($('input[name=radioProduct]:checked').val());
+	switch( product )
 	{
 		case 1:
 			$("#tabContainer .ui-tabs-nav li:nth-child(2)").hide();
@@ -288,6 +289,10 @@ function switchProduct()
 			$("#tabContainer .ui-tabs-nav li:nth-child(3)").show();
 			break;
 	}
+	if( product == 2)
+		$('[id^="groupcelladtagsdata"]').show();
+	else
+		$('[id^="groupcelladtagsdata"]').hide();
 }
 
 function setSurveyVisibility()

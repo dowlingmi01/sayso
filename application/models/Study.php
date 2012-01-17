@@ -514,18 +514,29 @@ class Study extends Record
 				$creativeAssoc->save();
 
 				// add avails
+				$availIds = array();
+				
 				if(!empty($creativeData['avails']))
 				{
 					foreach ($creativeData['avails'] as $availIndex)
 					{
 						$availData = &$creativeData[$availIndex];
 
-						$avail						  = new Study_Avail();
-						$avail->creative_id			 = $creative->getId();
-						$avail->label				   = $availData['label'];
-						$avail->selector				= $availData['jq'];
+						$avail						 = new Study_Tag();
+						$avail->name				 = $availData['label'];
+						$avail->tag					 = $availData['jq'];
+						$avail->study_id			 = $study->getId();
+						$avail->user_id				 = $user->id;
 						$avail->save();
+						
+						$availIds[] = $avail->getId();
 
+						$tm = new Study_CreativeTagMap();
+						$tm->tag_id = $avail->getId();
+						$tm->creative_id = $creative->getId();
+						$tm->save();
+						
+						
 						if(!empty($availData['domain']))
 						{
 							foreach ($availData['domain'] as $domainData)
@@ -556,9 +567,9 @@ class Study extends Record
 								}
 
 								// associate
-								$dm				 = new Study_AvailDomainMap();
-								$dm->study_avail_id = $avail->getId();
-								$dm->domain_id	  = $domain->getId();
+								$dm				 = new Study_TagDomainMap();
+								$dm->tag_id      = $avail->getId();
+								$dm->domain_id	 = $domain->getId();
 								$dm->save();
 							}
 						}
@@ -616,7 +627,12 @@ class Study extends Record
                         $map->save();
                     }
                 }
-                
+                foreach( $availIds as $availId ) {
+                    $map            = new Study_CellTagMap();
+                    $map->cell_id   = $cell->getId();
+                    $map->tag_id    = $availId;
+                    $map->save();
+                }
                 if(!empty($cellData['qualifiers']))
                 {
                     foreach ($cellData['qualifiers'] as $qualifier)

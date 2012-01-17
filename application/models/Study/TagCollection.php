@@ -20,6 +20,25 @@ class Study_TagCollection extends RecordCollection
 		}
 	}
 
+	public function loadForCreative($creativeId)
+	{
+		$sql = "SELECT
+					st.*
+				FROM
+					study_tag st, study_creative_tag_map sctm
+				WHERE
+					sctm.creative_id = ?
+				AND
+				    st.id = sctm.tag_id";
+
+		$entries = Db_Pdo::fetchAll($sql, $creativeId);
+
+		if ($entries)
+		{
+			$this->build($entries, new Study_Tag());
+		}
+	}
+
 	public static function dropForStudy($studyId)
 	{
 		$sql = "DELETE FROM study_tag WHERE study_id = ?";

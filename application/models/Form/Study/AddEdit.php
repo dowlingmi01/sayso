@@ -605,7 +605,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 		);
 
 		/**
-		 * Adjuster Campapign
+		 * Adjuster Campaign
 		 */
 
 
@@ -679,7 +679,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 		$htmlForCellCB = '';
 		$tagClientIds = array();
 
-		if($this->study instanceof Study)
+		if($this->study instanceof Study && $this->study->study_type == 2)
 		{
 			$tags = new Study_TagCollection();
 			$tags->loadForStudy($this->study->getId());
@@ -910,7 +910,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 				->setAttrib('class', 'add-fieldset-data styled-button');
 
 		$htmlFromStudy = '';
-		if($this->study instanceof Study)
+		if($this->study instanceof Study && $this->study->study_type == 3)
 		{
 			$collection = new Study_CreativeCollection();
 			$collection->loadForStudy($this->study->getId());
@@ -935,7 +935,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 					$mimeType = new Lookup_MimeType();
 					$mimeType->loadData($creative->mime_type_id);
 
-					$avails = new Study_AvailCollection();
+					$avails = new Study_TagCollection();
 					$avails->loadForCreative($creative->getId());
 					foreach ($avails as $avail)
 					{
@@ -948,14 +948,14 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 						// properties
 						$meta .= sprintf('<input type="hidden" name="creative[%s][%s][label]" class="creative-%s avail-%s avail-data-label" '
 								.'value="%s" />',
-							$creativeKey, $availKey, $creativeKey, $availKey, $avail->label);
+							$creativeKey, $availKey, $creativeKey, $availKey, $avail->name);
 						$meta .= sprintf('<input type="hidden" name="creative[%s][%s][jq]" class="creative-%s avail-%s avail-data-jq" '
 								.'value="%s" />',
-							$creativeKey, $availKey, $creativeKey, $availKey, $avail->selector);
+							$creativeKey, $availKey, $creativeKey, $availKey, htmlspecialchars($avail->tag));
 
 						// domains
 						$domains	= new Study_DomainCollection();
-						$domains->loadForAvail($avail->getId());
+						$domains->loadForTag($avail->getId());
 						if(!empty($domains))
 						{
 							foreach($domains as $domain)
@@ -1332,12 +1332,14 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 					$htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][type]" class="cell-%s" value="%s" />',
 							$cellKey, $cellKey, ($cell->cell_type == 'control' ? 1 : 2));
 							
-					$qAdTag = new Study_CellTagMapCollection();
-					$qAdTag->loadForCell($cell->getId());
-					foreach( $qAdTag as $adtag )
-					{
-						$htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][adtag][]" class="cell-%s" value="%s" />',
-							$cellKey, $cellKey, $tagClientIds[$adtag->tag_id]);
+					if( $this->study->study_type == 2 ) {
+						$qAdTag = new Study_CellTagMapCollecton();
+						$qAdTag->loadForCell($cell->getId());
+						foreach( $qAdTag as $adtag )
+						{
+							$htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][adtag][]" class="cell-%s" value="%s" />',
+								$cellKey, $cellKey, $tagClientIds[$adtag->tag_id]);
+						}
 					}
 
 					// browser qualifiers

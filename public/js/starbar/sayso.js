@@ -415,6 +415,8 @@ $SQ(function () {
 					} // tags
 				} // cells
 			} // studies
+			
+			if (!inIframe) log('Current Cells: ', cells);
 
 			processStudyCells(cells);
 

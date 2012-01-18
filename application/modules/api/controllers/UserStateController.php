@@ -81,7 +81,6 @@ class Api_UserStateController extends Api_GlobalController
 		$userState->visibility = $this->visibility;
 		$userState->last_update_profile = $this->last_update_profile;
 		$userState->last_update_game = $this->last_update_game;
-		$userState->last_update_studies = $this->last_update_studies;
 
 		$userState->save();
 
@@ -95,6 +94,7 @@ class Api_UserStateController extends Api_GlobalController
 		$userState = new User_State();
 		$userState->loadDataByUniqueFields(array('user_id' => $this->user_id));
 		$userState->studies = $this->studies;
+		$userState->last_update_studies = $this->last_update_studies;
 		$userState->save();
 
 		return $this->_resultType(true);

@@ -95,18 +95,19 @@ class Admin_StudyController extends Admin_CommonController
 			);
 		$grid->addExtraColumns($extraColumnProgress);
 
-		$extraColumnStatus = new Bvb_Grid_Extra_Column();
-		$extraColumnStatus
-			->position('right')
-			->name('show_status')
-			->title('Status')
-			->callback(
-				array(
-					'function'  => array($this, 'generateStatusButtonLink'),
-					'params'	=> array('{{id}}', '{{status}}', '{{begin_date}}', '{{end_date}}')
-				)
-			);
-		$grid->addExtraColumns($extraColumnStatus);
+// The following removed as requested on #383		
+//		$extraColumnStatus = new Bvb_Grid_Extra_Column();
+//		$extraColumnStatus
+//			->position('right')
+//			->name('show_status')
+//			->title('Status')
+//			->callback(
+//				array(
+//					'function'  => array($this, 'generateStatusButtonLink'),
+//					'params'	=> array('{{id}}', '{{status}}', '{{begin_date}}', '{{end_date}}')
+//				)
+//			);
+//		$grid->addExtraColumns($extraColumnStatus);
 
 		$extraColumnIsStopped = new Bvb_Grid_Extra_Column();
 		$extraColumnIsStopped

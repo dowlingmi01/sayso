@@ -288,7 +288,7 @@ $SQ(function () {
 	// ================================================================
 	// ADjuster
 
-	if (!sayso.flags.match('adjuster_ads')) return; // globally disabled ad detection/replacement
+//	if (!sayso.flags.match('adjuster_ads')) return; // globally disabled ad detection/replacement
 
 	log('ADjuster ad handling enabled');
 

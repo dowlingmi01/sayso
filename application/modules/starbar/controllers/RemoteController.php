@@ -464,6 +464,21 @@ class Starbar_RemoteController extends Api_GlobalController
 		$this->user_key = $userSession->getKey();
 		$this->auth_key = $starbar->auth_key;
 
+		// Set our cookies for our extension
+		// Make them expire in a year
+		$expiry = time()+(86400*365);
+		setcookie('user_id', $this->user_id, $expiry, '/', null, null, true);
+		setcookie('user_key', $this->user_key, $expiry, '/', null, null, true);
+		setcookie('auth_key', $this->auth_key, $expiry, '/', null, null, true);
+
+		$userState = new User_State();
+		$userState->starbar_id = $this->starbar_id;
+		$userState->user_id = $this->user_id;
+		$userState->user_key = $this->user_key;
+		$userState->auth_key = $this->auth_key;
+		$userState->visibility = "open";
+		$userState->save();
+
 		// Game
 
 		$gamer = Gamer::create($user->getId(), $starbar->getId());

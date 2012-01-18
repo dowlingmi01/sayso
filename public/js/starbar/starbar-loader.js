@@ -10,70 +10,32 @@
  */
 (function () {
 
-	var sayso = window.sayso,
+	// No jQuery, or no authentication
+	if (!window.$SQ || !window.$SQ.sayso) return;
+
+	// jQuery
+	$SQ = window.$SQ;
+
+	var sayso = $SQ.sayso,
 		starbarContainer = document.getElementById('sayso-starbar'),
+		currentUrl = $SQ.sayso.current_url,
+		urlMatchPrepend = $SQ.sayso.url_match_prepend;
 
-		urlMatchPrepend = '^(?:http|https){1}://(?:[\\w.-]+)?',
-		currentUrl = window.location.href,
-		inIframe = (top !== self);
+	$SQ.jsLoadTimer = jsLoadTimer;
+	$SQ.cssLoadTimer = cssLoadTimer;
 
-	// setup global "safe" logging functions
-	if (!sayso.log) {
-		function _log (type) { // <-- closure here allows re-use for log() and warn()
-			return function () {
-				if (sayso.debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
-					var args = Array.prototype.slice.call(arguments);
-					if (typeof console.log.apply === 'function') {
-						args.unshift('SaySo:');
-						window.console[type].apply(window.console, args);
-					} else {
-						// must be IE
-						if (typeof args[0] !== 'object') {
-							window.console.log(args[0]);
-						}
-					}
-				}
-			};
-		};
-		sayso.log = _log('log');
-		sayso.warn = _log('warn');
-	}
+	// ADjuster
 
-	// bring in namespaced jQuery $SQ
+	var jsSayso = document.createElement('script');
+	jsSayso.src = '//' + sayso.baseDomain + '/js/starbar/sayso.js';
+	starbarContainer.appendChild(jsSayso);
 
-	if (!window.$SQ) {
-		if (!sayso.loading || sayso.loading !== 'jquery') {
-			var jsJQuery = document.createElement('script');
-			jsJQuery.src = '//' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
-			starbarContainer.appendChild(jsJQuery);
-		}
-	}
+	// App loading
 
+	/* Feature checks */
+	var ieVersion = sayso.ie_version ;
+	var geckoVersion = sayso.gecko_version;
 
-	// Support for stupid browsers
-
-	function getInternetExplorerVersion() {
-		var rv = -1; // Return value assumes failure.
-		if (navigator.appName == 'Microsoft Internet Explorer') {
-			var ua = navigator.userAgent;
-			var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-			if (re.exec(ua) != null)
-				rv = parseFloat(RegExp.$1);
-		}
-		return rv;
-	}
-
-	function getGeckoVersion() {
-		var rv = -1; // Return value assumes failure.
-		fullVersion = navigator.userAgent.replace(/^Mozilla.*rv:|\).*$/g, '' ) || ( /^rv\:|\).*$/g, '' );
-		if (fullVersion) {
-			rv = fullVersion.substring(0,3);
-		}
-		return rv;
-	}
-
-	var ieVersion = getInternetExplorerVersion();
-	var geckoVersion = getGeckoVersion();
 	if (ieVersion > -1 && ieVersion < 9) {
 		sayso.disableJqueryEffects = true;
 	} else {
@@ -87,79 +49,62 @@
 		sayso.placeholderSupportMissing = false;
 	}
 
-	String.prototype.trim = function() {
-		return this.replace(/^\s+|\s+$/g,'');
-	};
+	// fix FLASH elements!
+	$SQ('embed[src*=".swf"]').each(function(index) {
+		$SQembed = $SQ(this);
 
-	new jsLoadTimer().start('window.$SQ', function () {
+		if ($SQembed.attr('id') == 'sm2movie') return true; // no fix needed, go to next <embed>
 
-		$SQ.jsLoadTimer = jsLoadTimer;
-		$SQ.cssLoadTimer = cssLoadTimer;
-
-		// JSON support for stupid browsers
-
-		if (!window.JSON || !window.JSON.stringify || !window.JSON.parse) {
-			var jsJson = document.createElement('script');
-			jsJson.src = '//' + sayso.baseDomain + '/js/starbar/json2.min.js';
-			starbarContainer.appendChild(jsJson);
+		$SQembed.css('z-index', '9998 !important');
+		if ($SQembed.attr('wmode') != 'transparent' && $SQembed.attr('wmode') != 'opaque') {
+			$SQembed.attr('wmode', 'transparent');
+			newElem = $SQembed.clone(true, true);
+			$SQembed.replaceWith(newElem);
 		}
+	});
 
-		// ADjuster
-
-		var jsSayso = document.createElement('script');
-		jsSayso.src = '//' + sayso.baseDomain + '/js/starbar/sayso.js';
-		starbarContainer.appendChild(jsSayso);
-
-		// App loading
-
-		// fix FLASH elements!
-		$SQ('embed[src*=".swf"]').each(function(index) {
-			$SQembed = $SQ(this);
-
-			if ($SQembed.attr('id') == 'sm2movie') return true; // no fix needed, go to next <embed>
-
-			$SQembed.css('z-index', '9998 !important');
-			if ($SQembed.attr('wmode') != 'transparent' && $SQembed.attr('wmode') != 'opaque') {
-				$SQembed.attr('wmode', 'transparent');
-				newElem = $SQembed.clone(true, true);
-				$SQembed.replaceWith(newElem);
-			}
-		});
-
-		// fix FLASH elements for IE!
-		if (ieVersion > -1) {
-			$SQ('object').each(function(index) {
-				$SQobject = $SQ(this);
-				if ($SQobject.attr('id') == 'sm2movie' || $SQobject.attr('id') == 'FS') return true; // no fix needed, go to next <object>
-				$SQwmodeParam = $SQ('param[name="wmode"]', $SQobject);
-				if ($SQwmodeParam.length == 1) {
-					if ($SQwmodeParam.attr('value') == 'transparent' || $SQwmodeParam.attr('value') == 'opaque') {
-						return true; // no fix needed, go to next <object>
-					} else {
-						$SQwmodeParam.attr('value', 'transparent');
-					}
+	// fix FLASH elements for IE!
+	if (ieVersion > -1) {
+		$SQ('object').each(function(index) {
+			$SQobject = $SQ(this);
+			if ($SQobject.attr('id') == 'sm2movie' || $SQobject.attr('id') == 'FS') return true; // no fix needed, go to next <object>
+			$SQwmodeParam = $SQ('param[name="wmode"]', $SQobject);
+			if ($SQwmodeParam.length == 1) {
+				if ($SQwmodeParam.attr('value') == 'transparent' || $SQwmodeParam.attr('value') == 'opaque') {
+					return true; // no fix needed, go to next <object>
 				} else {
-					// Check if this <object> is flash, if so add the wmode parameter
-					$SQmovieParam = $SQ('param[name="movie"]', $SQobject);
-					if ($SQmovieParam.length == 1 && $SQmovieParam.attr('value').match(/.swf/)) {
-						newParam = document.createElement('param');
-						newParam.setAttribute('name', 'wmode');
-						newParam.setAttribute('value', 'transparent');
-						$SQobject.append(newParam);
-					} else {
-						return true; // not flash, go to next <object>
-					}
+					$SQwmodeParam.attr('value', 'transparent');
 				}
-				$SQobject.css('z-index', '9998 !important');
+			} else {
+				// Check if this <object> is flash, if so add the wmode parameter
+				$SQmovieParam = $SQ('param[name="movie"]', $SQobject);
+				if ($SQmovieParam.length == 1 && $SQmovieParam.attr('value').match(/.swf/)) {
+					newParam = document.createElement('param');
+					newParam.setAttribute('name', 'wmode');
+					newParam.setAttribute('value', 'transparent');
+					$SQobject.append(newParam);
+				} else {
+					return true; // not flash, go to next <object>
+				}
+			}
+			$SQobject.css('z-index', '9998 !important');
 
-				container = $SQobject.parent();
-				newElem = $SQobject.clone(true);
-				$SQobject.remove();
-				container.html(newElem);
-			});
-		}
+			container = $SQobject.parent();
+			newElem = $SQobject.clone(true);
+			$SQobject.remove();
+			container.html(newElem);
+		});
+	}
 
-		if (!inIframe) {
+	if (!sayso.in_iframe) {
+
+		if (sayso.starbar.id) { // load known Starbar
+
+			loadStarbar();
+
+		} else {				// install new Starbar
+
+			sayso.log('****** Installing NEW App ******');
 
 			// client site detection
 
@@ -172,48 +117,39 @@
 			var clientSetupTimer = new jsLoadTimer();
 			clientSetupTimer.start('window.saysoClientSetup', function () {
 
-				if (sayso.starbar.id) { // load known Starbar
+				var postInstallUrl = '//' + sayso.baseDomain + '/starbar/remote/post-install-setup';
 
-					loadStarbar();
-
-				} else {				// install new Starbar
-
-					sayso.log('****** Installing NEW App ******');
-
-					var postInstallUrl = '//' + sayso.baseDomain + '/starbar/remote/post-install-setup';
-
-					if (sayso.client && sayso.client.uuid) { // we must be on a client site, so provide client vars
-						postInstallUrl +=
-							'?client_name=' + sayso.client.name +
-							'&client_uuid=' + sayso.client.uuid +
-							'&client_uuid_type=' + sayso.client.uuidType +
-							'&client_user_logged_in=' + (sayso.client.userLoggedIn ? 'true' : '');
-					}
-
-					// load iframe to pass pre-install cookies to sayso
-					// along with IP and user agent headers
-					var iframe = document.createElement('iframe');
-					iframe.src = postInstallUrl;
-					iframe.width = '0';
-					iframe.height = '0';
-					iframe.scrolling = 'no';
-					iframe.style.cssText = 'width: 0px; height: 0px; border: 0px;';
-					starbarContainer.appendChild(iframe);
-
-					// after a short delay, continue loading starbar
-					// NOTE: because the Starbar ID is not established at this point
-					// the action to retreive the starbar (/starbar/remote) will
-					// be routed to /starbar/remote/post-install-deliver which will
-					// match the IP/user agent from the previous step and lookup the
-					// correct Starbar for this user (e.g. HelloMusic)
-					setTimeout(loadStarbar, 1000);
+				if (sayso.client && sayso.client.uuid) { // we must be on a client site, so provide client vars
+					postInstallUrl +=
+						'?client_name=' + sayso.client.name +
+						'&client_uuid=' + sayso.client.uuid +
+						'&client_uuid_type=' + sayso.client.uuidType +
+						'&client_user_logged_in=' + (sayso.client.userLoggedIn ? 'true' : '');
 				}
+
+				// load iframe to pass pre-install cookies to sayso
+				// along with IP and user agent headers
+				var iframe = document.createElement('iframe');
+				iframe.src = postInstallUrl;
+				iframe.width = '0';
+				iframe.height = '0';
+				iframe.scrolling = 'no';
+				iframe.style.cssText = 'width: 0px; height: 0px; border: 0px;';
+				starbarContainer.appendChild(iframe);
+
+				// after a short delay, continue loading starbar
+				// NOTE: because the Starbar ID is not established at this point
+				// the action to retreive the starbar (/starbar/remote) will
+				// be routed to /starbar/remote/post-install-deliver which will
+				// match the IP/user agent from the previous step and lookup the
+				// correct Starbar for this user (e.g. HelloMusic)
+				setTimeout(loadStarbar, 1000);
 			});
 		}
-
-	});
+	}
 
 	function loadStarbar () {
+
 
 		if ($SQ('embed[type*="pdf"]').length > 0) return; // Don't load on Google Docs
 
@@ -238,12 +174,13 @@
 			$SQ.fx.off = true;
 		}
 
+		sayso.log('remoting!');
 		$SQ.ajax({
 			dataType: 'jsonp',
 			data : params,
 			url : '//' + sayso.baseDomain + '/starbar/remote',
 			success : function (response, status) {
-
+				console.log(response);
 				if (response.status === 'error') {
 					// error happened on server (probably in remote/post-install-deliver)
 					// go no further, do not display starbar
@@ -274,19 +211,6 @@
 				} else {
 					sayso.flags = 'none';
 				}
-
-				// update global/persistent vars on kobj.net
-				var app = KOBJ.get_application(sayso.starbar.kynetxAppId);
-				app.raise_event(
-					'update_global_variables',
-					{
-						'starbar_id' : starbar.id,
-						'auth_key' : starbar.auth_key,
-						'user_id' : starbar._user.id,
-						'user_key' : starbar._user._key,
-						'flags' : sayso.flags
-					}
-				);
 
 				if (!starbar._html.length) return; // for some reason, no markup was returned
 

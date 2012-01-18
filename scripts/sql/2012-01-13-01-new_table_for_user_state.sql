@@ -1,0 +1,20 @@
+CREATE TABLE user_state (
+	id int(10) NOT NULL auto_increment,
+	user_id int(10) NOT NULL,
+	user_key varchar(50),
+	auth_key varchar(50),
+	starbar_id int(10) DEFAULT NULL,
+	visibility enum('open', 'stowed'),
+	last_update_profile int(10),
+	last_update_game int(10),
+	last_update_studies int(10),
+	studies varchar(500),
+	ad_targets varchar(500),
+	flags varchar(200),
+	PRIMARY KEY (id),
+	CONSTRAINT user_state_user_id FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT user_state_starbar_id FOREIGN KEY (starbar_id) REFERENCES starbar (id) ON DELETE SET NULL ON UPDATE CASCADE,
+	UNIQUE INDEX (user_id),
+	created timestamp DEFAULT '0000-00-00 00:00:00',
+	modified timestamp DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -5,8 +5,13 @@
 
 $SQ(function () {
 
-	var sayso = window.sayso,
-		starbar = window.sayso.starbar;
+	// No jQuery, or no authentication
+	if (!window.$SQ || !window.$SQ.sayso) return;
+	$SQ = window.$SQ;
+
+
+	var sayso = $SQ.sayso,
+		starbar = $SQ.sayso.starbar;
 
 	// Check required params
 
@@ -25,9 +30,9 @@ $SQ(function () {
 
 	// setup
 
-	var log = window.sayso.log,
-		warn = window.sayso.warn,
-		inIframe = (top !== self);
+	var log = sayso.log,
+		warn = sayso.warn,
+		inIframe = sayso.in_iframe;
 
 	if (!sayso.study) sayso.study = {};
 
@@ -558,13 +563,14 @@ $SQ(function () {
 
 			adTargets[adTargetId] = adTarget;
 
-			var app = KOBJ.get_application(sayso.starbar.kynetxAppId);
-			app.raise_event(
-				'update_ad_targets',
-				{
-					'ad_targets' : JSON.stringify(adTargets)
+			$SQ.ajaxWithAuth({
+				url: '//'+sayso.baseDomain+'/api/user-state/update-ad-targets?renderer=jsonp',
+				data: {
+					'ad_targets': JSON.stringify(adTargets)
+				},
+				success : function (response, status) {
 				}
-			);
+			});
 
 			/*
 			var clickDetectionElem = $SQ(document.createElement('div'));

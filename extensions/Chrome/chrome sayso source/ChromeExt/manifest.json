@@ -1,20 +1,20 @@
 {
-    "name": "Say.So Dev Hamza Test",
-    "version": "1.0",
-    "description": "A fun way to have your influence recognized, and your opinions rewarded!",
-    "background_page": "background.html",
-    "options_page": "options.html",
-    "content_scripts": [
-        {
-            "matches": ["http://*/*","https://*/*"],
-            "js": ["page.js"],
-	    "all_frames": true,
-            "run_at":"document_end"
-        }
-    ],
-    "permissions": [
-        "http://*.kobj.net/",
-        "https://*.kobj.net/"
-    ],
-    "update_url": "http://update.kobj.net/ch/a239x18/updates.xml"
+	"name": "Say.So K-less Dev",
+	"version": "1.0",
+	"description": "A fun way to have your influence recognized, and your opinions rewarded!",
+	"background_page": "background.html",
+	"options_page": "options.html",
+	"content_scripts": [
+		{
+			"matches": ["http://*/*","https://*/*"],
+			"js": ["page.js"],
+			"all_frames": true,
+			"run_at":"document_end"
+		}
+	],
+	"permissions": [
+		"http://*.saysollc.com/",
+		"https://*.saysollc.com/"
+	],
+	"update_url": "http://app.saysollc.com/xml/chrome-extension-updates.xml"
 }

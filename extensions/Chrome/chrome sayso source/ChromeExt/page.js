@@ -1,25 +1,13 @@
-chrome.extension.sendRequest({hostname: document.location.hostname}, function(response) {
-//  console.log(response);
+(function () {
+	if (document.body) {
+		var baseDomain = 'app-dev.saysollc.com';
 
-    if (response.plantTags) {
-        var d = document;
-        if (d.body) {
+		var saysoGlobal = document.createElement('script');
+		saysoGlobal.text = "window.$SaySoExtension = { base_domain: '" + baseDomain + "' }";
+		document.body.appendChild(saysoGlobal);
 
-            var planted = d.getElementById("kynetx_runtime_planted");
-            if (planted == null) {
-                var s = d.createElement('script');
-                s.text = response.full_runtime;
-                d.body.appendChild(s);
-
-                s = d.createElement('script');
-                s.id = "kynetx_runtime_planted";
-                d.body.appendChild(s);
-            }
-
-            var s = d.createElement('script');
-            s.text = "KOBJ.add_config_and_run(" + JSON.stringify(response.config) + ");";
-            d.body.appendChild(s);
-
-        }
-    }
-});
+		var saysoInit = document.createElement('script');
+		saysoInit.src = '//' + baseDomain + '/js/starbar/sayso-init.js';
+		document.body.appendChild(saysoInit);
+	}
+})();

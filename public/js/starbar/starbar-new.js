@@ -4,7 +4,7 @@
 
 $SQ(function(){
 
-	var sayso = window.sayso,
+	var sayso = window.$SQ.sayso,
 		starbar = sayso.starbar;
 
 	// global var
@@ -187,12 +187,15 @@ $SQ(function(){
 
 	// Update the cross-domain state variables
 	starbar.state.update = function (){
-		var app = KOBJ.get_application(starbar.kynetxAppId);
-		starbar.state.callback = null;
-		app.raise_event('update_state', {
-			'visibility' : starbar.state.visibility,
-			'profile' : starbar.state.profile,
-			'game' : starbar.state.game
+		$SQ.ajaxWithAuth({
+			url: '//'+sayso.baseDomain+'/api/user-state/update?renderer=jsonp',
+			data: {
+				'visibility': starbar.state.visibility,
+				'last_update_profile': starbar.state.profile,
+				'last_update_game': starbar.state.game
+			},
+			success : function (response, status) {
+			}
 		});
 	};
 
@@ -205,31 +208,38 @@ $SQ(function(){
 
 	// Refresh the Starbar to respond to state changes, if any
 	starbar.state.refresh = function () {
-		starbar.state.callback = function () {
-			// logic here to determine if/what should be fired to "refresh"
-			if (starbar.state.visibility != starbar.state.local.visibility) {
-				toggleBar(false);
+		$SQ.ajaxWithAuth({
+			url: '//'+sayso.baseDomain+'/api/user-state/refresh?renderer=jsonp',
+			success : function (response, status) {
+				sayso.log('REFRESH', response);
+				// Grab the latest state from the response
+				starbar.state.visibility = response.data.visibility;
+				starbar.state.profile = response.data.last_update_profile;
+				starbar.state.game = response.data.last_update_game;
+
+				// logic here to determine if/what should be fired to "refresh"
+				if (starbar.state.visibility != starbar.state.local.visibility) {
+					toggleBar(false);
+				}
+
+				updateAlerts(false);
+
+				if (starbar.state.profile > starbar.state.local.profile) {
+					updateProfile(false);
+				}
+
+				if (starbar.state.game > starbar.state.local.game) {
+					sayso.log('AJAX GAME UPDATE: game state updated in another tab');
+					updateGame('ajax', false, false);
+				}
+
+				// Done refreshing everything, set our local state to most recent
+				starbar.state.local.profile = starbar.state.profile;
+				starbar.state.local.game = starbar.state.game;
+				starbar.state.local.visibility = starbar.state.visibility;
 			}
+		});
 
-			updateAlerts(false);
-
-			if (starbar.state.profile > starbar.state.local.profile) {
-				updateProfile(false);
-			}
-
-			if (starbar.state.game > starbar.state.local.game) {
-				sayso.log('AJAX GAME UPDATE: game state updated in another tab');
-				updateGame('ajax', false, false);
-			}
-
-			// Done refreshing everything, set our local state to most recent
-			starbar.state.local.profile = starbar.state.profile;
-			starbar.state.local.game = starbar.state.game;
-			starbar.state.local.visibility = starbar.state.visibility;
-
-		};
-		var app = KOBJ.get_application(starbar.kynetxAppId);
-		app.raise_event('refresh_state');
 	};
 
 	// initialize the starbar

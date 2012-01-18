@@ -4,8 +4,8 @@ $SQ.ajaxWithAuth = function (options) {
 	var user_id = null;
 	var user_key = null;
 
-	sayso = window.sayso;
-	
+	sayso = window.$SQ.sayso;
+
 	// Authenticated?
 	try
 	{
@@ -15,7 +15,7 @@ $SQ.ajaxWithAuth = function (options) {
 		auth_key = sayso.starbar.authKey;
 	}
 	catch (e) {}
-	
+
 	options.data = $SQ.extend(options.data || {}, {
 		starbar_id : starbar_id,
 		user_id : user_id,
@@ -53,7 +53,7 @@ $SQ.ajaxWithAuth = function (options) {
 		cleanHtml: function() {
 			return this.html().replace('<a xmlns="http://www.w3.org/1999/xhtml">', '').replace('</a>', '');
 		}
-	
+
 	});
 })($SQ);
 
@@ -118,7 +118,7 @@ $SQ.insertCommunicationIframe = function(link, container, width, height, scrolli
 }
 
 /*
-* This function takes two parameters: integer value for string length and optional 
+* This function takes two parameters: integer value for string length and optional
 * boolean value true if you want to include special characters in your generated string.
 * From: http://jquery-howto.blogspot.com/2009/10/javascript-jquery-password-generator.html
 */

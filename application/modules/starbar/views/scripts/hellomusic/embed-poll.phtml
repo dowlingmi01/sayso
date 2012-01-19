@@ -3,82 +3,84 @@
 	<script type="text/javascript">document.write("<scr"+"ipt type=\"text/javascript\" src=\"//www.surveygizmo.com/s3/polljs/<?= $this->survey->external_id ?>-<?= $this->survey->external_key ?>/?bundle_of_joy=<?= $this->bundle_of_joy ?>\"></scr"+"ipt>");</script>
 </div>
 <script type="text/javascript">
-	function enableClickableRadios() {
-		// Ensure that poll.js is loaded (it's loaded at the bottom of the SG content)
-		if ((typeof SG_init_page) != 'undefined' && (typeof SGSurvey) != 'undefined') {
-			var externalContentElem = $SQ('#sayso-starbar-external');
-			var domain = $SQ('#sg_SubmitButton').data("domain");
-			var survey = null;
+	$SQ(function () {
+		function enableClickableRadios() {
+			// Ensure that poll.js is loaded (it's loaded at the bottom of the SG content)
+			if ((typeof SG_init_page) != 'undefined' && (typeof SGSurvey) != 'undefined') {
+				var externalContentElem = $SQ('#sayso-starbar-external');
+				var domain = $SQ('#sg_SubmitButton').data("domain");
+				var survey = null;
 
-			// SG_init_page still fails sometimes, if poll.js is partially loaded
-			try
-			{
-				SG_init_page($SQ('#survey-wrapper-<?= $this->survey->external_id ?>'));
-				survey = new SGSurvey(SGAPI.surveyData["<?= $this->survey->external_id ?>"], false);
-				survey.InitPage(3);
+				// SG_init_page still fails sometimes, if poll.js is partially loaded
+				try
+				{
+					SG_init_page($SQ('#survey-wrapper-<?= $this->survey->external_id ?>'));
+					survey = new SGSurvey(SGAPI.surveyData["<?= $this->survey->external_id ?>"], false);
+					survey.InitPage(3);
 
-				// If we've made it this far, everything has loaded properly.
-				clearInterval(repeatUntilEmbedLoads);
+					// If we've made it this far, everything has loaded properly.
+					clearInterval(repeatUntilEmbedLoads);
 
-				$i = 15; // Check if CSS has loaded a maximum of 15 times, i.e. for 3000 ms, or 3 seconds
-				// After that assume it has (or give up regardless) and show the poll
-				var cssCheckInterval = setInterval(function(){
-					if (externalContentElem.css('display') == 'inline-table') { // Our css is loaded!
-						clearInterval(cssCheckInterval);
-						externalContentElem.css('display', 'block');
-						$SQ.remoteControl.loadComplete(true, 62+$SQ('.sg-survey-form').outerHeight());
-					}
-					$i--;
-					if ($i < 1) externalContentElem.css('display', 'inline-table');
-				}, 200);
+					$i = 15; // Check if CSS has loaded a maximum of 15 times, i.e. for 3000 ms, or 3 seconds
+					// After that assume it has (or give up regardless) and show the poll
+					var cssCheckInterval = setInterval(function(){
+						if (externalContentElem.css('display') == 'inline-table') { // Our css is loaded!
+							clearInterval(cssCheckInterval);
+							externalContentElem.css('display', 'block');
+							$SQ.remoteControl.loadComplete(true, 62+$SQ('.sg-survey-form').outerHeight());
+						}
+						$i--;
+						if ($i < 1) externalContentElem.css('display', 'inline-table');
+					}, 200);
 
-				// Make the radio buttons clickable
-				var elemRadios = $SQ('input:radio');
-				elemRadios.each(function(){
-					$SQ(this).bind({
-						click: function(event){
-							$SQ(this).attr('checked', 'checked');
+					// Make the radio buttons clickable
+					var elemRadios = $SQ('input:radio');
+					elemRadios.each(function(){
+						$SQ(this).bind({
+							click: function(event){
+								$SQ(this).attr('checked', 'checked');
 
-							// Simulate what survey.Vote(domain) does... which is submit the vote via ajax
-							var vote=$SQ("#sg_FormFor<?= $this->survey->external_id ?>").serialize();
-							var link=["//",domain,"/s3/polljs/<?= $this->survey->external_id ?>-<?= $this->survey->external_key ?>?_vote=",escape(vote)].join("");
-							$SQ.ajax({url:link,dataType:"jsonp"});
+								// Simulate what survey.Vote(domain) does... which is submit the vote via ajax
+								var vote=$SQ("#sg_FormFor<?= $this->survey->external_id ?>").serialize();
+								var link=["//",domain,"/s3/polljs/<?= $this->survey->external_id ?>-<?= $this->survey->external_key ?>?_vote=",escape(vote)].join("");
+								$SQ.ajax({url:link,dataType:"jsonp"});
 
-							$SQ.ajax({
-								dataType:"jsonp",
-								url : "//<?= BASE_DOMAIN ?>/api/survey/user-poll-submit?renderer=jsonp&survey_id=<?= $this->survey->id ?>&user_id=<?= $this->user_id ?>&user_key=<?= $this->user_key ?>&auth_key=<?= $this->auth_key ?>",
-								beforeSend : function(x) {
-									if (x && x.overrideMimeType) {
-										x.overrideMimeType("application/j-son;charset=UTF-8");
+								$SQ.ajax({
+									dataType:"jsonp",
+									url : "//<?= BASE_DOMAIN ?>/api/survey/user-poll-submit?renderer=jsonp&survey_id=<?= $this->survey->id ?>&user_id=<?= $this->user_id ?>&user_key=<?= $this->user_key ?>&auth_key=<?= $this->auth_key ?>",
+									beforeSend : function(x) {
+										if (x && x.overrideMimeType) {
+											x.overrideMimeType("application/j-son;charset=UTF-8");
+										}
+									},
+									success : function (response, status, jqXHR) {
+										$SQ.remoteControl.updateGame(response.game);
 									}
-								},
-								success : function (response, status, jqXHR) {
-									$SQ.remoteControl.updateGame(response.game);
-								}
-							});
+								});
 
-							survey.ShowResults(domain);
-							setTimeout(function() {
-								$SQ('#sb-survey-completed').fadeTo(500, 1);
-							}, 500);
-						}
+								survey.ShowResults(domain);
+								setTimeout(function() {
+									$SQ('#sb-survey-completed').fadeTo(500, 1);
+								}, 500);
+							}
+						});
 					});
-				});
 
-				$SQ.getScript("//platform.twitter.com/widgets.js", function(){
-					function handleTweetEvent(event){
-						if (event) {
-							$SQ.remoteControl.handleTweet('poll', <?= $this->survey->id ?>);
+					$SQ.getScript("//platform.twitter.com/widgets.js", function(){
+						function handleTweetEvent(event){
+							if (event) {
+								$SQ.remoteControl.handleTweet('poll', <?= $this->survey->id ?>);
+							}
 						}
-					}
-					twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
-				});
+						twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
+					});
+				}
+				catch (err) {}
 			}
-			catch (err) {}
 		}
-	}
 
-	var repeatUntilEmbedLoads = setInterval(enableClickableRadios, 100);
+		var repeatUntilEmbedLoads = setInterval(enableClickableRadios, 100);
+	});
 
 </script>
 <div id="sayso-starbar-embed">

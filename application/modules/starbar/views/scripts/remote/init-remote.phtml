@@ -16,8 +16,7 @@ $game = $this->game;
 	 * User session is dynamic
 	 */
 	$SQ(function () {
-		if (!$SQ.sayso) $SQ.sayso = {};
-		var sayso = $SQ.sayso;
+		var sayso = {};
 		sayso.debug = false;
 		sayso.baseDomain = '<?= BASE_DOMAIN ?>';
 		sayso.environment = '<?= Registry::getPseudoEnvironmentName() ?>';
@@ -103,6 +102,8 @@ $game = $this->game;
 		}
 
 		sayso.log(sayso.starbar);
+
+		$SQ.sayso = sayso;
 	});
 
 	$SQ('body').css('margin', 0);

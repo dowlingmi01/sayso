@@ -1,3 +1,5 @@
+if (!$SQ) return;
+
 $SQ.ajaxWithAuth = function (options) {
 	var starbar_id = null;
 	var auth_key = null;
@@ -94,10 +96,10 @@ $SQ.insertCommunicationIframe = function(link, container, width, height, scrolli
 	// This function inserts the iframe (with x-domain communication enabled!)
 	// The id of the container is placed inside the 'ref' attribute at the top of the accordion
 	new easyXDM.Rpc({
-		local: "https://"+sayso.baseDomain+"/html/communicator.html",
-		swf: "https://"+sayso.baseDomain+"/swf/easyxdm.swf",
+		local: "https://"+$SQ.sayso.baseDomain+"/html/communicator.html",
+		swf: "https://"+$SQ.sayso.baseDomain+"/swf/easyxdm.swf",
 		remote: link,
-		remoteHelper: "https://"+sayso.baseDomain+"/html/communicator.html",
+		remoteHelper: "https://"+$SQ.sayso.baseDomain+"/html/communicator.html",
 		container: container,
 		props: {
 			scrolling: scrolling,
@@ -113,8 +115,8 @@ $SQ.insertCommunicationIframe = function(link, container, width, height, scrolli
 		local: $SQ.frameCommunicationFunctions
 	});
 
-	sayso.starbar.openFrameContainer = $SQ('#'+container);
-	sayso.starbar.openFrame = sayso.starbar.openFrameContainer.children('iframe');
+	$SQ.sayso.starbar.openFrameContainer = $SQ('#'+container);
+	$SQ.sayso.starbar.openFrame = sayso.starbar.openFrameContainer.children('iframe');
 }
 
 /*

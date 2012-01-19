@@ -30,7 +30,7 @@ class Starbar_ContentController extends Api_GlobalController
 			return $this->_resultType(new Object(array('html' => $this->getResponse()->getBody())));
 		} else {
 			// iframe loaded content, hence the need for all JS dependencies
-			$this->view->headScript()->appendFile('/js/starbar/jquery-1.6.1.min.js');
+			$this->view->headScript()->appendFile('/js/starbar/jquery-1.7.1.min.js');
 			$this->view->headScript()->appendFile('/js/starbar/jquery-ui-1.8.16.custom.min.js');
 			$this->view->headScript()->appendFile('/js/starbar/jquery.jscrollpane.min.js');
 			$this->view->headScript()->appendFile('/js/starbar/jquery.cookie.js');

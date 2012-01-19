@@ -4,24 +4,7 @@ require_once APPLICATION_PATH . '/modules/api/controllers/GlobalController.php';
 
 class Api_UserStateController extends Api_GlobalController
 {
-	protected function _authenticateUser($targetUserMustMatch = false, $adminOnly = false) {
-		$this->user_id = $_COOKIE['user_id'];
-		$this->user_key = $_COOKIE['user_key'];
-		$this->auth_key = $_COOKIE['auth_key'];
-
-		$request = $this->getRequest();
-		$request->setParam('user_id', $this->user_id);
-		$request->setParam('user_key', $this->user_key);
-		$request->setParam('auth_key', $this->auth_key);
-
-		$this->_validateRequiredParameters(array('user_id', 'user_key', 'auth_key'));
-
-		parent::_authenticateUser($targetUserMustMatch, $adminOnly);
-	}
-
 	public function getAction () {
-		$this->_authenticateUser();
-
 		$userState = new User_State();
 
 		/*
@@ -45,8 +28,6 @@ class Api_UserStateController extends Api_GlobalController
 	}
 
 	public function refreshAction () {
-		$this->_authenticateUser();
-
 		$userState = new User_State();
 		$userState->loadDataByUniqueFields(array('user_id' => $this->user_id));
 
@@ -57,7 +38,6 @@ class Api_UserStateController extends Api_GlobalController
 				'last_update_profile',
 				'last_update_game',
 			);
-			ObjectExporter_Array::$escapeQuotes = true;
 			return $this->_resultType(json_encode($userState->exportData($fields)));
 		} else {
 			return $this->_resultType(false);
@@ -65,12 +45,9 @@ class Api_UserStateController extends Api_GlobalController
 	}
 
 	public function updateAction () {
-		$this->_authenticateUser();
 		// Uncomment next line (and delete following line) when switching starbars becomes possible
 		// $this->_validateRequiredParameters(array('starbar_id', 'visibility', 'last_update_profile', 'last_update_game'));
 		$this->_validateRequiredParameters(array('visibility', 'last_update_profile', 'last_update_game'));
-
-		$request = $this->getRequest();
 
 		$userState = new User_State();
 		$userState->loadDataByUniqueFields(array('user_id' => $this->user_id));
@@ -87,7 +64,6 @@ class Api_UserStateController extends Api_GlobalController
 	}
 
 	public function updateStudiesAction () {
-		$this->_authenticateUser();
 		$this->_validateRequiredParameters(array('studies', 'last_update_studies'));
 
 		$userState = new User_State();
@@ -100,7 +76,6 @@ class Api_UserStateController extends Api_GlobalController
 	}
 
 	public function updateAdTargetsAction () {
-		$this->_authenticateUser();
 		$this->_validateRequiredParameters(array('ad_targets'));
 
 		$userState = new User_State();

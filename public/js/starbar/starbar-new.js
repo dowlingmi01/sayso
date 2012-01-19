@@ -187,6 +187,8 @@ $SQ(function(){
 
 	// Update the cross-domain state variables
 	starbar.state.update = function (){
+		if (starbar.state.profile == 0) starbar.state.profile = Math.round(new Date().getTime() / 1000);
+		if (starbar.state.game == 0) starbar.state.game = Math.round(new Date().getTime() / 1000);
 		$SQ.ajaxWithAuth({
 			url: '//'+sayso.baseDomain+'/api/user-state/update?renderer=jsonp',
 			data: {

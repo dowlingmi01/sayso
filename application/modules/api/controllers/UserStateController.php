@@ -38,7 +38,6 @@ class Api_UserStateController extends Api_GlobalController
 		$userState->base_domain = BASE_DOMAIN;
 
 		if ($userState->id) {
-			ObjectExporter_Array::$escapeQuotes = true;
 			return $this->_resultType($userState);
 		} else {
 			return $this->_resultType(false);

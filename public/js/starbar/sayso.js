@@ -295,7 +295,8 @@ $SQ(function () {
 	// ADjuster Click-Thrus ------------------------
 
 	var adTargets = JSON.parse(sayso.study.adTargets);
-
+	if (!adTargets) adTargets = {};
+	
 	if (!inIframe) log('Ad Targets: ', adTargets);
 	// { creative12 : { urlSegment : 'foo/diamonds', type : 'creative', type_id : 12 }, campaign234 : { etc
 	for (var key in adTargets) {

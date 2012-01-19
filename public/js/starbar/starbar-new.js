@@ -5,7 +5,7 @@
 $SQ(function(){
 
 	var sayso = window.$SQ.sayso,
-		starbar = sayso.starbar;
+		starbar = window.$SQ.sayso.starbar;
 
 	// global var
 	var themeColor = '#de40b2';
@@ -213,9 +213,9 @@ $SQ(function(){
 			success : function (response, status) {
 				sayso.log('REFRESH', response);
 				// Grab the latest state from the response
-				starbar.state.visibility = response.data.visibility;
-				starbar.state.profile = response.data.last_update_profile;
-				starbar.state.game = response.data.last_update_game;
+				starbar.state.visibility = response.visibility;
+				starbar.state.profile = response.last_update_profile;
+				starbar.state.game = response.last_update_game;
 
 				// logic here to determine if/what should be fired to "refresh"
 				if (starbar.state.visibility != starbar.state.local.visibility) {

@@ -1,4 +1,4 @@
-set x=kynetx-a239x18
+set x=sayso
 xcopy src build /i /e
 if %ERRORLEVEL% NEQ 0 goto end
 

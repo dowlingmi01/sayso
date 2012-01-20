@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="chrome://kynetx-a239x18/skin/overlay.css" type="text/css"?>
-<!DOCTYPE overlay SYSTEM "chrome://kynetx-a239x18/locale/kynetx.dtd">
-<overlay id="kynetx-a239x18-overlay"
+<?xml-stylesheet href="chrome://sayso/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://sayso/locale/sayso.dtd">
+<overlay id="sayso-overlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script src="overlay.js"/>
-  <stringbundleset id="stringbundleset">
-    <stringbundle id="kynetx-strings" src="chrome://kynetx-a239x18/locale/kynetx.properties"/>
-  </stringbundleset>
-
-  <menupopup id="menu_ToolsPopup">
-    <menuitem id="kynetx-a239x18-toggle" label="&kynetx.label;" type="checkbox" checked="true"
-              oncommand="com.kynetx.a239x18.toggle(event);" persist="checked" autocheck="false"/>
-  </menupopup>
 </overlay>

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
  xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
-    <em:id>a239x18@kobj.net</em:id>
-    <em:name>Say.So Dev Hamza Test</em:name>
-    <em:version>1.1</em:version>
+    <em:id>bar@say.so</em:id>
+    <em:name>Say.So K-less Dev</em:name>
+    <em:version>1.5</em:version>
     <em:creator>Say.So LLC</em:creator>
     <em:description>A fun way to have your influence recognized, and your opinions rewarded!</em:description>
-    <em:updateURL>https://update.kobj.net/ff/a239x18</em:updateURL>
-    <em:aboutURL>chrome://kynetx-a239x18/content/about.xul</em:aboutURL>
+    <em:updateURL>https://app.saysollc.com/xml/firefox-extension-updates.xml</em:updateURL>
+    <em:aboutURL>http://www.say.so/</em:aboutURL>
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- firefox -->
         <em:minVersion>1.5</em:minVersion>
-        <em:maxVersion>12.*.*</em:maxVersion>
+        <em:maxVersion>100.*</em:maxVersion>
       </Description>
     </em:targetApplication>
   </Description>

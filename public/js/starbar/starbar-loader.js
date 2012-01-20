@@ -174,13 +174,11 @@
 			$SQ.fx.off = true;
 		}
 
-		sayso.log('remoting!');
 		$SQ.ajax({
 			dataType: 'jsonp',
 			data : params,
 			url : '//' + sayso.baseDomain + '/starbar/remote',
 			success : function (response, status) {
-				console.log(response);
 				if (response.status === 'error') {
 					// error happened on server (probably in remote/post-install-deliver)
 					// go no further, do not display starbar

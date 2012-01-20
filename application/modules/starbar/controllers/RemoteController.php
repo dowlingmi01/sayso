@@ -464,6 +464,9 @@ class Starbar_RemoteController extends Api_GlobalController
 		$this->user_key = $userSession->getKey();
 		$this->auth_key = $starbar->auth_key;
 
+		// privacy header needed by IE to allow these 3rd party cookies to work
+		header('P3P: CP="NOI ADM DEV PSAi COM NAV OUR OTR STP IND DEM"');
+
 		// Set our cookies for our extension
 		// Make them expire in a year
 		$expiry = time()+(86400*365);

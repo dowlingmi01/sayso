@@ -66,8 +66,6 @@
 		dataType: 'jsonp',
 		url: '//' + saysoBaseDomain + '/api/user-state/get?renderer=jsonp',
 		success: function (response, status) {
-			console.log(response);
-
 			var sayso = {};
 			sayso.debug = true;
 			sayso.installed = true;

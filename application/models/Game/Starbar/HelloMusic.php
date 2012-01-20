@@ -29,16 +29,16 @@ class Game_Starbar_HelloMusic extends Game_Starbar {
 		$currentLevel = $profile->getHighestLevel();
 
 		if ($good->getId() == $this->_economy->getGoodId('WEEK_ONE_GIVEAWAY')) {
-			$good->setNonRedeemReason('It\'s too late to buy tokens for week 1: congrats to Jansen W. from Glen Allen, VA!');
+			$good->setNonRedeemReason('Congrats to Jansen W. from Glen Allen, VA for winning the week 1 prize!');
 			$good->setCommentForUser('Unavailable');
 		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_TWO_GIVEAWAY')) {
-			$good->setNonRedeemReason('It\'s too late to buy tokens for week 2: congrats to Mike B. from New York, NY!');
+			$good->setNonRedeemReason('Congrats to Mike B. from New York, NY for winning the week 2 prize!');
 			$good->setCommentForUser('Unavailable');
 		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_THREE_GIVEAWAY')) {
-			$good->setNonRedeemReason('It\'s too late to buy tokens for week 3: congrats to Matthew L. from Black Mt, NC!');
+			$good->setNonRedeemReason('Congrats to Matthew L. from Black Mt, NC for winning the week 3 prize!');
 			$good->setCommentForUser('Unavailable');
-		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_FOUR_GIVEAWAY') && time() > strtotime('3 January 2012 08:00')) {
-			$good->setNonRedeemReason('It\'s too late to buy tokens for the monthly giveaway: we\'ll be announcing the grand prize winner soon!');
+		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_FOUR_GIVEAWAY')) {
+			$good->setNonRedeemReason('HUGE Congrats to Michael A. from Fishers, IN for winning the grand prize!');
 			$good->setCommentForUser('Unavailable');
 		} elseif (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
 			$good->setNonRedeemReason('Sorry, this item is sold out.');

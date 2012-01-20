@@ -24,6 +24,11 @@
 	$SQ.jsLoadTimer = jsLoadTimer;
 	$SQ.cssLoadTimer = cssLoadTimer;
 
+	// easyXDM for cross-domain iframe communication
+	var jsEasyXDM = document.createElement('script');
+	jsEasyXDM.src = '//' + sayso.baseDomain + '/js/starbar/easyXDM.min.js';
+	starbarContainer.appendChild(jsEasyXDM);
+
 	// load SaySo Shared Javascript (which depends on the above data settings)
 	var jsSaysoShared = document.createElement('script');
 	jsSaysoShared.src = '//' + sayso.baseDomain + '/js/starbar/sayso-shared.js';
@@ -292,10 +297,6 @@
 					var jsCycle = document.createElement('script');
 					jsCycle.src = '//' + sayso.baseDomain + '/js/starbar/jquery.cycle.lite.js';
 					starbarContainer.appendChild(jsCycle);
-
-					var jsEasyXDM = document.createElement('script');
-					jsEasyXDM.src = '//' + sayso.baseDomain + '/js/starbar/easyXDM.min.js';
-					starbarContainer.appendChild(jsEasyXDM);
 
 					// load the specific CSS for this Starbar
 					var cssStarbar = document.createElement('link');

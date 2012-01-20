@@ -1,18 +1,20 @@
 <?= $this->partial('remote/init-remote.phtml', null, array('starbar' => $this->starbar)); ?>
 <script type="text/javascript">
-	setTimeout(function() {
-		$SQ('#sb-survey-disqualified').fadeTo(500, 1);
-		$SQ.remoteControl.updateGame(null);
-		$SQ.remoteControl.hideOverlay();
-	}, 200);
+	$SQ(function () {
+		setTimeout(function() {
+			$SQ('#sb-survey-disqualified').fadeTo(500, 1);
+			$SQ.remoteControl.updateGame(null);
+			$SQ.remoteControl.hideOverlay();
+		}, 200);
 
-	$SQ.getScript("//platform.twitter.com/widgets.js", function(){
-		function handleTweetEvent(event){
-			if (event) {
-				$SQ.remoteControl.handleTweet('survey', <?= $this->survey->id ?>);
+		$SQ.getScript("//platform.twitter.com/widgets.js", function(){
+			function handleTweetEvent(event){
+				if (event) {
+					$SQ.remoteControl.handleTweet('survey', <?= $this->survey->id ?>);
+				}
 			}
-		}
-		twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
+			twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
+		});
 	});
 </script>
 <div id="sayso-starbar-embed">

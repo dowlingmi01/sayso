@@ -296,7 +296,7 @@ $SQ(function () {
 
 	var adTargets = JSON.parse(sayso.study.adTargets);
 	if (!adTargets) adTargets = {};
-	
+
 	if (!inIframe) log('Ad Targets: ', adTargets);
 	// { creative12 : { urlSegment : 'foo/diamonds', type : 'creative', type_id : 12 }, campaign234 : { etc
 	for (var key in adTargets) {
@@ -568,8 +568,6 @@ $SQ(function () {
 				url: '//'+sayso.baseDomain+'/api/user-state/update-ad-targets?renderer=jsonp',
 				data: {
 					'ad_targets': JSON.stringify(adTargets)
-				},
-				success : function (response, status) {
 				}
 			});
 

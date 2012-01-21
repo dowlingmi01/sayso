@@ -34,17 +34,17 @@ Source: SaySo.dll; DestDir: {app}
 Source: Microsoft.mshtml.dll; DestDir: {app}
 
 [Setup]
-OutputBaseFilename=SaySoBar
+OutputBaseFilename=SaySo-DEV-Setup
 VersionInfoCompany=Say.So LLC
 VersionInfoProductName=Say.So LLC
 VersionInfoProductVersion=1.1
 AppName=Say.So
-AppVerName=Say.So 1.5
+AppVerName=Say.So 1.6
 DisableDirPage=true
 DisableProgramGroupPage=true
 UsePreviousGroup=false
 OutputDir=SetupOutput
-DefaultDirName={pf}\SaySoBar\
+DefaultDirName={pf}\SaySo-DEV\
 ShowLanguageDialog=no
 
 [Run]

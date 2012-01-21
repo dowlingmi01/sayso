@@ -37,7 +37,7 @@ Source: Microsoft.mshtml.dll; DestDir: {app}
 OutputBaseFilename=SaySoBar
 VersionInfoCompany=Say.So LLC
 VersionInfoProductName=Say.So LLC
-VersionInfoProductVersion=1.0
+VersionInfoProductVersion=1.1
 AppName=Say.So
 AppVerName=Say.So 1.5
 DisableDirPage=true

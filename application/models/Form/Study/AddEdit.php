@@ -1333,7 +1333,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 							$cellKey, $cellKey, ($cell->cell_type == 'control' ? 1 : 2));
 							
 					if( $this->study->study_type == 2 ) {
-						$qAdTag = new Study_CellTagMapCollecton();
+						$qAdTag = new Study_CellTagMapCollection();
 						$qAdTag->loadForCell($cell->getId());
 						foreach( $qAdTag as $adtag )
 						{

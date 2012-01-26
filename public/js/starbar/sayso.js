@@ -473,11 +473,13 @@ $SQ(function () {
 		 */
 		function processTag (tag) {
 			var selector = tag.tag;
+			sayso.log('Selector: ', selector);
 
 			if ($SQ.sayso.ie_version > -1 && selector.indexOf('embed') > -1) { // Flash + IE
 				// embed[src*="blahblah.swf"]   becomes   param[name="Movie"][value*="blahblah.swf"]
 				selector = selector.replace(/embed/, 'param[name="movie"]');
 				selector = selector.replace(/src/, 'value');
+				sayso.log('Selector (IE): ', selector);
 			}
 
 			var jTag = $SQ(selector);

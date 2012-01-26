@@ -505,8 +505,8 @@ $SQ(function () {
 					});
 				}
 			} else {
-				jTagContainer = jTag.parent();
 				jTag = $SQ(selector);
+				jTagContainer = jTag.parent();
 			}
 
 

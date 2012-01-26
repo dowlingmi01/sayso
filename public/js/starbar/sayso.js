@@ -473,18 +473,23 @@ $SQ(function () {
 		 */
 		function processTag (tag) {
 			var selector = tag.tag;
-			sayso.log('Selector: ', selector);
+			log('Selector: ');
+			log(selector);
 
 			if ($SQ.sayso.ie_version > -1 && selector.indexOf('embed') > -1) { // Flash + IE
 				// embed[src*="blahblah.swf"]   becomes   param[name="Movie"][value*="blahblah.swf"]
 				selector = selector.replace(/embed/, 'param[name="movie"]');
 				selector = selector.replace(/src/, 'value');
-				sayso.log('Selector (IE): ', selector);
+				log('Selector (IE): ');
+				log(selector);
 			}
 
 			var jTag = $SQ(selector);
 
-			if (!jTag.length) return;
+			if (!jTag.length) {
+				log('No Matches');
+				return;
+			}
 
 			log('Match', jTag);
 

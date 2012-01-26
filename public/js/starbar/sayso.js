@@ -475,18 +475,40 @@ $SQ(function () {
 			var selector = tag.tag;
 			log('Selector: ');
 			log(selector);
+			var jTag = false;
 
-			if ($SQ.sayso.ie_version > -1 && selector.indexOf('embed') > -1) { // Flash + IE
-				// embed[src*="blahblah.swf"]   becomes   param[name="Movie"][value*="blahblah.swf"]
-				selector = selector.replace(/embed/, 'param[name="movie"]');
-				selector = selector.replace(/src/, 'value');
-				log('Selector (IE): ');
-				log(selector);
+			if (sayso.ie_version > -1 && selector.indexOf('embed') > -1) { // Flash selector on IE needs special treatment
+				// embed[src*="blahblah.swf"]   becomes   blahblah.swf
+				var partialUrl = selector.replace(/^embed\[src\*="/, '');
+				partialUrl = partialUrl.replace(/"\]$/, '');
+				log('Partial URL (IE): ');
+				log(partialUrl);
+
+				objectTags = $SQ('object');
+				if (objectTags.length) {
+					objectTags.each(function (index) {
+						objectTag = $SQ(this);
+						paramTags = objectTag.children();
+						for (i in paramTags) {
+							if (paramTags[i].attr('name').toLowerCase == "movie") { // We are only interested in the "movie" param (i.e. the URL of the movie)
+								if (paramTags[i].attr('value').indexOf(partialUrl) > -1) {
+									jTag = paramTags;
+									// Match found, need need to search any more
+									return false;
+								} else {
+									// Go to next object tag
+									return true;
+								}
+							}
+						}
+					});
+				}
+			} else {
+				jTag = $SQ(selector);
 			}
 
-			var jTag = $SQ(selector);
 
-			if (!jTag.length) {
+			if (!jTag || !jTag.length) {
 				log('No Matches');
 				return;
 			}

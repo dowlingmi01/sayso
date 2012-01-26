@@ -473,6 +473,12 @@ $SQ(function () {
 		 */
 		function processTag (tag) {
 
+			if ($SQ.sayso.ie_version > -1 && tag.indexOf('embed') > -1) { // Flash + IE
+				// embed[src*="blahblah.swf"]   becomes   param[name="Movie"][value*="blahblah.swf"]
+				tag = tag.replace(/embed/, 'param[name="movie"]');
+				tag = tag.replace(/src/, 'value');
+			}
+
 			var jTag = $SQ(tag.tag);
 
 			if (!jTag.length) return;
@@ -481,8 +487,8 @@ $SQ(function () {
 
 			// tag exists
 			jTagContainer = jTag.parent();
-			if (jTag.is('embed') && jTagContainer.is('object')) {
-				// If we found an embed tag inside an <object> tag, we want the parent of *that*
+			if (jTag.is('param') && jTagContainer.is('object')) {
+				// If we found a param tag inside an <object> tag, we want the parent of *that*
 				jTagContainer = jTagContainer.parent();
 			}
 
@@ -504,15 +510,15 @@ $SQ(function () {
 				// replace ad
 				adWidth = jTagContainer.innerWidth();
 				adHeight = jTagContainer.innerHeight();
-				jTag = $SQ(document.createElement('div'));
-				jTag.css({
+				var newTag = $SQ(document.createElement('div'));
+				newTag.css({
 					'width': adWidth+'px',
 					'height': adHeight+'px',
 					'overflow': 'hidden',
 					'display': 'block'
 				});
-				jTag.html('<a id="sayso-adcreative-'+creative.id+'" href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
-				jTagContainer.html('').append(jTag);
+				newTag.html('<a id="sayso-adcreative-'+creative.id+'" href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
+				jTagContainer.html('').append(newTag);
 
 				// record view of the creative
 				currentActivity.creativeViews.push(creative.id);

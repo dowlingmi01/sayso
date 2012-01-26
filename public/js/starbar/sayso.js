@@ -472,14 +472,15 @@ $SQ(function () {
 		 * - this function inherits currentActivity for the current cell
 		 */
 		function processTag (tag) {
+			var selector = tag.tag;
 
-			if ($SQ.sayso.ie_version > -1 && tag.indexOf('embed') > -1) { // Flash + IE
+			if ($SQ.sayso.ie_version > -1 && selector.indexOf('embed') > -1) { // Flash + IE
 				// embed[src*="blahblah.swf"]   becomes   param[name="Movie"][value*="blahblah.swf"]
-				tag = tag.replace(/embed/, 'param[name="movie"]');
-				tag = tag.replace(/src/, 'value');
+				selector = selector.replace(/embed/, 'param[name="movie"]');
+				selector = selector.replace(/src/, 'value');
 			}
 
-			var jTag = $SQ(tag.tag);
+			var jTag = $SQ(selector);
 
 			if (!jTag.length) return;
 

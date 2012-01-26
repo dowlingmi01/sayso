@@ -490,7 +490,7 @@ $SQ(function () {
 						objectTag = $SQ(this);
 						paramTags = objectTag.children();
 						for (i = 0; i < paramTags.length; i++) {
-							if (paramTags.eq(i).attr('name').toLowerCase == "movie") { // We are only interested in the "movie" param (i.e. the URL of the movie)
+							if (paramTags.eq(i).attr('name').toLowerCase() == "movie") { // We are only interested in the "movie" param (i.e. the URL of the movie)
 								if (paramTags.eq(i).attr('value').indexOf(partialUrl) > -1) {
 									jTag = paramTags;
 									// Match found, need need to search any more

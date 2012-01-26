@@ -493,6 +493,7 @@ $SQ(function () {
 							if (paramTags.eq(i).attr('name').toLowerCase() == "movie") { // We are only interested in the "movie" param (i.e. the URL of the movie)
 								if (paramTags.eq(i).attr('value').indexOf(partialUrl) > -1) {
 									jTag = paramTags;
+									jTagContainer = objectTag;
 									// Match found, need need to search any more
 									return false;
 								} else {
@@ -504,6 +505,7 @@ $SQ(function () {
 					});
 				}
 			} else {
+				jTagContainer = jTag.parent();
 				jTag = $SQ(selector);
 			}
 
@@ -516,7 +518,6 @@ $SQ(function () {
 			log('Match', jTag);
 
 			// tag exists
-			jTagContainer = jTag.parent();
 			if (jTag.is('param') && jTagContainer.is('object')) {
 				// If we found a param tag inside an <object> tag, we want the parent of *that*
 				jTagContainer = jTagContainer.parent();

@@ -3,12 +3,6 @@
 //	 $SQ.cssLoadTimer
 // (see starbar-loader.js)
 
-// The following forces the browser to wait until all the javascript on the page is done loading before
-// proceeding (since it needs to make sure that window.jdfhjdsfhksdjhfksjdhfsjkdhfskjdfhskjdfhkjhsdfkjhsd() doesn't exist)
-try {
-	jdfhjdsfhksdjhfksjdhfsjkdhfskjdfhskjdfhkjhsdfkjhsd();
-} catch(e) {}
-
 $SQ(function () {
 
 	// No jQuery, or no authentication
@@ -431,6 +425,8 @@ $SQ(function () {
 			if (!inIframe) log('Current Cells: ', cells);
 
 			processStudyCells(cells);
+			setTimeout(processStudyCells(cells), 500);
+			setTimeout(processStudyCells(cells), 1000);
 
 		}
 	});

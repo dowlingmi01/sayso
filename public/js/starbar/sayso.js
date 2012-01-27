@@ -425,8 +425,6 @@ $SQ(function () {
 			if (!inIframe) log('Current Cells: ', cells);
 
 			processStudyCells(cells);
-			setTimeout(processStudyCells(cells), 500);
-			setTimeout(processStudyCells(cells), 1000);
 
 		}
 	});

@@ -19,7 +19,7 @@ $SQ(function () {
 
 	// ADjuster blacklist
 
-	var trackerBlackList = [/(saysollc\.com/];
+	var trackerBlackList = [/saysollc\.com/];
 	for (var i = 0, ln = trackerBlackList.length; i < ln; i++)
 	{
 		if (trackerBlackList[i].test(location.href))

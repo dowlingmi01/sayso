@@ -19,7 +19,7 @@ $SQ(function () {
 
 	// ADjuster blacklist
 
-	var trackerBlackList = [/(sayso|saysollc)\.com/, /say\.so/];
+	var trackerBlackList = [/(saysollc\.com/];
 	for (var i = 0, ln = trackerBlackList.length; i < ln; i++)
 	{
 		if (trackerBlackList[i].test(location.href))
@@ -475,38 +475,44 @@ $SQ(function () {
 			var selector = tag.tag;
 			log('Selector: ');
 			log(selector);
-			var jTag = false;
+			var jTag = $SQ(selector);
 
-			if (sayso.ie_version > -1 && selector.indexOf('embed') > -1) { // Flash selector on IE needs special treatment
-				// embed[src*="blahblah.swf"]   becomes   blahblah.swf
-				var partialUrl = selector.replace(/^embed\[src\*="/, '');
-				partialUrl = partialUrl.replace(/"\]$/, '');
-				log('Partial URL (IE): ');
-				log(partialUrl);
+			// Try finding the tag.
+			if (!jTag || !jTag.length) {
+				if (selector.indexOf('embed') > -1) { // if we're looking for flash, we may need to search inside objects
+					// embed[src*="blahblah.swf"]   becomes   blahblah.swf
+					var partialUrl = selector.replace(/^embed\[src\*="/, '');
+					partialUrl = partialUrl.replace(/"\]$/, '');
+					log('Partial URL (flash): ');
+					log(partialUrl);
 
-				objectTags = $SQ('object');
-				if (objectTags.length) {
-					objectTags.each(function (index) {
-						objectTag = $SQ(this);
-						paramTags = objectTag.children();
-						for (i = 0; i < paramTags.length; i++) {
-							if (paramTags.eq(i).attr('name').toLowerCase() == "movie") { // We are only interested in the "movie" param (i.e. the URL of the movie)
-								if (paramTags.eq(i).attr('value').indexOf(partialUrl) > -1) {
-									jTag = paramTags;
-									jTagContainer = objectTag;
-									// Match found, need need to search any more
-									return false;
-								} else {
-									// Go to next object tag
-									return true;
+					// Try to search (using jQuery) for the param element (though on IE and possibly other browsers, params are not in the DOM).
+					jTag = $SQ('param[name="movie"][value*="'+partialUrl+'"]');
+
+					// If flash is still not found on this page, try looking inside all the <object> tags' children (i.e. the params)
+					if (!jTag || !jTag.length) {
+						objectTags = $SQ('object');
+						if (objectTags.length) {
+							objectTags.each(function (index) {
+								objectTag = $SQ(this);
+								paramTags = objectTag.children();
+								for (i = 0; i < paramTags.length; i++) {
+									if (paramTags.eq(i).attr('name').toLowerCase() == "movie") { // We are only interested in the "movie" param (i.e. the URL of the movie)
+										if (paramTags.eq(i).attr('value').indexOf(partialUrl) > -1) {
+											jTag = paramTags;
+											jTagContainer = objectTag;
+											// Match found, need need to search any more
+											return false;
+										} else {
+											// Go to next object tag
+											return true;
+										}
+									}
 								}
-							}
+							});
 						}
-					});
+					}
 				}
-			} else {
-				jTag = $SQ(selector);
-				jTagContainer = jTag.parent();
 			}
 
 
@@ -517,8 +523,10 @@ $SQ(function () {
 
 			log('Match', jTag);
 
+			var jTagContainer = jTag.parent();
+
 			// tag exists
-			if (jTag.is('param') && jTagContainer.is('object')) {
+			if (jTagContainer.is('object')) {
 				// If we found a param tag inside an <object> tag, we want the parent of *that*
 				jTagContainer = jTagContainer.parent();
 			}

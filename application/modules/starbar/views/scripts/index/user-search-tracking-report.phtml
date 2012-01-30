@@ -13,6 +13,7 @@
 	Keywords: <input type="text" name="keywords" style="width: 400px;" value="<?= $this->keywords ?>" /> <input type="submit" value="Go!"><br />
 	<br />
 	<? if ($this->keywords) { ?>
+		Total: <?= $this->total_searches."" ?> searches<br />
 		<textarea cols="100" rows="40"><?= $this->csv ?></textarea><br />
 	<? } ?>
 </form>

@@ -58,6 +58,7 @@ class Starbar_IndexController extends Api_GlobalController
 		$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));
 		$starbar->setVisibility('stowed');
 		$this->view->starbar = $starbar;
+		$totalPageViews = 0;
 
 		// SELECT user_id, COUNT(user_id) as total_visits FROM metrics_log WHERE user_id > 122 AND metrics_type = 1 AND ((content LIKE '%guitar%' AND content LIKE '%center%') OR (content LIKE '%guitar%' AND content LIKE '%centre%')) GROUP BY user_id ORDER BY user_id
 
@@ -83,9 +84,11 @@ class Starbar_IndexController extends Api_GlobalController
 			$reportData = Db_Pdo::fetchAll($sql);
 			foreach ($reportData as $row) {
 				$csv .= $row['user_id'] . "," . $row['page_views'] . "\n";
+				$totalPageViews += (int)$row['page_views'];
 			}
 		}
 
+		$this->view->totalPageViews = $totalPageViews;
 		$this->view->keywords = $keywords;
 		$this->view->csv = $csv;
 	}
@@ -121,9 +124,11 @@ class Starbar_IndexController extends Api_GlobalController
 			$reportData = Db_Pdo::fetchAll($sql);
 			foreach ($reportData as $row) {
 				$csv .= $row['user_id'] . "," . $row['searches'] . "\n";
+				$totalSearches += (int)$row['searches'];
 			}
 		}
 
+		$this->view->total_searches = $totalSearches;
 		$this->view->keywords = $keywords;
 		$this->view->csv = $csv;
 	}

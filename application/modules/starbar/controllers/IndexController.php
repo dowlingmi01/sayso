@@ -59,6 +59,7 @@ class Starbar_IndexController extends Api_GlobalController
 		$starbar->setVisibility('stowed');
 		$this->view->starbar = $starbar;
 		$totalPageViews = 0;
+		$totalUsers = 0;
 
 		// SELECT user_id, COUNT(user_id) as total_visits FROM metrics_log WHERE user_id > 122 AND metrics_type = 1 AND ((content LIKE '%guitar%' AND content LIKE '%center%') OR (content LIKE '%guitar%' AND content LIKE '%centre%')) GROUP BY user_id ORDER BY user_id
 
@@ -85,10 +86,12 @@ class Starbar_IndexController extends Api_GlobalController
 			foreach ($reportData as $row) {
 				$csv .= $row['user_id'] . "," . $row['page_views'] . "\n";
 				$totalPageViews += (int)$row['page_views'];
+				$totalUsers += 1;
 			}
 		}
 
 		$this->view->total_page_views = $totalPageViews;
+		$this->view->total_users = $totalUsers;
 		$this->view->keywords = $keywords;
 		$this->view->csv = $csv;
 	}
@@ -99,6 +102,7 @@ class Starbar_IndexController extends Api_GlobalController
 		$starbar->loadDataByUniqueFields(array('short_name' => 'hellomusic'));
 		$starbar->setVisibility('stowed');
 		$this->view->starbar = $starbar;
+		$totalUsers = 0;
 
 		// SELECT user_id, COUNT(user_id) as total_visits FROM metrics_log WHERE user_id > 122 AND metrics_type = 1 AND ((content LIKE '%guitar%' AND content LIKE '%center%') OR (content LIKE '%guitar%' AND content LIKE '%centre%')) GROUP BY user_id ORDER BY user_id
 
@@ -125,10 +129,12 @@ class Starbar_IndexController extends Api_GlobalController
 			foreach ($reportData as $row) {
 				$csv .= $row['user_id'] . "," . $row['searches'] . "\n";
 				$totalSearches += (int)$row['searches'];
+				$totalUsers += 1;
 			}
 		}
 
 		$this->view->total_searches = $totalSearches;
+		$this->view->total_users = $totalUsers;
 		$this->view->keywords = $keywords;
 		$this->view->csv = $csv;
 	}

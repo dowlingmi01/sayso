@@ -14,7 +14,9 @@
 	Domains: <input type="text" name="keywords" style="width: 400px;" value="<?= $this->keywords ?>" /> <input type="submit" value="Go!"><br />
 	<br />
 	<? if ($this->keywords) { ?>
-		Total: <?= $this->total_page_views."" ?> page views<br />
+		Report for: <?= $this->keywords ?><br />
+		Total: <?= $this->total_page_views."" ?> page views / <?= $this->total_users."" ?> users<br />
+		Average: <?= ($this->total_users ? round($this->total_page_views / $this->total_users, 2) ." page views per user" : "N/A") ?><br />
 		<textarea cols="100" rows="40"><?= $this->csv ?></textarea><br />
 	<? } ?>
 </form>

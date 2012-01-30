@@ -13,7 +13,9 @@
 	Keywords: <input type="text" name="keywords" style="width: 400px;" value="<?= $this->keywords ?>" /> <input type="submit" value="Go!"><br />
 	<br />
 	<? if ($this->keywords) { ?>
-		Total: <?= $this->total_searches."" ?> searches<br />
+		Report for: <?= $this->keywords ?><br />
+		Total: <?= $this->total_searches."" ?> searches / <?= $this->total_users."" ?> users<br />
+		Average: <?= ($this->total_users ? round($this->total_searches / $this->total_users, 2) ." searches per user" : "N/A") ?><br />
 		<textarea cols="100" rows="40"><?= $this->csv ?></textarea><br />
 	<? } ?>
 </form>

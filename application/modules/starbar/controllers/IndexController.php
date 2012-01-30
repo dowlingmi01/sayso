@@ -88,7 +88,7 @@ class Starbar_IndexController extends Api_GlobalController
 			}
 		}
 
-		$this->view->totalPageViews = $totalPageViews;
+		$this->view->total_page_views = $totalPageViews;
 		$this->view->keywords = $keywords;
 		$this->view->csv = $csv;
 	}

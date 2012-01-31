@@ -28,10 +28,10 @@
 
 
 [Files]
-Source: Interop.SHDocVw.dll; DestDir: {app}
-Source: Jayrock.Json.dll; DestDir: {app}
-Source: SaySo.dll; DestDir: {app}
-Source: Microsoft.mshtml.dll; DestDir: {app}
+Source: ..\lib\Interop.SHDocVw.dll; DestDir: {app}
+Source: ..\lib\Jayrock.Json.dll; DestDir: {app}
+Source: ..\obj\SaySo.dll; DestDir: {app}
+Source: ..\lib\Microsoft.mshtml.dll; DestDir: {app}
 
 [Setup]
 OutputBaseFilename=SaySo-DEV-Setup
@@ -100,4 +100,3 @@ begin
 end;
 [Languages]
 Name: en; MessagesFile: compiler:Default.isl
-Name: de; MessagesFile: compiler:Default.isl

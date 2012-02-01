@@ -475,12 +475,17 @@ class Starbar_RemoteController extends Api_GlobalController
 		setcookie('auth_key', $this->auth_key, $expiry, '/', null, null, true);
 
 		$userState = new User_State();
-		$userState->starbar_id = $this->starbar_id;
-		$userState->user_id = $this->user_id;
-		$userState->user_key = $this->user_key;
-		$userState->auth_key = $this->auth_key;
-		$userState->visibility = "open";
-		$userState->save();
+        if( !$newUser ) {
+            $userState->loadDataByUniqueFields(array('user_id' => $this->user_id));
+        }
+        if( $newUser || !$userState->id ) {
+		    $userState->starbar_id = $this->starbar_id;
+		    $userState->user_id = $this->user_id;
+		    $userState->user_key = $this->user_key;
+		    $userState->auth_key = $this->auth_key;
+		    $userState->visibility = "open";
+		    $userState->save();
+        }
 
 		// Game
 

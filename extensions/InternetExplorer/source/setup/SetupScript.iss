@@ -29,17 +29,16 @@
 
 [Files]
 Source: ..\lib\Interop.SHDocVw.dll; DestDir: {app}
-Source: ..\lib\Jayrock.Json.dll; DestDir: {app}
 Source: ..\obj\SaySo.dll; DestDir: {app}
 Source: ..\lib\Microsoft.mshtml.dll; DestDir: {app}
 
 [Setup]
 OutputBaseFilename=SaySo-DEV-Setup
 VersionInfoCompany=Say.So LLC
-VersionInfoProductName=Say.So LLC
-VersionInfoProductVersion=1.1
-AppName=Say.So
-AppVerName=Say.So 1.6
+VersionInfoProductName=Say.So Bar
+VersionInfoProductVersion=2.0
+AppName=Say.So Bar
+AppVerName=Say.So Bar 2.0
 DisableDirPage=true
 DisableProgramGroupPage=true
 UsePreviousGroup=false

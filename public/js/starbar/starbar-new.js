@@ -1519,15 +1519,16 @@ $SQ(function(){
 		closePopBox(true);
 		hideAlerts();
 		elemStarbarMain.fadeTo('fast', 0);
-		elemPopBoxVisControl.fadeTo('fast', 0);
 		btnToggleVis.attr('class','').addClass('sb_btnStarbar-closed');
 		btnSaySoLogo.css('backgroundPosition','3px 0px');
 
 		if (sayso.disableJqueryEffects) {
+            starbar.stowing = true;
 			elemPlayerConsole.attr('class','').addClass('sb_starbar-visClosed');
 			setTimeout(function () {
 				btnToggleVis.attr('class','').addClass('sb_btnStarbar-stowed');
 				elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
+                starbar.stowing = false;
 			}, 1000);
 		} else {
 			elemPlayerConsole.animate(
@@ -1560,6 +1561,8 @@ $SQ(function(){
 	}
 
 	function openBar (needToUpdateState) {
+        if( starbar.stowing )
+            return;
 		starbar.state.local.visibility = 'open';
 		if (needToUpdateState) {
 			starbar.state.visibility = starbar.state.local.visibility;
@@ -1593,14 +1596,9 @@ $SQ(function(){
 		}
 	}
 
-	if (/*@cc_on!@*/false) { // check for Internet Explorer
-		var oldOnFocus = document.onfocusin && typeof document.onfocusin === 'function' ? document.onfocusin : function () {};
-		document.onfocusin = function () { oldOnFocus(); starbar.state.refresh(); };
-	} else {
-		var oldOnFocus = window.onfocus && typeof window.onfocus === 'function' ? window.onfocus : function () {};
-		$SQ(window).bind('focus', function () { oldOnFocus(); starbar.state.refresh(); });
-//		window.onfocus = function () { oldOnFocus(); starbar.state.refresh(); };
-	}
+	$SQ(window).bind('focus', function () { 
+        starbar.state.refresh();
+    });
 
 	// flag so we know this file has loaded
 	sayso.starbar.loaded = true;

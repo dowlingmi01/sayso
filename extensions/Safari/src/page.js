@@ -1,6 +1,6 @@
 (function () {
 	if (document.body) {
-		var baseDomain = 'app-dev.saysollc.com';
+		var baseDomain = 'app.saysollc.com';
 
 		var saysoGlobal = document.createElement('script');
 		saysoGlobal.text = "window.$SaySoExtension = { base_domain: '" + baseDomain + "' }";

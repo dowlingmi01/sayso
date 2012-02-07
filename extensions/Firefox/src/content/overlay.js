@@ -1,5 +1,5 @@
 (function () {
-	var baseDomain = 'app-dev.saysollc.com';
+	var baseDomain = 'app.saysollc.com';
 
 	// See https://developer.mozilla.org/en/Code_snippets/On_page_load
 

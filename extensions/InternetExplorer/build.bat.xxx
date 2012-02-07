@@ -2,8 +2,16 @@
 if %ERRORLEVEL% NEQ 0 goto end
 
 cd setup
-C:\"Program Files (x86)"\"Inno Setup 5"\iscc.exe SetupScript.iss"
+C:\"Program Files (x86)"\"Inno Setup 5"\iscc.exe SetupScript.iss
 if %ERRORLEVEL% NEQ 0 goto end
 cd ..
 
+move build.exe "..\..\public\install\ie\##BaseExtFileName##-Setup.exe"
+if %ERRORLEVEL% NEQ 0 goto end
+
+goto done
+
 :end
+exit /b 1
+
+:done

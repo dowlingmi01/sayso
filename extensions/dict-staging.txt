@@ -1,0 +1,2 @@
+BaseDomain=app-staging.saysollc.com
+BaseExtFileName=SaySo-STAGE

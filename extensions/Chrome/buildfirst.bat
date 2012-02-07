@@ -1,1 +1,0 @@
-crxmake --pack-extension=ChromeExt\ --extension-output=.\a239x18.crx --mode=crx --key-output=.\a239x18.pem --ignore-dir=/\.(?:svn)/

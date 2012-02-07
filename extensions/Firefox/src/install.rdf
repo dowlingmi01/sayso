@@ -3,8 +3,8 @@
  xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
     <em:id>bar@say.so</em:id>
-    <em:name>Say.So K-less Dev</em:name>
-    <em:version>1.5</em:version>
+    <em:name>Say.So Bar</em:name>
+    <em:version>2.0</em:version>
     <em:creator>Say.So LLC</em:creator>
     <em:description>A fun way to have your influence recognized, and your opinions rewarded!</em:description>
     <em:updateURL>https://app.saysollc.com/xml/firefox-extension-updates.xml</em:updateURL>

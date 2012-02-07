@@ -1,0 +1,2 @@
+BaseDomain=app-demo.saysollc.com
+BaseExtFileName=SaySo-DEMO

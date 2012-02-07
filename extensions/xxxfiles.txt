@@ -1,0 +1,12 @@
+InternetExplorer/build.bat
+InternetExplorer/src/BHO.cs
+InternetExplorer/src/AssemblyInfo.cs
+InternetExplorer/setup/SetupScript.iss
+Chrome/build.bat
+Chrome/src/manifest.json
+Chrome/src/page.js
+Firefox/build.bat
+FireFox/src/install.rdf
+FireFox/src/content/overlay.js
+Safari/src/Info.plist
+Safari/src/page.js

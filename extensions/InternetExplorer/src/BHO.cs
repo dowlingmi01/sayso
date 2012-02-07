@@ -23,7 +23,7 @@ namespace SaySo.Bar
 
 		public BHO(){
 
-			baseDomain = "app-dev.saysollc.com";
+			baseDomain = "app.saysollc.com";
 
 		}
 

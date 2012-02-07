@@ -1,0 +1,7 @@
+BaseDomain=app.saysollc.com
+Company=Say.So LLC
+ProductName=Say.So Bar
+ProductVersion=2.0
+ProductFullVersion=2.0.0.0
+ProductNameVersion=Say.So Bar 2.0
+ProductDescription=A fun way to have your influence recognized, and your opinions rewarded!

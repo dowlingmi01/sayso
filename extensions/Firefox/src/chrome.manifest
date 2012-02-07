@@ -1,4 +1,4 @@
-content	sayso	jar:chrome/sayso.jar!/content/
-locale	sayso	en-US	jar:chrome/sayso.jar!/locale/en-US/
-skin	sayso	classic/1.0	jar:chrome/sayso.jar!/skin/
+content	sayso	            content/
+locale	sayso	en-US	    locale/en-US/
+skin	sayso	classic/1.0 skin/
 overlay	chrome://browser/content/browser.xul	chrome://sayso/content/firefoxOverlay.xul

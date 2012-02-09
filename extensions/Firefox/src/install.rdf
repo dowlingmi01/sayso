@@ -2,6 +2,7 @@
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
  xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
+    <em:bootstrap>true</em:bootstrap>
     <em:id>bar@say.so</em:id>
     <em:name>Say.So Bar</em:name>
     <em:version>2.0</em:version>
@@ -12,7 +13,7 @@
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- firefox -->
-        <em:minVersion>1.5</em:minVersion>
+        <em:minVersion>4.0</em:minVersion>
         <em:maxVersion>100.*</em:maxVersion>
       </Description>
     </em:targetApplication>

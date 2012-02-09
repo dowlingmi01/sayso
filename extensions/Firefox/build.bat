@@ -4,7 +4,7 @@ if %ERRORLEVEL% NEQ 0 goto end
 for /d %%i in (build\*) do rmdir /q /s %%i
 if %ERRORLEVEL% NEQ 0 goto end
 
-if exist buil.xpi del build.xpi
+if exist build.xpi del build.xpi
 if %ERRORLEVEL% NEQ 0 goto end
 
 xcopy src build /i /e

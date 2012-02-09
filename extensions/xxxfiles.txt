@@ -7,6 +7,6 @@ Chrome/src/manifest.json
 Chrome/src/page.js
 Firefox/build.bat
 FireFox/src/install.rdf
-FireFox/src/content/overlay.js
+FireFox/src/bootstrap.js
 Safari/src/Info.plist
 Safari/src/page.js

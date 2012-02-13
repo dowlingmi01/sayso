@@ -78,6 +78,8 @@
 			// setup global "safe" logging functions
 			sayso.log = safeLog('log', sayso.debug);
 			sayso.warn = safeLog('warn', sayso.debug);
+			
+			sayso.log( "Starting extension version " + window.$SaySoExtension.ext_version + " on " + window.$SaySoExtension.ext_browser );
 
 			if (response.status && response.status == "error") {
 				sayso.baseDomain = saysoBaseDomain;

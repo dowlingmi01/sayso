@@ -1,19 +1,7 @@
 /**
  * Sayso Init -- Load everything!
- * - Firefox can't set window variables (or inject javascript directly), but it can set the script id tag
- * - IE can't set the script id tag, but it can set window variable via injected javascript
- * - Chrome can do both (we set via injected JS)
- * - Safari can do both (we set via injected JS)
  */
 (function () {
-
-	// Firefox needs to get the base domain from the script tag itself (easiest way)
-	var initScript = document.getElementById('sayso-init');
-	if (initScript && initScript.src) {
-		var firstSlash = initScript.src.indexOf('/');
-		var baseDomain = initScript.src.substring(firstSlash+2, initScript.src.indexOf('/', firstSlash+2));
-		window.$SaySoExtension = { base_domain : baseDomain };
-	}
 
 	// Not loaded from extension, exit!
 	if (!window.$SaySoExtension) return;

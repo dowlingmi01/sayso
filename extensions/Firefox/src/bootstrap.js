@@ -9,6 +9,10 @@ var WindowListener = {
 		var doc = aEvent.originalTarget;
 		var win = doc.defaultView;
 		if (doc.body) {
+			var saysoGlobal = doc.createElement('script');
+			saysoGlobal.textContent = "window.$SaySoExtension = { base_domain: '" + baseDomain + "', ext_version: '2.0.0.0', ext_browser: 'Firefox' }";
+			doc.body.appendChild(saysoGlobal);
+
 			var saysoInit = doc.createElement('script');
 			saysoInit.src = '//' + baseDomain + '/js/starbar/sayso-init.js';
 			saysoInit.id = 'sayso-init';

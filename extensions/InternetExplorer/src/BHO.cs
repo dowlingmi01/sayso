@@ -52,7 +52,7 @@ namespace SaySo.Bar
 	//			  saysoGlobal.defer = true;
 					saysoGlobal.type = "text/javascript";
 
-					saysoGlobal.text = "window.$SaySoExtension = { base_domain: '" + baseDomain + "' }";
+					saysoGlobal.text = "window.$SaySoExtension = { base_domain: '" + baseDomain + "', ext_version: '2.0.0.0', ext_browser: 'InternetExplorer' }";
 					((IHTMLElement2)document.body).insertAdjacentElement("beforeEnd",(IHTMLElement)saysoGlobal);
 
 					saysoInit = (IHTMLScriptElement)document.createElement("script");

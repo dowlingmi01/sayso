@@ -1,10 +1,10 @@
-rmdir /q /s build\%1
+rmdir /q /s build\%1.safariextension
 if %ERRORLEVEL% NEQ 0 goto end
-mkdir build\%1
+mkdir build\%1.safariextension
 if %ERRORLEVEL% NEQ 0 goto end
-copy src\* build\%1
+copy src\* build\%1.safariextension
 if %ERRORLEVEL% NEQ 0 goto end
-del build\%1\*.xxx
+del build\%1.safariextension\*.xxx
 if %ERRORLEVEL% NEQ 0 goto end
 
 goto done

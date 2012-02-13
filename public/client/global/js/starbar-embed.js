@@ -135,7 +135,7 @@
 
 		if (!window.$SQ) {
 			var jQueryInclude = document.createElement('script');
-			jQueryInclude.src = '//' + sayso.baseDomain + '/js/starbar/jquery-1.6.1.min.js';
+			jQueryInclude.src = '//' + sayso.baseDomain + '/js/starbar/jquery-1.7.1.min.js';
 			document.getElementsByTagName('body')[0].appendChild(jQueryInclude);
 		}
 

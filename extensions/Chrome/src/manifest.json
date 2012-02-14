@@ -2,8 +2,6 @@
 	"name": "Say.So Bar",
 	"version": "2.0",
 	"description": "A fun way to have your influence recognized, and your opinions rewarded!",
-	"background_page": "background.html",
-	"options_page": "options.html",
 	"content_scripts": [
 		{
 			"matches": ["http://*/*","https://*/*"],

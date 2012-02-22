@@ -547,8 +547,8 @@ $SQ(function () {
 				var creative = tag.creatives[0];
 
 				// replace ad
-				adWidth = jTagContainer.innerWidth();
-				adHeight = jTagContainer.innerHeight();
+				adWidth = jTag.innerWidth();
+				adHeight = jTag.innerHeight();
 				var newTag = $SQ(document.createElement('div'));
 				newTag.css({
 					'width': adWidth+'px',
@@ -558,6 +558,12 @@ $SQ(function () {
 				});
 				newTag.html('<a id="sayso-adcreative-'+creative.id+'" href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
 				jTagContainer.html('').append(newTag);
+				jTagContainer.css({
+					'width': adWidth+'px',
+					'height': adHeight+'px',
+					'left': 0,
+					'top': 0
+				});
 
 				// record view of the creative
 				currentActivity.creativeViews.push(creative.id);

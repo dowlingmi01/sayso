@@ -176,7 +176,7 @@ class Starbar_IndexController extends Api_GlobalController
 		$starbar->setVisibility('stowed');
 		$this->view->starbar = $starbar;
 
-		$notesReportCSV = "user_id,email,notes_remaining,first_name,last_name\n";
+		$notesReportCSV = "user_id,email,first_name,last_name,chops_earned,notes_earned,notes_spent,notes_remaining\n";
 
 		$sql = "
 			SELECT user_gaming.user_id, user_gaming.gaming_id, user.first_name, user.last_name, user_email.email
@@ -206,11 +206,19 @@ class Starbar_IndexController extends Api_GlobalController
 				$gamerInfoCache->save($gamerInfo);
 			}
 
+			$notes = 0;
+			$chops = 0;
+
 			foreach ($gamerInfo->currency_balances as $currency) {
 				if ((strtolower($currency->end_user_title) == 'notes' || strtolower($currency->pub_title) == 'notes') && intval($currency->current_balance)) {
-					$notesReportCSV .= $gamer['user_id'] . ',' . $gamer['email'] . ',' . intval($currency->current_balance) . ',' . $gamer['first_name'] . ',' . $gamer['last_name'] . "\n";
+					$notes = intval($currency->current_balance);
+				}
+				if ((strtolower($currency->end_user_title) == 'chops' || strtolower($currency->pub_title) == 'chops') && intval($currency->current_balance)) {
+					$chops = intval($currency->current_balance);
 				}
 			}
+
+			$notesReportCSV .= $gamer['user_id'] . ',' . $gamer['email'] . ',' . $gamer['first_name'] . ',' . $gamer['last_name'] . ',' . $chops . ',' . ($chops/10) . ',' . (($chops/10) - $notes) . ',' . $notes . "\n";
 		}
 
 		$this->view->notesReportCSV = $notesReportCSV;

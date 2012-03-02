@@ -105,7 +105,7 @@ class Devadmin_IndexController extends Api_GlobalController
 		$sql = "
 			SELECT user.id, user_email.email
 			FROM user INNER JOIN user_email ON user.primary_email_id = user_email.id
-		    WHERE (user_email.email LIKE '%@say.so'
+			WHERE (user_email.email LIKE '%@say.so'
 					OR user_email.email LIKE '%@saysollc.com'
 					OR user_email.email LIKE '%@hellomusic.com'
 					OR user_email.email LIKE '%@wilshiremedia.com'
@@ -351,5 +351,78 @@ class Devadmin_IndexController extends Api_GlobalController
 			}
 		}
 		$this->view->emails = $emails;
+	}
+
+	public function facebookAdDemoAction () {
+		$request = $this->getRequest();
+
+		$newFbAdId = $request->getParam("new_fb_id", false);
+
+		if ($newFbAdId) {
+			$newStudy = new Study();
+			$newStudy->study_type = 3; // Creative -- why is this an integer? :(
+			$newStudy->status = 0; // Why is this an integer? :(
+			$newStudy->user_id = 1; // Why is this an integer? :(
+			$newStudy->name = "FB AD " . $newFbAdId;
+			$newStudy->study_id = $newFbAdId;
+			$newStudy->size = 100;
+			$newStudy->size_minimum = 1;
+			$newStudy->begin_date = time();
+			$newStudy->end_date = strtotime("+3 months");
+			$newStudy->is_stopped = false;
+			$newStudy->click_track = true;
+
+ 			if ($newStudy->save()) {
+				$newStudyCell = new Study_Cell();
+				$newStudyCell->study_id = $newStudy->id;
+				$newStudyCell->description = "FB AD " . $newFbAdId;
+				$newStudyCell->size = 100;
+				$newStudyCell->cell_type = "test";
+				$newStudyCell->save();
+
+				$newStudyTag = new Study_Tag();
+				$newStudyTag->user_id = 1;
+				$newStudyTag->study_id = $newStudy->id;
+				$newStudyTag->name = "FB AD " . $newFbAdId;
+				$newStudyTag->type = "Facebook";
+				$newStudyTag->tag = $newFbAdId;
+				$newStudyTag->save();
+
+				$newStudyCellTagMap = new Study_CellTagMap();
+				$newStudyCellTagMap->cell_id = $newStudyCell->id;
+				$newStudyCellTagMap->tag_id = $newStudyTag->id;
+				$newStudyCellTagMap->save();
+
+				$newStudyDomain = new Study_Domain();
+				$newStudyDomain->user_id = 1;
+				$newStudyDomain->domain = "www.facebook.com";
+				$newStudyDomain->save();
+
+				$newStudyTagDomainMap = new Study_TagDomainMap();
+				$newStudyTagDomainMap->tag_id = $newStudyTag->id;
+				$newStudyTagDomainMap->domain_id = $newStudyDomain->id;
+				$newStudyTagDomainMap->save();
+
+				$newStudyCreative = new Study_Creative();
+				$newStudyCreative->user_id = 1;
+				$newStudyCreative->name = "FB AD " . $newFbAdId;
+				$newStudyCreative->type = "Facebook";
+				$newStudyCreative->url = "https://s3.amazonaws.com/say.so/media/Say.So_FB.jpg";
+				$newStudyCreative->ad_title = "YOUR AD HERE";
+				$newStudyCreative->ad_description = "Pretest your ads with Say.So's revolutionary ADjuster product";
+				$newStudyCreative->target_url = "http://say.so/";
+				$newStudyCreative->save();
+
+				$newStudyCreativeTagMap = new Study_CreativeTagMap();
+				$newStudyCreativeTagMap->tag_id = $newStudyTag->id;
+				$newStudyCreativeTagMap->creative_id = $newStudyCreative->id;
+				$newStudyCreativeTagMap->save();
+			}
+		}
+
+		$currentFbStudies = new StudyCollection();
+		$currentFbStudies->loadAllFacebookStudies();
+
+		$this->view->current_fb_studies = $currentFbStudies;
 	}
 }

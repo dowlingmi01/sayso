@@ -1,0 +1,8 @@
+<form method="POST">
+	New Study, Enter AD ID from Facebook: <input type="text" name="new_fb_id" value=""> <input type="submit" name="Add Study" value="Add Study"><br /><br />
+</form>
+Current Facebook Studies:<br />
+<? if (!$this->current_fb_studies) echo "No studies yet!<br />" ?>
+<? foreach ($this->current_fb_studies AS $study) { ?>
+	<?= $study->name ?><br />
+<? } ?>

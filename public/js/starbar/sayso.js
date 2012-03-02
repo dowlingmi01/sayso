@@ -472,47 +472,48 @@ $SQ(function () {
 		 * - this function inherits currentActivity for the current cell
 		 */
 		function processTag (tag) {
-			var selector = tag.tag;
-			log('Selector: ');
-			log(selector);
-			var jTag = $SQ(selector);
+			log('Tag.tag: ');
+			log(tag.tag);
 
-			// Try finding the tag.
-			if (!jTag || !jTag.length) {
-				if (selector.indexOf('embed') > -1) { // if we're looking for flash, we may need to search inside objects
-					// embed[src*="blahblah.swf"]   becomes   blahblah.swf
-					var partialUrl = selector.replace(/^embed\[src\*="/, '');
-					partialUrl = partialUrl.replace(/"\]$/, '');
-					log('Partial URL (flash): ');
-					log(partialUrl);
-
-					// Try to search (using jQuery) for the param element (though on IE and possibly other browsers, params are not in the DOM).
-					jTag = $SQ('param[name="movie"][value*="'+partialUrl+'"]');
-
-					// If flash is still not found on this page, try looking inside all the <object> tags' children (i.e. the params)
+			var jTag = false;
+			switch (tag.type) {
+				case "Image":
+					jTag = $SQ('img[src*="' + tag.tag + '"]');
+					break;
+				case "Flash":
+					jTag = $SQ('embed[src*="' + tag.tag + '"]');
 					if (!jTag || !jTag.length) {
-						objectTags = $SQ('object');
-						if (objectTags.length) {
-							objectTags.each(function (index) {
-								objectTag = $SQ(this);
-								paramTags = objectTag.children();
-								for (i = 0; i < paramTags.length; i++) {
-									if (paramTags.eq(i).attr('name').toLowerCase() == "movie") { // We are only interested in the "movie" param (i.e. the URL of the movie)
-										if (paramTags.eq(i).attr('value').indexOf(partialUrl) > -1) {
-											jTag = paramTags;
-											jTagContainer = objectTag;
-											// Match found, need need to search any more
-											return false;
-										} else {
-											// Go to next object tag
-											return true;
+						// Try to search (using jQuery) for the param element (though on IE and possibly other browsers, params are not in the DOM).
+						jTag = $SQ('param[name="movie"][value*="'+tag.tag+'"]');
+
+						// If flash is still not found on this page, try looking inside all the <object> tags' children (i.e. the params)
+						if (!jTag || !jTag.length) {
+							objectTags = $SQ('object');
+							if (objectTags.length) {
+								objectTags.each(function (index) {
+									objectTag = $SQ(this);
+									paramTags = objectTag.children();
+									for (i = 0; i < paramTags.length; i++) {
+										if (paramTags.eq(i).attr('name').toLowerCase() == "movie") { // We are only interested in the "movie" param (i.e. the URL of the movie)
+											if (paramTags.eq(i).attr('value').indexOf(partialUrl) > -1) {
+												jTag = paramTags.eq(i);
+												jTagContainer = objectTag;
+												// Match found, need need to search any more
+												return false;
+											} else {
+												// Go to next object tag
+												return true;
+											}
 										}
 									}
-								}
-							});
+								});
+							}
 						}
 					}
-				}
+					break;
+				case "Facebook":
+					jTag = $SQ('div[id*="' + tag.tag + '-id_"]');
+					break;
 			}
 
 
@@ -556,7 +557,34 @@ $SQ(function () {
 					'overflow': 'hidden',
 					'display': 'block'
 				});
-				newTag.html('<a id="sayso-adcreative-'+creative.id+'" href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
+				switch (creative.type) {
+					case "Image":
+						newTag.html('<a id="sayso-adcreative-'+creative.id+'" href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
+						break;
+					case "Flash":
+						newTag.html(''); // @todo, insert <object><param><param><embed></object> etc. for flash ads
+						break;
+					case "Facebook":
+						newTag.html(' \
+							<div class="fbEmu fbEmuEgo"> \
+								<a class="fbEmuTitleBodyImageLink emuEvent1  fbEmuLink" href="'+creative.target_url+'" target="_blank"> \
+									<div class="fbEmuTitleBodyImageDiv"> \
+										<div class="title"><span class="forceLTR">'+creative.ad_title+'</span></div> \
+										<div class="clearfix uiImageBlock image_body_block"> \
+											<div class="image fbEmuImage uiImageBlockImage uiImageBlockMediumImage lfloat"> \
+												<img class="img" src="'+creative.url+'" alt=""> \
+											</div> \
+											<div class="uiImageBlockContent "> \
+												<div class="body"><div class="forceLTR">'+creative.ad_description+'</div></div> \
+											</div> \
+										</div> \
+									</div> \
+								</a> \
+								<div class="inline"><div class="action"><span class="fbEmuContext">&nbsp;</span></div></div> \
+							</div> \
+						');
+						break;
+				}
 				jTagContainer.html('').append(newTag);
 				jTagContainer.css({
 					'width': adWidth+'px',

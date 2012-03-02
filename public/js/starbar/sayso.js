@@ -395,6 +395,7 @@ $SQ(function () {
 						var tagIndex = cells[cellIndex].tags.push({
 							id : tag.id,
 							tag : tag.tag,
+							type : tag.type,
 							target_url : tag.target_url,
 							domains : '',
 							creatives : []
@@ -415,6 +416,9 @@ $SQ(function () {
 							cells[cellIndex].tags[tagIndex].creatives.push({
 								id : creative.id,
 								url : creative.url,
+								type : creative.type,
+								ad_title : creative.ad_title,
+								ad_description : creative.ad_description,
 								target_url : creative.target_url
 							});
 						} // creatives

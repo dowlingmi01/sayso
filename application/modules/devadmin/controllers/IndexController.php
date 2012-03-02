@@ -371,53 +371,52 @@ class Devadmin_IndexController extends Api_GlobalController
 			$newStudy->end_date = strtotime("+3 months");
 			$newStudy->is_stopped = false;
 			$newStudy->click_track = true;
+			$newStudy->save();
 
- 			if ($newStudy->save()) {
-				$newStudyCell = new Study_Cell();
-				$newStudyCell->study_id = $newStudy->id;
-				$newStudyCell->description = "FB AD " . $newFbAdId;
-				$newStudyCell->size = 100;
-				$newStudyCell->cell_type = "test";
-				$newStudyCell->save();
+			$newStudyCell = new Study_Cell();
+			$newStudyCell->study_id = $newStudy->id;
+			$newStudyCell->description = "FB AD " . $newFbAdId;
+			$newStudyCell->size = 100;
+			$newStudyCell->cell_type = "test";
+			$newStudyCell->save();
 
-				$newStudyTag = new Study_Tag();
-				$newStudyTag->user_id = 1;
-				$newStudyTag->study_id = $newStudy->id;
-				$newStudyTag->name = "FB AD " . $newFbAdId;
-				$newStudyTag->type = "Facebook";
-				$newStudyTag->tag = $newFbAdId;
-				$newStudyTag->save();
+			$newStudyTag = new Study_Tag();
+			$newStudyTag->user_id = 1;
+			$newStudyTag->study_id = $newStudy->id;
+			$newStudyTag->name = "FB AD " . $newFbAdId;
+			$newStudyTag->type = "Facebook";
+			$newStudyTag->tag = $newFbAdId;
+			$newStudyTag->save();
 
-				$newStudyCellTagMap = new Study_CellTagMap();
-				$newStudyCellTagMap->cell_id = $newStudyCell->id;
-				$newStudyCellTagMap->tag_id = $newStudyTag->id;
-				$newStudyCellTagMap->save();
+			$newStudyCellTagMap = new Study_CellTagMap();
+			$newStudyCellTagMap->cell_id = $newStudyCell->id;
+			$newStudyCellTagMap->tag_id = $newStudyTag->id;
+			$newStudyCellTagMap->save();
 
-				$newStudyDomain = new Study_Domain();
-				$newStudyDomain->user_id = 1;
-				$newStudyDomain->domain = "www.facebook.com";
-				$newStudyDomain->save();
+			$newStudyDomain = new Study_Domain();
+			$newStudyDomain->user_id = 1;
+			$newStudyDomain->domain = "www.facebook.com";
+			$newStudyDomain->save();
 
-				$newStudyTagDomainMap = new Study_TagDomainMap();
-				$newStudyTagDomainMap->tag_id = $newStudyTag->id;
-				$newStudyTagDomainMap->domain_id = $newStudyDomain->id;
-				$newStudyTagDomainMap->save();
+			$newStudyTagDomainMap = new Study_TagDomainMap();
+			$newStudyTagDomainMap->tag_id = $newStudyTag->id;
+			$newStudyTagDomainMap->domain_id = $newStudyDomain->id;
+			$newStudyTagDomainMap->save();
 
-				$newStudyCreative = new Study_Creative();
-				$newStudyCreative->user_id = 1;
-				$newStudyCreative->name = "FB AD " . $newFbAdId;
-				$newStudyCreative->type = "Facebook";
-				$newStudyCreative->url = "https://s3.amazonaws.com/say.so/media/Say.So_FB.jpg";
-				$newStudyCreative->ad_title = "YOUR AD HERE";
-				$newStudyCreative->ad_description = "Pretest your ads with Say.So's revolutionary ADjuster product";
-				$newStudyCreative->target_url = "http://say.so/";
-				$newStudyCreative->save();
+			$newStudyCreative = new Study_Creative();
+			$newStudyCreative->user_id = 1;
+			$newStudyCreative->name = "FB AD " . $newFbAdId;
+			$newStudyCreative->type = "Facebook";
+			$newStudyCreative->url = "https://s3.amazonaws.com/say.so/media/Say.So_FB.jpg";
+			$newStudyCreative->ad_title = "Test YOUR ad here!";
+			$newStudyCreative->ad_description = "Pre-test your ads with Say.So's revolutionary ADjuster product";
+			$newStudyCreative->target_url = "http://say.so/";
+			$newStudyCreative->save();
 
-				$newStudyCreativeTagMap = new Study_CreativeTagMap();
-				$newStudyCreativeTagMap->tag_id = $newStudyTag->id;
-				$newStudyCreativeTagMap->creative_id = $newStudyCreative->id;
-				$newStudyCreativeTagMap->save();
-			}
+			$newStudyCreativeTagMap = new Study_CreativeTagMap();
+			$newStudyCreativeTagMap->tag_id = $newStudyTag->id;
+			$newStudyCreativeTagMap->creative_id = $newStudyCreative->id;
+			$newStudyCreativeTagMap->save();
 		}
 
 		$currentFbStudies = new StudyCollection();

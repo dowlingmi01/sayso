@@ -476,44 +476,41 @@ $SQ(function () {
 			log(tag.tag);
 
 			var jTag = false;
-			switch (tag.type) {
-				case "Image":
-					jTag = $SQ('img[src*="' + tag.tag + '"]');
-					break;
-				case "Flash":
-					jTag = $SQ('embed[src*="' + tag.tag + '"]');
-					if (!jTag || !jTag.length) {
-						// Try to search (using jQuery) for the param element (though on IE and possibly other browsers, params are not in the DOM).
-						jTag = $SQ('param[name="movie"][value*="'+tag.tag+'"]');
 
-						// If flash is still not found on this page, try looking inside all the <object> tags' children (i.e. the params)
-						if (!jTag || !jTag.length) {
-							objectTags = $SQ('object');
-							if (objectTags.length) {
-								objectTags.each(function (index) {
-									objectTag = $SQ(this);
-									paramTags = objectTag.children();
-									for (i = 0; i < paramTags.length; i++) {
-										if (paramTags.eq(i).attr('name').toLowerCase() == "movie") { // We are only interested in the "movie" param (i.e. the URL of the movie)
-											if (paramTags.eq(i).attr('value').indexOf(partialUrl) > -1) {
-												jTag = paramTags.eq(i);
-												jTagContainer = objectTag;
-												// Match found, need need to search any more
-												return false;
-											} else {
-												// Go to next object tag
-												return true;
-											}
+			if (tag.type == "Image") {
+				jTag = $SQ('img[src*="' + tag.tag + '"]');
+			} else if (tag.type == "Flash") {
+				jTag = $SQ('embed[src*="' + tag.tag + '"]');
+				if (!jTag || !jTag.length) {
+					// Try to search (using jQuery) for the param element (though on IE and possibly other browsers, params are not in the DOM).
+					jTag = $SQ('param[name="movie"][value*="'+tag.tag+'"]');
+
+					// If flash is still not found on this page, try looking inside all the <object> tags' children (i.e. the params)
+					if (!jTag || !jTag.length) {
+						objectTags = $SQ('object');
+						if (objectTags.length) {
+							objectTags.each(function (index) {
+								objectTag = $SQ(this);
+								paramTags = objectTag.children();
+								for (i = 0; i < paramTags.length; i++) {
+									if (paramTags.eq(i).attr('name').toLowerCase() == "movie") { // We are only interested in the "movie" param (i.e. the URL of the movie)
+										if (paramTags.eq(i).attr('value').indexOf(partialUrl) > -1) {
+											jTag = paramTags.eq(i);
+											jTagContainer = objectTag;
+											// Match found, need need to search any more
+											return false;
+										} else {
+											// Go to next object tag
+											return true;
 										}
 									}
-								});
-							}
+								}
+							});
 						}
 					}
-					break;
-				case "Facebook":
-					jTag = $SQ('div[id*="' + tag.tag + '-id_"]');
-					break;
+				}
+			} else if (tag.type == "Facebook") {
+				jTag = $SQ('div[id*="' + tag.tag + '-id_"]');
 			}
 
 

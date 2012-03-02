@@ -4,39 +4,39 @@
 class Study_Creative extends Record
 {
 	protected $_tableName = 'study_creative';
-	
+
 	/**
 	 * Depending on the logic flow, tags attached
 	 * to this creative may need saving or may already
-	 * have been saved, in which case just save the 
+	 * have been saved, in which case just save the
 	 * mappings. Default is to do the most common thing
 	 * and save whatever collection is attached.
-	 * 
+	 *
 	 * @var boolean
 	 */
 	public static $saveTagsOnSave = true;
-	
+
 	/**
 	 * @var Study
 	 */
 	protected $_study;
-	
+
 	/**
 	 * @var Study_TagCollection
 	 */
 	protected $_tags;
-	
+
 	public function setStudy (Study $study) {
 		$this->_study = $study;
 	}
-	
+
 	public function addTag (Study_Tag $tag) {
 		if (!$this->_tags) {
 			$this->_tags = new Study_TagCollection();
 		}
 		$this->_tags->addItem($tag);
 	}
-	
+
 	public function save() {
 		parent::save();
 		if ($this->_study) {
@@ -56,18 +56,21 @@ class Study_Creative extends Record
 			}
 		}
 	}
-	
+
 	public function exportData() {
 		$fields = array(
 			'user_id',
 			'mime_type_id',
 			'name',
+			'type',
 			'url',
-			'target_url'
+			'target_url',
+			'ad_title',
+			'ad_description'
 		);
 		return array_intersect_key($this->getData(), array_flip($fields));
 	}
-	
+
 	public function exportProperties($parentObject = null) {
 		$props = array();
 		if ($this->_tags && $this->_tags->count()) {
@@ -75,6 +78,6 @@ class Study_Creative extends Record
 		}
 		return array_merge(parent::exportProperties($parentObject), $props);
 	}
-	
+
 }
 

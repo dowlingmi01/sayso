@@ -1,9 +1,11 @@
-<html>
-	<head>
-		<title>ADjuster Ad Measurement Tester</title>
-	</head>
-	<body>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<style>
+		body { background-color: #FFFFFF; font: 12px arial, sans-serif; }
+		th { border-bottom: 1px solid #CCCCCC; padding: 4px; background-color: #555555; color: #EEEEEE; }
+		td { background-color: #F5F5F5; border-bottom: 1px solid #D3D3D3; padding: 4px; }
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<div style="border: 1px solid #CCCCCC; background-color: #EEEEEE; padding: 10px; width: 800px; margin: 20px 0 20px 10px">
+		<div style="margin: 3px 0 21px 0; color: #119922; cursor: pointer;" onclick="$(this).hide(); $('#the_form').show(); return false;">New Study +</div>
 		<form id="the_form" method="POST">
 			<input type="hidden" id="operation" name="operation" value="add" />
 			<input type="hidden" id="study_id_to_delete" name="study_id_to_delete" value="" />
@@ -32,51 +34,64 @@
 				</div>
 			</div>
 		</form>
-		Current Studies:<br />
-		<? if (!$this->current_studies) echo "No studies yet!<br />" ?>
-		<table border="0" cellpadding="0" cellspacing="0" width=800>
-			<? foreach ($this->current_studies AS $study) { ?>
-				<tr><td width="50%"><?= $study->name ?></td><td width="40%"><?= ($study->type == 2 ? "Campaign" : "Creative") ?></td><td width="10%" align="right"><a href="#" onclick="$('#study_id_to_delete').attr('value', <?= $study->getId() ?>); $('#operation').attr('value', 'delete'); $('#the_form').submit(); return false;" style="color: red;">X</a></td></tr>
-			<? } ?>
-		</table>
+	</div>
+	<div style="border: 1px solid #CCCCCC; background-color: #EEEEEE; padding: 10px; width: 800px; margin: 0 0 0 10px">
+	Current Studies:<br />
+	<? if (!count($this->current_studies)) echo "<br /><em>&nbsp; &nbsp;No studies found. You may add a study above.</em><br />" ?>
+	<table border="0" cellpadding="0" cellspacing="0" style="width: 798px; margin: 10px 0 5px 0; border: 1px solid #CCCCCC;">
+		<tr>
+			<th width="50%" align="left">Study Name</td>
+			<th width="40%" align="left">Type of Study</td>
+			<th width="10%" align="right">Delete</td>
+		</tr>
+		<? foreach ($this->current_studies AS $study) { ?>
+			<tr>
+				<td><?= $study->name ?></td>
+				<td><?= ($study->study_type == 2 ? "Campaign (track AD)" : "Creative (replace AD)") ?></td>
+				<td align="right"><a href="#" onclick="$('#study_id_to_delete').attr('value', <?= $study->getId() ?>); $('#operation').attr('value', 'delete'); $('#the_form').submit(); return false;" style="color: red;">X</a></td>
+			</tr>
+		<? } ?>
+	</table>
 
-		<script type="text/javascript">
-			var study_type = "";
+	<script type="text/javascript">
+		var study_type = "";
+		$('#the_form').hide();
+		$('#study_type_chosen').hide();
+		$('#tag_type_chosen').hide();
+		$('tr:last').children().css('border-bottom', '0');
+		$('tr:odd').children().css('background-color', '#F9F9F9');
+
+
+		function UpdateStudyType(type) {
 			$('#study_type_chosen').hide();
+
+			study_type = type;
+
+			if (type == "campaign") {
+				$('#track_or_replace').html('TRACK');
+				$('#ad_target').show();
+				$('#study_type_chosen').show();
+			} else if(type == "creative") {
+				$('#track_or_replace').html('REPLACE');
+				$('#ad_target').hide();
+				$('#study_type_chosen').show();
+			}
+		}
+
+		function UpdateTagType(type) {
 			$('#tag_type_chosen').hide();
-
-			function UpdateStudyType(type) {
-				$('#study_type_chosen').hide();
-
-				study_type = type;
-
-				if (type == "campaign") {
-					$('#track_or_replace').html('TRACK');
-					$('#ad_target').show();
-					$('#study_type_chosen').show();
-				} else if(type == "creative") {
-					$('#track_or_replace').html('REPLACE');
-					$('#ad_target').hide();
-					$('#study_type_chosen').show();
-				}
+			if (type == "Image") {
+				$('#tag_instructions').html('Partial Image URL (e.g. "ad_123.jpg")');
+				$('#domain').show();
+				$('#tag_type_chosen').show();
+			} else if(type == "Flash") {
+				$('#tag_instructions').html('Partial Flash URL (e.g. "ad_123.swf")');
+				$('#domain').show();
+				$('#tag_type_chosen').show();
+			} else if(type == "Facebook") {
+				$('#tag_instructions').html('Facebook Ad ID (e.g. "6789012345")');
+				$('#domain').hide();
+				$('#tag_type_chosen').show();
 			}
-
-			function UpdateTagType(type) {
-				$('#tag_type_chosen').hide();
-				if (type == "Image") {
-					$('#tag_instructions').html('Partial Image URL (e.g. "ad_123.jpg")');
-					$('#domain').show();
-					$('#tag_type_chosen').show();
-				} else if(type == "Flash") {
-					$('#tag_instructions').html('Partial Flash URL (e.g. "ad_123.swf")');
-					$('#domain').show();
-					$('#tag_type_chosen').show();
-				} else if(type == "Facebook") {
-					$('#tag_instructions').html('Facebook Ad ID (e.g. "6789012345")');
-					$('#domain').hide();
-					$('#tag_type_chosen').show();
-				}
-			}
-		</script>
-	</body>
-</html>
+		}
+	</script>

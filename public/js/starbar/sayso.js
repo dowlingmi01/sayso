@@ -493,16 +493,16 @@ $SQ(function () {
 
 					// If flash is still not found on this page, try looking inside all the <object> tags' children (i.e. the params)
 					if (!jTag || !jTag.length) {
-						objectTags = $SQ('object');
-						if (objectTags.length) {
-							objectTags.each(function (index) {
-								objectTag = $SQ(this);
-								paramTags = objectTag.children();
+						objectElems = $SQ('object');
+						if (objectElems.length) {
+							objectElems.each(function (index) {
+								objectElem = $SQ(this);
+								paramTags = objectElem.children();
 								for (i = 0; i < paramTags.length; i++) {
 									if (paramTags.eq(i).attr('name').toLowerCase() == "movie") { // We are only interested in the "movie" param (i.e. the URL of the movie)
 										if (paramTags.eq(i).attr('value').indexOf(tag.tag) > -1) {
 											jTag = paramTags.eq(i);
-											jTagContainer = objectTag;
+											jTagContainer = objectElem;
 											// Match found, need need to search any more
 											return false;
 										} else {
@@ -724,14 +724,45 @@ $SQ(function () {
 
 	function adminFunctions () {
 		// Detect and log flash files on this page to assist admin find tags
-		log('Detected '+$SQ('embed').length+' flash file(s) ' + (inIframe ? 'in this iframe' : 'on this page'));
+		var tempLink = document.createElement('a');
+		lastIndex = 0;
+
 		$SQ('embed').each(function(index) {
 			var embedElem = $SQ(this);
-			var filename = embedElem.attr('src').match(/[^/]+$/)[0];
+			var filename = embedElem.attr('src');
+			tempLink.href = filename;
+			filename = tempLink.pathname.split('/').pop(); // filename only, e.g. blah.swf
 			if (embedElem.parent().is('object')) {
 				embedElem = embedElem.parent(); // just for logging purposes, since chrome will only highlight the embed if it is NOT contained in an <object>
 			}
-			log('Tag '+(index+1)+' (copy and paste this): "'+filename+'"\nElement '+(index+1)+' (roll over this to visually confirm): ', embedElem);
+			lastIndex = index+1;
+			log('Tag '+lastIndex+' (copy and paste this): "'+filename+'"\nElement '+lastIndex+' (roll over this to visually confirm): ', embedElem);
 		});
+
+		lastIndex++;
+
+		$SQ('object').each(function(index) {
+			var objectElem = $SQ(this);
+			if (objectElem.children('embed').length > 0) { // already found in previous loop
+				return true;
+			}
+
+			paramTags = objectElem.children();
+			for (i = 0; i < paramTags.length; i++) {
+				if (paramTags.eq(i).attr('name').toLowerCase() == "movie") { // We are only interested in the "movie" param (i.e. the URL of the movie)
+					var filename = paramTags.eq(i).attr('value');
+					tempLink.href = filename;
+					filename = tempLink.pathname.split('/').pop(); // filename only, e.g. blah.swf
+					log('Tag '+lastIndex+' (copy and paste this): "'+filename+'"\nElement '+lastIndex+' (roll over this to visually confirm): ', objectElem);
+					lastIndex++;
+
+					// Go to next object tag
+					return true;
+				}
+			}
+		});
+
+		log('Detected '+lastIndex+' flash file(s) ' + (inIframe ? 'in this iframe' : 'on this page'));
+
 	}
 });

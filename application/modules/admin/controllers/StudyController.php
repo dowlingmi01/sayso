@@ -95,7 +95,7 @@ class Admin_StudyController extends Admin_CommonController
 			);
 		$grid->addExtraColumns($extraColumnProgress);
 
-// The following removed as requested on #383		
+// The following removed as requested on #383
 //		$extraColumnStatus = new Bvb_Grid_Extra_Column();
 //		$extraColumnStatus
 //			->position('right')
@@ -691,6 +691,7 @@ class Admin_StudyController extends Admin_CommonController
 					$tag = new Study_Tag();
 					$tag->name	  = $tagDomainData['label'];
 					$tag->tag	   = $tagDomainData['tag'];
+					$tag->type	   = $tagDomainData['type'];
 					$tag->target_url = $tagDomainData['targetUrl'];
 					$tag->user_id   = $this->currentUser->id;
 					$tags->addItem($tag);
@@ -725,8 +726,11 @@ class Admin_StudyController extends Admin_CommonController
 					$creative->user_id	  = $this->currentUser->id;
 					$creative->mime_type_id = $creativeData['contentType'];
 					$creative->name		 = $creativeData['name'];
+					$creative->type		 = $creativeData['type'];
 					$creative->url		  = $creativeData['creativeUrl'];
 					$creative->target_url   = $creativeData['targetUrl'];
+					$creative->ad_title		 = $creativeData['adTitle'];
+					$creative->ad_description		 = $creativeData['adDescription'];
 					// associate Study for this Creative
 					$creative->setStudy($study);
 					$creatives->addItem($creative);

@@ -353,18 +353,37 @@ class Devadmin_IndexController extends Api_GlobalController
 		$this->view->emails = $emails;
 	}
 
-	public function facebookAdDemoAction () {
+	public function measureAdsAction () {
 		$request = $this->getRequest();
 
-		$newFbAdId = $request->getParam("new_fb_id", false);
+		$operation = $request->getParam("operation", false);
+		$studyType = $request->getParam("study_type", false);
+		$tagType = $request->getParam("tag_type", false);
+		$tag = $request->getParam("tag", false);
+		$domain = $request->getParam("domain", false);
+		$adTarget = $request->getParam("ad_target", false);
+		$studyIdToDelete = $request->getParam("study_id_to_delete", false);
 
-		if ($newFbAdId) {
+		if ($operation == "delete" && $studyIdToDelete) {
+			$study = new Study;
+			$study->loadData($studyIdToDelete);
+			$study->delete();
+		}
+
+		if (
+			$operation == "add"
+			&& $studyType
+			&& $tag
+			&& $tagType
+			&& ($domain || $tagType == "Facebook")
+			&& ($adTarget || $studyType == "creative")
+		) {
 			$newStudy = new Study();
-			$newStudy->study_type = 3; // Creative -- why is this an integer? :(
+			$newStudy->study_type = ($studyType == "campaign" ? 2 : 3); // Why is this an integer? :(
 			$newStudy->status = 0; // Why is this an integer? :(
-			$newStudy->user_id = 1; // Why is this an integer? :(
-			$newStudy->name = "FB AD " . $newFbAdId;
-			$newStudy->study_id = $newFbAdId;
+			$newStudy->user_id = 1;
+			$newStudy->name = $tagType . " AD: " . $tag;
+			$newStudy->study_id = $tagType . " AD: " . $tag;
 			$newStudy->size = 100;
 			$newStudy->size_minimum = 1;
 			$newStudy->begin_date = time();
@@ -375,7 +394,7 @@ class Devadmin_IndexController extends Api_GlobalController
 
 			$newStudyCell = new Study_Cell();
 			$newStudyCell->study_id = $newStudy->id;
-			$newStudyCell->description = "FB AD " . $newFbAdId;
+			$newStudyCell->description = $tagType . " AD: " . $tag;
 			$newStudyCell->size = 100;
 			$newStudyCell->cell_type = "test";
 			$newStudyCell->save();
@@ -383,9 +402,10 @@ class Devadmin_IndexController extends Api_GlobalController
 			$newStudyTag = new Study_Tag();
 			$newStudyTag->user_id = 1;
 			$newStudyTag->study_id = $newStudy->id;
-			$newStudyTag->name = "FB AD " . $newFbAdId;
-			$newStudyTag->type = "Facebook";
-			$newStudyTag->tag = $newFbAdId;
+			$newStudyTag->name = $tagType . " AD: " . $tag;
+			$newStudyTag->type = $tagType;
+			$newStudyTag->tag = $tag;
+			if ($studyType == "campaign") $newStudyTag->target_url = $adTarget;
 			$newStudyTag->save();
 
 			$newStudyCellTagMap = new Study_CellTagMap();
@@ -395,7 +415,7 @@ class Devadmin_IndexController extends Api_GlobalController
 
 			$newStudyDomain = new Study_Domain();
 			$newStudyDomain->user_id = 1;
-			$newStudyDomain->domain = "www.facebook.com";
+			$newStudyDomain->domain = ($tagType == "Facebook" ? "www.facebook.com" : $domain);
 			$newStudyDomain->save();
 
 			$newStudyTagDomainMap = new Study_TagDomainMap();
@@ -403,25 +423,35 @@ class Devadmin_IndexController extends Api_GlobalController
 			$newStudyTagDomainMap->domain_id = $newStudyDomain->id;
 			$newStudyTagDomainMap->save();
 
-			$newStudyCreative = new Study_Creative();
-			$newStudyCreative->user_id = 1;
-			$newStudyCreative->name = "FB AD " . $newFbAdId;
-			$newStudyCreative->type = "Facebook";
-			$newStudyCreative->url = "https://s3.amazonaws.com/say.so/media/Say.So_FB.jpg";
-			$newStudyCreative->ad_title = "Test YOUR ad here!";
-			$newStudyCreative->ad_description = "Pre-test your ads with Say.So's revolutionary ADjuster product";
-			$newStudyCreative->target_url = "http://say.so/";
-			$newStudyCreative->save();
+			if ($studyType == "creative") {
+				$newStudyCreative = new Study_Creative();
+				$newStudyCreative->user_id = 1;
+				$newStudyCreative->name = $tagType . " AD: " . $tag;
+				if ($tagType == "Facebook") {
+					$newStudyCreative->type = "Facebook";
+					$newStudyCreative->url = "https://s3.amazonaws.com/say.so/media/Say.So_FB.jpg";
+					$newStudyCreative->ad_title = "Say.So can test your AD here!";
+					$newStudyCreative->ad_description = "Pre-test your ad creative with Say.So's revolutionary product ADjuster&trade;";
+				} else {
+					$newStudyCreative->type = "Image";
+					$newStudyCreative->url = "http://s3.amazonaws.com/say.so/ADj+CREATIVE+300x250+PLACEHOLDER.jpg";
+					$newStudyCreative->ad_title = "Say.So can test your AD here!";
+				}
+				$newStudyCreative->target_url = "http://say.so/";
+				$newStudyCreative->save();
 
-			$newStudyCreativeTagMap = new Study_CreativeTagMap();
-			$newStudyCreativeTagMap->tag_id = $newStudyTag->id;
-			$newStudyCreativeTagMap->creative_id = $newStudyCreative->id;
-			$newStudyCreativeTagMap->save();
+				$newStudyCreativeTagMap = new Study_CreativeTagMap();
+				$newStudyCreativeTagMap->tag_id = $newStudyTag->id;
+				$newStudyCreativeTagMap->creative_id = $newStudyCreative->id;
+				$newStudyCreativeTagMap->save();
+			}
+
+			Api_Cache::getInstance('Studies_GetAll_RecentOrder')->remove(); // clear studies cache
 		}
 
-		$currentFbStudies = new StudyCollection();
-		$currentFbStudies->loadAllFacebookStudies();
+		$currentStudies = new StudyCollection();
+		$currentStudies->loadAllTestStudies();
 
-		$this->view->current_fb_studies = $currentFbStudies;
+		$this->view->current_studies = $currentStudies;
 	}
 }

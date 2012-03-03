@@ -1,0 +1,82 @@
+<html>
+	<head>
+		<title>ADjuster Ad Measurement Tester</title>
+	</head>
+	<body>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<form id="the_form" method="POST">
+			<input type="hidden" id="operation" name="operation" value="add" />
+			<input type="hidden" id="study_id_to_delete" name="study_id_to_delete" value="" />
+			New Study Type: <select name="study_type" onchange="UpdateStudyType(this.options[this.selectedIndex].value);">
+				<option value=""></option>
+				<option value="campaign">ADjuster Campaign</option>
+				<option value="creative">ADjuster Creative</option>
+			</select><br /><br />
+			<div id="study_type_chosen">
+				Type of AD to <span id="track_or_replace"></span>:
+				<select name="tag_type" onchange="UpdateTagType(this.options[this.selectedIndex].value);">
+					<option value=""></option>
+					<option value="Image">Image</option>
+					<option value="Flash">Flash</option>
+					<option value="Facebook">Facebook</option>
+				</select><br /><br />
+				<div id="tag_type_chosen">
+					<span id="tag_instructions"></span>: <input type="text" name="tag" value=""><br /><br />
+					<div id="domain">
+						Domain the AD appears on (e.g. "coolmagazine.com"): <input type="text" name="domain" value=""><br /><br />
+					</div>
+					<div id="ad_target">
+						Part of AD target URL (e.g. "publisher.com"): <input type="text" name="ad_target" value=""><br /><br />
+					</div>
+					<input type="submit" name="Add Study" value="Add Study"><br /><br />
+				</div>
+			</div>
+		</form>
+		Current Studies:<br />
+		<? if (!$this->current_studies) echo "No studies yet!<br />" ?>
+		<table border="0" cellpadding="0" cellspacing="0" width=800>
+			<? foreach ($this->current_studies AS $study) { ?>
+				<tr><td width="50%"><?= $study->name ?></td><td width="40%"><?= ($study->type == 2 ? "Campaign" : "Creative") ?></td><td width="10%" align="right"><a href="#" onclick="$('#study_id_to_delete').attr('value', <?= $study->getId() ?>); $('#operation').attr('value', 'delete'); $('#the_form').submit(); return false;" style="color: red;">X</a></td></tr>
+			<? } ?>
+		</table>
+
+		<script type="text/javascript">
+			var study_type = "";
+			$('#study_type_chosen').hide();
+			$('#tag_type_chosen').hide();
+
+			function UpdateStudyType(type) {
+				$('#study_type_chosen').hide();
+
+				study_type = type;
+
+				if (type == "campaign") {
+					$('#track_or_replace').html('TRACK');
+					$('#ad_target').show();
+					$('#study_type_chosen').show();
+				} else if(type == "creative") {
+					$('#track_or_replace').html('REPLACE');
+					$('#ad_target').hide();
+					$('#study_type_chosen').show();
+				}
+			}
+
+			function UpdateTagType(type) {
+				$('#tag_type_chosen').hide();
+				if (type == "Image") {
+					$('#tag_instructions').html('Partial Image URL (e.g. "ad_123.jpg")');
+					$('#domain').show();
+					$('#tag_type_chosen').show();
+				} else if(type == "Flash") {
+					$('#tag_instructions').html('Partial Flash URL (e.g. "ad_123.swf")');
+					$('#domain').show();
+					$('#tag_type_chosen').show();
+				} else if(type == "Facebook") {
+					$('#tag_instructions').html('Facebook Ad ID (e.g. "6789012345")');
+					$('#domain').hide();
+					$('#tag_type_chosen').show();
+				}
+			}
+		</script>
+	</body>
+</html>

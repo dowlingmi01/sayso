@@ -5,10 +5,10 @@
 
 class StudyCollection extends RecordCollection
 {
-	public function loadAllFacebookStudies() {
-		$sql = "SELECT *
+	public function loadAllTestStudies() {
+		$sql = "SELECT id, name, study_type
 				FROM study
-				WHERE name LIKE 'FB AD %'
+				WHERE name LIKE '% AD: %'
 				";
 		$studies = Db_Pdo::fetchAll($sql);
 

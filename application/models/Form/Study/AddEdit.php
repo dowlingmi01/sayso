@@ -613,10 +613,20 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 			$this->createElement('text', 'txtLabelIt')
 				->setLabel('Label It');
 
-		$taJQUERYSelector =
-			$this->createElement('textarea', 'taJQUERYSelector')
-				->setLabel('Provide jQuery Selector for the Ad')
-				->setAttrib('style', 'width:97%;height:50px;');
+		$selectAdType =
+			$this->createElement('select', 'selectAdType')
+				->setMultiOptions(array(
+						'Image' =>'Image',
+						'Flash' =>'Flash',
+						'Facebook' =>'Facebook',
+						'Avail' =>'Avail',
+					)
+				)
+				->setLabel('Ad Type');
+
+		$txtJQUERYSelector =
+			$this->createElement('text', 'txtJQUERYSelector')
+				->setLabel('Provide partial Image/Flash file name, Facebook ad id, or Avail id (i.e. div id)');
 
 		$txtTargetURLSegment =
 			$this->createElement('text', 'txtTargetURLSegment')
@@ -625,14 +635,16 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 
 		$subforms[1]->addElements(array(
 			$txtLabelIt,
-			$taJQUERYSelector,
+			$selectAdType,
+			$txtJQUERYSelector,
 			$txtTargetURLSegment,
 		));
 
 		$subforms[1]->addDisplayGroup(
 			array(
 				$txtLabelIt,
-				$taJQUERYSelector,
+				$selectAdType,
+				$txtJQUERYSelector,
 				$txtTargetURLSegment,
 			),
 			'group-aj-camp-basics', array('Legend' => 'Tag-Domain Pairs')
@@ -724,7 +736,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 					// row
 					$htmlFromStudy .= '<tr'.$class.' id="ac-tag-row-'.$cellKey.'">'.$tds.'</tr>';
 					$htmlFromStudy .= $meta;
-					
+
 					$htmlForCellCB .= '<tr id="cbAdTagContainer'. $cellKey.'"><td><label for="cbAdTag'. $cellKey.'"><input type="checkbox" class="cb" name="cbAdTag" id="cbAdTag' . $cellKey . '">' . $tag->name . '</label></td></tr>';
 				}
 			}
@@ -778,20 +790,32 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 			$this->createElement('text', 'txtLabelItAvail')
 				->setLabel('Label It');
 
-		$taJQUERYSelectorAvail =
-			$this->createElement('textarea', 'taJQUERYSelectorAvail')
-				->setLabel('Provide jQuery Selector for the Avail')
-				->setAttrib('style', 'width:97%;height:50px;');
+		$selectAvailType =
+			$this->createElement('select', 'selectAvailType')
+				->setMultiOptions(array(
+						'Image' =>'Image',
+						'Flash' =>'Flash',
+						'Facebook' =>'Facebook',
+						'Avail' =>'Avail',
+					)
+				)
+				->setLabel('Ad Type');
+
+		$txtJQUERYSelectorAvail =
+			$this->createElement('text', 'txtJQUERYSelectorAvail')
+				->setLabel('Provide partial Image/Flash file name, Facebook ad id, or Avail id (i.e. div id)');
 
 		$subforms[2]->addElements(array(
 			$txtLabelItAvail,
-			$taJQUERYSelectorAvail,
+			$selectAvailType,
+			$txtJQUERYSelectorAvail,
 		));
 
 		$subforms[2]->addDisplayGroup(
 			array(
 				$txtLabelItAvail,
-				$taJQUERYSelectorAvail,
+				$selectAvailType,
+				$txtJQUERYSelectorAvail,
 			),
 			'group-aj-creat-basics', array('Legend' => 'Build Avails')
 		);
@@ -880,9 +904,29 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 			$this->createElement('text', 'txtAvailName')
 				->setLabel('Name');
 
+		$selectReplacementAdType =
+			$this->createElement('select', 'selectReplacementAdType')
+				->setMultiOptions(array(
+						'Image' =>'Image',
+						'Flash' =>'Flash',
+						'Facebook' =>'Facebook',
+						'HTML' =>'HTML',
+					)
+				)
+				->setLabel('Replacement Ad Type')
+				->setDecorators($alignLeft);
+
 		$txtAvailCreativeUrl =
 			$this->createElement('text', 'txtAvailCreativeUrl')
 				->setLabel('AD creative URL');
+
+		$txtAvailAdTitle =
+			$this->createElement('text', 'txtAvailAdTitle')
+				->setLabel('Facebook Ad Title');
+
+		$txtAvailAdDescription =
+			$this->createElement('text', 'txtAvailAdDescription')
+				->setLabel('Facebook Ad Description');
 
 		$collection = new Lookup_Collection_MimeType();
 		$collection->lookup();
@@ -995,7 +1039,10 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 
 		$subforms[2]->addElements(array(
 			$txtAvailName,
+			$selectReplacementAdType,
 			$txtAvailCreativeUrl,
+			$txtAvailAdTitle,
+			$txtAvailAdDescription,
 			$txtAvailTargetURLSegment,
 			$selectCreativeMimeType,
 			$btnAddCreative,
@@ -1005,7 +1052,10 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 		$subforms[2]->addDisplayGroup(
 			array(
 				$txtAvailName,
+				$selectReplacementAdType,
 				$txtAvailCreativeUrl,
+				$txtAvailAdTitle,
+				$txtAvailAdDescription,
 				$txtAvailTargetURLSegment,
 				$selectCreativeMimeType,
 				$btnAddCreative,
@@ -1083,8 +1133,8 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 			'group-cell-adtags-data', array('Legend' => 'Ad Tags', 'style' => '')
 		);
 
-		
-		
+
+
 		// Online Browsing
 
 		$freeLabel5 = new Form_Markup_Element_AnyHtml('freeLabel5');
@@ -1331,7 +1381,7 @@ final class Form_Study_AddEdit extends ZendX_JQuery_Form
 							$cellKey, $cellKey, $cell->size);
 					$htmlFromStudy .= sprintf('<input type="hidden" name="cell[%s][type]" class="cell-%s" value="%s" />',
 							$cellKey, $cellKey, ($cell->cell_type == 'control' ? 1 : 2));
-							
+
 					if( $this->study->study_type == 2 ) {
 						$qAdTag = new Study_CellTagMapCollection();
 						$qAdTag->loadForCell($cell->getId());

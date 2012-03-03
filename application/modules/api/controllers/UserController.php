@@ -12,30 +12,30 @@ class Api_UserController extends Api_GlobalController
 
 	public function indexAction()
 	{
-		
+
 		return $this->_resultType(new Object(array('foo' => 'bar')));
 	}
 
-	public function registerAction () 
+	public function registerAction ()
 	{
 		$this->_createMissingParameters(array('email_frequency_id', 'poll_frequency_id', 'survey_type_id', 'gender_id'));
-		
+
 		$validAlpha = new Zend_Validate_Alpha(true);
-		
+
 		$validAlnum = new Zend_Validate_Alnum();
 		$validAlnum->setMessage('Username must be letters or numbers', Zend_Validate_Alnum::NOT_ALNUM);
-		
+
 		$validEmail = new ValidateEmailAddress(); // see end of file for this class
 		$validEmail->setMessage('Email address is not valid');
-		
+
 		$validPassword = new Zend_Validate_Regex('/.{5,}/');
 		$validPassword->setMessage('Password must be at least 5 characters');
-		
+
 		$yearRange = new Zend_Validate_InArray(range(1930, 2000));
 		$yearRange->setMessage('Birth year must be between 1930 and 2000 inclusive');
 
 		$filters = array ();
-		
+
 		$validators = array(
 			'first_name' => array(
 				new Zend_Validate_NotEmpty()
@@ -94,9 +94,9 @@ class Api_UserController extends Api_GlobalController
 		);
 		$input = new Zend_Filter_Input($filters, $validators);
 		$input->setData($this->_request->getPost());
-		
+
 		$passwordVerifyValidated = false;
-				
+
 		while ($input->isValid()) {
 			// always validate password verify after everything else
 			// is validated, so we don't have conflicting messages
@@ -104,10 +104,10 @@ class Api_UserController extends Api_GlobalController
 			{
 				$email = new User_Email();
 				$email->email = $input->email;
-				
-				// create user object with filtered data 
-				// (before resetting the validator) 
-				$user = new User(); 
+
+				// create user object with filtered data
+				// (before resetting the validator)
+				$user = new User();
 				$user->setPlainTextPassword($input->password);
 				$user->username =	  $input->username;
 				$user->first_name =	$input->first_name;
@@ -116,22 +116,22 @@ class Api_UserController extends Api_GlobalController
 				$user->ethnicity_id =  $input->ethnicity_id;
 				$user->birthdate =	 $input->birth_year . '-00-00'; // ensure mysql date field accepts year
 				$user->timezone =	  urldecode($input->timezone);
-			
+
 				$preference = new Preference_General();
 				$preference->poll_frequency_id = $input->poll_frequency_id;
 				$preference->email_frequency_id = $input->email_frequency_id;
 				$user->setPreference($preference);
-				
+
 				$surveyTypes = new Preference_SurveyTypeCollection();
 				foreach ($input->survey_type_id as $surveyTypeId) {
 					$surveyTypes->addItem(new Preference_SurveyType(array('survey_type_id' => $surveyTypeId)));
 				}
 				$user->setSurveyTypes($surveyTypes);
-				
+
 				// now setup validation of password verify
 				$validIdentical = new Zend_Validate_Identical($this->password);
 				$validIdentical->setMessage('Passwords do not match', Zend_Validate_Identical::NOT_SAME);
-				
+
 				$input = new Zend_Filter_Input($filters, array(
 					'password_verify' => array(
 						new Zend_Validate_NotEmpty()
@@ -142,17 +142,17 @@ class Api_UserController extends Api_GlobalController
 				$input->setData($this->_request->getParams());
 				$passwordVerifyValidated = true;
 				// validate again
-				continue; 
+				continue;
 			}
-			
+
 			$user->setEmail($email);
-			
+
 			// save
 			$user->save();
-			
+
 			// start up the user authentication session
 			$this->_startUserSession($user);
-			
+
 			// success
 			return $this->_resultType($user);
 		}
@@ -161,7 +161,7 @@ class Api_UserController extends Api_GlobalController
 	}
 
 	public function loginAction () {
-		
+
 		// end-user validation
 		$validators = array(
 			'username' => array(
@@ -175,37 +175,37 @@ class Api_UserController extends Api_GlobalController
 		);
 		$validator = new Zend_Filter_Input(array(), $validators);
 		$validator->setData($this->_request->getParams());
-		
+
 		if ($validator->isValid()) {
-			
+
 			$username = $validator->username;
 			$plainTextPassword = $validator->password;
-			
+
 			// attempt getting the user
 			$userRow = Db_Pdo::fetch('SELECT * FROM user WHERE username = ?', $username);
-			
+
 			// no user found
 			if (empty($userRow)) {
 				throw new Api_UserException(new Api_ValidationError(array('username' => array('Not found'))));
 			}
-			
+
 			// calculate the password hash using the retreived password salt
 			$passwordHash = md5(md5($plainTextPassword) . $userRow['password_salt']);
-			
+
 			// compare provided password to saved password
 			if ($userRow['password'] !== $passwordHash) {
 				throw new Api_UserException(new Api_ValidationError(array('password' => array('Password invalid'))));
 			}
-			
+
 			// all is good, return the user
 			$user = new User();
 			$user->setData($userRow);
-			
+
 			// start up the user authentication session
 			$this->_startUserSession($user);
-			
+
 			return $this->_resultType($user);
-			
+
 		} else {
 			// form validation error
 			throw new Api_UserException(new Api_ValidationError($validator->getMessages()));
@@ -222,22 +222,22 @@ class Api_UserController extends Api_GlobalController
 		return $this->_resultType($user);
 	}
 
-	public function saveInPlaceAction() {	
-		$this->_validateRequiredParameters(array('user_id', 'user_key'));	
+	public function saveInPlaceAction() {
+		$this->_validateRequiredParameters(array('user_id', 'user_key'));
 		$response = array();
 		$response["is_error"] = true;
 		$response["error_text"] = "Edit Failed.";
 		$response["html"] = "";
-		
+
 		$request = $this->getRequest();
 		$editedElementId = $request->getParam('id');
-		
+
 		switch ($editedElementId) {
 			case "sb_profile_username":
 				$user = new User();
 				$user->loadData($this->user_id);
 				$newUsername = $request->getParam('new_value');
-				
+
 				if ($newUsername) {
 					$user->username = $newUsername;
 					$user->save();
@@ -248,7 +248,7 @@ class Api_UserController extends Api_GlobalController
 				$response["is_error"] = false;
 				$response["error_text"] = "";
 				$response["html"] = $newUsername;
-				
+
 				break;
 		}
 		Game_Starbar::getInstance()->completeProfile($user);
@@ -257,7 +257,7 @@ class Api_UserController extends Api_GlobalController
 
 	// Functions to assist with testing
 	public function testCompleteSurveyAction() {
-		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
+		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'demo'))) {
 			$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'survey_type', 'survey_premium'));
 
 			$survey = new Survey();
@@ -281,9 +281,9 @@ class Api_UserController extends Api_GlobalController
 	}
 
 	public function testRewardNotesAction() {
-		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
+		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'demo'))) {
 			Game_Starbar::getInstance()->testRewardNotes($survey);
-			
+
 			return $this->_resultType(true);
 		} else {
 			return $this->_resultType(false);
@@ -291,7 +291,7 @@ class Api_UserController extends Api_GlobalController
 	}
 
 	public function testResetSurveysAndPollsAction() {
-		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
+		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'demo'))) {
 			$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
 			Db_Pdo::execute("DELETE FROM survey_user_map WHERE user_id = ?", $this->user_id);
 			return $this->_resultType(true);
@@ -301,7 +301,7 @@ class Api_UserController extends Api_GlobalController
 	}
 
 	public function testResetGamerAction() {
-		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
+		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'demo'))) {
 			$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
 			$newGamer = Gamer::reset($this->user_id, $this->user_key, $this->starbar_id);
 			Game_Starbar::getInstance()->install();
@@ -311,8 +311,8 @@ class Api_UserController extends Api_GlobalController
 		}
 	}
 
-	public function testResetExternalAction() {		
-		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
+	public function testResetExternalAction() {
+		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'demo'))) {
 			$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
 			Db_Pdo::execute("DELETE FROM user_social WHERE user_id = ?", $this->user_id);
 			Db_Pdo::execute("UPDATE user SET username = '' WHERE id = ?", $this->user_id);
@@ -322,8 +322,8 @@ class Api_UserController extends Api_GlobalController
 		}
 	}
 
-	public function testResetNotificationsAction() {		
-		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
+	public function testResetNotificationsAction() {
+		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'demo'))) {
 			$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
 			Db_Pdo::execute("DELETE FROM notification_message_user_map WHERE user_id = ?", $this->user_id);
 			Db_Pdo::execute("UPDATE user SET created = now() WHERE id = ?", $this->user_id);
@@ -334,7 +334,7 @@ class Api_UserController extends Api_GlobalController
 	}
 
 	public function testResetAllAction() {
-		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing'))) {
+		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'demo'))) {
 			$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
 			Db_Pdo::execute("DELETE FROM survey_user_map WHERE user_id = ?", $this->user_id);
 			Db_Pdo::execute("DELETE FROM notification_message_user_map WHERE user_id = ?", $this->user_id);
@@ -354,21 +354,21 @@ class Api_UserController extends Api_GlobalController
 	}
 
 	protected function _startUserSession (User & $user) {
-		
+
 		$userSession = Api_UserSession::getInstance();
-		
+
 		// set the user id on the session
 		// which effectively resets the user and removes any
 		// persistente user objects, thereby forcing rebuild
 		$userSession->setId($user->getId());
-		
+
 		// re-query the user to pull in complete aggregate data
 		$user = $userSession->getUser();
-		
+
 		// set the key on the user object so it is available for client-apps
 		// this is important so they can authenticate correctly with the user_key
 		$user->setKey($userSession->getKey());
-	}	
+	}
 
 }
 

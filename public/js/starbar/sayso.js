@@ -480,9 +480,11 @@ $SQ(function () {
 			log(tag.tag);
 
 			var jTag = false;
+			var jTagContainer = false;
 
 			if (tag.type == "Image") {
 				jTag = $SQ('img[src*="' + tag.tag + '"]');
+				jTagContainer = jTag.parent();
 			} else if (tag.type == "Flash") {
 				jTag = $SQ('embed[src*="' + tag.tag + '"]');
 				if (!jTag || !jTag.length) {
@@ -498,7 +500,7 @@ $SQ(function () {
 								paramTags = objectTag.children();
 								for (i = 0; i < paramTags.length; i++) {
 									if (paramTags.eq(i).attr('name').toLowerCase() == "movie") { // We are only interested in the "movie" param (i.e. the URL of the movie)
-										if (paramTags.eq(i).attr('value').indexOf(partialUrl) > -1) {
+										if (paramTags.eq(i).attr('value').indexOf(tag.tag) > -1) {
 											jTag = paramTags.eq(i);
 											jTagContainer = objectTag;
 											// Match found, need need to search any more
@@ -515,6 +517,7 @@ $SQ(function () {
 				}
 			} else if (tag.type == "Facebook") {
 				jTag = $SQ('div[id*="' + tag.tag + '-id_"]');
+				jTagContainer = jTag.parent();
 			}
 
 
@@ -524,8 +527,6 @@ $SQ(function () {
 			}
 
 			log('Match', jTag);
-
-			var jTagContainer = jTag.parent();
 
 			// tag exists
 			if (jTagContainer.is('object')) {
@@ -560,7 +561,7 @@ $SQ(function () {
 				});
 				switch (creative.type) {
 					case "Image":
-						newTag.html('<a id="sayso-adcreative-'+creative.id+'" href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" border=0 /></a>');
+						newTag.html('<a id="sayso-adcreative-'+creative.id+'" href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" alt="'+creative.ad_title+'" title="'+creative.ad_title+'" border=0 /></a>');
 						break;
 					case "Flash":
 						newTag.html(''); // @todo, insert <object><param><param><embed></object> etc. for flash ads
@@ -730,7 +731,7 @@ $SQ(function () {
 			if (embedElem.parent().is('object')) {
 				embedElem = embedElem.parent(); // just for logging purposes, since chrome will only highlight the embed if it is NOT contained in an <object>
 			}
-			log('Selector '+(index+1)+' (copy and paste this): embed[src*="'+filename+'"]\nElement '+(index+1)+' (roll over this to visually confirm): ', embedElem);
+			log('Tag '+(index+1)+' (copy and paste this): "'+filename+'"\nElement '+(index+1)+' (roll over this to visually confirm): ', embedElem);
 		});
 	}
 });

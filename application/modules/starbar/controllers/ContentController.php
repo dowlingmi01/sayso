@@ -154,7 +154,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function aboutSaysoAction ()
 	{
-		$this->view->assign('show_testing_function', in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing')));
+		$this->view->assign('show_testing_function', in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'demo')));
 	}
 
 	// Embed a single SG poll. Expects "survey_id" passed via URL (GET)

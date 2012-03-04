@@ -51,6 +51,11 @@ function drawSingleRow(v)
 			break;
 	}
 
+	if (v.content.indexOf('Facebook AD: ') != -1) { // Special case for FB ADjuster
+		rowTypeName = 'Facebook ' + rowTypeName;
+		rowStyle = rowStyle + '-facebook';
+	}
+
 	html += '<div class="updates-entry ' + rowStyle + '" data-rowid="'+v.id+'">';
 		html += '<div class="updates-entry-user">';
 			html += '<a href="javascript:void(null)" rel="'+ v.user_id +'" class="filterUserOnly"'

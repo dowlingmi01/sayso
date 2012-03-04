@@ -69,6 +69,24 @@ div#update-marker a:hover
 {
 	background: #B790AA;
 }
+.updates-row-campaign-impression-facebook
+{
+	background: #EDEFF4;
+}
+.updates-row-campaign-click-thru-facebook
+{
+	background: #D8DFEA;
+}
+.updates-row-creative-impression-facebook
+{
+	background: #3B5998;
+	color: #D8DFEA;
+}
+.updates-row-creative-click-thru-facebook
+{
+	background: #133783;
+	color: #D8DFEA;
+}
 
 
 
@@ -124,7 +142,7 @@ div#controls
 	float:left;
 	text-align: center;
 	margin-top:2px;
-	margin-left:16px;	
+	margin-left:16px;
 }
 div#controls input
 {

@@ -439,7 +439,7 @@ class Devadmin_IndexController extends Api_GlobalController
 					$newStudyCreative->url = "http://s3.amazonaws.com/say.so/ADj+CREATIVE+300x250+PLACEHOLDER.jpg";
 					$newStudyCreative->ad_title = "Say.So can test your AD here!";
 				}
-				$newStudyCreative->target_url = "http://say.so/";
+				$newStudyCreative->target_url = "http://say.so/?".$newStudy->id;
 				$newStudyCreative->save();
 
 				$newStudyCreativeTagMap = new Study_CreativeTagMap();

@@ -25,10 +25,10 @@
 				<div id="tag_type_chosen">
 					<span id="tag_instructions"></span>: <input type="text" name="tag" value=""><br /><br />
 					<div id="domain">
-						Domain the AD appears on (e.g. "coolmagazine.com"): <input type="text" name="domain" value=""><br /><br />
+						Domain the AD appears on (e.g. <b>coolmagazine.com</b>): <input type="text" name="domain" value=""><br /><br />
 					</div>
 					<div id="ad_target">
-						Part of AD target URL (e.g. "publisher.com"): <input type="text" name="ad_target" value=""><br /><br />
+						Part of AD target URL (e.g. <b>publisher.com</b>): <input type="text" name="ad_target" value=""><br /><br />
 					</div>
 					<input type="submit" name="Add Study" value="Add Study"><br /><br />
 				</div>
@@ -86,15 +86,15 @@
 		function UpdateTagType(type) {
 			$('#tag_type_chosen').hide();
 			if (type == "Image") {
-				$('#tag_instructions').html('Partial Image URL (e.g. "ad_123.jpg")');
+				$('#tag_instructions').html('Partial Image URL (e.g. <b>ad_123.jpg</b>)');
 				$('#domain').show();
 				$('#tag_type_chosen').show();
 			} else if(type == "Flash") {
-				$('#tag_instructions').html('Partial Flash URL (e.g. "ad_123.swf")');
+				$('#tag_instructions').html('Partial Flash URL (e.g. <b>ad_123.swf</b>)');
 				$('#domain').show();
 				$('#tag_type_chosen').show();
 			} else if(type == "Facebook") {
-				$('#tag_instructions').html('Facebook Ad ID (e.g. "6789012345")');
+				$('#tag_instructions').html('Facebook Ad ID (e.g. <b>6789012345</b>)');
 				$('#domain').hide();
 				$('#tag_type_chosen').show();
 			}

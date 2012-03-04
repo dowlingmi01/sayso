@@ -301,7 +301,7 @@ $SQ(function () {
 	// { creative12 : { urlSegment : 'foo/diamonds', type : 'creative', type_id : 12 }, campaign234 : { etc
 	for (var key in adTargets) {
 		var adTarget = adTargets[key];
-		if (location.href.match(adTarget.urlSegment)) {
+		if (location.href.indexOf(adTarget.urlSegment) > -1) {
 			// click thru!
 			ajax({
 				url : '//' + sayso.baseDomain + '/api/metrics/track-click-thru',

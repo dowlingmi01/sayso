@@ -454,6 +454,16 @@ class Devadmin_IndexController extends Api_GlobalController
 		$currentStudies = new StudyCollection();
 		$currentStudies->loadAllTestStudies();
 
+		$tempCurrentDomains = new Study_DomainCollection();
+		$tempCurrentDomains->loadAllDomainsForStudies($currentStudies);
+
+		// insert into new array so it's easier to access the domains in the same order as the studies
+		$currentDomains = array();
+		foreach ($tempCurrentDomains AS $domain) {
+			$currentDomains[] = $domain;
+		}
+
 		$this->view->current_studies = $currentStudies;
+		$this->view->current_domains = $currentDomains;
 	}
 }

@@ -484,7 +484,6 @@ $SQ(function () {
 
 			if (tag.type == "Image") {
 				jTag = $SQ('img[src*="' + tag.tag + '"]');
-				jTagContainer = jTag.parent();
 			} else if (tag.type == "Flash") {
 				jTag = $SQ('embed[src*="' + tag.tag + '"]');
 				if (!jTag || !jTag.length) {
@@ -517,7 +516,6 @@ $SQ(function () {
 				}
 			} else if (tag.type == "Facebook") {
 				jTag = $SQ('div[id*="' + tag.tag + '-id_"]');
-				jTagContainer = jTag.parent();
 			}
 
 
@@ -528,7 +526,8 @@ $SQ(function () {
 
 			log('Match', jTag);
 
-			// tag exists
+			if (!jTagContainer) jTagContainer = jTag.parent();
+
 			if (jTagContainer.is('object')) {
 				// If we found a param tag inside an <object> tag, we want the parent of *that*
 				jTagContainer = jTagContainer.parent();
@@ -536,6 +535,7 @@ $SQ(function () {
 
 			jTagContainer.css('position', 'relative');
 
+			// tag exists
 			adsFound++;
 			var adTarget = null,
 				adTargetId = ''; // used as a JS optimization for searching the adTargets object
@@ -611,23 +611,6 @@ $SQ(function () {
 
 				// track ad view
 				currentActivity.tagViews.push(tag.id);
-
-				// Flash; add wmode transparent, then recreate the flash object (via cloning) to reinsert it into the DOM
-				/*
-				if (jTag.is('embed')) {
-					jTag.css('z-index', '2000000001');
-					jTag.attr('wmode', 'transparent');
-					if (jTag.parent().is('object')) {
-						oldTag = jTag.parent();
-						oldTag.prepend('<param name="wmode" value="transparent" />');
-						newTag = oldTag.clone(true, true);
-					} else {
-						oldTag = jTag;
-						newTag = jTag.clone(true, true);
-					}
-					oldTag.replaceWith(newTag);
-				}
-				*/
 
 				adTarget = {
 					urlSegment : tag.target_url,

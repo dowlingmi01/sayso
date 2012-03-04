@@ -368,6 +368,8 @@ class Devadmin_IndexController extends Api_GlobalController
 			$study = new Study;
 			$study->loadData($studyIdToDelete);
 			$study->delete();
+
+			Api_Cache::getInstance('Studies_GetAll_RecentOrder')->remove(); // clear studies cache
 		}
 
 		if (

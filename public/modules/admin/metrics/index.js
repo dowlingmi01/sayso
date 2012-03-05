@@ -128,7 +128,7 @@ function doPoll()
 
 	if(dir == 'down')
 	{
-		rowId = $('#updates .updates-entry:last').attr('data-rowid') || 0;
+		rowId = parseInt($('#updates .updates-entry:last').attr('data-rowid')) || 0;
 	}
 
 	// crate poll request
@@ -177,7 +177,7 @@ function doPoll()
 			{
 				// redefine id for next poll
 				prependRows(data.rows);
-				window.poll.rowId = $('#updates .updates-entry:first').attr('data-rowid');
+				window.poll.rowId = parseInt($('#updates .updates-entry:first').attr('data-rowid'));
 			}
 			else
 			{
@@ -190,9 +190,9 @@ function doPoll()
 						// redefine id for next poll
 						$.each(data.rows, function(i, v)
 						{
-							if(v.id > window.poll.rowId)
+							if(parseInt(v.id) > window.poll.rowId)
 							{
-								window.poll.rowId = v.id;
+								window.poll.rowId = parseInt(v.id);
 							}
 						});
 						// twitter-style updater: add a clickable div if not exists
@@ -307,7 +307,7 @@ function bindControls()
 
 function bindAll()
 {
-	window.poll = {cache:[], rowId : '0'};
+	window.poll = {cache:[], rowId : 0};
 
 	// set checkboxes according to cookies
 	bindControls();

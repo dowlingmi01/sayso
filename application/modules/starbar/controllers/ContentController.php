@@ -62,7 +62,8 @@ class Starbar_ContentController extends Api_GlobalController
 	public function rewardRedeemAction () {
 		$good = Api_Adapter::getInstance()->call('Gaming', 'getGoodFromStore');
 
-		$user = Api_UserSession::getInstance($this->user_key)->getUser();
+		$user = new User();
+		$user->loadData($this->user_key);
 
 		$userAddress = $user->getPrimaryAddress();
 
@@ -339,7 +340,8 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('twitter_social', $twitterSocial);
 
 		$userEmail = new User_Email();
-		$userEmail->loadData($user->primary_email_id);
+		if($user->primary_email_id)
+			$userEmail->loadData($user->primary_email_id);
 		$this->view->assign('user_email', $userEmail);
 
 		// Assign the counts for surveys and polls
@@ -398,7 +400,7 @@ class Starbar_ContentController extends Api_GlobalController
 			$callbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-connect?user_id=".$this->user_id."&user_key=".$this->user_key;
 		}
 
-		if ($fbUser && $this->user_key && (int)$this->user_id === (int)Api_UserSession::getInstance($this->user_key)->getId()) {
+		if ($fbUser && $this->user_id) {
 			$userSocial = new User_Social();
 			$userSocial->user_id = $this->user_id;
 			$userSocial->provider = "facebook";
@@ -479,7 +481,7 @@ class Starbar_ContentController extends Api_GlobalController
 			/* Request access tokens from twitter */
 			$accessToken = $connection->getAccessToken($request->getParam('oauth_verifier'));
 
-			if ($this->user_key && (int) $this->user_id === (int) Api_UserSession::getInstance($this->user_key)->getId()) {
+			if ($this->user_id) {
 				$userSocial = new User_Social();
 				$userSocial->user_id = $this->user_id;
 				$userSocial->provider = "twitter";

@@ -54,36 +54,50 @@
 		return this.replace(/^\s+|\s+$/g,'');
 	};
 
+	// setup global "safe" logging functions
+	var sayso = {};
+	sayso.debug = true;
+	sayso.log = safeLog('log', sayso.debug);
+	sayso.warn = safeLog('warn', sayso.debug);
+	
+	sayso.log( "Starting extension version " + window.$SaySoExtension.ext_version + " on " + window.$SaySoExtension.ext_browser );
 
+	sayso.current_url = window.location.href;
+	sayso.in_iframe = (top !== self);
 
-	// $The default base domain to use SQ.sayso.baseDomain (returned by ajax call below) can override the baseDomain for the user, but we need to do the ajax call to somewhere!
+	if( window.sayso && window.sayso.client )
+		sayso.client = window.sayso.client;
+	else
+		; // Look at cookies as done in client-setup.js
+	
+	// The default base domain to use $SQ.sayso.baseDomain (returned by ajax call below)
+	// can override the baseDomain for the user, but we need to do the ajax call to somewhere!
 	var saysoBaseDomain = window.$SaySoExtension.base_domain;
-
-	// Insert the starbar constainer
- 	if ($SQ('#sayso-starbar').length < 1) $SQ('body').append('<div id="sayso-starbar" style="position: fixed; left: 0px; bottom: 0px; width: 100%; background: none; margin-bottom: -3px; z-index: 9999;"></div>');
+	
+	var ajaxData = { renderer: 'jsonp' };
+	
+	if( !sayso.in_iframe )
+		ajaxData.url = sayso.current_url;
+		
+	if( sayso.client ) {
+		ajaxData.client_name = sayso.client.name;
+		ajaxData.client_uuid = sayso.client.uuid;
+		ajaxData.client_uuid_type = sayso.client.uuidType;
+		ajaxData.client_user_logged_in = sayso.client.userLoggedIn;
+	}
 
 	$SQ.ajax({
 		dataType: 'jsonp',
-		url: '//' + saysoBaseDomain + '/api/user-state/get?renderer=jsonp',
-		success: function (response, status) {
-			var sayso = {};
-			sayso.debug = true;
+		url: '//' + saysoBaseDomain + '/api/user-state/get',
+		data: ajaxData,
+		success: function (response) {
 			sayso.installed = true;
 			sayso.url_match_prepend = '^(?:http|https){1}://(?:[\\w.-]+)?';
-			sayso.current_url = window.location.href;
-			sayso.in_iframe = (top !== self);
 			sayso.ie_version = getInternetExplorerVersion();
 			sayso.gecko_version = getGeckoVersion();
 
-			// setup global "safe" logging functions
-			sayso.log = safeLog('log', sayso.debug);
-			sayso.warn = safeLog('warn', sayso.debug);
-			
-			sayso.log( "Starting extension version " + window.$SaySoExtension.ext_version + " on " + window.$SaySoExtension.ext_browser );
-
 			if (response.status && response.status == "error") {
-				sayso.baseDomain = saysoBaseDomain;
-				sayso.starbar = { id : 0, authKey: 0, user: { id: 0, key: 0 }, state: { visbility: 0 } }
+				sayso.warn("Error getting user-state: ", response.data);
 			} else {
 				sayso.baseDomain = response.data.base_domain;
 				sayso.flags = response.data.flags;
@@ -107,14 +121,85 @@
 					studiesTimestamp : response.data.last_update_studies,
 					adTargets : response.data.ad_targets
 				}
+				
+				$SQ.sayso = sayso;
+				
+				$SQ.jsLoadTimer = jsLoadTimer;
+
+				// ADjuster can run asynchronously
+				var jsSayso = document.createElement('script');
+				jsSayso.src = '//' + sayso.baseDomain + '/js/starbar/sayso.js';
+				document.body.appendChild(jsSayso);
+				
+				// Only load starbar if not in iframe
+				if( !sayso.in_iframe )
+					window.$SaySoExtension.loadNextScript('sayso-state.js');
 			}
 
-			$SQ.sayso = sayso;
-
-			// Whether successful or not, continue loading starbar-loader, since we may be on a client site,
-			// and starbar-loader completes the install process
-			if (window.$SaySoExtension) window.$SaySoExtension.loadNextScript('sayso-state.js');
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			sayso.warn( "Error getting user-state: " + textStatus + (errorThrown ? " - " + errorThrown : ""));
 		}
 	});
+
+	// Moved from starbar-loader
+	function jsLoadTimer () {
+
+		var _counter = 0,
+			_maxCount = 400, // # of reps X wait time in milliseconds
+			_waitTime = 50,
+			_symbol = '',
+			_callback = null,
+			_elseCallback = null,
+			_timeout = null,
+			_instance = this,
+			ref = null;
+
+		function _checkAgain () {
+			if (_counter++ <= _maxCount) {
+				_timeout = setTimeout(_waitUntilJsLoaded, _waitTime);
+			} else {
+				if (typeof _elseCallback === 'function') {
+					_elseCallback();
+				}
+			}
+		}
+		function _waitUntilJsLoaded () {
+			try {
+				if ((typeof _symbol === 'function' && _symbol()) || (typeof _symbol === 'string' && eval(_symbol))) {
+					if (_timeout) clearTimeout(_timeout);
+					try {
+						_callback();
+					} catch (exception) {
+						sayso.warn(exception);
+					}
+					return;
+				} else {
+					_checkAgain();
+				}
+			} catch (exception) {
+				_checkAgain();
+			}
+		}
+		this.setMaxCount = function (max) {
+			_maxCount = max;
+			return this;
+		};
+		this.setInterval = function (interval) {
+			_waitTime = interval;
+			return this;
+		};
+		this.setLocalReference = function (reference) {
+			ref = reference;
+			return this;
+		};
+		this.start = function (symbol, callback, elseCallback) {
+			_symbol = symbol;
+			_callback = callback;
+			_elseCallback = elseCallback;
+			_waitUntilJsLoaded();
+			return this;
+		};
+	}
 
 })();

@@ -35,7 +35,7 @@ $shortName = strtolower(Zend_Controller_Front::getInstance()->getRequest()->getC
 
 <script type="text/javascript">
 
-	(function () {
+	sayso.client.loginCallback = function () {
 
 		// already logged in
 		if ('<?= $this->userLoggedIn ?>'.length) return;
@@ -75,7 +75,6 @@ $shortName = strtolower(Zend_Controller_Front::getInstance()->getRequest()->getC
 			timer2.start('typeof $.fn.ajaxForm === "function"', function () {
 				
 				// login popup
-				sayso.client.loginCallback = function () {
 					$('#simulate-login').show();
 					
 					// ajax form
@@ -87,11 +86,10 @@ $shortName = strtolower(Zend_Controller_Front::getInstance()->getRequest()->getC
 							window.location.reload();
 						}
 					});
-				};
 			});
 		});
 
 		
 		
-	})();
+	};
 </script>

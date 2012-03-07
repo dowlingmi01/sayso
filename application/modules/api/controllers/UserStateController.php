@@ -17,14 +17,39 @@ class Api_UserStateController extends Api_GlobalController
 			$cache->save($userState); // <-- note 'studies' tag used for cleaning
 		}*/
 		$userState->loadDataByUniqueFields(array('user_id' => $this->user_id));
+		
+		if (!$userState->id) { // This must be the first install for this user
+			$install = new External_UserInstall();
+			$install->loadDataByUniqueFields(array('token'=>$this->user_key));
+			$install->first_access_ts = new Zend_Db_Expr('now()');
+			$install->save();
+
+			$externalUser = new External_User();
+			$externalUser->loadData($install->external_user_id);
+
+			$starbarUserMap = new Starbar_UserMap();
+			$starbarUserMap->user_id = $this->user_id;
+			$starbarUserMap->starbar_id = $externalUser->starbar_id;
+			$starbarUserMap->active = 1;
+			$starbarUserMap->save();
+
+			$gamer = Gamer::create($this->user_id, $externalUser->starbar_id);
+			$starbar = new Starbar();
+			$starbar->loadData($externalUser->starbar_id);
+			$game = Game_Starbar::create($gamer, $this->_request, $starbar);
+			$game->install();
+			
+			$userState->starbar_id = $externalUser->starbar_id;
+			$userState->auth_key = $starbar->auth_key;
+			$userState->visibility = "open";
+			$userState->save();
+			$userState->reload();
+		}		
 
 		$userState->base_domain = BASE_DOMAIN;
+		$userState->user_key = $this->user_key;
 
-		if ($userState->id) {
-			return $this->_resultType($userState);
-		} else {
-			return $this->_resultType(false);
-		}
+		return $this->_resultType($userState);
 	}
 
 	public function refreshAction () {

@@ -106,8 +106,10 @@ class Bootstrap extends App_Bootstrap
 		$front->setRequest(new Zend_Controller_Request_Simple());
 		return true;
 	}
-
-
+	
+	/* Don't use Api_Auth */
+	public function setupAuthPlugin (Zend_Controller_Request_Abstract $request) {
+	}
 }
 
 /**
@@ -159,12 +161,24 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
 			}
 		}
 
-		if ($currentModule === 'api') return;
-
-		$userKey = $request->getParam(Api_Constant::USER_KEY);
-		if ($userKey) {
-			Api_UserSession::init($userKey);
+		if( !$request->getParam(Api_Constant::USER_KEY) && isset($_COOKIE[Api_Constant::USER_KEY])) {
+			$request->setParam(Api_Constant::USER_KEY, $_COOKIE[Api_Constant::USER_KEY]);
+			if( !$request->getParam(Api_Constant::USER_ID) && isset($_COOKIE[Api_Constant::USER_ID]))
+				$request->setParam(Api_Constant::USER_ID, $_COOKIE[Api_Constant::USER_ID]);
 		}
+		
+		// If there is a valid user_key, retrieve the corresponding user_id.
+		// Otherwise, disallow any user_id and user_key parameters
+		
+		if( $token = $request->getParam(Api_Constant::USER_KEY) ) {
+			$user_id = User_Key::validate($token);
+			$request->setParam(Api_Constant::USER_ID, $user_id);
+			if(!$user_id)
+				$request->setParam(Api_Constant::USER_KEY, null);
+		} else if( $request->getParam(Api_Constant::USER_ID) )
+			$request->setParam(Api_Constant::USER_ID, null);
+					
+		if ($currentModule === 'api') return;
 
 		$layout = Zend_Layout::startMvc();
 		$view = $layout->getView();

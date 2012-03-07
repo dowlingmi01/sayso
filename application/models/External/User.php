@@ -24,5 +24,34 @@ class External_User extends Record
 		);
 		return array_intersect_key($this->getData(), array_flip($fields));
 	}
+	public function getUser() {
+		$user = new User();
+		if( $this->user_id ) {
+			$user->setId( $this->user_id );
+		} else {
+			// TODO: Handle race condition here.
+			$user->save();
+			$this->user_id = $user->getId();
+			$this->save();
+			
+			switch ($this->uuid_type) {
+				case 'email' :
+					$email = new User_Email();
+					$email->email = $this->uuid;
+					$user->setEmail($email);
+					$user->save();
+					break;
+				case 'username' :
+					$user->username = $this->uuid;
+					$user->save();
+					break;
+				case 'integer' :
+				case 'hash' :
+				default :
+					// do nothing for now
+			}
+		}
+		return $user;
+	}
 }
 

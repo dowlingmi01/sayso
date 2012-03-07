@@ -15,13 +15,16 @@
 
 	// jQuery
 	$SQ = window.$SQ;
+	
+	// Insert the starbar container
+ 	if ($SQ('#sayso-starbar').length < 1)
+ 		$SQ('body').append('<div id="sayso-starbar" style="position: fixed; left: 0px; bottom: 0px; width: 100%; background: none; margin-bottom: -3px; z-index: 9999;"></div>');
 
 	var sayso = $SQ.sayso,
 		starbarContainer = document.getElementById('sayso-starbar'),
 		currentUrl = $SQ.sayso.current_url,
 		urlMatchPrepend = $SQ.sayso.url_match_prepend;
 
-	$SQ.jsLoadTimer = jsLoadTimer;
 	$SQ.cssLoadTimer = cssLoadTimer;
 
 	// easyXDM for cross-domain iframe communication
@@ -33,12 +36,6 @@
 	var jsSaysoShared = document.createElement('script');
 	jsSaysoShared.src = '//' + sayso.baseDomain + '/js/starbar/sayso-shared.js';
 	starbarContainer.appendChild(jsSaysoShared);
-
-	// ADjuster
-
-	var jsSayso = document.createElement('script');
-	jsSayso.src = '//' + sayso.baseDomain + '/js/starbar/sayso.js';
-	starbarContainer.appendChild(jsSayso);
 
 	// App loading
 
@@ -106,57 +103,7 @@
 		});
 	}
 
-	if (!sayso.in_iframe) {
-
-		if (sayso.starbar.id) { // load known Starbar
-
-			loadStarbar();
-
-		} else {				// install new Starbar
-
-			sayso.log('****** Installing NEW App ******');
-
-			// client site detection
-
-			var clientSetup = document.createElement('script');
-			clientSetup.src = '//' + sayso.baseDomain + '/js/starbar/client-setup.js';
-			starbarContainer.appendChild(clientSetup);
-
-			// start loading app
-
-			var clientSetupTimer = new jsLoadTimer();
-			clientSetupTimer.start('window.saysoClientSetup', function () {
-
-				var postInstallUrl = '//' + sayso.baseDomain + '/starbar/remote/post-install-setup';
-
-				if (sayso.client && sayso.client.uuid) { // we must be on a client site, so provide client vars
-					postInstallUrl +=
-						'?client_name=' + sayso.client.name +
-						'&client_uuid=' + sayso.client.uuid +
-						'&client_uuid_type=' + sayso.client.uuidType +
-						'&client_user_logged_in=' + (sayso.client.userLoggedIn ? 'true' : '');
-				}
-
-				// load iframe to pass pre-install cookies to sayso
-				// along with IP and user agent headers
-				var iframe = document.createElement('iframe');
-				iframe.src = postInstallUrl;
-				iframe.width = '0';
-				iframe.height = '0';
-				iframe.scrolling = 'no';
-				iframe.style.cssText = 'width: 0px; height: 0px; border: 0px;';
-				starbarContainer.appendChild(iframe);
-
-				// after a short delay, continue loading starbar
-				// NOTE: because the Starbar ID is not established at this point
-				// the action to retreive the starbar (/starbar/remote) will
-				// be routed to /starbar/remote/post-install-deliver which will
-				// match the IP/user agent from the previous step and lookup the
-				// correct Starbar for this user (e.g. HelloMusic)
-				setTimeout(loadStarbar, 1000);
-			});
-		}
-	}
+	loadStarbar();
 
 	function loadStarbar () {
 
@@ -209,8 +156,6 @@
 				sayso.starbar.id = starbar.id;
 				sayso.starbar.shortName = starbar.short_name;
 				sayso.starbar.authKey = starbar.auth_key;
-				sayso.starbar.user.id = starbar._user.id;
-				sayso.starbar.user.key = starbar._user._key;
 
 				// sayso.flags can be used anywhere via sayso.flags.match('<flag_name>')
 				// see starbar table, flags column
@@ -260,7 +205,7 @@
 					}
 				}
 
-				new jsLoadTimer().start(function () { return bi === blackList.length; }, function () {
+				new $SQ.jsLoadTimer().start(function () { return bi === blackList.length; }, function () {
 
 					// ===========================================
 					// Begin handling the visible console
@@ -309,7 +254,7 @@
 					customCssLoadTimer.start('_sayso_starbar_css_loaded', function () {
 
 
-						var jQueryLibraryLoadTimer = new jsLoadTimer();
+						var jQueryLibraryLoadTimer = new $SQ.jsLoadTimer();
 						jQueryLibraryLoadTimer.start('window.jQueryUILoaded', function () {
 
 							// finally, inject the HTML!
@@ -320,7 +265,7 @@
 							jsStarbar.src = '//' + sayso.baseDomain + '/js/starbar/starbar-new.js';
 							starbarContainer.appendChild(jsStarbar);
 
-							var starbarJsTimer = new jsLoadTimer();
+							var starbarJsTimer = new $SQ.jsLoadTimer();
 							starbarJsTimer.start('window.sayso.starbar.loaded', function () {
 								// if user has not "onboarded" and we are on the Starbar's base domain
 								// then trigger the onboarding to display
@@ -362,65 +307,6 @@
 	} // end loadStarbar()
 
 	// functions to control load order
-
-	function jsLoadTimer () {
-
-		var _counter = 0,
-			_maxCount = 400, // # of reps X wait time in milliseconds
-			_waitTime = 50,
-			_symbol = '',
-			_callback = null,
-			_elseCallback = null,
-			_timeout = null,
-			_instance = this,
-			ref = null;
-
-		function _checkAgain () {
-			if (_counter++ <= _maxCount) {
-				_timeout = setTimeout(_waitUntilJsLoaded, _waitTime);
-			} else {
-				if (typeof _elseCallback === 'function') {
-					_elseCallback();
-				}
-			}
-		}
-		function _waitUntilJsLoaded () {
-			try {
-				if ((typeof _symbol === 'function' && _symbol()) || (typeof _symbol === 'string' && eval(_symbol))) {
-					if (_timeout) clearTimeout(_timeout);
-					try {
-						_callback();
-					} catch (exception) {
-						sayso.warn(exception);
-					}
-					return;
-				} else {
-					_checkAgain();
-				}
-			} catch (exception) {
-				_checkAgain();
-			}
-		}
-		this.setMaxCount = function (max) {
-			_maxCount = max;
-			return this;
-		};
-		this.setInterval = function (interval) {
-			_waitTime = interval;
-			return this;
-		};
-		this.setLocalReference = function (reference) {
-			ref = reference;
-			return this;
-		};
-		this.start = function (symbol, callback, elseCallback) {
-			_symbol = symbol;
-			_callback = callback;
-			_elseCallback = elseCallback;
-			_waitUntilJsLoaded();
-			return this;
-		};
-	}
 
 	function cssLoadTimer () {
 

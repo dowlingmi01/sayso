@@ -1,7 +1,6 @@
 // available to this script:
 //	 $SQ.jsLoadTimer
-//	 $SQ.cssLoadTimer
-// (see starbar-loader.js)
+// (see sayso-state.js)
 
 $SQ(function () {
 

@@ -1,5 +1,7 @@
 
 (function () {
+	if (!window.sayso || !window.sayso.client)
+		return; // No way to identify the user
 
 	// add trim function if needed
 	if(typeof String.prototype.trim !== 'function') {
@@ -7,54 +9,28 @@
 			return this.replace(/^\s+|\s+$/g, '');
 		};
 	}
-
-	if (getCookie('sayso-installed')) return;
-
-	if (!window.sayso) window.sayso = {};
-	if (!window.sayso.baseDomain) {
-		window.sayso.baseDomain = 'app.saysollc.com';
-		window.sayso.environment = 'PROD';
-	}
-
+		
 	var sayso = window.sayso;
-
+	
+	var loginCookie = getCookie(sayso.client.meta.userLoggedInKey),
+		userUniqueId = getCookie(sayso.client.meta.uuidKey);
+	
 	var installParam = getUrlParam('sayso-install'),
 		installCookie = getCookie('sayso-install');
-
-	// if app is already loaded, go no further
-
-	if (typeof window.KOBJ === 'object' && sayso.starbar.kynetxAppId) { // app already installed
-		setCookie('sayso-installing', null, -10);
-		return;
+		
+	if (loginCookie && userUniqueId) {
+		sayso.client.uuid = userUniqueId;
+		sayso.client.userLoggedIn = true;
 	}
+	
+	if( installParam || installCookie && sayso.client.userLoggedIn )
+		setTimeout(afterPause, 10);
 
-	// sanity check.. since the app loads LATE in the DOM,
-	// we setup a timer now to fire when loaded and set the *installed* cookie
-	// (which the above condition checks and returns)
-	new jsLoadTimer().setMaxCount(1000).start(
-		function () {
-			return window.sayso.starbar.loaded;
-		},
-		function () {
-			// Starbar IS installed
-			setCookie('sayso-installing', null, -10);
-			setCookie('sayso-installed', 1, 30);
+	function afterPause() { if( !window.$SaySoExtension ) {
+		if (!sayso.baseDomain) {
+			sayso.baseDomain = 'app.saysollc.com';
 		}
-	);
 
-	if (getCookie('sayso-installing')) {
-		setCookie('sayso-installing', null, -10);
-		// Chrome workflow requires a refresh, Firefox requires one on tabs that are early in stack
-		if ((navigator.userAgent.match('Firefox') || navigator.userAgent.match('Chrome')) &&
-			confirm('Click here to finish installing the app!')) {
-			// reload page WITHOUT the install param
-			location.href = location.protocol + '//' + location.host + location.pathname;
-		}
-		return;
-	}
-
-	// url param exists, set the cookie
-	if (installParam) {
 		function getInternetExplorerVersion() {
 			var rv = -1; // Return value assumes failure.
 			if (navigator.appName == 'Microsoft Internet Explorer') {
@@ -65,7 +41,9 @@
 			}
 			return rv;
 		}
-
+		
+		var browserSupported = true;
+		
 		var ieVersion = getInternetExplorerVersion();
 		var appVersion = '';
 
@@ -77,113 +55,86 @@
 		   ||
 			(ieVersion > -1 && ieVersion < 8)
 		) {
+			browserSupported = false;
+			
 			if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/iPad/i)) {
 				alert('Sorry! The Say.So Music Bar isn\'t yet available for mobile browsers. Join us via your computer when you can!');
 			} else {
 				alert('Sorry, your web browser ('+navigator.appName+appVersion+') doesn\'t support the cool features of the Say.So Music Bar. For an optimal experience, use Chrome (www.google.com/chrome), Firefox (www.getfirefox.com) or Safari (www.apple.com/safari). And we support Internet Explorer 8 and above.');
 			}
-			return; // unsupported browser
-		} else {
-			setCookie('sayso-install', installParam, 1);
 		}
-	}
+		if( sayso.client.userLoggedIn ) {
+			if (!window.$SQ) {
+				var jQueryInclude = document.createElement('script');
+				jQueryInclude.src = '//' + sayso.baseDomain + '/js/starbar/jquery-1.7.1.min.js';
+				document.getElementsByTagName('body')[0].appendChild(jQueryInclude);
+			}
+			
+			var jQueryTimer = new jsLoadTimer();
+			jQueryTimer.start('typeof window.$SQ === "function"', function () {
 
-	if (!installCookie && !installParam) {
-		// no cookie, no param
-		return;
-	} else {
+				if( browserSupported ) {
+					var div = document.createElement('div');
+					div.id = 'sayso-container';
+					div.style.display = 'none'; div.style.width = '100%'; div.style.height = '100%'; div.style.position = 'absolute'; div.style.top = '0px';
+					document.getElementsByTagName('body')[0].appendChild(div);
 
-		var loginCookie = getCookie(sayso.client.meta.userLoggedInKey),
-			userUniqueId = getCookie(sayso.client.meta.uuidKey);
+					var container = $SQ('#sayso-container'),
+						body = document.getElementsByTagName('body')[0];
 
-		if (loginCookie && userUniqueId) {
-			sayso.client.uuid = userUniqueId;
-			sayso.client.userLoggedIn = true;
+					// css
 
-			// Pre-Install routine
-			// pass uuid and token for this user to sayso
-			// and in return set cookies on the client
+					var cssGeneric = document.createElement('link');
+					cssGeneric.rel = 'stylesheet';
+					cssGeneric.href = '//' + sayso.baseDomain + '/client/' + sayso.client.name + '/css/sayso-onboard.css';
+					body.appendChild(cssGeneric);
 
-			var iframe = document.createElement('iframe');
-			iframe.src =
-				'//' + sayso.baseDomain + '/starbar/remote/pre-install' +
-				'?auth_key=' + sayso.client.authKey +
-				'&client_name=' + sayso.client.name +
-				'&client_uuid=' + sayso.client.uuid +
-				'&client_uuid_type=' + sayso.client.uuidType +
-				'&client_user_logged_in=' + (sayso.client.userLoggedIn ? 'true' : '') +
-				'&install_token=' + getRandomToken() +
-				'&install_origination=' + (installParam ? installParam : installCookie);
-			iframe.width= '0'; iframe.height = '0';
-			iframe.scrolling='no';
-			// note 'style' property cannot be set directly. must use it's individual properties instead
-			iframe.style.width = '0'; iframe.style.height = '0'; iframe.style.border = 'none'; iframe.style.display = 'none';
-			document.getElementsByTagName('body')[0].appendChild(iframe);
-
-			// delete the install cookie
-			setCookie('sayso-install', null, -10);
-		}
-
-		var div = document.createElement('div');
-		div.id = 'sayso-container';
-		div.style.display = 'none'; div.style.width = '100%'; div.style.height = '100%'; div.style.position = 'absolute'; div.style.top = '0px';
-		document.getElementsByTagName('body')[0].appendChild(div);
-
-		var sayso = window.sayso;
-
-		// jquery
-
-		if (!window.$SQ) {
-			var jQueryInclude = document.createElement('script');
-			jQueryInclude.src = '//' + sayso.baseDomain + '/js/starbar/jquery-1.7.1.min.js';
-			document.getElementsByTagName('body')[0].appendChild(jQueryInclude);
-		}
-
-		var jQueryTimer = new jsLoadTimer();
-		jQueryTimer.start('typeof window.$SQ === "function"', function () {
-
-			var container = $SQ('#sayso-container'),
-				body = document.getElementsByTagName('body')[0];
-
-			// css
-
-			var cssGeneric = document.createElement('link');
-			cssGeneric.rel = 'stylesheet';
-			cssGeneric.href = '//' + sayso.baseDomain + '/client/' + sayso.client.name + '/css/sayso-onboard.css';
-			body.appendChild(cssGeneric);
-
-			var cssColorbox = document.createElement('link');
-			cssColorbox.rel = 'stylesheet';
-			cssColorbox.href = '//' + sayso.baseDomain + '/client/global/css/colorbox.css';
-			body.appendChild(cssColorbox);
-
-			// overlay
-
-			$SQ.ajax({
-				url : '//' + sayso.baseDomain + '/client/' + sayso.client.name + '/install',
-				dataType : 'jsonp',
-				success : function (response) {
-
-					setTimeout(function () {
-						// overlay
-						container.html(response.data.html);
-						if ((loginCookie && userUniqueId) || installParam) {
-							if (!loginCookie || !userUniqueId) {
-								container.show();
-								alert('Please log in first to install the app');
-								$SQ('#sayso-onboard,#sso_wrapper,#sayso-container').hide();
-								// fire login callback
-								if (sayso.client.loginCallback) sayso.client.loginCallback();
-							} else {
-								container.fadeTo('slow', 1);
-							}
-						}
-					}, 1000);
+					var cssColorbox = document.createElement('link');
+					cssColorbox.rel = 'stylesheet';
+					cssColorbox.href = '//' + sayso.baseDomain + '/client/global/css/colorbox.css';
+					body.appendChild(cssColorbox);
 				}
-			});
-		});
-	}
+				
+				// overlay
 
+				var ajaxOpts = {
+					url : '//' + sayso.baseDomain + '/starbar/install/' + sayso.client.name,
+					dataType : 'jsonp',
+					data : {
+						client_name : sayso.client.name,
+						client_uuid: sayso.client.uuid,
+						client_uuid_type : sayso.client.uuidType,
+						client_user_logged_in : sayso.client.userLoggedIn,
+						install_origination : (installParam ? installParam : installCookie),
+						user_agent_supported : browserSupported,
+						install_url : document.location.href,
+						referrer : document.referrer,
+						},
+					success : function (response) {
+						if( browserSupported ) {
+							setTimeout(function () {
+								// overlay
+								container.html(response.data.html);
+								container.fadeTo('slow', 1);
+								if( installCookie )
+									setCookie('sayso-install', null, -10);
+							}, 1000);
+						}
+					}
+				};
+				$SQ.ajax(ajaxOpts);
+			}); //end when jQuery loaded
+		// end if userLoggedIn
+		} else if( browserSupported && installParam ) {
+			setCookie('sayso-install', installParam, 1);
+			alert('Please log in first to install the Say.So app');
+			if (sayso.client.loginCallback)
+				sayso.client.loginCallback();
+		}
+	}} // end function afterPause
+
+
+	
 	// functions
 
 	function jsLoadTimer(){function d(){j++<=f?b=setTimeout(g,h):"function"===typeof e&&e()}function g(){try{if("function"===typeof c&&c()||"string"===typeof c&&eval(c)){b&&clearTimeout(b);try{i()}catch(a){sayso.warn(a)}}else d()}catch(e){d()}}var j=0,f=400,h=50,c="",i=null,e=null,b=null;this.setMaxCount=function(a){f=a;return this};this.setInterval=function(a){h=a;return this};this.setLocalReference=function(){return this};this.start=function(a,b,d){c=a;i=b;e=d;g();return this}};
@@ -223,18 +174,5 @@
 			}
 		}
 		return this.params[name];
-	}
-
-	/**
-	 * Get a random 64 character token
-	 */
-	function getRandomToken() {
-
-		var s = [],
-			characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		for (var i = 0; i < 64; i++) {
-			s[i] = characters.substr(Math.floor(Math.random() * 36), 1);
-		}
-		return s.join('');
 	}
 })();

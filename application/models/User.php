@@ -34,13 +34,6 @@ class User extends Record implements Titled
 	 */
 	protected $_plainTextPassword;
 	
-	/**
-	 * The unique session id for this user
-	 * 
-	 * @var string
-	 */
-	protected $_key;
-	
 	public function getTitle ()
 	{
 		if ($this->username) return $this->username;
@@ -113,15 +106,6 @@ class User extends Record implements Titled
 	public function setPlainTextPassword ($password)
 	{
 		$this->_plainTextPassword = $password;
-	}
-	
-	/**
-	 * Set the unique session id for this user
-	 * 
-	 * @param $key
-	 */
-	public function setKey ($key) {
-		$this->_key = $key;
 	}
 	
 	/**
@@ -205,13 +189,6 @@ class User extends Record implements Titled
 			$userAddress->loadData($this->primary_address_id);
 		}
 		return $userAddress;
-	}
-	
-	public static function getHash ($userId) {
-		// the official hash representing a specific user
-		// this is used with sessions and authentication
-		// User 5 (on production) rocks!
-		return md5('User ' . $userId . ' (on ' . APPLICATION_ENV . ') rocks!');
 	}
 }
 

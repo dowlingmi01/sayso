@@ -6,7 +6,7 @@ $SQ(function(){
 		var user_id = null;
 		var user_key = null;
 
-		sayso = window.$SQ.sayso;
+		var sayso = window.$SQ.sayso;
 
 		// Authenticated?
 		try

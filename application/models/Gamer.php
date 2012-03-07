@@ -48,7 +48,6 @@ class Gamer extends Gaming_User {
 		$gamer->delete();
 		
 		$newGamer = self::create($userId, $starbarId);
-		Api_UserSession::getInstance($userKey)->setGamingUser($newGamer);
 		return $newGamer;
 	}
 }

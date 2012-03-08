@@ -57,7 +57,8 @@ abstract class Game_Starbar extends Game_Abstract {
 		$this->submitAction('STARBAR_CHECKIN');
 	}
 
-	public function testRewardNotes () {
+    /* was testRewardNotes*/
+	public function rewardNotes () {
 		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'demo'))) {
 			$this->submitAction('TEST_REWARD_NOTES');
 		}

@@ -20,6 +20,13 @@ class Gamer extends Gaming_User {
 	 * @return Gamer
 	 */
 	public static function create ($userId, $starbarId) {
+		// Quick HACK to get starbar_id from user state. It should be part of the request.
+		if( $userId && !$starbarId ) {
+			$userstate = new User_State();
+			$userstate->loadDataByUniqueFields(array('user_id'=>$userId));
+			if( $userstate->hasId() )
+				$starbarId = $userstate->starbar_id;
+		}
 		if (!$userId || !$starbarId) {
 			throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Gamer::create() requires user id (' . $userId . ') and starbar id (' . $starbarId . ')'));
 		}

@@ -6,7 +6,10 @@ $SQ(function(){
 		var user_id = null;
 		var user_key = null;
 
-		var sayso = window.$SQ.sayso;
+		// The following line is copying $SQ.sayso to global scope (window)
+		// Polls and Surveys currently break if we add the keyword var to keep it private
+		// TODO: find out why that happens
+		sayso = window.$SQ.sayso;
 
 		// Authenticated?
 		try

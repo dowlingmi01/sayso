@@ -26,18 +26,4 @@ class Client_HellomusicController extends Client_GlobalController
 		));
 		return parent::homeAction();
 	}
-	
-	/**
-	 * AJAX loaded install overlay for Hello Music
-	 * 
-	 */
-	public function installAction () {
-		$this->render();
-		$body = $this->getResponse()->getBody();
-		$this->_enableRenderer(new Api_Plugin_JsonPRenderer());
-		return $this->_resultType(new Object(array('html' => $body)));
-	}
-
-	
 }
-

@@ -128,7 +128,7 @@ $SQ(function(){
 		 * @param object|string object
 		 */
 		_container.setObject = function (object) {
-			_container.data('object', typeof(object) === 'string' ? object : JSON.stringify(object));
+			_container.data('object', typeof(object) === 'string' ? object : $SQ.JSON.stringify(object));
 			return _container;
 		};
 
@@ -137,7 +137,7 @@ $SQ(function(){
 		 * @returns object
 		 */
 		_container.getObject = function () {
-			return JSON.parse(_container.data('object'));
+			return $SQ.JSON.parse(_container.data('object'));
 		};
 
 		/**
@@ -1596,7 +1596,7 @@ $SQ(function(){
 		}
 	}
 
-	$SQ(window).bind('focus', function () { 
+	$SQ(window).bind('focus', function () {
         starbar.state.refresh();
     });
 

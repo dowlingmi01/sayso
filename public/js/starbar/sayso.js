@@ -293,7 +293,7 @@ $SQ(function () {
 
 	// ADjuster Click-Thrus ------------------------
 
-	var adTargets = JSON.parse(sayso.study.adTargets);
+	var adTargets = $SQ.JSON.parse(sayso.study.adTargets);
 	if (!adTargets) adTargets = {};
 
 	if (!inIframe) log('Ad Targets: ', adTargets);
@@ -630,7 +630,7 @@ $SQ(function () {
 			$SQ.ajaxWithAuth({
 				url: '//'+sayso.baseDomain+'/api/user-state/update-ad-targets?renderer=jsonp',
 				data: {
-					'ad_targets': JSON.stringify(adTargets)
+					'ad_targets': $SQ.JSON.stringify(adTargets)
 				}
 			});
 
@@ -687,7 +687,7 @@ $SQ(function () {
 					data : {
 						// note: user_id, starbar_id are included in ajax() wrapper
 						// study_id is associated via cell id, which is included in cellAdActivity
-						cell_activity : JSON.stringify(cellAdActivity)
+						cell_activity : $SQ.JSON.stringify(cellAdActivity)
 					},
 					success : function (response) {
 

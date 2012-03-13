@@ -63,7 +63,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$good = Api_Adapter::getInstance()->call('Gaming', 'getGoodFromStore');
 
 		$user = new User();
-		$user->loadData($this->user_key);
+		$user->loadData($this->user_id);
 
 		$userAddress = $user->getPrimaryAddress();
 

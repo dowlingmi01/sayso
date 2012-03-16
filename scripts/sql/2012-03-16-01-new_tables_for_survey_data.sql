@@ -56,7 +56,7 @@ CREATE TABLE survey_response (
 	user_id int(10) NOT NULL,
 	external_response_id int(10) DEFAULT NULL COMMENT "Response ID on SurveyGizmo, for example",
 	status enum('completed','archived','new','disqualified') NOT NULL DEFAULT 'new',
-	processing_status enum ('completed', 'pending') DEFAULT 'pending',
+	processing_status enum ('completed', 'pending') NOT NULL DEFAULT 'pending',
 	PRIMARY KEY (id),
 	completed_disqualified timestamp DEFAULT '0000-00-00 00:00:00',
 	data_download timestamp DEFAULT '0000-00-00 00:00:00',

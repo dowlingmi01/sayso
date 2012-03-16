@@ -5,7 +5,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>Say.So | App</title>
+		<title>Say.So Dashboard <?= (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'staging')) ? " - " . ucwords(APPLICATION_ENV) : "") ?></title>
 		<?= $this->headLink() . PHP_EOL ?>
 		<?= $this->headScript() . PHP_EOL ?>
 	</head>
@@ -13,16 +13,15 @@
 		<div id="layout">
 			<header>
 				<h1>Say.So</h1>
-				<img height="60" width="230" alt="Say.So Logo" src="/img/say-so.png" style="width: 230px; height: 60px;">
+				<img width="183" height="80" alt="Say.So Logo" src="/img/say-so.png" style="margin-left: 10px; width: 183px; height: 80px;">
 				<?php echo $this->partial('partials/common-auth.phtml', 'admin') ?>
 				<?php if ($auth->hasIdentity()): ?>
 					<nav class="common">
 						<ul>
-							<li><a id="menu-products" href="/admin/" title="Products"><span>Products</span></a></li>
 							<li><a id="menu-studies" href="/admin/study/" title="Crate And Manage Studies"><span>Studies</span></a></li>
 							<li><a id="menu-metrics" href="/admin/metrics/" title="Real-Time Metrics"><span>Metrics</span></a></li>
 							<li><a id="menu-users" href="/admin/user/" title="User Management"><span>Admins</span></a></li>
-						</ul>					
+						</ul>
 						<div class="clear"></div>
 					</nav>
 				<?php endif; ?>

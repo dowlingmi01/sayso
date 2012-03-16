@@ -270,8 +270,8 @@ class Starbar_ContentController extends Api_GlobalController
 
 		$this->view->assign('survey', $survey);
 
-		$surveyUserMap = new Survey_UserMap();
-		$surveyAlreadyCompleted = $surveyUserMap->checkIfUserHasCompletedSurvey($this->user_id, $this->survey_id);
+		$surveyResponse = new Survey_Response();
+		$surveyAlreadyCompleted = $surveyResponse->checkIfUserHasCompletedSurvey($this->user_id, $this->survey_id);
 
 		if ($surveyAlreadyCompleted) {
 			$this->view->assign('survey_already_completed', true);
@@ -373,18 +373,18 @@ class Starbar_ContentController extends Api_GlobalController
 	// Fetches polls for the current user for display
 	public function pollsAction ()
 	{
-		$surveyUserMaps = new Survey_UserMapCollection();
-		$surveyUserMaps->markOldSurveysArchivedForStarbarAndUser($this->starbar_id, $this->user_id, 'polls');
-		$surveyUserMaps->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'polls', $this->_maximumDisplayed['polls']);
+		$surveyResponses = new Survey_ResponseCollection();
+		$surveyResponses->markOldSurveysArchivedForStarbarAndUser($this->starbar_id, $this->user_id, 'polls');
+		$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'polls', $this->_maximumDisplayed['polls']);
 		$this->_assignSurveysToView('polls');
 	}
 
 	// Fetches surveys for the current user for display
 	public function surveysAction ()
 	{
-		$surveyUserMaps = new Survey_UserMapCollection();
-		$surveyUserMaps->markOldSurveysArchivedForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys');
-		$surveyUserMaps->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys', $this->_maximumDisplayed['surveys']);
+		$surveyResponses = new Survey_ResponseCollection();
+		$surveyResponses->markOldSurveysArchivedForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys');
+		$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys', $this->_maximumDisplayed['surveys']);
 		$this->_assignSurveysToView('surveys');
 	}
 
@@ -418,10 +418,10 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('user_email', $userEmail);
 
 		// Assign the counts for surveys and polls
-		$surveyUserMaps = new Survey_UserMapCollection();
-		$surveyUserMaps->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'polls', $this->_maximumDisplayed['polls']);
+		$surveyResponses = new Survey_ResponseCollection();
+		$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'polls', $this->_maximumDisplayed['polls']);
 		$this->_assignSurveysToView('polls');
-		$surveyUserMaps->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys', $this->_maximumDisplayed['surveys']);
+		$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys', $this->_maximumDisplayed['surveys']);
 		$this->_assignSurveysToView('surveys');
 
 		// @todo point this to onboarding

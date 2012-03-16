@@ -28,6 +28,8 @@ class Admin_IndexController extends Admin_CommonController
 		if(!$this->checkAccess(array('superuser')))
 		{
 			$this->_helper->viewRenderer->setNoRender(true);
+		} else {
+			$this->_redirect("/admin/study/");
 		}
 	}
 

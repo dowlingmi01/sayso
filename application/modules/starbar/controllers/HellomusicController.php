@@ -49,8 +49,8 @@ class Starbar_HellomusicController extends Starbar_ContentController
 
 	public function pollsAction ()
 	{
-		$surveyUserMap = new Survey_UserMap();
-		$primarySurveyTaken = $surveyUserMap->checkIfUserHasCompletedSurvey($this->user_id, 1);
+		$surveyResponse = new Survey_Response();
+		$primarySurveyTaken = $surveyResponse->checkIfUserHasCompletedSurvey($this->user_id, 1);
 		$this->view->primary_survey_taken = $primarySurveyTaken;
 
 		if (!$primarySurveyTaken) {
@@ -61,8 +61,8 @@ class Starbar_HellomusicController extends Starbar_ContentController
 
 	public function surveysAction ()
 	{
-		$surveyUserMap = new Survey_UserMap();
-		$primarySurveyTaken = $surveyUserMap->checkIfUserHasCompletedSurvey($this->user_id, 1);
+		$surveyResponse = new Survey_Response();
+		$primarySurveyTaken = $surveyResponse->checkIfUserHasCompletedSurvey($this->user_id, 1);
 		$this->view->primary_survey_taken = $primarySurveyTaken;
 
 		if (!$primarySurveyTaken) {
@@ -73,8 +73,8 @@ class Starbar_HellomusicController extends Starbar_ContentController
 
 	public function userProfileAction ()
 	{
-		$surveyUserMap = new Survey_UserMap();
-		$primarySurveyTaken = $surveyUserMap->checkIfUserHasCompletedSurvey($this->user_id, 1);
+		$surveyResponse = new Survey_Response();
+		$primarySurveyTaken = $surveyResponse->checkIfUserHasCompletedSurvey($this->user_id, 1);
 		$this->view->primary_survey_taken = $primarySurveyTaken;
 
 		if (!$primarySurveyTaken) {

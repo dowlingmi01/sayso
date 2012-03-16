@@ -18,10 +18,10 @@ class SurveyCollection extends RecordCollection
 
 		$sql = "SELECT *
 				FROM survey s
-					INNER JOIN survey_user_map sum
-					ON s.id = sum.survey_id
-						AND sum.user_id = ?
-						AND sum.status = ?
+					INNER JOIN survey_response sr
+					ON s.id = sr.survey_id
+						AND sr.user_id = ?
+						AND sr.status = ?
 				WHERE s.type = ?
 					AND s.starbar_id = ?
 					AND s.start_at < now()

@@ -9,7 +9,7 @@ class Survey_ResponseCollection extends RecordCollection
 		$type = str_replace("polls", "poll", $type);
 
 		if ($maximumToDisplay) {
-			$sql = "SELECT count(id) AS theCount
+			$sql = "SELECT count(sr.id) AS theCount
 					FROM survey_response sr
 					JOIN survey s
 						ON s.id = sr.survey_id

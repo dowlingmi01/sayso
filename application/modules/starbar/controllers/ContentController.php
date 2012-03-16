@@ -71,6 +71,14 @@ class Starbar_ContentController extends Api_GlobalController
 		return $this->_resultType($good);
 	}
 
+        /**
+         * Redeem a 'Good'
+         * Redeems a 'Good' via BigDoor's API (basically removes the value of
+         * the good from the users credit), and sends confirmation emails to 
+         * the client admins and the redeeming user.
+         * 
+         * @return object - the Good being redeemed
+         */
 	public function rewardRedeemedAction () {
 
 		$this->_validateRequiredParameters(array('quantity', 'good_id', 'user_key'));
@@ -81,6 +89,11 @@ class Starbar_ContentController extends Api_GlobalController
 		$game = Game_Starbar::getInstance();
 		$game->purchaseGood($good, $this->quantity);
 
+                /* Strip purchase words from the beginning of the $good->title */       
+                $searchArray = array("Purchase ", "Buy ", "Redeem ");
+                $replaceArray   = array("", "", "");
+                $goodTitle = str_ireplace($searchArray, $replaceArray, $good->title);
+                
 		$user = new User();
 		$user->loadData($this->user_id);
 
@@ -101,6 +114,7 @@ class Starbar_ContentController extends Api_GlobalController
 			$userAddress->region = $this->order_state;
 			$userAddress->postalCode = $this->order_zip;
 			$userAddress->country = $this->order_country;
+                        $userAddress->phone = $this->order_phone;
 			$userAddress->save();
 
 			if (!$user->primary_address_id) {
@@ -111,12 +125,12 @@ class Starbar_ContentController extends Api_GlobalController
 			$user->last_name = $this->order_last_name;
 			$user->save();
 
-
+                        /* Send a confirmation email to the admins */
 			try {
 				$userEmail = new User_Email();
 				$userEmail->loadData($user->primary_email_id);
 				$message = '
-					Say.So Music Bar redemption made for ' . $good->title . '
+					Say.So Music Bar redemption made for ' . $goodTitle . '
 
 					Order Details
 					=============
@@ -127,8 +141,8 @@ class Starbar_ContentController extends Api_GlobalController
 					City: ' . $this->order_city . '
 					State/Region: ' . $this->order_state . '
 					Postal Code: ' . $this->order_zip . '
-					Country: ' . $this->order_country . '
-
+					Country: ' . $this->order_country . ' 
+					Phone: ' . $this->order_phone . '
 					User ID: ' . $this->user_id . '
 					User Email: ' . $userEmail->email . '
 					=============
@@ -140,12 +154,71 @@ class Starbar_ContentController extends Api_GlobalController
 				$mail = new Mailer();
 				$mail->setFrom('hmorders@say.so')
 					 ->addTo('hmorders@say.so')
-					 ->setSubject('Redemption');
+					 ->setSubject('Redemption of '.$goodTitle.' for '.$userEmail->email);
 				$mail->setBodyMultilineText($message);
 				$mail->send(new Zend_Mail_Transport_Smtp());
 			} catch (Exception $e) {
 				quickLog($message);
 			}
+                        
+                        /* Send a confirmation email to the user */
+                        try {
+				$userEmail = new User_Email();
+                                $address = $this->order_address_1;
+                                if (strlen($this->order_address_2) > 0) {
+                                    $address .= "<br />".$this->order_address_2;
+                                }
+				$userEmail->loadData($user->primary_email_id);
+                                $htmlmessage = "<h1>Say.So Music Bar redemption made for ".$goodTitle."</h1>";
+                                $htmlmessage .= "<table><tr><td colspan='2' bgcolor='#1d1c1c'><font color='#ffffff'>Order Details</font></td></tr>";
+                                $htmlmessage .= "<tr><td>First Name:</td><td>".$this->order_first_name."</td></tr>";
+                                $htmlmessage .= "<tr><td>Last Name:</td><td>".$this->order_last_name."</td></tr>";
+                                $htmlmessage .= "<tr><td>Street Address</td><td>".$address."</td></tr>";
+                                $htmlmessage .= "<tr><td>City:</td><td>".$this->order_city."</td></tr>";
+                                $htmlmessage .= "<tr><td>State/Region:</td><td>".$this->order_state."</td></tr>";
+                                $htmlmessage .= "<tr><td>ZIP Code:</td><td>".$this->order_zip."</td></tr>";
+                                $htmlmessage .= "<tr><td>Country:</td><td>".$this->order_country."</td></tr>";
+                                $htmlmessage .= "<tr><td>Phone:</td><td>".$this->order_phone."</td></tr>";
+                                $htmlmessage .= "<tr><td>Email Address:</td><td>".$userEmail->email."</td></tr>";
+                                $htmlmessage .= "</table>";
+                                $htmlmessage .= "<p>Thank you,<br />say.so Mailman</p>";
+				$message = '
+					Say.So Music Bar redemption made for ' . $goodTitle . '
+
+					Order Details
+					=============
+					First Name: ' . $this->order_first_name . '
+					Last Name: ' . $this->order_last_name . '
+					Address : ' . $address . '
+					City: ' . $this->order_city . '
+					State/Region: ' . $this->order_state . '
+					Postal Code: ' . $this->order_zip . '
+					Country: ' . $this->order_country . '
+                                        Phone: ' . $this->order_phone . '
+
+					User ID: ' . $this->user_id . '
+					User Email: ' . $userEmail->email . '
+					=============
+					Thank you,
+                                        
+					Say.So Mailer v3.4
+				';
+
+				$config = Api_Registry::getConfig();
+				$mail = new Mailer();
+				/*$mail->setFrom('hmorders@say.so')
+					 ->addTo('hmorders@say.so')
+					 ->setSubject('Redemption');*/
+                                $mail->setFrom('hmorders@say.so')
+					 ->addTo($userEmail->email)
+					 ->setSubject('Your Item Redemption');
+				$mail->setBodyMultilineText($message);
+                                $mail->setBodyHtml($htmlmessage);
+				$mail->send(new Zend_Mail_Transport_Smtp());
+			} catch (Exception $e) {
+				quickLog($htmlmessage);
+			}
+                        
 		} else {
 
 		}

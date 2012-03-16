@@ -91,7 +91,8 @@ if ($goodIsToken) {
 						<input name="sb_address_1" class="sb_wide_input" type="text" placeholder="Address" value="<?= $userAddress->street1 ?>" /><br />
 						<input name="sb_address_2" class="sb_wide_input" type="text" value="<?= $userAddress->street2 ?>" /><br />
 						<input name="sb_city" type="text" placeholder="City" value="<?= $userAddress->locality ?>" /><input name="sb_state" type="text" placeholder="State/Region" value="<?= $userAddress->region ?>" />
-						<input name="sb_country" type="text" value="USA" placeholder="Country" value="<?= ($userAddress->country ? $userAddress->country : 'USA') ?>" /><input name="sb_zip" type="text" placeholder="Zip/Postal Code" value="<?= $userAddress->postalCode ?>" />
+						<input name="sb_country" type="text" value="USA" placeholder="Country" value="<?= ($userAddress->country ? $userAddress->country : 'USA') ?>" /><input name="sb_zip" type="text" placeholder="Zip/Postal Code" value="<?= $userAddress->postalCode ?>" /><br />
+                                                <input name="sb_phone" class="sb_wide_input" type="text" placeholder="Phone" value="<?= $userAddress->phone ?>" />
 					</p>
 				<?php endif ?>
 			</div>
@@ -161,7 +162,7 @@ if ($goodIsToken) {
 						};
 
 						var inputElems = new Array();
-						var fields = ['first_name', 'last_name', 'address_1', 'address_2', 'city', 'state', 'country', 'zip'];
+						var fields = ['first_name', 'last_name', 'address_1', 'address_2', 'city', 'state', 'country', 'zip', 'phone'];
 						var required_fields = ['first_name', 'last_name', 'address_1', 'city', 'country', 'zip'];
 
 						if (sayso.placeholderSupportMissing) {

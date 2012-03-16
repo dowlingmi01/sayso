@@ -50,7 +50,8 @@ $userAddress = $this->user_address;
 				<?= $userAddress->street1 ?><br />
 				<?= ($userAddress->street2 ? $userAddress->street2 . '<br />' : '') ?>
 				<?= $userAddress->locality ?><?= ($userAddress->region ? ', ' . $userAddress->region : '') ?><?= ($userAddress->country == 'USA' ? ' ' . $userAddress->postalCode : '<br />') ?>
-				<?= ($userAddress->country != 'USA' ? $userAddress->country . ' &nbsp;' . $userAddress->postalCode : '') ?>
+				<?= ($userAddress->country != 'USA' ? $userAddress->country . ' &nbsp;' . $userAddress->postalCode  : '') ?>
+                                <?= '<br />' . $userAddress->phone; ?>
 			</p>
 		<?php endif ?>
 		<br clear="all" />

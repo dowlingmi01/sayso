@@ -291,30 +291,32 @@ $SQ(function () {
 
 	log('ADjuster ad handling enabled');
 
-	// ADjuster Click-Thrus ------------------------
+	if (!inIframe) {
+		// ADjuster Click-Thrus ------------------------
 
-	var adTargets = $SQ.JSON.parse(sayso.study.adTargets);
-	if (!adTargets) adTargets = {};
+		var adTargets = $SQ.JSON.parse(sayso.study.adTargets);
+		if (!adTargets) adTargets = {};
 
-	if (!inIframe) log('Ad Targets: ', adTargets);
-	// { creative12 : { urlSegment : 'foo/diamonds', type : 'creative', type_id : 12 }, campaign234 : { etc
-	for (var key in adTargets) {
-		var adTarget = adTargets[key];
-		if (location.href.indexOf(adTarget.urlSegment) > -1) {
-			// click thru!
-			ajax({
-				url : '//' + sayso.baseDomain + '/api/metrics/track-click-thru',
-				data : {
-					url : location.href,
-					url_segment : adTarget.urlSegment,
-					type : adTarget.type,
-					type_id : adTarget.typeId
-				},
-				success : function (response) {
-					log('ADjuster: Click Through (' + adTarget.type + '/' + adTarget.typeId + ')');
-				}
-			});
-			break;
+		log('Ad Targets: ', adTargets);
+		// { creative12 : { urlSegment : 'foo/diamonds', type : 'creative', type_id : 12 }, campaign234 : { etc
+		for (var key in adTargets) {
+			var adTarget = adTargets[key];
+			if (location.href.indexOf(adTarget.urlSegment) > -1) {
+				// click thru!
+				ajax({
+					url : '//' + sayso.baseDomain + '/api/metrics/track-click-thru',
+					data : {
+						url : location.href,
+						url_segment : adTarget.urlSegment,
+						type : adTarget.type,
+						type_id : adTarget.typeId
+					},
+					success : function (response) {
+						log('ADjuster: Click Through (' + adTarget.type + '/' + adTarget.typeId + ')');
+					}
+				});
+				break;
+			}
 		}
 	}
 

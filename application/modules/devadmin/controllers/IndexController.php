@@ -493,6 +493,12 @@ class Devadmin_IndexController extends Api_GlobalController
 		$questionArray = array();
 		$questionExternalIdReferenceArray = array();
 
+		// Messages to show on interface after processing
+		$messages = array();
+
+		$surveyQuestionsSaved = 0;
+		$surveyQuestionChoicesSaved = 0;
+
 		if ($survey->id && $survey->external_id) {
 			$sgUser = $config->surveyGizmo->api->username;
 			$sgPass = $config->surveyGizmo->api->password;
@@ -508,20 +514,34 @@ class Devadmin_IndexController extends Api_GlobalController
 			}
 
 			$url = "https://restapi.surveygizmo.com/v1/survey/" . $survey->external_id . "/surveyquestion" . $requestParamString;
+			$messages[] = "Connecting to " . $url;
+
 			$handle = fopen($url, 'r');
 			set_time_limit(180); // Allow SG 3 minutes to respond
-			$decodedJson = json_decode(stream_get_contents($handle), true);
+
+			$json = stream_get_contents($handle);
+			if ($json) {
+				$decodedJson = json_decode($json, true);
+			} else {
+				$decodedJson = null;
+				throw new Api_Exception(Api_Error::create(Api_Error::SURVEYGIZMO_ERROR, 'Attempt to retreive survey responses failed when accessing: ' . $url));
+			}
 		}
 
 		if (
 			$decodedJson
 			&& isset($decodedJson['result_ok'])
 			&& isset($decodedJson['total_count'])
+			&& isset($decodedJson['total_pages'])
 			&& isset($decodedJson['data'])
 			&& $decodedJson['result_ok'] === true
 			&& $decodedJson['total_count']
+			&& $decodedJson['total_pages']
 			&& count($decodedJson['data'])
 		) {
+			$messages[] = "Survey Gizmo reports " . $decodedJson['total_count'] . " questions on " . $decodedJson['total_pages'] . " page(s)";
+			$messages[] = "(including action and logic questions, which we don't save, and piped questions which we save as multiple questions)";
+
 			$questionOrdinal = 1;
 			$questionsData = $decodedJson['data'];
 
@@ -561,6 +581,7 @@ class Devadmin_IndexController extends Api_GlobalController
 						$questionOrdinal++;
 
 						$pipedQuestion->save();
+						$surveyQuestionsSaved++;
 
 						$choiceOrdinal = 1;
 
@@ -575,6 +596,7 @@ class Devadmin_IndexController extends Api_GlobalController
 								$choiceOrdinal++;
 
 								$questionChoice->save();
+								$surveyQuestionChoicesSaved++;
 
 								$pipedQuestion->option_array[$questionChoice->external_choice_id] = $questionChoice;
 							}
@@ -596,6 +618,7 @@ class Devadmin_IndexController extends Api_GlobalController
 							$questionOrdinal++;
 
 							$question->save();
+							$surveyQuestionsSaved++;
 
 							// We could duplicate the options for each piped question
 							// (that's what commented code block below does), but instead
@@ -614,6 +637,7 @@ class Devadmin_IndexController extends Api_GlobalController
 									$choiceOrdinal++;
 
 									$questionChoice->save();
+									$surveyQuestionChoicesSaved++;
 
 									$question->option_array[$questionChoice->external_choice_id] = $questionChoice;
 								}
@@ -656,6 +680,7 @@ class Devadmin_IndexController extends Api_GlobalController
 							$questionOrdinal++;
 
 							$question->save();
+							$surveyQuestionsSaved++;
 
 							$questionArray[$question->external_pipe_choice_id] = $question; // Add to array so we can easily find later for piping
 						}
@@ -679,6 +704,7 @@ class Devadmin_IndexController extends Api_GlobalController
 						$questionOrdinal++;
 
 						$question->save();
+						$surveyQuestionsSaved++;
 
 						// Options are in the piped-from question, so no need to re-add them
 
@@ -703,6 +729,7 @@ class Devadmin_IndexController extends Api_GlobalController
 						$questionOrdinal++;
 
 						$question->save();
+						$surveyQuestionsSaved++;
 
 						// Options are in the piped-from question, so no need to re-add them
 
@@ -728,6 +755,7 @@ class Devadmin_IndexController extends Api_GlobalController
 					$questionOrdinal++;
 
 					$question->save();
+					$surveyQuestionsSaved++;
 
 					$choiceOrdinal = 1;
 
@@ -742,6 +770,7 @@ class Devadmin_IndexController extends Api_GlobalController
 							$choiceOrdinal++;
 
 							$questionChoice->save();
+							$surveyQuestionChoicesSaved++;
 
 							$question->option_array[$questionChoice->external_choice_id] = $questionChoice;
 						}
@@ -800,6 +829,7 @@ class Devadmin_IndexController extends Api_GlobalController
 
 					$question->number_of_choices = (isset($questionData['options']) ? count($questionData['options']) : 0);
 					$question->save(); // save so we have the id available
+					$surveyQuestionsSaved++;
 
 					if ($question->number_of_choices) {
 						$choiceOrdinal = 1;
@@ -813,13 +843,14 @@ class Devadmin_IndexController extends Api_GlobalController
 								$questionChoice->ordinal = $choiceOrdinal * 10;
 								$choiceOrdinal++;
 
-								if (isset($optionData['properties']['other']) && $optionData['properties']['other'] && $question->data_type == 'None') {
+								if (isset($optionData['properties']['other']) && $optionData['properties']['other'] && $question->data_type == 'none') {
 									$questionChoice->other = true;
 									$question->data_type = 'string'; // question is saved again below
 									$needToSaveQuestionAgain = true;
 								}
 
 								$questionChoice->save();
+								$surveyQuestionChoicesSaved++;
 
 								$question->option_array[$questionChoice->external_choice_id] = $questionChoice;
 							}
@@ -840,6 +871,12 @@ class Devadmin_IndexController extends Api_GlobalController
 
 			$survey->save();
 
+			$messages[] = "";
+			$messages[] = "Processing Complete!";
+			$messages[] = "survey_question records saved in the DB: " . $surveyQuestionsSaved;
+			$messages[] = "survey_question_response records saved in DB: " . $surveyQuestionChoicesSaved;
+
+			$this->view->messages = $messages;
 		}
 
 	}
@@ -856,10 +893,18 @@ class Devadmin_IndexController extends Api_GlobalController
 		$decodedJson = false;
 		$requestParams = array();
 
+		// Reference arrays
 		$questionIdReferenceArray = array();
 		$comboExternalIdReferenceArray = array();
 		$choiceExternalIdReferenceArray = array();
 		$choiceValueReferenceArray = array();
+
+		// Messages to show on interface after processing
+		$messages = array();
+
+		$rowsMatchingRegex = 0;
+		$rowsMatchingNoRegex = 0;
+		$surveyQuestionResponsesSaved = 0;
 
 		$currentPage = 1;
 		$totalNumberOfPages = 1;
@@ -870,6 +915,8 @@ class Devadmin_IndexController extends Api_GlobalController
 
 			$requestParams["user:pass"] = $sgUser . ":" . $sgPass;
 			$requestParams["resultsperpage"] = 25;
+
+			// For more on SG filters: http://developer.surveygizmo.com/resources/filtering-and-browsing-results/
 			$requestParams["filter[field][0]"] = "status";
 			$requestParams["filter[operator][0]"] = "="; // Can also use "!=" here
 			$requestParams["filter[value][0]"] = "Complete"; // Can also use "Deleted" here
@@ -886,8 +933,10 @@ class Devadmin_IndexController extends Api_GlobalController
 				}
 
 				$url = "https://restapi.surveygizmo.com/v1/survey/" . $survey->external_id . "/surveyresponse" . $requestParamString;
+				$messages[] = "Connecting to " . $url;
+
+				set_time_limit(180); // Allow 3 minutes for SG response (excludes local processing time, since we reset timer below)
 				$handle = fopen($url, 'r');
-				set_time_limit(180); // Allow 3 minutes per SG response (includes local processing time)
 				$json = stream_get_contents($handle);
 
 				if ($json) {
@@ -908,53 +957,59 @@ class Devadmin_IndexController extends Api_GlobalController
 					&& $decodedJson['total_pages']
 					&& count($decodedJson['data'])
 				) {
-					if ((int) $decodedJson['total_pages'] != $totalNumberOfPages) $totalNumberOfPages = (int) $decodedJson['total_pages'];
+					// Initialize reference arrays so we don't have to repeatedly call the DB
+					if ($currentPage == 1) {
+						$messages[] = "Survey Gizmo reports " . $decodedJson['total_count'] . " responses on " . $decodedJson['total_pages'] . " pages";
 
-					// for testing:
-					if ($totalNumberOfPages > 5) $totalNumberOfPages = 5;
+						$totalNumberOfPages = (int) $decodedJson['total_pages'];
 
-					$allSurveyQuestions = new Survey_QuestionCollection();
-					$allSurveyQuestions->loadAllQuestionsForSurvey($surveyId);
+						// for testing:
+						if ($totalNumberOfPages > 5) $totalNumberOfPages = 5;
 
-					$allSurveyQuestionChoices = new Survey_QuestionChoiceCollection();
-					$allSurveyQuestionChoices->loadAllQuestionChoicesForSurvey($surveyId);
+						$allSurveyQuestions = new Survey_QuestionCollection();
+						$allSurveyQuestions->loadAllQuestionsForSurvey($surveyId);
 
-					$surveyQuestionChoices = new Survey_QuestionChoiceCollection();
+						$allSurveyQuestionChoices = new Survey_QuestionChoiceCollection();
+						$allSurveyQuestionChoices->loadAllQuestionChoicesForSurvey($surveyId);
 
-					// Prepare reference arrays to make finding questions easy
-					foreach ($allSurveyQuestions as $surveyQuestion) {
-						$questionIdReferenceArray[$surveyQuestion->id] = array("question" => $surveyQuestion, "choices" => array());
-						if ($surveyQuestion->choice_type == "multiple") {
-							$surveyQuestionChoices->loadAllQuestionChoicesForSurveyQuestion($surveyQuestion->id);
-							foreach ($surveyQuestionChoices as $surveyQuestionChoice) {
-								$comboArrayKey = $surveyQuestion->external_question_id . "-" . $surveyQuestionChoice->external_choice_id;
+						$surveyQuestionChoices = new Survey_QuestionChoiceCollection();
+
+						// Prepare reference arrays to make finding questions easy
+						foreach ($allSurveyQuestions as $surveyQuestion) {
+							$questionIdReferenceArray[$surveyQuestion->id] = array("question" => $surveyQuestion, "choices" => array());
+							if ($surveyQuestion->choice_type == "multiple") {
+								$surveyQuestionChoices->loadAllQuestionChoicesForSurveyQuestion($surveyQuestion->id);
+								foreach ($surveyQuestionChoices as $surveyQuestionChoice) {
+									$comboArrayKey = $surveyQuestion->external_question_id . "-" . $surveyQuestionChoice->external_choice_id;
+									$comboExternalIdReferenceArray[$comboArrayKey] = $surveyQuestion;
+								}
+							} else {
+								$comboArrayKey = $surveyQuestion->external_question_id . "-" . $surveyQuestion->external_pipe_choice_id;
 								$comboExternalIdReferenceArray[$comboArrayKey] = $surveyQuestion;
 							}
-						} else {
-							$comboArrayKey = $surveyQuestion->external_question_id . "-" . $surveyQuestion->external_pipe_choice_id;
-							$comboExternalIdReferenceArray[$comboArrayKey] = $surveyQuestion;
 						}
+
+						// Reference arrays for this survey's choices
+						foreach ($allSurveyQuestionChoices as $surveyQuestionChoice) {
+							$choiceExternalIdReferenceArray[$surveyQuestionChoice->external_choice_id] = $surveyQuestionChoice;
+							$choiceValueReferenceArray[$surveyQuestionChoice->value] = $surveyQuestionChoice;
+							$questionIdReferenceArray[$surveyQuestionChoice->survey_question_id]["choices"][$surveyQuestionChoice->value] = $surveyQuestionChoice;
+						}
+
+						// How the array keys can look for the responses we want to parse
+						$regexArray = array(
+							"/\[question\(([0-9]+)\), option\(([0-9]+)\)\]/",
+							"/\[question\(([0-9]+)\), option\(\"([0-9]+)-(other)\"\)\]/",
+							"/\[question\(([0-9]+)\)\]/",
+							"/\[question\(([0-9]+)\), question_pipe\(([0-9]+)\)\]/",
+							"/\[variable\(([0-9]+)\)\]/",
+							"/\[variable\(\"([0-9]+)-shown\"\)\]/",
+							"/\[variable\(([0-9]+)\), question_pipe\(([0-9]+)\)\]/",
+							"/\[variable\(\"([0-9]+)-shown\"\), question_pipe\(([0-9]+)\)\]/",
+						);
 					}
 
-					// Reference arrays for this survey's choices
-					foreach ($allSurveyQuestionChoices as $surveyQuestionChoice) {
-						$choiceExternalIdReferenceArray[$surveyQuestionChoice->external_choice_id] = $surveyQuestionChoice;
-						$choiceValueReferenceArray[$surveyQuestionChoice->value] = $surveyQuestionChoice;
-						$questionIdReferenceArray[$surveyQuestionChoice->survey_question_id]["choices"][$surveyQuestionChoice->value] = $surveyQuestionChoice;
-					}
-
-					// How the array keys can look for the responses we want to parse
-					$regexArray = array(
-						"/\[question\(([0-9]+)\), option\(([0-9]+)\)\]/",
-						"/\[question\(([0-9]+)\), option\(\"([0-9]+)-(other)\"\)\]/",
-						"/\[question\(([0-9]+)\)\]/",
-						"/\[question\(([0-9]+)\), question_pipe\(([0-9]+)\)\]/",
-						"/\[variable\(([0-9]+)\)\]/",
-						"/\[variable\(\"([0-9]+)-shown\"\)\]/",
-						"/\[variable\(([0-9]+)\), question_pipe\(([0-9]+)\)\]/",
-						"/\[variable\(\"([0-9]+)-shown\"\), question_pipe\(([0-9]+)\)\]/",
-					);
-
+					// All the responses on this page of results
 					$responsesData = $decodedJson['data'];
 
 					// Go through all the responses on this page (should be one per user)
@@ -973,12 +1028,12 @@ class Devadmin_IndexController extends Api_GlobalController
 							} elseif (strpos($answerValue, "user_id^-^") !== false) {
 								$userId = (int) substr($answerValue, 10, strpos($answerValue, "^|^")-10);
 							} elseif ($answerValue) { // Skip empty answers
-								$matches = array();
-								$matchFound = false;
-								$matchRegex = "";
-								$matchComboArrayKey = "";
-								$matchQuestionExternalId = "";
-								$matchChoiceExternalId = "";
+								$matches = array(); // array for preg_match() to write to
+								$matchFound = false; // boolean, has the answer key matched any of our regular expressions?
+								$matchRegex = ""; // The regex expression that successfully matched this answer
+								$matchQuestionExternalId = ""; // The matching question id on SG
+								$matchChoiceExternalId = ""; // The matching choice id on SG (can be for multiple choice (with multiple user choices, e.g. checkbox) or for piped questions
+								$matchComboArrayKey = ""; // either "$matchQuestionExternalId-" (note dash at the end) or "$matchQuestionExternalId-$matchChoiceExternalId"
 								foreach ($regexArray as $regex) {
 									$numberOfMatchesFound = preg_match($regex, $answerKey, $matches);
 									if ($numberOfMatchesFound) {
@@ -1002,18 +1057,17 @@ class Devadmin_IndexController extends Api_GlobalController
 
 								// This answer (within a larger response) matches one of our regular expressions, get the choice/typed in answer out of it
 								if ($matchFound) {
+									$rowsMatchingRegex++;
 
-									echo "Match found: " . $matchComboArrayKey . "<br />";
 									if (isset($comboExternalIdReferenceArray[$matchComboArrayKey])) {
 										$matchQuestion = $comboExternalIdReferenceArray[$matchComboArrayKey];
 									} else {
 										$matchQuestion = null;
-										echo "Not found in question array! :(<br />";
+										$messages[] = "Question matches regex but not found in \$comboExternalIdReferenceArray: Key = " . $answerKey;
 									}
 
 									if ($matchQuestion) {
 										$matchChoice = null;
-										$needToStoreData = false;
 										if ($otherValue || (strpos($matchRegex, "variable") === false && $matchQuestion->data_type != "none")) {
 											if (isset($questionIdReferenceArray[$matchQuestion->id]["choices"][$answerValue])) $matchChoice = $questionIdReferenceArray[$matchQuestion->id]["choices"][$answerValue];
 											else {
@@ -1028,18 +1082,23 @@ class Devadmin_IndexController extends Api_GlobalController
 													case "monetary":
 														$dataToSave[$matchQuestion->id . "-data"] = array($matchQuestion, floatval(str_replace("\$", "", $answerValue)));
 														break;
+													default:
+														$messages[] = "Dunno what to do with this row (question id " . $matchQuestion->id . " matched but unknown data type): " . $answerKey . " => " . $answerValue;
+														break;
 												}
 											}
 										} else {
 											if (strpos($matchRegex, "variable") !== false && isset($choiceExternalIdReferenceArray[$answerValue])) $matchChoice = $choiceExternalIdReferenceArray[$answerValue];
 											elseif (count($matches) >= 3 && isset($choiceExternalIdReferenceArray[$matches[2]])) $matchChoice = $choiceExternalIdReferenceArray[$matches[2]];
 											elseif (isset($choiceValueReferenceArray[$answerValue])) $matchChoice = $choiceValueReferenceArray[$answerValue];
-											else echo "Dunno what to do with this answer: " . $answerKey . " => " . $answerValue . "<br />";
+											else $messages[] = "Dunno what to do with this row: " . $answerKey . " => " . $answerValue;
 										}
 										if ($matchChoice) $dataToSave[$matchQuestion->id . "-" . $matchChoice->id] = array($matchQuestion, $matchChoice);
+									} else {
+										$messages[] = "Unexpected result with this row: " . $answerKey . " => " . $answerValue;
 									}
 								} else {
-									echo "No match found for: " . $answerKey . "<br />";
+									$rowsMatchingNoRegex++;
 								}
 							}
 						} // end processing all answers (and non-answer data) for one user's response
@@ -1067,13 +1126,18 @@ class Devadmin_IndexController extends Api_GlobalController
 											case "monetary":
 												$surveyQuestionResponse->response_decimal = $surveyQuestionResponseData[1];
 												break;
+											default:
+												$messages[] = "Survey Question Response should have data type but doesn't! Data key = " . $dataKey;
+												break;
 										}
 									} else {
 										$surveyQuestionResponse->data_type = "choice";
 										$surveyQuestionResponse->survey_question_choice_id = $surveyQuestionResponseData[1]->id;
 									}
 									$surveyQuestionResponse->save();
+									$surveyQuestionResponsesSaved++;
 								}
+
 								$surveyResponse->processing_status = "completed";
 								$surveyResponse->save();
 							}
@@ -1086,6 +1150,15 @@ class Devadmin_IndexController extends Api_GlobalController
 					$currentPage++;
 				}
 			} // Done going through all pages of results
+
+			$messages[] = "";
+			$messages[] = "Processing Complete!";
+			$messages[] = "Rows matching one of the regular expressions: " . $rowsMatchingRegex;
+			$messages[] = "survey_question_response records saved in DB: " . $surveyQuestionResponsesSaved;
+			$messages[] = "Note that rows saved is usually less than rows matching, since some data is repeated in SG's response";
+			$messages[] = "Rows not matching any of the regular expressions (non-zero expected): " . $rowsMatchingNoRegex;
+
+			$this->view->messages = $messages;
 		}
 	}
 }

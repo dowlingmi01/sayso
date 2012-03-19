@@ -12,16 +12,13 @@
 		
 	var sayso = window.sayso;
 	
-	var loginCookie = getCookie(sayso.client.meta.userLoggedInKey),
-		userUniqueId = getCookie(sayso.client.meta.uuidKey);
+	var loginCookie = getCookie(sayso.client.meta.userLoggedInKey);
 	
 	var installParam = getUrlParam('sayso-install'),
 		installCookie = getCookie('sayso-install');
 		
-	if (loginCookie && userUniqueId) {
-		sayso.client.uuid = userUniqueId;
+	if( loginCookie )
 		sayso.client.userLoggedIn = true;
-	}
 	
 	if( installParam || installCookie && sayso.client.userLoggedIn )
 		setTimeout(afterPause, 10);
@@ -96,15 +93,16 @@
 				}
 				
 				// overlay
+				var clientKeys = {};
+				for( var i = 0; i < sayso.client.meta.sendKeys.length; i++ )
+					clientKeys[sayso.client.meta.sendKeys[i]] = getCookie(sayso.client.meta.sendKeys[i]);
 
 				var ajaxOpts = {
 					url : '//' + sayso.baseDomain + '/starbar/install/' + sayso.client.name,
 					dataType : 'jsonp',
 					data : {
 						client_name : sayso.client.name,
-						client_uuid: sayso.client.uuid,
-						client_uuid_type : sayso.client.uuidType,
-						client_user_logged_in : sayso.client.userLoggedIn,
+						client_keys : clientKeys,
 						install_origination : (installParam ? installParam : installCookie),
 						user_agent_supported : browserSupported,
 						install_url : document.location.href,
@@ -142,10 +140,9 @@
 	function getCookie (find) {
 		var cookies = document.cookie.split(';');
 		for(var i = 0; i < cookies.length; i++) {
-			var nameValue = cookies[i].split('=');
-			var name = nameValue[0].trim();
+			var name = cookies[i].slice(0, cookies[i].indexOf('=')).trim();
 			if (name === find) {
-				return nameValue[1].trim();
+				return cookies[i].slice(cookies[i].indexOf('=')+1).trim();
 			}
 		}
 		return '';

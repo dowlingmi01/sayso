@@ -14,7 +14,7 @@ class Client_HellomusicController extends Client_GlobalController
 	
 	protected $_uuidCookieName = 'MyEmail';
 	protected $_loggedInCookieName = 'CHOMPUID';
-	protected $_uuidType = 'email';
+	protected $_uuidType = 'hash';
 	
 	/**
 	 * SIMULATED Hello Music Home page
@@ -25,5 +25,18 @@ class Client_HellomusicController extends Client_GlobalController
 			'screenshot' => '/client/hellomusic/images/HelloMusicScreenShot.png'
 		));
 		return parent::homeAction();
+	}
+	
+	public function loginAction () {
+		$this->_enableRenderer(new Api_Plugin_JsonPRenderer());
+		setcookie($this->_uuidCookieName, $this->uuid, mktime(0,0,0,12,31,2030), '/');
+		setrawcookie($this->_loggedInCookieName, 'NAME=xxxxxx&HMID='.md5($this->uuid).'==', mktime(0,0,0,12,31,2030), '/');
+		return $this->_resultType(true);
+	}
+	
+	public function logoutAction () {
+		$this->_enableRenderer(new Api_Plugin_JsonPRenderer());
+		setcookie($this->_loggedInCookieName, '', mktime(0, 0, 0, 1, 1, 2000), '/');
+		return $this->_resultType(true);
 	}
 }

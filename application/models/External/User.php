@@ -50,6 +50,12 @@ class External_User extends Record
 				default :
 					// do nothing for now
 			}
+			if( $this->email && !$user->email ) {
+				$email = new User_Email();
+				$email->email = $this->email;
+				$user->setEmail($email);
+				$user->save();
+			}
 		}
 		return $user;
 	}

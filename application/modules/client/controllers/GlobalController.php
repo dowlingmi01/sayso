@@ -27,7 +27,7 @@ class Client_GlobalController extends Api_GlobalController
 	public function homeAction () {
 		// this is accessed via the child controller (e.g. hellomusic)
 		$this->view->assign(array(
-			'uuid' => isset($_COOKIE[$this->_uuidCookieName]) ? $_COOKIE[$this->_uuidCookieName] : '',
+			'uuid' => isset($_COOKIE[$this->_loggedInCookieName]) && isset($_COOKIE[$this->_uuidCookieName]) ? $_COOKIE[$this->_uuidCookieName] : '',
 			'uuidType' => $this->_uuidType,
 			'userLoggedIn' => isset($_COOKIE[$this->_loggedInCookieName]) ? true : false,
 			'loggedInCookieName' => $this->_loggedInCookieName

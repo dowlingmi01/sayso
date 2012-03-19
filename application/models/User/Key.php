@@ -2,7 +2,8 @@
 
 class User_Key extends Record
 {
-	const ORIGIN_INSTALL = 100;
+	const ORIGIN_INSTALL = 100
+	    , ORIGIN_USER_STATE = 101;
 	
 	protected $_tableName = 'user_key';
 	

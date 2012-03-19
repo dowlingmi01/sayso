@@ -9,6 +9,7 @@ class Starbar_InstallController extends Api_GlobalController {
 		$externalUser->starbar_id = $starbar->id;
 		$externalUser->uuid = $this->client_uuid;
 		$externalUser->uuid_type = $this->client_uuid_type;
+		$externalUser->email = $this->client_email;
 		$externalUser->loadOrCreate();
 		
 		$install = new External_UserInstall();

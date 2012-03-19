@@ -81,11 +81,14 @@
 		
 	if( sayso.client ) {
 		ajaxData.client_name = sayso.client.name;
-		ajaxData.client_uuid = sayso.client.uuid;
-		ajaxData.client_uuid_type = sayso.client.uuidType;
-		ajaxData.client_user_logged_in = sayso.client.userLoggedIn;
+		if( sayso.client.meta && sayso.client.meta.sendKeys ) {
+			var clientKeys = {};
+			for( var i = 0; i < sayso.client.meta.sendKeys.length; i++ )
+				clientKeys[sayso.client.meta.sendKeys[i]] = getCookie(sayso.client.meta.sendKeys[i]);
+			ajaxData.client_keys = clientKeys;
+		}
 	}
-
+	
 	$SQ.ajax({
 		dataType: 'jsonp',
 		url: '//' + saysoBaseDomain + '/api/user-state/get',
@@ -200,6 +203,17 @@
 			_waitUntilJsLoaded();
 			return this;
 		};
+	}
+
+	function getCookie (find) {
+		var cookies = document.cookie.split(';');
+		for(var i = 0; i < cookies.length; i++) {
+			var name = cookies[i].slice(0, cookies[i].indexOf('=')).trim();
+			if (name === find) {
+				return cookies[i].slice(cookies[i].indexOf('=')+1).trim();
+			}
+		}
+		return '';
 	}
 
 })();

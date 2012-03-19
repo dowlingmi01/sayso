@@ -177,6 +177,10 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
 				$request->setParam(Api_Constant::USER_KEY, null);
 		} else if( $request->getParam(Api_Constant::USER_ID) )
 			$request->setParam(Api_Constant::USER_ID, null);
+		
+		if( $clientName = $request->getParam('client_name') ) {
+			Client::getInstance($clientName)->processKeys($request);
+		}
 					
 		if ($currentModule === 'api') return;
 

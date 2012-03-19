@@ -17,7 +17,7 @@ $shortName = strtolower(Zend_Controller_Front::getInstance()->getRequest()->getC
 </script>
 
 <!-- SIMULATED customer login (popup) -->
-
+<div id="login-click-area" style="position: relative; height: 115px;"></div>
 
 <div id="simulate-login" style="background: white; opacity: 1; padding: 10px; margin: auto; border: solid 2px black; width: 300px; font-family: Verdana; font-size: .8em; z-index: 10000; position: relative; display: none;">
 	<h2 style="margin: 2px;">Login <small id="simulate-login-status" style="font-size: .6em; color: green;"><?= $this->userLoggedIn ? '(logged in)' : '' ?></small></h2>
@@ -29,67 +29,30 @@ $shortName = strtolower(Zend_Controller_Front::getInstance()->getRequest()->getC
 			<input class="email" type="text" name="uuid" value="<?= $this->uuid ?>" style="width: 200px; font-size: 1.3em;" />&nbsp;<input class="submit" type="submit" name="simulate_submit" value="Login" />
 		</p>
 	</form>
+	<? if( $this->userLoggedIn ) { ?>
+		<form method="post" action="/client/<?= $shortName ?>/logout">
+			<input class="submit" type="submit" name="simulate_logout" value="Logout" />
+		</form>
+	<? } ?>
 </div>
 
 <?= $this->partial($shortName . '/embed.phtml', array('shortName' => $shortName)) ?>
-
+<script src="/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="/js/jquery.form.min.js" type="text/javascript"/></script>
 <script type="text/javascript">
 
+	// login popup
 	sayso.client.loginCallback = function () {
-
-		// already logged in
-		if ('<?= $this->userLoggedIn ?>'.length) return;
-		
-		var sayso = window.sayso;
-
-		if (!sayso.functions) {
-			sayso.functions = {
-				jsLoadTimer : function (){function d(){i++<=b&&(c=setTimeout(e,f))}function e(){try{if(eval(g)){c&&clearTimeout(c);try{h()}catch(a){sayso.warn(a)}}else d()}catch(b){d()}}var i=0,b=400,f=50,g="",h=null,c=null;this.setMaxCount=function(a){b=a};this.setInterval=function(a){f=a};this.setLocalReference=function(){};this.start=function(a,b){g=a;h=b;e()}},
-				getCookie : function (d){for(var b=document.cookie.split(";"),a=0;a<b.length;a++){var c=b[a].split("=");if(c[0].trim()===d)return c[1].trim()}return""},
-				setCookie : function (d,a,b){var c=new Date;b&&c.setDate(c.getDate()+b);a=escape(a)+(b?"; expires="+c.toUTCString():"")+"; path=/";document.cookie=d+"="+a},
-				getUrlParam : function (c){if(!this.params){this.params={};for(var a,b=/\+/g,d=/([^&=]+)=?([^&]*)/g,e=window.location.search.substring(1);a=d.exec(e);)this.params[decodeURIComponent(a[1].replace(b," "))]=decodeURIComponent(a[2].replace(b," "))}return this.params[c]}
-			};  
+		$('#simulate-login').show();
+	}		
+	// ajax form
+	$('#simulate-login form').ajaxForm({
+		url : $(this).attr('action'),
+		type : 'post',
+		dataType : 'jsonp',
+		success : function (response) {
+			window.location.reload();
 		}
-
-		var f = sayso.functions;
-		
-		var jQueryInclude = document.createElement('script');		 
-		jQueryInclude.src = '//' + sayso.baseDomain + '/js/starbar/jquery-1.7.1.min.js';
-		document.getElementsByTagName('body')[0].appendChild(jQueryInclude);
-		
-
-		var jQueryTimer = new f.jsLoadTimer();
-		jQueryTimer.start('window.$SQ', function () { // note: jquery is loaded in the embed script
-
-			// SIMULATED login form
-			
-			// since jquery.form is not namespaced, we transfer over the ref
-			// back to jQuery/$ for it to use. This is safe in our simulated environ.
-			jQuery = $ = $SQ; 
-			
-			var jQueryForm = document.createElement('script');		 
-			jQueryForm.src = '//' + sayso.baseDomain + '/js/jquery.form.min.js';
-			document.getElementsByTagName('body')[0].appendChild(jQueryForm);
-	
-			var timer2 = new f.jsLoadTimer();
-			timer2.start('typeof $.fn.ajaxForm === "function"', function () {
-				
-				// login popup
-					$('#simulate-login').show();
-					
-					// ajax form
-					$('#simulate-login form').ajaxForm({
-						url : $(this).attr('action'),
-						type : 'post',
-						dataType : 'jsonp',
-						success : function (response) {
-							window.location.reload();
-						}
-					});
-			});
-		});
-
-		
-		
-	};
+	});
+	$('#login-click-area').on('click', function(){$('#simulate-login').toggle();});
 </script>

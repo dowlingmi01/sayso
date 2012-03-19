@@ -5,27 +5,54 @@ require_once APPLICATION_PATH . '/modules/api/controllers/GlobalController.php';
 class Api_UserStateController extends Api_GlobalController
 {
 	public function getAction () {
+		$starbar = new Starbar();
+		$newToken = false;
+		
+		if ($this->client_user_logged_in) {
+			$this->_validateRequiredParameters(array('client_name', 'client_uuid', 'client_uuid_type'));
+			
+			$externalUser = new External_User();
+			$starbar->loadDataByUniqueFields( array('short_name' => $this->client_name));
+			$externalUser->starbar_id = $starbar->id;
+			$externalUser->uuid = $this->client_uuid;
+			$externalUser->uuid_type = $this->client_uuid_type;
+			$externalUser->email = $this->client_email;
+			$externalUser->loadOrCreate();
+			
+			$user = $externalUser->getUser();
+			
+			if( $externalUser->user_id != $this->user_id ) {
+				$userKey = new User_Key();
+				$userKey->user_id = $user->getId();
+				$userKey->token = User_Key::getRandomToken();
+				$userKey->origin = User_Key::ORIGIN_USER_STATE;
+				$userKey->save();
+				
+				header('P3P: CP="NOI ADM DEV PSAi COM NAV OUR OTR STP IND DEM"');
+				setcookie('user_key', $userKey->token, time()+(86400*365), '/', null, null, true);
+				
+				$this->user_id = $externalUser->user_id;
+				$this->user_key = $userKey->token;
+				$newToken = true;
+			}
+		}
+
+		$this->_validateRequiredParameters(array('user_id'));
+		
 		$userState = new User_State();
 
-		/*
-		@todo add caching?
-		$cache = Api_Cache::getInstance('User_State_'.$this->user_id, Api_Cache::LIFETIME_HOUR);
-		if ($cache->test()) {
-			$userState = $cache->load();
-		} else {
-			$userState->loadDataByUniqueFields(array('user_id' => $this->user_id));
-			$cache->save($userState); // <-- note 'studies' tag used for cleaning
-		}*/
 		$userState->loadDataByUniqueFields(array('user_id' => $this->user_id));
-		
+				
 		if (!$userState->id) { // This must be the first install for this user
-			$install = new External_UserInstall();
-			$install->loadDataByUniqueFields(array('token'=>$this->user_key));
-			$install->first_access_ts = new Zend_Db_Expr('now()');
-			$install->save();
+			if( !$newToken ) {
+				$install = new External_UserInstall();
+				$install->loadDataByUniqueFields(array('token'=>$this->user_key));
+				$install->first_access_ts = new Zend_Db_Expr('now()');
+				$install->save();
 
-			$externalUser = new External_User();
-			$externalUser->loadData($install->external_user_id);
+				$externalUser = new External_User();
+				$externalUser->loadData($install->external_user_id);
+			}
 
 			$starbarUserMap = new Starbar_UserMap();
 			$starbarUserMap->user_id = $this->user_id;
@@ -34,7 +61,6 @@ class Api_UserStateController extends Api_GlobalController
 			$starbarUserMap->save();
 
 			$gamer = Gamer::create($this->user_id, $externalUser->starbar_id);
-			$starbar = new Starbar();
 			$starbar->loadData($externalUser->starbar_id);
 			$game = Game_Starbar::create($gamer, $this->_request, $starbar);
 			$game->install();

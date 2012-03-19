@@ -37,17 +37,11 @@ class Starbar_RemoteController extends Api_GlobalController
 	 */
 	public function indexAction () {
 		$this->_acceptIdParameter('starbar_id');
-		$this->_validateRequiredParameters(array('starbar_id', 'user_id', 'user_key', 'auth_key'));
+		$this->_validateRequiredParameters(array('starbar_id', 'user_id'));
 
 		$starbar = new Starbar();
+		$starbar->loadData($this->starbar_id);
 		$this->view->starbar = $starbar;
-
-		if ($this->starbar_id) {
-			$starbar->loadData($this->starbar_id);
-		} else {
-			$starbar->loadDataByUniqueFields(array('short_name' => $this->short_name));
-			$this->starbar_id = $starbar->getId();
-		}
 
 		$starbarUserMap = new Starbar_UserMap();
 		$starbarUserMap->loadDataByUniqueFields(array('user_id' => $this->user_id, 'starbar_id' => $starbar->getId()));
@@ -56,42 +50,6 @@ class Starbar_RemoteController extends Api_GlobalController
 
 		if ($this->visibility) {
 			$starbar->setVisibility($this->visibility);
-		}
-
-		if ($this->client_user_logged_in) {
-
-			if ($starbar->short_name !== $this->client_name) {
-				// customer site change!
-				// @todo handle this scenario
-			}
-			if ($starbar->short_name === $this->client_name) {
-				// we are on the customer's web site (must be if these params are present)
-				// client vars: client_name, client_uuid, client_uuid_type
-
-				$externalUserData = Db_Pdo::fetch('SELECT * FROM external_user WHERE user_id = ?', $this->user_id);
-				// so verify that the user id matches the uuid
-				// if NOT, then switch users
-				if ($externalUserData['uuid'] !== $this->client_uuid) {
-					// user change! (on same browser/computer)
-					// create/update external user
-					$externalUser = new External_User();
-					$externalUser->uuid = $this->client_uuid; // unique
-					$externalUser->uuid_type = $this->client_uuid_type;
-					$externalUser->starbar_id = $starbar->getId(); // unique
-					// note: we also treat this as a new "install":
-					$externalUser->install_ip_address = $_SERVER['REMOTE_ADDR'];
-					$externalUser->install_user_agent = $_SERVER['HTTP_USER_AGENT'];
-					$externalUser->install_begin_time = new Zend_Db_Expr('now()');
-					$externalUser->save(); // <-- inserts/updates based on uniques
-
-					return $this->_forward(
-						'post-install-deliver',
-						null,
-						null,
-						array('external_user' => $externalUser)
-					);
-				}
-			}
 		}
 
 		$user = new User();

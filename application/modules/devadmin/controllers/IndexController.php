@@ -388,10 +388,10 @@ class Devadmin_IndexController extends Api_GlobalController
 			$newStudy->study_id = $tagType . " AD: " . $tag;
 			$newStudy->size = 100;
 			$newStudy->size_minimum = 1;
-			$newStudy->begin_date = time();
-			$newStudy->end_date = strtotime("+3 months");
-			$newStudy->is_stopped = false;
-			$newStudy->click_track = true;
+			$newStudy->begin_date = new Zend_Db_Expr('now()');
+			$newStudy->end_date = new Zend_Db_Expr('date_add(now(), interval 3 month)');
+			$newStudy->is_stopped = 0;
+			$newStudy->click_track = 1;
 			$newStudy->save();
 
 			$newStudyCell = new Study_Cell();
@@ -460,24 +460,26 @@ class Devadmin_IndexController extends Api_GlobalController
 		$currentStudies = new StudyCollection();
 		$currentStudies->loadAllTestStudies();
 
-		$commaDelimitedStudyIdList = "";
-		foreach($currentStudies AS $study) {
-			if ($commaDelimitedStudyIdList) $commaDelimitedStudyIdList = $commaDelimitedStudyIdList . ",";
-			$commaDelimitedStudyIdList = $commaDelimitedStudyIdList . $study->id;
+		if( $currentStudies->count() ) {
+			$commaDelimitedStudyIdList = "";
+			foreach($currentStudies AS $study) {
+				if ($commaDelimitedStudyIdList) $commaDelimitedStudyIdList = $commaDelimitedStudyIdList . ",";
+				$commaDelimitedStudyIdList = $commaDelimitedStudyIdList . $study->id;
+			}
+
+			$sql = "
+				SELECT sd.domain
+				FROM study_tag st
+					LEFT JOIN study_tag_domain_map stdm ON st.id = stdm.tag_id
+					LEFT JOIN study_domain sd ON sd.id = stdm.domain_id
+				WHERE st.study_id IN (" . $commaDelimitedStudyIdList . ")
+				ORDER BY FIND_IN_SET(st.study_id, '" . $commaDelimitedStudyIdList . "')
+			";
+			$currentDomains = Db_Pdo::fetchAll($sql);
+			$this->view->current_domains = $currentDomains;
 		}
 
-		$sql = "
-			SELECT sd.domain
-			FROM study_tag st
-				LEFT JOIN study_tag_domain_map stdm ON st.id = stdm.tag_id
-				LEFT JOIN study_domain sd ON sd.id = stdm.domain_id
-			WHERE st.study_id IN (" . $commaDelimitedStudyIdList . ")
-			ORDER BY FIND_IN_SET(st.study_id, '" . $commaDelimitedStudyIdList . "')
-		";
-		$currentDomains = Db_Pdo::fetchAll($sql);
-
 		$this->view->current_studies = $currentStudies;
-		$this->view->current_domains = $currentDomains;
 	}
 
 

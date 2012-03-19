@@ -520,9 +520,11 @@ class Starbar_ContentController extends Api_GlobalController
 			/* Get temporary credentials and set the callback URL. */
 			$twitterRequestToken = $connection->getRequestToken($callbackUrl);
 
-			/* Save temporary credentials to session. */
-			$_SESSION['oauth_token'] = $twitterRequestToken['oauth_token'];
-			$_SESSION['oauth_token_secret'] = $twitterRequestToken['oauth_token_secret'];
+			/* Save temporary credentials to cache. */
+			$oauth['token'] = $twitterRequestToken['oauth_token'];
+			$oauth['token_secret'] = $twitterRequestToken['oauth_token_secret'];
+			$cache = Api_Cache::getInstance('Twitter_OAuth_'.$this->user_key, Api_Cache::LIFETIME_HOUR);
+			$cache->save($oauth);
 
 			if ($twitterRequestToken['oauth_callback_confirmed'] == 'true') $success = true;
 		} catch (Exception $e) {}
@@ -540,44 +542,44 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->_usingJsonPRenderer = false;
 
 		$config = Api_Registry::getConfig();
-		$request = $this->getRequest();
+		
+		$cache = Api_Cache::getInstance('Twitter_OAuth_'.$this->user_key, Api_Cache::LIFETIME_HOUR);
+		
+		if( $cache->test() && ($oauth = $cache->load()) && $this->oauth_verifier && $this->oauth_token == $oauth['token']) {
+			try {
+				/* Create TwitterOAuth object with app key/secret and token key/secret from default phase */
+				$connection = new TwitterOAuth($config->twitter->consumer_key, $config->twitter->consumer_secret, $oaut['token'], $oauth['token_secret']);
 
-		/* If the oauth_token is old redirect to the connect page. */
-		if ($request->getParam('oauth_verifier') && $_SESSION['oauth_token'] !== $request->getParam('oauth_token')) {
-			$this->_redirect("/starbar/content/twitter-connect-redirect?user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key);
-		}
+				/* Request access tokens from twitter */
+				$accessToken = $connection->getAccessToken($this->oauth_verifier);
 
-		try {
-			/* Create TwitteroAuth object with app key/secret and token key/secret from default phase */
-			$connection = new TwitterOAuth($config->twitter->consumer_key, $config->twitter->consumer_secret, $_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
+				if ($this->user_id) {
+					$userSocial = new User_Social();
+					$userSocial->user_id = $this->user_id;
+					$userSocial->provider = "twitter";
+					$userSocial->identifier = $accessToken['user_id'];
+					$userSocial->username = $accessToken['screen_name'];
+					$userSocial->save();
 
-			/* Request access tokens from twitter */
-			$accessToken = $connection->getAccessToken($request->getParam('oauth_verifier'));
+					Game_Starbar::getInstance()->associateSocialNetwork($userSocial);
 
-			if ($this->user_id) {
-				$userSocial = new User_Social();
-				$userSocial->user_id = $this->user_id;
-				$userSocial->provider = "twitter";
-				$userSocial->identifier = $accessToken['user_id'];
-				$userSocial->username = $accessToken['screen_name'];
-				$userSocial->save();
+					// Show user congrats notification
+					$message = new Notification_Message();
+					$message->loadDataByUniqueFields(array('short_name' => 'TW Account Connected'));
 
-				Game_Starbar::getInstance()->associateSocialNetwork($userSocial);
-
-				// Show user congrats notification
-				$message = new Notification_Message();
-				$message->loadDataByUniqueFields(array('short_name' => 'TW Account Connected'));
-
-				if ($message->id) {
-					$messageUserMap = new Notification_MessageUserMap();
-					$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, false);
+					if ($message->id) {
+						$messageUserMap = new Notification_MessageUserMap();
+						$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, false);
+					}
 				}
-			}
 
-			$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key.'&auth_key='.$this->auth_key);
-		} catch (Exception $e) {}
+				$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key.'&auth_key='.$this->auth_key);
+				return;
+			} catch (Exception $e) {}
 
-		$this->_redirect('/starbar/content/twitter-fail?user_id='.$this->user_id.'&user_key='.$this->user_key.'&auth_key='.$this->auth_key);
+			$this->_redirect('/starbar/content/twitter-fail?user_id='.$this->user_id.'&user_key='.$this->user_key.'&auth_key='.$this->auth_key);
+		} else
+			$this->_redirect("/starbar/content/twitter-connect-redirect?user_id=".$this->user_id."&user_key=".$this->user_key."&auth_key=".$this->auth_key);
 	}
 
 	public function onboardAction ()

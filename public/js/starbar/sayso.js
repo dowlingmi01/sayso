@@ -629,7 +629,7 @@ $SQ(function () {
 
 			adTargets[adTargetId] = adTarget;
 
-			$SQ.ajaxWithAuth({
+			ajax({
 				url: '//'+sayso.baseDomain+'/api/user-state/update-ad-targets?renderer=jsonp',
 				data: {
 					'ad_targets': $SQ.JSON.stringify(adTargets)

@@ -291,11 +291,11 @@ $SQ(function () {
 
 	log('ADjuster ad handling enabled');
 
+	var adTargets = $SQ.JSON.parse(sayso.study.adTargets);
+	if (!adTargets) adTargets = {};
+
 	if (!inIframe) {
 		// ADjuster Click-Thrus ------------------------
-
-		var adTargets = $SQ.JSON.parse(sayso.study.adTargets);
-		if (!adTargets) adTargets = {};
 
 		log('Ad Targets: ', adTargets);
 		// { creative12 : { urlSegment : 'foo/diamonds', type : 'creative', type_id : 12 }, campaign234 : { etc

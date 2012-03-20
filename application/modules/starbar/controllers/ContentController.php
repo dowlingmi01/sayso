@@ -548,7 +548,7 @@ class Starbar_ContentController extends Api_GlobalController
 		if( $cache->test() && ($oauth = $cache->load()) && $this->oauth_verifier && $this->oauth_token == $oauth['token']) {
 			try {
 				/* Create TwitterOAuth object with app key/secret and token key/secret from default phase */
-				$connection = new TwitterOAuth($config->twitter->consumer_key, $config->twitter->consumer_secret, $oaut['token'], $oauth['token_secret']);
+				$connection = new TwitterOAuth($config->twitter->consumer_key, $config->twitter->consumer_secret, $oauth['token'], $oauth['token_secret']);
 
 				/* Request access tokens from twitter */
 				$accessToken = $connection->getAccessToken($this->oauth_verifier);

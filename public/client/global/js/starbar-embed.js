@@ -22,7 +22,7 @@
 		sayso.client.userLoggedIn = true;
 	
 	if( installParam || installCookie && sayso.client.userLoggedIn )
-		setTimeout(afterPause, 10);
+		setTimeout(afterPause, 75);
 
 	function afterPause() { if( !window.$SaySoExtension ) {
 		if (!sayso.baseDomain) {

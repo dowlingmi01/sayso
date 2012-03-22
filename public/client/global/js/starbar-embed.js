@@ -15,7 +15,8 @@
 	var loginCookie = getCookie(sayso.client.meta.userLoggedInKey);
 	
 	var installParam = getUrlParam('sayso-install'),
-		installCookie = getCookie('sayso-install');
+		installCookie = getCookie('sayso-install'),
+		referrerCookie = getCookie('sayso-referrer');
 		
 	if( loginCookie )
 		sayso.client.userLoggedIn = true;
@@ -106,7 +107,7 @@
 						install_origination : (installParam ? installParam : installCookie),
 						user_agent_supported : browserSupported,
 						install_url : document.location.href,
-						referrer : document.referrer,
+						referrer : (installParam ? document.referrer : referrerCookie),
 						},
 					success : function (response) {
 						if( browserSupported ) {
@@ -114,8 +115,10 @@
 								// overlay
 								container.html(response.data.html);
 								container.fadeTo('slow', 1);
-								if( installCookie )
+								if( installCookie ) {
 									setCookie('sayso-install', null, -10);
+									setCookie('sayso-referrer', null, -10);
+								}
 							}, 1000);
 						}
 					}
@@ -125,6 +128,7 @@
 		// end if userLoggedIn
 		} else if( browserSupported && installParam ) {
 			setCookie('sayso-install', installParam, 1);
+			setCookie('sayso-referrer', document.referrer, 1);
 			alert('Please log in first to install the Say.So app');
 			if (sayso.client.loginCallback)
 				sayso.client.loginCallback();

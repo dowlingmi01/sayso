@@ -407,7 +407,10 @@ class Starbar_ContentController extends Api_GlobalController
 		$redirectUrl .= "&xdm_c=" . $this->xdm_c;
 		$redirectUrl .= "&xdm_e=" . $this->xdm_e;
 		$redirectUrl .= "&xdm_p=" . $this->xdm_p;
-		if (APPLICATION_ENV != "production") $redirectUrl .= "&base_domain=" . BASE_DOMAIN;
+		if (APPLICATION_ENV != "production") {
+			$redirectUrl .= "&base_domain=" . BASE_DOMAIN;
+			$redirectUrl .= "&testing=1";
+		}
 
 		$this->_redirect($redirectUrl);
 	}

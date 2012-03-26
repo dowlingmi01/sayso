@@ -922,9 +922,9 @@ class Devadmin_IndexController extends Api_GlobalController
 			$requestParams["resultsperpage"] = 25;
 
 			// For more on SG filters: http://developer.surveygizmo.com/resources/filtering-and-browsing-results/
-			$requestParams["filter[field][0]"] = "status";
-			$requestParams["filter[operator][0]"] = "="; // Can also use "!=" here
-			$requestParams["filter[value][0]"] = "Complete"; // Can also use "Deleted" here
+			// $requestParams["filter[field][0]"] = "status";
+			// $requestParams["filter[operator][0]"] = "="; // Can also use "!=" here
+			// $requestParams["filter[value][0]"] = "Complete"; // Can also use "Deleted" here
 
 			while ($currentPage <= $totalNumberOfPages) {
 				$requestParams["page"] = $currentPage;
@@ -1029,6 +1029,16 @@ class Devadmin_IndexController extends Api_GlobalController
 						foreach ($responseData as $answerKey => $answerValue) {
 							if ($answerKey == "id") {
 								$externalResponseId = (int) $answerValue;
+							} elseif ($answerKey == "status") {
+								if ($answerValue == "Complete" || $answerValue == "Disqualified") {
+									continue;
+								} else {
+									// Skip Partial (or other?) responses
+									$externalResponseId = 0;
+									$userId = 0;
+									$dataToSave = array();
+									break;
+								}
 							// Look for the user_id in the bundle_of_joy, which starts like this: "user_id^-^123^|^..."
 							} elseif (strpos($answerValue, "user_id^-^") !== false) {
 								$userId = (int) substr($answerValue, 10, strpos($answerValue, "^|^")-10);
@@ -1111,7 +1121,7 @@ class Devadmin_IndexController extends Api_GlobalController
 						// $dataToSave has been collected... save it!
 						if ($externalResponseId && $userId && count($dataToSave)) {
 							$surveyResponse = new Survey_Response();
-							$surveyResponse->loadDataByUniqueFields(array("user_id" => $userId, "survey_id" => $survey->id, "status" => "completed", "processing_status" => "pending"));
+							$surveyResponse->loadDataByUniqueFields(array("user_id" => $userId, "survey_id" => $survey->id, "processing_status" => "pending"));
 
 							if ($surveyResponse->id) {
 								foreach ($dataToSave as $dataKey => $surveyQuestionResponseData) {

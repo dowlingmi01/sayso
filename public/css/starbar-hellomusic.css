@@ -310,82 +310,6 @@
 }
 
 
-/* REUSABLE: user level box and user score */
-
-#sayso-starbar #starbar-player-console .sb_user-level-box{
-	height: 27px;
-	position: relative;
-	display: block;
-	margin: 0px 0px 0px 0px;
-}
-
-#sayso-starbar #starbar-player-console .sb_user-points-box{
-	height: 30px;
-	position: relative;
-	display: block;
-	padding: 12px 0px 0px 0px;
-}
-
-#sayso-starbar #starbar-player-console #starbar-level .sb_user-points-box{
-	width: 75px;
-}
-
-#sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-star{
-	position: absolute;
-	z-index: 1000;
-	top: -5px;
-	left: 0;
-	background-image: url('../images/hellomusic/img_star.png');
-	background-repeat: no-repeat;
-	width: 27px;
-	height: 27px;
-}
-
-#sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-note{
-	position: absolute;
-	z-index: 1000;
-	top: -5px;
-	left: 0px;
-	background-image: url('../images/hellomusic/img_note_sm.png');
-	background-repeat: no-repeat;
-	width: 14px;
-	height: 20px;
-}
-
-#sayso-starbar #starbar-player-console .sb_mini-note-reward, #sayso-starbar-embed .sb_mini-note-reward {
-	background-image: url('../images/hellomusic/img_note_tn.png');
-	background-repeat: no-repeat;
-	background-position: 0px 3px;
-	padding: 5px 0 3px 13px;
-	height: 14px;
-	font-size: 10px;
-	margin: 0 3px 0 3px;
-	color: black;
-	float: left;
-}
-
-#sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgNote{
-	position: absolute;
-	z-index: 1000;
-	top: 2px;
-	left: 0;
-	height: 37px;
-}
-
-#sayso-starbar .sb_user-level-box .sb_progress_bar,
-#sayso-starbar .sb_user-points-box .sb_progress_bar{
-	border: 2px solid #fff;
-	margin: 5px 3px 0px 13px;
-	position: relative;
-	-moz-box-shadow: 0px 0px 2px #666;
-	-webkit-box-shadow: 0px 0px 2px #666;
-	box-shadow: 0px 0px 2px #666;
-}
-
-#sayso-starbar .sb_user-level-box .sb_progress_bar .sb_progressBarValue{
-	top: 1px;
-}
-
 /* JQUERY OVERRIDES */
 
 
@@ -403,6 +327,7 @@
 #sayso-starbar h2.sb_title,
 #sayso-starbar #starbar-player-console .sb_outlineList li h3,
 #sayso-starbar #starbar-player-console #starbar-type .sb_content .sb_popBox a,
+#sayso-starbar #sb_popBox_user-profile .sb_currency_balance,
 #sayso-starbar .sb_rewardItem .sb_rewardHeader{
 	color: #0081c5;
 }
@@ -601,6 +526,82 @@
 	position: absolute;
 	bottom: 5px;
 	right: 5px;
+}
+
+/* REUSABLE: user level box and user score */
+
+#sayso-starbar #starbar-player-console .sb_user-level-box{
+	height: 27px;
+	position: relative;
+	display: block;
+	margin: 0px 0px 0px 0px;
+}
+
+#sayso-starbar #starbar-player-console .sb_user-points-box{
+	height: 30px;
+	position: relative;
+	display: block;
+	padding: 12px 0px 0px 0px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-level .sb_user-points-box{
+	width: 75px;
+}
+
+#sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-star{
+	position: absolute;
+	z-index: 1000;
+	top: -5px;
+	left: 0;
+	background-image: url('../images/hellomusic/img_star.png');
+	background-repeat: no-repeat;
+	width: 27px;
+	height: 27px;
+}
+
+#sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-note{
+	position: absolute;
+	z-index: 1000;
+	top: -5px;
+	left: 0px;
+	background-image: url('../images/hellomusic/img_note_sm.png');
+	background-repeat: no-repeat;
+	width: 14px;
+	height: 20px;
+}
+
+#sayso-starbar #starbar-player-console span.sb_mini-note-reward, #sayso-starbar-embed span.sb_mini-note-reward, #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li span.sb_mini-note-reward {
+	background-image: url('../images/hellomusic/img_note_tn.png');
+	background-repeat: no-repeat;
+	background-position: 0px 3px;
+	padding: 5px 0 3px 13px;
+	height: 14px;
+	font-size: 10px;
+	margin: 0 3px 0 3px;
+	color: black;
+	float: left;
+}
+
+#sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgNote{
+	position: absolute;
+	z-index: 1000;
+	top: 2px;
+	left: 0;
+	height: 37px;
+}
+
+#sayso-starbar .sb_user-level-box .sb_progress_bar,
+#sayso-starbar .sb_user-points-box .sb_progress_bar{
+	border: 2px solid #fff;
+	margin: 5px 3px 0px 13px;
+	position: relative;
+	-moz-box-shadow: 0px 0px 2px #666;
+	-webkit-box-shadow: 0px 0px 2px #666;
+	box-shadow: 0px 0px 2px #666;
+}
+
+#sayso-starbar .sb_user-level-box .sb_progress_bar .sb_progressBarValue{
+	top: 1px;
 }
 
 /* user level */

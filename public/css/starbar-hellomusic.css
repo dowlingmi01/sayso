@@ -524,7 +524,12 @@
 
 #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealInfo p{
 	padding: 7px;
+	color: white;
 	position: relative;
+}
+
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li span{
+	color: white;
 }
 
 #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li img.sb_dealImage{
@@ -543,7 +548,6 @@
 	display: block;
 	padding: 4px;
 	text-align: right;
-	color: #fff;
 	text-transform: uppercase;
 }
 #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealStatusBG{

@@ -15,7 +15,7 @@
 
 	// jQuery
 	$SQ = window.$SQ;
-	
+
 	// Insert the starbar container
  	if ($SQ('#sayso-starbar').length < 1)
  		$SQ('body').append('<div id="sayso-starbar" style="position: fixed; left: 0px; bottom: 0px; width: 100%; background: none; margin-bottom: -3px; z-index: 9999;"></div>');
@@ -56,57 +56,23 @@
 		sayso.placeholderSupportMissing = false;
 	}
 
-	// fix FLASH elements!
-	$SQ('embed[src*=".swf"]').each(function(index) {
-		$SQembed = $SQ(this);
-
-		if ($SQembed.attr('id') == 'sm2movie') return true; // no fix needed, go to next <embed>
-
-		$SQembed.css('z-index', '9998 !important');
-		if ($SQembed.attr('wmode') != 'transparent' && $SQembed.attr('wmode') != 'opaque') {
-			$SQembed.attr('wmode', 'transparent');
-			newElem = $SQembed.clone(true, true);
-			$SQembed.replaceWith(newElem);
-		}
-	});
-
-	// fix FLASH elements for IE!
-	if (ieVersion > -1) {
-		$SQ('object').each(function(index) {
-			$SQobject = $SQ(this);
-			if ($SQobject.attr('id') == 'sm2movie' || $SQobject.attr('id') == 'FS') return true; // no fix needed, go to next <object>
-			$SQwmodeParam = $SQ('param[name="wmode"]', $SQobject);
-			if ($SQwmodeParam.length == 1) {
-				if ($SQwmodeParam.attr('value') == 'transparent' || $SQwmodeParam.attr('value') == 'opaque') {
-					return true; // no fix needed, go to next <object>
-				} else {
-					$SQwmodeParam.attr('value', 'transparent');
-				}
-			} else {
-				// Check if this <object> is flash, if so add the wmode parameter
-				$SQmovieParam = $SQ('param[name="movie"]', $SQobject);
-				if ($SQmovieParam.length == 1 && $SQmovieParam.attr('value').match(/.swf/)) {
-					newParam = document.createElement('param');
-					newParam.setAttribute('name', 'wmode');
-					newParam.setAttribute('value', 'transparent');
-					$SQobject.append(newParam);
-				} else {
-					return true; // not flash, go to next <object>
-				}
-			}
-			$SQobject.css('z-index', '9998 !important');
-
-			container = $SQobject.parent();
-			newElem = $SQobject.clone(true);
-			$SQobject.remove();
-			container.html(newElem);
-		});
-	}
-
+	fixFlashElements();
 	loadStarbar();
 
-	function loadStarbar () {
+	timeSpentFixingFlashSoFar = 0;
+	timeBetweenFlashFixes = 500;
+	maximumTimeToWaitForFlashToLoad = 5000; // 5 seconds
+	$SQ.doTimeout('flashFixer', timeBetweenFlashFixes, function () {
+		if (timeSpentFixingFlashSoFar > maximumTimeToWaitForFlashToLoad) {
+			return false; // stop the loop
+		}
+		timeSpentFixingFlashSoFar += timeBetweenFlashFixes;
+		fixFlashElements();
+		return true; // keep doTimeout schedule going
+	});
 
+
+	function loadStarbar () {
 
 		if ($SQ('embed[type*="pdf"]').length > 0) return; // Don't load on Google Docs
 
@@ -339,5 +305,59 @@
 			_callback = callback;
 			_waitUntilCssLoaded();
 		};
+	}
+
+	function fixFlashElements () {
+		// fix <embed> FLASH elements!
+		$SQ('embed[src*=".swf"]').not('.saysofixed').each(function(index) {
+			$SQembed = $SQ(this);
+
+			if ($SQembed.attr('id') == 'sm2movie') return true; // no fix needed, go to next <embed>
+
+			$SQembed.css('z-index', '9998 !important');
+			if ($SQembed.attr('wmode') != 'transparent' && $SQembed.attr('wmode') != 'opaque') {
+				$SQembed.attr('wmode', 'transparent');
+				newElem = $SQembed.clone(true, true);
+				newElem.addClass('saysofixed');
+				$SQembed.replaceWith(newElem);
+			}
+		});
+
+		// fix <object> FLASH elements!
+		$SQ('object').not('.saysofixed').each(function(index) {
+			$SQobject = $SQ(this);
+			if ($SQobject.attr('id') == 'sm2movie' || $SQobject.attr('id') == 'FS') return true; // no fix needed, go to next <object>
+			$SQwmodeParam = $SQ('param[name="wmode"]', $SQobject);
+			if ($SQwmodeParam.length == 1) {
+				if ($SQwmodeParam.attr('value') == 'transparent' || $SQwmodeParam.attr('value') == 'opaque') {
+					return true; // no fix needed, go to next <object>
+				} else {
+					$SQwmodeParam.attr('value', 'transparent');
+				}
+			} else {
+				// Check if this <object> is flash, if so add the wmode parameter
+				$SQmovieParam = $SQ('param[name="movie"]', $SQobject);
+				if (($SQmovieParam.length == 1 && $SQmovieParam.attr('value').match(/.swf/)) || $SQobject.attr('type').match(/flash/)) {
+					newParam = document.createElement('param');
+					newParam.setAttribute('name', 'wmode');
+					newParam.setAttribute('value', 'transparent');
+					$SQobject.append(newParam);
+				} else {
+					return true; // not flash, go to next <object>
+				}
+			}
+			$SQobject.css('z-index', '9998 !important');
+
+			container = $SQobject.parent();
+			newElem = $SQobject.clone(true);
+			newElem.addClass('saysofixed');
+			elemBeforeObject = $SQobject.prev();
+			$SQobject.remove();
+			if (elemBeforeObject.length != 0) {
+				newElem.insertAfter(elemBeforeObject);
+			} else {
+				container.prepend(newElem);
+			}
+		});
 	}
 })();

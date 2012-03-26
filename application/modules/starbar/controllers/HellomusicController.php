@@ -5,11 +5,10 @@ require_once APPLICATION_PATH . '/modules/starbar/controllers/ContentController.
 class Starbar_HellomusicController extends Starbar_ContentController
 {
 	public function postDispatch() {
+		parent::postDispatch();
 		if (!$this->_usingJsonPRenderer) {
 			$this->view->headLink()->appendStylesheet('/css/starbar-hellomusic.css');
 		}
-
-		parent::postDispatch();
 	}
 
 	// Daily deals is probably unique to each starbar

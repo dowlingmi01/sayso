@@ -501,7 +501,7 @@ class Devadmin_IndexController extends Api_GlobalController
 		$surveyQuestionsSaved = 0;
 		$surveyQuestionChoicesSaved = 0;
 
-		if ($survey->id && $survey->external_id) {
+		if ($survey->id && $survey->external_id && $survey->processing_status == "pending") {
 			$sgUser = $config->surveyGizmo->api->username;
 			$sgPass = $config->surveyGizmo->api->password;
 
@@ -567,6 +567,8 @@ class Devadmin_IndexController extends Api_GlobalController
 				if ($surveyType == "table" && isset($questionData['properties']['piped_from']) && $questionData['properties']['piped_from']) {
 
 					$pipedFrom = (int) $questionData['properties']['piped_from'];
+					// The question that was piped from should have already been processed, and therefore should exist in the
+					// $questionArray that we create as we process the questions from SG
 					if ($pipedFrom && isset($questionArray[$pipedFrom]) && isset($questionArray[$pipedFrom]->option_array)) {
 						$pipedFromQuestion = $questionArray[$pipedFrom];
 
@@ -871,6 +873,7 @@ class Devadmin_IndexController extends Api_GlobalController
 				if (!$survey->display_number_of_questions) $survey->display_number_of_questions = $survey->number_of_questions . "";
 			}
 
+			$survey->processing_status = "completed";
 			$survey->save();
 
 			$messages[] = "";
@@ -966,7 +969,7 @@ class Devadmin_IndexController extends Api_GlobalController
 						$totalNumberOfPages = (int) $decodedJson['total_pages'];
 
 						// for testing:
-						if ($totalNumberOfPages > 5) $totalNumberOfPages = 5;
+						// if ($totalNumberOfPages > 5) $totalNumberOfPages = 5;
 
 						$allSurveyQuestions = new Survey_QuestionCollection();
 						$allSurveyQuestions->loadAllQuestionsForSurvey($surveyId);
@@ -1140,6 +1143,7 @@ class Devadmin_IndexController extends Api_GlobalController
 									$surveyQuestionResponsesSaved++;
 								}
 
+								$surveyResponse->data_download = new Zend_Db_Expr('now()');
 								$surveyResponse->processing_status = "completed";
 								$surveyResponse->save();
 							}

@@ -236,3 +236,33 @@ h1.sg-title {
 #sg-snc-form {
 	width: 80%;
 }
+
+.sayso_loading_container {
+	float: left;
+	position: absolute;
+	width: 97%;
+	height: 100%;
+	text-align: center;
+	font-size: 150%;
+	font-weight: bold;
+	margin: 0;
+	padding: 0;
+	background-color: #F3F3F3;
+	z-index: 5;
+}
+
+.sayso_loading_container .sb_img_loading{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -16px 0 0 -32px;
+	width: 32px;
+	height: 32px;
+	background-image: url('http://app.saysollc.com/images/generic/img_ajax-loader.gif');
+	background-repeat: no-repeat;
+	text-indent: -9999px;
+}
+/* Used to check that css loading is complete -- see surveygizmo-init.js */
+.sg-footer-hook-2 {
+	background-color: #F3F3F4;
+	}

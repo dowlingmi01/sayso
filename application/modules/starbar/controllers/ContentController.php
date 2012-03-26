@@ -71,14 +71,14 @@ class Starbar_ContentController extends Api_GlobalController
 		return $this->_resultType($good);
 	}
 
-        /**
-         * Redeem a 'Good'
-         * Redeems a 'Good' via BigDoor's API (basically removes the value of
-         * the good from the users credit), and sends confirmation emails to 
-         * the client admins and the redeeming user.
-         * 
-         * @return object - the Good being redeemed
-         */
+		/**
+		 * Redeem a 'Good'
+		 * Redeems a 'Good' via BigDoor's API (basically removes the value of
+		 * the good from the users credit), and sends confirmation emails to
+		 * the client admins and the redeeming user.
+		 *
+		 * @return object - the Good being redeemed
+		 */
 	public function rewardRedeemedAction () {
 
 		$this->_validateRequiredParameters(array('quantity', 'good_id', 'user_key'));
@@ -89,11 +89,11 @@ class Starbar_ContentController extends Api_GlobalController
 		$game = Game_Starbar::getInstance();
 		$game->purchaseGood($good, $this->quantity);
 
-                /* Strip purchase words from the beginning of the $good->title */       
-                $searchArray = array("Purchase ", "Buy ", "Redeem ");
-                $replaceArray   = array("", "", "");
-                $goodTitle = str_ireplace($searchArray, $replaceArray, $good->title);
-                
+		/* Strip purchase words from the beginning of the $good->title */
+		$searchArray = array("Purchase ", "Buy ", "Redeem ");
+		$replaceArray   = array("", "", "");
+		$goodTitle = str_ireplace($searchArray, $replaceArray, $good->title);
+
 		$user = new User();
 		$user->loadData($this->user_id);
 
@@ -114,7 +114,7 @@ class Starbar_ContentController extends Api_GlobalController
 			$userAddress->region = $this->order_state;
 			$userAddress->postalCode = $this->order_zip;
 			$userAddress->country = $this->order_country;
-                        $userAddress->phone = $this->order_phone;
+			$userAddress->phone = $this->order_phone;
 			$userAddress->save();
 
 			if (!$user->primary_address_id) {
@@ -125,7 +125,7 @@ class Starbar_ContentController extends Api_GlobalController
 			$user->last_name = $this->order_last_name;
 			$user->save();
 
-                        /* Send a confirmation email to the admins */
+			/* Send a confirmation email to the admins */
 			try {
 				$userEmail = new User_Email();
 				$userEmail->loadData($user->primary_email_id);
@@ -141,7 +141,7 @@ class Starbar_ContentController extends Api_GlobalController
 					City: ' . $this->order_city . '
 					State/Region: ' . $this->order_state . '
 					Postal Code: ' . $this->order_zip . '
-					Country: ' . $this->order_country . ' 
+					Country: ' . $this->order_country . '
 					Phone: ' . $this->order_phone . '
 					User ID: ' . $this->user_id . '
 					User Email: ' . $userEmail->email . '
@@ -160,28 +160,28 @@ class Starbar_ContentController extends Api_GlobalController
 			} catch (Exception $e) {
 				quickLog($message);
 			}
-                        
-                        /* Send a confirmation email to the user */
-                        try {
+
+						/* Send a confirmation email to the user */
+						try {
 				$userEmail = new User_Email();
-                                $address = $this->order_address_1;
-                                if (strlen($this->order_address_2) > 0) {
-                                    $address .= "<br />".$this->order_address_2;
-                                }
+				$address = $this->order_address_1;
+				if (strlen($this->order_address_2) > 0) {
+					$address .= "<br />".$this->order_address_2;
+				}
 				$userEmail->loadData($user->primary_email_id);
-                                $htmlmessage = "<h1>Say.So Music Bar redemption made for ".$goodTitle."</h1>";
-                                $htmlmessage .= "<table><tr><td colspan='2' bgcolor='#1d1c1c'><font color='#ffffff'>Order Details</font></td></tr>";
-                                $htmlmessage .= "<tr><td>First Name:</td><td>".$this->order_first_name."</td></tr>";
-                                $htmlmessage .= "<tr><td>Last Name:</td><td>".$this->order_last_name."</td></tr>";
-                                $htmlmessage .= "<tr><td>Street Address</td><td>".$address."</td></tr>";
-                                $htmlmessage .= "<tr><td>City:</td><td>".$this->order_city."</td></tr>";
-                                $htmlmessage .= "<tr><td>State/Region:</td><td>".$this->order_state."</td></tr>";
-                                $htmlmessage .= "<tr><td>ZIP Code:</td><td>".$this->order_zip."</td></tr>";
-                                $htmlmessage .= "<tr><td>Country:</td><td>".$this->order_country."</td></tr>";
-                                $htmlmessage .= "<tr><td>Phone:</td><td>".$this->order_phone."</td></tr>";
-                                $htmlmessage .= "<tr><td>Email Address:</td><td>".$userEmail->email."</td></tr>";
-                                $htmlmessage .= "</table>";
-                                $htmlmessage .= "<p>Thank you,<br />say.so Mailman</p>";
+				$htmlmessage = "<h1>Say.So Music Bar redemption made for ".$goodTitle."</h1>";
+				$htmlmessage .= "<table><tr><td colspan='2' bgcolor='#1d1c1c'><font color='#ffffff'>Order Details</font></td></tr>";
+				$htmlmessage .= "<tr><td>First Name:</td><td>".$this->order_first_name."</td></tr>";
+				$htmlmessage .= "<tr><td>Last Name:</td><td>".$this->order_last_name."</td></tr>";
+				$htmlmessage .= "<tr><td>Street Address</td><td>".$address."</td></tr>";
+				$htmlmessage .= "<tr><td>City:</td><td>".$this->order_city."</td></tr>";
+				$htmlmessage .= "<tr><td>State/Region:</td><td>".$this->order_state."</td></tr>";
+				$htmlmessage .= "<tr><td>ZIP Code:</td><td>".$this->order_zip."</td></tr>";
+				$htmlmessage .= "<tr><td>Country:</td><td>".$this->order_country."</td></tr>";
+				$htmlmessage .= "<tr><td>Phone:</td><td>".$this->order_phone."</td></tr>";
+				$htmlmessage .= "<tr><td>Email Address:</td><td>".$userEmail->email."</td></tr>";
+				$htmlmessage .= "</table>";
+				$htmlmessage .= "<p>Thank you,<br />say.so Mailman</p>";
 				$message = '
 					Say.So Music Bar redemption made for ' . $goodTitle . '
 
@@ -194,13 +194,13 @@ class Starbar_ContentController extends Api_GlobalController
 					State/Region: ' . $this->order_state . '
 					Postal Code: ' . $this->order_zip . '
 					Country: ' . $this->order_country . '
-                                        Phone: ' . $this->order_phone . '
+					Phone: ' . $this->order_phone . '
 
 					User ID: ' . $this->user_id . '
 					User Email: ' . $userEmail->email . '
 					=============
 					Thank you,
-                                        
+
 					Say.So Mailer v3.4
 				';
 
@@ -209,16 +209,16 @@ class Starbar_ContentController extends Api_GlobalController
 				/*$mail->setFrom('hmorders@say.so')
 					 ->addTo('hmorders@say.so')
 					 ->setSubject('Redemption');*/
-                                $mail->setFrom('hmorders@say.so')
+				$mail->setFrom('hmorders@say.so')
 					 ->addTo($userEmail->email)
 					 ->setSubject('Your Item Redemption');
 				$mail->setBodyMultilineText($message);
-                                $mail->setBodyHtml($htmlmessage);
+				$mail->setBodyHtml($htmlmessage);
 				$mail->send(new Zend_Mail_Transport_Smtp());
 			} catch (Exception $e) {
 				quickLog($htmlmessage);
 			}
-                        
+
 		} else {
 
 		}
@@ -271,7 +271,10 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('survey', $survey);
 
 		$surveyResponse = new Survey_Response();
-		$surveyAlreadyCompleted = $surveyResponse->checkIfUserHasCompletedSurvey($this->user_id, $this->survey_id);
+		$surveyResponse->loadDataByUniqueFields(array("user_id" => $this->user_id, "survey_id" => $this->survey_id));
+		if (!$surveyResponse->id) exit;
+
+		$surveyAlreadyCompleted = ($surveyResponse->status == "completed" || $surveyResponse->status == "disqualified");
 
 		if ($surveyAlreadyCompleted) {
 			$this->view->assign('survey_already_completed', true);
@@ -284,9 +287,6 @@ class Starbar_ContentController extends Api_GlobalController
 			else $nextSurveyId = -1;
 
 			$this->view->assign('next_survey_id', $nextSurveyId);
-
-			$bundleOfJoy = $this->_getBundleOfJoy($this->survey_id, $nextSurveyId);
-			$this->view->assign('bundle_of_joy', $bundleOfJoy);
 		}
 
 	}
@@ -300,12 +300,27 @@ class Starbar_ContentController extends Api_GlobalController
 	public function surveyDisqualifyAction ()
 	{
 		$this->_replaceBundleOfJoyWithGetVariables();
-		$this->_validateRequiredParameters(array('survey_id', 'next_survey_id'));
+		$this->_validateRequiredParameters(array('srid', 'next_survey_id'));
 		// this page is fetched via an iframe, not ajax;
 		$this->_usingJsonPRenderer = false;
 
+		$surveyResponse = new Survey_Response();
+		$surveyResponse->loadData($this->srid);
+
+		if ( !$surveyResponse->id
+			|| $surveyResponse->user_id != $this->user_id
+			|| $surveyResponse->status == "completed"
+			|| $surveyResponse->status == "disqualified")
+			exit;
+
 		$survey = new Survey();
-		$survey->loadData($this->survey_id);
+		$survey->loadData($surveyResponse->survey_id);
+
+		$surveyResponse->status = "disqualified";
+		$surveyResponse->processing_status = "pending";
+		$surveyResponse->completed_disqualified = new Zend_Db_Expr('now()');
+		$surveyResponse->save();
+		Game_Starbar::getInstance()->disqualifySurvey($survey);
 
 		$nextSurvey = new Survey();
 		if ($this->next_survey_id != -1) {
@@ -328,12 +343,27 @@ class Starbar_ContentController extends Api_GlobalController
 	public function surveyCompleteAction ()
 	{
 		$this->_replaceBundleOfJoyWithGetVariables();
-		$this->_validateRequiredParameters(array('survey_id', 'next_survey_id'));
+		$this->_validateRequiredParameters(array('srid', 'next_survey_id'));
 		// this page is fetched via an iframe, not ajax;
 		$this->_usingJsonPRenderer = false;
 
+		$surveyResponse = new Survey_Response();
+		$surveyResponse->loadData($this->srid);
+
+		if ( !$surveyResponse->id
+			|| $surveyResponse->user_id != $this->user_id
+			|| $surveyResponse->status == "completed"
+			|| $surveyResponse->status == "disqualified")
+			exit;
+
 		$survey = new Survey();
-		$survey->loadData($this->survey_id);
+		$survey->loadData($surveyResponse->survey_id);
+
+		$surveyResponse->status = "completed";
+		$surveyResponse->processing_status = "pending";
+		$surveyResponse->completed_disqualified = new Zend_Db_Expr('now()');
+		$surveyResponse->save();
+		Game_Starbar::getInstance()->completeSurvey($survey);
 
 		$nextSurvey = new Survey();
 		if ($this->next_survey_id != -1) {
@@ -355,19 +385,31 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function surveyRedirectAction ()
 	{
-		$this->_validateRequiredParameters(array('survey_id', 'next_survey_id'));
-		// this page is fetched via an iframe, not ajax;
-		$this->_usingJsonPRenderer = false;
+		$this->_validateRequiredParameters(array('survey_id', 'user_id', 'next_survey_id', 'xdm_c', 'xdm_e', 'xdm_p'));
 
 		$survey = new Survey();
 		$survey->loadData($this->survey_id);
 
-		$bundleOfJoy = $this->_getBundleOfJoy($this->survey_id, $this->next_survey_id);
-		$redirectAddress = ($_SERVER['HTTPS'] ? 'https:' : 'http:')
-							. "//www.surveygizmo.com/s3/"
-							. $survey->external_id . "/" . $survey->external_key
-							. "?bundle_of_joy=" . $bundleOfJoy;
-		$this->_redirect($redirectAddress);
+		if (!$survey->id) exit;
+
+		$this->_assignStarbarToView();
+
+		$surveyResponse = new Survey_Response();
+		$surveyResponse->loadDataByUniqueFields(array("user_id" => $this->user_id, "survey_id" => $this->survey_id));
+		if (!$surveyResponse->id || $surveyResponse->status == "completed" || $surveyResponse->status == "disqualified") exit;
+
+		$protocol = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']) ? "https" : "http");
+
+		$redirectUrl = $protocol . "://www.surveygizmo.com/s3/" . $survey->external_id . "/" . $survey->external_key;
+		$redirectUrl .= "?next_survey_id=" . $this->next_survey_id;
+		$redirectUrl .= "&srid=" . $surveyResponse->id;
+		$redirectUrl .= "&size=" . $survey->size;
+		$redirectUrl .= "&xdm_c=" . $this->xdm_c;
+		$redirectUrl .= "&xdm_e=" . $this->xdm_e;
+		$redirectUrl .= "&xdm_p=" . $this->xdm_p;
+		if (APPLICATION_ENV != "production") $redirectUrl .= "&base_domain=" . BASE_DOMAIN;
+
+		$this->_redirect($redirectUrl);
 	}
 
 	// Fetches polls for the current user for display
@@ -542,9 +584,9 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->_usingJsonPRenderer = false;
 
 		$config = Api_Registry::getConfig();
-		
+
 		$cache = Api_Cache::getInstance('Twitter_OAuth_'.$this->user_key, Api_Cache::LIFETIME_HOUR);
-		
+
 		if( $cache->test() && ($oauth = $cache->load()) && $this->oauth_verifier && $this->oauth_token == $oauth['token']) {
 			try {
 				/* Create TwitterOAuth object with app key/secret and token key/secret from default phase */

@@ -464,7 +464,7 @@
 }
 
 /* loading animated gif */
-#sayso-starbar .sb_img_loading, #sayso-starbar-loading-external .sb_img_loading{
+#sayso-starbar .sb_img_loading, .sayso-starbar-loading-external .sb_img_loading{
 	background-image: url('../images/hellomusic/img_ajax-loader.gif') !important;
 }
 

@@ -15,6 +15,7 @@
 	background-image: none;
 	background-color: none;
 	max-height: none;
+	color: black;
 	filter: none !important;
 }
 #sayso-starbar article, #sayso-starbar aside, #sayso-starbar details, #sayso-starbar figcaption, #sayso-starbar figure, #sayso-starbar footer, #sayso-starbar header, #sayso-starbar hgroup, #sayso-starbar menu, #sayso-starbar nav, #sayso-starbar section {
@@ -1271,6 +1272,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_button span.sb_theme_buttonArrow {
+	color: white;
 	background-image: url('../images/generic/img_arrow_white_lg.png');
 	background-repeat: no-repeat;
 	background-position: right 50%;
@@ -1478,7 +1480,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 }
 
 /* loading animated gif */
-#sayso-starbar .sb_img_loading, #sayso-starbar-loading-external .sb_img_loading{
+#sayso-starbar .sb_img_loading, .sayso-starbar-loading-external .sb_img_loading{
 	position: absolute;
 	top: 50%;
 	left: 50%;

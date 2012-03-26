@@ -5,20 +5,10 @@ class Survey_Response extends Record
 {
 	protected $_tableName = 'survey_response';
 
-	protected $_idKey = null;
-
-	protected $_uniqueFields = array('survey_id' => 0, 'user_id' => 0);
-
 	/**
 	 * @var Survey
 	 */
 	protected $_survey;
-
-	public function init() {
-		parent::init();
-		// make sure zend db knows this table does not have an id col
-		$this->setZendDbTableOptions(array(Zend_Db_Table_Abstract::PRIMARY => NULL));
-	}
 
 	public function setSurvey (Survey $survey) {
 		$this->_survey = $survey;

@@ -777,6 +777,16 @@ $SQ(function(){
 
 			openPopBox($SQ('#sb_popBox_surveys_lg'), '//'+sayso.baseDomain+'/starbar/hellomusic/embed-survey?survey_id='+surveyId, true, true);
 		},
+		'openSurveyFromSave': function (parameters) {
+			var surveyId = parameters['survey_id'];
+			var snc = parameters['snc'];
+			var size = parameters['size'];
+
+			var popBoxId = '#sb_popBox_surveys_lg';
+			if (size == "large") popBoxId = '#sb_popBox_surveys_hg';
+
+			openPopBox($SQ(popBoxId), '//'+sayso.baseDomain+'/starbar/hellomusic/embed-survey?survey_id='+surveyId+"&snc="+snc, true, true);
+		},
 		'hideOverlay': function () {
 			hideOverlay();
 		},

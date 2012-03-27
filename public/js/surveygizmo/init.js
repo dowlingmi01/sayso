@@ -34,9 +34,10 @@
 
 	function everythingIsLoaded() {
 		if (jQuery && $ // jQuery on SG via googleapi servers
-			&& window.$SQ // starbar container object
-			&& window.$SQ.starbar // starbar object
-			&& window.$SQ.starbar.user // user object
+			&& window.$SQ // sayso jQuery
+			&& window.$SQ.sayso // sayso object
+			&& window.$SQ.sayso.starbar // starbar object
+			&& window.$SQ.sayso.starbar.user // user object
 			&& $SGQ.loaded // survey DOM
 			&& ((!$SGQ.in_iframe && window.sayso.starbar.loaded) || $SGQ.in_iframe) // if loading outside iframe, make sure starbar has loaded
 			&& $('.sg-footer-hook-2').css('background-color') == "rgb(243, 243, 244)" // i.e. "#F3F3F4", which indicates that css is done loading

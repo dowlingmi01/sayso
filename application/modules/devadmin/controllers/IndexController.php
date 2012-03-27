@@ -560,7 +560,7 @@ class Devadmin_IndexController extends Api_GlobalController
 
 				$questionData = $questionsData[$mainQuestionCounter];
 
-				$surveyType = strtolower($questionData['_subtype']);
+				$questionType = strtolower($questionData['_subtype']);
 				$needToSaveQuestionAgain = false;
 
 				// Skip disabled questions
@@ -569,7 +569,7 @@ class Devadmin_IndexController extends Api_GlobalController
 				}
 
 				// Piped question, single choice from many
-				if ($surveyType == "table" && isset($questionData['properties']['piped_from']) && $questionData['properties']['piped_from']) {
+				if ($questionType == "table" && isset($questionData['properties']['piped_from']) && $questionData['properties']['piped_from']) {
 
 					$pipedFrom = (int) $questionData['properties']['piped_from'];
 					// The question that was piped from should have already been processed, and therefore should exist in the
@@ -660,7 +660,7 @@ class Devadmin_IndexController extends Api_GlobalController
 					}
 
 				// Piped question, text value (string by default)
-				} elseif ($surveyType == "textbox" && isset($questionData['properties']['piped_from']) && $questionData['properties']['piped_from']) {
+				} elseif ($questionType == "textbox" && isset($questionData['properties']['piped_from']) && $questionData['properties']['piped_from']) {
 
 					$pipedFrom = (int) $questionData['properties']['piped_from'];
 					if ($pipedFrom && isset($questionArray[$pipedFrom]) && isset($questionArray[$pipedFrom]->option_array)) {
@@ -696,7 +696,7 @@ class Devadmin_IndexController extends Api_GlobalController
 					}
 
 				// Piped question, single choice from multiple
-				} elseif ($surveyType == "radio" && isset($questionData['properties']['piped_from']) && $questionData['properties']['piped_from']) {
+				} elseif ($questionType == "radio" && isset($questionData['properties']['piped_from']) && $questionData['properties']['piped_from']) {
 
 					$pipedFrom = (int) $questionData['properties']['piped_from'];
 					if ($pipedFrom && isset($questionArray[$pipedFrom]) && isset($questionArray[$pipedFrom]->option_array)) {
@@ -721,7 +721,7 @@ class Devadmin_IndexController extends Api_GlobalController
 					}
 
 				// Piped question, multiple choice from multiple
-				} elseif ($surveyType == "checkbox" && isset($questionData['properties']['piped_from']) && $questionData['properties']['piped_from']) {
+				} elseif ($questionType == "checkbox" && isset($questionData['properties']['piped_from']) && $questionData['properties']['piped_from']) {
 
 					$pipedFrom = (int) $questionData['properties']['piped_from'];
 					if ($pipedFrom && isset($questionArray[$pipedFrom]) && isset($questionArray[$pipedFrom]->option_array)) {
@@ -746,7 +746,7 @@ class Devadmin_IndexController extends Api_GlobalController
 					}
 
 				// Parent question that pipes into several sub-questions (by default, they don't have the piped_from property set, so we'll fake it)
-				} elseif ($surveyType == "table" && isset($questionData['sub_question_skus']) && $questionData['sub_question_skus'] && count($questionData['sub_question_skus'])) { // Not a piped question, but still a table -- look for sub_question_skus
+				} elseif ($questionType == "table" && isset($questionData['sub_question_skus']) && $questionData['sub_question_skus'] && count($questionData['sub_question_skus'])) { // Not a piped question, but still a table -- look for sub_question_skus
 
 					$masterQuestionExternalId = (int) $questionData['id'];
 					$masterQuestionTitle = (isset($questionData['title']['English']) ? $questionData['title']['English'] : "");
@@ -800,8 +800,42 @@ class Devadmin_IndexController extends Api_GlobalController
 						}
 					}
 
+				// Question made up of several options that each has a textbox, so treat each one like a unique question. Also save the original question for reference/grouping
+				// (each sub-question title is made up of the original question title + option title)
+				} elseif ($questionType == "multi_textbox") {
+
+					$masterQuestion = new Survey_Question();
+					$masterQuestion->survey_id = $survey->id;
+					$masterQuestion->choice_type = 'none';
+					$masterQuestion->data_type = 'none';
+					$masterQuestion->external_question_id = (int) $questionData['id'];
+					$masterQuestion->title = $questionData['title']['English'];
+					$masterQuestion->ordinal = $questionOrdinal * 10;
+					$questionOrdinal++;
+
+					$masterQuestion->save();
+					$surveyQuestionsSaved++;
+
+					$questionArray[$masterQuestion->external_question_id] = $masterQuestion; // Add to array so we can easily find later for piping
+
+					foreach ($questionData['options'] as $optionData) { // Each option in the original question is a new question
+						$question = new Survey_Question();
+						$question->survey_id = $survey->id;
+						$question->choice_type = 'none';
+						$question->data_type = 'string';
+						$question->piped_from_survey_question_id = $masterQuestion->id; // id in local DB
+						$question->title = $masterQuestion->title . " : " . $optionData['title']['English'];
+						$question->external_question_id = (int) $questionData['id'];
+						$question->external_pipe_choice_id = (int) $optionData['id'];;
+						$question->ordinal = $questionOrdinal * 10;
+						$questionOrdinal++;
+
+						$question->save();
+						$surveyQuestionsSaved++;
+					}
+
 				// Non-piped, non-table questions (i.e. all other questions, except 'logic' questions and 'action' questions, which aren't really questions)
-				} elseif (in_array($surveyType, array("checkbox", "menu", "radio", "textbox", "rank"))) {
+				} elseif (in_array($questionType, array("checkbox", "menu", "radio", "textbox", "rank"))) {
 
 					$question = new Survey_Question();
 					$question->survey_id = $survey->id;

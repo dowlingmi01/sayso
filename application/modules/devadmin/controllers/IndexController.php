@@ -563,6 +563,11 @@ class Devadmin_IndexController extends Api_GlobalController
 				$surveyType = strtolower($questionData['_subtype']);
 				$needToSaveQuestionAgain = false;
 
+				// Skip disabled questions
+				if (isset($questionData['properties']['disabled']) && $questionData['properties']['disabled']) {
+					continue;
+				}
+
 				// Piped question, single choice from many
 				if ($surveyType == "table" && isset($questionData['properties']['piped_from']) && $questionData['properties']['piped_from']) {
 
@@ -590,7 +595,7 @@ class Devadmin_IndexController extends Api_GlobalController
 						$choiceOrdinal = 1;
 
 						foreach ($questionData['options'] as $optionData) {
-							if ($optionData['_type'] == "SurveyOption") {
+							if ($optionData['_type'] == "SurveyOption" && !(isset($optionData['properties']['disabled']) && $optionData['properties']['disabled'])) {
 								$questionChoice = new Survey_QuestionChoice();
 								$questionChoice->survey_question_id = $pipedQuestion->id;
 								$questionChoice->external_choice_id = (int) $optionData['id'];
@@ -764,7 +769,7 @@ class Devadmin_IndexController extends Api_GlobalController
 					$choiceOrdinal = 1;
 
 					foreach ($questionData['options'] as $optionData) {
-						if ($optionData['_type'] == "SurveyOption") {
+						if ($optionData['_type'] == "SurveyOption" && !(isset($optionData['properties']['disabled']) && $optionData['properties']['disabled'])) {
 							$questionChoice = new Survey_QuestionChoice();
 							$questionChoice->survey_question_id = $question->id;
 							$questionChoice->external_choice_id = (int) $optionData['id'];
@@ -838,7 +843,7 @@ class Devadmin_IndexController extends Api_GlobalController
 					if ($question->number_of_choices) {
 						$choiceOrdinal = 1;
 						foreach ($questionData['options'] as $optionData) {
-							if ($optionData['_type'] == "SurveyOption") {
+							if ($optionData['_type'] == "SurveyOption" && !(isset($optionData['properties']['disabled']) && $optionData['properties']['disabled'])) {
 								$questionChoice = new Survey_QuestionChoice();
 								$questionChoice->survey_question_id = $question->id;
 								$questionChoice->external_choice_id = (int) $optionData['id'];

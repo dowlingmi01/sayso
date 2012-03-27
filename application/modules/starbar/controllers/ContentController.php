@@ -402,6 +402,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 		$redirectUrl = $protocol . "://www.surveygizmo.com/s3/" . $survey->external_id . "/" . $survey->external_key;
 		$redirectUrl .= "?next_survey_id=" . $this->next_survey_id;
+		$redirectUrl .= "&starbar_short_name=" . $this->view->starbar->id;
 		$redirectUrl .= "&srid=" . $surveyResponse->id;
 		$redirectUrl .= "&size=" . $survey->size;
 		$redirectUrl .= "&xdm_c=" . $this->xdm_c;

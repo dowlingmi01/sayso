@@ -756,7 +756,7 @@ class Devadmin_IndexController extends Api_GlobalController
 					$question->choice_type = 'none';
 					$question->data_type = 'none';
 					$question->option_array = array();
-					$question->piped_from_survey_question_id = $pipedFromQuestion->id; // id in local DB
+					$question->piped_from_survey_question_id = $masterQuestionExternalId; // id in local DB
 					$question->title = $questionData['title']['English'];
 					$question->external_question_id = (int) $questionData['id'];
 					$question->number_of_choices = count($questionData['options']);

@@ -973,7 +973,7 @@ class Devadmin_IndexController extends Api_GlobalController
 						$totalNumberOfPages = (int) $decodedJson['total_pages'];
 
 						// for testing:
-						// if ($totalNumberOfPages > 5) $totalNumberOfPages = 5;
+						// if ($totalNumberOfPages > 2) $totalNumberOfPages = 2;
 
 						$allSurveyQuestions = new Survey_QuestionCollection();
 						$allSurveyQuestions->loadAllQuestionsForSurvey($surveyId);
@@ -991,6 +991,16 @@ class Devadmin_IndexController extends Api_GlobalController
 								foreach ($surveyQuestionChoices as $surveyQuestionChoice) {
 									$comboArrayKey = $surveyQuestion->external_question_id . "-" . $surveyQuestionChoice->external_choice_id;
 									$comboExternalIdReferenceArray[$comboArrayKey] = $surveyQuestion;
+								}
+							} elseif ($surveyQuestion->choice_type == "single" && $surveyQuestion->data_type != "none") {
+								$comboArrayKey = $surveyQuestion->external_question_id . "-" . $surveyQuestion->external_pipe_choice_id;
+								$comboExternalIdReferenceArray[$comboArrayKey] = $surveyQuestion;
+								$surveyQuestionChoices->loadAllQuestionChoicesForSurveyQuestion($surveyQuestion->id);
+								foreach ($surveyQuestionChoices as $surveyQuestionChoice) {
+									if ($surveyQuestionChoice->other) {
+										$comboArrayKey = $surveyQuestion->external_question_id . "-" . $surveyQuestionChoice->external_choice_id;
+										$comboExternalIdReferenceArray[$comboArrayKey] = $surveyQuestion;
+									}
 								}
 							} else {
 								$comboArrayKey = $surveyQuestion->external_question_id . "-" . $surveyQuestion->external_pipe_choice_id;

@@ -170,38 +170,18 @@ class Starbar_ContentController extends Api_GlobalController
 				}
 				$userEmail->loadData($user->primary_email_id);
 				$htmlmessage = "<h1>Say.So Music Bar redemption made for ".$goodTitle."</h1>";
-				$htmlmessage .= "<table><tr><td colspan='2' bgcolor='#1d1c1c'><font color='#ffffff'>Order Details</font></td></tr>";
-				$htmlmessage .= "<tr><td>First Name:</td><td>".$this->order_first_name."</td></tr>";
-				$htmlmessage .= "<tr><td>Last Name:</td><td>".$this->order_last_name."</td></tr>";
-				$htmlmessage .= "<tr><td>Street Address</td><td>".$address."</td></tr>";
-				$htmlmessage .= "<tr><td>City:</td><td>".$this->order_city."</td></tr>";
-				$htmlmessage .= "<tr><td>State/Region:</td><td>".$this->order_state."</td></tr>";
-				$htmlmessage .= "<tr><td>ZIP Code:</td><td>".$this->order_zip."</td></tr>";
-				$htmlmessage .= "<tr><td>Country:</td><td>".$this->order_country."</td></tr>";
-				$htmlmessage .= "<tr><td>Phone:</td><td>".$this->order_phone."</td></tr>";
-				$htmlmessage .= "<tr><td>Email Address:</td><td>".$userEmail->email."</td></tr>";
-				$htmlmessage .= "</table>";
-				$htmlmessage .= "<p>Thank you,<br />say.so Mailman</p>";
-				$message = '
-					Say.So Music Bar redemption made for ' . $goodTitle . '
+				$htmlmessage .= sprintf("<p>This is your confirmation for the redemption of the item - %s.</p>",$goodTitle);
+				$htmlmessage .= "<p>Congratulations! Your redemption is being processed.</p>";
+				$htmlmessage .= "<p>Thank you for being a member of Hello Music Say.So!</p>";
+				$htmlmessage .= "<p>- Hello Music Say.So Team</p>";
 
-					Order Details
-					=============
-					First Name: ' . $this->order_first_name . '
-					Last Name: ' . $this->order_last_name . '
-					Address : ' . $address . '
-					City: ' . $this->order_city . '
-					State/Region: ' . $this->order_state . '
-					Postal Code: ' . $this->order_zip . '
-					Country: ' . $this->order_country . '
-					Phone: ' . $this->order_phone . '
+				$message = 'This is your confirmation for the redemption of the item - ' . $goodTitle . '
 
-					User ID: ' . $this->user_id . '
-					User Email: ' . $userEmail->email . '
-					=============
-					Thank you,
+					Congratulations! Your redemption is being processed.
 
-					Say.So Mailer v3.4
+					Thank you for being a member of Hello Music Say.So!
+
+					- Hello Music Say.So Team
 				';
 
 				$config = Api_Registry::getConfig();

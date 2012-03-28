@@ -1,0 +1,22 @@
+<?php
+
+$json = '{"type":"ADjuster","tagdomain":{},"domainAvail":{"85256":{"label":"test","tag":"test","domain":{"99958":{"name":"test.com","id":99958},"22209":{"name":"asdf","id":22209}},"id":85256},"24805":{"label":"another avail","tag":"avaiil avail!","domain":{"19527":{"name":"asdf","id":19527},"45874":{"name":"qwer","id":45874}},"id":24805}},"creative":{"17664":{"name":"test","creativeUrl":"http://whereamiapp.com/image.php?key=959a6853f043ec34f0167250bfb5293c&id=187&size=200&max","contentType":"2","targetUrl":"http://www.google.com/","domainAvail":[85256],"id":17664},"22277":{"name":"big creative","creativeUrl":"http://whereamiapp.com/image.php?key=06c83b46a4db9fe40270faefb7e58726&id=16&size=380&max","contentType":"2","targetUrl":"http://www.google.com/","domainAvail":[85256,24805],"id":22277}},"basic":{"name":"Test","id":"123","size":"10000","minimum":"100","begindate":"08/31/2011","enddate":"09/22/2011","issurvey":"no"},"metrics":{"clicktrack":"Yes","searchengines":{"Google":"Yes","Yahoo!":"Yes"},"searchengineIds":["2","3"],"social":{"Facebook Like":"Yes","Tweet":"Yes"},"socialIds":["1","2"]},"surveyinfo":{"type":"Custom Survey","url":"http://mysurvey.com/mysurvey1234","deliverIf":{"33155":{"domain":"Facebook.com","timeframe":"1 Day","timeframeId":"2","id":33155},"56947":{"domain":"asdf.com","timeframe":"1 Week","timeframeId":"3","id":56947}}},"quota":{"82395":{"gender":"Male","genderId":"1","age":"18-24","ageId":"2","ethnicity":"White","ethnicityId":"1","percent":"50%","percentId":"6","id":82395},"86155":{"gender":"Female","genderId":"2","age":"18-24","ageId":"2","ethnicity":"African American","ethnicityId":"2","percent":"25%","percentId":"3","id":86155},"62781":{"gender":"Male","genderId":"1","age":"25-34","ageId":"3","ethnicity":"African American","ethnicityId":"2","percent":"25%","percentId":"3","id":62781}},"cells":{"86075":{"description":"My Cell","type":"Control","size":"100","deliverIf":"visited-similar-site","adtag":[85256,24805],"qualifier":{"browse":{"74098":{"include":"Include","site":"foo.com","timeframe":"1 Week","timeframeId":"3","id":74098},"9655":{"include":"Exclude","site":"bar.com","timeframe":"1 Hour","timeframeId":"1","id":9655}},"search":{"27355":{"include":"Include","term":"foo","timeframe":"1 Month","timeframeId":"4","which":{"bing":"No","google":"Yes","yahoo":"Yes"},"whichIds":["2","3"],"id":27355}}},"id":86075},"92523":{"description":"Another","type":"Test","size":"300","adtag":[85256],"qualifier":{"browse":{"64293":{"include":"Exclude","site":"foo.com","timeframe":"1 Day","timeframeId":"2","id":64293}},"search":{"46499":{"include":"Include","term":"asdf","timeframe":"Timeframe","timeframeId":"2","which":{"bing":"Yes","google":"No","yahoo":"No"},"whichIds":["1"],"id":46499}}},"id":92523}}}';
+
+
+?>
+<button>Go</button>
+<script type="text/javascript">
+	$(function() {
+		$('button').click(function () {
+			a.ajax({
+				url : 'http://<?= BASE_DOMAIN ?>/api/study/submit',
+				data : { data : '<?= $json ?>' },
+				type : 'POST',
+				dataType : 'json',
+				success : function (response) {
+					console.log(response);
+				}
+			});
+		});
+	});
+</script>

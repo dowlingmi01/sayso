@@ -1,0 +1,13 @@
+<!-- views/scripts/surveys/delete.phtml file -->
+<?php
+$this->title = "Delete Survey";
+$this->headTitle($this->title);
+?>
+<p>Are you sure that you want to delete the survey <?php echo $this->survey['name']; ?>?</p>
+<form action="<?php echo $this->url(array('action'=>'delete')); ?>" method=""post">
+      <div>
+	  <input type="hidden" name="id" value="<?php echo $this->survey['id']; ?>" />
+	  <input type="submit" name="del" value="Yes" />
+	  <input type="submit" name="del" value="No" />
+    </div>
+</form>

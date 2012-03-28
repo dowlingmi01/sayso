@@ -1,0 +1,43 @@
+<?php if ($this->survey): ?>
+<h1>View <?php echo ucfirst($this->survey->type) ?></h1>
+    <dl>
+        <dt class="odd">ID: </dt>
+        <dd class="odd"><?php echo $this->survey->id ?></dd>
+
+        <dt class="even">Title:</dt>
+        <dd class="even"><?php echo $this->survey->title ?></dd>
+
+        <dt class="odd">External ID:</dt>
+        <dd class="odd"><?php echo $this->survey->external_id != null?$this->survey->external_id:"null" ?></dd>
+
+	<dt class="even">External Key:</dt>
+        <dd class="even"><?php echo $this->survey->external_key ?></dd>
+
+	<dt class="odd">Premium:</dt>
+        <dd class="odd"><?php echo ($this->survey->premium == 1?"Premium":"Standard") ?></dd>
+
+	<dt class="even">Number of Answers:</dt>
+        <dd class="even"><?php echo $this->survey->number_of_answers>0?$this->survey->number_of_answers:"0"; ?></dd>
+
+	<dt class="odd">Number of Questions:</dt>
+        <dd class="odd"><?php echo $this->survey->number_of_questions>0?$this->survey->number_of_questions:"0"; ?></dd>
+
+	<dt class="even">Display Number of Questions:</dt>
+        <dd class="even"><?php echo $this->survey->display_number_of_questions>0?$this->survey->display_number_of_questions:"0" ?></dd>
+
+	<dt class="odd">Ordinal:</dt>
+        <dd class="odd"><?php echo $this->survey->ordinal>0?$this->survey->ordinal:"0" ?></dd>
+
+	<dt class="even">Start After:</dt>
+        <dd class="even"><?php echo $this->survey->start_after>0?$this->survey->start_after:"0" ?></dd>
+
+        <dt class="odd">Start At</dt>
+        <dd class="odd"><?php echo $this->survey->start_at ?></dd>
+
+	<dt class="even">End At</dt>
+        <dd class="even"><?php echo $this->survey->end_at ?></dd>
+
+    </dl>
+<?php else: ?>
+    <p><?php echo $this->message ?></p>
+<?php endif ?>

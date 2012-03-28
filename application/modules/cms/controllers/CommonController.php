@@ -2,9 +2,8 @@
 /**
  * @author alecksmart
  */
-require_once ('CMSClasses.php');
 
-abstract class Admin_CommonController extends Zend_Controller_Action
+abstract class Cms_CommonController extends Zend_Controller_Action
 {
 	/**
 	 * @var Zend_Auth
@@ -62,9 +61,8 @@ abstract class Admin_CommonController extends Zend_Controller_Action
 	 */
 	protected function setLayoutBasics()
 	{
-		//$this->_helper->layout->setLayout('admin');
 		$this->view->headLink()->appendStylesheet('/modules/common.css', 'screen');
-		if(get_class($this) == 'Admin_IndexController')
+		if(get_class($this) == 'Cms_IndexController')
 		{
 			// legacy styling, should be deleted soon...
 			$this->view->headLink()->appendStylesheet('/css/smoothness/jquery-ui-1.8.13.custom.css', 'screen');

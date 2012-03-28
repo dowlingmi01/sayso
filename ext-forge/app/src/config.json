@@ -1,0 +1,61 @@
+{
+	"platform_version": "v1.2",
+	"name": "Say.So Bar",
+	"author": "Say.So LLC",
+	"version": "2.0.0",
+	"homepage": "http://www.say.so/",
+	"description": "A fun way to have your influence recognized, and your opinions rewarded!",
+	"permissions": ["tabs"],
+	"background_files": ["js/config.js", "js/background.js"],
+	"activations": [
+		{
+			"patterns": ["http://*/*", "https://*/*"],
+			"styles": [],
+			"scripts": ["js/config.js", "js/content.js"],
+			"run_at": "ready",
+			"all_frames": true
+		}
+	],
+	"package_names": {
+		"firefox": "bar@say.so",
+		"safari": "com.saysollc.app"
+	},
+	"update_url": {
+		"chrome": "http://app.saysollc.com/xml/chrome-extension-updates.xml",
+		"firefox": "https://app.saysollc.com/xml/firefox-extension-updates.xml",
+		"safari": "http://app.saysollc.com/xml/safari-extension-updates.plist"
+	},
+	"icons": {
+		"chrome": {
+			"16": "img/icon16.png",
+			"32": "img/icon32.png",
+			"48": "img/icon48.png",
+			"64": "img/icon64.png",
+			"128": "img/icon128.png"
+		},
+		"firefox": {
+			"16": "img/icon16.png",
+			"32": "img/icon32.png",
+			"48": "img/icon48.png",
+			"64": "img/icon64.png",
+			"128": "img/icon128.png"
+		},
+		"safari": {
+			"16": "img/icon16.png",
+			"32": "img/icon32.png",
+			"48": "img/icon48.png",
+			"64": "img/icon64.png",
+			"128": "img/icon128.png"
+		},
+		"ie": {
+			"16": "img/icon16.png",
+			"32": "img/icon32.png",
+			"48": "img/icon48.png",
+			"64": "img/icon64.png",
+			"128": "img/icon128.png"
+		}
+	},
+	"logging": {
+			"level": "INFO"
+	}
+}

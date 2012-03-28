@@ -60,8 +60,6 @@
 	sayso.log = safeLog('log', sayso.debug);
 	sayso.warn = safeLog('warn', sayso.debug);
 	
-	sayso.log( "Starting extension version " + window.$SaySoExtension.ext_version + " on " + window.$SaySoExtension.ext_browser );
-
 	sayso.current_url = window.location.href;
 	sayso.in_iframe = (top !== self);
 

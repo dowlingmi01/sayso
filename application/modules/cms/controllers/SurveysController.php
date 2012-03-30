@@ -11,6 +11,7 @@
 	public function preDispatch() {
 		// i.e. for everything based on Generic Starbar, use these includes
 		$this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
+		$this->view->headLink()->appendStylesheet('/css/cms.css');
 		$this->view->headScript()->appendFile('/js/starbar/jquery-1.7.1.min.js');
 		$this->view->headScript()->appendFile('/js/starbar/jquery-ui-1.8.16.custom.min.js');
 		$this->view->headScript()->appendFile('/js/starbar/jquery.jscrollpane.min.js');
@@ -18,6 +19,10 @@
 		$this->view->headScript()->appendFile('/js/starbar/jquery.jeip.js');
 		$this->view->headScript()->appendFile('/js/starbar/jquery.cycle.lite.js');
 		$this->view->headScript()->appendFile('/js/starbar/jquery.easyTooltip.js');
+		$this->view->headScript()->appendFile('/js/cms/jquery.ui.slider.js');
+		$this->view->headScript()->appendFile('/js/cms/jquery.ui.datepicker.js');
+		$this->view->headScript()->appendFile('/js/cms/jquery.ui.timepicker-addon.js');
+		$this->view->headScript()->appendFile('/js/cms/init.js');
 	}
         /**
          * Always called before actions
@@ -68,18 +73,18 @@
         {
 	    $formElements = array();
 
-            $formElements['starbarlist'] = new Zend_Form_Sayso_Starbar('starbar_id');
+            $formElements['starbarlist'] = new Form_Element_Starbar('starbar_id');
 
-            $formElements['title'] = new Zend_Form_Sayso_Text('title');
+            $formElements['title'] = new Form_Element_Text('title');
 $formElements['title']->setAttrib("size","60");
 		$formElements['title']	->setDescription('Title for this Survey')
 					->setRequired(true); // required field
 
-	    $formElements['external_id'] = new Zend_Form_Sayso_Text('external_id');
+	    $formElements['external_id'] = new Form_Element_Text('external_id');
 
-	    $formElements['external_key'] = new Zend_Form_Sayso_Text('external_key');
+	    $formElements['external_key'] = new Form_Element_Text('external_key');
 
-            $formElements['premium'] = new Zend_Form_Sayso_Select('premium');
+            $formElements['premium'] = new Form_Element_Select('premium');
 		$formElements['premium']->setLabel('Survey Type')
 					->setDescription('Is this a Standard or Premium Survey')
 					->setRequired(false)
@@ -89,19 +94,19 @@ $formElements['title']->setAttrib("size","60");
 
 					));
 
-            $formElements['number_of_questions'] = new Zend_Form_Sayso_Number('number_of_questions');
+            $formElements['number_of_questions'] = new Form_Element_Number('number_of_questions');
 
-	    $formElements['number_of_answers'] = new Zend_Form_Sayso_Number('number_of_answers');
+	    $formElements['number_of_answers'] = new Form_Element_Number('number_of_answers');
 
-	    $formElements['display_number_of_questions'] = new Zend_Form_Sayso_Number('display_number_of_questions');
+	    $formElements['display_number_of_questions'] = new Form_Element_Number('display_number_of_questions');
 
-	    $formElements['ordinal'] = new Zend_Form_Sayso_Number('ordinal');
+	    $formElements['ordinal'] = new Form_Element_Number('ordinal');
 
-	    $formElements['start_after'] = new Zend_Form_Sayso_Number('start_after');
+	    $formElements['start_after'] = new Form_Element_Number('start_after');
 
-	    $formElements['start_at'] = new Zend_Form_Sayso_Date('start_at');
+	    $formElements['start_at'] = new Form_Element_Date('start_at');
 
-	    $formElements['end_at'] = new Zend_Form_Sayso_Date('end_at');
+	    $formElements['end_at'] = new Form_Element_Date('end_at');
 
             $formElements['submit'] = new Zend_Form_Element_Submit('submit');
             $formElements['submit'] ->setLabel('Save New Survey') // the button's value

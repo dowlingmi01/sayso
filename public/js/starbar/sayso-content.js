@@ -1,4 +1,5 @@
 if (document.body) {
+	forge.config.logging.marker='Say.So';
 	var saysoGlobal = document.createElement('script');
 	var txt = "window.$SaySoExtension = { base_domain: '" + sayso.baseDomain + "', ext_version: '" + sayso.version + "' }";
 	

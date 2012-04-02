@@ -71,4 +71,23 @@ class Starbar_InstallController extends Api_GlobalController {
 		setcookie('user_key', $this->install_token, time()+(86400*365), '/', null, null, true);
 		$this->_redirect('/install/'.$prefix.$fileName.$suffix);
 	}
+	public function postInstallAction() {
+		if( $this->user_key ) {
+			$install = new External_UserInstall();
+			$install->loadDataByUniqueFields(array('token'=>$this->user_key));
+			if( $install->id ) {
+				$externalUser = new External_User();
+				$externalUser->loadData($install->external_user_id);
+				
+				$starbar = new Starbar();
+				$starbar->loadData($externalUser->starbar_id);
+				
+				$url = Client::getInstance($starbar->short_name)->getPostInstallURL();
+			}
+		}
+		if( ! $url ) {
+			$url = "http://say.so/welcome";
+		}
+		$this->_redirect($url);
+	}
 }

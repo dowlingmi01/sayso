@@ -11,4 +11,11 @@ class Client_Hellomusic
 			$request->setParam("client_user_logged_in", true);
 		}
 	}
+	public function getPostInstallURL() {
+		$env = Registry::getPseudoEnvironmentName();
+		if( $env === 'PROD' )
+			return 'http://www.hellomusic.com/';
+		else
+			return 'http://client.' . Registry::getConfig()->baseDomain . '/hellomusic/home';
+	}
 }

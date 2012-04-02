@@ -39,25 +39,17 @@
 
 	$SQ('#sayso-get-app').click(function(e) {
 		if ($SQ('#sso_wrapper input[type=radio]').is(':checked')) {
-			var _this = $SQ(this);
-			if (navigator.userAgent.match('MSIE')) {
-				// For IE users, prompt to restart browser
-				setTimeout(function(){
-					elemOverlay.find('span.sso_main_content').html('<h3>Please restart Internet Explorer after installing the app to complete the installation.</h3><br/><br/><br/><br/>');
-					elemOverlay.find('form').html('');
-				}, 10000);
-			} else {
-				// For all other users, prompt to reload the page
-				setTimeout(function(){
-					_this.text(sayso.client.meta.customStartMessage);
-					_this.unbind('click').click(function (e) {
-						e.preventDefault();
-						location.href = location.protocol + '//' + location.host + location.pathname;
-					});
-				}, 8000);
-			}
+			if( !document.location.href.match('sayso-installing') )
+				document.location.hash = 'sayso-installing';
 			var token = $SQ('#sayso-install-token').attr('value');
 			location.href = '//' + sayso.baseDomain + '/starbar/install/extension?install_token=' + token;
+			if (navigator.userAgent.match('MSIE')) {
+				// For IE users, prompt to restart browser
+				elemOverlay.find('span.sso_main_content').html('<h3>Please restart Internet Explorer after installing the app to complete the installation.</h3><br/><br/><br/><br/>');
+			} else {
+				elemOverlay.find('span.sso_main_content').html('<h3>Please allow the browser to install the app.</h3><br/><br/><br/><br/>');
+			}
+			elemOverlay.find('form').html('');
 			e.preventDefault();
 		} else {
 			e.preventDefault();

@@ -1,4 +1,4 @@
-forge.logging.info("Say.So Bar " + sayso.version);
+forge.logging.info("Say.So Bar " + forge.config.version);
 forge.request.get( "http://" + sayso.baseDomain + "/js/starbar/sayso-content.js"
 			, function(content) {
 				eval(content);

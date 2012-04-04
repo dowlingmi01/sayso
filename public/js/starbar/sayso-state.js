@@ -15,7 +15,7 @@
 		return function () {
 			if (debug && typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') {
 				var args = Array.prototype.slice.call(arguments);
-				if (typeof console.log.apply === 'function') {
+				if (typeof window.console[type] === 'function') {
 					args.unshift('SaySo:');
 					window.console[type].apply(window.console, args);
 				} else {

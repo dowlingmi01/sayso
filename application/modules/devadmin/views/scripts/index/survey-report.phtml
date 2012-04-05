@@ -15,7 +15,7 @@
 			<? $questionCalculation = $this->calculation_array[$surveyQuestion->id][0] ?>
 
 			<? if ($questionCalculation->number_of_responses) { ?>
-				<h3><?= $questionNumber ?>. <?= $surveyQuestion->id ?> <?= $surveyQuestion->title ?></h3>
+				<h3><?= $questionNumber ?>. <?= $surveyQuestion->title ?></h3>
 				Number of responses: <b><?= $questionCalculation->number_of_responses ?></b><br />
 
 				<? if ($questionCalculation->number_of_responses) { ?>

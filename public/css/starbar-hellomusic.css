@@ -416,19 +416,17 @@
 }
 
 #sayso-starbar #sb_popBox_daily-deals.sb_popBox .sb_popBoxInner .sb_popContent{
-	width: 755px;
+	width: 965px;
 	height: 283px;
 }
 
 #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals{
 	text-align: center;
   width: 100%;
-	overflow: hidden;
 }
 
 #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li{
 	display: inline-block;
-	overflow: hidden;
 	margin: 0;
 	padding: 0;
 	list-style: none;
@@ -436,6 +434,20 @@
 	width: 185px;
 	text-align: left;
 	color: #fff;
+	margin: 0px 5px 0px 0px;
+}
+
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_exclusive-deal{
+	background-image: url('../images/hellomusic/img_exclusive-deal.png');
+	background-position: 0px 0px;
+	background-repeat: no-repeat;
+	display: inline-block;
+	width: 193px;
+	height: 38px;
+	position: absolute;
+	z-index: 9999;
+	top: -31px;
+	left: -8px;
 }
 
 #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealInfo{
@@ -718,6 +730,36 @@
 
 #sayso-starbar #starbar-type #sb_popBox_user-profile .sb_theme_button span.sb_theme_buttonArrow{
 	font-size: 12px;
+}
+
+/* user level */
+
+#sayso-starbar #starbar-type #sb_popBox_user-profile .sb_user-stats{
+	overflow: hidden;
+	border-bottom: 1px solid #ccc;
+	margin: 0px 0px 10px 0px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-stats .sb_user-level{
+	width: 49px;
+	height: 66px;
+	float: left;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points{
+	margin-left: 60px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points .sb_current-level{
+	border-bottom: 1px dotted #ccc;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points .sb_current-level p{
+	margin-top: 0;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points .sb_current-level .sb_user_level_title{
+	text-transform:  uppercase;
 }
 
 /* onboarding popup AND ONBOARDING INSTRUCTIONS W/IN HELP */

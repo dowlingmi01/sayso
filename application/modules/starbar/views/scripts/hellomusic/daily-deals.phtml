@@ -28,8 +28,9 @@
 	<? $i = 1 ?>
 	<? foreach ($this->deals as $deal) { ?>
 		<? if ($i > 4) break ?>
-		<li>
-			<a href="<?= $deal->itemURL ?>"><img src="<?= $deal->itemImageURL ?>" alt="" class="sb_dealImage" />
+		<li>			
+			<a href="<?= $deal->itemURL ?>">
+			<img src="<?= $deal->itemImageURL ?>" alt="" class="sb_dealImage" />
 				<? if ($deal->status == "SOLD OUT") { ?>
 					<span class="sb_dealStatusBG sb_dealStatusBG_red">
 						<span class="sb_dealStatus">Sold Out</span>
@@ -77,5 +78,29 @@
 			</div>
 		</li>
 		<? $i++ ?>
+		
 	<? } ?>
+	<!-- TESTING STATIC DEAL FOR "EXCLUSIVE DEALS" -->
+	<li>			
+			<a href="http://www.hellomusic.com/ec/DealMain.aspx?did=14151">
+			<span class="sb_exclusive-deal"></span>
+			<img src="https://www.hellomusic.com/DealImages/hellomusicadmin.helloimages/9/8/6/9/98695U40LK2TQEC59ULP8M03TVALDQI.jpg" alt="" class="sb_dealImage">
+							</a>
+			<div class="sb_dealInfo">
+				<p>
+					<span class="sb_itemName">Cadillac Select (Cherry Burst) </span>
+					<a href="http://www.hellomusic.com/ec/DealMain.aspx?did=14151" target="_blank" class="sb_theme_button_flat">View</a>
+											<span class="sb_dealPercentOff">46% OFF!</span>
+									</p>
+			</div><!-- .sb_dealInfo -->
+			<div class="sb_externalShares">
+																<a style="cursor: pointer;" class="sb_externalShare" onclick='$SQ.openWindow("//www.facebook.com/dialog/feed?app_id=294589067222667&amp;link=http%3A%2F%2Fwww.hellomusic.com%2Fec%2FDealMain.aspx%3Fdid%3D14151&amp;caption=Hello+Music+has+another+great+daily+deal+going%2C+46%25+off+Cadillac+Select+%28Cherry+Burst%29+.+Only+today%21&amp;picture=https%3A%2F%2Fwww.hellomusic.com%2FDealImages%2Fhellomusicadmin.helloimages%2F9%2F8%2F6%2F9%2F98695U40LK2TQEC59ULP8M03TVALDQI.jpg&amp;redirect_uri=https%3A%2F%2Flocal.sayso.com%2Fstarbar%2Fhellomusic%2Ffacebook-post-result%3Fshared_type%3Dpromos%26shared_id%3D14151%26user_id%3D134%26user_key%3DFE3BZNWIVW3LI5DBK5W4STX3XU1MYUO2%26auth_key%3D309e34632c2ca9cd5edaf2388f5fa3db&amp;name=Cadillac+Select+%28Cherry+Burst%29+&amp;description=Like+Music%3F+You+can+get+the+Say.So+Music+Bar+from+Hello+Music%2C+give+your+opinion%2C+earn+points%2C+get+FREE+gear%2C+as+well+as+exclusive+access+to+deeply+discounted+music+gear.", "sb_window_open", "location=1,status=1,scrollbars=0,width=981,height=450"); return false;'>
+					<img src="//local.sayso.com/images/generic/facebook-share-icon.png" alt="Facebook">
+				</a>
+				<span class="sb_mini-note-reward">+25</span>
+				<iframe title="Twitter Tweet Button" style="width: 55px; height: 20px;" class="twitter-share-button twitter-count-none" src="http://platform.twitter.com/widgets/tweet_button.1333526973.html#_=1333595715793&amp;count=none&amp;id=twitter-widget-6&amp;lang=en&amp;original_referer=http%3A%2F%2Flocal.sayso.com%2Fclient%2Fhellomusic%2Fhome&amp;size=m&amp;text=Hello%20Music%20has%20another%20great%20daily%20deal%20going%2C%2046%25%20off%20Cadillac%20Select%20%28Cherry%20Burst%29%20.%20Only%20today%21&amp;url=http%3A%2F%2Fwww.hellomusic.com%2Fec%2FDealMain.aspx%3Fdid%3D14151&amp;via=saysoapp" allowtransparency="true" frameborder="0" scrolling="no"></iframe>
+				<span class="sb_mini-note-reward" style="padding-right: 0px; margin-right: 0px;">+25</span>
+			</div>
+		</li>
+	
 </ul><!-- .sb_dailyDeal -->

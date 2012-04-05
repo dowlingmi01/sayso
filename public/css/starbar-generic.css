@@ -1352,24 +1352,24 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 /* facebook / twitter connect icons */
 
 #sayso-starbar .sb_connect_facebook {
-	width: 53px;
-	height: 64px;
+	width: 49px;
+	height: 66px;
 	text-indent: -9999px;
 	display: inline-block;
 	background-image: url('../images/generic/img_connect_facebook.png');
 	background-repeat: no-repeat;
-	background-position: -56px 0px;
+	background-position: 0px 0px;
 	margin: 0px 5px 5px 0px;
 }
 #sayso-starbar .sb_connect_twitter {
-	width: 53px;
-	height: 64px;
+	width: 49px;
+	height: 66px;
 	text-indent: -9999px;
 	display: inline-block;
 	background-image: url('../images/generic/img_connect_twitter.png');
 	background-repeat: no-repeat;
 	margin: 0px 5px 5px 0px;
-	background-position: -56px 0px;
+	background-position: 0px 0px;
 }
 
 #sayso-starbar .sb_unconnected {
@@ -1381,7 +1381,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	opacity: 0.5;
 }
 #sayso-starbar .sb_connected {
-	background-position: 0px 0px;
+	background-position: 0px -66px;
 }
 #sayso-starbar .sb_externalShares, #sayso-starbar-embed .sb_externalShares {
 	margin-top: 5px;
@@ -1392,6 +1392,28 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar .twitter-share-button, #sayso-starbar-embed .twitter-share-button {
 	float: left;
 }
+
+#sayso-starbar .sb_externalShare, #sayso-starbar-embed .sb_externalShare.sb_externalShare_twitter{
+	width: 35px;
+	height: 33px;
+	display: inline-block;
+	text-indent: -9999px;
+	background-image: url('../images/generic/img_share_twitter.png');
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+}
+
+#sayso-starbar .sb_externalShare, #sayso-starbar-embed .sb_externalShare.sb_externalShare_faceboook{
+	width: 35px;
+	height: 33px;
+	display: inline-block;
+	text-indent: -9999px;
+	background-image: url('../images/generic/img_share_facebook.png');
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+}
+
+
 /* JQUERY EDIT IN PLACE */
 
 #sayso-starbar .sb_jeip{

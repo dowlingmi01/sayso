@@ -14,7 +14,7 @@
 	if (!window.$SQ || !window.$SQ.sayso) return;
 
 	// jQuery
-	$SQ = window.$SQ;
+	var $SQ = window.$SQ;
 
 	// Insert the starbar container
  	if ($SQ('#sayso-starbar').length < 1)
@@ -310,14 +310,14 @@
 	function fixFlashElements () {
 		// fix <embed> FLASH elements!
 		$SQ('embed[src*=".swf"]').not('.saysofixed').each(function(index) {
-			$SQembed = $SQ(this);
+			var $SQembed = $SQ(this);
 
 			if ($SQembed.attr('id') == 'sm2movie') return true; // no fix needed, go to next <embed>
 
 			$SQembed.css('z-index', '9998 !important');
 			if ($SQembed.attr('wmode') != 'transparent' && $SQembed.attr('wmode') != 'opaque') {
 				$SQembed.attr('wmode', 'transparent');
-				newElem = $SQembed.clone(true, true);
+				var newElem = $SQembed.clone(true, true);
 				newElem.addClass('saysofixed');
 				$SQembed.replaceWith(newElem);
 			}
@@ -325,9 +325,9 @@
 
 		// fix <object> FLASH elements!
 		$SQ('object').not('.saysofixed').each(function(index) {
-			$SQobject = $SQ(this);
+			var $SQobject = $SQ(this);
 			if ($SQobject.attr('id') == 'sm2movie' || $SQobject.attr('id') == 'FS') return true; // no fix needed, go to next <object>
-			$SQwmodeParam = $SQ('param[name="wmode"]', $SQobject);
+			var $SQwmodeParam = $SQ('param[name="wmode"]', $SQobject);
 			if ($SQwmodeParam.length == 1) {
 				if ($SQwmodeParam.attr('value') == 'transparent' || $SQwmodeParam.attr('value') == 'opaque') {
 					return true; // no fix needed, go to next <object>
@@ -336,9 +336,10 @@
 				}
 			} else {
 				// Check if this <object> is flash, if so add the wmode parameter
-				$SQmovieParam = $SQ('param[name="movie"]', $SQobject);
-				if (($SQmovieParam.length == 1 && $SQmovieParam.attr('value').match(/.swf/)) || $SQobject.attr('type').match(/flash/)) {
-					newParam = document.createElement('param');
+				var $SQmovieParam = $SQ('param[name="movie"]', $SQobject);
+				var $SQobjectType = $SQobject.attr('type');
+				if (($SQmovieParam.length == 1 && $SQmovieParam.attr('value').match(/.swf/)) || ($SQobjectType && $SQobjectType.match(/flash/))) {
+					var newParam = document.createElement('param');
 					newParam.setAttribute('name', 'wmode');
 					newParam.setAttribute('value', 'transparent');
 					$SQobject.append(newParam);
@@ -348,10 +349,10 @@
 			}
 			$SQobject.css('z-index', '9998 !important');
 
-			container = $SQobject.parent();
-			newElem = $SQobject.clone(true);
+			var container = $SQobject.parent();
+			var newElem = $SQobject.clone(true);
 			newElem.addClass('saysofixed');
-			elemBeforeObject = $SQobject.prev();
+			var elemBeforeObject = $SQobject.prev();
 			$SQobject.remove();
 			if (elemBeforeObject.length != 0) {
 				newElem.insertAfter(elemBeforeObject);

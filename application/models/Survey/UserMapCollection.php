@@ -1,4 +1,5 @@
 <?php
+// Renamed and deprecated -- See ResponseCollection.php in this directory -- delete me by June 2012 or sooner if still unused!
 
 class Survey_UserMapCollection extends RecordCollection
 {

@@ -3,7 +3,7 @@
 class Survey extends Record
 {
 	protected $_tableName = 'survey';
-	
+
 	public static function getNextSurveyForUser($startSurvey, $userId) {
 		// Figure out what the status of this survey is for this user
 		$surveyUserMap = new Survey_UserMap();
@@ -13,7 +13,7 @@ class Survey extends Record
 		} else {
 			$surveyUserStatus = 'new';
 		}
-		
+
 		if ($surveyUserStatus == 'new' || $surveyUserStatus == 'archived') {
 			$surveys = new SurveyCollection();
 			$surveys->loadSurveysForStarbarAndUser($startSurvey->starbar_id, $userId, 'survey', $surveyUserStatus);
@@ -24,6 +24,19 @@ class Survey extends Record
 			}
 		}
 		return new Survey();
+	}
+
+	public function getArrayOfUsersWhoResponded($commaDelimitedUserIdFilterList = null) {
+		if (!$this->id) return;
+
+		$sql = "SELECT user_id FROM survey_response WHERE survey_id = ? AND processing_status = 'completed'";
+
+		if ($commaDelimitedUserIdFilterList) {
+			// add to $sql
+			$sql .= " AND user_id IN (" . trimCommas($commaDelimitedUserIdFilterList) . ")";
+		}
+
+		return Db_Pdo::fetchColumn($sql, $this->id);
 	}
 }
 

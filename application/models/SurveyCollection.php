@@ -34,4 +34,15 @@ class SurveyCollection extends RecordCollection
 			$this->build($surveys, new Survey());
 		}
 	}
+
+	public function loadAllSurveys() {
+		$sql = "SELECT *
+				FROM survey
+				";
+		$surveys = Db_Pdo::fetchAll($sql);
+
+		if ($surveys) {
+			$this->build($surveys, new Survey());
+		}
+	}
 }

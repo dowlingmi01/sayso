@@ -1,0 +1,48 @@
+<br />
+<form id="reportForm" method="get">
+	<select name="survey_id" onchange="$SQ('#reportForm').submit();">
+		<option value="0">Choose a survey, any survey</option>
+		<? foreach ($this->surveys as $survey) { ?>
+			<? if ($survey->type == "survey") { ?>
+				<option value="<?= $survey->id ?>" <? if ($this->survey_id == $survey->id) { echo 'selected'; } ?>><?= $survey->title ?></option>
+			<? } ?>
+		<? } ?>
+	</select><br /><br />
+	<? if ($this->survey_id) { ?>
+		<? $questionNumber = 1 ?>
+		<? foreach ($this->survey_questions as $surveyQuestion) { ?>
+			<? $surveyQuestion = $this->survey_question_array[$surveyQuestion->id] ?>
+			<? $questionCalculation = $this->calculation_array[$surveyQuestion->id][0] ?>
+
+			<? if ($questionCalculation->number_of_responses) { ?>
+				<h3><?= $questionNumber ?>. <?= $surveyQuestion->id ?> <?= $surveyQuestion->title ?></h3>
+				Number of responses: <b><?= $questionCalculation->number_of_responses ?></b><br />
+
+				<? if ($questionCalculation->number_of_responses) { ?>
+					<? if ($questionCalculation->average) echo "Average: " . $questionCalculation->average . "<br />" ?>
+					<? if ($questionCalculation->median) echo "Median: " . $questionCalculation->median . "<br />" ?>
+					<? if ($questionCalculation->standard_deviation) echo "Std. Dev.: " . $questionCalculation->standard_deviation . "<br />" ?>
+
+					<? if ($surveyQuestion->piped_from_survey_question_id) { ?>
+					 	<? $surveyQuestion->option_array = $this->survey_question_array[$surveyQuestion->piped_from_survey_question_id]->option_array ?>
+					<? } ?>
+
+
+					<? if (count($surveyQuestion->option_array)) { ?>
+						Choices (users can pick <b><?= ($surveyQuestion->choice_type == "single" ? "one response" : "multiple responses") ?></b>):
+						<ol>
+						<? foreach ($surveyQuestion->option_array as $surveyQuestionChoice) { ?>
+							<? $choiceCalculation = $this->calculation_array[$surveyQuestion->id][$surveyQuestionChoice->id] ?>
+							<li>
+								<?= $surveyQuestionChoice->title ?> <b><?= $choiceCalculation->number_of_responses ?></b> (<?= round($choiceCalculation->number_of_responses / $questionCalculation->number_of_responses * 100, 2) ?>%)<br />
+							</li>
+						<? } ?>
+						</ol>
+						<br />
+					<? } ?>
+				<? } ?>
+				<? $questionNumber++ ?>
+			<? } ?>
+		<? } ?>
+	<? } ?>
+</form>

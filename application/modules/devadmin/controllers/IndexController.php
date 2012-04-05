@@ -1013,7 +1013,7 @@ class Devadmin_IndexController extends Api_GlobalController
 						$allSurveyQuestions->loadAllQuestionsForSurvey($surveyId);
 
 						$allSurveyQuestionChoices = new Survey_QuestionChoiceCollection();
-						$allSurveyQuestionChoices->loadAllQuestionChoicesForSurvey($surveyId);
+						$allSurveyQuestionChoices->loadAllChoicesForSurvey($surveyId);
 
 						$surveyQuestionChoices = new Survey_QuestionChoiceCollection();
 
@@ -1021,7 +1021,7 @@ class Devadmin_IndexController extends Api_GlobalController
 						foreach ($allSurveyQuestions as $surveyQuestion) {
 							$questionIdReferenceArray[$surveyQuestion->id] = array("question" => $surveyQuestion, "choices" => array());
 							if ($surveyQuestion->choice_type == "multiple") {
-								$surveyQuestionChoices->loadAllQuestionChoicesForSurveyQuestion($surveyQuestion->id);
+								$surveyQuestionChoices->loadAllChoicesForSurveyQuestion($surveyQuestion->id);
 								foreach ($surveyQuestionChoices as $surveyQuestionChoice) {
 									$comboArrayKey = $surveyQuestion->external_question_id . "-" . $surveyQuestionChoice->external_choice_id;
 									$comboExternalIdReferenceArray[$comboArrayKey] = $surveyQuestion;
@@ -1029,7 +1029,7 @@ class Devadmin_IndexController extends Api_GlobalController
 							} elseif ($surveyQuestion->choice_type == "single" && $surveyQuestion->data_type != "none") {
 								$comboArrayKey = $surveyQuestion->external_question_id . "-" . $surveyQuestion->external_pipe_choice_id;
 								$comboExternalIdReferenceArray[$comboArrayKey] = $surveyQuestion;
-								$surveyQuestionChoices->loadAllQuestionChoicesForSurveyQuestion($surveyQuestion->id);
+								$surveyQuestionChoices->loadAllChoicesForSurveyQuestion($surveyQuestion->id);
 								foreach ($surveyQuestionChoices as $surveyQuestionChoice) {
 									if ($surveyQuestionChoice->other) {
 										$comboArrayKey = $surveyQuestion->external_question_id . "-" . $surveyQuestionChoice->external_choice_id;
@@ -1224,5 +1224,72 @@ class Devadmin_IndexController extends Api_GlobalController
 
 			$this->view->messages = $messages;
 		}
+	}
+
+	public function processReportCellsAction () {
+		$reportCells = new ReportCellCollection();
+		$reportCells->loadAllReportCells();
+
+		foreach ($reportCells as $reportCell) {
+			$reportCell->process();
+		}
+
+		$this->view->messages = array("Processing Complete!");
+	}
+
+	public function surveyReportAction () {
+		$request = $this->getRequest();
+		$surveyId = $request->getParam("survey_id", false);
+		$reportCellId = 1; // @todo allow choosing of report cell
+		$surveyQuestions = null;
+		$surveyQuestionArray = array();
+		$calculationArray = array();
+
+		if ($surveyId && $reportCellId) {
+			$reportCellSurvey = new ReportCell_Survey();
+			$reportCellSurvey->loadDataByUniqueFields(array("report_cell_id" => $reportCellId, "survey_id" => $surveyId));
+			if ($reportCellSurvey->id) {
+				$surveyQuestions = new Survey_QuestionCollection();
+				$surveyQuestions->loadAllQuestionsForSurvey($surveyId);
+
+				// Place survey questions into an array, where the key is the survey_question_id
+				foreach ($surveyQuestions as $surveyQuestion) {
+					$surveyQuestion->option_array = array();
+					$surveyQuestionArray[$surveyQuestion->id] = $surveyQuestion;
+					$calculationArray[$surveyQuestion->id] = array();
+				}
+
+				$surveyQuestionChoices = new Survey_QuestionChoiceCollection();
+				$surveyQuestionChoices->loadAllChoicesForSurvey($surveyId);
+
+				foreach ($surveyQuestionChoices as $surveyQuestionChoice) {
+					$surveyQuestionArray[$surveyQuestionChoice->survey_question_id]->option_array[$surveyQuestionChoice->id] = $surveyQuestionChoice;
+				}
+
+				$reportCellSurveyCalculations = new ReportCell_SurveyCalculationCollection();
+				$reportCellSurveyCalculations->loadAllCalculationsForReportCellSurvey($reportCellSurvey->id);
+
+				foreach ($reportCellSurveyCalculations as $reportCellSurveyCalculation) {
+					switch ($reportCellSurveyCalculation->parent_type) {
+						case "survey_question":
+							$calculationArray[$reportCellSurveyCalculation->survey_question_id][0] = $reportCellSurveyCalculation;
+							break;
+
+						case "survey_question_choice":
+							$calculationArray[$reportCellSurveyCalculation->survey_question_id][$reportCellSurveyCalculation->survey_question_choice_id] = $reportCellSurveyCalculation;
+							break;
+					}
+				}
+			}
+		}
+
+		$this->view->survey_id = $surveyId;
+		$this->view->calculation_array = $calculationArray;
+		$this->view->survey_question_array = $surveyQuestionArray;
+		$this->view->survey_questions = $surveyQuestions; // Ordered properly
+
+		$surveys = new SurveyCollection();
+		$surveys->loadAllSurveys();
+		$this->view->surveys = $surveys;
 	}
 }

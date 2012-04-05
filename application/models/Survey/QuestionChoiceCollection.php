@@ -2,7 +2,7 @@
 
 class Survey_QuestionChoiceCollection extends RecordCollection
 {
-	public function loadAllQuestionChoicesForSurvey ($surveyId) {
+	public function loadAllChoicesForSurvey ($surveyId) {
 		if ($surveyId) {
 			$sql = "
 				SELECT survey_question_choice.*, survey_question.ordinal AS questionordinal
@@ -19,7 +19,7 @@ class Survey_QuestionChoiceCollection extends RecordCollection
 		}
 	}
 
-	public function loadAllQuestionChoicesForSurveyQuestion($surveyQuestionId) {
+	public function loadAllChoicesForSurveyQuestion($surveyQuestionId) {
 		if ($surveyQuestionId) {
 			$surveyQuestion = new Survey_Question();
 			$surveyQuestion->loadData($surveyQuestionId);

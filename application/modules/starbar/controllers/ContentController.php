@@ -252,7 +252,19 @@ class Starbar_ContentController extends Api_GlobalController
 
 		$surveyResponse = new Survey_Response();
 		$surveyResponse->loadDataByUniqueFields(array("user_id" => $this->user_id, "survey_id" => $this->survey_id));
-		if (!$surveyResponse->id) exit;
+
+		if (!$surveyResponse->id) {
+			// Failed... might be because it's a new user. Try again after marking unseen surveys new
+			$surveyResponses = new Survey_ResponseCollection();
+			$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys', $this->_maximumDisplayed['surveys']);
+
+			$surveyResponse->loadDataByUniqueFields(array("user_id" => $this->user_id, "survey_id" => $this->survey_id));
+		}
+
+		if (!$surveyResponse->id) {
+			throw new Api_Exception(Api_Error::create(Api_Error::APPLICATION_ERROR, 'User ' . $this->user_id . ' could not take survey ' . $this->survey_id . ' because there is no survey_response record'));
+			exit;
+		}
 
 		$surveyAlreadyCompleted = ($surveyResponse->status == "completed" || $surveyResponse->status == "disqualified");
 

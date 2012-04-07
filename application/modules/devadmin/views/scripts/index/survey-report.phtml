@@ -3,9 +3,7 @@
 	<select name="survey_id" onchange="$SQ('#reportForm').submit();">
 		<option value="0">Choose a survey, any survey</option>
 		<? foreach ($this->surveys as $survey) { ?>
-			<? if ($survey->type == "survey") { ?>
-				<option value="<?= $survey->id ?>" <? if ($this->survey_id == $survey->id) { echo 'selected'; } ?>><?= $survey->title ?></option>
-			<? } ?>
+			<option value="<?= $survey->id ?>" <? if ($this->survey_id == $survey->id) { echo 'selected'; } ?>><?= strtoupper($survey->type) . ": " . $survey->title ?></option>
 		<? } ?>
 	</select><br /><br />
 	<? if ($this->survey_id) { ?>

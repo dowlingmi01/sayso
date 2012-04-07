@@ -38,6 +38,7 @@ class SurveyCollection extends RecordCollection
 	public function loadAllSurveys() {
 		$sql = "SELECT *
 				FROM survey
+				ORDER BY type DESC, ordinal ASC
 				";
 		$surveys = Db_Pdo::fetchAll($sql);
 

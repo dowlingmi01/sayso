@@ -601,8 +601,8 @@
 	text-indent: 20px;
 }
 
-#sayso-starbar #starbar-player-console span.sb_mini-note-reward#sb_mini-note-reward_twitter{
-	left: 80px;
+#sayso-starbar #starbar-player-console span.sb_mini-note-reward.sb_mini-note-reward_twitter{
+	left: 80px !important;
 }
 
 

@@ -984,9 +984,19 @@ $SQ(function(){
 				}
 			});
 		}
-
+		
 		if (levelIconsContainerElems.length > 0) {
 			levelIconsContainerElems.each(function() {
+				$SQ(this).cycle({
+					prev :	'#sb_userLevel_prev',
+					next:		'#sb_userLevel_next',
+					fx: 		'scrollHorz',
+					speed:	500,
+					timeout:	0, 
+					startingSlide: 1
+				});
+				/*
+				COMMENTED OUT TO SET UP JQUERY CYCLE AND SHOW HOW IT SHOULD WORK.
 				$SQ(this).html('');
 				if (allLevels && userCurrentLevel) {
 					$SQ.each(allLevels, function (index, level) {
@@ -1017,7 +1027,7 @@ $SQ(function(){
 						levelIconsContainerElems.append('<div class="sb_userLevelIcons sb_userLevel_next"><div class="sb_userLevelImg sb_userLevel_empty"></div><p><br /></p></div>');
 						emptyLevelsToAdd--;
 					}
-				}
+				}*/
 			});
 		}
 

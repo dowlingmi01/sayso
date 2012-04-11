@@ -638,25 +638,73 @@
 	padding: 0;
 }
 
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle{
+	position: relative;
+	display: block;
+	height: 139px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_user_level_icons_container{
+	margin: 0px 25px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav{
+	width: 20px;
+	height: 102px;
+	position: absolute;
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+	cursor: pointer;
+	top: 10px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav:hover{
+	background-position: 0px -102px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav#sb_userLevel_prev{
+	background-image: url('../images/hellomusic/img_carousel_left.png');
+	left: 0;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav#sb_userLevel_next{
+	background-image: url('../images/hellomusic/img_carousel_right.png');
+	right: 0;
+}
+
+
 #sayso-starbar #sb_popBox_user-level .sb_userLevelIcons{
 	float: left;
 	margin: 0px 0px 0px 0px;
 	text-align: center;
 }
 
+#sayso-starbar #sb_popBox_user-level .sb_userLevelIcons p{
+	display: none;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevelIcons:hover p{
+	display: block;
+}
+
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_earned,
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next{
-	width: 112px;
+	width: 100px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_current{
-	width: 112px;
+	width: 100px;
 	height: 139px; /* fixed height to allow scrollPane to have correct height */
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevelIcons.sb_userLevel_current p{
+	display: block;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevelImg{
 	height: 85px;
 	width: 100%;
+	display: block;
 	background-repeat: no-repeat;
 	background-position: center bottom;
 }
@@ -676,6 +724,10 @@
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_empty{
 	background-image: url('../images/hellomusic/img_level_empty.png');
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_next .sb_userLevelImg{
+	background-image: url('../images/hellomusic/img_level_blank.png');
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_user-level-box{

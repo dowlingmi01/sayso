@@ -17,7 +17,7 @@
 		$this->view->headScript()->appendFile('/js/starbar/jquery.jscrollpane.min.js');
 		$this->view->headScript()->appendFile('/js/starbar/jquery.cookie.js');
 		$this->view->headScript()->appendFile('/js/starbar/jquery.jeip.js');
-		$this->view->headScript()->appendFile('/js/starbar/jquery.cycle.lite.js');
+		$this->view->headScript()->appendFile('/js/starbar/jquery.cycle.all.js');
 		$this->view->headScript()->appendFile('/js/starbar/jquery.easyTooltip.js');
 		$this->view->headScript()->appendFile('/js/cms/jquery.ui.slider.js');
 		$this->view->headScript()->appendFile('/js/cms/jquery.ui.datepicker.js');

@@ -206,7 +206,7 @@
 					starbarContainer.appendChild(jsEasyTooltip);
 
 					var jsCycle = document.createElement('script');
-					jsCycle.src = '//' + sayso.baseDomain + '/js/starbar/jquery.cycle.lite.js';
+					jsCycle.src = '//' + sayso.baseDomain + '/js/starbar/jquery.cycle.all.js';
 					starbarContainer.appendChild(jsCycle);
 
 					// load the specific CSS for this Starbar

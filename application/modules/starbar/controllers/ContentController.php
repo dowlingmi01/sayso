@@ -35,7 +35,7 @@ class Starbar_ContentController extends Api_GlobalController
 			$this->view->headScript()->appendFile('/js/starbar/jquery.jscrollpane.min.js');
 			$this->view->headScript()->appendFile('/js/starbar/jquery.cookie.js');
 			$this->view->headScript()->appendFile('/js/starbar/jquery.jeip.js');
-			$this->view->headScript()->appendFile('/js/starbar/jquery.cycle.lite.js');
+			$this->view->headScript()->appendFile('/js/starbar/jquery.cycle.all.js');
 			$this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
 			// For init-remote.phtml
 			$this->_assignStarbarToView();

@@ -53,7 +53,7 @@
 			<h2 class="sb_titlePlain">My Stats</h2>
 			<div class="sb_user-stats">
 				<div class="sb_user-level">
-					[pic]
+					
 				</div><!-- .sb_user-level -->
 				<div class="sb_user-points">
 					<div class="sb_current-level">
@@ -81,16 +81,19 @@
 
 	
 	<li style="border: none;">
-		<div class="sb_header">
-			<h2 class="sb_titlePlain" style="padding-top: 3px">Share the Say.So Music Bar</h2>
-		</div><!-- .sb_header -->
+		<h2 class="sb_titlePlain" style="padding-top: 3px">Share the Say.So Music Bar</h2>
 		<span class="sb_tiny_note">Earn extra credit for sharing!</span>
 		<div class="sb_externalShares">
-			<a class="sb_externalShare" href="#" 
+		
+			<!-- FACEBOOK -->
+			<a class="sb_externalShare sb_externalShare_facebook" rel="sb_mini-note-reward_facebook" 	href="#" 
 				onclick="return $SQ.openWindow('//www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($this->share_link) ?>&caption=<?= urlencode($this->facebook_share_caption) ?>&picture=<?= urlencode($this->facebook_share_image_url) ?>&redirect_uri=<?= urlencode($this->facebook_share_callback_url) ?>&name=<?= urlencode($this->facebook_title) ?>&description=<?= urlencode($this->facebook_description) ?>', 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450');">
-				<img src="//<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
+				Facebook Share
 			</a>
-			<span class="sb_mini-note-reward">+50</span>
+			<span class="sb_mini-note-reward" id="sb_mini-note-reward_facebook">+50</span>
+			<!-- / facebook -->
+			
+			<! -- TWITTER -->
 			<script type="text/javascript">
 				$SQ.getScript("//platform.twitter.com/widgets.js", function(){
 					function handleTweetEvent(event){
@@ -104,18 +107,23 @@
 					twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
 				});
 			</script>
-			<a class="twitter-share-button"
-				data-related="<?= $this->twitter_share_related_users ?>"
-				data-hashtags="<?= $this->twitter_share_hashtags ?>"
-				data-via="<?= $this->twitter_share_via_user ?>"
-				data-url="<?= $this->share_link ?>"
-				data-text="<?= $this->twitter_share_text ?>"
-				data-count="none"
-				href="https://twitter.com/intent/tweet">
-					<img src="//<?= BASE_DOMAIN ?>/images/generic/logo_twitter.png" alt="Twitter" />
-			</a>
-			<span class="sb_mini-note-reward">+50</span>
-		</div>
+						
+			<div class="sb_externalShare sb_externalShare_twitter" rel="sb_mini-note-reward_twitter">
+				<a class="twitter-share-button"
+					data-related="<?= $this->twitter_share_related_users ?>"
+					data-hashtags="<?= $this->twitter_share_hashtags ?>"
+					data-via="<?= $this->twitter_share_via_user ?>"
+					data-url="<?= $this->share_link ?>"
+					data-text="<?= $this->twitter_share_text ?>"
+					data-count="none"
+					href="https://twitter.com/intent/tweet">						
+				</a>
+			</div>
+			
+			<span class="sb_mini-note-reward" id="sb_mini-note-reward_twitter">+50</span>
+			<!-- / twitter -->
+			
+		</div><!-- .sb_externalShares -->
 		</li>
 		</ul>
 	</div><!-- .sb_column40 -->

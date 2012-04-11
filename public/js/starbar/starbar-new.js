@@ -16,6 +16,8 @@ $SQ(function(){
 	// clickable elements that ppl will interact with
 	var btnToggleVis; //  = $SQ('#sayso-starbar #starbar-visControls #starbar-toggleVis');
 	var btnSaySoLogo; // = $SQ('#sayso-starbar #starbar-visControls #sb_starbar-logo');
+	var btnExternalShare; // = $SQ('.sb_externalShare',starbarElem);
+
 
 	// container elements
 	var elemSaySoLogoBorder; // = $SQ('#sayso-starbar #starbar-player-console #sb_starbar-logoBorder');
@@ -268,6 +270,7 @@ $SQ(function(){
 		// clickable elements that ppl will interact with
 		btnToggleVis = $SQ('#starbar-visControls #starbar-toggleVis', starbarElem);
 		btnSaySoLogo = $SQ('#starbar-visControls #sb_starbar-logo', starbarElem);
+		btnExternalShare = $SQ('.sb_externalShare',starbarElem);
 
 		// container elements
 		elemSaySoLogoSemiStowed = $SQ('#sb_starbar-logoSemiStowed', starbarElem);
@@ -297,7 +300,7 @@ $SQ(function(){
 
 		/* prevent default for any link with # as the href */
 		$SQ('a', starbarElem).each(function(){
-			$SQthis = $SQ(this);
+			$SQthis = $SQ(this);			
 			if ($SQthis.attr('href')=='#'){
 				$SQthis.removeAttr('href')
 				.css('cursor', 'pointer')
@@ -451,6 +454,23 @@ $SQ(function(){
 				}
 			});
 		});
+		
+		// SET UP EXTERNAL SHARE BEHAVIORS
+		$.each(btnExternalShare,function(){			
+			// for some reason, the hover behavior set in the CSS is totally ignored. :(
+				$SQ(this).hover(function(){
+					$SQPoints = $('#'+$SQ(this).attr('rel'));
+					console.log($SQ(this).attr('rel'));
+					$SQ(this).css('background-position','0px -20px');
+					$SQPoints.show();
+				},
+				function(){
+					$SQPoints = $('#'+$SQ(this).attr('rel'));
+					$SQ(this).css('background-position','0px 0px');		
+					$SQPoints.hide();		
+				});
+
+		}); // end btnExternalShare
 
 	} // end initElements()
 

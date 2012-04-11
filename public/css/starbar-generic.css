@@ -1385,17 +1385,24 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 }
 #sayso-starbar .sb_externalShares, #sayso-starbar-embed .sb_externalShares {
 	margin-top: 5px;
+	position: relative;
+	padding: 5px 0px;
 }
 #sayso-starbar .sb_externalShare, #sayso-starbar-embed .sb_externalShare {
 	float: left;
+	margin: 0px 5px 0px 0px;
 }
 #sayso-starbar .twitter-share-button, #sayso-starbar-embed .twitter-share-button {
 	float: left;
 }
 
-#sayso-starbar .sb_externalShare, #sayso-starbar-embed .sb_externalShare.sb_externalShare_twitter{
-	width: 35px;
-	height: 33px;
+#sayso-starbar .sb_externalShare{
+
+}
+
+#sayso-starbar .sb_externalShare.sb_externalShare_twitter{
+	width: 20px;
+	height: 20px;
 	display: inline-block;
 	text-indent: -9999px;
 	background-image: url('../images/generic/img_share_twitter.png');
@@ -1403,9 +1410,9 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	background-position: 0px 0px;
 }
 
-#sayso-starbar .sb_externalShare, #sayso-starbar-embed .sb_externalShare.sb_externalShare_faceboook{
-	width: 35px;
-	height: 33px;
+#sayso-starbar .sb_externalShare.sb_externalShare_facebook{
+	width: 20px;
+	height: 20px;
 	display: inline-block;
 	text-indent: -9999px;
 	background-image: url('../images/generic/img_share_facebook.png');

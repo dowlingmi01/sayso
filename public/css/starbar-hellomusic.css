@@ -582,17 +582,29 @@
 	height: 20px;
 }
 
-#sayso-starbar #starbar-player-console span.sb_mini-note-reward, #sayso-starbar-embed span.sb_mini-note-reward, #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li span.sb_mini-note-reward {
+#sayso-starbar #starbar-player-console span.sb_mini-note-reward, 
+#sayso-starbar-embed span.sb_mini-note-reward, 
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li span.sb_mini-note-reward{
 	background-image: url('../images/hellomusic/img_note_tn.png');
 	background-repeat: no-repeat;
-	background-position: 0px 3px;
-	padding: 5px 0 3px 13px;
-	height: 14px;
-	font-size: 10px;
-	margin: 0 3px 0 3px;
-	color: black;
-	float: left;
+	background-position: 0px 0px;
+	font-size: 13px;
+	color: #e6bd5b;
+	width: 75px;
+	height: 40px;
+	position: absolute;
+	z-index: 9999;
+	display: none;
+	left: 22px;
+	top: -7px;
+	line-height: 43px;
+	text-indent: 20px;
 }
+
+#sayso-starbar #starbar-player-console span.sb_mini-note-reward#sb_mini-note-reward_twitter{
+	left: 80px;
+}
+
 
 #sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgNote{
 	position: absolute;
@@ -744,6 +756,9 @@
 	width: 49px;
 	height: 66px;
 	float: left;
+	background-image: url('../images/hellomusic/img_level_blank.png');
+	background-position: center middle;
+	background-repeat: no-repeat;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points{

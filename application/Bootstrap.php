@@ -38,7 +38,15 @@ class Bootstrap extends App_Bootstrap
 
 		Zend_Controller_Front::getInstance()->registerPlugin(new BootstrapPlugin($this), 1);
 	}
-
+	/**
+	 *@author Peter Connolly
+	 * @return \Zend_View
+	 */
+ protected function _initView()
+   {
+       $view = new Zend_View();
+       return $view;
+   }
 	/**
 	 * Setup bootstrap resource returning a usable link
 	 * to table holding session data
@@ -70,6 +78,9 @@ class Bootstrap extends App_Bootstrap
 			'lifetimeColumn' => 'lifetime',
 			'db'			 => $db
 		);
+        
+        /* Set the default adapter for abstract tables - Peter Connolly, 5 April 2012 */
+        Zend_Db_Table_Abstract::setDefaultAdapter($db);
 
 		$dbSessionHandler = false;
 
@@ -106,7 +117,7 @@ class Bootstrap extends App_Bootstrap
 		$front->setRequest(new Zend_Controller_Request_Simple());
 		return true;
 	}
-	
+
 	/* Don't use Api_Auth */
 	public function setupAuthPlugin (Zend_Controller_Request_Abstract $request) {
 	}
@@ -166,10 +177,10 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
 			if( !$request->getParam(Api_Constant::USER_ID) && isset($_COOKIE[Api_Constant::USER_ID]))
 				$request->setParam(Api_Constant::USER_ID, $_COOKIE[Api_Constant::USER_ID]);
 		}
-		
+
 		// If there is a valid user_key, retrieve the corresponding user_id.
 		// Otherwise, disallow any user_id and user_key parameters
-		
+
 		if( $token = $request->getParam(Api_Constant::USER_KEY) ) {
 			$user_id = User_Key::validate($token);
 			$request->setParam(Api_Constant::USER_ID, $user_id);
@@ -177,11 +188,11 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
 				$request->setParam(Api_Constant::USER_KEY, null);
 		} else if( $request->getParam(Api_Constant::USER_ID) )
 			$request->setParam(Api_Constant::USER_ID, null);
-		
+
 		if( $clientName = $request->getParam('client_name') ) {
 			Client::getInstance($clientName)->processKeys($request);
 		}
-					
+
 		if ($currentModule === 'api') return;
 
 		$layout = Zend_Layout::startMvc();

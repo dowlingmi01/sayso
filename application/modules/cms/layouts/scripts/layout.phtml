@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>Say.So | CMSvv</title>
+		<title>Say.So | CMS</title>
 		<?= $this->headLink(); ?>
                 <?php printf("<!--csshelper included below-->"); ?>
                 <?= $this->cssHelper(); ?>
@@ -22,40 +22,24 @@
 			<header>
 
 					<span class="common">
-						<ul>
-							<li><a id="menu-surveys" href="/cms/surveys/" title="Survey"><span>Surveys</span></a></li>
+					<!--	<ul>
+							<li><a id="menu-surveys" href="/cms/admin/" title="Survey"><span>Tablej List</span></a></li>
 							<li> | </li>
-							<li><a id="menu-surveys" href="/cms/polls/" title="Survey"><span>Polls</span></a></li>
-							<li> | </li>
-							<li><a id="menu-studies" href="/cms/study/" title="Crate And Manage Studies"><span>Studies</span></a></li>
-							<li> | </li>
-							<li><a id="menu-metrics" href="/cms/metrics/" title="Real-Time Metrics"><span>Metrics</span></a></li>
-							<li> | </li>
-							<li><a id="menu-users" href="/cms/user/" title="User Management"><span>Admins</span></a></li>
-						</ul>
+							<li><a id="menu-reload" href="/cms/admin/reload" title="Survey"><span>Refresh Tables</span></a></li>
+
+						</ul> -->
 						<div class="clear"></div>
 					</span>
 
 			</header>
 			<div id="main" role="main">
+			    <?php
+			    	printf("<span class='system-message'>%s</span>",$this->message) ;
+			    ?>
 
-				<?= $this->layout()->content ?>
+			    <?= $this->layout()->content ?>
 
 			</div>
-			<footer></footer>
 		</div>
-		<div id="system-message" title="System message"></div>
-<?php
-$flashMessenger = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
-$messages	   = $flashMessenger->getMessages();
-if (sizeof($messages) > 0)
-{
-	$messages = $flashMessenger->getMessages();
-	if(!empty($messages))
-	{
-		echo "\n<script>\nwindow._saysoMessages = ['",  implode("','", $messages) , "'];\n</script>\n";
-	}
-}
-?>
 	</body>
 </html>

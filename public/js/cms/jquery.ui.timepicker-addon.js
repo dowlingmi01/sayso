@@ -18,7 +18,11 @@
 * .ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
 *
 * Sayso
-* Function modified to use the $SQ namespace for Sayso
+* -----
+* Function modified by Pete Connolly to use the $SQ namespace for Sayso
+* Dependencies
+* jQuery UI
+* jQuery UI Slider
 */
 
 (function($SQ) {

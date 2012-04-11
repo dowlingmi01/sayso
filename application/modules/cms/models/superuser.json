@@ -1,0 +1,170 @@
+{
+    "superuser": [
+        {
+            "survey": [
+                {
+                    "table": [
+                        {
+                            "tablename": "Survey"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "colname": "id",
+                            "type": "hidden"
+                        },
+                        {
+                            "colname": "user_id",
+                            "type": "hidden",
+                            "value":1
+                        },
+                        {
+                            "colname": "type",
+                            "type": "list",
+                            "listoptions": [
+                                "poll",
+                                "survey"
+                            ]
+                        },
+                        {
+                            "colname": "origin",
+                            "type": "list",
+                            "listoptions": [
+                                "SurveyGizmo",
+                                "Internal"
+                            ]
+                        },
+                        {
+                            "colname": "starbar_id",
+                            "type": "fkey",
+                            "lookuptable": "starbar",
+                            "lookupfield": "id",
+                            "lookuplabel": "label",
+                            "default": "--Please Select a starbar--"
+                        },
+                        {
+                            "colname": "title",
+                            "type": "string",
+                            "label": "Survey Title",
+                            "width": 40,
+                            "validate": [
+                                "notnull",
+                                "minlength(10)"
+                            ]
+                        },
+                        {
+                            "colname": "external_id",
+                            "type": "number"
+                        },
+                        {
+                            "colname": "external_key",
+                            "type": "string",
+                            "width": 40,
+                            "validate": [
+                                "notnull",
+                                "minlength(10)"
+                            ]
+                        },
+                        {
+                            "colname": "premium",
+                            "type": "checkbox",
+                            "default": false
+                        },
+                        {
+                            "colname": "number_of_answers",
+                            "type": "number"
+                        },
+                        {
+                            "colname": "number_of_questions",
+                            "type": "number"
+                        },
+                        {
+                            "colname": "display_number_of_questions",
+                            "type": "number"
+                        },
+                        {
+                            "colname": "ordinal",
+                            "type": "number"
+                        },
+                        {
+                            "colname": "start_after",
+                            "type": "number",
+                            "help": "Time delay before this survey is available to the user"
+                        },
+                        {
+                            "colname": "start_at",
+                            "type": "datetime"
+                        },
+                        {
+                            "colname": "end_at",
+                            "type": "datetime"
+                        }
+                    ]
+                }
+            ],
+            "study_quota": [
+                {
+                    "table": [
+                        {
+                            "tablename": "study_quota"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "colname": "id",
+                            "type": "hidden"
+                        },
+                        {
+                            "colname": "study_id",
+                            "type": "fkey",
+                            "lookuptable": "study",
+                            "lookupfield": "id",
+                            "lookuplabel": "name",
+                            "default": "--Please Select a study--"
+                        },
+                        {
+                            "colname": "percentile_id",
+                            "type": "fkey",
+                            "lookuptable": "lookup_quota_percentile",
+                            "lookupfield": "id",
+                            "lookuplabel": "quota",
+                            "default": "--Please Select percentile--"
+                        },
+                        {
+                            "colname": "gender_id",
+                            "type": "fkey",
+                            "lookuptable": "lookup_gender",
+                            "lookupfield": "id",
+                            "lookuplabel": "short_name",
+                            "default": "--Please Select a gender--"
+                        },
+                        {
+                            "colname": "age_range_id",
+                           	"type": "fkey",
+                            "lookuptable": "lookup_age_range",
+                            "lookupfield": "id",
+                            "lookuplabel": "age_from",
+                            "default": "--Please Select an age range--"
+                        },
+                        {
+                            "colname": "ethnicity_id",
+                            "type": "fkey",
+                            "lookuptable": "lookup_ethnicity",
+                            "lookupfield": "id",
+                            "lookuplabel": "label",
+                            "default": "--Please Select ethnicity--"
+                        },
+                        {
+                            "colname": "income_range_id",
+                            "type": "fkey",
+                            "lookuptable": "lookup_income_range",
+                            "lookupfield": "id",
+                            "lookuplabel": "income_from",
+                            "default": "--Please Select an income range--"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

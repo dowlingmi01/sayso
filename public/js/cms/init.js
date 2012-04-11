@@ -1,11 +1,38 @@
 $SQ(document).ready(function() {
+
 /**
+ * set up easyTooltip
+ * @author Peter Connolly
+ *
+ * @example To use, simply set the Title attribute on a link
+ *
+ */
+$SQ("input").easyTooltip();
+
+// handle unified messaging
+
+	if(window._saysoMessages != undefined && window._saysoMessages.length > 0)
+	{
+		$SQ.fx.speeds._default = 500;
+		$SQ('#system-message').html(window._saysoMessages.join("<br />"));
+		window._saysoMessages = [];
+		$SQ('#system-message').dialog({
+			modal   : true,
+			hide	: "explode",
+			buttons : {
+				'Ok': function(){$(this).dialog( "close" );}
+			}
+		});
+	}
+/**
+ * set up datetimepicker
  * @author Peter Connolly
  * @todo Rewrite abstractly, so that start_at and end_at are classes that can apply to any pair of dates
  *
  */
 
 $SQ('#start_at').datetimepicker({
+	dateFormat: 'yy-mm-dd',
     onClose: function(dateText, inst) {
         var endDateTextBox = $SQ('#end_at');
         if (endDateTextBox.val() != '') {
@@ -24,6 +51,7 @@ $SQ('#start_at').datetimepicker({
     }
 });
 $SQ('#end_at').datetimepicker({
+	dateFormat: 'yy-mm-dd',
     onClose: function(dateText, inst) {
         var startDateTextBox = $SQ('#start_at');
         if (startDateTextBox.val() != '') {

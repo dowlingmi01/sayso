@@ -2,6 +2,7 @@
 /**
  * @author alecksmart
  */
+require_once ('CMSClasses.php');
 
 abstract class Admin_CommonController extends Zend_Controller_Action
 {

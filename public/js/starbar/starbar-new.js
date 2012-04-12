@@ -456,7 +456,7 @@ $SQ(function(){
 		});
 		
 		// SET UP EXTERNAL SHARE BEHAVIORS
-		$.each(btnExternalShare,function(){			
+		$SQ.each(btnExternalShare,function(){			
 			// for some reason, the hover behavior set in the CSS is totally ignored. :(
 				$SQ(this).hover(function(){
 					$SQPoints = $('#'+$SQ(this).attr('rel'));

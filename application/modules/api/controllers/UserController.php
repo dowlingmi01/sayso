@@ -267,11 +267,11 @@ class Api_UserController extends Api_GlobalController
 
 			if ($survey->type == 'survey' && $survey->premium) {
 				Db_Pdo::execute("DELETE FROM survey_user_map WHERE survey_id = 1 AND user_id = ?", $this->user_id);
-				$surveyUserMap = new Survey_UserMap();
-				$surveyUserMap->survey_id = 1;
-				$surveyUserMap->user_id = $this->user_id;
-				$surveyUserMap->status = 'completed';
-				$surveyUserMap->save();
+				$surveyResponse = new Survey_Response();
+				$surveyResponse->survey_id = 1;
+				$surveyResponse->user_id = $this->user_id;
+				$surveyResponse->status = 'completed';
+				$surveyResponse->save();
 			}
 
 			return $this->_resultType(true);

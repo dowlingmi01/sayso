@@ -48,9 +48,7 @@ class Starbar_HellomusicController extends Starbar_ContentController
 
 	public function pollsAction ()
 	{
-		$surveyResponse = new Survey_Response();
-		$primarySurveyTaken = $surveyResponse->checkIfUserHasCompletedSurvey($this->user_id, 1);
-		$this->view->primary_survey_taken = $primarySurveyTaken;
+		$this->view->primary_survey_taken = Survey_Response::checkIfUserHasCompletedSurvey($this->user_id, 1);
 
 		if (!$primarySurveyTaken) {
 			$this->_maximumDisplayed['polls'] = 5;
@@ -60,9 +58,7 @@ class Starbar_HellomusicController extends Starbar_ContentController
 
 	public function surveysAction ()
 	{
-		$surveyResponse = new Survey_Response();
-		$primarySurveyTaken = $surveyResponse->checkIfUserHasCompletedSurvey($this->user_id, 1);
-		$this->view->primary_survey_taken = $primarySurveyTaken;
+		$this->view->primary_survey_taken = Survey_Response::checkIfUserHasCompletedSurvey($this->user_id, 1);
 
 		if (!$primarySurveyTaken) {
 			$this->_maximumDisplayed['surveys'] = 4;
@@ -72,9 +68,7 @@ class Starbar_HellomusicController extends Starbar_ContentController
 
 	public function userProfileAction ()
 	{
-		$surveyResponse = new Survey_Response();
-		$primarySurveyTaken = $surveyResponse->checkIfUserHasCompletedSurvey($this->user_id, 1);
-		$this->view->primary_survey_taken = $primarySurveyTaken;
+		$this->view->primary_survey_taken = Survey_Response::checkIfUserHasCompletedSurvey($this->user_id, 1);
 
 		if (!$primarySurveyTaken) {
 			$this->_maximumDisplayed['polls'] = 5;

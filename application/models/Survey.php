@@ -6,10 +6,10 @@ class Survey extends Record
 
 	public static function getNextSurveyForUser($startSurvey, $userId) {
 		// Figure out what the status of this survey is for this user
-		$surveyUserMap = new Survey_UserMap();
-		$surveyUserMap->loadDataByUniqueFields(array('survey_id' => $startSurvey->id, 'user_id' => $userId));
-		if ($surveyUserMap->status) {
-			$surveyUserStatus = $surveyUserMap->status;
+		$surveyResponse = new Survey_Response();
+		$surveyResponse->loadDataByUniqueFields(array('survey_id' => $startSurvey->id, 'user_id' => $userId));
+		if ($surveyResponse->status) {
+			$surveyUserStatus = $surveyResponse->status;
 		} else {
 			$surveyUserStatus = 'new';
 		}
@@ -20,7 +20,7 @@ class Survey extends Record
 			$returnNextSurvey = false;
 			foreach($surveys as $survey) {
 				if ($returnNextSurvey) return $survey;
-				if ($this->id == $startSurvey->id) $returnNextSurvey = true;
+				if ($survey->id == $startSurvey->id) $returnNextSurvey = true;
 			}
 		}
 		return new Survey();
@@ -474,7 +474,11 @@ class Survey extends Record
 		}
 	}
 
-	public function retrieveResponsesFromSurveyGizmo () {
+	// This function is deprecated -- relies on bundle_of_joy variable which is no longer in use.
+	// See SurveyResponse::process() for new version, which is not a batch function,
+	// instead it is intended to be used for live collection of responses (one by one)
+	/*
+	public function retrieveBatchResponsesFromSurveyGizmo () {
 		$config = Api_Registry::getConfig();
 
 		$decodedJson = false;
@@ -769,4 +773,5 @@ class Survey extends Record
 			return $messages;
 		}
 	}
+	*/
 }

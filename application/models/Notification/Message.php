@@ -77,13 +77,11 @@ class Notification_Message extends Record
 				break;
 
 			case 'Take Survey':
-				$surveyUserMap = new Survey_UserMap();
-				if ($surveyUserMap->checkIfUserHasCompletedSurvey($userId, $this->survey_id)) return false;
+				if (Survey_Response::checkIfUserHasCompletedSurvey($userId, $this->survey_id)) return false;
 				break;
 
 			case 'Taken Survey':
-				$surveyUserMap = new Survey_UserMap();
-				if (! $surveyUserMap->checkIfUserHasCompletedSurvey($userId, $this->survey_id)) return false;
+				if (! Survey_Response::checkIfUserHasCompletedSurvey($userId, $this->survey_id)) return false;
 				break;
 		}
 

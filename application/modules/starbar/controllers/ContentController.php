@@ -222,9 +222,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$survey->loadData($this->survey_id);
 
 		$this->view->assign('survey', $survey);
-
-		$bundleOfJoy = $this->_getBundleOfJoy($this->survey_id);
-		$this->view->assign('bundle_of_joy', $bundleOfJoy);
+		$this->_assignStarbarToView();
 
 		$this->view->user_id = $this->user_id;
 		$this->view->user_key = $this->user_key;
@@ -291,7 +289,6 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function surveyDisqualifyAction ()
 	{
-		$this->_replaceBundleOfJoyWithGetVariables();
 		$this->_validateRequiredParameters(array('srid', 'next_survey_id'));
 		// this page is fetched via an iframe, not ajax;
 		$this->_usingJsonPRenderer = false;
@@ -334,7 +331,6 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function surveyCompleteAction ()
 	{
-		$this->_replaceBundleOfJoyWithGetVariables();
 		$this->_validateRequiredParameters(array('srid', 'next_survey_id'));
 		// this page is fetched via an iframe, not ajax;
 		$this->_usingJsonPRenderer = false;
@@ -656,62 +652,6 @@ class Starbar_ContentController extends Api_GlobalController
 			}
 		}
 		$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key.'&auth_key='.$this->auth_key);
-	}
-
-	protected function _getBundleOfJoy ($surveyId, $nextSurveyId = -1)
-	{
-		$bundleOfJoy = "";
-		$sep = "^|^"; // seperator between variables
-		$eq = "^-^"; // seperator between variable name and value
-		// e.g. user_id^-^1^|^user_key^-^123
-
-		$request = $this->getRequest();
-
-		// Include easyXDM variables so they can be used at the end of the survey for iframe communication
-		// Namely, used by survey-complete and survey-disqualify
-		$xdm_c = $request->getParam('xdm_c');
-		$xdm_e = $request->getParam('xdm_e');
-		$xdm_p = $request->getParam('xdm_p');
-
-		$bundleData = array(
-			'user_id' => $this->user_id,
-			"user_key" => $this->user_key,
-			"auth_key" => $this->auth_key,
-			"survey_id" => $surveyId,
-			"next_survey_id" => $nextSurveyId,
-			"xdm_c" => $xdm_c,
-			"xdm_e" => $xdm_e,
-			"xdm_p" => $xdm_p,
-		);
-
-		foreach ($bundleData AS $name => $value) {
-			if ($bundleOfJoy) $bundleOfJoy .= $sep;
-			$bundleOfJoy .= $name . $eq . $value;
-		}
-
-		return $bundleOfJoy;
-	}
-
-	// Used so that the easyXDM variables (xdm_c, xdm_e, xdm_p)
-	// are in the URL and can be used by easyXDM for our cross domain iframe communication
-	protected function _replaceBundleOfJoyWithGetVariables()
-	{
-		$queryString = "";
-		$request = $this->getRequest();
-
-		if ($request->getParam('bundle_of_joy')) {
-			foreach (explode('^|^', $request->getParam('bundle_of_joy')) as $keyPair) {
-				if ($queryString) $queryString .= "&";
-				else $queryString = "?";
-
-				$parts = explode('^-^', $keyPair);
-				$queryString .= $parts[0] . "=" . $parts[1];
-			}
-			$currentPage = $_SERVER['REQUEST_URI'];
-			if (strpos($currentPage, "?") !== false) $currentPage = reset(explode("?", $currentPage));
-
-			$this->_redirect(($_SERVER['HTTPS'] ? 'https' : 'http') . '://' . BASE_DOMAIN . $currentPage . $queryString);
-		}
 	}
 
 	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null)

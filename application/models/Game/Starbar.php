@@ -64,7 +64,7 @@ abstract class Game_Starbar extends Game_Abstract {
 		}
 	}
 
-	public function completeSurvey (Survey $survey, Survey_UserMap $surveyUserMap = null) {
+	public function completeSurvey (Survey $survey) {
 
 		switch ($survey->type) {
 			case 'poll' :

@@ -309,7 +309,7 @@
 
 	function fixFlashElements () {
 		// fix <embed> FLASH elements!
-		$SQ('embed[src*=".swf"]').not('.saysofixed').each(function(index) {
+		$SQ('embed[src*=".swf"], embed[type*="flash"]').not('.saysofixed').each(function(index) {
 			var $SQembed = $SQ(this);
 
 			if ($SQembed.attr('id') == 'sm2movie') return true; // no fix needed, go to next <embed>

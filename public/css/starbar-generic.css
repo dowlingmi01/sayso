@@ -1087,6 +1087,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	text-shadow: 1px 1px 0px #000;
 }
 #sayso-starbar .sb_ui-progressbar .sb_progressBarValue span {
+	color: #fff;
 	font-size: 11px !important;
 }
 #sayso-starbar .sb_progress_bar {

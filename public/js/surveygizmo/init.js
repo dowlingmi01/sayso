@@ -77,7 +77,6 @@
 							snc: $SGQ.snc,
 							size: $SGQ.size
 						}]);
-						$('#sg-wrapper').show();
 						$('.sayso_loading_container').hide();
 	    				return false; // exit loop
 					}
@@ -95,6 +94,7 @@
 					}
 
 					// Loading complete!
+					$('.sg-wrapper').show();
 					$('.sayso_loading_container').hide();
 			        return false; // exit doTimeout loop
 			    }

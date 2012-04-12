@@ -1,7 +1,8 @@
 <?= $this->partial('remote/init-remote.phtml', null, array('starbar' => $this->starbar)); ?>
 <div id="sayso-starbar-external">
-	<script type="text/javascript">document.write("<scr"+"ipt type=\"text/javascript\" src=\"//www.surveygizmo.com/s3/polljs/<?= $this->survey->external_id ?>-<?= $this->survey->external_key ?>/?starbar_short_name=<?= $this->starbar->short_name ?>\"></scr"+"ipt>");</script>
+	<script type="text/javascript">document.write("<scr"+"ipt type=\"text/javascript\" src=\"//www.surveygizmo.com/s3/polljs/<?= $this->survey->external_id ?>-<?= $this->survey->external_key ?>/\"></scr"+"ipt>");</script>
 </div>
+<link href='/css/surveygizmo/polls-<?= $this->starbar->short_name ?>.css' rel='stylesheet' media='all' type='text/css' />
 <script type="text/javascript">
 	$SQ(function () {
 		function enableClickableRadios() {

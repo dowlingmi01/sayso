@@ -3,6 +3,8 @@ require_once APPLICATION_PATH . '/modules/api/controllers/GlobalController.php';
 
 class Starbar_InstallController extends Api_GlobalController {
 	private function commonInstall() {
+		$userHasPassword = false;
+		
 		$externalUser = new External_User();
 		$starbar = new Starbar();
 		$starbar->loadDataByUniqueFields( array('short_name' => $this->client_name));
@@ -11,6 +13,13 @@ class Starbar_InstallController extends Api_GlobalController {
 		$externalUser->uuid_type = $this->client_uuid_type;
 		$externalUser->email = $this->client_email;
 		$externalUser->loadOrCreate();
+		
+		if( $externalUser->user_id ) {
+			$user = new User();
+			$user->loadData( $externalUser->user_id );
+			if( $user->password )
+				$userHasPassword = true;
+		}
 		
 		$install = new External_UserInstall();
 		$install->external_user_id = $externalUser->id;
@@ -24,6 +33,8 @@ class Starbar_InstallController extends Api_GlobalController {
 		$install->save();
 		
 		$this->view->assign('token', $install->token);
+		$this->view->assign('client_email', $this->client_email);
+		$this->view->assign('user_has_password', $userHasPassword);
 
 		$this->render();
 		$body = $this->getResponse()->getBody();
@@ -33,21 +44,25 @@ class Starbar_InstallController extends Api_GlobalController {
 	public function hellomusicAction() {
 		return $this->commonInstall();
 	}
-	public function extensionAction() {
+	public function userPasswordAction() {
+		$this->_enableRenderer(new Api_Plugin_JsonPRenderer());
+
 		$this->_validateRequiredParameters(array('install_token'));
 		$install = new External_UserInstall();
 		$install->loadDataByUniqueFields(array('token'=>$this->install_token));
-		$install->click_ts = new Zend_Db_Expr('now()');
-		$install->save();
 		$externalUser = new External_User();
 		$externalUser->loadData($install->external_user_id);
-		$user = $externalUser->getUser();
+		$user = $externalUser->getUser($this->user_password);
+		$install->click_ts = new Zend_Db_Expr('now()');
+		$install->save();
 		$userKey = new User_Key();
 		$userKey->user_id = $user->getId();
 		$userKey->token = $this->install_token;
 		$userKey->origin = User_Key::ORIGIN_INSTALL;
 		$userKey->save();
-		
+		return $this->_resultType(true);
+	}
+	public function extensionAction() {
 		$user_agent = $_SERVER['HTTP_USER_AGENT'];
 		if( strpos($user_agent, 'MSIE') ) {
 			$prefix = 'ie/';

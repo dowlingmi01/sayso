@@ -157,7 +157,12 @@ class User extends Record implements Titled
 		// commit all changes
 		$this->commitTransaction();
 	}
-	
+	public function validatePassword($password) {
+		$passwordHash = md5(md5($password) . $this->password_salt);
+		if ($this->password !== $passwordHash) {
+			throw new Api_UserException(Api_Error::create(260, "Incorrect password"));
+		}
+	}
 	public function exportData() {
 		$fields = array(
 			'username',

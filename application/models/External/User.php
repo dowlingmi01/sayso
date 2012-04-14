@@ -24,26 +24,36 @@ class External_User extends Record
 		);
 		return array_intersect_key($this->getData(), array_flip($fields));
 	}
-	public function getUser() {
+	public function getUser($user_password = NULL) {
 		$user = new User();
 		if( $this->user_id ) {
-			$user->setId( $this->user_id );
+			$user->loadData( $this->user_id );
+			if( $user_password ) {
+				if( $user->password )
+					$user->validatePassword($user_password);
+				else {
+					$user->setPlainTextPassword($user_password);
+					$user->save();
+				}
+			}
 		} else {
 			// TODO: Handle race condition here.
 			$user->save();
 			$this->user_id = $user->getId();
 			$this->save();
 			
+			if( $user_password ) {
+				$user->setPlainTextPassword($user_password);
+			}
+			
 			switch ($this->uuid_type) {
 				case 'email' :
 					$email = new User_Email();
 					$email->email = $this->uuid;
 					$user->setEmail($email);
-					$user->save();
 					break;
 				case 'username' :
 					$user->username = $this->uuid;
-					$user->save();
 					break;
 				case 'integer' :
 				case 'hash' :
@@ -54,8 +64,8 @@ class External_User extends Record
 				$email = new User_Email();
 				$email->email = $this->email;
 				$user->setEmail($email);
-				$user->save();
 			}
+			$user->save();
 		}
 		return $user;
 	}

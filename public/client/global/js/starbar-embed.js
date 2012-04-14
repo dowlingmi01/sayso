@@ -107,7 +107,7 @@
 						install_origination : (installParam ? installParam : installCookie),
 						user_agent_supported : browserSupported,
 						install_url : document.location.href,
-						referrer : (installParam ? document.referrer : referrerCookie),
+						referrer : (installParam ? document.referrer : referrerCookie)
 						},
 					success : function (response) {
 						if( browserSupported ) {

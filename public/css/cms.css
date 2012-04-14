@@ -61,6 +61,24 @@ th {
 td {
     padding:0 5px;
 }
+
+#list tr {
+	background-color:white;
+	
+}
+#list td {
+	border-left:thin solid #a8d8eb;
+}
+#list td:last-child {
+	border-right:thin solid #a8d8eb;
+}
+#list tr.alt {
+	background-color:#eee;
+}
+#list tr:hover td {
+	background-color:#d5effc;
+	
+}
 #list table {
     width:480px;
 }
@@ -104,12 +122,13 @@ dl.zend_form dt {
     clear: left;
     text-align: right;
     width:110px;
+    margin-top:6px;
 }
 dl.zend_form dt label.required { font-weight: 600; }
 dl.zend_form dd {
     float: left;
     clear: right;
-    padding-left: 5px;
+    margin-left: 5px;
 }
 
 dl.zend_form dd ul.errors {

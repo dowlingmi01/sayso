@@ -138,19 +138,504 @@
          */
         public function editAction()
         {
+			$id = $this->getRequest()->getParam('id');
+			if ($id===null) {
+				printf("<p>No ID found. Cannot edit.</p>");
+			} else {
+					
+	            $tablename = strtolower($this->getRequest()->getParam('table'));
+	            $tablenamepolite = ucwords(str_replace("_"," ",$tablename));
+	            if ($tablename !== null) {
+            		
+					// Search for the json file
+					// set file to read - Move relative from 'public' to find it.
+					
+					$userlevel = "superuser";
+					// @todo Userlevel will be changed once logins and user level permissions are included.
+					
+					$file = sprintf('../application/modules/cms/models/%s.json',$userlevel);
+					if (file_exists($file)) {
+						
+						$fh = fopen($file, 'r') or die('Could not open file!');
+						$data = fread($fh, filesize($file)) or die('Could not read file!');
+						// Process JSON file
+						$json = Zend_Json::decode($data);
+						fclose($fh);
 
-            $tablename = $this->getRequest()->getParam('table');
+					
+						if (array_key_exists($tablename, $json['superuser'][0])) {
+						
+							$json = $json['superuser'][0][$tablename][0];
+							
+							// We need to get the details for the ID from this table
+							// Find the columns we want to see on the grid
+							$columnlist = $this->_getCMSColumns($json['columns'],"displaywhen","edit");
+							
+							$select = Zend_Registry::get('db')->select()->from($tablename,$columnlist)->where("id = ?",$id);
+							
+							$stmt = $select->query();
+							$currentData = $stmt->fetchAll();
+							if (count($currentData) == 1) {
+								$currentData = $currentData[0];
+							
+								// currentData contains a list of fields and values from the JSON, which we can put in as initial values
+						
+								// Start with a blank formelements array, and add the array items as we go
+								$formElements = array();
+				
+								foreach ($json['columns'] as $key=>$value) {
+							
+									// Process the form fields for this table
+									// We know there will be a colname and a type
+									$colname = $value['colname'];
+									$coltype = $value['type'];
+									
+									if (array_key_exists("listoptions",$value)) {			
+										$listoptions = array(); 
+										
+										foreach ($value['listoptions'] as $listkey=>$listvalue) {
+											$listoptions[$listvalue] = $listvalue;
+										}
+									}
+									
+									$coloptions = array();
+									foreach ($value as $colkey=>$colvalue) {
+										if (($colkey!='colname') and ($colkey!='type')) {
+											$coloptions[$colkey] = $colvalue;
+										}	
+									}
+								
+									// Build this form element
+									switch (strtolower($coltype)) {
+										case "checkbox":
+											$formElements[$colname] = new Form_Element_Checkbox($colname);
+											break;
+										case "datetime":
+											 $formElements[$colname] = new Form_Element_Date($colname,array('jQueryParams' => array('dateFormat' => 'yy-mm-dd')));
+											break;
+										case "fkey":
+											$formElements[$colname] = new Form_Element_Fkey($colname);
+											$formElements[$colname]->setParams($value);
+											break;
+										case "hidden":
+											$formElements[$colname] = new Form_Element_Hidden($colname);
+											break;
+										case "list":
+											$formElements[$colname] = new Form_Element_Select($colname);
+											$formElements[$colname]->setMultiOptions($listoptions);
+											break;
+										case "number":
+											$formElements[$colname] = new Form_Element_Number($colname);
+											break;
+										case "string":
+											 $formElements[$colname] = new Form_Element_Text($colname);
+											break;
+										
+									}
+									// general aspects of a form element
+									
+									// Override the field label
+									if (array_key_exists('label',$coloptions)) {
+										$formElements[$colname]->setLabel($coloptions['label']);
+									}
+									
+									// Assign a default value
+									if (array_key_exists('value',$coloptions)) {
+										$formElements[$colname]->setValue($coloptions['value']);
+									}
+									
+									// Assign a value from the edited record - if there is one. This may override any default value
+									if (array_key_exists($colname,$currentData)) {
+										$formElements[$colname]->setValue($currentData[$colname]);
+									}
+									
+									// Tooltip help
+									if (array_key_exists('help',$coloptions)) {
+										$formElements[$colname]->setAttrib("title", $coloptions['help']);
+									}
+									
+									// Display Width
+									if (array_key_exists('width',$coloptions)) {
+										$formElements[$colname]->setAttrib("size", $coloptions['width']);
+									}
+								}
+							
+								// All column elements have been built. Add the standard form elements
+								$formElements['submit'] = new Zend_Form_Element_Submit('submit');
+            					$formElements['submit'] ->setLabel(sprintf('Save Changes')); // the button's value
+				    										//->setIgnore(true); // very usefull -> it will be ignored before insertion
+							    $form = new ZendX_JQuery_Form();
+            					$form->setName($tablename);
+	    						$form->addElements($formElements);
+            					$form->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));
+	                			
+			                // Find the record and populate the initial form values
+			                
+			               
+								if ($this->getRequest()->isPost()) { //is it a post request ?
+                					$postData = $this->getRequest()->getPost(); // getting the $_POST data
+                					if ($form->isValid($postData)) {
+                						
+                    					$formData = $form->getValues(); // data filtered
+                    					// Update the 'modified' field (don't update the 'Created' field)
+                    					$formData += array('modified' => date('Y-m-d H:i:s'));
+                   						
+                   						unset($formData['no_csrf_foo']); // Remove the salt - we don't need it for an update
+                   						// remove any data with null values - we don't need them.
+                   						$formData = array_filter($formData,array('self','_notnull'));
+                   						
+                   						
+                   						$db = new Zend_Db_Table($tablename);
+                   					
+                   						$where = sprintf('id = %s', $id);
+	 
+										$result = $db->update($formData, $where);
+                   						
+                   						$this->view->message = $result." record successfully updated ";
+                   						            
+                					} else {
+                						$form->populate($postData); // show errors and populate form with $postData
+									}
+	    	        			}
+								$this->view->tablename = $tablenamepolite;
+    	    	    			$this->view->form = $form; // assigning the form to view
+							} else {
+								$this->view->message = sprintf("Invalid ID [%s] for %s",$id,$tablename);
+							}
+						} else {
+							
+							$this->view->message = sprintf("Table definition [%s] does not exist in the JSON file",$tablename);
+							
+						}
+					}
+					else {
+						
+						$this->view->message = sprintf("File [%s] is missing",$file);
+					}
+		        }
+	        }
+		}
+
+		/**
+		* View one record in detail
+		* 
+		* @author Peter Connolly
+		*/
+		public function detailAction()
+        {
+			$id = $this->getRequest()->getParam('id');
+			if ($id===null) {
+				printf("<p>No ID found. Cannot display.</p>");
+			} else {
+					
+	            $tablename = strtolower($this->getRequest()->getParam('table'));
+	            $tablenamepolite = ucwords(str_replace("_"," ",$tablename));
+	            if ($tablename !== null) {
+            		
+					// Search for the json file
+					// set file to read - Move relative from 'public' to find it.
+					
+					$userlevel = "superuser";
+					// @todo Userlevel will be changed once logins and user level permissions are included.
+					
+					$file = sprintf('../application/modules/cms/models/%s.json',$userlevel);
+					if (file_exists($file)) {
+						
+						$fh = fopen($file, 'r') or die('Could not open file!');
+						$data = fread($fh, filesize($file)) or die('Could not read file!');
+						// Process JSON file
+						$json = Zend_Json::decode($data);
+						fclose($fh);
+
+					
+						if (array_key_exists($tablename, $json['superuser'][0])) {
+						
+							$json = $json['superuser'][0][$tablename][0];
+							
+							// We need to get the details for the ID from this table
+							// Find the columns we want to see on the grid
+							$columnlist = $this->_getCMSColumns($json['columns'],"displaywhen","detail");
+							
+							$select = Zend_Registry::get('db')->select()->from($tablename,$columnlist)->where("id = ?",$id);
+							
+							$stmt = $select->query();
+							$currentData = $stmt->fetchAll();
+							if (count($currentData) == 1) {
+								$currentData = $currentData[0];
+							
+								// currentData contains a list of fields and values from the JSON, which we can put in as initial values
+						
+								// Start with a blank formelements array, and add the array items as we go
+								$formElements = array();
+				
+								foreach ($json['columns'] as $key=>$value) {
+							
+									// Process the form fields for this table
+									// We know there will be a colname and a type
+									$colname = $value['colname'];
+									$coltype = $value['type'];
+									
+									if (array_key_exists("listoptions",$value)) {			
+										$listoptions = array(); 
+										
+										foreach ($value['listoptions'] as $listkey=>$listvalue) {
+											$listoptions[$listvalue] = $listvalue;
+										}
+									}
+									
+									$coloptions = array();
+									foreach ($value as $colkey=>$colvalue) {
+										if (($colkey!='colname') and ($colkey!='type')) {
+											$coloptions[$colkey] = $colvalue;
+										}	
+									}
+								
+									// Build this form element
+									switch (strtolower($coltype)) {
+										case "checkbox":
+											$formElements[$colname] = new Form_Element_Checkbox($colname);
+											$formElements[$colname]->setAttrib("readonly","");
+									$formElements[$colname]->setAttrib("class","readonly");
+											break;
+										case "datetime":
+											 $formElements[$colname] = new Form_Element_Date($colname,array('jQueryParams' => array('dateFormat' => 'yy-mm-dd')));
+											break;
+										case "fkey":
+											$formElements[$colname] = new Form_Element_Fkey($colname);
+											$formElements[$colname]->setParams($value);
+											break;
+										case "hidden":
+											$formElements[$colname] = new Form_Element_Hidden($colname);
+											break;
+										case "list":
+											$formElements[$colname] = new Form_Element_Select($colname);
+											$formElements[$colname]->setMultiOptions($listoptions);
+											break;
+										case "number":
+											$formElements[$colname] = new Form_Element_Number($colname);
+											$formElements[$colname]->setAttrib("readonly","");
+									$formElements[$colname]->setAttrib("class","readonly");
+											break;
+										case "string":
+											 $formElements[$colname] = new Form_Element_Text($colname);
+											 $formElements[$colname]->setAttrib("readonly","");
+											$formElements[$colname]->setAttrib("class","readonly");
+											break;
+										
+									}
+									// general aspects of a form element
+									
+									
+									// Override the field label
+									if (array_key_exists('label',$coloptions)) {
+										$formElements[$colname]->setLabel($coloptions['label']);
+									}
+									
+									// Assign a default value
+									if (array_key_exists('value',$coloptions)) {
+										$formElements[$colname]->setValue($coloptions['value']);
+									}
+									
+									// Assign a value from the edited record - if there is one. This may override any default value
+									if (array_key_exists($colname,$currentData) && array_key_exists($colname,$formElements)) {
+										$formElements[$colname]->setValue($currentData[$colname]);
+									}
+									
+									// Tooltip help
+									if (array_key_exists('help',$coloptions)) {
+										$formElements[$colname]->setAttrib("title", $coloptions['help']);
+									}
+									
+									// Display Width
+									if (array_key_exists('width',$coloptions)) {
+										$formElements[$colname]->setAttrib("size", $coloptions['width']);
+									}
+								}
+							
+								// All column elements have been built. Add the standard form elements
+							//	$formElements['submit'] = new Zend_Form_Element_Submit('submit');
+            				//	$formElements['submit'] ->setLabel(sprintf('Save Changes')); // the button's value
+				    										//->setIgnore(true); // very usefull -> it will be ignored before insertion
+							    $form = new ZendX_JQuery_Form();
+            					$form->setName($tablename);
+	    						$form->addElements($formElements);
+            					//$form->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));
+	                			
+			                
+			                
+			               
+							
+								$this->view->tablename = $tablenamepolite;
+    	    	    			$this->view->form = $form; // assigning the form to view
+							} else {
+								$this->view->message = sprintf("Invalid ID [%s] for %s",$id,$tablename);
+							}
+						} else {
+							
+							$this->view->message = sprintf("Table definition [%s] does not exist in the JSON file",$tablename);
+							
+						}
+					}
+					else {
+						
+						$this->view->message = sprintf("File [%s] is missing",$file);
+					}
+		        }
+	        }
+		}
+
+        /**
+        * View a table in column format, suitable for selecting records for editing/deleting
+        * 
+        * @author Peter Connolly
+        */
+        public function viewAction()
+        {
+        	$tablename = strtolower($this->getRequest()->getParam('table'));
+            $tablenamepolite = ucwords(str_replace("_"," ",$tablename));
             if ($tablename != "") {
             	
-printf("we have a table edit request = for [%s]",$tablename);
-exit;
-			}
-			else {
-				printf("Table name is null");
-			}
-           
-        }
+				// Search for the json file
+				// set file to read - Move relative from 'public' to find it.
+				
+				$userlevel = "superuser";
+				// @todo Userlevel will be changed once logins and user level permissions are included.
+				
+				$file = sprintf('../application/modules/cms/models/%s.json',$userlevel);
+				if (file_exists($file)) {
+					
+					$fh = fopen($file, 'r') or die('Could not open file!');
+					$data = fread($fh, filesize($file)) or die('Could not read file!');
+					// Process JSON file
+					$json = Zend_Json::decode($data);
+					fclose($fh);
+					
+					// Create the grid
+					// Find the columns we want to see on the grid
+					$columnlist = $this->_getCMSColumns($json['superuser'][0][$tablename][0]['columns'],"displaywhen","grid");
+					$select = Zend_Registry::get('db')->select()->from($tablename,$columnlist)->order("id desc");
+					$grid   = new Cms_Matrix();
+					$grid->setJqgParams(array('altRows' => true));// rows will alternate color
+	        		$grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
+	        		
+	        		//$grid->setDeleteConfirmationPage(true);
+	        		
+	        		// Add a column which will give us the Edit Table Rows action
+				    $extraColumnEdit = new Bvb_Grid_Extra_Column();
+				    $extraColumnEdit
+					    ->position('left')
+					    ->name('editit')
+					    ->title(' ')
+					    ->callback(
+						    array(
+							    'function'  => array($this, '_generateEditButtonLink'),
+							    'params'	=> array('{{id}}')
+						    )
+					    );
+				    $grid->addExtraColumns($extraColumnEdit);
 
+ 					$extraColumnDetails = new Bvb_Grid_Extra_Column();
+				    $extraColumnDetails
+					    ->position('left')
+					    ->name('details')
+					    ->title(' ')
+					    ->callback(
+						    array(
+							    'function'  => array($this, '_generateDetailsButtonLink'),
+							    'params'	=> array('{{id}}')
+						    )
+					    );
+		   			$grid->addExtraColumns($extraColumnDetails);
+		    		    
+					$form = new Bvb_Grid_Form($class='Zend_Form', $options=array());
+					
+					$form->setDelete(true);
+					$grid->setForm($form);
+					
+					$this->view->tablename = $tablenamepolite;
+					$this->view->newRecordLink = sprintf('<span class="newlink"><a href="/cms/admin/add/table/%s/"><img src="/images/icons/add.png" style="width:16px;" alt="Add" Title="Add" /> Add New %s</a></span>',$tablename,$tablenamepolite);
+			        $this->view->grid = $grid->deploy();
+					
+				} else {
+					
+					$this->view->message = sprintf("File [%s] is missing",$file);
+				}
+			} else {
+					
+				$this->view->message = sprintf("Table name is missing");
+			}
+		}
+		
+		/**
+		* return an array of columns matching the required values
+		* 
+		* @example
+		* $outputarray = getCMSColumns($inputarray,"displaywhen","list")
+		* returns an array of one item, 'colnameoftype', given the following input array
+		* Example input format:
+		* [2] => Array
+        *(
+        *    [colname] => colnameoftype
+        *    [type] => list
+        *    [listoptions] => Array
+        *        (
+        *            [0] => poll
+        *            [1] => survey
+        *        )
+		*
+        *    [displaywhen] => Array
+        *        (
+        *           [0] => add
+        *            [1] => list
+        *            [2] => edit
+        *        )
+		*
+        *)
+        *
+		* @param array $inputarray
+		* @param string $matchkey -  Key to be searched
+		* @param string $matchvalue - Value to be searched in the array
+		* @returns array Array of column names which match the value
+		* @author Peter Connolly
+		*/
+		private function _getCMSColumns($inputarray,$matchkey,$matchvalue)
+		{
+			$returnarray = array();
+			foreach ($inputarray as $key=>$value) {
+				if (array_key_exists($matchkey,$value)) {
+					if (in_array($matchvalue,$value[$matchkey])) {
+						$returnarray[] = $value['colname'];
+					}
+				}
+			}
+			return $returnarray;
+		}
+		
+		/**
+        * Generate a button which will activate the tablefields action
+        * 
+        * @param mixed $id
+        * @author Peter Connolly
+        */
+        public function _generateEditButtonLink($id)
+	    {
+        $link = '<a href="' . $this->view->url(array('action' => 'edit', 'id' => intval($id))). '" class="button-edit" title="Edit"><img src="/images/icons/pencil.png" style="width:16px;" alt="Edit" Title="Edit" /></a>';
+
+		    return $link;
+	    }
+
+/**
+        * Generate a button which will activate the view action
+        * 
+        * @param mixed $id
+        * @author Peter Connolly
+        */
+        public function _generateDetailsButtonLink($id)
+	    {
+	    	$link = '<a href="' . $this->view->url(array('action' => 'detail', 'id' => intval($id))). '" class="button-details" title="Edit"><img src="/images/icons/information.png" style="width:16px;" alt="Details" Title="Details" /></a>';
+		    return $link;
+	    }
+	    		
         /**
          * Add a table row
          * 
@@ -188,7 +673,7 @@ exit;
 		
 						foreach ($json['columns'] as $key=>$value) {
 					
-							// Process the form fields
+							// Process the form fields for this table
 							// We know there will be a colname and a type
 							$colname = $value['colname'];
 							$coltype = $value['type'];
@@ -249,7 +734,12 @@ exit;
 							
 							// Tooltip help
 							if (array_key_exists('help',$coloptions)) {
-								$formElements[$colname]->setAttrib("Title", $coloptions['help']);
+								$formElements[$colname]->setAttrib("title", $coloptions['help']);
+							}
+							
+							// Display Width
+							if (array_key_exists('width',$coloptions)) {
+								$formElements[$colname]->setAttrib("size", $coloptions['width']);
 							}
 						}
 					
@@ -272,9 +762,12 @@ exit;
                     			$formData += array('created' => date('Y-m-d H:i:s'), 'modified' => date('Y-m-d H:i:s'));
                    				
                    				unset($formData['no_csrf_foo']); // Remove the salt - we don't need it for the insert
-                   				print_r($formData);
-                   			$db = new Zend_Db_Table($tablename);
-                   			$result = $db->insert($formData);
+                   				// remove any data with null values - we don't need them.
+                   				$formData = array_filter($formData,array('self','_notnull'));
+                   				
+                   				
+                   				$db = new Zend_Db_Table($tablename);
+                   				$result = $db->insert($formData);
                    				
                    				$this->view->message = "Record successfully added ".$result;
                    				$form->reset();
@@ -302,6 +795,19 @@ exit;
 		}
         
         /**
+        * Callback function to remove empty values from a supplied array.
+        * Used in the array_filter call
+        * 
+        * @param mixed $var
+        * @author Peter Connolly
+        */
+        private function _notnull($var)
+        {
+        	if ($var!==null) {
+        		return $var;
+			}
+		}
+        /**
         * Given a table name and an associative array of data, this function builds a 
         * valid insert statement - fully escaped, ready for execution.
         * 
@@ -326,19 +832,5 @@ exit;
 				$vals = substr($vals,0,-2);
 				return mysql_real_escape_string(sprintf("INSERT INTO %s (%s) values (%s)",$tablename,$cols,$vals));
 		}
-        
-        /**
-        * Generate a button which will activate the tablefields action
-        * 
-        * @param mixed $id
-        * @author Peter Connolly
-        */
-        public function generateEditButtonLink($id)
-	    {
-        //$link = '<a href="' . $this->view->url(array('action' => 'tablefields', 'id' => intval($id))). '" class="button-edit" title="Edit">Fields</a>';
-        $link = '<a href="' . $this->view->url(array('controller'=>'table', 'action' => 'index', 'cms_table_list_id' => intval($id))). '" class="button-edit" title="Edit">Fields</a>';
-// Need to be http://local.sayso.com/cms/table/index/cms_table_list_id/63
-		    return $link;
-	    }
         
     }

@@ -1378,8 +1378,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 }
 
 #sayso-starbar .sb_unconnected:hover {
-	background-position: 0px 0px;
-	opacity: 0.5;
+	background-position: 0px -66px;
 }
 #sayso-starbar .sb_connected {
 	background-position: 0px -66px;

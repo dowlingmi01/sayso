@@ -200,7 +200,10 @@
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week4{
 	display: none;
-	background-image: url('../images/hellomusic/img_promo_week4_bg.jpg');
+	margin: -5px 0px 0px -5px !important;
+	width: 525px;
+	height: 300px;
+	background-image: url('../images/hellomusic/img_promo_week4_bg_0412.jpg');
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide{
@@ -416,7 +419,7 @@
 }
 
 #sayso-starbar #sb_popBox_daily-deals.sb_popBox .sb_popBoxInner .sb_popContent{
-	width: 965px;
+	width: 968px;
 	height: 283px;
 }
 
@@ -800,7 +803,7 @@
 
 #sayso-starbar #starbar-type #sb_popBox_user-profile .sb_user-stats{
 	overflow: hidden;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid #929292;
 	margin: 0px 0px 10px 0px;
 }
 

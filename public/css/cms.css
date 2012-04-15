@@ -79,8 +79,16 @@ td {
 	background-color:#d5effc;
 	
 }
+#list tr:first-child td {
+	background-color:#ccc;
+	
+}
+#list tr:last-child td {
+	background-color:#ccc;
+	
+}
 #list table {
-    width:480px;
+    width:583px;
 }
 a,
 a:active,
@@ -180,4 +188,22 @@ dl.zend_form dd ul.errors li {
 
 .system-message {
     color:red;
+}
+.newlink {
+	padding-left:41px;
+	padding: 9px 9px 0 9px;
+}
+
+/* Set the width of the first three columns in the grid */
+#list table td:first-child,
+#list table td:first-child + td,
+#list table td:first-child + td + td {
+	width:15px;
+}
+
+/* Set the width of the 4th*/
+
+#filter_idlist {
+	width:30px;
+	text-align:center;
 }

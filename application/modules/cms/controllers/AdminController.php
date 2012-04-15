@@ -215,7 +215,7 @@
 											break;
 										case "fkey":
 											$formElements[$colname] = new Form_Element_Fkey($colname);
-											$formElements[$colname]->setParams($value);
+											 $formElements[$colname]->setParams($value);
 											break;
 										case "hidden":
 											$formElements[$colname] = new Form_Element_Hidden($colname);
@@ -244,10 +244,7 @@
 										$formElements[$colname]->setValue($coloptions['value']);
 									}
 									
-									// Assign a value from the edited record - if there is one. This may override any default value
-									if (array_key_exists($colname,$currentData)) {
-										$formElements[$colname]->setValue($currentData[$colname]);
-									}
+									
 									
 									// Tooltip help
 									if (array_key_exists('help',$coloptions)) {
@@ -258,7 +255,19 @@
 									if (array_key_exists('width',$coloptions)) {
 										$formElements[$colname]->setAttrib("size", $coloptions['width']);
 									}
+									
+									if (array_key_exists($colname,$currentData)) {
+										//printf("<p>We found [%s], in [%s] - is it in [%s]</p>",$colname,print_r($currentData,true),print_r($formElements,true));
+										if (array_key_exists($colname,$currentData) && (array_key_exists($colname,$formElements))) {
+											$formElements[$colname]->setValue($currentData[$colname]);
+										}
+									}
+									
 								}
+								
+								// Assign the known values
+							
+									
 							
 								// All column elements have been built. Add the standard form elements
 								$formElements['submit'] = new Zend_Form_Element_Submit('submit');
@@ -394,15 +403,16 @@
 									switch (strtolower($coltype)) {
 										case "checkbox":
 											$formElements[$colname] = new Form_Element_Checkbox($colname);
-											$formElements[$colname]->setAttrib("readonly","");
-									$formElements[$colname]->setAttrib("class","readonly");
+											$formElements[$colname]->setReadOnly();
 											break;
 										case "datetime":
-											 $formElements[$colname] = new Form_Element_Date($colname,array('jQueryParams' => array('dateFormat' => 'yy-mm-dd')));
+											 $formElements[$colname] = new Form_Element_Text($colname);
+											 $formElements[$colname]->setReadOnly();
 											break;
 										case "fkey":
 											$formElements[$colname] = new Form_Element_Fkey($colname);
 											$formElements[$colname]->setParams($value);
+											$formElements[$colname]->setReadOnly();
 											break;
 										case "hidden":
 											$formElements[$colname] = new Form_Element_Hidden($colname);
@@ -410,16 +420,15 @@
 										case "list":
 											$formElements[$colname] = new Form_Element_Select($colname);
 											$formElements[$colname]->setMultiOptions($listoptions);
+											$formElements[$colname]->setReadOnly();
 											break;
 										case "number":
 											$formElements[$colname] = new Form_Element_Number($colname);
-											$formElements[$colname]->setAttrib("readonly","");
-									$formElements[$colname]->setAttrib("class","readonly");
+											$formElements[$colname]->setreadOnly();
 											break;
 										case "string":
 											 $formElements[$colname] = new Form_Element_Text($colname);
-											 $formElements[$colname]->setAttrib("readonly","");
-											$formElements[$colname]->setAttrib("class","readonly");
+											 $formElements[$colname]->setreadOnly();
 											break;
 										
 									}

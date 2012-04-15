@@ -1,0 +1,99 @@
+/*
+    Document   : surveys
+    Created on : Mar 23, 2012, 11:54:21 AM
+    Author     : Pete
+    Description:
+        Layout stylesheet for Surveys controller
+*/
+
+body {
+    font-family: arial, sans-serif;
+    font-size:11px;
+}
+
+#layout {
+width: 600px;
+height: 400px;
+margin: 0 auto;
+border: solid black thin;
+overflow-y: scroll;
+padding: 0 10px;
+}
+
+th {
+    color:#fff;
+    background-color:#28B2D3;
+}
+
+.odd {
+    background-color:#DFDFDF;
+}
+
+.even {
+    background-color:#f0f0f0;
+}
+td {
+    padding:3px 5px;
+}
+
+a,
+a:active,
+a:visited{
+    color:#6b7885;
+    text-decoration:none;
+}
+a:hover {
+    text-decoration:underline;
+}
+
+.common ul,
+.common li {
+    display:inline;
+}
+
+#main dl {
+
+}
+#main dt, #main dd {
+    float:left;
+
+}
+
+#main dt {
+    width:30%;
+    font-weight:bold;
+    text-align:right;
+    padding:6px 5px 0 0;
+}
+#main dd {
+    width:65%;
+    margin-left:0;
+}
+
+ul.errors {
+    float:right;
+    color:red;
+}
+
+/* css for timepicker */
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+.ui-timepicker-div dl { text-align: left; }
+.ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
+.ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+
+#surveys .col1 {
+    width:370px;
+}
+
+#surveys .col2 {
+    width:35px;
+}
+
+#surveys .col3 {
+    width:102px;
+}
+#surveys .col4 {
+    width:35px;
+}

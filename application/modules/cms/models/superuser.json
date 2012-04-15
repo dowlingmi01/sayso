@@ -26,7 +26,7 @@
                         },
                         {
                             "colname": "type",
-                            "type": "grid",
+                            "type": "list",
                             "listoptions": [
                                 "poll",
                                 "survey"
@@ -41,7 +41,7 @@
                         },
                         {
                             "colname": "origin",
-                            "type": "grid",
+                            "type": "list",
                             "listoptions": [
                                 "SurveyGizmo",
                                 "Internal"

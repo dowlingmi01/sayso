@@ -41,7 +41,7 @@ class Form_Element_Checkbox extends Zend_Form_Element_Checkbox
      */
     public function getHelpText()
     {
-	return $this->_helpText;
+		return $this->_helpText;
     }
 
     /**
@@ -53,9 +53,9 @@ class Form_Element_Checkbox extends Zend_Form_Element_Checkbox
     public function setReadonly()
     {
 
-	$this->setAttrib("readonly","");
-	$this->setAttrib("class","readonly");
-	
+		$this->setAttrib("readonly","readonly");
+		$this->setAttrib("class","readonly");
+		$this->setAttrib("disabled","disabled");
         return $this;
     }
 

@@ -18,6 +18,21 @@ class Form_Element_Number extends Form_Element_Text
         return parent::init();
     }
 
+    /**
+     * Set this element as readonly. Note that we also set the class of the element to .readonly
+     *
+     * * @author Peter Connolly
+     * @return \Form_Element_Text
+     */
+    public function setReadonly()
+    {
+
+		$this->setAttrib("readonly","");
+		$this->setAttrib("class","readonly");
+
+        return $this;
+    }
+    
 }
 
 ?>

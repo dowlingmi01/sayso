@@ -14,6 +14,12 @@ class Form_Element_Date extends ZendX_JQuery_Form_Element_DatePicker
 		$this->setLabel(ucwords(str_replace("_"," ",$this->getName())));
         return parent::init();
     }
+    
+    public function setReadOnly() 
+    {
+    	$this->setAttrib("readonly","");
+		$this->setAttrib("class","readonly");
+	}
 
 }
 ?>

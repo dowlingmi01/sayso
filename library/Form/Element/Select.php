@@ -11,6 +11,11 @@ class Form_Element_Select extends Zend_Form_Element_Select {
         $this->setLabel(ucwords(str_replace("_"," ",$this->getName())));
 		return parent::init();
     }
+    
+     public function setReadOnly() 
+     {
+    	$this->setAttrib('disabled', 'disabled');
+	}
 
 }
 ?>

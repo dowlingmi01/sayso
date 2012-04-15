@@ -58,8 +58,9 @@ class Form_Element_Text extends Zend_Form_Element_Text
     public function setReadonly()
     {
 
-	$this->setAttrib("readonly","");
-	$this->setAttrib("class","readonly");
+		$this->setAttrib("readonly","readonly");
+		$this->setAttrib("disabled","disabled");
+		$this->setAttrib("class","readonly");
 
         return $this;
     }

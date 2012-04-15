@@ -38,6 +38,10 @@ class Form_Element_Fkey extends Zend_Form_Element_Select
         $this->setMultiOptions($options);
 	}
 	
+    public function setReadOnly() {
+    	$this->setAttrib('disabled', 'disabled');
+	}
+	
     public function init()
     {
 		 

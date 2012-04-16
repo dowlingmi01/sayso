@@ -43,10 +43,10 @@
 							"colname": "status",
 							"type": "list",
 							"listoptions": [
-								"Active",
-								"Inactive"
+								"active",
+								"inactive"
 							],
-							"default": "Active",
+							"default": "active",
 							"displaywhen": [
 								"add",
 								"detail",

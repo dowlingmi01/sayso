@@ -15,7 +15,7 @@ class Survey_ResponseCollection extends RecordCollection
 						ON s.id = sr.survey_id
 						AND s.starbar_id = ?
 						AND s.type = ?
-						AND s.status = 'Active'
+						AND s.status = 'active'
 					WHERE sr.user_id = ?
 					";
 			$result = Db_Pdo::fetch($sql, $starbarId, $type, $userId);
@@ -65,7 +65,7 @@ class Survey_ResponseCollection extends RecordCollection
 								OR s.start_after IS NULL)
 							AND s.start_day >= ?
 							AND s.start_day <= ?
-							AND s.status = 'Active'
+							AND s.status = 'active'
 						".$limitClause."
 					";
 			Db_Pdo::execute($sql, $type, $userId, $starbarId, $userId, $firstDayOfSurveysUserShouldSee, $lastDayOfSurveysUserShouldSee);
@@ -84,10 +84,10 @@ class Survey_ResponseCollection extends RecordCollection
 						AND s.type = ?
 						AND s.starbar_id = ?
 						AND s.premium IS NOT TRUE
-						AND s.status = 'Active'
-					SET status = 'archived'
+						AND s.status = 'active'
+					SET sr.status = 'archived'
 					WHERE sr.user_id = ?
-						AND status = 'new'
+						AND sr.status = 'new'
 						AND ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(sr.created)) > ?)
 					";
 			Db_Pdo::execute($sql, $type, $starbarId, $userId, $secondsBeforeAutoArchive);

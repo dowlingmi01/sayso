@@ -1,303 +1,303 @@
 {
-    "superuser": [
-        {
-            "survey": [
-                {
-                    "table": [
-                        {
-                            "tablename": "Survey"
-                        }
-                    ],
-                    "columns": [
-                        {
-                            "colname": "id",
-                            "type": "hidden",
-                            "width":10,
-                            "displaywhen": [
-                                "grid",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "user_id",
-                            "type": "hidden",
-                            "value":1
-                        },
-                        {
-                            "colname": "type",
-                            "type": "list",
-                            "listoptions": [
-                                "poll",
-                                "survey"
-                            ],
-                            "displaywhen": [
-                                "add",
-                                "grid",
-                                "detail",
-                                "edit"
-                            ]
+	"superuser": [
+		{
+			"survey": [
+				{
+					"table": [
+						{
+							"tablename": "Survey"
+						}
+					],
+					"columns": [
+						{
+							"colname": "id",
+							"type": "hidden",
+							"width":10,
+							"displaywhen": [
+								"grid",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "user_id",
+							"type": "hidden",
+							"value":1
+						},
+						{
+							"colname": "type",
+							"type": "list",
+							"listoptions": [
+								"poll",
+								"survey"
+							],
+							"displaywhen": [
+								"add",
+								"grid",
+								"detail",
+								"edit"
+							]
 
-                        },
-                        {
-                            "colname": "origin",
-                            "type": "list",
-                            "listoptions": [
-                                "SurveyGizmo",
-                                "Internal"
-                            ],
-                            "displaywhen": [
-                                "add",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "starbar_id",
-                            "type": "fkey",
-                            "lookuptable": "starbar",
-                            "lookupfield": "id",
-                            "lookuplabel": "label",
-                            "default": "--Please Select a starbar--",
-                            "displaywhen": [
-                                "add",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "title",
-                            "type": "string",
-                            "label": "Survey Title",
-                            "width": 20,
-                            "validate": [
-                                "notnull",
-                                "minlength(10)"
-                            ],
-                            "displaywhen": [
-                                "add",
-                                "grid",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "external_id",
-                            "type": "number",
-                            "displaywhen": [
-                                "add",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "external_key",
-                            "type": "string",
-                            "width": 20,
-                            "displaywhen": [
-                                "add",
-                                "detail",
-                                "edit"
-                            ],
-                            "validate": [
-                                "notnull",
-                                "minlength(10)"
-                            ]
-                        },
-                        {
-                            "colname": "premium",
-                            "type": "checkbox",
-                            "default": false,
-                            "displaywhen": [
-                                "add",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "number_of_answers",
-                            "type": "number",
-                            "displaywhen": [
-                                "add",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "number_of_questions",
-                            "type": "number",
-                            "displaywhen": [
-                                "add",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "display_number_of_questions",
-                            "type": "number",
-                            "displaywhen": [
-                                "add",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "ordinal",
-                            "type": "number",
-                            "displaywhen": [
-                                "add",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "start_day",
-                            "type": "number",
-                            "width":5,
-                            "help": "Day (relative to launch) that this survey is available. Day 1 = launch day",
-                            "displaywhen": [
-                                "add",
-                                "detail",
-                                "grid",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "start_after",
-                            "type": "number",
-                            "help": "Time delay in seconds before this survey is available to a new user",
-                            "displaywhen": [
-                                "add",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "start_at",
-                            "type": "datetime",
-                            "displaywhen": [
-                                "add",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "end_at",
-                            "type": "datetime",
-                            "displaywhen": [
-                                "add",
-                                "detail",
-                                "edit"
-                            ]
-                        }
-                    ]
-                }
-            ],
-            "study_quota": [
-                {
-                    "table": [
-                        {
-                            "tablename": "study_quota"
-                        }
-                    ],
-                    "columns": [
-                        {
-                            "colname": "id",
-                            "type": "hidden",
-                            "width":5,
-                            "displaywhen": [
-                                "grid",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "study_id",
-                            "type": "fkey",
-                            "lookuptable": "study",
-                            "lookupfield": "id",
-                            "lookuplabel": "name",
-                            "default": "--Please Select a study--",
-                            "displaywhen": [
-                                "add",
-                                "grid",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "percentile_id",
-                            "type": "fkey",
-                            "lookuptable": "lookup_quota_percentile",
-                            "lookupfield": "id",
-                            "lookuplabel": "quota",
-                            "default": "--Please Select percentile--",
-                            "displaywhen": [
-                                "add",
-                                "grid",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "gender_id",
-                            "type": "fkey",
-                            "lookuptable": "lookup_gender",
-                            "lookupfield": "id",
-                            "lookuplabel": "short_name",
-                            "default": "--Please Select a gender--",
-                            "displaywhen": [
-                                "add",
-                                "grid",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "age_range_id",
-                           	"type": "fkey",
-                            "lookuptable": "lookup_age_range",
-                            "lookupfield": "id",
-                            "lookuplabel": "age_from",
-                            "default": "--Please Select an age range--",
-                            "displaywhen": [
-                                "add",
-                                "grid",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "ethnicity_id",
-                            "type": "fkey",
-                            "lookuptable": "lookup_ethnicity",
-                            "lookupfield": "id",
-                            "lookuplabel": "label",
-                            "default": "--Please Select ethnicity--",
-                            "displaywhen": [
-                                "add",
-                                "grid",
-                                "detail",
-                                "edit"
-                            ]
-                        },
-                        {
-                            "colname": "income_range_id",
-                            "type": "fkey",
-                            "lookuptable": "lookup_income_range",
-                            "lookupfield": "id",
-                            "lookuplabel": "income_from",
-                            "default": "--Please Select an income range--",
-                            "displaywhen": [
-                                "add",
-                                "grid",
-                                "detail",
-                                "edit"
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
+						},
+						{
+							"colname": "origin",
+							"type": "list",
+							"listoptions": [
+								"SurveyGizmo",
+								"Internal"
+							],
+							"displaywhen": [
+								"add",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "starbar_id",
+							"type": "fkey",
+							"lookuptable": "starbar",
+							"lookupfield": "id",
+							"lookuplabel": "label",
+							"default": "--Please Select a starbar--",
+							"displaywhen": [
+								"add",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "title",
+							"type": "string",
+							"label": "Survey Title",
+							"width": 20,
+							"validate": [
+								"notnull",
+								"minlength(10)"
+							],
+							"displaywhen": [
+								"add",
+								"grid",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "external_id",
+							"type": "number",
+							"displaywhen": [
+								"add",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "external_key",
+							"type": "string",
+							"width": 20,
+							"displaywhen": [
+								"add",
+								"detail",
+								"edit"
+							],
+							"validate": [
+								"notnull",
+								"minlength(10)"
+							]
+						},
+						{
+							"colname": "premium",
+							"type": "checkbox",
+							"default": false,
+							"displaywhen": [
+								"add",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "number_of_answers",
+							"type": "number",
+							"displaywhen": [
+								"add",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "number_of_questions",
+							"type": "number",
+							"displaywhen": [
+								"add",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "display_number_of_questions",
+							"type": "number",
+							"displaywhen": [
+								"add",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "ordinal",
+							"type": "number",
+							"displaywhen": [
+								"add",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "start_day",
+							"type": "number",
+							"width":5,
+							"help": "Day (relative to launch) that this survey is available. Day 1 = launch day",
+							"displaywhen": [
+								"add",
+								"detail",
+								"grid",
+								"edit"
+							]
+						},
+						{
+							"colname": "start_after",
+							"type": "number",
+							"help": "Time delay in seconds before this survey is available to a new user",
+							"displaywhen": [
+								"add",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "start_at",
+							"type": "datetime",
+							"displaywhen": [
+								"add",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "end_at",
+							"type": "datetime",
+							"displaywhen": [
+								"add",
+								"detail",
+								"edit"
+							]
+						}
+					]
+				}
+			],
+			"study_quota": [
+				{
+					"table": [
+						{
+							"tablename": "study_quota"
+						}
+					],
+					"columns": [
+						{
+							"colname": "id",
+							"type": "hidden",
+							"width":5,
+							"displaywhen": [
+								"grid",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "study_id",
+							"type": "fkey",
+							"lookuptable": "study",
+							"lookupfield": "id",
+							"lookuplabel": "name",
+							"default": "--Please Select a study--",
+							"displaywhen": [
+								"add",
+								"grid",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "percentile_id",
+							"type": "fkey",
+							"lookuptable": "lookup_quota_percentile",
+							"lookupfield": "id",
+							"lookuplabel": "quota",
+							"default": "--Please Select percentile--",
+							"displaywhen": [
+								"add",
+								"grid",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "gender_id",
+							"type": "fkey",
+							"lookuptable": "lookup_gender",
+							"lookupfield": "id",
+							"lookuplabel": "short_name",
+							"default": "--Please Select a gender--",
+							"displaywhen": [
+								"add",
+								"grid",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "age_range_id",
+						   	"type": "fkey",
+							"lookuptable": "lookup_age_range",
+							"lookupfield": "id",
+							"lookuplabel": "age_from",
+							"default": "--Please Select an age range--",
+							"displaywhen": [
+								"add",
+								"grid",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "ethnicity_id",
+							"type": "fkey",
+							"lookuptable": "lookup_ethnicity",
+							"lookupfield": "id",
+							"lookuplabel": "label",
+							"default": "--Please Select ethnicity--",
+							"displaywhen": [
+								"add",
+								"grid",
+								"detail",
+								"edit"
+							]
+						},
+						{
+							"colname": "income_range_id",
+							"type": "fkey",
+							"lookuptable": "lookup_income_range",
+							"lookupfield": "id",
+							"lookuplabel": "income_from",
+							"default": "--Please Select an income range--",
+							"displaywhen": [
+								"add",
+								"grid",
+								"detail",
+								"edit"
+							]
+						}
+					]
+				}
+			]
+		}
+	]
 }

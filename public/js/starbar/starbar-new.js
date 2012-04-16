@@ -4,6 +4,8 @@
 
 $SQ(function(){
 
+	$SQ(document).trigger('onboarding-display'); 
+
 	var sayso = window.$SQ.sayso,
 		starbar = window.$SQ.sayso.starbar;
 

@@ -40,17 +40,19 @@
 
 						},
 						{
-							"colname": "origin",
+							"colname": "status",
 							"type": "list",
 							"listoptions": [
-								"SurveyGizmo",
-								"Internal"
+								"Active",
+								"Inactive"
 							],
+							"default": "Active",
 							"displaywhen": [
 								"add",
 								"detail",
 								"edit"
 							]
+
 						},
 						{
 							"colname": "starbar_id",
@@ -108,24 +110,6 @@
 							"colname": "premium",
 							"type": "checkbox",
 							"default": false,
-							"displaywhen": [
-								"add",
-								"detail",
-								"edit"
-							]
-						},
-						{
-							"colname": "number_of_answers",
-							"type": "number",
-							"displaywhen": [
-								"add",
-								"detail",
-								"edit"
-							]
-						},
-						{
-							"colname": "number_of_questions",
-							"type": "number",
 							"displaywhen": [
 								"add",
 								"detail",

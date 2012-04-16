@@ -26,6 +26,7 @@ class SurveyCollection extends RecordCollection
 					AND s.starbar_id = ?
 					AND s.start_at < now()
 					AND (s.end_at > now() OR s.end_at = '0000-00-00 00:00:00')
+					AND s.status = 'Active'
 				ORDER BY ".$order."
 				 ";
 		$surveys = Db_Pdo::fetchAll($sql, $userId, $surveyUserStatus, $type, $starbarId);

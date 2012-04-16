@@ -461,6 +461,9 @@ class Survey extends Record
 				$this->number_of_questions = $questionOrdinal - 1;
 				if (!$this->display_number_of_questions) $this->display_number_of_questions = $this->number_of_questions . "";
 			}
+			if ($this->type == "poll") {
+				$this->number_of_answers = $surveyQuestionChoicesSaved;
+			}
 
 			$this->processing_status = "completed";
 			$this->save();

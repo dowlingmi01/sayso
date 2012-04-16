@@ -30,8 +30,12 @@ class Survey_ResponseCollection extends RecordCollection
 		$starbarUserMap = new Starbar_UserMap();
 		$starbarUserMap->loadDataByUniqueFields(array("user_id" => $userId, "starbar_id" => $starbarId));
 
-		$starbar = new Starbar();
-		$starbar->loadData($starbarId);
+		if (Registry::isRegistered('starbar')) {
+			$starbar = Registry::getStarbar();
+		} else {
+			$starbar = new Starbar();
+			$starbar->loadData($starbarId);
+		}
 
 		$userJoinedStarbar = strtotime($starbarUserMap->created);
 		$starbarLaunched = strtotime($starbar->launched);

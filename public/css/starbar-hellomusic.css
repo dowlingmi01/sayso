@@ -415,7 +415,7 @@
 /* daily deals */
 
 #sayso-starbar #sb_popBox_daily-deals.sb_popBox{
-	left: -128px;
+	left: -340px;
 }
 
 #sayso-starbar #sb_popBox_daily-deals.sb_popBox .sb_popBoxInner .sb_popContent{
@@ -1010,7 +1010,7 @@
 }
 
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard #onboard_tabs_1 h3{
+#sayso-starbar #starbar-player-console #onboard_tabs_1 h3{
 	text-align:center;
 	font-size: 16px;
 	margin-bottom: 20px;
@@ -1266,13 +1266,13 @@
 /* daily deals */
 
 #sayso-starbar #sb_popBox_daily-deals.sb_triangle-border:before{
-	left: 340px;
+	left: 552px;
 }
 #sayso-starbar #sb_popBox_daily-deals.sb_triangle-border:after{
-	left: 341px;
+	left: 553px;
 }
 #sayso-starbar #sb_popBox_daily-deals .sb_triangle-solid:after{
-	left: 338px;
+	left: 548px;
 }
 
 /* user levels */

@@ -32,7 +32,8 @@
 		    $this->view->headScript()->appendFile('/js/cms/jquery.ui.slider.js');
 		    $this->view->headScript()->appendFile('/js/cms/jquery.ui.datepicker.js');
 		    $this->view->headScript()->appendFile('/js/cms/jquery.ui.timepicker-addon.js');
-		    $this->view->headScript()->appendFile('/js/cms/init.js');
+ 			$this->view->headScript()->appendFile('/js/cms/jquery.Menu.js');
+ 		    $this->view->headScript()->appendFile('/js/cms/init.js');
 		
 	    }
         
@@ -60,74 +61,7 @@
          */
         public function indexAction()
         {
-	        $select = Zend_Registry::get('db')->select()->from('cms_table_list');
 	        
-            $grid   = new Cms_Matrix();
-	        $grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
-	        $grid->setGridColumns(array('table_name', 'table_alias', 'allowed','edit','editit'));
-
-	        // To display a checkbox, we need to have a decorator, and we need to apply the format 'checkbox'
-	        $grid->updateColumn('allowed',
-				    array(
-				        'title' => 'Allowed',
-				        'align' => 'center',
-				        'format' => 'checkbox',
-				        'decorator'=>"<input type='checkbox' name='number[]' {{allowed}}  disabled='disabled' >"
-				        ));
-
-	        // Add a column which will give us the Edit Table Rows action
-		    $extraColumnEdit = new Bvb_Grid_Extra_Column();
-		    $extraColumnEdit
-			    ->position('left')
-			    ->name('editit')
-			    ->title(' ')
-			    ->callback(
-				    array(
-					    'function'  => array($this, 'generateEditButtonLink'),
-					    'params'	=> array('{{id}}')
-				    )
-			    );
-		    $grid->addExtraColumns($extraColumnEdit);
-
-            
-	        $form = new Bvb_Grid_Form($class='Zend_Form', $options=array());
-	        $form->setEdit(true); // Add the edit button to our form
-
-	        // Modify the fields. Note that the variable name is irrelevant. If the checkbox has the name of a boolean variable, that
-	        // field will be turned into a checkbox.
-	        $table_name = new Form_Element_Text('table_name');
-	        $table_name->setHelpText("Internal table name");
-	        $table_name->setReadonly();
-
-	        $allowed = new Form_Element_Checkbox('allowed');
-	        $allowed->setLabel('Allowed')
-		        ->setAttrib('id','1-allowed')
-		        ->setHelpText("Is this table shown in the CMS system?");
-
-	        $enable_insert = new Form_Element_Checkbox('enable_insert');
-	        $enable_insert->setAttrib('id','1-enable_insert')
-		        ->setHelpText("Can we insert rows into this table?");
-
-	        $enable_edit = new Form_Element_Checkbox('enable_edit');
-	        $enable_edit->setAttrib('id','1-enable_edit')
-		        ->setHelpText("Can we edit existing rows in this table?");
-
-	        $enable_delete = new Form_Element_Checkbox('enable_delete');
-	        $enable_delete->setAttrib('id','1-enable_delete')
-		        ->setHelpText("Can we delete existing rows in this table?");
-
-	        $enable_details = new Form_Element_Checkbox('enable_details');
-	        $enable_details->setAttrib('id','1-enable_details')
-		       ->setHelpText("Can we see details of this table? (might not use this)");
-
-	        $enable_list = new Form_Element_Checkbox('enable_list');
-	        $enable_list->setAttrib('id','1-enable_list')
-		        ->setHelpText("Can we view this table as a list?");
-
-	        $form->addElements(array($table_name, $allowed, $enable_insert, $enable_edit, $enable_delete, $enable_details, $enable_list));
-	        $grid->setForm($form);
-
-	        $this->view->grid = $grid->deploy();
 
         }
             
@@ -244,8 +178,6 @@
 										$formElements[$colname]->setValue($coloptions['value']);
 									}
 									
-									
-									
 									// Tooltip help
 									if (array_key_exists('help',$coloptions)) {
 										$formElements[$colname]->setAttrib("title", $coloptions['help']);
@@ -263,11 +195,7 @@
 										}
 									}
 									
-								}
-								
-								// Assign the known values
-							
-									
+								}														
 							
 								// All column elements have been built. Add the standard form elements
 								$formElements['submit'] = new Zend_Form_Element_Submit('submit');
@@ -510,7 +438,7 @@
 				$userlevel = "superuser";
 				// @todo Userlevel will be changed once logins and user level permissions are included.
 				
-				$file = sprintf('../application/modules/cms/models/%s.json',$userlevel);
+				$file = sprintf('../application/modules/cms/models/%s/%s.json',$userlevel,$tablename);
 				if (file_exists($file)) {
 					
 					$fh = fopen($file, 'r') or die('Could not open file!');
@@ -521,13 +449,59 @@
 					
 					// Create the grid
 					// Find the columns we want to see on the grid
-					$columnlist = $this->_getCMSColumns($json['superuser'][0][$tablename][0]['columns'],"displaywhen","grid");
+					$columnlist = $this->_getCMSColumns($json['columns'],"displaywhen","grid");
+					
+					/* Columnlist is an array, as
+					Array
+						(
+						    [0] => id
+						    [1] => external_id
+						    [2] => type
+						    [3] => title
+						    [4] => start_day
+						)
+						*/
+
 					$select = Zend_Registry::get('db')->select()->from($tablename,$columnlist)->order("id desc");
 					$grid   = new Cms_Matrix();
 					$grid->setJqgParams(array('altRows' => true));// rows will alternate color
 	        		$grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
 	        		
-	        		//$grid->setDeleteConfirmationPage(true);
+	        		// Adjust the widths of any columns on the grid
+	        		foreach ($columnlist as $key=>$value) {
+	        			
+	        			// we want to hide any hidden columns
+	        			$coltype = $this->_getColAttr($json['columns'],$value,'type');
+	        			if ($coltype=="hidden") {
+	        				$grid->updateColumn($value,array('hide' => true));				
+						}
+						
+						$colwidth =  $this->_getColAttr($json['columns'],$value,'width');
+						if ($colwidth!==Null) {	
+							$grid->updateColumn($value,array('style'=>'width:40px'));				
+						}
+						
+						// Cross reference any foreign keys
+						if ($coltype=="fkey") {
+							// For fkeys, we know we will have a lookuptable, lookupfield and lookuplabel
+   
+							$lookuptable = $this->_getColAttr($json['columns'],$value,'lookuptable');
+							$lookupfield = $this->_getColAttr($json['columns'],$value,'lookupfield');
+							$lookuplabel = $this->_getColAttr($json['columns'],$value,'lookuplabel');
+							$fieldname = sprintf("{{%s}}",$value);
+							
+							$grid->updateColumn($value,array(
+							        'callback' => array(
+								        'function'=>array($this,'_getDataField'),
+									        'params'=>array($fieldname,
+            												$lookuptable,
+            												$lookupfield,
+            												$lookuplabel
+            												)
+									)));
+			
+						}
+					}
 	        		
 	        		// Add a column which will give us the Edit Table Rows action
 				    $extraColumnEdit = new Bvb_Grid_Extra_Column();
@@ -554,15 +528,32 @@
 							    'params'	=> array('{{id}}')
 						    )
 					    );
+					    
 		   			$grid->addExtraColumns($extraColumnDetails);
+		   			
+		   			$extraColumnDelete = new Bvb_Grid_Extra_Column();
+				    $extraColumnDelete
+					    ->position('right')
+					    ->name('delete')
+					    ->title(' ')
+					    ->callback(
+						    array(
+							    'function'  => array($this, '_generateDeleteButtonLink'),
+							    'params'	=> array('{{id}}',$tablename,$tablenamepolite)
+						    )
+					    );
+		   			$grid->addExtraColumns($extraColumnDelete);
 		    		    
 					$form = new Bvb_Grid_Form($class='Zend_Form', $options=array());
 					
-					$form->setDelete(true);
+				//	$form->setDelete(true);
+				$grid->setAjax('myId');
 					$grid->setForm($form);
 					
 					$this->view->tablename = $tablenamepolite;
 					$this->view->newRecordLink = sprintf('<span class="newlink"><a href="/cms/admin/add/table/%s/"><img src="/images/icons/add.png" style="width:16px;" alt="Add" Title="Add" /> Add New %s</a></span>',$tablename,$tablenamepolite);
+					 
+				
 			        $this->view->grid = $grid->deploy();
 					
 				} else {
@@ -620,6 +611,28 @@
 			return $returnarray;
 		}
 		
+		/** 
+		* Search an array for a specific value
+		* 
+		* @param array $inputarray
+		* @param string $matchcol Column in the array being searched for
+		* @param string $matchkey Key being searched for
+		* #returns string Value of the column, or Null if not found
+		* @author Peter Connolly
+		*/
+		private function _getColAttr($inputarray,$matchcol,$matchkey) {
+			
+			$returnvalue = null;
+			foreach ($inputarray as $key=>$value) {
+				if ($value['colname'] == $matchcol) {
+					if (array_key_exists($matchkey,$value)) {			
+						$returnvalue = $value[$matchkey];
+					}
+				}
+			}
+			return $returnvalue;
+		}
+		
 		/**
         * Generate a button which will activate the tablefields action
         * 
@@ -632,7 +645,19 @@
 
 		    return $link;
 	    }
-
+	    
+		/**
+        * Generate a button which will delete the selected record
+        * 
+        * @param mixed $id
+        * @author Peter Connolly
+        */
+        public function _generateDeleteButtonLink($id,$tablename,$tablenamepolite)
+	    {
+	    	$link = sprintf("<a href='#' onclick=\"_listconfirmDel('You are about to delete record #%s from %s. Are you sure?','/cms/admin/view/table/%s/commlist/mode:delete;[%s.id:%s]');\" > <img src='/images/delete.png' border='0' /></a>",$id,$tablenamepolite,$tablename,$tablename,$id);
+		    return $link;
+	    }
+	    
 /**
         * Generate a button which will activate the view action
         * 
@@ -816,6 +841,31 @@
         		return $var;
 			}
 		}
+		
+		/**
+		* Return the value of a foreign key field
+		* 
+		* @author Peter Connolly
+		*/
+		public function _getDataField($findvalue,$lookuptable,$lookupfield,$lookuplabel)
+		{
+			if ($findvalue==null) {
+				return null;
+			} else {
+				$sql = sprintf("SELECT %s FROM %s WHERE %s=%s",$lookuplabel,$lookuptable,$lookupfield,$findvalue);	
+
+				$results = Db_Pdo::fetchAll($sql);
+
+				if ($results)
+				{
+					// We only want the result of the datafield
+					return $results[0][$lookuplabel];
+				} else {
+					return null;
+				}
+			}
+		}
+		
         /**
         * Given a table name and an associative array of data, this function builds a 
         * valid insert statement - fully escaped, ready for execution.

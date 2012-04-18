@@ -11,27 +11,149 @@
 
 		<?= $this->headScript(); ?>
                 <?= $this->javascriptHelper(); ?>
-		 <?php printf("<!--jQuery  included below-->"); ?>
-		<?///= $this->jQuery(); ?>
-		 <?php printf("<!--jQuery  included above-->"); ?>
+		 
 		<?= $this->headLink()->setStylesheet($this->baseUrl().'/css/jquery-ui-1.8.2.custom.css'); ?>
 
 	</head>
 	<body>
 		<div id="layout">
-			<header>
+			
 
-					<span class="common">
-						<ul>
-							<li><a id="menu-surveys" href="/cms/admin/view/table/survey" title="Survey"><span>Survey</span></a></li>
-							<li> | </li>
-							<li><a id="menu-study_quota" href="/cms/admin/view/table/study_quota" title="Survey"><span>Study Quota</span></a></li>
+					<div id="common">
+						
+							<ul class="cmsMenu">
 
-						</ul> 
-						<div class="clear"></div>
-					</span>
-
-			</header>
+								<li><a href="/cms/admin">Home</a></li>
+								
+								
+								<li><a href="#url">Metrics</a>
+									<ul>
+										<li><a href="/cms/admin/view/table/metrics_log">Log</a></li>
+										<li><a href="/cms/admin/view/table/metrics_page_view">Page View</a></li>
+										<li><a href="#url">Search</a></li>
+										<li><a href="#url">Social Activity</a></li>
+										<li><a href="#url">Tag Click Thru</a></li>
+										<li><a href="#url">Tag View</a></li>
+									</ul>
+								</li>
+								
+								<li><a href="#url">Study</a>
+									<ul>
+										<li><a href="#url">Study</a></li>
+										<li><a href="#url">Avail</a></li>
+										<li><a href="#url">Avail Domain Map</a></li>
+										<li><a href="#">Cell</a>
+										<ul>
+										<li><a href="#url">Cell</a></li>
+										<li><a href="#url">Cell Assignment</a></li>
+										<li><a href="#url">Cell Qualifier Browsing</a></li>
+										<li><a href="#url">Cell Qualifier Search</a></li>
+										<li><a href="#url">Cell Qualifier Search Engines Map</a></li>
+										<li><a href="#url">Cell Tag Map</a></li>
+										</ul>
+										</li>
+										<li><a href="#">Creative</a>
+										<ul>
+										<li><a href="#url">Creative</a></li>
+										<li><a href="#url">Creative Data</a></li>
+										<li><a href="#url">Creative Map</a></li>
+										<li><a href="#url">Creative Tag Map</a></li></ul>
+										</li>
+										<li><a href="#url">Domain</a></li>
+										<li><a href="/cms/admin/view/table/study_quota">Quota</a></li>
+										<li><a href="#url">Search Engines Map</a></li>
+										<li><a href="#url">Social Activity Map</a></li>
+										<li><a href="#url">Survey</a></li>
+										<li><a href="#url">Survey Criterion</a></li>
+										<li><a href="#url">Survey Criterion Map</a></li>
+										<li><a href="#url">Survey Map</a></li>
+										<li><a href="#url">Tag</a></li>
+										<li><a href="#url">Tag Domain Map</a></li>
+									</ul>
+								</li>
+								<li><a href="#url">Polls/Survey</a>
+									<ul>
+										<li><a href="/cms/admin/view/table/survey">Polls/Surveys</a></li>
+										<li><a href="#url">Question</a></li>
+										<li><a href="#url">Question Choice</a></li>
+										<li><a href="#url">Question Response</a></li>
+										<li><a href="#url">Question Type</a></li>
+										<li><a href="#url">Response</a></li>
+										<li><a href="#url">User Map</a></li>
+									</ul>
+								</li>
+								<li><a href="#url">User</a>
+									<ul>
+										<li><a href="#url">User</a></li>
+										<li><a href="#url">Address</a></li>
+										<li><a href="#url">Avatar</a></li>
+										<li><a href="#url">Child</a></li>
+										<li><a href="#url">Email</a></li>
+										<li><a href="#url">Gaming</a></li>
+										<li><a href="#url">Key</a></li>
+										<li><a href="#url">Role</a></li>
+										<li><a href="#url">Social</a></li>
+										<li><a href="#url">State</a></li>									
+									</ul>
+								</li>
+								<li><a href="#">The Closet</a>
+									<ul>
+										<li><a href="#url">Admin</a>
+											<ul>
+												<li><a href="#url">Role</a></li>
+												<li><a href="#url">User</a></li>
+												<li><a href="#url">User/Admin</a></li>
+											</ul>
+										</li>
+										<li><a href="#url">External</a>
+											<ul>
+												<li><a href="#url">User</a></li>
+												<li><a href="#url">User/Install</a></li>
+											</ul>
+										</li>
+										<li><a href="#url">Lookup</a>
+											<ul>
+												<li><a href="#url">Age Range</a></li>
+												<li><a href="#url">Email Frequency</a></li>
+												<li><a href="#url">Ethnicity</a></li>
+												<li><a href="#url">Gender</a></li>
+												<li><a href="#url">Income Range</a></li>
+												<li><a href="#url">Mime Type</a></li>
+												<li><a href="#url">Poll Frequency</a></li>
+												<li><a href="#url">Quota Percentile</a></li>
+												<li><a href="#url">Search Engines</a></li>
+												<li><a href="#url">Social Activity Type</a></li>
+												<li><a href="#url">Survey Type</a></li>
+												<li><a href="#url">Timeframe</a></li>
+											</ul>
+										</li>
+										<li><a href="#url">Notification</a>
+											<ul>
+												<li><a href="#url">Message</a></li>
+												<li><a href="#url">Message Group</a></li>
+												<li><a href="#url">Message User Map</a></li>
+											</ul>
+										</li>
+								
+										<li><a href="#url">Preference</a>
+											<ul>
+												<li><a href="#url">General</a></li>
+												<li><a href="#url">Survey Type</a></li>
+											</ul>
+										</li>
+										<li><a href="#url">Starbar</a>
+											<ul>
+												<li><a href="#url">Starbar</a></li>
+												<li><a href="#url">Content</a></li>
+												<li><a href="#url">User Map</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+					</div>
+<div class="clear"></div>
+			
 			<div id="main" role="main">
 			    <?php
 			    	printf("<span class='system-message'>%s</span>",$this->message) ;

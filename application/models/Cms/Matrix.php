@@ -25,7 +25,9 @@ class Cms_Matrix extends Bvb_Grid_Deploy_Table
 		$this->setNoFilters(false);
 		$this->setAlwaysShowOrderArrows(false);
 		$this->setNoOrder(false);
+		$this->setUseKeyEventsOnFilters(true);
 		$this->setRecordsPerPage(11);
+		$this->setPaginationInterval(array(10=>10,20=>20,50=>50,100=>100));
 	}
 
 

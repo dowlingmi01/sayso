@@ -1,0 +1,32 @@
+{
+    "table": [
+        {
+            "tablename": "metrics_log"
+        }
+    ],
+    "columns": [
+        {
+            "colname": "id",
+            "type": "hidden",
+            "width": 5,
+            "displaywhen": [
+                "grid",
+                "detail"
+            ]
+        },
+        {
+            "colname": "content",
+            "type": "string",
+            "label": "Content",
+            "width": 40,
+            "validate": [
+                "notnull",
+                "minlength(10)"
+            ],
+            "displaywhen": [
+                "grid",
+                "detail"
+            ]
+        }
+    ]
+}

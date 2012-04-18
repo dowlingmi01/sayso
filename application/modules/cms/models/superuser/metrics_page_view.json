@@ -1,0 +1,44 @@
+{
+    "table": [
+        {
+            "tablename": "metrics_page_view"
+        }
+    ],
+    "columns": [
+        {
+            "colname": "id",
+            "type": "hidden",
+            "width": 5,
+            "displaywhen": [
+                "grid",
+                "detail"
+            ]
+        },
+        {
+            "colname": "url",
+            "type": "string",
+            "label": "Content",
+            "width": 40,
+            "validate": [
+                "notnull",
+                "minlength(10)"
+            ],
+            "displaywhen": [
+                "grid",
+                "detail"
+            ]
+        },
+        {
+            "colname": "user_id",
+            "type": "fkey",
+            "lookuptable": "user",
+            "lookupfield": "id",
+            "lookuplabel": "username",
+            "default": "--",
+            "displaywhen": [
+                "grid",
+                "detail"
+            ]
+        }
+    ]
+}

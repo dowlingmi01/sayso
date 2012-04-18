@@ -201,9 +201,51 @@ dl.zend_form dd ul.errors li {
 	width:15px;
 }
 
+/* Hide the first Delete button*/
+#list table td:first-child,
+#list table th:first-child {
+	/*background-color:coral;*/
+	/*display:none;*/
+}
+
 /* Set the width of the 4th*/
 
 #filter_idlist {
 	width:30px;
 	text-align:center;
 }
+
+/* Menu CMS */
+.cmsMenu ul {position:absolute;  margin:0; padding:0; list-style:none; white-space:nowrap; background:#5b80c2; border:1px solid #fff; padding: 10px 0; text-align:left;
+-o-border-radius: 10px;
+-ms-border-radius: 10px;
+-moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+border-radius: 10px;
+-o-box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+-ms-box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+-moz-box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+-webkit-box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+}
+.cmsMenu ul ul {left:100%; margin-top:-36px; margin-left:-5px;}
+.cmsMenu li {margin:0; padding:0; list-style:none; display:inline-block; display:inline;}
+.cmsMenu a {display:block; font:normal 12px arial,sans-serif; color:#fff; line-height:17px; text-decoration:none; padding:0 20px 0 10px;} 
+
+.cmsMenu li a.a-top,
+.cmsMenu li a.a-sub {background:url(/images/icons/arrow-right.gif) no-repeat right center;}
+
+.cmsMenu li.clicked > a {background-color:#3563B7;}
+
+.cmsMenu {padding:0; margin:0; list-style:none; text-align:left; position:relative; background:#5b80c2; height:19px;}
+.cmsMenu > li > a {display:inline-block; margin-right:-5px; height:18px;}
+.cmsMenu > li {position:relative; display:inline-block;}
+
+.cmsMenu > li {*display:inline;}
+.cmsMenu > li > ul {top:18px; left:-1px;}
+
+.cmsMenu ul {display:none;}
+
+.cmsMenu .nolink {background-color:lightgrey}
+
+

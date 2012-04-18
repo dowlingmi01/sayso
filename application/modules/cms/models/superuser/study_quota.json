@@ -1,0 +1,107 @@
+{
+    "table": [
+        {
+            "tablename": "study_quota",
+            "tableattributes":[
+            	"nodelete",
+            	"noedit"
+            ]
+        }
+    ],
+    "columns": [
+        {
+            "colname": "id",
+            "type": "hidden",
+            "width": 5,
+            "displaywhen": [
+                "grid",
+                "detail",
+                "edit"
+            ]
+        },
+        {
+            "colname": "study_id",
+            "type": "fkey",
+            "lookuptable": "study",
+            "lookupfield": "id",
+            "lookuplabel": "name",
+            "default": "--Please Select a study--",
+            "displaywhen": [
+                "add",
+                "grid",
+                "detail",
+                "edit"
+            ]
+        },
+        {
+            "colname": "percentile_id",
+            "type": "fkey",
+            "lookuptable": "lookup_quota_percentile",
+            "lookupfield": "id",
+            "lookuplabel": "quota",
+            "default": "--Please Select percentile--",
+            "displaywhen": [
+                "add",
+                "grid",
+                "detail",
+                "edit"
+            ]
+        },
+        {
+            "colname": "gender_id",
+            "type": "fkey",
+            "lookuptable": "lookup_gender",
+            "lookupfield": "id",
+            "lookuplabel": "short_name",
+            "default": "--Please Select a gender--",
+            "displaywhen": [
+                "add",
+                "grid",
+                "detail",
+                "edit"
+            ]
+        },
+        {
+            "colname": "age_range_id",
+            "type": "fkey",
+            "lookuptable": "lookup_age_range",
+            "lookupfield": "id",
+            "lookuplabel": "age_from",
+            "default": "--Please Select an age range--",
+            "displaywhen": [
+                "add",
+                "grid",
+                "detail",
+                "edit"
+            ]
+        },
+        {
+            "colname": "ethnicity_id",
+            "type": "fkey",
+            "lookuptable": "lookup_ethnicity",
+            "lookupfield": "id",
+            "lookuplabel": "label",
+            "default": "--Please Select ethnicity--",
+            "displaywhen": [
+                "add",
+                "grid",
+                "detail",
+                "edit"
+            ]
+        },
+        {
+            "colname": "income_range_id",
+            "type": "fkey",
+            "lookuptable": "lookup_income_range",
+            "lookupfield": "id",
+            "lookuplabel": "income_from",
+            "default": "--Please Select an income range--",
+            "displaywhen": [
+                "add",
+                "grid",
+                "detail",
+                "edit"
+            ]
+        }
+    ]
+}

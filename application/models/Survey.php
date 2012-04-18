@@ -39,6 +39,17 @@ class Survey extends Record
 		return Db_Pdo::fetchColumn($sql, $this->id);
 	}
 
+	public function afterInsert() {
+		if (!$this->id) return;
+
+		$messages = $this->retrieveQuestionsAndChoicesFromSurveyGizmo();
+		if (sizeof($messages)) {
+			$messages = array_merge(array("Survey/Poll questions and choices retrieved after survey->insert"), $messages);
+			$message = implode("\n", $messages);
+			quickLog($message);
+		}
+	}
+
 	public function retrieveQuestionsAndChoicesFromSurveyGizmo() {
 		$config = Api_Registry::getConfig();
 
@@ -473,8 +484,9 @@ class Survey extends Record
 			$messages[] = "survey_question records saved in the DB: " . $surveyQuestionsSaved;
 			$messages[] = "survey_question_choice records saved in DB: " . $surveyQuestionChoicesSaved;
 
-			return $messages;
 		}
+
+		return $messages;
 	}
 
 	// This function is deprecated -- relies on bundle_of_joy variable which is no longer in use.

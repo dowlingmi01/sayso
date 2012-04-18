@@ -43,9 +43,12 @@ class Starbar_RemoteController extends Api_GlobalController
 		$starbar->loadData($this->starbar_id);
 		$this->view->starbar = $starbar;
 
+		$economy = new Economy();
+		$economy->loadData($starbar->economy_id);
+		$starbar->setEconomy($economy);
+
 		$starbarUserMap = new Starbar_UserMap();
 		$starbarUserMap->loadDataByUniqueFields(array('user_id' => $this->user_id, 'starbar_id' => $starbar->getId()));
-
 		$starbar->setUserMap($starbarUserMap);
 
 		if ($this->visibility) {

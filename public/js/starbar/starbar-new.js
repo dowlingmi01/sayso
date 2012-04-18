@@ -4,8 +4,6 @@
 
 $SQ(function(){
 
-	$SQ(document).trigger('onboarding-display'); 
-
 	var sayso = window.$SQ.sayso,
 		starbar = window.$SQ.sayso.starbar;
 
@@ -302,7 +300,7 @@ $SQ(function(){
 
 		/* prevent default for any link with # as the href */
 		$SQ('a', starbarElem).each(function(){
-			$SQthis = $SQ(this);			
+			$SQthis = $SQ(this);
 			if ($SQthis.attr('href')=='#'){
 				$SQthis.removeAttr('href')
 				.css('cursor', 'pointer')
@@ -456,9 +454,9 @@ $SQ(function(){
 				}
 			});
 		});
-		
+
 		// SET UP EXTERNAL SHARE BEHAVIORS
-		$SQ.each(btnExternalShare,function(){			
+		$SQ.each(btnExternalShare,function(){
 			// for some reason, the hover behavior set in the CSS is totally ignored. :(
 				$SQ(this).hover(function(){
 					$SQPoints = $('#'+$SQ(this).attr('rel'));
@@ -468,8 +466,8 @@ $SQ(function(){
 				},
 				function(){
 					$SQPoints = $('#'+$SQ(this).attr('rel'));
-					$SQ(this).css('background-position','0px 0px');		
-					$SQPoints.hide();		
+					$SQ(this).css('background-position','0px 0px');
+					$SQPoints.hide();
 				});
 
 		}); // end btnExternalShare
@@ -896,7 +894,7 @@ $SQ(function(){
 		var userPreviousLevels = sayso.starbar.previous_game._gamer._levels.items;
 		var userGoods = sayso.starbar.game._gamer._goods.items;
 		var userCurrencies = sayso.starbar.game._gamer._currencies.items;
-		var redeemableCurrency = "Notes"; // @todo get this from the game object
+		var redeemableCurrency = sayso.starbar._economy.redeemable_currency;
 
 		// The current level is the first level in the items (it is sorted by the gaming API!)
 		var userCurrentLevel = userLevels[0];
@@ -986,7 +984,7 @@ $SQ(function(){
 				}
 			});
 		}
-		
+
 		if (levelIconsContainerElems.length > 0) {
 			levelIconsContainerElems.each(function() {
 				$SQ(this).cycle({
@@ -994,7 +992,7 @@ $SQ(function(){
 					next:		'#sb_userLevel_next',
 					fx: 		'scrollHorz',
 					speed:	500,
-					timeout:	0, 
+					timeout:	0,
 					startingSlide: 1
 				});
 				/*

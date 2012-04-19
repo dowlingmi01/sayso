@@ -11,7 +11,7 @@ CREATE TABLE economy (
 ALTER TABLE starbar ADD COLUMN economy_id int(10) DEFAULT NULL;
 ALTER TABLE starbar ADD CONSTRAINT sb_e_id FOREIGN KEY (economy_id) REFERENCES economy (id) ON DELETE SET NULL ON UPDATE CASCADE;
 
-INSERT INTO economy (id, title, redeemableCurrency, experienceCurrency) VALUES (1, 'Hello Music', 'Notes', 'Chops');
+INSERT INTO economy (id, title, redeemable_currency, experience_currency) VALUES (1, 'Hello Music', 'Notes', 'Chops');
 
 UPDATE starbar SET economy_id = 1 WHERE id = 1;
 

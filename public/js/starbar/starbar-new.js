@@ -894,7 +894,7 @@ $SQ(function(){
 		var userPreviousLevels = sayso.starbar.previous_game._gamer._levels.items;
 		var userGoods = sayso.starbar.game._gamer._goods.items;
 		var userCurrencies = sayso.starbar.game._gamer._currencies.items;
-		var redeemableCurrency = sayso.starbar._economy.redeemable_currency;
+		var redeemableCurrency = sayso.starbar.economy.redeemable_currency;
 
 		// The current level is the first level in the items (it is sorted by the gaming API!)
 		var userCurrentLevel = userLevels[0];

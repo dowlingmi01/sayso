@@ -122,6 +122,7 @@
 				sayso.starbar.id = starbar.id;
 				sayso.starbar.shortName = starbar.short_name;
 				sayso.starbar.authKey = starbar.auth_key;
+				sayso.starbar.economy = starbar._economy;
 
 				// sayso.flags can be used anywhere via sayso.flags.match('<flag_name>')
 				// see starbar table, flags column

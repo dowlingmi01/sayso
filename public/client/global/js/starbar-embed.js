@@ -119,7 +119,7 @@
 									setCookie('sayso-install', null, -10);
 									setCookie('sayso-referrer', null, -10);
 								}
-							}, 1000);
+							}, 500);
 						}
 					}
 				};

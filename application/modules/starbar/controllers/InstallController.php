@@ -20,6 +20,18 @@ class Starbar_InstallController extends Api_GlobalController {
 			if( $user->password )
 				$userHasPassword = true;
 		}
+		$isPilotUser = false;
+		if( $externalUser->client_data ) {
+			$clientData = Zend_Json::decode($externalUser->client_data);
+			if( $clientData["hm_pilot_user"] ) {
+				$isPilotUser = true;
+				$this->view->assign('onboarding_type', 'pilot_user');
+			}
+		}
+		if( !$isPilotUser && preg_match('/share/', $this->install_origination)  )
+			$this->view->assign('onboarding_type', 'share');
+		else if( !$isPilotUser )
+			$this->view->assign('onboarding_type', 'new_user');
 		
 		$install = new External_UserInstall();
 		$install->external_user_id = $externalUser->id;

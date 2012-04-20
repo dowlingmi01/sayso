@@ -28,7 +28,7 @@ class Starbar_InstallController extends Api_GlobalController {
 				$this->view->assign('onboarding_type', 'pilot_user');
 			}
 		}
-		if( !$isPilotUser && preg_match('/share/', $this->install_origination)  )
+		if( !$isPilotUser && preg_match('/^s-/', $this->install_origination)  )
 			$this->view->assign('onboarding_type', 'share');
 		else if( !$isPilotUser )
 			$this->view->assign('onboarding_type', 'new_user');

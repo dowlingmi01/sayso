@@ -1,6 +1,3 @@
 <?php $this->headScript()->appendScript("$this->jQuery();");?>
-<h1>Editing Table Definition</h1>
-<?php if ($this->message): ?>
-    <p><?php echo $this->message ?></p>
-<?php endif ?>
+<h2>Editing <?php echo $this->tablename; ?> Record</h2>
 <?php echo $this->form ?>

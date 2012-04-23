@@ -1,0 +1,90 @@
+{
+	"table": [
+		{
+			"tablename": "lookup_timeframe",
+			"permissions":[
+				"allowgrid",
+				"allowadd",
+				"allowdelete",
+				"allowedit",
+				"disallowdetails"
+			]
+		}
+	],
+	"columns": [
+		{
+			"colname": "id",
+			"type": "hidden",
+			
+			"displaywhen": [
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "short_name",
+			"type": "text",
+			"label": "Short Name",
+			"width": 42,
+			"validate": [
+				"notnull",
+				"minlength(10)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "label",
+			"type": "text",
+			"label": "Label",
+			"width": 42,
+			"validate": [
+				"notnull",
+				"minlength(10)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "seconds",
+			"type": "text",
+			"label": "Seconds",
+			"width": 42,
+			"validate": [
+				"notnull",
+				"minlength(10)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "description",
+			"type": "text",
+			"label": "Description",
+			"width": 42,
+			"validate": [
+				"notnull",
+				"minlength(10)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		}
+	]
+}

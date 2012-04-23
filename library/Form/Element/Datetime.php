@@ -1,11 +1,12 @@
 <?php
 
 /**
-* Create a form text box which allows only positive integer numbers
-*
-* @author Peter Connolly
-*/
-class Form_Element_Number extends Form_Element_Text
+ * Create a jQuery Date Picker for date fields
+ *
+ * @author Peter Connolly
+ *
+ */
+class Form_Element_Datetime extends ZendX_JQuery_Form_Element_DatePicker
 {
 	/**
 	* Indicates action being processed (e.g, edit, add, view, detail)
@@ -20,32 +21,20 @@ class Form_Element_Number extends Form_Element_Text
 	* @var array
 	*/
 	protected $_options;
-
+	
 	public function init()
 	{
-	// Set the default title
 		$this->setLabel(ucwords(str_replace("_"," ",$this->getName())));
-		$this->addValidator('Int', true);
-		$this->addValidator('GreaterThan',false, -1); // Number must be 0 or more
-		$this->setErrorMessages(array('Must be a positive integer, or null'));
 		return parent::init();
 	}
 
-	/**
-	* Set this element as readonly. Note that we also set the class of the element to .readonly
-	*
-	* @author Peter Connolly
-	* @return \Form_Element_Text
-	*/
-	public function setReadOnly()
+	public function setReadOnly() 
 	{
-
-		$this->setAttrib("readonly","readonly");
+		$this->setAttrib("readonly","");
 		$this->setAttrib("class","readonly");
 		$this->setAttrib("disabled","disabled");
-		return $this;
 	}
-	
+
 	private function _setHelp()
 	{
 		$db = Zend_Registry::get('db');
@@ -68,12 +57,13 @@ class Form_Element_Number extends Form_Element_Text
 	{
 		$this->_action = $action;
 		$this->_options = $optionarray;
+	
+		$this->setJQueryParams(array('dateFormat' => 'yy-mm-dd'));
 		
 		// Are we going to display this element?
 		if (in_array($action,$this->_options['displaywhen'])) {
 			
 			$this->_setHelp();
-			
 			// We're going to display this element. Now look to see what we do with it
 			switch ($action) {
 				
@@ -94,6 +84,6 @@ class Form_Element_Number extends Form_Element_Text
 		
 		return $this;
 	}
+	
 }
-
 ?>

@@ -1,0 +1,72 @@
+{
+    "table": [
+        {
+            "tablename": "starbar_user_map",
+            "permissions":[
+            	"allowgrid",
+            	"allowadd",
+            	"allowdelete",
+            	"allowedit",
+            	"allowdetails"
+            ]
+        }
+    ],
+    "columns": [
+        {
+            "colname": "id",
+            "type": "hidden",
+            
+            "displaywhen": [
+                "grid",
+                "detail",
+                "edit"
+            ]
+        },
+        {
+            "colname": "user_id",
+            "type": "fkey",
+            "lookuptable": "user",
+            "lookupfield": "id",
+            "lookuplabel": "username",
+            "default": "--",
+            "displaywhen": [
+                "grid",
+                "detail"
+            ]
+        },
+         {
+            "colname": "starbar_id",
+            "type": "fkey",
+            "lookuptable": "starbar",
+            "lookupfield": "id",
+            "lookuplabel": "label",
+            "default": "--Please Select a starbar--",
+            "displaywhen": [
+                "add",
+                "grid",
+                "detail",
+                "edit"
+            ]
+        },
+        {
+            "colname": "active",
+            "type": "checkbox",
+            "default": false,
+            "displaywhen": [
+                "add",
+                "detail",
+                "edit"
+            ]
+        },
+        {
+            "colname": "onboarded",
+            "type": "checkbox",
+            "default": false,
+            "displaywhen": [
+                "add",
+                "detail",
+                "edit"
+            ]
+        }
+    ]
+}

@@ -1,174 +1,192 @@
 {
-    "table": [
-        {
-            "tablename": "Survey"
-        }
-    ],
-    "columns": [
-        {
-            "colname": "id",
-            "type": "hidden",
-            
-            "displaywhen": [
-                "grid",
-                "detail",
-                "edit"
-            ]
-        },
-        {
-            "colname": "external_id",
-            "type": "number",
-            "displaywhen": [
-                "add",
-                "detail",
-                "grid",
-                "edit"
-            ]
-        },
-        {
-            "colname": "user_id",
-            "type": "hidden",
-            "value": 1
-        },
-        {
-            "colname": "type",
-            "type": "list",
-            "listoptions": [
-                "poll",
-                "survey"
-            ],
-            "displaywhen": [
-                "add",
-                "grid",
-                "detail",
-                "edit"
-            ]
-        },
-        {
-            "colname": "status",
-            "type": "list",
-            "listoptions": [
-                "Active",
-                "Inactive"
-            ],
-            "default": "Active",
-            "displaywhen": [
-                "add",
-                "detail",
-                "edit"
-            ]
-        },
-        {
-            "colname": "starbar_id",
-            "type": "fkey",
-            "lookuptable": "starbar",
-            "lookupfield": "id",
-            "lookuplabel": "label",
-            "default": "--Please Select a starbar--",
-            "displaywhen": [
-                "add",
-                "grid",
-                "detail",
-                "edit"
-            ]
-        },
-        {
-            "colname": "title",
-            "type": "string",
-            "label": "Survey Title",
-            "width": 42,
-            "validate": [
-                "notnull",
-                "minlength(10)"
-            ],
-            "displaywhen": [
-                "add",
-                "grid",
-                "detail",
-                "edit"
-            ]
-        },
-        {
-            "colname": "external_key",
-            "type": "string",
-            "width": 20,
-            "displaywhen": [
-                "add",
-                "detail",
-                "edit"
-            ],
-            "validate": [
-                "notnull",
-                "minlength(10)"
-            ]
-        },
-        {
-            "colname": "premium",
-            "type": "checkbox",
-            "default": false,
-            "displaywhen": [
-                "add",
-                "detail",
-                "edit"
-            ]
-        },
-        {
-            "colname": "display_number_of_questions",
-            "type": "number",
-            "displaywhen": [
-                "add",
-                "detail",
-                "edit"
-            ]
-        },
-        {
-            "colname": "ordinal",
-            "type": "number",
-            "displaywhen": [
-                "add",
-                "detail",
-                "edit"
-            ]
-        },
-        {
-            "colname": "start_day",
-            "type": "number",
-            "width": 5,
-            "help": "Day (relative to launch) that this survey is available. Day 1 = launch day",
-            "displaywhen": [
-                "add",
-                "detail",
-                "grid",
-                "edit"
-            ]
-        },
-        {
-            "colname": "start_after",
-            "type": "number",
-            "help": "Time delay in seconds before this survey is available to a new user",
-            "displaywhen": [
-                "add",
-                "detail",
-                "edit"
-            ]
-        },
-        {
-            "colname": "start_at",
-            "type": "datetime",
-            "displaywhen": [
-                "add",
-                "detail",
-                "edit"
-            ]
-        },
-        {
-            "colname": "end_at",
-            "type": "datetime",
-            "displaywhen": [
-                "add",
-                "detail",
-                "edit"
-            ]
-        }
-    ]
+	"table": [
+		{
+			"tablename": "Survey",
+			"model": "Survey",
+			"permissions":[
+				"allowgrid",
+				"allowadd",
+				"allowdelete",
+				"allowedit",
+				"allowdetails"
+			]
+		}
+	],
+	"columns": [
+		{
+			"colname": "id",
+			"type": "hidden",
+			
+			"displaywhen": [
+				"grid",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "external_id",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"grid",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "user_id",
+			"type": "hidden",
+			"value": 1,
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "type",
+			"type": "list",
+			"listoptions": [
+				"poll",
+				"survey"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"delete",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "status",
+			"type": "list",
+			"listoptions": [
+				"Activcccccce",
+				"Inactive"
+			],
+			"default": "Activcccccce",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "starbar_id",
+			"type": "fkey",
+			"lookuptable": "starbar",
+			"lookupfield": "id",
+			"lookuplabel": "label",
+			"default": "--Please Select a starbar--",
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "title",
+			"type": "text",
+			"label": "Survey Title",
+			"width": 42,
+			"validate": [
+				"notnull",
+				"minlength(10)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"delete",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "external_key",
+			"type": "text",
+			"width": 20,
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			],
+			"validate": [
+				"notnull",
+				"minlength(10)"
+			]
+		},
+		{
+			"colname": "premium",
+			"type": "checkbox",
+			"default": false,
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "display_number_of_questions",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "ordinal",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "start_day",
+			"type": "number",
+			"width": 5,
+			"help": "Day (relative to launch) that this survey is available. Day 1 = launch day",
+			"displaywhen": [
+				"add",
+				"detail",
+				"grid",
+				"edit"
+			]
+		},
+		{
+			"colname": "start_after",
+			"type": "number",
+			"help": "Time delay in seconds before this survey is available to a new user",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "start_at",
+			"type": "datetime",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+			{
+			"colname": "end_at",
+			"type": "datetime",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		}
+	]
 }

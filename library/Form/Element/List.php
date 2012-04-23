@@ -1,49 +1,49 @@
 <?php
-
 /**
-* Create a form text box which allows only positive integer numbers
+* Skeleton for a Select form element
 *
 * @author Peter Connolly
 */
-class Form_Element_Number extends Form_Element_Text
-{
+class Form_Element_List extends Zend_Form_Element_Select {
 	/**
 	* Indicates action being processed (e.g, edit, add, view, detail)
 	* 
 	* @var mixed
 	*/
 	protected $_action;
-
+	
 	/**
 	* Stores the options for this column
 	* 
 	* @var array
 	*/
 	protected $_options;
-
+	
 	public function init()
 	{
-	// Set the default title
+		// Set the default title
 		$this->setLabel(ucwords(str_replace("_"," ",$this->getName())));
-		$this->addValidator('Int', true);
-		$this->addValidator('GreaterThan',false, -1); // Number must be 0 or more
-		$this->setErrorMessages(array('Must be a positive integer, or null'));
+
 		return parent::init();
 	}
 
-	/**
-	* Set this element as readonly. Note that we also set the class of the element to .readonly
-	*
-	* @author Peter Connolly
-	* @return \Form_Element_Text
-	*/
-	public function setReadOnly()
+	private function _setParams()
 	{
+		//print_r($this->_options);
+		if (array_key_exists("listoptions",$this->_options)) {			
+			$listoptions = array(); 
+			
+			foreach ($this->_options['listoptions'] as $listkey=>$listvalue) {
+				$listoptions[$listvalue] = $listvalue;
+			}
+			$this->setMultiOptions($listoptions);
+		}
 
-		$this->setAttrib("readonly","readonly");
-		$this->setAttrib("class","readonly");
-		$this->setAttrib("disabled","disabled");
-		return $this;
+	}
+	
+	public function setReadOnly() 
+	{
+		$this->setAttrib('disabled', 'disabled');
 	}
 	
 	private function _setHelp()
@@ -72,6 +72,7 @@ class Form_Element_Number extends Form_Element_Text
 		// Are we going to display this element?
 		if (in_array($action,$this->_options['displaywhen'])) {
 			
+			$this->_setParams();
 			$this->_setHelp();
 			
 			// We're going to display this element. Now look to see what we do with it
@@ -87,7 +88,7 @@ class Form_Element_Number extends Form_Element_Text
 					break;
 				
 				case "edit":
-				
+					
 					break;
 			}
 		}
@@ -95,5 +96,4 @@ class Form_Element_Number extends Form_Element_Text
 		return $this;
 	}
 }
-
 ?>

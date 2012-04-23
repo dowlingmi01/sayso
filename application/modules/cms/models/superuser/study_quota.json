@@ -1,10 +1,14 @@
 {
     "table": [
         {
-            "tablename": "study_quota",
-            "tableattributes":[
-            	"nodelete",
-            	"noedit"
+            "tablename": "Study_Quota",
+            "model":"Study_Quota",
+            "permissions":[
+            	"allowgrid",
+            	"allowadd",
+            	"allowdelete",
+            	"allowedit",
+            	"disallowdetails"
             ]
         }
     ],

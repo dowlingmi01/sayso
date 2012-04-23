@@ -1,0 +1,130 @@
+{
+	"table": [
+		{
+			"tablename": "starbar",
+			"permissions":[
+				"allowgrid",
+				"allowadd",
+				"allowdelete",
+				"allowedit",
+				"allowdetails"
+			]
+		}
+	],
+	"columns": [
+		{
+			"colname": "id",
+			"type": "hidden",
+			
+			"displaywhen": [
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "short_name",
+			"type": "text",
+			"label": "Short Name",
+			"width": 42,
+			"validate": [
+				"notnull",
+				"minlength(5)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "label",
+			"type": "text",
+			"label": "Label",
+			"width": 42,
+			"validate": [
+				"notnull"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "description",
+			"type": "text",
+			"label": "Description",
+			"width": 42,
+			"validate": [
+				"notnull",
+				"minlength(5)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "user_pseudonym",
+			"type": "text",
+			"label": "User Pseudonym",
+			"width": 42,
+			"validate": [
+				"notnull",
+				"minlength(5)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "domain",
+			"type": "text",
+			"label": "Domain",
+			"width": 42,
+			"validate": [
+				"notnull",
+				"minlength(5)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "auth_key",
+			"type": "text",
+			"label": "Auth Key",
+			"width": 42,
+			"validate": [
+				"notnull",
+				"minlength(5)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "launched",
+			"type": "datetime",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		}
+	]
+}

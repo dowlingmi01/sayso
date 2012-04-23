@@ -1,0 +1,90 @@
+{
+	"table": [
+		{
+			"tablename": "metrics_search",
+			"permissions":[
+				"allowgrid",
+				"disallowadd",
+				"disallowdelete",
+				"disallowedit",
+				"disallowdetails"
+			]
+		}
+	],
+	"columns": [
+		{
+			"colname": "id",
+			"type": "hidden",
+			"width": 5,
+			"displaywhen": [
+				"grid",
+				"detail"
+			]
+		},
+		{
+			"colname": "user_id",
+			"type": "fkey",
+			"lookuptable": "user",
+			"lookupfield": "id",
+			"lookuplabel": "username",
+			"default": "--",
+			"displaywhen": [
+				"grid",
+				"detail"
+			]
+		},
+		{
+			"colname": "starbar_id",
+			"type": "fkey",
+			"lookuptable": "starbar",
+			"lookupfield": "id",
+			"lookuplabel": "label",
+			"default": "--Please Select a starbar--",
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "search_engine_id",
+			"type": "fkey",
+			"lookuptable": "lookup_search_engines",
+			"lookupfield": "id",
+			"lookuplabel": "label",
+			"default": "--Please Select a Search Engine--",
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "query",
+			"type": "text",
+			"label": "Query",
+			"width": 60,
+			"validate": [
+				"notnull",
+				"minlength(10)"
+			],
+			"displaywhen": [
+				"grid",
+				"detail"
+			]
+		},
+		{
+			"colname": "created",
+			"type": "datetime",
+			"label":"Created",
+			"displaywhen": [
+				"grid",
+				"add",
+				"detail",
+				"edit"
+			]
+		}
+	]
+}

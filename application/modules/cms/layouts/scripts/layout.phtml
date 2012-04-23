@@ -30,7 +30,7 @@
 									<ul>
 										<li><a href="/cms/admin/view/table/metrics_log">Log</a></li>
 										<li><a href="/cms/admin/view/table/metrics_page_view">Page View</a></li>
-										<li><a href="#url">Search</a></li>
+										<li><a href="/cms/admin/view/table/metrics_search">Search</a></li>
 										<li><a href="#url">Social Activity</a></li>
 										<li><a href="#url">Tag Click Thru</a></li>
 										<li><a href="#url">Tag View</a></li>
@@ -121,10 +121,10 @@
 												<li><a href="#url">Mime Type</a></li>
 												<li><a href="#url">Poll Frequency</a></li>
 												<li><a href="#url">Quota Percentile</a></li>
-												<li><a href="#url">Search Engines</a></li>
+												<li><a href="/cms/admin/view/table/lookup_search_engines">Search Engines</a></li>
 												<li><a href="#url">Social Activity Type</a></li>
-												<li><a href="#url">Survey Type</a></li>
-												<li><a href="#url">Timeframe</a></li>
+												<li><a href="/cms/admin/view/table/lookup_survey_type">Survey Type</a></li>
+												<li><a href="/cms/admin/view/table/lookup_timeframe">Timeframe</a></li>
 											</ul>
 										</li>
 										<li><a href="#url">Notification</a>
@@ -143,9 +143,9 @@
 										</li>
 										<li><a href="#url">Starbar</a>
 											<ul>
-												<li><a href="#url">Starbar</a></li>
-												<li><a href="#url">Content</a></li>
-												<li><a href="#url">User Map</a></li>
+												<li><a href="/cms/admin/view/table/starbar">Starbar</a></li>
+												<li><a href="/cms/admin/view/table/starbar_content">Content</a></li>
+												<li><a href="/cms/admin/view/table/starbar_user_map">User Map</a></li>
 											</ul>
 										</li>
 									</ul>
@@ -155,8 +155,9 @@
 <div class="clear"></div>
 			
 			<div id="main" role="main">
-			    <?php
-			    	printf("<span class='system-message'>%s</span>",$this->message) ;
+			<?php 
+				echo ($this->BackLink)?$this->BackLink:""; 
+			    printf(" <span class='system-message'>%s</span>",$this->message) ;
 			    ?>
 
 			    <?= $this->layout()->content ?>

@@ -1,0 +1,68 @@
+{
+	"table": [
+		{
+			"tablename": "starbar_content",
+			"permissions":[
+				"allowgrid",
+				"allowadd",
+				"allowdelete",
+				"allowedit",
+				"allowdetails"
+			]
+		}
+	],
+	"columns": [
+		{
+			"colname": "id",
+			"type": "hidden",
+			
+			"displaywhen": [
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "user_id",
+			"type": "fkey",
+			"lookuptable": "user",
+			"lookupfield": "id",
+			"lookuplabel": "username",
+			"default": "--",
+			"displaywhen": [
+				"grid",
+				"detail"
+			]
+		},
+		 {
+			"colname": "starbar_id",
+			"type": "fkey",
+			"lookuptable": "starbar",
+			"lookupfield": "id",
+			"lookuplabel": "label",
+			"default": "--Please Select a starbar--",
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "name",
+			"type": "text",
+			"label": "Name",
+			"width": 42,
+			"validate": [
+				"notnull",
+				"minlength(5)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		}
+	]
+}

@@ -21,32 +21,36 @@ class Bootstrap extends App_Bootstrap
 		Game_Abstract::$_enabled = true;
 
 		// only log if used by a developer
-		$remoteAddress = $_SERVER['REMOTE_ADDR'];
-		$devAddresses = array(
-			'195.60.129.27' => 'david', '127.0.0.1' => 'local', '98.154.229.46' => 'matt',
-			'24.2.88.78' => 'jim', '72.10.153.136' => 'hamza'
-		);
+		if (isset($_SERVER['REMOTE_ADDR'])) {
+			$remoteAddress = $_SERVER['REMOTE_ADDR'];
+			$devAddresses = array(
+				'195.60.129.27' => 'david', '127.0.0.1' => 'local', '98.154.229.46' => 'matt',
+				'24.2.88.78' => 'jim', '72.10.153.136' => 'hamza'
+			);
 
-		if (array_key_exists($remoteAddress, $devAddresses)) {
+			if (array_key_exists($remoteAddress, $devAddresses)) {
 
-			$apiLog = new Zend_Log();
-			$apiLogWriter = new Zend_Log_Writer_Stream(realpath(APPLICATION_PATH . '/../log/api.log'));
-			$apiLog->addWriter($apiLogWriter);
-			Api_Registry::set('log', $apiLog);
+				$apiLog = new Zend_Log();
+				$apiLogWriter = new Zend_Log_Writer_Stream(realpath(APPLICATION_PATH . '/../log/api.log'));
+				$apiLog->addWriter($apiLogWriter);
+				Api_Registry::set('log', $apiLog);
 
+			}
 		}
 
 		Zend_Controller_Front::getInstance()->registerPlugin(new BootstrapPlugin($this), 1);
 	}
+
 	/**
 	 *@author Peter Connolly
 	 * @return \Zend_View
 	 */
- protected function _initView()
-   {
-       $view = new Zend_View();
-       return $view;
-   }
+	protected function _initView()
+	{
+		$view = new Zend_View();
+		return $view;
+	}
+
 	/**
 	 * Setup bootstrap resource returning a usable link
 	 * to table holding session data
@@ -79,8 +83,8 @@ class Bootstrap extends App_Bootstrap
 			'db'			 => $db
 		);
 
-        /* Set the default adapter for abstract tables - Peter Connolly, 5 April 2012 */
-        Zend_Db_Table_Abstract::setDefaultAdapter($db);
+		/* Set the default adapter for abstract tables - Peter Connolly, 5 April 2012 */
+		Zend_Db_Table_Abstract::setDefaultAdapter($db);
 
 		$dbSessionHandler = false;
 

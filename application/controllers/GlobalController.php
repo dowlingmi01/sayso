@@ -3,7 +3,7 @@
 class GlobalController extends Api_AbstractController
 {
 	public function init() {
-		if (!$this->_request->isXmlHttpRequest()) {
+		if (get_class($this->_request) != "Zend_Controller_Request_Simple" && !$this->_request->isXmlHttpRequest()) {
 			$config = Api_Registry::getConfig();
 			$this->view->doctype('XHTML1_STRICT');
 			$this->view->headLink()->appendStylesheet('/css/sayso-corporate.css', 'screen');

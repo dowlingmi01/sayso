@@ -39,7 +39,7 @@ class Api_SurveyController extends Api_GlobalController
 		$surveyQuestionResponse->save();
 
 		$surveyResponse->status = "completed";
-		$surveyResponse->process_status = "completed";
+		$surveyResponse->processing_status = "completed";
 		$surveyResponse->data_download = new Zend_Db_Expr('now()');
 		$surveyResponse->completed_disqualified = new Zend_Db_Expr('now()');
 		$surveyResponse->save();

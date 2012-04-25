@@ -22,7 +22,7 @@ class Client_SnakkleController extends Client_GlobalController
 	 */
 	public function homeAction () {
 		$this->view->assign(array(
-			'screenshot' => '/client/hellomusic/images/HelloMusicScreenShot.png'
+			'screenshot' => '/client/snakkle/images/SnakkleScreenShot.png'
 		));
 		return parent::homeAction();
 	}

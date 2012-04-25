@@ -414,6 +414,11 @@
 
 /* daily deals */
 
+#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_daily-deals span.sb_nav_element {
+	background-image: url('../images/generic/nav_daily-deals.png');
+	width: 101px;
+}
+
 #sayso-starbar #sb_popBox_daily-deals.sb_popBox{
 	left: -340px;
 }
@@ -585,8 +590,8 @@
 	height: 20px;
 }
 
-#sayso-starbar #starbar-player-console span.sb_mini-note-reward, 
-#sayso-starbar-embed span.sb_mini-note-reward, 
+#sayso-starbar #starbar-player-console span.sb_mini-note-reward,
+#sayso-starbar-embed span.sb_mini-note-reward,
 #sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li span.sb_mini-note-reward{
 	background-image: url('../images/hellomusic/img_note_tn.png');
 	background-repeat: no-repeat;

@@ -74,6 +74,13 @@ abstract class Game_Starbar extends Game_Abstract {
 					$this->submitAction('POLL_STANDARD');
 				}
 				break;
+			case 'quiz' :
+				if ($survey->premium) {
+					$this->submitAction('QUIZ_PREMIUM');
+				} else {
+					$this->submitAction('QUIZ_STANDARD');
+				}
+				break;
 			case 'survey' :
 			default :
 				if ($survey->premium) {

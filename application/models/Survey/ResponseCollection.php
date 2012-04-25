@@ -7,6 +7,7 @@ class Survey_ResponseCollection extends RecordCollection
 
 		$type = str_replace("surveys", "survey", $type);
 		$type = str_replace("polls", "poll", $type);
+		$type = str_replace("quizzes", "quiz", $type);
 
 		if ($maximumToDisplay) {
 			$sql = "SELECT count(sr.id) AS theCount
@@ -51,7 +52,7 @@ class Survey_ResponseCollection extends RecordCollection
 		$firstDayOfSurveysUserShouldSee = $lastDayOfSurveysUserShouldSee - $daysOfSurveysToDisplay;
 		if ($firstDayOfSurveysUserShouldSee < 1) $firstDayOfSurveysUserShouldSee = 1;
 
-		if ($type == "poll" || $type == "survey") {
+		if ($type == "poll" || $type == "survey" || $type == "quiz") {
 			$sql = "INSERT INTO survey_response (survey_id, user_id, status, created)
 						SELECT s.id, u.id, 'new', now()
 						FROM survey s, user u

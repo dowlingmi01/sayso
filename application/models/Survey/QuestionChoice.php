@@ -37,4 +37,17 @@ class Survey_QuestionChoice extends Record
 
 		return Db_Pdo::fetchColumn($sql, $this->id);
 	}
+
+	public static function getCorrectChoiceForQuestion($surveyQuestionId) {
+		$sql = "
+			SELECT id
+			FROM survey_question_choice
+			WHERE survey_question_id = ?
+				AND correct IS true
+		";
+		$result = Db_Pdo::fetch($sql, $surveyQuestionId);
+		$correctSurveyQuestionChoiceId = (int) $result['id'];
+
+		return $correctSurveyQuestionChoiceId;
+	}
 }

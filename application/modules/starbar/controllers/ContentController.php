@@ -281,6 +281,26 @@ class Starbar_ContentController extends Api_GlobalController
 
 	}
 
+	// Fetches the next quiz for the current user for display
+	// Optionally takes quiz_index as CGI parameter to indicate getting the
+	// (n+1)th quiz for the user (0 = first quiz, 1 = second quiz, etc.)
+	public function quizAction ()
+	{
+		$this->_validateRequiredParameters(array('user_id'));
+
+		$request = $this->getRequest();
+		$quizIndex = (int) abs($request->getParam("quiz_index", 0));
+
+		$surveyResponses = new Survey_ResponseCollection();
+		$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'quizzes', $this->_maximumDisplayed['quizzes']);
+
+		$quizzes = new SurveyCollection();
+		$quizzes->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'quiz', 'new');
+
+		if ($quizIndex <= sizeof($quizzes) - 1) $this->view->quiz = $quizzes[$quizIndex];
+		else $this->view->quiz = new Survey();
+	}
+
 	public function surveyUnavailableAction ()
 	{
 		// this page is fetched via an iframe, not ajax;

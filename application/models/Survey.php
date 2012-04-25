@@ -42,11 +42,13 @@ class Survey extends Record
 	public function afterInsert() {
 		if (!$this->id) return;
 
-		$messages = $this->retrieveQuestionsAndChoicesFromSurveyGizmo();
-		if (sizeof($messages)) {
-			$messages = array_merge(array("Survey/Poll questions and choices retrieved after survey->insert"), $messages);
-			$message = implode("\n", $messages);
-			quickLog($message);
+		if ($this->origin == "SurveyGizmo") {
+			$messages = $this->retrieveQuestionsAndChoicesFromSurveyGizmo();
+			if (sizeof($messages)) {
+				$messages = array_merge(array("Survey/Poll questions and choices retrieved after survey->insert"), $messages);
+				$message = implode("\n", $messages);
+				quickLog($message);
+			}
 		}
 	}
 

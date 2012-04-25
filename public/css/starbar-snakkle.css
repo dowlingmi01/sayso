@@ -412,23 +412,28 @@
 	right: 10px;
 }
 
-/* daily deals */
+/* quizzes */
 
-#sayso-starbar #sb_popBox_daily-deals.sb_popBox{
+#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_quizzes span.sb_nav_element {
+	background-image: url('../images/generic/nav_daily-deals.png');
+	width: 101px;
+}
+
+#sayso-starbar #sb_popBox_quizzes.sb_popBox{
 	left: -340px;
 }
 
-#sayso-starbar #sb_popBox_daily-deals.sb_popBox .sb_popBoxInner .sb_popContent{
+#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent{
 	width: 968px;
 	height: 283px;
 }
 
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals{
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals{
 	text-align: center;
   width: 100%;
 }
 
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li{
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li{
 	display: inline-block;
 	margin: 0;
 	padding: 0;
@@ -440,7 +445,7 @@
 	margin: 0px 5px 0px 0px;
 }
 
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_exclusive-deal{
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_exclusive-deal{
 	background-image: url('../images/snakkle/img_exclusive-deal.png');
 	background-position: 0px 0px;
 	background-repeat: no-repeat;
@@ -453,36 +458,36 @@
 	left: -8px;
 }
 
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealInfo{
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealInfo{
 	background-color: #161a1e;
 	margin: -5px 0px 0px 0px;
 }
 
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li a{
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li a{
 	text-decoration: none;
 }
 
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealInfo p{
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealInfo p{
 	padding: 7px;
 	color: white;
 	position: relative;
 }
 
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li span{
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li span{
 	color: white;
 }
 
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li img.sb_dealImage{
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li img.sb_dealImage{
 	position: relative;
 	width: 185px;
 	height: 97px;
 }
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_itemName{
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_itemName{
 	height: 34px;
 	overflow: hidden;
 	display: block;
 }
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealStatus{
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealStatus{
 	font-size: 12px;
 	font-weight: bold;
 	display: block;
@@ -490,7 +495,7 @@
 	text-align: right;
 	text-transform: uppercase;
 }
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealStatusBG{
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealStatusBG{
 	opacity: 0.8;
 	position: absolute;
 	z-index: 9999;
@@ -499,15 +504,15 @@
 	width: 100%;
 }
 
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealStatusBG_orange{
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealStatusBG_orange{
 	background-color: #C60;
 }
 
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealStatusBG_red{
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealStatusBG_red{
 	background-color: #900;
 }
 
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealPercentOff{
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealPercentOff{
 	height: 27px;
 	font-size: 16px;
 	font-weight: bold;
@@ -518,7 +523,7 @@
 	clear: both;
 }
 
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealPrice{
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealPrice{
 	height: 17px;
 	font-size: 14px;
 	font-weight: bold;
@@ -528,7 +533,7 @@
 	clear: both;
 }
 
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealMsrp{
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealMsrp{
 	height: 13px;
 	font-size: 11px;
 	margin: 2px 0px;
@@ -537,7 +542,7 @@
 	clear: both;
 }
 
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li a.sb_theme_button_flat{
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li a.sb_theme_button_flat{
 	position: absolute;
 	bottom: 5px;
 	right: 5px;
@@ -585,9 +590,9 @@
 	height: 20px;
 }
 
-#sayso-starbar #starbar-player-console span.sb_mini-note-reward, 
-#sayso-starbar-embed span.sb_mini-note-reward, 
-#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li span.sb_mini-note-reward{
+#sayso-starbar #starbar-player-console span.sb_mini-note-reward,
+#sayso-starbar-embed span.sb_mini-note-reward,
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li span.sb_mini-note-reward{
 	background-image: url('../images/snakkle/img_note_tn.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
@@ -1265,13 +1270,13 @@
 
 /* daily deals */
 
-#sayso-starbar #sb_popBox_daily-deals.sb_triangle-border:before{
+#sayso-starbar #sb_popBox_quizzes.sb_triangle-border:before{
 	left: 552px;
 }
-#sayso-starbar #sb_popBox_daily-deals.sb_triangle-border:after{
+#sayso-starbar #sb_popBox_quizzes.sb_triangle-border:after{
 	left: 553px;
 }
-#sayso-starbar #sb_popBox_daily-deals .sb_triangle-solid:after{
+#sayso-starbar #sb_popBox_quizzes .sb_triangle-solid:after{
 	left: 548px;
 }
 

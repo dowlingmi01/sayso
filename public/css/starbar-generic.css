@@ -579,10 +579,6 @@ html {
 	background-image: url('../images/generic/nav_surveys.png');
 	width: 97px;
 }
-#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_daily-deals span.sb_nav_element {
-	background-image: url('../images/generic/nav_daily-deals.png');
-	width: 101px;
-}
 /* POP BOX STYLES */
 
 #sayso-starbar #starbar-player-console .sb_popBox {

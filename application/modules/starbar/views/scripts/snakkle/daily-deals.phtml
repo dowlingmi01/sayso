@@ -1,0 +1,133 @@
+<script type="text/javascript">
+	$SQ.getScript("//platform.twitter.com/widgets.js", function(){
+		function handleTweetEvent(event){
+			if (event) {
+				matches = event.target.src.match(/%3Fdid%3D(\d+)&/i);
+				if (matches && matches.length == 2) {
+					$SQ('#sayso-starbar').trigger('frameCommunication', ['handleTweet', {
+						shared_type: 'promos',
+						shared_id: matches[1]
+					}]);
+				}
+			}
+		}
+		twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
+	});
+
+	$SQ('#sayso-starbar').trigger('frameCommunication', ['hideAlertByNotificationMessageId', {
+		message_id: 9,
+		animate: true,
+		perform_ajax_call: true
+	}]);
+</script>
+<div class="sb_header">
+	<h2 class="sb_title"><img src="//<?= BASE_DOMAIN ?>/images/hellomusic/logo_hellomusic.png" alt="HelloMusic logo" width="70" /> Deals</h2>
+</div><!-- .sb_header -->
+<p>Act fast, deals don't last long! And remember to keep earning <strong class="sb_theme_textHighlight sb_tooltip" title="Notes - are almost as good as cash and can be redeemed for goods in the Rewards Center.">Notes</strong> &amp; <strong class="sb_theme_textHighlight sb_tooltip" title="Chops - determine your access to increasingly important levels of influence.">Chops</strong> by sharing.</p>
+<ul class="sb_listDeals">
+	<? $i = 1 ?>
+	<? foreach ($this->deals as $deal) { ?>
+		<? if ($i > 4) break ?>
+		<li>			
+			<a href="<?= $deal->itemURL ?>">
+			<img src="<?= $deal->itemImageURL ?>" alt="" class="sb_dealImage" />
+				<? if ($deal->status == "SOLD OUT") { ?>
+					<span class="sb_dealStatusBG sb_dealStatusBG_red">
+						<span class="sb_dealStatus">Sold Out</span>
+					</span>
+				<? } elseif ($deal->status == "ALMOST SOLD OUT") { ?>
+					<span class="sb_dealStatusBG sb_dealStatusBG_orange">
+						<span class="sb_dealStatus">Almost Sold Out</span>
+					</span>
+				<? } ?>
+			</a>
+			<div class="sb_dealInfo">
+				<p>
+					<span class="sb_itemName"><?= $deal->name ?></span>
+					<a href="<?= $deal->itemURL ?>" target="_blank" class="sb_theme_button_flat">View</a>
+					<? if ((string) $deal->price) { ?>
+						<span class="sb_dealPrice">$<?= $deal->price ?> Deal</span>
+						<? if ((string) $deal->msrp) { ?>
+							<span class="sb_dealMsrp">$<?= $deal->msrp ?> MSRP</span>
+						<? } ?>
+					<? } else { ?>
+						<span class="sb_dealPercentOff"><?= $deal->discountPercentage ?>% OFF!</span>
+					<? } ?>
+				</p>
+			</div><!-- .sb_dealInfo -->
+			<div class="sb_externalShares">
+				<!-- FACEBOOK -->
+				<? $facebookCallbackUrl = str_replace("THE_DEAL_ID", $deal->ID, $this->facebook_share_callback_url) ?>
+				<? $deal->itemURL = str_replace("\"", "'", $deal->itemURL) ?>
+				<? $deal->shareText = str_replace("\"", "'", $deal->shareText) ?>
+				<a class="sb_externalShare sb_externalShare_facebook" rel="sb_mini-note-reward_facebook_<?php echo $i ?>" href="#"
+					onclick='$SQ.openWindow("//www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($deal->itemURL) ?>&caption=<?= urlencode($deal->shareText) ?>&picture=<?= urlencode($deal->itemImageURL) ?>&redirect_uri=<?= urlencode($facebookCallbackUrl) ?>&name=<?= urlencode($deal->name) ?>&description=<?= urlencode($this->facebook_description) ?>", "sb_window_open", "location=1,status=1,scrollbars=0,width=981,height=450"); return false;'>
+					<img src="//<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
+				</a>
+				<span class="sb_mini-note-reward sb_mini-note-reward_facebook" id="sb_mini-note-reward_facebook_<?php echo $i ?>">+50</span>
+				<!-- / facebook -->
+				
+				<!-- TWITTER -->
+				<div class="sb_externalShare sb_externalShare_twitter" rel="sb_mini-note-reward_twitter_<?php echo $i ?>">			
+					<a class="twitter-share-button"
+						data-related="<?= $this->twitter_share_related_users ?>"
+						data-hashtags="<?= $this->twitter_share_hashtags ?>"
+						data-via="<?= $this->twitter_share_via_user ?>"
+						data-url="<?= $deal->itemURL ?>"
+						data-text="<?= $deal->shareText ?>"
+						data-count="none"
+						href="https://twitter.com/intent/tweet">
+							<img src="//<?= BASE_DOMAIN ?>/images/generic/logo_twitter.png" alt="Twitter" />
+					</a>
+				</div>
+				<span class="sb_mini-note-reward sb_mini-note-reward_twitter" id="sb_mini-note-reward_twitter_<?php echo $i ?>">+50</span>
+				<!-- / twitter -->		
+			</div><!-- .sb_externalShrares -->
+		</li>
+		<? $i++ ?>
+		
+	<? } ?>
+	<!-- TESTING STATIC DEAL FOR "EXCLUSIVE DEALS" -->
+	<li>			
+			<a href="http://www.hellomusic.com/ec/DealMain.aspx?did=14151">
+			<span class="sb_exclusive-deal"></span>
+			<img src="https://www.hellomusic.com/DealImages/hellomusicadmin.helloimages/9/8/6/9/98695U40LK2TQEC59ULP8M03TVALDQI.jpg" alt="" class="sb_dealImage">
+							</a>
+			<div class="sb_dealInfo">
+				<p>
+					<span class="sb_itemName">Cadillac Select (Cherry Burst) </span>
+					<a href="http://www.hellomusic.com/ec/DealMain.aspx?did=14151" target="_blank" class="sb_theme_button_flat">View</a>
+											<span class="sb_dealPercentOff">46% OFF!</span>
+									</p>
+			</div><!-- .sb_dealInfo -->
+			<div class="sb_externalShares">
+				<!-- FACEBOOK -->
+				<? $facebookCallbackUrl = str_replace("THE_DEAL_ID", $deal->ID, $this->facebook_share_callback_url) ?>
+				<? $deal->itemURL = str_replace("\"", "'", $deal->itemURL) ?>
+				<? $deal->shareText = str_replace("\"", "'", $deal->shareText) ?>
+				<a class="sb_externalShare sb_externalShare_facebook" rel="sb_mini-note-reward_facebook_<?php echo $i ?>" href="#"
+					onclick='$SQ.openWindow("//www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($deal->itemURL) ?>&caption=<?= urlencode($deal->shareText) ?>&picture=<?= urlencode($deal->itemImageURL) ?>&redirect_uri=<?= urlencode($facebookCallbackUrl) ?>&name=<?= urlencode($deal->name) ?>&description=<?= urlencode($this->facebook_description) ?>", "sb_window_open", "location=1,status=1,scrollbars=0,width=981,height=450"); return false;'>
+					<img src="//<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
+				</a>
+				<span class="sb_mini-note-reward sb_mini-note-reward_facebook" id="sb_mini-note-reward_facebook_<?php echo $i ?>">+50</span>
+				<!-- / facebook -->
+				
+				<!-- TWITTER -->
+				<div class="sb_externalShare sb_externalShare_twitter" rel="sb_mini-note-reward_twitter_<?php echo $i ?>">			
+					<a class="twitter-share-button"
+						data-related="<?= $this->twitter_share_related_users ?>"
+						data-hashtags="<?= $this->twitter_share_hashtags ?>"
+						data-via="<?= $this->twitter_share_via_user ?>"
+						data-url="<?= $deal->itemURL ?>"
+						data-text="<?= $deal->shareText ?>"
+						data-count="none"
+						href="https://twitter.com/intent/tweet">
+							<img src="//<?= BASE_DOMAIN ?>/images/generic/logo_twitter.png" alt="Twitter" />
+					</a>
+				</div>
+				<span class="sb_mini-note-reward sb_mini-note-reward_twitter" id="sb_mini-note-reward_twitter_<?php echo $i ?>">+50</span>
+				<!-- / twitter -->		
+			</div><!-- .sb_externalShrares -->
+		</li>
+	
+</ul><!-- .sb_dailyDeal -->

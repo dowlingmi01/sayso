@@ -1,0 +1,1363 @@
+#sayso-starbar #starbar-player-console{
+	background-image: url('../images/snakkle/bg_bar.png');
+}
+
+
+#sayso-starbar #starbar-player-console.sb_starbar-visBG{
+	background-image: url('../images/snakkle/bg_bar.png');
+	background-repeat: repeat-x ;
+	background-position: 0px bottom;
+}
+
+/* turn off starbar type background + switcher */
+#sayso-starbar #starbar-player-console #starbar-type .sb_changeTheme{
+	display: none;
+}
+
+/* starbar type logo + content area */
+#sayso-starbar #starbar-player-console #starbar-type .sb_logo{
+	width: 78px;
+	height: 37px;
+	margin: 5px 0px 0px 0px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-type .sb_userImg{
+	width: 32px;
+	height: 35px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-type div.sb_userImg{
+	position: absolute;
+	left: 100px;
+	top: 22px;
+	cursor: pointer;
+}
+
+#sayso-starbar #starbar-player-console #starbar-type .sb_content{
+	width: 82px;
+	top: 22px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-type .sb_content h2{
+	font-size: 13px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-type .sb_content img{
+	float: left;
+	margin: 0px 5px 0px 0px;
+}
+
+
+/* special color classes */
+#sayso-starbar #starbar-player-console .sb_theme_navOnGradient{
+	background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(102,102,102)),
+	color-stop(0.61, rgb(255,255,255)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(102,102,102) 22%,
+			rgb(255,255,255) 61%);
+	background-color# ccc;
+}
+
+#sayso-starbar #starbar-player-console .sb_theme_bgGradient,
+#sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value,
+#sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value-fading,
+#sayso-starbar .sb_theme_button{
+	background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(22,141,202)),
+	color-stop(0.61, rgb(7,61,89)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(22,141,202) 22%,
+			rgb(7,61,89) 61%);
+	background-color: #0081c5;
+}
+
+#sayso-starbar #starbar-player-console .sb_theme_button_alt{
+	background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(237,176,70)),
+	color-stop(0.61, rgb(206,146,41)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(237,176,70) 22%,
+			rgb(206,146,41) 61%);
+	background-color: #d98a00;
+}
+
+
+#sayso-starbar #starbar-player-console .sb_theme_button_grey{
+	background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(70,70,70)),
+	color-stop(0.61, rgb(55,55,55)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(70,70,70) 22%,
+			rgb(55,55,55) 61%);
+	background-color: #303030;
+	color: #666;
+}
+
+
+#sayso-starbar #starbar-player-console .sb_theme_button_flat{
+	background-color: #627484;
+	padding: 3px 5px;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	font-size: 14px;
+	font-weight: bold;
+	color: #fff;
+	text-decoration: none !important;
+}
+
+#sayso-starbar #starbar-player-console .sb_theme_button .sb_imgNote{
+	position: absolute;
+	top: -8px;
+	left: -14px;
+}
+
+#sayso-starbar #starbar-player-console .sb_theme_textHighlight, #sayso-starbar-embed .sb_theme_textHighlight{
+	color: #0082c5 !important;
+	text-shadow: none !important;
+}
+
+#sayso-starbar #starbar-player-console .sb_theme_textHighlight_alt, #sayso-starbar-embed .sb_theme_textHighlight_alt{
+	color: #d98a00 !important;
+	text-shadow: none !important;
+}
+
+
+#sayso-starbar #starbar-player-console .sb_theme_bgGlow{
+  -moz-box-shadow: 0px 0px 5px #0081c5;
+  -webkit-box-shadow: 0px 0px 5px #0081c5;
+  box-shadow: 0px 0px 5px #0081c5;
+}
+
+#sayso-starbar #starbar-player-console .sb_theme_iconChange{
+	background-image: url('../images/snakkle/img_change.png');
+	background-repeat: no-repeat;
+	background-position: right 3px;
+	font-weight: bold;
+	text-decoration: none;
+	font-size: 12px;
+	padding: 0px 13px 0px 0px;
+}
+
+/* promo area */
+
+#sayso-starbar #starbar-player-console #starbar-promo{
+	z-index: 1000;
+	position: absolute;
+	left: 606px;
+	bottom: 0;
+	height: 53px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_popBoxInner .sb_popContent{
+	width: 515px;
+	height: 290px;
+	padding: 0 !important;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_promoBG{
+	width: 515px;
+	height: 290px;
+	background-repeat: no-repeat;
+}
+
+
+#sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow{
+	position: relative;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week1{
+	display: block;
+	background-image: url('../images/snakkle/img_promo_week1_bg.jpg');
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week2{
+	display: none;
+	background-image: url('../images/snakkle/img_promo_week2_bg.jpg');
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week3{
+	display: none;
+	background-image: url('../images/snakkle/img_promo_week3_bg.jpg');
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week4{
+	display: none;
+	margin: -5px 0px 0px -5px !important;
+	width: 525px;
+	height: 300px;
+	background-image: url('../images/snakkle/img_promo_week4_bg_0412.jpg');
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide{
+	padding: 5px;
+	position: relative;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details{
+	position: absolute;
+	width: 240px;
+	top: 135px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p{
+	margin: 12px 0px;
+	font-size: 12px;
+	line-height: 15px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p small,
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p small strong{
+	font-size: 11px !important;
+}
+
+
+#sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow_nav{
+	position: absolute;
+	z-index: 1000;
+	bottom: 8px;
+	left: 10px;
+	overflow: hidden;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow_nav span{
+	width: 18px;
+	height: 18px;
+	display: inline-block;
+	background-repeat: no-repeat;
+	text-indent: -9999px;
+	cursor: pointer;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow_nav .sb_prev{
+	background-image: url('../images/generic/img_arrow_left.png');
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow_nav .sb_next{
+	background-image: url('../images/generic/img_arrow_right.png');
+}
+
+/* user level / progress area */
+
+#sayso-starbar #starbar-player-console #starbar-level{
+	z-index: 1000;
+	position: absolute;
+	left: 770px;
+	bottom: 0;
+	height: 53px;
+	width: 140px;
+	background-image: url('../images/generic/bg_divider.png');
+	background-repeat: no-repeat;
+	background-position: 0px 50%;
+}
+
+#sayso-starbar #starbar-player-console #starbar-level .sb_content{
+	padding: 6px 0px 0px 10px;
+	position: relative;
+	text-align: center;
+}
+
+#sayso-starbar #starbar-player-console #starbar-level .sb_popBoxInner .sb_popContent{
+	width: 570px;
+	height: 360px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-level .sb_popContent .sb_user-level{
+	text-align: center;
+}
+
+#sayso-starbar #starbar-player-console a .sb_user-level,
+#sayso-starbar #starbar-player-console a .sb_user-level span{
+	color: #fff;
+	text-transform: uppercase;
+	font-size: 10px;
+	font-weight: bold;
+}
+
+#sayso-starbar #starbar-player-console #starbar-level .sb_user-level-box{
+
+}
+
+#sayso-starbar #starbar-player-console #starbar-points{
+	z-index: 1000;
+	position: absolute;
+	left: 920px;
+	bottom: 0;
+	height: 53px;
+	width: 80px;
+	background-image: url('../images/generic/bg_divider.png');
+	background-repeat: no-repeat;
+	background-position: 0px 50%;
+}
+
+#sayso-starbar #starbar-player-console #starbar-points .sb_content{
+	margin: 8px 0px 0px 5px;
+	position: relative;
+}
+
+
+/* JQUERY OVERRIDES */
+
+
+/* FORMATTING AND COLOR SETTINGS */
+
+/* everything that has textcolor */
+
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a,
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-disabled a,
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-processing a,
+#sayso-starbar a, #sayso-starbar a:link,
+#sayso-starbar a:active,
+#sayso-starbar a:visited,
+#sayso-starbar h3.sb_title,
+#sayso-starbar h2.sb_title,
+#sayso-starbar #starbar-player-console .sb_outlineList li h3,
+#sayso-starbar #starbar-player-console #starbar-type .sb_content .sb_popBox a,
+#sayso-starbar #sb_popBox_user-profile .sb_currency_balance,
+#sayso-starbar .sb_rewardItem .sb_rewardHeader{
+	color: #0081c5;
+}
+
+/* other special formatting styles */
+
+#sayso-starbar #starbar-player-console .sb_notesEarned{
+	background-image: url('../images/snakkle/img_note_sm.png');
+	background-repeat: no-repeat;
+	background-position: 5px 3px;
+	padding: 3px 5px 3px 24px;
+	line-height: 21px;
+	font-size: 11px;
+	color: #333;
+	display: block;
+}
+
+#sayso-starbar #starbar-player-console .sb_xpEarned{
+	background-image: url('../images/snakkle/img_star_sm.png');
+	background-repeat: no-repeat;
+	background-position: 2px 3px;
+	padding: 3px 7px 3px 24px;
+	font-size: 11px;
+	line-height: 21px;
+	border-bottom: 1px solid #c2c2c2;
+	color: #333;
+	display: block;
+	height: 40%;
+}
+
+#sayso-starbar #starbar-player-console .sb_xpRequired{
+	background-image: url('../images/snakkle/img_star_sm.png');
+	background-repeat: no-repeat;
+	background-position: 0px 3px;
+	height: 20px;
+	padding: 7px 7px 3px 23px;
+	font-size: 11px;
+	line-height: 22px;
+	color: #333;
+	display: inline;
+}
+
+
+#sayso-starbar #starbar-player-console .sb_imgNote{
+	background-image: url('../images/snakkle/img_note.png');
+	width: 26px;
+	height: 37px;
+	display: inline-block;
+}
+
+#sayso-starbar #starbar-player-console .sb_pointsEarnedTotal{
+	width: 65px;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	position: absolute;
+	border-left: 1px solid #c2c2c2;
+	background-color: #e4e4e4;
+}
+
+/* loading animated gif */
+#sayso-starbar .sb_img_loading, .sayso-starbar-loading-external .sb_img_loading{
+	background-image: url('../images/snakkle/img_ajax-loader.gif') !important;
+}
+
+
+/* POPBOX SPECIFIC STYLES */
+
+/* surveys */
+
+#sayso-starbar #sb_popBox_surveys .sb_surveyInfo{
+	width: 65%;
+	float: left;
+}
+
+#sayso-starbar #sb_popBox_surveys li .sb_theme_button{
+	position: absolute;
+	top: 35%;
+	right: 10px;
+}
+
+/* daily deals */
+
+#sayso-starbar #sb_popBox_daily-deals.sb_popBox{
+	left: -340px;
+}
+
+#sayso-starbar #sb_popBox_daily-deals.sb_popBox .sb_popBoxInner .sb_popContent{
+	width: 968px;
+	height: 283px;
+}
+
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals{
+	text-align: center;
+  width: 100%;
+}
+
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li{
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	position: relative;
+	width: 185px;
+	text-align: left;
+	color: #fff;
+	margin: 0px 5px 0px 0px;
+}
+
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_exclusive-deal{
+	background-image: url('../images/snakkle/img_exclusive-deal.png');
+	background-position: 0px 0px;
+	background-repeat: no-repeat;
+	display: inline-block;
+	width: 193px;
+	height: 38px;
+	position: absolute;
+	z-index: 9999;
+	top: -31px;
+	left: -8px;
+}
+
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealInfo{
+	background-color: #161a1e;
+	margin: -5px 0px 0px 0px;
+}
+
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li a{
+	text-decoration: none;
+}
+
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealInfo p{
+	padding: 7px;
+	color: white;
+	position: relative;
+}
+
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li span{
+	color: white;
+}
+
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li img.sb_dealImage{
+	position: relative;
+	width: 185px;
+	height: 97px;
+}
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_itemName{
+	height: 34px;
+	overflow: hidden;
+	display: block;
+}
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealStatus{
+	font-size: 12px;
+	font-weight: bold;
+	display: block;
+	padding: 4px;
+	text-align: right;
+	text-transform: uppercase;
+}
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealStatusBG{
+	opacity: 0.8;
+	position: absolute;
+	z-index: 9999;
+	top: 75px;
+	left: 0;
+	width: 100%;
+}
+
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealStatusBG_orange{
+	background-color: #C60;
+}
+
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealStatusBG_red{
+	background-color: #900;
+}
+
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealPercentOff{
+	height: 27px;
+	font-size: 16px;
+	font-weight: bold;
+	padding-top: 5px;
+	margin: 2px 0px;
+	text-transform: uppercase;
+	display: block;
+	clear: both;
+}
+
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealPrice{
+	height: 17px;
+	font-size: 14px;
+	font-weight: bold;
+	margin: 2px 0px;
+	text-transform: uppercase;
+	display: block;
+	clear: both;
+}
+
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li .sb_dealMsrp{
+	height: 13px;
+	font-size: 11px;
+	margin: 2px 0px;
+	color: #ccc;
+	display: block;
+	clear: both;
+}
+
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li a.sb_theme_button_flat{
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+}
+
+/* REUSABLE: user level box and user score */
+
+#sayso-starbar #starbar-player-console .sb_user-level-box{
+	height: 27px;
+	position: relative;
+	display: block;
+	margin: 0px 0px 0px 0px;
+}
+
+#sayso-starbar #starbar-player-console .sb_user-points-box{
+	height: 30px;
+	position: relative;
+	display: block;
+	padding: 12px 0px 0px 0px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-level .sb_user-points-box{
+	width: 75px;
+}
+
+#sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-star{
+	position: absolute;
+	z-index: 1000;
+	top: -5px;
+	left: 0;
+	background-image: url('../images/snakkle/img_star.png');
+	background-repeat: no-repeat;
+	width: 27px;
+	height: 27px;
+}
+
+#sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-note{
+	position: absolute;
+	z-index: 1000;
+	top: -5px;
+	left: 0px;
+	background-image: url('../images/snakkle/img_note_sm.png');
+	background-repeat: no-repeat;
+	width: 14px;
+	height: 20px;
+}
+
+#sayso-starbar #starbar-player-console span.sb_mini-note-reward, 
+#sayso-starbar-embed span.sb_mini-note-reward, 
+#sayso-starbar #sb_popBox_daily-deals ul.sb_listDeals li span.sb_mini-note-reward{
+	background-image: url('../images/snakkle/img_note_tn.png');
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+	font-size: 13px;
+	color: #e6bd5b;
+	width: 75px;
+	height: 40px;
+	position: absolute;
+	z-index: 9999;
+	display: none;
+	left: 22px;
+	top: -7px;
+	line-height: 43px;
+	text-indent: 20px;
+}
+
+#sayso-starbar #starbar-player-console span.sb_mini-note-reward.sb_mini-note-reward_twitter{
+	left: 80px !important;
+}
+
+
+#sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgNote{
+	position: absolute;
+	z-index: 1000;
+	top: 2px;
+	left: 0;
+	height: 37px;
+}
+
+#sayso-starbar .sb_user-level-box .sb_progress_bar,
+#sayso-starbar .sb_user-points-box .sb_progress_bar{
+	border: 2px solid #fff;
+	margin: 5px 3px 0px 13px;
+	position: relative;
+	-moz-box-shadow: 0px 0px 2px #666;
+	-webkit-box-shadow: 0px 0px 2px #666;
+	box-shadow: 0px 0px 2px #666;
+}
+
+#sayso-starbar .sb_user-level-box .sb_progress_bar .sb_progressBarValue{
+	top: 1px;
+}
+
+/* user level */
+
+#sayso-starbar #sb_popBox_user-level .sb_header{
+	border-bottom: 1px solid #929292;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_lineList li:first-child{
+	padding: 0;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle{
+	position: relative;
+	display: block;
+	height: 139px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_user_level_icons_container{
+	margin: 0px 25px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav{
+	width: 20px;
+	height: 102px;
+	position: absolute;
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+	cursor: pointer;
+	top: 10px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav:hover{
+	background-position: 0px -102px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav#sb_userLevel_prev{
+	background-image: url('../images/snakkle/img_carousel_left.png');
+	left: 0;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav#sb_userLevel_next{
+	background-image: url('../images/snakkle/img_carousel_right.png');
+	right: 0;
+}
+
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevelIcons{
+	float: left;
+	margin: 0px 0px 0px 0px;
+	text-align: center;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevelIcons p{
+	display: none;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevelIcons:hover p{
+	display: block;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_earned,
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_next{
+	width: 100px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_current{
+	width: 100px;
+	height: 139px; /* fixed height to allow scrollPane to have correct height */
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevelIcons.sb_userLevel_current p{
+	display: block;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevelImg{
+	height: 85px;
+	width: 100%;
+	display: block;
+	background-repeat: no-repeat;
+	background-position: center bottom;
+}
+
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_earned .sb_userLevelImg,
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_next .sb_userLevelImg{
+	margin: 25px 0px 0px 0px;
+	height: 60px;
+	background-position: center 0px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_next{
+	opacity:0.5;
+	filter:alpha(opacity=50) !important;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_empty{
+	background-image: url('../images/snakkle/img_level_empty.png');
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_next .sb_userLevelImg{
+	background-image: url('../images/snakkle/img_level_blank.png');
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_user-level-box{
+	margin: 18px 0px 0px 0px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_rewardsCenterLink{
+	float: right;
+	margin: 32px 0px 0px 0px;
+	width: 130px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_user_purchase {
+	float: left;
+	position: relative;
+	margin: 10px 15px 10px 0px;
+	width: 80px;
+	height: 52px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_user_purchase .sb_user_puchase_quantity {
+	position: absolute;
+	top: -3px;
+	right: 2px;
+	background-image: url('../images/generic/black_dot.png');
+	padding: 5px 2px 0 0;
+	width: 24px;
+	height: 21px;
+	font-size: 11px;
+	line-height: 18px;
+	color: #fff;
+	text-align: center;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_user_purchase_img{
+	width: 80px;
+	height: 52px;
+}
+
+/* user profile settings */
+#sayso-starbar #starbar-type #sb_popBox_user-profile #edit-sb_profile_username{
+	width: 100px;
+}
+
+
+#sayso-starbar #starbar-type #sb_popBox_user-profile h2.sb_title{
+	font-weight: normal;
+	font-size: 14px;
+	color: #333;
+}
+
+#sayso-starbar #starbar-type #sb_popBox_user-profile .sb_header{
+	margin-bottom: 0;
+}
+
+
+#sayso-starbar #starbar-type #sb_popBox_user-profile .sb_lineList li{
+	padding: 5px 0px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_nextToUserImage {
+	margin: 0 0 0 50px;
+}
+
+#sayso-starbar #starbar-type #sb_popBox_user-profile .sb_theme_button span.sb_theme_buttonArrow{
+	font-size: 12px;
+}
+
+/* user level */
+
+#sayso-starbar #starbar-type #sb_popBox_user-profile .sb_user-stats{
+	overflow: hidden;
+	border-bottom: 1px solid #929292;
+	margin: 0px 0px 10px 0px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-stats .sb_user-level{
+	width: 49px;
+	height: 66px;
+	float: left;
+	background-image: url('../images/snakkle/img_level_blank.png');
+	background-position: center middle;
+	background-repeat: no-repeat;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points{
+	margin-left: 60px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points .sb_current-level{
+	border-bottom: 1px dotted #ccc;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points .sb_current-level p{
+	margin-top: 0;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points .sb_current-level .sb_user_level_title{
+	text-transform:  uppercase;
+}
+
+/* onboarding popup AND ONBOARDING INSTRUCTIONS W/IN HELP */
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard {
+	bottom: 100px;
+	left: 210px;
+}
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_popBoxInner .sb_popContent {
+	width: 470px;
+	height: 400px;
+	padding: 5px 20px 5px 20px !important;
+}
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_header {
+	margin: -15px 0px 0px 0px;
+	padding: 5px 10px 0px 5px;
+	background-color: #383838;
+}
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList{
+	border-top: 1px solid #ccc;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li{
+	border-bottom: 1px solid #ccc;
+	padding: 10px 45px 10px 55px;
+	background-repeat: no-repeat;
+	background-position: 0px 10px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_chops,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_chops{
+	background-image: url('../images/snakkle/img_star_lg.png');
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_notes,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_notes{
+	background-image: url('../images/snakkle/img_note_lg.png');
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_polls,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_polls{
+	background-image: url('../images/snakkle/img_poll_lg.png');
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_surveys,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_surveys{
+	background-image: url('../images/snakkle/img_survey_lg.png');
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_deals,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_deals{
+	background-image: url('../images/snakkle/img_deal_lg.png');
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_gear,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_gear{
+	background-image: url('../images/snakkle/img_gear_lg.png');
+	padding-left: 60px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_prizes,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_prizes{
+	background-image: url('../images/snakkle/img_prizes_lg.png');
+	padding-left: 60px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_hottest,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_hottest{
+	background-image: url('../images/snakkle/img_hottest_lg.png');
+	padding-left: 60px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul.sb_ui-tabs-nav{
+	float: none;
+	margin: 0;
+	top: auto;
+	left: -10px;
+	right: auto;
+	bottom: 0px;
+	background-image: url('../images/snakkle/img_onboard_nav.png');
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+	padding: 0;
+	width: 495px;
+	height: 40px;
+}
+
+#starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul.sb_ui-tabs-nav {
+	left: 10px !important;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul#sb_ui-tabs-nav_2,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul#sb_ui-tabs-nav_2{
+	background-position: 0px -40px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul#sb_ui-tabs-nav_3,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul#sb_ui-tabs-nav_3{
+	background-position: 0px -80px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul#sb_ui-tabs-nav_4,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul#sb_ui-tabs-nav_4{
+	background-position: 0px -120px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul.sb_ui-tabs-nav li{
+	border: none;
+	color: #fff;
+	width: 120px;
+	text-align: center;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li a,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul.sb_ui-tabs-nav li a{
+	color: #fff;
+	text-shadow: #000 0px 0px 4px;
+	font-size: 13px;
+	height: 40px;
+	width: 100%;
+	display: inline-block;
+	text-align: center;
+	line-height: 38px;
+	margin-left: 2px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs a.sb_surveyLaunch,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs a.sb_surveyLaunch{
+	color: #fff;
+	text-shadow: #000 0px 0px 4px;
+	height: 42px;
+	padding: 0px 0px 0px 15px;
+	text-align: center;
+	line-height: 40px;
+	position: absolute;
+	bottom: 5px;
+	z-index: 9999;
+	left: 300px;
+	font-weight: bold;
+	font-size: 12px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_tabs{
+	height: 390px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_tabs h3.sb_title{
+	font-size: 14px;
+	margin: 0;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_tabs p{
+	margin: 5px 0px 10px 0px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs{
+	border-top: 1px solid #ccc;
+	padding-top: 10px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard h2.sb_title{
+	text-transform: none;
+	font-size: 22px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard h3.sb_title{
+	text-transform: none;
+	font-size: 18px;
+	position: absolute;
+	bottom: 50px;
+	text-align: center;
+	width: 100%;
+	font-weight: normal;
+}
+
+
+#sayso-starbar #starbar-player-console #onboard_tabs_1 h3{
+	text-align:center;
+	font-size: 16px;
+	margin-bottom: 20px;
+	font-weight:  normal;
+}
+
+/* Rewards Popup */
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewards{
+	overflow: hidden;
+	margin: 0px 0px 0px -15px;
+}
+
+#sayso-starbar .sb_rewardItem{
+	width: 150px;
+	height: 230px;
+	float: left;
+	border: 1px solid #ababab;
+	background-color: #383838;
+	margin: 0px 0px 20px 15px;
+	cursor: pointer;
+	position: relative;
+	z-index: 1;
+}
+
+#sayso-starbar #sb_innerOverlay .sb_rewardItem{
+	cursor: auto;
+	width: auto;
+	height: 100%;
+	border: none;
+	float: none;
+	background-color: ##fff;
+	margin: 0;
+}
+
+#sayso-starbar .sb_rewardItem .sb_rewardHeader{
+	padding: 5px 10px;
+	text-align: center;
+	overflow: hidden;
+	background-color: #fff;
+	height: 30px;
+}
+
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_rewardHeader{
+	font-size: 16px;
+	height: auto;
+	padding: 20px 10px 5px 10px;
+}
+
+#sayso-starbar .sb_rewardItem .sb_rewardImg{
+	text-align: center;
+	padding: 5px 0px;
+	height: 85px;
+	background-color: #fff;
+}
+
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_rewardImg{
+	height: auto;
+}
+
+
+#sayso-starbar .sb_rewardItem .sb_rewardBase{
+	text-align: center;
+	overflow: hidden;
+	padding: 0px 5px 10px 5px;
+}
+
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_rewardBase{
+	background-color: #383838;
+	color: #fff;
+}
+
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_rewardOrder{
+	background-color: #fff;
+	color: #222;
+	padding: 5px 6px;
+}
+
+#sayso-starbar .sb_rewardItem .sb_theme_button{
+	margin: 5px 0px 0px 0px;
+	display: inline-block;
+}
+
+#sayso-starbar .sb_rewardItem .sb_user-points-box .sb_progress_bar{
+	margin: 0px auto;
+	width: 135px;
+}
+
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_user-points-box .sb_progress_bar{
+	width: 75%;
+}
+
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_user-points-box{
+	width: 100%;
+}
+
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_column50{
+	font-size: 10px;
+	line-height: 15px;
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_column50 .sb_user-points-box{
+	text-align: center;
+	padding-top: 5px;
+}
+
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_column50 .sb_user-points-box .sb_progress_bar{
+	width: 85%;
+	margin: 0 auto 0 auto;
+}
+
+#sayso-starbar #sb_innerOverlay .sb_step2Actions {
+	padding: 0 10px 0 10px;
+}
+
+#sayso-starbar #sb_innerOverlay .sb_rewardItem p{
+	font-size: 11px;
+	line-height: 15px;
+	margin: 10px 0px;
+}
+
+#sayso-starbar .sb_rewardItem .sb_user-points-box .sb_progress_bar img{
+	 margin: -10px 0px 0px -20px;
+	 vertical-align: text-bottom;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem.sb_rewardItem_disabled:hover{
+	cursor: default;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardItem_disabledMsg{
+	display: none;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem.sb_rewardItem_disabled:hover .sb_rewardItem_disabledMsg{
+	display: block;
+	background-image: url('../images/colorbox/overlay.png');
+	background-repeat: repeat;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: 9999;
+	color: #fff;
+	font-size: 11px;
+	text-align: center;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardItem_disabledMsg p{
+	font-size: 11px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardItem_disabledMsg h1{
+	margin: 40% 0px 0px 0px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem p.sb_reward_levelReq{
+	height: 14px;
+	margin: -10px 0px 10px 0px;
+	display: block;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem p.sb_reward_levelReq span{
+	text-transform: uppercase;
+	color: #fff;
+	font-size: 10px;
+	background-image: url('../images/generic/img_lock.png');
+	background-repeat: no-repeat;
+	background-position: 0px 2px;
+	padding: 2px 0px 0px 15px;
+	display: inline-block;
+	margin: 0px auto;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem p.sb_reward_comment{
+	height: 14px;
+	margin: -10px 0px 10px 0px;
+	display: block;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem p.sb_reward_comment span{
+	text-transform: uppercase;
+	color: #fff;
+	font-size: 10px;
+	padding: 2px 0 0 0;
+	display: inline-block;
+	margin: 0px auto;
+}
+
+/* share starber */
+
+#sayso-starbar #sb_popBox_user-share textarea{
+	width: 98.5%;
+}
+
+#sayso-starbar #sb_popBox_user-share .sb_importShare{
+	background-color: #7c7364;
+	color: #fff;
+	margin: 0px 0px 0px 0px !important;
+	padding: 2px 5px 5px 5px;
+	line-height: 14px !important;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-family: Arial Narrow, Helvetica, sans-serif;
+	height: 16px;
+	overflow: hidden;
+}
+
+#sayso-starbar #sb_popBox_user-share .sb_importShare span{
+	margin: 1px 0px 0px 0px;
+	float: left;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-family: Arial Narrow, Helvetica, sans-serif;
+}
+
+#sayso-starbar #sb_popBox_user-share .sb_importShare a{
+	color: #000;
+	margin: 0px 0px 0px 5px;
+	display: inline-block;
+	float: left;
+	line-height: 14px;
+}
+
+#sayso-starbar #sb_popBox_user-share .sb_importShare a img{
+	padding: 2px 0px 0px 0px;
+}
+
+
+/* POSITION ALL OF THE POPBOX TRIANGLES */
+
+
+/* surveys */
+
+#sayso-starbar #sb_popBox_surveys.sb_triangle-border:before,
+#sayso-starbar #sb_popBox_surveys_lg.sb_triangle-border:before,
+#sayso-starbar #sb_popBox_surveys_hg.sb_triangle-border:before{
+	left: 115px;
+}
+#sayso-starbar #sb_popBox_surveys.sb_triangle-border:after,
+#sayso-starbar #sb_popBox_surveys_lg.sb_triangle-border:after,
+#sayso-starbar #sb_popBox_surveys_hg.sb_triangle-border:after{
+	left: 116px;
+}
+#sayso-starbar #sb_popBox_surveys .sb_triangle-solid:after,
+#sayso-starbar #sb_popBox_surveys_lg .sb_triangle-solid:after,
+#sayso-starbar #sb_popBox_surveys_hg .sb_triangle-solid:after{
+	left: 113px;
+}
+
+/* daily deals */
+
+#sayso-starbar #sb_popBox_daily-deals.sb_triangle-border:before{
+	left: 552px;
+}
+#sayso-starbar #sb_popBox_daily-deals.sb_triangle-border:after{
+	left: 553px;
+}
+#sayso-starbar #sb_popBox_daily-deals .sb_triangle-solid:after{
+	left: 548px;
+}
+
+/* user levels */
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-level.sb_popBox{
+	left: -380px;
+}
+
+#sayso-starbar #sb_popBox_user-level.sb_triangle-border:before{
+	left: 447px;
+}
+#sayso-starbar #sb_popBox_user-level.sb_triangle-border:after{
+	left: 448px;
+}
+#sayso-starbar #sb_popBox_user-level .sb_triangle-solid:after{
+	left: 445px;
+}
+
+/* promo */
+
+#sayso-starbar #starbar-player-console #sb_popBox_promo.sb_popBox{
+	left: -148px;
+}
+
+#sayso-starbar #sb_popBox_promo.sb_triangle-border:before{
+	left: 225px;
+}
+#sayso-starbar #sb_popBox_promo.sb_triangle-border:after{
+	left: 226px;
+}
+#sayso-starbar #sb_popBox_promo .sb_triangle-solid:after{
+	left: 223px;
+}
+
+/* user account */
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile.sb_popBox,
+#sayso-starbar #starbar-player-console #sb_popBox_user-share.sb_popBox{
+	left: -100px;
+	bottom: 10px;
+}
+
+#sayso-starbar #sb_popBox_user-profile.sb_triangle-border:before,
+#sayso-starbar #sb_popBox_user-share.sb_triangle-border:before{
+	left: 225px;
+}
+#sayso-starbar #sb_popBox_user-profile.sb_triangle-border:after,
+#sayso-starbar #sb_popBox_user-share.sb_triangle-border:after{
+	left: 226px;
+}
+#sayso-starbar #sb_popBox_user-profile .sb_triangle-solid:after,
+#sayso-starbar #sb_popBox_user-share .sb_triangle-solid:after{
+	left: 223px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile.sb_popBox .sb_popContent,
+#sayso-starbar #starbar-player-console #sb_popBox_user-share.sb_popBox .sb_popContent{
+	width: 520px;
+	height: 280px;
+}
+
+/* rewards */
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards {
+	left: auto;
+	right: 0;
+}
+
+#sayso-starbar #sb_popBox_rewards.sb_triangle-border:before{
+	left: 490px;
+}
+#sayso-starbar #sb_popBox_rewards.sb_triangle-border:after{
+	left: 491px;
+}
+#sayso-starbar #sb_popBox_rewards .sb_triangle-solid:after{
+	left: 487px;
+}
+
+/* accordions */
+#sayso-starbar #starbar-player-console .sb_popBox .sb_accordion{
+	width: 490px;
+}
+
+/* Keep this at end of file. It's used for testing if CSS is loaded. */
+
+._sayso_starbar_css_loaded {
+	width: 1px;
+}

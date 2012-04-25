@@ -1,0 +1,55 @@
+<div id="sb_innerOverlay">
+	<div class="sb_innerOverlayBackground"></div>
+	<div class="sb_innerOverlayContent"></div>
+</div>
+<div class="sb_header">
+	<h2 class="sb_title">Rewards Center</h2>
+</div><!-- .sb_header -->
+<div class="sb_scrollPane">
+	<!--<p>Hundreds of items have been redeemed already -- grab the NEW items before they're gone! And remember to get your Giveaway Tokens!</p>-->
+	<p><strong class="sb_theme_textHighlight">Select an item below</strong></p>
+
+	<div class="sb_rewards">
+	<?= $this->partialLoop('hellomusic/reward.phtml', $this->rewards) ?>
+	</div><!-- .sb_rewards -->
+</div><!-- .sb_scrollPane -->
+
+<script language="javascript">
+	$SQ(function(){
+		var sayso = window.sayso;
+		var overlay = $SQ('#sayso-starbar #sb_innerOverlay');
+
+		var overlayContent = $SQ('.sb_innerOverlayContent', overlay);
+
+		$SQ(document).bind('sb_cbox_cleanup', function () {
+			overlay.hide();
+		});
+
+		// select a reward
+		$SQ('#sayso-starbar .sb_rewards .sb_rewardItem')
+			.not('.sb_rewardItem_disabled')
+			.unbind('click').bind('click', function(e){
+
+				overlayContent.html('').fadeTo(0, 0);
+				overlay.fadeOut(0).fadeIn(500);
+
+				var container = $SQ(this).dataContainer();
+
+				$SQ.ajaxWithAuth({
+					url : '//' + sayso.baseDomain + '/starbar/hellomusic/reward-redeem',
+					data : { good_id : container.getId() },
+					success : function (response) {
+						overlayContent.html(response.data.html).fadeTo(200, 1);
+					}
+				});
+			});
+		});
+
+		<? if ($this->chosen_good_id) { ?>
+			$SQ('#sayso-starbar .sb_rewards .sb_rewardItem').not('.sb_rewardItem_disabled').each(function (index) {
+				if (parseInt($SQ(this).attr('data-id')) == parseInt(<?= $this->chosen_good_id ?>)) {
+					$SQ(this).trigger('click');
+				}
+			});
+		<? } ?>
+</script>

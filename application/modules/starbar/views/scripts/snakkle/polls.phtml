@@ -1,0 +1,65 @@
+<div class="sb_header">
+	<h2 class="sb_title"><img src="//<?= BASE_DOMAIN ?>/images/hellomusic/logo_hellomusic.png" alt="Hello Music logo" width="70" /> Polls</h2>
+</div><!-- .sb_header -->
+<div class="sb_tabs">
+	<ul>
+		<? if ($this->count_new_polls) { ?>
+			<li><a href="#polls_tabs_1"><?= $this->count_new_polls ?> New!</a></li>
+		<? } else { ?>
+			<li><a href="#polls_tabs_1">New</a></li>
+		<? } ?>
+		<? if ($this->count_completed_polls || $this->count_disqualified_polls) { ?>
+			<li><a href="#polls_tabs_2">Completed</a></li>
+		<? } ?>
+		<? if ($this->count_archived_polls) { ?>
+			<li><a href="#polls_tabs_3">Archive</a></li>
+		<? } ?>
+	</ul>
+	<div id="polls_tabs_1" class="sb_tabPane">
+		<p class="sb_tabHeader">
+			Polls are a speedy and effective way to gauge which way the wind is blowing. Each poll completed earns you <strong class="sb_theme_textHighlight sb_tooltip" title="Notes - are almost as good as cash and can be redeemed for goods in the Rewards Center.">25 Notes</strong> &amp; <strong class="sb_theme_textHighlight sb_tooltip" title="Chops - determine your access to increasingly important levels of influence.">250 Chops</strong>. Share and tweet Polls to for bonus Notes! And look for special Polls with point magnifiers!
+		</p>
+		<? if (!$this->primary_survey_taken) { ?>
+			<p class="sb_tabHeader">
+				Complete the <a href="//<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey?survey_id=1" class="sb_nav_element" rel="sb_popBox_surveys_hg">Influencer Survey</a> to unlock the remaining polls!
+			</p>
+		<? } ?>
+		<div class="sb_scrollPane">
+
+			<!-- BEGIN POLL BOX LANDING -->
+			<? $this->displayPolls('new') ?>
+			<!-- END POLL BOX LANDING -->
+		</div><!-- .sb_scrollPane -->
+	</div><!-- #tabs_1 -->
+
+	<? if ($this->count_completed_polls || $this->count_disqualified_polls) { ?>
+		<div id="polls_tabs_2" class="sb_tabPane">
+			<p class="sb_tabHeader">These are polls you've completed</p>
+			<div class="sb_scrollPane">
+				<ul class="sb_outlineList">
+					<? $this->displayPolls('completed') ?>
+					<? $this->displayPolls('disqualified') ?>
+				</ul>
+			</div><!-- .sb_scrollPane -->
+		</div><!-- #tabs_2 -->
+	<? } ?>
+
+	<? if ($this->count_archived_polls) { ?>
+		<div id="polls_tabs_3" class="sb_tabPane">
+			<p class="sb_tabHeader">
+				We'd still love your opinion on these Archived Polls, and you can still earn by completing them! Same deal&ndash; <strong class="sb_theme_textHighlight">25 Notes</strong> &amp; <strong class="sb_theme_textHighlight">250 Chops</strong> for each one you complete.
+			</p>
+			<div class="sb_scrollPane">
+
+				<!-- BEGIN POLL BOX LANDING -->
+				<? $this->displayPolls('archived') ?>
+				<!-- END POLL BOX LANDING -->
+				<br />
+				<? if ($this->count_new_polls) { ?>
+					<p align="right"><a href="#" class="sb_nav_tabs sb_theme_button" rel="1"><span class="sb_theme_buttonArrow">Take a New Poll</span></a></p>
+				<? } ?>
+			</div><!-- .sb_scrollPane -->
+		</div><!-- #tabs_3 -->
+	<? } ?>
+
+</div><!-- .tabs -->

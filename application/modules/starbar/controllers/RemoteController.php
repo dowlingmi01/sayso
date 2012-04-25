@@ -97,7 +97,14 @@ class Starbar_RemoteController extends Api_GlobalController
 	 * Hello Music "Say.So Music Bar"
 	 */
 	public function hellomusicAction () {
+		return $this->commonStarbar();
+	}
 
+	public function snakkleAction () {
+		return $this->commonStarbar();
+	}
+
+	public function commonStarbar () {
 		// get Starbar passed via index or post-install-deliver
 		// and assign it to the view
 		$starbar = $this->_getStarbarObject();
@@ -112,8 +119,7 @@ class Starbar_RemoteController extends Api_GlobalController
 		// render the view manually, we will pass it back in the JSON
 		$this->render();
 
-		// setup Hello Music specific data
-		$starbar->setCssUrl('//' . BASE_DOMAIN . '/css/starbar-hellomusic.css');
+		$starbar->setCssUrl('//' . BASE_DOMAIN . '/css/starbar-'.$starbar->short_name.'.css');
 		$starbar->setHtml($this->getResponse()->getBody());
 
 		// return Starbar via JSON-P

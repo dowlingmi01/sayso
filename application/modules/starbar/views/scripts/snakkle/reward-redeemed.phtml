@@ -1,0 +1,74 @@
+<?php 
+
+$game = $this->game;
+/* @var $game Game_Starbar */
+$good = $this->good;
+/* @var $good Gaming_BigDoor_Good */
+$user = $this->user;
+/* @var $user User */
+$userAddress = $this->user_address;
+/* @var $userAddress User_Address */
+
+?>
+<div id="sb_reward_step3" class="sb_reward_step">
+	<!-- ORDER COMPLETE - SHIPPING -->
+	<div class="sb_rewardHeader"><h2>Order Complete!</h2><span/></div>
+	<div class="sb_rewardImg">
+		<img src="<?= $good->url_full ?>" alt="<?= $good->title ?>" />
+	</div><!-- .sb_rewardImg -->
+	<div class="sb_rewardOrder">
+		<?php if ($good->hasAttribute('giveaway_token')) : ?>
+			<?
+			switch((int)$good->id) {
+				case 2036:
+					$drawDate = "Dec. 12, 2011";
+					break;
+
+				case 2038:
+					$drawDate = "Dec. 19, 2011";
+					break;
+
+				case 2044:
+					$drawDate = "Dec. 26, 2011";
+					break;
+
+				case 2054:
+					$drawDate = "Jan. 2, 2012";
+					break;
+
+				default:
+					$drawDate = "(Date TBD)";
+			}
+			?>
+			<p align="center"><strong><small>The giveaway will be drawn on <?= $drawDate ?></small></strong></p>
+			<p>Remember, you can enter as many times as you want and increase your likelihood of winning.</p>
+		<?php else : ?>
+			<p align="center"><strong><small>Your order will arrive via USPS in 2-4 weeks</small></strong></p>
+			<p><strong>Shipping Address:</strong></p> 
+			<p>
+				<?= $user->first_name . ' ' . $user->last_name ?><br />
+				<?= $userAddress->street1 ?><br />
+				<?= ($userAddress->street2 ? $userAddress->street2 . '<br />' : '') ?>
+				<?= $userAddress->locality ?><?= ($userAddress->region ? ', ' . $userAddress->region : '') ?><?= ($userAddress->country == 'USA' ? ' ' . $userAddress->postalCode : '<br />') ?>
+				<?= ($userAddress->country != 'USA' ? $userAddress->country . ' &nbsp;' . $userAddress->postalCode  : '') ?>
+                                <?= '<br />' . $userAddress->phone; ?>
+			</p>
+		<?php endif ?>
+		<br clear="all" />
+		<p align="center"><span class="sb_theme_button">Back to Rewards Center</span></p>
+	</div><!-- .sb_rewardOrder -->
+	<!-- END ORDER COMPLETE - SHIPPING -->
+</div><!-- #sb_reward_step3 -->
+<script type="text/javascript">
+	$SQ(function () {
+		$SQ('#sb_reward_step3 .sb_theme_button').unbind().bind('click', function (e) {
+			$SQ('#sayso-starbar').trigger('frameCommunication', ['refreshRewardCenter', {}]);
+		});
+		overlayBackground = $SQ('#sayso-starbar #sb_innerOverlay .sb_innerOverlayBackground');
+		if (overlayBackground.length == 1){
+			overlayBackground.unbind().bind('click', function (e) {
+				$SQ('#sayso-starbar').trigger('frameCommunication', ['refreshRewardCenter', {}]);
+			});
+		}
+	});
+</script>

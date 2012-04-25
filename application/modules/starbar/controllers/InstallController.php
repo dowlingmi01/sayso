@@ -56,6 +56,9 @@ class Starbar_InstallController extends Api_GlobalController {
 	public function hellomusicAction() {
 		return $this->commonInstall();
 	}
+	public function snakkleAction() {
+		return $this->commonInstall();
+	}
 	public function userPasswordAction() {
 		$this->_enableRenderer(new Api_Plugin_JsonPRenderer());
 

@@ -1,0 +1,34 @@
+<script type="text/javascript">
+	if (!window.sayso) window.sayso = {};
+	if (!window.sayso.client) {
+		window.sayso.client = {
+			name : 'snakkle',
+			userLoggedIn : false,
+			authKey : '309e34632c2ca9cd5edaf2388f5fa3db',
+			meta : {
+				sendKeys : ['MyEmail', 'CHOMPUID'],
+				userLoggedInKey : 'CHOMPUID',
+				customStartMessage : 'Start the Music!'
+			},
+			loginCallback : null
+		};
+	}
+	if (!window.sayso.baseDomain) {
+		if (location.host.match('staging.hellomusic.com')) {
+			window.sayso.baseDomain = 'app-staging.saysollc.com';
+			window.sayso.environment = 'STAGE';
+		} else {
+			window.sayso.baseDomain = 'app.saysollc.com';
+			window.sayso.environment = 'PROD';
+		}
+	}
+	var embed = document.createElement('script');
+	embed.src = '//' + window.sayso.baseDomain + '/client/global/js/starbar-embed.js';
+	document.getElementsByTagName('body')[0].appendChild(embed);
+</script>
+<script type="text/javascript">
+	// ==== customization here ====
+	// loginCallback can be used to open a login modal, re-direct
+	// a user to a login page, focus on field, or whatever
+	window.sayso.client.loginCallback = function () {};
+</script>

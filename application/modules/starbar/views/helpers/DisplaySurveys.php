@@ -88,7 +88,7 @@ class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 							<h3><?= $survey->title ?></h3>
 							<p><?= $survey->number_of_questions ?> Questions - Earn <strong class="<?= $strongClass ?>"><?= $numberOfNotes ?> Notes</strong> and <strong class="<?= $strongClass ?>"><?= $numberOfChops ?> Chops</strong></p>
 						</div><!-- .sb_surveyInfo -->
-						<a href="//<?= BASE_DOMAIN ?>/starbar/hellomusic/embed-survey?survey_id=<?= $survey->id ?>" class="sb_surveyLaunch <?= $buttonClass ?> sb_nav_element sb_alignRight" rel="<?= $popBoxToOpen ?>"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
+						<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/embed-survey?survey_id=<?= $survey->id ?>" class="sb_surveyLaunch <?= $buttonClass ?> sb_nav_element sb_alignRight" rel="<?= $popBoxToOpen ?>"><span class="sb_theme_buttonArrow">Take The Survey</span></a>
 					</li>
 				<? } else { // User cannot take this survey ?>
 					<li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>

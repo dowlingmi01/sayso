@@ -795,7 +795,7 @@ $SQ(function(){
 		'openSurvey': function (parameters) {
 			var surveyId = parameters['survey_id'];
 
-			openPopBox($SQ('#sb_popBox_surveys_lg'), '//'+sayso.baseDomain+'/starbar/hellomusic/embed-survey?survey_id='+surveyId, true, true);
+			openPopBox($SQ('#sb_popBox_surveys_lg'), '//'+sayso.baseDomain+'/starbar/snakkle/embed-survey?survey_id='+surveyId, true, true);
 		},
 		'openSurveyFromSave': function (parameters) {
 			var surveyId = parameters['survey_id'];
@@ -805,14 +805,14 @@ $SQ(function(){
 			var popBoxId = '#sb_popBox_surveys_lg';
 			if (size == "large") popBoxId = '#sb_popBox_surveys_hg';
 
-			openPopBox($SQ(popBoxId), '//'+sayso.baseDomain+'/starbar/hellomusic/embed-survey?survey_id='+surveyId+"&snc="+snc, true, true);
+			openPopBox($SQ(popBoxId), '//'+sayso.baseDomain+'/starbar/snakkle/embed-survey?survey_id='+surveyId+"&snc="+snc, true, true);
 		},
 		'hideOverlay': function () {
 			hideOverlay();
 		},
 		'refreshRewardCenter': function () {
 			closePopBox();
-			openPopBox($SQ('#sb_popBox_rewards'), '//'+sayso.baseDomain+'/starbar/hellomusic/rewards', true, true);
+			openPopBox($SQ('#sb_popBox_rewards'), '//'+sayso.baseDomain+'/starbar/snakkle/rewards', true, true);
 		},
 		'hideAlertByNotificationMessageId': function (parameters) {
 			var performAjaxCall = parameters['perform_ajax_call'];

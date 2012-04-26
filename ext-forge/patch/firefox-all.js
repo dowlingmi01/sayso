@@ -2,11 +2,11 @@
 (function() {
     var m = {};
     m.config = {
-        version: "2.0.0",
-        logging: {
-            level: "INFO"
+        modules: {
+            logging: {
+                level: "INFO"
+            }
         },
-        name: "Say.So Bar",
         uuid: "4093d42274ec11e1a41a12313d1adcbe"
     };
     var h = {};
@@ -724,21 +724,16 @@
                 r(s)
             }, p)
         },
+        getLocal: function(q, r, p) {
+            h.priv.call("file.getLocal", {
+                name: q
+            }, r, p)
+        },
         base64: function(q, r, p) {
             h.priv.call("file.base64", q, r, p)
         },
-        imageBase64: function(r, s, t, q) {
-            if (typeof s === "function") {
-                q = t;
-                t = s
-            }
-            var p = {};
-            for (prop in r) {
-                p[prop] = r[prop]
-            }
-            p.height = s.height || r.height || 0;
-            p.width = s.width || r.width || 0;
-            h.priv.call("file.base64", p, t, q)
+        string: function(q, r, p) {
+            h.priv.call("file.string", q, r, p)
         },
         URL: function(r, s, t, q) {
             if (typeof s === "function") {
@@ -749,8 +744,8 @@
             for (prop in r) {
                 p[prop] = r[prop]
             }
-            p.height = s.height || r.height || 0;
-            p.width = s.width || r.width || 0;
+            p.height = s.height || r.height || undefined;
+            p.width = s.width || r.width || undefined;
             h.priv.call("file.URL", p, t, q)
         },
         isFile: function(q, r, p) {
@@ -838,9 +833,19 @@
                 title: r
             }, q, p)
         },
+        setTitleImage: function(q, r, p) {
+            h.priv.call("topbar.setTitleImage", {
+                icon: q
+            }, r, p)
+        },
+        setTint: function(p, r, q) {
+            h.priv.call("topbar.setTint", {
+                color: p
+            }, r, q)
+        },
         addButton: function(q, r, p) {
             h.priv.call("topbar.addButton", q, function(s) {
-                h.addEventListener("topbar.buttonPressed." + s, r)
+                r && h.addEventListener("topbar.buttonPressed." + s, r)
             }, p)
         },
         removeButtons: function(q, p) {
@@ -850,6 +855,45 @@
             addListener: function(q, p) {
                 h.addEventListener("topbar.homePressed", q)
             }
+        }
+    };
+    m.tabbar = {
+        addButton: function(r, q, p) {
+            h.priv.call("tabbar.addButton", r, function(s) {
+                q && q({
+                    remove: function(u, t) {
+                        h.priv.call("tabbar.removeButton", {
+                            id: s
+                        }, u, t)
+                    },
+                    setActive: function(u, t) {
+                        h.priv.call("tabbar.setActive", {
+                            id: s
+                        }, u, t)
+                    },
+                    onPressed: {
+                        addListener: function(u, t) {
+                            h.addEventListener("tabbar.buttonPressed." + s, u)
+                        }
+                    }
+                })
+            }, p)
+        },
+        removeButtons: function(q, p) {
+            h.priv.call("tabbar.removeButtons", {}, q, p)
+        },
+        setTint: function(p, r, q) {
+            h.priv.call("tabbar.setTint", {
+                color: p
+            }, r, q)
+        },
+        setActiveTint: function(p, r, q) {
+            h.priv.call("tabbar.setActiveTint", {
+                color: p
+            }, r, q)
+        },
+        setInactive: function(q, p) {
+            h.priv.call("tabbar.setInactive", {}, q, p)
         }
     };
     if (self && self.on) {
@@ -1107,11 +1151,11 @@
         },
         file: {
             getImage: m.file.getImage,
+            getLocal: m.file.getLocal,
             isFile: m.file.isFile,
             URL: m.file.URL,
-            imageURL: m.file.URL,
-            imageBase64: m.file.imageBase64,
             base64: m.file.base64,
+            string: m.file.string,
             cacheURL: m.file.cacheURL,
             remove: m.file.remove,
             clearCache: m.file.clearCache
@@ -1141,11 +1185,20 @@
         },
         topbar: {
             setTitle: m.topbar.setTitle,
+            setTitleImage: m.topbar.setTitleImage,
+            setTint: m.topbar.setTint,
             addButton: m.topbar.addButton,
             removeButtons: m.topbar.removeButtons,
             homePressed: {
                 addListener: m.topbar.homePressed.addListener
             }
+        },
+        tabbar: {
+            addButton: m.tabbar.addButton,
+            removeButtons: m.tabbar.removeButtons,
+            setTint: m.tabbar.setTint,
+            setActiveTint: m.tabbar.setActiveTint,
+            setInactive: m.tabbar.setInactive
         }
     };
     window.forge["ajax"] = m.request.ajax;
@@ -1157,6 +1210,7 @@
     window.forge["button"]["setUrl"] = m.button.setURL;
     window.forge["button"]["setBadgeText"] = m.button.setBadge;
     window.forge["file"]["delete"] = m.file.remove;
+    window.forge["file"]["imageURL"] = m.file.URL;
     window.forge["_get"] = h.priv.get;
     window.forge["_receive"] = h.priv.receive;
     window.forge["_dispatchMessage"] = h.dispatchMessage;

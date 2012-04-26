@@ -3,12 +3,15 @@ setlocal
 
 echo Patching...
 
+echo firefox-all
 fc app\development\firefox\resources\f\data\forge\all.js patch\firefox-all.ori.js > nul
 if %ERRORLEVEL% NEQ 0 goto end
 
+echo firefox-main
 fc app\development\firefox\resources\f\lib\main.js patch\firefox-main.ori.js > nul
 if %ERRORLEVEL% NEQ 0 goto end
 
+echo ie-setup-x86
 fc app\development\ie\dist\setup-x86.nsi patch\ie-setup-x86.ori.nsi > nul
 if %ERRORLEVEL% NEQ 0 goto end
 

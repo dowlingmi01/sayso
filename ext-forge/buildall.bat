@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-set domains=staging qa dev demo prod local
+set domains=local staging qa dev demo prod
 
 for %%d in (%domains%) do ( 
    call build.bat %%d || goto end

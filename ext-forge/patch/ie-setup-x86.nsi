@@ -81,7 +81,6 @@ Section
         SetOverwrite on
         File "noarch\defaults"
         File "noarch\forge.ico"
-        File "noarch\forge_hot.ico"
         File "..\manifest.json"
         File "..\forge.html"
         File /r /x .hg /x certificates "..\src"
@@ -89,18 +88,23 @@ Section
         File /r "..\forge\*.*"
         SetOutPath "$INSTDIR"   
 
+        ; frame injection
+        File "${BUILD_DIR}\forge32.exe"
+        File "${BUILD_DIR}\frame32.dll"
+
+        ; bho
+        ; TODO - don't install if dll >= version already exists
+        !insertmacro InstallLib REGDLL SHARED NOREBOOT_NOTPROTECTED             "${BUILD_DIR}\${FORGE_EXECUTE_FILE}"             "$INSTDIR\${FORGE_EXECUTE_FILE}"             "$INSTDIR"
+        !insertmacro InstallLib REGDLL SHARED NOREBOOT_NOTPROTECTED             "${BUILD_DIR}\${PRODUCT_EXECUTE_FILE}"             "$INSTDIR\${PRODUCT_EXECUTE_FILE}"             "$INSTDIR"
+
         ; estimate size
         ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
         ; IntFmt $0 "0x%08X" $0
         !define ESTIMATED_SIZE $0
 
-        ; TODO - don't install if dll >= version already exists
-        !insertmacro InstallLib REGDLL SHARED NOREBOOT_NOTPROTECTED             "${BUILD_DIR}\${FORGE_EXECUTE_FILE}"             "$INSTDIR\${FORGE_EXECUTE_FILE}"             "$INSTDIR"
-        !insertmacro InstallLib REGDLL SHARED NOREBOOT_NOTPROTECTED             "${BUILD_DIR}\${PRODUCT_EXECUTE_FILE}"             "$INSTDIR\${PRODUCT_EXECUTE_FILE}"             "$INSTDIR"
-
-        ; Enable BHO For Windows 7
+        ; Enable BHO for IE 8
         WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Ext\CLSID"                         "{E017A723-53B3-4952-895D-ED7C3377C885}" "1"
-        ; Enable App for Windows 7
+        ; Enable App for IE 8
         WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Ext\CLSID"                          "12830336-3A64-4672-0FE0-9C18A0AFA2BD" "1" 
 
         ; Create uninstaller
@@ -131,6 +135,7 @@ Section
     ie9: 
         Goto done
     done:
+        ; TODO http://nsis.sourceforge.net/UAC_plug-in
         
         Exec '"$PROGRAMFILES\Internet Explorer\iexplore.exe" http://${SAYSO_BASE_DOMAIN}/starbar/install/post-install'
         

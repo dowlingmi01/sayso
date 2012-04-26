@@ -1,9 +1,9 @@
 var config = {
-    version: "2.0.0",
-    logging: {
-        level: "INFO"
+    modules: {
+        logging: {
+            level: "INFO"
+        }
     },
-    name: "Say.So Bar",
     uuid: "4093d42274ec11e1a41a12313d1adcbe"
 };
 var pageWorker = require("page-worker");
@@ -346,7 +346,6 @@ var apiImpl = {
         s(r);
     }
 };
-
 exports.main = function(b, c) {
     background = pageWorker.Page({
         contentURL: data.url("forge.html"),

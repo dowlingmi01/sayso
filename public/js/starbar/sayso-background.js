@@ -1,4 +1,3 @@
-forge.config.logging.marker='Say.So';
 forge.logging.info("Background script loaded");
 
 function showErr( errObject ) {

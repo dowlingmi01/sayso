@@ -1,5 +1,3 @@
-forge.logging.info("Background script loaded");
-
 function showErr( errObject ) {
 	forge.logging.error( errObject.message );
 }
@@ -64,7 +62,21 @@ function firstRun( firstRunDone ) {
 		} );
 	}
 }
-
+function getScript( scriptName, callback ) {
+	if( !sayso.scripts[scriptName] ) {
+		forge.request.get( "http://" + sayso.baseDomain + "/js/" + scriptName + "?_=" + ( new Date() ).getTime()
+				, function(content) {
+					sayso.scripts[scriptName] = content;
+					callback(content);
+				}
+				, showErr
+			);
+	} else
+		callback( sayso.scripts[scriptName] );
+}
+sayso.scripts = {};
+forge.message.listen("get-script", getScript, showErr);
+forge.logging.info("Background script loaded");
 forge.prefs.get('firstRunDone', firstRun, showErr);
 
 //@ sourceURL=sayso-background.js

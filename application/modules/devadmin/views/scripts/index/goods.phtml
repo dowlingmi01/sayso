@@ -1,0 +1,35 @@
+<br />
+<style>
+	form { width: 600px; line-height: 26px; }
+	input { width: 400px; float: right; margin: 0px; }
+</style>
+<form id="inventoryForm" method="post">
+	<b>The Gooder Good-O-Matic</b><br />
+	Welcome to the ugly but functional form for adding goods to BigDoor<br />
+	Please read the instructions/examples, and ask Hamza if you have any questions<br />
+	<br />
+	<input type="hidden" name="operation" value="add" />
+	Product Title: <input type="text" name="product_title" value="" /><br />
+	E.g. <b>Acme Power Tools 2000</b> or <b>TOKEN for iProduct Giveaway!</b><br />
+	<br />
+	Type:
+	<select name="type">
+		<option value="physical_good">Physical Good</option>
+		<option value="token">Token</option>
+	</select><br />
+	<br />
+	Initial Inventory: <input type="text" name="initial_inventory" value="" /><br />
+	E.g. <b>1</b> or <b>100</b> (this is ignored for tokens, which are always infinite)<br />
+	<br />
+	Include the "https://" for the following:<br />
+	Image URL (full): <input type="text" name="image_url_full" value="" /><br />
+	Image URL (preview): <input type="text" name="image_url_preview" value="" /><br />
+	Image URL (preview_bought): <input type="text" name="image_url_preview_bought" value="" /><br />
+	E.g. <b>https://media.saysoll.com/image.jpg</b><br />
+	<br />
+	Price (in notes, bucks, etc.): <input type="text" name="price" value="" /><br />
+	E.g. <b>100</b> or <b>9500</b> (integers only)<br />
+	<br />
+	Note: No error checking will be done! Please double check everything before submitting!<br />
+	<input type="submit" value="Add" name="Add"><br /><br />
+</form>

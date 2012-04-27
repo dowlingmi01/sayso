@@ -65,10 +65,10 @@
 			"colname": "status",
 			"type": "list",
 			"listoptions": [
-				"Activcccccce",
+				"Active",
 				"Inactive"
 			],
-			"default": "Activcccccce",
+			"default": "Active",
 			"displaywhen": [
 				"add",
 				"detail",

@@ -92,22 +92,43 @@
 			<p>Excellent! You earned <strong class="sb_theme_textHighlight">25 Notes</strong> &amp; <strong class="sb_theme_textHighlight">250 Chops</strong></p>
 		<? } ?>
 		<div class="sb_externalShares">
-			<a class="sb_externalShare" href="#"
-				onclick="$SQ.openWindow('//www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($this->share_link) ?>&caption=<?= urlencode($this->facebook_share_caption) ?>&picture=<?= urlencode($this->facebook_share_image_url) ?>&redirect_uri=<?= urlencode($this->facebook_share_callback_url) ?>&name=<?= urlencode($this->facebook_title) ?>&description=<?= urlencode($this->facebook_description) ?>', 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450'); return false;">
-				<img src="//<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
+			<!-- FACEBOOK -->
+			<a class="sb_externalShare sb_externalShare_facebook" rel="sb_mini-note-reward_facebook" 	href="#" 
+				onclick="return $SQ.openWindow('//www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($this->share_link) ?>&caption=<?= urlencode($this->facebook_share_caption) ?>&picture=<?= urlencode($this->facebook_share_image_url) ?>&redirect_uri=<?= urlencode($this->facebook_share_callback_url) ?>&name=<?= urlencode($this->facebook_title) ?>&description=<?= urlencode($this->facebook_description) ?>', 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450');">
+				Facebook Share
 			</a>
-			<span class="sb_mini-note-reward">+25</span>
-			<a class="twitter-share-button"
-				data-related="<?= $this->twitter_share_related_users ?>"
-				data-hashtags="<?= $this->twitter_share_hashtags ?>"
-				data-via="<?= $this->twitter_share_via_user ?>"
-				data-url="<?= $this->share_link ?>"
-				data-text="<?= $this->twitter_share_text ?>"
-				data-count="none"
-				href="https://twitter.com/intent/tweet">
-					<img src="//<?= BASE_DOMAIN ?>/images/generic/logo_twitter.png" alt="Twitter" />
-			</a>
-			<span class="sb_mini-note-reward">+25</span>
+			<span class="sb_mini-note-reward sb_mini-note-reward_facebook" id="sb_mini-note-reward_facebook">+50</span>
+			<!-- / facebook -->
+			
+			<! -- TWITTER -->
+			<script type="text/javascript">
+				$SQ.getScript("//platform.twitter.com/widgets.js", function(){
+					function handleTweetEvent(event){
+						if (event) {
+							$SQ('#sayso-starbar').trigger('frameCommunication', ['handleTweet', {
+								shared_type: 'starbar',
+								shared_id: window.sayso.starbar.id
+							}]);
+						}
+					}
+					twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
+				});
+			</script>
+						
+			<div class="sb_externalShare sb_externalShare_twitter" rel="sb_mini-note-reward_twitter">
+				<a class="twitter-share-button"
+					data-related="<?= $this->twitter_share_related_users ?>"
+					data-hashtags="<?= $this->twitter_share_hashtags ?>"
+					data-via="<?= $this->twitter_share_via_user ?>"
+					data-url="<?= $this->share_link ?>"
+					data-text="<?= $this->twitter_share_text ?>"
+					data-count="none"
+					href="https://twitter.com/intent/tweet">						
+				</a>
+			</div>
+			
+			<span class="sb_mini-note-reward sb_mini-note-reward_twitter" id="sb_mini-note-reward_twitter">+50</span>
+			<!-- / twitter -->	
 			Share this poll to earn extra points
 		</div>
 	</div>

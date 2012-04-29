@@ -43,7 +43,7 @@
 				<div class="sb_inner">
 					<div class="sb_changeTheme"><span>Check out other starbars</span></div><!-- .changeTheme -->
 					<div class="sb_logo">
-						<img src="//<?= BASE_DOMAIN ?>/images/snakkle/logo_hellomusic.png" alt="HelloMusic logo" />
+						<img src="//<?= BASE_DOMAIN ?>/images/snakkle/logo_snakkle.png" alt="Snakkle logo" />
 					</div><!-- .logo -->
 					<div class="sb_userImg">
 						<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/user-profile" class="sb_nav_element" rel="sb_popBox_user-profile">
@@ -57,6 +57,7 @@
 					<div class="sb_content">
 						<h2>Hi <a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/user-profile" class="sb_nav_element sb_user_title <?= ($this->user->username ? "" : "sb_user_level_title") ?>" rel="sb_popBox_user-profile"><?= $user->getTitle() ?></a></h2>
 						<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/user-profile" class="sb_nav_element" rel="sb_popBox_user-profile">Edit Profile</a> |
+						<a href="//<?= BASE_DOMAIN ?>/starbar/content/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">About</a> | 
 						<a href="//<?= BASE_DOMAIN ?>/starbar/content/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">Help</a>
 						</div><!-- .sb_content -->
 						<div id="sb_popBox_user-profile" class="sb_popBox sb_triangle-border">
@@ -71,11 +72,11 @@
 			</div>
 			<div id="starbar-nav">
 				<ul>
-					<li id="nav_polls" class="sb_theme_bgGradient"><span href="//<?= BASE_DOMAIN ?>/starbar/snakkle/polls" class="sb_nav_element"><span class="sb_nav_border">Polls</span></span>
+					<li id="nav_polls" class="sb_theme_bgGradient sb_theme_bgGradientGrey"><span href="//<?= BASE_DOMAIN ?>/starbar/snakkle/polls" class="sb_nav_element"><span class="sb_nav_border">Polls</span></span>
 						<div id="sb_popBox_polls" class="sb_popBox sb_triangle-border">
 						</div><!-- .sb_popBox -->
 					</li>
-					<li id="nav_surveys" class="sb_theme_bgGradient"><span href="//<?= BASE_DOMAIN ?>/starbar/snakkle/surveys" class="sb_nav_element"><span class="sb_nav_border">Surveys</span></span>
+					<li id="nav_surveys" class="sb_theme_bgGradient sb_theme_bgGradientGrey"><span href="//<?= BASE_DOMAIN ?>/starbar/snakkle/surveys" class="sb_nav_element"><span class="sb_nav_border">Surveys</span></span>
 						<div id="sb_popBox_surveys" class="sb_popBox sb_triangle-border">
 						</div><!-- .sb_popBox survey list -->
 
@@ -84,7 +85,7 @@
 						<div id="sb_popBox_surveys_hg" class="sb_popBox sb_popBoxHg sb_triangle-border">
 						</div><!-- .sb_popBox premium surveys (huge!) -->
 					</li>
-					<li id="nav_quizzes" class="sb_theme_bgGradient"><span href="//<?= BASE_DOMAIN ?>/starbar/snakkle/quiz" class="sb_nav_element"><span class="sb_nav_border">Quizzes</span></span>
+					<li id="nav_quizzes" class="sb_theme_bgGradient sb_theme_bgGradientGrey"><span href="//<?= BASE_DOMAIN ?>/starbar/snakkle/quiz" class="sb_nav_element"><span class="sb_nav_border">Quizzes</span></span>
 						<div id="sb_popBox_quizzes" class="sb_popBox sb_triangle-border">
 						</div><!-- .sb_popBox -->
 					</li>
@@ -115,7 +116,7 @@
 				<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/rewards" class="sb_nav_element" rel="sb_popBox_rewards">
 					<div class="sb_content">
 						<div class="sb_user-points-box">
-							<span class="sb_imgNote"></span>
+							<span class="sb_imgSnakkles"></span>
 							<div class="sb_progress_bar"><span class="sb_currency_percent"></span><span class="sb_progressBarValue sb_currency_balance" data-currency="notes"></span></div>
 						</div><!-- .user-points-box -->
 					</div><!-- .sb_content -->

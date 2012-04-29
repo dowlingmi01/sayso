@@ -1406,7 +1406,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	background-position: 0px 0px;
 }
 
-#sayso-starbar .sb_externalShare.sb_externalShare_facebook{
+#sayso-starbar .sb_externalShare.sb_externalShare_facebook, #sayso-starbar-embed .sb_externalShare.sb_externalShare_facebook{
 	width: 20px;
 	height: 20px;
 	display: inline-block;
@@ -1414,6 +1414,22 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	background-image: url('../images/generic/img_share_facebook.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
+}
+
+
+
+#sayso-starbar .sb_externalShare.sb_externalShare_email,
+#sayso-starbar .sb_externalShare.sb_externalShare_email:hover, 
+#sayso-starbar-embed .sb_externalShare.sb_externalShare_email,
+#sayso-starbar-embed .sb_externalShare.sb_externalShare_email:hover{
+	width: 75px;
+	height: 30px;
+	display: inline-block;
+	text-indent: -9999px;
+	background-image: url('../images/generic/img_share_email.png');
+	background-repeat: no-repeat;
+	background-position: 0px 0px !important;
+	margin: -5px 0px 0px 35px;
 }
 
 

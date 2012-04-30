@@ -47,6 +47,8 @@ class Survey extends Record
 					$this->origin = "Internal";
 			}
 		}
+
+		$this->processing_status = "pending";
 	}
 
 	public function afterInsert() {

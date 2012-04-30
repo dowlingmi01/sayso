@@ -117,6 +117,7 @@
 					sayso.starbar.game = response.game;
 				}
 
+				sayso.log('Response', response);
 				sayso.log(starbar.label + ' App', starbar);
 
 				sayso.starbar.id = starbar.id;

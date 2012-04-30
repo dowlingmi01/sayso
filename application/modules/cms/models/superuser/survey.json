@@ -16,21 +16,10 @@
 		{
 			"colname": "id",
 			"type": "hidden",
-			
+
 			"displaywhen": [
 				"grid",
 				"detail",
-				"delete",
-				"edit"
-			]
-		},
-		{
-			"colname": "external_id",
-			"type": "number",
-			"displaywhen": [
-				"add",
-				"detail",
-				"grid",
 				"delete",
 				"edit"
 			]
@@ -107,6 +96,17 @@
 			]
 		},
 		{
+			"colname": "external_id",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"grid",
+				"delete",
+				"edit"
+			]
+		},
+		{
 			"colname": "external_key",
 			"type": "text",
 			"width": 20,
@@ -134,7 +134,6 @@
 			"colname": "display_number_of_questions",
 			"type": "number",
 			"displaywhen": [
-				"add",
 				"detail",
 				"edit"
 			]

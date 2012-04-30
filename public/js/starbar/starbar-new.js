@@ -870,11 +870,13 @@ $SQ(function(){
 	 * 5. Elements that contain the level icons for the user, e.g. <div class="sb_user_level_icons_container"></div>
 	 * 6. Elements that contain the leveling currency balance required to reach the next level, e.g. <span class="sb_currency_balance_next_level"></span>
 	 * 7. Elements that contain the user's purchased items, e.g. <div class="sb_user_purchases"></div>
+	 * 8. Elements that contain a currency title (either redeemable points or experience points)
 	 */
 	function activateGameElements (target, animate) {
 		var userPurchasesContainerElems = $SQ('.sb_user_purchases', target);
 		var levelIconsContainerElems = $SQ('.sb_user_level_icons_container', target);
 		var currencyBalanceNextLevelElems = $SQ('.sb_currency_balance_next_level', target);
+		var currencyTitleElems = $SQ('.sb_currency_title', target);
 		var currencyBalanceElems = $SQ('.sb_currency_balance', target);
 		var currencyPercentElems = $SQ('.sb_currency_percent', target);
 		var progressBarElems = $SQ('.sb_progress_bar', target);
@@ -894,6 +896,7 @@ $SQ(function(){
 		var userPreviousLevels = sayso.starbar.previous_game._gamer._levels.items;
 		var userGoods = sayso.starbar.game._gamer._goods.items;
 		var userCurrencies = sayso.starbar.game._gamer._currencies.items;
+		var experienceCurrency = sayso.starbar.economy.experience_currency;
 		var redeemableCurrency = sayso.starbar.economy.redeemable_currency;
 
 		// The current level is the first level in the items (it is sorted by the gaming API!)
@@ -1031,6 +1034,16 @@ $SQ(function(){
 			});
 		}
 
+		if (currencyTitleElems.length > 0) {
+			currencyTitleElems.each(function(){
+				if ($SQ(this).attr('data-currency-type') == "experience") {
+					$SQ(this).html(experienceCurrency);
+				} else if ($SQ(this).attr('data-currency-type') == "redeemable") {
+					$SQ(this).html(redeemableCurrency);
+				}
+			});
+		}
+
 		if (progressBarElems.length > 0) {
 			progressBarElems.each(function(){
 				if (!$SQ(this).hasClass('sb_ui-progressbar')) {
@@ -1048,6 +1061,7 @@ $SQ(function(){
 		} else {
 			$SQ.each(userCurrencies, function (index, currency) {
 				var currencyTitle = currency.title.toLowerCase();
+				var currencyType = currency.currency_type;
 				var currencyBalance = parseInt(currency.current_balance);
 				var previousCurrency = null;
 				var currencyNeedsUpdate = false;
@@ -1074,7 +1088,7 @@ $SQ(function(){
 					if (currencyBalanceElems.length > 0) {
 						currencyBalanceElems.each(function() {
 							var $SQthis = $SQ(this);
-							if ($SQthis.attr('data-currency') == currencyTitle) {
+							if ($SQthis.attr('data-currency-type') == currencyType) {
 								if (animate) { // New value, play animation
 									var originalColor = $SQthis.css('color');
 									// total duration is doubled when leveling up
@@ -1109,6 +1123,7 @@ $SQ(function(){
 									$SQthis.html(currencyBalance);
 								}
 							}
+							else sayso.log($SQthis.attr('data-currency-type') + " != " + currencyType);
 						});
 					}
 

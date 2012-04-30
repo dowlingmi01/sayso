@@ -34,12 +34,12 @@ if ($goodIsToken) {
 
 	<div id="sb_reward_step1" class="sb_reward_step" style="background-color: #383838">
 		<!-- BEGIN LANDING -->
-		<div class="sb_rewardHeader"><span><?= $good->title ?></span></div>	  
+		<div class="sb_rewardHeader"><span><?= $good->title ?></span></div>
 		<div class="sb_rewardImg">
 			<img src="<?= $good->url_full ?>" alt="<?= $good->title ?>" />
 		</div><!-- .sb_rewardImg -->
 		<div class="sb_rewardBase">
-			<div class="sb_user-points-box">					
+			<div class="sb_user-points-box">
 				<div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentUserBalanceToCost ?>%"></span><span class="sb_progressBarValue"><img src="//<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $itemCost ?></span></span></div>
 			</div><!-- .user-points-box -->
 			<?php if ($goodIsToken) : ?>
@@ -54,7 +54,7 @@ if ($goodIsToken) {
 
 	<div id="sb_reward_step2" class="sb_reward_step" style="display: none;">
 		<!-- BEGIN SHIPPING ADDRESS CONFIRM -->
-		<div class="sb_rewardHeader"><span><?= $good->title ?></span></div><!-- .sb_rewardHeader -->	  
+		<div class="sb_rewardHeader"><span><?= $good->title ?></span></div><!-- .sb_rewardHeader -->
 		<div class="sb_rewardImg">
 			<img src="<?= $good->url_full ?>" alt="<?= $good->title ?>" />
 		</div><!-- .sb_rewardImg -->
@@ -62,7 +62,7 @@ if ($goodIsToken) {
 			<div class="sb_column_5050BG">
 				<div class="sb_column50">
 					Current Balance&nbsp;<br clear="all" />
-					<div class="sb_user-points-box">					
+					<div class="sb_user-points-box">
 						<div class="sb_progress_bar sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all"><span class="sb_currency_percent sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left" style="width: 100%"></span><span class="sb_progressBarValue"><img src="//<?= BASE_DOMAIN ?>/images/hellomusic/img_note_sm.png" alt="Notes" /> <span><?= $currentBalance ?></span></span></div>
 					</div><!-- .user-points-box -->
 				</div><!-- .sb_column50 -->
@@ -85,7 +85,7 @@ if ($goodIsToken) {
 					</p>
 					<p>Tokens will appear in your account and you will be automatically entered into the Week One giveaway</p>
 				<?php else : ?>
-					<p><strong>Shipping Address</strong></p> 
+					<p><strong>Shipping Address</strong></p>
 					<p id="sb_personalInfo">
 						<input name="sb_first_name" type="text" placeholder="First Name" value="<?= $user->first_name ?>" /><input name="sb_last_name" type="text" placeholder="Last Name" value="<?= $user->last_name ?>" /><br />
 						<input name="sb_address_1" class="sb_wide_input" type="text" placeholder="Address" value="<?= $userAddress->street1 ?>" /><br />
@@ -102,18 +102,18 @@ if ($goodIsToken) {
 		<!-- END SHIPPING ADDRESS CONFIRM -->
 	</div><!-- #sb_reward_step2 -->
 
-	<div id="sb_reward_step3" class="sb_reward_step" style="display: none;">		
+	<div id="sb_reward_step3" class="sb_reward_step" style="display: none;">
 		 <img src="//<?= BASE_DOMAIN ?>/images/hellomusic/img_ajax-loader.gif" alt="Loading..." id="sb_img-loading" style="margin: 50px auto; display:block; text-align: center;" />
 		<!-- ajax loaded after order is complete -->
 	</div><!-- #sb_reward_step3 -->
-   
+
 </div><!-- .sb_rewardItem -->
 <script language="javascript">
 	$SQ(function(){
 		var sayso = window.sayso;
 		var rewardSteps = $SQ('#sb_rewardItem .sb_reward_step');
 				var loadingImg = $SQ('#sb_rewardItem #sb_img-loading');
-	
+
 		var step1 = rewardSteps.eq(0),
 			step2 = rewardSteps.eq(1),
 			step3 = rewardSteps.eq(2);
@@ -144,7 +144,7 @@ if ($goodIsToken) {
 			$SQ(this).click(function(e){
 				var currentBox = $SQ(this).parents('.sb_reward_step');
 				var nextBox = currentBox.next();
-				
+
 				switch (currentBox.attr('id')) {
 					case 'sb_reward_step1' : // intro
 						nextBox.show();
@@ -156,7 +156,7 @@ if ($goodIsToken) {
 						var quantity = $SQ('#sb_reward_step2 select'),
 							personalInfo = step2.find('#sb_personalInfo');
 
-						var params = { 
+						var params = {
 							good_id : <?= $good->getId() ?>,
 							quantity : (quantity.length ? quantity.val() : 1)
 						};
@@ -196,7 +196,7 @@ if ($goodIsToken) {
 							$SQ('.sb_rewardOrder',currentBox).html(loadingImg);
 
 							$SQ.ajaxWithAuth({
-								url : '//' + sayso.baseDomain + '/starbar/hellomusic/reward-redeemed',
+								url : '//' + sayso.baseDomain + '/starbar/snakkle/reward-redeemed',
 								data : params,
 								beforeSend: function(){
 
@@ -225,20 +225,20 @@ if ($goodIsToken) {
 
 						break;
 				}
-				
+
 			});
 		});
 
 		// update balance remaining based on quantity selected
 		step2.find('.sb_step2Actions select').bind('change', function () {
-			
+
 			var itemsCost = <?= $itemCost ?> * ($SQ(this).val()),
 				balanceAfter = <?= $currentBalance ?> - itemsCost,
 				pointsBox = step2.find('.sb_user-points-box').eq(1);
-				
-			// update text 
+
+			// update text
 			pointsBox.find('span.sb_progressBarValue span').text(balanceAfter);
-			
+
 			// update progress bar
 			pointsBox.find('span.sb_currency_percent').css('width', Math.round((balanceAfter / <?= $currentBalance ?>) * 100) + '%');
 		});
@@ -246,8 +246,8 @@ if ($goodIsToken) {
 
 		// email order to ?
 		// shipping address OR quantity
-		// 
+		//
 
-				
+
 	});
 </script>

@@ -57,7 +57,7 @@
 					<div class="sb_content">
 						<h2>Hi <a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/user-profile" class="sb_nav_element sb_user_title <?= ($this->user->username ? "" : "sb_user_level_title") ?>" rel="sb_popBox_user-profile"><?= $user->getTitle() ?></a></h2>
 						<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/user-profile" class="sb_nav_element" rel="sb_popBox_user-profile">Edit Profile</a> |
-						<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">About</a> | 
+						<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">About</a> |
 						<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">Help</a>
 						</div><!-- .sb_content -->
 						<div id="sb_popBox_user-profile" class="sb_popBox sb_triangle-border">
@@ -106,7 +106,7 @@
 						<div class="sb_user-level">L<span class="sb_user_level_number"></span>: <span class="sb_theme_textHighlight sb_user_level_title"></span></div>
 						<div class="sb_user-level-box">
 							<span class="sb_user-level-star"></span>
-							<div class="sb_progress_bar"><span class="sb_currency_percent" data-currency="chops"></span><span class="sb_progressBarValue sb_currency_balance" data-currency="chops"></span></div>
+							<div class="sb_progress_bar"><span class="sb_currency_percent" data-currency-type="experience"></span><span class="sb_progressBarValue sb_currency_balance" data-currency-type="experience"></span></div>
 						</div><!-- .user-level-box -->
 					</div><!-- .sb_content -->
 				</a>
@@ -117,7 +117,7 @@
 					<div class="sb_content">
 						<div class="sb_user-points-box">
 							<span class="sb_imgSnakkles"></span>
-							<div class="sb_progress_bar"><span class="sb_currency_percent"></span><span class="sb_progressBarValue sb_currency_balance" data-currency="notes"></span></div>
+							<div class="sb_progress_bar"><span class="sb_currency_percent"></span><span class="sb_progressBarValue sb_currency_balance" data-currency-type="redeemable"></span></div>
 						</div><!-- .user-points-box -->
 					</div><!-- .sb_content -->
 				</a>

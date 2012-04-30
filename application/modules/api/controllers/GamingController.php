@@ -61,7 +61,7 @@ class Api_GamingController extends Api_GlobalController
 			$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
 			$gamer = Gamer::create($this->user_id, $this->starbar_id);
 			$game = Game_Starbar::create($gamer, $this->_request);
-			$gamer->loadProfile($game->getHttpClient());
+			$gamer->loadProfile($game->getHttpClient(), $game);
 		}
 		return $this->_resultType($gamer);
 	}

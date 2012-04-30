@@ -39,6 +39,16 @@ class Survey extends Record
 		return Db_Pdo::fetchColumn($sql, $this->id);
 	}
 
+	public function beforeInsert() {
+		if ($this->type && !$this->origin) {
+			if ($this->type == "poll" || $this->type == "survey") {
+					$this->origin = "SurveyGizmo";
+			} else {
+					$this->origin = "Internal";
+			}
+		}
+	}
+
 	public function afterInsert() {
 		if (!$this->id) return;
 

@@ -884,7 +884,9 @@
 }
 
 #sayso-starbar #starbar-type #sb_popBox_user-profile .sb_header{
-	margin-bottom: 0;
+	margin: 0;
+	padding: 0;
+	background: transparent;
 }
 
 

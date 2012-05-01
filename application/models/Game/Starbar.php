@@ -214,16 +214,8 @@ abstract class Game_Starbar extends Game_Abstract {
 	/**
 	 * Create a new Starbar "Game"
 	 *
-	 * The game is determined from the developer authentication tables,
-	 * so the first thing is to authenticate the app via the auth_key
-	 *
-	 * The auth key is determined by:
-	 * 1. $request auth_key
-	 * 2. $starbar auth_key
-	 * 	  a. via Starbar object
-	 * 	  b. via starbar_id (in $request)
-	 *	c. via short_name (in $request)
-	 *	d. via Starbar_<shortname>Controller
+	 * The game is determined in Game_Factory::create from the starbar economy,
+	 * so we need to make sure the starbar is registered.
 	 *
 	 * @param Gaming_User $gamer
 	 * @param Zend_Controller_Request_Http $request
@@ -232,46 +224,25 @@ abstract class Game_Starbar extends Game_Abstract {
 	public static function create (Gaming_User $gamer, Zend_Controller_Request_Http $request, Starbar $starbar = null) {
 
 		try {
-			// all games (and therefore transactions) are determined via authentication tables
-			// so we begin the process here of determining the authentication key, in one of:
-
-			// 1. auth_key
-			$authKey = $request->getParam(Api_Constant::AUTH_KEY);
-			if (!$authKey) {
-				// 2. Starbar->auth_key
-				if ($starbar) {
-					// 2a. via Starbar object
-					$authKey = $starbar->auth_key;
+			if (!Registry::isRegistered('starbar')) {
+				$starbar = new Starbar();
+				$starbarId = $request->getParam('starbar_id');
+				$shortName = $request->getParam('short_name');
+				if ($starbarId) {
+					// 2b. via starbar_id
+					$starbar->loadData($starbarId);
+				} else if ($shortName) {
+					// 2c. via short_name
+					$starbar->loadDataByUniqueFields(array('short_name' => $shortName));
 				} else {
-					if (Registry::isRegistered('starbar')) {
-						$starbar = Registry::getStarbar();
-					} else {
-						$starbar = new Starbar();
-						$starbarId = $request->getParam('starbar_id');
-						$shortName = $request->getParam('short_name');
-						if ($starbarId) {
-							// 2b. via starbar_id
-							$starbar->loadData($starbarId);
-						} else if ($shortName) {
-							// 2c. via short_name
-							$starbar->loadDataByUniqueFields(array('short_name' => $shortName));
-						} else {
-							// 2d. via Starbar_<shortname>Controller
-							$shortName = strtolower($request->getControllerName());
-							$starbar->loadDataByUniqueFields(array('short_name' => $shortName));
-							if (!$starbar->hasId()) {
-								throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Could not determine Game in Game_Starbar::create(). See method for for more information.'));
-							}
-						}
+					// 2d. via Starbar_<shortname>Controller
+					$shortName = strtolower($request->getControllerName());
+					$starbar->loadDataByUniqueFields(array('short_name' => $shortName));
+					if (!$starbar->hasId()) {
+						throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Could not determine Game in Game_Starbar::create(). See method for for more information.'));
 					}
-					$authKey = $starbar->auth_key;
 				}
 			}
-			$request->setParam(Api_Constant::AUTH_KEY, $authKey);
-
-			// app must be authorized in order to determine game name
-			// (Game_Factory will handle this)
-			$auth = Api_Auth::getInstance()->authorizeApp($authKey);
 
 			return Game_Factory::create($gamer, $request);
 

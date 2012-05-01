@@ -23,6 +23,17 @@ class Starbar extends Record
 
 	protected $_html = '';
 
+	/**
+	* Each time the economy field is set, load economy data from the db
+	*/
+    protected function _filter ($value, $property = '') {
+    	if( $property == 'economy_id' && $value) {
+			$this->_economy = new Economy();
+			$this->_economy->loadData($value);
+    	}
+        return parent::_filter($value, $property);
+    }
+    
 	public function init() {
 		if (Registry::isRegistered('starbar')) {
 			throw new Exception('Starbar already created and registered in Registry as \'starbar\'');

@@ -27,7 +27,8 @@ if ($percentUserBalanceToCost > 100) $percentUserBalanceToCost = 100;
 		</div><!-- .sb_rewardImg -->
 		<div class="sb_rewardBase">
 			<div class="sb_user-points-box">
-				<div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentUserBalanceToCost ?>%"></span><span class="sb_progressBarValue"><img src="//<?= BASE_DOMAIN ?>/images/snakkle/img_buck_sm.png" alt="Bucks" /> <span><?= $good->cost ?></span></span></div>
+				<span class="sb_imgSnakkles"></span>
+				<div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentUserBalanceToCost ?>%"></span><span class="sb_progressBarValue"><span><?= $good->cost ?></span></span></div>
 			</div><!-- .user-points-box -->
 			<?php if ($good->getCommentForUser()) : ?>
 				<?php if ($good->isRedeemable()) : ?>
@@ -37,7 +38,7 @@ if ($percentUserBalanceToCost > 100) $percentUserBalanceToCost = 100;
 				<?php endif ?>
 			<?php endif ?>
 			<?php if ($good->isRedeemable()) : ?>
-				<span class="sb_theme_button">Redeem</span>
+				<span class="sb_theme_button_alt">Redeem</span>
 			<?php else : ?>
 				<span class="sb_theme_button sb_theme_button_grey">Redeem</span>
 			<?php endif ?>

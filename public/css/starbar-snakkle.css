@@ -82,7 +82,40 @@
   text-indent: -9999px;
 }
 
+#sayso-starbar #starbar-player-console #starbar-nav ul li{
+	box-shadow: inset -1px 0 0px rgba(255,255,255,.1);
+}
+	
+#sayso-starbar #starbar-player-console #starbar-nav ul li span.sb_nav_element{
+	width: 95px !important;
+	background-position: center 55% !important;
+}
 
+#sayso-starbar #starbar-player-console #starbar-nav ul li span.sb_nav_notify{
+	padding: 2px 3px 0px 3px;
+	min-width:  6px;
+	display: inline-block;
+	position: absolute;
+	top: 13px;
+	right: 5px;
+	color: #383838;
+	background-color: #92c20c;
+	font-size: 9px;
+	text-align:  center;
+	line-height: 9px;
+	border-radius: 2px;
+	font-weight:  bold;
+}
+
+#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_surveys span.sb_nav_element {
+	background-image: url('../images/snakkle/nav_surveys.png');
+}
+#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_quizzes span.sb_nav_element {
+	background-image: url('../images/snakkle/nav_quizzes.png');
+}
+#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_polls span.sb_nav_element{
+	background-image: url('../images/snakkle/nav_polls.png');
+}
 /* special color classes */
 #sayso-starbar #starbar-player-console .sb_theme_navOnGradient{
 	background-image: -webkit-gradient(
@@ -115,6 +148,44 @@
 	background-color: #009fd2;
 }
 
+#sayso-starbar .sb_popBox .sb_ui-progressbar{
+	background-color: #ccc;
+}
+
+#sayso-starbar #starbar-player-console .sb_theme_bgGradient_alt,
+#sayso-starbar .sb_progress_bar_alt.sb_ui-progressbar .sb_ui-progressbar-value,
+#sayso-starbar .sb_progress_bar_alt.sb_ui-progressbar .sb_ui-progressbar-value-fading,
+#sayso-starbar .sb_theme_button_alt{
+	background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(195,220,116)),
+	color-stop(0.61, rgb(139,170,43)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(195,220,116) 22%,
+			rgb(139,170,43) 61%);
+	background-color: #92c20c;
+}
+
+#sayso-starbar #starbar-player-console .sb_theme_bgGradient_error,
+#sayso-starbar .sb_progress_bar_error.sb_ui-progressbar .sb_ui-progressbar-value,
+#sayso-starbar .sb_progress_bar_error.sb_ui-progressbar .sb_ui-progressbar-value-fading,
+#sayso-starbar .sb_theme_button_error{
+	background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(201,12,12)),
+	color-stop(0.61, rgb(128,8,8)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(201,12,12) 22%,
+			rgb(128,8,8) 61%);
+	background-color: #c90c0c;
+}
+
 #sayso-starbar #starbar-player-console .sb_theme_bgGradientGrey{
 	background-image: -webkit-gradient(
 	linear,
@@ -127,20 +198,6 @@
 			rgb(63,64,65) 22%,
 			rgb(28,29,28) 61%);
 	background-color: #1c1d1c;
-}
-
-#sayso-starbar #starbar-player-console .sb_theme_button_alt{
-	background-image: -webkit-gradient(
-	linear,
-	left top,
-	left bottom,
-	color-stop(0.22, rgb(237,176,70)),
-	color-stop(0.61, rgb(206,146,41)));
-	background-image: -moz-linear-gradient(
-			center top,
-			rgb(237,176,70) 22%,
-			rgb(206,146,41) 61%);
-	background-color: #d98a00;
 }
 
 
@@ -184,10 +241,9 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_textHighlight_alt, #sayso-starbar-embed .sb_theme_textHighlight_alt{
-	color: #d98a00 !important;
+	color: #92c20c !important;
 	text-shadow: none !important;
 }
-
 
 #sayso-starbar #starbar-player-console .sb_theme_bgGlow{
   -moz-box-shadow: 0px 0px 5px #009fd2;
@@ -210,15 +266,28 @@
 #sayso-starbar #starbar-player-console #starbar-promo{
 	z-index: 1000;
 	position: absolute;
-	left: 606px;
+	left: 619px;
 	bottom: 0;
 	height: 53px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo a.sb_nav_element{
+	width: 118px;
+	height: 53px;
+	display: table-cell;
+	vertical-align:  middle;
+	text-align:  center;
+	background-image: url("../images/generic/bg_divider.png");
+	background-repeat: repeat-y;
+	background-position: -2px 50%;
+	//border-left: 1px solid #383838;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_popBoxInner .sb_popContent{
 	width: 515px;
 	height: 290px;
 	padding: 0 !important;
+	margin: 0 !important;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_promoBG{
@@ -230,34 +299,25 @@
 
 #sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow{
 	position: relative;
+	margin: -11px 0px 0px 10px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week1{
 	display: block;
 	background-image: url('../images/snakkle/img_promo_week1_bg.jpg');
-}
-
-#sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week2{
-	display: none;
-	background-image: url('../images/snakkle/img_promo_week2_bg.jpg');
-}
-
-#sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week3{
-	display: none;
-	background-image: url('../images/snakkle/img_promo_week3_bg.jpg');
-}
-
-#sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week4{
-	display: none;
-	margin: -5px 0px 0px -5px !important;
-	width: 525px;
-	height: 300px;
-	background-image: url('../images/snakkle/img_promo_week4_bg_0412.jpg');
+	background-position: left bottom;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide{
-	padding: 5px;
+	padding: 0px;
+	margin: 0;
 	position: relative;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_header{
+	background: none;
+	margin: 0;
+	padding: 0;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details{
@@ -272,11 +332,34 @@
 	line-height: 15px;
 }
 
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide p.sb_promo_link{
+	margin: 40px 0px 0px 0px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_link a{
+	background-image: url('../images/snakkle/img_arrow_right_solid.png');
+	background-repeat: no-repeat;
+	background-position: right 50%;
+	height: 20px;
+	line-height: 20px;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 0px 30px 0px 0px;
+	display: inline-block;
+
+}
+
+
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p small,
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p small strong{
 	font-size: 11px !important;
 }
 
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p small a{
+	color: black;
+	text-decoration: underline;
+}
 
 #sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow_nav{
 	position: absolute;
@@ -308,10 +391,10 @@
 #sayso-starbar #starbar-player-console #starbar-level{
 	z-index: 1000;
 	position: absolute;
-	left: 770px;
+	left: 735px;
 	bottom: 0;
 	height: 53px;
-	width: 140px;
+	width: 160px;
 	background-image: url('../images/generic/bg_divider.png');
 	background-repeat: no-repeat;
 	background-position: 0px 50%;
@@ -347,17 +430,17 @@
 #sayso-starbar #starbar-player-console #starbar-points{
 	z-index: 1000;
 	position: absolute;
-	left: 920px;
+	left: 905px;
 	bottom: 0;
 	height: 53px;
-	width: 80px;
+	width: 90px;
 	background-image: url('../images/generic/bg_divider.png');
 	background-repeat: no-repeat;
 	background-position: 0px 50%;
 }
 
 #sayso-starbar #starbar-player-console #starbar-points .sb_content{
-	margin: 8px 0px 0px 5px;
+	margin: 8px 0px 0px 10px;
 	position: relative;
 }
 
@@ -463,138 +546,79 @@
 
 /* quizzes */
 
-#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_quizzes span.sb_nav_element {
-	background-image: url('../images/generic/nav_daily-deals.png');
-	width: 101px;
-}
-
 #sayso-starbar #sb_popBox_quizzes.sb_popBox{
-	left: -340px;
+	left: 0px;
 }
 
 #sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent{
-	width: 968px;
-	height: 283px;
+	width: 360px;
+	height: 455px;
 }
 
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals{
+#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz h2.sb_title{
 	text-align: center;
-  width: 100%;
 }
 
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li{
-	display: inline-block;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	position: relative;
-	width: 185px;
-	text-align: left;
-	color: #fff;
-	margin: 0px 5px 0px 0px;
+#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_main{
+	border-bottom: 2px dotted #999999;
+	padding: 0px 0px 5px 0px;
 }
 
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_exclusive-deal{
-	background-image: url('../images/snakkle/img_exclusive-deal.png');
-	background-position: 0px 0px;
-	background-repeat: no-repeat;
-	display: inline-block;
-	width: 193px;
-	height: 38px;
-	position: absolute;
-	z-index: 9999;
-	top: -31px;
-	left: -8px;
-}
-
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealInfo{
-	background-color: #161a1e;
-	margin: -5px 0px 0px 0px;
-}
-
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li a{
-	text-decoration: none;
-}
-
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealInfo p{
-	padding: 7px;
-	color: white;
-	position: relative;
-}
-
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li span{
-	color: white;
-}
-
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li img.sb_dealImage{
-	position: relative;
-	width: 185px;
-	height: 97px;
-}
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_itemName{
-	height: 34px;
-	overflow: hidden;
+#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_main img{
 	display: block;
+	margin: 10px auto;
 }
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealStatus{
-	font-size: 12px;
-	font-weight: bold;
-	display: block;
-	padding: 4px;
-	text-align: right;
-	text-transform: uppercase;
-}
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealStatusBG{
-	opacity: 0.8;
-	position: absolute;
-	z-index: 9999;
-	top: 75px;
-	left: 0;
+
+#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_options{
 	width: 100%;
+	display: table;
 }
 
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealStatusBG_orange{
-	background-color: #C60;
+#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_options .sb_quiz_row{
+	display: table-row;
 }
 
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealStatusBG_red{
-	background-color: #900;
+#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_options .sb_quiz_option{
+	width: 45%;
+	display: table-cell;
+	padding: 5px 15px 5px 0px;
 }
 
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealPercentOff{
-	height: 27px;
-	font-size: 16px;
-	font-weight: bold;
-	padding-top: 5px;
-	margin: 2px 0px;
-	text-transform: uppercase;
-	display: block;
-	clear: both;
+#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_results{
+	border-bottom: 2px dotted #999999;
+	padding-bottom: 5px;
+	margin-bottom: 10px;
 }
 
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealPrice{
-	height: 17px;
-	font-size: 14px;
-	font-weight: bold;
-	margin: 2px 0px;
-	text-transform: uppercase;
-	display: block;
-	clear: both;
+#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quizShare{
+	float: left;
 }
 
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li .sb_dealMsrp{
-	height: 13px;
-	font-size: 11px;
-	margin: 2px 0px;
-	color: #ccc;
-	display: block;
-	clear: both;
+#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_externalShares{
+	float: left;
+	margin: 0px 0px 0px 10px;
 }
 
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li a.sb_theme_button_flat{
+#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz_next{
 	position: absolute;
-	bottom: 5px;
-	right: 5px;
+	bottom: 0;
+	width: 100%;
+	text-align:  center;
+}
+
+#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz_next a{
+	color: #333;
+	font-weight: bold;
+	font-size: 11px;
+	background-image: url('../images/snakkle/img_arrow_right.png');
+	background-repeat: no-repeat;
+	background-position: right 0px;
+	padding: 0px 22px 0px 0px;
+	display: inline-block;
+	margin: 0px auto;
+	height: 20px;
+	line-height: 20px;
+	text-align:  center;
 }
 
 /* REUSABLE: user level box and user score */
@@ -693,12 +717,27 @@
 
 /* user level */
 
-#sayso-starbar #sb_popBox_user-level .sb_header{
-	border-bottom: 1px solid #929292;
+#sayso-starbar #sb_popBox_user-level.sb_popBox .sb_header{
+	background-color: transparent !important;
+	margin: 	0px 0px 10px 0px!important;
+	padding: 0px !important;
+	border-bottom: 2px dotted #ccc;
+	
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_lineList li{
+	border-bottom: 2px dotted #ccc;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_lineList li:first-child{
 	padding: 0;
+}
+
+#sayso-starbar #sb_popBox_user-level h3.sb_title,
+#sayso-starbar #sb_popBox_user-level h3.sb_title span{
+	text-transform:  uppercase;
+	color: #009FD2 !important;
+	font-weight: bold !important;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle{
@@ -801,6 +840,8 @@
 	float: right;
 	margin: 32px 0px 0px 0px;
 	width: 130px;
+	color: #000;
+	line-height:  20px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_user_purchase {
@@ -1083,12 +1124,59 @@
 	font-weight:  normal;
 }
 
+/* POPBOX STYLE OVERRIDES -- OVERRIDE BASE STYLES FROM GENERIC.CSS*/
+
+#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent{
+	padding: 5px !important;
+	background-color: #fff;
+}
+
+#sayso-starbar #starbar-player-console .sb_popBox .sb_header{
+	background-color: #383838;
+	margin: -15px -15px 10px -15px;
+	padding: 5px 5px 5px 8px;
+}
+
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav{
+	top: -35px;
+}
+
+#sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_ui-icon-triangle-1-s {
+	background-image: url('../images/snakkle/img_arrow_down.png');
+	width: 18px;
+	height: 18px;
+}
+#sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_ui-icon-triangle-1-e {
+	background-image: url('../images/snakkle/img_arrow_right.png');
+	width: 18px;
+	height: 18px;
+}
+
+#sayso-starbar #starbar-player-console .sb_img_nextTriangle{
+	background-image: url("../images/snakkle/img_arrow_right_solid.png");
+  float: right;
+  height: 20px;
+  margin-left: 4px;
+  width: 22px;
+}
+
+#sayso-starbar #starbar-player-console .sb_theme_iconChange{
+	background-image: url("../images/hellomusic/img_change.png");
+  background-position: right 3px;
+  background-repeat: no-repeat;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0 20px 0 0;
+  text-decoration: none;
+}
+
 /* Rewards Popup */
 
 #sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewards{
 	overflow: hidden;
 	margin: 0px 0px 0px -15px;
 }
+
 
 #sayso-starbar .sb_rewardItem{
 	width: 150px;
@@ -1171,6 +1259,11 @@
 
 #sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_user-points-box{
 	width: 100%;
+}
+
+#sayso-starbar #starbar-player-console .sb_rewardItem .sb_user-points-box .sb_imgSnakkles{
+	top: 7px;
+	left: -3px;
 }
 
 #sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_column50{
@@ -1329,16 +1422,16 @@
 	left: 113px;
 }
 
-/* daily deals */
+/* quizzes */
 
 #sayso-starbar #sb_popBox_quizzes.sb_triangle-border:before{
-	left: 552px;
+	left: 190px;
 }
 #sayso-starbar #sb_popBox_quizzes.sb_triangle-border:after{
-	left: 553px;
+	left: 191px;
 }
 #sayso-starbar #sb_popBox_quizzes .sb_triangle-solid:after{
-	left: 548px;
+	left: 187px;
 }
 
 /* user levels */

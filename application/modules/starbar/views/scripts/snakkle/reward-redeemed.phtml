@@ -55,13 +55,13 @@ $userAddress = $this->user_address;
 			</p>
 		<?php endif ?>
 		<br clear="all" />
-		<p align="center"><span class="sb_theme_button">Back to Rewards Center</span></p>
+		<p align="center"><span class="sb_theme_button_alt">Back to Rewards Center</span></p>
 	</div><!-- .sb_rewardOrder -->
 	<!-- END ORDER COMPLETE - SHIPPING -->
 </div><!-- #sb_reward_step3 -->
 <script type="text/javascript">
 	$SQ(function () {
-		$SQ('#sb_reward_step3 .sb_theme_button').unbind().bind('click', function (e) {
+		$SQ('#sb_reward_step3 .sb_theme_button_alt').unbind().bind('click', function (e) {
 			$SQ('#sayso-starbar').trigger('frameCommunication', ['refreshRewardCenter', {}]);
 		});
 		overlayBackground = $SQ('#sayso-starbar #sb_innerOverlay .sb_innerOverlayBackground');

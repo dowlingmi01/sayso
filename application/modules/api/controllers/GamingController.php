@@ -164,14 +164,16 @@ class Api_GamingController extends Api_GlobalController
 		$goods->orderBy('title');
 		$goods->orderBy('cost');
 		foreach ($goods as $good) {
-			if ($good->isToken()) {
-				$tokens->addItem($good);
-			} elseif ($gamer->getGoods()->hasItem($good->getId())) {
-				$purchasedGoods->addItem($good);
-			} elseif ($good->inventory_sold < $good->inventory_total) {
-				$availableGoods->addItem($good);
-			} else {
-				$soldOutGoods->addItem($good);
+			if ($good->isForCurrentEnvironment()) {
+				if ($good->isToken()) {
+					$tokens->addItem($good);
+				} elseif ($gamer->getGoods()->hasItem($good->getId())) {
+					$purchasedGoods->addItem($good);
+				} elseif ($good->inventory_sold < $good->inventory_total) {
+					$availableGoods->addItem($good);
+				} else {
+					$soldOutGoods->addItem($good);
+				}
 			}
 		}
 		foreach ($tokens as $good) $results->addItem($good);

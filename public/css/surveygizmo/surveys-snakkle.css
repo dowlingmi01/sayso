@@ -265,5 +265,5 @@ h1.sg-title {
 }
 /* Used to check that css loading is complete -- see surveygizmo-init.js */
 .sg-footer-hook-2 {
-	background-color: #F3F3F4;
+	text-align: right;
 	}

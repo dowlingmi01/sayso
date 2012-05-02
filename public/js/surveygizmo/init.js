@@ -41,7 +41,7 @@
 				&& window.$SQ.sayso.starbar.user // user object
 				&& $SGQ.loaded // survey DOM
 				&& ((!$SGQ.in_iframe && window.sayso.starbar.loaded) || $SGQ.in_iframe) // if loading outside iframe, make sure starbar has loaded
-				&& $('.sg-footer-hook-2').css('background-color') == "rgb(243, 243, 244)" // i.e. "#F3F3F4", which indicates that css is done loading
+				&& $('.sg-footer-hook-2').css('text-align') == "right" // indicates that css is done loading
 			) return true;
 			else return false;
 		}

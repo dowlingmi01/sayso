@@ -237,6 +237,19 @@ class Devadmin_IndexController extends Api_GlobalController
 
 		// Definitions
 		$client = new Gaming_BigDoor_HttpClient('43bfbce697bd4be99c9bf276f9c6b086', '35eb12f3e87144a0822cf1d18d93d867');
+			$client->getNamedTransactionGroup(5330003);
+			do_dump($client->getData(), "Transaction Group for Product");
+			$client->getNamedTransactionGroup(5342008);
+			do_dump($client->getData(), "Transaction Group for Product Variant");
+
+			$client->setCustomParameters(array(
+				'attribute_friendly_id' => 'bdm-product-variant',
+				'verbosity' => 9,
+				'max_records' => 100
+			));
+			$client->getNamedTransactionGroup('store');
+			$data = $client->getData();
+			do_dump($data, 'data'); exit;
 		$attributeFullId = 14;
 		$attributePreviewId = 13;
 		$attributePreviewBoughtId = 4958001;
@@ -269,6 +282,8 @@ class Devadmin_IndexController extends Api_GlobalController
 		}
 
 		if ($operation == "add") {
+			set_time_limit(300);
+
 			// // // // // ADD PRODUCT
 
 			// // // Add Association for Product
@@ -305,7 +320,7 @@ class Devadmin_IndexController extends Api_GlobalController
 			$client->setParameterPost("end_user_title", "GOOD Product Transaction (Purchasing Points): " . $productTitle);
 			$client->setParameterPost("read_only", 0);
 			$client->setParameterPost("named_transaction_group_ratio", "-1.00");
-			$client->setParameterPost("is_source", 1);
+			$client->setParameterPost("is_source", 0);
 			$client->setParameterPost("variable_amount_allowed", 1);
 			$client->setParameterPost("is_multi_user", 0);
 			$client->setParameterPost("named_transaction_is_primary", 0);
@@ -324,12 +339,12 @@ class Devadmin_IndexController extends Api_GlobalController
 			$client->setParameterPost("end_user_title", "GOOD Product Transaction (Redeemable Points): " . $productTitle);
 			$client->setParameterPost("read_only", 0);
 			$client->setParameterPost("named_transaction_group_ratio", "-1.00");
-			$client->setParameterPost("is_source", 1);
+			$client->setParameterPost("is_source", 0);
 			$client->setParameterPost("variable_amount_allowed", 1);
 			$client->setParameterPost("is_multi_user", 0);
 			$client->setParameterPost("named_transaction_is_primary", 1);
 			$client->setParameterPost("notifiable_event", 0);
-			$client->setParameterPost("currency_id", $currencyPurchasePointsId);
+			$client->setParameterPost("currency_id", $currencyRedeemableId);
 			$client->setParameterPost("default_amount", "-" . $price . ".00");
 			$client->setParameterPost("named_good_id", $namedGoodProductId);
 			$client->postNamedTransaction();
@@ -345,7 +360,7 @@ class Devadmin_IndexController extends Api_GlobalController
 				$client->setParameterPost("end_user_title", "GOOD Product Transaction (Token Points): " . $productTitle);
 				$client->setParameterPost("read_only", 0);
 				$client->setParameterPost("named_transaction_group_ratio", "-1.00");
-				$client->setParameterPost("is_source", 1);
+				$client->setParameterPost("is_source", 0);
 				$client->setParameterPost("variable_amount_allowed", 1);
 				$client->setParameterPost("is_multi_user", 0);
 				$client->setParameterPost("named_transaction_is_primary", 0);
@@ -391,6 +406,7 @@ class Devadmin_IndexController extends Api_GlobalController
 			$client->setParameterPost("url", $imageUrlFull);
 			$client->setParameterPost("read_only", 0);
 			$client->setParameterPost("is_media_url", 0);
+			$client->setParameterPost("is_for_end_user_ui", 0);
 			$client->postUrl();
 
 			$data = $client->getData();
@@ -406,6 +422,7 @@ class Devadmin_IndexController extends Api_GlobalController
 			$client->setParameterPost("url", $imageUrlPreview);
 			$client->setParameterPost("read_only", 0);
 			$client->setParameterPost("is_media_url", 0);
+			$client->setParameterPost("is_for_end_user_ui", 0);
 			$client->postUrl();
 
 			$data = $client->getData();
@@ -421,6 +438,7 @@ class Devadmin_IndexController extends Api_GlobalController
 			$client->setParameterPost("url", $imageUrlPreviewBought);
 			$client->setParameterPost("read_only", 0);
 			$client->setParameterPost("is_media_url", 0);
+			$client->setParameterPost("is_for_end_user_ui", 0);
 			$client->postUrl();
 
 			$data = $client->getData();
@@ -437,7 +455,8 @@ class Devadmin_IndexController extends Api_GlobalController
 			$data = $client->getData();
 			$attributeProductVariantAssociationId = $data->id;
 
-			$client->attribute($attributeProductVariantId)->postAttribute($attributeProductVariantAssociationId);
+			//$client->attribute($attributeProductVariantId)->postAttribute($attributeProductVariantAssociationId);
+			$client->attribute($attributeProductId)->postAttribute($attributeProductVariantAssociationId);
 
 
 			// // // Add Named Good for Product Variant
@@ -474,7 +493,7 @@ class Devadmin_IndexController extends Api_GlobalController
 			$client->setParameterPost("end_user_title", "GOOD Product Variant Transaction (Purchasing Points): " . $productTitle);
 			$client->setParameterPost("read_only", 0);
 			$client->setParameterPost("named_transaction_group_ratio", "-1.00");
-			$client->setParameterPost("is_source", 1);
+			$client->setParameterPost("is_source", 0);
 			$client->setParameterPost("variable_amount_allowed", 1);
 			$client->setParameterPost("is_multi_user", 0);
 			$client->setParameterPost("named_transaction_is_primary", 0);
@@ -493,12 +512,12 @@ class Devadmin_IndexController extends Api_GlobalController
 			$client->setParameterPost("end_user_title", "GOOD Product Variant Transaction (Redeemable Points): " . $productTitle);
 			$client->setParameterPost("read_only", 0);
 			$client->setParameterPost("named_transaction_group_ratio", "-1.00");
-			$client->setParameterPost("is_source", 1);
+			$client->setParameterPost("is_source", 0);
 			$client->setParameterPost("variable_amount_allowed", 1);
 			$client->setParameterPost("is_multi_user", 0);
 			$client->setParameterPost("named_transaction_is_primary", 1);
 			$client->setParameterPost("notifiable_event", 0);
-			$client->setParameterPost("currency_id", $currencyPurchasePointsId);
+			$client->setParameterPost("currency_id", $currencyRedeemableId);
 			$client->setParameterPost("default_amount", "-" . $price . ".00");
 			$client->setParameterPost("named_good_id", $namedGoodProductVariantId);
 			$client->postNamedTransaction();
@@ -514,7 +533,7 @@ class Devadmin_IndexController extends Api_GlobalController
 				$client->setParameterPost("end_user_title", "GOOD Product Variant Transaction (Token Points): " . $productTitle);
 				$client->setParameterPost("read_only", 0);
 				$client->setParameterPost("named_transaction_group_ratio", "-1.00");
-				$client->setParameterPost("is_source", 1);
+				$client->setParameterPost("is_source", 0);
 				$client->setParameterPost("variable_amount_allowed", 1);
 				$client->setParameterPost("is_multi_user", 0);
 				$client->setParameterPost("named_transaction_is_primary", 0);
@@ -554,6 +573,10 @@ class Devadmin_IndexController extends Api_GlobalController
 			$client->getNamedTransactionGroup($namedTransactionGroupProductVariantId);
 			do_dump($client->getData(), "Transaction Group for Product Variant");
 			exit;
+
+			//$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
+			$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_43bfbce697bd4be99c9bf276f9c6b086');
+			$cache->remove();
 		}
 	}
 

@@ -170,6 +170,11 @@ html {
 #sayso-onboard select, #sayso-onboard input, #sayso-onboard textarea, #sayso-onboard button {
 	font: 99% sans-serif;
 }
+
+#sayso-onboard button {
+	width:225px;
+}
+
 /* Webkit tap highlight
  * j.mp/webkit-tap-highlight-color */
 #sayso-onboard a:link {
@@ -188,12 +193,12 @@ html {
 
 #sayso-onboard #sso_wrapper{
 	width: 600px;
-	height: 430px;
-	background-image: url('../images/bg_box.jpg');
+	height: 450px;
+
 	background-position: 0px bottom;
 	background-repeat: no-repeat;
-	background-color: #000;
-	border: 1px solid #0081c5;
+	background-color: #fff;
+	border: 1px solid #9d9d9d;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -242,7 +247,7 @@ html {
 #sayso-onboard #sso_wrapper #sso_logo{
 	position: absolute;
 	z-index: 0;
-	top: -30px;
+	top: 10px;
 	width: 100%;
 	text-align: center;
 }
@@ -257,23 +262,23 @@ html {
 
 #sayso-onboard #sso_wrapper h1{
 	font-size: 30px;
-	color: #fff;
+	color: #0099CF;
 	font-weight: bold;
 	line-height: normal;
-	margin: 5px 0px;
+	margin: 5px 0 -5px 0;
 }
 
 #sayso-onboard #sso_wrapper h2{
-	font-size: 20px;
-	color: #fff;
+	font-size: 24px;
+	color: #0099CF;
 	font-weight: bold;
 	line-height: normal;
-	margin: 5px 0px;
+	margin: 0px;
 }
 
 #sayso-onboard #sso_wrapper h3{
 	font-size: 17px;
-	color: #fff;
+	color: #333537;
 	font-weight: normal;
 	line-height: normal;
 	margin: 15px 0 0 0;
@@ -284,11 +289,12 @@ html {
 #sayso-onboard #sso_wrapper h2 strong{
 	font-size: inherit;
 	font-weight: bold;
+	color:#99C93B;
 }
 
 #sayso-onboard #sso_wrapper h4{
 	font-size: 15px;
-	color: #fff;
+	color: #333537;
 	font-weight: normal;
 	line-height: 17px;
 /*	letter-spacing: 1px;*/
@@ -298,11 +304,11 @@ html {
 #sayso-onboard #sso_wrapper p{
 	font-size: 15px;
 	margin: 10px 0px;
-	color: #fff;
+	color: #333537;
 }
 
 #sayso-onboard #sso_wrapper a{
-	color: #fff;
+	color: #333537;
 	text-decoration: underline;
 }
 
@@ -346,26 +352,26 @@ html {
 }
 
 #sayso-onboard #sso_wrapper .sso_theme_button_disabled{
-	border-radius: 2px;
-	-moz-border-radius: 2px;
-	-webkit-border-radius: 2px;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
 	font-weight: normal;
 	text-decoration: none;
 	padding: 2px 30px;
 	font-size: 12px;
 	position: relative;
-	border: none;
+	border: thin solid #d4d5d7;
 	background-image: -webkit-gradient(
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(90,90,90)),
-	color-stop(0.61, rgb(70,70,70)));
+	color-stop(0.22, rgb(235,235,235)),
+	color-stop(1, rgb(1,1,1)));
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(90,90,90) 22%,
-			rgb(70,70,70) 61%);
-	background-color: #303030;
+			rgb(235,235,235) 22%,
+			rgb(1,1,1) 100%);
+	background-color: #fff;
 	color: #666;
 	opacity:0.75;
 	filter:alpha(opacity=75);
@@ -373,8 +379,12 @@ html {
 }
 
 #sayso-onboard #sso_wrapper .sso_theme_buttonXL{
-	padding: 10px 40px;
-	font-size: 23px;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border: thin solid #d4d5d7;
+	padding: 2px 30px;
+	font-size: 20px;
 	font-weight: bold;
 }
 
@@ -395,4 +405,24 @@ html {
 }
 #sayso-onboard .sso_hidden{
 	display: none;
+}
+
+#sayso-get-app img {
+	margin:20px;
+}
+
+#sayso-onboard #sso_wrapper h2#sso_protected {
+	color: #0099CF;
+	font-size:17px;
+	margin-bottom:30px;
+}
+
+#sayso-onboard #sso_wrapper p.sso_noshare_notice {
+	margin-top:35px;
+	font-size:small;
+	font-weight:strong;
+}
+
+#sayso-onboard #sso_wrapper h2#sso_allow_install_text {
+	margin-top:130px;
 }

@@ -14,8 +14,8 @@ $baseUrl = 'http://' . Registry::getConfig()->baseDomain;
 			<div id="sso_new_users" class="sso_panel">
 				<h1>Are you a Snakkle Fan?</h1>
 				<h2>Let your celebrity knowledge earn for you!</h2>
-				<p>You've been invited to become a Super Snakkler and participate in<br/>
-				Snakkle Say.So - your source for all things celebrity and pop culture.</p>
+				<p>Become a Super Snakkler and participate in
+				Snakkle Say.So<br />- your source for all things celebrity and pop culture.</p>
 				<div style="width: 469px;height: 109px; background-color: gray; margin-right: auto; margin-left: auto;border-radius: 8px;"><img src="<?= $baseUrl ?>/client/snakkle/images/offer_snakkle.png" alt="Snakkle Say.So Offers" /></div>
 				<h3>
 					<strong>GRAB</strong> the Snakkle Say.So browser extension.<br />
@@ -63,17 +63,18 @@ $baseUrl = 'http://' . Registry::getConfig()->baseDomain;
 			<?php } ?>
 			<div id="sso_enter_password" class="sso_panel sso_hidden">
 			<?php if( !$this->user_has_password ) {?>
-					<h1>Create your Say.So password</h1>
+					<h1>Create your Say.So account</h1>
 					<h2 id="sso_protected">So we can make sure your points and rewards are protected</h2>
 					<!--<p><strong><?php // = $this->client_email ?></strong></p>-->
 					<span class="sso_textError" style="display: none;"></span>
 					<form action="" name="" method="">
-					<p><input id="sso_fld_client_email" name="client_email" onfocus="if
-(this.value==this.defaultValue) this.value='';" value="Enter Your Email Address" type=text class="sso_client_email"/></p>
-					<p><input id="sso_fld_password" name="password" type=password class="sso_password"/>
-					<input id="sso_fld_password_txt" value="Enter your desired password (6-12 character limit)"/></p>
-					<p><input id="sso_fld_password_vfy" type=password class="sso_password"/>
-					<input id="sso_fld_password_vfy_txt" value="Verify Your Password"/></p>
+					<div id="sso_form_flds">
+						<p><label for="sso_fld_client_email">Email Address </label><input id="sso_fld_client_email" name="client_email" type=text class="sso_username" /><input id="sso_fld_client_email_txt" value="Enter Your Email Address"  /></p>
+						<p><label for="sso_fld_password">Password </label><input id="sso_fld_password" name="password" type=password class="sso_password"/>
+						<input id="sso_fld_password_txt" value="Enter your desired password (6-12 character limit)"/></p>
+						<p><label for="sso_fld_password_vfy">Confirm Password </label><input id="sso_fld_password_vfy" type=password class="sso_password"/>
+						<input id="sso_fld_password_vfy_txt" value="Verify Your Password"/></p>
+					</div>
 					<p><a id="sayso-get-app" href="" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL">GRAB IT</a></p>
 					<input type="hidden" id="sayso-install-token" value="<?= $this->token ?>"/>
 					</form>

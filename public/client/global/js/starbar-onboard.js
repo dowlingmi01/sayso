@@ -38,7 +38,7 @@
 		var pwd1 = $SQ('#sso_fld_password').val();
 		if( pwd1.length < 1 )
 			return "Woops - Please enter your password";
-			
+
 		var pwd2 = $SQ('#sso_fld_password_vfy');
 		if( pwd2.length ) {
 			pwd2 = pwd2.val();
@@ -49,6 +49,19 @@
 		}
 		return false;
 	}
+
+	function validateEmail() {
+		var emailadd = $SQ('#sso_fld_client_email').val();
+		if( emailadd.length < 1 )
+			return "Woops - Please enter your email address";
+
+
+       var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+       if (emailPattern.test(emailadd))
+       	return false;
+       return "Sorry - invalid Email address";
+     }
+
 	$SQ('.sso_password').each( function() {
 		var pwd = $SQ(this);
 		var txt = $SQ('#'+pwd.attr('id')+'_txt');
@@ -72,36 +85,57 @@
 				$SQ('#sayso-get-app').addClass('sso_theme_button_disabled');
 		})
 	})
-	
+	$SQ('.sso_username').each( function() {
+		var user = $SQ(this);
+		var txt = $SQ('#'+user.attr('id')+'_txt');
+		user.hide()
+		txt.focus( function() {
+			txt.hide();
+			user.show();
+			user.focus();
+		});
+		user.blur( function() {
+			if( user.val() == '' ) {
+				user.hide();
+				txt.show();
+			}
+		});
+
+	})
 	// Get the App!
 
 	$SQ('#sayso-get-app').click(function(e) {
 		var errMsg;
-		if(!(errMsg = validatePasswords())) {
-			var installToken = $SQ('#sayso-install-token').attr('value');
-			var ajaxOpts = {
-				url : '//' + sayso.baseDomain + '/starbar/install/user-password',
-				dataType : 'jsonp',
-				data : {
-					install_token: installToken,
-					user_password: $SQ('#sso_fld_password').val(),
-					renderer: 'jsonp'
-				},
-				success : function (response) {
-					if (response.status && response.status == "error") {
-						$SQ('span.sso_textError').html(response.data.message).fadeIn('slow');
-					} else {
-						if( !document.location.href.match('sayso-installing') )
-							document.location.hash = 'sayso-installing';
-						location.href = '//' + sayso.baseDomain + '/starbar/install/extension?install_token=' + installToken;
-						$SQ('#sso_allow_install_text').text('Please allow the browser to install the app.');
-						$SQ('.sso_panel').addClass('sso_hidden');
-						$SQ('#sso_allow_install').removeClass('sso_hidden');
+		if (!(errMsg = validateEmail())) {
+			if(!(errMsg = validatePasswords())) {
+				var installToken = $SQ('#sayso-install-token').attr('value');
+				var ajaxOpts = {
+					url : '//' + sayso.baseDomain + '/starbar/install/user-password',
+					dataType : 'jsonp',
+					data : {
+						install_token: installToken,
+						user_password: $SQ('#sso_fld_password').val(),
+						renderer: 'jsonp'
+					},
+					success : function (response) {
+						if (response.status && response.status == "error") {
+							$SQ('span.sso_textError').html(response.data.message).fadeIn('slow');
+						} else {
+							if( !document.location.href.match('sayso-installing') )
+								document.location.hash = 'sayso-installing';
+							location.href = '//' + sayso.baseDomain + '/starbar/install/extension?install_token=' + installToken;
+							$SQ('#sso_allow_install_text').text('Please allow the browser to install the app.');
+							$SQ('.sso_panel').addClass('sso_hidden');
+							$SQ('#sso_allow_install').removeClass('sso_hidden');
+						}
 					}
-				}
-			};
-			$SQ.ajax(ajaxOpts);
-			e.preventDefault();
+				};
+				$SQ.ajax(ajaxOpts);
+				e.preventDefault();
+			} else {
+				e.preventDefault();
+				$SQ('span.sso_textError').html(errMsg).fadeIn('slow');
+			}
 		} else {
 			e.preventDefault();
 			$SQ('span.sso_textError').html(errMsg).fadeIn('slow');

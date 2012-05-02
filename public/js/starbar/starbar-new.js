@@ -1123,7 +1123,6 @@ $SQ(function(){
 									$SQthis.html(currencyBalance);
 								}
 							}
-							else sayso.log($SQthis.attr('data-currency-type') + " != " + currencyType);
 						});
 					}
 

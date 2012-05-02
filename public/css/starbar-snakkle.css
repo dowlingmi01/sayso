@@ -85,7 +85,7 @@
 #sayso-starbar #starbar-player-console #starbar-nav ul li{
 	box-shadow: inset -1px 0 0px rgba(255,255,255,.1);
 }
-	
+
 #sayso-starbar #starbar-player-console #starbar-nav ul li span.sb_nav_element{
 	width: 95px !important;
 	background-position: center 55% !important;
@@ -299,7 +299,7 @@
 
 #sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow{
 	position: relative;
-	margin: -11px 0px 0px 10px;
+	margin: 5px 0px 0px 10px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week1{
@@ -722,7 +722,7 @@
 	margin: 	0px 0px 10px 0px!important;
 	padding: 0px !important;
 	border-bottom: 2px dotted #ccc;
-	
+
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_lineList li{

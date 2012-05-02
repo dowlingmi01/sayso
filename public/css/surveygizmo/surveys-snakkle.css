@@ -19,6 +19,7 @@
 	}
 .sg-header {
 	margin: 0;
+	display: none;
 	}
 .sg-content {
 	clear:both;

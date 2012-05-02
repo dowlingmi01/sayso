@@ -575,11 +575,12 @@ class Devadmin_IndexController extends Api_GlobalController
 			do_dump($client->getData(), "Transaction Group for Product");
 			$client->getNamedTransactionGroup($namedTransactionGroupProductVariantId);
 			do_dump($client->getData(), "Transaction Group for Product Variant");
-			exit;
 
 			//$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
 			$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_43bfbce697bd4be99c9bf276f9c6b086');
 			$cache->remove();
+
+			exit;
 		}
 	}
 

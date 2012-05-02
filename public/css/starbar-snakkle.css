@@ -954,17 +954,17 @@
 }
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_header {
 	margin: -15px 0px 0px 0px;
-	padding: 5px 10px 0px 5px;
+	padding: 10px 10px 5px 10px;
 	background-color: #383838;
 }
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList{
-	border-top: 1px solid #ccc;
+	border-top: 2px dotted #ccc;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li{
-	border-bottom: 1px solid #ccc;
+	border-bottom: 2px dotted #ccc;
 	padding: 10px 45px 10px 55px;
 	background-repeat: no-repeat;
 	background-position: 0px 10px;
@@ -975,9 +975,9 @@
 	background-image: url('../images/snakkle/img_star_lg.png');
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_notes,
-#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_notes{
-	background-image: url('../images/snakkle/img_note_lg.png');
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_snakkles,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_snakkles{
+	background-image: url('../images/snakkle/img_snakkles_lg.png');
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_polls,
@@ -990,9 +990,9 @@
 	background-image: url('../images/snakkle/img_survey_lg.png');
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_deals,
-#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_deals{
-	background-image: url('../images/snakkle/img_deal_lg.png');
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_quizzes,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_quizzes{
+	background-image: url('../images/snakkle/img_quizzes_lg.png');
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_gear,
@@ -1007,9 +1007,9 @@
 	padding-left: 60px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_hottest,
-#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_hottest{
-	background-image: url('../images/snakkle/img_hottest_lg.png');
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_giveaways,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_giveaways{
+	background-image: url('../images/snakkle/img_giveaways_lg.png');
 	padding-left: 60px;
 }
 

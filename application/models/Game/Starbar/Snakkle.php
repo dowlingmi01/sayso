@@ -40,7 +40,7 @@ class Game_Starbar_Snakkle extends Game_Starbar {
 		if (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
 			$good->setNonRedeemReason('Sorry, this item is sold out.');
 			$good->setCommentForUser('Sold Out');
-		} elseif ((int) $currencyPrimarySurvey->current_balance < 1) {
+		} elseif ((int) $currencyProfileSurvey->current_balance < 1) {
 			$good->setNonRedeemReason('Must complete<br /><a href="//'.BASE_DOMAIN.'/starbar/snakkle/embed-survey?survey_id=1" class="sb_nav_element" rel="sb_popBox_surveys_hg" title="Take profile survey now!" style="position: relative; top: -5px;">Profile Survey</a>');
 			$good->setCommentForUser('Survey Requirement');
 		} elseif ($profile->getCurrencyByTitle('Snakkle Bucks')->current_balance < $good->cost) {

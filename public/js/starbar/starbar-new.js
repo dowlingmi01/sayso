@@ -924,8 +924,8 @@ $SQ(function(){
 		}
 
 		var justLeveledUp = false;
-		var currentLevel = userPreviousLevels.length - 1;
-		var newLevel = userLevels.length - 1;
+		var currentLevel = userPreviousLevels.length;
+		var newLevel = userLevels.length;
 		if (currentLevel != newLevel) {
 			justLeveledUp = true;
 			updateAlerts(true);

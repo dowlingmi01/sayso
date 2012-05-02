@@ -1167,6 +1167,7 @@
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardItem_disabledMsg p{
+	color: white;
 	font-size: 11px;
 }
 

@@ -236,8 +236,9 @@ class Devadmin_IndexController extends Api_GlobalController
 		$type = $request->getParam('type');
 
 		// Definitions
-		$client = new Gaming_BigDoor_HttpClient('43bfbce697bd4be99c9bf276f9c6b086', '35eb12f3e87144a0822cf1d18d93d867');
-			$client->getNamedTransactionGroup(5330003);
+		$client = new Gaming_BigDoor_HttpClient('43bfbce697bd4be99c9bf276f9c6b086', '35eb12f3e87144a0822cf1d18d93d867'); // Snakkle
+		// $client = new Gaming_BigDoor_HttpClient('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2'); // Hello Music
+			/*$client->getNamedTransactionGroup(5330003);
 			do_dump($client->getData(), "Transaction Group for Product");
 			$client->getNamedTransactionGroup(5342008);
 			do_dump($client->getData(), "Transaction Group for Product Variant");
@@ -249,7 +250,7 @@ class Devadmin_IndexController extends Api_GlobalController
 			));
 			$client->getNamedTransactionGroup('store');
 			$data = $client->getData();
-			do_dump($data, 'data'); exit;
+			do_dump($data, 'data'); exit;*/
 		$attributeFullId = 14;
 		$attributePreviewId = 13;
 		$attributePreviewBoughtId = 4958001;
@@ -333,10 +334,10 @@ class Devadmin_IndexController extends Api_GlobalController
 			$namedTransactionProductPurchasingPointsId = $data->id;
 
 			// Redeemable Points Transaction
-			$client->setParameterPost("end_user_description", "GOOD Product Transaction (Redeemable Points): " . $productTitle);
-			$client->setParameterPost("pub_title", "GOOD Product Transaction (Redeemable Points): " . $productTitle);
-			$client->setParameterPost("pub_description", "GOOD Product Transaction (Redeemable Points): " . $productTitle);
-			$client->setParameterPost("end_user_title", "GOOD Product Transaction (Redeemable Points): " . $productTitle);
+			$client->setParameterPost("end_user_description", $productTitle . " (Full)");
+			$client->setParameterPost("pub_title", $productTitle . " (Full)");
+			$client->setParameterPost("pub_description", $productTitle . " (Full)");
+			$client->setParameterPost("end_user_title", $productTitle . " (Full)");
 			$client->setParameterPost("read_only", 0);
 			$client->setParameterPost("named_transaction_group_ratio", "-1.00");
 			$client->setParameterPost("is_source", 0);
@@ -506,10 +507,10 @@ class Devadmin_IndexController extends Api_GlobalController
 			$namedTransactionProductVariantPurchasingPointsId = $data->id;
 
 			// Redeemable Points Transaction
-			$client->setParameterPost("end_user_description", "GOOD Product Variant Transaction (Redeemable Points): " . $productTitle);
-			$client->setParameterPost("pub_title", "GOOD Product Variant Transaction (Redeemable Points): " . $productTitle);
-			$client->setParameterPost("pub_description", "GOOD Product Variant Transaction (Redeemable Points): " . $productTitle);
-			$client->setParameterPost("end_user_title", "GOOD Product Variant Transaction (Redeemable Points): " . $productTitle);
+			$client->setParameterPost("end_user_description", $productTitle . " (Variant)");
+			$client->setParameterPost("pub_title", $productTitle . " (Variant)");
+			$client->setParameterPost("pub_description", $productTitle . " (Variant)");
+			$client->setParameterPost("end_user_title", $productTitle . " (Variant)");
 			$client->setParameterPost("read_only", 0);
 			$client->setParameterPost("named_transaction_group_ratio", "-1.00");
 			$client->setParameterPost("is_source", 0);
@@ -524,6 +525,8 @@ class Devadmin_IndexController extends Api_GlobalController
 
 			$data = $client->getData();
 			$namedTransactionProductVariantRedeemablePointsId = $data->id;
+
+			$client->attribute($attributeProductVariantId)->postNamedTransaction($namedTransactionProductVariantRedeemablePointsId);
 
 			// Token Points Transaction
 			if ($type == "token") {

@@ -12,7 +12,7 @@
 		
 	var sayso = window.sayso;
 	
-	var loginCookie = getCookie(sayso.client.meta.userLoggedInKey);
+	var loginCookie = !sayso.client.anonymousUsers && getCookie(sayso.client.meta.userLoggedInKey);
 	
 	var installParam = getUrlParam('sayso-install'),
 		installCookie = getCookie('sayso-install'),
@@ -56,12 +56,12 @@
 			browserSupported = false;
 			
 			if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/iPad/i)) {
-				alert('Sorry! The Say.So Music Bar isn\'t yet available for mobile browsers. Join us via your computer when you can!');
+				alert('Sorry! The ' + sayso.client.appName + ' isn\'t yet available for mobile browsers. Join us via your computer when you can!');
 			} else {
-				alert('Sorry, your web browser ('+navigator.appName+appVersion+') doesn\'t support the cool features of the Say.So Music Bar. For an optimal experience, use Chrome (www.google.com/chrome), Firefox (www.getfirefox.com) or Safari (www.apple.com/safari). And we support Internet Explorer 8 and above.');
+				alert('Sorry, your web browser ('+navigator.appName+appVersion+') doesn\'t support the cool features of the ' + sayso.client.appName + '. For an optimal experience, use the latest versions of Chrome (www.google.com/chrome), Firefox (www.getfirefox.com) or Safari (www.apple.com/safari). And we support Internet Explorer 8 and above.');
 			}
 		}
-		if( sayso.client.userLoggedIn ) {
+		if( sayso.client.userLoggedIn || sayso.client.anonymousUsers ) {
 			if (!window.$SQ) {
 				var jQueryInclude = document.createElement('script');
 				jQueryInclude.src = '//' + sayso.baseDomain + '/js/starbar/jquery-1.7.1.min.js';
@@ -95,9 +95,18 @@
 				
 				// overlay
 				var clientKeys = {};
-				for( var i = 0; i < sayso.client.meta.sendKeys.length; i++ )
-					clientKeys[sayso.client.meta.sendKeys[i]] = getCookie(sayso.client.meta.sendKeys[i]);
+				
+				if( !sayso.client.anonymousUsers )
+					for( var i = 0; i < sayso.client.meta.sendKeys.length; i++ )
+						clientKeys[sayso.client.meta.sendKeys[i]] = getCookie(sayso.client.meta.sendKeys[i]);
 
+				var locationCookie = getCookie( 'sayso-location' );
+				
+				if( !locationCookie ) {
+					locationCookie = getRandomToken();
+					setCookie( 'sayso-location', locationCookie, 365 );
+				}
+				
 				var ajaxOpts = {
 					url : '//' + sayso.baseDomain + '/starbar/install/' + sayso.client.name,
 					dataType : 'jsonp',
@@ -107,6 +116,7 @@
 						install_origination : (installParam ? installParam : installCookie),
 						user_agent_supported : browserSupported,
 						install_url : document.location.href,
+						location_token : locationCookie,
 						referrer : (installParam ? document.referrer : referrerCookie)
 						},
 					success : function (response) {
@@ -175,5 +185,14 @@
 			}
 		}
 		return this.params[name];
+	}
+	
+	function getRandomToken() {
+		var s = [],
+			characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		for (var i = 0; i < 32; i++) {
+			s[i] = characters[Math.floor(Math.random() * characters.length)];
+		}
+		return s.join('');
 	}
 })();

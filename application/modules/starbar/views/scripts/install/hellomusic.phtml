@@ -66,9 +66,9 @@ $baseUrl = 'http://' . Registry::getConfig()->baseDomain;
 					<p><?= $this->client_email ?></p>
 					<span class="sso_textError" style="display: none;"></span>
 					<form action="" name="" method="">
-					<p><input id="sso_fld_password" name="password" type=password class="sso_password"/>
+					<p><input id="sso_fld_password" name="password" type=password class="sso_fld"/>
 					<input id="sso_fld_password_txt" value="Enter your desired password (6-12 character limit)"/></p>
-					<p><input id="sso_fld_password_vfy" type=password class="sso_password"/>
+					<p><input id="sso_fld_password_vfy" type=password class="sso_fld"/>
 					<input id="sso_fld_password_vfy_txt" value="Verify Your Password"/></p>
 					<p><a id="sayso-get-app" href="" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL">GRAB IT</a></p>
 					<input type="hidden" id="sayso-install-token" value="<?= $this->token ?>"/>
@@ -79,7 +79,7 @@ $baseUrl = 'http://' . Registry::getConfig()->baseDomain;
 					<p><?= $this->client_email ?></p>
 					<span class="sso_textError" style="display: none;"></span>
 					<form action="" name="" method="">
-					<p><input id="sso_fld_password" name="password" type=password class="sso_password"/>
+					<p><input id="sso_fld_password" name="password" type=password class="sso_fld"/>
 					<input id="sso_fld_password_txt" value="Enter your Say.So password"/></p>
 					<p><a id="sayso-get-app" href="" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL">GRAB IT</a></p>
 					<input type="hidden" id="sayso-install-token" value="<?= $this->token ?>"/>

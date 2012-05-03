@@ -2,7 +2,7 @@
 require_once APPLICATION_PATH . '/modules/api/controllers/GlobalController.php';
 
 class Starbar_InstallController extends Api_GlobalController {
-	private function commonInstall() {
+	public function hellomusicAction() {
 		$userHasPassword = false;
 		
 		$externalUser = new External_User();
@@ -33,7 +33,7 @@ class Starbar_InstallController extends Api_GlobalController {
 		else if( !$isPilotUser )
 			$this->view->assign('onboarding_type', 'new_user');
 		
-		$install = new External_UserInstall();
+		$install = new User_Install();
 		$install->external_user_id = $externalUser->id;
 		$install->token = User_Key::getRandomToken();
 		$install->ip_address = $_SERVER['REMOTE_ADDR'];
@@ -53,21 +53,63 @@ class Starbar_InstallController extends Api_GlobalController {
 		$this->_enableRenderer(new Api_Plugin_JsonPRenderer());
 		return $this->_resultType(new Object(array('html' => $body)));
 	}
-	public function hellomusicAction() {
-		return $this->commonInstall();
-	}
 	public function snakkleAction() {
-		return $this->commonInstall();
+		$install = new User_Install();
+		$starbar = new Starbar();
+		$starbar->loadDataByUniqueFields( array('short_name' => $this->client_name));
+		$install->starbar_id = $starbar->id;
+		$install->location = $this->location_token;
+		$install->token = User_Key::getRandomToken();
+		$install->ip_address = $_SERVER['REMOTE_ADDR'];
+		$install->user_agent = $_SERVER['HTTP_USER_AGENT'];
+		$install->user_agent_supported = ($this->user_agent_supported == 'true');
+		$install->origination = $this->install_origination;
+		$install->url = $this->install_url;
+		$install->referrer = $this->referrer;
+		$install->save();
+
+		if( preg_match('/^s-/', $this->install_origination)  )
+			$this->view->assign('onboarding_type', 'share');
+		else if( !$isPilotUser )
+			$this->view->assign('onboarding_type', 'new_user');
+		
+		$this->view->assign('token', $install->token);
+
+		$this->render();
+		$body = $this->getResponse()->getBody();
+		$this->_enableRenderer(new Api_Plugin_JsonPRenderer());
+		return $this->_resultType(new Object(array('html' => $body)));
 	}
 	public function userPasswordAction() {
 		$this->_enableRenderer(new Api_Plugin_JsonPRenderer());
 
 		$this->_validateRequiredParameters(array('install_token'));
-		$install = new External_UserInstall();
+		$install = new User_Install();
 		$install->loadDataByUniqueFields(array('token'=>$this->install_token));
-		$externalUser = new External_User();
-		$externalUser->loadData($install->external_user_id);
-		$user = $externalUser->getUser($this->user_password);
+		if( $install->external_user_id ) {
+			$externalUser = new External_User();
+			$externalUser->loadData($install->external_user_id);
+			$user = $externalUser->getUser($this->user_password);
+		} else {
+			$this->user_email = strtolower($this->user_email);
+			$email = new User_Email();
+			$email->loadDataByUniqueFields(array('email'=>$this->user_email));
+			$user = new User();
+			if( $email->user_id ) {
+				$user->loadData( $email->user_id );
+				if( $user->password )
+					$user->validatePassword($this->user_password);
+				else {
+					$user->setPlainTextPassword($this->user_password);
+					$user->save();
+				}
+			} else {
+				$user->setPlainTextPassword($this->user_password);
+				$user->setEmail( $email );
+				$user->save();
+			}
+			$install->user_id = $user->id;
+		}
 		$install->click_ts = new Zend_Db_Expr('now()');
 		$install->save();
 		$userKey = new User_Key();
@@ -103,7 +145,7 @@ class Starbar_InstallController extends Api_GlobalController {
 	}
 	public function postInstallAction() {
 		if( $this->user_key ) {
-			$install = new External_UserInstall();
+			$install = new User_Install();
 			$install->loadDataByUniqueFields(array('token'=>$this->user_key));
 			if( $install->id ) {
 				$externalUser = new External_User();

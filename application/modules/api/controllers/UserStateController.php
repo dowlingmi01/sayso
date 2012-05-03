@@ -45,27 +45,31 @@ class Api_UserStateController extends Api_GlobalController
 				
 		if (!$userState->id) { // This must be the first install for this user
 			if( !$newToken ) {
-				$install = new External_UserInstall();
+				$install = new User_Install();
 				$install->loadDataByUniqueFields(array('token'=>$this->user_key));
 				$install->first_access_ts = new Zend_Db_Expr('now()');
 				$install->save();
 
-				$externalUser = new External_User();
-				$externalUser->loadData($install->external_user_id);
+				if( $install->starbar_id )
+					$starbar->loadData($install->starbar_id);
+				else {
+					$externalUser = new External_User();
+					$externalUser->loadData($install->external_user_id);
+					$starbar->loadData($externalUser->starbar_id);
+				}
 			}
 
 			$starbarUserMap = new Starbar_UserMap();
 			$starbarUserMap->user_id = $this->user_id;
-			$starbarUserMap->starbar_id = $externalUser->starbar_id;
+			$starbarUserMap->starbar_id = $starbar->id;
 			$starbarUserMap->active = 1;
 			$starbarUserMap->save();
 
-			$gamer = Gamer::create($this->user_id, $externalUser->starbar_id);
-			$starbar->loadData($externalUser->starbar_id);
+			$gamer = Gamer::create($this->user_id, $starbar->id);
 			$game = Game_Starbar::create($gamer, $this->_request, $starbar);
 			$game->install();
 			
-			$userState->starbar_id = $externalUser->starbar_id;
+			$userState->starbar_id = $starbar->id;
 			$userState->auth_key = $starbar->auth_key;
 			$userState->visibility = "open";
 			$userState->save();

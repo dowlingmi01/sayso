@@ -39,7 +39,7 @@ $baseUrl = 'http://' . Registry::getConfig()->baseDomain;
 				<h4 style="font-weight: 500"><strong style="color: #1f80c2;">BONUS</strong> Snakkle Bucks when you download the Snakkle Say.So browser<br />extension and become a Snakkle Say.So member today!</h4>
 				<h4 style="font-weight: 500"><strong style="color: #1f80c2;">PLUS A BONUS for being a previous member</strong></h4>
 				<div style="height: 20px;">
-				<p style="font-size: 12px;"><input type="radio" /> I agree to the <a href="<?= $baseUrl ?>/docs/Say.So_App_EULA.pdf" target="_blank">terms and conditions</a></p>
+				<p style="font-size: 12px;"><input type="radio" /> I agree to the <a href="<?= $baseUrl ?>/docs/snakkle/Say.So_App_EULA.pdf" target="_blank">terms and conditions</a></p>
 				</div>
 			</div>
 			<?php } elseif( $this->onboarding_type == "share" ) {?>
@@ -57,7 +57,7 @@ $baseUrl = 'http://' . Registry::getConfig()->baseDomain;
 					<strong>GET</strong> exclusive deals and awesome prices.<br />
 				</h3>
 				<div style="height: 20px;">
-				<p style="font-size: 12px;"><input type="radio" /> I agree to the <a href="<?= $baseUrl ?>/docs/Say.So_App_EULA.pdf" target="_blank">terms and conditions</a></p>
+				<p style="font-size: 12px;"><input type="radio" /> I agree to the <a href="<?= $baseUrl ?>/docs/snakkle/Say.So_App_EULA.pdf" target="_blank">terms and conditions</a></p>
 				</div>
 			</div>
 			<?php } ?>
@@ -69,10 +69,10 @@ $baseUrl = 'http://' . Registry::getConfig()->baseDomain;
 					<span class="sso_textError" style="display: none;"></span>
 					<form action="" name="" method="">
 					<div id="sso_form_flds">
-						<p><label for="sso_fld_client_email">Email Address </label><input id="sso_fld_client_email" name="client_email" type=text class="sso_username" /><input id="sso_fld_client_email_txt" value="Enter Your Email Address"  /></p>
-						<p><label for="sso_fld_password">Password </label><input id="sso_fld_password" name="password" type=password class="sso_password"/>
+						<p><label for="sso_fld_client_email">Email Address </label><input id="sso_fld_client_email" name="client_email" type=text class="sso_fld" /><input id="sso_fld_client_email_txt" value="Enter Your Email Address"  /></p>
+						<p><label for="sso_fld_password">Password </label><input id="sso_fld_password" name="password" type=password class="sso_fld"/>
 						<input id="sso_fld_password_txt" value="Enter your desired password (6-12 character limit)"/></p>
-						<p><label for="sso_fld_password_vfy">Confirm Password </label><input id="sso_fld_password_vfy" type=password class="sso_password"/>
+						<p><label for="sso_fld_password_vfy">Confirm Password </label><input id="sso_fld_password_vfy" type=password class="sso_fld"/>
 						<input id="sso_fld_password_vfy_txt" value="Verify Your Password"/></p>
 					</div>
 					<p><a id="sayso-get-app" href="" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL">GRAB IT</a></p>
@@ -84,7 +84,7 @@ $baseUrl = 'http://' . Registry::getConfig()->baseDomain;
 					<p><strong><?= $this->client_email ?></strong></p>
 					<span class="sso_textError" style="display: none;"></span>
 					<form action="" name="" method="">
-					<p><input id="sso_fld_password" name="password" type=password class="sso_password"/>
+					<p><input id="sso_fld_password" name="password" type=password class="sso_fld"/>
 					<input id="sso_fld_password_txt" value="Enter your Say.So password"/></p>
 					<p><a id="sayso-get-app" href="" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL">GRAB IT</a></p>
 					<input type="hidden" id="sayso-install-token" value="<?= $this->token ?>"/>

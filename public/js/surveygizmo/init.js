@@ -63,7 +63,7 @@
 					var protocol = ('https:' == document.location.protocol ? 'https:' : 'http:');
 	    			easyXDMParameters = "xdm_c=" + $SGQ.xdm_c + "&xdm_e=" + $SGQ.xdm_e + "&xdm_p=" + $SGQ.xdm_p;
 
-					var redirectParameters = "?srid=" + $SGQ.srid + "&next_survey_id=" + $SGQ.next_survey_id + "&user_id=" + $SQ.sayso.starbar.user.id + "&user_key=" + $SQ.sayso.starbar.user.key + "&auth_key=" + $SQ.sayso.starbar.authKey + "&" + easyXDMParameters + "#" + easyXDMParameters;
+					var redirectParameters = "?srid=" + $SGQ.srid + "&next_survey_id=" + $SGQ.next_survey_id + "&user_id=" + $SQ.sayso.starbar.user.id + "&user_key=" + $SQ.sayso.starbar.user.key + "&starbar_id=" + $SQ.sayso.starbar.id + "&" + easyXDMParameters + "#" + easyXDMParameters;
 					if ($SQ('.sg-disqualify').length == 1) {
 						self.location = protocol + "//" + $SGQ.base_domain + "/starbar/" + $SGQ.starbar_short_name + "/survey-disqualify" + redirectParameters;
 						return;

@@ -508,6 +508,8 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->_assignSurveysToView('polls');
 		$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys', $this->_maximumDisplayed['surveys']);
 		$this->_assignSurveysToView('surveys');
+		$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'quizzes', $this->_maximumDisplayed['quizzes']);
+		$this->_assignSurveysToView('quizzes');
 
 		// @todo point this to onboarding
 		$shareLink = "http://music.say.so/";
@@ -750,6 +752,7 @@ class Starbar_ContentController extends Api_GlobalController
 	{
 		$type = str_replace("surveys", "survey", $type);
 		$type = str_replace("polls", "poll", $type);
+		$type = str_replace("quizzes", "quiz", $type);
 		$statusArray = Array('completed', 'disqualified', 'archived', 'new', );
 		$totalDisplayed = 0;
 

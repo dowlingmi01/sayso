@@ -916,12 +916,12 @@
 	margin: 0px 0px 10px 0px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-stats .sb_user-level{
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-stats .sb_user-current-level-icon{
 	width: 55px;
 	height: 55px;
 	float: left;
 	background-image: url('../images/snakkle/img_level_blank.png');
-	background-position: center middle;
+	background-position: center center;
 	background-repeat: no-repeat;
 }
 

@@ -52,7 +52,7 @@
 	<div class="sb_column40">
 			<h2 class="sb_titlePlain">My Stats</h2>
 			<div class="sb_user-stats">
-				<div class="sb_user-level">
+				<div class="sb_user-current-level-icon">
 
 				</div><!-- .sb_user-level -->
 				<div class="sb_user-points">
@@ -75,7 +75,7 @@
 			<li>
 				<? if ($this->count_new_polls) { ?><a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/polls" class="sb_nav_element" rel="sb_popBox_polls"><?= $this->count_new_polls ?> New Polls</a><br /><? } ?>
 				<? if ($this->count_new_surveys) { ?><a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/surveys" class="sb_nav_element" rel="sb_popBox_surveys"><?= $this->count_new_surveys ?> New Surveys</a><br /><? } ?>
-				<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/quiz" class="sb_nav_element" rel="sb_popBox_daily-deals">4 New Daily Deals</a>
+				<? if ($this->count_new_quizzes) { ?><a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/quiz" class="sb_nav_element" rel="sb_popBox_quizzes"><?= $this->count_new_surveys ?> New Quizzes</a><br /><? } ?>
 			</li>
 
 

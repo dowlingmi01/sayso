@@ -883,6 +883,7 @@ $SQ(function(){
 		var progressBarElems = $SQ('.sb_progress_bar', target);
 		var userLevelNumberElems = $SQ('.sb_user_level_number', target);
 		var userLevelTitleElems = $SQ('.sb_user_level_title', target);
+		var userCurrentLevelIconElems = $SQ('.sb_user-current-level-icon', target);
 		var animationDuration = 2000; // milliseconds
 		var justInitialized = false;
 
@@ -985,6 +986,25 @@ $SQ(function(){
 					});
 				} else {
 					$SQ(this).html('<p>Head to the Rewards Center to redeem your '+redeemableCurrency+' for awesome gear!</p>');
+				}
+			});
+		}
+
+		if (userCurrentLevelIconElems.length > 0) {
+			userCurrentLevelIconElems.each(function() {
+				var iconElem = $SQ(this);
+				if (allLevels && userCurrentLevel) {
+					$SQ.each(allLevels, function (index, level) {
+						if (level.ordinal == userCurrentLevel.ordinal) {
+							var smallImageUrl;
+							$SQ.each(level.urls.items, function (index, url) {
+								if (url.url.indexOf('_S.png') != -1) smallImageUrl = url.url;
+							});
+							iconElem.css("background-image", "url('"+smallImageUrl+"')");
+							iconElem.css("background-position", "center bottom");
+							sayso.log(iconElem);
+						}
+					})
 				}
 			});
 		}

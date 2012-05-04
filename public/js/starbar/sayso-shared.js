@@ -2,7 +2,6 @@ $SQ(function(){
 
 	$SQ.ajaxWithAuth = function (options) {
 		var starbar_id = null;
-		var auth_key = null;
 		var user_id = null;
 		var user_key = null;
 
@@ -17,7 +16,6 @@ $SQ(function(){
 			starbar_id = sayso.starbar.id;
 			user_id = sayso.starbar.user.id;
 			user_key = sayso.starbar.user.key;
-			auth_key = sayso.starbar.authKey;
 		}
 		catch (e) {}
 
@@ -25,7 +23,6 @@ $SQ(function(){
 			starbar_id : starbar_id,
 			user_id : user_id,
 			user_key : user_key,
-			auth_key : auth_key
 		});
 
 		if (!options.dataType)

@@ -70,7 +70,6 @@ class Api_UserStateController extends Api_GlobalController
 			$game->install();
 			
 			$userState->starbar_id = $starbar->id;
-			$userState->auth_key = $starbar->auth_key;
 			$userState->visibility = "open";
 			$userState->save();
 			$userState->reload();

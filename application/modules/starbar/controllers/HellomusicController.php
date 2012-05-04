@@ -40,7 +40,7 @@ class Starbar_HellomusicController extends Starbar_ContentController
 			// award the user
 			Game_Starbar::getInstance()->viewPromos();
 
-			$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=promos&shared_id=THE_DEAL_ID&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id."&auth_key=".$this->auth_key;
+			$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/hellomusic/facebook-post-result?shared_type=promos&shared_id=THE_DEAL_ID&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
 			$facebookDescription = "Like Music? You can get the Say.So Music Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
 			$this->_assignShareInfoToView(null, null, null, $facebookCallbackUrl, null, $facebookDescription);
 		}

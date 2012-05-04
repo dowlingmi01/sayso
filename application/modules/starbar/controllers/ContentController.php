@@ -13,7 +13,7 @@ class Starbar_ContentController extends Api_GlobalController
 	public function preDispatch()
 	{
 		try {
-			$this->_validateRequiredParameters(array('user_id', 'user_key', 'auth_key'));
+			$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
 		} catch (Exception $e) {
 			if ($e->getCode() == Api_Error::MISSING_PARAMETERS) {
 				echo "This page can only be loaded via the app.";
@@ -226,7 +226,6 @@ class Starbar_ContentController extends Api_GlobalController
 
 		$this->view->user_id = $this->user_id;
 		$this->view->user_key = $this->user_key;
-		$this->view->auth_key = $this->auth_key;
 		$this->view->starbar_id = $this->starbar_id;
 
 		// @todo point this to onboarding
@@ -235,7 +234,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$shareText = "Poll time! Just took the '".$survey->title."' poll on the Say.So Music Bar";
 		$facebookTitle = $survey->title;
 		$facebookDescription = "Like Music? You can get the Say.So Music Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
-		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=poll&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id."&auth_key=".$this->auth_key;
+		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=poll&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
 		$this->_assignShareInfoToView($shareLink, $shareText, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
 	}
 
@@ -302,7 +301,6 @@ class Starbar_ContentController extends Api_GlobalController
 
 		$this->view->user_id = $this->user_id;
 		$this->view->user_key = $this->user_key;
-		$this->view->auth_key = $this->auth_key;
 		$this->view->starbar_id = $this->starbar_id;
 		$this->view->quiz_index = $quizIndex;
 
@@ -378,7 +376,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$shareText = "Survey time! Just filled out '".$survey->title."' on the Say.So Music Bar";
 		$facebookTitle = $survey->title;
 		$facebookDescription = "Like Music? You can get the Say.So Music Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
-		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id."&auth_key=".$this->auth_key;
+		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
 		$this->_assignShareInfoToView($shareLink, $shareText, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
 	}
 
@@ -420,7 +418,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$shareText = "Survey time! Just filled out '".$survey->title."' on the Say.So Music Bar";
 		$facebookTitle = $survey->title;
 		$facebookDescription = "Like Music? You can get the Say.So Music Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
-		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id."&auth_key=".$this->auth_key;
+		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
 		$this->_assignShareInfoToView($shareLink, $shareText, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
 	}
 
@@ -517,7 +515,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$twitterShareText = "Join me in the Say.So Music Bar app. Get access to sweet gear deals and a chance to win a Takamine Guitar";
 		$facebookTitle = "Say.So Music Bar";
 		$facebookCaption = "If you're a Musician or dig music gear, you should join me in the Say.So Music Bar from Hello Music. We get access to some sweet gear deals and get awesome odds on walking away with one of their big giveaways like a Takamine Acoustic, a Full Midi Kit, and others. We just give our opinion on a few things and they give us Notes we can redeem for stuff. Sweet deal. Only lasts a month. Want in?";
-		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=starbar&shared_id=".$this->starbar_id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id."&auth_key=".$this->auth_key;
+		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=starbar&shared_id=".$this->starbar_id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
 		$this->_assignShareInfoToView($shareLink, $twitterShareText, $facebookCaption,  $facebookCallbackUrl, $facebookTitle, null);
 	}
 
@@ -586,7 +584,7 @@ class Starbar_ContentController extends Api_GlobalController
 				$messageUserMap = new Notification_MessageUserMap();
 				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, false);
 			}
-			$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id.'&auth_key='.$this->auth_key);
+			$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id);
 		} else {
 			$this->_redirect($facebook->getLoginUrl());
 		}
@@ -602,7 +600,7 @@ class Starbar_ContentController extends Api_GlobalController
 			/* Build TwitterOAuth object with client credentials. */
 			$connection = new TwitterOAuth($config->twitter->consumer_key, $config->twitter->consumer_secret);
 
-			$callbackUrl = 'https://'.BASE_DOMAIN.'/starbar/content/twitter-connect-result?user_id='.$this->user_id.'&user_key='.$this->user_key.'."&starbar_id=".$this->starbar_id&auth_key='.$this->auth_key;
+			$callbackUrl = 'https://'.BASE_DOMAIN.'/starbar/content/twitter-connect-result?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id;
 
 			/* Get temporary credentials and set the callback URL. */
 			$twitterRequestToken = $connection->getRequestToken($callbackUrl);
@@ -619,7 +617,7 @@ class Starbar_ContentController extends Api_GlobalController
 		if ($success) {
 			$this->_redirect("https://api.twitter.com/oauth/authorize?oauth_token=".$twitterRequestToken['oauth_token']);
 		} else {
-			$this->_redirect('/starbar/content/twitter-fail?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id.'&auth_key='.$this->auth_key);
+			$this->_redirect('/starbar/content/twitter-fail?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id);
 		}
 	}
 
@@ -660,13 +658,13 @@ class Starbar_ContentController extends Api_GlobalController
 					}
 				}
 
-				$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id.'&auth_key='.$this->auth_key);
+				$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id);
 				return;
 			} catch (Exception $e) {}
 
-			$this->_redirect('/starbar/content/twitter-fail?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id.'&auth_key='.$this->auth_key);
+			$this->_redirect('/starbar/content/twitter-fail?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id);
 		} else
-			$this->_redirect("/starbar/content/twitter-connect-redirect?user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id."&auth_key=".$this->auth_key);
+			$this->_redirect("/starbar/content/twitter-connect-redirect?user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id);
 	}
 
 	public function onboardAction ()
@@ -704,7 +702,7 @@ class Starbar_ContentController extends Api_GlobalController
 				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, false);
 			}
 		}
-		$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id.'&auth_key='.$this->auth_key);
+		$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id);
 	}
 
 	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null)

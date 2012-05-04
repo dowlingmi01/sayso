@@ -104,7 +104,6 @@
 				sayso.flags = response.data.flags;
 				sayso.starbar = {
 					id : response.data.starbar_id,
-					authKey : response.data.auth_key,
 					user : {
 						id : response.data.user_id,
 						key : response.data.user_key

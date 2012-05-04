@@ -1357,7 +1357,7 @@ $SQ(function(){
 								link += "?";
 							else
 								link += "&";
-							link += "user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&starbar_id="+ sayso.starbar.id+"&auth_key="+sayso.starbar.authKey;
+							link += "user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&starbar_id="+ sayso.starbar.id;
 
 							// The container for the new iFrame is in the link's 'ref' attribute
 							var iFrameContainerId = activeLink.attr('rel');
@@ -1448,7 +1448,7 @@ $SQ(function(){
 		// set up the EIP elements
 		elemJEIP.each(function(){
 			$SQ(this).eip(
-				"//"+sayso.baseDomain+"/api/user/save-in-place?renderer=jsonp&user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&starbar_id="+ sayso.starbar.id+"&auth_key="+sayso.starbar.authKey,
+				"//"+sayso.baseDomain+"/api/user/save-in-place?renderer=jsonp&user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&starbar_id="+ sayso.starbar.id,
 				{
 					savebutton_text		: "save",
 					savebutton_class	: "sb_theme_button",
@@ -1485,7 +1485,7 @@ $SQ(function(){
 						link += "?";
 					else
 						link += "&";
-					link += "user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&starbar_id="+ sayso.starbar.id+"&auth_key="+sayso.starbar.authKey;
+					link += "user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&starbar_id="+ sayso.starbar.id;
 
 					return $SQ.openWindow(link, 'sb_window_open', windowParameters);
 				}

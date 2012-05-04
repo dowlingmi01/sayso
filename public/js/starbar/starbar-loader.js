@@ -80,7 +80,6 @@
 
 		var params = {
 			starbar_id : sayso.starbar.id,
-			auth_key : sayso.starbar.authKey,
 			user_id : sayso.starbar.user.id,
 			user_key : sayso.starbar.user.key,
 			visibility : sayso.starbar.state.visibility
@@ -122,7 +121,6 @@
 
 				sayso.starbar.id = starbar.id;
 				sayso.starbar.shortName = starbar.short_name;
-				sayso.starbar.authKey = starbar.auth_key;
 				sayso.starbar.economy = starbar._economy;
 
 				// sayso.flags can be used anywhere via sayso.flags.match('<flag_name>')
@@ -253,7 +251,6 @@
 											dataType: 'jsonp',
 											data : {
 												starbar_id : sayso.starbar.id,
-												auth_key : sayso.starbar.authKey,
 												user_id : sayso.starbar.user.id,
 												user_key : sayso.starbar.user.key,
 												renderer : 'jsonp',

@@ -119,7 +119,7 @@
 
 							$SQ.ajax({
 								dataType:"jsonp",
-								url : "//<?= BASE_DOMAIN ?>/api/survey/user-quiz-submit?renderer=jsonp&survey_id=<?= $this->quiz->id ?>&user_id=<?= $this->user_id ?>&user_key=<?= $this->user_key ?>&auth_key=<?= $this->auth_key ?>&starbar_id=<?= $this->starbar_id ?>&survey_question_choice_id="+selectedChoiceId,
+								url : "//<?= BASE_DOMAIN ?>/api/survey/user-quiz-submit?renderer=jsonp&survey_id=<?= $this->quiz->id ?>&user_id=<?= $this->user_id ?>&user_key=<?= $this->user_key ?>&starbar_id=<?= $this->starbar_id ?>&survey_question_choice_id="+selectedChoiceId,
 								beforeSend : function(x) {
 									if (x && x.overrideMimeType) {
 										x.overrideMimeType("application/j-son;charset=UTF-8");

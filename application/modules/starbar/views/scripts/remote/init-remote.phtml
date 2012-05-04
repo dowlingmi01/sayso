@@ -41,8 +41,6 @@ $game = $this->game;
 		sayso.starbar = {
 			id : <?= $starbar->getId() ?>,
 			shortName : '<?= $starbar->short_name ?>',
-			kynetxAppId : 'a239x20', // <-- this doesn't matter in this context
-			authKey : '<?= $starbar->auth_key ?>',
 			user : {
 				id : <?= Api_UserSession::getInstance()->getId() ?>,
 				key : '<?= Api_UserSession::getInstance()->getKey() ?>'

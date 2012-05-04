@@ -14,7 +14,7 @@ $SQ(function () {
 
 	// Check required params
 
-	if (!starbar.id || !starbar.user.id || !starbar.user.key || !starbar.authKey) return;
+	if (!starbar.id || !starbar.user.id || !starbar.user.key) return;
 
 	// ADjuster blacklist
 
@@ -37,7 +37,6 @@ $SQ(function () {
 
 	var ajax = function (options) {
 		options.data = $SQ.extend(options.data || {}, {
-			auth_key : starbar.authKey,
 			user_id : starbar.user.id,
 			user_key : starbar.user.key,
 			starbar_id : starbar.id,

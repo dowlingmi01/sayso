@@ -117,7 +117,6 @@ class Starbar extends Record
 			'description',
 			'user_pseudonym',
 			'domain',
-			'auth_key',
 			'flags'
 		);
 		return array_intersect_key($this->getData(), array_flip($fields));

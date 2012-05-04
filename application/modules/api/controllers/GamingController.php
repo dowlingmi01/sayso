@@ -22,7 +22,7 @@ class Api_GamingController extends Api_GlobalController
 	{
 	}
 
-	// http://local.sayso.com/api/gaming/user-profile/starbar_id/1/user_id/46/user_key/r3nouttk6om52u18ba154mc4j4/auth_key/309e34632c2ca9cd5edaf2388f5fa3db
+	// http://local.sayso.com/api/gaming/user-profile/starbar_id/1/user_id/46/user_key/r3nouttk6om52u18ba154mc4j4
 
 	public function getGameAction () {
 		$this->_validateRequiredParameters(array('user_id', 'user_key'));

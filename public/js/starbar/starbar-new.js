@@ -998,7 +998,6 @@ $SQ(function(){
 
 				if (allLevels && userCurrentLevel) {
 					$SQ.each(allLevels, function (index, level) {
-						sayso.log(index, level);
 						if (index % 5 == 0) {
 							levelGroup = $SQ(document.createElement('div'));
 							levelGroup.addClass('sb_userLevelIcons_group');

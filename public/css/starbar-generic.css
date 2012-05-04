@@ -18,6 +18,8 @@
 	color: black;
 	opacity: 1;
 	filter: none !important;
+	width: auto;
+	height: auto;
 }
 #sayso-starbar article, #sayso-starbar aside, #sayso-starbar details, #sayso-starbar figcaption, #sayso-starbar figure, #sayso-starbar footer, #sayso-starbar header, #sayso-starbar hgroup, #sayso-starbar menu, #sayso-starbar nav, #sayso-starbar section {
 	display: block;
@@ -1419,7 +1421,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 
 
 #sayso-starbar .sb_externalShare.sb_externalShare_email,
-#sayso-starbar .sb_externalShare.sb_externalShare_email:hover, 
+#sayso-starbar .sb_externalShare.sb_externalShare_email:hover,
 #sayso-starbar-embed .sb_externalShare.sb_externalShare_email,
 #sayso-starbar-embed .sb_externalShare.sb_externalShare_email:hover{
 	width: 75px;

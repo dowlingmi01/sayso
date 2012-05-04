@@ -35,6 +35,7 @@ class Starbar_InstallController extends Api_GlobalController {
 		
 		$install = new User_Install();
 		$install->external_user_id = $externalUser->id;
+		$install->location = $this->location_token;
 		$install->token = User_Key::getRandomToken();
 		$install->ip_address = $_SERVER['REMOTE_ADDR'];
 		$install->user_agent = $_SERVER['HTTP_USER_AGENT'];

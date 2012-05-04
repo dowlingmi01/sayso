@@ -1,16 +1,7 @@
 <?php
 /**
- * This controller handles the authentication and delivery of the client-specific Starbar
+ * This controller handles the delivery of the client-specific Starbar
  *
- * The principle point of entry is the index action which handles pre and post
- * install situations and routes the call to the correct Starbar action
- *
- * Scenarios:
- * - user logs in / installs app / restarts / returns to client site
- * - user logs in / installs app / restarts / returns to any other site
- * - user logs in / logs out / another user logs in
- * - user logs in / deletes cookies / user logs in
- * - user logs in / deletes cookies / another user logs in
  * @author davidbjames
  *
  */

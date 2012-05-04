@@ -20,7 +20,6 @@ class Api_MetricsController extends Api_GlobalController
 	
 	public function pageViewSubmitAction () {
 		$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'url'));
-//		$this->_authenticateUser(true);
 		$metric = new Metrics_PageView();
 		$metric->user_id = $this->user_id;
 		$metric->starbar_id = $this->starbar_id;

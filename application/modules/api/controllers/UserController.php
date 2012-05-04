@@ -150,9 +150,6 @@ class Api_UserController extends Api_GlobalController
 			// save
 			$user->save();
 
-			// start up the user authentication session
-			$this->_startUserSession($user);
-
 			// success
 			return $this->_resultType($user);
 		}
@@ -200,9 +197,6 @@ class Api_UserController extends Api_GlobalController
 			// all is good, return the user
 			$user = new User();
 			$user->setData($userRow);
-
-			// start up the user authentication session
-			$this->_startUserSession($user);
 
 			return $this->_resultType($user);
 
@@ -351,23 +345,6 @@ class Api_UserController extends Api_GlobalController
 		} else {
 			return $this->_resultType(false);
 		}
-	}
-
-	protected function _startUserSession (User & $user) {
-
-		$userSession = Api_UserSession::getInstance();
-
-		// set the user id on the session
-		// which effectively resets the user and removes any
-		// persistente user objects, thereby forcing rebuild
-		$userSession->setId($user->getId());
-
-		// re-query the user to pull in complete aggregate data
-		$user = $userSession->getUser();
-
-		// set the key on the user object so it is available for client-apps
-		// this is important so they can authenticate correctly with the user_key
-		$user->setKey($userSession->getKey());
 	}
 
 }

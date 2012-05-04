@@ -1039,7 +1039,7 @@ $SQ(function(){
 					fx: 		'scrollHorz',
 					speed:	500,
 					timeout:	0,
-					startingSlide: parseInt(Math.floor(currentLevel / 5))
+					startingSlide: parseInt(Math.floor((currentLevel - 1) / 5))
 				});
 			});
 		}

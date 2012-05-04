@@ -733,7 +733,7 @@ $SQ(function () {
 
 			paramTags = objectElem.children();
 			for (i = 0; i < paramTags.length; i++) {
-				if (paramTags.eq(i).attr('name').toLowerCase() == "movie") { // We are only interested in the "movie" param (i.e. the URL of the movie)
+				if (paramTags.eq(i).attr('name') && paramTags.eq(i).attr('name').toLowerCase() == "movie") { // We are only interested in the "movie" param (i.e. the URL of the movie)
 					var filename = paramTags.eq(i).attr('value');
 					tempLink.href = filename;
 					filename = tempLink.pathname.split('/').pop(); // filename only, e.g. blah.swf

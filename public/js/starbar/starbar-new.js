@@ -991,23 +991,23 @@ $SQ(function(){
 
 		if (levelIconsContainerElems.length > 0) {
 			levelIconsContainerElems.each(function() {
-				$SQ(this).cycle({
-					prev :	'#sb_userLevel_prev',
-					next:		'#sb_userLevel_next',
-					fx: 		'scrollHorz',
-					speed:	500,
-					timeout:	0,
-					startingSlide: 1
-				});
-				/*
-				COMMENTED OUT TO SET UP JQUERY CYCLE AND SHOW HOW IT SHOULD WORK.
-				$SQ(this).html('');
+				var containerElem = $SQ(this);
+				containerElem.html('');
+
+				var levelGroup = null;
+
 				if (allLevels && userCurrentLevel) {
 					$SQ.each(allLevels, function (index, level) {
+						sayso.log(index, level);
+						if (index % 5 == 0) {
+							levelGroup = $SQ(document.createElement('div'));
+							levelGroup.addClass('sb_userLevelIcons_group');
+							containerElem.append(levelGroup);
+						}
 						var smallImageUrl, bigImageUrl;
 						$SQ.each(level.urls.items, function (index, url) {
-							if (url.url.indexOf('_b.png') != -1) bigImageUrl = url.url;
-							if (url.url.indexOf('_sm.png') != -1) smallImageUrl = url.url;
+							if (url.url.indexOf('_B.png') != -1) bigImageUrl = url.url;
+							if (url.url.indexOf('_S.png') != -1) smallImageUrl = url.url;
 						});
 
 						var levelIcon = $SQ(document.createElement('div'));
@@ -1018,20 +1018,30 @@ $SQ(function(){
 						} else {
 							if (level.ordinal < userCurrentLevel.ordinal) {
 								levelIcon.addClass('sb_userLevel_earned');
+								levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+smallImageUrl+'\')"></div><p>'+level.title+'<br /><small class="sb_xpRequired">'+level.ordinal+'</small></p>');
 							} else { // level.ordinal > userCurrentLevel.ordinal
 								levelIcon.addClass('sb_userLevel_next');
+								levelIcon.html('<div class="sb_userLevelImg"></div><p>'+level.title+'<br /><small class="sb_xpRequired">'+level.ordinal+'</small></p>');
 							}
-							levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+smallImageUrl+'\')"></div><p>'+level.title+'<br /><small class="sb_xpRequired">'+level.ordinal+'</small></p>');
 						}
-						levelIconsContainerElems.append(levelIcon);
+						levelGroup.append(levelIcon);
 					});
 
-					var emptyLevelsToAdd = 5 - allLevels.length;
+					var emptyLevelsToAdd = allLevels.length % 5;
 					while (emptyLevelsToAdd > 0) {
-						levelIconsContainerElems.append('<div class="sb_userLevelIcons sb_userLevel_next"><div class="sb_userLevelImg sb_userLevel_empty"></div><p><br /></p></div>');
+						levelGroup.append('<div class="sb_userLevelIcons sb_userLevel_next"><div class="sb_userLevelImg sb_userLevel_empty"></div><p><br /></p></div>');
 						emptyLevelsToAdd--;
 					}
-				}*/
+				}
+
+				containerElem.cycle({
+					prev :	'#sb_userLevel_prev',
+					next:		'#sb_userLevel_next',
+					fx: 		'scrollHorz',
+					speed:	500,
+					timeout:	0,
+					startingSlide: parseInt(Math.floor(currentLevel / 5))
+				});
 			});
 		}
 

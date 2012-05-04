@@ -729,11 +729,15 @@ class Starbar_ContentController extends Api_GlobalController
 		if (Registry::isRegistered('starbar')) {
 			$starbar = Registry::getStarbar();
 		} else {
-			$userstate = new User_State();
-			$userstate->loadDataByUniqueFields(array('user_id'=>$this->user_id));
-
 			$starbar = new Starbar();
-			$starbar->loadData($userstate->starbar_id);
+			if( $this->starbar_id )
+				$starbar->loadData($this->starbar_id);
+			else {
+				$userstate = new User_State();
+				$userstate->loadDataByUniqueFields(array('user_id'=>$this->user_id));
+
+				$starbar->loadData($userstate->starbar_id);
+			}
 		}
 
 		$this->view->assign('starbar', $starbar);

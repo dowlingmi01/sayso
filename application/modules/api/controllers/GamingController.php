@@ -4,9 +4,6 @@ require_once APPLICATION_PATH . '/modules/api/controllers/GlobalController.php';
 /**
  * Sayso "mini" Gaming API
  *
- * - starbar_id is optional to this controller since we can
- *   determine the "game" from the auth_key which is always
- *   required for API requests
  * - user_key is required on most calls since we get the user's
  * 	 gaming id from their user_id
  *

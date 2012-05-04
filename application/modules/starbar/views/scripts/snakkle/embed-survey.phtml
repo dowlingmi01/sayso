@@ -23,6 +23,7 @@
 			+ "//<?= BASE_DOMAIN ?>/starbar/snakkle/survey-redirect?survey_id=<?= $this->survey->id ?>&next_survey_id=<?= $this->next_survey_id ?>&user_id="
 			+ sayso.starbar.user.id
 			+ "&user_key=" + sayso.starbar.user.key
+			+ "&starbar_id=" + sayso.starbar.id
 			+ "&auth_key=" + sayso.starbar.authKey;
 		var iframeContainerId = "starbar-survey-<?= $this->survey->id ?>";
 		<? if ($this->survey->premium) { ?>

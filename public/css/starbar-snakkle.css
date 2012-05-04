@@ -1526,6 +1526,6 @@
 
 /* Keep this at end of file. It's used for testing if CSS is loaded. */
 
-._sayso_starbar_css_loaded {
+#sayso-starbar ._sayso_starbar_css_loaded {
 	width: 1px;
 }

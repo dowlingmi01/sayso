@@ -92,10 +92,10 @@ class Api_SurveyController extends Api_GlobalController
 			// reward the user
 			Game_Starbar::getInstance()->completeSurvey($survey);
 		} else {
-			$correctSurveyQuestionChoiceId = Survey_QuestionChoice::getCorrectChoiceForQuestion($surveyQuestion->id);
+			$correctSurveyQuestionChoiceId = Survey_QuestionChoice::getCorrectChoiceIdForQuestion($surveyQuestion->id);
 		}
 
-		return $this->_resultType(array("correct_survey_question_choice_id" => $correctSurveyQuestionChoiceId));
+		return $this->_resultType(new Object(array("correct_survey_question_choice_id" => $correctSurveyQuestionChoiceId)));
 	}
 }
 

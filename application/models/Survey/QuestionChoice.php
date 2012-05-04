@@ -38,7 +38,7 @@ class Survey_QuestionChoice extends Record
 		return Db_Pdo::fetchColumn($sql, $this->id);
 	}
 
-	public static function getCorrectChoiceForQuestion($surveyQuestionId) {
+	public static function getCorrectChoiceIdForQuestion($surveyQuestionId) {
 		$sql = "
 			SELECT id
 			FROM survey_question_choice
@@ -49,5 +49,17 @@ class Survey_QuestionChoice extends Record
 		$correctSurveyQuestionChoiceId = (int) $result['id'];
 
 		return $correctSurveyQuestionChoiceId;
+	}
+
+	public static function getNumberOfResponsesForChoice($surveyQuestionChoiceId) {
+		$sql = "
+			SELECT count(id) AS theCount
+			FROM survey_question_response
+			WHERE survey_question_choice_id = ?
+		";
+		$result = Db_Pdo::fetch($sql, $surveyQuestionChoiceId);
+		$numberOfResponses = (int) $result['theCount'];
+
+		return $numberOfResponses;
 	}
 }

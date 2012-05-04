@@ -227,6 +227,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->user_id = $this->user_id;
 		$this->view->user_key = $this->user_key;
 		$this->view->auth_key = $this->auth_key;
+		$this->view->starbar_id = $this->starbar_id;
 
 		// @todo point this to onboarding
 		$shareLink = "http://music.say.so/";
@@ -294,11 +295,43 @@ class Starbar_ContentController extends Api_GlobalController
 		$surveyResponses = new Survey_ResponseCollection();
 		$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'quizzes', $this->_maximumDisplayed['quizzes']);
 
-		$quizzes = new SurveyCollection();
-		$quizzes->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'quiz', 'new');
+		$quizzesById = new SurveyCollection();
+		$quizzesById->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'quiz', 'new');
 
-		if ($quizIndex <= sizeof($quizzes) - 1) $this->view->quiz = $quizzes[$quizIndex];
-		else $this->view->quiz = new Survey();
+		$quizzes = array();
+
+		$this->view->user_id = $this->user_id;
+		$this->view->user_key = $this->user_key;
+		$this->view->auth_key = $this->auth_key;
+		$this->view->starbar_id = $this->starbar_id;
+		$this->view->quiz_index = $quizIndex;
+
+		foreach ($quizzesById as $quiz) {
+			$quizzes[] = $quiz;
+		}
+
+		if (($quizIndex <= sizeof($quizzes) - 1) && isset($quizzes[$quizIndex])) {
+			$quiz = $quizzes[$quizIndex];
+			$quizQuestion = new Survey_Question();
+			$quizQuestion->loadDataByUniqueFields(array('survey_id' => $quiz->id));
+			$quizChoices = new Survey_QuestionChoiceCollection();
+			$quizChoices->loadAllChoicesForSurveyQuestion($quizQuestion->id);
+			$quizResults = array();
+
+			$totalQuizResponses = 0;
+			foreach ($quizChoices as $quizChoice) {
+				$numberOfResponsesForThisChoice = Survey_QuestionChoice::getNumberOfResponsesForChoice($quizChoice->id);
+				$quizResults[$quizChoice->id] = $numberOfResponsesForThisChoice;
+				$totalQuizResponses += $numberOfResponsesForThisChoice;
+			}
+
+			$this->view->quiz = $quiz;
+			$this->view->quiz_question = $quizQuestion;
+			$this->view->quiz_choices = $quizChoices;
+			$this->view->quiz_results = $quizResults;
+			$this->view->total_quiz_responses = $totalQuizResponses;
+		}
+		else $this->view->quiz = false;
 	}
 
 	public function surveyUnavailableAction ()
@@ -700,7 +733,7 @@ class Starbar_ContentController extends Api_GlobalController
 		} else {
 			$userstate = new User_State();
 			$userstate->loadDataByUniqueFields(array('user_id'=>$this->user_id));
-			
+
 			$starbar = new Starbar();
 			$starbar->loadData($userstate->starbar_id);
 		}

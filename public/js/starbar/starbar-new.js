@@ -406,8 +406,9 @@ $SQ(function(){
 						hideAlerts(notification, true, true);
 					}
 
-					// if it was already open, close it and remove the class. otherwise, open the popbox
-					if (thisPopBox.hasClass('sb_popBoxActive')){
+					// if it was already open, close it and remove the class (unless trying to refresh from inside the popBox).
+					// otherwise, open the popbox
+					if (thisPopBox.hasClass('sb_popBoxActive') && $SQ(this).parents('.sb_popBoxActive').length == 0){
 						closePopBox();
 					}else{
 						// this menu item's popBox is active
@@ -459,13 +460,13 @@ $SQ(function(){
 		$SQ.each(btnExternalShare,function(){
 			// for some reason, the hover behavior set in the CSS is totally ignored. :(
 				$SQ(this).hover(function(){
-					$SQPoints = $('#'+$SQ(this).attr('rel'));
+					$SQPoints = $SQ('#'+$SQ(this).attr('rel'));
 					console.log($SQ(this).attr('rel'));
 					$SQ(this).css('background-position','0px -20px');
 					$SQPoints.show();
 				},
 				function(){
-					$SQPoints = $('#'+$SQ(this).attr('rel'));
+					$SQPoints = $SQ('#'+$SQ(this).attr('rel'));
 					$SQ(this).css('background-position','0px 0px');
 					$SQPoints.hide();
 				});

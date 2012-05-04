@@ -552,7 +552,7 @@
 
 #sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent{
 	width: 360px;
-	height: 455px;
+	height: 340px;
 }
 
 #sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz h2.sb_title{
@@ -584,6 +584,11 @@
 	padding: 5px 15px 5px 0px;
 }
 
+#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_options .sb_quiz_option_correct{
+	color: #92c20c !important;
+	text-shadow: none !important;
+}
+
 #sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_results{
 	border-bottom: 2px dotted #999999;
 	padding-bottom: 5px;
@@ -592,11 +597,12 @@
 
 #sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quizShare{
 	float: left;
+	margin: 0 0 0 50px;
 }
 
 #sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_externalShares{
 	float: left;
-	margin: 0px 0px 0px 10px;
+	margin: 10px 0px 0px 10px;
 }
 
 #sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz_next{
@@ -1412,29 +1418,29 @@
 #sayso-starbar #sb_popBox_surveys.sb_triangle-border:before,
 #sayso-starbar #sb_popBox_surveys_lg.sb_triangle-border:before,
 #sayso-starbar #sb_popBox_surveys_hg.sb_triangle-border:before{
-	left: 115px;
+	left: 125px;
 }
 #sayso-starbar #sb_popBox_surveys.sb_triangle-border:after,
 #sayso-starbar #sb_popBox_surveys_lg.sb_triangle-border:after,
 #sayso-starbar #sb_popBox_surveys_hg.sb_triangle-border:after{
-	left: 116px;
+	left: 126px;
 }
 #sayso-starbar #sb_popBox_surveys .sb_triangle-solid:after,
 #sayso-starbar #sb_popBox_surveys_lg .sb_triangle-solid:after,
 #sayso-starbar #sb_popBox_surveys_hg .sb_triangle-solid:after{
-	left: 113px;
+	left: 123px;
 }
 
 /* quizzes */
 
 #sayso-starbar #sb_popBox_quizzes.sb_triangle-border:before{
-	left: 190px;
+	left: 230px;
 }
 #sayso-starbar #sb_popBox_quizzes.sb_triangle-border:after{
-	left: 191px;
+	left: 231px;
 }
 #sayso-starbar #sb_popBox_quizzes .sb_triangle-solid:after{
-	left: 187px;
+	left: 227px;
 }
 
 /* user levels */

@@ -5,12 +5,12 @@
 
 /* !----- Basic Structure ----- */
 .sg-body {
-	background:#F3F3F3;
+	background:#FFFFFF;
 	margin:0;
 	padding:0;
 	}
 .sg-wrapper {
-	background:#F3F3F3;
+	background:#FFFFFF;
 	color:black;
 	border:0;
 	width:475px;
@@ -37,24 +37,24 @@
 	font-size: 15px;
 	}
 .sg-page-description {
-	background-color:#F3F3F3;
-	border:1px solid #F3F3F3;
+	background-color:#FFFFFF;
+	border:1px solid #FFFFFF;
 	padding:20px;
 	}
 
 /* !----- Headers, Footers, Table headers ----- */
 .sg-header,
 .sg-footer {
-	background:#F3F3F3;
+	background:#FFFFFF;
 	color:black;
 	}
 
 .sg-header {
-	border-bottom:1px solid #F3F3F3;
+	border-bottom:1px solid #FFFFFF;
 	}
 
 .sg-footer {
-	border-top:1px solid #F3F3F3;
+	border-top:1px solid #FFFFFF;
 	}
 
 /* !----- Question Titles ----- */
@@ -135,9 +135,9 @@ ul.sg-list-vertical li {
 .sg-button-bar {
 	position: fixed;
 	bottom: 0;
-	border-top: 10px solid #F3F3F3;
-	border-bottom: 10px solid #F3F3F3;
-	background: #F3F3F3;
+	border-top: 10px solid #FFFFFF;
+	border-bottom: 10px solid #FFFFFF;
+	background: #FFFFFF;
 	width: 98%;
 	}
 
@@ -249,7 +249,7 @@ h1.sg-title {
 	font-weight: bold;
 	margin: 0;
 	padding: 0;
-	background-color: #F3F3F3;
+	background-color: #FFFFFF;
 	z-index: 5;
 }
 

@@ -254,11 +254,16 @@
 #sayso-starbar #starbar-player-console .sb_theme_iconChange{
 	background-image: url('../images/snakkle/img_change.png');
 	background-repeat: no-repeat;
-	background-position: right 3px;
+	background-position: right 0px;
 	font-weight: bold;
 	text-decoration: none;
 	font-size: 12px;
-	padding: 0px 13px 0px 0px;
+	padding: 0px 20px 0px 0px;
+	height: 16px;
+	line-height: 16px;
+	color: #666666;
+	display: inline-block;
+	margin: 5px 0px 0px 0px;
 }
 
 /* promo area */
@@ -455,6 +460,7 @@
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a,
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-disabled a,
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-processing a,
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a:hover,
 #sayso-starbar a, #sayso-starbar a:link,
 #sayso-starbar a:active,
 #sayso-starbar a:visited,
@@ -467,12 +473,21 @@
 	color: #009fd2;
 }
 
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a{
+	color: #ffffff;
+}
+
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li{
+	border-right: 1px solid #ffffff;
+}
+
+
 /* other special formatting styles */
 
 #sayso-starbar #starbar-player-console .sb_notesEarned{
-	background-image: url('../images/snakkle/img_note_sm.png');
+	background-image: url('../images/snakkle/img_snakkles_sm.png');
 	background-repeat: no-repeat;
-	background-position: 5px 3px;
+	background-position: 2px 3px;
 	padding: 3px 5px 3px 24px;
 	line-height: 21px;
 	font-size: 11px;
@@ -526,6 +541,22 @@
 /* loading animated gif */
 #sayso-starbar .sb_img_loading, .sayso-starbar-loading-external .sb_img_loading{
 	background-image: url('../images/snakkle/img_ajax-loader.gif') !important;
+}
+
+#sayso-starbar #starbar-player-console h3.sb_theme_iconComplete{
+	background-image: url("../images/snakkle/img_complete.png");
+  background-position: 5px 0;
+  background-repeat: no-repeat;
+	display: inline-block;
+  float: left;
+  line-height: 37px;
+  margin: 10px 0px;
+  height: 37px;
+  padding: 0px 0 0px 50px;
+  position: absolute;
+  width: 360px;
+  font-weight: normal;
+  color: #000 !important;
 }
 
 
@@ -669,6 +700,36 @@
 	height: 20px;
 }
 
+/* share icons */
+#sayso-starbar .sb_externalShare.sb_externalShare_twitter{
+	width: 56px;
+	height: 20px;
+	display: inline-block;
+	text-indent: -9999px;
+	background-image: url('../images/snakkle/img_share_twitter.png');
+	background-repeat: no-repeat;
+	background-position: 0px 0px !important;
+}
+
+#sayso-starbar .sb_externalShare.sb_externalShare_facebook, 
+#sayso-starbar-embed .sb_externalShare.sb_externalShare_facebook{
+	width: 55px;
+	height: 20px;
+	display: inline-block;
+	text-indent: -9999px;
+	background-image: url('../images/snakkle/img_share_facebook.png');
+	background-repeat: no-repeat;
+	background-position: 0px 0px !important;
+}
+
+#sayso-starbar .sb_externalShare.sb_externalShare_email, 
+#sayso-starbar .sb_externalShare.sb_externalShare_email:hover, 
+#sayso-starbar-embed .sb_externalShare.sb_externalShare_email, 
+#sayso-starbar-embed .sb_externalShare.sb_externalShare_email:hover {
+	margin-left: 0px;
+	margin-right: -20px;
+}
+
 #sayso-starbar #starbar-player-console span.sb_mini-snakkle-reward,
 #sayso-starbar-embed span.sb_mini-snakkle-reward,
 #sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li span.sb_mini-snakkle-reward{
@@ -689,8 +750,12 @@
 	text-shadow: 1px 1px 1px rgba(0,0,0,.8);
 }
 
+#sayso-starbar #starbar-player-console span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_facebook{
+	left: 55px;
+}
+
 #sayso-starbar #starbar-player-console span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_twitter{
-	left: 80px !important;
+	left: 115px !important;
 }
 
 
@@ -1168,16 +1233,6 @@
   width: 22px;
 }
 
-#sayso-starbar #starbar-player-console .sb_theme_iconChange{
-	background-image: url("../images/hellomusic/img_change.png");
-  background-position: right 3px;
-  background-repeat: no-repeat;
-  font-size: 12px;
-  font-weight: bold;
-  padding: 0 20px 0 0;
-  text-decoration: none;
-}
-
 /* Rewards Popup */
 
 #sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewards{
@@ -1498,7 +1553,7 @@
 
 #sayso-starbar #starbar-player-console #sb_popBox_user-profile.sb_popBox .sb_popContent,
 #sayso-starbar #starbar-player-console #sb_popBox_user-share.sb_popBox .sb_popContent{
-	width: 520px;
+	width: 530px;
 	height: 280px;
 }
 

@@ -15,8 +15,6 @@ class Bootstrap extends App_Bootstrap
 		App_Bootstrap::initApp();
 
 		Record::$defaultModifiedColumn = 'modified';
-		Api_UserSession::setup('User', '', 'Gamer');
-		//Api_UserSession::$regenerateMissingSessionId = true;
 
 		Game_Abstract::$_enabled = true;
 
@@ -49,57 +47,6 @@ class Bootstrap extends App_Bootstrap
 	{
 		$view = new Zend_View();
 		return $view;
-	}
-
-	/**
-	 * Setup bootstrap resource returning a usable link
-	 * to table holding session data
-	 * - this method is now a "callback style" init - first must determine module(s)
-	 *   see BootstrapPlugin below
-	 *
-	 * @return Zend_Session_SaveHandler_DbTable
-	 * @author alecksmart
-	 */
-	public function _initDbSessionHandler()
-	{
-		// Get values we supplied in application.ini
-		$options	= $this->getOptions();
-		if(!$options['sessionDbHandler']['on'])
-		{
-			return false;
-		}
-		$db		 = Zend_Db::factory('Pdo_Mysql', array(
-			'host'			=> $options['sessionDbHandler']['host'],
-			'username'		=> $options['sessionDbHandler']['username'],
-			'password'		=> $options['sessionDbHandler']['password'],
-			'dbname'		=> $options['sessionDbHandler']['dbname'])
-		);
-		$config	 = array(
-			'name'		   => 'session',
-			'primary'		=> 'id',
-			'modifiedColumn' => 'modified',
-			'dataColumn'	 => 'data',
-			'lifetimeColumn' => 'lifetime',
-			'db'			 => $db
-		);
-
-		/* Set the default adapter for abstract tables - Peter Connolly, 5 April 2012 */
-		Zend_Db_Table_Abstract::setDefaultAdapter($db);
-
-		$dbSessionHandler = false;
-
-		// Try to iniialize db conncetion
-		// and return the created handler
-		try {
-			$dbSessionHandler = new Zend_Session_SaveHandler_DbTable($config);
-		}
-		catch (Exception $e) {
-			return false;
-		}
-
-		// @todo this is hackish, intent is that sessions are permanent (no gc)
-		$dbSessionHandler->setLifetime(31500000);  // 1 year
-		return $dbSessionHandler;
 	}
 
 	/**

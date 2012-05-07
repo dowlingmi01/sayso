@@ -8,13 +8,6 @@ $game = $this->game;
 
 ?>
 <script type="text/javascript">
-	/**
-	 * Purpose of this code is to represent the browser app for testing/development
-	 * Whatever app state is set in the KRL, should be represented here.
-	 * Starbar, auth key are hard coded to Hello Music
-	 * User is hard-coded
-	 * User session is dynamic
-	 */
 	$SQ(function () {
 		var sayso = {};
 		sayso.debug = false;
@@ -42,8 +35,8 @@ $game = $this->game;
 			id : <?= $starbar->getId() ?>,
 			shortName : '<?= $starbar->short_name ?>',
 			user : {
-				id : <?= Api_UserSession::getInstance()->getId() ?>,
-				key : '<?= Api_UserSession::getInstance()->getKey() ?>'
+				id : <?= $this->user_id ? $this->user_id : 0 ?>,
+				key : '<?= $this->user_key ? $this->user_key : "" ?>'
 			},
 			<? if ($game && $game->getGamer() && $game->getLevels()) { ?>
 				game : <?= $this->game->export(new ObjectExporter_Json()) ?>,

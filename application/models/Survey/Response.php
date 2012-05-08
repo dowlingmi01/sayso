@@ -122,10 +122,10 @@ class Survey_Response extends Record
 
 			// Initialize reference arrays so we don't have to repeatedly call the DB
 			$allSurveyQuestions = new Survey_QuestionCollection();
-			$allSurveyQuestions->loadAllQuestionsForSurvey($this->id);
+			$allSurveyQuestions->loadAllQuestionsForSurvey($survey->id);
 
 			$allSurveyQuestionChoices = new Survey_QuestionChoiceCollection();
-			$allSurveyQuestionChoices->loadAllChoicesForSurvey($this->id);
+			$allSurveyQuestionChoices->loadAllChoicesForSurvey($survey->id);
 
 			$surveyQuestionChoices = new Survey_QuestionChoiceCollection();
 

@@ -182,9 +182,9 @@ class Api_GamingController extends Api_GlobalController
 	}
 
 	public function shareAction () {
-		$this->_validateRequiredParameters(array('shared_type', 'shared_id', 'user_key'));
+		$this->_validateRequiredParameters(array('shared_type', 'shared_id', 'social_network', 'user_key'));
 
-		Game_Starbar::getInstance()->share($this->shared_type, @$this->shared_id);
+		Game_Starbar::getInstance()->share($this->shared_type, $this->social_network, @$this->shared_id);
 		return $this->_resultType(true);
 	}
 

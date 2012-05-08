@@ -86,7 +86,7 @@
 </script>
 <div id="sayso-starbar-embed">
 	<div id="sb-survey-completed">
-		<? if ($this->survey->premium) { ?>
+		<? if ($this->survey->reward_category == "premium") { ?>
 			<p>Excellent! You earned <strong class="sb_theme_textHighlight_alt">50 Notes</strong> &amp; <strong class="sb_theme_textHighlight_alt">500 Chops</strong></p>
 		<? } else { ?>
 			<p>Excellent! You earned <strong class="sb_theme_textHighlight">25 Notes</strong> &amp; <strong class="sb_theme_textHighlight">250 Chops</strong></p>

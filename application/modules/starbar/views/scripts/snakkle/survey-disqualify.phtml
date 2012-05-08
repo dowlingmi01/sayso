@@ -23,17 +23,22 @@
 		Sorry, it appears that you do not qualify for the <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong> survey. Don't worry, we'll still give you some Bucks and Stars for trying!<br /><br />
 	<? } ?>
 	<div id="sb-survey-disqualified">
-		<? if ($this->survey->premium) { ?>
-			<p>Nice! You still banked <strong class="sb_theme_textHighlight_alt">200 Bucks</strong> &amp; <strong class="sb_theme_textHighlight_alt">2000 Stars</strong>. Remember to check out the Rewards Center to redeem your Bucks for stuff!</p>
+		<? if ($this->survey->reward_category == "premium") { ?>
+			<p>Nice! You still banked <strong class="sb_theme_textHighlight_alt">75 Bucks</strong> &amp; <strong class="sb_theme_textHighlight_alt">1000 Stars</strong>. Remember to check out the Rewards Center to redeem your Bucks for stuff!</p>
+			<? $shareReward = 30 ?>
+		<? } elseif ($this->survey->reward_category == "profile") { ?>
+			<p>You earned <strong class="sb_theme_textHighlight">50 Bucks</strong> &amp;	<strong class="sb_theme_textHighlight">500 Stars</strong></p>
+			<? $shareReward = 15 ?>
 		<? } else { ?>
 			<p>You earned <strong class="sb_theme_textHighlight">25 Bucks</strong> &amp;	<strong class="sb_theme_textHighlight">250 Stars</strong></p>
+			<? $shareReward = 8 ?>
 		<? } ?>
 		<div class="sb_externalShares">
 			<a class="sb_externalShare" href="#"
 				onclick="$SQ.openWindow('//www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($this->share_link) ?>&caption=<?= urlencode($this->facebook_share_caption) ?>&picture=<?= urlencode($this->facebook_share_image_url) ?>&redirect_uri=<?= urlencode($this->facebook_share_callback_url) ?>&name=<?= urlencode($this->facebook_title) ?>&description=<?= urlencode($this->facebook_description) ?>', 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450'); return false;">
 				<img src="//<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
 			</a>
-			<span class="sb_mini-note-reward">+<?= ($this->survey->premium ? "50" : "25") ?></span>
+			<span class="sb_mini-note-reward">+<?= $shareReward ?></span>
 			<a class="twitter-share-button"
 				data-related="<?= $this->twitter_share_related_users ?>"
 				data-hashtags="<?= $this->twitter_share_hashtags ?>"
@@ -44,7 +49,7 @@
 				href="https://twitter.com/intent/tweet">
 					<img src="//<?= BASE_DOMAIN ?>/images/generic/logo_twitter.png" alt="Twitter" />
 			</a>
-			<span class="sb_mini-note-reward">+<?= ($this->survey->premium ? "50" : "25") ?></span>
+			<span class="sb_mini-note-reward">+<?= $shareReward ?></span>
 			Share this survey to earn extra points
 		</div>
 	</div>

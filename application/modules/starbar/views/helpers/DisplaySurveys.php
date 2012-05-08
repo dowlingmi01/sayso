@@ -3,15 +3,19 @@ class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 {
 	function displaySurveys($status) {
 
-		$numberOfPremiumRedeemablePoints = 500;
+		$numberOfPremiumRedeemablePoints = 380;
 		$numberOfPremiumExperiencePoints = 5000;
-		$numberOfRegularRedeemablePoints = 50;
-		$numberOfRegularExperiencePoints = 500;
+		$numberOfStandardRedeemablePoints = 38;
+		$numberOfStandardExperiencePoints = 500;
+		$numberOfProfileRedeemablePoints = 150;
+		$numberOfProfileExperiencePoints = 2000;
 
-		$numberOfPremiumRedeemablePointsDisqualified = 200;
-		$numberOfPremiumExperiencePointsDisqualified = 2000;
-		$numberOfRegularRedeemablePointsDisqualified = 25;
-		$numberOfRegularExperiencePointsDisqualified = 250;
+		$numberOfPremiumRedeemablePointsDisqualified = 75;
+		$numberOfPremiumExperiencePointsDisqualified = 1000;
+		$numberOfStandardRedeemablePointsDisqualified = 25;
+		$numberOfStandardExperiencePointsDisqualified = 250;
+		$numberOfProfileRedeemablePointsDisqualified = 75;
+		$numberOfProfileExperiencePointsDisqualified = 1000;
 
 		switch ($status) {
 			case "new":
@@ -40,9 +44,11 @@ class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 
 		if ($numberToShow) {
 			$i = 0;
+
 			if ($status == 'new' || $status == 'archived') {
 				echo '<ul class="sb_solidList">';
 			}
+
 			foreach ($surveys as $survey) {
 				// The numberToShow can be smaller than the size of the list
 				if ($i >= $numberToShow) break;
@@ -50,37 +56,58 @@ class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 				// "sb_listOdd" or "sb_listEven"
 				$listItemClass = "sb_list".(($i % 2) ? "Odd" : "Even");
 
-				if ($status == 'new' || $status == 'archived') {
-					if ($survey->premium) {
-						$strongClass = "sb_theme_textHighlight_alt";
-						$buttonClass = "sb_theme_button sb_theme_button_alt";
-						$popBoxToOpen = "sb_popBox_surveys_hg";
-						$numberOfRedeemablePoints = $numberOfPremiumRedeemablePoints;
-						$numberOfExperiencePoints = $numberOfPremiumExperiencePoints;
-					} else {
+				// Used for new and archived, ignored for completed/disqualified
+				if ($survey->size == "large") {
+					$popBoxToOpen = "sb_popBox_surveys_hg";
+				} else {
+					$popBoxToOpen = "sb_popBox_surveys_lg";
+				}
+
+				// Used for new and archived, ignored for completed/disqualified
+				switch($survey->reward_category) {
+					case "standard":
 						$strongClass = "sb_theme_textHighlight";
 						$buttonClass = "sb_theme_button";
-						$popBoxToOpen = "sb_popBox_surveys_lg";
-						$numberOfRedeemablePoints = $numberOfRegularRedeemablePoints;
-						$numberOfExperiencePoints = $numberOfRegularExperiencePoints;
-					}
-				} elseif ($status == 'completed') {
-					if ($survey->premium) {
-						$numberOfRedeemablePoints = $numberOfPremiumRedeemablePointsDisqualified;
-						$numberOfExperiencePoints = $numberOfPremiumExperiencePointsDisqualified;
-					} else {
-						$numberOfRedeemablePoints = $numberOfRegularRedeemablePointsDisqualified;
-						$numberOfExperiencePoints = $numberOfRegularExperiencePointsDisqualified;
+						break;
+					case "premium":
+					case "profile":
+						$strongClass = "sb_theme_textHighlight_alt";
+						$buttonClass = "sb_theme_button sb_theme_button_alt";
+						break;
+				}
+
+				if (in_array($status, array("new", "archived", "completed"))) {
+					switch($survey->reward_category) {
+						case "standard":
+							$numberOfRedeemablePoints = $numberOfStandardRedeemablePoints;
+							$numberOfExperiencePoints = $numberOfStandardExperiencePoints;
+							break;
+						case "premium":
+							$numberOfRedeemablePoints = $numberOfPremiumRedeemablePoints;
+							$numberOfExperiencePoints = $numberOfPremiumExperiencePoints;
+							break;
+						case "profile":
+							$numberOfRedeemablePoints = $numberOfProfileRedeemablePoints;
+							$numberOfExperiencePoints = $numberOfProfileExperiencePoints;
+							break;
 					}
 				} elseif ($status == 'disqualified') {
-					if ($survey->premium) {
-						$numberOfRedeemablePoints = $numberOfPremiumRedeemablePointsDisqualified;
-						$numberOfExperiencePoints = $numberOfPremiumExperiencePointsDisqualified;
-					} else {
-						$numberOfRedeemablePoints = $numberOfRegularRedeemablePointsDisqualified;
-						$numberOfExperiencePoints = $numberOfRegularExperiencePointsDisqualified;
+					switch($survey->reward_category) {
+						case "standard":
+							$numberOfRedeemablePoints = $numberOfStandardRedeemablePointsDisqualified;
+							$numberOfExperiencePoints = $numberOfStandardExperiencePointsDisqualified;
+							break;
+						case "premium":
+							$numberOfRedeemablePoints = $numberOfPremiumRedeemablePointsDisqualified;
+							$numberOfExperiencePoints = $numberOfPremiumExperiencePointsDisqualified;
+							break;
+						case "profile":
+							$numberOfRedeemablePoints = $numberOfProfileRedeemablePointsDisqualified;
+							$numberOfExperiencePoints = $numberOfProfileExperiencePointsDisqualified;
+							break;
 					}
 				}
+
 				?>
 				<? if ($status == 'new' || $status == 'archived') { // User can take this survey ?>
 					<li class="<?= $listItemClass ?>">
@@ -109,7 +136,7 @@ class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 			<? if ($this->view->count_archived_surveys) { ?>
 				<p>No new surveys today, but you still have <?= $this->view->count_archived_surveys ?> surveys to complete in the <a href="#" class="sb_nav_tabs" rel="<?= (($this->view->count_completed_surveys || $this->view->count_disqualified_surveys) ? 3 : 2) ?>">archives</a>.</p>
 			<? } else { ?>
-				<p>No new surveys today, check back soon to earn more notes and chops!</p>
+				<p>No new surveys today, check back soon to earn more bucks and stars!</p>
 			<? } ?>
 			<?
 		}

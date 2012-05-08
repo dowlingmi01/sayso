@@ -54,10 +54,10 @@
 			"colname": "status",
 			"type": "list",
 			"listoptions": [
-				"Active",
-				"Inactive"
+				"active",
+				"inactive"
 			],
-			"default": "Active",
+			"default": "active",
 			"displaywhen": [
 				"add",
 				"detail",
@@ -121,9 +121,14 @@
 			]
 		},
 		{
-			"colname": "premium",
-			"type": "checkbox",
-			"default": false,
+			"colname": "reward_category",
+			"type": "list",
+			"listoptions": [
+				"standard",
+				"premium",
+				"profile"
+			],
+			"default": "standard",
 			"displaywhen": [
 				"add",
 				"detail",

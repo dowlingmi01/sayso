@@ -41,7 +41,7 @@ class Starbar_View_Helper_DisplayPolls extends Zend_View_Helper_Abstract
 					<h3>
 						<? $iframeHeight = 62 + (ceil($survey->number_of_answers / 2.0) * 32); // 62 base height + 32 per row of answers -- Note that this height estimate is updated after the iframe loads ?>
 						<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/embed-poll?survey_id=<?= $survey->id ?>" rel="starbar-poll-<?= $survey->id ?>" iframeHeight="<?= $iframeHeight ?>">
-							<? if ($survey->premium) { ?>
+							<? if ($survey->reward_category == "premium") { ?>
 								<span class="sb_img_doubleValue"></span>
 							<? } ?>
 							<?= $survey->title ?>
@@ -62,12 +62,12 @@ class Starbar_View_Helper_DisplayPolls extends Zend_View_Helper_Abstract
 				<? } else { // User cannot take this poll ?>
 					<li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>
 						<div class="sb_pointsEarnedTotal">
-							<? if ($survey->premium) { ?>
+							<? if ($survey->reward_category == "premium") { ?>
 								<span class="sb_xpEarned sb_theme_textHighlight_alt">+500</span>
-								<span class="sb_notesEarned sb_theme_textHighlight_alt">+50</span>
+								<span class="sb_notesEarned sb_theme_textHighlight_alt">+38</span>
 							<? } else { ?>
 								<span class="sb_xpEarned sb_theme_textHighlight">+250</span>
-								<span class="sb_notesEarned sb_theme_textHighlight">+25</span>
+								<span class="sb_notesEarned sb_theme_textHighlight">+19</span>
 							<? } ?>
 						</div><!-- .sb_pointsEarnedTotal -->
 					</li>

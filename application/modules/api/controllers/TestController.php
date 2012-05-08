@@ -11,27 +11,31 @@ class Api_TestController extends Api_GlobalController
 {
 
 	/**
-	* Simulate completing initial survey
+	* Simulate completing a survey
 	* @param None
 	* @return Boolean (true) if we are on the development environments (no other checks are performed in order to get this result)
 	* @return Boolean (false) if we are not on the development system
 	*/
 	public function completeSurveyAction() {
 		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'demo'))) {
-			$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'survey_type', 'survey_premium'));
+			$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'survey_type', 'survey_reward_category'));
 
 			$survey = new Survey();
 			$survey->type = $this->survey_type;
-			$survey->premium = ( $this->survey_premium == "true" ? true : false );
+			$survey->reward_category = $this->survey_reward_category;
 			Game_Starbar::getInstance()->completeSurvey($survey);
 
-			if ($survey->type == 'survey' && $survey->premium) {
-				Db_Pdo::execute("DELETE FROM survey_response WHERE survey_id = 1 AND user_id = ?", $this->user_id);
-				$surveyResponse = new Survey_Response();
-				$surveyResponse->survey_id = 1;
-				$surveyResponse->user_id = $this->user_id;
-				$surveyResponse->status = 'completed';
-				$surveyResponse->save();
+			if ($survey->type == "survey" && $survey->reward_category == "profile") {
+				$profileSurvey = new Survey();
+				$profileSurvey->loadDataByUniqueFields(array("starbar_id" => $this->starbar_id, "reward_category" => "profile"));
+				if ($profileSurvey->id) {
+					Db_Pdo::execute("DELETE FROM survey_response WHERE survey_id = ? AND user_id = ?", $profileSurvey->id, $this->user_id);
+					$surveyResponse = new Survey_Response();
+					$surveyResponse->survey_id = $profileSurvey->id;
+					$surveyResponse->user_id = $this->user_id;
+					$surveyResponse->status = 'completed';
+					$surveyResponse->save();
+				}
 			}
 
 			return $this->_resultType(true);

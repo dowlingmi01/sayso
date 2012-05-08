@@ -471,6 +471,15 @@ class Starbar_ContentController extends Api_GlobalController
 		$surveyResponses->markOldSurveysArchivedForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys');
 		$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys', $this->_maximumDisplayed['surveys']);
 		$this->_assignSurveysToView('surveys');
+		$this->view->profile_survey_id = 0;
+		if (isset($this->view->new_surveys) && sizeof($this->view->new_surveys)) {
+			foreach ($this->view->new_surveys as $survey) {
+				if ($survey->reward_category == "profile") {
+					$this->view->profile_survey_id = $survey->id;
+					break;
+				}
+			}
+		}
 	}
 
 	public function onboardingAction ()
@@ -693,7 +702,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 		/* Facebook wall post successful */
 		if ($request->getParam('post_id')) {
-			Game_Starbar::getInstance()->share($this->shared_type, @$this->shared_id);
+			Game_Starbar::getInstance()->share($this->shared_type, "FB", @$this->shared_id);
 
 			// Send hidden game update notification to make the user request an update
 			$message = new Notification_Message();

@@ -729,7 +729,7 @@ $SQ(function(){
 	function handleTweet (shared_type, shared_id) {
 		if (shared_type && shared_id) {
 			$SQ.ajaxWithAuth({
-				url : '//'+sayso.baseDomain+'/api/gaming/share?renderer=jsonp&shared_type='+shared_type+'&shared_id='+shared_id,
+				url : '//'+sayso.baseDomain+'/api/gaming/share?renderer=jsonp&shared_type='+shared_type+'&shared_id='+shared_id+'&social_network=TW',
 				success : function (response, status, jqXHR) {
 					updateGame(response.game, true, true);
 				}

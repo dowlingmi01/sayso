@@ -84,7 +84,7 @@ class Survey_ResponseCollection extends RecordCollection
 						ON s.id = sr.survey_id
 						AND s.type = ?
 						AND s.starbar_id = ?
-						AND s.premium IS NOT TRUE
+						AND s.reward_category = 'standard'
 						AND s.status = 'active'
 					SET sr.status = 'archived'
 					WHERE sr.user_id = ?

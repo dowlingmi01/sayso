@@ -37,6 +37,7 @@ abstract class Game_Starbar extends Game_Abstract {
 
 	const SHARE_POLL = 'poll';
 	const SHARE_SURVEY = 'survey';
+	const SHARE_QUIZ = 'quiz';
 	const SHARE_STARBAR = 'starbar';
 	const SHARE_PROMOS = 'promos';
 
@@ -65,69 +66,43 @@ abstract class Game_Starbar extends Game_Abstract {
 	}
 
 	public function completeSurvey (Survey $survey) {
-
-		switch ($survey->type) {
-			case 'poll' :
-				if ($survey->premium) {
-					$this->submitAction('POLL_PREMIUM');
-				} else {
-					$this->submitAction('POLL_STANDARD');
-				}
-				break;
-			case 'quiz' :
-				if ($survey->premium) {
-					$this->submitAction('QUIZ_PREMIUM');
-				} else {
-					$this->submitAction('QUIZ_STANDARD');
-				}
-				break;
-			case 'survey' :
-			default :
-				if ($survey->premium) {
-					$this->submitAction('SURVEY_PREMIUM');
-				} else {
-					$this->submitAction('SURVEY_STANDARD');
-				}
+		// POLL_STANDARD, SURVEY_PROFILE, QUIZ_PREMIUM, etc.
+		if (in_array($survey->type, array('survey', 'poll', 'quiz')) && in_array($survey->reward_category, array('standard', 'premium', 'profile'))) {
+			$this->submitAction(strtoupper($survey->type.'_'.$survey->reward_category));
 		}
 	}
 
 	public function disqualifySurvey (Survey $survey) {
-		if ($survey->premium) {
-			$this->submitAction('SURVEY_PREMIUM_DISQUALIFIED');
-		} else {
-			$this->submitAction('SURVEY_STANDARD_DISQUALIFIED');
+		// POLL_STANDARD_DISQUALIFIED, SURVEY_PROFILE_DISQUALIFIED, QUIZ_PREMIUM_DISQUALIFIED, etc.
+		if (in_array($survey->type, array('survey', 'poll', 'quiz')) && in_array($survey->reward_category, array('standard', 'premium', 'profile'))) {
+			$this->submitAction(strtoupper($survey->type.'_'.$survey->reward_category).'_DISQUALIFIED');
 		}
 	}
 
-	public function share ($type, $typeId = 0) {
+	public function share ($type, $network, $typeId = 0) {
+		$network = strtoupper($network);
+
+		if (!in_array($network, array("FB", "TW"))) {
+			throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Cannot award user. No social network specified.'));
+		}
 
 		switch ($type) {
 			case self::SHARE_POLL :
 			case self::SHARE_SURVEY :
+			case self::SHARE_QUIZ :
 				if (!$typeId) {
 					throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Cannot award user for sharing survey/poll. Survey id missing from call and required in order to determine if standard or premium.'));
 				}
 				$survey = new Survey();
 				$survey->loadData($typeId);
-				if ($type === self::SHARE_POLL) {
-					if ($survey->premium) {
-						$this->submitAction('POLL_PREMIUM_SHARE');
-					} else {
-						$this->submitAction('POLL_STANDARD_SHARE');
-					}
-				} else {
-					if ($survey->premium) {
-						$this->submitAction('SURVEY_PREMIUM_SHARE');
-					} else {
-						$this->submitAction('SURVEY_STANDARD_SHARE');
-					}
-				}
+				// e.g. FB_QUIZ_STANDARD_SHARE, TW_SURVEY_PREMIUM_SHARE, etc.
+				$this->submitAction(strtoupper($network.'_'.$survey->type.'_'.$survey->reward_category).'_SHARE');
 				break;
 			case self::SHARE_STARBAR :
-				$this->submitAction('SHARE_STARBAR');
+				$this->submitAction($network.'_SHARE_STARBAR');
 				break;
 			case self::SHARE_PROMOS :
-				$this->submitAction('SHARE_PROMOS');
+				$this->submitAction($network.'_SHARE_PROMOS');
 				break;
 			default :
 				throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Wrong type (' . $type . ') supplied to Game_Starbar::share(). See Game_Starbar "SHARE" constants for allowed types.'));

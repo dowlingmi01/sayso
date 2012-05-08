@@ -148,7 +148,7 @@ class Devadmin_IndexController extends Api_GlobalController
 			}
 
 			if (!$gamerInfo || !$gamerInfo->currency_balances) {
-				$client = Gaming_BigDoor_HttpClient::getInstance('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
+				$client = Gaming_BigDoor_HttpClient::getInstance('43bfbce697bd4be99c9bf276f9c6b086', '35eb12f3e87144a0822cf1d18d93d867');
 				$client->getEndUser($gamer['gaming_id']);
 				$gamerInfo = $client->getData();
 				$gamerInfoCache->save($gamerInfo);
@@ -177,7 +177,7 @@ class Devadmin_IndexController extends Api_GlobalController
 		$goodId = $request->getParam('named_good_id');
 		$newInventory = $request->getParam('new_inventory');
 
-		$client = new Gaming_BigDoor_HttpClient('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
+		$client = new Gaming_BigDoor_HttpClient('43bfbce697bd4be99c9bf276f9c6b086', '35eb12f3e87144a0822cf1d18d93d867');
 		$client->getNamedGoodCollection(788);
 		$data = $client->getData();
 		$goods = $data->named_goods;
@@ -629,7 +629,7 @@ class Devadmin_IndexController extends Api_GlobalController
 					if ($cache->test()) {
 						$transactions = array_merge($transactions, $cache->load());
 					} else {
-						$client = Gaming_BigDoor_HttpClient::getInstance('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2');
+						$client = Gaming_BigDoor_HttpClient::getInstance('43bfbce697bd4be99c9bf276f9c6b086', '35eb12f3e87144a0822cf1d18d93d867');
 						$client->setParameterGet('max_records', 10000);
 						$client->setParameterGet('named_good', $goodId);
 						$client->setParameterGet('start_time', $stepStartTime);

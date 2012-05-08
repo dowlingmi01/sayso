@@ -19,6 +19,7 @@
             "width": 5,
             "displaywhen": [
                 "grid",
+                "subgrid",
                 "edit",
                 "detail"
             ]
@@ -52,6 +53,7 @@
             "displaywhen": [
                 "add",
                 "grid",
+                "subgrid",
                 "detail",
                 "edit"
             ]
@@ -68,6 +70,7 @@
             "displaywhen": [
                 "add",
                 "detail",
+                "subgrid",
                 "edit"
             ]
         },

@@ -408,16 +408,19 @@
 		*/
 		public function detailAction()
 		{
-			$id = $this->getRequest()->getParam('id');
+			$longid = explode("?",$this->getRequest()->getParam('id'));
+			$id = $longid[0];
 			if ($id===null) {
 				printf("<p>No ID found. Cannot display.</p>");
 			} else {
 
 				if ($this->getRequest()->getParam('sid')!=null) {
-					$id = $this->getRequest()->getParam('sid');
+					$longid = explode("?",$this->getRequest()->getParam('sid'));
+					$id = $longid[0];
 				}
 
-				$tablename = strtolower($this->getRequest()->getParam('table'));
+				$longtable = explode("?",$this->getRequest()->getParam('table'));
+				$tablename = strtolower($longtable[0]);
 				$tablenamepolite = ucwords(str_replace("_"," ",$tablename));
 				if ($tablename !== null) {
 
@@ -535,12 +538,14 @@
 		*/
 		public function deleteAction()
 		{
-			$id = $this->getRequest()->getParam('id');
+			$longid = explode("?",$this->getRequest()->getParam('id'));
+			$id = $longid[0];
 			if ($id===null) {
 				printf("<p>No ID found. Cannot display.</p>");
 			} else {
 
-				$tablename = strtolower($this->getRequest()->getParam('table'));
+				$longtable = explode("?",$this->getRequest()->getParam('table'));
+				$tablename = strtolower($longtable[0]);
 				$tablenamepolite = ucwords(str_replace("_"," ",$tablename));
 				if ($tablename !== null) {
 
@@ -684,7 +689,9 @@
 		*/
 		public function viewAction()
 		{
-			$tablename = strtolower($this->getRequest()->getParam('table'));
+			$longtable = explode("?",$this->getRequest()->getParam('table'));
+			// We need to strip any parameters off the table name - they're added at times by the debugger if we're using it. There are no sideeffects if there are no parameters.
+			$tablename = strtolower($longtable[0]);
 			$tablenamepolite = ucwords(str_replace("_"," ",$tablename));
 			if ($tablename != null) {
 

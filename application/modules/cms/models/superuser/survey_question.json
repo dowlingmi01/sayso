@@ -21,11 +21,13 @@
 				"grid",
 				"subgrid",
 				"edit",
+				"delete",
 				"detail"
 			]
 		},
 		{
 			"colname": "survey_id",
+			"label": "Survey/Poll/Quiz",
 			"type": "fkey",
 			"lookuptable": "survey",
 			"lookupfield": "id",
@@ -35,6 +37,7 @@
 				"add",
 				"grid",
 				"detail",
+				"delete",
 				"edit"
 			],
 			"attributes": [
@@ -83,6 +86,7 @@
 				"grid",
 				"detail",
 				"subgrid",
+				"delete",
 				"edit"
 			]
 		},
@@ -106,8 +110,6 @@
 			"displaywhen": [
 				"add",
 				"detail",
-
-				"delete",
 				"edit"
 			]
 		},
@@ -117,7 +119,6 @@
 			"displaywhen": [
 				"add",
 				"detail",
-				"delete",
 				"edit"
 			]
 		}

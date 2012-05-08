@@ -356,6 +356,7 @@
 								$form = new ZendX_JQuery_Form();
 								$form->setName($tablename);
 								$form->addElements($formElements);
+
 								$form->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));
 
 								// Find the record and populate the initial form values
@@ -376,6 +377,8 @@
 										$result = $model->save();
 
 										$this->view->message = "Record successfully updated ";
+										// Redirect to the View screen
+										$this->rd->gotoSimple('detail','admin','cms',array('table' => $tablename,'id'=>$id));
 
 									} else {
 										$form->populate($postData); // show errors and populate form with $postData

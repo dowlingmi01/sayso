@@ -77,10 +77,6 @@
 			"type": "text",
 			"label": "Question Title",
 			"width": 100,
-			"validate": [
-				"notnull",
-				"minlength(10)"
-			],
 			"displaywhen": [
 				"add",
 				"grid",

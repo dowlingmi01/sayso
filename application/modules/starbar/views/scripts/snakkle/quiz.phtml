@@ -8,9 +8,11 @@
 			<p><img src="<?= $this->quiz_question->image_url ?>" alt="<?= $this->quiz_question->title ?>" /></p>
 
 			<div class="sb_quiz_question">
-				<p>
-					<strong class="sb_theme_textHighlight">HINT</strong> - <?= $this->quiz_question->title ?>
-				</p>
+				<? if ($this->quiz_question->title) { ?>
+					<p>
+						<strong class="sb_theme_textHighlight">HINT</strong> - <?= $this->quiz_question->title ?>
+					</p>
+				<? } ?>
 				<div class="sb_quiz_options">
 					<div class="sb_quiz_row">
 						<? $choiceCounter = 1 ?>

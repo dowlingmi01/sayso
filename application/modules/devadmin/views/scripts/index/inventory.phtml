@@ -3,10 +3,8 @@
 	<select name="named_good_id" onchange="$SQ('#new_inventory').attr('value', ''); $SQ('#inventoryForm').submit();">
 		<option value="0">Choose a good, any good</option>
 		<? foreach ($this->named_goods as $good) { ?>
-			<? if (strpos($good->end_user_title, '(Variant)') !== false && strpos(strtolower($good->end_user_title), 'token') === false) { ?>
-				<? $title = str_replace('(Variant)', '', $good->end_user_title) ?>
-				<option value="<?= $good->id ?>" <? if ($this->named_good_id == $good->id) { echo 'selected'; } ?>><?= $title ?></option>
-			<? } ?>
+			<? $title = str_replace('(Variant)', '', $good->end_user_title) ?>
+			<option value="<?= $good->id ?>" <? if ($this->named_good_id == $good->id) { echo 'selected'; } ?>><?= $title ?></option>
 		<? } ?>
 	</select>
 	<? if ($this->named_good_id) { ?>

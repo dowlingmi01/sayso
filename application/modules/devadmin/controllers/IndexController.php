@@ -180,7 +180,29 @@ class Devadmin_IndexController extends Api_GlobalController
 		$client = new Gaming_BigDoor_HttpClient('43bfbce697bd4be99c9bf276f9c6b086', '35eb12f3e87144a0822cf1d18d93d867');
 		$client->getNamedGoodCollection(2296001);
 		$data = $client->getData();
-		$goods = $data->named_goods;
+		$unfilteredGoods = $data->named_goods;
+		$goods = array();
+
+		// Keep only items for this environment
+		foreach ($unfilteredGoods as $good) {
+			if (strpos($good->end_user_title, ' (Variant)') !== false) {
+				foreach ($good->attributes as $attribute) {
+					if ($attribute->friendly_id == "environment-".APPLICATION_ENV) {
+						$goods[] = $good;
+						continue 2; // Go to next unfiltered good
+					}
+				}
+			}
+		}
+
+		// Filter out tokens
+		foreach ($goods as $goodIndex => $good) {
+			foreach ($good->attributes as $attribute) {
+				if ($attribute->friendly_id == "giveaway-token") {
+					unset($goods[$goodIndex]);
+				}
+			}
+		}
 
 		$remainingInventory = "";
 		$soldInventory = "";

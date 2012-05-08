@@ -93,7 +93,7 @@ class Survey_Response extends Record
 			$requestParamString .= $key . "=" . $value;
 		}
 
-		$url = "https://restapi.surveygizmo.com/v1/survey/" . $this->external_id . "/surveyresponse" . $requestParamString;
+		$url = "https://restapi.surveygizmo.com/v1/survey/" . $survey->external_id . "/surveyresponse" . $requestParamString;
 		$messages[] = "Connecting to " . $url;
 
 		set_time_limit(180); // Allow 3 minutes for SG response (excludes local processing time, since we reset timer below)

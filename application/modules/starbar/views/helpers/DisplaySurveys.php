@@ -3,7 +3,7 @@ class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 {
 	function displaySurveys($status) {
 
-		$numberOfPremiumRedeemablePoints = 380;
+		$numberOfPremiumRedeemablePoints = 375;
 		$numberOfPremiumExperiencePoints = 5000;
 		$numberOfStandardRedeemablePoints = 38;
 		$numberOfStandardExperiencePoints = 500;

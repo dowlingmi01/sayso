@@ -20,6 +20,7 @@
 			"displaywhen": [
 				"grid",
 				"subgrid",
+				"edit",
 				"detail"
 			]
 		},

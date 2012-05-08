@@ -85,22 +85,22 @@
 }
 
 .sg-container {
-	background:#F3F3F3;
+	background:#FFFFFF;
 	margin:0;
 	padding:0;
 }
 
 /* !----- Basic Structure ----- */
 .sg-body {
-	background:#F3F3F3;
+	background:#FFFFFF;
 	margin:0;
 	padding:0;
 	padding-bottom:0 !important;
 	}
 .sg-wrapper {
-	background:#F3F3F3;
+	background:#FFFFFF;
 	color:black;
-	border:1px solid #F3F3F3;
+	border:1px solid #FFFFFF;
 	width:480px;
 	margin:0;
 	font-size: 100%;
@@ -117,7 +117,7 @@
 	margin:0;
 	padding:0;
 	}
-.sg-footer { 
+.sg-footer {
 	min-height:60px;
 	padding:15px 0;
 	text-align:center;
@@ -144,8 +144,8 @@
 	display: none;
 	}
 .sg-page-description {
-	background-color:#F3F3F3;
-	border:1px solid #F3F3F3;
+	background-color:#FFFFFF;
+	border:1px solid #FFFFFF;
 	padding:20px;
 	display: none;
 	}
@@ -154,19 +154,19 @@
 	}
 
 /* !----- Headers, Footers, Table headers ----- */
-.sg-header, 
+.sg-header,
 .sg-footer {
-	background:#F3F3F3;
+	background:#FFFFFF;
 	color:black;
 	}
 .sg-header {
-	border-bottom:1px solid #F3F3F3;
+	border-bottom:1px solid #FFFFFF;
 	}
-	 
+
 .sg-footer {
-	border-top:1px solid #F3F3F3;
+	border-top:1px solid #FFFFFF;
 	}
- 
+
 /* !----- Question Titles ----- */
 .sg-question-title {
 	display: none;
@@ -187,7 +187,7 @@
 	}
 .sg-question-set { /* wraps around question options and subquestions */
 	margin: 0;
-	}		
+	}
 
 
 .sg-question-options {
@@ -215,7 +215,7 @@
 	.sg-buttons,
 	.sg-button-bar input {
 		display:inline;
-		}	
+		}
 	.sg-button:hover {
 		background-position:0 -40px;
 		}
@@ -240,10 +240,10 @@
 .sg-wrapper h6 {
 	text-align:left;
 	}
-.sg-wrapper h1 {font-size:1.55em;margin:.5em 0;}	
-.sg-wrapper h2 {font-size:1.3em;}	
-.sg-wrapper h3 {font-size:1.15em;}	
-.sg-wrapper h4 {font-size:.95em;}	
+.sg-wrapper h1 {font-size:1.55em;margin:.5em 0;}
+.sg-wrapper h2 {font-size:1.3em;}
+.sg-wrapper h3 {font-size:1.15em;}
+.sg-wrapper h4 {font-size:.95em;}
 h1.sg-title {
 	margin:0;
 	padding:0 0 .3em 0;
@@ -264,8 +264,8 @@ h1.sg-title {
 	}
 
 /* !----- Special Effects ----- */
-.sg-wrapper input:focus, 
-.sg-wrapper select:focus, 
+.sg-wrapper input:focus,
+.sg-wrapper select:focus,
 .sg-wrapper textarea:focus {
 	background-color: #feffaf !important;
 	}

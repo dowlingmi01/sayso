@@ -75,6 +75,17 @@
 			]
 		},
 		{
+			"colname": "correct",
+			"label": "Correct Answer?",
+			"type": "checkbox",
+			"default": false,
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
 			"colname": "ordinal",
 			"type": "number",
 			"displaywhen": [

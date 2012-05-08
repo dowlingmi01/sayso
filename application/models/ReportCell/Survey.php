@@ -28,7 +28,12 @@ class ReportCell_Survey extends Record
 
 		// Add all the numeric responses to the question array
 		foreach ($surveyQuestionResponses as $surveyQuestionResponse) {
-			$surveyQuestionArray[$surveyQuestionResponse->survey_question_id]->response_array[] = $surveyQuestionResponse;
+			if ($surveyQuestion->data_type == 'decimal' || $surveyQuestion->data_type == 'monetary') $responseValue = $surveyQuestionResponse->response_decimal;
+			elseif ($surveyQuestion->data_type == 'integer') $responseValue = $surveyQuestionResponse->response_integer;
+			else $responseValue = false;
+
+			if ($responseValue !== false)
+				$surveyQuestionArray[$surveyQuestionResponse->survey_question_id]->response_array[] = $responseValue;
 		}
 
 		// Now go through all the questions and numeric responses and calculate stuff!
@@ -53,8 +58,7 @@ class ReportCell_Survey extends Record
 				$numberOfResponses = 0;
 
 				// Calculate the total for the average
-				foreach ($surveyQuestion->response_array as $surveyQuestionResponse) {
-					$responseValue = ($surveyQuestion->data_type == 'integer' ? $surveyQuestionResponse->response_integer : $surveyQuestionResponse->response_decimal);
+				foreach ($surveyQuestion->response_array as $responseValue) {
 					$runningTotal += $responseValue;
 					$numberOfResponses++;
 				}
@@ -63,8 +67,7 @@ class ReportCell_Survey extends Record
 				$reportCellSurveyCalculation->median = ($surveyQuestion->data_type == 'integer' ? $medianResponse->response_integer : $medianResponse->response_decimal);
 
 				// Calculate the standard deviation using the average
-				foreach ($surveyQuestion->response_array as $surveyQuestionResponse) {
-					$responseValue = ($surveyQuestion->data_type == 'integer' ? $surveyQuestionResponse->response_integer : $surveyQuestionResponse->response_decimal);
+				foreach ($surveyQuestion->response_array as $responseValue) {
 					$deviation = $reportCellSurveyCalculation->average - $responseValue;
 					$squareDeviationsTotal += $deviation * $deviation;
 				}

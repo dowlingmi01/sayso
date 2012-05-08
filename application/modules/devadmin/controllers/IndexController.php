@@ -178,7 +178,7 @@ class Devadmin_IndexController extends Api_GlobalController
 		$newInventory = $request->getParam('new_inventory');
 
 		$client = new Gaming_BigDoor_HttpClient('43bfbce697bd4be99c9bf276f9c6b086', '35eb12f3e87144a0822cf1d18d93d867');
-		$client->getNamedGoodCollection(788);
+		$client->getNamedGoodCollection(2296001);
 		$data = $client->getData();
 		$goods = $data->named_goods;
 
@@ -186,7 +186,7 @@ class Devadmin_IndexController extends Api_GlobalController
 		$soldInventory = "";
 
 		if ($goodId) {
-			$client->namedGoodCollection(788)->namedGood($goodId)->getInventory();
+			$client->namedGoodCollection(2296001)->namedGood($goodId)->getInventory();
 			$data = $client->getData();
 			if ($data) {
 				$soldInventory = $data->sold_inventory;
@@ -195,7 +195,7 @@ class Devadmin_IndexController extends Api_GlobalController
 					$newInventory = abs($newInventory);
 					$remainingInventory = $newInventory;
 					$client->setParameterPost('total_inventory', $remainingInventory+$soldInventory);
-					$client->namedGoodCollection(788)->namedGood($goodId)->putInventory();
+					$client->namedGoodCollection(2296001)->namedGood($goodId)->putInventory();
 
 					$game = Game_Starbar::getInstance();
 					$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
@@ -206,7 +206,7 @@ class Devadmin_IndexController extends Api_GlobalController
 					$newInventory = abs($newInventory);
 					$remainingInventory = $newInventory;
 					$client->setParameterPost('total_inventory', $remainingInventory);
-					$client->namedGoodCollection(788)->namedGood($goodId)->postInventory(); // post CREATES inventory
+					$client->namedGoodCollection(2296001)->namedGood($goodId)->postInventory(); // post CREATES inventory
 
 					$game = Game_Starbar::getInstance();
 					$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);

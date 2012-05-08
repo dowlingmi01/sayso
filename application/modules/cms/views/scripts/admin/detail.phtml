@@ -1,3 +1,39 @@
 <!-- views/scripts/admin/detail.phtml file -->
 <h2>View <?php echo $this->tablename; ?> Record</h2>
-<?php echo $this->form ?>
+
+<?php
+
+	echo $this->form;
+
+	// If we have any subobjects
+	if ($this->grid_data) {
+
+		// Create tabs for subobjects
+		printf("<div style='clear:both'></div>\n");
+		printf("<div id='tabs'>\n");
+		printf("<ul>\n");
+
+		$cnt = 1;
+	 	foreach ($this->grid_data as $griddata) {
+			printf("<li><a href='#tabs-%s'>%s</a></li>",$cnt,$griddata['title']);
+			$cnt++;
+		}
+
+		printf("</ul>\n");
+
+		// Create the subobject grids
+		$cnt = 1;
+		foreach ($this->grid_array as $grid) {
+			printf("<div id='tabs-%s'>",$cnt);
+			echo $this->grid_data[$cnt-1]['newrecord'];
+			echo $grid;
+			printf("</div>");
+			$cnt++;
+		}
+
+		echo $this->grid1;
+
+		printf("</div>\n");
+
+	}
+?>

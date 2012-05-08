@@ -1,0 +1,111 @@
+{
+    "table": [
+        {
+            "tablename": "survey_response",
+            "model": "Survey_Response",
+            "permissions": [
+                "allowgrid",
+                "allowdetails"
+            ]
+        }
+    ],
+    "columns": [
+		{
+            "colname": "id",
+            "type": "hidden",
+            "width": 5,
+            "displaywhen": [
+                "grid",
+                "detail"
+            ]
+        },
+        {
+            "colname": "survey_id",
+            "type": "fkey",
+            "lookuptable": "survey",
+            "lookupfield": "id",
+            "lookuplabel": "title",
+            "default": "--Please Select a survey--",
+            "displaywhen": [
+                "add",
+                "grid",
+                "detail",
+                "edit"
+            ],
+            "attributes": [
+                "writeonly"
+            ]
+        },
+        {
+			"colname": "user_id",
+			"type": "hidden",
+			"value": 1,
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+        {
+            "colname": "external_response_id",
+            "type": "number",
+            "displaywhen": [
+                "add",
+                "detail",
+                "delete",
+                "edit"
+            ]
+        },
+        {
+            "colname": "status",
+            "type": "list",
+            "listoptions": [
+                "completed",
+                "archived",
+                "new",
+                "disqualified"
+            ],
+            "default": "new",
+            "displaywhen": [
+                "add",
+                "detail",
+                "edit"
+            ]
+        },
+		{
+            "colname": "processing_status",
+            "type": "list",
+            "listoptions": [
+                "not required",
+                "pending",
+                "completed"
+            ],
+            "default": "not required",
+            "displaywhen": [
+                "add",
+                "detail",
+                "edit"
+            ]
+        },
+
+		{
+			"colname": "completed_disqualified",
+			"type": "datetime",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "data_download",
+			"type": "datetime",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		}
+	]
+}

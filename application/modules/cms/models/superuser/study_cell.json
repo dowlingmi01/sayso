@@ -1,0 +1,83 @@
+{
+	"table": [
+		{
+			"tablename": "Study_Cell",
+			"model":"Study_Cell",
+			"permissions":[
+				"allowgrid",
+				"allowadd",
+				"allowdelete",
+				"allowedit",
+				"disallowdetails"
+			]
+		}
+	],
+	"columns": [
+		{
+			"colname": "id",
+			"type": "hidden",
+			"width": 5,
+			"displaywhen": [
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "study_id",
+			"label":"Study",
+			"type": "fkey",
+			"lookuptable": "study",
+			"lookupfield": "id",
+			"lookuplabel": "name",
+			"default": "--Please Select a study--",
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "description",
+			"type": "text",
+			"label": "Study Cell Description",
+			"width": 42,
+			"validate": [
+				"minlength(10)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"delete",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "size",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "cell_type",
+			"type": "list",
+			"listoptions": [
+				"test",
+				"control"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"delete",
+				"detail",
+				"edit"
+			]
+		}
+	]
+}

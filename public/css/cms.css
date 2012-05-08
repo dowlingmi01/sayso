@@ -38,8 +38,8 @@ body {
 }
 
 #layout {
-width: 600px;
-height: 400px;
+width: 800px;
+height: 600px;
 margin: 0 auto;
 border: solid black thin;
 overflow-y: scroll;
@@ -64,7 +64,7 @@ td {
 
 #list tr {
 	background-color:white;
-	
+
 }
 #list td {
 	border-left:thin solid #a8d8eb;
@@ -77,15 +77,15 @@ td {
 }
 #list tr:hover td {
 	background-color:#d5effc;
-	
+
 }
 #list tr:first-child td {
 	background-color:#ccc;
-	
+
 }
 #list tr:last-child td {
 	background-color:#ccc;
-	
+
 }
 #list table {
     width:583px;
@@ -230,7 +230,7 @@ box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
 }
 .cmsMenu ul ul {left:100%; margin-top:-36px; margin-left:-5px;}
 .cmsMenu li {margin:0; padding:0; list-style:none; display:inline-block; display:inline;}
-.cmsMenu a {display:block; font:normal 12px arial,sans-serif; color:#fff; line-height:17px; text-decoration:none; padding:0 20px 0 10px;} 
+.cmsMenu a {display:block; font:normal 12px arial,sans-serif; color:#fff; line-height:17px; text-decoration:none; padding:0 20px 0 10px;}
 
 .cmsMenu li a.a-top,
 .cmsMenu li a.a-sub {background:url(/images/icons/arrow-right.gif) no-repeat right center;}
@@ -248,4 +248,11 @@ box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
 
 .cmsMenu .nolink {background-color:lightgrey}
 
+body .ui-widget {
+	font-family:arial, sans-serif;
+	font-size:11px;
+}
 
+body .ui-widget-content a {
+	color:#6b7885;
+}

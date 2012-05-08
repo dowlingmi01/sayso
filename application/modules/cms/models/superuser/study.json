@@ -1,8 +1,8 @@
 {
 	"table": [
 		{
-			"tablename": "Survey",
-			"model": "Survey",
+			"tablename": "Study",
+			"model": "Study",
 			"permissions":[
 				"allowgrid",
 				"allowadd",
@@ -25,6 +25,26 @@
 			]
 		},
 		{
+			"colname": "study_type",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "status",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
 			"colname": "user_id",
 			"type": "hidden",
 			"value": 1,
@@ -36,52 +56,9 @@
 			]
 		},
 		{
-			"colname": "type",
-			"type": "list",
-			"listoptions": [
-				"poll",
-				"survey"
-			],
-			"displaywhen": [
-				"add",
-				"grid",
-				"delete",
-				"detail",
-				"edit"
-			]
-		},
-		{
-			"colname": "status",
-			"type": "list",
-			"listoptions": [
-				"active",
-				"inactive"
-			],
-			"default": "active",
-			"displaywhen": [
-				"add",
-				"detail",
-				"edit"
-			]
-		},
-		{
-			"colname": "starbar_id",
-			"type": "fkey",
-			"lookuptable": "starbar",
-			"lookupfield": "id",
-			"lookuplabel": "label",
-			"default": "--Please Select a starbar--",
-			"displaywhen": [
-				"add",
-				"grid",
-				"detail",
-				"edit"
-			]
-		},
-		{
-			"colname": "title",
+			"colname": "name",
 			"type": "text",
-			"label": "Survey Title",
+			"label": "Study Name",
 			"width": 42,
 			"validate": [
 				"notnull",
@@ -96,79 +73,64 @@
 			]
 		},
 		{
-			"colname": "external_id",
+			"colname": "study_id",
+			"type": "text",
+			"label": "Study ID",
+			"width": 42,
+			"validate": [
+				"notnull",
+				"minlength(10)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"delete",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "description",
+			"type": "text",
+			"label": "Study Description",
+			"width": 42,
+			"validate": [
+				"minlength(10)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"delete",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "size",
 			"type": "number",
-			"width":40,
 			"displaywhen": [
 				"add",
 				"detail",
-				"grid",
 				"delete",
 				"edit"
 			]
 		},
 		{
-			"colname": "external_key",
-			"type": "text",
-			"width": 20,
-			"displaywhen": [
-				"add",
-				"detail",
-				"edit"
-			],
-			"validate": [
-				"notnull",
-				"minlength(10)"
-			]
-		},
-		{
-			"colname": "reward_category",
-			"type": "list",
-			"listoptions": [
-				"standard",
-				"premium",
-				"profile"
-			],
-			"default": "standard",
-			"displaywhen": [
-				"add",
-				"detail",
-				"edit"
-			]
-		},
-		{
-			"colname": "display_number_of_questions",
-			"type": "number",
-			"displaywhen": [
-				"detail",
-				"edit"
-			]
-		},
-		{
-			"colname": "ordinal",
+			"colname": "size_minimum",
+			"label": "Minimum Size",
 			"type": "number",
 			"displaywhen": [
 				"add",
 				"detail",
+				"delete",
 				"edit"
 			]
 		},
 		{
-			"colname": "start_day",
-			"type": "number",
-			"width": 50,
-			"help": "Day (relative to launch) that this survey is available. Day 1 = launch day",
-			"displaywhen": [
-				"add",
-				"detail",
-				"grid",
-				"edit"
-			]
-		},
-		{
-			"colname": "start_after",
-			"type": "number",
-			"help": "Time delay in seconds before this survey is available to a new user",
+			"colname": "is_stopped",
+			"label": "Study Stopped?",
+			"type": "checkbox",
+			"default": false,
 			"displaywhen": [
 				"add",
 				"detail",
@@ -176,7 +138,17 @@
 			]
 		},
 		{
-			"colname": "start_at",
+			"colname": "click_track",
+			"type": "checkbox",
+			"default": false,
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "begin_date",
 			"type": "datetime",
 			"displaywhen": [
 				"add",
@@ -185,7 +157,7 @@
 			]
 		},
 			{
-			"colname": "end_at",
+			"colname": "end_date",
 			"type": "datetime",
 			"displaywhen": [
 				"add",
@@ -194,11 +166,16 @@
 			]
 		}
 	],
-    "subobjects": [
+	"subobjects": [
 		{
-			"Title":"Questions",
-			"table": "survey_question",
-			"fk": "survey_id"
+			"Title":"Cells",
+			"table": "study_cell",
+			"fk": "study_id"
+		},
+		{
+			"Title":"Quota",
+			"table": "study_quota",
+			"fk": "study_id"
 		}
 	]
 }

@@ -69,7 +69,7 @@ $SQ('#end_at').datetimepicker({
         $SQ('#start_at').datetimepicker('option', 'maxDate', new Date(end.getTime()) );
     }
 });
-
+$SQ('#tabs').tabs();
 
 });
 

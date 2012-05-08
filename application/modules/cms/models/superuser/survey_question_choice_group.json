@@ -1,0 +1,60 @@
+{
+    "table": [
+        {
+            "tablename": "survey_question_choice_group",
+            "model": "Survey_QuestionChoiceGroup",
+            "permissions": [
+                "allowgrid",
+                "allowadd",
+                "allowdelete",
+                "allowedit",
+                "allowdetails"
+            ]
+        }
+    ],
+    "columns": [
+        {
+            "colname": "id",
+            "type": "hidden",
+            "width": 5,
+            "displaywhen": [
+                "grid",
+                "edit",
+                "detail"
+            ]
+        },
+        {
+            "colname": "survey_question_group_id",
+            "type": "fkey",
+            "lookuptable": "survey_question_group",
+            "lookupfield": "id",
+            "lookuplabel": "title",
+            "default": "--Please Select a Question Group--",
+            "displaywhen": [
+                "add",
+                "grid",
+                "detail",
+                "edit"
+            ],
+            "attributes": [
+                "writeonly"
+            ]
+        },
+        {
+            "colname": "title",
+            "type": "text",
+            "label": "Question Choice Group Title",
+            "width": 40,
+            "validate": [
+                "notnull",
+                "minlength(10)"
+            ],
+            "displaywhen": [
+                "add",
+                "grid",
+                "detail",
+                "edit"
+            ]
+        }
+    ]
+}

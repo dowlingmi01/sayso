@@ -1,31 +1,41 @@
+<?php
+// Breadcrumbs code
+/**
+* If a match is found here for the controller/action/table, the appropriate label is used. If not, the breadcrumb is derived
+*
+* @var mixed
+*/
+
+?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>Say.So | CMS</title>
 		<?= $this->headLink(); ?>
-                <?php printf("<!--csshelper included below-->"); ?>
-                <?= $this->cssHelper(); ?>
-                <?php printf("<!--csshelper included above-->"); ?>
+				<?php printf("<!--csshelper included below-->"); ?>
+				<?= $this->cssHelper(); ?>
+
+				<?php printf("<!--csshelper included above-->"); ?>
 
 
 		<?= $this->headScript(); ?>
-                <?= $this->javascriptHelper(); ?>
-		 
+				<?= $this->javascriptHelper(); ?>
+
 		<?= $this->headLink()->setStylesheet($this->baseUrl().'/css/jquery-ui-1.8.2.custom.css'); ?>
 
 	</head>
 	<body>
 		<div id="layout">
-			
+
 
 					<div id="common">
-						
+
 							<ul class="cmsMenu">
 
 								<li><a href="/cms/admin">Home</a></li>
-								
-								
+
+
 								<li><a href="#url">Metrics</a>
 									<ul>
 										<li><a href="/cms/admin/view/table/metrics_log">Log</a></li>
@@ -36,15 +46,15 @@
 										<li><a href="#url">Tag View</a></li>
 									</ul>
 								</li>
-								
+
 								<li><a href="#url">Study</a>
 									<ul>
-										<li><a href="#url">Study</a></li>
+										<li><a href="/cms/admin/view/table/study">Study</a></li>
 										<li><a href="#url">Avail</a></li>
 										<li><a href="#url">Avail Domain Map</a></li>
 										<li><a href="#">Cell</a>
 										<ul>
-										<li><a href="#url">Cell</a></li>
+										<li><a href="/cms/admin/view/table/study_cell">Cell</a></li>
 										<li><a href="#url">Cell Assignment</a></li>
 										<li><a href="#url">Cell Qualifier Browsing</a></li>
 										<li><a href="#url">Cell Qualifier Search</a></li>
@@ -71,14 +81,15 @@
 										<li><a href="#url">Tag Domain Map</a></li>
 									</ul>
 								</li>
-								<li><a href="#url">Polls/Survey</a>
+								<li><a href="#url">Polls/Surveys/Quizzes</a>
 									<ul>
-										<li><a href="/cms/admin/view/table/survey">Polls/Surveys</a></li>
-										<li><a href="#url">Question</a></li>
-										<li><a href="#url">Question Choice</a></li>
+										<li><a href="/cms/admin/view/table/survey">Polls/Surveys/Quizzes</a></li>
+										<li><a href="/cms/admin/view/table/survey_question">Question</a></li>
+										<li><a href="/cms/admin/view/table/survey_question_choice">Question Choice</a></li>
+										<li><a href="#url">Question Group</a></li>
+										<li><a href="#url">Question Choice Group</a></li>
 										<li><a href="#url">Question Response</a></li>
-										<li><a href="#url">Question Type</a></li>
-										<li><a href="#url">Response</a></li>
+										<li><a href="/cms/admin/view/table/survey_response">Response</a></li>
 										<li><a href="#url">User Map</a></li>
 									</ul>
 								</li>
@@ -93,7 +104,7 @@
 										<li><a href="#url">Key</a></li>
 										<li><a href="#url">Role</a></li>
 										<li><a href="#url">Social</a></li>
-										<li><a href="#url">State</a></li>									
+										<li><a href="#url">State</a></li>
 									</ul>
 								</li>
 								<li><a href="#">The Closet</a>
@@ -134,7 +145,7 @@
 												<li><a href="#url">Message User Map</a></li>
 											</ul>
 										</li>
-								
+
 										<li><a href="#url">Preference</a>
 											<ul>
 												<li><a href="#url">General</a></li>
@@ -152,15 +163,24 @@
 								</li>
 							</ul>
 					</div>
-<div class="clear"></div>
-			
-			<div id="main" role="main">
-			<?php 
-				echo ($this->BackLink)?$this->BackLink:""; 
-			    printf(" <span class='system-message'>%s</span>",$this->message) ;
-			    ?>
+<div class="clear"></div><div class="breadcrumbs">
+<?php
+//echo $this->navigation()->menu();
+//echo $this->navigation()->breadcrumbs()->setLinkLast(false)->setMinDepth(0)->render();
+//echo 'You are in: '.$this->navigation()->breadcrumbs()->setLinkLast(true)->setMinDepth(0)->render();
 
-			    <?= $this->layout()->content ?>
+ echo $this->breadcrumb;
+//echo $this->breadcrumb();
+?>
+</div>
+
+			<div id="main" role="main">
+			<?php
+				//echo ($this->BackLink)?$this->BackLink:"";
+			    printf(" <span class='system-message'>%s</span>",$this->message) ;
+				?>
+
+				<?= $this->layout()->content ?>
 
 			</div>
 		</div>

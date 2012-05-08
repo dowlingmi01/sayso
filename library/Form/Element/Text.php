@@ -78,7 +78,21 @@ class Form_Element_Text extends Zend_Form_Element_Text
 
 		return $this;
 	}
-
+	
+	private function _getAttribute($attrib)
+	{
+		
+		if (array_key_exists('attributes',$this->_options)) {
+			if (is_array($this->_options['attributes'])) {		
+			 	return in_array($attrib,$this->_options['attributes']);
+			} else {
+				return $this->_options['attributes'];
+			}
+		} else {
+			return false;
+		}
+	}
+	
 	private function _setHelp()
 	{
 		$db = Zend_Registry::get('db');
@@ -120,7 +134,11 @@ class Form_Element_Text extends Zend_Form_Element_Text
 					break;
 				
 				case "edit":
-				
+					// Is it a writeonly field?
+					if ($this->_getAttribute("writeonly")) {
+						$this->setReadOnly();
+					}
+					
 					break;
 			}
 		}

@@ -41,26 +41,6 @@
 			]
 		},
 		{
-			"colname": "piped_from_survey_question_id",
-			"type": "number",
-			"displaywhen": [
-				"add",
-				"detail",
-				"delete",
-				"edit"
-			]
-		},
-		{
-			"colname": "piped_from_survey_question_choice_id",
-			"type": "number",
-			"displaywhen": [
-				"add",
-				"detail",
-				"delete",
-				"edit"
-			]
-		},
-		{
 			"colname": "data_type",
 			"type": "list",
 			"listoptions": [

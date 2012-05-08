@@ -1,118 +1,118 @@
 {
-    "table": [
-        {
-            "tablename": "survey_question_choice",
-            "model": "Survey_QuestionChoice",
-            "permissions": [
-                "allowgrid",
-                "allowadd",
-                "allowdelete",
-                "allowedit",
-                "allowdetails"
-            ]
-        }
-    ],
-    "columns": [
-        {
-            "colname": "id",
-            "type": "hidden",
-            "width": 5,
-            "displaywhen": [
-                "grid",
-                "subgrid",
-                "edit",
-                "detail"
-            ]
-        },
-        {
-            "colname": "survey_question_id",
-            "type": "fkey",
-            "lookuptable": "survey_question",
-            "lookupfield": "id",
-            "lookuplabel": "title",
-            "default": "--Please Select a Question--",
-            "displaywhen": [
-                "add",
-                "grid",
-                "detail",
-                "edit"
-            ],
-            "attributes": [
-                "writeonly"
-            ]
-        },
-        {
-            "colname": "title",
-            "type": "text",
-            "label": "Question Choice Title",
-            "width": 40,
-            "validate": [
-                "notnull",
-                "minlength(10)"
-            ],
-            "displaywhen": [
-                "add",
-                "grid",
-                "subgrid",
-                "detail",
-                "edit"
-            ]
-        },
-        {
-            "colname": "value",
-            "type": "text",
-            "label": "Choice Value",
-            "width": 40,
-            "validate": [
-                "notnull",
-                "minlength(10)"
-            ],
-            "displaywhen": [
-                "add",
-                "detail",
-                "subgrid",
-                "edit"
-            ]
-        },
-        {
-            "colname": "other",
-            "type": "number",
-            "displaywhen": [
-                "add",
-                "detail",
-                "delete",
-                "edit"
-            ]
-        },
-        {
-            "colname": "ordinal",
-            "type": "number",
-            "displaywhen": [
-                "add",
-                "detail",
-                "delete",
-                "edit"
-            ]
-        },
-        {
-            "colname": "external_choice_id",
-            "type": "number",
-            "displaywhen": [
-                "add",
-                "detail",
-                "delete",
-                "edit"
-            ]
-        },
-        {
-            "colname": "survey_question_choice_group_id",
-            "type": "number",
-            "displaywhen": [
-                "add",
-                "detail",
-                "delete",
-                "edit"
-            ]
-        }
-    ]
+		"table": [
+		{
+			"tablename": "survey_question_choice",
+			"model": "Survey_QuestionChoice",
+			"permissions": [
+				"allowgrid",
+				"allowadd",
+				"allowdelete",
+				"allowedit",
+				"allowdetails"
+			]
+		}
+	],
+	"columns": [
+		{
+			"colname": "id",
+			"type": "hidden",
+			"width": 5,
+			"displaywhen": [
+				"grid",
+				"subgrid",
+				"edit",
+				"detail"
+			]
+		},
+		{
+			"colname": "survey_question_id",
+			"type": "fkey",
+			"lookuptable": "survey_question",
+			"lookupfield": "id",
+			"lookuplabel": "title",
+			"default": "--Please Select a Question--",
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			],
+			"attributes": [
+				"writeonly"
+			]
+		},
+		{
+			"colname": "title",
+			"type": "text",
+			"label": "Question Choice Title",
+			"width": 40,
+			"validate": [
+				"notnull",
+				"minlength(10)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"subgrid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "value",
+			"type": "text",
+			"label": "Choice Value",
+			"width": 40,
+			"validate": [
+				"notnull",
+				"minlength(10)"
+			],
+			"displaywhen": [
+				"add",
+				"detail",
+				"subgrid",
+				"edit"
+			]
+		},
+		{
+			"colname": "other",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "ordinal",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "external_choice_id",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "survey_question_choice_group_id",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		}
+	]
 }

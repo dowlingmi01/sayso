@@ -328,6 +328,10 @@ class Starbar_ContentController extends Api_GlobalController
 				$totalQuizResponses += $numberOfResponsesForThisChoice;
 			}
 
+			if ($quizQuestion->title && $quizQuestion->title != $quiz->title)
+				$this->view->quiz_hint = $quizQuestion->title;
+			else $this->view->quiz_hint = "";
+
 			$this->view->quiz = $quiz;
 			$this->view->quiz_question = $quizQuestion;
 			$this->view->quiz_choices = $quizChoices;

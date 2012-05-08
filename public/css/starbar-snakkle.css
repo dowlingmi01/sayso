@@ -583,7 +583,7 @@
 
 #sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent{
 	width: 360px;
-	height: 340px;
+	height: 380px;
 }
 
 #sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz h2.sb_title{
@@ -598,7 +598,7 @@
 #sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_main img{
 	display: block;
 	margin: 10px auto;
-	max-height: 70px;
+	max-height: 110px;
 }
 
 #sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_options{

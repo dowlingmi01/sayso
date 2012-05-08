@@ -5,12 +5,12 @@
 	<? if ($this->quiz && $this->quiz->id) { ?>
 		<div class="sb_quiz_main">
 			<h2 class="sb_title">Who is this?</h2>
-			<p><img src="<?= $this->quiz_question->image_url ?>" alt="<?= $this->quiz_question->title ?>" /></p>
+			<p><img src="<?= $this->quiz_question->image_url ?>" alt="<?= $this->quiz_hint ?>" /></p>
 
 			<div class="sb_quiz_question">
-				<? if ($this->quiz_question->title) { ?>
+				<? if ($this->quiz_hint) { ?>
 					<p>
-						<strong class="sb_theme_textHighlight">HINT</strong> - <?= $this->quiz_question->title ?>
+						<strong class="sb_theme_textHighlight">HINT</strong> - <?= $this->quiz_hint ?>
 					</p>
 				<? } ?>
 				<div class="sb_quiz_options">

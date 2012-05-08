@@ -119,36 +119,6 @@
 				"delete",
 				"edit"
 			]
-		},
-		{
-			"colname": "external_question_id",
-			"type": "number",
-			"displaywhen": [
-				"add",
-				"detail",
-				"delete",
-				"edit"
-			]
-		},
-		{
-			"colname": "external_pipe_choice_id",
-			"type": "number",
-			"displaywhen": [
-				"add",
-				"detail",
-				"delete",
-				"edit"
-			]
-		},
-		{
-			"colname": "survey_question_group_id",
-			"type": "number",
-			"displaywhen": [
-				"add",
-				"detail",
-				"delete",
-				"edit"
-			]
 		}
 	],
 	"subobjects": [

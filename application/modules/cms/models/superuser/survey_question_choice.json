@@ -75,37 +75,7 @@
 			]
 		},
 		{
-			"colname": "other",
-			"type": "number",
-			"displaywhen": [
-				"add",
-				"detail",
-				"delete",
-				"edit"
-			]
-		},
-		{
 			"colname": "ordinal",
-			"type": "number",
-			"displaywhen": [
-				"add",
-				"detail",
-				"delete",
-				"edit"
-			]
-		},
-		{
-			"colname": "external_choice_id",
-			"type": "number",
-			"displaywhen": [
-				"add",
-				"detail",
-				"delete",
-				"edit"
-			]
-		},
-		{
-			"colname": "survey_question_choice_group_id",
 			"type": "number",
 			"displaywhen": [
 				"add",

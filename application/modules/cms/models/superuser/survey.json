@@ -40,14 +40,14 @@
 			"type": "list",
 			"listoptions": [
 				"poll",
-				"survey"
+				"survey",
+				"quiz"
 			],
 			"displaywhen": [
 				"add",
 				"grid",
 				"delete",
-				"detail",
-				"edit"
+				"detail"
 			]
 		},
 		{
@@ -99,6 +99,7 @@
 			"colname": "external_id",
 			"type": "number",
 			"width":40,
+			"help": "Used for polls/surveys only -- ignored for quizzes",
 			"displaywhen": [
 				"add",
 				"detail",
@@ -111,14 +112,11 @@
 			"colname": "external_key",
 			"type": "text",
 			"width": 20,
+			"help": "Used for polls/surveys only -- ignored for quizzes",
 			"displaywhen": [
 				"add",
 				"detail",
 				"edit"
-			],
-			"validate": [
-				"notnull",
-				"minlength(10)"
 			]
 		},
 		{
@@ -194,7 +192,7 @@
 			]
 		}
 	],
-    "subobjects": [
+	"subobjects": [
 		{
 			"Title":"Questions",
 			"table": "survey_question",

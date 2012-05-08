@@ -1,167 +1,181 @@
 {
-    "table": [
-        {
-            "tablename": "survey_question",
-            "model": "Survey_Question",
-            "permissions": [
-                "allowgrid",
-                "allowadd",
-                "allowdelete",
-                "allowedit",
-                "allowdetails"
-            ]
-        }
-    ],
-    "columns": [
+	"table": [
 		{
-            "colname": "id",
-            "type": "hidden",
-            "width": 5,
-            "displaywhen": [
-                "grid",
-                "subgrid",
-                "detail"
-            ]
-        },
-        {
-            "colname": "survey_id",
-            "type": "fkey",
-            "lookuptable": "survey",
-            "lookupfield": "id",
-            "lookuplabel": "title",
-            "default": "--Please Select a survey--",
-            "displaywhen": [
-                "add",
-                "grid",
-                "detail",
-                "edit"
-            ],
-            "attributes": [
-                "writeonly"
-            ]
-        },
-        {
-            "colname": "piped_from_survey_question_id",
-            "type": "number",
-            "displaywhen": [
-                "add",
-                "detail",
-                "delete",
-                "edit"
-            ]
-        },
-        {
-            "colname": "piped_from_survey_question_choice_id",
-            "type": "number",
-            "displaywhen": [
-                "add",
-                "detail",
-                "delete",
-                "edit"
-            ]
-        },
-        {
-            "colname": "data_type",
-            "type": "list",
-            "listoptions": [
-                "none",
-                "string",
-                "integer",
-                "decimal",
-                "monetary"
-            ],
-            "default": "none",
-            "displaywhen": [
-                "add",
-                "detail",
-                "edit"
-            ]
-        },
-        {
-            "colname": "choice_type",
-            "type": "list",
-            "listoptions": [
-                "none",
-                "single",
-                "multiple"
-            ],
-            "default": "none",
-            "displaywhen": [
-                "add",
-                "detail",
-                "edit"
-            ]
-        },
-        {
-            "colname": "title",
-            "type": "text",
-            "label": "Question Title",
-            "width": 240,
-            "validate": [
-                "notnull",
-                "minlength(10)"
-            ],
-            "displaywhen": [
-                "add",
-                "grid",
-                "detail",
-                "subgrid",
-                "edit"
-            ]
-        },
-        {
-            "colname": "number_of_choices",
-            "type": "number",
-            "displaywhen": [
-                "add",
-                "detail",
+			"tablename": "survey_question",
+			"model": "Survey_Question",
+			"permissions": [
+				"allowgrid",
+				"allowadd",
+				"allowdelete",
+				"allowedit",
+				"allowdetails"
+			]
+		}
+	],
+	"columns": [
+		{
+			"colname": "id",
+			"type": "hidden",
+			"width": 5,
+			"displaywhen": [
+				"grid",
+				"subgrid",
+				"detail"
+			]
+		},
+		{
+			"colname": "survey_id",
+			"type": "fkey",
+			"lookuptable": "survey",
+			"lookupfield": "id",
+			"lookuplabel": "title",
+			"default": "--Please Select a survey--",
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			],
+			"attributes": [
+				"writeonly"
+			]
+		},
+		{
+			"colname": "piped_from_survey_question_id",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "piped_from_survey_question_choice_id",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "data_type",
+			"type": "list",
+			"listoptions": [
+				"none",
+				"string",
+				"integer",
+				"decimal",
+				"monetary"
+			],
+			"default": "none",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "choice_type",
+			"type": "list",
+			"listoptions": [
+				"none",
+				"single",
+				"multiple"
+			],
+			"default": "none",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "title",
+			"type": "text",
+			"label": "Question Title",
+			"width": 100,
+			"validate": [
+				"notnull",
+				"minlength(10)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"subgrid",
+				"edit"
+			]
+		},
+		{
+			"colname": "image_url",
+			"type": "text",
+			"label": "Image URL",
+			"help": "Used for quizzes only -- ignored for polls/surveys",
+			"width": 100,
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"subgrid",
+				"edit"
+			]
+		},
+		{
+			"colname": "number_of_choices",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
 
-                "delete",
-                "edit"
-            ]
-        },
-        {
-            "colname": "ordinal",
-            "type": "number",
-            "displaywhen": [
-                "add",
-                "detail",
-                "delete",
-                "edit"
-            ]
-        },
-        {
-            "colname": "external_question_id",
-            "type": "number",
-            "displaywhen": [
-                "add",
-                "detail",
-                "delete",
-                "edit"
-            ]
-        },
-        {
-            "colname": "external_pipe_choice_id",
-            "type": "number",
-            "displaywhen": [
-                "add",
-                "detail",
-                "delete",
-                "edit"
-            ]
-        },
-        {
-            "colname": "survey_question_group_id",
-            "type": "number",
-            "displaywhen": [
-                "add",
-                "detail",
-                "delete",
-                "edit"
-            ]
-        }
-    ],
-    "subobjects": [
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "ordinal",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "external_question_id",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "external_pipe_choice_id",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "survey_question_group_id",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		}
+	],
+	"subobjects": [
 		{
 			"Title":"Question Options",
 			"table": "survey_question_choice",

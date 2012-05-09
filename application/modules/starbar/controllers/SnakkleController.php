@@ -24,7 +24,7 @@ class Starbar_SnakkleController extends Starbar_ContentController
 		$fbkAppShareCopy = "I just earned 19 Snakkle Bucks for sharing Snakkle Say.So!
 Join Snakkle Say.So and get access to big giveaways and awesome prizes.";
 
-		$this->_assignShareInfoToView($this->_appShareLink, $twAppShareText, $fbkAppShareCopy,  $facebookCallbackUrl, $fbkAppShareTitle, $_fbkAppDescription);
+		$this->_assignShareInfoToView($this->_appShareLink, $twAppShareText, $fbkAppShareCopy,  $facebookCallbackUrl, $fbkAppShareTitle, $this->_fbkAppDescription);
 	}
 	protected function _assignShareSurveyToView(Survey $survey, $completed, $facebookCallbackUrl) {
 		switch ($survey->reward_category) {

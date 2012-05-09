@@ -81,4 +81,33 @@ class Starbar_HellomusicController extends Starbar_ContentController
 		parent::_assignShareInfoToView($shareLink, $twitterShareText, $facebookShareCaption, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
 		$this->view->assign('facebook_share_image_url', 'https://s3.amazonaws.com/say.so/media/hellomusic/logo_hellomusic.png');
 	}
+	protected $_appShareLink = 'http://music.say.so/';
+	protected $_fbkAppDescription = "Like Music? You can get the Say.So Music Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
+	
+	protected function _assignShareAppToView($facebookCallbackUrl) {
+		$twAppShareText = 'Join me in the Say.So Music Bar app. Get access to sweet gear deals and a chance to win a Takamine Guitar';
+		$fbkAppShareTitle = 'Say.So Music Bar';
+		$fbkAppShareCopy = "If you're a Musician or dig music gear, you should join me in the Say.So Music Bar from Hello Music. We get access to some sweet gear deals and get awesome odds on walking away with one of their big giveaways like a Takamine Acoustic, a Full Midi Kit, and others. We just give our opinion on a few things and they give us Notes we can redeem for stuff. Sweet deal. Only lasts a month. Want in?";
+
+		$this->_assignShareInfoToView($this->_appShareLink, $twAppShareText, $fbkAppShareCopy,  $facebookCallbackUrl, $fbkAppShareTitle, null);
+	}
+	protected function _assignShareSurveyToView(Survey $survey, $facebookCallbackUrl) {
+		$twShareText = "I just answered " . $survey->title ." and earned 25 Snakkle Bucks! Join Snakkle Say.So and earn great prizes!";
+		$fbkShareText = "Survey time! Just filled out '" . $survey->title ."' on the Say.So Music Bar";
+
+		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
+	}
+	protected function _assignSharePollToView(Survey $survey, $facebookCallbackUrl) {
+		$twShareText = "I just answered " . $survey->title ." and earned 25 Snakkle Bucks! Join Snakkle Say.So and earn great prizes!";
+		$fbkShareText = "Poll time! Just took the '" . $survey->title ."' poll on the Say.So Music Bar";
+
+		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
+	}
+	protected function _assignShareQuizToView(Survey $survey, $facebookCallbackUrl) {
+		$twShareText = "I just answered " . $survey->title ." and earned 25 Snakkle Bucks! Join Snakkle Say.So and earn great prizes!";
+		$fbkShareText = 'I just earned 25 Snakkle Bucks for sharing the quiz "'. $survey->title .'".
+Join Snakkle Say.So and get access big giveaways and awesome prizes.';
+
+		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
+	}
 }

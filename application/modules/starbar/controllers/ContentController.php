@@ -8,7 +8,7 @@ class Starbar_ContentController extends Api_GlobalController
 	protected $_usingJsonPRenderer = true;
 
 	// To be set by inherited classes, e.g. HellomusicController
-	protected $_maximumDisplayed = array('polls' => 0, 'surveys' => 0);
+	protected $_maximumDisplayed = array('polls' => 0, 'surveys' => 0, 'quizzes' => 0);
 
 	public function preDispatch()
 	{
@@ -232,15 +232,9 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->user_id = $this->user_id;
 		$this->view->user_key = $this->user_key;
 		$this->view->starbar_id = $this->starbar_id;
-
-		// @todo point this to onboarding
-		$shareLink = "http://music.say.so/";
-
-		$shareText = "Poll time! Just took the '".$survey->title."' poll on the Say.So Music Bar";
-		$facebookTitle = $survey->title;
-		$facebookDescription = "Like Music? You can get the Say.So Music Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
+		
 		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=poll&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
-		$this->_assignShareInfoToView($shareLink, $shareText, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
+		$this->_assignSharePollToView($survey, $facebookCallbackUrl);
 	}
 
 	// Embed a single SG survey. Expects "survey_id" passed via URL (GET)
@@ -337,6 +331,9 @@ class Starbar_ContentController extends Api_GlobalController
 			$this->view->quiz_choices = $quizChoices;
 			$this->view->quiz_results = $quizResults;
 			$this->view->total_quiz_responses = $totalQuizResponses;
+			
+			$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=quiz&shared_id=".$quiz->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
+			$this->_assignShareQuizToView($quiz, $facebookCallbackUrl);
 		}
 		else $this->view->quiz = false;
 	}
@@ -379,14 +376,8 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('survey', $survey);
 		$this->view->assign('next_survey', $nextSurvey);
 
-		// @todo point this to onboarding
-		$shareLink = "http://music.say.so/";
-		// @todo share text to vary based on starbar_id?
-		$shareText = "Survey time! Just filled out '".$survey->title."' on the Say.So Music Bar";
-		$facebookTitle = $survey->title;
-		$facebookDescription = "Like Music? You can get the Say.So Music Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
 		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
-		$this->_assignShareInfoToView($shareLink, $shareText, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
+		$this->_assignShareSurveyToView($survey, $facebookCallbackUrl);
 	}
 
 	public function surveyCompleteAction ()
@@ -421,14 +412,8 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('survey', $survey);
 		$this->view->assign('next_survey', $nextSurvey);
 
-		// @todo point this to onboarding
-		$shareLink = "http://music.say.so/";
-		// @todo share text to vary based on starbar_id?
-		$shareText = "Survey time! Just filled out '".$survey->title."' on the Say.So Music Bar";
-		$facebookTitle = $survey->title;
-		$facebookDescription = "Like Music? You can get the Say.So Music Bar from Hello Music, give your opinion, earn points, get FREE gear, as well as exclusive access to deeply discounted music gear.";
 		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
-		$this->_assignShareInfoToView($shareLink, $shareText, $shareText, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
+		$this->_assignShareSurveyToView($survey, $facebookCallbackUrl);
 	}
 
 	public function surveyRedirectAction ()
@@ -533,14 +518,8 @@ class Starbar_ContentController extends Api_GlobalController
 		$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'quizzes', $this->_maximumDisplayed['quizzes']);
 		$this->_assignSurveysToView('quizzes');
 
-		// @todo point this to onboarding
-		$shareLink = "http://music.say.so/";
-		// @todo share text to vary based on starbar_id?
-		$twitterShareText = "Join me in the Say.So Music Bar app. Get access to sweet gear deals and a chance to win a Takamine Guitar";
-		$facebookTitle = "Say.So Music Bar";
-		$facebookCaption = "If you're a Musician or dig music gear, you should join me in the Say.So Music Bar from Hello Music. We get access to some sweet gear deals and get awesome odds on walking away with one of their big giveaways like a Takamine Acoustic, a Full Midi Kit, and others. We just give our opinion on a few things and they give us Notes we can redeem for stuff. Sweet deal. Only lasts a month. Want in?";
 		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=starbar&shared_id=".$this->starbar_id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
-		$this->_assignShareInfoToView($shareLink, $twitterShareText, $facebookCaption,  $facebookCallbackUrl, $facebookTitle, null);
+		$this->_assignShareAppToView($facebookCallbackUrl);
 	}
 
 	public function userShareAction()

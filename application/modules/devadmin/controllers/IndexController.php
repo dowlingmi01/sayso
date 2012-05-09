@@ -414,6 +414,7 @@ class Devadmin_IndexController extends Api_GlobalController
 			$namedTransactionGroupProductId = $data->id;
 
 			$client->namedTransactionGroup($namedTransactionGroupProductId)->postNamedTransaction($namedTransactionProductPurchasingPointsId);
+			$client->setParameterPost("named_transaction_is_primary", 1);
 			$client->namedTransactionGroup($namedTransactionGroupProductId)->postNamedTransaction($namedTransactionProductRedeemablePointsId);
 			if ($type == "token") {
 				$client->namedTransactionGroup($namedTransactionGroupProductId)->postNamedTransaction($namedTransactionProductTokenPointsId);
@@ -590,6 +591,7 @@ class Devadmin_IndexController extends Api_GlobalController
 			$namedTransactionGroupProductVariantId = $data->id;
 
 			$client->namedTransactionGroup($namedTransactionGroupProductVariantId)->postNamedTransaction($namedTransactionProductVariantPurchasingPointsId);
+			$client->setParameterPost("named_transaction_is_primary", 1);
 			$client->namedTransactionGroup($namedTransactionGroupProductVariantId)->postNamedTransaction($namedTransactionProductVariantRedeemablePointsId);
 			if ($type == "token") {
 				$client->namedTransactionGroup($namedTransactionGroupProductVariantId)->postNamedTransaction($namedTransactionProductVariantTokenPointsId);

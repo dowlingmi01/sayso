@@ -141,9 +141,11 @@ ul.sg-list-vertical li {
 
 #sg_BackButton {
 	margin-left: 141px;
+	margin-left: 110px\0/IE8+9;
 }
 #sg_NextButton {
 	margin-right: 141px;
+	margin-right: 110px\0/IE8+9;
 	float: right;
 }
 #sg_SubmitButton {

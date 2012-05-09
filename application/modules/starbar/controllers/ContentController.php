@@ -374,7 +374,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('next_survey', $nextSurvey);
 
 		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
-		$this->_assignShareSurveyToView($survey, $facebookCallbackUrl);
+		$this->_assignShareSurveyToView($survey, false, $facebookCallbackUrl);
 	}
 
 	public function surveyCompleteAction ()
@@ -410,7 +410,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('next_survey', $nextSurvey);
 
 		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=survey&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
-		$this->_assignShareSurveyToView($survey, $facebookCallbackUrl);
+		$this->_assignShareSurveyToView($survey, true, $facebookCallbackUrl);
 	}
 
 	public function surveyRedirectAction ()

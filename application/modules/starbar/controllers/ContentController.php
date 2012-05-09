@@ -232,7 +232,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->user_id = $this->user_id;
 		$this->view->user_key = $this->user_key;
 		$this->view->starbar_id = $this->starbar_id;
-		
+
 		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=poll&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
 		$this->_assignSharePollToView($survey, $facebookCallbackUrl);
 	}
@@ -331,7 +331,7 @@ class Starbar_ContentController extends Api_GlobalController
 			$this->view->quiz_choices = $quizChoices;
 			$this->view->quiz_results = $quizResults;
 			$this->view->total_quiz_responses = $totalQuizResponses;
-			
+
 			$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=quiz&shared_id=".$quiz->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
 			$this->_assignShareQuizToView($quiz, $facebookCallbackUrl);
 		}
@@ -476,18 +476,13 @@ class Starbar_ContentController extends Api_GlobalController
 		}
 	}
 
-	public function onboardingAction ()
+	public function promosAction ()
 	{
 		$this->_validateRequiredParameters(array('starbar_id'));
 		$profileSurvey = new Survey();
 		$profileSurvey->loadDataByUniqueFields(array("starbar_id" => $this->starbar_id, "reward_category" => "profile"));
 		if ($profileSurvey->id) $this->view->profile_survey_id = $profileSurvey->id;
 		else $this->view->profile_survey_id = 0;
-	}
-
-	public function promosAction ()
-	{
-
 	}
 
 	public function userProfileAction ()
@@ -672,6 +667,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function onboardAction ()
 	{
+		$this->_validateRequiredParameters(array('starbar_id'));
 		$profileSurvey = new Survey();
 		$profileSurvey->loadDataByUniqueFields(array("starbar_id" => $this->starbar_id, "reward_category" => "profile"));
 		if ($profileSurvey->id) $this->view->profile_survey_id = $profileSurvey->id;

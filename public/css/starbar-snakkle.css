@@ -276,7 +276,7 @@
 	height: 53px;
 }
 
-#sayso-starbar #starbar-player-console #starbar-promo a.sb_nav_element{
+#sayso-starbar #starbar-player-console #starbar-promo a.sb_top_level_element{
 	width: 118px;
 	height: 53px;
 	display: table-cell;
@@ -595,7 +595,7 @@
 	font-weight: normal;
 	font-size: 14px;
 	padding: 0px 0px 10px 0px;
-	border-bottom: 2px dotted #ccc;	
+	border-bottom: 2px dotted #ccc;
 }
 
 #sayso-starbar #sb_popBox_surveys ul.sb_solidList li .sb_surveyInfo p,
@@ -1198,6 +1198,10 @@
 	left: 300px;
 	font-weight: bold;
 	font-size: 12px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_polls .sb_tabs{
+	height: 323px;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_tabs{

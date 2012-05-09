@@ -46,7 +46,10 @@
 			});
 		});
 
-		<? if ($this->chosen_good_id) { ?>
+		<? if ($this->chosen_good_id == "first") { ?>
+			var firstItem = $SQ('#sayso-starbar .sb_rewards .sb_rewardItem').first();
+			if (!firstItem.hasClass('sb_rewardItem_disabled')) firstItem.trigger('click');
+		<? } elseif ($this->chosen_good_id) { ?>
 			$SQ('#sayso-starbar .sb_rewards .sb_rewardItem').not('.sb_rewardItem_disabled').each(function (index) {
 				if (parseInt($SQ(this).attr('data-id')) == parseInt(<?= $this->chosen_good_id ?>)) {
 					$SQ(this).trigger('click');

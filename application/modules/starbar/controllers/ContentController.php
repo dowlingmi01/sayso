@@ -672,7 +672,10 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function onboardAction ()
 	{
-
+		$profileSurvey = new Survey();
+		$profileSurvey->loadDataByUniqueFields(array("starbar_id" => $this->starbar_id, "reward_category" => "profile"));
+		if ($profileSurvey->id) $this->view->profile_survey_id = $profileSurvey->id;
+		else $this->view->profile_survey_id = 0;
 	}
 
 	public function closeWindowAction ()

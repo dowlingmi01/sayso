@@ -1311,7 +1311,7 @@ $SQ(function(){
 
 	function activateScroll(target){
 		// first, resize the scrollpane dynamically to fit whatever height it lives in (.content.height() - .header.height())
-		var contentHeight = $SQ('.sb_popContent', target).height();
+		var contentHeight = $SQ('.sb_popContent', target).innerHeight();
 
 		// add height of the header + any margins / paddings
 		if ($SQ('.sb_popContent .sb_header', target).length > 0){

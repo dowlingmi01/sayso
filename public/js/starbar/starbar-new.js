@@ -36,7 +36,12 @@ $SQ(function(){
 	*/
 	$SQ(document).keyup(function(e) {
 		if (e.keyCode == 27) {
-			closePopBox();
+			var overlay = $SQ('.sb_outerOverlay');
+			if (overlay.length == 1){
+				overlay.trigger('click');
+			} else {
+				closePopBox();
+			}
 		}  // esc
 	});
 
@@ -461,7 +466,6 @@ $SQ(function(){
 			// for some reason, the hover behavior set in the CSS is totally ignored. :(
 				$SQ(this).hover(function(){
 					$SQPoints = $SQ('#'+$SQ(this).attr('rel'));
-					console.log($SQ(this).attr('rel'));
 					$SQ(this).css('background-position','0px -20px');
 					$SQPoints.show();
 				},

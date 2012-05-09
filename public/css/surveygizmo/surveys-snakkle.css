@@ -94,6 +94,8 @@ ul.sg-list-vertical li {
 
 /* !----- Buttons ----- */
 .sg-button, #sGizmoSaveButtonX {
+	background-color: #168DCA;
+	background-image: none;
 	background-image: -webkit-gradient(
 	linear,
 	left top,
@@ -104,7 +106,6 @@ ul.sg-list-vertical li {
 			center top,
 			rgb(22,141,202) 22%,
 			rgb(7,61,89) 61%);
-	background-color: #009fd2;
 
 	font-size: 14px;
 	font-weight: normal;
@@ -118,6 +119,7 @@ ul.sg-list-vertical li {
 	border: none;
 	float: left;
 	margin: 0 10px 0 10px;
+	display:inline;
 	}
 	.sg-buttons,
 	.sg-button-bar input {
@@ -131,7 +133,8 @@ ul.sg-list-vertical li {
 	position: fixed;
 	bottom: 0;
 	border-top: 10px solid #FFFFFF;
-	border-bottom: 10px solid #FFFFFF;
+	border-bottom: 2px solid #FFFFFF;
+	margin-bottom: 0px;
 	background: #FFFFFF;
 	width: 98%;
 	}

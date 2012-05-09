@@ -794,11 +794,13 @@
 	text-shadow: 1px 1px 1px rgba(0,0,0,.8);
 }
 
-#sayso-starbar #starbar-player-console span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_facebook{
+#sayso-starbar #starbar-player-console span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_facebook,
+#sayso-starbar-embed span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_facebook{
 	left: 55px;
 }
 
-#sayso-starbar #starbar-player-console span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_twitter{
+#sayso-starbar #starbar-player-console span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_twitter,
+#sayso-starbar-embed span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_twitter{
 	left: 115px !important;
 }
 

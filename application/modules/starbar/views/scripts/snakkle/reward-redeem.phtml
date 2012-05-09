@@ -12,7 +12,7 @@ $userAddress = $this->user_address;
 
 $gamer = $game->getGamer();
 
-$currentBalance = (int) $gamer->getCurrencyByTitle('notes')->current_balance;
+$currentBalance = (int) $gamer->getCurrencyByType('redeemable')->current_balance;
 $itemCost = (int) $good->cost;
 
 $percentUserBalanceToCost = round(($currentBalance / $itemCost) * 100);

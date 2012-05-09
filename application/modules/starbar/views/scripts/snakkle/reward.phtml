@@ -5,7 +5,7 @@ $good = $this->model;
 
 /* @var $reward Gaming_BigDoor_Good */
 $gamer = $good->getGame()->getGamer();
-$Bucks = $gamer->getCurrencyByTitle('Bucks')->current_balance;
+$Bucks = $gamer->getCurrencyByType('redeemable')->current_balance;
 $percentUserBalanceToCost = round(((int) $Bucks / (int) $good->cost) * 100);
 if ($percentUserBalanceToCost > 100) $percentUserBalanceToCost = 100;
 ?>

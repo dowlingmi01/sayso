@@ -979,4 +979,10 @@ class Devadmin_IndexController extends Api_GlobalController
 		$surveys->loadAllSurveys();
 		$this->view->surveys = $surveys;
 	}
+
+	public function everyFiveMinutesAction() {
+		$this->view->messages = Survey_ResponseCollection::processAllResponsesPendingProcessing();
+		if (!$this->view->messages) $this->view->messages = array();
+		quicklog(implode("\n", $this->view->messages));
+	}
 }

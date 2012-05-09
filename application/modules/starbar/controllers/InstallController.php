@@ -149,11 +149,15 @@ class Starbar_InstallController extends Api_GlobalController {
 			$install = new User_Install();
 			$install->loadDataByUniqueFields(array('token'=>$this->user_key));
 			if( $install->id ) {
-				$externalUser = new External_User();
-				$externalUser->loadData($install->external_user_id);
-				
 				$starbar = new Starbar();
-				$starbar->loadData($externalUser->starbar_id);
+				
+				if( $install->starbar_id )
+					$starbar->loadData($install->starbar_id);
+				else {
+					$externalUser = new External_User();
+					$externalUser->loadData($install->external_user_id);
+					$starbar->loadData($externalUser->starbar_id);
+				}
 				
 				$url = Client::getInstance($starbar->short_name)->getPostInstallURL();
 			}

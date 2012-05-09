@@ -102,6 +102,7 @@ class Survey_ResponseCollection extends RecordCollection
 		foreach ($surveyResponses as $surveyResponse) {
 			$messages = array_merge($messages, $surveyResponse->process());
 		}
+		return $messages;
 	}
 
 	public function loadAllResponsesPendingProcessing () {

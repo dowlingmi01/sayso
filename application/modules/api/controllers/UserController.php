@@ -245,7 +245,7 @@ class Api_UserController extends Api_GlobalController
 
 				break;
 		}
-		Game_Starbar::getInstance()->completeProfile($user);
+		//Game_Starbar::getInstance()->completeProfile($user);
 		return $this->_resultType(new Object($response));
 	}
 }

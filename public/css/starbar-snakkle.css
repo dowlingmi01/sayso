@@ -575,6 +575,49 @@
 	right: 10px;
 }
 
+#sayso-starbar #sb_popBox_surveys ul.sb_solidList{
+
+}
+#sayso-starbar #sb_popBox_surveys ul.sb_solidList li{
+	border: 1px solid #e5e5e5 !important;
+	background-color: #f7f7f7 !important;
+	margin: 0px 0px 5px 0px;
+	padding: 10px 10px 0px 10px;
+	position: relative;
+}
+
+#sayso-starbar #sb_popBox_surveys ul.sb_solidList li .sb_surveyInfo{
+	width: 90%;
+}
+
+#sayso-starbar #sb_popBox_surveys ul.sb_solidList li .sb_surveyInfo h3{
+	color: #009FD2;
+	font-weight: normal;
+	font-size: 14px;
+	padding: 0px 0px 10px 0px;
+	border-bottom: 2px dotted #ccc;	
+}
+
+#sayso-starbar #sb_popBox_surveys ul.sb_solidList li .sb_surveyInfo p,
+#sayso-starbar #sb_popBox_surveys ul.sb_solidList li .sb_surveyInfo p .sb_currency_title{
+	font-size: 11px;
+	color: #000;
+	margin-bottom: 0;
+}
+
+#sayso-starbar #sb_popBox_surveys .sb_survey-select{
+	text-indent: -9999px;
+	width: 32px;
+	height: 28px;
+	display: inline-block;
+	background-image:  url('../images/snakkle/img_arrow_right_solid_lg.png');
+	background-repeat: no-repeat;
+	position: absolute;
+	right: 10px;
+	margin-top: -19px;
+	top: 50%;
+}
+
 /* quizzes */
 
 #sayso-starbar #sb_popBox_quizzes.sb_popBox{

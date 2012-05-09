@@ -73,8 +73,8 @@ class Survey_Response extends Record
 
 		if (APPLICATION_ENV == "production") {
 			$requestParams["filter[field][1]"] = "[url(%22testing%22)]";
-			$requestParams["filter[operator][1]"] = "!=";
-			$requestParams["filter[value][1]"] = 1;
+			$requestParams["filter[operator][1]"] = "=";
+			$requestParams["filter[value][1]"] = "false";
 		} else {
 			$requestParams["filter[field][1]"] = "[url(%22base_domain%22)]";
 			$requestParams["filter[operator][1]"] = "=";
@@ -82,7 +82,7 @@ class Survey_Response extends Record
 
 			$requestParams["filter[field][2]"] = "[url(%22testing%22)]";
 			$requestParams["filter[operator][2]"] = "=";
-			$requestParams["filter[value][2]"] = 1;
+			$requestParams["filter[value][2]"] = "true";
 		}
 
 		$requestParamString = "";

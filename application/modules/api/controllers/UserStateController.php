@@ -43,7 +43,7 @@ class Api_UserStateController extends Api_GlobalController
 
 		$userState->loadDataByUniqueFields(array('user_id' => $this->user_id));
 				
-		if (!$userState->id) { // This must be the first install for this user
+		if (!$userState->id && !($this->in_iframe == "true")) { // This must be the first install for this user
 			if( !$newToken ) {
 				$install = new User_Install();
 				$install->loadDataByUniqueFields(array('token'=>$this->user_key));
@@ -73,7 +73,9 @@ class Api_UserStateController extends Api_GlobalController
 			$userState->visibility = "open";
 			$userState->save();
 			$userState->reload();
-		}		
+		} else if( !$userState->id ) {
+			return $this->_resultType(false);
+		}
 
 		$userState->base_domain = BASE_DOMAIN;
 		$userState->user_key = $this->user_key;

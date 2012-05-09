@@ -72,7 +72,7 @@
 	// can override the baseDomain for the user, but we need to do the ajax call to somewhere!
 	var saysoBaseDomain = window.$SaySoExtension.base_domain;
 	
-	var ajaxData = { renderer: 'jsonp' };
+	var ajaxData = { renderer: 'jsonp', in_iframe: sayso.in_iframe };
 	
 	if( !sayso.in_iframe )
 		ajaxData.url = sayso.current_url;

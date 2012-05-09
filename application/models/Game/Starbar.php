@@ -155,11 +155,13 @@ abstract class Game_Starbar extends Game_Abstract {
 			$gamer = $this->getGamer(/* load profile */);
 
 			// if user just leveled up, congratulate via notification
-			// FYI $currentUserLevel = $gamer->getLevels()->count() - 1; since the user starts with 2 levels
-			if ($gamer->justLeveledUp() && $gamer->getLevels()->count() > 2) {
+			if ($gamer->justLeveledUp() && $gamer->getLevels()->count() > 1) {
+				$messageGroup = new Notification_MessageGroup();
+				$messageGroup->loadDataByUniqueFields(array('short_name' => 'User Actions', 'starbar_id' => $this->_request->getParam('starbar_id')));
 				$message = new Notification_Message();
-				$shortName = 'Level Up';
-				$message->loadDataByUniqueFields(array('short_name' => $shortName));
+
+				if ($messageGroup->id)
+					$message->loadDataByUniqueFields(array('short_name' => 'Level Up', 'notification_message_group_id' => $messageGroup->id));
 
 				if ($message->id) {
 					$messageUserMap = new Notification_MessageUserMap();

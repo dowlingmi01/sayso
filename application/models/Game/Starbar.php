@@ -165,7 +165,7 @@ abstract class Game_Starbar extends Game_Abstract {
 
 				if ($message->id) {
 					$messageUserMap = new Notification_MessageUserMap();
-					$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->_request->getParam('user_id'));
+					$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, (int) $this->_request->getParam('user_id'));
 				}
 
 				// remove cache so "just leveled up" logic is not re-used

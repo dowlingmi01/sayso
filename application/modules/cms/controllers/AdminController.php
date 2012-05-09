@@ -46,16 +46,16 @@
 
 			// Zap any existing parameters
 			foreach ($this->_getAllParams() as $key=>$value) {
-				$this->_setParam($key,null);
+			//	$this->_setParam($key,null);
 			}
 
 			foreach ($newParams as $key=>$value) {
-				$this->_setParam($key,$value);
+			//	$this->_setParam($key,$value);
 			}
 
 			// Changing the action (by _setParam) doesn't do anything unless we forward...
 			if (($this->_getParam('action')!= $this->getRequest()->getActionName()) && ($this->_getParam('action') != null)) {
-				$this->_forward($this->_getParam('action'),'admin','cms');
+			//	$this->_forward($this->_getParam('action'),'admin','cms');
 			}
 		}
 
@@ -235,8 +235,13 @@
 
 					if ($saysojson->checkTablePermission("allowadd")) {
 						$fullURL = $this->_getFullURL();
-						//$griddata['newrecord'] = sprintf('<span class="newlink"><a href="%s/add/table/%s/"><img src="/images/icons/add.png" style="width:16px;" alt="Add" Title="Add" /> Add New %s</a></span>',$fullURL,$fktablename,$tablenamepolite);
-						$griddata['newrecord'] = sprintf('<span class="newlink"><a href="/cms/admin/add/table/%s/"><img src="/images/icons/add.png" style="width:16px;" alt="Add" Title="Add" /> Add New %s</a></span>',$fktablename,$tablenamepolite);
+						$tablename = $this->getRequest()->getParam('table');
+						$id = $this->getRequest()->getParam('id');
+						if (($tablename != null) && ($id!=null)) {
+							$redirect = "pt/".$tablename."/pi/".$id;
+						}
+
+						$griddata['newrecord'] = sprintf('<span class="newlink"><a href="/cms/admin/add/table/%s/%s"><img src="/images/icons/add.png" style="width:16px;" alt="Add" Title="Add" /> Add New %s</a></span>',$fktablename,$redirect,$tablenamepolite);
 					}
 
 					$griddata['title'] = $tablenamepolite;
@@ -848,9 +853,6 @@
 				if ($reverse[0]=="/") {
 					$currentURL = substr($currentURL,0,strlen($currentURL)-1);
 				}
-			//	$newURL = $currentURL."/edit/table/".$tablename."/id/".intval($id);
-			//	$link = '<a href="'.$newURL. '" class="button-details" title="Edit"><img src="/images/icons/pencil.png" style="width:16px;" alt="Edit" Title="Edit" /></a>';
-// The above is part of the breadcrumb trail
 
 				$link = '<a href="' .$this->view->url(array('action' => 'edit', 'table'=>$tablename,'id' => intval($id))). '" class="button-details" title="Edit"><img src="/images/icons/pencil.png" style="width:16px;" alt="Edit" Title="Edit" /></a>';
 
@@ -878,10 +880,8 @@
 				if ($reverse[0]=="/") {
 					$currentURL = substr($currentURL,0,strlen($currentURL)-1);
 				}
-				//$newURL = $currentURL."/delete/table/".$tablename."/id/".intval($id);
-				//$link = '<a href="'.$newURL. '" class="button-details" title="Delete"><img src="/images/icons/delete.png" style="width:16px;" alt="Delete" Title="Delete" /></a>';
-// The above is part of the breadcrumb trail
-$link = '<a href="' .$this->view->url(array('action' => 'delete', 'table' => $tablename, 'id' => intval($id))). '" class="button-details" title="Delete"><img src="/images/icons/delete.png" style="width:16px;" alt="Delete" Title="Delete" /></a>';
+
+				$link = '<a href="' .$this->view->url(array('action' => 'delete', 'table' => $tablename, 'id' => intval($id))). '" class="button-details" title="Delete"><img src="/images/icons/delete.png" style="width:16px;" alt="Delete" Title="Delete" /></a>';
 
 			} else {
 
@@ -930,6 +930,8 @@ $link = '<a href="' .$this->view->url(array('action' => 'delete', 'table' => $ta
 
 			$tablename = $this->getRequest()->getParam('table');
 			$tablenamepolite = ucwords(str_replace("_"," ",$tablename));
+			$parenttable = $this->getRequest()->getParam('pt');
+			$parentid = $this->getRequest()->getParam('pi');
 			if ($tablename != "") {
 
 				// Search for the json file
@@ -1027,7 +1029,13 @@ $link = '<a href="' .$this->view->url(array('action' => 'delete', 'table' => $ta
 								$result = $model->save();
 
 								$this->view->message = "Record successfully added ".$result;
-								$form->reset();
+
+								if (($parenttable!=null) && ($parentid!=null))
+								{
+									$this->rd->gotoSimple('detail','admin','cms',array('table' => $parenttable,'id'=>$parentid));
+								} else {
+									$form->reset();
+								}
 
 							} else {
 								$form->populate($postData); // show errors and populate form with $postData

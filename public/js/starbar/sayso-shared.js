@@ -54,8 +54,11 @@ $SQ(function(){
 			// remove this function and replace calls to .cleanHtml() with calls to .html() when jquery is fixed!
 			cleanHtml: function() {
 				return this.html().replace('<a xmlns="http://www.w3.org/1999/xhtml">', '').replace('</a>', '');
-			}
+			},
 
+			biggestHeight: function() {
+				return Math.max(this.outerHeight(), this.outerHeight(true));
+			}
 		});
 	})($SQ);
 

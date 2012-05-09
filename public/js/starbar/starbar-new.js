@@ -1311,22 +1311,22 @@ $SQ(function(){
 
 	function activateScroll(target){
 		// first, resize the scrollpane dynamically to fit whatever height it lives in (.content.height() - .header.height())
-		var contentHeight = $SQ('.sb_popContent', target).innerHeight();
+		var contentHeight = $SQ('.sb_popContent', target).height();
 
 		// add height of the header + any margins / paddings
 		if ($SQ('.sb_popContent .sb_header', target).length > 0){
-			var headerHeight = $SQ('.sb_popContent .sb_header',target).outerHeight(true);
+			var headerHeight = $SQ('.sb_popContent .sb_header',target).biggestHeight();
 		}else{
 			var headerHeight = 0;
 		}
 
 		// recalculate if we're using 2 column layout.
 		if ($SQ('.sb_popContent .sb_column60', target).length > 0){
-			var headerHeight = $SQ('.sb_popContent  .sb_column60 .sb_header',target).outerHeight(true);
+			var headerHeight = $SQ('.sb_popContent  .sb_column60 .sb_header',target).biggestHeight();
 		}
 
 		if ($SQ('.sb_popContent .sb_column40', target).length > 0){
-			var headerHeight = $SQ('.sb_popContent  .sb_column60 .sb_header',target).outerHeight(true);
+			var headerHeight = $SQ('.sb_popContent  .sb_column60 .sb_header',target).biggestHeight();
 		}
 
 		var panes = $SQ('.sb_scrollPane',target);
@@ -1334,7 +1334,7 @@ $SQ(function(){
 			// Add height of all the paragraphs (or anything with the class "sb_tabHeader" really)
 			var paragraphs = $SQ('.sb_tabHeader', $SQ(this).parent());
 			var paragraphHeight = 0;
-			paragraphs.each(function(i) {paragraphHeight += $SQ(this).outerHeight(true);});
+			paragraphs.each(function(i) {paragraphHeight += $SQ(this).biggestHeight();});
 
 			// special rule to handle if there are 2 columns in a popbox, check to see if any doesn't have a header, if it doesn't, change the height of the scroll.
 			var parent = $SQ(this).parent();

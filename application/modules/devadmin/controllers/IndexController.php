@@ -401,7 +401,8 @@ class Devadmin_IndexController extends Api_GlobalController
 			$client->setParameterPost("pub_title", "BUY " . $productTitle);
 			$client->setParameterPost("pub_description", "BUY " . $productTitle);
 			$client->setParameterPost("end_user_title", "BUY " . $productTitle);
-			$client->setParameterPost("end_user_cap", 1);
+			if ($type == "token") $client->setParameterPost("end_user_cap", -1);
+			else $client->setParameterPost("end_user_cap", 1);
 			$client->setParameterPost("end_user_cap_interval", -1);
 			$client->setParameterPost("read_only", 0);
 			$client->setParameterPost("challenge_response_enabled", 0);
@@ -576,7 +577,8 @@ class Devadmin_IndexController extends Api_GlobalController
 			$client->setParameterPost("pub_title", "BUY " . $productTitle . " (Variant)");
 			$client->setParameterPost("pub_description", "BUY " . $productTitle . " (Variant)");
 			$client->setParameterPost("end_user_title", "BUY " . $productTitle . " (Variant)");
-			$client->setParameterPost("end_user_cap", 1);
+			if ($type == "token") $client->setParameterPost("end_user_cap", -1);
+			else $client->setParameterPost("end_user_cap", 1);
 			$client->setParameterPost("end_user_cap_interval", -1);
 			$client->setParameterPost("read_only", 0);
 			$client->setParameterPost("challenge_response_enabled", 0);

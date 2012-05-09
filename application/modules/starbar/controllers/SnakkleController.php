@@ -15,7 +15,7 @@ class Starbar_SnakkleController extends Starbar_ContentController
 		parent::_assignShareInfoToView($shareLink, $twitterShareText, $facebookShareCaption, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
 		$this->view->assign('facebook_share_image_url', 'https://s3.amazonaws.com/say.so/media/snakkle/logo_snakkle.png');
 	}
-	protected $_appShareLink = 'http://www.snakkle.com/?sayso-install=s-1';
+	protected $_appShareLink = 'http://snakkle.say.so';
 	protected $_fbkAppDescription = "Say.So is your way of making a lasting impact on the communities you love. Participating in Snakkle Say.So is easy - by giving your opinion, answering polls and taking fun quizzes, you gain points to redeem awesome prizes from Snakkle.";
 	
 	protected function _assignShareAppToView($facebookCallbackUrl) {

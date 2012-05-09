@@ -130,7 +130,7 @@ class Starbar_ContentController extends Api_GlobalController
 				$userEmail = new User_Email();
 				$userEmail->loadData($user->primary_email_id);
 				$message = '
-					Say.So Music Bar redemption made for ' . $goodTitle . '
+					Snakkle Say.So redemption made for ' . $goodTitle . '
 
 					Order Details
 					=============
@@ -147,13 +147,13 @@ class Starbar_ContentController extends Api_GlobalController
 					User Email: ' . $userEmail->email . '
 					=============
 					Thank you,
-					Say.So Mailer v3.4
+					Say.So Mailer v4.4
 				';
 
 				$config = Api_Registry::getConfig();
 				$mail = new Mailer();
-				$mail->setFrom('hmorders@say.so')
-					 ->addTo('hmorders@say.so')
+				$mail->setFrom('snakkleorders@say.so')
+					 ->addTo('snakkleorders@say.so')
 					 ->setSubject('Redemption of '.$goodTitle.' for '.$userEmail->email);
 				$mail->setBodyMultilineText($message);
 				$mail->send(new Zend_Mail_Transport_Smtp());
@@ -169,27 +169,24 @@ class Starbar_ContentController extends Api_GlobalController
 					$address .= "<br />".$this->order_address_2;
 				}
 				$userEmail->loadData($user->primary_email_id);
-				$htmlmessage = "<h1>Say.So Music Bar redemption made for ".$goodTitle."</h1>";
+				$htmlmessage = "<h1>Snakkle Say.So redemption made for ".$goodTitle."</h1>";
 				$htmlmessage .= sprintf("<p>This is your confirmation for the redemption of the item - %s.</p>",$goodTitle);
 				$htmlmessage .= "<p>Congratulations! Your redemption is being processed.</p>";
-				$htmlmessage .= "<p>Thank you for being a member of Hello Music Say.So!</p>";
-				$htmlmessage .= "<p>- Hello Music Say.So Team</p>";
+				$htmlmessage .= "<p>Thank you for being a member of Snakkle Say.So!</p>";
+				$htmlmessage .= "<p>- Snakkle Say.So Team</p>";
 
 				$message = 'This is your confirmation for the redemption of the item - ' . $goodTitle . '
 
 					Congratulations! Your redemption is being processed.
 
-					Thank you for being a member of Hello Music Say.So!
+					Thank you for being a member of Snakkle Say.So!
 
-					- Hello Music Say.So Team
+					- Snakkle Say.So Team
 				';
 
 				$config = Api_Registry::getConfig();
 				$mail = new Mailer();
-				/*$mail->setFrom('hmorders@say.so')
-					 ->addTo('hmorders@say.so')
-					 ->setSubject('Redemption');*/
-				$mail->setFrom('hmorders@say.so')
+				$mail->setFrom('snakkleorders@say.so')
 					 ->addTo($userEmail->email)
 					 ->setSubject('Your Item Redemption');
 				$mail->setBodyMultilineText($message);

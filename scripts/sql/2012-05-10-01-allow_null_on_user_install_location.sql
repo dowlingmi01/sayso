@@ -1,1 +1,1 @@
-ALTER TABLE user_install ALTER location varchar(32) NULL;
+ALTER TABLE user_install MODIFY location varchar(32) NULL;

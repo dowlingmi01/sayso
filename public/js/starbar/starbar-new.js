@@ -1006,7 +1006,6 @@ $SQ(function(){
 							});
 							iconElem.css("background-image", "url('"+smallImageUrl+"')");
 							iconElem.css("background-position", "center bottom");
-							sayso.log(iconElem);
 						}
 					})
 				}

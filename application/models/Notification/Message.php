@@ -10,7 +10,7 @@ class Notification_Message extends Record
 
 		// Select the next message in the group
 		$sql = "
-			SELECT *
+			SELECT nm.*
 			FROM notification_message nm
 				INNER JOIN notification_message_group nmg
 					ON nmg.id = nm.notification_message_group_id
@@ -50,14 +50,16 @@ class Notification_Message extends Record
 
 		if ($data // We got a result
 			&& !$validMessage // The user shouldn't see it
-			&& $nextMessage->id != $stopId // We haven't looped around the group yet, so...
+			&& $this->id != $stopId // We haven't looped around the group yet, so...
 		) {
 			// ... grab the next message in the group!
-			$this->loadNextMessageInGroupForUser($nextMessage, $messageGroup, $userId, $stopId);
+			return $this->loadNextMessageInGroupForUser($this, $messageGroup, $userId, $stopId);
 
-		} elseif (isset($nextMessage) && $nextMessageValid) { // We got a result that the user should see
-			$data = Db_Pdo::fetch($sql, $messageGroup->id);
-			$this->build($data);
+		} elseif ($this->id && $validMessage) { // We got a result that the user should see
+			return true;
+		} else { // No more messages in this group for this user
+			$this->id = 0;
+			return false;
 		}
 
 		// If we haven't built $this by now, there are no next messages in the group for this user. All done!

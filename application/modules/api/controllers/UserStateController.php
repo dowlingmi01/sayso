@@ -7,10 +7,10 @@ class Api_UserStateController extends Api_GlobalController
 	public function getAction () {
 		$starbar = new Starbar();
 		$newToken = false;
-		
+
 		if ($this->client_user_logged_in) {
 			$this->_validateRequiredParameters(array('client_name', 'client_uuid', 'client_uuid_type'));
-			
+
 			$externalUser = new External_User();
 			$starbar->loadDataByUniqueFields( array('short_name' => $this->client_name));
 			$externalUser->starbar_id = $starbar->id;
@@ -18,31 +18,34 @@ class Api_UserStateController extends Api_GlobalController
 			$externalUser->uuid_type = $this->client_uuid_type;
 			$externalUser->email = $this->client_email;
 			$externalUser->loadOrCreate();
-			
+
 			$user = $externalUser->getUser();
-			
+
 			if( $externalUser->user_id != $this->user_id ) {
 				$userKey = new User_Key();
 				$userKey->user_id = $user->getId();
 				$userKey->token = User_Key::getRandomToken();
 				$userKey->origin = User_Key::ORIGIN_USER_STATE;
 				$userKey->save();
-				
+
 				header('P3P: CP="NOI ADM DEV PSAi COM NAV OUR OTR STP IND DEM"');
 				setcookie('user_key', $userKey->token, time()+(86400*365), '/', null, null, true);
-				
+
 				$this->user_id = $externalUser->user_id;
 				$this->user_key = $userKey->token;
 				$newToken = true;
 			}
 		}
 
+		// Silently fail if user_id is missing to avoid excessive thrown errors (they don't grow on trees you know)
+		if (! $this->getRequest()->getParam('user_id')) return $this->_resultType(false);
+
 		$this->_validateRequiredParameters(array('user_id'));
-		
+
 		$userState = new User_State();
 
 		$userState->loadDataByUniqueFields(array('user_id' => $this->user_id));
-				
+
 		if (!$userState->id && !($this->in_iframe == "true")) { // This must be the first install for this user
 			if( !$newToken ) {
 				$install = new User_Install();
@@ -68,7 +71,7 @@ class Api_UserStateController extends Api_GlobalController
 			$gamer = Gamer::create($this->user_id, $starbar->id);
 			$game = Game_Starbar::create($gamer, $this->_request, $starbar);
 			$game->install();
-			
+
 			$userState->starbar_id = $starbar->id;
 			$userState->visibility = "open";
 			$userState->save();

@@ -28,37 +28,53 @@
 		if (!sayso.baseDomain) {
 			sayso.baseDomain = 'app.saysollc.com';
 		}
-
-		function getInternetExplorerVersion() {
-			var rv = -1; // Return value assumes failure.
-			if (navigator.appName == 'Microsoft Internet Explorer') {
-				var ua = navigator.userAgent;
-				var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-				if (re.exec(ua) != null)
-					rv = parseFloat(RegExp.$1);
+		
+		function getBrowserNameVersion() {
+			var bn = {};
+			var ua = navigator.userAgent;
+			if( !ua ) {
+				bn.browser = "unknown";
+				bn.isSupported = false;
+				return bn;
 			}
-			return rv;
+			var mobileStrs = ["Android", "webOS", "iPhone", "iPod", "iPad"];
+			var identStrs = ["Chrome", "Safari", "Firefox", "MSIE"];
+			var versionStrs = ["Chrome", "Version", "Firefox", "MSIE"];
+			var minVer = [1.0, 5.01, 10.0, 8.0];
+			var i, j;
+			for( i = 0; i < mobileStrs.length; i++ )
+				if( ua.indexOf(mobileStrs[i]) >= 0 ) {
+				bn.isMobile = true;
+				bn.isSupported = false;
+				return bn;
+			}
+			for( i = 0; i < identStrs.length; i++ )
+				if( (j = ua.indexOf(identStrs[i])) >= 0 ) {
+					bn.browser = identStrs[i].toLowerCase();
+					var ver = 0;
+					if( (j = ua.indexOf(versionStrs[i])) > 0 ) {
+						ver = parseFloat(ua.substring(j + versionStrs[i].length + 1));
+						if( ver )
+							bn.version = ver;
+					}
+						
+					bn.isSupported = ver >= minVer[i];
+					return bn;
+				}
+			bn.browser = "unknown";
+			bn.isSupported = false;
+			return bn;
 		}
-		
-		var browserSupported = true;
-		
-		var ieVersion = getInternetExplorerVersion();
-		var appVersion = '';
 
-		if (ieVersion > -1 && ieVersion < 8) appVersion = ' ' + ieVersion;
+		
+		var bn = getBrowserNameVersion();
+		sayso.bn = bn;
 
-		if (
-			(!navigator.userAgent.match('Mozilla.*Gecko.*Firefox') && !navigator.userAgent.match('Chrome') &&
-			!navigator.userAgent.match('MSIE') && !navigator.userAgent.match('AppleWebKit((?!Mobile).)*Safari'))
-		   ||
-			(ieVersion > -1 && ieVersion < 8)
-		) {
-			browserSupported = false;
-			
-			if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/iPad/i)) {
+		if ( !bn.isSupported ) {
+			if( bn.isMobile ) {
 				alert('Sorry! The ' + sayso.client.appName + ' isn\'t yet available for mobile browsers. Join us via your computer when you can!');
 			} else {
-				alert('Sorry, your web browser ('+navigator.appName+appVersion+') doesn\'t support the cool features of the ' + sayso.client.appName + '. For an optimal experience, use the latest versions of Chrome (www.google.com/chrome), Firefox (www.getfirefox.com) or Safari (www.apple.com/safari). And we support Internet Explorer 8 and above.');
+				alert('Sorry, your web browser doesn\'t support the cool features of the ' + sayso.client.appName + '. For an optimal experience, use the latest versions of Chrome (www.google.com/chrome), Firefox (www.getfirefox.com) or Safari (www.apple.com/safari). And we support Internet Explorer 8 and above.');
 			}
 		}
 		if( sayso.client.userLoggedIn || sayso.client.anonymousUsers ) {
@@ -71,7 +87,7 @@
 			var jQueryTimer = new jsLoadTimer();
 			jQueryTimer.start('typeof window.$SQ === "function"', function () {
 
-				if( browserSupported ) {
+				if( bn.isSupported ) {
 					var div = document.createElement('div');
 					div.id = 'sayso-container';
 					div.style.display = 'none'; div.style.width = '100%'; div.style.height = '100%'; div.style.position = 'absolute'; div.style.top = '0px';
@@ -114,13 +130,13 @@
 						client_name : sayso.client.name,
 						client_keys : clientKeys,
 						install_origination : (installParam ? installParam : installCookie),
-						user_agent_supported : browserSupported,
+						user_agent_supported : bn.isSupported,
 						install_url : document.location.href,
 						location_token : locationCookie,
 						referrer : (installParam ? document.referrer : referrerCookie)
 						},
 					success : function (response) {
-						if( browserSupported ) {
+						if( bn.isSupported ) {
 							setTimeout(function () {
 								// overlay
 								container.html(response.data.html);
@@ -136,7 +152,7 @@
 				$SQ.ajax(ajaxOpts);
 			}); //end when jQuery loaded
 		// end if userLoggedIn
-		} else if( browserSupported && installParam ) {
+		} else if( bn.isSupported && installParam ) {
 			setCookie('sayso-install', installParam, 1);
 			setCookie('sayso-referrer', document.referrer, 1);
 			alert('Please log in first to install the Say.So app');

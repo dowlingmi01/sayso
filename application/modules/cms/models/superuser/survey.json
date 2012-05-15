@@ -46,6 +46,7 @@
 			"displaywhen": [
 				"add",
 				"grid",
+				"edit",
 				"delete",
 				"detail"
 			]

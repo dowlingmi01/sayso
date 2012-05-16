@@ -253,6 +253,12 @@ $SQ(function(){
 
 	};
 
+	sayso.facebook_share_lock = {
+		share_type: "none",
+		share_id: 0,
+		active: false
+	}
+
 	// initialize the starbar
 	initStarBar();
 
@@ -689,15 +695,15 @@ $SQ(function(){
 								newAlerts = true;
 							} else {
 								// Messages with no notification area should not be shown, they are sent silently to initiate certain actions
-
-								/*if (message.short_name == 'Update Game') {
-									sayso.log('AJAX GAME UPDATE: \'Update Game\' notification received');
-									updateGame('ajax', true, true);
-								}
 								$SQ.ajaxWithAuth({ // Mark closed, those notifications are meant to be received only once.
 									url : '//'+sayso.baseDomain+'/api/notification/close?renderer=jsonp&message_id='+message.id,
 									success : function (response, status) {}
-								});*/
+								});
+
+								// FB post successful, activate lock on the current share to disallow sharing same thing multiple times
+								if (message.short_name == 'Facebook Post') {
+									sayso.facebook_share_lock.active = true;
+								}
 							}
 						} else { // Alert already exist, remove the class with the random string that we just added
 							currentAlert.removeClass('sb_starbar-alert_'+randomString);
@@ -730,10 +736,10 @@ $SQ(function(){
 		});
 	}
 
-	function handleTweet (shared_type, shared_id) {
-		if (shared_type && shared_id) {
+	function handleTweet (shareType, shareId) {
+		if (shareType && shareId) {
 			$SQ.ajaxWithAuth({
-				url : '//'+sayso.baseDomain+'/api/gaming/share?renderer=jsonp&shared_type='+shared_type+'&shared_id='+shared_id+'&social_network=TW',
+				url : '//'+sayso.baseDomain+'/api/gaming/share?renderer=jsonp&shared_type='+shareType+'&shared_id='+shareId+'&social_network=TW',
 				success : function (response, status, jqXHR) {
 					updateGame(response.game, true, true);
 				}
@@ -741,6 +747,24 @@ $SQ(function(){
 		}
 	}
 
+	function handleFacebookShare (link, shareType, shareId) {
+		if (link && canFacebookShare(shareType, shareId)) {
+			$SQ.sayso.facebook_share_lock.share_type = shareType;
+			$SQ.sayso.facebook_share_lock.share_id = shareId;
+			$SQ.sayso.facebook_share_lock.active = false; // lock is activated after share is successful
+			$SQ.openWindow(link, 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450');
+		}
+	}
+
+	function canFacebookShare (shareType, shareId) {
+		if ($SQ.sayso.facebook_share_lock
+			&& $SQ.sayso.facebook_share_lock.active
+			&& $SQ.sayso.facebook_share_lock.share_type == shareType
+			&& $SQ.sayso.facebook_share_lock.share_id == shareId
+		) return false;
+		return true;
+
+	}
 
 	var frameCommunicationFunctions = {
 		'loadComplete': function (parameters) {
@@ -796,6 +820,12 @@ $SQ(function(){
 			var sharedType = parameters['shared_type'];
 			var sharedId = parameters['shared_id'];
 			if (sharedType && sharedId) handleTweet(sharedType, sharedId);
+		},
+		'handleFacebookShare': function (parameters) {
+			var link = parameters['link'];
+			var sharedType = parameters['shared_type'];
+			var sharedId = parameters['shared_id'];
+			if (sharedType && sharedId) handleFacebookShare(link, sharedType, sharedId);
 		},
 		'openSurvey': function (parameters) {
 			var surveyId = parameters['survey_id'];

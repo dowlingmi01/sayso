@@ -80,6 +80,13 @@ $SQ(function(){
 				shared_id: sharedId
 			}]);
 		},
+		handleFacebookShare: function (link, sharedType, sharedId) {
+			$SQ('#sayso-starbar').trigger('frameCommunication', ['handleFacebookShare', {
+				link: link,
+				shared_type: sharedType,
+				shared_id: sharedId
+			}]);
+		},
 		openSurvey: function (surveyId) {
 			$SQ('#sayso-starbar').trigger('frameCommunication', ['openSurvey', {
 				survey_id: surveyId

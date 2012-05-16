@@ -89,4 +89,22 @@ class Notification_Message extends Record
 
 		return true;
 	}
+
+	public function loadByShortNameAndStarbarId($shortName, $starbarId) {
+		$sql = "
+			SELECT nm.*
+			FROM notification_message nm
+				INNER JOIN notification_message_group nmg
+					ON nmg.id = nm.notification_message_group_id
+					AND nmg.starbar_id = ?
+			WHERE nm.short_name LIKE ?
+			ORDER BY nm.ordinal ASC
+			LIMIT 1
+		";
+		$data = Db_Pdo::fetch($sql, $starbarId, $shortName);
+
+		if ($data) {
+			$this->build($data);
+		}
+	}
 }

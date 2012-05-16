@@ -575,7 +575,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 			// Show user congrats notification
 			$message = new Notification_Message();
-			$message->loadDataByUniqueFields(array('short_name' => 'FB Account Connected'));
+			$message->loadByShortNameAndStarbarId('FB Account Connected', $this->starbar_id);
 
 			if ($message->id) {
 				$messageUserMap = new Notification_MessageUserMap();
@@ -647,7 +647,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 					// Show user congrats notification
 					$message = new Notification_Message();
-					$message->loadDataByUniqueFields(array('short_name' => 'TW Account Connected'));
+					$message->loadByShortNameAndStarbarId('TW Account Connected', $this->starbar_id);
 
 					if ($message->id) {
 						$messageUserMap = new Notification_MessageUserMap();
@@ -694,9 +694,9 @@ class Starbar_ContentController extends Api_GlobalController
 		if ($request->getParam('post_id')) {
 			Game_Starbar::getInstance()->share($this->shared_type, "FB", @$this->shared_id);
 
-			// Send hidden game update notification to make the user request an update
+			// Send hidden notification to make the user request an update to game info, and to disable sharing that same item on FB again
 			$message = new Notification_Message();
-			$message->loadDataByUniqueFields(array('short_name' => 'Update Game'));
+			$message->loadByShortNameAndStarbarId('Facebook Post', $this->starbar_id);
 
 			if ($message->id) {
 				$messageUserMap = new Notification_MessageUserMap();

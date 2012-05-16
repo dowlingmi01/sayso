@@ -91,6 +91,10 @@ class Starbar_RemoteController extends Api_GlobalController
 		return $this->commonStarbar();
 	}
 
+	public function movieAction () {
+		return $this->commonStarbar();
+	}
+
 	public function commonStarbar () {
 		// get Starbar passed via index or post-install-deliver
 		// and assign it to the view

@@ -55,6 +55,12 @@ class Starbar_InstallController extends Api_GlobalController {
 		return $this->_resultType(new Object(array('html' => $body)));
 	}
 	public function snakkleAction() {
+		return $this->emailBasedInstall();
+	}
+	public function movieAction() {
+		return $this->emailBasedInstall();
+	}
+	public function emailBasedInstall() {
 		$install = new User_Install();
 		$starbar = new Starbar();
 		$starbar->loadDataByUniqueFields( array('short_name' => $this->client_name));

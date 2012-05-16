@@ -1,0 +1,134 @@
+<div class="sb_column6040BG">
+	<div class="sb_column60">
+		<div class="sb_header">
+			<h2>Welcome Back, <a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/user-level" class="sb_nav_element sb_user_title <?= ($this->user->username ? "" : "sb_user_level_title") ?>" rel="sb_popBox_user-level"><?= $this->user->getTitle() ?></a></h2>
+		</div><!-- .sb_header -->
+		<div>
+			<ul class="sb_lineList">
+				<li>
+					<? if ($this->facebook_social->identifier) { ?>
+						<img class="sb_userImg sb_alignLeft" src="//graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $this->user->getTitle() ?>" />
+					<? } else { ?>
+						<img class="sb_userImg sb_alignLeft" src="//<?= BASE_DOMAIN ?>/images/snakkle/img_user.jpg" alt="<?= $this->user->getTitle() ?>" />
+					<? } ?>
+					<p class="sb_nextToUserImage">
+						<strong>Username:</strong> <span id="sb_profile_username" class="sb_user_title sb_jeip<? if (!$this->user->username) { ?> sb_user_level_title<? } ?>"><?= $this->user->getTitle() ?></span><br />
+						<?= $this->user_email->email ?>
+					</p>
+				</li>
+				<li style="padding: 10px 0 0 0;">
+					<iframe src="//www.facebook.com/plugins/like.php?locale=en_US&amp;href=http://www.facebook.com/pages/Snakkle-SaySo/327830640606067&amp;layout=standard&amp;show_faces=false&amp;width=240&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:290px; height:35px;" allowTransparency="true"></iframe>
+				</li>
+				<li>
+					<h2 class="sb_titlePlain">Link Your Accounts</h2>
+					<p>
+						<? if ($this->facebook_social->user_id) { ?>
+							<span id="sb_profile_facebook" class="sb_connect_facebook sb_connected">http://www.facebook.com</span>
+						<? } else { ?>
+							<span href="//<?= BASE_DOMAIN ?>/starbar/snakkle/facebook-connect" id="sb_profile_facebook" class="sb_connect_facebook sb_unconnected">http://www.facebook.com</span>
+						<? } ?>
+						<? if ($this->twitter_social->user_id) { ?>
+							<span id="sb_profile_twitter" class="sb_connect_twitter sb_connected">http://www.twitter.com</span>
+						<? } else { ?>
+							<span href="//<?= BASE_DOMAIN ?>/starbar/snakkle/twitter-connect-redirect" id="sb_profile_twitter" class="sb_connect_twitter sb_unconnected">http://www.twitter.com</span>
+						<? } ?>
+						<br />
+					</p>
+				</li>
+				<li style="border: 0;">
+					<h2 class="sb_titlePlain" style="margin: 0;">Documents</h2>
+					<p style="margin: 0;">
+						<small>
+							<a href="http://<?= BASE_DOMAIN ?>/docs/snakkle/Say.So_Privacy_Policy.pdf" target="_new">Privacy Policy</a>&nbsp;&nbsp;|&nbsp;
+							<a href="http://<?= BASE_DOMAIN ?>/docs/snakkle/Say.So_Rewards_Rules.pdf" target="_new">Rewards Rules</a>&nbsp;&nbsp;|&nbsp;
+							<a href="http://<?= BASE_DOMAIN ?>/docs/snakkle/Say.So_App_EULA.pdf" target="_new">EULA</a>
+						</small>
+					</p>
+				</li>
+			</ul>
+		</div>
+	</div><!-- .sb_column60 -->
+	<div class="sb_column40">
+			<h2 class="sb_titlePlain">My Stats</h2>
+			<div class="sb_user-stats">
+				<div class="sb_user-current-level-icon">
+
+				</div><!-- .sb_user-level -->
+				<div class="sb_user-points">
+					<div class="sb_current-level">
+						<p>
+						<strong>Level <span class="sb_user_level_number"></span>. <a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><span class="sb_userLevelColor1 sb_user_level_title"></span></a></strong>
+						</p>
+					</div><!-- .sb_current-level -->
+
+					<p>
+						<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><span class="sb_currency_balance" data-currency-type="redeemable"></span>&nbsp;<span class="sb_currency_title" data-currency-type="redeemable"></span></a><br />
+						<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><span class="sb_currency_balance" data-currency-type="experience"></span>&nbsp;<span class="sb_currency_title" data-currency-type="experience"></span></a>
+					</p>
+				</div><!-- .sb_user-points -->
+			</div><!-- .sb_user-level -->
+
+		<h2 class="sb_titlePlain">What's New Today</h2>
+
+		<ul class="sb_lineList">
+			<li>
+				<? if ($this->count_new_polls) { ?><a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/polls" class="sb_nav_element" rel="sb_popBox_polls"><?= $this->count_new_polls ?> New Polls</a><br /><? } ?>
+				<? if ($this->count_new_surveys) { ?><a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/surveys" class="sb_nav_element" rel="sb_popBox_surveys"><?= $this->count_new_surveys ?> New Surveys</a><br /><? } ?>
+				<? if ($this->count_new_quizzes) { ?><a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/quiz" class="sb_nav_element" rel="sb_popBox_quizzes"><?= $this->count_new_surveys ?> New Quizzes</a><br /><? } ?>
+			</li>
+
+
+
+	<li style="border: none;">
+		<h2 class="sb_titlePlain" style="padding-top: 3px">Share Snakkle Say.So </h2>
+		<span class="sb_tiny_note">Earn Snakkle Bucks for sharing!</span>
+		<div class="sb_externalShares">
+
+			<!-- FACEBOOK -->
+			<a class="sb_externalShare sb_externalShare_facebook" rel="sb_mini-snakkle-reward_facebook" 	href="#"
+				onclick="return $SQ.openWindow('//www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($this->share_link) ?>&caption=<?= urlencode($this->facebook_share_caption) ?>&picture=<?= urlencode($this->facebook_share_image_url) ?>&redirect_uri=<?= urlencode($this->facebook_share_callback_url) ?>&name=<?= urlencode($this->facebook_title) ?>&description=<?= urlencode($this->facebook_description) ?>', 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450');">
+				Facebook Share
+			</a>
+			<span class="sb_mini-snakkle-reward sb_mini-snakkle-reward_facebook" id="sb_mini-snakkle-reward_facebook">+19</span>
+			<!-- / facebook -->
+
+			<! -- TWITTER -->
+			<script type="text/javascript">
+				$SQ.getScript("//platform.twitter.com/widgets.js", function(){
+					function handleTweetEvent(event){
+						if (event) {
+							$SQ('#sayso-starbar').trigger('frameCommunication', ['handleTweet', {
+								shared_type: 'starbar',
+								shared_id: window.sayso.starbar.id
+							}]);
+						}
+					}
+					twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
+				});
+			</script>
+
+			<div class="sb_externalShare sb_externalShare_twitter" rel="sb_mini-snakkle-reward_twitter">
+				<a class="twitter-share-button"
+					data-related="<?= $this->twitter_share_related_users ?>"
+					data-hashtags="<?= $this->twitter_share_hashtags ?>"
+					data-via="<?= $this->twitter_share_via_user ?>"
+					data-url="<?= $this->share_link ?>"
+					data-text="<?= $this->twitter_share_text ?>"
+					data-count="none"
+					href="https://twitter.com/intent/tweet">
+				</a>
+			</div>
+
+			<span class="sb_mini-snakkle-reward sb_mini-snakkle-reward_twitter" id="sb_mini-snakkle-reward_twitter">+19</span>
+			<!-- / twitter -->
+
+
+			<!-- EMAIL -->
+			<!--<a href="#" class="sb_externalShare sb_externalShare_email" rel="sb_mini-snakkle-reward_email">Send to a friend</a>--.
+			<!--<span class="sb_mini-snakkle-reward sb_mini-snakkle-reward_email" id="sb_mini-snakkle-reward_email">+50</span>-->
+			<!-- / email -->
+		</div><!-- .sb_externalShares -->
+		</li>
+		</ul>
+	</div><!-- .sb_column40 -->
+</div><!-- .sb_column6040BG -->

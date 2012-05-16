@@ -3,7 +3,7 @@
 	<div class="sb_innerOverlayContent"></div>
 </div>
 <div class="sb_header">
-	<img src="//<?= BASE_DOMAIN ?>/images/snakkle/logo_snakkle_lg.png" alt="Snakkle logo" />
+	<img src="//<?= BASE_DOMAIN ?>/images/movie/logo_snakkle_lg.png" alt="Snakkle logo" />
 </div><!-- .sb_header -->
 <div class="sb_scrollPane">
 	<h2 class="sb_title">Rewards Center</h2>
@@ -37,7 +37,7 @@
 				var container = $SQ(this).dataContainer();
 
 				$SQ.ajaxWithAuth({
-					url : '//' + sayso.baseDomain + '/starbar/snakkle/reward-redeem',
+					url : '//' + sayso.baseDomain + '/starbar/movie/reward-redeem',
 					data : { good_id : container.getId() },
 					success : function (response) {
 						overlayContent.html(response.data.html).fadeTo(200, 1);

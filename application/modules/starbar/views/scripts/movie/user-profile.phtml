@@ -1,7 +1,7 @@
 <div class="sb_column6040BG">
 	<div class="sb_column60">
 		<div class="sb_header">
-			<h2>Welcome Back, <a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/user-level" class="sb_nav_element sb_user_title <?= ($this->user->username ? "" : "sb_user_level_title") ?>" rel="sb_popBox_user-level"><?= $this->user->getTitle() ?></a></h2>
+			<h2>Welcome Back, <a href="//<?= BASE_DOMAIN ?>/starbar/movie/user-level" class="sb_nav_element sb_user_title <?= ($this->user->username ? "" : "sb_user_level_title") ?>" rel="sb_popBox_user-level"><?= $this->user->getTitle() ?></a></h2>
 		</div><!-- .sb_header -->
 		<div>
 			<ul class="sb_lineList">
@@ -9,7 +9,7 @@
 					<? if ($this->facebook_social->identifier) { ?>
 						<img class="sb_userImg sb_alignLeft" src="//graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $this->user->getTitle() ?>" />
 					<? } else { ?>
-						<img class="sb_userImg sb_alignLeft" src="//<?= BASE_DOMAIN ?>/images/snakkle/img_user.jpg" alt="<?= $this->user->getTitle() ?>" />
+						<img class="sb_userImg sb_alignLeft" src="//<?= BASE_DOMAIN ?>/images/movie/img_user.jpg" alt="<?= $this->user->getTitle() ?>" />
 					<? } ?>
 					<p class="sb_nextToUserImage">
 						<strong>Username:</strong> <span id="sb_profile_username" class="sb_user_title sb_jeip<? if (!$this->user->username) { ?> sb_user_level_title<? } ?>"><?= $this->user->getTitle() ?></span><br />
@@ -25,12 +25,12 @@
 						<? if ($this->facebook_social->user_id) { ?>
 							<span id="sb_profile_facebook" class="sb_connect_facebook sb_connected">http://www.facebook.com</span>
 						<? } else { ?>
-							<span href="//<?= BASE_DOMAIN ?>/starbar/snakkle/facebook-connect" id="sb_profile_facebook" class="sb_connect_facebook sb_unconnected">http://www.facebook.com</span>
+							<span href="//<?= BASE_DOMAIN ?>/starbar/movie/facebook-connect" id="sb_profile_facebook" class="sb_connect_facebook sb_unconnected">http://www.facebook.com</span>
 						<? } ?>
 						<? if ($this->twitter_social->user_id) { ?>
 							<span id="sb_profile_twitter" class="sb_connect_twitter sb_connected">http://www.twitter.com</span>
 						<? } else { ?>
-							<span href="//<?= BASE_DOMAIN ?>/starbar/snakkle/twitter-connect-redirect" id="sb_profile_twitter" class="sb_connect_twitter sb_unconnected">http://www.twitter.com</span>
+							<span href="//<?= BASE_DOMAIN ?>/starbar/movie/twitter-connect-redirect" id="sb_profile_twitter" class="sb_connect_twitter sb_unconnected">http://www.twitter.com</span>
 						<? } ?>
 						<br />
 					</p>
@@ -39,9 +39,9 @@
 					<h2 class="sb_titlePlain" style="margin: 0;">Documents</h2>
 					<p style="margin: 0;">
 						<small>
-							<a href="http://<?= BASE_DOMAIN ?>/docs/snakkle/Say.So_Privacy_Policy.pdf" target="_new">Privacy Policy</a>&nbsp;&nbsp;|&nbsp;
-							<a href="http://<?= BASE_DOMAIN ?>/docs/snakkle/Say.So_Rewards_Rules.pdf" target="_new">Rewards Rules</a>&nbsp;&nbsp;|&nbsp;
-							<a href="http://<?= BASE_DOMAIN ?>/docs/snakkle/Say.So_App_EULA.pdf" target="_new">EULA</a>
+							<a href="http://<?= BASE_DOMAIN ?>/docs/movie/Say.So_Privacy_Policy.pdf" target="_new">Privacy Policy</a>&nbsp;&nbsp;|&nbsp;
+							<a href="http://<?= BASE_DOMAIN ?>/docs/movie/Say.So_Rewards_Rules.pdf" target="_new">Rewards Rules</a>&nbsp;&nbsp;|&nbsp;
+							<a href="http://<?= BASE_DOMAIN ?>/docs/movie/Say.So_App_EULA.pdf" target="_new">EULA</a>
 						</small>
 					</p>
 				</li>
@@ -57,13 +57,13 @@
 				<div class="sb_user-points">
 					<div class="sb_current-level">
 						<p>
-						<strong>Level <span class="sb_user_level_number"></span>. <a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><span class="sb_userLevelColor1 sb_user_level_title"></span></a></strong>
+						<strong>Level <span class="sb_user_level_number"></span>. <a href="//<?= BASE_DOMAIN ?>/starbar/movie/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><span class="sb_userLevelColor1 sb_user_level_title"></span></a></strong>
 						</p>
 					</div><!-- .sb_current-level -->
 
 					<p>
-						<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><span class="sb_currency_balance" data-currency-type="redeemable"></span>&nbsp;<span class="sb_currency_title" data-currency-type="redeemable"></span></a><br />
-						<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><span class="sb_currency_balance" data-currency-type="experience"></span>&nbsp;<span class="sb_currency_title" data-currency-type="experience"></span></a>
+						<a href="//<?= BASE_DOMAIN ?>/starbar/movie/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><span class="sb_currency_balance" data-currency-type="redeemable"></span>&nbsp;<span class="sb_currency_title" data-currency-type="redeemable"></span></a><br />
+						<a href="//<?= BASE_DOMAIN ?>/starbar/movie/user-level" class="sb_nav_element" rel="sb_popBox_user-level"><span class="sb_currency_balance" data-currency-type="experience"></span>&nbsp;<span class="sb_currency_title" data-currency-type="experience"></span></a>
 					</p>
 				</div><!-- .sb_user-points -->
 			</div><!-- .sb_user-level -->
@@ -72,9 +72,9 @@
 
 		<ul class="sb_lineList">
 			<li>
-				<? if ($this->count_new_polls) { ?><a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/polls" class="sb_nav_element" rel="sb_popBox_polls"><?= $this->count_new_polls ?> New Polls</a><br /><? } ?>
-				<? if ($this->count_new_surveys) { ?><a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/surveys" class="sb_nav_element" rel="sb_popBox_surveys"><?= $this->count_new_surveys ?> New Surveys</a><br /><? } ?>
-				<? if ($this->count_new_quizzes) { ?><a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/quiz" class="sb_nav_element" rel="sb_popBox_quizzes"><?= $this->count_new_surveys ?> New Quizzes</a><br /><? } ?>
+				<? if ($this->count_new_polls) { ?><a href="//<?= BASE_DOMAIN ?>/starbar/movie/polls" class="sb_nav_element" rel="sb_popBox_polls"><?= $this->count_new_polls ?> New Polls</a><br /><? } ?>
+				<? if ($this->count_new_surveys) { ?><a href="//<?= BASE_DOMAIN ?>/starbar/movie/surveys" class="sb_nav_element" rel="sb_popBox_surveys"><?= $this->count_new_surveys ?> New Surveys</a><br /><? } ?>
+				<? if ($this->count_new_quizzes) { ?><a href="//<?= BASE_DOMAIN ?>/starbar/movie/quiz" class="sb_nav_element" rel="sb_popBox_quizzes"><?= $this->count_new_surveys ?> New Quizzes</a><br /><? } ?>
 			</li>
 
 

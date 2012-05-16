@@ -3,9 +3,9 @@
 
 	if (!window.sayso.client) {
 		window.sayso.client = {
-			name : 'snakkle',
+			name : 'movie',
 			userLoggedIn : false,
-			appName : 'Snakkle Say.So App',
+			appName : 'Movie Say.So App',
 			anonymousUsers : true,
 			loginCallback : null
 		};

@@ -1,5 +1,5 @@
 <div class="sb_header">
-	<img src="//<?= BASE_DOMAIN ?>/images/snakkle/logo_snakkle_lg.png" alt="Snakkle logo" />
+	<img src="//<?= BASE_DOMAIN ?>/images/movie/logo_snakkle_lg.png" alt="Snakkle logo" />
 </div><!-- .sb_header -->
 <div class="sb_quiz">
 	<? if ($this->quiz && $this->quiz->id) { ?>
@@ -142,7 +142,7 @@
 									$SQ('#result_'+response.data.correct_survey_question_choice_id+' .sb_theme_textHighlight').removeClass('sb_theme_textHighlight').addClass('sb_theme_textHighlight_alt');
 									$SQ('#result_'+response.data.correct_survey_question_choice_id+' .sb_progress_bar').addClass('sb_progress_bar_alt');
 
-									$SQ('#sb_next_quiz_link').attr('href', '//<?= BASE_DOMAIN ?>/starbar/snakkle/quiz?quiz_index='+quizIndex);
+									$SQ('#sb_next_quiz_link').attr('href', '//<?= BASE_DOMAIN ?>/starbar/movie/quiz?quiz_index='+quizIndex);
 
 									results[selectedChoiceId]++;
 									numberOfResponses++;
@@ -166,7 +166,7 @@
 				});
 			</script>
 		</div><!-- .sb_quiz_main -->
-		<p class="sb_quiz_next"><a id="sb_next_quiz_link" href="//<?= BASE_DOMAIN ?>/starbar/snakkle/quiz?quiz_index=<?= ($this->quiz_index + 1) ?>" class="sb_nav_element" rel="sb_popBox_quizzes">Next Quiz</a></p>
+		<p class="sb_quiz_next"><a id="sb_next_quiz_link" href="//<?= BASE_DOMAIN ?>/starbar/movie/quiz?quiz_index=<?= ($this->quiz_index + 1) ?>" class="sb_nav_element" rel="sb_popBox_quizzes">Next Quiz</a></p>
 	<? } else { ?>
 		<p>Nice job, looks like you've taken all the quizzes! Check back tomorrow for new quizzes!</p>
 	<? } ?>

@@ -1019,6 +1019,17 @@
 								$formElements[$colname]->setValue($coloptions['value']);
 							}
 
+							if ($colname==$parenttable."_id") {
+								// We have a parent table, and this field is the foreign key for it
+								$formElements[$colname]->setValue($parentid);
+								$formElements[$colname]->setReadOnly();
+								// Because it's readonly, we need to create a hidden field to match
+								$this->_newElements[$colname] = new Form_Element_Hidden($colname,array());
+								$this->_newElements[$colname]->setValue($parentid);
+								$formElements[$colname]->setName($colname."_readonly");
+								$formElements[$colname."_notrequired"] = $formElements[$colname];
+								unset($formElements[$colname]);
+							}
 
 							// Display Width
 							if (array_key_exists('width',$coloptions)) {
@@ -1033,6 +1044,7 @@
 						$form = new ZendX_JQuery_Form();
 						$form->setName($tablename);
 						$form->addElements($formElements);
+						$form->addElements($this->_newElements);
 						$form->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));
 
 						if ($this->getRequest()->isPost()) { //is it a post request ?
@@ -1044,6 +1056,13 @@
 								$formData = $form->getValues(); // data filtered
 								// created and updated fields
 								$formData += array('created' => date('Y-m-d H:i:s'), 'modified' => date('Y-m-d H:i:s'));
+
+								// Remove any fields not required in the save
+								foreach ($formData as $key=>$value) {
+									if (strpos($key,"_notrequired")!==false) {
+										unset($formData[$key]);
+									}
+								}
 
 								unset($formData['no_csrf_foo']); // Remove the salt - we don't need it for the insert
 								// remove any data with null values - we don't need them.

@@ -6,8 +6,7 @@
             logging: {
                 level: "INFO"
             }
-        },
-        uuid: "4093d42274ec11e1a41a12313d1adcbe"
+        }
     };
     var h = {};
     h.listeners = {};
@@ -17,7 +16,7 @@
     var k = false;
     var o = function() {
             if (g.length > 0) {
-                if (!window.forge.debug || window.catalystConnected) {
+                if (!h.debug || window.catalystConnected) {
                     k = true;
                     while (g.length > 0) {
                         var p = g.shift();
@@ -34,7 +33,7 @@
         };
     h.priv = {
         call: function(w, v, u, q) {
-            if ((!window.forge.debug || window.catalystConnected) && (g.length == 0 || k)) {
+            if ((!h.debug || window.catalystConnected || w === "internal.showDebugWarning") && (g.length == 0 || k)) {
                 var p = m.tools.UUID();
                 var s = true;
                 if (w === "button.onClicked.addListener" || w === "message.toFocussed") {
@@ -116,15 +115,36 @@
             h.listeners[p] = [q]
         }
     };
-    h.generateQueryString = function(p) {
-        if (typeof p === "string") {
-            return p
+    h.generateQueryString = function(q) {
+        if (!q) {
+            return ""
         }
-        var q = "";
-        for (key in p) {
-            q += encodeURIComponent(key) + "=" + encodeURIComponent(p[key]) + "&"
+        if (!(q instanceof Object)) {
+            return new String(q).toString()
         }
-        return q.substring(0, q.length - 1)
+        var r = [];
+        var p = function(u, t) {
+                if (u instanceof Array) {
+                    var s = (t ? t : "") + "[]";
+                    for (x in u) {
+                        p(u[x], s)
+                    }
+                } else {
+                    if (u instanceof Object) {
+                        for (x in u) {
+                            var s = x;
+                            if (t) {
+                                s = t + "[" + x + "]"
+                            }
+                            p(u[x], s)
+                        }
+                    } else {
+                        r.push(encodeURIComponent(t) + "=" + encodeURIComponent(u))
+                    }
+                }
+            };
+        p(q);
+        return r.join("&").replace("%20", "+")
     };
     h.generateMultipartString = function(p, r) {
         if (typeof p === "string") {
@@ -147,6 +167,16 @@
         r = r.substring(0, r.length - 1);
         return q + (r ? "?" + r : "")
     };
+    m.enableDebug = function() {
+        h.debug = true;
+        h.priv.call("internal.showDebugWarning", {}, null, null);
+        h.priv.call("internal.hideDebugWarning", {}, null, null)
+    };
+    setTimeout(function() {
+        if (window.forge.debug) {
+            alert("Warning!\n\n'forge.debug = true;' is no longer supported\n\nUse 'forge.enableDebug();' instead.")
+        }
+    }, 3000);
     m.is = {
         mobile: function() {
             return false
@@ -181,6 +211,14 @@
             },
             landscape: function() {
                 return false
+            }
+        },
+        connection: {
+            connected: function() {
+                return true
+            },
+            wifi: function() {
+                return true
             }
         }
     };
@@ -304,163 +342,163 @@
     };
     var e = function(v, t, w) {
             var r = [];
-            stylize = function(y, x) {
-                return y
+            stylize = function(z, y) {
+                return z
             };
 
-            function p(x) {
-                return x instanceof RegExp || (typeof x === "object" && Object.prototype.toString.call(x) === "[object RegExp]")
+            function p(y) {
+                return y instanceof RegExp || (typeof y === "object" && Object.prototype.toString.call(y) === "[object RegExp]")
             }
-            function q(x) {
-                return x instanceof Array || Array.isArray(x) || (x && x !== Object.prototype && q(x.__proto__))
+            function q(y) {
+                return y instanceof Array || Array.isArray(y) || (y && y !== Object.prototype && q(y.__proto__))
             }
-            function s(z) {
-                if (z instanceof Date) {
+            function s(A) {
+                if (A instanceof Date) {
                     return true
                 }
-                if (typeof z !== "object") {
+                if (typeof A !== "object") {
                     return false
                 }
-                var x = Date.prototype && Object.getOwnPropertyNames(Date.prototype);
-                var y = z.__proto__ && Object.getOwnPropertyNames(z.__proto__);
-                return JSON.stringify(y) === JSON.stringify(x)
+                var y = Date.prototype && Object.getOwnPropertyNames(Date.prototype);
+                var z = A.__proto__ && Object.getOwnPropertyNames(A.__proto__);
+                return JSON.stringify(z) === JSON.stringify(y)
             }
-            function u(J, G) {
+            function u(K, H) {
                 try {
-                    if (J && typeof J.inspect === "function" && !(J.constructor && J.constructor.prototype === J)) {
-                        return J.inspect(G)
+                    if (K && typeof K.inspect === "function" && !(K.constructor && K.constructor.prototype === K)) {
+                        return K.inspect(H)
                     }
-                    switch (typeof J) {
+                    switch (typeof K) {
                     case "undefined":
                         return stylize("undefined", "undefined");
                     case "string":
-                        var x = "'" + JSON.stringify(J).replace(/^"|"$/g, "").replace(/'/g, "\\'").replace(/\\"/g, '"') + "'";
-                        return stylize(x, "string");
+                        var y = "'" + JSON.stringify(K).replace(/^"|"$/g, "").replace(/'/g, "\\'").replace(/\\"/g, '"') + "'";
+                        return stylize(y, "string");
                     case "number":
-                        return stylize("" + J, "number");
+                        return stylize("" + K, "number");
                     case "boolean":
-                        return stylize("" + J, "boolean")
+                        return stylize("" + K, "boolean")
                     }
-                    if (J === null) {
+                    if (K === null) {
                         return stylize("null", "null")
                     }
-                    if (J instanceof Document) {
-                        return (new XMLSerializer()).serializeToString(J)
+                    if (K instanceof Document) {
+                        return (new XMLSerializer()).serializeToString(K)
                     }
-                    var D = Object.keys(J);
-                    var K = t ? Object.getOwnPropertyNames(J) : D;
-                    if (typeof J === "function" && K.length === 0) {
-                        var y = J.name ? ": " + J.name : "";
-                        return stylize("[Function" + y + "]", "special")
+                    var E = Object.keys(K);
+                    var L = t ? Object.getOwnPropertyNames(K) : E;
+                    if (typeof K === "function" && L.length === 0) {
+                        var z = K.name ? ": " + K.name : "";
+                        return stylize("[Function" + z + "]", "special")
                     }
-                    if (p(J) && K.length === 0) {
-                        return stylize("" + J, "regexp")
+                    if (p(K) && L.length === 0) {
+                        return stylize("" + K, "regexp")
                     }
-                    if (s(J) && K.length === 0) {
-                        return stylize(J.toUTCString(), "date")
+                    if (s(K) && L.length === 0) {
+                        return stylize(K.toUTCString(), "date")
                     }
-                    var z, H, E;
-                    if (q(J)) {
-                        H = "Array";
-                        E = ["[", "]"]
+                    var A, I, F;
+                    if (q(K)) {
+                        I = "Array";
+                        F = ["[", "]"]
                     } else {
-                        H = "Object";
-                        E = ["{", "}"]
+                        I = "Object";
+                        F = ["{", "}"]
                     }
-                    if (typeof J === "function") {
-                        var C = J.name ? ": " + J.name : "";
-                        z = " [Function" + C + "]"
+                    if (typeof K === "function") {
+                        var D = K.name ? ": " + K.name : "";
+                        A = " [Function" + D + "]"
                     } else {
-                        z = ""
+                        A = ""
                     }
-                    if (p(J)) {
-                        z = " " + J
+                    if (p(K)) {
+                        A = " " + K
                     }
-                    if (s(J)) {
-                        z = " " + J.toUTCString()
+                    if (s(K)) {
+                        A = " " + K.toUTCString()
                     }
-                    if (K.length === 0) {
-                        return E[0] + z + E[1]
+                    if (L.length === 0) {
+                        return F[0] + A + F[1]
                     }
-                    if (G < 0) {
-                        if (p(J)) {
-                            return stylize("" + J, "regexp")
+                    if (H < 0) {
+                        if (p(K)) {
+                            return stylize("" + K, "regexp")
                         } else {
                             return stylize("[Object]", "special")
                         }
                     }
-                    r.push(J);
-                    var B = K.map(function(M) {
-                        var L, N;
-                        if (J.__lookupGetter__) {
-                            if (J.__lookupGetter__(M)) {
-                                if (J.__lookupSetter__(M)) {
-                                    N = stylize("[Getter/Setter]", "special")
+                    r.push(K);
+                    var C = L.map(function(N) {
+                        var M, O;
+                        if (K.__lookupGetter__) {
+                            if (K.__lookupGetter__(N)) {
+                                if (K.__lookupSetter__(N)) {
+                                    O = stylize("[Getter/Setter]", "special")
                                 } else {
-                                    N = stylize("[Getter]", "special")
+                                    O = stylize("[Getter]", "special")
                                 }
                             } else {
-                                if (J.__lookupSetter__(M)) {
-                                    N = stylize("[Setter]", "special")
+                                if (K.__lookupSetter__(N)) {
+                                    O = stylize("[Setter]", "special")
                                 }
                             }
                         }
-                        if (D.indexOf(M) < 0) {
-                            L = "[" + M + "]"
+                        if (E.indexOf(N) < 0) {
+                            M = "[" + N + "]"
                         }
-                        if (!N) {
-                            if (r.indexOf(J[M]) < 0) {
-                                if (G === null) {
-                                    N = u(J[M])
+                        if (!O) {
+                            if (r.indexOf(K[N]) < 0) {
+                                if (H === null) {
+                                    O = u(K[N])
                                 } else {
-                                    N = u(J[M], G - 1)
+                                    O = u(K[N], H - 1)
                                 }
-                                if (N.indexOf("\n") > -1) {
-                                    if (q(J)) {
-                                        N = N.split("\n").map(function(O) {
-                                            return "  " + O
+                                if (O.indexOf("\n") > -1) {
+                                    if (q(K)) {
+                                        O = O.split("\n").map(function(P) {
+                                            return "  " + P
                                         }).join("\n").substr(2)
                                     } else {
-                                        N = "\n" + N.split("\n").map(function(O) {
-                                            return "   " + O
+                                        O = "\n" + O.split("\n").map(function(P) {
+                                            return "   " + P
                                         }).join("\n")
                                     }
                                 }
                             } else {
-                                N = stylize("[Circular]", "special")
+                                O = stylize("[Circular]", "special")
                             }
                         }
-                        if (typeof L === "undefined") {
-                            if (H === "Array" && M.match(/^\d+$/)) {
-                                return N
+                        if (typeof M === "undefined") {
+                            if (I === "Array" && N.match(/^\d+$/)) {
+                                return O
                             }
-                            L = JSON.stringify("" + M);
-                            if (L.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/)) {
-                                L = L.substr(1, L.length - 2);
-                                L = stylize(L, "name")
+                            M = JSON.stringify("" + N);
+                            if (M.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/)) {
+                                M = M.substr(1, M.length - 2);
+                                M = stylize(M, "name")
                             } else {
-                                L = L.replace(/'/g, "\\'").replace(/\\"/g, '"').replace(/(^"|"$)/g, "'");
-                                L = stylize(L, "string")
+                                M = M.replace(/'/g, "\\'").replace(/\\"/g, '"').replace(/(^"|"$)/g, "'");
+                                M = stylize(M, "string")
                             }
                         }
-                        return L + ": " + N
+                        return M + ": " + O
                     });
                     r.pop();
-                    var I = 0;
-                    var A = B.reduce(function(L, M) {
-                        I++;
-                        if (M.indexOf("\n") >= 0) {
-                            I++
+                    var J = 0;
+                    var B = C.reduce(function(M, N) {
+                        J++;
+                        if (N.indexOf("\n") >= 0) {
+                            J++
                         }
-                        return L + M.length + 1
+                        return M + N.length + 1
                     }, 0);
-                    if (A > 50) {
-                        B = E[0] + (z === "" ? "" : z + "\n ") + " " + B.join(",\n  ") + " " + E[1]
+                    if (B > 50) {
+                        C = F[0] + (A === "" ? "" : A + "\n ") + " " + C.join(",\n  ") + " " + F[1]
                     } else {
-                        B = E[0] + z + " " + B.join(", ") + " " + E[1]
+                        C = F[0] + A + " " + C.join(", ") + " " + F[1]
                     }
-                    return B
-                } catch (F) {
+                    return C
+                } catch (G) {
                     return "[No string representation]"
                 }
             }
@@ -576,7 +614,7 @@
                 var r = m.logging.LEVELS.ALL
             }
             if (t >= r) {
-                i(e(q) + c(p), t)
+                i(e(q, false, 10) + c(p), t)
             }
         }
     };
@@ -627,13 +665,9 @@
         openWithOptions: function(q, s, p) {
             var r = undefined;
             if (q.pattern) {
-                r = n(q.pattern)
+                q.pattern = n(q.pattern)
             }
-            h.priv.call("tabs.open", {
-                url: q.url,
-                keepFocus: q.keepFocus,
-                pattern: r
-            }, s, p)
+            h.priv.call("tabs.open", q, s, p)
         },
         closeCurrent: function(p) {
             p = arguments[1] || p;
@@ -716,24 +750,54 @@
             function(t) {
                 var s = {
                     uri: t,
-                    name: "Image"
+                    name: "Image",
+                    type: "image"
                 };
-                for (prop in q) {
-                    s[prop] = q[prop]
+                if (q.width) {
+                    s.width = q.width
+                }
+                if (q.height) {
+                    s.height = q.height
                 }
                 r(s)
             }, p)
         },
+        getVideo: function(q, r, p) {
+            if (typeof q === "function") {
+                p = r;
+                r = q;
+                q = {}
+            }
+            if (!q) {
+                q = {}
+            }
+            h.priv.call("file.getVideo", q, r &&
+            function(t) {
+                var s = {
+                    uri: t,
+                    name: "Video",
+                    type: "video"
+                };
+                r(s)
+            }, p)
+        },
         getLocal: function(q, r, p) {
-            h.priv.call("file.getLocal", {
-                name: q
-            }, r, p)
+            m.tools.getURL(q, function(s) {
+                r({
+                    uri: s,
+                    name: q
+                })
+            }, p)
         },
         base64: function(q, r, p) {
             h.priv.call("file.base64", q, r, p)
         },
         string: function(q, r, p) {
-            h.priv.call("file.string", q, r, p)
+            m.request.ajax({
+                url: q.uri,
+                success: r,
+                error: p
+            })
         },
         URL: function(r, s, t, q) {
             if (typeof s === "function") {
@@ -787,6 +851,11 @@
             addListener: function(q, p) {
                 h.addEventListener("event.orientationChange", q)
             }
+        },
+        connectionStateChange: {
+            addListener: function(q, p) {
+                h.addEventListener("event.connectionStateChange", q)
+            }
         }
     };
     m.contact = {
@@ -834,6 +903,9 @@
             }, q, p)
         },
         setTitleImage: function(q, r, p) {
+            if (q && q[0] === "/") {
+                q = q.substr(1)
+            }
             h.priv.call("topbar.setTitleImage", {
                 icon: q
             }, r, p)
@@ -844,6 +916,9 @@
             }, r, q)
         },
         addButton: function(q, r, p) {
+            if (q.icon && q.icon[0] === "/") {
+                q.icon = q.icon.substr(1)
+            }
             h.priv.call("topbar.addButton", q, function(s) {
                 r && h.addEventListener("topbar.buttonPressed." + s, r)
             }, p)
@@ -859,6 +934,12 @@
     };
     m.tabbar = {
         addButton: function(r, q, p) {
+            if (r.icon && r.icon[0] === "/") {
+                r.icon = r.icon.substr(1)
+            }
+            if (!r.index) {
+                r.index = 0
+            }
             h.priv.call("tabbar.addButton", r, function(s) {
                 q && q({
                     remove: function(u, t) {
@@ -894,6 +975,16 @@
         },
         setInactive: function(q, p) {
             h.priv.call("tabbar.setInactive", {}, q, p)
+        }
+    };
+    m.media = {
+        videoPlay: function(q, r, p) {
+            if (!q.uri) {
+                q = {
+                    uri: q
+                }
+            }
+            h.priv.call("media.videoPlay", q, r, p)
         }
     };
     if (self && self.on) {
@@ -1017,20 +1108,20 @@
             })
         }
     };
-    m.request.ajax = function(C) {
-        var r = (C.url ? C.url : null);
-        var B = (C.success ? C.success : undefined);
-        var w = (C.error ? C.error : undefined);
-        var u = (C.username ? C.username : null);
-        var A = (C.password ? C.password : null);
-        var p = (C.accepts ? C.accepts : ["*/*"]);
-        var q = (C.cache ? C.cache : false);
-        var z = (C.contentType ? C.contentType : null);
-        var t = (C.data ? C.data : null);
-        var y = (C.dataType ? C.dataType : null);
-        var s = (C.headers ? C.headers : {});
-        var x = (C.timeout ? C.timeout : 60000);
-        var v = (C.type ? C.type : "GET");
+    m.request.ajax = function(D) {
+        var r = (D.url ? D.url : null);
+        var C = (D.success ? D.success : undefined);
+        var w = (D.error ? D.error : undefined);
+        var u = (D.username ? D.username : null);
+        var B = (D.password ? D.password : null);
+        var p = (D.accepts ? D.accepts : ["*/*"]);
+        var q = (D.cache ? D.cache : false);
+        var A = (D.contentType ? D.contentType : null);
+        var t = (D.data ? D.data : null);
+        var z = (D.dataType ? D.dataType : null);
+        var s = (D.headers ? D.headers : {});
+        var y = (D.timeout ? D.timeout : 60000);
+        var v = (D.type ? D.type : "GET");
         if (typeof p === "string") {
             p = [p]
         }
@@ -1045,48 +1136,52 @@
         }
         if (t) {
             t = h.generateQueryString(t);
-            if (!z) {
-                z = "application/x-www-form-urlencoded"
+            if (!A) {
+                A = "application/x-www-form-urlencoded"
             }
         }
         if (p) {
             s.Accept = p.join(",")
         }
-        if (z) {
-            s["Content-Type"] = z
+        if (A) {
+            s["Content-Type"] = A
         }
         h.priv.call("request.ajax", {
             url: r,
             username: u,
-            password: A,
+            password: B,
             data: t,
             headers: s,
             type: v,
-            timeout: x
-        }, function(F) {
+            timeout: y
+        }, function(G) {
             try {
-                if (y == "xml") {
-                    var E, D;
+                if (z == "xml") {
+                    var F, E;
                     if (window.DOMParser) {
-                        E = new DOMParser();
-                        D = E.parseFromString(F, "text/xml")
+                        F = new DOMParser();
+                        E = F.parseFromString(G, "text/xml")
                     } else {
-                        D = new ActiveXObject("Microsoft.XMLDOM");
-                        D.async = "false";
-                        D.loadXML(F)
+                        E = new ActiveXObject("Microsoft.XMLDOM");
+                        E.async = "false";
+                        E.loadXML(G)
                     }
-                    F = D
+                    G = E
                 } else {
-                    if (y == "json") {
-                        F = JSON.parse(F)
+                    if (z == "json") {
+                        G = JSON.parse(G)
                     }
                 }
-            } catch (G) {}
-            B(F)
+            } catch (H) {}
+            C(G)
         }, w)
+    };
+    m.file.string = function(q, r, p) {
+        h.priv.call("file.string", q, r, p)
     };
     window.forge = {
         config: m.config,
+        enableDebug: m.enableDebug,
         is: {
             mobile: m.is.mobile,
             desktop: m.is.desktop,
@@ -1100,6 +1195,10 @@
             orientation: {
                 portrait: m.is.orientation.portrait,
                 landscape: m.is.orientation.landscape
+            },
+            connection: {
+                connected: m.is.connection.connected,
+                wifi: m.is.connection.wifi
             }
         },
         message: {
@@ -1151,6 +1250,7 @@
         },
         file: {
             getImage: m.file.getImage,
+            getVideo: m.file.getVideo,
             getLocal: m.file.getLocal,
             isFile: m.file.isFile,
             URL: m.file.URL,
@@ -1169,6 +1269,9 @@
             },
             orientationChange: {
                 addListener: m.event.orientationChange.addListener
+            },
+            connectionStateChange: {
+                addListener: m.event.connectionStateChange.addListener
             }
         },
         contact: {
@@ -1199,6 +1302,9 @@
             setTint: m.tabbar.setTint,
             setActiveTint: m.tabbar.setActiveTint,
             setInactive: m.tabbar.setInactive
+        },
+        media: {
+            videoPlay: m.media.videoPlay
         }
     };
     window.forge["ajax"] = m.request.ajax;

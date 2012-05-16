@@ -3,8 +3,7 @@ var config = {
         logging: {
             level: "INFO"
         }
-    },
-    uuid: "4093d42274ec11e1a41a12313d1adcbe"
+    }
 };
 var pageWorker = require("page-worker");
 var pageMod = require("page-mod");
@@ -243,7 +242,7 @@ var apiImpl = {
             if (name.indexOf("http://") === 0 || name.indexOf("https://") === 0) {
                 b(name)
             } else {
-                b(require("self").data.url("src" + (name.substring(0, 1) == "/" ? "" : "/") + name))
+                b(data.url("src" + (name.substring(0, 1) == "/" ? "" : "/") + name))
             }
         }
     },
@@ -332,10 +331,15 @@ var apiImpl = {
             b(ss.storage.prefs = {})
         }
     },
+    file: {
+        string: function(b, c, a) {
+            c(data.load(b.uri.substring(data.url("").length)))
+        }
+    },
     firefoxeval: function(c, s, e) {
-     	var r; 
-    	try {
-    		r = eval(c);
+        var r; 
+        try {
+            r = eval(c);
         } catch (g) {
             e({
                 message: "Unknown error: " + g,

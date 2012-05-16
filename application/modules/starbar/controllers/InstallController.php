@@ -138,7 +138,7 @@ class Starbar_InstallController extends Api_GlobalController {
 		
 		$env = Registry::getPseudoEnvironmentName();
 		
-		$fileName = ($env === 'PROD' ? 'Say.So Bar' : 'SaySo-' . $env);
+		$fileName = ($env === 'PROD' ? 'Say.So' : 'SaySo-' . $env);
 
 		header('P3P: CP="NOI ADM DEV PSAi COM NAV OUR OTR STP IND DEM"');
 		setcookie('user_key', $this->install_token, time()+(86400*365), '/', null, null, true);

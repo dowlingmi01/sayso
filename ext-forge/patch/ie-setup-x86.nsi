@@ -1,4 +1,4 @@
-Name "Say.So Bar"
+Name "Say.So"
 
 # Included files
 !addplugindir "plugins"
@@ -30,23 +30,23 @@ Page instfiles
 
 # Installer attributes
 RequestExecutionLevel admin
-OutFile "Say.So Bar-2.0.0-x86.exe"
-InstallDir "$PROGRAMFILES\Say.So Bar"
-DirText "This will install Say.So Bar on your computer. Choose a directory"
+OutFile "Say.So-2.0.1-x86.exe"
+InstallDir "$PROGRAMFILES\Say.So"
+DirText "This will install Say.So on your computer. Choose a directory"
 CRCCheck on
 XPStyle on
 
 ShowInstDetails show
-!define VERSION_SHORT "2.0.0"
+!define VERSION_SHORT "2.0.1"
 ${VersionCompleteXXXX} ${VERSION_SHORT} VIPV
 VIProductVersion ${VIPV}
-VIAddVersionKey ProductName "Say.So Bar"
-VIAddVersionKey ProductVersion "2.0.0"
+VIAddVersionKey ProductName "Say.So"
+VIAddVersionKey ProductVersion "2.0.1"
 VIAddVersionKey CompanyName "Say.So LLC"
 VIAddVersionKey LegalCopyright "(c) Say.So LLC"
 VIAddVersionKey CompanyWebsite "http://www.say.so/"
-VIAddVersionKey FileVersion "2.0.0"
-VIAddVersionKey FileDescription "Say.So Bar"
+VIAddVersionKey FileVersion "2.0.1"
+VIAddVersionKey FileDescription "Say.So"
 
 # Installer 
 Section 
@@ -105,16 +105,16 @@ Section
         ; Enable BHO for IE 8
         WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Ext\CLSID"                         "{E017A723-53B3-4952-895D-ED7C3377C885}" "1"
         ; Enable App for IE 8
-        WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Ext\CLSID"                          "12830336-3A64-4672-0FE0-9C18A0AFA2BD" "1" 
+        WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Ext\CLSID"                          "{12830336-3A64-4672-0FE0-9C18A0AFA2BD}" "1" 
 
         ; Create uninstaller
-        !define ARP "Software\Microsoft\Windows\CurrentVersion\Uninstall\Say.So Bar"
+        !define ARP "Software\Microsoft\Windows\CurrentVersion\Uninstall\Say.So"
         WriteUninstaller "$INSTDIR\Uninstall.exe"
         WriteRegStr   HKLM "${ARP}" "Path"             "$INSTDIR\defaults"
-        WriteRegStr   HKLM "${ARP}" "DisplayName"      "Say.So Bar (remove only)"
+        WriteRegStr   HKLM "${ARP}" "DisplayName"      "Say.So (remove only)"
         WriteRegStr   HKLM "${ARP}" "UninstallString"  "$INSTDIR\Uninstall.exe" 
         WriteRegStr   HKLM "${ARP}" "Publisher"        "Say.So LLC"
-        WriteRegStr   HKLM "${ARP}" "DisplayVersion"   "2.0.0"
+        WriteRegStr   HKLM "${ARP}" "DisplayVersion"   "2.0.1"
         WriteRegDWORD HKLM "${ARP}" "EstimatedSize"    "${ESTIMATED_SIZE}"
         
 
@@ -153,9 +153,9 @@ Section "Uninstall"
     DeleteRegValue HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Ext\CLSID"                         "{E017A723-53B3-4952-895D-ED7C3377C885}"
 
     ; Remove application settings
-    DeleteRegValue HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Ext\CLSID"                         "12830336-3A64-4672-0FE0-9C18A0AFA2BD" 
-    DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Say.So Bar"
-    DeleteRegKey HKCU "Software\Say.So Bar"
+    DeleteRegValue HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Ext\CLSID"                         "{12830336-3A64-4672-0FE0-9C18A0AFA2BD}" 
+    DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Say.So"
+    DeleteRegKey HKCU "Software\Say.So"
 
     ; Being for the benefit of Mr AV Vendor there will be a twiddling of bits.
     Nop

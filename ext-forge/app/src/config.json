@@ -1,8 +1,8 @@
 {
 	"platform_version": "v1.3",
-	"name": "Say.So Bar",
+	"name": "Say.So",
 	"author": "Say.So LLC",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"config_version": "2",
 	"homepage": "http://www.say.so/",
 	"description": "A fun way to have your influence recognized, and your opinions rewarded!",
@@ -20,7 +20,7 @@
 			}
 		],
 		"package_names": {
-			"firefox": "bar@say.so",
+			"firefox": "say.so",
 			"safari": "com.saysollc.app"
 		},
 		"update_url": {

@@ -21,6 +21,8 @@
 		private $_gridCollection = array();
 		private $_gridAssociatedData = array();
 
+		private $_newElements = array();
+
 		public function preDispatch() {
 			// i.e. for everything based on Generic Starbar, use these includes
 			$this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
@@ -142,6 +144,7 @@
 							if ($coltype=="hidden") {
 							    $grid2->updateColumn($value,array('hidden' => true));
 							}
+
 
 							// Set column widths
 							$colwidth =  $saysojson->getColAttr($value,'width');
@@ -335,7 +338,7 @@
 										$formElements[$colname]->setLabel($coloptions['label']);
 									}
 
-									// Assign a default value
+									// Assign a default value if set in the JSON file
 									if (array_key_exists('value',$coloptions)) {
 										$formElements[$colname]->setValue($coloptions['value']);
 									}
@@ -346,11 +349,23 @@
 									}
 
 									if (array_key_exists($colname,$currentData)) {
-
+										// Assign a value if found in the select statement results
 										if (array_key_exists($colname,$currentData) && (array_key_exists($colname,$formElements))) {
-											$formElements[$colname]->setValue($currentData[$colname]);
+												$formElements[$colname]->setValue($currentData[$colname]);
 										}
 									}
+
+									if (array_key_exists('attributes',$coloptions)) {
+										if ($coloptions['attributes'][0]=="writeonly") {
+											//  It's a write only field
+											$this->_newElements[$colname] = new Form_Element_Hidden($colname,array());
+											$this->_newElements[$colname]->setValue($formElements[$colname]->getValue());
+											$formElements[$colname]->setName($colname."_readonly");
+											$formElements[$colname."_notrequired"] = $formElements[$colname];
+
+										}
+									}
+
 
 								}
 
@@ -360,7 +375,10 @@
 														//->setIgnore(true); // very usefull -> it will be ignored before insertion
 								$form = new ZendX_JQuery_Form();
 								$form->setName($tablename);
+
 								$form->addElements($formElements);
+								$form->addElements($this->_newElements);
+
 
 								$form->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));
 
@@ -369,11 +387,20 @@
 
 								if ($this->getRequest()->isPost()) { //is it a post request ?
 									$postData = $this->getRequest()->getPost(); // getting the $_POST data
+
+
 									if ($form->isValid($postData)) {
 
 										$formData = $form->getValues(); // data filtered
 										// Update the 'modified' field (don't update the 'Created' field)
 										$formData += array('modified' => date('Y-m-d H:i:s'));
+
+										// Remove any fields not required in the save
+										foreach ($formData as $key=>$value) {
+											if (strpos($key,"_notrequired")!==false) {
+												unset($formData[$key]);
+											}
+										}
 
 										unset($formData['no_csrf_foo']); // Remove the salt - we don't need it for an update
 										$tablefrommodel = $saysojson->getModel();

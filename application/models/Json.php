@@ -235,7 +235,11 @@ class Json extends Zend_Json {
 		if (strtolower($this->_json['table'][0]['tablename']) == strtolower($tablename)) {
 			return true;
 		} else {
-			return false;
+			if ((array_key_exists('jsonname',$this->_json['table'][0]) && (strtolower($this->_json['table'][0]['jsonname']) == strtolower($tablename)))) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 

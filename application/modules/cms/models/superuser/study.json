@@ -16,7 +16,6 @@
 		{
 			"colname": "id",
 			"type": "hidden",
-
 			"displaywhen": [
 				"grid",
 				"detail",
@@ -69,6 +68,7 @@
 				"grid",
 				"delete",
 				"detail",
+				"subgrid",
 				"edit"
 			]
 		},

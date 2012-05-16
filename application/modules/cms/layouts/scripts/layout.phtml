@@ -83,7 +83,8 @@
 								</li>
 								<li><a href="#url">Polls/Surveys/Quizzes</a>
 									<ul>
-										<li><a href="/cms/admin/view/table/survey">Polls/Surveys/Quizzes</a></li>
+										<li><a href="/cms/admin/view/table/survey">Polls/Surveys</a></li>
+										<li><a href="/cms/admin/view/table/quiz">Quizzes</a></li>
 										<li><a href="/cms/admin/view/table/survey_question">Question</a></li>
 										<li><a href="/cms/admin/view/table/survey_question_choice">Question Choice</a></li>
 										<li><a href="#url">Question Group</a></li>
@@ -170,13 +171,28 @@
 //echo 'You are in: '.$this->navigation()->breadcrumbs()->setLinkLast(true)->setMinDepth(0)->render();
 
  echo $this->breadcrumb;
+ echo ($this->BackLink)?"<br />".$this->BackLink:"";
+
 //echo $this->breadcrumb();
+?>
+<div id="system-message" title="System message"></div>
+<?php
+$flashMessenger = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
+$messages	   = $flashMessenger->getMessages();
+if (sizeof($messages) > 0)
+{
+	$messages = $flashMessenger->getMessages();
+	if(!empty($messages))
+	{
+		echo "\n<script>\nwindow._saysoMessages = ['",  implode("','", $messages) , "'];\n</script>\n";
+	}
+}
 ?>
 </div>
 
 			<div id="main" role="main">
 			<?php
-				//echo ($this->BackLink)?$this->BackLink:"";
+
 			    printf(" <span class='system-message'>%s</span>",$this->message) ;
 				?>
 

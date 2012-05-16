@@ -1,6 +1,8 @@
 {
 	"table": [
 		{
+			"comment": "This json is for quizzes, a subset of Polls/Surveys",
+			"jsonname": "quiz",
 			"tablename": "Survey",
 			"model": "Survey",
 			"permissions":[
@@ -37,17 +39,13 @@
 		},
 		{
 			"colname": "type",
-			"type": "list",
-			"listoptions": [
-				"poll",
-				"survey"
-			],
+			"type": "hidden",
+			"value": "quiz",
 			"displaywhen": [
 				"add",
-				"grid",
-				"edit",
+				"detail",
 				"delete",
-				"detail"
+				"edit"
 			]
 		},
 		{

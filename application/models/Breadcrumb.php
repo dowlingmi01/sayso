@@ -132,8 +132,22 @@ class Breadcrumb {
 					$this->_breadcrumb  .= sprintf("%s%s",$this->_getSeparator(),$bcComment);
 				} else {
 					// we may not have five links - for an add, we only get four.
-					//print_r($this->_getURL());
-					$cumulativeURL .= sprintf("%s/%s/%s/%s/%s/",$this->_getURL($cnt),$this->_getURL($cnt+1),$this->_getURL($cnt+2),$this->_getURL($cnt+3),$this->_getURL($cnt+4));
+					if ($this->_getURL($cnt)) {
+						$cumulativeURL .= sprintf("%s/",$this->_getURL($cnt));
+					}
+					if ($this->_getURL($cnt+1)) {
+						$cumulativeURL .= sprintf("%s/",$this->_getURL($cnt+1));
+					}
+					if ($this->_getURL($cnt+2)) {
+						$cumulativeURL .= sprintf("%s/",$this->_getURL($cnt+2));
+					}
+					if ($this->_getURL($cnt+3)) {
+						$cumulativeURL .= sprintf("%s/",$this->_getURL($cnt+3));
+					}
+					if ($this->_getURL($cnt+4)) {
+						$cumulativeURL .= sprintf("%s/",$this->_getURL($cnt+4));
+					}
+				//	$cumulativeURL .= sprintf("%s/%s/%s/%s/%s/",$this->_getURL($cnt),$this->_getURL($cnt+1),$this->_getURL($cnt+2),$this->_getURL($cnt+3),$this->_getURL($cnt+4));
 
 					$this->_breadcrumb  .= sprintf("%s<a href='%s/%s'>%s</a>",$this->_getSeparator(),$bcBase,$cumulativeURL,$bcComment);
 
@@ -225,7 +239,11 @@ class Breadcrumb {
 	private function _getURL($index=null)
 	{
 		if ($index!=null) {
-			return $this->_url[$index];
+			if (array_key_exists($index,$this->_url)) {
+				return $this->_url[$index];
+			} else {
+				return false;
+			}
 		} else {
 			return $this->_url;
 		}

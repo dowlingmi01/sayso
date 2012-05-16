@@ -1,2 +1,0 @@
-BaseDomain=app.saysollc.com
-BaseExtFileName=Say.So Starbar

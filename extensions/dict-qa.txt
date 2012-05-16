@@ -1,2 +1,0 @@
-BaseDomain=app-qa.saysollc.com
-BaseExtFileName=SaySo-TEST

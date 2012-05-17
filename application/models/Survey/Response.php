@@ -71,18 +71,28 @@ class Survey_Response extends Record
 		$requestParams["filter[operator][0]"] = "=";
 		$requestParams["filter[value][0]"] = $this->id;
 
-		if (APPLICATION_ENV == "production") {
-			$requestParams["filter[field][1]"] = "[url(%22testing%22)]";
+		if ($this->status == "completed") {
+			$requestParams["filter[field][1]"] = "status";
 			$requestParams["filter[operator][1]"] = "=";
-			$requestParams["filter[value][1]"] = "false";
-		} else {
-			$requestParams["filter[field][1]"] = "[url(%22base_domain%22)]";
+			$requestParams["filter[value][1]"] = "Complete";
+		} elseif ($this->status == "disqualified") {
+			$requestParams["filter[field][1]"] = "status";
 			$requestParams["filter[operator][1]"] = "=";
-			$requestParams["filter[value][1]"] = BASE_DOMAIN;
+			$requestParams["filter[value][1]"] = "Disqualified";
+		}
 
+		if (APPLICATION_ENV == "production") {
 			$requestParams["filter[field][2]"] = "[url(%22testing%22)]";
 			$requestParams["filter[operator][2]"] = "=";
-			$requestParams["filter[value][2]"] = "true";
+			$requestParams["filter[value][2]"] = "false";
+		} else {
+			$requestParams["filter[field][2]"] = "[url(%22base_domain%22)]";
+			$requestParams["filter[operator][2]"] = "=";
+			$requestParams["filter[value][2]"] = BASE_DOMAIN;
+
+			$requestParams["filter[field][3]"] = "[url(%22testing%22)]";
+			$requestParams["filter[operator][3]"] = "=";
+			$requestParams["filter[value][3]"] = "true";
 		}
 
 		$requestParamString = "";

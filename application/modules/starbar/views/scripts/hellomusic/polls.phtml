@@ -27,7 +27,7 @@
 		<div class="sb_scrollPane">
 
 			<!-- BEGIN POLL BOX LANDING -->
-			<? $this->displayPolls('new') ?>
+			<? $this->displayPolls('new', $this->starbar) ?>
 			<!-- END POLL BOX LANDING -->
 		</div><!-- .sb_scrollPane -->
 	</div><!-- #tabs_1 -->
@@ -37,8 +37,8 @@
 			<p class="sb_tabHeader">These are polls you've completed</p>
 			<div class="sb_scrollPane">
 				<ul class="sb_outlineList">
-					<? $this->displayPolls('completed') ?>
-					<? $this->displayPolls('disqualified') ?>
+					<? $this->displayPolls('completed', $this->starbar) ?>
+					<? $this->displayPolls('disqualified', $this->starbar) ?>
 				</ul>
 			</div><!-- .sb_scrollPane -->
 		</div><!-- #tabs_2 -->
@@ -52,7 +52,7 @@
 			<div class="sb_scrollPane">
 
 				<!-- BEGIN POLL BOX LANDING -->
-				<? $this->displayPolls('archived') ?>
+				<? $this->displayPolls('archived', $this->starbar) ?>
 				<!-- END POLL BOX LANDING -->
 				<br />
 				<? if ($this->count_new_polls) { ?>

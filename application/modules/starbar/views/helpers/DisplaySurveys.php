@@ -1,7 +1,7 @@
 <?php
 class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 {
-	function displaySurveys($status) {
+	function displaySurveys($status, $starbar) {
 
 		$numberOfPremiumRedeemablePoints = 375;
 		$numberOfPremiumExperiencePoints = 5000;
@@ -115,7 +115,7 @@ class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 							<h3><?= $survey->title ?></h3>
 							<p><?= $survey->number_of_questions ?> Questions - Earn <strong class="<?= $strongClass ?>"><?= $numberOfRedeemablePoints ?> <span class="sb_currency_title" data-currency-type="redeemable"></span></strong> and <strong class="<?= $strongClass ?>"><?= $numberOfExperiencePoints ?> <span class="sb_currency_title" data-currency-type="experience"></span></strong></p>
 						</div><!-- .sb_surveyInfo -->
-						<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/embed-survey?survey_id=<?= $survey->id ?>" class="sb_surveyLaunch sb_nav_element sb_alignRight" rel="<?= $popBoxToOpen ?>"><span class="sb_survey-select">Take The Survey</span></a>
+						<a href="//<?= BASE_DOMAIN ?>/starbar/<?= $starbar->short_name ?>/embed-survey?survey_id=<?= $survey->id ?>" class="sb_surveyLaunch sb_nav_element sb_alignRight" rel="<?= $popBoxToOpen ?>"><span class="sb_survey-select">Take The Survey</span></a>
 					</li>
 				<? } else { // User cannot take this survey ?>
 					<li><h3 class="sb_theme_iconComplete"><?= $survey->title ?></h3>

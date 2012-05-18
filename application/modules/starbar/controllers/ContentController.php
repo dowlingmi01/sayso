@@ -24,6 +24,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function postDispatch()
 	{
+		$this->_assignStarbarToView();
 		if ($this->_usingJsonPRenderer) {
 			$this->_enableRenderer(new Api_Plugin_JsonPRenderer());
 			$this->render();
@@ -37,8 +38,6 @@ class Starbar_ContentController extends Api_GlobalController
 			$this->view->headScript()->appendFile('/js/starbar/jquery.jeip.js');
 			$this->view->headScript()->appendFile('/js/starbar/jquery.cycle.all.js');
 			$this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
-			// For init-remote.phtml
-			$this->_assignStarbarToView();
 		}
 	}
 

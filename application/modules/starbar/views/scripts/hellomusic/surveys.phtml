@@ -25,7 +25,7 @@
 			</p>
 		<? } ?>
 		<div class="sb_scrollPane">
-			<? $this->displaySurveys('new') ?>
+			<? $this->displaySurveys('new', $this->starbar) ?>
 		</div><!-- .sb_scrollPane -->
 	</div><!-- #tabs_1 -->
 
@@ -34,8 +34,8 @@
 			<p class="sb_tabHeader">All of your completed surveys are listed below.</p>
 			<div class="sb_scrollPane">
 				<ul class="sb_outlineList">
-					<? $this->displaySurveys('completed') ?>
-					<? $this->displaySurveys('disqualified') ?>
+					<? $this->displaySurveys('completed', $this->starbar) ?>
+					<? $this->displaySurveys('disqualified', $this->starbar) ?>
 				</ul>
 			</div><!-- .sb_scrollPane -->
 		</div><!-- #tabs_2 -->
@@ -45,7 +45,7 @@
 		<div id="surveys_tabs_3" class="sb_tabPane">
 			<p class="sb_tabHeader">No shelf-life on these babies totally take-able Surveys. SaySo immortality awaits. We await your SaySo.</p>
 			<div class="sb_scrollPane">
-				<? $this->displaySurveys('archived') ?>
+				<? $this->displaySurveys('archived', $this->starbar) ?>
 				<br />
 				<? if ($this->count_new_surveys) { ?>
 					<p align="right"><a href="#" class="sb_nav_tabs sb_theme_button" rel="1"><span class="sb_theme_buttonArrow">Take a New Survey</span></a></p>

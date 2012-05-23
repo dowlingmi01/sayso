@@ -92,7 +92,7 @@
 		*
 		* @author Peter Connolly
 		*/
-		private function _subobject($fktablename,$fkfield,$fkval,$gridid)
+		private function _subobject($fktablename,$fkfield,$fkval,$gridid,$realtable="")
 		{
 			$griddata = array();
 
@@ -112,6 +112,7 @@
 
 				if ($saysojson->validJson($fktablename)) {
 
+					$realfktablename = strtolower($saysojson->getTableAttr('tablename'));
 					// Create the grid
 					// Find the columns we want to see on the grid
 					$columnlist = $saysojson->getCMSColumnsAssoc("displaywhen","subgrid");
@@ -125,7 +126,7 @@
 
 					$strWhere = sprintf("%s = %s",$fkfield,$fkval);
 
-					$select = Zend_Registry::get('db')->select()->from($fktablename,$columnlist)->where($strWhere)->order("id desc");
+					$select = Zend_Registry::get('db')->select()->from($realfktablename,$columnlist)->where($strWhere)->order("id desc");
 
 					$grid2   = new Cms_Matrix();
 					$grid2->setNoFilters(true); // We don't need to see filters on subobjects
@@ -144,7 +145,6 @@
 							if ($coltype=="hidden") {
 							    $grid2->updateColumn($value,array('hidden' => true));
 							}
-
 
 							// Set column widths
 							$colwidth =  $saysojson->getColAttr($value,'width');
@@ -239,6 +239,7 @@
 					if ($saysojson->checkTablePermission("allowadd")) {
 						$fullURL = $this->_getFullURL();
 						$tablename = $this->getRequest()->getParam('table');
+						$tablename = $realtable ;
 						$id = $this->getRequest()->getParam('id');
 						if (($tablename != null) && ($id!=null)) {
 							$redirect = "pt/".$tablename."/pi/".$id;
@@ -247,8 +248,12 @@
 						$griddata['newrecord'] = sprintf('<span class="newlink"><a href="/cms/admin/add/table/%s/%s"><img src="/images/icons/add.png" style="width:16px;" alt="Add" Title="Add" /> Add New %s</a></span>',$fktablename,$redirect,$tablenamepolite);
 					}
 
-					$griddata['title'] = $tablenamepolite;
+					if ($saysojson->getTableAttr('label')!=null) {
+						$griddata['title'] = $saysojson->getTableAttr('label');
+					} else {
+						$griddata['title'] = $tablenamepolite;
 
+					}
 					$this->_gridAssociatedData[] = $griddata;
 					$DeployedGrid = $grid2->deploy();
 					$this->_gridCollection[] = $DeployedGrid;
@@ -291,12 +296,15 @@
 
 					if ($saysojson->validJson($tablename)) {
 
+						$realtablename = strtolower($saysojson->getTableAttr('tablename'));
+
 						if ($saysojson->checkTablePermission("allowedit")) {
 							// We need to get the details for the ID from this table
 							// Find the columns we want to see on the grid
 							$columnlist = $saysojson->getCMSColumns("displaywhen","edit");
 
-							$select = Zend_Registry::get('db')->select()->from($tablename,$columnlist)->where("id = ?",$id);
+							$select = Zend_Registry::get('db')->select()->from($realtablename,$columnlist)->where("id = ?",$id);
+
 
 							$stmt = $select->query();
 							$currentData = $stmt->fetchAll();
@@ -323,7 +331,7 @@
 										}
 									}
 
-									$coloptions['meta']['tablename'] = $tablename;
+									$coloptions['meta']['tablename'] = $realtablename;
 									$coloptions['meta']['colname'] = $colname;
 
 									// Build this form element
@@ -374,7 +382,7 @@
 								$formElements['submit'] ->setLabel(sprintf('Save Changes')); // the button's value
 														//->setIgnore(true); // very usefull -> it will be ignored before insertion
 								$form = new ZendX_JQuery_Form();
-								$form->setName($tablename);
+								$form->setName($realtablename);
 
 								$form->addElements($formElements);
 								$form->addElements($this->_newElements);
@@ -408,7 +416,7 @@
 										$model->setData($formData);
 										$result = $model->save();
 
-										$this->view->message = "Record successfully updated ";
+										$this->msg->addMessage('Record successfully updated');
 										// Redirect to the View screen
 										$this->rd->gotoSimple('detail','admin','cms',array('table' => $tablename,'id'=>$id));
 
@@ -473,7 +481,11 @@
 						if ($saysojson->checkTablePermission('allowdetails')) {
 							$columnlist = $saysojson->getCMSColumns("displaywhen","detail");
 
-							$select = Zend_Registry::get('db')->select()->from($tablename,$columnlist)->where("id = ?",$id);
+							$realtable = strtolower($saysojson->getTableAttr('tablename'));
+
+
+
+							$select = Zend_Registry::get('db')->select()->from($realtable,$columnlist)->where("id = ?",$id);
 
 							$stmt = $select->query();
 							$currentData = $stmt->fetchAll();
@@ -498,7 +510,7 @@
 										}
 									}
 
-									$coloptions['meta']['tablename'] = $tablename;
+									$coloptions['meta']['tablename'] = $realtable;
 									$coloptions['meta']['colname'] = $colname;
 
 									// Build this form element
@@ -531,7 +543,7 @@
 								}
 
 								$form = new ZendX_JQuery_Form();
-								$form->setName($tablename);
+								$form->setName($realtable);
 								$form->addElements($formElements);
 
 								$this->view->tablename = $tablenamepolite;
@@ -542,7 +554,7 @@
 								if (array_key_exists("subobjects",$saysojson->getJson())) {
 									foreach ($saysojson->getJson('subobjects') as $key=>$value) {
 
-										$this->_subobject($value['table'],$value['fk'],$formElements["id"]->getValue(),$cnt);
+										$this->_subobject($value['table'],$value['fk'],$formElements["id"]->getValue(),$cnt,$realtable);
 										$cnt++;
 									}
 
@@ -598,7 +610,8 @@
 						if ($saysojson->checkTablePermission('allowdelete')) {
 							$columnlist = $saysojson->getCMSColumns("displaywhen","delete");
 
-							$select = Zend_Registry::get('db')->select()->from($tablename,$columnlist)->where("id = ?",$id);
+							$realtable = strtolower($saysojson->getTableAttr('tablename'));
+							$select = Zend_Registry::get('db')->select()->from($realtable,$columnlist)->where("id = ?",$id);
 
 							$stmt = $select->query();
 							$currentData = $stmt->fetchAll();
@@ -667,7 +680,7 @@
 								$formElements['submitno'] ->setLabel(sprintf('Cancel')); // the button's value
 															//->setIgnore(true); // very usefull -> it will be ignored before insertion
 								$form = new ZendX_JQuery_Form();
-								$form->setName($tablename);
+								$form->setName($realtable);
 								$form->addElements($formElements);
 
 								$form->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));
@@ -682,9 +695,8 @@
 										$model = new $tablefrommodel();
 										$model->setData($formData);
 										$result = $model->delete();
-										// @todo Make this message appear somewhere
-										$this->view->message = "Record successfully deleted";
-										$this->msg->addMessage('We did something in the last request');
+
+										$this->msg->addMessage('Record successfully deleted');
 										$this->rd->gotoSimple('view','admin','cms',array('table' => $tablename));
 
 										} else {
@@ -745,8 +757,13 @@
 					// Create the grid
 					// Find the columns we want to see on the grid
 					$columnlist = $saysojson->getCMSColumns("displaywhen","grid");
-
-					$select = Zend_Registry::get('db')->select()->from($tablename,$columnlist)->order("id desc");
+					$where = $saysojson->getTableAttr('where');
+					$realtable = strtolower($saysojson->getTableAttr('tablename'));
+					if ($where==null) {
+						$select = Zend_Registry::get('db')->select()->from($realtable,$columnlist)->order("id desc");
+					} else {
+						$select = Zend_Registry::get('db')->select()->from($realtable,$columnlist)->where($where)->order("id desc");
+					}
 					$grid   = new Cms_Matrix();
 					$grid->setJqgParams(array('altRows' => true));// rows will alternate color
 					$grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
@@ -972,12 +989,13 @@
 
 				if ($saysojson->validJson($tablename)) {
 
-						//$json = $json['superuser'][0][$tablename][0];
+					$realtable = strtolower($saysojson->getTableAttr('tablename'));
+
 					if ($saysojson->checkTablePermission("allowadd")) {
 						// Start with a blank formelements array, and add the array items as we go
 
 						$formElements = array();
-						//$columnlist = $saysojson->getCMSColumns("displaywhen","add");
+
 
 						foreach ($saysojson->getCMSColumns("displaywhen","add",true) as $key=>$value) {
 
@@ -994,7 +1012,7 @@
 								}
 							}
 
-							$coloptions['meta']['tablename'] = $tablename;
+							$coloptions['meta']['tablename'] = $realtable;
 							$coloptions['meta']['colname'] = $colname;
 
 
@@ -1042,7 +1060,7 @@
 						$formElements['submit'] ->setLabel(sprintf('Save New %s',$tablenamepolite)); // the button's value
 													//->setIgnore(true); // very usefull -> it will be ignored before insertion
 						$form = new ZendX_JQuery_Form();
-						$form->setName($tablename);
+						$form->setName($realtable);
 						$form->addElements($formElements);
 						$form->addElements($this->_newElements);
 						$form->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));

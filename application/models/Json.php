@@ -50,7 +50,11 @@ class Json extends Zend_Json {
 	public function getJson($column = null)
 	{
 		if ($column!=null) {
-			return $this->_json[$column];
+			if (array_key_exists($column,$this->_json)) {
+				return $this->_json[$column];
+			} else {
+				return null;
+			}
 		} else {
 			return $this->_json;
 		}
@@ -177,7 +181,6 @@ class Json extends Zend_Json {
 	* Search the JSON Table Definition for a specific value
 	*
 	* @param string $matchcol Column in the array being searched for
-	* @param string $matchkey Key being searched for
 	* #returns string Value of the column, or Null if not found
 	* @author Peter Connolly
 	*/
@@ -235,9 +238,10 @@ class Json extends Zend_Json {
 		if (strtolower($this->_json['table'][0]['tablename']) == strtolower($tablename)) {
 			return true;
 		} else {
-			if ((array_key_exists('jsonname',$this->_json['table'][0]) && (strtolower($this->_json['table'][0]['jsonname']) == strtolower($tablename)))) {
+			if ((array_key_exists('viewname',$this->_json['table'][0]) && (strtolower($this->_json['table'][0]['viewname']) == strtolower($tablename)))) {
 				return true;
 			} else {
+
 				return false;
 			}
 		}

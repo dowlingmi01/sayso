@@ -2,8 +2,9 @@
 	"table": [
 		{
 			"comment": "This json is for quizzes, a subset of Polls/Surveys",
-			"jsonname": "quiz",
-			"tablename": "Survey",
+			"viewname": "Quiz",
+			"where": "type=3",
+			"tablename": "survey",
 			"model": "Survey",
 			"permissions":[
 				"allowgrid",
@@ -79,7 +80,8 @@
 		{
 			"colname": "title",
 			"type": "text",
-			"label": "Survey Title",
+			"label": "Quiz Title",
+			"help":"The title of this quiz",
 			"width": 42,
 			"validate": [
 				"notnull",
@@ -89,30 +91,6 @@
 				"add",
 				"grid",
 				"delete",
-				"detail",
-				"edit"
-			]
-		},
-		{
-			"colname": "external_id",
-			"type": "number",
-			"width":40,
-			"help": "Used for polls/surveys only -- ignored for quizzes",
-			"displaywhen": [
-				"add",
-				"detail",
-				"grid",
-				"delete",
-				"edit"
-			]
-		},
-		{
-			"colname": "external_key",
-			"type": "text",
-			"width": 20,
-			"help": "Used for polls/surveys only -- ignored for quizzes",
-			"displaywhen": [
-				"add",
 				"detail",
 				"edit"
 			]
@@ -148,52 +126,13 @@
 				"detail",
 				"edit"
 			]
-		},
-		{
-			"colname": "start_day",
-			"type": "number",
-			"width": 50,
-			"help": "Day (relative to launch) that this survey is available. Day 1 = launch day",
-			"displaywhen": [
-				"add",
-				"detail",
-				"grid",
-				"edit"
-			]
-		},
-		{
-			"colname": "start_after",
-			"type": "number",
-			"help": "Time delay in seconds before this survey is available to a new user",
-			"displaywhen": [
-				"add",
-				"detail",
-				"edit"
-			]
-		},
-		{
-			"colname": "start_at",
-			"type": "datetime",
-			"displaywhen": [
-				"add",
-				"detail",
-				"edit"
-			]
-		},
-			{
-			"colname": "end_at",
-			"type": "datetime",
-			"displaywhen": [
-				"add",
-				"detail",
-				"edit"
-			]
 		}
 	],
 	"subobjects": [
 		{
-			"Title":"Questions",
-			"table": "survey_question",
+			"Comment": "Even when using a view, the fk should point to the fk on the real table",
+			"Title": "Questions",
+			"table": "quiz_question",
 			"fk": "survey_id"
 		}
 	]

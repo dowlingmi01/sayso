@@ -16,14 +16,8 @@ $SQ("input").easyTooltip();
 		$SQ.fx.speeds._default = 500;
 		$SQ('#system-message').html(window._saysoMessages.join("<br />"));
 		window._saysoMessages = [];
-		$SQ('#system-message').dialog({
-			modal   : true,
-			hide	: "explode",
-			buttons : {
-				'Ok': function(){$(this).dialog( "close" );}
-			}
-		});
 	}
+
 /**
  * set up datetimepicker
  * @author Peter Connolly

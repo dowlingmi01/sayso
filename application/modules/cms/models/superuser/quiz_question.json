@@ -1,0 +1,137 @@
+{
+	"table": [
+		{
+			"comment": "This json is for quizzes, a subset of Polls/Surveys",
+			"label": "Quiz Question",
+			"viewname": "quiz_question",
+			"tablename": "survey_question",
+			"model": "Survey_Question",
+			"permissions": [
+				"allowgrid",
+				"allowadd",
+				"allowdelete",
+				"allowedit",
+				"allowdetails"
+			]
+		}
+	],
+	"columns": [
+		{
+			"colname": "id",
+			"type": "hidden",
+			"width": 5,
+			"displaywhen": [
+				"grid",
+				"subgrid",
+				"edit",
+				"delete",
+				"detail"
+			]
+		},
+		{
+			"colname": "survey_id",
+			"label": "Quiz",
+			"type": "fkey",
+			"lookuptable": "survey",
+			"lookupfield": "id",
+			"lookuplabel": "title",
+			"where": "type=3",
+			"default": "--Please Select a Quiz--",
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"delete",
+				"edit"
+			],
+			"attributes": [
+				"writeonly"
+			]
+		},
+		{
+			"colname": "data_type",
+			"type": "list",
+			"listoptions": [
+				"none",
+				"string",
+				"integer",
+				"decimal",
+				"monetary"
+			],
+			"default": "none",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "choice_type",
+			"type": "list",
+			"listoptions": [
+				"none",
+				"single",
+				"multiple"
+			],
+			"default": "none",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "title",
+			"type": "text",
+			"label": "Question Title",
+			"width": 100,
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"subgrid",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "image_url",
+			"type": "text",
+			"label": "Image URL",
+			"help": "Used for quizzes only -- ignored for polls/surveys",
+			"width": 100,
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"subgrid",
+				"edit"
+			]
+		},
+		{
+			"colname": "number_of_choices",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "ordinal",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		}
+	],
+	"subobjects": [
+		{
+			"Title":"Question Answers",
+			"table": "quiz_question_choice",
+			"fk": "survey_question_id"
+		}
+	]
+}

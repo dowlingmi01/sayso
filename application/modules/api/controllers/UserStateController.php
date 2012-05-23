@@ -46,20 +46,19 @@ class Api_UserStateController extends Api_GlobalController
 
 		$userState->loadDataByUniqueFields(array('user_id' => $this->user_id));
 
-		if (!$userState->id && !($this->in_iframe == "true")) { // This must be the first install for this user
-			if( !$newToken ) {
-				$install = new User_Install();
-				$install->loadDataByUniqueFields(array('token'=>$this->user_key));
-				$install->first_access_ts = new Zend_Db_Expr('now()');
-				$install->save();
+		$install = new User_Install();
+		$install->loadDataByUniqueFields(array('token'=>$this->user_key));
+		
+		if( $install->id && !$install->first_access_ts  && !($this->in_iframe == "true")) {
+			$install->first_access_ts = new Zend_Db_Expr('now()');
+			$install->save();
 
-				if( $install->starbar_id )
-					$starbar->loadData($install->starbar_id);
-				else {
-					$externalUser = new External_User();
-					$externalUser->loadData($install->external_user_id);
-					$starbar->loadData($externalUser->starbar_id);
-				}
+			if( $install->starbar_id )
+				$starbar->loadData($install->starbar_id);
+			else {
+				$externalUser = new External_User();
+				$externalUser->loadData($install->external_user_id);
+				$starbar->loadData($externalUser->starbar_id);
 			}
 
 			$starbarUserMap = new Starbar_UserMap();
@@ -68,9 +67,11 @@ class Api_UserStateController extends Api_GlobalController
 			$starbarUserMap->active = 1;
 			$starbarUserMap->save();
 
-			$gamer = Gamer::create($this->user_id, $starbar->id);
+			$isNewGamer = false;
+			$gamer = Gamer::create($this->user_id, $starbar->id, $isNewGamer);
 			$game = Game_Starbar::create($gamer, $this->_request, $starbar);
-			$game->install();
+			if( $isNewGamer )
+				$game->install();
 
 			$userState->starbar_id = $starbar->id;
 			$userState->visibility = "open";

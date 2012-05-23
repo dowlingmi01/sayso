@@ -19,7 +19,7 @@ class Gamer extends Gaming_User {
 	 * @param int $starbarId
 	 * @return Gamer
 	 */
-	public static function create ($userId, $starbarId) {
+	public static function create ($userId, $starbarId, &$isNew = false) {
 		// Quick HACK to get starbar_id from user state. It should be part of the request.
 		if( $userId && !$starbarId ) {
 			$userstate = new User_State();
@@ -37,6 +37,7 @@ class Gamer extends Gaming_User {
 			$gamer->generateUniqueId();
 			$gamer->save();
 			$gamer->reload();
+			$isNew = true;
 		}
 		return $gamer;
 	}

@@ -131,14 +131,6 @@ class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 			if ($status == 'new' || $status == 'archived') {
 				echo '</ul>';
 			}
-		} elseif ($status == 'new') { // No new surveys, show a message! -- and keep the p tag or scrollpane fails.
-			?>
-			<? if ($this->view->count_archived_surveys) { ?>
-				<p>No new surveys today, but you still have <?= $this->view->count_archived_surveys ?> surveys to complete in the <a href="#" class="sb_nav_tabs" rel="<?= (($this->view->count_completed_surveys || $this->view->count_disqualified_surveys) ? 3 : 2) ?>">archives</a>.</p>
-			<? } else { ?>
-				<p>No new surveys today, check back soon to earn more bucks and stars!</p>
-			<? } ?>
-			<?
 		}
 	}
 }

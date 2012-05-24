@@ -26,6 +26,13 @@
 		<? } ?>
 		<div class="sb_scrollPane">
 			<? $this->displaySurveys('new', $this->starbar) ?>
+			<? if( $this->count_new_surveys )
+				$this->displaySurveys('new', $this->starbar);
+			else if ($this->count_archived_surveys) { ?>
+				<p>No new surveys today, but you still have <?= $this->count_archived_surveys ?> surveys to complete in the <a href="#" class="sb_nav_tabs" rel="<?= (($this->count_completed_surveys || $this->count_disqualified_surveys) ? 3 : 2) ?>">archives</a>.</p>
+			<? } else { ?>
+				<p>Nice job, looks like you've taken all the surveys! Check back soon to earn more Snakkle Bucks and Stars!</p>
+			<? } ?>
 		</div><!-- .sb_scrollPane -->
 	</div><!-- #tabs_1 -->
 

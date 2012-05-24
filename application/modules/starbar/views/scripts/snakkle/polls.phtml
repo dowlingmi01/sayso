@@ -24,7 +24,13 @@
 		<div class="sb_scrollPane">
 
 			<!-- BEGIN POLL BOX LANDING -->
-			<? $this->displayPolls('new', $this->starbar) ?>
+			<? if( $this->count_new_polls )
+				$this->displayPolls('new', $this->starbar);
+			else if ($this->count_archived_polls) { ?>
+				<p>No new polls today, but you still have <?= $this->count_archived_polls ?> polls to complete in the <a href="#" class="sb_nav_tabs" rel="<?= (($this->count_completed_polls || $this->count_disqualified_polls) ? 3 : 2) ?>">archives</a>.</p>
+			<? } else { ?>
+				<p>Nice job, looks like you've taken all the polls! Check back soon to earn more Snakkle Bucks and Stars!</p>
+			<? } ?>
 			<!-- END POLL BOX LANDING -->
 		</div><!-- .sb_scrollPane -->
 	</div><!-- #tabs_1 -->

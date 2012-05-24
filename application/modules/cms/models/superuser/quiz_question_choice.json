@@ -47,8 +47,8 @@
 		{
 			"colname": "title",
 			"type": "text",
-			"label": "Question Choice Title",
-			"width": 40,
+			"label": "Question Answer",
+			"width": 200,
 			"validate": [
 				"notnull",
 				"minlength(10)"
@@ -78,8 +78,9 @@
 		},
 		{
 			"colname": "correct",
-			"label": "Correct Answer?",
+			"label": "Correct?",
 			"type": "checkbox",
+			"width": "40",
 			"default": false,
 			"displaywhen": [
 				"add",

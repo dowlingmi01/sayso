@@ -149,10 +149,15 @@
 							// Set column widths
 							$colwidth =  $saysojson->getColAttr($value,'width');
 							if ($colwidth==Null) {
-								$grid2->updateColumn($value,array('style'=>'width:100px'));
+								$grid2->updateColumn($value,array('style'=>'width:150px'));
 							} else {
 								$width = sprintf("width:%spx",$colwidth);
 								$grid2->updateColumn($value,array('style'=>$width));
+							}
+
+							// Set column title
+							if ($saysojson->getColAttr($value,'label')!=null) {
+								$grid2->updateColumn($value,array('title'=>$saysojson->getColAttr($value,'label')));
 							}
 
 							// Cross reference any foreign keys
@@ -173,6 +178,18 @@
 																$lookuptable,
 																$lookupfield,
 																$lookuplabel
+																)
+										)));
+							}
+
+							if ($coltype=='checkbox') {
+								// For Checkboxes, we can replace the value '1' with a tick
+								$fieldname = sprintf("{{%s}}",$value);
+								$grid2->updateColumn($value,array(
+										'callback' => array(
+										'function'=>array($this,'_generateTickMark'),
+												'params'=>array($fieldname,
+																$value
 																)
 										)));
 							}
@@ -905,6 +922,20 @@
 				$link = '<a href="' .$this->view->url(array('action' => 'edit', 'id' => intval($id))). '" class="button-details" title="Edit"><img src="/images/icons/pencil.png" style="width:16px;" alt="Edit" Title="Edit" /></a>';
 			}
 			return $link;
+		}
+
+		/**
+		* If the input value is a '1', generate a tick mark
+		*
+		* @param mixed $id
+		* @param integer $value
+		* @author Peter Connolly
+		*/
+		public function _generateTickMark($id,$value)
+		{
+			if ($id=="1") {
+				return "<img src='/images/icons/tick.png' alt='Checked' />";
+			}
 		}
 
 		/**

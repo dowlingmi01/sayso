@@ -615,21 +615,9 @@ class Devadmin_IndexController extends Api_GlobalController
 		$goodId = (int) $request->getParam('named_good_id');
 
 		switch ($goodId) {
-			case 2036:
-				$startTime = mktime(0, 0, 0, 12, 2, 2011);
-				$endTime = mktime(23, 59, 59, 12, 11, 2011);
-				break;
-			case 2038:
-				$startTime = mktime(0, 0, 0, 12, 2, 2011);
-				$endTime = mktime(23, 59, 59, 18, 11, 2011);
-				break;
-			case 2044:
-				$startTime = mktime(0, 0, 0, 12, 2, 2011);
-				$endTime = mktime(23, 59, 59, 12, 25, 2011);
-				break;
-			case 2054:
-				$startTime = mktime(0, 0, 0, 12, 2, 2011);
-				$endTime = mktime(23, 59, 59, 1, 2, 2012);
+			case 3462001:
+				$startTime = mktime(0, 0, 0, 5, 9, 2012);
+				$endTime = mktime(23, 59, 59, 6, 15, 2012);
 				break;
 			default:
 				$goodId = false;

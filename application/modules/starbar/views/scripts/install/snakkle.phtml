@@ -11,53 +11,104 @@ $baseUrl = 'http://' . Registry::getConfig()->baseDomain;
 	  	<div class="sso_content">
 			<?php
 			 if( $this->onboarding_type == "new_user" ) {?>
-			<div id="sso_new_users" class="sso_panel">
-				<h2>Let your celebrity knowledge earn for you!</h2>
-				<p>Snakkle is running a BETA program that will let you shape what kind of celebrity and pop culture we offer.
-Take polls, quizzes, and surveys to show your knowledge and redeem points for prizes.</p>
-				<div style="width: 469px;height: 109px; background-color: gray; margin-right: auto; margin-left: auto;border-radius: 8px;"><img src="<?= $baseUrl ?>/client/snakkle/images/offer_snakkle.png" alt="Snakkle Say.So Offers" /></div>
-				<h3>
-					<strong>GRAB</strong> the Snakkle Say.So App.<br />
-					<strong>SHOW OFF</strong> your celebrity knowledge.<br />
-					<strong>GET</strong> sweet rewards.<br />
-				</h3>
-				<h4 style="font-weight: 500">First comers earn <strong style="color: #1f80c2;">IMMEDIATE BONUS</strong> Snakkle Bucks when they install the app and commence giving their say.so on celebrity knowledge, and the app itself!</h4>
-				<div style="height: 20px;">
-				<p style="font-size: 12px;"><input type="radio" /> I agree to the <a href="<?= $baseUrl ?>/docs/snakkle/Say.So_App_EULA.pdf" target="_blank">terms and conditions</a></p>
-				</div>
+			<div id="sso_new_users" class="ssp_panel1">
+				<h2>Are you a celebrity addict? Do you crave your next dose of Reality TV?<br />Do you follow all the trending celebrity news?</h2>
+				<p>Earn real prizes and entry into awesome giveaways by taking fun celebrity polls and quizzes and giving your Say So about anything and everything celebrity related!</p>
+				<div style="width: 640px;height: 345px; background-color: gray; margin-right: auto; margin-left: auto;border-radius: 8px;"><a href='#' class="goto2"><img src="<?= $baseUrl ?>/client/snakkle/images/Onboarding1-01.jpg" alt="Snakkle Say.So Offers" /></a></div>
 			</div>
+			<div class="navbar ssp_panel1">
+				<h2 id="go-now"><a href='#' class="goto4">I'm ready to get started now!</a></h2>
+				<img src="<?= $baseUrl ?>/client/snakkle/images/1whatissayso_blue.jpg" alt="What is Say.so" /><a href='#' class="goto2"><img src="<?= $baseUrl ?>/client/snakkle/images/2whatcanido_blue-grey.jpg" alt="What Can I Do?" /></a><a href='#' class="goto3"><img src="<?= $baseUrl ?>/client/snakkle/images/3whatdoiget_grey.jpg" alt="What Do I Get?" /></a><a href='#' class="goto4"><img src="<?= $baseUrl ?>/client/snakkle/images/4getstarted_grey.jpg" alt="Get Started" /></a>
+			</div>
+
+			<div id="sso_new_users2" class="ssp_panel2 sso_hidden">
+			<h2>What can I do?</h2>
+				<p>Earn Snakkle Bucks by giving your opinion on pop culture polls, answering surveys and<br />taking fun celebrity quizzes. Redeem Snakkle Bucks for items in our Reward Center.</p>
+				<div style="width: 634px;height: 342px; background-color: gray; margin-right: auto; margin-left: auto;border-radius: 8px;"><a href='#' class="goto3"><img src="<?= $baseUrl ?>/client/snakkle/images/Onboarding2-01.jpg" alt="Snakkle Say.So - What can I do?" /></a></div>
+			</div>
+			<div class="navbar ssp_panel2 sso_hidden">
+				<h2 id="go-now"><a href='#' class="goto4">I'm ready to get started now!</a></h2>
+				<a href='#' class="goto1"><img src="<?= $baseUrl ?>/client/snakkle/images/1whatissayso_grey.jpg" alt="What is Say.so" /></a><img src="<?= $baseUrl ?>/client/snakkle/images/2whatcanido_grey-blue.jpg" alt="What Can I Do?" /><a href='#' class="goto3"><img src="<?= $baseUrl ?>/client/snakkle/images/3whatdoiget_blue-grey.jpg" alt="What Do I Get?" /></a><a href='#' class="goto4"><img src="<?= $baseUrl ?>/client/snakkle/images/4getstarted_grey.jpg" alt="Get Started" /></a>
+				</div><!-- /navbar -->
+
+			<div id="sso_new_users3" class="ssp_panel3 sso_hidden">
+			<h2>What do I get?</h2>
+				<p>Great Prizes - The Reward Center is full of prizes designed specifically for the celebrity devotee.</p>
+				<div style="width: 637px;height: 341px; background-color: gray; margin-right: auto; margin-left: auto;border-radius: 8px;"><a href='#' class="goto4"><img src="<?= $baseUrl ?>/client/snakkle/images/Onboarding3-01.jpg" alt="Snakkle Say.So - What do I get?" /></a></div>
+
+			</div>
+			<div class="navbar ssp_panel3 sso_hidden">
+				<h2 id="go-now"><a href='#' class="goto4">I'm ready to get started now!</a></h2>
+				<a href='#' class="goto1"><img src="<?= $baseUrl ?>/client/snakkle/images/1whatissayso_grey.jpg" alt="What is Say.so" /></a><a href='#' class="goto2"><img src="<?= $baseUrl ?>/client/snakkle/images/2whatcanido_grey.jpg" alt="What Can I Do?" /></a><img src="<?= $baseUrl ?>/client/snakkle/images/3whatdoiget_grey-blue.jpg" alt="What Do I Get?" /><a href='#' class="goto4"><img src="<?= $baseUrl ?>/client/snakkle/images/4getstarted_blue-grey.jpg" alt="Get Started" /></a>
+			</div><!-- /navbar -->
+
 			<?php } elseif( $this->onboarding_type == "pilot_user" ) {?>
-			<div id="sso_pilot_users" class="sso_panel">
-				<h1>Welcome Back!</h1>
-				<h3>
-					<strong>GRAB</strong> the Snakkle Say.So browser extension.<br />
-					<strong>GIVE</strong> your opinion.<br />
-					<strong>GET</strong> exclusive deals and awesome prices.<br />
-				</h3>
-				<div style="width: 230px;height: 135px; background-color: gray; margin-right: auto; margin-left: auto;border-radius: 8px; margin-top: 15px; margin-bottom: 20px;"></div>
-				<h4 style="font-weight: 500"><strong style="color: #1f80c2;">BONUS</strong> Snakkle Bucks when you download the Snakkle Say.So browser<br />extension and become a Snakkle Say.So member today!</h4>
-				<h4 style="font-weight: 500"><strong style="color: #1f80c2;">PLUS A BONUS for being a previous member</strong></h4>
-				<div style="height: 20px;">
-				<p style="font-size: 12px;"><input type="radio" /> I agree to the <a href="<?= $baseUrl ?>/docs/snakkle/Say.So_App_EULA.pdf" target="_blank">terms and conditions</a></p>
-				</div>
+			<div id="sso_new_users" class="ssp_panel1">
+				<h2>Are you a celebrity addict? Do you crave your next dose of Reality TV?<br />Do you follow all the trending celebrity news?</h2>
+				<p>Earn real prizes and entry into awesome giveaways by taking fun celebrity polls and quizzes and giving your Say So about anything and everything celebrity related!</p>
+				<div style="width: 640px;height: 345px; background-color: gray; margin-right: auto; margin-left: auto;border-radius: 8px;"><a href='#' class="goto2"><img src="<?= $baseUrl ?>/client/snakkle/images/Onboarding1-01.jpg" alt="Snakkle Say.So Offers" /></a></div>
 			</div>
+			<div class="navbar ssp_panel1">
+				<h2 id="go-now"><a href='#' class="goto4">I'm ready to get started now!</a></h2>
+				<img src="<?= $baseUrl ?>/client/snakkle/images/1whatissayso_blue.jpg" alt="What is Say.so" /><a href='#' class="goto2"><img src="<?= $baseUrl ?>/client/snakkle/images/2whatcanido_blue-grey.jpg" alt="What Can I Do?" /></a><a href='#' class="goto3"><img src="<?= $baseUrl ?>/client/snakkle/images/3whatdoiget_grey.jpg" alt="What Do I Get?" /></a><a href='#' class="goto4"><img src="<?= $baseUrl ?>/client/snakkle/images/4getstarted_grey.jpg" alt="Get Started" /></a>
+			</div>
+
+			<div id="sso_new_users2" class="ssp_panel2 sso_hidden">
+			<h2>What can I do?</h2>
+				<p>Earn Snakkle Bucks by giving your opinion on pop culture polls, answering surveys and<br />taking fun celebrity quizzes. Redeem Snakkle Bucks for items in our Reward Center.</p>
+				<div style="width: 634px;height: 342px; background-color: gray; margin-right: auto; margin-left: auto;border-radius: 8px;"><a href='#' class="goto3"><img src="<?= $baseUrl ?>/client/snakkle/images/Onboarding2-01.jpg" alt="Snakkle Say.So - What can I do?" /></a></div>
+			</div>
+			<div class="navbar ssp_panel2 sso_hidden">
+				<h2 id="go-now"><a href='#' class="goto4">I'm ready to get started now!</a></h2>
+				<a href='#' class="goto1"><img src="<?= $baseUrl ?>/client/snakkle/images/1whatissayso_grey.jpg" alt="What is Say.so" /></a><img src="<?= $baseUrl ?>/client/snakkle/images/2whatcanido_grey-blue.jpg" alt="What Can I Do?" /><a href='#' class="goto3"><img src="<?= $baseUrl ?>/client/snakkle/images/3whatdoiget_blue-grey.jpg" alt="What Do I Get?" /></a><a href='#' class="goto4"><img src="<?= $baseUrl ?>/client/snakkle/images/4getstarted_grey.jpg" alt="Get Started" /></a>
+				</div><!-- /navbar -->
+
+			<div id="sso_new_users3" class="ssp_panel3 sso_hidden">
+			<h2>What do I get?</h2>
+				<p>Great Prizes - The Reward Center is full of prizes designed specifically for the celebrity devotee.</p>
+				<div style="width: 637px;height: 341px; background-color: gray; margin-right: auto; margin-left: auto;border-radius: 8px;"><a href='#' class="goto4"><img src="<?= $baseUrl ?>/client/snakkle/images/Onboarding3-01.jpg" alt="Snakkle Say.So - What do I get?" /></a></div>
+
+			</div>
+			<div class="navbar ssp_panel3 sso_hidden">
+				<h2 id="go-now"><a href='#' class="goto4">I'm ready to get started now!</a></h2>
+				<a href='#' class="goto1"><img src="<?= $baseUrl ?>/client/snakkle/images/1whatissayso_grey.jpg" alt="What is Say.so" /></a><a href='#' class="goto2"><img src="<?= $baseUrl ?>/client/snakkle/images/2whatcanido_grey.jpg" alt="What Can I Do?" /></a><img src="<?= $baseUrl ?>/client/snakkle/images/3whatdoiget_grey-blue.jpg" alt="What Do I Get?" /><a href='#' class="goto4"><img src="<?= $baseUrl ?>/client/snakkle/images/4getstarted_blue-grey.jpg" alt="Get Started" /></a>
+			</div><!-- /navbar -->
+
+
 			<?php } elseif( $this->onboarding_type == "share" ) {?>
-			<div id="sso_share_users" class="sso_panel">
-				<h1>Welcome to Snakkle Say.So!</h1>
-				<h4>Where you get rewarded for taking fun celebrity quizzes, answering pop culture polls and giving your say so about the celebrity content offered on Snakkle.com!</h4>
-				<div style="width: 469px;height: 109px; background-color: gray; margin-right: auto; margin-left: auto;border-radius: 8px;"><img src="<?= $baseUrl ?>/client/snakkle/images/offer_snakkle.png" alt="Snakkle Say.So Offers" /></div>
-				<h3>
-					<strong>GRAB</strong> the Snakkle Say.So App.<br />
-					<strong>SHOW OFF</strong> your celebrity knowledge.<br />
-					<strong>GET</strong> sweet rewards.<br />
-				</h3>
-				<h4 style="font-weight: 500">You get <strong style="color: #1f80c2;">IMMEDIATE BONUS</strong> Snakkle Bucks when you install the Snakkle Say.So App and commence Super Snakkling!</h4>
-				<div style="height: 20px;">
-				<p style="font-size: 12px;"><input type="radio" /> I agree to the <a href="<?= $baseUrl ?>/docs/snakkle/Say.So_App_EULA.pdf" target="_blank">terms and conditions</a></p>
-				</div>
+			<div id="sso_new_users" class="ssp_panel1">
+				<h2>Are you a celebrity addict? Do you crave your next dose of Reality TV?<br />Do you follow all the trending celebrity news?</h2>
+				<p>Earn real prizes and entry into awesome giveaways by taking fun celebrity polls and quizzes and giving your Say So about anything and everything celebrity related!</p>
+				<div style="width: 640px;height: 345px; background-color: gray; margin-right: auto; margin-left: auto;border-radius: 8px;"><a href='#' class="goto2"><img src="<?= $baseUrl ?>/client/snakkle/images/Onboarding1-01.jpg" alt="Snakkle Say.So Offers" /></a></div>
 			</div>
+			<div class="navbar ssp_panel1">
+				<h2 id="go-now"><a href='#' class="goto4">I'm ready to get started now!</a></h2>
+				<img src="<?= $baseUrl ?>/client/snakkle/images/1whatissayso_blue.jpg" alt="What is Say.so" /><a href='#' class="goto2"><img src="<?= $baseUrl ?>/client/snakkle/images/2whatcanido_blue-grey.jpg" alt="What Can I Do?" /></a><a href='#' class="goto3"><img src="<?= $baseUrl ?>/client/snakkle/images/3whatdoiget_grey.jpg" alt="What Do I Get?" /></a><a href='#' class="goto4"><img src="<?= $baseUrl ?>/client/snakkle/images/4getstarted_grey.jpg" alt="Get Started" /></a>
+			</div>
+
+			<div id="sso_new_users2" class="ssp_panel2 sso_hidden">
+			<h2>What can I do?</h2>
+				<p>Earn Snakkle Bucks by giving your opinion on pop culture polls, answering surveys and<br />taking fun celebrity quizzes. Redeem Snakkle Bucks for items in our Reward Center.</p>
+				<div style="width: 634px;height: 342px; background-color: gray; margin-right: auto; margin-left: auto;border-radius: 8px;"><a href='#' class="goto3"><img src="<?= $baseUrl ?>/client/snakkle/images/Onboarding2-01.jpg" alt="Snakkle Say.So - What can I do?" /></a></div>
+			</div>
+			<div class="navbar ssp_panel2 sso_hidden">
+				<h2 id="go-now"><a href='#' class="goto4">I'm ready to get started now!</a></h2>
+				<a href='#' class="goto1"><img src="<?= $baseUrl ?>/client/snakkle/images/1whatissayso_grey.jpg" alt="What is Say.so" /></a><img src="<?= $baseUrl ?>/client/snakkle/images/2whatcanido_grey-blue.jpg" alt="What Can I Do?" /><a href='#' class="goto3"><img src="<?= $baseUrl ?>/client/snakkle/images/3whatdoiget_blue-grey.jpg" alt="What Do I Get?" /></a><a href='#' class="goto4"><img src="<?= $baseUrl ?>/client/snakkle/images/4getstarted_grey.jpg" alt="Get Started" /></a>
+				</div><!-- /navbar -->
+
+			<div id="sso_new_users3" class="ssp_panel3 sso_hidden">
+			<h2>What do I get?</h2>
+				<p>Great Prizes - The Reward Center is full of prizes designed specifically for the celebrity devotee.</p>
+				<div style="width: 637px;height: 341px; background-color: gray; margin-right: auto; margin-left: auto;border-radius: 8px;"><a href='#' class="goto4"><img src="<?= $baseUrl ?>/client/snakkle/images/Onboarding3-01.jpg" alt="Snakkle Say.So - What do I get?" /></a></div>
+
+			</div>
+			<div class="navbar ssp_panel3 sso_hidden">
+				<h2 id="go-now"><a href='#' class="goto4">I'm ready to get started now!</a></h2>
+				<a href='#' class="goto1"><img src="<?= $baseUrl ?>/client/snakkle/images/1whatissayso_grey.jpg" alt="What is Say.so" /></a><a href='#' class="goto2"><img src="<?= $baseUrl ?>/client/snakkle/images/2whatcanido_grey.jpg" alt="What Can I Do?" /></a><img src="<?= $baseUrl ?>/client/snakkle/images/3whatdoiget_grey-blue.jpg" alt="What Do I Get?" /><a href='#' class="goto4"><img src="<?= $baseUrl ?>/client/snakkle/images/4getstarted_blue-grey.jpg" alt="Get Started" /></a>
+			</div><!-- /navbar -->
+
 			<?php } ?>
-			<div id="sso_enter_password" class="sso_panel sso_hidden">
+			<div id="sso_enter_password" class="ssp_panel4 sso_hidden">
 			<?php if( !$this->user_has_password ) {?>
 					<h1>Create your Say.So account</h1>
 					<h2 id="sso_protected">So we can make sure your points and rewards are protected</h2>
@@ -65,16 +116,17 @@ Take polls, quizzes, and surveys to show your knowledge and redeem points for pr
 					<span class="sso_textError" style="display: none;"></span>
 					<form action="" name="" method="">
 					<div id="sso_form_flds">
-						<p><label for="sso_fld_client_email">Email Address </label><input id="sso_fld_client_email" name="client_email" type=text class="sso_fld" /><input id="sso_fld_client_email_txt" value="Enter Your Email Address"  /></p>
-						<p><label for="sso_fld_password">Password </label><input id="sso_fld_password" name="password" type=password class="sso_fld"/>
+						<p><input id="sso_fld_client_email" name="client_email" type=text class="sso_fld" /><input id="sso_fld_client_email_txt" value="Enter Your Email Address"  /></p>
+						<p><input id="sso_fld_password" name="password" type=password class="sso_fld"/>
 						<input id="sso_fld_password_txt" value="Enter your desired password (6-12 character limit)"/></p>
-						<p><label for="sso_fld_password_vfy">Confirm Password </label><input id="sso_fld_password_vfy" type=password class="sso_fld"/>
+						<p><input id="sso_fld_password_vfy" type=password class="sso_fld"/>
 						<input id="sso_fld_password_vfy_txt" value="Verify Your Password"/></p>
 					</div>
 					<p><a id="sayso-get-app" href="" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL">GRAB IT</a></p>
 					<input type="hidden" id="sayso-install-token" value="<?= $this->token ?>"/>
 					</form>
-					<p class="sso_noshare_notice"><strong>We don't share your email or passwords with anyone... period.</strong></p>
+					<p class="sso_noshare_notice">We don't share your email or passwords with anyone... period.</p>
+
 			<?php } else {?>
 					<h1>Please enter your Say.So password</h1>
 					<p><strong><?= $this->client_email ?></strong></p>
@@ -85,12 +137,17 @@ Take polls, quizzes, and surveys to show your knowledge and redeem points for pr
 					<p><a id="sayso-get-app" href="" class="sso_theme_button sso_theme_button_disabled sso_theme_buttonXL">GRAB IT</a></p>
 					<input type="hidden" id="sayso-install-token" value="<?= $this->token ?>"/>
 					</form>
-					<p class="sso_noshare_notice"><strong>We don't share your email or passwords with anyone... period.</strong></p>
+					<p class="sso_noshare_notice">We don't share your email or passwords with anyone... period.</p>
+
 			<?php }?>
 			</div>
+			<div class="navbar ssp_panel4 sso_hidden">
+						<a href='#' class="goto1"><img src="<?= $baseUrl ?>/client/snakkle/images/1whatissayso_grey.jpg" alt="What is Say.so" /></a><a href='#' class="goto2"><img src="<?= $baseUrl ?>/client/snakkle/images/2whatcanido_grey.jpg" alt="What Can I Do?" /></a><a href='#' class="goto3"><img src="<?= $baseUrl ?>/client/snakkle/images/3whatdoiget_grey.jpg" alt="What Do I Get?" /></a><img src="<?= $baseUrl ?>/client/snakkle/images/4getstarted_grey-blue.jpg" alt="Get Started" />
+				</div><!-- /navbar -->
 			<div id="sso_allow_install" class="sso_panel sso_hidden">
 				<h2 id="sso_allow_install_text"></h2>
 			</div>
+
 		</div><!-- .sso_content -->
 	</div><!-- #sso_wraper -->
 	<script type="text/javascript" src="<?= $baseUrl ?>/client/global/js/starbar-onboard.js"></script>

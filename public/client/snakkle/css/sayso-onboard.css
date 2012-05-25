@@ -174,6 +174,8 @@ html {
 
 #sayso-onboard input {
 	width:330px;
+	border:2px solid #0099cf;
+	padding:8px;
 }
 #sayso-onboard button {
 	width:225px;
@@ -196,8 +198,8 @@ html {
 }
 
 #sayso-onboard #sso_wrapper{
-	width: 600px;
-	height: 450px;
+	width: 667px;
+	height: 584px;
 
 	background-position: 0px bottom;
 	background-repeat: no-repeat;
@@ -206,7 +208,7 @@ html {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin: -215px 0px 0px -300px;
+	margin: -335px 0px 0px -335px;
 	display: none;
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
@@ -243,7 +245,7 @@ html {
 }
 
 #sayso-onboard #sso_wrapper .sso_content{
-	padding: 50px 20px 0px 20px;
+	padding: 50px 20px 0px 12px;
 	position: relative;
 	text-align: center;
 }
@@ -273,7 +275,7 @@ html {
 }
 
 #sayso-onboard #sso_wrapper h2{
-	font-size: 24px;
+	font-size: 18px;
 	color: #0099CF;
 	font-weight: bold;
 	line-height: normal;
@@ -306,19 +308,19 @@ html {
 }
 
 #sayso-onboard #sso_wrapper p{
-	font-size: 15px;
-	margin: 10px 0px;
+	font-size: 12px;
+	margin: 10px 30px;
 	color: #333537;
+	font-weight:bold;
 }
 
 #sayso-onboard #sso_wrapper a{
-	color: #333537;
-	text-decoration: underline;
+	color: #0099CF;
+	text-decoration: none;
 }
 
-
-#sayso-onboard #sso_wrapper a:hover{
-	text-decoration: none;
+#sayso-onboard #sso_wrapper h2#go-now{
+	margin:5px 0 8px 0;
 }
 
 #sayso-onboard #sso_wrapper input.input_text{
@@ -425,7 +427,7 @@ background-image: -webkit-gradient(
 #sayso-onboard #sso_wrapper p.sso_noshare_notice {
 	margin-top:35px;
 	font-size:small;
-	font-weight:strong;
+	font-weight:bold;
 }
 
 #sayso-onboard #sso_wrapper h2#sso_allow_install_text {
@@ -436,4 +438,20 @@ background-image: -webkit-gradient(
 	margin:0 auto;
 	text-align:right;
 	width:450px;
+}
+
+#sayso-onboard #sso_wrapper .navbar {
+	margin:0 auto;
+	padding:0;
+	position:absolute;
+	width:627px;
+}
+
+#sso_new_users,
+#sso_new_users2,
+#sso_new_users3 {
+	height:440px;
+}
+#sso_enter_password {
+	height:470px;
 }

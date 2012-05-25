@@ -22,6 +22,31 @@
 
 	elemOverlay.css('display','block');
 
+	// Panel Switching
+	$SQ('.goto1').click(function(){
+		$SQ('.ssp_panel1').removeClass('sso_hidden');
+		$SQ('.ssp_panel2').addClass('sso_hidden');
+		$SQ('.ssp_panel3').addClass('sso_hidden');
+		$SQ('.ssp_panel4').addClass('sso_hidden');
+	});
+	$SQ('.goto2').click(function(){
+		$SQ('.ssp_panel2').removeClass('sso_hidden');
+		$SQ('.ssp_panel1').addClass('sso_hidden');
+		$SQ('.ssp_panel3').addClass('sso_hidden');
+		$SQ('.ssp_panel4').addClass('sso_hidden');
+	});
+	$SQ('.goto3').click(function(){
+		$SQ('.ssp_panel3').removeClass('sso_hidden');
+		$SQ('.ssp_panel1').addClass('sso_hidden');
+		$SQ('.ssp_panel2').addClass('sso_hidden');
+		$SQ('.ssp_panel4').addClass('sso_hidden');
+	});
+	$SQ('.goto4').click(function(){
+		$SQ('.ssp_panel4').removeClass('sso_hidden');
+		$SQ('.ssp_panel1').addClass('sso_hidden');
+		$SQ('.ssp_panel3').addClass('sso_hidden');
+		$SQ('.ssp_panel2').addClass('sso_hidden');
+	});
 	// Agree to terms
 
 	$SQ('#sso_wrapper input[type=radio]').bind('change', function () {
@@ -44,7 +69,7 @@
 			if (!emailPattern.test(emailadd))
 				return "Woops - Please enter a valid email address";
 		}
-       
+
 		var pwd1 = $SQ('#sso_fld_password').val();
 		if( pwd1.length < 1 )
 			return "Woops - Please enter your password";
@@ -85,10 +110,15 @@
 				$SQ('#sayso-get-app').addClass('sso_theme_button_disabled');
 		})
 	});
-	
+
 	// Get the App!
 
 	$SQ('#sayso-get-app').click(function(e) {
+		$SQ('.ssp_panel1').addClass('sso_hidden');
+		$SQ('.ssp_panel2').addClass('sso_hidden');
+		$SQ('.ssp_panel3').addClass('sso_hidden');
+		$SQ('.ssp_panel4').addClass('sso_hidden');
+		$SQ('#sso_enter_password').addClass('sso_hidden');
 		var errMsg;
 		if(!(errMsg = validateFields())) {
 			var installToken = $SQ('#sayso-install-token').attr('value');
@@ -97,11 +127,11 @@
 					user_password: $SQ('#sso_fld_password').val(),
 					renderer: 'jsonp'
 				};
-				
+
 			var emailadd = $SQ('#sso_fld_client_email');
 			if( emailadd.length )
 				ajaxData.user_email = emailadd.val();
-				
+
 			var ajaxOpts = {
 				url : '//' + sayso.baseDomain + '/starbar/install/user-password',
 				dataType : 'jsonp',

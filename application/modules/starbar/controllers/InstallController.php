@@ -35,6 +35,7 @@ class Starbar_InstallController extends Api_GlobalController {
 		
 		$install = new User_Install();
 		$install->external_user_id = $externalUser->id;
+		$install->starbar_id = $starbar->id;
 		$install->location = $this->location_token;
 		$install->token = User_Key::getRandomToken();
 		$install->ip_address = $_SERVER['REMOTE_ADDR'];
@@ -113,6 +114,7 @@ class Starbar_InstallController extends Api_GlobalController {
 			} else {
 				$user->setPlainTextPassword($this->user_password);
 				$user->setEmail( $email );
+				$user->originating_starbar_id = $install->starbar_id;
 				$user->save();
 			}
 			$install->user_id = $user->id;

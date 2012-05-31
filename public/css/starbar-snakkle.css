@@ -416,6 +416,12 @@
 	height: 360px;
 }
 
+#sayso-starbar #starbar-player-console #starbar-points .sb_popDisclaimer {
+	color:white;
+	font-size:10px;
+	padding:0 4px 4px;
+}
+
 #sayso-starbar #starbar-player-console #starbar-level .sb_popContent .sb_user-level{
 	text-align: center;
 }

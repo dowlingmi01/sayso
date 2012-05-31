@@ -526,7 +526,12 @@ $SQ(function(){
 
 		if (src && withLoadingElement) {  // insert loading elements into popBox, then load content into inner container
 			// fill in the container with loading div and container divs
-			popBox.html('<div class="sb_popBoxInner"><div class="sb_popContent"></div></div>');
+			if (src.slice(-8)=='/rewards') {
+				// We are on the reward page. Print the disclaimer at the bottom of the box.
+				popBox.html('<div class="sb_popBoxInner"><div class="sb_popContent"></div></div><div class="sb_popDisclaimer">' + sayso.starbar.shortName.toCamelCase() + ' Say.So is a consumer research panel that does not guarantee prizes for participation. Prizes are limited and are redeemed on a first come, first serve basis. Once an item is \'Out of stock\' it is not guaranteed to be replaced or restocked. Say.So does not take responsibility for points not redeemed by the end of the program.</div>');
+			} else {
+				popBox.html('<div class="sb_popBoxInner"><div class="sb_popContent"></div>');
+			}
 			popContent = popBox.find('.sb_popContent');
 			// if the src string is specified, load via ajax (jsonp), then call this function again without the src
 			popContent.html('<div id="sayso-starbar-loading-ajax"><span class="sb_img_loading">Loading</span></div><div id="sayso-starbar-ajax-content"></div>');
@@ -765,6 +770,10 @@ $SQ(function(){
 		return true;
 
 	}
+
+	String.prototype.toCamelCase = function () {
+    	return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+	};
 
 	var frameCommunicationFunctions = {
 		'loadComplete': function (parameters) {

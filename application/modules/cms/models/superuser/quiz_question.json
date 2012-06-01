@@ -6,6 +6,7 @@
 			"viewname": "quiz_question",
 			"tablename": "survey_question",
 			"model": "Survey_Question",
+			"order": "ordinal asc",
 			"permissions": [
 				"allowgrid",
 				"allowadd",
@@ -84,7 +85,7 @@
 			"colname": "title",
 			"type": "text",
 			"label": "Question Title",
-			"width": 100,
+			"width": 600,
 			"displaywhen": [
 				"add",
 				"grid",
@@ -104,7 +105,6 @@
 				"add",
 				"grid",
 				"detail",
-				"subgrid",
 				"edit"
 			]
 		},

@@ -24,6 +24,20 @@
 
 		<?= $this->headLink()->setStylesheet($this->baseUrl().'/css/jquery-ui-1.8.2.custom.css'); ?>
 
+
+
+	<?php
+
+	// Use jQuery to override column widths if needed.
+	if ($this->jquerywidth) { ?>
+			<script type='text/javascript'>($SQ(document).ready(function() {
+				<?php foreach($this->jquerywidth as $key=>$value) { ?>
+							$SQ('<?=$key?>').css(<?=$value?>);
+				<?php } ?>
+			}));
+			</script>
+		<?php }	?>
+
 	</head>
 	<body>
 		<div id="layout">

@@ -66,6 +66,7 @@
 		},
 		{
 			"colname": "starbar_id",
+			"filterwidth":40,
 			"type": "fkey",
 			"lookuptable": "starbar",
 			"lookupfield": "id",
@@ -82,7 +83,8 @@
 			"colname": "title",
 			"type": "text",
 			"label": "Survey Title",
-			"width": 42,
+			"width": 300,
+			"filterwidth":250,
 			"validate": [
 				"notnull",
 				"minlength(10)"
@@ -99,6 +101,7 @@
 			"colname": "external_id",
 			"type": "number",
 			"width":40,
+			"filterwidth":40,
 			"help": "Used for polls/surveys only -- ignored for quizzes",
 			"displaywhen": [
 				"add",
@@ -155,6 +158,7 @@
 			"colname": "start_day",
 			"type": "number",
 			"width": 50,
+			"filterwidth":20,
 			"help": "Day (relative to launch) that this survey is available. Day 1 = launch day",
 			"displaywhen": [
 				"add",

@@ -275,6 +275,7 @@
 					$DeployedGrid = $grid2->deploy();
 					$this->_gridCollection[] = $DeployedGrid;
 
+
 				} else {
 
 					$this->view->message = sprintf("E03: File [%s] is missing",$file);
@@ -753,6 +754,7 @@
 		*/
 		public function viewAction()
 		{
+
 			$longtable = explode("?",$this->getRequest()->getParam('table'));
 			// We need to strip any parameters off the table name - they're added at times by the debugger if we're using it. There are no sideeffects if there are no parameters.
 			$tablename = strtolower($longtable[0]);
@@ -785,6 +787,8 @@
 					$grid->setJqgParams(array('altRows' => true));// rows will alternate color
 					$grid->setSource(new Bvb_Grid_Source_Zend_Select($select));
 
+					$jquerywidth = array(); // Will store details of filter column header widths
+
 					// Adjust the widths of any columns on the grid
 					foreach ($columnlist as $key=>$value) {
 
@@ -801,6 +805,12 @@
 						} else {
 							$width = sprintf("width:%spx",$colwidth);
 							$grid->updateColumn($value,array('style'=>$width));
+						}
+
+						// Set search filter widths
+						$filtercolwidth =  $saysojson->getColAttr($value,'filterwidth');
+						if ($filtercolwidth!=Null) {
+							$jquerywidth['#filter_'.$value.'list'] = sprintf("'width','%spx'",$filtercolwidth);
 						}
 
 						// Cross reference any foreign keys
@@ -885,6 +895,7 @@
 
 					}
 
+					$this->view->jquerywidth = $jquerywidth;
 					$this->view->grid = $grid->deploy();
 
 				} else {
@@ -1082,14 +1093,14 @@
 
 							// Display Width
 							if (array_key_exists('width',$coloptions)) {
-								$formElements[$colname]->setAttrib("size", $coloptions['width']);
+								$formElements[$colname]->setAttrib("size", (int)$coloptions['width']/8);
 							}
 						}
 
 						// All column elements have been built. Add the standard form elements
 						$formElements['submit'] = new Zend_Form_Element_Submit('submit');
-						$formElements['submit'] ->setLabel(sprintf('Save New %s',$tablenamepolite)); // the button's value
-													//->setIgnore(true); // very usefull -> it will be ignored before insertion
+						$formElements['submit'] ->setLabel(sprintf('Savexxx New %s',$tablenamepolite)); // the button's value
+
 						$form = new ZendX_JQuery_Form();
 						$form->setName($realtable);
 						$form->addElements($formElements);
@@ -1127,7 +1138,11 @@
 
 								if (($parenttable!=null) && ($parentid!=null))
 								{
-									$this->rd->gotoSimple('detail','admin','cms',array('table' => $parenttable,'id'=>$parentid));
+									if ($tablename=="quiz_question") {
+										$this->rd->gotoSimple('detail','admin','cms',array('table' => 'quiz','id'=>$parentid));
+									} else {
+										$this->rd->gotoSimple('detail','admin','cms',array('table' => $parenttable,'id'=>$parentid));
+									}
 								} else {
 									$form->reset();
 								}

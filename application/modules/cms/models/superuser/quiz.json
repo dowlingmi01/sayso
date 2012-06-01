@@ -65,6 +65,7 @@
 		},
 		{
 			"colname": "starbar_id",
+			"filterwidth":40,
 			"type": "fkey",
 			"lookuptable": "starbar",
 			"lookupfield": "id",
@@ -83,6 +84,7 @@
 			"label": "Quiz Title",
 			"help":"The title of this quiz",
 			"width": 42,
+			"filterwidth":250,
 			"validate": [
 				"notnull",
 				"minlength(10)"

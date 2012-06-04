@@ -10,7 +10,7 @@
  * @author davidbjames
  *
  */
-class Game_Starbar_Snakkle extends Game_Starbar {
+class Game_Starbar_Machinima extends Game_Starbar {
 
 	/**
 	 *
@@ -43,7 +43,7 @@ class Game_Starbar_Snakkle extends Game_Starbar {
 		} elseif ((int) $currencyProfileSurvey->current_balance < 1) {
 			$profileSurvey = new Survey();
 			$profileSurvey->loadDataByUniqueFields(array("starbar_id" => 2, "reward_category" => "profile"));
-			if ($profileSurvey->id) $profileSurveyLink = '<a href="//'.BASE_DOMAIN.'/starbar/snakkle/embed-survey?survey_id='.$profileSurvey->id.'" class="sb_nav_element" rel="sb_popBox_surveys_hg" title="Take profile survey now!" style="position: relative; top: -5px;">Profile Survey</a>';
+			if ($profileSurvey->id) $profileSurveyLink = '<a href="//'.BASE_DOMAIN.'/starbar/machinima/embed-survey?survey_id='.$profileSurvey->id.'" class="sb_nav_element" rel="sb_popBox_surveys_hg" title="Take profile survey now!" style="position: relative; top: -5px;">Profile Survey</a>';
 			else $profileSurveyLink = "Profile Survey";
 			$good->setNonRedeemReason('Must complete<br />'.$profileSurveyLink);
 			$good->setCommentForUser('Survey Requirement');

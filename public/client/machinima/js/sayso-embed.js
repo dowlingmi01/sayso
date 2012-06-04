@@ -3,9 +3,9 @@
 
 	if (!window.sayso.client) {
 		window.sayso.client = {
-			name : 'snakkle',
+			name : 'machinima',
 			userLoggedIn : false,
-			appName : 'Snakkle Say.So App',
+			appName : 'Machinima Recon',
 			anonymousUsers : true,
 			loginCallback : null
 		};

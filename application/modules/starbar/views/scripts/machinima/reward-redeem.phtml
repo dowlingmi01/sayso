@@ -106,7 +106,7 @@ if ($goodIsToken) {
 	</div><!-- #sb_reward_step2 -->
 
 	<div id="sb_reward_step3" class="sb_reward_step" style="display: none;">
-		 <img src="//<?= BASE_DOMAIN ?>/images/snakkle/img_ajax-loader.gif" alt="Loading..." id="sb_img-loading" style="margin: 50px auto; display:block; text-align: center;" />
+		 <img src="//<?= BASE_DOMAIN ?>/images/machinima/img_ajax-loader.gif" alt="Loading..." id="sb_img-loading" style="margin: 50px auto; display:block; text-align: center;" />
 		<!-- ajax loaded after order is complete -->
 	</div><!-- #sb_reward_step3 -->
 
@@ -199,7 +199,7 @@ if ($goodIsToken) {
 							$SQ('.sb_rewardOrder',currentBox).html(loadingImg);
 
 							$SQ.ajaxWithAuth({
-								url : '//' + sayso.baseDomain + '/starbar/snakkle/reward-redeemed',
+								url : '//' + sayso.baseDomain + '/starbar/machinima/reward-redeemed',
 								data : params,
 								beforeSend: function(){
 

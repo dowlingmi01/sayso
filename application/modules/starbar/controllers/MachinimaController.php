@@ -2,12 +2,12 @@
 
 require_once APPLICATION_PATH . '/modules/starbar/controllers/ContentController.php';
 
-class Starbar_SnakkleController extends Starbar_ContentController
+class Starbar_MachinimaController extends Starbar_ContentController
 {
 	public function postDispatch() {
 		parent::postDispatch();
 		if (!$this->_usingJsonPRenderer) {
-			$this->view->headLink()->appendStylesheet('/css/starbar-snakkle.css');
+			$this->view->headLink()->appendStylesheet('/css/starbar-machinima.css');
 		}
 	}
 

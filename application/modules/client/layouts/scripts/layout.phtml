@@ -7,7 +7,7 @@
 		<title>Starbar</title>
 		<meta name="description" content="">
 	</head>
-	<body style="margin: 0; padding: 0; background: url('<?= $this->screenshot ?>') top center no-repeat;">
+	<body style="margin: 0; padding: 0; background: <?= $this->color ? $this->color : '' ?> url('<?= $this->screenshot ?>') top center no-repeat;">
 		<?php echo $this->layout()->content; ?>
 		<?= $this->headScript() . PHP_EOL ?>
 	</body>

@@ -32,10 +32,10 @@
 	<div id="starbar-wrapper">
 		<div id="starbar-visControls">
 			<div id="starbar-toggleVis" class="<?= $buttonVisibility ?>"></div><!-- #starbar-toggleVis -->
-			<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/about-sayso" class="sb_nav_element sb_starbar-logo" id="sb_starbar-logo" rel="sb_popBox_about-saySo">say.so</a>
+			<a href="//<?= BASE_DOMAIN ?>/starbar/machinima/about-sayso" class="sb_nav_element sb_starbar-logo" id="sb_starbar-logo" rel="sb_popBox_about-saySo">say.so</a>
 			<div id="sb_popBox_about-saySo" class="sb_popBox">
 			</div><!-- .sb_popBox -->
-			<div id="sb_popBox_onboard" class="sb_popBox" href="//<?= BASE_DOMAIN ?>/starbar/snakkle/onboard">
+			<div id="sb_popBox_onboard" class="sb_popBox" href="//<?= BASE_DOMAIN ?>/starbar/machinima/onboard">
 			</div><!-- #sb_popBox_onboard -->
 		</div><!-- #starbar-visControls -->
 		<div id="starbar-main">
@@ -43,22 +43,22 @@
 				<div class="sb_inner">
 					<div class="sb_changeTheme"><span>Check out other starbars</span></div><!-- .changeTheme -->
 					<div class="sb_logo">
-						<img src="//<?= BASE_DOMAIN ?>/images/snakkle/logo_snakkle.png" alt="Snakkle logo" />
+						<img src="//<?= BASE_DOMAIN ?>/images/machinima/logo_snakkle.png" alt="Snakkle logo" />
 					</div><!-- .logo -->
 					<div class="sb_userImg">
-						<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/user-profile" class="sb_nav_element" rel="sb_popBox_user-profile">
+						<a href="//<?= BASE_DOMAIN ?>/starbar/machinima/user-profile" class="sb_nav_element" rel="sb_popBox_user-profile">
 							<? if ($this->facebook_social->identifier) { ?>
 								<img class="sb_userImg" src="//graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $user->getTitle() ?>" />
 							<? } else { ?>
-								<img class="sb_userImg" src="//<?= BASE_DOMAIN ?>/images/snakkle/img_user.jpg" alt="<?= $user->getTitle() ?>" />
+								<img class="sb_userImg" src="//<?= BASE_DOMAIN ?>/images/machinima/img_user.jpg" alt="<?= $user->getTitle() ?>" />
 							<? } ?>
 						</a>
 					</div><!-- .userImg -->
 					<div class="sb_content">
-						<h2>Hi <a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/user-profile" class="sb_nav_element sb_user_title <?= ($this->user->username ? "" : "sb_user_level_title") ?>" rel="sb_popBox_user-profile"><?= $user->getTitle() ?></a></h2>
-						<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/user-profile" class="sb_nav_element" rel="sb_popBox_user-profile">Edit Profile</a> |
-						<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">About</a> |
-						<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">Help</a>
+						<h2>Hi <a href="//<?= BASE_DOMAIN ?>/starbar/machinima/user-profile" class="sb_nav_element sb_user_title <?= ($this->user->username ? "" : "sb_user_level_title") ?>" rel="sb_popBox_user-profile"><?= $user->getTitle() ?></a></h2>
+						<a href="//<?= BASE_DOMAIN ?>/starbar/machinima/user-profile" class="sb_nav_element" rel="sb_popBox_user-profile">Edit Profile</a> |
+						<a href="//<?= BASE_DOMAIN ?>/starbar/machinima/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">About</a> |
+						<a href="//<?= BASE_DOMAIN ?>/starbar/machinima/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">Help</a>
 						</div><!-- .sb_content -->
 						<div id="sb_popBox_user-profile" class="sb_popBox sb_triangle-border">
 						</div><!-- .sb_popBox -->
@@ -72,11 +72,11 @@
 			</div>
 			<div id="starbar-nav">
 				<ul>
-					<li id="nav_polls" class="sb_theme_bgGradient sb_theme_bgGradientGrey"><span href="//<?= BASE_DOMAIN ?>/starbar/snakkle/polls" class="sb_nav_element"><span class="sb_nav_border">Polls</span><!--<span class="sb_nav_notify">5</span>--></span>
+					<li id="nav_polls" class="sb_theme_bgGradient sb_theme_bgGradientGrey"><span href="//<?= BASE_DOMAIN ?>/starbar/machinima/polls" class="sb_nav_element"><span class="sb_nav_border">Polls</span><!--<span class="sb_nav_notify">5</span>--></span>
 						<div id="sb_popBox_polls" class="sb_popBox sb_triangle-border">
 						</div><!-- .sb_popBox -->
 					</li>
-					<li id="nav_surveys" class="sb_theme_bgGradient sb_theme_bgGradientGrey"><span href="//<?= BASE_DOMAIN ?>/starbar/snakkle/surveys" class="sb_nav_element"><span class="sb_nav_border">Surveys</span></span>
+					<li id="nav_surveys" class="sb_theme_bgGradient sb_theme_bgGradientGrey"><span href="//<?= BASE_DOMAIN ?>/starbar/machinima/surveys" class="sb_nav_element"><span class="sb_nav_border">Surveys</span></span>
 						<div id="sb_popBox_surveys" class="sb_popBox sb_triangle-border">
 						</div><!-- .sb_popBox survey list -->
 
@@ -85,15 +85,15 @@
 						<div id="sb_popBox_surveys_hg" class="sb_popBox sb_popBoxHg sb_triangle-border">
 						</div><!-- .sb_popBox premium surveys (huge!) -->
 					</li>
-					<li id="nav_quizzes" class="sb_theme_bgGradient sb_theme_bgGradientGrey"><span href="//<?= BASE_DOMAIN ?>/starbar/snakkle/quiz" class="sb_nav_element"><span class="sb_nav_border">Quizzes</span></span>
+					<li id="nav_quizzes" class="sb_theme_bgGradient sb_theme_bgGradientGrey"><span href="//<?= BASE_DOMAIN ?>/starbar/machinima/quiz" class="sb_nav_element"><span class="sb_nav_border">Quizzes</span></span>
 						<div id="sb_popBox_quizzes" class="sb_popBox sb_triangle-border">
 						</div><!-- .sb_popBox -->
 					</li>
 				</ul>
 			</div><!-- #starbar-nav -->
 			<div id="starbar-promo">
-				<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/promos" class="sb_nav_element sb_top_level_element">
-					<img src="//<?= BASE_DOMAIN ?>/images/snakkle/img_promo.png" alt="Promo" />
+				<a href="//<?= BASE_DOMAIN ?>/starbar/machinima/promos" class="sb_nav_element sb_top_level_element">
+					<img src="//<?= BASE_DOMAIN ?>/images/machinima/img_promo.png" alt="Promo" />
 				</a>
 				<div id="sb_popBox_promo" class="sb_popBox sb_triangle-border">
 				</div><!-- .sb_popBox -->
@@ -101,7 +101,7 @@
 			<div class="sb_alerts_container" id="starbar-alert-container-alerts">
 			</div>
 			<div id="starbar-level">
-				<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/user-level" class="sb_nav_element" rel="sb_popBox_user-level">
+				<a href="//<?= BASE_DOMAIN ?>/starbar/machinima/user-level" class="sb_nav_element" rel="sb_popBox_user-level">
 					<div class="sb_content">
 						<div class="sb_user-level">L<span class="sb_user_level_number"></span>: <span class="sb_theme_textHighlight sb_user_level_title"></span></div>
 						<div class="sb_user-level-box">
@@ -113,7 +113,7 @@
 				<div id="sb_popBox_user-level" class="sb_popBox sb_triangle-border"></div><!-- .sb_popBox -->
 			</div><!-- #starbar-level -->
 			<div id="starbar-points">
-				<a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/rewards" class="sb_nav_element" rel="sb_popBox_rewards">
+				<a href="//<?= BASE_DOMAIN ?>/starbar/machinima/rewards" class="sb_nav_element" rel="sb_popBox_rewards">
 					<div class="sb_content">
 						<div class="sb_user-points-box">
 							<span class="sb_imgSnakkles"></span>

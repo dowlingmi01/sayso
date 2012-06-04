@@ -9,7 +9,7 @@
  */
 require_once APPLICATION_PATH . '/modules/client/controllers/GlobalController.php';
 
-class Client_SnakkleController extends Client_GlobalController
+class Client_MachinimaController extends Client_GlobalController
 {
 	
 	protected $_uuidCookieName = 'MyEmail';
@@ -22,7 +22,8 @@ class Client_SnakkleController extends Client_GlobalController
 	 */
 	public function homeAction () {
 		$this->view->assign(array(
-			'screenshot' => '/client/snakkle/images/SnakkleScreenShot.png'
+			'screenshot' => '/client/machinima/images/MachinimaScreenShot.png'
+			, 'color' => 'black'
 		));
 		return parent::homeAction();
 	}

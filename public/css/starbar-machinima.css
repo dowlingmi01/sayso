@@ -1,10 +1,10 @@
 #sayso-starbar #starbar-player-console{
-	background-image: url('../images/snakkle/bg_bar.png');
+	background-image: url('../images/machinima/bg_bar.png');
 }
 
 /* override */
 #sayso-starbar #starbar-player-console #starbar-type{
-	background-image: url("../images/snakkle/bg_starbar-type.png");
+	background-image: url("../images/machinima/bg_starbar-type.png");
   height: 74px;
   left: 100px;
   position: absolute;
@@ -14,7 +14,7 @@
 }
 
 #sayso-starbar #starbar-player-console.sb_starbar-visBG{
-	background-image: url('../images/snakkle/bg_bar.png');
+	background-image: url('../images/machinima/bg_bar.png');
 	background-repeat: repeat-x ;
 	background-position: 0px bottom;
 }
@@ -108,13 +108,13 @@
 }
 
 #sayso-starbar #starbar-player-console #starbar-nav ul li#nav_surveys span.sb_nav_element {
-	background-image: url('../images/snakkle/nav_surveys.png');
+	background-image: url('../images/machinima/nav_surveys.png');
 }
 #sayso-starbar #starbar-player-console #starbar-nav ul li#nav_quizzes span.sb_nav_element {
-	background-image: url('../images/snakkle/nav_quizzes.png');
+	background-image: url('../images/machinima/nav_quizzes.png');
 }
 #sayso-starbar #starbar-player-console #starbar-nav ul li#nav_polls span.sb_nav_element{
-	background-image: url('../images/snakkle/nav_polls.png');
+	background-image: url('../images/machinima/nav_polls.png');
 }
 /* special color classes */
 #sayso-starbar #starbar-player-console .sb_theme_navOnGradient{
@@ -252,7 +252,7 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_iconChange{
-	background-image: url('../images/snakkle/img_change.png');
+	background-image: url('../images/machinima/img_change.png');
 	background-repeat: no-repeat;
 	background-position: right 0px;
 	font-weight: bold;
@@ -309,7 +309,7 @@
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week1{
 	display: block;
-	background-image: url('../images/snakkle/img_promo_week1_bg.jpg');
+	background-image: url('../images/machinima/img_promo_week1_bg.jpg');
 	background-position: left bottom;
 }
 
@@ -342,7 +342,7 @@
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_link a{
-	background-image: url('../images/snakkle/img_arrow_right_solid.png');
+	background-image: url('../images/machinima/img_arrow_right_solid.png');
 	background-repeat: no-repeat;
 	background-position: right 50%;
 	height: 20px;
@@ -491,7 +491,7 @@
 /* other special formatting styles */
 
 #sayso-starbar #starbar-player-console .sb_notesEarned{
-	background-image: url('../images/snakkle/img_snakkles_sm.png');
+	background-image: url('../images/machinima/img_snakkles_sm.png');
 	background-repeat: no-repeat;
 	background-position: 2px 3px;
 	padding: 3px 5px 3px 24px;
@@ -502,7 +502,7 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_xpEarned{
-	background-image: url('../images/snakkle/img_star_sm.png');
+	background-image: url('../images/machinima/img_star_sm.png');
 	background-repeat: no-repeat;
 	background-position: 2px 3px;
 	padding: 3px 7px 3px 24px;
@@ -515,7 +515,7 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_xpRequired{
-	background-image: url('../images/snakkle/img_star_sm.png');
+	background-image: url('../images/machinima/img_star_sm.png');
 	background-repeat: no-repeat;
 	background-position: 0px 3px;
 	height: 20px;
@@ -528,7 +528,7 @@
 
 
 #sayso-starbar #starbar-player-console .sb_imgSnakkles{
-	background-image: url('../images/snakkle/img_snakkles.png');
+	background-image: url('../images/machinima/img_snakkles.png');
 	width: 30px;
 	height: 30px;
 	display: inline-block;
@@ -546,11 +546,11 @@
 
 /* loading animated gif */
 #sayso-starbar .sb_img_loading, .sayso-starbar-loading-external .sb_img_loading{
-	background-image: url('../images/snakkle/img_ajax-loader.gif') !important;
+	background-image: url('../images/machinima/img_ajax-loader.gif') !important;
 }
 
 #sayso-starbar #starbar-player-console h3.sb_theme_iconComplete{
-	background-image: url("../images/snakkle/img_complete.png");
+	background-image: url("../images/machinima/img_complete.png");
   background-position: 5px 0;
   background-repeat: no-repeat;
 	display: inline-block;
@@ -616,7 +616,7 @@
 	width: 32px;
 	height: 28px;
 	display: inline-block;
-	background-image:  url('../images/snakkle/img_arrow_right_solid_lg.png');
+	background-image:  url('../images/machinima/img_arrow_right_solid_lg.png');
 	background-repeat: no-repeat;
 	position: absolute;
 	right: 10px;
@@ -697,7 +697,7 @@
 	color: #333;
 	font-weight: bold;
 	font-size: 11px;
-	background-image: url('../images/snakkle/img_arrow_right.png');
+	background-image: url('../images/machinima/img_arrow_right.png');
 	background-repeat: no-repeat;
 	background-position: right 0px;
 	padding: 0px 22px 0px 0px;
@@ -733,7 +733,7 @@
 	z-index: 1000;
 	top: -5px;
 	left: 0;
-	background-image: url('../images/snakkle/img_star.png');
+	background-image: url('../images/machinima/img_star.png');
 	background-repeat: no-repeat;
 	width: 27px;
 	height: 27px;
@@ -744,7 +744,7 @@
 	z-index: 1000;
 	top: -5px;
 	left: 0px;
-	background-image: url('../images/snakkle/img_note_sm.png');
+	background-image: url('../images/machinima/img_note_sm.png');
 	background-repeat: no-repeat;
 	width: 14px;
 	height: 20px;
@@ -756,7 +756,7 @@
 	height: 20px;
 	display: inline-block;
 	text-indent: -9999px;
-	background-image: url('../images/snakkle/img_share_twitter.png');
+	background-image: url('../images/machinima/img_share_twitter.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px !important;
 }
@@ -767,7 +767,7 @@
 	height: 20px;
 	display: inline-block;
 	text-indent: -9999px;
-	background-image: url('../images/snakkle/img_share_facebook.png');
+	background-image: url('../images/machinima/img_share_facebook.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px !important;
 }
@@ -783,7 +783,7 @@
 #sayso-starbar #starbar-player-console span.sb_mini-snakkle-reward,
 #sayso-starbar-embed span.sb_mini-snakkle-reward,
 #sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li span.sb_mini-snakkle-reward{
-	background-image: url('../images/snakkle/img_snakkle_tn.png');
+	background-image: url('../images/machinima/img_snakkle_tn.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
 	font-size: 13px;
@@ -888,12 +888,12 @@
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav#sb_userLevel_prev{
-	background-image: url('../images/snakkle/img_carousel_left.png');
+	background-image: url('../images/machinima/img_carousel_left.png');
 	left: 0;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav#sb_userLevel_next{
-	background-image: url('../images/snakkle/img_carousel_right.png');
+	background-image: url('../images/machinima/img_carousel_right.png');
 	right: 0;
 }
 
@@ -948,11 +948,11 @@
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_empty{
-	background-image: url('../images/snakkle/img_level_empty.png');
+	background-image: url('../images/machinima/img_level_empty.png');
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next .sb_userLevelImg{
-	background-image: url('../images/snakkle/img_level_blank.png');
+	background-image: url('../images/machinima/img_level_blank.png');
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_user-level-box{
@@ -1037,7 +1037,7 @@
 	width: 55px;
 	height: 55px;
 	float: left;
-	background-image: url('../images/snakkle/img_level_blank.png');
+	background-image: url('../images/machinima/img_level_blank.png');
 	background-position: center center;
 	background-repeat: no-repeat;
 }
@@ -1095,44 +1095,44 @@
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_chops,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_chops{
-	background-image: url('../images/snakkle/img_star_lg.png');
+	background-image: url('../images/machinima/img_star_lg.png');
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_snakkles,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_snakkles{
-	background-image: url('../images/snakkle/img_snakkles_lg.png');
+	background-image: url('../images/machinima/img_snakkles_lg.png');
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_polls,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_polls{
-	background-image: url('../images/snakkle/img_poll_lg.png');
+	background-image: url('../images/machinima/img_poll_lg.png');
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_surveys,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_surveys{
-	background-image: url('../images/snakkle/img_survey_lg.png');
+	background-image: url('../images/machinima/img_survey_lg.png');
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_quizzes,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_quizzes{
-	background-image: url('../images/snakkle/img_quizzes_lg.png');
+	background-image: url('../images/machinima/img_quizzes_lg.png');
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_gear,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_gear{
-	background-image: url('../images/snakkle/img_gear_lg.png');
+	background-image: url('../images/machinima/img_gear_lg.png');
 	padding-left: 60px;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_prizes,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_prizes{
-	background-image: url('../images/snakkle/img_prizes_lg.png');
+	background-image: url('../images/machinima/img_prizes_lg.png');
 	padding-left: 60px;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_giveaways,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_giveaways{
-	background-image: url('../images/snakkle/img_giveaways_lg.png');
+	background-image: url('../images/machinima/img_giveaways_lg.png');
 	padding-left: 60px;
 }
 
@@ -1144,7 +1144,7 @@
 	left: -10px;
 	right: auto;
 	bottom: 0px;
-	background-image: url('../images/snakkle/img_onboard_nav.png');
+	background-image: url('../images/machinima/img_onboard_nav.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
 	padding: 0;
@@ -1275,18 +1275,18 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_ui-icon-triangle-1-s {
-	background-image: url('../images/snakkle/img_arrow_down.png');
+	background-image: url('../images/machinima/img_arrow_down.png');
 	width: 18px;
 	height: 18px;
 }
 #sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_ui-icon-triangle-1-e {
-	background-image: url('../images/snakkle/img_arrow_right.png');
+	background-image: url('../images/machinima/img_arrow_right.png');
 	width: 18px;
 	height: 18px;
 }
 
 #sayso-starbar #starbar-player-console .sb_img_nextTriangle{
-	background-image: url("../images/snakkle/img_arrow_right_solid.png");
+	background-image: url("../images/machinima/img_arrow_right_solid.png");
   float: right;
   height: 20px;
   margin-left: 4px;

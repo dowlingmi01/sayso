@@ -61,6 +61,9 @@ class Starbar_InstallController extends Api_GlobalController {
 	public function movieAction() {
 		return $this->emailBasedInstall();
 	}
+	public function machinimaAction() {
+		return $this->emailBasedInstall();
+	}
 	public function emailBasedInstall() {
 		$install = new User_Install();
 		$starbar = new Starbar();

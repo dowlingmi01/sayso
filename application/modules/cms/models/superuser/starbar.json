@@ -1,7 +1,7 @@
 {
 	"table": [
 		{
-			"tablename": "starbar",
+			"tablename": "Starbar",
 			"permissions":[
 				"allowgrid",
 				"allowadd",
@@ -15,10 +15,11 @@
 		{
 			"colname": "id",
 			"type": "hidden",
-			
+
 			"displaywhen": [
 				"grid",
 				"detail",
+				"delete",
 				"edit"
 			]
 		},
@@ -26,7 +27,8 @@
 			"colname": "short_name",
 			"type": "text",
 			"label": "Short Name",
-			"width": 42,
+			"width": 62,
+			"filterwidth":62,
 			"validate": [
 				"notnull",
 				"minlength(5)"
@@ -35,6 +37,7 @@
 				"add",
 				"grid",
 				"detail",
+				"delete",
 				"edit"
 			]
 		},
@@ -50,6 +53,7 @@
 				"add",
 				"grid",
 				"detail",
+				"delete",
 				"edit"
 			]
 		},
@@ -64,16 +68,17 @@
 			],
 			"displaywhen": [
 				"add",
-				"grid",
 				"detail",
+				"delete",
 				"edit"
 			]
 		},
 		{
 			"colname": "user_pseudonym",
 			"type": "text",
-			"label": "User Pseudonym",
+			"label": "Pseudonym",
 			"width": 42,
+			"filterwidth":42,
 			"validate": [
 				"notnull",
 				"minlength(5)"
@@ -81,6 +86,24 @@
 			"displaywhen": [
 				"add",
 				"grid",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "economy_id",
+			"label": "Economy",
+			"filterwidth":120,
+			"type": "fkey",
+			"lookuptable": "economy",
+			"lookupfield": "id",
+			"lookuplabel": "concat(redeemable_currency, ' / ', experience_currency)",
+			"default": "--Please Select an economy--",
+			"displaywhen": [
+				"add",
+				"grid",
+				"delete",
 				"detail",
 				"edit"
 			]
@@ -90,6 +113,7 @@
 			"type": "text",
 			"label": "Domain",
 			"width": 42,
+			"filterwidth":42,
 			"validate": [
 				"notnull",
 				"minlength(5)"
@@ -112,7 +136,6 @@
 			],
 			"displaywhen": [
 				"add",
-				"grid",
 				"detail",
 				"edit"
 			]

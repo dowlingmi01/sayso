@@ -754,7 +754,6 @@
 		*/
 		public function viewAction()
 		{
-
 			$longtable = explode("?",$this->getRequest()->getParam('table'));
 			// We need to strip any parameters off the table name - they're added at times by the debugger if we're using it. There are no sideeffects if there are no parameters.
 			$tablename = strtolower($longtable[0]);
@@ -811,6 +810,11 @@
 						$filtercolwidth =  $saysojson->getColAttr($value,'filterwidth');
 						if ($filtercolwidth!=Null) {
 							$jquerywidth['#filter_'.$value.'list'] = sprintf("'width','%spx'",$filtercolwidth);
+						}
+
+						// Set column title
+						if ($saysojson->getColAttr($value,'label')!=null) {
+							$grid->updateColumn($value,array('title'=>$saysojson->getColAttr($value,'label')));
 						}
 
 						// Cross reference any foreign keys
@@ -1099,7 +1103,7 @@
 
 						// All column elements have been built. Add the standard form elements
 						$formElements['submit'] = new Zend_Form_Element_Submit('submit');
-						$formElements['submit'] ->setLabel(sprintf('Savexxx New %s',$tablenamepolite)); // the button's value
+						$formElements['submit'] ->setLabel(sprintf('Save New %s',$tablenamepolite)); // the button's value
 
 						$form = new ZendX_JQuery_Form();
 						$form->setName($realtable);

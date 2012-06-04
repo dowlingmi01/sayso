@@ -1,0 +1,34 @@
+<? if (!$this->survey_already_completed) { ?>
+	<div class="sb_outerOverlay"></div>
+<? } ?>
+<div class="sb_header">
+	<h2 class="sb_title"><img src="//<?= BASE_DOMAIN ?>/images/snakkle/logo_snakkle_lg.png" alt="Snakkle logo" /> Surveys</h2>
+</div><!-- .sb_header -->
+<p class="sb_alignRight"><a href="//<?= BASE_DOMAIN ?>/starbar/snakkle/surveys" class="sb_theme_iconChange sb_nav_element" rel="sb_popBox_surveys">Switch Survey</a></p>
+<? if ($this->survey->reward_category == "premium" || $this->survey->reward_category == "profile") { ?>
+	<div class="sb_theme_textHighlight_alt sb_survey_title"><?= $this->survey->title ?></div>
+<? } else { ?>
+	<div class="sb_theme_textHighlight sb_survey_title"><?= $this->survey->title ?></div>
+<? } ?>
+
+<? if ($this->survey_already_completed) { ?>
+	<br />
+	You have already completed this survey.
+<? } else { ?>
+	<div id="starbar-survey-<?= $this->survey->id ?>" class="sb_survey_container"></div>
+	<script type="text/javascript">
+		var protocol = ('https:' == document.location.protocol ? 'https:' : 'http:');
+
+		var link = protocol
+			+ "//<?= BASE_DOMAIN ?>/starbar/snakkle/survey-redirect?survey_id=<?= $this->survey->id ?>&next_survey_id=<?= $this->next_survey_id ?>&user_id="
+			+ sayso.starbar.user.id
+			+ "&user_key=" + sayso.starbar.user.key
+			+ "&starbar_id=" + sayso.starbar.id;
+		var iframeContainerId = "starbar-survey-<?= $this->survey->id ?>";
+		<? if ($this->survey->size == "large") { ?>
+			$SQ.insertCommunicationIframe(link, iframeContainerId, 640, 410, 'auto'); // Add new iframe!
+		<? } else { ?>
+			$SQ.insertCommunicationIframe(link, iframeContainerId, 500, 295, 'auto'); // Add new iframe!
+		<? } ?>
+	</script>
+<? } ?>

@@ -1,0 +1,256 @@
+<?php
+
+$game = $this->game;
+/* @var $game Game_Starbar */
+$good = $this->good;
+/* @var $good Gaming_BigDoor_Good */
+$user = $this->user;
+/* @var $user User */
+$userAddress = $this->user_address;
+/* @var $userAddress User_Address */
+
+
+$gamer = $game->getGamer();
+
+$currentBalance = (int) $gamer->getCurrencyByType('redeemable')->current_balance;
+$itemCost = (int) $good->cost;
+
+$percentUserBalanceToCost = round(($currentBalance / $itemCost) * 100);
+if ($percentUserBalanceToCost > 100) $percentUserBalanceToCost = 100;
+
+$balanceAfter = $currentBalance - $itemCost;
+$percentUserBalanceRemaining = round(($balanceAfter / $currentBalance) * 100);
+
+$goodIsToken = $good->hasAttribute('giveaway_token');
+
+if ($goodIsToken) {
+	$maximumQuantity = floor($currentBalance/$itemCost);
+	if ($maximumQuantity > 5) $maximumQuantity = 5;
+}
+
+?>
+
+<div id="sb_rewardItem" class="sb_rewardItem" data-id="<?= $good->getId() ?>">
+
+	<div id="sb_reward_step1" class="sb_reward_step" style="background-color: #383838">
+		<!-- BEGIN LANDING -->
+		<div class="sb_rewardHeader"><span><?= $good->title ?></span></div>
+		<div class="sb_rewardImg">
+			<img src="<?= $good->url_full ?>" alt="<?= $good->title ?>" />
+		</div><!-- .sb_rewardImg -->
+		<div class="sb_rewardBase">
+			<div class="sb_user-points-box">
+				<span class="sb_imgSnakkles"></span>
+				<div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentUserBalanceToCost ?>%"></span><span class="sb_progressBarValue"><span><?= $itemCost ?></span></span></div>
+			</div><!-- .user-points-box -->
+			<?php if ($goodIsToken) : ?>
+				<p class="sb_rewardDescription">Redeem your Snakkle Bucks for Entry Tokens to win<br /><strong><?= $good->description ?></strong></p>
+			<?php else : ?>
+				<p class="sb_rewardDescription">Redeem your Snakkle Bucks for<br /><strong><?= $good->description ?></strong></p>
+			<?php endif ?>
+			<span class="sb_theme_button_alt">Redeem</span>
+		</div><!-- .sb_rewardBase -->
+		<!-- END LANDING -->
+	</div><!-- #sb_reward_step1 -->
+
+	<div id="sb_reward_step2" class="sb_reward_step" style="display: none;">
+		<!-- BEGIN SHIPPING ADDRESS CONFIRM -->
+		<div class="sb_rewardHeader"><span><?= $good->title ?></span></div><!-- .sb_rewardHeader -->
+		<div class="sb_rewardImg">
+			<img src="<?= $good->url_full ?>" alt="<?= $good->title ?>" />
+		</div><!-- .sb_rewardImg -->
+		<div class="sb_rewardOrder">
+			<div class="sb_column_5050BG">
+				<div class="sb_column50">
+					Current Balance&nbsp;<br clear="all" />
+					<div class="sb_user-points-box">
+						<span class="sb_imgSnakkles"></span>
+						<div class="sb_progress_bar sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all"><span class="sb_currency_percent sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left" style="width: 100%"></span><span class="sb_progressBarValue"><span><?= $currentBalance ?></span></span></div>
+					</div><!-- .user-points-box -->
+				</div><!-- .sb_column50 -->
+				<div class="sb_column50">
+					Ending Balance&nbsp;<br clear="all" />
+					<div class="sb_user-points-box">
+						<span class="sb_imgSnakkles"></span>
+						<div class="sb_progress_bar sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all"><span class="sb_currency_percent sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left" style="width: <?= $percentUserBalanceRemaining ?>%"></span><span class="sb_progressBarValue"><span><?= $balanceAfter ?></span></span></div>
+					</div><!-- .user-points-box -->
+				</div><!-- .sb_column50 -->
+			</div><!-- .column_5050BG -->
+			<div class="sb_step2Actions">
+				<?php if ($goodIsToken) : ?>
+					<p>
+						<strong>Quantity:</strong>
+						<select name="sb_itemQuantity">
+							<?php for ($i = 1; $i <= $maximumQuantity; $i++) : ?>
+								<option><?= $i ?></option>
+							<?php endfor ?>
+						</select>
+					</p>
+					<p>Tokens will appear in your account and you will be automatically entered into the Week One giveaway</p>
+				<?php else : ?>
+					<p><strong>Shipping Address</strong></p>
+					<p id="sb_personalInfo">
+						<input name="sb_first_name" type="text" placeholder="First Name" value="<?= $user->first_name ?>" /><input name="sb_last_name" type="text" placeholder="Last Name" value="<?= $user->last_name ?>" /><br />
+						<input name="sb_address_1" class="sb_wide_input" type="text" placeholder="Address" value="<?= $userAddress->street1 ?>" /><br />
+						<input name="sb_address_2" class="sb_wide_input" type="text" value="<?= $userAddress->street2 ?>" /><br />
+						<input name="sb_city" type="text" placeholder="City" value="<?= $userAddress->locality ?>" /><input name="sb_state" type="text" placeholder="State/Region" value="<?= $userAddress->region ?>" />
+						<input name="sb_country" type="text" value="USA" placeholder="Country" value="<?= ($userAddress->country ? $userAddress->country : 'USA') ?>" /><input name="sb_zip" type="text" placeholder="Zip/Postal Code" value="<?= $userAddress->postalCode ?>" /><br />
+                                                <input name="sb_phone" class="sb_wide_input" type="text" placeholder="Phone" value="<?= $userAddress->phone ?>" />
+					</p>
+				<?php endif ?>
+			</div>
+			<p align="center">My information is correct<br clear="all" />
+			<span class="sb_theme_button_alt">Place Order</span></p>
+		</div><!-- .sb_rewardOrder -->
+		<!-- END SHIPPING ADDRESS CONFIRM -->
+	</div><!-- #sb_reward_step2 -->
+
+	<div id="sb_reward_step3" class="sb_reward_step" style="display: none;">
+		 <img src="//<?= BASE_DOMAIN ?>/images/snakkle/img_ajax-loader.gif" alt="Loading..." id="sb_img-loading" style="margin: 50px auto; display:block; text-align: center;" />
+		<!-- ajax loaded after order is complete -->
+	</div><!-- #sb_reward_step3 -->
+
+</div><!-- .sb_rewardItem -->
+<script language="javascript">
+	$SQ(function(){
+		var sayso = window.sayso;
+		var rewardSteps = $SQ('#sb_rewardItem .sb_reward_step');
+				var loadingImg = $SQ('#sb_rewardItem #sb_img-loading');
+
+		var step1 = rewardSteps.eq(0),
+			step2 = rewardSteps.eq(1),
+			step3 = rewardSteps.eq(2);
+
+		// set up the progress bars (copied from starbar-new.js)
+		var reward_progressBarElems = $SQ('.sb_progress_bar', rewardSteps);
+		var reward_currencyPercentElems = $SQ('.sb_currency_percent', rewardSteps);
+		reward_progressBarElems.each(function(){
+				if (!$SQ(this).hasClass('sb_ui-progressbar')) {
+					$SQ(this).addClass('sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all');
+				}
+		});
+
+		reward_currencyPercentElems.each(function() {
+			var $SQthis = $SQ(this);
+			if (!$SQthis.hasClass('sb_ui-progressbar-value')) {
+				$SQthis.addClass('sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left');
+			}
+		});
+
+		if (sayso.placeholderSupportMissing) {
+			$SQ('#sayso-starbar').trigger('frameCommunication', ['fixPlaceholders', {
+				target : step2
+			}]);
+		}
+
+		$SQ('#sb_rewardItem .sb_theme_button_alt').each(function(){
+			$SQ(this).click(function(e){
+				var currentBox = $SQ(this).parents('.sb_reward_step');
+				var nextBox = currentBox.next();
+
+				switch (currentBox.attr('id')) {
+					case 'sb_reward_step1' : // intro
+						nextBox.show();
+						currentBox.replaceWith(nextBox);
+						break;
+					case 'sb_reward_step2' : // address/confirm/place order
+						var formErrors = false;
+
+						var quantity = $SQ('#sb_reward_step2 select'),
+							personalInfo = step2.find('#sb_personalInfo');
+
+						var params = {
+							good_id : <?= $good->getId() ?>,
+							quantity : (quantity.length ? quantity.val() : 1)
+						};
+
+						var inputElems = new Array();
+						var fields = ['first_name', 'last_name', 'address_1', 'address_2', 'city', 'state', 'country', 'zip', 'phone'];
+						var required_fields = ['first_name', 'last_name', 'address_1', 'city', 'country', 'zip'];
+
+						if (sayso.placeholderSupportMissing) {
+							$SQ("input[placeholder]", step2).each(function(index){
+								var inputElem = $SQ(this);
+								var placeholder = inputElem.attr('placeholder');
+								if (inputElem.val() === placeholder) {
+									inputElem.val('');
+								}
+							});
+						}
+
+						if (personalInfo.length) {
+							for (i = 0; i < fields.length; i++) {
+								inputElems[fields[i]] = $SQ('input[name="sb_'+fields[i]+'"]', personalInfo);
+								params['order_'+fields[i]] = inputElems[fields[i]].val();
+							}
+
+							for (i = 0; i < required_fields.length; i++) {
+								if (params['order_'+required_fields[i]] == "") {
+									formErrors = true;
+									inputElems[required_fields[i]].css('border', '1px solid #F00');
+								} else {
+									inputElems[required_fields[i]].css('border', '1px solid #CCC');
+								}
+							}
+						}
+
+						if (!formErrors) {
+							// ghetto solution for loading image b/c beforeSend wasn't working. :(
+							$SQ('.sb_rewardOrder',currentBox).html(loadingImg);
+
+							$SQ.ajaxWithAuth({
+								url : '//' + sayso.baseDomain + '/starbar/snakkle/reward-redeemed',
+								data : params,
+								beforeSend: function(){
+
+								},
+								success : function (response) {
+									nextBox.show();
+									sayso.log(response.game);
+									$SQ('#sayso-starbar').trigger('frameCommunication', ['updateGame', {
+										newGame: response.game
+									}]);
+									$SQ('#sayso-starbar #sb_img-loading').hide();
+									currentBox.replaceWith(response.data.html);
+								}
+							});
+						}
+
+						if (sayso.placeholderSupportMissing) {
+							$SQ("input[placeholder]", step2).each(function(index){
+								var inputElem = $SQ(this);
+								var placeholder = inputElem.attr('placeholder');
+								if (! inputElem.val()) {
+									inputElem.val(placeholder);
+								}
+							});
+						}
+
+						break;
+				}
+
+			});
+		});
+
+		// update balance remaining based on quantity selected
+		step2.find('.sb_step2Actions select').bind('change', function () {
+
+			var itemsCost = <?= $itemCost ?> * ($SQ(this).val()),
+				balanceAfter = <?= $currentBalance ?> - itemsCost,
+				pointsBox = step2.find('.sb_user-points-box').eq(1);
+
+			// update text
+			pointsBox.find('span.sb_progressBarValue span').text(balanceAfter);
+
+			// update progress bar
+			pointsBox.find('span.sb_currency_percent').css('width', Math.round((balanceAfter / <?= $currentBalance ?>) * 100) + '%');
+		});
+
+
+		// email order to ?
+		// shipping address OR quantity
+		//
+
+
+	});
+</script>

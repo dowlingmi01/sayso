@@ -1,0 +1,68 @@
+<div class="sb_header">
+	<img src="//<?= BASE_DOMAIN ?>/images/snakkle/logo_snakkle_lg.png" alt="Snakkle logo" />
+</div><!-- .sb_header -->
+<div class="sb_tabs">
+	<ul>
+		<? if ($this->count_new_polls) { ?>
+			<li><a href="#polls_tabs_1"><?= $this->count_new_polls ?> New!</a></li>
+		<? } else { ?>
+			<li><a href="#polls_tabs_1">New</a></li>
+		<? } ?>
+		<? if ($this->count_completed_polls || $this->count_disqualified_polls) { ?>
+			<li><a href="#polls_tabs_2">Completed</a></li>
+		<? } ?>
+		<? if ($this->count_archived_polls) { ?>
+			<li><a href="#polls_tabs_3">Archive</a></li>
+		<? } ?>
+	</ul>
+
+	<div id="polls_tabs_1" class="sb_tabPane">
+		<h2 class="sb_title sb_tabHeader">Polls</h2>
+		<p class="sb_tabHeader">
+			Polls are a speedy and effective way to find out what you love in the celebrity world. Each poll completed earns you <strong class="sb_theme_textHighlight sb_tooltip" title="Snakkle Bucks - are almost as good as cash and can be redeemed for goods in the Rewards Center.">Snakkle Bucks</strong> &amp; <strong class="sb_theme_textHighlight sb_tooltip" title="Stars - determine your access to increasingly important levels of influence.">Stars</strong>. Gain bonus Snakkle Bucks & Stars by sharing and tweeting your favorite polls, and look for special polls with point magnifiers.
+		</p>
+		<div class="sb_scrollPane">
+
+			<!-- BEGIN POLL BOX LANDING -->
+			<? if( $this->count_new_polls )
+				$this->displayPolls('new', $this->starbar);
+			else if ($this->count_archived_polls) { ?>
+				<p>No new polls today, but you still have <?= $this->count_archived_polls ?> polls to complete in the <a href="#" class="sb_nav_tabs" rel="<?= (($this->count_completed_polls || $this->count_disqualified_polls) ? 3 : 2) ?>">archives</a>.</p>
+			<? } else { ?>
+				<p>Nice job, looks like you've taken all the polls! Check back soon to earn more Snakkle Bucks and Stars!</p>
+			<? } ?>
+			<!-- END POLL BOX LANDING -->
+		</div><!-- .sb_scrollPane -->
+	</div><!-- #tabs_1 -->
+
+	<? if ($this->count_completed_polls || $this->count_disqualified_polls) { ?>
+		<div id="polls_tabs_2" class="sb_tabPane">
+			<p class="sb_tabHeader">These are polls you've completed</p>
+			<div class="sb_scrollPane">
+				<ul class="sb_outlineList">
+					<? $this->displayPolls('completed', $this->starbar) ?>
+					<? $this->displayPolls('disqualified', $this->starbar) ?>
+				</ul>
+			</div><!-- .sb_scrollPane -->
+		</div><!-- #tabs_2 -->
+	<? } ?>
+
+	<? if ($this->count_archived_polls) { ?>
+		<div id="polls_tabs_3" class="sb_tabPane">
+			<p class="sb_tabHeader">
+				We'd still love your opinion on these archived polls, and you can still earn by completing them! Same deal &ndash; earn <strong class="sb_theme_textHighlight">Snakkle Bucks</strong> &amp; <strong class="sb_theme_textHighlight"> Stars</strong> for each one you complete.
+			</p>
+			<div class="sb_scrollPane">
+
+				<!-- BEGIN POLL BOX LANDING -->
+				<? $this->displayPolls('archived', $this->starbar) ?>
+				<!-- END POLL BOX LANDING -->
+				<br />
+				<? if ($this->count_new_polls) { ?>
+					<p align="right"><a href="#" class="sb_nav_tabs sb_theme_button" rel="1"><span class="sb_theme_buttonArrow">Take a New Poll</span></a></p>
+				<? } ?>
+			</div><!-- .sb_scrollPane -->
+		</div><!-- #tabs_3 -->
+	<? } ?>
+
+</div><!-- .tabs -->

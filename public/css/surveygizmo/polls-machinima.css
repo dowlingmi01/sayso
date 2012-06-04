@@ -1,0 +1,276 @@
+/*
+ * Theme: Theme for HelloMusic Polls
+ * To be used on polls loaded via SG
+*/
+
+.sg-poll-result {
+	width: 232px;
+	padding: 0 8px 10px 0;
+	margin-bottom: 0px;
+	float: left;
+}
+
+.sg-poll-result strong {
+	text-align: right;
+	font-weight: normal;
+}
+
+.sg-result-indicator {
+	width: 187px;
+	height: 12px;
+	text-align: left;
+	background-color: #ccc;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	box-shadow:inset 0 0 5px #999;
+	-moz-box-shadow:inset 0 0 5px #999;
+	-webkit-box-shadow:inset 0 0 5px #999;
+	margin: 4px 0 0 0;
+	padding: 0;
+	border: 0;
+	vertical-align: baseline;
+	outline: 0;
+	display: block;
+}
+
+.sg-result-bar {
+	background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0.22, rgb(180,180,180)), color-stop(0.61, rgb(140,140,140)));
+	background-image: -moz-linear-gradient( center top, rgb(180,180,180) 22%, rgb(140,140,140) 61%);
+	background-color: #666;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	box-shadow:inset 0 0 5px #999;
+	-moz-box-shadow:inset 0 0 5px #999;
+	-webkit-box-shadow:inset 0 0 5px #999;
+	float: left;
+	position: relative;
+	margin: 0;
+	height: 100%;
+	padding: 0;
+	border: 0;
+	vertical-align: baseline;
+	outline: 0;
+}
+
+.sg-poll-result-most .sg-result-bar {
+	background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(22,141,202)),
+	color-stop(0.61, rgb(7,61,89)));
+	background-image: -moz-linear-gradient(
+		center top,
+		rgb(22,141,202) 22%,
+		rgb(7,61,89) 61%);
+	background-color: #0081c5;
+}
+
+.sg-result-percent {
+	color: #0081c5;
+}
+
+.sg-result-count {
+	display: none;
+}
+
+.sg-poll-total-votes {
+	display: none;
+}
+
+.sg-poll-total-disclaimer {
+	display: none;
+}
+
+.sg-container {
+	background:#FFFFFF;
+	margin:0;
+	padding:0;
+}
+
+/* !----- Basic Structure ----- */
+.sg-body {
+	background:#FFFFFF;
+	margin:0;
+	padding:0;
+	padding-bottom:0 !important;
+	}
+.sg-wrapper {
+	background:#FFFFFF;
+	color:black;
+	border:1px solid #FFFFFF;
+	width:480px;
+	margin:0;
+	font-size: 100%;
+	font: 13px/1.231 sans-serif;
+	}
+.sg-header {
+	margin:0;
+	padding:15px;
+	min-height:40px;
+	display: none;
+	}
+.sg-content {
+	clear:both;
+	margin:0;
+	padding:0;
+	}
+.sg-footer {
+	min-height:60px;
+	padding:15px 0;
+	text-align:center;
+	margin:0;
+	display: none;
+	}
+.sg-poll-links-box {
+	display: none;
+	}
+.sg-progress-bar {
+	display: none;
+	}
+.sg-powered-by {
+	visibility: hidden;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	margin: 0;
+	clear: none;
+	}
+.sg-page-title {
+	color: black;
+	font-weight:bold;
+	display: none;
+	}
+.sg-page-description {
+	background-color:#FFFFFF;
+	border:1px solid #FFFFFF;
+	padding:20px;
+	display: none;
+	}
+.sg-error-message {
+	display: none;
+	}
+
+/* !----- Headers, Footers, Table headers ----- */
+.sg-header,
+.sg-footer {
+	background:#FFFFFF;
+	color:black;
+	}
+.sg-header {
+	border-bottom:1px solid #FFFFFF;
+	}
+
+.sg-footer {
+	border-top:1px solid #FFFFFF;
+	}
+
+/* !----- Question Titles ----- */
+.sg-question-title {
+	display: none;
+	position: relative;
+	font-weight:bold;
+	color:black;
+	margin:0 ;
+	padding:0 0;
+	}
+.sg-question-number {
+	}
+
+/* !----- Questions ----- */
+.sg-question {
+	margin: 0 0;
+	clear: both;
+	border-bottom: 0;
+	}
+.sg-question-set { /* wraps around question options and subquestions */
+	margin: 0;
+	}
+
+
+.sg-question-options {
+	padding: 0;
+}
+
+/* !-- Answers -- */
+.sg-type-radio ul.sg-list-vertical li {
+	clear: none;
+	float: left;
+	width: 205px;
+	margin: 0 10px 4px 0;
+}
+
+/* !----- Buttons ----- */
+.sg-button {
+	border:1px outset #000 !important;
+	background: #fff url(https://app.sgizmo.com/images/surveys/btn_grey_gradient.gif) repeat-x 1px 1px;
+	font-size:120% !important;
+	text-decoration: none;
+	font-weight:bold;
+	padding:8px 15px !important;
+	margin:5px;
+	}
+	.sg-buttons,
+	.sg-button-bar input {
+		display:inline;
+		}
+	.sg-button:hover {
+		background-position:0 -40px;
+		}
+
+.sg-button-bar {
+	text-align:center;
+	margin: 0 0 10px 0;
+	}
+
+/* !----- Footer Hooks ----- */
+.sg-footer-hook-2 {
+	color:#EFF6FF;
+	font-size:90% !important;
+	}
+
+/* !----- Font Settings: Headers ----- */
+.sg-wrapper h1,
+.sg-wrapper h2,
+.sg-wrapper h3,
+.sg-wrapper h4,
+.sg-wrapper h5,
+.sg-wrapper h6 {
+	text-align:left;
+	}
+.sg-wrapper h1 {font-size:1.55em;margin:.5em 0;}
+.sg-wrapper h2 {font-size:1.3em;}
+.sg-wrapper h3 {font-size:1.15em;}
+.sg-wrapper h4 {font-size:.95em;}
+h1.sg-title {
+	margin:0;
+	padding:0 0 .3em 0;
+	font-weight:bold;
+	}
+
+/* !----- Font Settings: Body ----- */
+.sg-wrapper,
+.sg-wrapper p,
+.sg-wrapper li,
+.sg-wrapper td,
+.sg-wrapper th,
+.sg-wrapper select,
+.sg-wrapper input,
+.sg-wrapper textarea {
+	font-family:black, sans-serif;
+	font-size:small; /* change this value up or down to affect all text size universally */
+	}
+
+/* !----- Special Effects ----- */
+.sg-wrapper input:focus,
+.sg-wrapper select:focus,
+.sg-wrapper textarea:focus {
+	background-color: #feffaf !important;
+	}
+
+/* Do not change the next rule! It is used to check if this file is fully loaded */
+#sayso-starbar-external {
+	display: inline-table;
+}

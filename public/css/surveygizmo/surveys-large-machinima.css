@@ -1,0 +1,33 @@
+/*
+ * Theme: Theme for HelloMusic Surveys
+ * To be used on surveys loaded via SG
+*/
+
+/* !----- Basic Structure ----- */
+.sg-wrapper {
+	width:615px;
+	}
+ul.sg-list-vertical li {
+	min-width: 290px;
+}
+#sg_BackButton {
+	margin-left: 171px;
+}
+#sg_NextButton {
+	margin-right: 171px;
+	float: right;
+}
+#sg_SubmitButton {
+	margin-right: 155px;
+	float: right;
+}
+.sg-progress-bar {
+	display: block;
+	position: fixed;
+	left: 50%;
+	width: 150px;
+	height: 16px;
+	margin-left: -75px;
+	bottom: 14px;
+	clear: none;
+	}

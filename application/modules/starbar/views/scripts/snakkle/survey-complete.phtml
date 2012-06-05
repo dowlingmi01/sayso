@@ -11,11 +11,6 @@
 			function handleTweetEvent(event){
 				if (event) {
 					$SQ.remoteControl.handleTweet('survey', <?= $this->survey->id ?>);
-					$SQ('.sb_externalShare_twitter').bind('click', function(e) {
-						e.preventDefault();
-						e.stopPropagation();
-						return false;
-					});
 				}
 			}
 			twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
@@ -39,7 +34,7 @@
 		<div class="sb_externalShares">
 
 			<a class="sb_externalShare sb_externalShare_facebook" rel="sb_mini-snakkle-reward_facebook" href="#"
-				onclick="$SQ.remoteControl.handleFacebookShare('//www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($this->share_link) ?>&caption=<?= urlencode($this->facebook_share_caption) ?>&picture=<?= urlencode($this->facebook_share_image_url) ?>&redirect_uri=<?= urlencode($this->facebook_share_callback_url) ?>&name=<?= urlencode($this->facebook_title) ?>&description=<?= urlencode($this->facebook_description) ?>', 'survey', <?= $this->survey->id ?>); return false;">
+				onclick="$SQ.openWindow('//www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($this->share_link) ?>&caption=<?= urlencode($this->facebook_share_caption) ?>&picture=<?= urlencode($this->facebook_share_image_url) ?>&redirect_uri=<?= urlencode($this->facebook_share_callback_url) ?>&name=<?= urlencode($this->facebook_title) ?>&description=<?= urlencode($this->facebook_description) ?>', 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450'); return false;">
 				<img src="//<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
 			</a>
 			<span class="sb_mini-snakkle-reward sb_mini-snakkle-reward_facebook" id="sb_mini-snakkle-reward_facebook">+<?= $shareReward ?></span>

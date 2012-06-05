@@ -253,12 +253,6 @@ $SQ(function(){
 
 	};
 
-	sayso.facebook_share_lock = {
-		share_type: "none",
-		share_id: 0,
-		active: false
-	}
-
 	// initialize the starbar
 	initStarBar();
 
@@ -704,11 +698,6 @@ $SQ(function(){
 									url : '//'+sayso.baseDomain+'/api/notification/close?renderer=jsonp&message_id='+message.id,
 									success : function (response, status) {}
 								});
-
-								// FB post successful, activate lock on the current share to disallow sharing same thing multiple times
-								if (message.short_name == 'Facebook Post') {
-									sayso.facebook_share_lock.active = true;
-								}
 							}
 						} else { // Alert already exist, remove the class with the random string that we just added
 							currentAlert.removeClass('sb_starbar-alert_'+randomString);
@@ -750,25 +739,6 @@ $SQ(function(){
 				}
 			});
 		}
-	}
-
-	function handleFacebookShare (link, shareType, shareId) {
-		if (link && canFacebookShare(shareType, shareId)) {
-			$SQ.sayso.facebook_share_lock.share_type = shareType;
-			$SQ.sayso.facebook_share_lock.share_id = shareId;
-			$SQ.sayso.facebook_share_lock.active = false; // lock is activated after share is successful
-			$SQ.openWindow(link, 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450');
-		}
-	}
-
-	function canFacebookShare (shareType, shareId) {
-		if ($SQ.sayso.facebook_share_lock
-			&& $SQ.sayso.facebook_share_lock.active
-			&& $SQ.sayso.facebook_share_lock.share_type == shareType
-			&& $SQ.sayso.facebook_share_lock.share_id == shareId
-		) return false;
-		return true;
-
 	}
 
 	String.prototype.toCamelCase = function () {
@@ -829,12 +799,6 @@ $SQ(function(){
 			var sharedType = parameters['shared_type'];
 			var sharedId = parameters['shared_id'];
 			if (sharedType && sharedId) handleTweet(sharedType, sharedId);
-		},
-		'handleFacebookShare': function (parameters) {
-			var link = parameters['link'];
-			var sharedType = parameters['shared_type'];
-			var sharedId = parameters['shared_id'];
-			if (sharedType && sharedId) handleFacebookShare(link, sharedType, sharedId);
 		},
 		'openSurvey': function (parameters) {
 			var surveyId = parameters['survey_id'];
@@ -1722,8 +1686,9 @@ $SQ(function(){
 		}
 	}
 
-	$SQ(window).bind('focus', function () {
+	$SQ(window).focus(function () {
         starbar.state.refresh();
+        updateAlerts(false);
     });
 
 	// flag so we know this file has loaded

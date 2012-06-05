@@ -86,6 +86,13 @@ abstract class Game_Starbar extends Game_Abstract {
 			throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Cannot award user. No social network specified.'));
 		}
 
+		$userState = new User_State();
+		$userState->loadDataByUniqueFields(array("user_id" => $this->_request->getParam('user_id')));
+
+		if (!$userState->canShare($network, $type, $typeId)) {
+			throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Cannot award user. Already shared '.$network.'-'.$type.'-'.$typeId.'.'));
+		}
+
 		switch ($type) {
 			case self::SHARE_POLL :
 			case self::SHARE_SURVEY :

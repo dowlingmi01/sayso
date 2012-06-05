@@ -2,13 +2,14 @@
 	background-image: url('../images/movie/bg_bar.png');
 }
 
+
 /* override */
 #sayso-starbar #starbar-player-console #starbar-type{
 	background-image: url("../images/movie/bg_starbar-type.png");
-  height: 74px;
+  height: 95px;
   left: 100px;
   position: absolute;
-  top: 0;
+  top: -20px;
   width: 240px;
   z-index: 2147480011;
 }
@@ -19,6 +20,63 @@
 	background-position: 0px bottom;
 }
 
+#sayso-starbar #starbar-player-console .sb_starbar-logo,
+#sayso-starbar #starbar-player-console .sb_starbar-logo:hover,
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed .sb_starbar-logo,
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed .sb_starbar-logo:hover,
+#sayso-starbar #sb_starbar-logoSemiStowed .sb_starbar-logo,
+#sayso-starbar #sb_starbar-logoSemiStowed .sb_starbar-logo:hover{
+    background-image: url("../images/movie/logo_sayso.png");
+    background-position: 0px 0;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    display: inline-block;
+    height: 25px;
+    width: 30px;
+    left: 0;
+    position: absolute;
+    text-indent: -9999px;
+    top: 30px;
+}
+
+#sayso-starbar #sb_starbar-logoSemiStowed .sb_starbar-logo{
+	top: 5px;
+	left: 1px;
+}
+
+
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed .sb_starbar-logo,
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed .sb_starbar-logo:hover{
+	top: 30px;
+	left: 3px;
+}
+
+#sayso-starbar #starbar-player-console .starbar-infoLinks{
+	position: absolute;
+	width: 55px;
+	top: 20px;
+	right: 0;
+}
+
+#sayso-starbar #starbar-player-console .starbar-infoLinks a{
+	color: rgba(253,232,131,.8);
+	font-size: 11px;
+	line-height: 13px;
+	text-shadow: 0px 0px 2px rgba(0,0,0,1);
+	display: block;
+	padding: 1px 2px;
+	border-bottom: 1px solid rgba(0,0,0,.5);
+}
+
+#sayso-starbar #starbar-player-semiStowed .starbar-infoLinks,
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed .starbar-infoLinks{
+	display: none;
+}
+
+#sayso-starbar #starbar-player-console .starbar-infoLinks a:last-child{
+	border-bottom: none;
+}
+
 /* turn off starbar type background + switcher */
 #sayso-starbar #starbar-player-console #starbar-type .sb_changeTheme{
 	display: none;
@@ -26,31 +84,31 @@
 
 /* starbar type logo + content area */
 #sayso-starbar #starbar-player-console #starbar-type .sb_logo{
-	width: 110px;
-	height: 25px;
+	width: 144px;
+	height: 37px;
 	margin: 0px 0px 0px 0px;
 	top: 8px;
-	left: 73px;
+	left: 75px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-type .sb_userImg{
-	width: 50px;
-	height: 50px;
+	width: 52px;
+	height: 60px;
 	margin: 0px 5px 0px 0px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-type div.sb_userImg{
 	position: absolute;
 	left: 15px;
-	top: 15px;
+	top: 25px;
 	cursor: pointer;
 }
 
 #sayso-starbar #starbar-player-console #starbar-type .sb_content{
 	width: 140px;
-	top: 35px;
-	left: 73px;
-	color: #000000;
+	top: 50px;
+	left: 77px;
+	color: #ffffff;
 }
 
 #sayso-starbar #starbar-player-console #starbar-type .sb_content h2{
@@ -62,7 +120,7 @@
 #sayso-starbar #starbar-player-console #starbar-type .sb_content h2,
 #sayso-starbar #starbar-player-console #starbar-type .sb_content h2 a,
 #sayso-starbar #starbar-player-console #starbar-type .sb_content a{
-	color: #000000;
+	color: #ffffff;
 }
 
 #sayso-starbar #starbar-player-console #starbar-type .sb_content img{
@@ -73,9 +131,19 @@
 /* MAIN NAV OVERRIDES */
 
 #sayso-starbar #starbar-player-console #starbar-nav ul li span.sb_nav_border{
-	background-color: #676865;
-  border-bottom: 1px solid #4b4c4a;
-  border-top: 1px solid #000000;
+	background-color: #333333;
+	background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(51,51,51)),
+	color-stop(0.61, rgb(36,36,36)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(51,51,51) 22%,
+			rgb(36,36,36) 61%);
+  border-bottom: 1px solid #631210;
+  border-top: 1px solid #4d3739;
   display: block;
   height: 8px;
   margin: 0;
@@ -88,7 +156,7 @@
 
 #sayso-starbar #starbar-player-console #starbar-nav ul li span.sb_nav_element{
 	width: 95px !important;
-	background-position: center 55% !important;
+	background-position: center 58% !important;
 }
 
 #sayso-starbar #starbar-player-console #starbar-nav ul li span.sb_nav_notify{
@@ -110,8 +178,8 @@
 #sayso-starbar #starbar-player-console #starbar-nav ul li#nav_surveys span.sb_nav_element {
 	background-image: url('../images/movie/nav_surveys.png');
 }
-#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_quizzes span.sb_nav_element {
-	background-image: url('../images/movie/nav_quizzes.png');
+#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_spotlight span.sb_nav_element {
+	background-image: url('../images/movie/nav_spotlight.png');
 }
 #sayso-starbar #starbar-player-console #starbar-nav ul li#nav_polls span.sb_nav_element{
 	background-image: url('../images/movie/nav_polls.png');
@@ -122,13 +190,13 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(0,163,217)),
-	color-stop(0.61, rgb(0,134,179)));
+	color-stop(0.22, rgb(196,118,12)),
+	color-stop(0.61, rgb(253,231,113))) !important;
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(0,163,217) 22%,
-			rgb(0,134,179) 61%);
-	background-color# 009fd2;
+			rgb(196,118,12) 22%,
+			rgb(253,231,113) 61%) !important;
+	background-color: #fcd149;
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_bgGradient,
@@ -139,13 +207,13 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(22,141,202)),
-	color-stop(0.61, rgb(7,61,89)));
+	color-stop(0.22, rgb(97,17,16)),
+	color-stop(0.61, rgb(9,1,2)));
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(22,141,202) 22%,
-			rgb(7,61,89) 61%);
-	background-color: #009fd2;
+			rgb(97,17,16) 22%,
+			rgb(9,1,2) 61%);
+	background-color: #611110;
 }
 
 #sayso-starbar .sb_popBox .sb_ui-progressbar{
@@ -277,7 +345,7 @@
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo a.sb_top_level_element{
-	width: 118px;
+	width: 122px;
 	height: 53px;
 	display: table-cell;
 	vertical-align:  middle;
@@ -396,10 +464,10 @@
 #sayso-starbar #starbar-player-console #starbar-level{
 	z-index: 1000;
 	position: absolute;
-	left: 735px;
+	left: 745px;
 	bottom: 0;
 	height: 53px;
-	width: 160px;
+	width: 150px;
 	background-image: url('../images/generic/bg_divider.png');
 	background-repeat: no-repeat;
 	background-position: 0px 50%;
@@ -521,8 +589,8 @@
 }
 
 
-#sayso-starbar #starbar-player-console .sb_imgSnakkles{
-	background-image: url('../images/movie/img_snakkles.png');
+#sayso-starbar #starbar-player-console .sb_imgCinebucks{
+	background-image: url('../images/movie/img_cinebucks.png');
 	width: 30px;
 	height: 30px;
 	display: inline-block;

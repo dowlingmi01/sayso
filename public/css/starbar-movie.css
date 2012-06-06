@@ -216,6 +216,21 @@
 	background-color: #611110;
 }
 
+#sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value,
+#sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value-fading{
+	background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(196,118,12)),
+	color-stop(0.61, rgb(253,231,113))) !important;
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(196,118,12) 22%,
+			rgb(253,231,113) 61%) !important;
+	background-color: #fcd149;
+}
+
 #sayso-starbar .sb_popBox .sb_ui-progressbar{
 	background-color: #ccc;
 }
@@ -304,7 +319,7 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_textHighlight, #sayso-starbar-embed .sb_theme_textHighlight{
-	color: #009fd2 !important;
+	color: #991B17 !important;
 	text-shadow: none !important;
 }
 
@@ -358,27 +373,27 @@
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_popBoxInner .sb_popContent{
 	width: 515px;
-	height: 290px;
+	height: 292px;
 	padding: 0 !important;
 	margin: 0 !important;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_promoBG{
 	width: 515px;
-	height: 290px;
+	height: 292px;
 	background-repeat: no-repeat;
 }
 
 
 #sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow{
 	position: relative;
-	margin: 5px 0px 0px 10px;
+	margin: 0px 0px 0px 0px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week1{
 	display: block;
 	background-image: url('../images/movie/img_promo_week1_bg.jpg');
-	background-position: left bottom;
+	background-position: top right;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide{
@@ -538,11 +553,17 @@
 #sayso-starbar #starbar-player-console #starbar-type .sb_content .sb_popBox a,
 #sayso-starbar #sb_popBox_user-profile .sb_currency_balance,
 #sayso-starbar .sb_rewardItem .sb_rewardHeader{
-	color: #009fd2;
+	color: #991b17;
+}
+
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a{
+	color: #fcbf2f !important;
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a{
 	color: #ffffff;
+	font-weight: bold !important;
+	font-size: 13px !important;
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li{
@@ -594,6 +615,8 @@
 	width: 30px;
 	height: 30px;
 	display: inline-block;
+	position: absolute;
+	z-index: 9999;
 }
 
 #sayso-starbar #starbar-player-console .sb_pointsEarnedTotal{
@@ -783,7 +806,7 @@
 	height: 30px;
 	position: relative;
 	display: block;
-	padding: 12px 0px 0px 0px;
+	padding: 10px 0px 0px 0px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-level .sb_user-points-box{
@@ -842,14 +865,15 @@
 	margin-right: -20px;
 }
 
-#sayso-starbar #starbar-player-console span.sb_mini-snakkle-reward,
-#sayso-starbar-embed span.sb_mini-snakkle-reward,
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li span.sb_mini-snakkle-reward{
-	background-image: url('../images/movie/img_snakkle_tn.png');
+#sayso-starbar #starbar-player-console span.sb_mini-cinebucks-reward,
+#sayso-starbar-embed span.sb_mini-cinebucks-reward,
+#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li span.sb_mini-cinebucks-reward{
+	background-image: url('../images/movie/img_cinebucks_tn.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
 	font-size: 13px;
-	color: #e6bd5b;
+	color: #ffffff;
+	font-weight: bold;
 	width: 75px;
 	height: 40px;
 	position: absolute;
@@ -862,20 +886,21 @@
 	text-shadow: 1px 1px 1px rgba(0,0,0,.8);
 }
 
-#sayso-starbar #starbar-player-console span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_facebook,
-#sayso-starbar-embed span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_facebook{
-	left: 55px;
+#sayso-starbar #starbar-player-console span.sb_mini-cinebucks-reward_facebook,
+#sayso-starbar-embed span.sb_mini-cinebucks-reward.sb_mini-cinebucks-reward_facebook{
+	left: 54px !important;
 }
 
-#sayso-starbar #starbar-player-console span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_twitter,
-#sayso-starbar-embed span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_twitter{
+#sayso-starbar #starbar-player-console span.sb_mini-cinebucks-reward.sb_mini-cinebucks-reward_twitter,
+#sayso-starbar-embed span.sb_mini-cinebucks-reward.sb_mini-cinebucks-reward_twitter{
 	left: 115px !important;
 }
 
 
-#sayso-starbar #starbar-player-console span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_email{
+#sayso-starbar #starbar-player-console span.sb_mini-cinebucks-reward.sb_mini-cinebucks-reward_email{
 	left: 150px !important;
 }
+
 
 
 #sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgSnakkles{
@@ -920,8 +945,9 @@
 
 #sayso-starbar #sb_popBox_user-level h3.sb_title,
 #sayso-starbar #sb_popBox_user-level h3.sb_title span{
-	text-transform:  uppercase;
-	color: #009FD2 !important;
+	//text-transform:  uppercase;
+	//color: #009FD2 !important;
+	font-size: 14px;
 	font-weight: bold !important;
 }
 
@@ -1024,8 +1050,13 @@
 #sayso-starbar #sb_popBox_user-level .sb_rewardsCenterLink{
 	float: right;
 	margin: 32px 0px 0px 0px;
-	width: 130px;
+	width: 147px;
+	height: 20px;
+	display: inline-block;
+	background-image: url('../images/movie/img_rewards-center.png');
+	background-repeat: no-repeat;
 	color: #000;
+	text-indent: -9999px;
 	line-height:  20px;
 }
 
@@ -1124,6 +1155,11 @@
 
 #sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points .sb_current-level .sb_user_level_title{
 	text-transform:  uppercase;
+	color: #991B17;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points .sb_currency_title{
+	color: #991B17;
 }
 
 /* onboarding popup AND ONBOARDING INSTRUCTIONS W/IN HELP */
@@ -1160,9 +1196,9 @@
 	background-image: url('../images/movie/img_star_lg.png');
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_snakkles,
-#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_snakkles{
-	background-image: url('../images/movie/img_snakkles_lg.png');
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_cinebucks,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_cinebucks{
+	background-image: url('../images/movie/img_cinebucks_lg.png');
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_polls,
@@ -1254,6 +1290,14 @@
 	margin-left: 2px;
 }
 
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li.sb_ui-tabs-selected a,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul.sb_ui-tabs-nav li.sb_ui-tabs-selected a{
+	color: #333 !important;
+	text-shadow: #fff 0px 0px 4px;
+}
+
+
+
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs a.sb_surveyLaunch,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs a.sb_surveyLaunch{
 	color: #fff;
@@ -1329,7 +1373,7 @@
 #sayso-starbar #starbar-player-console .sb_popBox .sb_header{
 	background-color: #383838;
 	margin: -15px -15px 10px -15px;
-	padding: 5px 5px 5px 8px;
+	padding: 5px 5px 5px 0px !important;
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav{
@@ -1348,11 +1392,11 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_img_nextTriangle{
-	background-image: url("../images/movie/img_arrow_right_solid.png");
+	background-image: url("../images/movie/img_arrow_right.png");
   float: right;
   height: 20px;
   margin-left: 4px;
-  width: 22px;
+  width: 20px;
 }
 
 /* Rewards Popup */
@@ -1446,7 +1490,7 @@
 	width: 100%;
 }
 
-#sayso-starbar #starbar-player-console .sb_rewardItem .sb_user-points-box .sb_imgSnakkles{
+#sayso-starbar #starbar-player-console .sb_rewardItem .sb_user-points-box .sb_imgCinebucks{
 	top: 7px;
 	left: -3px;
 }
@@ -1676,7 +1720,7 @@
 #sayso-starbar #starbar-player-console #sb_popBox_user-profile.sb_popBox .sb_popContent,
 #sayso-starbar #starbar-player-console #sb_popBox_user-share.sb_popBox .sb_popContent{
 	width: 530px;
-	height: 280px;
+	height: 290px;
 }
 
 /* rewards */

@@ -16,10 +16,10 @@
 						<?= $this->user_email->email ?>
 					</p>
 				</li>
-				<li style="padding: 10px 0 0 0;">
+				<li style="padding: 5px; height: 25px; overflow: hidden;">
 					<iframe src="//www.facebook.com/plugins/like.php?locale=en_US&amp;href=http://www.facebook.com/pages/Snakkle-SaySo/327830640606067&amp;layout=standard&amp;show_faces=false&amp;width=240&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:290px; height:35px;" allowTransparency="true"></iframe>
 				</li>
-				<li>
+				<li style="padding: 5px 0px 0px 0px;">
 					<h2 class="sb_titlePlain">Link Your Accounts</h2>
 					<p>
 						<? if ($this->facebook_social->user_id) { ?>
@@ -80,16 +80,16 @@
 
 
 	<li style="border: none;">
-		<h2 class="sb_titlePlain" style="padding-top: 3px">Share Snakkle Say.So </h2>
-		<span class="sb_tiny_note">Earn Snakkle Bucks for sharing!</span>
+		<h2 class="sb_titlePlain" style="padding-top: 3px">Share Movie Say.So App</h2>
+		<span class="sb_tiny_note">Earn Cinebucks for sharing!</span>
 		<div class="sb_externalShares">
 
 			<!-- FACEBOOK -->
-			<a class="sb_externalShare sb_externalShare_facebook" rel="sb_mini-snakkle-reward_facebook" 	href="#"
+			<a class="sb_externalShare sb_externalShare_facebook" rel="sb_mini-cinebucks-reward_facebook" 	href="#"
 				onclick="return $SQ.openWindow('//www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($this->share_link) ?>&caption=<?= urlencode($this->facebook_share_caption) ?>&picture=<?= urlencode($this->facebook_share_image_url) ?>&redirect_uri=<?= urlencode($this->facebook_share_callback_url) ?>&name=<?= urlencode($this->facebook_title) ?>&description=<?= urlencode($this->facebook_description) ?>', 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450');">
 				Facebook Share
 			</a>
-			<span class="sb_mini-snakkle-reward sb_mini-snakkle-reward_facebook" id="sb_mini-snakkle-reward_facebook">+19</span>
+			<span class="sb_mini-cinebucks-reward sb_mini-cinebucks-reward_facebook" id="sb_mini-cinebucks-reward_facebook">+19</span>
 			<!-- / facebook -->
 
 			<! -- TWITTER -->
@@ -107,7 +107,7 @@
 				});
 			</script>
 
-			<div class="sb_externalShare sb_externalShare_twitter" rel="sb_mini-snakkle-reward_twitter">
+			<div class="sb_externalShare sb_externalShare_twitter" rel="sb_mini-cinebucks-reward_twitter">
 				<a class="twitter-share-button"
 					data-related="<?= $this->twitter_share_related_users ?>"
 					data-hashtags="<?= $this->twitter_share_hashtags ?>"
@@ -119,13 +119,13 @@
 				</a>
 			</div>
 
-			<span class="sb_mini-snakkle-reward sb_mini-snakkle-reward_twitter" id="sb_mini-snakkle-reward_twitter">+19</span>
+			<span class="sb_mini-cinebucks-reward sb_mini-cinebucks-reward_twitter" id="sb_mini-cinebucks-reward_twitter">+19</span>
 			<!-- / twitter -->
 
 
 			<!-- EMAIL -->
-			<!--<a href="#" class="sb_externalShare sb_externalShare_email" rel="sb_mini-snakkle-reward_email">Send to a friend</a>--.
-			<!--<span class="sb_mini-snakkle-reward sb_mini-snakkle-reward_email" id="sb_mini-snakkle-reward_email">+50</span>-->
+			<!--<a href="#" class="sb_externalShare sb_externalShare_email" rel="sb_mini-cinebucks-reward_email">Send to a friend</a>--.
+			<!--<span class="sb_mini-cinebucks-reward sb_mini-cinebucks-reward_email" id="sb_mini-cinebucks-reward_email">+50</span>-->
 			<!-- / email -->
 		</div><!-- .sb_externalShares -->
 		</li>

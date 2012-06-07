@@ -201,8 +201,7 @@
 
 #sayso-starbar #starbar-player-console .sb_theme_bgGradient,
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value,
-#sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value-fading,
-#sayso-starbar .sb_theme_button{
+#sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value-fading{
 	background-image: -webkit-gradient(
 	linear,
 	left top,
@@ -215,6 +214,23 @@
 			rgb(9,1,2) 61%);
 	background-color: #611110;
 }
+
+
+#sayso-starbar .sb_theme_button{
+	background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(191,46,20)),
+	color-stop(0.61, rgb(82,5,20)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(191,46,20) 22%,
+			rgb(82,5,20) 61%);
+	background-color: #bf2e14;
+}
+
+
 
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value,
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value-fading{
@@ -616,7 +632,7 @@
 	height: 30px;
 	display: inline-block;
 	position: absolute;
-	z-index: 9999;
+	z-index: 1000;
 }
 
 #sayso-starbar #starbar-player-console .sb_pointsEarnedTotal{
@@ -1462,6 +1478,20 @@
 	padding: 0px 5px 10px 5px;
 }
 
+#sayso-starbar .sb_rewardItem:hover .sb_theme_button{
+	background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(191,46,20)),
+	color-stop(0.61, rgb(82,5,20))) !important;
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(191,46,20) 22%,
+			rgb(82,5,20) 61%) !important;
+	background-color: #bf2e14;
+}
+
 #sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_rewardBase{
 	background-color: #383838;
 	color: #fff;
@@ -1496,6 +1526,15 @@
 	left: -3px;
 }
 
+#sayso-starbar .sb_rewardItem .sb_reward_step .sb_user-points-box .sb_imgCinebucks{
+	left: 10px !important;
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2 .sb_user-points-box .sb_imgCinebucks{
+	left: 0px !important;
+	top: 0px;
+}
+
 #sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_column50{
 	font-size: 10px;
 	line-height: 15px;
@@ -1522,6 +1561,16 @@
 	font-size: 11px;
 	line-height: 15px;
 	margin: 10px 0px;
+}
+
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_reward_step p,
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_reward_step p strong{
+	color: #ffffff !important;
+}
+
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_reward_step .sb_step2Actions p,
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_reward_step .sb_step2Actions p strong{
+	color: #333 !important;
 }
 
 #sayso-starbar .sb_rewardItem .sb_user-points-box .sb_progress_bar img{

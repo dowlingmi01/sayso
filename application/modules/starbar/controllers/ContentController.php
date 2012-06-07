@@ -714,7 +714,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('twitter_share_related_users', $config->twitter->share_related_users);
 		$this->view->assign('twitter_share_hashtags', $config->twitter->share_hashtags);
 
-		$this->view->assign('twitter_share_text', $twitterShareText);
+		$this->view->assign('twitter_share_text', htmlspecialchars($twitterShareText));
 
 		$this->view->assign('share_link', $shareLink);
 

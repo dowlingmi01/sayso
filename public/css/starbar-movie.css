@@ -1226,6 +1226,7 @@
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_prizes{
 	background-image: url('../images/movie/img_prizes_lg.png');
 	padding-left: 60px;
+	background-position: 0px 5px;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_giveaways,
@@ -1280,8 +1281,9 @@
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li a,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul.sb_ui-tabs-nav li a{
 	color: #fff;
-	text-shadow: #000 0px 0px 4px;
-	font-size: 13px;
+	text-shadow: 0px 0px 2px rgba(0,0,0,.8);
+	font-size: 14px;
+	letter-spacing: .8px;
 	height: 40px;
 	width: 100%;
 	display: inline-block;
@@ -1292,8 +1294,7 @@
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li.sb_ui-tabs-selected a,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul.sb_ui-tabs-nav li.sb_ui-tabs-selected a{
-	color: #333 !important;
-	text-shadow: #fff 0px 0px 4px;
+	color: #fff !important;
 }
 
 

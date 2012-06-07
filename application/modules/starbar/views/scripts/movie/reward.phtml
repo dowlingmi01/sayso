@@ -12,7 +12,10 @@ if ($percentUserBalanceToCost > 100) $percentUserBalanceToCost = 100;
 
 <? if ($good->getCommentForUser() != "Sold Out" && $good->getCommentForUser() != "Purchased") { ?>
 
-	<div class="sb_rewardItem <?= ($good->isRedeemable() ? '' : 'sb_rewardItem_disabled') ?>" data-id="<?= $good->getId() ?>">
+<?php
+	//sb_rewardItem_disabled
+?>
+	<div class="sb_rewardItem <?= ($good->isRedeemable() ? '' : '') ?>" data-id="<?= $good->getId() ?>">
 		<?php if ($good->getNonRedeemReason()) : ?>
 			<div class="sb_rewardItem_disabledMsg">
 				<h1 class="sb_textError">!</h1>

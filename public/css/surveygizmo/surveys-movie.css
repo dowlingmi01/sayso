@@ -1,0 +1,270 @@
+/*
+ * Theme: Theme for HelloMusic Surveys
+ * To be used on surveys loaded via SG
+*/
+
+/* !----- Basic Structure ----- */
+.sg-body {
+	background:#FFFFFF;
+	margin:0;
+	padding:0;
+	}
+.sg-wrapper {
+	background:#FFFFFF;
+	color:black;
+	border:0;
+	width:475px;
+	margin:0 0 0 5px;
+	display: none;
+	}
+.sg-header {
+	margin: 0;
+	display: none;
+	}
+.sg-content {
+	clear:both;
+	margin:0;
+	}
+.sg-footer {
+	padding:0;
+	text-align:center;
+	margin:20px 0 0 0;
+	}
+.sg-page-title {
+	padding: 5px 0 5px 0;
+	color: #0081C5;
+	font-weight:bold;
+	font-size: 15px;
+	}
+.sg-page-description {
+	background-color:#FFFFFF;
+	border:1px solid #FFFFFF;
+	padding:20px;
+	}
+
+/* !----- Headers, Footers, Table headers ----- */
+.sg-header,
+.sg-footer {
+	background:#FFFFFF;
+	color:black;
+	}
+
+.sg-header {
+	border-bottom:1px solid #FFFFFF;
+	}
+
+.sg-footer {
+	border-top:1px solid #FFFFFF;
+	}
+
+/* !----- Question Titles ----- */
+.sg-question-title {
+	position: relative;
+	color:black;
+	margin:0 ;
+	padding:3px 0;
+	font-size: 15px;
+	}
+.sg-question-number {
+	}
+
+/* !----- Questions ----- */
+.sg-question {
+	margin: 0;
+	clear: both;
+	border-bottom: 0;
+	}
+.sg-question-set { /* wraps around question options and subquestions */
+	margin: 0;
+	}
+
+
+.sg-question-options {
+	padding: 0;
+	font-size: 12px;
+}
+
+
+ul.sg-list-vertical li {
+	clear: none !important;
+	float: left;
+	min-width: 220px;
+	margin: 0 10px 0 0;
+}
+
+/* !----- Buttons ----- */
+.sg-button, #sGizmoSaveButtonX {
+	background-color: #168DCA;
+	background-image: none;
+	background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(22,141,202)),
+	color-stop(0.61, rgb(7,61,89)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(22,141,202) 22%,
+			rgb(7,61,89) 61%);
+
+	font-size: 14px;
+	font-weight: normal;
+	text-decoration: none;
+	color: #fff !important;
+	padding: 5px 10px;
+	box-shadow: 0px 0px 3px #666;
+	-moz-box-shadow: 0px 0px 3px #666;
+	-webkit-box-shadow: 0px 0px 3px #666;
+	position: relative;
+	border: none;
+	float: left;
+	margin: 0 10px 0 10px;
+	display:inline;
+	}
+	.sg-buttons,
+	.sg-button-bar input {
+		display:inline;
+		}
+	.sg-button:hover {
+		background-position:0 -40px;
+		}
+
+.sg-button-bar {
+	position: fixed;
+	bottom: 0;
+	border-top: 10px solid #FFFFFF;
+	border-bottom: 2px solid #FFFFFF;
+	margin-bottom: 0px;
+	background: #FFFFFF;
+	width: 98%;
+	}
+
+#sg_BackButton {
+	margin-left: 141px;
+	margin-left: 110px\0/IE8+9;
+}
+#sg_NextButton {
+	margin-right: 141px;
+	margin-right: 110px\0/IE8+9;
+	float: right;
+}
+#sg_SubmitButton {
+	margin-right: 125px;
+	float: right;
+}
+.sg-table thead th {
+	color: black;
+}
+.sg-header-row-first tr th {
+	background-color: #b9d2df;
+}
+
+.sg-progress-bar {
+	display: none;
+}
+.sg-progress-bar-text {
+	width: 150px;
+	margin-top: 3px;
+	font-size: 11px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	text-align: center;
+}
+.sg-powered-by {
+	visibility: hidden;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	margin: 0;
+	clear: none;
+	}
+/* !----- Footer Hooks ----- */
+.sg-footer-hook-2 {
+	color:#EFF6FF;
+	font-size:90% !important;
+	}
+
+/* !----- Font Settings: Headers ----- */
+.sg-wrapper h1,
+.sg-wrapper h2,
+.sg-wrapper h3,
+.sg-wrapper h4,
+.sg-wrapper h5,
+.sg-wrapper h6 {
+	text-align:left;
+	}
+.sg-wrapper h1 {font-size:1.55em;margin:.5em 0;}
+.sg-wrapper h2 {font-size:1.3em;}
+.sg-wrapper h3 {font-size:1.15em;}
+.sg-wrapper h4 {font-size:.95em;}
+h1.sg-title {
+	display: none;
+}
+
+/* !----- Font Settings: Body ----- */
+.sg-wrapper,
+.sg-wrapper p,
+.sg-wrapper li,
+.sg-wrapper td,
+.sg-wrapper th,
+.sg-wrapper select,
+.sg-wrapper input,
+.sg-wrapper textarea {
+	font-family: sans-serif;
+	font-size:13px/1.231; /* change this value up or down to affect all text size universally */
+	}
+
+/* !----- Special Effects ----- */
+.sg-wrapper input:focus,
+.sg-wrapper select:focus,
+.sg-wrapper textarea:focus {
+	background-color: #feffaf !important;
+	}
+
+.sg-table .sg-odd-row th, .sg-table .sg-odd-row td {
+	background-color: #dadada;
+	}
+.sg-table .sg-even-row th, .sg-table .sg-even-row td {
+	background-color: #dbe7ee;
+	}
+.sg-type-table tbody th {
+	border-top: 1px solid #FFF !important;
+	}
+.sg-type-table td {
+	border-top: 1px solid #FFF !important;
+	border-left: 1px solid #888 !important;
+	}
+#sg-snc-form {
+	width: 80%;
+}
+
+.sayso_loading_container {
+	float: left;
+	position: absolute;
+	width: 97%;
+	height: 100%;
+	text-align: center;
+	font-size: 150%;
+	font-weight: bold;
+	margin: 0;
+	padding: 0;
+	background-color: #FFFFFF;
+	z-index: 5;
+}
+
+.sayso_loading_container .sb_img_loading{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -16px 0 0 -32px;
+	width: 32px;
+	height: 32px;
+	background-image: url('/images/generic/img_ajax-loader.gif');
+	background-repeat: no-repeat;
+	text-indent: -9999px;
+}
+/* Used to check that css loading is complete -- see surveygizmo-init.js */
+.sg-footer-hook-2 {
+	text-align: right;
+	}

@@ -151,7 +151,7 @@
 }
 
 #sayso-starbar #starbar-player-console #starbar-nav ul li{
-	box-shadow: inset -1px 0 0px rgba(255,255,255,.1);
+	box-shadow: 0;
 }
 
 #sayso-starbar #starbar-player-console #starbar-nav ul li span.sb_nav_element{
@@ -573,19 +573,18 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a{
-	color: #fcbf2f !important;
+	color: #991b17 !important;
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a{
-	color: #ffffff;
+	color: #333;
 	font-weight: bold !important;
 	font-size: 13px !important;
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li{
-	border-right: 1px solid #ffffff;
+	border-left: 1px solid #991b17;
 }
-
 
 /* other special formatting styles */
 
@@ -698,11 +697,11 @@
 }
 
 #sayso-starbar #sb_popBox_surveys ul.sb_solidList li .sb_surveyInfo h3{
-	color: #009FD2;
-	font-weight: normal;
+	color: #000;
+	font-weight: bold;
 	font-size: 14px;
 	padding: 0px 0px 10px 0px;
-	border-bottom: 2px dotted #ccc;
+	border-bottom: 1px solid #ccc;
 }
 
 #sayso-starbar #sb_popBox_surveys ul.sb_solidList li .sb_surveyInfo p,
@@ -714,10 +713,10 @@
 
 #sayso-starbar #sb_popBox_surveys .sb_survey-select{
 	text-indent: -9999px;
-	width: 32px;
-	height: 28px;
+	width: 18px;
+	height: 40px;
 	display: inline-block;
-	background-image:  url('../images/movie/img_arrow_right_solid_lg.png');
+	background-image:  url('../images/movie/img_arrow-right_lg.png');
 	background-repeat: no-repeat;
 	position: absolute;
 	right: 10px;
@@ -1178,6 +1177,27 @@
 	color: #991B17;
 }
 
+/* ABOUT SAYSO POPBOX */
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_ui-tabs .sb_ui-tabs-nav{
+	top: -35px;
+	margin: 0px -10px 0px 0px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_ui-tabs .sb_ui-tabs-nav li{
+	border-color: #fff;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a{
+	color: #fcbf2f !important;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_header img{
+	margin: 0px 0px 0px 10px;
+}
+
+
+
 /* onboarding popup AND ONBOARDING INSTRUCTIONS W/IN HELP */
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard {
@@ -1394,7 +1414,7 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav{
-	top: -35px;
+	top: 0px;
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_ui-icon-triangle-1-s {

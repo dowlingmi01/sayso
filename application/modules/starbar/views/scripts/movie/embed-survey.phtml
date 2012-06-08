@@ -1,14 +1,12 @@
 <? if (!$this->survey_already_completed) { ?>
 	<div class="sb_outerOverlay"></div>
 <? } ?>
-<div class="sb_header">
-	<h2 class="sb_title"><img src="//<?= BASE_DOMAIN ?>/images/movie/logo_snakkle_lg.png" alt="Snakkle logo" /> Surveys</h2>
-</div><!-- .sb_header -->
-<p class="sb_alignRight"><a href="//<?= BASE_DOMAIN ?>/starbar/movie/surveys" class="sb_theme_iconChange sb_nav_element" rel="sb_popBox_surveys">Switch Survey</a></p>
+<img src="//<?= BASE_DOMAIN ?>/images/movie/img_header_surveys.png" alt="Surveys" />
+<p class="sb_alignRight"><a href="//<?= BASE_DOMAIN ?>/starbar/movie/surveys" class="sb_theme_iconChange sb_them_textHighlight sb_nav_element" rel="sb_popBox_surveys">Switch Survey</a></p>
 <? if ($this->survey->reward_category == "premium" || $this->survey->reward_category == "profile") { ?>
 	<div class="sb_theme_textHighlight_alt sb_survey_title"><?= $this->survey->title ?></div>
 <? } else { ?>
-	<div class="sb_theme_textHighlight sb_survey_title"><?= $this->survey->title ?></div>
+	<div class="sb_survey_title"><?= $this->survey->title ?></div>
 <? } ?>
 
 <? if ($this->survey_already_completed) { ?>

@@ -29,7 +29,7 @@
 
 	<? if ($this->count_completed_surveys || $this->count_disqualified_surveys) { ?>
 		<div id="surveys_tabs_2" class="sb_tabPane">
-			<h2 class="sb_title">Surveys</h2>
+			<img src="//<?= BASE_DOMAIN ?>/images/movie/img_header_surveys.png" alt="Surveys" />
 			<p class="sb_tabHeader">All of your completed surveys are listed below.</p>
 			<div class="sb_scrollPane">
 				<ul class="sb_outlineList">
@@ -42,7 +42,7 @@
 
 	<? if ($this->count_archived_surveys) { ?>
 		<div id="surveys_tabs_3" class="sb_tabPane">
-			<h2 class="sb_title">Surveys</h2>
+			<img src="//<?= BASE_DOMAIN ?>/images/movie/img_header_surveys.png" alt="Surveys" />
 			<p class="sb_tabHeader">We'd still love your opinion on these archived surveys, and you can still earn by completing them! Same deal &ndash; earn <strong class="sb_theme_textHighlight">Snakkle Bucks</strong> &amp; <strong class="sb_theme_textHighlight"> Stars</strong> for each one you complete.</p>
 			<div class="sb_scrollPane">
 				<? $this->displaySurveys('archived', $this->starbar) ?>

@@ -589,10 +589,10 @@
 /* other special formatting styles */
 
 #sayso-starbar #starbar-player-console .sb_notesEarned{
-	background-image: url('../images/movie/img_snakkles_sm.png');
+	background-image: url('../images/movie/img_cinebucks_sm.png');
 	background-repeat: no-repeat;
-	background-position: 2px 3px;
-	padding: 3px 5px 3px 24px;
+	background-position: 2px 2px;
+	padding: 3px 5px 3px 30px;
 	line-height: 21px;
 	font-size: 11px;
 	color: #333;
@@ -603,7 +603,7 @@
 	background-image: url('../images/movie/img_star_sm.png');
 	background-repeat: no-repeat;
 	background-position: 2px 3px;
-	padding: 3px 7px 3px 24px;
+	padding: 3px 7px 3px 30px;
 	font-size: 11px;
 	line-height: 21px;
 	border-bottom: 1px solid #c2c2c2;
@@ -615,9 +615,9 @@
 #sayso-starbar #starbar-player-console .sb_xpRequired{
 	background-image: url('../images/movie/img_star_sm.png');
 	background-repeat: no-repeat;
-	background-position: 0px 3px;
+	background-position: 2px 3px;
 	height: 20px;
-	padding: 7px 7px 3px 23px;
+	padding: 7px 7px 3px 30px;
 	font-size: 11px;
 	line-height: 22px;
 	color: #333;
@@ -682,14 +682,20 @@
 }
 
 #sayso-starbar #sb_popBox_surveys ul.sb_solidList{
-
+	border-top: 1px solid #b8b8b8;
 }
 #sayso-starbar #sb_popBox_surveys ul.sb_solidList li{
-	border: 1px solid #e5e5e5 !important;
-	background-color: #f7f7f7 !important;
-	margin: 0px 0px 5px 0px;
+	border: 1px solid #b8b8b8 !important;
+	border-left: 0;
+	border-right: 0;
+	background-color: #f5f5f5 !important;
+	margin: -1px 0px 0px 0px;
 	padding: 10px 10px 0px 10px;
 	position: relative;
+}
+
+#sayso-starbar #sb_popBox_surveys ul.sb_solidList li.sb_listOdd{
+	background-color: #e0e0e0 !important;
 }
 
 #sayso-starbar #sb_popBox_surveys ul.sb_solidList li .sb_surveyInfo{
@@ -701,7 +707,7 @@
 	font-weight: bold;
 	font-size: 14px;
 	padding: 0px 0px 10px 0px;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid #b8b8b8;
 }
 
 #sayso-starbar #sb_popBox_surveys ul.sb_solidList li .sb_surveyInfo p,

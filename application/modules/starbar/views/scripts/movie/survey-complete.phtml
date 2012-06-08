@@ -22,23 +22,23 @@
 	Thank you for completing the <strong class="sb_theme_textHighlight"> "<?= $this->survey->title ?>"</strong> survey!<br /><br />
 	<div id="sb-survey-completed">
 		<? if ($this->survey->reward_category == "premium") { ?>
-			<p>Excellent! You earned <strong class="sb_theme_textHighlight_alt">375 Snakkle Bucks</strong> &amp; <strong class="sb_theme_textHighlight_alt">5000 Stars</strong></p>
+			<p>Excellent! You earned <strong class="sb_theme_textHighlight_alt">375 Cinebucks</strong> &amp; <strong class="sb_theme_textHighlight_alt">5000 Stars</strong></p>
 			<? $shareReward = 30 ?>
 		<? } elseif ($this->survey->reward_category == "profile") { ?>
-			<p>Excellent! You earned <strong class="sb_theme_textHighlight_alt">150 Snakkle Bucks</strong> &amp; <strong class="sb_theme_textHighlight_alt">2000 Stars</strong></p>
+			<p>Excellent! You earned <strong class="sb_theme_textHighlight_alt">150 Cinebucks</strong> &amp; <strong class="sb_theme_textHighlight_alt">2000 Stars</strong></p>
 			<? $shareReward = 15 ?>
 		<? } else { ?>
-			<p>Excellent! You earned <strong class="sb_theme_textHighlight">38 Snakkle Bucks</strong> &amp; <strong class="sb_theme_textHighlight">500 Stars</strong></p>
+			<p>Excellent! You earned <strong class="sb_theme_textHighlight">38 Cinebucks</strong> &amp; <strong class="sb_theme_textHighlight">500 Stars</strong></p>
 			<? $shareReward = 8 ?>
 		<? } ?>
 		<div class="sb_externalShares">
 
-			<a class="sb_externalShare sb_externalShare_facebook" rel="sb_mini-snakkle-reward_facebook" href="#"
+			<a class="sb_externalShare sb_externalShare_facebook" rel="sb_mini-cinebucks-reward_facebook" href="#"
 				onclick="$SQ.openWindow('//www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($this->share_link) ?>&caption=<?= urlencode($this->facebook_share_caption) ?>&picture=<?= urlencode($this->facebook_share_image_url) ?>&redirect_uri=<?= urlencode($this->facebook_share_callback_url) ?>&name=<?= urlencode($this->facebook_title) ?>&description=<?= urlencode($this->facebook_description) ?>', 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450'); return false;">
 				<img src="//<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
 			</a>
-			<span class="sb_mini-snakkle-reward sb_mini-snakkle-reward_facebook" id="sb_mini-snakkle-reward_facebook">+<?= $shareReward ?></span>
-			<div class="sb_externalShare sb_externalShare_twitter" rel="sb_mini-snakkle-reward_twitter">
+			<span class="sb_mini-cinebucks-reward sb_mini-cinebucks-reward_facebook" id="sb_mini-cinebucks-reward_facebook">+<?= $shareReward ?></span>
+			<div class="sb_externalShare sb_externalShare_twitter" rel="sb_mini-cinebucks-reward_twitter">
 				<a class="twitter-share-button"
 					data-related="<?= $this->twitter_share_related_users ?>"
 					data-hashtags="<?= $this->twitter_share_hashtags ?>"
@@ -50,7 +50,7 @@
 						<img src="//<?= BASE_DOMAIN ?>/images/generic/logo_twitter.png" alt="Twitter" />
 				</a>
 			</div>
-			<span class="sb_mini-snakkle-reward sb_mini-snakkle-reward_twitter" id="sb_mini-snakkle-reward_twitter">+<?= $shareReward ?></span>
+			<span class="sb_mini-cinebucks-reward sb_mini-cinebucks-reward_twitter" id="sb_mini-cinebucks-reward_twitter">+<?= $shareReward ?></span>
 			Share this survey to earn extra points
 		</div>
 		<br />

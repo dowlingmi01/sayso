@@ -4,12 +4,14 @@
 
 /* override */
 #sayso-starbar #starbar-player-console #starbar-type{
-	background-image: url("../images/machinima/bg_starbar-type.png");
-  height: 74px;
-  left: 100px;
+	
+  background: url("../images/machinima/bg_starbar-type.png") no-repeat;
+  width: 235px;
+  height: 80px;
+  
   position: absolute;
-  top: 0;
-  width: 240px;
+  top: -7px;
+  left: 103px;
   z-index: 2147480011;
 }
 
@@ -29,14 +31,14 @@
 	width: 110px;
 	height: 25px;
 	margin: 0px 0px 0px 0px;
-	top: 8px;
+	top: 10px;
 	left: 73px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-type .sb_userImg{
-	width: 50px;
-	height: 50px;
-	margin: 0px 5px 0px 0px;
+	width: 54px;
+	height: 60px;
+	margin-top: -2px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-type div.sb_userImg{
@@ -48,9 +50,9 @@
 
 #sayso-starbar #starbar-player-console #starbar-type .sb_content{
 	width: 140px;
-	top: 35px;
+	top: 42px;
 	left: 73px;
-	color: #000000;
+	color: #FFFFFF;
 }
 
 #sayso-starbar #starbar-player-console #starbar-type .sb_content h2{
@@ -62,7 +64,7 @@
 #sayso-starbar #starbar-player-console #starbar-type .sb_content h2,
 #sayso-starbar #starbar-player-console #starbar-type .sb_content h2 a,
 #sayso-starbar #starbar-player-console #starbar-type .sb_content a{
-	color: #000000;
+	color: #ffffff;
 }
 
 #sayso-starbar #starbar-player-console #starbar-type .sb_content img{
@@ -73,13 +75,17 @@
 /* MAIN NAV OVERRIDES */
 
 #sayso-starbar #starbar-player-console #starbar-nav ul li span.sb_nav_border{
-	background-color: #676865;
+
+
+  background-color: #676865;
   border-bottom: 1px solid #4b4c4a;
   border-top: 1px solid #000000;
   display: block;
   height: 8px;
   margin: 0;
   text-indent: -9999px;
+
+
 }
 
 #sayso-starbar #starbar-player-console #starbar-nav ul li{
@@ -111,13 +117,14 @@
 	background-image: url('../images/machinima/nav_surveys.png');
 }
 #sayso-starbar #starbar-player-console #starbar-nav ul li#nav_quizzes span.sb_nav_element {
-	background-image: url('../images/machinima/nav_quizzes.png');
+	background-image: url('../images/machinima/nav_freshness.png');
 }
 #sayso-starbar #starbar-player-console #starbar-nav ul li#nav_polls span.sb_nav_element{
 	background-image: url('../images/machinima/nav_polls.png');
 }
 /* special color classes */
 #sayso-starbar #starbar-player-console .sb_theme_navOnGradient{
+	/*
 	background-image: -webkit-gradient(
 	linear,
 	left top,
@@ -128,13 +135,17 @@
 			center top,
 			rgb(0,163,217) 22%,
 			rgb(0,134,179) 61%);
-	background-color# 009fd2;
+	background-color: #009fd2;
+	*/
+	
+	background: url('../images/machinima/nav_border_bg.png') repeat-x;
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_bgGradient,
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value,
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value-fading,
-#sayso-starbar .sb_theme_button{
+#sayso-starbar .sb_theme_button {
+	
 	background-image: -webkit-gradient(
 	linear,
 	left top,
@@ -146,9 +157,10 @@
 			rgb(22,141,202) 22%,
 			rgb(7,61,89) 61%);
 	background-color: #009fd2;
+
 }
 
-#sayso-starbar .sb_popBox .sb_ui-progressbar{
+#sayso-starbar .sb_popBox .sb_ui-progressbar {
 	background-color: #ccc;
 }
 
@@ -187,17 +199,30 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_bgGradientGrey{
+	
+	/*
 	background-image: -webkit-gradient(
-	linear,
-	left top,
-	left bottom,
-	color-stop(0.22, rgb(63,64,65)),
-	color-stop(0.61, rgb(28,29,28)));
+	
+		linear,
+		left top,
+		left bottom,
+		color-stop(0.22, rgb(63,64,65) ),
+		color-stop(0.61, rgb(28,29,28) )
+	
+	);
+	
+	
 	background-image: -moz-linear-gradient(
+	
 			center top,
 			rgb(63,64,65) 22%,
-			rgb(28,29,28) 61%);
-	background-color: #1c1d1c;
+			rgb(28,29,28) 61%
+			
+	);
+	*/
+	
+	background: url(../images/machinima/btn_bg.png) repeat-x center;
+	
 }
 
 
@@ -269,14 +294,16 @@
 /* promo area */
 
 #sayso-starbar #starbar-player-console #starbar-promo{
+	
 	z-index: 1000;
 	position: absolute;
-	left: 619px;
+	left: 615px;
 	bottom: 0;
 	height: 53px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo a.sb_top_level_element{
+	
 	width: 118px;
 	height: 53px;
 	display: table-cell;
@@ -285,7 +312,7 @@
 	background-image: url("../images/generic/bg_divider.png");
 	background-repeat: repeat-y;
 	background-position: -2px 50%;
-	//border-left: 1px solid #383838;
+	border-left: 1px solid #383838;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_popBoxInner .sb_popContent{
@@ -293,6 +320,11 @@
 	height: 290px;
 	padding: 0 !important;
 	margin: 0 !important;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo img
+{
+	margin-top:3px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_promoBG{
@@ -311,6 +343,7 @@
 	display: block;
 	background-image: url('../images/machinima/img_promo_week1_bg.jpg');
 	background-position: left bottom;
+	margin-top:2px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide{
@@ -528,10 +561,13 @@
 
 
 #sayso-starbar #starbar-player-console .sb_imgSnakkles{
-	background-image: url('../images/machinima/img_snakkles.png');
-	width: 30px;
-	height: 30px;
+	background-image: url('../images/machinima/p_icon.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 25px;
+	height: 25px;
 	display: inline-block;
+	margin-top:-3px;
 }
 
 #sayso-starbar #starbar-player-console .sb_pointsEarnedTotal{
@@ -731,9 +767,9 @@
 #sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-star{
 	position: absolute;
 	z-index: 1000;
-	top: -5px;
+	top: -7px;
 	left: 0;
-	background-image: url('../images/machinima/img_star.png');
+	background-image: url('../images/machinima/star.png');
 	background-repeat: no-repeat;
 	width: 27px;
 	height: 27px;
@@ -835,7 +871,7 @@
 }
 
 #sayso-starbar .sb_user-level-box .sb_progress_bar .sb_progressBarValue{
-	top: 1px;
+	top: -2px;
 }
 
 /* user level */

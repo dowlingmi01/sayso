@@ -82,6 +82,7 @@
   border-top: 1px solid #000000;
   display: block;
   height: 8px;
+  width:95px;
   margin: 0;
   text-indent: -9999px;
 
@@ -297,13 +298,12 @@
 	
 	z-index: 1000;
 	position: absolute;
-	left: 615px;
+	left: 618px;
 	bottom: 0;
 	height: 53px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo a.sb_top_level_element{
-	
 	width: 118px;
 	height: 53px;
 	display: table-cell;
@@ -331,6 +331,7 @@
 	width: 515px;
 	height: 290px;
 	background-repeat: no-repeat;
+	
 }
 
 
@@ -765,14 +766,16 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-star{
+	
 	position: absolute;
 	z-index: 1000;
 	top: -7px;
 	left: 0;
 	background-image: url('../images/machinima/star.png');
 	background-repeat: no-repeat;
-	width: 27px;
+	width: 33px;
 	height: 27px;
+	
 }
 
 #sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-note{
@@ -853,11 +856,13 @@
 
 
 #sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgSnakkles{
+	
 	position: absolute;
 	z-index: 1000;
-	top: 10px;
+	top: 17px;
 	left: 0;
-	height: 30px;
+	height: 25px;
+	width: 25px;
 }
 
 #sayso-starbar .sb_user-level-box .sb_progress_bar,
@@ -871,7 +876,7 @@
 }
 
 #sayso-starbar .sb_user-level-box .sb_progress_bar .sb_progressBarValue{
-	top: -2px;
+	top: 0px;
 }
 
 /* user level */
@@ -1098,6 +1103,7 @@
 
 #sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points .sb_current-level .sb_user_level_title{
 	text-transform:  uppercase;
+	color:#FAFAFA !important;
 }
 
 /* onboarding popup AND ONBOARDING INSTRUCTIONS W/IN HELP */
@@ -1679,4 +1685,60 @@
 
 #sayso-starbar ._sayso_starbar_css_loaded {
 	width: 1px;
+}
+
+
+/* Tab contents */
+
+/* => Globals */
+#sayso-starbar #starbar-player-console #sb_popBox_polls * 
+{
+	font-weight:bold;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_polls span.red_highlight
+{
+	color:#ca4f54;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_polls .polls_content_wrapper
+{
+	width:100%;
+	height:100%;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_polls .polls_content_wrapper .head
+{
+	width:100%;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_polls .polls_content_wrapper .head .page_title
+{
+	float:left;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_polls .polls_content_wrapper .head .page_title .title
+{
+
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_polls .polls_content_wrapper .head .navigation
+{
+	float:right;
+
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_polls .polls_content_wrapper .head .navigation .infotext
+{
+
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_polls .polls_content_wrapper .content
+{
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_polls .polls_content_wrapper .space
+{
+	clear:both;
+	height:10px;
 }

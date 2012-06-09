@@ -881,6 +881,7 @@ $SQ(function(){
 	 * 8. Elements that contain a currency title (either redeemable points or experience points)
 	 */
 	function activateGameElements (target, animate) {
+		
 		var userPurchasesContainerElems = $SQ('.sb_user_purchases', target);
 		var levelIconsContainerElems = $SQ('.sb_user_level_icons_container', target);
 		var currencyBalanceNextLevelElems = $SQ('.sb_currency_balance_next_level', target);
@@ -1693,4 +1694,5 @@ $SQ(function(){
 
 	// flag so we know this file has loaded
 	sayso.starbar.loaded = true;
+
 });

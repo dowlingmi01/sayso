@@ -262,7 +262,7 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_textHighlight, #sayso-starbar-embed .sb_theme_textHighlight{
-	color: #009fd2 !important;
+	color: #b63035 !important;
 	text-shadow: none !important;
 }
 
@@ -867,12 +867,15 @@
 
 #sayso-starbar .sb_user-level-box .sb_progress_bar,
 #sayso-starbar .sb_user-points-box .sb_progress_bar{
-	border: 2px solid #fff;
+	border: 1px solid #fff;
 	margin: 5px 3px 0px 13px;
 	position: relative;
 	-moz-box-shadow: 0px 0px 2px #666;
 	-webkit-box-shadow: 0px 0px 2px #666;
 	box-shadow: 0px 0px 2px #666;
+	
+	background-color:#000;
+	
 }
 
 #sayso-starbar .sb_user-level-box .sb_progress_bar .sb_progressBarValue{
@@ -925,16 +928,16 @@
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav:hover{
-	background-position: 0px -102px;
+	/*background-position: 0px -102px;*/
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav#sb_userLevel_prev{
-	background-image: url('../images/machinima/img_carousel_left.png');
+	background-image: url('../images/machinima/c_prev.png');
 	left: 0;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav#sb_userLevel_next{
-	background-image: url('../images/machinima/img_carousel_right.png');
+	background-image: url('../images/machinima/c_next.png');
 	right: 0;
 }
 
@@ -968,6 +971,7 @@
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevelImg{
+	
 	height: 85px;
 	width: 100%;
 	display: block;
@@ -993,7 +997,7 @@
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next .sb_userLevelImg{
-	background-image: url('../images/machinima/img_level_blank.png');
+	background-image: url('../images/machinima/level_blank.png');
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_user-level-box{
@@ -1258,6 +1262,23 @@
 	height: 313px;
 }
 
+#sayso-starbar #starbar-player-console #sb_popBox_polls .sb_tabPane .sb_tabHeader
+{
+	font-weight:bold;
+	font-size:12px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_polls .sb_tabPane h3 a{
+	color: #000000;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_polls .sb_tabPane h3 .sb_img_doubleValue
+{
+	background-image : url('../images/machinima/double_value.png');
+}
+
+
+
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_tabs{
 	height: 390px;
 }
@@ -1307,9 +1328,11 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_popBox .sb_header{
+	/*
 	background-color: #383838;
 	margin: -15px -15px 10px -15px;
 	padding: 5px 5px 5px 8px;
+	*/
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav{
@@ -1318,21 +1341,20 @@
 
 #sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_ui-icon-triangle-1-s {
 	background-image: url('../images/machinima/img_arrow_down.png');
-	width: 18px;
+	width: 17px;
 	height: 18px;
 }
 #sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_ui-icon-triangle-1-e {
 	background-image: url('../images/machinima/img_arrow_right.png');
 	width: 18px;
-	height: 18px;
+	height: 17px;
 }
 
 #sayso-starbar #starbar-player-console .sb_img_nextTriangle{
-	background-image: url("../images/machinima/img_arrow_right_solid.png");
-  float: right;
-  height: 20px;
-  margin-left: 4px;
-  width: 22px;
+	background-image: url("../images/machinima/next_poll.png");
+  	height: 14px;
+  	margin-left: 4px;
+  	width: 46px;
 }
 
 /* Rewards Popup */
@@ -1648,6 +1670,7 @@
 #sayso-starbar #sb_popBox_user-share.sb_triangle-border:after{
 	left: 226px;
 }
+
 #sayso-starbar #sb_popBox_user-profile .sb_triangle-solid:after,
 #sayso-starbar #sb_popBox_user-share .sb_triangle-solid:after{
 	left: 223px;
@@ -1677,6 +1700,7 @@
 }
 
 /* accordions */
+
 #sayso-starbar #starbar-player-console .sb_popBox .sb_accordion{
 	width: 490px;
 }
@@ -1687,58 +1711,9 @@
 	width: 1px;
 }
 
-
-/* Tab contents */
-
-/* => Globals */
-#sayso-starbar #starbar-player-console #sb_popBox_polls * 
+.sb_nextPoll
 {
-	font-weight:bold;
+	background-pozition: center !important;
+	text-indent:-9999px !important;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_polls span.red_highlight
-{
-	color:#ca4f54;
-}
-
-#sayso-starbar #starbar-player-console #sb_popBox_polls .polls_content_wrapper
-{
-	width:100%;
-	height:100%;
-}
-
-#sayso-starbar #starbar-player-console #sb_popBox_polls .polls_content_wrapper .head
-{
-	width:100%;
-}
-
-#sayso-starbar #starbar-player-console #sb_popBox_polls .polls_content_wrapper .head .page_title
-{
-	float:left;
-}
-
-#sayso-starbar #starbar-player-console #sb_popBox_polls .polls_content_wrapper .head .page_title .title
-{
-
-}
-
-#sayso-starbar #starbar-player-console #sb_popBox_polls .polls_content_wrapper .head .navigation
-{
-	float:right;
-
-}
-
-#sayso-starbar #starbar-player-console #sb_popBox_polls .polls_content_wrapper .head .navigation .infotext
-{
-
-}
-
-#sayso-starbar #starbar-player-console #sb_popBox_polls .polls_content_wrapper .content
-{
-}
-
-#sayso-starbar #starbar-player-console #sb_popBox_polls .polls_content_wrapper .space
-{
-	clear:both;
-	height:10px;
-}

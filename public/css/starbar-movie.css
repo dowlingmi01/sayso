@@ -763,6 +763,42 @@
 	font-size: 14px;
 }
 
+#sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner .sb_popContent p strong{
+	font-size: 14px !important;
+}
+
+
+#sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner .sb_popContent label{
+	color: #ffffff !important;	
+	font-size: 14px;
+	margin: 0px 5px;
+}
+
+#sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner .sb_popContent .sb_spotlight-response,
+#sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner .sb_popContent .sb_spotlight-share{
+	margin: 15px 0px !important;
+	display: block;
+	overflow:  hidden;
+}
+
+#sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner .sb_popContent .sb_spotlight-response .sb_column{
+	width: 50%;
+	float: left;
+	display: inline-block;
+}
+
+
+#sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner .sb_popContent .sb_spotlight-rate{
+ width: 15px;
+ height: 15px;
+ margin: 0px 5px;
+ background-repeat: repeat-x;
+ background-position:  0px 0px;
+ background-image: url('../images/movie/img_spotlight-rate.png');
+ display: inline-block;
+ text-indent: -9999px;
+}
+
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a,
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-disabled a,
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-processing a{

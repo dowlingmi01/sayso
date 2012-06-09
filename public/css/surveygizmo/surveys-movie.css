@@ -93,25 +93,28 @@ ul.sg-list-vertical li {
 }
 
 /* !----- Buttons ----- */
-.sg-button, #sGizmoSaveButtonX {
-	background-color: #168DCA;
-	background-image: none;
+.sg-button, #sGizmoSaveButtonX,
+.sg-button:hover, #sGizmoSaveButtonX:hover {
 	background-image: -webkit-gradient(
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(22,141,202)),
-	color-stop(0.61, rgb(7,61,89)));
+	color-stop(0.22, rgb(191,46,20)),
+	color-stop(0.61, rgb(82,5,20))) !important;
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(22,141,202) 22%,
-			rgb(7,61,89) 61%);
+			rgb(191,46,20) 22%,
+			rgb(82,5,20) 61%) !important;
+	background-color: #bf2e14;
 
 	font-size: 14px;
 	font-weight: normal;
 	text-decoration: none;
 	color: #fff !important;
-	padding: 5px 10px;
+	padding: 3px 5px;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
 	box-shadow: 0px 0px 3px #666;
 	-moz-box-shadow: 0px 0px 3px #666;
 	-webkit-box-shadow: 0px 0px 3px #666;

@@ -360,10 +360,14 @@
 	padding: 0px 20px 0px 0px;
 	height: 16px;
 	line-height: 16px;
-	color: #666666;
+	color: #991B17;
 	display: inline-block;
 	margin: 5px 0px 0px 0px;
 }
+
+/* SCROLLPANE */
+
+
 
 /* promo area */
 
@@ -595,7 +599,7 @@
 	padding: 3px 5px 3px 30px;
 	line-height: 21px;
 	font-size: 11px;
-	color: #333;
+	color: #333 !important;
 	display: block;
 }
 
@@ -607,7 +611,7 @@
 	font-size: 11px;
 	line-height: 21px;
 	border-bottom: 1px solid #c2c2c2;
-	color: #333;
+	color: #333 !important;
 	display: block;
 	height: 40%;
 }
@@ -730,89 +734,48 @@
 	top: 50%;
 }
 
-/* quizzes */
+/* spotlight */
 
-#sayso-starbar #sb_popBox_quizzes.sb_popBox{
+#sayso-starbar #sb_popBox_spotlight.sb_popBox{
 	left: 0px;
 }
 
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent{
-	width: 360px;
-	height: 420px;
+#sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner{
+	background-color: #000;
 }
 
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz h2.sb_title{
-	text-align: center;
+#sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner .sb_popContent{
+	width: 640px;
+	height: 530px;
+	background-color: #000 !important;
+	color: #ffffff !important;
 }
 
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_main{
-	border-bottom: 2px dotted #999999;
-	padding: 0px 0px 5px 0px;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_main img{
-	display: block;
-	margin: 10px auto;
-	max-height: 140px;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_options{
-	width: 100%;
-	display: table;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_options .sb_quiz_row{
-	display: table-row;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_options .sb_quiz_option{
-	width: 45%;
-	display: table-cell;
-	padding: 5px 15px 5px 0px;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_options .sb_quiz_option_correct{
-	color: #92c20c !important;
-	text-shadow: none !important;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_results{
-	border-bottom: 2px dotted #999999;
-	padding-bottom: 5px;
-	margin-bottom: 10px;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quizShare{
-	float: left;
-	margin: 0 0 0 10px;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_externalShares{
-	float: left;
+#sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner .sb_popContent h2{
+	color: #991B17;
 	margin: 10px 0px 0px 0px;
+	font-size: 28px;
+	font-weight: normal;
 }
 
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz_next{
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	text-align:  center;
+#sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner .sb_popContent p{
+	color: #ffffff !important;
+	font-size: 14px;
 }
 
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz_next a{
-	color: #333;
-	font-weight: bold;
-	font-size: 11px;
-	background-image: url('../images/movie/img_arrow_right.png');
-	background-repeat: no-repeat;
-	background-position: right 0px;
-	padding: 0px 22px 0px 0px;
-	display: inline-block;
-	margin: 0px auto;
-	height: 20px;
-	line-height: 20px;
-	text-align:  center;
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a,
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-disabled a,
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-processing a{
+	color: #f1b134 !important;
 }
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li a{
+	color: #ffffff !important;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li{
+	border-color: #ffffff !important;
+}
+
 
 /* REUSABLE: user level box and user score */
 
@@ -888,7 +851,7 @@
 
 #sayso-starbar #starbar-player-console span.sb_mini-cinebucks-reward,
 #sayso-starbar-embed span.sb_mini-cinebucks-reward,
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li span.sb_mini-cinebucks-reward{
+#sayso-starbar #sb_popBox_spotlight ul.sb_listDeals li span.sb_mini-cinebucks-reward{
 	background-image: url('../images/movie/img_cinebucks_tn.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
@@ -1730,13 +1693,13 @@
 
 /* quizzes */
 
-#sayso-starbar #sb_popBox_quizzes.sb_triangle-border:before{
+#sayso-starbar #sb_popBox_spotlight.sb_triangle-border:before{
 	left: 230px;
 }
-#sayso-starbar #sb_popBox_quizzes.sb_triangle-border:after{
+#sayso-starbar #sb_popBox_spotlight.sb_triangle-border:after{
 	left: 231px;
 }
-#sayso-starbar #sb_popBox_quizzes .sb_triangle-solid:after{
+#sayso-starbar #sb_popBox_spotlight .sb_triangle-solid:after{
 	left: 227px;
 }
 

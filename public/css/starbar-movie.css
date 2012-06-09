@@ -1219,6 +1219,11 @@
 	padding: 10px 10px 5px 10px;
 	background-color: #383838;
 }
+
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_header img{
+	margin: 0px 0px 0px 10px;
+}
+
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList{
 	border-top: 2px dotted #ccc;

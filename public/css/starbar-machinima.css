@@ -315,7 +315,7 @@
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_popBoxInner .sb_popContent{
-	width: 515px;
+	width: 525px;
 	height: 290px;
 	padding: 0 !important;
 	margin: 0 !important;
@@ -327,10 +327,15 @@
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_promoBG{
-	width: 515px;
+	width: 525px;
 	height: 290px;
 	background-repeat: no-repeat;
 	
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_header
+{
+	border:none !important;
 }
 
 
@@ -341,7 +346,7 @@
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week1{
 	display: block;
-	background-image: url('../images/machinima/img_promo_week1_bg.jpg');
+	background-image: url('../images/machinima/img_promo_2.png');
 	background-position: left bottom;
 	margin-top:2px;
 }
@@ -360,14 +365,16 @@
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details{
 	position: absolute;
-	width: 240px;
-	top: 135px;
+	top: 90px !important;
+	left: 12px !important;
+	width: 220px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p{
 	margin: 12px 0px;
-	font-size: 12px;
+	font-size: 13px;
 	line-height: 15px;
+	width:220px;	
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide p.sb_promo_link{
@@ -375,15 +382,19 @@
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_link a{
-	background-image: url('../images/machinima/img_arrow_right_solid.png');
+	background-image: url('../images/machinima/tokens_btn.png');
 	background-repeat: no-repeat;
+	/*
 	background-position: right 50%;
 	height: 20px;
 	line-height: 20px;
 	font-size: 14px;
 	font-weight: bold;
+	*/
 	padding: 0px 30px 0px 0px;
 	display: inline-block;
+	width:163px;
+	height:23px;
 
 }
 
@@ -511,7 +522,74 @@
 #sayso-starbar .sb_rewardItem .sb_rewardHeader{
 	color: #000000;
 }
+#sayso-starbar #sb_popBox_user-profile .sb_header h2
+{
+	font-weight:normal !important;
+	font-size:13px;
+}
 
+#sayso-starbar #sb_popBox_user-profile .sb_header h2 .sb_user_title 
+{
+	font-weight:bold !important;
+	font-size:13px;
+	color:#e51c24;
+}
+
+#sayso-starbar #sb_popBox_user-profile .sb_userImg 
+{
+	width:50px !important;
+	height:50px !important;
+	margin-right: 7px !important;
+	background: url('../images/machinima/coca_dude.png') !important;
+}
+
+#sayso-starbar #sb_popBox_user-profile .sb_lineList li:last-child p small a
+{
+	color:#e51c24 !important;
+}
+
+#sayso-starbar #sb_popBox_user-profile .sb_lineList li a.sb_nav_element
+{
+	color:#e51c24 !important;
+}
+
+#sayso-starbar #sb_popBox_user-profile .sb_titlePlain
+{
+	font-size:13px !important;
+}
+
+#sayso-starbar #sb_popBox_user-profile .sb_currency_balance, 
+#sayso-starbar #sb_popBox_user-profile .sb_currency_title
+{
+	color:#e51c24 !important;
+}
+
+#sayso-starbar #sb_popBox_user-profile .sb_userLevelColor1.sb_user_level_title
+{
+	color:#e51c24 !important;
+	font-size:12px;
+	font-weight:bold;
+}
+
+#sayso-starbar #sb_popBox_user-profile .sb_user_level_number
+{
+	font-weight:bold;
+}
+
+#sayso-starbar #sb_popBox_user-profile  .sb_titlePlain
+{
+	/*border-bottom:solid 1px #bfbfbf;*/
+}
+
+#sayso-starbar #sb_popBox_user-profile  .sb_tiny_note
+{
+	font-size:12px;
+}
+
+#sayso-starbar #sb_popBox_user-profile .sb_popContent
+{
+	width:550px !important;	
+}
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a{
 	color: #ffffff;
@@ -525,7 +603,7 @@
 /* other special formatting styles */
 
 #sayso-starbar #starbar-player-console .sb_notesEarned{
-	background-image: url('../images/machinima/img_snakkles_sm.png');
+	background-image: url('../images/machinima/i_small.png');
 	background-repeat: no-repeat;
 	background-position: 2px 3px;
 	padding: 3px 5px 3px 24px;
@@ -536,7 +614,7 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_xpEarned{
-	background-image: url('../images/machinima/img_star_sm.png');
+	background-image: url('../images/machinima/star_small.png');
 	background-repeat: no-repeat;
 	background-position: 2px 3px;
 	padding: 3px 7px 3px 24px;
@@ -598,7 +676,7 @@
   padding: 0px 0 0px 50px;
   position: absolute;
   width: 360px;
-  font-weight: normal;
+  font-weight: bold;
   color: #000 !important;
 }
 
@@ -627,6 +705,9 @@
 	margin: 0px 0px 5px 0px;
 	padding: 10px 10px 0px 10px;
 	position: relative;
+	
+	border-left: none !important;
+	border-right: none !important;
 }
 
 #sayso-starbar #sb_popBox_surveys ul.sb_solidList li .sb_surveyInfo{
@@ -641,6 +722,11 @@
 	border-bottom: 2px dotted #ccc;
 }
 
+#sayso-starbar #sb_popBox_surveys .sb_surveyInfo p .sb_theme_textHighlight
+{
+	font-size:11px;
+}
+
 #sayso-starbar #sb_popBox_surveys ul.sb_solidList li .sb_surveyInfo p,
 #sayso-starbar #sb_popBox_surveys ul.sb_solidList li .sb_surveyInfo p .sb_currency_title{
 	font-size: 11px;
@@ -650,15 +736,37 @@
 
 #sayso-starbar #sb_popBox_surveys .sb_survey-select{
 	text-indent: -9999px;
-	width: 32px;
-	height: 28px;
+	width: 19px;
+	height: 42px;
 	display: inline-block;
-	background-image:  url('../images/machinima/img_arrow_right_solid_lg.png');
+	background-image:  url('../images/machinima/surveys_go.png');
 	background-repeat: no-repeat;
 	position: absolute;
 	right: 10px;
-	margin-top: -19px;
+	margin-top: -22px;
 	top: 50%;
+}
+
+#sayso-starbar #sb_popBox_surveys_lg .sb_header.embed
+{
+	border:none !important;
+}
+
+#sayso-starbar #sb_popBox_surveys_lg .sb_survey_title.embed
+{
+	color:#000000 !important;
+	font-size:14px !important;
+}
+
+#sayso-starbar #sb_popBox_surveys_lg .sb_theme_iconChange
+{
+	color: #e51c24;
+	background-image: url('../images/machinima/img_change.png') !important;
+}
+
+#sayso-starbar #sb_popBox_surveys_lg .sb_survey_container
+{
+	border-top: solid 1px #bfbfbf;
 }
 
 /* quizzes */
@@ -1045,6 +1153,19 @@
 	height: 52px;
 }
 
+#sayso-starbar #sb_popBox_user-profile .sb_user-current-level-icon
+{
+	background-image: url('../images/machinima/user_lvl.png') !important;
+	width:60px !important;
+	height:60px !important;
+}
+
+#sayso-starbar #sb_popBox_user-profile .sb_titlePlain.top
+{
+	border-bottom:solid 1px #999;
+	padding-bottom:5px;
+}
+
 /* user profile settings */
 #sayso-starbar #starbar-type #sb_popBox_user-profile #edit-sb_profile_username{
 	width: 100px;
@@ -1113,7 +1234,6 @@
 
 #sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points .sb_current-level .sb_user_level_title{
 	text-transform:  uppercase;
-	color:#FAFAFA !important;
 }
 
 /* onboarding popup AND ONBOARDING INSTRUCTIONS W/IN HELP */
@@ -1369,7 +1489,7 @@
 	width: 116px;
   	height: 14px;
   	margin-left: 4px;
-  	margin-top: 7px !important;
+  	margin-top: 6px !important;
 }
 
 /* Rewards Popup */
@@ -1624,6 +1744,30 @@
 #sayso-starbar #sb_popBox_surveys_hg .sb_triangle-solid:after{
 	left: 123px;
 }
+
+#sayso-starbar #sb_popBox_surveys .sb_tabHeader,
+#sayso-starbar #sb_popBox_surveys .sb_tabHeader .sb_theme_textHighlight
+{
+	font-weight:bold !important;
+	font-size:12px;
+}
+
+#sayso-starbar #sb_popBox_surveys .sb_surveyInfo h3{
+	color:#000000 !important;
+	font-size:14px !important;
+	font-weight:bold !important;
+	border-bottom:solid 1px #bfbfbf !important;
+	padding-bottom:15px !important;
+}
+
+#sayso-starbar #starbar-player-console .sb_solidList li.sb_listOdd {
+	background-color: #000000;
+}
+#sayso-starbar #starbar-player-console .sb_solidList li.sb_listEven {
+	background-color: #FAFAFA;
+	
+}
+
 
 /* quizzes */
 

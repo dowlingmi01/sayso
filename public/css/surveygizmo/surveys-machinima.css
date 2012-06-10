@@ -63,8 +63,8 @@
 	color:black;
 	margin:0 ;
 	padding:3px 0;
-	font-size: 15px;
-	}
+	font-size: 13px;
+}
 .sg-question-number {
 	}
 
@@ -75,13 +75,15 @@
 	border-bottom: 0;
 	}
 .sg-question-set { /* wraps around question options and subquestions */
-	margin: 0;
-	}
+	width:475px;
+	margin-left:-35px;
+}
 
 
 .sg-question-options {
 	padding: 0;
 	font-size: 12px;
+	margin-top:10px;
 }
 
 
@@ -93,6 +95,7 @@ ul.sg-list-vertical li {
 }
 
 /* !----- Buttons ----- */
+
 .sg-button, #sGizmoSaveButtonX {
 	background-color: #168DCA;
 	background-image: none;
@@ -121,6 +124,7 @@ ul.sg-list-vertical li {
 	margin: 0 10px 0 10px;
 	display:inline;
 	}
+	
 	.sg-buttons,
 	.sg-button-bar input {
 		display:inline;
@@ -128,16 +132,7 @@ ul.sg-list-vertical li {
 	.sg-button:hover {
 		background-position:0 -40px;
 		}
-
-.sg-button-bar {
-	position: fixed;
-	bottom: 0;
-	border-top: 10px solid #FFFFFF;
-	border-bottom: 2px solid #FFFFFF;
-	margin-bottom: 0px;
-	background: #FFFFFF;
-	width: 98%;
-	}
+	
 
 #sg_BackButton {
 	margin-left: 141px;
@@ -148,6 +143,22 @@ ul.sg-list-vertical li {
 	margin-right: 110px\0/IE8+9;
 	float: right;
 }
+
+
+
+
+.sg-button-bar {
+	position: fixed;
+	bottom: 0;
+	border-top: 10px solid #FFFFFF;
+	border-bottom: 2px solid #FFFFFF;
+	margin-bottom: 0px;
+	background: #FFFFFF;
+	width: 98%;
+}
+
+
+
 #sg_SubmitButton {
 	margin-right: 125px;
 	float: right;

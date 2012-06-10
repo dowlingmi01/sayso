@@ -1,5 +1,5 @@
 <div class="sb_header">
-	<img src="//<?= BASE_DOMAIN ?>/images/machinima/logo_snakkle_lg.png" alt="Snakkle logo" />
+	<img src="//<?= BASE_DOMAIN ?>/images/machinima/surveys_logo.png" alt="Snakkle logo" />
 </div><!-- .sb_header -->
 <div class="sb_tabs">
 	<ul>
@@ -16,9 +16,9 @@
 		<? } ?>
 	</ul>
 	<div id="surveys_tabs_1" class="sb_tabPane">
-		<h2 class="sb_title sb_tabHeader">Surveys</h2>
 		<p class="sb_tabHeader">
-			Here's where your SaySo really counts! Completing surveys not only earns you <strong class="sb_theme_textHighlight sb_tooltip" title="Snakkle Bucks - are almost as good as cash and can be redeemed for goods in the Rewards Center.">Snakkle Bucks</strong> &amp; <strong class="sb_theme_textHighlight sb_tooltip" title="Stars - determine your access to increasingly important levels of influence.">Stars</strong>, but will influence Snakkle's content and it's community. Share surveys for bonus Snakkle Bucks &amp; Stars and look for special surveys that are worth even more!
+			Earn <strong class="sb_theme_textHighlight sb_tooltip" title="">XP</strong> &amp; 
+			<strong class="sb_theme_textHighlight sb_tooltip" title="">M&#39;s</strong> for each Survey you complete. Share with your friends to earn extra points and you&#39;ll be that much closer to winning the big giveaway.
 		</p>
 		<? if ($this->profile_survey_id) { ?>
 			<p class="sb_tabHeader">
@@ -32,7 +32,6 @@
 
 	<? if ($this->count_completed_surveys || $this->count_disqualified_surveys) { ?>
 		<div id="surveys_tabs_2" class="sb_tabPane">
-			<h2 class="sb_title">Surveys</h2>
 			<p class="sb_tabHeader">All of your completed surveys are listed below.</p>
 			<div class="sb_scrollPane">
 				<ul class="sb_outlineList">
@@ -45,7 +44,6 @@
 
 	<? if ($this->count_archived_surveys) { ?>
 		<div id="surveys_tabs_3" class="sb_tabPane">
-			<h2 class="sb_title">Surveys</h2>
 			<p class="sb_tabHeader">We'd still love your opinion on these archived surveys, and you can still earn by completing them! Same deal &ndash; earn <strong class="sb_theme_textHighlight">Snakkle Bucks</strong> &amp; <strong class="sb_theme_textHighlight"> Stars</strong> for each one you complete.</p>
 			<div class="sb_scrollPane">
 				<? $this->displaySurveys('archived', $this->starbar) ?>

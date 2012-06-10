@@ -12,7 +12,7 @@
 						<img class="sb_userImg sb_alignLeft" src="//<?= BASE_DOMAIN ?>/images/machinima/img_user.jpg" alt="<?= $this->user->getTitle() ?>" />
 					<? } ?>
 					<p class="sb_nextToUserImage">
-						<strong>Username:</strong> <span id="sb_profile_username" class="sb_user_title sb_jeip<? if (!$this->user->username) { ?> sb_user_level_title<? } ?>"><?= $this->user->getTitle() ?></span><br />
+						<strong>User Name:</strong> <span id="sb_profile_username" class="sb_user_title sb_jeip<? if (!$this->user->username) { ?> sb_user_level_title<? } ?>"><?= $this->user->getTitle() ?></span><br />
 						<?= $this->user_email->email ?>
 					</p>
 				</li>
@@ -39,8 +39,9 @@
 					<h2 class="sb_titlePlain" style="margin: 0;">Documents</h2>
 					<p style="margin: 0;">
 						<small>
-							<a href="http://<?= BASE_DOMAIN ?>/docs/machinima/Say.So_Privacy_Policy.pdf" target="_new">Privacy Policy</a>&nbsp;&nbsp;|&nbsp;
-							<a href="http://<?= BASE_DOMAIN ?>/docs/machinima/Say.So_Rewards_Rules.pdf" target="_new">Rewards Rules</a>&nbsp;&nbsp;|&nbsp;
+							<a href="http://<?= BASE_DOMAIN ?>/docs/machinima/Say.So_Privacy_Policy.pdf" target="_new">Privacy Policy</a>&nbsp;|
+							<a href="http://<?= BASE_DOMAIN ?>/docs/machinima/Say.So_Rewards_Rules.pdf" target="_new">Rewards Rules</a>&nbsp;|
+							<a href="http://<?= BASE_DOMAIN ?>/docs/machinima/Say.So_Rewards_Rules.pdf" target="_new">Giveaway Rules</a>&nbsp;|
 							<a href="http://<?= BASE_DOMAIN ?>/docs/machinima/Say.So_App_EULA.pdf" target="_new">EULA</a>
 						</small>
 					</p>
@@ -49,7 +50,7 @@
 		</div>
 	</div><!-- .sb_column60 -->
 	<div class="sb_column40">
-			<h2 class="sb_titlePlain">My Stats</h2>
+			<h2 class="sb_titlePlain top">My Stats</h2>
 			<div class="sb_user-stats">
 				<div class="sb_user-current-level-icon">
 
@@ -80,8 +81,8 @@
 
 
 	<li style="border: none;">
-		<h2 class="sb_titlePlain" style="padding-top: 3px">Share Snakkle Say.So </h2>
-		<span class="sb_tiny_note">Earn Snakkle Bucks for sharing!</span>
+		<h2 class="sb_titlePlain" style="padding-top: 3px">Share the Machinima Say.So Bar</h2>
+		<span class="sb_tiny_note">Earn extra credit for sharing!</span>
 		<div class="sb_externalShares">
 
 			<!-- FACEBOOK -->

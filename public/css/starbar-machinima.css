@@ -8,7 +8,6 @@
   background: url("../images/machinima/bg_starbar-type.png") no-repeat;
   width: 235px;
   height: 80px;
-  
   position: absolute;
   top: -7px;
   left: 103px;
@@ -510,8 +509,9 @@
 #sayso-starbar #starbar-player-console #starbar-type .sb_content .sb_popBox a,
 #sayso-starbar #sb_popBox_user-profile .sb_currency_balance,
 #sayso-starbar .sb_rewardItem .sb_rewardHeader{
-	color: #009fd2;
+	color: #000000;
 }
+
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a{
 	color: #ffffff;
@@ -962,8 +962,11 @@
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_current{
+	/*
 	width: 100px;
-	height: 139px; /* fixed height to allow scrollPane to have correct height */
+	height: 139px; 
+	*/
+	/* fixed height to allow scrollPane to have correct height */
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevelIcons.sb_userLevel_current p{
@@ -988,8 +991,10 @@
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next{
+	/*
 	opacity:0.5;
 	filter:alpha(opacity=50) !important;
+	*/
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_empty{
@@ -1004,9 +1009,10 @@
 	margin: 18px 0px 0px 0px;
 }
 
+
 #sayso-starbar #sb_popBox_user-level .sb_rewardsCenterLink{
 	float: right;
-	margin: 32px 0px 0px 0px;
+	margin: 22px 0px 0px 0px;
 	width: 130px;
 	color: #000;
 	line-height:  20px;
@@ -1357,6 +1363,15 @@
   	width: 46px;
 }
 
+
+#sayso-starbar #starbar-player-console .sb_img_nextTriangle_rewards{
+	background-image: url("../images/machinima/rewards_center_btn.png");
+	width: 116px;
+  	height: 14px;
+  	margin-left: 4px;
+  	margin-top: 7px !important;
+}
+
 /* Rewards Popup */
 
 #sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewards{
@@ -1705,15 +1720,30 @@
 	width: 490px;
 }
 
+#sayso-starbar .sb_nextPoll{background-pozition: center !important;text-indent:-9999px !important;}
+#sayso-starbar .sb_column5050 .sb_column50{}
+#sayso-starbar .sb_column5050 .sb_column50.points {width: 200px;}
+#sayso-starbar .sb_column5050 .sb_column50.level{width: 125px; margin-left: 28px;}
+#sayso-starbar .sb_column5050 .sb_column50 small {padding-left: 13px; font-size:11px !important;}
+#sayso-starbar .sb_column5050 .sb_column50 small span.sb_currency_balance_next_level,#sayso-starbar .sb_column5050 .sb_column50 small span.sb_currency_title {font-size:11px !important;}
+#sayso-starbar .sb_column5050 .sb_column50.level .sb_user-points-box{width: 125px !important;top: 0;}
+#sayso-starbar .sb_lineList li span.sb_title{font-size:12px !important;font-weight:bold !important;color:#000000;text-transform: uppercase;}
+#sayso-starbar .sb_lineList li span.sb_title span {font-weight:bold !important;}
+#sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container{top:10px;margin-left:auto !important;margin-right:auto !important;}
+#sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group{}
+#sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_next{width:95px !important;height:65px !important;margin-top:27px !important;}
+#sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_next .sb_userLevelImg{width:60px !important;height:63px !important;margin-left:auto !important;margin-right:auto !important;}
+#sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_current{height:105px !important;}
+#sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_current .sb_userLevelImg{width:105px !important;height:104px !important;margin-left:auto !important;margin-right:auto !important;background-image: url('../images/machinima/level_current.png') !important;}
+#sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box {margin-top:10px !important;}
+#sayso-starbar #sayso-starbar-ajax-content .sb_user-points-box{ padding-top:0px !important; margin-top:10px !important }
+#sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box .sb_user-level-star{top:-9px !important;height:30px !important;}
+#sayso-starbar #sayso-starbar-ajax-content .sb_user-points-box .sb_imgSnakkles{top:-2px !important;}
+#sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box .sb_progress_bar,#sayso-starbar #sayso-starbar-ajax-content .sb_user-points-box .sb_progress_bar{background-color:#555555;}
+#sayso-starbar #sayso-starbar-ajax-content .sb_user_purchases p {font-size:11px !important;padding-top:5px !important;}
+#sayso-starbar .sb_lineList li { border-bottom: solid 1px #bfbfbf !important; }
+#sayso-starbar .sb_lineList li:last-child {  border-bottom:none !important; }
+#sayso-starbar .sb_header { border-bottom: solid 1px #bfbfbf !important; }
 /* Keep this at end of file. It's used for testing if CSS is loaded. */
 
-#sayso-starbar ._sayso_starbar_css_loaded {
-	width: 1px;
-}
-
-.sb_nextPoll
-{
-	background-pozition: center !important;
-	text-indent:-9999px !important;
-}
-
+#sayso-starbar ._sayso_starbar_css_loaded {width: 1px;}

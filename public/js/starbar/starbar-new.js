@@ -894,6 +894,8 @@ $SQ(function(){
 		var userCurrentLevelIconElems = $SQ('.sb_user-current-level-icon', target);
 		var animationDuration = 2000; // milliseconds
 		var justInitialized = false;
+		
+	
 
 		if (target || ! sayso.starbar.previous_game) {
 			sayso.starbar.previous_game = sayso.starbar.game;
@@ -1020,39 +1022,51 @@ $SQ(function(){
 			levelIconsContainerElems.each(function() {
 				var containerElem = $SQ(this);
 				containerElem.html('');
-
+				
 				var levelGroup = null;
-
+						
 				if (allLevels && userCurrentLevel) {
+					
+					
 					$SQ.each(allLevels, function (index, level) {
+							
+						
+						
 						if (index % 5 == 0) {
+							
 							levelGroup = $SQ(document.createElement('div'));
 							levelGroup.addClass('sb_userLevelIcons_group');
 							containerElem.append(levelGroup);
+							
+						
 						}
 						var smallImageUrl, bigImageUrl;
 						$SQ.each(level.urls.items, function (index, url) {
 							if (url.url.indexOf('_B.png') != -1) bigImageUrl = url.url;
 							if (url.url.indexOf('_S.png') != -1) smallImageUrl = url.url;
 						});
-
+						
 						var levelIcon = $SQ(document.createElement('div'));
+						
 						levelIcon.addClass('sb_userLevelIcons');
 						if (level.ordinal == userCurrentLevel.ordinal) {
 							levelIcon.addClass('sb_userLevel_current');
-							levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+bigImageUrl+'\')"></div><p><strong class="sb_theme_textHighlight">'+level.title+'</strong><br /><small class="sb_xpRequired">'+level.ordinal+'</small></p>');
+							levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+bigImageUrl+'\')"></div>');
+							//<p><strong class="sb_theme_textHighlight">'+level.title+'</strong><br /><small class="sb_xpRequired">'+level.ordinal+'</small></p>
 						} else {
 							if (level.ordinal < userCurrentLevel.ordinal) {
 								levelIcon.addClass('sb_userLevel_earned');
-								levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+smallImageUrl+'\')"></div><p>'+level.title+'<br /><small class="sb_xpRequired">'+level.ordinal+'</small></p>');
+								levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+smallImageUrl+'\')"></div>');
+								//<p>'+level.title+'<br /><small class="sb_xpRequired">'+level.ordinal+'</small></p>
 							} else { // level.ordinal > userCurrentLevel.ordinal
 								levelIcon.addClass('sb_userLevel_next');
-								levelIcon.html('<div class="sb_userLevelImg"></div><p>'+level.title+'<br /><small class="sb_xpRequired">'+level.ordinal+'</small></p>');
+								levelIcon.html('<div class="sb_userLevelImg"></div>');
+								//<p>'+level.title+'<br /><small class="sb_xpRequired">'+level.ordinal+'</small></p>
 							}
 						}
 						levelGroup.append(levelIcon);
 					});
-
+					
 					var emptyLevelsToAdd = allLevels.length % 5;
 					while (emptyLevelsToAdd > 0) {
 						levelGroup.append('<div class="sb_userLevelIcons sb_userLevel_next"><div class="sb_userLevelImg sb_userLevel_empty"></div><p><br /></p></div>');

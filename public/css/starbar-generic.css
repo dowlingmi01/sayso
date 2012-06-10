@@ -1131,7 +1131,6 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 
 #sayso-starbar h3 {
 	font-size: 13px;
-	display: block;
 }
 #sayso-starbar h2.sb_title {
 	text-transform: uppercase;

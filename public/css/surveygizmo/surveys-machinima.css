@@ -94,6 +94,15 @@ ul.sg-list-vertical li {
 	margin: 0 10px 0 0;
 }
 
+/* !----- Rewards ---- */
+
+
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_header
+{
+	background-color:red !important;
+}
+
+
 /* !----- Buttons ----- */
 
 .sg-button, #sGizmoSaveButtonX {

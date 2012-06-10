@@ -97,7 +97,7 @@ ul.sg-list-vertical li {
 /* !----- Rewards ---- */
 
 
-#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_header
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_header.no-border
 {
 	background-color:red !important;
 }

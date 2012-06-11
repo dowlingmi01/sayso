@@ -439,12 +439,14 @@
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p small,
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p small strong{
 	font-size: 11px !important;
+	font-weight: normal !important;
 }
 
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p small a{
 	color: black;
 	text-decoration: underline;
+	font-weight: normal !important;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow_nav{

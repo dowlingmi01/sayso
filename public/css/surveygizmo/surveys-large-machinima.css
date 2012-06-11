@@ -10,6 +10,7 @@
 ul.sg-list-vertical li {
 	min-width: 290px;
 }
+/*
 #sg_BackButton {
 	margin-left: 171px;
 }
@@ -21,6 +22,7 @@ ul.sg-list-vertical li {
 	margin-right: 155px;
 	float: right;
 }
+*/
 .sg-progress-bar {
 	display: block;
 	position: fixed;
@@ -30,4 +32,4 @@ ul.sg-list-vertical li {
 	margin-left: -75px;
 	bottom: 14px;
 	clear: none;
-	}
+}

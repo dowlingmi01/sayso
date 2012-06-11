@@ -29,7 +29,8 @@
 	padding:0;
 	text-align:center;
 	margin:20px 0 0 0;
-	}
+	position:relative;
+}
 .sg-page-title {
 	padding: 5px 0 5px 0;
 	color: #0081C5;
@@ -104,7 +105,7 @@ ul.sg-list-vertical li {
 
 
 /* !----- Buttons ----- */
-
+/*
 .sg-button, #sGizmoSaveButtonX {
 	background-color: #168DCA;
 	background-image: none;
@@ -172,6 +173,9 @@ ul.sg-list-vertical li {
 	margin-right: 125px;
 	float: right;
 }
+
+*/
+
 .sg-table thead th {
 	color: black;
 }
@@ -179,18 +183,44 @@ ul.sg-list-vertical li {
 	background-color: #b9d2df;
 }
 
-.sg-progress-bar {
-	display: none;
+.sg-button-bar {
+	height:25px;
 }
+
+.sg-progress-bar {
+	display: block;
+	width:150px !important;
+	height:15px !important;
+	position:absolute;
+	top:8px;
+	left:161px;
+}
+
+.sg-progress-bar .sg-progress-bar-inner {
+	background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(201,12,12)),
+	color-stop(0.61, rgb(128,8,8)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(201,12,12) 22%,
+			rgb(128,8,8) 61%);
+	background-color: #c90c0c;
+	height:15px !important;
+}
+
+
 .sg-progress-bar-text {
 	width: 150px;
-	margin-top: 3px;
-	font-size: 11px;
-	position: absolute;
-	top: 0;
-	left: 0;
+	margin-top: 0px;
+	font-size: 13px;
 	text-align: center;
+	color: #ffffff;
+	font-weight:bold;
 }
+
 .sg-powered-by {
 	visibility: hidden;
 	width: 1px;
@@ -198,11 +228,12 @@ ul.sg-list-vertical li {
 	overflow: hidden;
 	margin: 0;
 	clear: none;
-	}
+}
 /* !----- Footer Hooks ----- */
 .sg-footer-hook-2 {
 	color:#EFF6FF;
 	font-size:90% !important;
+	
 	}
 
 /* !----- Font Settings: Headers ----- */
@@ -287,4 +318,36 @@ h1.sg-title {
 /* Used to check that css loading is complete -- see surveygizmo-init.js */
 .sg-footer-hook-2 {
 	text-align: right;
-	}
+}
+
+
+
+#sg_BackButton.sg-button.sg-back-button{
+	
+	border:none !important;
+	background: none !important;
+	background: url('/images/machinima/surveys_back.png') no-repeat !important;
+	width:37px !important; 
+	height:25px !important;
+	white-space: nowrap;
+	text-indent: -3000px;
+	outline: none;
+	display:block;
+	float:left;
+	margin-left: 115px  !important;
+}
+
+#sg_NextButton.sg-button.sg-next-button{
+	
+	border:none !important;
+	background: none !important;
+	background: url('/images/machinima/surveys_next.png') no-repeat !important;
+	width:37px !important; 
+	height:25px !important;
+	white-space: nowrap;
+	text-indent: -3000px;
+	outline: none;
+	display:block;
+	float:right;
+	margin-right: 115px !important;
+}

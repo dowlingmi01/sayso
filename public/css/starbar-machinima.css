@@ -145,7 +145,7 @@
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value,
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value-fading,
 #sayso-starbar .sb_theme_button {
-	
+	/*
 	background-image: -webkit-gradient(
 	linear,
 	left top,
@@ -157,6 +157,18 @@
 			rgb(22,141,202) 22%,
 			rgb(7,61,89) 61%);
 	background-color: #009fd2;
+	*/
+	background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(201,12,12)),
+	color-stop(0.61, rgb(128,8,8)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(201,12,12) 22%,
+			rgb(128,8,8) 61%);
+	background-color: #c90c0c;
 
 }
 
@@ -168,6 +180,7 @@
 #sayso-starbar .sb_progress_bar_alt.sb_ui-progressbar .sb_ui-progressbar-value,
 #sayso-starbar .sb_progress_bar_alt.sb_ui-progressbar .sb_ui-progressbar-value-fading,
 #sayso-starbar .sb_theme_button_alt{
+	/*
 	background-image: -webkit-gradient(
 	linear,
 	left top,
@@ -178,7 +191,18 @@
 			center top,
 			rgb(195,220,116) 22%,
 			rgb(139,170,43) 61%);
-	background-color: #92c20c;
+	background-color: #92c20c;*/
+	background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(201,12,12)),
+	color-stop(0.61, rgb(128,8,8)));
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(201,12,12) 22%,
+			rgb(128,8,8) 61%);
+	background-color: #c90c0c;
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_bgGradient_error,
@@ -533,7 +557,14 @@
 #sayso-starbar #starbar-player-console #starbar-type .sb_content .sb_popBox a,
 #sayso-starbar #sb_popBox_user-profile .sb_currency_balance,
 #sayso-starbar .sb_rewardItem .sb_rewardHeader{
-	color: #000000;
+	color: #d04f55;
+	font-size:11px;
+	font-weight:bold;
+	position:relative;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis; /* The sb_rewardHeader text in the container will be hidden with ... if it's too big ( recommendation ) 
+								this should not affect the title container in some particular cases */
 }
 #sayso-starbar #sb_popBox_user-profile .sb_header h2
 {
@@ -752,7 +783,8 @@
 	margin-bottom: 0;
 }
 
-#sayso-starbar #sb_popBox_surveys .sb_survey-select{
+
+#sayso-starbar #sb_popBox_surveys .sb_surveyLaunch {
 	text-indent: -9999px;
 	width: 19px;
 	height: 42px;
@@ -1563,20 +1595,22 @@
 
 #sayso-starbar .sb_rewardItem .sb_rewardImg{
 	text-align: center;
-	padding: 5px 0px;
-	height: 85px;
+	padding: 5px 0px;	
 	background-color: #fff;
+	height:85px;
+	overflow:hidden; /* Correction so that the image doesn't get outside the reward container (recommendation) */
 }
 
 #sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_rewardImg{
 	height: auto;
 }
 
-
 #sayso-starbar .sb_rewardItem .sb_rewardBase{
 	text-align: center;
 	overflow: hidden;
 	padding: 0px 5px 10px 5px;
+	position:absolute;
+	bottom:0; /* Explicit correction so that sb_reward_base button+progressbar container should remain down */
 }
 
 #sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_rewardBase{
@@ -1596,8 +1630,8 @@
 }
 
 #sayso-starbar .sb_rewardItem .sb_user-points-box .sb_progress_bar{
-	margin: 0px auto;
-	width: 135px;
+	width: 120px;
+	margin-left:16px;
 }
 
 #sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_user-points-box .sb_progress_bar{

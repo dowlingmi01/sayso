@@ -16,20 +16,29 @@
 	width:475px;
 	margin:0 0 0 5px;
 	display: none;
-	}
+}
+
 .sg-header {
 	margin: 0;
 	display: none;
-	}
+}
+
 .sg-content {
 	clear:both;
 	margin:0;
-	}
+}
+
 .sg-footer {
-	padding:0;
+	
+	background:#FFFFFF;
+	color:black;
+	border-bottom:1px solid #FFFFFF;
+	border-top:1px solid #FFFFFF;
+	padding:0 !important;
 	text-align:center;
-	margin:20px 0 0 0;
 	position:relative;
+	margin-top:50px;
+	/* margin:100px 0 0 0; */
 }
 .sg-page-title {
 	padding: 5px 0 5px 0;
@@ -44,19 +53,13 @@
 	}
 
 /* !----- Headers, Footers, Table headers ----- */
-.sg-header,
-.sg-footer {
+.sg-header {
 	background:#FFFFFF;
 	color:black;
-	}
-
-.sg-header {
 	border-bottom:1px solid #FFFFFF;
-	}
-
-.sg-footer {
 	border-top:1px solid #FFFFFF;
-	}
+}
+
 
 /* !----- Question Titles ----- */
 .sg-question-title {
@@ -233,7 +236,7 @@ ul.sg-list-vertical li {
 .sg-footer-hook-2 {
 	color:#EFF6FF;
 	font-size:90% !important;
-	
+	display:none;
 	}
 
 /* !----- Font Settings: Headers ----- */

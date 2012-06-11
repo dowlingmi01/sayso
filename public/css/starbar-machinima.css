@@ -800,11 +800,15 @@
 }
 
 
-/*
-#sayso-starbar #sb_popBox_surveys_lg .sb_header.embed
+
+.survey_st_nav
 {
-	border:none !important;
-}*/
+	with:250px;
+	position:absolute;
+	top:20px;
+	right:10px;
+	list-style-type:none;
+}
 
 #sayso-starbar #sb_popBox_surveys_lg .sb_survey_title.embed
 {

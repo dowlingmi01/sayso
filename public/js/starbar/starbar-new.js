@@ -522,7 +522,9 @@ $SQ(function(){
 			// fill in the container with loading div and container divs
 			if (src.slice(-8)=='/rewards') {
 				// We are on the reward page. Print the disclaimer at the bottom of the box.
-				popBox.html('<div class="sb_popBoxInner"><div class="sb_popContent"></div></div><div class="sb_popDisclaimer">' + sayso.starbar.shortName.toCamelCase() + ' Say.So is a consumer research panel that does not guarantee prizes for participation. Prizes are limited and are redeemed on a first come, first serve basis. Once an item is \'Out of stock\' it is not guaranteed to be replaced or restocked. Say.So does not take responsibility for points not redeemed by the end of the program.</div>');
+				//popBox.html('<div class="sb_popBoxInner"><div class="sb_popContent"></div></div><div class="sb_popDisclaimer">' + sayso.starbar.shortName.toCamelCase() + ' Say.So is a consumer research panel that does not guarantee prizes for participation. Prizes are limited and are redeemed on a first come, first serve basis. Once an item is \'Out of stock\' it is not guaranteed to be replaced or restocked. Say.So does not take responsibility for points not redeemed by the end of the program.</div>');
+				popBox.html('<div class="sb_popBoxInner"><div class="sb_popContent"></div>');
+				/* Removed the disclaimer from the rewards page since it is not in the psd */
 			} else {
 				popBox.html('<div class="sb_popBoxInner"><div class="sb_popContent"></div>');
 			}

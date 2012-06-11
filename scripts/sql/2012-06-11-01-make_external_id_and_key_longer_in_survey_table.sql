@@ -1,0 +1,2 @@
+ALTER TABLE survey CHANGE COLUMN external_id external_id VARCHAR(255) DEFAULT NULL;
+ALTER TABLE survey CHANGE COLUMN external_key external_key VARCHAR(255) DEFAULT NULL;

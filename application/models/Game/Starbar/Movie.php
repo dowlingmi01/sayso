@@ -42,14 +42,14 @@ class Game_Starbar_Movie extends Game_Starbar {
 			$good->setCommentForUser('Sold Out');
 		} elseif ((int) $currencyProfileSurvey->current_balance < 1) {
 			$profileSurvey = new Survey();
-			$profileSurvey->loadDataByUniqueFields(array("starbar_id" => 2, "reward_category" => "profile"));
-			if ($profileSurvey->id) $profileSurveyLink = '<a href="//'.BASE_DOMAIN.'/starbar/snakkle/embed-survey?survey_id='.$profileSurvey->id.'" class="sb_nav_element" rel="sb_popBox_surveys_hg" title="Take profile survey now!" style="position: relative; top: -5px;">Profile Survey</a>';
+			$profileSurvey->loadDataByUniqueFields(array("starbar_id" => 3, "reward_category" => "profile"));
+			if ($profileSurvey->id) $profileSurveyLink = '<a href="//'.BASE_DOMAIN.'/starbar/movie/embed-survey?survey_id='.$profileSurvey->id.'" class="sb_nav_element" rel="sb_popBox_surveys_hg" title="Take profile survey now!" style="position: relative; top: -5px;">Profile Survey</a>';
 			else $profileSurveyLink = "Profile Survey";
 			$good->setNonRedeemReason('Must complete<br />'.$profileSurveyLink);
 			$good->setCommentForUser('Survey Requirement');
-		} elseif ($profile->getCurrencyByTitle('Snakkle Bucks')->current_balance < $good->cost) {
-			$good->setNonRedeemReason('Earn more Snakkle Bucks by<br />completing polls and surveys!');
-			$good->setCommentForUser('Insufficient Snakkle Bucks');
+		} elseif ($profile->getCurrencyByTitle('CineBucks')->current_balance < $good->cost) {
+			$good->setNonRedeemReason('Earn more CineBucks by<br />completing polls and surveys!');
+			$good->setCommentForUser('Insufficient CineBucks');
 		}
 
 		if ($good->inventory_total > $good->inventory_sold && (($good->inventory_total - $good->inventory_sold) < 4)) {
@@ -67,7 +67,7 @@ class Game_Starbar_Movie extends Game_Starbar {
 	public function getPurchaseCurrencyId() {
 		static $currencyId = 0;
 		if (!$currencyId) {
-			$currencyId = $this->_economy->getCurrencyId('SNAKKLE_BUCKS');
+			$currencyId = $this->_economy->getCurrencyId('CINEBUCKS');
 		}
 		return $currencyId;
 	}

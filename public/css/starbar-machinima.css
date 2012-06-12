@@ -568,6 +568,208 @@
 	text-overflow: ellipsis; /* The sb_rewardHeader text in the container will be hidden with ... if it's too big ( recommendation ) 
 								this should not affect the title container in some particular cases */
 }
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step{
+	padding:0 !important;
+}
+/* rewards_balance_box.png */
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .cnt{
+
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .balance{
+	background-image:url(../images/machinima/rewards_balance_box.png);
+	width:99px;
+	height:18px;
+	text-align:center;
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step1 .sb_rewardHeader {
+	height:20px !important;	
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step1 .sb_rewardDescription
+{
+	color: #ffffff;
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step1 .sb_redeem_btn_step1
+{
+	background: url(../images/machinima/rewards_step_redeem_btn.png);
+	width:75px;
+	height:26px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step1 .sb_redeem_btn_step1 .sb_rewardImg img
+{
+	width:155px !important;
+	height:113px !important;
+}
+
+
+/* rewards_step_redeem_btn.png */
+
+#sayso-starbar .sb_rewardItem #sb_reward_step1 .sb_rewardBase .balance
+{
+	background-image:url(../images/machinima/rewards_balance_box_big.png);
+	width:133px;
+	height:18px;
+	text-align:center;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:5px;
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step1 .sb_rewardBase .balance .icon{
+	margin-left:42px !important;
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .balance.current{
+	margin-left:10px;
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .balance.ending{
+	margin-left:2px;
+}
+
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .sb_column50{
+	font-size:9px;
+	text-align:center;
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step1{
+	position:relative;
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step1 .sb_rewardHeader span{
+	color:#3fa0d3;
+	font-weight:bold;
+}
+/*
+#sayso-starbar .sb_popBox_rewards .sb_rewardItem {
+	border:solid 1px red !important;	
+}
+*/
+#sayso-starbar .sb_rewardItem #sb_reward_step1 .sb_rewardHeader {
+	
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step1 .sb_rewardBase{
+	position: relative !important;
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .sb_step2Actions .address_title{
+
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .sb_reward_confirm_order_btn
+{
+	background: url(../images/machinima/reward_confirm_order_btn.png) no-repeat;
+	width:88px;
+	height:26px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .sb_reward_place_order_btn
+{
+	background: url(../images/machinima/reward_place_order_btn.png) no-repeat;
+	width:75px;
+	height:26px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .balance .icon,
+#sayso-starbar .sb_rewardItem #sb_reward_step1 .sb_rewardBase .balance .icon
+{
+	background-image:url(../images/machinima/note.png);
+	height:16px;
+	width:16px;
+	float:left;
+	margin-left:25px;
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .balance .text,
+#sayso-starbar .sb_rewardItem #sb_reward_step1 .sb_rewardBase .balance .text
+{
+	font-size:12px;
+	font-weight:bold;	
+	color: #fff;
+	float:left;
+}
+
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .city_state_zip
+{
+	margin-top:4px;
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .sb_wide_input
+{
+	width: 200px;
+	height: 15px;
+	font-size:9px !important;
+	border:solid 1px #b2b2b2;
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .sb_wide_input.inner
+{
+	margin-top:4px;
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .sb_input_city
+{
+	width: 102px;
+	height: 15px;
+	font-size:9px !important;
+	border:solid 1px #b2b2b2;
+}
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .sb_input_zip
+{
+	width: 44px;
+	height: 15px;
+	font-size:9px !important;
+	border:solid 1px #b2b2b2;
+}
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .sb_select_state
+{
+	width: 40px !important;
+	height: 20px !important;
+	font-size:9px !important;
+}
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .sb_select_state option
+{
+	font-size:9px !important;
+	padding-top:5px;
+	padding-bottom:5px;
+}
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .sb_rewardImg img
+{
+	width: 100px;
+	height:	75px;
+}
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .sb_rewardHeader h3{
+	font-size:14px;
+}
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .sb_rewardHeader span{
+	color:#3fa0d3;
+	font-weight:bold;
+}
+
+
+#sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step .sb_step2Actions .tinfo
+{
+	font-size:12px;
+}
+
+/* End Order Modal Window */
+
 #sayso-starbar #sb_popBox_user-profile .sb_header h2
 {
 	font-weight:normal !important;

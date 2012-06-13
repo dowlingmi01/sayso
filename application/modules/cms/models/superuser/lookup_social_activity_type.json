@@ -1,13 +1,13 @@
 {
 	"table": [
 		{
-			"tablename": "Economy",
+			"tablename": "lookup_social_activity_type",
 			"permissions":[
 				"allowgrid",
 				"allowadd",
 				"allowdelete",
 				"allowedit",
-				"allowdetails"
+				"disallowdetails"
 			]
 		}
 	],
@@ -19,70 +19,54 @@
 			"displaywhen": [
 				"grid",
 				"detail",
-				"delete",
 				"edit"
 			]
 		},
 		{
-			"colname": "title",
+			"colname": "short_name",
 			"type": "text",
-			"width": 62,
-			"filterwidth":62,
+			"label": "Short Name",
+			"width": 80,
 			"validate": [
 				"notnull",
-				"minlength(5)"
+				"minlength(10)"
 			],
 			"displaywhen": [
 				"add",
 				"grid",
 				"detail",
-				"delete",
 				"edit"
 			]
 		},
 		{
-			"colname": "redeemable_currency",
+			"colname": "label",
 			"type": "text",
-			"width": 42,
-			"validate": [
-				"notnull"
-			],
-			"displaywhen": [
-				"add",
-				"grid",
-				"detail",
-				"delete",
-				"edit"
-			]
-		},
-		{
-			"colname": "experience_currency",
-			"type": "text",
-
-			"width": 42,
-			"validate": [
-				"notnull"
-			],
-			"displaywhen": [
-				"add",
-				"grid",
-				"detail",
-				"delete",
-				"edit"
-			]
-		},
-		{
-			"colname": "name",
-			"type": "text",
-			"width": 42,
+			"label": "Label",
+			"width": 80,
 			"validate": [
 				"notnull",
-				"minlength(5)"
+				"minlength(10)"
 			],
 			"displaywhen": [
 				"add",
+				"grid",
 				"detail",
-				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "description",
+			"type": "text",
+			"label": "Description",
+			"width": 80,
+			"validate": [
+				"notnull",
+				"minlength(10)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
 				"edit"
 			]
 		}

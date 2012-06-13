@@ -1,0 +1,53 @@
+{
+	"table": [
+		{
+			"tablename": "admin_user_admin_role",
+			"permissions":[
+				"allowgrid",
+				"allowadd",
+				"allowdelete",
+				"allowedit",
+				"allowdetails"
+			]
+		}
+	],
+	"columns": [
+		{
+			"colname": "id",
+			"type": "hidden",
+			"displaywhen": [
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "admin_user_id",
+			"type": "fkey",
+			"lookuptable": "admin_user",
+			"lookupfield": "id",
+			"lookuplabel": "email",
+			"default": "--",
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		 {
+			"colname": "admin_role_id",
+			"type": "fkey",
+			"lookuptable": "admin_role",
+			"lookupfield": "id",
+			"lookuplabel": "name",
+			"default": "--Please Select an admin role--",
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		}
+	]
+}

@@ -74,6 +74,7 @@
 			if (!$this->rd) {
 				$this->rd = $this->_helper->Redirector;
 			}
+
 		}
 
 		/**
@@ -745,6 +746,92 @@
 					}
 				}
 			}
+		}
+
+		/**
+		* Reward User with point
+		*/
+		public function rewardAction()
+		{
+			$formElements = array();
+
+			$formElements['starbar'] = new Form_Element_Starbar('starbar_id');
+            $formElements['emailaddress'] = new Form_Element_Text('emailaddress');
+            $formElements['emailaddress']->setLabel("Users Email Address");
+            $formElements['redeemableaward'] = new Form_Element_Text('redeemableaward');
+            $formElements['redeemableaward']->setLabel("Award Points");
+            $formElements['redeemablecurrency'] = new Form_Element_Text('redeemablecurrency');
+            $formElements['redeemablecurrency']->setLabel("Award Currency");
+			$formElements['submit'] = new Zend_Form_Element_Submit('submit');
+            $formElements['submit'] ->setLabel('Give Reward') // the button's value
+				    ->setIgnore(true); // very usefull -> it will be ignored before insertion
+
+
+						$form = new ZendX_JQuery_Form();
+						$form->setName("Reward");
+						$form->addElements($formElements);
+						$form->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));
+
+						if ($this->getRequest()->isPost()) { //is it a post request ?
+
+							$postData = $this->getRequest()->getPost(); // getting the $_POST data
+
+							if ($form->isValid($postData)) {
+
+								$formData = $form->getValues(); // data filtered
+								// created and updated fields
+								$formData += array('created' => date('Y-m-d H:i:s'), 'modified' => date('Y-m-d H:i:s'));
+
+								// Remove any fields not required in the save
+								foreach ($formData as $key=>$value) {
+									if (strpos($key,"_notrequired")!==false) {
+										unset($formData[$key]);
+									}
+								}
+
+								unset($formData['no_csrf_foo']); // Remove the salt - we don't need it for the insert
+								// remove any data with null values - we don't need them.
+
+								$formData = array_filter($formData,array('self','_notnull'));
+								$email = new User_Email();
+
+								$emaildata = $email->getUserID($formData['emailaddress']);
+								//  In getInstance, we pass the key and secret (obtainable from publisher.bigdoor.com)
+								$client = Gaming_BigDoor_HttpClient::getInstance('43bfbce697bd4be99c9bf276f9c6b086', '35eb12f3e87144a0822cf1d18d93d867');
+
+								// Set the enduser by passing the gaming_id from the user_gaming table
+								$client->getEndUser($emaildata[0]['gaming_id']);
+
+$data = $client->getData();
+								do_dump($data);
+
+								if (isset($formData['redeemablecurrency'])) {
+									// Call transaction 5256048 - defined at http://publisher.bigdoor.com/economy/ntgs
+									$client->setParameterPost('amount',$formData['redeemablecurrency']);
+									$client->namedTransactionGroup(5256048)->postExecute($emaildata[0]['gaming_id']);
+								}
+
+								if (isset($formData['redeemableaward'])) {
+									// Call transaction 5256049 - defined at http://publisher.bigdoor.com/economy/ntgs
+									$client->setParameterPost('amount',$formData['redeemableaward']);
+									$client->namedTransactionGroup(5256049)->postExecute($emaildata[0]['gaming_id']);
+								}
+$data = $client->getData();
+printf("Here is the print_r");
+print_r($data);
+								$currencyBalance = (int) $data['currency_balances'][0]['current_balance'];
+
+								$this->view->message = "Reward successfully applied. User now has ".$currencyBalance;
+
+
+									$form->reset();
+
+
+							} else {
+								$form->populate($postData); // show errors and populate form with $postData
+							}
+						}
+						$this->view->form = $form; // assigning the form to view
 		}
 
 		/**

@@ -1,13 +1,13 @@
 {
 	"table": [
 		{
-			"tablename": "Economy",
+			"tablename": "lookup_income_range",
 			"permissions":[
 				"allowgrid",
 				"allowadd",
 				"allowdelete",
 				"allowedit",
-				"allowdetails"
+				"disallowdetails"
 			]
 		}
 	],
@@ -15,74 +15,42 @@
 		{
 			"colname": "id",
 			"type": "hidden",
-
 			"displaywhen": [
 				"grid",
 				"detail",
-				"delete",
 				"edit"
 			]
 		},
 		{
-			"colname": "title",
-			"type": "text",
-			"width": 62,
-			"filterwidth":62,
-			"validate": [
-				"notnull",
-				"minlength(5)"
-			],
-			"displaywhen": [
-				"add",
-				"grid",
-				"detail",
-				"delete",
-				"edit"
-			]
-		},
-		{
-			"colname": "redeemable_currency",
+			"colname": "income_from",
 			"type": "text",
 			"width": 42,
-			"validate": [
-				"notnull"
-			],
 			"displaywhen": [
 				"add",
 				"grid",
 				"detail",
-				"delete",
 				"edit"
 			]
 		},
 		{
-			"colname": "experience_currency",
+			"colname": "income_to",
 			"type": "text",
-
 			"width": 42,
-			"validate": [
-				"notnull"
-			],
 			"displaywhen": [
 				"add",
 				"grid",
 				"detail",
-				"delete",
 				"edit"
 			]
 		},
 		{
-			"colname": "name",
+			"colname": "ordinal",
 			"type": "text",
 			"width": 42,
-			"validate": [
-				"notnull",
-				"minlength(5)"
-			],
 			"displaywhen": [
 				"add",
+				"grid",
 				"detail",
-				"delete",
 				"edit"
 			]
 		}

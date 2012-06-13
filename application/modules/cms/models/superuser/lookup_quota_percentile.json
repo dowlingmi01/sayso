@@ -1,0 +1,68 @@
+{
+	"table": [
+		{
+			"tablename": "lookup_quota_percentile",
+			"order":"id asc",
+			"permissions":[
+				"allowgrid",
+				"disallowadd",
+				"disallowdelete",
+				"disallowedit",
+				"disallowdetails"
+			]
+		}
+	],
+	"columns": [
+		{
+			"colname": "id",
+			"type": "hidden",
+			"displaywhen": [
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "quota",
+			"type": "text",
+			"label": "Short Name",
+			"width": 80,
+			"validate": [
+				"notnull",
+				"minlength(10)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "quarter",
+			"type": "checkbox",
+			"default": false,
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "ordinal",
+			"type": "text",
+			"width": 80,
+			"validate": [
+				"notnull",
+				"minlength(10)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		}
+	]
+}

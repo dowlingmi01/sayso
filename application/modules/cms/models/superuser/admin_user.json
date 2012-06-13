@@ -1,13 +1,13 @@
 {
 	"table": [
 		{
-			"tablename": "Economy",
+			"tablename": "admin_user",
 			"permissions":[
 				"allowgrid",
 				"allowadd",
 				"allowdelete",
 				"allowedit",
-				"allowdetails"
+				"disallowdetails"
 			]
 		}
 	],
@@ -15,74 +15,51 @@
 		{
 			"colname": "id",
 			"type": "hidden",
-
 			"displaywhen": [
 				"grid",
 				"detail",
-				"delete",
 				"edit"
 			]
 		},
 		{
-			"colname": "title",
-			"type": "text",
-			"width": 62,
-			"filterwidth":62,
-			"validate": [
-				"notnull",
-				"minlength(5)"
-			],
-			"displaywhen": [
-				"add",
-				"grid",
-				"detail",
-				"delete",
-				"edit"
-			]
-		},
-		{
-			"colname": "redeemable_currency",
+			"colname": "email",
 			"type": "text",
 			"width": 42,
-			"validate": [
-				"notnull"
-			],
 			"displaywhen": [
 				"add",
 				"grid",
 				"detail",
-				"delete",
 				"edit"
 			]
 		},
 		{
-			"colname": "experience_currency",
+			"colname": "password",
 			"type": "text",
-
 			"width": 42,
-			"validate": [
-				"notnull"
-			],
+			"displaywhen": [
+				"add",
+				"detail"
+			]
+		},
+		{
+			"colname": "first_name",
+			"type": "text",
+			"width": 42,
 			"displaywhen": [
 				"add",
 				"grid",
 				"detail",
-				"delete",
 				"edit"
 			]
 		},
 		{
-			"colname": "name",
+			"colname": "last_name",
 			"type": "text",
 			"width": 42,
-			"validate": [
-				"notnull",
-				"minlength(5)"
-			],
 			"displaywhen": [
 				"add",
+				"grid",
 				"detail",
-				"delete",
 				"edit"
 			]
 		}

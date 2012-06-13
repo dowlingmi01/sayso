@@ -1,7 +1,7 @@
 {
 	"table": [
 		{
-			"tablename": "metrics_search",
+			"tablename": "metrics_social_activity",
 			"permissions":[
 				"allowgrid",
 				"disallowadd",
@@ -52,14 +52,14 @@
 			]
 		},
 		{
-			"colname": "search_engine_id",
-			"label":"Search Engine",
+			"colname": "social_activity_type_id",
+			"label":"Social Type",
 			"filterwidth":40,
 			"type": "fkey",
-			"lookuptable": "lookup_search_engines",
+			"lookuptable": "lookup_social_activity_type",
 			"lookupfield": "id",
 			"lookuplabel": "label",
-			"default": "--Please Select a Search Engine--",
+			"default": "--Please Select a Social Activity--",
 			"displaywhen": [
 				"add",
 				"grid",
@@ -68,10 +68,24 @@
 			]
 		},
 		{
-			"colname": "query",
+			"colname": "url",
 			"type": "text",
-			"label": "Query",
-			"width": 550,
+			"label": "URL",
+			"width": 200,
+			"validate": [
+				"notnull",
+				"minlength(10)"
+			],
+			"displaywhen": [
+				"grid",
+				"detail"
+			]
+		},
+		{
+			"colname": "content",
+			"type": "text",
+			"label": "Activity",
+			"width": 200,
 			"validate": [
 				"notnull",
 				"minlength(10)"

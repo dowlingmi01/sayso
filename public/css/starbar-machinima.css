@@ -285,13 +285,13 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_textHighlight, #sayso-starbar-embed .sb_theme_textHighlight{
-	color: #b63035 !important;
+	color: #c02526 !important;
 	text-shadow: none !important;
 }
 
 
 #sayso-starbar #starbar-player-console .sb_theme_textHighlight_alt, #sayso-starbar-embed .sb_theme_textHighlight_alt{
-	color: #b63035 !important;
+	color: #c02526 !important;
 	font-size:11px;
 }
 
@@ -559,7 +559,7 @@
 #sayso-starbar #starbar-player-console #starbar-type .sb_content .sb_popBox a,
 #sayso-starbar #sb_popBox_user-profile .sb_currency_balance,
 #sayso-starbar .sb_rewardItem .sb_rewardHeader{
-	color: #d04f55;
+	color: #c02526;
 	font-size:11px;
 	font-weight:bold;
 	position:relative;
@@ -798,7 +798,7 @@
 
 #sayso-starbar #sb_popBox_user-profile .sb_lineList li a.sb_nav_element
 {
-	color:#e51c24 !important;
+	color:#c02526 !important;
 }
 
 #sayso-starbar #sb_popBox_user-profile .sb_titlePlain
@@ -809,12 +809,12 @@
 #sayso-starbar #sb_popBox_user-profile .sb_currency_balance, 
 #sayso-starbar #sb_popBox_user-profile .sb_currency_title
 {
-	color:#e51c24 !important;
+	color:#c02526 !important;
 }
 
 #sayso-starbar #sb_popBox_user-profile .sb_userLevelColor1.sb_user_level_title
 {
-	color:#e51c24 !important;
+	color:#c02526 !important;
 	font-size:12px;
 	font-weight:bold;
 }
@@ -1276,7 +1276,7 @@
 #sayso-starbar #sb_popBox_user-level h3.sb_title,
 #sayso-starbar #sb_popBox_user-level h3.sb_title span{
 	text-transform:  uppercase;
-	color: #009FD2 !important;
+	color: #c02526 !important;
 	font-weight: bold !important;
 }
 
@@ -2141,7 +2141,7 @@
 #sayso-starbar .sb_column5050 .sb_column50.points {width: 200px;}
 #sayso-starbar .sb_column5050 .sb_column50.level{width: 125px; margin-left: 28px;}
 #sayso-starbar .sb_column5050 .sb_column50 small {padding-left: 13px; font-size:11px !important;}
-#sayso-starbar .sb_column5050 .sb_column50 small span.sb_currency_balance_next_level,#sayso-starbar .sb_column5050 .sb_column50 small span.sb_currency_title {font-size:11px !important;}
+#sayso-starbar .sb_column5050 .sb_column50 small span.sb_currency_balance_next_level,#sayso-starbar .sb_column5050 .sb_column50 small span.sb_currency_title {font-size:12px !important;}
 #sayso-starbar .sb_column5050 .sb_column50.level .sb_user-points-box{width: 125px !important;top: 0;}
 #sayso-starbar .sb_lineList li span.sb_title{font-size:12px !important;font-weight:bold !important;color:#000000;text-transform: uppercase;}
 #sayso-starbar .sb_lineList li span.sb_title span {font-weight:bold !important;}

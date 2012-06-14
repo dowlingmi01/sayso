@@ -3,9 +3,9 @@ function showErr( errObject ) {
 }
 function chopURL( url ) {
 	var i ;
-	if( i = url.indexOf('?') )
+	if( (i = url.indexOf('?')) >= 0 )
 		return url.slice(0, i);
-	else if( i = url.indexOf('#') )
+	else if( (i = url.indexOf('#')) >= 0 )
 		return url.slice(0, i);
 	else
 		return url;
@@ -48,9 +48,9 @@ function firstRun( firstRunDone ) {
 		code += "for( var i = 0; i < tabs.length; i++ ) \n";
 		code += "	if( tabs[i].url.match('sayso-installing') ) { \n";
 		code += "		var j; \n";
-		code += "		if( j = tabs[i].url.indexOf('?') ) \n";
+		code += "		if( (j = tabs[i].url.indexOf('?')) >= 0 ) \n";
 		code += "			tabs[i].url = tabs[i].url.slice(0, j); \n";
-		code += "		else if( j = tabs[i].url.indexOf('#') ) \n";
+		code += "		else if( (j = tabs[i].url.indexOf('#')) >= 0 ) \n";
 		code += "			tabs[i].url = tabs[i].slice(0, j); \n";
 		code += "		tabs[i].activate(); \n";
 		code += "		true; \n";

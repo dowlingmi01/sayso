@@ -21,10 +21,13 @@
 	if( loginCookie )
 		sayso.client.userLoggedIn = true;
 	
-	if( installParam || installCookie && sayso.client.userLoggedIn )
+	if( installParam || sayso.snakkleWidget || installCookie && sayso.client.userLoggedIn )
 		setTimeout(afterPause, 300);
 
 	function afterPause() { if( !window.$SaySoExtension ) {
+		
+		var installOrigination = installParam || installCookie;
+		
 		if (!sayso.baseDomain) {
 			sayso.baseDomain = 'app.saysollc.com';
 		}
@@ -70,14 +73,14 @@
 		var bn = getBrowserNameVersion();
 		sayso.bn = bn;
 
-		if ( !bn.isSupported ) {
+		if ( !bn.isSupported && installParam ) {
 			if( bn.isMobile ) {
 				alert('Sorry! The ' + sayso.client.appName + ' isn\'t yet available for mobile browsers. Join us via your computer when you can!');
 			} else {
 				alert('Sorry, your web browser doesn\'t support the cool features of the ' + sayso.client.appName + '. For an optimal experience, use the latest versions of Chrome (www.google.com/chrome), Firefox (www.getfirefox.com) or Safari (www.apple.com/safari). And we support Internet Explorer 8 and above.');
 			}
 		}
-		if( sayso.client.userLoggedIn || sayso.client.anonymousUsers ) {
+		if( installOrigination && (sayso.client.userLoggedIn || sayso.client.anonymousUsers) ) {
 			if (!window.$SQ) {
 				var jQueryInclude = document.createElement('script');
 				jQueryInclude.src = '//' + sayso.baseDomain + '/js/starbar/jquery-1.7.1.min.js';
@@ -88,25 +91,15 @@
 			jQueryTimer.start('typeof window.$SQ === "function"', function () {
 
 				if( bn.isSupported ) {
-					var div = document.createElement('div');
-					div.id = 'sayso-container';
-					div.style.display = 'none'; div.style.width = '100%'; div.style.height = '100%'; div.style.position = 'absolute'; div.style.top = '0px';
-					document.getElementsByTagName('body')[0].appendChild(div);
+					$SQ('body').append('<div id="sayso-container" style="display: none; width: 100%; height: 100%; position: absolute; top: 0px;">')
 
 					var container = $SQ('#sayso-container'),
 						body = document.getElementsByTagName('body')[0];
 
 					// css
+					$SQ('head').append('<link rel="stylesheet" href="//' + sayso.baseDomain + '/client/' + sayso.client.name + '/css/sayso-onboard.css" type="text/css" />');
 
-					var cssGeneric = document.createElement('link');
-					cssGeneric.rel = 'stylesheet';
-					cssGeneric.href = '//' + sayso.baseDomain + '/client/' + sayso.client.name + '/css/sayso-onboard.css';
-					body.appendChild(cssGeneric);
-
-					var cssColorbox = document.createElement('link');
-					cssColorbox.rel = 'stylesheet';
-					cssColorbox.href = '//' + sayso.baseDomain + '/client/global/css/colorbox.css';
-					body.appendChild(cssColorbox);
+					$SQ('head').append('<link rel="stylesheet" href="//' + sayso.baseDomain + '/client/global/css/colorbox.css" type="text/css" />');
 				}
 				
 				// overlay
@@ -116,13 +109,6 @@
 					for( var i = 0; i < sayso.client.meta.sendKeys.length; i++ )
 						clientKeys[sayso.client.meta.sendKeys[i]] = getCookie(sayso.client.meta.sendKeys[i]);
 
-				var locationCookie = getCookie( 'sayso-location' );
-				
-				if( !locationCookie ) {
-					locationCookie = getRandomToken();
-					setCookie( 'sayso-location', locationCookie, 365 );
-				}
-				
 				var ajaxOpts = {
 					url : '//' + sayso.baseDomain + '/starbar/install/' + sayso.client.name,
 					dataType : 'jsonp',
@@ -132,20 +118,17 @@
 						install_origination : (installParam ? installParam : installCookie),
 						user_agent_supported : bn.isSupported,
 						install_url : document.location.href,
-						location_token : locationCookie,
+						location_token : getLocationCookie(),
 						referrer : (installParam ? document.referrer : referrerCookie)
 						},
 					success : function (response) {
 						if( bn.isSupported ) {
-							setTimeout(function () {
-								// overlay
-								container.html(response.data.html);
-								container.fadeTo('slow', 1);
-								if( installCookie ) {
-									setCookie('sayso-install', null, -10);
-									setCookie('sayso-referrer', null, -10);
-								}
-							}, 500);
+							// overlay
+							$SQ('#sayso-container').html(response.data.html).fadeTo('slow', 1);
+							if( installCookie ) {
+								setCookie('sayso-install', null, -10);
+								setCookie('sayso-referrer', null, -10);
+							}
 						}
 					}
 				};
@@ -158,12 +141,33 @@
 			alert('Please log in first to install the Say.So app');
 			if (sayso.client.loginCallback)
 				sayso.client.loginCallback();
+		} else if( bn.isSupported && sayso.snakkleWidget ) {
+			window.SaySo = window.SaySo || {};
+			SaySo.baseUrl = '//' + window.sayso.baseDomain + '/client/snakkle/';
+			SaySo.baseImgUrl = '//s3.amazonaws.com/say.so/media/snakkle/web_app_pics/';
+			SaySo.locationCookie = getLocationCookie();
+			SaySo.baseDomain = sayso.baseDomain;
+			SaySo.getCookie = getCookie;
+			SaySo.setCookie = setCookie;
+	
+			$('head').append('<link rel="stylesheet" href="' + SaySo.baseUrl + 'css/widget.css" type="text/css" />');
+			$.getScript(SaySo.baseUrl + 'js/widget.js');
 		}
 	}} // end function afterPause
 
 
 	
 	// functions
+	function getLocationCookie() {
+		var locationCookie = getCookie( 'sayso-location' );
+		
+		if( !locationCookie ) {
+			locationCookie = getRandomToken();
+			setCookie( 'sayso-location', locationCookie, 365 );
+		}
+		
+		return locationCookie;
+	}
 
 	function jsLoadTimer(){function d(){j++<=f?b=setTimeout(g,h):"function"===typeof e&&e()}function g(){try{if("function"===typeof c&&c()||"string"===typeof c&&eval(c)){b&&clearTimeout(b);try{i()}catch(a){sayso.warn(a)}}else d()}catch(e){d()}}var j=0,f=400,h=50,c="",i=null,e=null,b=null;this.setMaxCount=function(a){f=a;return this};this.setInterval=function(a){h=a;return this};this.setLocalReference=function(){return this};this.start=function(a,b,d){c=a;i=b;e=d;g();return this}};
 

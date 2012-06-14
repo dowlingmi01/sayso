@@ -114,13 +114,14 @@
 	// Get the App!
 
 	$SQ('#sayso-get-app').click(function(e) {
-		$SQ('.ssp_panel1').addClass('sso_hidden');
-		$SQ('.ssp_panel2').addClass('sso_hidden');
-		$SQ('.ssp_panel3').addClass('sso_hidden');
-		$SQ('.ssp_panel4').addClass('sso_hidden');
-		$SQ('#sso_enter_password').addClass('sso_hidden');
 		var errMsg;
 		if(!(errMsg = validateFields())) {
+			$SQ('.ssp_panel1').addClass('sso_hidden');
+			$SQ('.ssp_panel2').addClass('sso_hidden');
+			$SQ('.ssp_panel3').addClass('sso_hidden');
+			$SQ('.ssp_panel4').addClass('sso_hidden');
+			$SQ('#sso_enter_password').addClass('sso_hidden');
+			
 			var installToken = $SQ('#sayso-install-token').attr('value');
 			var ajaxData = {
 					install_token: installToken,

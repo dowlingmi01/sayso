@@ -1,0 +1,106 @@
+[
+	{
+	   "image" : "https://s3.amazonaws.com/say.so/media/snakkle/web_app_pics/Seinfeld.jpg",
+	   "correct" : 1,
+	   "answers" : [
+		   {
+			   "id" : 1,
+			   "name" : "Jerry Seinfeld",
+			   "count" : 70
+		   },
+		   {
+			   "id" : 2,
+			   "name" : "Ben Stiller",
+			   "count" : 44
+		   },
+		   {
+			   "id" : 3,
+			   "name" : "Adam Sandler",
+			   "count" : 32
+		   },
+		   {
+			   "id" : 4,
+			   "name" : "Jimmy Fallon",
+			   "count" : 11
+		   }
+	   ]
+    },
+	{
+	   "image" : "https://s3.amazonaws.com/say.so/media/snakkle/web_app_pics/Jimmy_fallon.jpg",
+	   "correct" : 4,
+	   "answers" : [
+		   {
+			   "id" : 1,
+			   "name" : "Jerry Seinfeld",
+			   "count" : 22
+		   },
+		   {
+			   "id" : 2,
+			   "name" : "Ben stiller",
+			   "count" : 29
+		   },
+		   {
+			   "id" : 3,
+			   "name" : "Adam Sandler",
+			   "count" : 8
+		   },
+		   {
+			   "id" : 4,
+			   "name" : "Jimmy Fallon",
+			   "count" : 64
+		   }
+	   ]
+    },
+	{
+	   "image" : "https://s3.amazonaws.com/say.so/media/snakkle/web_app_pics/Zooey.jpg",
+	   "correct" : 2,
+	   "answers" : [
+		   {
+			   "id" : 1,
+			   "name" : "Megan Fox",
+			   "count" : 1
+		   },
+		   {
+			   "id" : 2,
+			   "name" : "Zooey Deschanel",
+			   "count" : 6
+		   },
+		   {
+			   "id" : 3,
+			   "name" : "Katy Perry",
+			   "count" : 6
+		   },
+		   {
+			   "id" : 4,
+			   "name" : "Jennifer Connely",
+			   "count" : 9
+		   }
+	   ]
+    },
+	{
+	   "image" : "https://s3.amazonaws.com/say.so/media/snakkle/web_app_pics/Matt_leblanc.jpg",
+	   "correct" : 1,
+	   "answers" : [
+		   {
+			   "id" : 1,
+			   "name" : "Matt Leblanc",
+			   "count" : 58
+		   },
+		   {
+			   "id" : 2,
+			   "name" : "Vince Vaughn",
+			   "count" : 52
+		   },
+		   {
+			   "id" : 3,
+			   "name" : "Keanu Reeves",
+			   "count" : 35
+		   },
+		   {
+			   "id" : 4,
+			   "name" : "Mel Gibson",
+			   "count" : 13
+		   }
+	   ]
+    }
+]

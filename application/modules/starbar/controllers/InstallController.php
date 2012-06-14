@@ -64,7 +64,7 @@ class Starbar_InstallController extends Api_GlobalController {
 	public function machinimaAction() {
 		return $this->emailBasedInstall();
 	}
-	public function emailBasedInstall() {
+	private function newInstall() {
 		$install = new User_Install();
 		$starbar = new Starbar();
 		$starbar->loadDataByUniqueFields( array('short_name' => $this->client_name));
@@ -77,6 +77,10 @@ class Starbar_InstallController extends Api_GlobalController {
 		$install->origination = $this->install_origination;
 		$install->url = $this->install_url;
 		$install->referrer = $this->referrer;
+		return $install;
+	}
+	private function emailBasedInstall() {
+		$install = $this->newInstall();
 		$install->save();
 
 		if( preg_match('/^s-/', $this->install_origination)  )
@@ -94,9 +98,12 @@ class Starbar_InstallController extends Api_GlobalController {
 	public function userPasswordAction() {
 		$this->_enableRenderer(new Api_Plugin_JsonPRenderer());
 
-		$this->_validateRequiredParameters(array('install_token'));
-		$install = new User_Install();
-		$install->loadDataByUniqueFields(array('token'=>$this->install_token));
+		if( $this->install_token ) {
+			$install = new User_Install();
+			$install->loadDataByUniqueFields(array('token'=>$this->install_token));
+		} else {
+			$install = $this->newInstall();
+		}
 		if( $install->external_user_id ) {
 			$externalUser = new External_User();
 			$externalUser->loadData($install->external_user_id);
@@ -126,10 +133,10 @@ class Starbar_InstallController extends Api_GlobalController {
 		$install->save();
 		$userKey = new User_Key();
 		$userKey->user_id = $user->getId();
-		$userKey->token = $this->install_token;
+		$userKey->token = $install->token;
 		$userKey->origin = User_Key::ORIGIN_INSTALL;
 		$userKey->save();
-		return $this->_resultType(true);
+		return $this->_resultType(new Object(array('install_token' => $install->token)));
 	}
 	public function extensionAction() {
 		$user_agent = $_SERVER['HTTP_USER_AGENT'];

@@ -36,15 +36,16 @@ $shortName = strtolower(Zend_Controller_Front::getInstance()->getRequest()->getC
 	<? } ?>
 </div>
 
-<?= $this->partial($shortName . '/embed.phtml', array('shortName' => $shortName)) ?>
 <script src="/js/jquery-1.7.1.min.js" type="text/javascript"></script>
 <script src="/js/jquery.form.min.js" type="text/javascript"></script>
+<?= $this->partial($shortName . '/embed.phtml', array('shortName' => $shortName)) ?>
 <script type="text/javascript">
 
-	// login popup
-	sayso.client.loginCallback = function () {
-		$('#simulate-login').show();
-	}		
+	if( sayso.client )
+		// login popup
+		sayso.client.loginCallback = function () {
+			$('#simulate-login').show();
+		}		
 	// ajax form
 	$('#simulate-login form').ajaxForm({
 		url : $(this).attr('action'),

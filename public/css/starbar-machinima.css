@@ -810,6 +810,7 @@
 #sayso-starbar #sb_popBox_user-profile .sb_currency_title
 {
 	color:#c02526 !important;
+	font-size:12px !important;
 }
 
 #sayso-starbar #sb_popBox_user-profile .sb_userLevelColor1.sb_user_level_title
@@ -817,6 +818,10 @@
 	color:#c02526 !important;
 	font-size:12px;
 	font-weight:bold;
+}
+
+#sayso-starbar #sb_popBox_user-profile .sb_user_level_title {
+	color:#c02526 !important;
 }
 
 #sayso-starbar #sb_popBox_user-profile .sb_user_level_number
@@ -947,6 +952,11 @@
 #sayso-starbar #sb_popBox_surveys ul.sb_solidList{
 
 }
+
+#sayso-starbar #sb_popBox_surveys .sb_nav_element {
+	font-size:12px;
+}
+
 #sayso-starbar #sb_popBox_surveys ul.sb_solidList li{
 	border: 1px solid #e5e5e5 !important;
 	background-color: #f7f7f7 !important;
@@ -978,6 +988,7 @@
 #sayso-starbar #sb_popBox_surveys .sb_surveyInfo p .sb_theme_textHighlight_alt
 {
 	font-size:11px;
+	color: #c02526;
 }
 
 #sayso-starbar #sb_popBox_surveys ul.sb_solidList li .sb_surveyInfo p,

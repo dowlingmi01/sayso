@@ -259,6 +259,7 @@ class Devadmin_IndexController extends Api_GlobalController
 		if ($starbarId) {
 			$starbar = new Starbar();
 			$starbar->loadData($starbarId);
+			$request->setParam('user_id', 1);
 			$gameStarbar = Game_Starbar::getInstance();
 
 			$this->view->starbar_id = $starbar->id;
@@ -304,7 +305,7 @@ class Devadmin_IndexController extends Api_GlobalController
 			$namedGoodCollectionId = $economy->getGoodId("NAMED_GOOD_COLLECTION");
 			$currencyPurchasePointsId = $economy->getCurrencyId("PURCHASE_POINTS");
 			$currencyTokenPointsId = $economy->getCurrencyId("TOKEN_POINTS");
-			$currencyRedeemableId = $economy->getCurrencyId($economy->getCurrencyTitleFromType("redeemable"));
+			$currencyRedeemableId = $economy->getCurrencyIdByType("redeemable");
 
 			$attributeEnvironmentId = $economy->getAttributeId("ENVIRONMENT_" . strtoupper(APPLICATION_ENV));
 

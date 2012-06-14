@@ -93,13 +93,16 @@
 				if( bn.isSupported ) {
 					$SQ('body').append('<div id="sayso-container" style="display: none; width: 100%; height: 100%; position: absolute; top: 0px;">')
 
-					var container = $SQ('#sayso-container'),
-						body = document.getElementsByTagName('body')[0];
-
 					// css
-					$SQ('head').append('<link rel="stylesheet" href="//' + sayso.baseDomain + '/client/' + sayso.client.name + '/css/sayso-onboard.css" type="text/css" />');
+					var cssGeneric = document.createElement('link');
+					cssGeneric.rel = 'stylesheet';
+					cssGeneric.href = '//' + sayso.baseDomain + '/client/' + sayso.client.name + '/css/sayso-onboard.css';
+					document.body.appendChild(cssGeneric);
 
-					$SQ('head').append('<link rel="stylesheet" href="//' + sayso.baseDomain + '/client/global/css/colorbox.css" type="text/css" />');
+					var cssColorbox = document.createElement('link');
+					cssColorbox.rel = 'stylesheet';
+					cssColorbox.href = '//' + sayso.baseDomain + '/client/global/css/colorbox.css';
+					document.body.appendChild(cssColorbox);
 				}
 				
 				// overlay
@@ -149,8 +152,12 @@
 			SaySo.baseDomain = sayso.baseDomain;
 			SaySo.getCookie = getCookie;
 			SaySo.setCookie = setCookie;
-	
-			$('head').append('<link rel="stylesheet" href="' + SaySo.baseUrl + 'css/widget.css" type="text/css" />');
+			
+			var cssWidget = document.createElement('link');
+			cssWidget.rel = 'stylesheet';
+			cssWidget.href = SaySo.baseUrl + 'css/widget.css';
+			document.body.appendChild(cssWidget);
+
 			$.getScript(SaySo.baseUrl + 'js/widget.js');
 		}
 	}} // end function afterPause

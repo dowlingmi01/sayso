@@ -642,7 +642,7 @@ $(function(){
 	// fires after user has taken all available quizzes
 	SaySo.on.complete = showFormHandler;	
 	
-	$.getScript(SaySo.baseUrl + '/js/widget-data.js', function() {
+	$.getScript(SaySo.baseUrl + 'js/widget-data.js', function() {
 		SaySo.on.html(SaySo.data.html);
 		SaySo.on.json(SaySo.data.json);
 	});

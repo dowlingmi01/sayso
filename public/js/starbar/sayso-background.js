@@ -51,7 +51,7 @@ function firstRun( firstRunDone ) {
 		code += "		if( (j = tabs[i].url.indexOf('?')) >= 0 ) \n";
 		code += "			tabs[i].url = tabs[i].url.slice(0, j); \n";
 		code += "		else if( (j = tabs[i].url.indexOf('#')) >= 0 ) \n";
-		code += "			tabs[i].url = tabs[i].slice(0, j); \n";
+		code += "			tabs[i].url = tabs[i].url.slice(0, j); \n";
 		code += "		tabs[i].activate(); \n";
 		code += "		true; \n";
 		code += "		break; \n";

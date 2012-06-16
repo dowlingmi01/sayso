@@ -12,6 +12,7 @@
 	font: 13px/1.231 sans-serif;
 	vertical-align: baseline;
 	outline: 0;
+	color:#fff;
 }
 #sayso-onboard article, #sayso-onboard aside, #sayso-onboard details, #sayso-onboard figcaption, #sayso-onboard figure, #sayso-onboard footer, #sayso-onboard header, #sayso-onboard hgroup, #sayso-onboard menu, #sayso-onboard nav, #sayso-onboard section {
 	display: block;
@@ -198,13 +199,14 @@ html {
 }
 
 #sayso-onboard #sso_wrapper{
-	width: 667px;
-	height: 584px;
+	
+	width: 670px;
+	height: 587px;
 
 	background-position: 0px bottom;
 	background-repeat: no-repeat;
-	background-color: #fff;
-	border: 1px solid #9d9d9d;
+	background-color: #000000;
+	border: 1px solid #7f7f7f;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -213,16 +215,17 @@ html {
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	border-radius: 8px;
+	
 }
 
 #sayso-onboard #sso_wrapper #sso_close{
 	width: 14px;
 	height: 13px;
 	position: absolute;
-	font-size: 11px;
+	font-size: 13px;
 	top: 10px;
 	right: 10px;
-	background-color: #666;
+	background: transparent;
 	color: #fff;
 	line-height: 11px;
 	text-align: center;
@@ -245,10 +248,37 @@ html {
 }
 
 #sayso-onboard #sso_wrapper .sso_content{
-	padding: 50px 20px 0px 12px;
+	padding: 50px 12px 0px 12px;
 	position: relative;
 	text-align: center;
+
 }
+
+#sayso-onboard #sso_wrapper .hr{
+	/*
+	color:#e30e2c;
+	background-color:#e30e2c;
+	border-color: #e30e2c;
+	margin-top:15px;
+	*/
+	height:3px;
+	border-bottom:solid 1px #e30e2c;
+	margin-top:15px;
+	margin-bottom:10px;
+	width:95%;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#sayso-onboard #sso_wrapper .sso_content h2.sso_content_title{
+	color:#fff;
+}
+
+#sayso-onboard #sso_wrapper .sso_content .sso_new_users p{
+	/*color:#fff;*/
+
+}
+
 
 #sayso-onboard #sso_wrapper #sso_logo{
 	position: absolute;
@@ -276,7 +306,7 @@ html {
 
 #sayso-onboard #sso_wrapper h2{
 	font-size: 18px;
-	color: #0099CF;
+	color: #fff;
 	font-weight: bold;
 	line-height: normal;
 	margin: 0px;
@@ -295,7 +325,8 @@ html {
 #sayso-onboard #sso_wrapper h2 strong{
 	font-size: inherit;
 	font-weight: bold;
-	color:#99C93B;
+	/*color:#99C93B;*/
+	color:#fff;
 }
 
 #sayso-onboard #sso_wrapper h4{
@@ -310,17 +341,20 @@ html {
 #sayso-onboard #sso_wrapper p{
 	font-size: 12px;
 	margin: 10px 30px;
-	color: #333537;
+	/*color: #333537;*/
+	color:#fff;
 	font-weight:bold;
 }
 
 #sayso-onboard #sso_wrapper a{
-	color: #0099CF;
+	color: #ec0c08;
 	text-decoration: none;
+	font-size:16px;
 }
 
 #sayso-onboard #sso_wrapper h2#go-now{
-	margin:5px 0 8px 0;
+	margin:0px 0 8px 0;
+	color:#fff !important;
 }
 
 #sayso-onboard #sso_wrapper input.input_text{
@@ -333,42 +367,40 @@ html {
 }
 
 #sayso-onboard #sso_wrapper .sso_theme_button{
-	border-radius: 2px;
-	-moz-border-radius: 2px;
-	-webkit-border-radius: 2px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
 	font-weight: normal;
 	text-decoration: none;
 	color: #fff !important;
-	padding: 2px 30px;
 	font-size: 12px;
 	position: relative;
 	border: none;
 
-background-color: #3AA1D5;
-background-image: linear-gradient(bottom, rgb(13,150,209) 0%, rgb(58,161,213) 50%, rgb(141,196,226) 75%);
-background-image: -o-linear-gradient(bottom, rgb(13,150,209) 0%, rgb(58,161,213) 50%, rgb(141,196,226) 75%);
-background-image: -moz-linear-gradient(bottom, rgb(13,150,209) 0%, rgb(58,161,213) 50%, rgb(141,196,226) 75%);
-background-image: -webkit-linear-gradient(bottom, rgb(13,150,209) 0%, rgb(58,161,213) 50%, rgb(141,196,226) 75%);
-background-image: -ms-linear-gradient(bottom, rgb(13,150,209) 0%, rgb(58,161,213) 50%, rgb(141,196,226) 75%);
+background-color: #c10e25;
+
+background-image: linear-gradient(bottom, rgb(136,14,24) 0%, rgb(165,14,30) 50%, rgb(210,13,40) 75%);
+background-image: -o-linear-gradient(bottom, rgb(136,14,24) 0%, rgb(165,14,30) 50%, rgb(210,13,40) 75%);
+background-image: -moz-linear-gradient(bottom, rgb(136,14,24) 0%, rgb(165,14,30) 50%, rgb(210,13,40) 75%);
+background-image: -webkit-linear-gradient(bottom, rgb(136,14,24) 0%, rgb(165,14,30) 50%, rgb(210,13,40) 75%);
+background-image: -ms-linear-gradient(bottom, rgb(136,14,24) 0%, rgb(165,14,30) 50%, rgb(210,13,40) 75%);
 
 
-
-	/*background-color: #0081c5;*/
-	display: inline-block;
+display: inline-block;
 }
 
 #sayso-onboard #sso_wrapper .sso_theme_button_disabled{
-	border-radius: 6px;
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
+	
+	border-radius: 4px;
+	-moz-border-radius: 4x;
+	-webkit-border-radius: 4px;
 	font-weight: normal;
 	text-decoration: none;
-	padding: 2px 30px;
 	font-size: 12px;
 	position: relative;
-	border: thin solid #d4d5d7;
 	background-color: #B7B7B7;
-	background-image: linear-gradient(bottom, rgb(168,168,168) 0%, rgb(183,183,183) 50%, rgb(236,236,236) 75%);
+
+background-image: linear-gradient(bottom, rgb(168,168,168) 0%, rgb(183,183,183) 50%, rgb(236,236,236) 75%);
 background-image: -o-linear-gradient(bottom, rgb(168,168,168) 0%, rgb(183,183,183) 50%, rgb(236,236,236) 75%);
 background-image: -moz-linear-gradient(bottom, rgb(168,168,168) 0%, rgb(183,183,183) 50%, rgb(236,236,236) 75%);
 background-image: -webkit-linear-gradient(bottom, rgb(168,168,168) 0%, rgb(183,183,183) 50%, rgb(236,236,236) 75%);
@@ -386,13 +418,15 @@ background-image: -webkit-gradient(
 }
 
 #sayso-onboard #sso_wrapper .sso_theme_buttonXL{
-	border-radius: 6px;
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
-	border: thin solid #d4d5d7;
-	padding: 2px 30px;
-	font-size: 20px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	padding-top:7px;
+	font-size: 18px;
 	font-weight: bold;
+	width:190px;
+	height:26px;
+	margin-top:15px;
 }
 
 #sayso-onboard #sso_wrapper .sso_textHighlight{
@@ -419,9 +453,10 @@ background-image: -webkit-gradient(
 }
 
 #sayso-onboard #sso_wrapper h2#sso_protected {
-	color: #0099CF;
+	color: #fff !important;
 	font-size:17px;
-	margin-bottom:30px;
+	margin-top:10px !important;
+	margin-bottom:30px !important;
 }
 
 #sayso-onboard #sso_wrapper p.sso_noshare_notice {
@@ -436,22 +471,44 @@ background-image: -webkit-gradient(
 
 #sayso-onboard #sso_wrapper #sso_form_flds {
 	margin:0 auto;
-	text-align:right;
+	text-align:center;
 	width:450px;
 }
+
+#sayso-onboard #sso_wrapper #sso_form_flds  p input{
+	border:solid 1px #595959 !important;
+	background: transparent;
+	color:#fff;
+}
+
 
 #sayso-onboard #sso_wrapper .navbar {
 	margin:0 auto;
 	padding:0;
 	position:absolute;
-	width:627px;
+	width:637px;
+}
+
+#sayso-onboard #sso_wrapper .navbar a
+{
+
 }
 
 #sso_new_users,
 #sso_new_users2,
 #sso_new_users3 {
-	height:440px;
+	height:425px;
 }
 #sso_enter_password {
-	height:470px;
+	height:455px;
+}
+
+#sso_enter_password h1{
+	color:#ffffff !important;
+	font-size:14px;
+}
+
+
+#sso_enter_password strong{
+	color:#fff !important;
 }

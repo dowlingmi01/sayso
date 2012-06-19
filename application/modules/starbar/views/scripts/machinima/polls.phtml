@@ -3,7 +3,7 @@
 	<!-- <h2 class="sb_title sb_tabHeader">Polls</h2> -->
 </div><!-- .sb_header -->
 <div class="sb_tabs">
-	
+
 	<ul>
 		<? if ($this->count_new_polls) { ?>
 			<li><a href="#polls_tabs_1"><?= $this->count_new_polls ?> New!</a></li>
@@ -20,19 +20,19 @@
 
 
 	<div id="polls_tabs_1" class="sb_tabPane">
-		
+
 		<p class="sb_tabHeader">
-			<!-- 
-			Polls are a speedy and effective way to find out what you love in the celebrity world. 
-			Each poll completed earns you 
-			<strong class="sb_theme_textHighlight sb_tooltip" title="Snakkle Bucks - are almost as good as cash and can be redeemed for goods in the Rewards Center.">Snakkle Bucks</strong> &amp; 
-			<strong class="sb_theme_textHighlight sb_tooltip" title="Stars - determine your access to increasingly important levels of influence.">Stars</strong>. 
-			Gain bonus Snakkle Bucks & Stars by sharing and tweeting your favorite polls, 
+
+			Polls are a speedy and effective way to find out what you love about Machinima.
+			Each poll completed earns you
+			<strong class="sb_theme_textHighlight sb_tooltip" title="Coins - are almost as good as cash and can be redeemed for goods in the Rewards Center.">Coins</strong> &amp;
+			<strong class="sb_theme_textHighlight sb_tooltip" title="XP - determine your access to increasingly important levels of influence.">XP</strong>.
+			Gain bonus Coins &amp; XP by sharing and tweeting your favorite polls,
 			and look for special polls with point magnifiers.
-			 -->
-			 
-			 Earn <strong class="sb_theme_textHighlight sb_tooltip" title="250 XP">250 XP</strong> &amp; <strong class="sb_theme_textHighlight sb_tooltip" title="Coins">Coins</strong> for each Poll you complete. Share with yout friends to earn extra points and you&#39;ll be that much closer to winning the big giveaway.
-			 
+
+
+			<!-- Earn <strong class="sb_theme_textHighlight sb_tooltip" title="250 XP">250 XP</strong> &amp; <strong class="sb_theme_textHighlight sb_tooltip" title="Coins">Coins</strong> for each Poll you complete. Share with yout friends to earn extra points and you&#39;ll be that much closer to winning the big giveaway.-->
+
 		</p>
 		<div class="sb_scrollPane">
 
@@ -42,7 +42,7 @@
 			else if ($this->count_archived_polls) { ?>
 				<p>No new polls today, but you still have <?= $this->count_archived_polls ?> polls to complete in the <a href="#" class="sb_nav_tabs" rel="<?= (($this->count_completed_polls || $this->count_disqualified_polls) ? 3 : 2) ?>">archives</a>.</p>
 			<? } else { ?>
-				<p>Nice job, looks like you've taken all the polls! Check back soon to earn more Snakkle Bucks and Stars!</p>
+				<p>Nice job, looks like you've taken all the polls! Check back soon to earn more Coins and XP!</p>
 			<? } ?>
 			<!-- END POLL BOX LANDING -->
 		</div><!-- .sb_scrollPane -->
@@ -63,7 +63,7 @@
 	<? if ($this->count_archived_polls) { ?>
 		<div id="polls_tabs_3" class="sb_tabPane">
 			<p class="sb_tabHeader">
-				We'd still love your opinion on these archived polls, and you can still earn by completing them! Same deal &ndash; earn <strong class="sb_theme_textHighlight">Snakkle Bucks</strong> &amp; <strong class="sb_theme_textHighlight"> Stars</strong> for each one you complete.
+				We'd still love your opinion on these archived polls, and you can still earn by completing them! Same deal &ndash; earn <strong class="sb_theme_textHighlight">Coins</strong> &amp; <strong class="sb_theme_textHighlight">XP</strong> for each one you complete.
 			</p>
 			<div class="sb_scrollPane">
 

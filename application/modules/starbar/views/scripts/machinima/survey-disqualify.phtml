@@ -25,17 +25,17 @@
 <div id="sayso-starbar-embed">
 	<br />
 	<? if (!$this->survey->premium) { ?>
-		Sorry, it appears that you do not qualify for the <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong> survey. Don't worry, we'll still give you some Bucks and Stars for trying!<br /><br />
+		Sorry, it appears that you do not qualify for the <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong> survey. Don't worry, we'll still give you some Coins and XP for trying!<br /><br />
 	<? } ?>
 	<div id="sb-survey-disqualified">
 		<? if ($this->survey->reward_category == "premium") { ?>
-			<p>Nice! You still banked <strong class="sb_theme_textHighlight_alt">75 Bucks</strong> &amp; <strong class="sb_theme_textHighlight_alt">1000 Stars</strong>. Remember to check out the Rewards Center to redeem your Bucks for stuff!</p>
+			<p>Nice! You still banked <strong class="sb_theme_textHighlight_alt">75 Coins</strong> &amp; <strong class="sb_theme_textHighlight_alt">1000 XP</strong>. Remember to check out the Rewards Center to redeem your Coins for stuff!</p>
 			<? $shareReward = 30 ?>
 		<? } elseif ($this->survey->reward_category == "profile") { ?>
-			<p>You earned <strong class="sb_theme_textHighlight">50 Bucks</strong> &amp;	<strong class="sb_theme_textHighlight">500 Stars</strong></p>
+			<p>You earned <strong class="sb_theme_textHighlight">50 Coins</strong> &amp;	<strong class="sb_theme_textHighlight">500 XP</strong></p>
 			<? $shareReward = 15 ?>
 		<? } else { ?>
-			<p>You earned <strong class="sb_theme_textHighlight">25 Bucks</strong> &amp;	<strong class="sb_theme_textHighlight">250 Stars</strong></p>
+			<p>You earned <strong class="sb_theme_textHighlight">25 Coins</strong> &amp;	<strong class="sb_theme_textHighlight">250 XP</strong></p>
 			<? $shareReward = 8 ?>
 		<? } ?>
 		<div class="sb_externalShares">
@@ -57,7 +57,7 @@
 				</a>
 			</div>
 			<span class="sb_mini-snakkle-reward sb_mini-snakkle-reward_twitter" id="sb_mini-snakkle-reward_twitter">+<?= $shareReward ?></span>
-			Share this survey to earn extra points
+			Share this survey to earn extra XP
 		</div>
 	</div>
 		<br />

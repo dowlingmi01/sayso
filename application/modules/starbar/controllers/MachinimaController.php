@@ -13,16 +13,16 @@ class Starbar_MachinimaController extends Starbar_ContentController
 
 	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null) {
 		parent::_assignShareInfoToView($shareLink, $twitterShareText, $facebookShareCaption, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
-		$this->view->assign('facebook_share_image_url', 'https://s3.amazonaws.com/say.so/media/snakkle/logo_snakkle.png');
+		$this->view->assign('facebook_share_image_url', 'https://s3.amazonaws.com/say.so/media/Machinima/logo_machinima.png');
 	}
-	protected $_appShareLink = 'http://Snakkle.Say.So';
-	protected $_fbkAppDescription = "Say.So is your way of making a lasting impact on the communities you love. Participating in Snakkle Say.So is easy - by giving your opinion, answering polls and taking fun quizzes, you gain points to redeem awesome prizes from Snakkle.";
+	protected $_appShareLink = 'http://Machinima.Say.So';
+	protected $_fbkAppDescription = "Say.So is your way of making a lasting impact on the communities you love. Participating in Machinima | Recon is easy - by giving your opinion, answering polls and taking fun quizzes, you gain points to redeem awesome prizes from Machinima.";
 
 	protected function _assignShareAppToView($facebookCallbackUrl) {
-		$twAppShareText = 'Join Snakkle Say.So and get access to big giveaways and great prizes from Snakkle.';
-		$fbkAppShareTitle = 'Snakkle Say.So';
-		$fbkAppShareCopy = "I just earned 19 Snakkle Bucks for sharing Snakkle Say.So!
-Join Snakkle Say.So and get access to big giveaways and awesome prizes.";
+		$twAppShareText = 'Join Machinima | Recon and get access to big giveaways and awesome prizes.';
+		$fbkAppShareTitle = 'Machinima Say.So';
+		$fbkAppShareCopy = "I just earned 19 Coins for sharing Machinima | Recon!
+Join Machinima | Recon and get access to big giveaways and awesome prizes.";
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twAppShareText, $fbkAppShareCopy,  $facebookCallbackUrl, $fbkAppShareTitle, $this->_fbkAppDescription);
 	}
@@ -42,9 +42,9 @@ Join Snakkle Say.So and get access to big giveaways and awesome prizes.";
 				$redeemable = ($completed ? 38 : 19);
 				break;
 		}
-		$twShareText = 'I just answered the survey "' . $survey->title .'" and earned ' . $redeemable . " Snakkle Bucks! Join Snakkle Say.So and earn great prizes!";
-		$fbkShareText = 'I just earned ' . $redeemable . ' Snakkle Bucks for answering the survey "'. $survey->title .'".
-Join Snakkle Say.So and get access to big giveaways and awesome prizes.';
+		$twShareText = 'I just answered the survey "' . $survey->title .'" and earned ' . $redeemable . " Machinima Coins! Join Machinima Say.So and earn great prizes!";
+		$fbkShareText = 'I just earned ' . $redeemable . ' Coins for answering the survey "'. $survey->title .'".
+Join Machinima | Recon and get access to big giveaways and awesome prizes.';
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
 	}
@@ -62,16 +62,16 @@ Join Snakkle Say.So and get access to big giveaways and awesome prizes.';
 				break;
 		}
 		$pollTitle = substr_compare($survey->title, '?', -1, 1) === 0 ? substr($survey->title, 0, -1) : $survey->title;
-		$twShareText = 'I just answered the poll "' . $pollTitle .'" and earned ' . $redeemable . " Snakkle Bucks! Join Snakkle Say.So and earn great prizes!";
-		$fbkShareText = 'I just earned ' . $redeemable . ' Snakkle Bucks for answering the poll "'. $pollTitle .'".
-Join Snakkle Say.So and get access to big giveaways and awesome prizes.';
+		$twShareText = 'I just answered the poll "' . $pollTitle .'" and earned ' . $redeemable . " Coins! Join Machinima | Recon and get access to big giveaways and awesome prizes!";
+		$fbkShareText = 'I just earned ' . $redeemable . ' Coins for answering the poll "'. $pollTitle .'".
+Join Machinima | Recon and get access to big giveaways and awesome prizes.';
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
 	}
 	protected function _assignShareQuizToView(Survey $survey, $facebookCallbackUrl) {
-		$twShareText = 'I just answered a Snakkle Celebrity Quiz! Join Snakkle Say.So and earn great prizes!';
-		$fbkShareText = 'I just answered a Snakkle Celebrity Quiz!
-Join Snakkle Say.So and get access to big giveaways and awesome prizes.';
+		$twShareText = 'I just answered a Machinima Quiz! Join Machinima Say.So and earn great prizes!';
+		$fbkShareText = 'I just answered a Machinima Quiz!
+Join Machinima | Recon and get access to big giveaways and awesome prizes.';
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, "Who is this?", $this->_fbkAppDescription);
 	}

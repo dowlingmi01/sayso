@@ -17,16 +17,16 @@ class Starbar_MovieController extends Starbar_ContentController
 
 	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null) {
 		parent::_assignShareInfoToView($shareLink, $twitterShareText, $facebookShareCaption, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
-		$this->view->assign('facebook_share_image_url', 'https://s3.amazonaws.com/say.so/media/snakkle/logo_snakkle.png');
+		$this->view->assign('facebook_share_image_url', 'https://s3.amazonaws.com/say.so/media/moviebar/logo_moviebar.png');
 	}
-	protected $_appShareLink = 'http://snakkle.say.so';
-	protected $_fbkAppDescription = "Say.So is your way of making a lasting impact on the communities you love. Participating in Snakkle Say.So is easy - by giving your opinion, answering polls and taking fun quizzes, you gain points to redeem awesome prizes from Snakkle.";
+	protected $_appShareLink = 'http://movie.say.so';
+	protected $_fbkAppDescription = "Say.So is your way of making a lasting impact on the communities you love. Participating in Movie Say.So is easy - by giving your opinion, answering polls and rating new and retro movie trailers, you gain points to redeem awesome prizes for movie buffs.";
 
 	protected function _assignShareAppToView($facebookCallbackUrl) {
-		$twAppShareText = 'Join Snakkle Say.So and get access to big giveaways and great prizes from Snakkle.';
-		$fbkAppShareTitle = 'Snakkle Say.So';
-		$fbkAppShareCopy = "I just earned 19 Snakkle Bucks for sharing Snakkle Say.So!
-Join Snakkle Say.So and get access to big giveaways and awesome prizes.";
+		$twAppShareText = 'Join Movie Say.So and get access to big giveaways and awesome prizes. Movie.Say.So';
+		$fbkAppShareTitle = 'Movie Say.So';
+		$fbkAppShareCopy = "I just earned 19 CineBucks for sharing Movie Say.So!
+Join Movie Say.So and get access to big giveaways and awesome prizes.";
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twAppShareText, $fbkAppShareCopy,  $facebookCallbackUrl, $fbkAppShareTitle, $this->_fbkAppDescription);
 	}
@@ -46,9 +46,9 @@ Join Snakkle Say.So and get access to big giveaways and awesome prizes.";
 				$redeemable = ($completed ? 38 : 19);
 				break;
 		}
-		$twShareText = "I just answered " . $survey->title ." and earned " . $redeemable . " Snakkle Bucks! Join Snakkle Say.So and earn great prizes!";
-		$fbkShareText = 'I just earned ' . $redeemable . ' Snakkle Bucks for answering the survey "'. $survey->title .'".
-Join Snakkle Say.So and get access big giveaways and awesome prizes.';
+		$twShareText = "I just answered " . $survey->title ." and earned " . $redeemable . " CineBucks! Join Movie Say.So and earn great prizes!";
+		$fbkShareText = 'I just earned ' . $redeemable . ' CineBucks for answering the survey "'. $survey->title .'".
+Join Movie Say.So and get access big giveaways and awesome prizes.';
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
 	}
@@ -65,16 +65,16 @@ Join Snakkle Say.So and get access big giveaways and awesome prizes.';
 				$redeemable = 19;
 				break;
 		}
-		$twShareText = "I just answered " . $survey->title ." and earned " . $redeemable . " Snakkle Bucks! Join Snakkle Say.So and earn great prizes!";
-		$fbkShareText = 'I just earned ' . $redeemable . ' Snakkle Bucks for answering the poll "'. $survey->title .'".
-Join Snakkle Say.So and get access big giveaways and awesome prizes.';
+		$twShareText = "I just answered " . $survey->title ." and earned " . $redeemable . " CineBucks! Join Movie Say.So and earn great prizes! Movie.Say.So";
+		$fbkShareText = 'I just earned ' . $redeemable . ' CineBucks for answering the poll "'. $survey->title .'".
+Join Movie Say.So and get access to big giveaways and awesome prizes.';
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
 	}
 	protected function _assignShareQuizToView(Survey $survey, $facebookCallbackUrl) {
-		$twShareText = 'I answered a Quiz, "Who is this?"! Join Snakkle Say.So and earn great prizes!';
-		$fbkShareText = 'I just answerer a Quiz, "Who is this?".
-Join Snakkle Say.So and get access big giveaways and awesome prizes.';
+		$twShareText = 'I answered a Quiz, "'.$survey->title.'"! Join Movie Say.So and earn great prizes!';
+		$fbkShareText = 'I just answered a Quiz, "'.$survey->title.'"!
+Join Movie Say.So and get access big giveaways and awesome prizes.';
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, "Who is this?", $this->_fbkAppDescription);
 	}

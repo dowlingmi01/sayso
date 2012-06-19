@@ -20,17 +20,17 @@
 <div id="sayso-starbar-embed">
 	<br />
 	<? if (!$this->survey->premium) { ?>
-		Sorry, it appears that you do not qualify for the <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong> survey. Don't worry, we'll still give you some Bucks and Stars for trying!<br /><br />
+		Sorry, it appears that you do not qualify for the <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong> survey. Don't worry, we'll still give you some CineBucks and CineStars for trying!<br /><br />
 	<? } ?>
 	<div id="sb-survey-disqualified">
 		<? if ($this->survey->reward_category == "premium") { ?>
-			<p>Nice! You still banked <strong class="sb_theme_textHighlight_alt">75 Bucks</strong> &amp; <strong class="sb_theme_textHighlight_alt">1000 Stars</strong>. Remember to check out the Rewards Center to redeem your Bucks for stuff!</p>
+			<p>Nice! You still banked <strong class="sb_theme_textHighlight_alt">75 CineBucks</strong> &amp; <strong class="sb_theme_textHighlight_alt">1000 CineStars</strong>. Remember to check out the Rewards Center to redeem your CineBucks for stuff!</p>
 			<? $shareReward = 30 ?>
 		<? } elseif ($this->survey->reward_category == "profile") { ?>
-			<p>You earned <strong class="sb_theme_textHighlight">50 Bucks</strong> &amp;	<strong class="sb_theme_textHighlight">500 Stars</strong></p>
+			<p>You earned <strong class="sb_theme_textHighlight">50 CineBucks</strong> &amp;	<strong class="sb_theme_textHighlight">500 CineStars</strong></p>
 			<? $shareReward = 15 ?>
 		<? } else { ?>
-			<p>You earned <strong class="sb_theme_textHighlight">25 Bucks</strong> &amp;	<strong class="sb_theme_textHighlight">250 Stars</strong></p>
+			<p>You earned <strong class="sb_theme_textHighlight">25 CineBucks</strong> &amp;	<strong class="sb_theme_textHighlight">250 CineStars</strong></p>
 			<? $shareReward = 8 ?>
 		<? } ?>
 		<div class="sb_externalShares">

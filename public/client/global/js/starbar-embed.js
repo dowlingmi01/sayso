@@ -158,7 +158,7 @@
 			cssWidget.href = SaySo.baseUrl + 'css/widget.css';
 			document.body.appendChild(cssWidget);
 
-			$.getScript(SaySo.baseUrl + 'js/widget.js');
+			$.ajax(SaySo.baseUrl + 'js/widget.js', { cache: true, dataType: 'script' });
 		}
 	}} // end function afterPause
 

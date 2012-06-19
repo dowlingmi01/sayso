@@ -37,8 +37,7 @@
 #sayso-starbar #starbar-player-console #starbar-type .sb_userImg{
 	width: 50px;
 	height: 48px;
-	position:absolute;
-	top:20px;
+	margin-top:10px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-type div.sb_userImg{

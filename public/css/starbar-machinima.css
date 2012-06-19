@@ -5,12 +5,12 @@
 /* override */
 #sayso-starbar #starbar-player-console #starbar-type{
 	
-  background: url("../images/machinima/bg_starbar-type.png") no-repeat;
+  background: url("../images/machinima/bg_starbar-type2.png") no-repeat;
   width: 235px;
-  height: 80px;
+  height: 110px;
   position: absolute;
-  top: -7px;
-  left: 103px;
+  top: -15px;
+  left: 104px;
   z-index: 2147480011;
 }
 
@@ -30,15 +30,15 @@
 	width: 110px;
 	height: 25px;
 	margin: 0px 0px 0px 0px;
-	top: 8px;
+	top: 7px;
 	left: 13px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-type .sb_userImg{
-	width: 40px;
-	height: 38px;
+	width: 52px;
+	height: 50px;
 	position:absolute;
-	top:22px;
+	top:20px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-type div.sb_userImg{
@@ -50,7 +50,7 @@
 
 #sayso-starbar #starbar-player-console #starbar-type .sb_content{
 	width: 140px;
-	top: 42px;
+	top: 50px;
 	left: 73px;
 	color: #FFFFFF;
 }

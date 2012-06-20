@@ -2084,7 +2084,7 @@
 #sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_next{width:95px !important;height:65px !important;margin-top:27px !important;}
 #sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_next .sb_userLevelImg{width:60px !important;height:63px !important;margin-left:auto !important;margin-right:auto !important;}
 #sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_current{height:105px !important;}
-#sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_current .sb_userLevelImg{width:105px !important;height:104px !important;margin-left:auto !important;margin-right:auto !important;background-image: url('../images/machinima/level_current.png') !important;}
+#sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_current .sb_userLevelImg{width:105px !important;height:104px !important;margin-left:auto !important;margin-right:auto !important;background-image: url('../images/machinima/level_current.png');}
 #sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box {margin-top:10px !important;}
 #sayso-starbar #sayso-starbar-ajax-content .sb_user-points-box{ padding-top:0px !important; margin-top:10px !important }
 #sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box .sb_user-level-star{top:-8px;height:30px !important;}

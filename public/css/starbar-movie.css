@@ -746,7 +746,7 @@
 
 #sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner .sb_popContent{
 	width: 640px;
-	height: 580px;
+	height: 560px;
 	background-color: #000 !important;
 	color: #ffffff !important;
 }
@@ -1375,6 +1375,7 @@
 	height:75px;
 	margin-left:auto;
 	margin-right:auto;
+	margin-top:18px;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .arrow_left
@@ -1415,18 +1416,33 @@
 {
 	width:125px;
 	height:70px;
-	border:dotted 1px #FAFAFA;
 	float:left;
 	margin-left:2px;
 	margin-right:2px;
+	border:solid 1px #1C1C1C;
+	/* Center images */
 }
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.first,
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.last
 {
 	width:93px;
 	height:70px;
-	border:solid 1px red;
 	float:left;
+	border:solid 1px #1C1C1C;
+	
+	/* First and Last Images from the carousel group */
+}
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb img
+{
+	width:125px;
+	height:70px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.first img,
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.last img
+{
+	width:93px;
+	height:70px;
 }
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.first
 {
@@ -1435,6 +1451,11 @@
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.last
 {
 	margin-right:4px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1
+{
+	margin-left:25px;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1 h2

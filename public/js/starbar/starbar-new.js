@@ -1027,12 +1027,9 @@ $SQ(function(){
 				var numberOfVisibleLevels = parseInt(containerElem.attr('rel'));
 				if (isNaN(numberOfVisibleLevels) || numberOfVisibleLevels < 1) numberOfVisibleLevels = 5;
 
-				sayso.log(numberOfVisibleLevels);
-
 				var levelGroup = null;
 
 				if (allLevels && userCurrentLevel) {
-
 
 					$SQ.each(allLevels, function (index, level) {
 

@@ -4,62 +4,62 @@
 			<li><a href="#spotlight_tabs_2">In Release</a></li>
 			<li><a href="#spotlight_tabs_3">Test Trailers</a></li>
 	</ul>
-
+	
 	<div id="spotlight_tabs_1" class="sb_tabPane">
-		<img src="//<?= BASE_DOMAIN ?>/images/movie/img_header_spotlight.png" alt="Spotlight" />		
+		<img src="//<?= BASE_DOMAIN ?>/images/movie/img_header_spotlight.png" alt="Spotlight" />
+		
 		<div class="sb_scrollPane">
-			
-		<img src="//<?= BASE_DOMAIN ?>/images/movie/img_spotlight-player.jpg" alt="Spotlight" />
-		<div class="sb_spotlight-questions" id="sb_spotlight-q1" style="display: none">
-			<h2>What’s your Say.So on this trailer?</h2>
-			<p>Caddyshack trailer (1980)</p>
-		</div><!-- .sb_spotlight-questions -->
-		
-		<div class="sb_spotlight-questions" id="sb_spotlight-q2" style="display: none;">
-			<p>How many thumbs up would you give the Caddyshack trailer?</p>
-			<p class="sb_spotlight-response">
-			<input type="radio" value="1" name="rate" id="spotlight-rate_1"><label for="spotlight-rate_1" class="sb_spotlight-rate">1</label>
-			<input type="radio" value="2" name="rate" id="spotlight-rate_2"><label for="spotlight-rate_2" class="sb_spotlight-rate" style="width: 30px">2</label>
-			<input type="radio" value="3" name="rate" id="spotlight-rate_3"><label for="spotlight-rate_3" class="sb_spotlight-rate" style="width: 45px;">3</label>
-			<input type="radio" value="4" name="rate" id="spotlight-rate_4"><label for="spotlight-rate_4" class="sb_spotlight-rate" style="width: 60px">4</label>
-			<input type="radio" value="5" name="rate" id="spotlight-rate_5"><label for="spotlight-rate_5"  class="sb_spotlight-rate" style="width: 75px">5</label>
-			</p>
-		</div><!-- .sb_spotlight-questions -->
-		
-		<div class="sb_spotlight-questions" id="sb_spotlight-q3" style="display: none;">
-			<p>Did you see the movie?</p>
-			<p class="sb_spotlight-response">
-			<input type="radio" value="yes" name="spotlight-didsee" id="spotlight-yes"><label for="spotlight-yes">Yes</label>
-			<input type="radio" value="no" name="spotlight-didsee" id="spotlight-no"><label for="spotlight-no">No</label>
-			</p>
-		</div><!-- .sb_spotlight-questions -->
-
-		<div class="sb_spotlight-questions" id="sb_spotlight-q4" style="display: none">
-			<p>Did the trailer match your expectations for the movie?</p>
-			<div class="sb_spotlight-response">
-				<div class="sb_column">
-					<p>
-					<input type="radio" value="yes" name="spotlight-didsee" id="spotlight-yes"><label for="spotlight-yes">The trailer was better than the movie</label>
-					</p>
-					<p>
-					<input type="radio" value="yes" name="spotlight-didsee" id="spotlight-yes"><label for="spotlight-yes">The trailer was worse than the movie</label>
-					</p>
-				</div>
-				<div class="sb_column">
-					<p>
-						<input type="radio" value="yes" name="spotlight-didsee" id="spotlight-yes"><label for="spotlight-yes">The trailer was worse than the movie</label>
-					</p>
-				</div>
+			<div class="sb_video_container" id="sb_video_container">
+			<!-- 
+				<object width="635" height="390">
+					<param name="movie" value="http://www.youtube.com/v/OXQDeyKaW-I?version=3&amp;hl=en_US"></param>
+					<param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param>
+					<embed id="video_source" src="http://www.youtube.com/v/OXQDeyKaW-I?version=3&amp;hl=en_US" type="application/x-shockwave-flash" width="635" height="390" allowscriptaccess="always" allowfullscreen="true"></embed>
+				</object>
+			 -->
+			 
 			</div>
-		</div><!-- .sb_spotlight-questions -->
+			
+			<div class="sb_spotlight-questions" id="sb_spotlight-q1">
+				<h2>What's your Say.So on this trailer?</h2>
+				<p>Caddyshack trailer (1980)</p>
+			</div><!-- .sb_spotlight-questions -->
+			
+			<div class="sb_video_carousel">
+				<div class="arrow_left"></div>
+				<div class="scroll_content">
+				
+					 <div class="line_group">
+						<div class="thumb first" id="A8ViCl9xMDA"></div>
+						<div class="thumb" id="cWfhaRFUHZY"></div>
+						<div class="thumb" id="E9muZAOhHag"></div>
+						<div class="thumb" id="yQ0oQOyqgvo"></div>
+						<div class="thumb last" id="wmpygzjf40c"></div>
+					 </div>
+					 
+					 <div class="line_group">
+						<div class="thumb first" id="67CeZZ52zZw"></div>
+						<div class="thumb" id="owjl5xRhr4g"></div>
+						<div class="thumb" id="iolCLx7lJRc"></div>
+						<div class="thumb" id="BR4K2lE31Iw"></div>
+						<div class="thumb last" id="rm4Tvh8oOvE"></div>
+					 </div>
+					 
+					 <div class="line_group active">
+						<div class="thumb first" id="3jE6gq4LQAU"></div>
+						<div class="thumb" id="cv23GGQUUeI"></div>
+						<div class="thumb" id="a40_WmAWsIA"></div>
+						<div class="thumb" id="NZX-84u00u8"></div>
+						<div class="thumb last" id="NZX-84u00u8"></div>
+					 </div>
+					 
+				</div>
+				<div class="arrow_right"></div>
+			</div>
+		</div>
 		
-		<div class="sb_spotlight-share" id="sb_spotlight-share">
-			<p>Congratulations! You earned <strong class="sb_theme_textHighlight">250 Cinestars & 2 Cinebucks</strong> </p>
-			<p>[share code]</p>
-		</div><!-- .sb_spotlight-questions -->
-
-
-		</div><!-- .sb_scrollPane -->
+		
+		
 	</div><!-- #tabs_1 -->
 	
 	<div id="spotlight_tabs_2" class="sb_tabPane">
@@ -81,6 +81,28 @@
 
 		</div><!-- .sb_scrollPane -->
 	</div><!-- #tabs_3 -->
-
+	
 	
 </div><!-- .tabs -->
+<script src="http://www.youtube.com/player_api"></script>
+<script>
+var player;
+
+function onYouTubePlayerAPIReady() {
+
+  player = new YT.Player('sb_video_container', {
+	  
+    height: '390',
+    width: '635',
+    videoId: 'HGekjZd5LPk'
+        
+  });
+  
+}
+
+$('.thumb').click(function(){
+    player.stopVideo();
+    player.loadVideoById( $(this).attr('id') );
+});
+
+</script>

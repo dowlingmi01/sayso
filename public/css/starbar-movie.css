@@ -1371,8 +1371,8 @@
 
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel
 {
-	width:620px;
-	height:65px;
+	width:635px;
+	height:75px;
 	margin-left:auto;
 	margin-right:auto;
 }
@@ -1398,7 +1398,7 @@
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content
 {
 	height:100%;
-	width:580px;
+	width:595px;
 	float:left;
 }
 
@@ -1423,7 +1423,7 @@
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.first,
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.last
 {
-	width:85px;
+	width:93px;
 	height:70px;
 	border:solid 1px red;
 	float:left;

@@ -4,6 +4,8 @@ require_once APPLICATION_PATH . '/modules/starbar/controllers/ContentController.
 
 class Starbar_MovieController extends Starbar_ContentController
 {
+	protected $_maximumDisplayed = array('polls' => 0, 'surveys' => 0, 'trailers' => 0);
+
 	public function postDispatch() {
 		parent::postDispatch();
 		if (!$this->_usingJsonPRenderer) {
@@ -11,14 +13,66 @@ class Starbar_MovieController extends Starbar_ContentController
 		}
 	}
 
-	public function spotlightAction() {
+	public function userProfileAction () {
+		Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'trailers', $this->_maximumDisplayed['trailers']);
+		$this->_assignSurveysToView('trailers');
+		parent::userProfileAction();
+	}
 
+	public function spotlightAction() {
+		$this->_validateRequiredParameters(array('user_id'));
+
+		$request = $this->getRequest();
+		$surveyId = (int) abs($request->getParam("survey_id", 0));
+
+		Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'trailers', $this->_maximumDisplayed['trailers']);
+
+		$trailers = new SurveyCollection();
+		$trailers->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'trailer', 'new');
+		$currentTrailer = null;
+
+		if ($surveyId && isset($trailers[$surveyId])) {
+			$currentTrailer = $trailers[$surveyId];
+		} elseif ($trailers) {
+			foreach ($trailers as $trailer) {
+				$currentTrailer = $trailer;
+				break;
+			}
+		}
+
+		if ($currentTrailer) {
+			$this->view->current_trailer = $currentTrailer;
+
+			$firstQuestion = new Survey_Question();
+			$firstQuestion->loadDataByUniqueFields(array('survey_id' => $currentTrailer->id, 'ordinal' => 1));
+
+			$this->view->first_question = $firstQuestion;
+
+			$firstQuestionChoices = new Survey_QuestionChoiceCollection();
+			$firstQuestionChoices->loadAllChoicesForSurveyQuestion($firstQuestion->id);
+
+			$this->view->first_question_choices = $firstQuestionChoices;
+
+			$secondQuestion = new Survey_Question();
+			$secondQuestion->loadDataByUniqueFields(array('survey_id' => $currentTrailer->id, 'ordinal' => 2));
+
+			$this->view->second_question = $secondQuestion;
+
+			$secondQuestionChoices = new Survey_QuestionChoiceCollection();
+			$secondQuestionChoices->loadAllChoicesForSurveyQuestion($secondQuestion->id);
+
+			$this->view->second_question_choices = $secondQuestionChoices;
+
+			$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=trailer&shared_id=".$currentTrailer->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
+			$this->_assignShareTrailerToView($currentTrailer, $facebookCallbackUrl);
+		}
 	}
 
 	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null) {
 		parent::_assignShareInfoToView($shareLink, $twitterShareText, $facebookShareCaption, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
 		$this->view->assign('facebook_share_image_url', 'https://s3.amazonaws.com/say.so/media/moviebar/logo_moviebar.png');
 	}
+
 	protected $_appShareLink = 'http://movie.say.so';
 	protected $_fbkAppDescription = "Say.So is your way of making a lasting impact on the communities you love. Participating in Movie Say.So is easy - by giving your opinion, answering polls and rating new and retro movie trailers, you gain points to redeem awesome prizes for movie buffs.";
 
@@ -30,6 +84,7 @@ Join Movie Say.So and get access to big giveaways and awesome prizes.";
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twAppShareText, $fbkAppShareCopy,  $facebookCallbackUrl, $fbkAppShareTitle, $this->_fbkAppDescription);
 	}
+
 	protected function _assignShareSurveyToView(Survey $survey, $completed, $facebookCallbackUrl) {
 		switch ($survey->reward_category) {
 			case "premium":
@@ -52,6 +107,7 @@ Join Movie Say.So and get access big giveaways and awesome prizes.';
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
 	}
+
 	protected function _assignSharePollToView(Survey $survey, $facebookCallbackUrl) {
 		switch ($survey->reward_category) {
 			case "premium":
@@ -71,7 +127,8 @@ Join Movie Say.So and get access to big giveaways and awesome prizes.';
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
 	}
-	protected function _assignShareQuizToView(Survey $survey, $facebookCallbackUrl) {
+
+	protected function _assignShareTrailerToView(Survey $survey, $facebookCallbackUrl) {
 		$twShareText = 'I answered a Quiz, "'.$survey->title.'"! Join Movie Say.So and earn great prizes!';
 		$fbkShareText = 'I just answered a Quiz, "'.$survey->title.'"!
 Join Movie Say.So and get access big giveaways and awesome prizes.';

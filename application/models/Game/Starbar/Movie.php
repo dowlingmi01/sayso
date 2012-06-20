@@ -47,7 +47,7 @@ class Game_Starbar_Movie extends Game_Starbar {
 			else $profileSurveyLink = "Profile Survey";
 			$good->setNonRedeemReason('Must complete<br />'.$profileSurveyLink);
 			$good->setCommentForUser('Survey Requirement');
-		} elseif ($profile->getCurrencyByTitle('CineBucks')->current_balance < $good->cost) {
+		} elseif ($profile->getCurrencyByType('redeemable')->current_balance < $good->cost) {
 			$good->setNonRedeemReason('Earn more CineBucks by<br />completing polls and surveys!');
 			$good->setCommentForUser('Insufficient CineBucks');
 		}
@@ -67,7 +67,7 @@ class Game_Starbar_Movie extends Game_Starbar {
 	public function getPurchaseCurrencyId() {
 		static $currencyId = 0;
 		if (!$currencyId) {
-			$currencyId = $this->_economy->getCurrencyId('CINEBUCKS');
+			$currencyId = $this->_economy->getCurrencyIdByType('redeemable');
 		}
 		return $currencyId;
 	}

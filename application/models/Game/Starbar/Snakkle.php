@@ -24,10 +24,10 @@ class Game_Starbar_Snakkle extends Game_Starbar {
 		$currencyProfileSurvey = $profile->getCurrencies()->find('id', $currencyProfileSurveyId)->getFirst();
 		$currentLevel = $profile->getHighestLevel();
 
-		/*if ($good->getId() == $this->_economy->getGoodId('WEEK_ONE_GIVEAWAY')) {
-			$good->setNonRedeemReason('Congrats to Jansen W. from Glen Allen, VA for winning the week 1 prize!');
+		if ($good->getId() == $this->_economy->getGoodId('MONTH_ONE_GIVEAWAY')) {
+			$good->setNonRedeemReason('The first monthly giveaway winner will be announced soon!');
 			$good->setCommentForUser('Unavailable');
-		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_TWO_GIVEAWAY')) {
+		/*} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_TWO_GIVEAWAY')) {
 			$good->setNonRedeemReason('Congrats to Mike B. from New York, NY for winning the week 2 prize!');
 			$good->setCommentForUser('Unavailable');
 		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_THREE_GIVEAWAY')) {
@@ -37,7 +37,7 @@ class Game_Starbar_Snakkle extends Game_Starbar {
 			$good->setNonRedeemReason('HUGE Congrats to Michael A. from Fishers, IN for winning the grand prize!');
 			$good->setCommentForUser('Unavailable');
 		*/
-		if (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
+		} elseif (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
 			$good->setNonRedeemReason('Sorry, this item is sold out.');
 			$good->setCommentForUser('Sold Out');
 		} elseif ((int) $currencyProfileSurvey->current_balance < 1) {

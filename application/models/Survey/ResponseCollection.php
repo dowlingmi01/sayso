@@ -2,7 +2,7 @@
 
 class Survey_ResponseCollection extends RecordCollection
 {
-	public function markUnseenSurveysNewForStarbarAndUser ($starbarId, $userId, $type, $maximumToDisplay) {
+	static public function markUnseenSurveysNewForStarbarAndUser ($starbarId, $userId, $type, $maximumToDisplay) {
 		$limitClause = "";
 
 		$type = str_replace("surveys", "survey", $type);
@@ -73,7 +73,7 @@ class Survey_ResponseCollection extends RecordCollection
 		}
 	}
 
-	public function markOldSurveysArchivedForStarbarAndUser ($starbarId, $userId, $type) {
+	static public function markOldSurveysArchivedForStarbarAndUser ($starbarId, $userId, $type) {
 		$type = str_replace("surveys", "survey", $type);
 		$type = str_replace("polls", "poll", $type);
 		$secondsBeforeAutoArchive = 259200; // = 72 hours = 3 days

@@ -8,7 +8,7 @@ class Starbar_ContentController extends Api_GlobalController
 	protected $_usingJsonPRenderer = true;
 
 	// To be set by inherited classes, e.g. HellomusicController
-	protected $_maximumDisplayed = array('polls' => 0, 'surveys' => 0, 'quizzes' => 0);
+	protected $_maximumDisplayed = array('polls' => 0, 'surveys' => 0);
 
 	public function preDispatch()
 	{
@@ -248,8 +248,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 		if (!$surveyResponse->id) {
 			// Failed... might be because it's a new user. Try again after marking unseen surveys new
-			$surveyResponses = new Survey_ResponseCollection();
-			$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys', $this->_maximumDisplayed['surveys']);
+			Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys', $this->_maximumDisplayed['surveys']);
 
 			$surveyResponse->loadDataByUniqueFields(array("user_id" => $this->user_id, "survey_id" => $this->survey_id));
 		}
@@ -274,64 +273,6 @@ class Starbar_ContentController extends Api_GlobalController
 			$this->view->assign('next_survey_id', $nextSurveyId);
 		}
 
-	}
-
-	// Fetches the next quiz for the current user for display
-	// Optionally takes quiz_index as CGI parameter to indicate getting the
-	// (n+1)th quiz for the user (0 = first quiz, 1 = second quiz, etc.)
-	public function quizAction ()
-	{
-		$this->_validateRequiredParameters(array('user_id'));
-
-		$request = $this->getRequest();
-		$quizIndex = (int) abs($request->getParam("quiz_index", 0));
-
-		$surveyResponses = new Survey_ResponseCollection();
-		$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'quizzes', $this->_maximumDisplayed['quizzes']);
-
-		$quizzesById = new SurveyCollection();
-		$quizzesById->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'quiz', 'new');
-
-		$quizzes = array();
-
-		$this->view->user_id = $this->user_id;
-		$this->view->user_key = $this->user_key;
-		$this->view->starbar_id = $this->starbar_id;
-		$this->view->quiz_index = $quizIndex;
-
-		foreach ($quizzesById as $quiz) {
-			$quizzes[] = $quiz;
-		}
-
-		if (($quizIndex <= sizeof($quizzes) - 1) && isset($quizzes[$quizIndex])) {
-			$quiz = $quizzes[$quizIndex];
-			$quizQuestion = new Survey_Question();
-			$quizQuestion->loadDataByUniqueFields(array('survey_id' => $quiz->id));
-			$quizChoices = new Survey_QuestionChoiceCollection();
-			$quizChoices->loadAllChoicesForSurveyQuestion($quizQuestion->id);
-			$quizResults = array();
-
-			$totalQuizResponses = 0;
-			foreach ($quizChoices as $quizChoice) {
-				$numberOfResponsesForThisChoice = Survey_QuestionChoice::getNumberOfResponsesForChoice($quizChoice->id);
-				$quizResults[$quizChoice->id] = $numberOfResponsesForThisChoice;
-				$totalQuizResponses += $numberOfResponsesForThisChoice;
-			}
-
-			if ($quizQuestion->title && $quizQuestion->title != $quiz->title)
-				$this->view->quiz_hint = $quizQuestion->title;
-			else $this->view->quiz_hint = "";
-
-			$this->view->quiz = $quiz;
-			$this->view->quiz_question = $quizQuestion;
-			$this->view->quiz_choices = $quizChoices;
-			$this->view->quiz_results = $quizResults;
-			$this->view->total_quiz_responses = $totalQuizResponses;
-
-			$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=quiz&shared_id=".$quiz->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
-			$this->_assignShareQuizToView($quiz, $facebookCallbackUrl);
-		}
-		else $this->view->quiz = false;
 	}
 
 	public function surveyUnavailableAction ()
@@ -450,18 +391,16 @@ class Starbar_ContentController extends Api_GlobalController
 	// Fetches polls for the current user for display
 	public function pollsAction ()
 	{
-		$surveyResponses = new Survey_ResponseCollection();
-		$surveyResponses->markOldSurveysArchivedForStarbarAndUser($this->starbar_id, $this->user_id, 'polls');
-		$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'polls', $this->_maximumDisplayed['polls']);
+		Survey_ResponseCollection::markOldSurveysArchivedForStarbarAndUser($this->starbar_id, $this->user_id, 'polls');
+		Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'polls', $this->_maximumDisplayed['polls']);
 		$this->_assignSurveysToView('polls');
 	}
 
 	// Fetches surveys for the current user for display
 	public function surveysAction ()
 	{
-		$surveyResponses = new Survey_ResponseCollection();
-		$surveyResponses->markOldSurveysArchivedForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys');
-		$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys', $this->_maximumDisplayed['surveys']);
+		Survey_ResponseCollection::markOldSurveysArchivedForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys');
+		Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys', $this->_maximumDisplayed['surveys']);
 		$this->_assignSurveysToView('surveys');
 		$this->view->profile_survey_id = 0;
 		if (isset($this->view->new_surveys) && sizeof($this->view->new_surveys)) {
@@ -503,13 +442,10 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('user_email', $userEmail);
 
 		// Assign the counts for surveys and polls
-		$surveyResponses = new Survey_ResponseCollection();
-		$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'polls', $this->_maximumDisplayed['polls']);
+		Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'polls', $this->_maximumDisplayed['polls']);
 		$this->_assignSurveysToView('polls');
-		$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys', $this->_maximumDisplayed['surveys']);
+		Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'surveys', $this->_maximumDisplayed['surveys']);
 		$this->_assignSurveysToView('surveys');
-		$surveyResponses->markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'quizzes', $this->_maximumDisplayed['quizzes']);
-		$this->_assignSurveysToView('quizzes');
 
 		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=starbar&shared_id=".$this->starbar_id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
 		$this->_assignShareAppToView($facebookCallbackUrl);
@@ -751,35 +687,54 @@ class Starbar_ContentController extends Api_GlobalController
 		$type = str_replace("surveys", "survey", $type);
 		$type = str_replace("polls", "poll", $type);
 		$type = str_replace("quizzes", "quiz", $type);
+		$type = str_replace("trailers", "trailer", $type);
+
+		switch ($type) {
+			case "survey":
+				$typePlural = "surveys";
+				break;
+			case "poll":
+				$typePlural = "polls";
+				break;
+			case "quiz":
+				$typePlural = "quizzes";
+				break;
+			case "trailer":
+				$typePlural = "trailers";
+				break;
+			default:
+				return;
+				break;
+		}
+
 		$statusArray = Array('completed', 'disqualified', 'archived', 'new', );
 		$totalDisplayed = 0;
 
-		if ($type == "poll" || $type == "survey") {
-			$maximumDisplayed = $this->_maximumDisplayed[$type.'s'];
-			foreach ($statusArray as $status) {
-				$surveyCollection = new SurveyCollection();
-				$surveyCollection->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, $type, $status);
-				$numberOfSurveys = sizeof($surveyCollection);
+		$maximumDisplayed = $this->_maximumDisplayed[$typePlural];
 
-				if ($maximumDisplayed && $totalDisplayed >= $maximumDisplayed && $status == 'archived') {
-					$this->view->assign('count_archived_'.$type.'s', 0);
-					$this->view->assign('count_new_'.$type.'s', 0);
-					break;
-				} elseif ($maximumDisplayed && $totalDisplayed >= $maximumDisplayed && $status == 'new') {
-					$this->view->assign('count_new_'.$type.'s', 0);
-					break;
-				}
+		foreach ($statusArray as $status) {
+			$surveyCollection = new SurveyCollection();
+			$surveyCollection->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, $type, $status);
+			$numberOfSurveys = sizeof($surveyCollection);
 
-				$this->view->assign($status.'_'.$type.'s', $surveyCollection);
-
-				if ($maximumDisplayed && $numberOfSurveys > ($maximumDisplayed - $totalDisplayed) && ($status == 'archived' || $status == 'new')) {
-					$numberOfSurveys = ($maximumDisplayed - $totalDisplayed);
-				}
-
-				$this->view->assign('count_'.$status.'_'.$type.'s', $numberOfSurveys);
-
-				$totalDisplayed += $numberOfSurveys;
+			if ($maximumDisplayed && $totalDisplayed >= $maximumDisplayed && $status == 'archived') {
+				$this->view->assign('count_archived_'.$typePlural, 0);
+				$this->view->assign('count_new_'.$typePlural, 0);
+				break;
+			} elseif ($maximumDisplayed && $totalDisplayed >= $maximumDisplayed && $status == 'new') {
+				$this->view->assign('count_new_'.$typePlural, 0);
+				break;
 			}
+
+			$this->view->assign($status.'_'.$typePlural, $surveyCollection);
+
+			if ($maximumDisplayed && $numberOfSurveys > ($maximumDisplayed - $totalDisplayed) && ($status == 'archived' || $status == 'new')) {
+				$numberOfSurveys = ($maximumDisplayed - $totalDisplayed);
+			}
+
+			$this->view->assign('count_'.$status.'_'.$typePlural, $numberOfSurveys);
+
+			$totalDisplayed += $numberOfSurveys;
 		}
 	}
 }

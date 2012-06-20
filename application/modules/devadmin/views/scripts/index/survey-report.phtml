@@ -30,7 +30,11 @@
 						Choices (users can pick <b><?= ($surveyQuestion->choice_type == "single" ? "one response" : "multiple responses") ?></b>):
 						<ol>
 						<? foreach ($surveyQuestion->option_array as $surveyQuestionChoice) { ?>
-							<? $choiceCalculation = $this->calculation_array[$surveyQuestion->id][$surveyQuestionChoice->id] ?>
+							<? if (isset($this->calculation_array[$surveyQuestion->id][$surveyQuestionChoice->id])) { ?>
+								<? $choiceCalculation = $this->calculation_array[$surveyQuestion->id][$surveyQuestionChoice->id] ?>
+							<? } else { ?>
+								<? $choiceCalculation = new ReportCell_SurveyCalculation() ?>
+							<? } ?>
 							<li>
 								<?= $surveyQuestionChoice->title ?> <b><?= $choiceCalculation->number_of_responses ?></b> (<?= round($choiceCalculation->number_of_responses / $questionCalculation->number_of_responses * 100, 2) ?>%)<br />
 							</li>

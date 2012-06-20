@@ -97,5 +97,46 @@ class Api_SurveyController extends Api_GlobalController
 
 		return $this->_resultType(new Object(array("correct_survey_question_choice_id" => $correctSurveyQuestionChoiceId)));
 	}
-}
 
+	public function userTrailerSubmitAction() {
+		$this->_validateRequiredParameters(array('user_id', 'user_key', 'survey_id', 'first_choice_id', 'second_choice_id'));
+
+		$survey = new Survey();
+		$survey->loadData($this->survey_id);
+		if (!$survey->id) return $this->_resultType(false);
+
+		$surveyResponse = new Survey_Response();
+		$surveyResponse->loadDataByUniqueFields(array("survey_id" => $this->survey_id, "user_id" => $this->user_id));
+
+		if (!$surveyResponse->id || $surveyResponse == 'completed') return $this->_resultType(false);
+
+		// Delete any existing responses (in case of previous partial response, for whatever reason)
+		$surveyResponse->deleteQuestionResponses();
+
+		$surveyQuestions = new Survey_QuestionCollection();
+		$surveyQuestions->loadAllQuestionsForSurvey($survey->id);
+
+		foreach ($surveyQuestions as $surveyQuestion) {
+			$choiceId = ($surveyQuestion->ordinal == 1 ? $this->first_choice_id : $this->second_choice_id);
+			// Verify the choice is valid
+			$surveyQuestionChoice = new Survey_QuestionChoice();
+			$surveyQuestionChoice->loadDataByUniqueFields(array('id' => $choiceId, 'survey_question_id' => $surveyQuestion->id));
+
+			if (!$surveyQuestionChoice->id) return $this->_resultType(false);
+
+			$surveyQuestionResponse = new Survey_QuestionResponse();
+			$surveyQuestionResponse->survey_response_id = $surveyResponse->id;
+			$surveyQuestionResponse->survey_question_id = $surveyQuestion->id;
+			$surveyQuestionResponse->survey_question_choice_id = $surveyQuestionChoice->id;
+			$surveyQuestionResponse->data_type = "choice";
+			$surveyQuestionResponse->save();
+		}
+
+		$surveyResponse->status = "completed";
+		$surveyResponse->processing_status = "completed";
+		$surveyResponse->data_download = new Zend_Db_Expr('now()');
+		$surveyResponse->completed_disqualified = new Zend_Db_Expr('now()');
+		$surveyResponse->save();
+	}
+
+}

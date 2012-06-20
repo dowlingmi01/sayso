@@ -11,6 +11,10 @@ class Starbar_MachinimaController extends Starbar_ContentController
 		}
 	}
 
+	public function spotlightAction() {
+		
+	}
+
 	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null) {
 		parent::_assignShareInfoToView($shareLink, $twitterShareText, $facebookShareCaption, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
 		$this->view->assign('facebook_share_image_url', 'https://s3.amazonaws.com/say.so/media/Machinima/logo_machinima.png');

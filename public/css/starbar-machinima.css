@@ -4,7 +4,7 @@
 
 /* override */
 #sayso-starbar #starbar-player-console #starbar-type{
-	
+
   background: url("../images/machinima/bg_starbar-type2.png") no-repeat;
   width: 235px;
   height: 110px;
@@ -116,7 +116,7 @@
 #sayso-starbar #starbar-player-console #starbar-nav ul li#nav_surveys span.sb_nav_element {
 	background-image: url('../images/machinima/nav_surveys.png');
 }
-#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_quizzes span.sb_nav_element {
+#sayso-starbar #starbar-player-console #starbar-nav ul li#nav_spotlight span.sb_nav_element {
 	background-image: url('../images/machinima/nav_freshness.png');
 }
 #sayso-starbar #starbar-player-console #starbar-nav ul li#nav_polls span.sb_nav_element{
@@ -137,7 +137,7 @@
 			rgb(0,134,179) 61%);
 	background-color: #009fd2;
 	*/
-	
+
 	background: url('../images/machinima/nav_border_bg.png') repeat-x;
 }
 
@@ -223,30 +223,30 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_bgGradientGrey{
-	
+
 	/*
 	background-image: -webkit-gradient(
-	
+
 		linear,
 		left top,
 		left bottom,
 		color-stop(0.22, rgb(63,64,65) ),
 		color-stop(0.61, rgb(28,29,28) )
-	
+
 	);
-	
-	
+
+
 	background-image: -moz-linear-gradient(
-	
+
 			center top,
 			rgb(63,64,65) 22%,
 			rgb(28,29,28) 61%
-			
+
 	);
 	*/
-	
+
 	background: url(../images/machinima/btn_bg.png) repeat-x center;
-	
+
 }
 
 
@@ -278,7 +278,7 @@
 	text-decoration: none !important;
 }
 
-#sayso-starbar #starbar-player-console .sb_theme_button .sb_imgSnakkles{
+#sayso-starbar #starbar-player-console .sb_theme_button .sb_imgExperienceCurrency{
 	position: absolute;
 	top: -8px;
 	left: -14px;
@@ -319,7 +319,7 @@
 /* promo area */
 
 #sayso-starbar #starbar-player-console #starbar-promo{
-	
+
 	z-index: 1000;
 	position: absolute;
 	left: 618px;
@@ -355,7 +355,7 @@
 	width: 525px;
 	height: 290px;
 	background-repeat: no-repeat;
-	
+
 }
 
 /*
@@ -411,7 +411,7 @@
 	margin: 12px 0px;
 	font-size: 13px;
 	line-height: 15px;
-	width:220px;	
+	width:220px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide p.sb_promo_link{
@@ -564,7 +564,7 @@
 	position:relative;
 	white-space: nowrap;
 	overflow: hidden;
-	text-overflow: ellipsis; /* The sb_rewardHeader text in the container will be hidden with ... if it's too big ( recommendation ) 
+	text-overflow: ellipsis; /* The sb_rewardHeader text in the container will be hidden with ... if it's too big ( recommendation )
 								this should not affect the title container in some particular cases */
 }
 
@@ -590,7 +590,7 @@
 }
 
 #sayso-starbar .sb_rewardItem #sb_reward_step1 .sb_rewardHeader {
-	height:20px !important;	
+	height:20px !important;
 }
 
 #sayso-starbar .sb_rewardItem #sb_reward_step1 .sb_rewardDescription
@@ -655,11 +655,11 @@
 }
 /*
 #sayso-starbar .sb_popBox_rewards .sb_rewardItem {
-	border:solid 1px red !important;	
+	border:solid 1px red !important;
 }
 */
 #sayso-starbar .sb_rewardItem #sb_reward_step1 .sb_rewardHeader {
-	
+
 }
 
 #sayso-starbar .sb_rewardItem #sb_reward_step1 .sb_rewardBase{
@@ -702,7 +702,7 @@
 #sayso-starbar .sb_rewardItem #sb_reward_step1 .sb_rewardBase .balance .text
 {
 	font-size:12px;
-	font-weight:bold;	
+	font-weight:bold;
 	color: #fff;
 	float:left;
 }
@@ -780,14 +780,14 @@
 	font-size:13px;
 }
 
-#sayso-starbar #sb_popBox_user-profile .sb_header h2 .sb_user_title 
+#sayso-starbar #sb_popBox_user-profile .sb_header h2 .sb_user_title
 {
 	font-weight:bold !important;
 	font-size:13px;
 	color:#e51c24;
 }
 
-#sayso-starbar #sb_popBox_user-profile .sb_userImg 
+#sayso-starbar #sb_popBox_user-profile .sb_userImg
 {
 	width:50px !important;
 	height:50px !important;
@@ -810,7 +810,7 @@
 	font-size:13px !important;
 }
 
-#sayso-starbar #sb_popBox_user-profile .sb_currency_balance, 
+#sayso-starbar #sb_popBox_user-profile .sb_currency_balance,
 #sayso-starbar #sb_popBox_user-profile .sb_currency_title
 {
 	color:#c02526 !important;
@@ -845,7 +845,7 @@
 
 #sayso-starbar #sb_popBox_user-profile .sb_popContent
 {
-	width:550px !important;	
+	width:550px !important;
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a{
@@ -896,7 +896,7 @@
 }
 
 
-#sayso-starbar #starbar-player-console .sb_imgSnakkles{
+#sayso-starbar #starbar-player-console .sb_imgExperienceCurrency{
 	background-image: url('../images/machinima/p_icon.png');
 	background-repeat: no-repeat;
 	background-position: center;
@@ -967,7 +967,7 @@
 	margin: 0px 0px 0px 0px;
 	padding: 10px 10px 0px 10px;
 	position: relative;
-	
+
 	border-left: none !important;
 	border-right: none !important;
 }
@@ -1044,88 +1044,15 @@
 	border-top: solid 1px #bfbfbf;
 }
 
-/* quizzes */
+/* spotlight */
 
-#sayso-starbar #sb_popBox_quizzes.sb_popBox{
+#sayso-starbar #sb_popBox_spotlight.sb_popBox{
 	left: 0px;
 }
 
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent{
+#sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner .sb_popContent{
 	width: 360px;
 	height: 420px;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz h2.sb_title{
-	text-align: center;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_main{
-	border-bottom: 2px dotted #999999;
-	padding: 0px 0px 5px 0px;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_main img{
-	display: block;
-	margin: 10px auto;
-	max-height: 140px;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_options{
-	width: 100%;
-	display: table;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_options .sb_quiz_row{
-	display: table-row;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_options .sb_quiz_option{
-	width: 45%;
-	display: table-cell;
-	padding: 5px 15px 5px 0px;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_options .sb_quiz_option_correct{
-	color: #92c20c !important;
-	text-shadow: none !important;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quiz_results{
-	border-bottom: 2px dotted #999999;
-	padding-bottom: 5px;
-	margin-bottom: 10px;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_quizShare{
-	float: left;
-	margin: 0 0 0 10px;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz .sb_externalShares{
-	float: left;
-	margin: 10px 0px 0px 0px;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz_next{
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	text-align:  center;
-}
-
-#sayso-starbar #sb_popBox_quizzes.sb_popBox .sb_popBoxInner .sb_popContent .sb_quiz_next a{
-	color: #333;
-	font-weight: bold;
-	font-size: 11px;
-	background-image: url('../images/machinima/img_arrow_right.png');
-	background-repeat: no-repeat;
-	background-position: right 0px;
-	padding: 0px 22px 0px 0px;
-	display: inline-block;
-	margin: 0px auto;
-	height: 20px;
-	line-height: 20px;
-	text-align:  center;
 }
 
 /* REUSABLE: user level box and user score */
@@ -1144,7 +1071,7 @@
 	padding: 10px 0px 0px 0px;
 }
 
-#sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgSnakkles
+#sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgExperienceCurrency
 {
 	margin-top:-6px;
 }
@@ -1154,7 +1081,7 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-star{
-	
+
 	position: absolute;
 	z-index: 1000;
 	top: -8px;
@@ -1163,7 +1090,7 @@
 	background-repeat: no-repeat;
 	width: 33px;
 	height: 27px;
-	
+
 }
 
 #sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-note{
@@ -1207,10 +1134,10 @@
 	margin-right: -20px;
 }
 
-#sayso-starbar #starbar-player-console span.sb_mini-snakkle-reward,
-#sayso-starbar-embed span.sb_mini-snakkle-reward,
-#sayso-starbar #sb_popBox_quizzes ul.sb_listDeals li span.sb_mini-snakkle-reward{
-	background-image: url('../images/machinima/img_snakkle_tn.png');
+#sayso-starbar #starbar-player-console span.sb_mini-redeemable-currency-reward,
+#sayso-starbar-embed span.sb_mini-redeemable-currency-reward,
+#sayso-starbar #sb_popBox_spotlight ul.sb_listDeals li span.sb_mini-redeemable-currency-reward{
+	background-image: url('../images/machinima/img_redeemable_currency_tn.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
 	font-size: 13px;
@@ -1227,24 +1154,24 @@
 	text-shadow: 1px 1px 1px rgba(0,0,0,.8);
 }
 
-#sayso-starbar #starbar-player-console span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_facebook,
-#sayso-starbar-embed span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_facebook{
+#sayso-starbar #starbar-player-console span.sb_mini-redeemable-currency-reward.sb_mini-redeemable-currency-reward_facebook,
+#sayso-starbar-embed span.sb_mini-redeemable-currency-reward.sb_mini-redeemable-currency-reward_facebook{
 	left: 55px;
 }
 
-#sayso-starbar #starbar-player-console span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_twitter,
-#sayso-starbar-embed span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_twitter{
+#sayso-starbar #starbar-player-console span.sb_mini-redeemable-currency-reward.sb_mini-redeemable-currency-reward_twitter,
+#sayso-starbar-embed span.sb_mini-redeemable-currency-reward.sb_mini-redeemable-currency-reward_twitter{
 	left: 115px !important;
 }
 
 
-#sayso-starbar #starbar-player-console span.sb_mini-snakkle-reward.sb_mini-snakkle-reward_email{
+#sayso-starbar #starbar-player-console span.sb_mini-redeemable-currency-reward.sb_mini-redeemable-currency-reward_email{
 	left: 150px !important;
 }
 
 
-#sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgSnakkles{
-	
+#sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgExperienceCurrency{
+
 	position: absolute;
 	z-index: 1000;
 	top: 17px;
@@ -1261,9 +1188,9 @@
 	-moz-box-shadow: 0px 0px 2px #666;
 	-webkit-box-shadow: 0px 0px 2px #666;
 	box-shadow: 0px 0px 2px #666;
-	
+
 	background-color:#000;
-	
+
 }
 
 #sayso-starbar .sb_user-level-box .sb_progress_bar .sb_progressBarValue{
@@ -1352,7 +1279,7 @@
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_current{
 	/*
 	width: 100px;
-	height: 139px; 
+	height: 139px;
 	*/
 	/* fixed height to allow scrollPane to have correct height */
 }
@@ -1362,7 +1289,7 @@
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevelImg{
-	
+
 	height: 85px;
 	width: 100%;
 	display: block;
@@ -1545,14 +1472,14 @@
 	background-position: 0px 10px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_chops,
-#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_chops{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_experience_currency,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_experience_currency{
 	background-image: url('../images/machinima/img_star_lg.png');
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_snakkles,
-#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_snakkles{
-	background-image: url('../images/machinima/img_snakkles_lg.png');
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_redeemable_currency,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_redeemable_currency{
+	background-image: url('../images/machinima/img_redeemable_currency_lg.png');
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_polls,
@@ -1565,9 +1492,9 @@
 	background-image: url('../images/machinima/img_survey_lg.png');
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_quizzes,
-#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_quizzes{
-	background-image: url('../images/machinima/img_quizzes_lg.png');
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_spotlight,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_spotlight{
+	background-image: url('../images/machinima/img_spotlight_lg.png');
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_gear,
@@ -1735,11 +1662,11 @@
 
 /*
 #sayso-starbar #starbar-player-console .sb_popBox .sb_header{
-	
+
 	background-color: #383838;
 	margin: -15px -15px 10px -15px;
 	padding: 5px 5px 5px 8px;
-	
+
 }
 */
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav{
@@ -1818,7 +1745,7 @@
 
 #sayso-starbar .sb_rewardItem .sb_rewardImg{
 	text-align: center;
-	padding: 5px 0px;	
+	padding: 5px 0px;
 	background-color: #fff;
 	height:85px;
 	overflow:hidden; /* Correction so that the image doesn't get outside the reward container (recommendation) */
@@ -1863,14 +1790,6 @@
 
 #sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_user-points-box{
 	width: 100%;
-}
-
-#sayso-starbar #starbar-player-console .sb_rewardItem .sb_user-points-box .sb_imgSnakkles{
-	/*
-	top: 13px;
-	left: -3px;
-	padding-top:13px;
-	*/
 }
 
 #sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_column50{
@@ -2056,15 +1975,15 @@
 	border-bottom: none !important;
 }
 
-/* quizzes */
+/* spotlight */
 
-#sayso-starbar #sb_popBox_quizzes.sb_triangle-border:before{
+#sayso-starbar #sb_popBox_spotlight.sb_triangle-border:before{
 	left: 230px;
 }
-#sayso-starbar #sb_popBox_quizzes.sb_triangle-border:after{
+#sayso-starbar #sb_popBox_spotlight.sb_triangle-border:after{
 	left: 231px;
 }
-#sayso-starbar #sb_popBox_quizzes .sb_triangle-solid:after{
+#sayso-starbar #sb_popBox_spotlight .sb_triangle-solid:after{
 	left: 227px;
 }
 
@@ -2169,7 +2088,7 @@
 #sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box {margin-top:10px !important;}
 #sayso-starbar #sayso-starbar-ajax-content .sb_user-points-box{ padding-top:0px !important; margin-top:10px !important }
 #sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box .sb_user-level-star{top:-8px;height:30px !important;}
-#sayso-starbar #sayso-starbar-ajax-content .sb_user-points-box .sb_imgSnakkles{top:2px;}
+#sayso-starbar #sayso-starbar-ajax-content .sb_user-points-box .sb_imgExperienceCurrency{top:2px;}
 #sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box .sb_progress_bar,#sayso-starbar #sayso-starbar-ajax-content .sb_user-points-box .sb_progress_bar{background-color:#555555;}
 #sayso-starbar #sayso-starbar-ajax-content .sb_user_purchases p {font-size:11px !important;padding-top:5px !important;}
 #sayso-starbar .sb_lineList li { border-bottom: solid 1px #bfbfbf !important; }

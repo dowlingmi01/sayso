@@ -2100,3 +2100,130 @@
 /* Keep this at end of file. It's used for testing if CSS is loaded. */
 
 #sayso-starbar ._sayso_starbar_css_loaded {width: 1px;}
+
+/* Spothlight 5th tab */
+	
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_popContent
+{
+	width: 640px;
+	height: 560px;
+	
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs ul
+{
+	margin-top:35px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs ul li
+{
+	color:#000 !important;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_container
+{
+	width:635px;
+	height:390px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel
+{
+	width:635px;
+	height:75px;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:18px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .arrow_left
+{
+	height:70px;
+	width:20px;
+	float:left;
+	background: url(../images/machinima/machinima_thumb_arrows.png) no-repeat top;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .arrow_right
+{
+	height:70px;
+	width:20px;
+	float:left;
+	background: url(../images/machinima/machinima_thumb_arrows.png) no-repeat bottom;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content
+{
+	height:100%;
+	width:595px;
+	float:left;
+	overflow:hidden;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .line_group
+{
+	display:none;
+}
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .line_group.active
+{
+	display:block;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb
+{
+	width:125px;
+	height:70px;
+	float:left;
+	margin-left:2px;
+	margin-right:2px;
+	border:solid 1px #1C1C1C;
+	/* Center images */
+}
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.first,
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.last
+{
+	width:93px;
+	height:70px;
+	float:left;
+	border:solid 1px #1C1C1C;
+	
+	/* First and Last Images from the carousel group */
+}
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb img
+{
+	width:125px;
+	height:70px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.first img,
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.last img
+{
+	width:93px;
+	height:70px;
+}
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.first
+{
+	margin-left:4px;
+}
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.last
+{
+	margin-right:4px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1
+{
+	margin-left:25px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1 h2
+{
+	font-size:18px;
+	font-weight:bold;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1 p
+{
+	font-size:12px;
+	font-weight:bold;
+}

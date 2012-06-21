@@ -29,7 +29,7 @@
 				<div class="arrow_left"></div>
 				<div class="scroll_content">
 				
-					 <div class="line_group">
+					 <div class="line_group active" id="l1">
 						<div class="thumb first" id="A8ViCl9xMDA"><img src="http://img.youtube.com/vi/A8ViCl9xMDA/1.jpg" /></div>
 						<div class="thumb" id="cWfhaRFUHZY"><img src="http://img.youtube.com/vi/cWfhaRFUHZY/1.jpg" /></div>
 						<div class="thumb" id="E9muZAOhHag"><img src="http://img.youtube.com/vi/E9muZAOhHag/1.jpg" /></div>
@@ -37,7 +37,7 @@
 						<div class="thumb last" id="wmpygzjf40c"><img src="http://img.youtube.com/vi/wmpygzjf40c/1.jpg" /></div>
 					 </div>
 					 
-					 <div class="line_group">
+					 <div class="line_group" id="l2">
 						<div class="thumb first" id="67CeZZ52zZw"><img src="http://img.youtube.com/vi/67CeZZ52zZw/1.jpg" /></div>
 						<div class="thumb" id="owjl5xRhr4g"><img src="http://img.youtube.com/vi/owjl5xRhr4g/1.jpg" /></div>
 						<div class="thumb" id="iolCLx7lJRc"><img src="http://img.youtube.com/vi/iolCLx7lJRc/1.jpg" /></div>
@@ -45,7 +45,7 @@
 						<div class="thumb last" id="rm4Tvh8oOvE"><img src="http://img.youtube.com/vi/rm4Tvh8oOvE/1.jpg" /></div>
 					 </div>
 					 
-					 <div class="line_group active">
+					 <div class="line_group" id="l3">
 						<div class="thumb first" id="3jE6gq4LQAU"><img src="http://img.youtube.com/vi/3jE6gq4LQAU/1.jpg" /></div>
 						<div class="thumb" id="cv23GGQUUeI"><img src="http://img.youtube.com/vi/cv23GGQUUeI/1.jpg" /></div>
 						<div class="thumb" id="a40_WmAWsIA"><img src="http://img.youtube.com/vi/a40_WmAWsIA/1.jpg" /></div>
@@ -105,4 +105,41 @@ $('.thumb').click(function(){
     player.loadVideoById( $(this).attr('id') );
 });
 
+$('.arrow_left, .arrow_right').bind('click', function(){
+
+	var selected	=	false;
+	var prev		=	false;
+	var next		=	false;
+	var dir 		= 	$(this).attr('class').split("_")[1];
+	
+	if($('.line_group.active').length > 0)					selected =	$('.line_group.active');
+	if( $(selected[0].previousElementSibling).length > 0 ) 	prev	 = 	$(selected[0].previousElementSibling);
+	if( $(selected[0].nextElementSibling).length > 0 ) 		next 	 = 	$(selected[0].nextElementSibling);
+	
+	switch(dir)
+	{
+		case 'left' :
+			
+				if( prev !== false ) {
+					$('.line_group').hide();
+					selected.removeClass('active');
+					prev.addClass('active');
+					$('.line_group.active').fadeIn("slow");
+				}
+			
+			break;
+			
+		case 'right' :
+			
+				if( next !== false ) {
+					$('.line_group').hide();
+					selected.removeClass('active');
+					next.addClass('active');
+					$('.line_group.active').fadeIn("slow");
+				}
+				
+			break;
+	}
+	
+});
 </script>

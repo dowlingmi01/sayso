@@ -1401,6 +1401,7 @@
 	height:100%;
 	width:595px;
 	float:left;
+	overflow:hidden;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .line_group
@@ -1939,3 +1940,9 @@
 #sayso-starbar ._sayso_starbar_css_loaded {
 	width: 1px;
 }
+
+/*
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .line_group#l1 .thumb { border:solid 1px red !important; }
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .line_group#l2 .thumb { border:solid 1px green !important; }
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .line_group#l3 .thumb { border:solid 1px blue !important; }
+*/

@@ -1380,20 +1380,18 @@
 
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .arrow_left
 {
-	height:40px;
-	width:18px;
+	height:70px;
+	width:20px;
 	float:left;
-	background: url(../images/movie/c_left.png) no-repeat;
-	margin-top:15px;
+	background: url(../images/movie/movie_thumb_arrows.png) no-repeat top;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .arrow_right
 {
-	height:40px;
-	width:18px;
+	height:70px;
+	width:20px;
 	float:left;
-	background: url(../images/movie/c_right.png) no-repeat;
-	margin-top:15px;
+	background: url(../images/movie/movie_thumb_arrows.png) no-repeat bottom;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content

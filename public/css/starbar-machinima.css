@@ -2126,6 +2126,10 @@
 	height:390px;
 	margin-left:auto;
 	margin-right:auto;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-o-user-select:none;
+	user-select:none;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel
@@ -2135,6 +2139,10 @@
 	margin-left:auto;
 	margin-right:auto;
 	margin-top:18px;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-o-user-select:none;
+	user-select:none;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .arrow_left
@@ -2143,6 +2151,10 @@
 	width:20px;
 	float:left;
 	background: url(../images/machinima/machinima_thumb_arrows.png) no-repeat top;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-o-user-select:none;
+	user-select:none;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .arrow_right
@@ -2151,6 +2163,10 @@
 	width:20px;
 	float:left;
 	background: url(../images/machinima/machinima_thumb_arrows.png) no-repeat bottom;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-o-user-select:none;
+	user-select:none;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content
@@ -2159,6 +2175,10 @@
 	width:595px;
 	float:left;
 	overflow:hidden;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-o-user-select:none;
+	user-select:none;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .line_group
@@ -2178,6 +2198,10 @@
 	margin-left:2px;
 	margin-right:2px;
 	border:solid 1px #1C1C1C;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-o-user-select:none;
+	user-select:none;
 	/* Center images */
 }
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.first,

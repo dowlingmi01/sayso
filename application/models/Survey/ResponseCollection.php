@@ -42,7 +42,7 @@ class Survey_ResponseCollection extends RecordCollection
 		$userJoinedStarbar = strtotime($starbarUserMap->created);
 		$starbarLaunched = strtotime($starbar->launched);
 
-		if ($userJoinedStarbar > $starbarLaunched) $userJoinedStarbar = $starbarLaunched;
+		if ($userJoinedStarbar < $starbarLaunched) $userJoinedStarbar = $starbarLaunched;
 
 		$daysSinceUserJoinedStarbar = intval(floor((time() - $userJoinedStarbar) / 86400));
 		$daysSinceStarbarLaunched = intval(floor((time() - $starbarLaunched) / 86400));

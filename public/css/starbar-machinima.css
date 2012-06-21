@@ -278,7 +278,7 @@
 	text-decoration: none !important;
 }
 
-#sayso-starbar #starbar-player-console .sb_theme_button .sb_imgExperienceCurrency{
+#sayso-starbar #starbar-player-console .sb_theme_button .sb_imgRedeemableCurrency{
 	position: absolute;
 	top: -8px;
 	left: -14px;
@@ -896,7 +896,7 @@
 }
 
 
-#sayso-starbar #starbar-player-console .sb_imgExperienceCurrency{
+#sayso-starbar #starbar-player-console .sb_imgRedeemableCurrency{
 	background-image: url('../images/machinima/p_icon.png');
 	background-repeat: no-repeat;
 	background-position: center;
@@ -1071,7 +1071,7 @@
 	padding: 10px 0px 0px 0px;
 }
 
-#sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgExperienceCurrency
+#sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgRedeemableCurrency
 {
 	margin-top:-6px;
 }
@@ -1080,7 +1080,7 @@
 	width: 75px;
 }
 
-#sayso-starbar #starbar-player-console .sb_user-level-box .sb_user-level-star{
+#sayso-starbar #starbar-player-console .sb_user-level-box .sb_imgExperienceCurrency{
 
 	position: absolute;
 	z-index: 1000;
@@ -1170,7 +1170,7 @@
 }
 
 
-#sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgExperienceCurrency{
+#sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgRedeemableCurrency{
 
 	position: absolute;
 	z-index: 1000;
@@ -2087,8 +2087,8 @@
 #sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_current .sb_userLevelImg{width:105px !important;height:104px !important;margin-left:auto !important;margin-right:auto !important;background-image: url('../images/machinima/level_current.png');}
 #sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box {margin-top:10px !important;}
 #sayso-starbar #sayso-starbar-ajax-content .sb_user-points-box{ padding-top:0px !important; margin-top:10px !important }
-#sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box .sb_user-level-star{top:-8px;height:30px !important;}
-#sayso-starbar #sayso-starbar-ajax-content .sb_user-points-box .sb_imgExperienceCurrency{top:2px;}
+#sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box .sb_imgExperienceCurrency{top:-8px;height:30px !important;}
+#sayso-starbar #sayso-starbar-ajax-content .sb_user-points-box .sb_imgRedeemableCurrency{top:2px;}
 #sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box .sb_progress_bar,#sayso-starbar #sayso-starbar-ajax-content .sb_user-points-box .sb_progress_bar{background-color:#555555;}
 #sayso-starbar #sayso-starbar-ajax-content .sb_user_purchases p {font-size:11px !important;padding-top:5px !important;}
 #sayso-starbar .sb_lineList li { border-bottom: solid 1px #bfbfbf !important; }

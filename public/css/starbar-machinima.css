@@ -2263,3 +2263,21 @@
 	font-size:12px;
 	font-weight:bold;
 }
+
+#sayso-starbar #starbar-player-console .sb_starbar-logo {
+	background-image: url('../images/machinima/logo_sayso.png');
+	background-repeat: no-repeat;
+	background-position: 10px 0px;
+	width: 100%;
+	height: 35px;
+	display: inline-block;
+	text-indent: -9999px;
+	cursor: pointer;
+	position: absolute;
+	top: 25px;
+	left: 0px;
+}
+
+#sayso-starbar #starbar-player-console .sb_starbar-logo:hover {
+	background-position: 10px -34px;
+}

@@ -372,7 +372,7 @@
 
 									// Display Width
 									if (array_key_exists('width',$coloptions)) {
-										$formElements[$colname]->setAttrib("size", $coloptions['width']);
+										$formElements[$colname]->setAttrib("size", $coloptions['width']/8);
 									}
 
 									if (array_key_exists($colname,$currentData)) {
@@ -557,7 +557,7 @@
 
 									// Display Width
 									if (array_key_exists('width',$coloptions)) {
-										$formElements[$colname]->setAttrib("size", $coloptions['width']);
+										$formElements[$colname]->setAttrib("size", $coloptions['width']/8);
 									}
 								}
 
@@ -748,6 +748,56 @@
 			}
 		}
 
+		public function userAction()
+		{
+			$formElements = array();
+
+            $formElements['emailaddress'] = new Form_Element_Text('emailaddress');
+            $formElements['emailaddress']->setLabel("Users Email Address");
+         	$formElements['submit'] = new Zend_Form_Element_Submit('submit');
+           // $formElements['submit'] ->setLabel('Give Reward') // the button's value
+				   // ->setIgnore(true); // very usefull -> it will be ignored before insertion
+
+			$form = new ZendX_JQuery_Form();
+			$form->setName("Reward");
+			$form->setAttrib('id','div_form');
+			$form->addElements($formElements);
+			$form->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));
+			$form->addElement('submit', 'submit', array(
+        		'label' => 'Get User Info',
+        		'onclick' => "$('#div_form').load('" . "/admin/rewardnew" . "', $('#div_results').serializeArray() ); return false;"
+    		));
+			if ($this->getRequest()->isPost()) { //is it a post request ?
+
+				$postData = $this->getRequest()->getPost(); // getting the $_POST data
+
+				$starbarsql = $db->query('select * from starbar');
+				$starbarreference = $starbarsql->fetchObject();
+
+				$select = Zend_Registry::get('db')->select()->from("starbar");
+							$stmt = $select->query();
+							$currentData = $stmt->fetchAll();
+
+printf("<h2>Starbarreference</h2><pre>%s</pre>",print_r($starbarreference,true));
+				if ($postData['emailaddress']!=null) {
+					// We have an email address. Get all starbars associated with this user
+					$user_email = new User_Email();
+					$usersstarbars = $user_email->getUserID($postData['emailaddress']);
+
+					if ($usersstarbars) {
+						//printf("<h2>We have user data</h2><pre>%s</pre>",print_r($starbarlist,true));
+						// Pass the starbar details back to the view
+						$this->view->tabs = $usesstarbars;
+					} else {
+						$this->view->error = "No data found for this user";
+					}
+
+				} else {
+					$this->view->error = "Please enter an email address";
+				}
+			}
+			$this->view->form = $form; // assigning the form to view
+		}
 		/**
 		* Reward User with point
 		*/

@@ -83,7 +83,7 @@
 			"colname": "title",
 			"type": "text",
 			"label": "Survey Title",
-			"width": 300,
+			"width": 600,
 			"filterwidth":250,
 			"validate": [
 				"notnull",
@@ -114,7 +114,7 @@
 		{
 			"colname": "external_key",
 			"type": "text",
-			"width": 20,
+			"width": 360,
 			"help": "Used for polls/surveys only -- ignored for quizzes",
 			"displaywhen": [
 				"add",

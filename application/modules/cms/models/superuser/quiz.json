@@ -83,7 +83,7 @@
 			"type": "text",
 			"label": "Quiz Title",
 			"help":"The title of this quiz",
-			"width": 42,
+			"width": 600,
 			"filterwidth":250,
 			"validate": [
 				"notnull",
@@ -126,6 +126,19 @@
 			"displaywhen": [
 				"add",
 				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "start_day",
+			"type": "number",
+			"width": 20,
+			"filterwidth":20,
+			"help": "Day (relative to launch) that this survey is available. Day 1 = launch day",
+			"displaywhen": [
+				"add",
+				"detail",
+				"grid",
 				"edit"
 			]
 		}

@@ -33,7 +33,7 @@ class Starbar extends Record
     	}
         return parent::_filter($value, $property);
     }
-    
+
 	public function init() {
 		if (Registry::isRegistered('starbar')) {
 			throw new Exception('Starbar already created and registered in Registry as \'starbar\'');
@@ -100,6 +100,19 @@ class Starbar extends Record
 
 	public function getVisibility () {
 		return $this->_visibility;
+	}
+
+	public function getCommaDelimitedListOfUsers() {
+		if (!$this->id) return;
+
+		$sql = "
+			SELECT sum.user_id
+			FROM starbar_user_map sum
+			WHERE sum.starbar_id = ?
+		";
+
+		$arrayOfUserIds = Db_Pdo::fetchColumn($sql, $this->id);
+		if (sizeof($arrayOfUserIds)) return implode(',', $arrayOfUserIds);
 	}
 
 	/**

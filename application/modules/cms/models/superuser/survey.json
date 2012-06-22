@@ -144,59 +144,14 @@
 				"detail",
 				"edit"
 			]
-		},
-		{
-			"colname": "ordinal",
-			"type": "number",
-			"displaywhen": [
-				"add",
-				"detail",
-				"edit"
-			]
-		},
-		{
-			"colname": "start_day",
-			"type": "number",
-			"width": 50,
-			"filterwidth":20,
-			"help": "Day (relative to launch) that this survey is available. Day 1 = launch day",
-			"displaywhen": [
-				"add",
-				"detail",
-				"grid",
-				"edit"
-			]
-		},
-		{
-			"colname": "start_after",
-			"type": "number",
-			"help": "Time delay in seconds before this survey is available to a new user",
-			"displaywhen": [
-				"add",
-				"detail",
-				"edit"
-			]
-		},
-		{
-			"colname": "start_at",
-			"type": "datetime",
-			"displaywhen": [
-				"add",
-				"detail",
-				"edit"
-			]
-		},
-			{
-			"colname": "end_at",
-			"type": "datetime",
-			"displaywhen": [
-				"add",
-				"detail",
-				"edit"
-			]
 		}
 	],
 	"subobjects": [
+		{
+			"Title":"Starbars",
+			"table": "starbar_survey_map",
+			"fk": "survey_id"
+		},
 		{
 			"Title":"Questions",
 			"table": "survey_question",

@@ -138,46 +138,6 @@
 								"detail",
 								"edit"
 							]
-						},
-						{
-							"colname": "start_day",
-							"type": "number",
-							"width":5,
-							"help": "Day (relative to launch) that this survey is available. Day 1 = launch day",
-							"displaywhen": [
-								"add",
-								"detail",
-								"grid",
-								"edit"
-							]
-						},
-						{
-							"colname": "start_after",
-							"type": "number",
-							"help": "Time delay in seconds before this survey is available to a new user",
-							"displaywhen": [
-								"add",
-								"detail",
-								"edit"
-							]
-						},
-						{
-							"colname": "start_at",
-							"type": "datetime",
-							"displaywhen": [
-								"add",
-								"detail",
-								"edit"
-							]
-						},
-						{
-							"colname": "end_at",
-							"type": "datetime",
-							"displaywhen": [
-								"add",
-								"detail",
-								"edit"
-							]
 						}
 					]
 				}

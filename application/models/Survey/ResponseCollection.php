@@ -8,6 +8,7 @@ class Survey_ResponseCollection extends RecordCollection
 		$type = str_replace("surveys", "survey", $type);
 		$type = str_replace("polls", "poll", $type);
 		$type = str_replace("quizzes", "quiz", $type);
+		$type = str_replace("trailers", "trailer", $type);
 
 		if ($maximumToDisplay) {
 			$sql = "SELECT count(sr.id) AS theCount
@@ -52,24 +53,32 @@ class Survey_ResponseCollection extends RecordCollection
 		$firstDayOfSurveysUserShouldSee = $lastDayOfSurveysUserShouldSee - $daysOfSurveysToDisplay;
 		if ($firstDayOfSurveysUserShouldSee < 1) $firstDayOfSurveysUserShouldSee = 1;
 
-		if ($type == "poll" || $type == "survey" || $type == "quiz") {
+		if ($type == "poll" || $type == "survey" || $type == "quiz" || $type == "trailer") {
 			$sql = "INSERT INTO survey_response (survey_id, user_id, status, created)
 						SELECT s.id, u.id, 'new', now()
 						FROM survey s, user u
+						INNER JOIN starbar_survey_map ssm
+							ON s.id = ssm.survey_id
+							AND ssm.starbar_id = ?
+							AND ssm.start_at < now()
+							AND (ssm.end_at > now() OR ssm.end_at = '0000-00-00 00:00:00')
+							AND (
+								(ssm.start_day >= ? AND ssm.start_day <= ?)
+								OR
+								(ssm.start_day IS NULL OR ssm.start_day = 0)
+							)
+							AND (
+								(UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(u.created)) > ssm.start_after
+								OR
+								ssm.start_after IS NULL
+							)
 						WHERE type = ?
 							AND s.id NOT IN (SELECT survey_id FROM survey_response WHERE user_id = ?)
-							AND s.starbar_id = ?
-							AND s.start_at < now()
-							AND (s.end_at > now() OR s.end_at = '0000-00-00 00:00:00')
 							AND u.id = ?
-							AND ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(u.created)) > s.start_after
-								OR s.start_after IS NULL)
-							AND s.start_day >= ?
-							AND s.start_day <= ?
 							AND s.status = 'active'
 						".$limitClause."
 					";
-			Db_Pdo::execute($sql, $type, $userId, $starbarId, $userId, $firstDayOfSurveysUserShouldSee, $lastDayOfSurveysUserShouldSee);
+			Db_Pdo::execute($sql, $type, $starbarId, $firstDayOfSurveysUserShouldSee, $lastDayOfSurveysUserShouldSee, $userId, $userId);
 		}
 	}
 

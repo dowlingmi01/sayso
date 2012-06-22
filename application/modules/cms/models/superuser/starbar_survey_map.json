@@ -1,0 +1,112 @@
+{
+	"table": [
+		{
+			"tablename": "starbar_survey_map",
+			"model": "Starbar_SurveyMap",
+			"permissions":[
+				"allowgrid",
+				"allowadd",
+				"allowdelete",
+				"allowedit",
+				"allowdetails"
+			]
+		}
+	],
+	"columns": [
+		{
+			"colname": "id",
+			"type": "hidden",
+
+			"displaywhen": [
+				"grid",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "survey_id",
+			"label": "Survey/Poll/Quiz",
+			"type": "fkey",
+			"lookuptable": "survey",
+			"lookupfield": "id",
+			"lookuplabel": "title",
+			"default": "--Please Select a survey--",
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"delete",
+				"edit"
+			],
+			"attributes": [
+				"writeonly"
+			]
+		},
+		{
+			"colname": "starbar_id",
+			"filterwidth":40,
+			"type": "fkey",
+			"lookuptable": "starbar",
+			"lookupfield": "id",
+			"lookuplabel": "label",
+			"default": "--Please Select a starbar--",
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "start_day",
+			"type": "number",
+			"width": 50,
+			"filterwidth":20,
+			"help": "Day (relative to launch) that this survey is available. Day 1 = launch day",
+			"displaywhen": [
+				"add",
+				"detail",
+				"grid",
+				"edit"
+			]
+		},
+		{
+			"colname": "start_after",
+			"type": "number",
+			"help": "Time delay in seconds before this survey is available to a new user",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "start_at",
+			"type": "datetime",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+			{
+			"colname": "end_at",
+			"type": "datetime",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "ordinal",
+			"type": "number",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		}
+	]
+}

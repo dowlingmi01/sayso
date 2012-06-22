@@ -27,7 +27,7 @@ class Api_TestController extends Api_GlobalController
 
 			if ($survey->type == "survey" && $survey->reward_category == "profile") {
 				$profileSurvey = new Survey();
-				$profileSurvey->loadDataByUniqueFields(array("starbar_id" => $this->starbar_id, "reward_category" => "profile"));
+				$profileSurvey->loadProfileSurveyForStarbar($this->starbar_id);
 				if ($profileSurvey->id) {
 					Db_Pdo::execute("DELETE FROM survey_response WHERE survey_id = ? AND user_id = ?", $profileSurvey->id, $this->user_id);
 					$surveyResponse = new Survey_Response();

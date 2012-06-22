@@ -42,7 +42,7 @@ class Game_Starbar_Movie extends Game_Starbar {
 			$good->setCommentForUser('Sold Out');
 		} elseif ((int) $currencyProfileSurvey->current_balance < 1) {
 			$profileSurvey = new Survey();
-			$profileSurvey->loadDataByUniqueFields(array("starbar_id" => 3, "reward_category" => "profile"));
+			$profileSurvey->loadProfileSurveyForStarbar(3);
 			if ($profileSurvey->id) $profileSurveyLink = '<a href="//'.BASE_DOMAIN.'/starbar/movie/embed-survey?survey_id='.$profileSurvey->id.'" class="sb_nav_element" rel="sb_popBox_surveys_hg" title="Take profile survey now!" style="position: relative; top: -5px;">Profile Survey</a>';
 			else $profileSurveyLink = "Profile Survey";
 			$good->setNonRedeemReason('Must complete<br />'.$profileSurveyLink);

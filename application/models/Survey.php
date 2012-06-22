@@ -64,6 +64,14 @@ class Survey extends Record
 		}
 	}
 
+	public function loadProfileSurveyForStarbar($starbarId) {
+		$sql = "SELECT s.* FROM survey s INNER JOIN starbar_survey_map ssm ON s.id = ssm.survey_id AND ssm.starbar_id = ? WHERE s.reward_category = 'profile'";
+		$result = Db_Pdo::fetch($sql, $starbarId);
+		if ($result && isset($result['id'])) {
+			$this->build($result);
+		}
+	}
+
 	public function retrieveQuestionsAndChoicesFromSurveyGizmo() {
 		$config = Api_Registry::getConfig();
 

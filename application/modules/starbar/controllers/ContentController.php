@@ -206,7 +206,7 @@ class Starbar_ContentController extends Api_GlobalController
 	{
 		$this->_validateRequiredParameters(array('starbar_id'));
 		$profileSurvey = new Survey();
-		$profileSurvey->loadDataByUniqueFields(array("starbar_id" => $this->starbar_id, "reward_category" => "profile"));
+		$profileSurvey->loadProfileSurveyForStarbar($this->starbar_id);
 		if ($profileSurvey->id) $this->view->profile_survey_id = $profileSurvey->id;
 		else $this->view->profile_survey_id = 0;
 		$this->view->assign('show_testing_function', in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'demo')));
@@ -417,7 +417,7 @@ class Starbar_ContentController extends Api_GlobalController
 	{
 		$this->_validateRequiredParameters(array('starbar_id'));
 		$profileSurvey = new Survey();
-		$profileSurvey->loadDataByUniqueFields(array("starbar_id" => $this->starbar_id, "reward_category" => "profile"));
+		$profileSurvey->loadProfileSurveyForStarbar($this->starbar_id);
 		if ($profileSurvey->id) $this->view->profile_survey_id = $profileSurvey->id;
 		else $this->view->profile_survey_id = 0;
 	}
@@ -603,7 +603,7 @@ class Starbar_ContentController extends Api_GlobalController
 	{
 		$this->_validateRequiredParameters(array('starbar_id'));
 		$profileSurvey = new Survey();
-		$profileSurvey->loadDataByUniqueFields(array("starbar_id" => $this->starbar_id, "reward_category" => "profile"));
+		$profileSurvey->loadProfileSurveyForStarbar($this->starbar_id);
 		if ($profileSurvey->id) $this->view->profile_survey_id = $profileSurvey->id;
 		else $this->view->profile_survey_id = 0;
 	}

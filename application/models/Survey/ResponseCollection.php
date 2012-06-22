@@ -5,6 +5,8 @@ class Survey_ResponseCollection extends RecordCollection
 	static public function markUnseenSurveysNewForStarbarAndUser ($starbarId, $userId, $type, $maximumToDisplay) {
 		$limitClause = "";
 
+		$userId = intval($userId);
+
 		$type = str_replace("surveys", "survey", $type);
 		$type = str_replace("polls", "poll", $type);
 		$type = str_replace("quizzes", "quiz", $type);
@@ -47,16 +49,17 @@ class Survey_ResponseCollection extends RecordCollection
 
 		$daysSinceUserJoinedStarbar = intval(floor((time() - $userJoinedStarbar) / 86400));
 		$daysSinceStarbarLaunched = intval(floor((time() - $starbarLaunched) / 86400));
-		$daysOfSurveysToDisplay = $daysSinceUserJoinedStarbar * 2;
+		$daysOfSurveysToDisplay = ($daysSinceUserJoinedStarbar + 1) * 2;
 
-		$lastDayOfSurveysUserShouldSee = $daysSinceStarbarLaunched + 1;
-		$firstDayOfSurveysUserShouldSee = $lastDayOfSurveysUserShouldSee - $daysOfSurveysToDisplay;
+		$lastDayOfSurveysUserShouldSee = $daysSinceStarbarLaunched;
+		$firstDayOfSurveysUserShouldSee = $lastDayOfSurveysUserShouldSee - $daysOfSurveysToDisplay + 1;
 		if ($firstDayOfSurveysUserShouldSee < 1) $firstDayOfSurveysUserShouldSee = 1;
+		if ($lastDayOfSurveysUserShouldSee < 1) $lastDayOfSurveysUserShouldSee = 1;
 
 		if ($type == "poll" || $type == "survey" || $type == "quiz" || $type == "trailer") {
 			$sql = "INSERT INTO survey_response (survey_id, user_id, status, created)
-						SELECT s.id, u.id, 'new', now()
-						FROM survey s, user u
+						SELECT s.id, sum.user_id, 'new', now()
+						FROM survey s
 						INNER JOIN starbar_survey_map ssm
 							ON s.id = ssm.survey_id
 							AND ssm.starbar_id = ?
@@ -67,18 +70,20 @@ class Survey_ResponseCollection extends RecordCollection
 								OR
 								(ssm.start_day IS NULL OR ssm.start_day = 0)
 							)
+						RIGHT JOIN starbar_user_map sum
+							ON sum.user_id = ?
+							AND sum.starbar_id = ?
+						WHERE s.type = ?
+							AND s.id NOT IN (SELECT survey_id FROM survey_response WHERE user_id = ?)
+							AND s.status = 'active'
 							AND (
-								(UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(u.created)) > ssm.start_after
+								(UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(sum.created)) > ssm.start_after
 								OR
 								ssm.start_after IS NULL
 							)
-						WHERE type = ?
-							AND s.id NOT IN (SELECT survey_id FROM survey_response WHERE user_id = ?)
-							AND u.id = ?
-							AND s.status = 'active'
 						".$limitClause."
 					";
-			Db_Pdo::execute($sql, $type, $starbarId, $firstDayOfSurveysUserShouldSee, $lastDayOfSurveysUserShouldSee, $userId, $userId);
+			Db_Pdo::execute($sql, $starbarId, $firstDayOfSurveysUserShouldSee, $lastDayOfSurveysUserShouldSee, $userId, $starbarId, $type, $userId);
 		}
 	}
 

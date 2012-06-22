@@ -35,6 +35,7 @@
 			"displaywhen": [
 				"add",
 				"grid",
+				"subgrid",
 				"detail",
 				"delete",
 				"edit"
@@ -54,6 +55,7 @@
 			"displaywhen": [
 				"add",
 				"grid",
+				"subgrid",
 				"detail",
 				"edit"
 			]
@@ -63,11 +65,16 @@
 			"type": "number",
 			"width": 50,
 			"filterwidth":20,
+					"validate": [
+				"notnull",
+				"minlength(10)"
+			],
 			"help": "Day (relative to launch) that this survey is available. Day 1 = launch day",
 			"displaywhen": [
 				"add",
 				"detail",
 				"grid",
+				"subgrid",
 				"edit"
 			]
 		},
@@ -104,6 +111,7 @@
 			"type": "number",
 			"displaywhen": [
 				"add",
+				"grid",
 				"detail",
 				"edit"
 			]

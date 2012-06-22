@@ -19,6 +19,7 @@
 
 			"displaywhen": [
 				"grid",
+				"subgrid",
 				"detail",
 				"delete",
 				"edit"
@@ -69,7 +70,7 @@
 				"notnull",
 				"minlength(10)"
 			],
-			"help": "Day (relative to launch) that this survey is available. Day 1 = launch day",
+			"help": "Day (relative to the selected starbar's launch) that this survey is available. Day 1 = launch day",
 			"displaywhen": [
 				"add",
 				"detail",
@@ -91,6 +92,7 @@
 		{
 			"colname": "start_at",
 			"type": "datetime",
+			"help": "Specific time to start showing this survey at on the selected starbar",
 			"displaywhen": [
 				"add",
 				"detail",
@@ -100,6 +102,7 @@
 			{
 			"colname": "end_at",
 			"type": "datetime",
+			"help": "Specific time to stop showing this survey at on the selected starbar",
 			"displaywhen": [
 				"add",
 				"detail",
@@ -109,6 +112,7 @@
 		{
 			"colname": "ordinal",
 			"type": "number",
+			"help": "Order of this survey relative to other surveys on the selected starbar",
 			"displaywhen": [
 				"add",
 				"grid",

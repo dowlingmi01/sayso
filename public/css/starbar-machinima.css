@@ -1052,7 +1052,7 @@
 
 #sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner .sb_popContent{
 	width: 360px;
-	height: 420px;
+	height: 460px;
 }
 
 /* REUSABLE: user level box and user score */
@@ -2106,8 +2106,7 @@
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_popContent
 {
 	width: 640px;
-	height: 560px;
-	
+	height: 590px;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs ul
@@ -2280,4 +2279,142 @@
 
 #sayso-starbar #starbar-player-console .sb_starbar-logo:hover {
 	background-position: 10px -34px;
+}
+
+/* questions */
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1
+{
+	display:none;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_flow p
+{
+	font-weight:bold;
+	margin-left:25px;
+	margin-top:20px;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-o-user-select:none;
+	-ms-user-select:none;
+	-khtml-user-select: none;
+	user-select:none;
+	
+	
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #sb_vid_question_phase2
+{
+	display:none;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #sb_vid_question_final
+{
+	display:none;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #sb_vid_question_final .sb_final_info
+{
+	margin-left:25px;
+	margin-top:2px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #sb_vid_question_final .sb_final_share
+{
+	margin-left:25px;
+	margin-top:10px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #sb_vid_question_final .sb_final_share > div
+{
+	magin-right:2px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #sb_vid_question_final .sb_final_share .share_text
+{
+	color:#000;
+	font-weight:bold;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #sb_vid_question_final .sb_final_info .txt
+{
+	color:#000;
+	margin-right:15px;
+	padding-top:2px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_flow .hl
+{
+	color: #a92614;
+	font-weight:bold;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_flow .sb_sel_vid_title
+{
+	color:inherit;
+	font-weight:bold;
+	font-size:13px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_flow p.inactive
+{
+	color:#686464 !important;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts
+{
+	margin-left:30px;
+	margin-top:20px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts input
+{
+	float:left;
+	margin-top:3px;
+	margin-right:5px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts .sb_rating_icon
+{
+	width:75px;
+	height:19px;
+	float:left;
+	color:#fff;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts .sb_radio_text
+{
+	color:#000;
+	margin-left: -3px;
+	margin-right: 10px;
+	margin-top: 1px;
+	float:left;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts .sb_rating_icon .icon
+{
+	background: url(../images/machinima/thumbs_up_red.png);
+	height:19px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts .sb_rating_icon.stars_one .icon{width:15px;}
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts .sb_rating_icon.stars_two .icon{width:30px;}
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts .sb_rating_icon.stars_three .icon{width:45px;}
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts .sb_rating_icon.stars_four .icon{width:60px;}
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts .sb_rating_icon.stars_five .icon{width:75px;}
+
+#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel
+{
+	width:635px;
+	height:75px;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:18px;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-o-user-select:none;
+	-ms-user-select:none;
+	-khtml-user-select: none;
+	user-select:none;
+	
+	display:none;
 }

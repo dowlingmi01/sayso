@@ -45,12 +45,19 @@
 			</div>
 			
 			<div id="sb_vid_question_phase2" class="sb_mv_questions_flow">
-				<p>Did you see the movie <span class="sb_sel_vid_title"></span></p>
+				<p>Did the trailer match your expectations for the movie?</p>
 				<div class="sb_mv_questions_opts">
-					<input type="radio" name="sb_seen_or_not" id="sb_y" class="sb_seen_or_not" value="yes"> 
-						<label class="sb_radio_text" for="sb_y">Yes</label>
-					<input type="radio" name="sb_seen_or_not" id="sb_n" class="sb_seen_or_not" value="no">
-						<label class="sb_radio_text" for="sb_n">No</label>
+					<input type="radio" name="expectations" id="sb_y" class="expectations" value="better"> 
+						<label class="sb_radio_text" for="sb_y">The trailer was better than the movice</label>
+					<input type="radio" name="expectations" id="sb_n" class="expectations" value="worse">
+						<label class="sb_radio_text" for="sb_n">The trailer was worse than the movie</label>
+				</div>
+				<br />
+				<div class="sb_mv_questions_opts">
+					<input type="radio" name="expectations" id="sb_k" class="expectations" value="equal">
+						<label class="sb_radio_text" for="sb_k">The trailer was equal to the movie</label>
+					<input type="radio" name="expectations" id="sb_o" class="expectations" value="movie_not_seen" style="margin-left:23px;">
+						<label class="sb_radio_text" for="sb_o">I did not see the movice</label>
 				</div>
 			</div>
 			
@@ -84,8 +91,12 @@
 				</div>
 			
 			</div>
+			
+			<div style="clear:both;"></div>
+			
 			<div class="sb_video_carousel">
 				<div class="arrow_left"></div>
+				
 				<div class="scroll_content">
 				
 				<!--  Sample video thumbs  -->
@@ -132,6 +143,7 @@
 					 
 				<!--  End Sample video thumbs  -->
 				</div>
+				
 				<div class="arrow_right"></div>
 			</div>
 		</div>
@@ -168,36 +180,41 @@
 
 var player;
 var defaults	=	{ 
-		vid : 'HGekjZd5LPk'
+		vid 		: 'HGekjZd5LPk',
+		autohide	:	false
 };
 var answers		=	{
-	q1	:	false,
-	q2	:	false,
-	q3	:	false	
+		q1	:	false,
+		q2	:	false,
+		q3	:	false	
 };
+
+$('.sb_video_carousel').show();
 
 $('input.sb_rating').bind('change' , function(){
 	
 	answers.q1	=	$(this).val();
 
 	if( answers.q1 ) {
-		
+	
 		$('#sb_vid_question_phase1').hide();
 		$('#sb_vid_question_phase2').show();
-		
+
 	}
 });
 
-$('input.sb_seen_or_not').bind('change', function(){
+$('input.expectations').bind('change', function(){
 	answers.q2	=	$(this).val();
 
 	if(answers.q2) {
-		
+
+		defaults.autohide	=	false;
+		$('.sb_video_carousel').removeClass('autohide');
 		$('#sb_vid_question_phase1').hide();
 		$('#sb_vid_question_phase2').hide();
 		$('#sb_vid_question_final').show();
-		$('.sb_video_carousel').show();
 		
+
 	}
 });
 
@@ -226,12 +243,21 @@ function onYouTubePlayerAPIReady() {
 }
 
 function onPlayerReady(event) {
-	event.target.playVideo();
+	//event.target.playVideo();
 }
 
 function onPlayerStateChange(event) {
 
-	if(event.data == YT.PlayerState.ENDED){
+	if(event.data	==	YT.PlayerState.PLAYING)
+	{
+		defaults.autohide	=	true;
+		
+		$('.sb_video_carousel').addClass('autohide');
+		$('#sb_spotlight-q1').hide();
+		$('#sb_vid_question_phase1').show();
+	}
+
+	if(event.data	==	YT.PlayerState.ENDED){
 		
 		$('input.sb_rating').removeAttr('disabled');
 		$('.sb_mv_questions_flow p').removeClass('inactive');
@@ -245,12 +271,13 @@ $('.thumb').click(function(){
 	answers.q1 	= 	false;
 	answers.q2	=	false;
 	answers.q3	=	false;
-
+	/*
 	$('.sb_sel_vid_title').empty().html("");
 	$('#sb_vid_question_phase1').show();
 	$('#sb_vid_question_phase2').hide();
 	$('#sb_vid_question_final').hide();
 	$('.sb_video_carousel').hide();
+	*/
 	
 	var vid		=	$(this).attr('id');
     player.stopVideo();
@@ -261,6 +288,23 @@ $('.thumb').click(function(){
     }, 700);
    	 
 
+});
+
+$('.sb_video_carousel').mouseenter(function(e){
+	if( $(this).hasClass('autohide') ){
+		
+		$(this).removeClass('autohide');
+		$('.sb_mv_questions_flow:visible').addClass('tmpAuto')
+		.css('height', '70px')
+		.children()
+		.hide();
+	}
+}).mouseleave(function(e){
+	if(defaults.autohide){
+		
+		$(this).addClass('autohide');
+		$('.sb_mv_questions_flow.tmpAuto').css('height','110px').removeClass('tmpAuto').children().show();
+	}
 });
 
 $('.arrow_left, .arrow_right').bind('click', function(){

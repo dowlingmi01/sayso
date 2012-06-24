@@ -17,7 +17,7 @@
 <? } else { ?>
 	<div id="starbar-survey-<?= $this->survey->id ?>" class="sb_survey_container"></div>
 	<script type="text/javascript">
-		var protocol = ('https:' == document.location.protocol ? 'https:' : 'http:');
+		var protocol = ('https:' == $SQ.sayso.location.protocol ? 'https:' : 'http:');
 
 		var link = protocol
 			+ "//<?= BASE_DOMAIN ?>/starbar/snakkle/survey-redirect?survey_id=<?= $this->survey->id ?>&next_survey_id=<?= $this->next_survey_id ?>&user_id="

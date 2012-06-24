@@ -112,8 +112,24 @@
 						$SQ(this).remove();
 					});
 				};
-				document.getElementById('sayso-frame-comm').addEventListener('saysoFrameComm', frameCommHandler);
+				frameComm.addEventListener('saysoFrameComm', frameCommHandler);
 				frameCommHandler();
+			}
+			if( sayso.location.hostname.match('surveygizmo.com')) {
+				sgqHandler = function() {
+					var sgq = $SQ('#sayso-sgq');
+					if( sgq.length ) {
+						window.$SGQ = JSON.parse(sgq.attr('value'));
+						sgq.remove();
+						sayso.loadScript('surveygizmo/content.js');
+					}
+				};
+				
+				if( $SQ('#sayso-sgq').length )
+					sgqHandler();
+				else
+					document.addEventListener('saysoSGQ', sgqHandler);
+				
 			}
 			forge.message.broadcastBackground( "get-state", {}, function( response ) {
 				sayso.state = response;
@@ -134,10 +150,6 @@
 				if( shouldLoadStarbar() )
 					sayso.loadScript('starbar/starbar-loader.js');
 				
-				if( $SQ('#sayso-sgq').length ) {
-					window.$SGQ = JSON.parse($SQ('#sayso-sgq').attr('value'));
-					sayso.loadScript('surveygizmo/content.js');
-				}
 			});
 		});
 	}

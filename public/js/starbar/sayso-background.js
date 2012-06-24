@@ -126,7 +126,7 @@ function getStarbar( starbarId, callback ) {
 		renderer : 'json',
 		starbar_id : starbarId,
 		user_id : sayso.state.user.id,
-		user_key : sayso.state.user.key,
+		user_key : sayso.state.user.key
 	};
 
 	forge.request.ajax({
@@ -201,7 +201,7 @@ function saveState() {
 				'visibility': sayso.state.starbarVisibility,
 				'last_update_profile': sayso.state.profileTS,
 				'last_update_game': sayso.state.gameTS
-			},
+			}
 	});
 }
 sayso.switchStarbar = function( starbarId ) {

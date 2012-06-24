@@ -119,15 +119,9 @@
 
 							$SQ(this).attr('checked', 'checked');
 
-							$SQ.ajax({
-								dataType:"jsonp",
-								url : "//<?= BASE_DOMAIN ?>/api/survey/user-quiz-submit?renderer=jsonp&survey_id=<?= $this->quiz->id ?>&user_id=<?= $this->user_id ?>&user_key=<?= $this->user_key ?>&starbar_id=<?= $this->starbar_id ?>&survey_question_choice_id="+selectedChoiceId,
-								beforeSend : function(x) {
-									if (x && x.overrideMimeType) {
-										x.overrideMimeType("application/j-son;charset=UTF-8");
-									}
-								},
-								success : function (response, status, jqXHR) {
+							$SQ.ajaxWithAuth({
+								url : "//<?= BASE_DOMAIN ?>/api/survey/user-quiz-submit?survey_id=<?= $this->quiz->id ?>&survey_question_choice_id="+selectedChoiceId,
+								success : function (response, status) {
 									if (response.data.correct_survey_question_choice_id && response.data.correct_survey_question_choice_id == selectedChoiceId) {
 										$SQ('#sayso-starbar').trigger('frameCommunication', ['updateGame', {
 											newGame: response.game

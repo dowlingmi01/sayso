@@ -397,7 +397,7 @@ exports.main = function(b, c) {
     pageMod.PageMod({
         include: d(["http://*/*", "https://*/*"]),
         contentScriptFile: e(["forge/all.js", "src/js/config.js", "src/js/content.js"]),
-        contentScriptWhen: "ready",
+        contentScriptWhen: "start",
         onAttach: function(h) {
             attachWorker(h);
             var g = [];

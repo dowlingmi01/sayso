@@ -50,7 +50,7 @@ class Starbar_View_Helper_DisplayPolls extends Zend_View_Helper_Abstract
 					<div>
 						<? if ($i < ($numberToShow - 1)) { ?>
 							<div class="sb_nextPoll">
-								<a href="#" onclick="$SQ(this).parents('.sb_accordion').accordion('activate', <?= ($i+1) ?>)"><span class="sb_img_nextTriangle"></span>Next Poll</a>
+								<a href="#" next_poll="<?= ($i+1) ?>"><span class="sb_img_nextTriangle"></span>Next Poll</a>
 							</div>
 						<? } ?>
 						<div id="starbar-poll-<?= $survey->id ?>">

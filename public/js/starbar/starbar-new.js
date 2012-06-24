@@ -7,9 +7,11 @@ $SQ(function(){
 	var sayso = window.$SQ.sayso,
 		starbar = window.$SQ.sayso.starbar;
 
-	// global var
-	var themeColor = '#de40b2';
-
+	sayso.frameId = $SQ.randomString( 10 );
+	forge.message.listen('sayso-frame-comm-' + sayso.frameId, function(content) {
+		$SQ('#sayso-starbar').trigger('frameCommunication', content);
+	});
+	
 	// NOTE: These variables are initialized in initElements()
 	var starbarElem; //  = $SQ('#sayso-starbar');
 
@@ -192,81 +194,32 @@ $SQ(function(){
 		return _container;
 	}
 
-	// Update the cross-domain state variables
-	starbar.state.update = function (){
-		if (!starbar.state.visibility || starbar.state.visibility == 0 || starbar.state.visibility == "") starbar.state.visibility = "open";
-		if (!starbar.state.profile || starbar.state.profile == 0) starbar.state.profile = Math.round(new Date().getTime() / 1000);
-		if (!starbar.state.game || starbar.state.game == 0) starbar.state.game = Math.round(new Date().getTime() / 1000);
-
-		$SQ.ajaxWithAuth({
-			url: '//'+sayso.baseDomain+'/api/user-state/update?renderer=jsonp',
-			data: {
-				'visibility': starbar.state.visibility,
-				'last_update_profile': starbar.state.profile,
-				'last_update_game': starbar.state.game
-			},
-			success : function (response, status) {
-			}
-		});
-	};
-
-	// Starbar state
-	starbar.state.local = {
-		profile : Math.round(new Date().getTime() / 1000),
-		game : Math.round(new Date().getTime() / 1000),
-		visibility : starbar.state.visibility
-	};
-
-	// Refresh the Starbar to respond to state changes, if any
-	starbar.state.refresh = function () {
-		$SQ.ajaxWithAuth({
-			url: '//'+sayso.baseDomain+'/api/user-state/refresh?renderer=jsonp',
-			success : function (response, status) {
-				sayso.log('REFRESH', response);
-				// Grab the latest state from the response
-				starbar.state.visibility = response.visibility;
-				starbar.state.profile = response.last_update_profile;
-				starbar.state.game = response.last_update_game;
-
-				// logic here to determine if/what should be fired to "refresh"
-				if (starbar.state.visibility != starbar.state.local.visibility) {
-					toggleBar(false);
-				}
-
-				updateAlerts(false);
-
-				if (starbar.state.profile > starbar.state.local.profile) {
-					updateProfile(false);
-				}
-
-				if (starbar.state.game > starbar.state.local.game) {
-					sayso.log('AJAX GAME UPDATE: game state updated in another tab');
-					updateGame('ajax', false, false);
-				}
-
-				// Done refreshing everything, set our local state to most recent
-				starbar.state.local.profile = starbar.state.profile;
-				starbar.state.local.game = starbar.state.game;
-				starbar.state.local.visibility = starbar.state.visibility;
-			}
-		});
-
-	};
-
-	// initialize the starbar
-	initStarBar();
-
 	/* FUNCTIONS */
 
 	// initialize the starbar
-	function initStarBar(){
+	sayso.initStarBar = function (){
+		starbar = window.$SQ.sayso.starbar;
+		
+		// Starbar state
+		starbar.state.local = {
+			profile : Math.round(new Date().getTime() / 1000),
+			game : Math.round(new Date().getTime() / 1000),
+			visibility : starbar.state.visibility
+		};
+
 		initElements();
 		updateAlerts(true);
 		activateGameElements(starbarElem, false);
 		// initializes development-only jquery
 		devInit();
+		
+		if( starbar.state.visibility == 'stowed') {
+			btnToggleVis.attr('class','').addClass('sb_btnStarbar-stowed');
+			elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
+		}
+
 		sayso.log('Loaded and Ready');
-	}
+	};
 
 	// initialize the elements
 	function initElements(){
@@ -328,7 +281,7 @@ $SQ(function(){
 		btnToggleVis.click(function(event){
 			event.preventDefault();
 			event.stopPropagation();
-			toggleBar(true);
+			forge.message.broadcastBackground('set-visibility', 'stowed');
 			//popBoxClose();
 		});
 
@@ -341,9 +294,9 @@ $SQ(function(){
 			click: function(e) {
 				e.preventDefault();
 				e.stopPropagation();
-				if (starbar.state.local.visibility == 'stowed'){
+				if (starbar.state.local.visibility == 'stowed' && !starbar.stowing){
 					// manual override to have any click re-open starbar to original state
-					openBar(true);
+					forge.message.broadcastBackground('set-visibility', 'open');
 				}else{
 					var thisPopBox = btnSaySoLogo.next('.sb_popBox');
 
@@ -557,6 +510,9 @@ $SQ(function(){
 					if (response.game) updateGame(response.game, true, true);
 
 					initElements();
+					$SQ('.sb_nextPoll a').on('click.poll', function(e) {
+						$SQ(this).parents('.sb_accordion').accordion('activate', parseInt($SQ(this).attr('next_poll')));
+					});
 					showPopBoxContents(popBox, loadingElement, ajaxContentContainer);
 				}
 			});
@@ -621,7 +577,7 @@ $SQ(function(){
 			if (performAjaxCall) {
 				var notification_id = target.attr('id').match(/(?:[0-9]+)/);
 				$SQ.ajaxWithAuth({
-					url : '//'+sayso.baseDomain+'/api/notification/close?renderer=jsonp&message_id='+notification_id,
+					url : '//'+sayso.baseDomain+'/api/notification/close?message_id='+notification_id,
 					success : function (response, status) {}
 				});
 			}
@@ -646,7 +602,7 @@ $SQ(function(){
 		if (starbar.state.visibility == 'stowed') starbarStowed = "true";
 
 		$SQ.ajaxWithAuth({
-			url : '//'+sayso.baseDomain+'/api/notification/get-all?renderer=jsonp&starbar_stowed='+starbarStowed+'&starbar_id='+sayso.starbar.id,
+			url : '//'+sayso.baseDomain+'/api/notification/get-all?starbar_stowed='+starbarStowed+'&starbar_id='+sayso.starbar.id,
 			success : function (response, status, jqXHR) {
 				var randomString = $SQ.randomString(10);
 				var newAlerts = false;
@@ -697,7 +653,7 @@ $SQ(function(){
 							} else {
 								// Messages with no notification area should not be shown, they are sent silently to initiate certain actions
 								$SQ.ajaxWithAuth({ // Mark closed, those notifications are meant to be received only once.
-									url : '//'+sayso.baseDomain+'/api/notification/close?renderer=jsonp&message_id='+message.id,
+									url : '//'+sayso.baseDomain+'/api/notification/close?message_id='+message.id,
 									success : function (response, status) {}
 								});
 							}
@@ -725,7 +681,7 @@ $SQ(function(){
 
 	function gameCheckin() {
 		$SQ.ajaxWithAuth({
-			url : '//'+sayso.baseDomain+'/api/gaming/checkin?renderer=jsonp',
+			url : '//'+sayso.baseDomain+'/api/gaming/checkin',
 			success : function (response, status, jqXHR) {
 				updateGame(response.game, true, true);
 			}
@@ -735,7 +691,7 @@ $SQ(function(){
 	function handleTweet (shareType, shareId) {
 		if (shareType && shareId) {
 			$SQ.ajaxWithAuth({
-				url : '//'+sayso.baseDomain+'/api/gaming/share?renderer=jsonp&shared_type='+shareType+'&shared_id='+shareId+'&social_network=TW',
+				url : '//'+sayso.baseDomain+'/api/gaming/share?shared_type='+shareType+'&shared_id='+shareId+'&social_network=TW',
 				success : function (response, status, jqXHR) {
 					updateGame(response.game, true, true);
 				}
@@ -844,30 +800,13 @@ $SQ(function(){
 	};
 
 	function updateGame (loadSource, setGlobalUpdate, animate) {
-		if (loadSource == "ajax") {
-			sayso.log('Updating game from AJAX');
-			$SQ.ajaxWithAuth({
-				url : '//'+sayso.baseDomain+'/api/gaming/get-game?renderer=jsonp',
-				success : function (response, status, jqXHR) {
-					updateGame(response.data, setGlobalUpdate, animate);
-				}
-			});
-		} else if (loadSource == "cache") {
-			sayso.log('Updating game from Cache');
-			activateGameElements(null, animate);
-		} else { // loadSource object is a game object, load from there
-			sayso.log('Updating game from Object');
-			sayso.log(loadSource);
-			sayso.starbar.game = loadSource;
-			activateGameElements(null, animate);
-		}
-
-
-		if (setGlobalUpdate) { // tell the starbars in other tabs to update game info
-			sayso.starbar.state.game = Math.round(new Date().getTime() / 1000);
-			sayso.starbar.state.update();
-		}
+		forge.message.broadcastBackground( 'update-game', loadSource == "ajax" ? null : loadSource );
 	}
+	
+	forge.message.listen( 'update-game', function( content ) {
+		sayso.starbar.game = content;
+		activateGameElements(null, true);
+	});
 
 	/* This function activates/updates several game-related elements:
 	 * 1. Progress bars (with or without an actual progress bar), e.g.
@@ -1259,7 +1198,7 @@ $SQ(function(){
 
 	function updateProfile(setGlobalUpdate, userInitiated) {
 		$SQ.ajaxWithAuth({
-			url : '//'+sayso.baseDomain+'/api/user/get?renderer=jsonp',
+			url : '//'+sayso.baseDomain+'/api/user/get',
 			success : function (response, status, jqXHR) {
 				var user = response.data;
 				var userSocials;
@@ -1304,7 +1243,7 @@ $SQ(function(){
 
 		if (setGlobalUpdate) { // tell the starbars in other tabs to update profile info
 			starbar.state.profile = Math.round(new Date().getTime() / 1000);
-			starbar.state.update();
+			//starbarStateUpdate();
 		}
 	}
 
@@ -1488,7 +1427,7 @@ $SQ(function(){
 		// set up the EIP elements
 		elemJEIP.each(function(){
 			$SQ(this).eip(
-				"//"+sayso.baseDomain+"/api/user/save-in-place?renderer=jsonp&user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&starbar_id="+ sayso.starbar.id,
+				"//"+sayso.baseDomain+"/api/user/save-in-place?user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&starbar_id="+ sayso.starbar.id,
 				{
 					savebutton_text		: "save",
 					savebutton_class	: "sb_theme_button",
@@ -1602,23 +1541,20 @@ $SQ(function(){
 	}
 
 	// animates the starbar-player-console bar based on current state
-	function toggleBar(needToUpdateState){
-		switch (starbar.state.local.visibility){
-			case 'open':
-				stowBar(needToUpdateState);
-				break;
-			case 'stowed':
-				openBar(needToUpdateState);
-				break;
+	forge.message.listen('set-visibility', function( visibility ) {
+		starbar.state.visibility = visibility;
+		switch (visibility){
+		case 'stowed':
+			stowBar();
+			break;
+		case 'open':
+			openBar();
+			break;
 		}
-	}
+	});
 
-	function stowBar (needToUpdateState) {
+	function stowBar () {
 		starbar.state.local.visibility = 'stowed';
-		if (needToUpdateState) {
-			starbar.state.visibility = starbar.state.local.visibility;
-			starbar.state.update();
-		}
 
 		closePopBox(true);
 		hideAlerts();
@@ -1664,14 +1600,8 @@ $SQ(function(){
 		}
 	}
 
-	function openBar (needToUpdateState) {
-        if( starbar.stowing )
-            return;
+	function openBar () {
 		starbar.state.local.visibility = 'open';
-		if (needToUpdateState) {
-			starbar.state.visibility = starbar.state.local.visibility;
-			starbar.state.update();
-		}
 
 		btnToggleVis.attr('class','');
 		elemSaySoLogoBorder.hide();
@@ -1701,7 +1631,6 @@ $SQ(function(){
 	}
 
 	$SQ(window).focus(function () {
-        starbar.state.refresh();
         updateAlerts(false);
     });
 

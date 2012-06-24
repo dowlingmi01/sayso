@@ -98,22 +98,19 @@ class Api_UserStateController extends Api_GlobalController
 				'last_update_profile',
 				'last_update_game',
 			);
-			return $this->_resultType(json_encode($userState->exportData($fields)));
+			return $this->_resultType($userState);
 		} else {
 			return $this->_resultType(false);
 		}
 	}
 
 	public function updateAction () {
-		// Uncomment next line (and delete following line) when switching starbars becomes possible
-		// $this->_validateRequiredParameters(array('starbar_id', 'visibility', 'last_update_profile', 'last_update_game'));
-		$this->_validateRequiredParameters(array('visibility', 'last_update_profile', 'last_update_game'));
+		$this->_validateRequiredParameters(array('starbar_id', 'visibility', 'last_update_profile', 'last_update_game'));
 
 		$userState = new User_State();
 		$userState->loadDataByUniqueFields(array('user_id' => $this->user_id));
 
-		// Uncomment next line when switching starbars becomes possible
-		// $userState->starbar_id = $this->starbar_id;
+		$userState->starbar_id = $this->starbar_id;
 		$userState->visibility = $this->visibility;
 		$userState->last_update_profile = $this->last_update_profile;
 		$userState->last_update_game = $this->last_update_game;

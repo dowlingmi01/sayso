@@ -15,7 +15,7 @@
 				"patterns": ["http://*/*", "https://*/*"],
 				"styles": [],
 				"scripts": ["js/config.js", "js/content.js"],
-				"run_at": "ready",
+				"run_at": "start",
 				"all_frames": true
 			}
 		],

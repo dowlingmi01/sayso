@@ -8,7 +8,7 @@ $game = $this->game;
 
 ?>
 <script type="text/javascript">
-	$SQ(function () {
+	(function () {
 		var sayso = {};
 		sayso.debug = false;
 		sayso.baseDomain = '<?= BASE_DOMAIN ?>';
@@ -47,7 +47,7 @@ $game = $this->game;
 			},
 			loaded : true
 		};
-
+		<?= $this->frame_id ? 'sayso.frameId = "' . $this->frame_id . '"' : '' ?>
 
 		// Support for stupid browsers
 
@@ -62,17 +62,7 @@ $game = $this->game;
 			return rv;
 		}
 
-		function getGeckoVersion() {
-			var rv = -1; // Return value assumes failure.
-			fullVersion = navigator.userAgent.replace(/^Mozilla.*rv:|\).*$/g, '' ) || ( /^rv\:¦\).*$/g, '' );
-			if (fullVersion) {
-				rv = fullVersion.substring(0,3);
-			}
-			return rv;
-		}
-
 		var ieVersion = getInternetExplorerVersion();
-		var geckoVersion = getGeckoVersion();
 		if (ieVersion > -1 && ieVersion < 9) {
 			sayso.disableJqueryEffects = true;
 			sayso.jsonSupportMissing = true;
@@ -82,7 +72,7 @@ $game = $this->game;
 		}
 
 		// test if HTML5 placeholder is supported or not
-		if (ieVersion > -1 || (geckoVersion > -1 && geckoVersion < 4)) {
+		if (ieVersion > -1) {
 			sayso.placeholderSupportMissing = true;
 		} else {
 			sayso.placeholderSupportMissing = false;
@@ -95,32 +85,62 @@ $game = $this->game;
 		sayso.log(sayso.starbar);
 
 		$SQ.sayso = sayso;
-	});
+	})();
 
 	$SQ('body').css('margin', 0);
 </script>
-<script src="//<?= BASE_DOMAIN ?>/js/starbar/easyXDM.min.js" type="text/javascript"></script>
 <script src="//<?= BASE_DOMAIN ?>/js/starbar/sayso-shared.js" type="text/javascript"></script>
 <script type="text/javascript">
+	
+	$SQ.frameComm = function( par ) {
+		$SQ('#sayso-frame-comm').append($SQ(document.createElement("div")).attr( {
+			value: JSON.stringify({
+				type: 'sayso-frame-comm-' + $SQ.sayso.frameId
+			, content: par })}));
+		var hiddenDiv = document.getElementById('sayso-frame-comm');
+		var ev = document.createEvent('Event');
+		ev.initEvent('saysoFrameComm', false, false);
+		hiddenDiv.dispatchEvent(ev);
+	}
 
-	var protocol = ('https:' == document.location.protocol ? 'https:' : 'http:');
-
-	$SQ.remoteControl = new easyXDM.Rpc({
-		remote: protocol+"//<?= BASE_DOMAIN ?>/html/communicator.html",
-		local: protocol+"//<?= BASE_DOMAIN ?>/html/communicator.html",
-		swf: protocol+"//<?= BASE_DOMAIN ?>/swf/easyxdm.swf"
-	}, {
-		// functions available to remote pages -- see sayso-shared.js
-		remote: {
-			loadComplete: {},
-			updateGame: {},
-			handleTweet: {},
-			handleFacebookShare: {},
-			openSurvey: {},
-			hideOverlay: {},
-			alertMessage: {}
+	$SQ.remoteControl = {
+		loadComplete: function (hideLoadingElem, newFrameHeight) {
+			$SQ.frameComm( ['loadComplete', {
+				hideLoadingElem: hideLoadingElem,
+				newFrameHeight: newFrameHeight
+			}]);
 		},
-		local: {}
-	});
-
+		updateGame: function (newGame) {
+			$SQ.frameComm( ['updateGame', {
+				newGame: newGame
+			}]);
+		},
+		handleTweet: function (sharedType, sharedId) {
+			$SQ.frameComm( ['handleTweet', {
+				shared_type: sharedType,
+				shared_id: sharedId
+			}]);
+		},
+		handleFacebookShare: function (link, sharedType, sharedId) {
+			$SQ.frameComm( ['handleFacebookShare', {
+				link: link,
+				shared_type: sharedType,
+				shared_id: sharedId
+			}]);
+		},
+		openSurvey: function (surveyId) {
+			$SQ.frameComm( ['openSurvey', {
+				survey_id: surveyId
+			}]);
+		},
+		hideOverlay: function () {
+			$SQ.frameComm( ['hideOverlay']);
+		},
+		alertMessage: function (alertMessage) {
+			$SQ.frameComm( ['alertMessage', {
+				alert_message: alertMessage
+			}]);
+		}
+	};
 </script>
+<div id="sayso-frame-comm" style="display: none;"></div>

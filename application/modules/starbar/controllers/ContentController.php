@@ -25,8 +25,12 @@ class Starbar_ContentController extends Api_GlobalController
 	public function postDispatch()
 	{
 		$this->_assignStarbarToView();
+
+		if( $this->frame_id )
+			$this->view->assign('frame_id', $this->frame_id);
+			
 		if ($this->_usingJsonPRenderer) {
-			$this->_enableRenderer(new Api_Plugin_JsonPRenderer());
+			$this->_enableRenderer(new Api_Plugin_JsonRenderer());
 			$this->render();
 			return $this->_resultType(new Object(array('html' => $this->getResponse()->getBody())));
 		} else {
@@ -355,7 +359,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function surveyRedirectAction ()
 	{
-		$this->_validateRequiredParameters(array('survey_id', 'user_id', 'next_survey_id', 'xdm_c', 'xdm_e', 'xdm_p'));
+		$this->_validateRequiredParameters(array('survey_id', 'user_id', 'next_survey_id', 'frame_id'));
 
 		$survey = new Survey();
 		$survey->loadData($this->survey_id);
@@ -375,9 +379,8 @@ class Starbar_ContentController extends Api_GlobalController
 		$redirectUrl .= "&starbar_short_name=" . $this->view->starbar->short_name;
 		$redirectUrl .= "&srid=" . $surveyResponse->id;
 		$redirectUrl .= "&size=" . $survey->size;
-		$redirectUrl .= "&xdm_c=" . $this->xdm_c;
-		$redirectUrl .= "&xdm_e=" . $this->xdm_e;
-		$redirectUrl .= "&xdm_p=" . $this->xdm_p;
+		$redirectUrl .= "&frame_id=" . $this->frame_id;
+		$redirectUrl .= "&xdm_c=" . $this->frame_id;
 		if (APPLICATION_ENV == "production") {
 			$redirectUrl .= "&testing=false";
 		} else {

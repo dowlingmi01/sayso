@@ -897,6 +897,12 @@
         }
     };
     m.topbar = {
+        show: function(q, p) {
+            h.priv.call("topbar.show", {}, q, p)
+        },
+        hide: function(q, p) {
+            h.priv.call("topbar.hide", {}, q, p)
+        },
         setTitle: function(r, q, p) {
             h.priv.call("topbar.setTitle", {
                 title: r
@@ -933,12 +939,15 @@
         }
     };
     m.tabbar = {
+        show: function(q, p) {
+            h.priv.call("tabbar.show", {}, q, p)
+        },
+        hide: function(q, p) {
+            h.priv.call("tabbar.hide", {}, q, p)
+        },
         addButton: function(r, q, p) {
             if (r.icon && r.icon[0] === "/") {
                 r.icon = r.icon.substr(1)
-            }
-            if (!r.index) {
-                r.index = 0
             }
             h.priv.call("tabbar.addButton", r, function(s) {
                 q && q({
@@ -985,6 +994,38 @@
                 }
             }
             h.priv.call("media.videoPlay", q, r, p)
+        }
+    };
+    m.payments = {
+        purchaseProduct: function(q, r, p) {
+            h.priv.call("payments.purchaseProduct", {
+                product: q
+            }, r, p)
+        },
+        restoreTransactions: function(q, p) {
+            h.priv.call("payments.restoreTransactions", {}, q, p)
+        },
+        transactionReceived: {
+            addListener: function(q, p) {
+                h.addEventListener("payments.transactionReceived", function(s) {
+                    var r = function() {
+                            if (s.notificationId) {
+                                h.priv.call("payments.confirmNotification", {
+                                    id: s.notificationId
+                                })
+                            }
+                        };
+                    q(s, r)
+                })
+            }
+        }
+    };
+    m.document = {
+        reload: function() {
+            return document.location.reload()
+        },
+        location: function(q, p) {
+            q(document.location)
         }
     };
     if (self && self.on) {
@@ -1260,6 +1301,9 @@
             remove: m.file.remove,
             clearCache: m.file.clearCache
         },
+        media: {
+            videoPlay: m.media.videoPlay
+        },
         event: {
             menuPressed: {
                 addListener: m.event.menuPressed.addListener
@@ -1287,6 +1331,8 @@
             send: m.sms.send
         },
         topbar: {
+            show: m.topbar.show,
+            hide: m.topbar.hide,
             setTitle: m.topbar.setTitle,
             setTitleImage: m.topbar.setTitleImage,
             setTint: m.topbar.setTint,
@@ -1297,14 +1343,27 @@
             }
         },
         tabbar: {
+            show: m.tabbar.show,
+            hide: m.tabbar.hide,
             addButton: m.tabbar.addButton,
             removeButtons: m.tabbar.removeButtons,
             setTint: m.tabbar.setTint,
             setActiveTint: m.tabbar.setActiveTint,
             setInactive: m.tabbar.setInactive
         },
+        payments: {
+            purchaseProduct: m.payments.purchaseProduct,
+            restoreTransactions: m.payments.restoreTransactions,
+            transactionReceived: {
+                addListener: m.payments.transactionReceived.addListener
+            }
+        },
         media: {
             videoPlay: m.media.videoPlay
+        },
+        document: {
+            reload: m.document.reload,
+            location: m.document.location
         }
     };
     window.forge["ajax"] = m.request.ajax;
@@ -1318,7 +1377,12 @@
     window.forge["file"]["delete"] = m.file.remove;
     window.forge["file"]["imageURL"] = m.file.URL;
     window.forge["_get"] = h.priv.get;
-    window.forge["_receive"] = h.priv.receive;
+    window.forge["_receive"] = function() {
+        var p = arguments;
+        setZeroTimeout(function() {
+            h.priv.receive.apply(this, p)
+        })
+    };
     window.forge["_dispatchMessage"] = h.dispatchMessage;
     window.forge["firefox"] = { evaluate: function(c, s, e) { h.priv.call("firefoxeval", c, s, e)} };
 })();

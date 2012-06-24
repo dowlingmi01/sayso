@@ -16,7 +16,7 @@ class Starbar_RemoteController extends Api_GlobalController
 				->getPlugin('Zend_Controller_Plugin_ErrorHandler')
 				->setErrorHandlerModule(Api_Bootstrap::$moduleName);
 			// make sure errors output via JSONP renderer
-			Api_Registry::set('renderer', new Api_Plugin_JsonPRenderer());
+//			Api_Registry::set('renderer', new Api_Plugin_JsonPRenderer());
 		}
 	}
 
@@ -60,17 +60,6 @@ class Starbar_RemoteController extends Api_GlobalController
 			null,
 			array('starbar' => $starbar)
 		);
-	}
-
-	/**
-	 * Lady Gaga Starbar
-	 * @todo add to starbar table if we decide to use it
-	 */
-	public function gagaAction ()
-	{
-		$this->render();
-		$this->_enableRenderer(new Api_Plugin_JsonPRenderer());
-		return $this->_resultType(new Object(array('html' => $this->getResponse()->getBody())));
 	}
 
 	/**
@@ -118,7 +107,7 @@ class Starbar_RemoteController extends Api_GlobalController
 		$starbar->setHtml($this->getResponse()->getBody());
 
 		// return Starbar via JSON-P
-		$this->_enableRenderer(new Api_Plugin_JsonPRenderer());
+		$this->_enableRenderer(new Api_Plugin_JsonRenderer());
 		return $this->_resultType($starbar);
 	}
 

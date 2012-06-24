@@ -109,7 +109,7 @@ class BootstrapPlugin extends Zend_Controller_Plugin_Abstract
 		$currentController = strtolower($request->getControllerName());
 		$currentAction = strtolower($request->getActionName());
 
-		if( !$request->getParam(Api_Constant::USER_KEY) && isset($_COOKIE[Api_Constant::USER_KEY])) {
+		if( isset($_COOKIE[Api_Constant::USER_KEY]) ) {
 			$request->setParam(Api_Constant::USER_KEY, $_COOKIE[Api_Constant::USER_KEY]);
 			if( !$request->getParam(Api_Constant::USER_ID) && isset($_COOKIE[Api_Constant::USER_ID]))
 				$request->setParam(Api_Constant::USER_ID, $_COOKIE[Api_Constant::USER_ID]);

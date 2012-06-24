@@ -4,13 +4,7 @@
 
 $SQ(function () {
 
-	// No jQuery, or no authentication
-	if (!window.$SQ || !window.$SQ.sayso) return;
-	$SQ = window.$SQ;
-
-
-	var sayso = $SQ.sayso,
-		starbar = $SQ.sayso.starbar;
+	var starbar = $SQ.sayso.starbar;
 
 	// Check required params
 
@@ -21,7 +15,7 @@ $SQ(function () {
 	var trackerBlackList = [/saysollc\.com/];
 	for (var i = 0, ln = trackerBlackList.length; i < ln; i++)
 	{
-		if (trackerBlackList[i].test(location.href))
+		if (trackerBlackList[i].test(sayso.location.href))
 		{
 			return;
 		}
@@ -40,13 +34,14 @@ $SQ(function () {
 			user_id : starbar.user.id,
 			user_key : starbar.user.key,
 			starbar_id : starbar.id,
-			renderer : 'jsonp'
+			renderer : 'json'
 		});
-		options.dataType = 'jsonp';
-		return $SQ.ajax(options);
+		options.dataType = 'json';
+		options.url = 'http:' + options.url;
+		return forge.request.ajax(options);
 	};
 
-	if (inIframe) log('iFrame', location.host);
+	if (inIframe) log('iFrame', sayso.location.host);
 
 	/**
 	 * Helper function for recording behaviors on the server
@@ -57,7 +52,7 @@ $SQ(function () {
 			ajax({
 				url : '//' + sayso.baseDomain + '/api/metrics/page-view-submit',
 				data : {
-					url : encodeURIComponent(location.protocol + '//' + location.host + location.pathname)
+					url : encodeURIComponent(sayso.location.protocol + '//' + sayso.location.host + sayso.location.pathname)
 				},
 				success : function (response) {}
 			});
@@ -112,17 +107,17 @@ $SQ(function () {
 
 		var googleEngineRegexp = /google(\..{2,3})+(\..{2,3})?\//;
 
-		if (location.href.match('bing.com/search'))
+		if (sayso.location.href.match('bing.com/search'))
 		{
 			searchType = 1; // bing (these ids match lookup_search_engines table)
 			searchRegex = /q=([^&]+)&/g;
 		}
-		else if (googleEngineRegexp.test(location.href))
+		else if (googleEngineRegexp.test(sayso.location.href))
 		{
 			searchType = 2; // google
 			searchRegex = /(?:\?|&)q=([^&]+)/;
 		}
-		else if (location.href.match('search.yahoo.com'))
+		else if (sayso.location.href.match('search.yahoo.com'))
 		{
 			searchType = 3; // yahoo
 			searchRegex = /[\?&]?p=([^&]+)&/g;
@@ -136,7 +131,7 @@ $SQ(function () {
 				type_id : searchType
 			};
 
-			var searchQueryArray = searchRegex.exec(location.href);
+			var searchQueryArray = searchRegex.exec(sayso.location.href);
 			if (searchQueryArray != null && searchQueryArray.length > 1)
 			{
 				var searchQuery = searchQueryArray[1];
@@ -206,9 +201,9 @@ $SQ(function () {
 	// Tweets
 
 	// popup/x-domain Tweet tracking
-	if (location.href.match('twitter.com/intent')) {
+	if (sayso.location.href.match('twitter.com/intent')) {
 
-		var tweetUrl = decodeURIComponent(/(?:\?|&)url=([^&]+)/.exec(location.search)[1]);
+		var tweetUrl = decodeURIComponent(/(?:\?|&)url=([^&]+)/.exec(sayso.location.search)[1]);
 		var tweet = $SQ('#status').val();
 		$SQ('#status').keyup(function () {
 			// on every key event we capture the full contents. ensures that
@@ -222,7 +217,7 @@ $SQ(function () {
 			$SQ(this).unbind('mousedown');
 		});
 	// Tweet tracking on Twitter.com
-	} else if (location.hostname.match('twitter.com') && $SQ('div.tweet-box textarea').length) {
+	} else if (sayso.location.hostname.match('twitter.com') && $SQ('div.tweet-box textarea').length) {
 
 		var tweet = '';
 
@@ -241,7 +236,7 @@ $SQ(function () {
 		{
 			try
 			{
-				behaviorTracker.socialActivity(window.location.href, tweet, 2);
+				behaviorTracker.socialActivity(sayso.location.href, tweet, 2);
 				e.preventDefault();
 				tweet = '';
 			}
@@ -256,11 +251,11 @@ $SQ(function () {
 	// Facebook Like
 
 	if (inIframe) {
-		if (location.href.match('facebook.com/sharer/sharer')) {
+		if (sayso.location.href.match('facebook.com/sharer/sharer')) {
 
 			var textArea = $SQ('textarea').first(),
 				comment = textArea.val(),
-				url = decodeURIComponent(/(?:\?|&)u=([^&]+)/.exec(location.search)[1]);
+				url = decodeURIComponent(/(?:\?|&)u=([^&]+)/.exec(sayso.location.search)[1]);
 
 			textarea.keyup(function () {
 				comment = $SQ(this).val();
@@ -271,13 +266,13 @@ $SQ(function () {
 					behaviorTracker.socialActivity(url, comment, 1);
 				}
 			});
-		} else if (location.href.match('facebook.com/plugins/comment_widget_shell')) {
+		} else if (sayso.location.href.match('facebook.com/plugins/comment_widget_shell')) {
 			sayso.log('In comment widget!!'); // can't get this working, iframe loads into a hidden div ?
 			var comment = $SQ('textarea.connect_comment_widget_full_input_textarea').val();
 			sayso.log(comment);
 		} else { // location.href.match('facebook.com/plugins|facebook.com/widgets')
 			$SQ('a.connect_widget_like_button').unbind('click').click(function () {
-				var likedUrl = decodeURIComponent(/href=([^&]*)/g.exec(window.location.search)[1]);
+				var likedUrl = decodeURIComponent(/href=([^&]*)/g.exec(sayso.location.search)[1]);
 				behaviorTracker.socialActivity(likedUrl, '', 1)
 			});
 		}
@@ -300,12 +295,12 @@ $SQ(function () {
 		// { creative12 : { urlSegment : 'foo/diamonds', type : 'creative', type_id : 12 }, campaign234 : { etc
 		for (var key in adTargets) {
 			var adTarget = adTargets[key];
-			if (location.href.indexOf(adTarget.urlSegment) > -1) {
+			if (sayso.location.href.indexOf(adTarget.urlSegment) > -1) {
 				// click thru!
 				ajax({
 					url : '//' + sayso.baseDomain + '/api/metrics/track-click-thru',
 					data : {
-						url : location.href,
+						url : sayso.location.href,
 						url_segment : adTarget.urlSegment,
 						type : adTarget.type,
 						type_id : adTarget.typeId
@@ -465,7 +460,7 @@ $SQ(function () {
 					// so we can check to make sure the iframes parent matches before firing
 					processTag (tag);
 				} else {
-					if (location.host.match(tag.domains)) processTag(tag);
+					if (sayso.location.host.match(tag.domains)) processTag(tag);
 				}
 			}
 		}
@@ -629,7 +624,7 @@ $SQ(function () {
 			adTargets[adTargetId] = adTarget;
 
 			ajax({
-				url: '//'+sayso.baseDomain+'/api/user-state/update-ad-targets?renderer=jsonp',
+				url: '//'+sayso.baseDomain+'/api/user-state/update-ad-targets',
 				data: {
 					'ad_targets': $SQ.JSON.stringify(adTargets)
 				}

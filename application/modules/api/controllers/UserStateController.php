@@ -105,15 +105,13 @@ class Api_UserStateController extends Api_GlobalController
 	}
 
 	public function updateAction () {
-		$this->_validateRequiredParameters(array('starbar_id', 'visibility', 'last_update_profile', 'last_update_game'));
+		$this->_validateRequiredParameters(array('starbar_id', 'visibility'));
 
 		$userState = new User_State();
 		$userState->loadDataByUniqueFields(array('user_id' => $this->user_id));
 
 		$userState->starbar_id = $this->starbar_id;
 		$userState->visibility = $this->visibility;
-		$userState->last_update_profile = $this->last_update_profile;
-		$userState->last_update_game = $this->last_update_game;
 
 		$userState->save();
 

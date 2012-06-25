@@ -112,7 +112,10 @@
 						$SQ(this).remove();
 					});
 				};
-				frameComm.addEventListener('saysoFrameComm', frameCommHandler);
+				if( frameComm.addEventListener )
+					frameComm.addEventListener('saysoFrameComm', frameCommHandler);
+				else if( frameComm.attachEvent )
+					frameComm.attachEvent('onclick', frameCommHandler);
 				frameCommHandler();
 			}
 			if( sayso.location.hostname.match('surveygizmo.com')) {
@@ -127,9 +130,11 @@
 				
 				if( $SQ('#sayso-sgq').length )
 					sgqHandler();
-				else
+				else if( document.addEventListener )
 					document.addEventListener('saysoSGQ', sgqHandler);
-				
+				else if( document.attachEvent )
+					document.attachEvent('onafterupdate', sgqHandler);
+			
 			}
 			forge.message.broadcastBackground( "get-state", {}, function( response ) {
 				sayso.state = response;

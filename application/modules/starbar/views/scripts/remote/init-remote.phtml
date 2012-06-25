@@ -98,9 +98,14 @@ $game = $this->game;
 				type: 'sayso-frame-comm-' + $SQ.sayso.frameId
 			, content: par })}));
 		var hiddenDiv = document.getElementById('sayso-frame-comm');
-		var ev = document.createEvent('Event');
-		ev.initEvent('saysoFrameComm', false, false);
-		hiddenDiv.dispatchEvent(ev);
+		if( document.createEvent ) {
+			var ev = document.createEvent('Event');
+			ev.initEvent('saysoFrameComm', false, false);
+			hiddenDiv.dispatchEvent(ev);
+		} else if( document.createEventObject ) {
+			var evObj = document.createEventObject();
+		    hiddenDiv.fireEvent( 'onclick', evObj );
+		}
 	}
 
 	$SQ.remoteControl = {

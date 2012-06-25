@@ -1,25 +1,35 @@
 <br />
 <form id="reportForm" method="get">
+	<select name="report_cell_id" onchange="$SQ('#reportForm').submit();">
+		<option value="0">Choose a bucket, any bucket</option>
+		<? foreach ($this->report_cells as $reportCell) { ?>
+			<option value="<?= $reportCell->id ?>" <? if ($this->report_cell_id == $reportCell->id) { echo 'selected'; } ?>><?= strtoupper($reportCell->category) . ": " . $reportCell->title . "(" . (int) $reportCell->number_of_users . ")"?></option>
+		<? } ?>
+	</select><br /><br />
 	<select name="survey_id" onchange="$SQ('#reportForm').submit();">
 		<option value="0">Choose a survey, any survey</option>
 		<? foreach ($this->surveys as $survey) { ?>
 			<option value="<?= $survey->id ?>" <? if ($this->survey_id == $survey->id) { echo 'selected'; } ?>><?= strtoupper($survey->type) . ": " . $survey->title ?></option>
 		<? } ?>
 	</select><br /><br />
-	<? if ($this->survey_id) { ?>
+	<? if ($this->survey_id && $this->report_cell_id) { ?>
 		<? $questionNumber = 1 ?>
 		<? foreach ($this->survey_questions as $surveyQuestion) { ?>
 			<? $surveyQuestion = $this->survey_question_array[$surveyQuestion->id] ?>
 			<? $questionCalculation = $this->calculation_array[$surveyQuestion->id][0] ?>
 
+			<h3><?= $questionNumber ?>. <?= $surveyQuestion->title ?></h3>
+			Number of responses: <b><?= (int) $questionCalculation->number_of_responses ?></b>
+
 			<? if ($questionCalculation->number_of_responses) { ?>
-				<h3><?= $questionNumber ?>. <?= $surveyQuestion->title ?></h3>
-				Number of responses: <b><?= $questionCalculation->number_of_responses ?></b><br />
+				<? if ($surveyQuestion->data_type != "none") { ?><span>(<a href="#" onclick="getResponsesForQuestion(this, <?= $this->report_cell_id ?>, <?= $surveyQuestion->id ?>); return false;">view</a>)</span><? } ?>
+				<br />
+				<div id="responses_question_<?= $surveyQuestion->id ?>" name="responses_question_<?= $surveyQuestion->id ?>" style="display: hidden;"></div>
 
 				<? if ($questionCalculation->number_of_responses) { ?>
 					<? if ($questionCalculation->average) echo "Average: " . $questionCalculation->average . "<br />" ?>
 					<? if ($questionCalculation->median) echo "Median: " . $questionCalculation->median . "<br />" ?>
-					<? if ($questionCalculation->standard_deviation) echo "Std. Dev.: " . $questionCalculation->standard_deviation . "<br />" ?>
+					<? if ($questionCalculation->stardard_deviation) echo "Std. Dev.: " . $questionCalculation->stardard_deviation . "<br />" ?>
 
 					<? if ($surveyQuestion->piped_from_survey_question_id) { ?>
 					 	<? $surveyQuestion->option_array = $this->survey_question_array[$surveyQuestion->piped_from_survey_question_id]->option_array ?>
@@ -36,7 +46,7 @@
 								<? $choiceCalculation = new ReportCell_SurveyCalculation() ?>
 							<? } ?>
 							<li>
-								<?= $surveyQuestionChoice->title ?> <b><?= $choiceCalculation->number_of_responses ?></b> (<?= round($choiceCalculation->number_of_responses / $questionCalculation->number_of_responses * 100, 2) ?>%)<br />
+								<?= $surveyQuestionChoice->title ?> <b>(<?= (int) $choiceCalculation->number_of_responses ?> users</b> - <?= round($choiceCalculation->number_of_responses / $questionCalculation->number_of_responses * 100, 2) ?>%)<br />
 							</li>
 						<? } ?>
 						</ol>
@@ -48,3 +58,53 @@
 		<? } ?>
 	<? } ?>
 </form>
+<script type="text/javascript">
+	function getResponsesForQuestion(callingElement, cellId, questionId) {
+		cellId = parseInt(cellId);
+		questionId = parseInt(questionId);
+		callingElement = $SQ(callingElement);
+		if (cellId > 0 && questionId > 0) {
+			$SQ.ajax({
+				url : 'survey-question-responses',
+				beforeSend : function(x) {
+					if (x && x.overrideMimeType) {
+						x.overrideMimeType("application/j-son;charset=UTF-8");
+					}
+				},
+				data : {
+					report_cell_id : cellId,
+					survey_question_id : questionId
+				},
+				success : function (response, status) {
+					responsesDiv = $SQ('#responses_question_'+questionId);
+					if (responsesDiv.length == 1) {
+						responsesDiv.html(response);
+						responsesDiv.css({
+							'width' : '700px',
+							'height' : '150px',
+							'overflow-y' : 'scroll',
+							'border' : '1px solid #CCCCCC',
+							'display' : 'block'
+						});
+						callingElement.parent().html('(<a href="#" onclick="hideResponsesForQuestion(this, '+cellId+', '+questionId+'); return false;">hide</a>)');
+						location.hash = 'responses_question_'+questionId;
+					}
+				}
+			});
+		}
+	}
+
+	function hideResponsesForQuestion(callingElement, cellId, questionId) {
+		cellId = parseInt(cellId);
+		questionId = parseInt(questionId);
+		callingElement = $SQ(callingElement);
+		responsesDiv = $SQ('#responses_question_'+questionId);
+		if (responsesDiv.length == 1) {
+			responsesDiv.css({
+				'display' : 'none'
+			});
+			callingElement.parent().html('(<a href="#" onclick="getResponsesForQuestion(this, '+cellId+', '+questionId+'); return false;">view</a>)');
+		}
+
+	}
+</script>

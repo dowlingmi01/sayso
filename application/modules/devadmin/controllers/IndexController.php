@@ -906,30 +906,36 @@ class Devadmin_IndexController extends Api_GlobalController
 	}
 
 
-	public function processReportCellsAction () {
-		$reportCells = new ReportCellCollection();
-		$reportCells->loadAllReportCells();
-
-		foreach ($reportCells as $reportCell) {
-			$reportCell->process();
-		}
-
-		$this->view->messages = array("Processing Complete!");
-	}
-
-
 	public function surveyReportAction () {
 		$request = $this->getRequest();
-		$surveyId = $request->getParam("survey_id", false);
-		$reportCellId = 1; // @todo allow choosing of report cell(s)
+		$surveyId = (int) $request->getParam("survey_id", false);
+		$reportCellId = (int) $request->getParam("report_cell_id", 1);
 		$surveyQuestions = null;
 		$surveyQuestionArray = array();
 		$calculationArray = array();
 
+		if ($surveyId) {
+			$survey = new Survey();
+			$survey->loadData($surveyId);
+		}
+
 		if ($surveyId && $reportCellId) {
 			$reportCellSurvey = new ReportCell_Survey();
 			$reportCellSurvey->loadDataByUniqueFields(array("report_cell_id" => $reportCellId, "survey_id" => $surveyId));
+
+			// Survey/report cell combination has never been processed before (or was deleted)
+			if (!$reportCellSurvey->id) {
+				$reportCellSurvey->report_cell_id = $reportCellId;
+				$reportCellSurvey->survey_id = $surveyId;
+				$reportCellSurvey->save();
+			}
+
 			if ($reportCellSurvey->id) {
+				// Survey has been taken since the last time it was processed
+				if ($reportCellSurvey->last_processed < $survey->last_response) {
+					$reportCellSurvey->process();
+				}
+
 				$surveyQuestions = new Survey_QuestionCollection();
 				$surveyQuestions->loadAllQuestionsForSurvey($surveyId);
 
@@ -965,6 +971,7 @@ class Devadmin_IndexController extends Api_GlobalController
 		}
 
 		$this->view->survey_id = $surveyId;
+		$this->view->report_cell_id = $reportCellId;
 		$this->view->calculation_array = $calculationArray;
 		$this->view->survey_question_array = $surveyQuestionArray;
 		$this->view->survey_questions = $surveyQuestions; // Ordered properly
@@ -972,7 +979,37 @@ class Devadmin_IndexController extends Api_GlobalController
 		$surveys = new SurveyCollection();
 		$surveys->loadAllSurveys();
 		$this->view->surveys = $surveys;
+
+		$reportCells = new ReportCellCollection();
+		$reportCells->loadAllReportCells();
+		$this->view->report_cells = $reportCells;
 	}
+
+
+	public function surveyQuestionResponsesAction () {
+		$request = $this->getRequest();
+		$reportCellId = (int) $request->getParam("report_cell_id", false);
+		$surveyQuestionId = (int) $request->getParam("survey_question_id", false);
+
+		$reportCell = new ReportCell();
+		$surveyQuestion = new Survey_Question();
+
+		if ($reportCellId) {
+			$reportCell->loadData($reportCellId);
+		}
+
+		if ($surveyQuestionId) {
+			$surveyQuestion->loadData($surveyQuestionId);
+		}
+
+		if ($reportCell->id && $surveyQuestion->id) {
+			$surveyQuestion->loadAllResponses($reportCell->comma_delimited_list_of_users);
+			$this->view->responses = $surveyQuestion->response_array;
+		} else {
+			$this->view->responses = array();
+		}
+	}
+
 
 	public function everyFiveMinutesAction() {
 		$this->view->messages = Survey_ResponseCollection::processAllResponsesPendingProcessing();
@@ -980,10 +1017,11 @@ class Devadmin_IndexController extends Api_GlobalController
 		quicklog(implode("\n", $this->view->messages));
 	}
 
-	public function testAction() {
-		$reportCell = new ReportCell();
-		$reportCell->loadData(2);
-		$reportCell->processConditions();
-		exit;
+
+	public function everyHourAction () {
+		$reportCells = new ReportCellCollection();
+		$reportCells::processAllReportCellConditions();
+
+		$this->view->messages = array("Processing Complete!");
 	}
 }

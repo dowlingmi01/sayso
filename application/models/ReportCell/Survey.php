@@ -7,43 +7,34 @@ class ReportCell_Survey extends Record
 	public function process() {
 		if (!$this->id || !$this->survey_id) return;
 
-		// There should be no calculations already present, but just in case, run a delete
+		$reportCell = new ReportCell();
+		$reportCell->loadData($this->report_cell_id);
+
+		if (!$reportCell->id) return;
+
+		// Delete existing calculations, if any
 		$reportCellSurveyCalculations = new ReportCell_SurveyCalculationCollection();
 		$reportCellSurveyCalculations->deleteAllCalculationsForReportCellSurvey($this->id);
-
 
 		// ---- Process Survey Questions ----
 		$surveyQuestions = new Survey_QuestionCollection();
 		$surveyQuestions->loadAllQuestionsForSurvey($this->survey_id);
-		$surveyQuestionArray = array();
 
-		// Place survey questions into an array, where the key is the survey_question_id
-		foreach ($surveyQuestions as $surveyQuestion) {
-			$surveyQuestion->response_array = array();
-			$surveyQuestionArray[$surveyQuestion->id] = $surveyQuestion;
-		}
-
-		$surveyQuestionResponses = new Survey_QuestionResponseCollection();
-		$surveyQuestionResponses->loadAllNumericResponsesForSurvey($this->survey_id, $this->comma_delimited_list_of_users);
-
-		// Add all the numeric responses to the question array
-		foreach ($surveyQuestionResponses as $surveyQuestionResponse) {
-			if ($surveyQuestion->data_type == 'decimal' || $surveyQuestion->data_type == 'monetary') $responseValue = $surveyQuestionResponse->response_decimal;
-			elseif ($surveyQuestion->data_type == 'integer') $responseValue = $surveyQuestionResponse->response_integer;
-			else $responseValue = false;
-
-			if ($responseValue !== false)
-				$surveyQuestionArray[$surveyQuestionResponse->survey_question_id]->response_array[] = $responseValue;
+		// Add response_array to survey questions
+		foreach ($surveyQuestions as $questionId => $surveyQuestion) {
+			if ($surveyQuestion->data_type == 'integer' || $surveyQuestion->data_type == 'decimal' || $surveyQuestion->data_type == 'monetary') {
+				$surveyQuestions[$questionId]->loadAllResponses($reportCell->comma_delimited_list_of_users);
+			}
 		}
 
 		// Now go through all the questions and numeric responses and calculate stuff!
-		foreach ($surveyQuestionArray as $surveyQuestion) {
+		foreach ($surveyQuestions as $surveyQuestion) {
 			$reportCellSurveyCalculation = new ReportCell_SurveyCalculation();
 			$reportCellSurveyCalculation->report_cell_survey_id = $this->id;
 			$reportCellSurveyCalculation->parent_type = "survey_question";
 			$reportCellSurveyCalculation->survey_question_id = $surveyQuestion->id;
 
-			$userArray = $surveyQuestion->getArrayOfUsersWhoAnsweredThisQuestion($this->comma_delimited_list_of_users);
+			$userArray = $surveyQuestion->getArrayOfUsersWhoAnsweredThisQuestion($reportCell->comma_delimited_list_of_users);
 			if (count($userArray)) {
 				$reportCellSurveyCalculation->number_of_responses = count($userArray);
 				$reportCellSurveyCalculation->comma_delimited_list_of_users = ',' . implode(',', $userArray) . ',';
@@ -63,8 +54,7 @@ class ReportCell_Survey extends Record
 					$numberOfResponses++;
 				}
 				$reportCellSurveyCalculation->average = $runningTotal / $numberOfResponses;
-				$medianResponse = $surveyQuestion->response_array[intval(floor(count($surveyQuestion->response_array)/2.0))];
-				$reportCellSurveyCalculation->median = ($surveyQuestion->data_type == 'integer' ? $medianResponse->response_integer : $medianResponse->response_decimal);
+				$reportCellSurveyCalculation->median = $surveyQuestion->response_array[intval(floor(count($surveyQuestion->response_array)/2.0))];
 
 				// Calculate the standard deviation using the average
 				foreach ($surveyQuestion->response_array as $responseValue) {
@@ -79,22 +69,13 @@ class ReportCell_Survey extends Record
 
 
 
-		// ---- Process Survey Question Groups ----
-		/*
-		@ todo
-		$surveyQuestionGroups = new Survey_QuestionGroupCollection();
-		$surveyQuestionGroups->loadAllForSurvey($this->survey_id);
-		*/
-
-
-
 		// ---- Process Survey Question Choices ----
 		$surveyQuestionChoices = new Survey_QuestionChoiceCollection();
 		$surveyQuestionChoices->loadAllChoicesForSurvey($this->survey_id);
 
 		foreach ($surveyQuestionChoices as $surveyQuestionChoice) {
 			// Check if the choice is shared among several questions
-			if ($surveyQuestionArray[$surveyQuestionChoice->survey_question_id]->choice_type == 'none') {
+			if ($surveyQuestions[$surveyQuestionChoice->survey_question_id]->choice_type == 'none') {
 				// Choice is shared among more than one question
 				$questionsThatShareChoiceArray = $surveyQuestionChoice->getArrayOfQuestionsThatShareThisChoice();
 				foreach ($questionsThatShareChoiceArray as $sharingQuestionId) {
@@ -104,7 +85,7 @@ class ReportCell_Survey extends Record
 					$reportCellSurveyCalculation->survey_question_id = $sharingQuestionId;
 					$reportCellSurveyCalculation->survey_question_choice_id = $surveyQuestionChoice->id;
 
-					$userArray = $surveyQuestionChoice->getArrayOfUsersWhoChoseThisChoice($sharingQuestionId, $this->comma_delimited_list_of_users);
+					$userArray = $surveyQuestionChoice->getArrayOfUsersWhoChoseThisChoice($sharingQuestionId, $reportCell->comma_delimited_list_of_users);
 					if (count($userArray)) {
 						$reportCellSurveyCalculation->number_of_responses = count($userArray);
 						$reportCellSurveyCalculation->comma_delimited_list_of_users = ',' . implode(',', $userArray) . ',';
@@ -120,7 +101,7 @@ class ReportCell_Survey extends Record
 				$reportCellSurveyCalculation->survey_question_id = $surveyQuestionChoice->survey_question_id;
 				$reportCellSurveyCalculation->survey_question_choice_id = $surveyQuestionChoice->id;
 
-				$userArray = $surveyQuestionChoice->getArrayOfUsersWhoChoseThisChoice($surveyQuestionChoice->survey_question_id, $this->comma_delimited_list_of_users);
+				$userArray = $surveyQuestionChoice->getArrayOfUsersWhoChoseThisChoice($surveyQuestionChoice->survey_question_id, $reportCell->comma_delimited_list_of_users);
 				if (count($userArray)) {
 					$reportCellSurveyCalculation->number_of_responses = count($userArray);
 					$reportCellSurveyCalculation->comma_delimited_list_of_users = ',' . implode(',', $userArray) . ',';
@@ -130,13 +111,7 @@ class ReportCell_Survey extends Record
 			}
 		}
 
-
-
-		// ---- Process Survey Question Choice Groups ----
-		/*
-		@ todo
-		$surveyQuestionChoiceGroups = new Survey_QuestionChoiceGroupCollection();
-		$surveyQuestionChoiceGroups->loadAllForSurvey($this->survey_id);
-		*/
+		$this->last_processed = new Zend_Db_Expr('now()');
+		$this->save();
 	}
 }

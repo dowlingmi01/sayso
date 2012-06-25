@@ -21,6 +21,17 @@ class Survey_Response extends Record
 		return $this->_survey;
 	}
 
+	public function afterSave() {
+		if ($this->id && $this->survey_id) {
+			$survey = new Survey();
+			$survey->loadData($this->survey_id);
+			if ($survey->id) {
+				$survey->last_response = new Zend_Db_Expr('now()');
+				$survey->save();
+			}
+		}
+	}
+
 	// @todo if you want to return this to the client (e.g. as JSON)
 	// then complete the following two methods. Probably also in
 	// the Survey class too

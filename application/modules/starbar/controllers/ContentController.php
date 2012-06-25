@@ -44,7 +44,11 @@ class Starbar_ContentController extends Api_GlobalController
 			$this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
 		}
 	}
-
+    public function starbarListAction() {
+		$sql  = "SELECT s.id, s.short_name, s.label FROM starbar_user_map sm, starbar s WHERE s.id = sm.starbar_id AND sm.user_id = ?";
+		$starbars = Db_Pdo::fetchAll($sql, $this->user_id);
+		$this->view->assign('starbars', $starbars);
+    }
 	public function rewardsAction ()
 	{
 		$gamer = Game_Starbar::getInstance()->getGamer();

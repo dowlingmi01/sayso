@@ -140,9 +140,6 @@
 		}); // end CSS load timer
 	} // end loadStarbar()
 
-	function switchStarbar(id) {
-		forge.message.broadcastBackground( 'starbar-switch', id );
-	}
 	forge.message.listen( 'starbar-switch', function( response ) {
 		sayso.state = response;
 		sayso.starbar = response.starbars[response.currentStarbar];

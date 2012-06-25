@@ -513,6 +513,9 @@ $SQ(function(){
 					$SQ('.sb_nextPoll a').on('click.poll', function(e) {
 						$SQ(this).parents('.sb_accordion').accordion('activate', parseInt($SQ(this).attr('next_poll')));
 					});
+					$SQ('.sb_starbar-switch').on('click', function() {
+						forge.message.broadcastBackground( 'starbar-switch', parseInt($SQ(this).attr('rel')) );
+					});
 					showPopBoxContents(popBox, loadingElement, ajaxContentContainer);
 				}
 			});

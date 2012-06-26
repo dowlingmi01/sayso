@@ -41,7 +41,7 @@ CREATE TABLE report_cell_user_condition (
 	CONSTRAINT rcuc_crc_id FOREIGN KEY (compare_report_cell_id) REFERENCES report_cell (id) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT rcuc_cs_id FOREIGN KEY (compare_starbar_id) REFERENCES starbar (id) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT rcuc_csq_id FOREIGN KEY (compare_survey_question_id) REFERENCES survey_question (id) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT rcuc_csqcg_id FOREIGN KEY (compare_survey_question_choice_id) REFERENCES survey_question_choice_group (id) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT rcuc_csqcg_id FOREIGN KEY (compare_survey_question_choice_id) REFERENCES survey_question_choice (id) ON DELETE CASCADE ON UPDATE CASCADE,
 	created timestamp DEFAULT CURRENT_TIMESTAMP,
 	modified timestamp DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

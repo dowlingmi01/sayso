@@ -265,23 +265,21 @@
 		</div><!-- .sb_scrollPane -->
 	</div><!-- #tab_4 -->
 	<? if ($this->show_testing_function) { ?>
-		<div id="about_tabs_5" class="sb_tabPane">
+		<div id="about_tabs_5" class="sb_tabPane sb_testingFunctions">
 			<div class="sb_scrollPane">
 				<h2 class="sb_title">Top Secret Testing Functions</h2>
-				<p><a href="#" onclick='$SQ.ajaxWithAuth({url : "//<?= BASE_DOMAIN ?>/api/test/reset-surveys-and-polls", success : function (r, s) {} })'>Reset surveys and polls</a></p>
-				<p><a href="#" onclick='$SQ.ajaxWithAuth({url : "//<?= BASE_DOMAIN ?>/api/test/reset-external", success : function (r, s) {} })'>Reset Facebook and Twitter External accounts and username</a></p>
-				<p><a href="#" onclick='$SQ.ajaxWithAuth({url : "//<?= BASE_DOMAIN ?>/api/test/reset-notifications", success : function (r, s) {} })'>Reset Notifications and User Creation Time</a></p>
-				<p><a href="#" onclick='$SQ.ajaxWithAuth({url : "//<?= BASE_DOMAIN ?>/api/test/reset-gamer", success : function (r, s) {  if (r.game) $SQ("#sayso-starbar").trigger("frameCommunication", ["updateGame", { newGame: r.game }]);  }})'>Reset Game info to just after install (1000 CineStars, 100 CineBucks)</a></p>
-				<p><a href="#" style="color: red;" onclick='$SQ.ajaxWithAuth({url : "//<?= BASE_DOMAIN ?>/api/test/reset-all", success : function (r, s) {  if (r.game) $SQ("#sayso-starbar").trigger("frameCommunication", ["updateGame", { newGame: r.game }]);  } })'>Reset this user to 'just created, just installed' state (i.e. All of the Above)</a></p>
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/reset-surveys-and-polls">Reset surveys and polls</a></p>
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/reset-external">Reset Facebook and Twitter External accounts and username</a></p>
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/reset-notifications">Reset Notifications and User Creation Time</a></p>
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/reset-gamer">Reset Game info to just after install (1000 chops, 100 notes)</a></p>
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/reset-all" style="color: red;">Reset this user to 'just created, just installed' state (i.e. All of the Above)</a></p>
 				<br />
-				<p><a href="#" onclick='$SQ.ajaxWithAuth({url : "//<?= BASE_DOMAIN ?>/api/test/complete-survey?survey_type=survey&survey_reward_category=profile", success : function (r, s) {  if (r.game) $SQ("#sayso-starbar").trigger("frameCommunication", ["updateGame", { newGame: r.game }]);  }})'>Simulate completing *the* profile survey</a></p>
-				<p><a href="#" onclick='$SQ.ajaxWithAuth({url : "//<?= BASE_DOMAIN ?>/api/test/complete-survey?survey_type=survey&survey_reward_category=premium", success : function (r, s) {  if (r.game) $SQ("#sayso-starbar").trigger("frameCommunication", ["updateGame", { newGame: r.game }]);  }})'>Simulate completing the primary survey (points only)</a></p>
-				<p><a href="#" onclick='$SQ.ajaxWithAuth({url : "//<?= BASE_DOMAIN ?>/api/test/complete-survey?survey_type=survey&survey_reward_category=standard", success : function (r, s) {  if (r.game) $SQ("#sayso-starbar").trigger("frameCommunication", ["updateGame", { newGame: r.game }]);  }})'>Simulate completing a regular survey (points only)</a></p><br />
-				<p><a href="#" onclick='$SQ.ajaxWithAuth({url : "//<?= BASE_DOMAIN ?>/api/test/complete-survey?survey_type=poll&survey_reward_category=standard", success : function (r, s) {  if (r.game) $SQ("#sayso-starbar").trigger("frameCommunication", ["updateGame", { newGame: r.game }]);  }})'>Simulate completing a regular poll (points only)</a></p>
-				<p><a href="#" onclick='$SQ.ajaxWithAuth({url : "//<?= BASE_DOMAIN ?>/api/test/complete-survey?survey_type=poll&survey_reward_category=premium", success : function (r, s) {  if (r.game) $SQ("#sayso-starbar").trigger("frameCommunication", ["updateGame", { newGame: r.game }]);  }})'>Simulate completing a premium poll (points only)</a></p><br />
-				<p><a href="#" onclick='$SQ.ajaxWithAuth({url : "//<?= BASE_DOMAIN ?>/api/test/complete-survey?survey_type=quiz&survey_reward_category=standard", success : function (r, s) {  if (r.game) $SQ("#sayso-starbar").trigger("frameCommunication", ["updateGame", { newGame: r.game }]);  }})'>Simulate completing a regular quiz (points only)</a></p>
-				<p><a href="#" onclick='$SQ.ajaxWithAuth({url : "//<?= BASE_DOMAIN ?>/api/test/complete-survey?survey_type=quiz&survey_reward_category=premium", success : function (r, s) {  if (r.game) $SQ("#sayso-starbar").trigger("frameCommunication", ["updateGame", { newGame: r.game }]);  }})'>Simulate completing a premium quiz (points only)</a></p>
-				<p><a href="#" style="color: green;" onclick='$SQ.ajaxWithAuth({url : "//<?= BASE_DOMAIN ?>/api/test/reward-notes", success : function (r, s) {  if (r.game) $SQ("#sayso-starbar").trigger("frameCommunication", ["updateGame", { newGame: r.game }]);  }})'>Receive 5000 CineStars</a></p>
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/complete-survey?survey_type=survey&survey_reward_category=profile">Simulate completing *the* profile survey</a></p>
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/complete-survey?survey_type=survey&survey_reward_category=premium">Simulate completing the primary survey (points only)</a></p>
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/complete-survey?survey_type=survey&survey_reward_category=standard">Simulate completing a regular survey (points only)</a></p><br />
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/complete-survey?survey_type=poll&survey_reward_category=standard">Simulate completing a regular poll (points only)</a></p>
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/complete-survey?survey_type=poll&survey_reward_category=premium">Simulate completing a premium poll (points only)</a></p><br />
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/reward-notes" style="color: green;">Receive 5000 notes</a></p>
 			</div><!-- .sb_scrollPane -->
 		</div><!-- #tab_5 -->
 	<? } ?>
@@ -293,4 +291,15 @@
 	});
 
 	$SQ('#sb_popBox_about-saySo .sb_header').insertBefore('#sb_popBox_about-saySo .sb_popBoxInner');
+
+	$SQ('.sb_testingFunctions a').on('click', function(e){
+		e.preventDefault();
+		$SQ.ajaxWithAuth( {
+			url : $SQ(this).attr('href'),
+			success : function(r) {
+				if( r.game )
+					$SQ("#sayso-starbar").trigger("frameCommunication", ["updateGame", { newGame: r.game }]);
+			}
+		} );
+	});
 </script>

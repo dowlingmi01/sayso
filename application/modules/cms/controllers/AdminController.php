@@ -89,6 +89,106 @@
 		}
 
 		/**
+		* Given an input date, returns a string saying how long ago it was
+		*
+		* @param string $d
+		*/
+		private function _ago($d)
+		{
+			date_default_timezone_set("America/Denver");
+		    $c = getdate();
+		    //printf("<h1>In _ago, date passed is</h1><pre>%s</pre><h1>Current date is</h1><pre>%s</pre>",print_r($d,true),print_r($c,true));
+     		$p = array('year', 'mon', 'mday', 'hours', 'minutes', 'seconds');
+     		$display = array('year', 'month', 'day', 'hour', 'minute', 'second');
+     		$factor = array(0, 12, 30, 24, 60, 60);
+     		$d = $this->_datetoarr($d);
+     		for ($w = 0; $w < 6; $w++) {
+          		if ($w > 0) {
+               		$c[$p[$w]] += $c[$p[$w-1]] * $factor[$w];
+               		$d[$p[$w]] += $d[$p[$w-1]] * $factor[$w];
+          		}
+          		if ($c[$p[$w]] - $d[$p[$w]] > 1) {
+               		return ($c[$p[$w]] - $d[$p[$w]]).' '.$display[$w].'s ago';
+          		}
+     		}
+     		return $d;
+
+
+		}
+
+		/**
+		* Converts a text date object to an array
+		* @example
+		* _datetoarr("2012-06-25 11:08:12")
+		* returns an array ("2012","06","25","11","08","12")
+		*
+		* @param mixed $d
+		*/
+		private function _datetoarr($d) {
+     		preg_match("/([0-9]{4})(\\-)([0-9]{2})(\\-)([0-9]{2}) ([0-9]{2})(\\:)([0-9]{2})(\\:)([0-9]{2})/", $d, $matches);
+		    return array(
+		          'seconds' => $matches[10],
+		          'minutes' => $matches[8],
+		          'hours' => $matches[6],
+		          'mday' => $matches[5],
+		          'mon' => $matches[3],
+		          'year' => $matches[1],
+		     );
+		}
+
+		/**
+		* Returns a string describing a date interval object
+		* Used for determining in friendly terms how long ago soemthing happened.
+		*
+		* @param dateinterval $d
+		* @return String
+		*/
+		private function _timeactive($d)
+		{
+			$active = array();
+			if ($d->y!=0) $active[] = $d->y. ' years';
+			if ($d->m!=0) $active[] = $d->m. ' months';
+			if ($d->d!=0) $active[] = $d->d. ' days';
+			if ($d->h!=0) $active[] = $d->h. ' hours';
+			if ($d->i!=0) $active[] = $d->m. ' minutes';
+			if ($d->s!=0) $active[] = $d->s. ' seconds';
+			return implode(', ',$active);
+		}
+
+		private function _mediaanalysis($user_id,$starbar_id,$social_media="facebook_like")
+		{
+			$strWhere = sprintf("m.user_id='%s' and m.starbar_id='%s' and s.short_name='%s' ",$user_id,$starbar_id,$social_media);
+
+//printf("userID is [%s], bar is [%s]",$user_id,$starbar_id);
+			$select = Zend_Registry::get('db')->select()
+						->from(array('m'=>'metrics_social_activity'),array("url","content","created"))
+						->join(array('s'=>'lookup_social_activity_type'),'s.id=m.social_activity_type_id')
+						->where($strWhere)
+						->order('m.id desc')
+						->limit(10,0);
+			$stmt = $select->query();
+			//printf("Select query is [%s]",$select);
+			$mediaresults = $stmt->fetchAll();
+
+			return $mediaresults;
+		}
+
+		private function _surveyanalysis($user_id,$type="survey",$status="completed")
+		{
+			$strWhere = sprintf("m.user_id='%s' and m.status='%s' and type='%s' ",$user_id,$status,$type);
+
+
+			$select = Zend_Registry::get('db')->select()
+						->from(array('s'=>'survey'),"title")
+						->join(array('m'=>'survey_user_map'),'s.id=m.survey_id')
+						->where($strWhere);
+			$stmt = $select->query();
+			$analysisresults = $stmt->fetchAll();
+
+			return $analysisresults;
+		}
+
+		/**
 		* View a subobject grid
 		*
 		* @author Peter Connolly
@@ -771,25 +871,59 @@
 
 				$postData = $this->getRequest()->getPost(); // getting the $_POST data
 
-				$starbarsql = $db->query('select * from starbar');
-				$starbarreference = $starbarsql->fetchObject();
 
 				$select = Zend_Registry::get('db')->select()->from("starbar");
-							$stmt = $select->query();
-							$currentData = $stmt->fetchAll();
+				$stmt = $select->query();
+				$starbarreference = $stmt->fetchAll();
+				// Starbar reference contains an array of starbars
+				/**
+				* @example Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [short_name] => hellomusic
+            [label] => Hello Music
+            [description] =>
+            [user_pseudonym] => Rocker
+            [domain] => hellomusic.com
+            [auth_key] => 309e34632c2ca9cd5edaf2388f5fa3db
+            [flags] => adjuster_ads
+            [created] => 2011-11-09 12:08:54
+            [modified] => 2011-11-09 12:08:54
+            [launched] => 0000-00-00 00:00:00
+            [economy_id] => 1
+        )
 
-printf("<h2>Starbarreference</h2><pre>%s</pre>",print_r($starbarreference,true));
+    [1] => Array
+        (
+            [id] => 2
+            [short_name] => snakkle
+            [label] => Snakkle
+            [description] =>
+            [user_pseudonym] => Papparazzi
+            [domain] => snakkle.com
+            [auth_key] => 309e34632c2ca9cd5edaf2388f5fa3db
+            [flags] =>
+            [created] => 0000-00-00 00:00:00
+            [modified] => 0000-00-00 00:00:00
+            [launched] => 0000-00-00 00:00:00
+            [economy_id] => 2
+        )
+
+				*/
+
+
 				if ($postData['emailaddress']!=null) {
 					// We have an email address. Get all starbars associated with this user
 					$user_email = new User_Email();
 					$usersstarbars = $user_email->getUserID($postData['emailaddress']);
 
 					if ($usersstarbars) {
-						//printf("<h2>We have user data</h2><pre>%s</pre>",print_r($starbarlist,true));
 						// Pass the starbar details back to the view
-						$this->view->tabs = $usesstarbars;
+						$this->view->tabs = $usersstarbars;
 					} else {
-						$this->view->error = "No data found for this user";
+						$this->view->error = sprintf("No data found for user %s",$postData['emailaddress']);
 					}
 
 				} else {
@@ -798,11 +932,152 @@ printf("<h2>Starbarreference</h2><pre>%s</pre>",print_r($starbarreference,true))
 			}
 			$this->view->form = $form; // assigning the form to view
 		}
+
+		// Called by AJAX from /cms/admin/user
+		public function sboverviewAction()
+		{
+			$this->_helper->layout->disableLayout();
+			$user_id = $this->getRequest()->getParam('user');
+
+			// Find out what day this user arrived
+			$strWhere = sprintf("id = %s",$user_id);
+			$select = Zend_Registry::get('db')->select()->from("user",array("created","originating_starbar_id"))->where($strWhere);
+
+			$stmt = $select->query();
+			$datecreated = $stmt->fetchAll();
+			if ($datecreated[0]['originating_starbar_id']!=null){
+				$strWhere = sprintf("id = %s",$datecreated[0]['originating_starbar_id']);
+				$select = Zend_Registry::get('db')->select()->from("starbar","label")->where($strWhere);
+				$stmt = $select->query();
+				$originalstarbar = $stmt->fetchAll();
+				$firstseenstarbar = $originalstarbar[0]['label'];
+			} else {
+				$firstseenstarbar = null;
+			}
+
+			// Find out what day this user was last seen
+			$strWhere = sprintf("user_id = %s",$user_id);
+			$select = Zend_Registry::get('db')->select()->from("metrics_log",array("created","starbar_id"))->where($strWhere)->order('id desc');
+			$stmt = $select->query();
+			$datelastseen = $stmt->fetchAll();
+
+
+			// What was the last starbar we saw this user on?
+			$strWhere = sprintf("id = %s",$datelastseen[0]['starbar_id']);
+			$select = Zend_Registry::get('db')->select()->from("starbar","label")->where($strWhere);
+			$stmt = $select->query();
+			$lateststarbar = $stmt->fetchAll();
+
+			$info = new stdClass();
+			$info->firstseentext = $this->_ago($datecreated[0]['created']);
+			$info->firstseen = $datecreated[0]['created'];
+			$info->firstseenstarbar = $firstseenstarbar;
+			$info->lastseentext = $this->_ago($datelastseen[0]['created']);
+			$info->lastseen = $datelastseen[0]['created'];
+			$info->lastseenstarbar = $lateststarbar[0]['label'];
+			$diff = date_diff(date_create($info->lastseen),date_create($info->firstseen));
+
+			$info->activedays = $this->_timeactive($diff);
+			$this->view->info = $info;
+
+		}
+
+		// Called by AJAX from /cms/admin/user
+		public function sbinfoAction()
+		{
+			$this->_helper->layout->disableLayout();
+			$starbar_id = $this->getRequest()->getParam('bar');
+			$user_id = $this->getRequest()->getParam('user');
+
+			$starbar = new Starbar();
+			$starbar->loadData($starbar_id);
+
+			$this->getRequest()->setParam('user_id', $user_id);  // required to be set to *something*
+			$this->getRequest()->setParam('starbar_id',$starbar_id);
+
+
+			$gameStarbar = Game_Starbar::getInstance();
+
+			$economy = $gameStarbar->getEconomy();
+
+			$gameStarbar->loadGamerProfile();
+
+			$gamer = $gameStarbar->getGamer();
+			$client = $economy->getClient();
+
+   			$attributeFullId = $economy->getAttributeId("FULL_STORE");
+   			$currencyTokenPointsId = $economy->getCurrencyId("TOKEN_POINTS");
+   			$currencyPurchasePointsId = $economy->getCurrencyId("PURCHASE_POINTS");
+
+   			$currencyRed = $economy->getCurrencyTitleFromType("redeemable");
+   			$currencyExp = $economy->getCurrencyTitleFromType("experience");
+			$currencyRedeemable = $economy->getCurrencyId($currencyRed);
+			$currencyExperience = $economy->getCurrencyId($currencyExp);
+
+   			$info->currency = ucwords(strtolower(str_replace('_',' ',$currencyRed)));
+   			$info->currencybalance = $gamer->_currencies[$currencyRedeemable]['current_balance'];
+   			$info->XP = ucwords(strtolower(str_replace('_',' ',$currencyExp)));
+   			$info->XPbalance = $gamer->_currencies[$currencyExperience]['current_balance'];
+   			$info->level = $gamer->getHighestLevel();
+
+   			$info->leveltitle = $economy->end_user_title;
+   			$info->levelurl = $info->level->urls[1]->url;
+
+			// Social Media Results
+			$info->likes = array();
+			$ctr=0;
+			foreach ($this->_mediaanalysis($user_id,$starbar_id) as $like) {
+				$info->likes[$ctr]['url'] = $like['url'];
+				$info->likes[$ctr]['content'] = $like['content'];
+				$info->likes[$ctr]['created'] = $like['created'];
+				$ctr++;
+			}
+
+			$info->tweets = array();
+			$ctr=0;
+			foreach ($this->_mediaanalysis($user_id,$starbar_id,'tweet') as $twit) {
+				$info->tweets[$ctr]['url'] = $twit['url'];
+				$info->tweets[$ctr]['content'] = $twit['content'];
+				$info->tweets[$ctr]['created'] = $twit['created'];
+				$ctr++;
+			}
+
+			// Surveys and Polls completed
+
+			$info->surveyscompleted = array();
+			foreach ($this->_surveyanalysis($user_id) as $survey) {
+				$info->surveyscompleted[] = $survey['title'];
+			}
+
+			$info->pollscompleted = array();
+			foreach ($this->_surveyanalysis($user_id,"poll") as $survey) {
+				$info->pollscompleted[] = $survey['title'];
+			}
+
+
+			$info->quizzescompleted = array();
+			foreach ($this->_surveyanalysis($user_id,"quiz") as $survey) {
+				$info->quizzescompleted[] = $survey['title'];
+			}
+
+   			$info->trailerscompleted = array();
+   			foreach ($this->_surveyanalysis($user_id,"trailer") as $survey) {
+				$info->trailerscompleted[] = $survey['title'];
+			}
+
+   			$this->view->info = $info;
+			$registry = Registry::getInstance();
+			$registry->offsetUnset('starbar');
+
+		}
+
 		/**
 		* Reward User with point
 		*/
 		public function rewardAction()
 		{
+			 $this->_helper->layout->disableLayout();
+
 			$formElements = array();
 
 			$formElements['starbar'] = new Form_Element_Starbar('starbar_id');

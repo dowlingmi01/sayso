@@ -152,11 +152,11 @@ dl.zend_form dd ul.errors li {
     color: #666666;
 }
 
-/*ul.errors {
-    float:right;
+.error {
+    font-weight:bold;
     color:red;
 }
-*/
+
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
 .ui-timepicker-div dl { text-align: left; }
@@ -259,4 +259,79 @@ body .ui-widget-content a {
 
 .clear {
 	clear:both;
+}
+
+#tabs img {border:none}
+.counter { font-size:xx-small;color:blue;}
+.sb_surveys_complete,
+.sb_social_activity {
+	padding:5px;
+	background-color:#85B5D9;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 1px solid #800000;
+	width:300px;
+	margin:10px;
+}
+.sb_social_activity {
+	width:600px;
+}
+.sb_level {
+	vertical-align:middle;
+}
+#div_results #emailaddress {
+	width:200px;
+	padding:2px 5px;
+	margin-left:10px;
+	border-radius: 5px 5px 0px 0px;
+	-moz-border-radius: 5px 5px 0px 0px;
+	-webkit-border-radius: 5px 5px 0px 0px;
+	background-color:#6FA7D1;
+	border: 1px solid #A6C9E2;
+	color:white;
+	font-weight:bold;
+}
+
+.sb_media .col1 {
+	max-width:155px;
+	overflow:hidden;
+}
+.sb_media .col2 {
+	max-width:265px;
+	overflow:hidden;
+}
+.sb_media .col3 {
+	max-width:105px;
+	overflow:hidden;
+}
+
+.sb_leveltitle {
+	font-size:x-large;
+	vertical-align:top;
+	color:#5B80C2;
+}
+.sb_points {
+	font-size:x-large;
+	vertical-align:top;
+	color:#5B80C2;
+	margin-left:20px;
+}
+.sb_currency {
+	font-size:x-large;
+	vertical-align:top;
+	color:#5B80C2;
+	margin-left:20px;
+}
+
+#sb_overview {
+	padding:5px;
+	background-color:#85B5D9;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 1px solid #800000;
+	width:300px;
+	margin:10px;
+	color:white;
 }

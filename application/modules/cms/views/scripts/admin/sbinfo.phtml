@@ -1,0 +1,76 @@
+<!-- views/scripts/admin/sbinfo.phtml file -->
+<?php //echo $this->form ?>
+<div class="sb_information">
+<?php
+	printf('<img src="%s" alt="%s" /> <span class="sb_leveltitle">%s</span><span class="sb_points">%s %s</span><span class="sb_currency">%s %s</span>',$this->info->levelurl,$this->info->level->title,$this->info->level->title,number_format($this->info->XPbalance,0),$this->info->XP,number_format($this->info->currencybalance,0),$this->info->currency);
+?>
+</div><!-- /sb_information -->
+
+<div class="sb_surveys_complete">
+<h2>Surveys <span style='color:white;font-size:xx-small'>(<?php echo count($this->info->surveyscompleted); ?> completed)</span></h2>
+<ul>
+<?php
+	foreach ($this->info->surveyscompleted as $survey) {
+		echo '<li>'.$survey.'</li>';
+	}
+?>
+</ul>
+<h2>Polls <span style='color:white;font-size:xx-small'>(<?php echo count($this->info->pollscompleted); ?> completed)</span></h2>
+<ul>
+<?php
+	foreach ($this->info->pollscompleted as $survey) {
+		echo '<li>'.$survey.'</li>';
+	}
+?>
+</ul>
+<h2>Quizzes <span style='color:white;font-size:xx-small'>(<?php echo count($this->info->quizzescompleted); ?> completed)</span></h2>
+<ul>
+<?php
+	foreach ($this->info->quizzescompleted as $survey) {
+		echo '<li>'.$survey.'</li>';
+	}
+?>
+</ul>
+<h2>Trailers <span style='color:white;font-size:xx-small'>(<?php echo count($this->info->trailerscompleted); ?> completed)</span></h2>
+<ul>
+<?php
+	foreach ($this->info->trailerscompleted as $survey) {
+		echo '<li>'.$survey.'</li>';
+	}
+?>
+</ul>
+</div>
+<div class="sb_social_activity">
+<h1>Social Media Activity</h1>
+<h2>Twitter <span style='color:white;font-size:xx-small'>(<?php echo count($this->info->tweets); ?> tweets)</span></h2>
+<?php
+if (count($this->info->tweets) != 0) {
+	?>
+<table>
+<tr><th>Content</th><th>URL</th><th>Created</th></tr>
+
+<?php
+	foreach ($this->info->tweets as $tweet) {
+		printf('<tr><td>%s</td><td>%s</td><td>%s</td></tr>',print_r($tweet['content'],true),print_r($tweet['url'],true),print_r($tweet['created'],true));
+	}
+?>
+</table>
+<?php
+}
+?>
+<h2>Facebook <span style='color:white;font-size:xx-small'>(<?php echo count($this->info->likes); ?> likes)</span></h2>
+<?php
+if (count($this->info->likes) != 0) {
+	?>
+<table class='sb_media'>
+<tr><th>Content</th><th>URL</th><th>Created</th></tr>
+<?php
+	foreach ($this->info->likes as $like) {
+		printf('<tr><td class="col1">%s</td><td class="col2">%s</td><td class="col3">%s</td></tr>',substr($like['content'],0,40),substr($like['url'],0,50),print_r($like['created'],true));
+	}
+?>
+</table>
+<?php
+}
+?>
+</div>

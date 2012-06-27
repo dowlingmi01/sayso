@@ -19,7 +19,7 @@ class User_Email extends Record implements Titled
 	public function getUserID($email)
 	{
 		$idarray = array();
-		$sql = sprintf("select * from user_gaming g left join user_email e on g.user_id = e.user_id where email = '%s'",$email);
+		$sql = sprintf("select * from user_gaming g left join user_email e on g.user_id = e.user_id left join starbar s on s.id = g.starbar_id where email = '%s'",$email);
 		$userID = Db_Pdo::fetchAll($sql);
 		if ($userID) {
 		return $userID;

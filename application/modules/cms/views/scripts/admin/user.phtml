@@ -1,0 +1,43 @@
+<!-- views/scripts/admin/user.phtml file -->
+<script>
+	$SQ(function() {
+		$SQ( "#tabs" ).tabs({
+			ajaxOptions: {
+				error: function( xhr, status, index, anchor ) {
+					$SQ( anchor.hash ).html(
+						"Sorry - This affiliate has been discontinued. Please contact say.so technical support." );
+				}
+			}
+
+		});
+		$SQ( "#tabs" ).tabs({ spinner: "<img src='/images/spinners/spinner-12x12.gif' style='border:none' />" });
+	});
+	</script>
+<h2>User Observation</h2>
+<?php echo $this->form ?>
+<div id="div_results" style="clear:both">
+<?php
+
+	if ($this->error) {
+		printf("<p class='error'>%s</p>",$this->error);
+	}
+	if ($this->tabs) {
+		printf("<div id='emailaddress'>%s</div>",$this->tabs[0]['email']);
+		?>
+
+<div id='tabs'>
+	<ul>
+<?php
+		printf('<li><a href="/cms/admin/sboverview/user/%s"><span>Overview</span></a></li>',$this->tabs[0]['user_id']);
+		foreach ($this->tabs as $tabs) {
+
+			printf("<li><a href='/cms/admin/sbinfo/bar/%s/user/%s'><span>%s</span></a></li>\n\r",$tabs['starbar_id'],$tabs['user_id'],$tabs['label']);
+		}
+		?>
+		</ul>
+		<?php
+
+		printf("</div><!-- /tabs -->");
+	}
+?>
+</div>

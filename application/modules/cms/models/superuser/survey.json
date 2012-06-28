@@ -65,21 +65,6 @@
 			]
 		},
 		{
-			"colname": "starbar_id",
-			"filterwidth":40,
-			"type": "fkey",
-			"lookuptable": "starbar",
-			"lookupfield": "id",
-			"lookuplabel": "label",
-			"default": "--Please Select a starbar--",
-			"displaywhen": [
-				"add",
-				"grid",
-				"detail",
-				"edit"
-			]
-		},
-		{
 			"colname": "title",
 			"type": "text",
 			"label": "Survey Title",

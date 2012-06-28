@@ -38,6 +38,7 @@ abstract class Game_Starbar extends Game_Abstract {
 	const SHARE_POLL = 'poll';
 	const SHARE_SURVEY = 'survey';
 	const SHARE_QUIZ = 'quiz';
+	const SHARE_TRAILER = 'trailer';
 	const SHARE_STARBAR = 'starbar';
 	const SHARE_PROMOS = 'promos';
 
@@ -67,14 +68,14 @@ abstract class Game_Starbar extends Game_Abstract {
 
 	public function completeSurvey (Survey $survey) {
 		// POLL_STANDARD, SURVEY_PROFILE, QUIZ_PREMIUM, etc.
-		if (in_array($survey->type, array('survey', 'poll', 'quiz')) && in_array($survey->reward_category, array('standard', 'premium', 'profile'))) {
+		if (in_array($survey->type, array('survey', 'poll', 'quiz', 'trailer')) && in_array($survey->reward_category, array('standard', 'premium', 'profile'))) {
 			$this->submitAction(strtoupper($survey->type.'_'.$survey->reward_category));
 		}
 	}
 
 	public function disqualifySurvey (Survey $survey) {
 		// POLL_STANDARD_DISQUALIFIED, SURVEY_PROFILE_DISQUALIFIED, QUIZ_PREMIUM_DISQUALIFIED, etc.
-		if (in_array($survey->type, array('survey', 'poll', 'quiz')) && in_array($survey->reward_category, array('standard', 'premium', 'profile'))) {
+		if (in_array($survey->type, array('survey', 'poll', 'quiz', 'trailer')) && in_array($survey->reward_category, array('standard', 'premium', 'profile'))) {
 			$this->submitAction(strtoupper($survey->type.'_'.$survey->reward_category).'_DISQUALIFIED');
 		}
 	}
@@ -97,8 +98,9 @@ abstract class Game_Starbar extends Game_Abstract {
 			case self::SHARE_POLL :
 			case self::SHARE_SURVEY :
 			case self::SHARE_QUIZ :
+			case self::SHARE_TRAILER :
 				if (!$typeId) {
-					throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Cannot award user for sharing survey/poll. Survey id missing from call and required in order to determine if standard or premium.'));
+					throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Cannot award user for sharing survey/poll/quiz/trailer. Survey id missing from call and required in order to determine if standard or premium.'));
 				}
 				$survey = new Survey();
 				$survey->loadData($typeId);

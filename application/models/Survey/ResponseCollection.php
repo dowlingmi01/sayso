@@ -56,7 +56,7 @@ class Survey_ResponseCollection extends RecordCollection
 		if ($firstDayOfSurveysUserShouldSee < 1) $firstDayOfSurveysUserShouldSee = 1;
 		if ($lastDayOfSurveysUserShouldSee < 1) $lastDayOfSurveysUserShouldSee = 1;
 
-		if ($type == "poll" || $type == "survey" || $type == "quiz" || $type == "trailer") {
+		if (in_array($type, array('survey', 'poll', 'quiz', 'trailer'))) {
 			$sql = "INSERT INTO survey_response (survey_id, user_id, status, created)
 						SELECT s.id, sum.user_id, 'new', now()
 						FROM survey s

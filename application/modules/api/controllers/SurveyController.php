@@ -99,7 +99,7 @@ class Api_SurveyController extends Api_GlobalController
 	}
 
 	public function userTrailerSubmitAction() {
-		$this->_validateRequiredParameters(array('user_id', 'user_key', 'survey_id', 'first_choice_id', 'second_choice_id'));
+		$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'survey_id', 'first_choice_id', 'second_choice_id'));
 
 		$survey = new Survey();
 		$survey->loadData($this->survey_id);
@@ -108,7 +108,7 @@ class Api_SurveyController extends Api_GlobalController
 		$surveyResponse = new Survey_Response();
 		$surveyResponse->loadDataByUniqueFields(array("survey_id" => $this->survey_id, "user_id" => $this->user_id));
 
-		if (!$surveyResponse->id || $surveyResponse == 'completed') return $this->_resultType(false);
+		if (!$surveyResponse->id || $surveyResponse->status == 'completed') return $this->_resultType(false);
 
 		// Delete any existing responses (in case of previous partial response, for whatever reason)
 		$surveyResponse->deleteQuestionResponses();
@@ -137,6 +137,10 @@ class Api_SurveyController extends Api_GlobalController
 		$surveyResponse->data_download = new Zend_Db_Expr('now()');
 		$surveyResponse->completed_disqualified = new Zend_Db_Expr('now()');
 		$surveyResponse->save();
+
+		Game_Starbar::getInstance()->completeSurvey($survey);
+
+		return $this->_resultType(true);
 	}
 
 }

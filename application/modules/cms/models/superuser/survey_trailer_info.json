@@ -1,0 +1,89 @@
+{
+		"table": [
+		{
+			"tablename": "survey_trailer_info",
+			"model": "Survey_TrailerInfo",
+			"permissions": [
+				"allowgrid",
+				"allowadd",
+				"allowdelete",
+				"allowedit",
+				"allowdetails"
+			]
+		}
+	],
+	"columns": [
+		{
+			"colname": "id",
+			"type": "hidden",
+			"width": 5,
+			"displaywhen": [
+				"grid",
+				"subgrid",
+				"edit",
+				"detail"
+			]
+		},
+		{
+			"colname": "survey_id",
+			"type": "fkey",
+			"lookuptable": "survey",
+			"lookupfield": "id",
+			"lookuplabel": "title",
+			"default": "--Please Select a Survey--",
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"edit"
+			],
+			"attributes": [
+				"writeonly"
+			]
+		},
+		{
+			"colname": "entertainment_title",
+			"type": "text",
+			"label": "Movie/Game Title",
+			"validate": [
+				"notnull"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"subgrid",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "category",
+			"type": "list",
+			"listoptions": [
+				"retro movie",
+				"game"
+			],
+			"default": "retro movie",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "video_key",
+			"type": "text",
+			"label": "Video Key",
+			"help": "If video URL is www.youtube.com/watch?v=ABCDEFGHIJK, the video key is ABCDEFGHIJK",
+			"validate": [
+				"notnull",
+				"minlength(11)"
+			],
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		}
+	]
+}

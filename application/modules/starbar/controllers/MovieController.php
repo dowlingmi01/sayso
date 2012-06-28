@@ -133,6 +133,6 @@ Join Movie Say.So and get access to big giveaways and awesome prizes.';
 		$fbkShareText = 'I just answered a Quiz, "'.$survey->title.'"!
 Join Movie Say.So and get access big giveaways and awesome prizes.';
 
-		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, "Who is this?", $this->_fbkAppDescription);
+		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
 	}
 }

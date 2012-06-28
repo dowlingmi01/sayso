@@ -1,9 +1,9 @@
 {
 	"table": [
 		{
-			"comment": "This json is for quizzes, a subset of Polls/Surveys",
-			"viewname": "Quiz",
-			"where": "type=3",
+			"comment": "This json is for trailers, a subset of Polls/Surveys",
+			"viewname": "Trailer",
+			"where": "type='trailer'",
 			"tablename": "survey",
 			"model": "Survey",
 			"permissions":[
@@ -41,7 +41,7 @@
 		{
 			"colname": "type",
 			"type": "hidden",
-			"value": "quiz",
+			"value": "trailer",
 			"displaywhen": [
 				"add",
 				"detail",
@@ -66,8 +66,8 @@
 		{
 			"colname": "title",
 			"type": "text",
-			"label": "Quiz Title",
-			"help":"The title of this quiz",
+			"label": "Trailer Title",
+			"help":"The title of this trailer quiz (not necessarily movie/game title)",
 			"width": 600,
 			"filterwidth":250,
 			"validate": [
@@ -95,15 +95,6 @@
 				"detail",
 				"edit"
 			]
-		},
-		{
-			"colname": "ordinal",
-			"type": "number",
-			"displaywhen": [
-				"add",
-				"detail",
-				"edit"
-			]
 		}
 	],
 	"subobjects": [
@@ -113,9 +104,14 @@
 			"fk": "survey_id"
 		},
 		{
+			"Title":"Trailer Info",
+			"table": "survey_trailer_info",
+			"fk": "survey_id"
+		},
+		{
 			"Comment": "Even when using a view, the fk should point to the fk on the real table",
 			"Title": "Questions",
-			"table": "quiz_question",
+			"table": "survey_question",
 			"fk": "survey_id"
 		}
 	]

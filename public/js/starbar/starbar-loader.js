@@ -15,12 +15,12 @@
  		$SQ('body').append('<div id="sayso-starbar" style="position: fixed; left: 0px; bottom: 0px; width: 100%; background: none; margin-bottom: -3px; z-index: 9999;"></div>');
 
 	var starbarContainer = document.getElementById('sayso-starbar')
-	
+
 	$SQ.ajaxWithAuth = ajaxWithAuth;
 	$SQ.cssLoadTimer = cssLoadTimer;
 	$SQ.insertCommunicationIframe = insertCommunicationIframe;
 	$SQ.randomString = randomString;
-	
+
 	// App loading
 
 	/* Feature checks */
@@ -39,7 +39,7 @@
 	} else {
 		sayso.placeholderSupportMissing = false;
 	}
-	
+
 	// load JS dependencies
 	var jsDep = [ 'jquery-ui-1.8.16.custom.min.js'
 				, 'jquery.jscrollpane.min.js'
@@ -50,10 +50,10 @@
 				, 'sayso-shared.js'
 				, 'starbar-new.js'
 				];
-				
+
 	for( var jsi = 0; jsi < jsDep.length; jsi++ )
 		window.sayso.loadScript('starbar/'+jsDep[jsi]);
-		
+
 
 	fixFlashElements();
 	loadStarbar();
@@ -104,7 +104,7 @@
 				starbarJsTimer.start('window.sayso.starbar.loaded', function () {
 					// initialize the starbar
 					sayso.initStarBar();
-					
+
 					// if user has not "onboarded" and we are on the Starbar's base domain
 					// then trigger the onboarding to display
 					if (!sayso.starbar.onboarded &&
@@ -141,12 +141,12 @@
 		sayso.starbar.game = sayso.state.economies[sayso.starbar.economyId].game;
 
 		sayso.starbar.economy = sayso.state.economies[sayso.starbar.economyId];
-		
+
 		sayso.starbar.loaded = true;
 		$SQ('#sayso-starbar').html('');
 		loadStarbar();
 	});
-	
+
 	function ajaxWithAuth(options) {
 		options.data = $SQ.extend(options.data || {}, {
 			renderer : 'json',
@@ -157,12 +157,12 @@
 
 		if (!options.dataType)
 			options.dataType = 'json';
-			
+
 		if( !options.frame_id && sayso.frameId ) {
 			options.frame_id = sayso.frameId;
 			options.xdm_c = sayso.frameId;
 		}
-			
+
 		options.beforeSend = function(x) {
 			if (x && x.overrideMimeType) {
 				x.overrideMimeType("application/j-son;charset=UTF-8");
@@ -171,12 +171,15 @@
 		options.url = 'http:' + options.url;
 		return forge.request.ajax(options);
 	}
-	
+
 	function insertCommunicationIframe(link, container, width, height, scrolling) {
 		// This function inserts the iframe (with x-domain communication enabled!)
 		// The id of the container is placed inside the 'ref' attribute at the top of the accordion
 
-		var ifr = $SQ(document.createElement("iframe")).attr({src: link+"&frame_id="+$SQ.sayso.frameId+"&xdm_c="+$SQ.sayso.frameId, scrolling: scrolling}).css({
+		if (link.indexOf("?") == -1) link += "?";
+		else link += "&";
+
+		var ifr = $SQ(document.createElement("iframe")).attr({src: link+"frame_id="+$SQ.sayso.frameId+"&xdm_c="+$SQ.sayso.frameId, scrolling: scrolling}).css({
 			height: parseInt(height)+"px",
 			width: parseInt(width)+"px",
 			margin: 0,

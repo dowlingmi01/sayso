@@ -44,6 +44,13 @@ class Survey_Response extends Record
 		return !!(Db_Pdo::fetch($sql, $userId, $surveyId));
 	}
 
+	public function deleteQuestionResponses() {
+		if (!$this->id) return;
+		$sql = "DELETE FROM survey_question_response WHERE survey_response_id = ?";
+		Db_Pdo::execute($sql, $this->id);
+		return true;
+	}
+
 	public function process() {
 		if (!$this->id || !$this->survey_id || !$this->user_id || $this->processing_status != "pending") return array("Can't process survey_response (id = " . $this->id . ")");
 

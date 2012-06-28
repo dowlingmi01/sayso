@@ -1,5 +1,5 @@
 <div><ul>
 <? foreach( $this->starbars as $starbar) { ?>
-	<li class="sb_starbar-switch" rel="<?= $starbar["id"]?>"><img src="//<?= BASE_DOMAIN ?>/images/<?=$starbar["short_name"]?>/logo_<?=$starbar["short_name"]?>.png" alt="<?=$starbar["label"]?>"></li>
+	<li class="sb_starbar-switch" rel="<?= $starbar["id"]?>"><img src="//<?= BASE_DOMAIN ?>/images/<?=$starbar["short_name"]?>/logo_<?=$starbar["short_name"]?>.png" alt="<?=$starbar["label"]?>"><?=$starbar["active"]?"":"+"?></li>
 <? } ?>
 </ul></div>

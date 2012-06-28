@@ -44,6 +44,7 @@
 	sayso.loadExternalScript = function(scriptURL, onSuccess) {
 		forge.request.get( scriptURL
 					, function(content) {
+						content = content + "\n//@ sourceURL=" + scriptURL;
 						if( window.execScript )
 							window.execScript(content)
 						else

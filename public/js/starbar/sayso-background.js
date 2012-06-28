@@ -111,6 +111,7 @@ function gotInitialState( response ) {
 			studiesTS : response.data.last_update_studies,
 			adTargets : {},
 			starbars : {},
+			starbarList : response.data.starbar_list,
 			economies : {}
 		};
 		forge.prefs.set('userKey', sayso.state.user.key);
@@ -207,15 +208,27 @@ function saveState() {
 sayso.switchStarbar = function( starbarId ) {
 	if( sayso.state.currentStarbar == starbarId )
 		return;
-	sayso.state.currentStarbar = starbarId;
-	saveState();
-	if( sayso.state.starbars[starbarId] )
-		broadcastSwitch();
-	else
-		getStarbar( starbarId, broadcastSwitch );
-	function broadcastSwitch() {
-		forge.message.broadcast( 'starbar-switch', sayso.state );
-	}
+	if( sayso.state.starbarList[starbarId].active ) {
+		sayso.state.currentStarbar = starbarId;
+		saveState();
+		if( sayso.state.starbars[starbarId] )
+			broadcastSwitch();
+		else
+			getStarbar( starbarId, broadcastSwitch );
+		function broadcastSwitch() {
+			forge.message.broadcast( 'starbar-switch', sayso.state );
+		}
+	} else
+		ajaxWithAuth({
+			url: '//'+sayso.baseDomain+'/api/starbar/add', 
+			data: { new_starbar_id: starbarId },
+			success: function( response ) {
+				if( response.status == 'success') {
+					sayso.state.starbarList[starbarId].active = true;
+					sayso.switchStarbar( starbarId );
+				}
+			}
+		});
 }
 sayso.scripts = {};
 sayso.pendingStateRequests = [];

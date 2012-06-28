@@ -60,22 +60,9 @@ class Api_UserStateController extends Api_GlobalController
 				$externalUser->loadData($install->external_user_id);
 				$starbar->loadData($externalUser->starbar_id);
 			}
-
-			$starbarUserMap = new Starbar_UserMap();
-			$starbarUserMap->user_id = $this->user_id;
-			$starbarUserMap->starbar_id = $starbar->id;
-			$starbarUserMap->active = 1;
-			$starbarUserMap->save();
-
-			$isNewGamer = false;
-			$gamer = Gamer::create($this->user_id, $starbar->id, $isNewGamer);
-			$game = Game_Starbar::create($gamer, $this->_request, $starbar);
-			if( $isNewGamer )
-				$game->install();
-
-			$userState->starbar_id = $starbar->id;
-			$userState->visibility = "open";
-			$userState->save();
+			
+            $userState->addStarbar($starbar, $this->_request);
+            
 			$userState->reload();
 		} else if( !$userState->id ) {
 			return $this->_resultType(false);
@@ -83,6 +70,7 @@ class Api_UserStateController extends Api_GlobalController
 
 		$userState->base_domain = BASE_DOMAIN;
 		$userState->user_key = $this->user_key;
+		$userState->starbar_list = $userState->getStarbarList($userState->user_id);
 
 		return $this->_resultType($userState);
 	}

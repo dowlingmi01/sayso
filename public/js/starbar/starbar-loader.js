@@ -119,19 +119,11 @@
 						// bind when the last step of the onboarding is selected, to mark onboarding done
 						// see starbar-new.js where this is triggered
 						$SQ(document).bind('onboarding-complete', function () {
-							$SQ.ajax({
-								dataType: 'json',
+							$SQ.ajaxWithAuth({
 								data : {
-									starbar_id : sayso.starbar.id,
-									user_id : sayso.starbar.user.id,
-									user_key : sayso.starbar.user.key,
-									renderer : 'json',
 									status : 1 // complete
 								},
-								url : '//' + sayso.baseDomain + '/api/starbar/set-onboard-status',
-								success : function (response, status) {
-									sayso.log('Onboarding complete.', response.data);
-								}
+								url : '//' + sayso.baseDomain + '/api/starbar/set-onboard-status'
 							});
 						});
 					}

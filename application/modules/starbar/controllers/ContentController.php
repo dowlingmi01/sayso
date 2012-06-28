@@ -45,9 +45,7 @@ class Starbar_ContentController extends Api_GlobalController
 		}
 	}
     public function starbarListAction() {
-		$sql  = "SELECT s.id, s.short_name, s.label FROM starbar_user_map sm, starbar s WHERE s.id = sm.starbar_id AND sm.user_id = ?";
-		$starbars = Db_Pdo::fetchAll($sql, $this->user_id);
-		$this->view->assign('starbars', $starbars);
+		$this->view->assign('starbars', User_State::getStarbarList($this->user_id));
     }
 	public function rewardsAction ()
 	{

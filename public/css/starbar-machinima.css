@@ -2,6 +2,14 @@
 	background-image: url('../images/machinima/bg_bar.png');
 }
 
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed {
+	width: 32px;
+}
+
+#sayso-starbar #sb_starbar-logoSemiStowed .sb_starbar-logo {
+	background-image: url('../images/machinima/logo_sayso.png');
+}
+
 /* override */
 #sayso-starbar #starbar-player-console #starbar-type{
 

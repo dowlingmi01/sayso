@@ -173,6 +173,7 @@ class Api_GamingController extends Api_GlobalController
 				}
 			}
 		}
+		$tokens->orderBy('id', 'desc'); // reverse the tokens so latest tokens are first
 		foreach ($tokens as $good) $results->addItem($good);
 		foreach ($availableGoods as $good) $results->addItem($good);
 		foreach ($purchasedGoods as $good) $results->addItem($good);

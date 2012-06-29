@@ -1357,6 +1357,7 @@
 #sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 p
 {
 	color: #a92614;
+	margin-top: 10px;
 }
 
 #sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_container
@@ -1489,7 +1490,7 @@
 
 #sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_opts .sb_radio_text
 {
-	color:#fff;
+	color:#A92614;
 	margin-left: -3px;
 	margin-right: 10px;
 	margin-top: 1px;
@@ -2031,6 +2032,11 @@
 }
 #sayso-starbar #sb_popBox_spotlight .sb_triangle-solid:after{
 	left: 227px;
+}
+
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel.autohide
+{
+	margin-top:60px;
 }
 
 /* user levels */

@@ -658,7 +658,7 @@
 }
 
 #sayso-starbar .sb_rewardItem #sb_reward_step1 .sb_rewardHeader span{
-	color:#3fa0d3;
+	color:#C02526;
 	font-weight:bold;
 }
 /*
@@ -1797,7 +1797,8 @@
 }
 
 #sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_user-points-box{
-	width: 100%;
+	width: 75%;
+	margin-left: 16%;
 }
 
 #sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_column50{

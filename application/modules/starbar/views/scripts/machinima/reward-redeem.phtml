@@ -42,18 +42,17 @@ if ($goodIsToken) {
 		<!-- .sb_rewardImg -->
 
 		<div class="sb_rewardBase">
-			<!--
 			<div class="sb_user-points-box">
-
 				<span class="sb_imgRedeemableCurrency"></span>
 				<div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentUserBalanceToCost ?>%"></span><span class="sb_progressBarValue"><span><?= $itemCost ?></span></span></div>
 			</div>
-			 -->
 
+			<!--
 			<div class="balance current">
 				<div class="icon"> </div>
 				<div class="text"><?= $itemCost ?></div>
 			</div>
+			 -->
 			<?php if ($goodIsToken) : ?>
 				<p class="sb_rewardDescription">Redeem your notes for a <?= $good->description ?> prize. The more tokens you purchase the better your chance of winning.</p>
 			<?php else : ?>
@@ -82,11 +81,12 @@ if ($goodIsToken) {
 				<div class="sb_column50">
 					Current Balance:
 					<br clear="all" />
+					<!--
 					<div class="balance current">
 						<div class="icon"> </div>
 						<div class="text"><?= $currentBalance ?></div>
 					</div>
-					<!--
+					-->
 					<div class="sb_user-points-box">
 						<span class="sb_imgRedeemableCurrency"></span>
 						<div class="sb_progress_bar sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all"><span class="sb_currency_percent sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left" style="width: 100%"></span><span class="sb_progressBarValue"><span><?= $currentBalance ?></span></span></div>
@@ -97,11 +97,12 @@ if ($goodIsToken) {
 				<div class="sb_column50">
 					Ending Balance:
 					<br clear="all" />
+					<!--
 					<div class="balance ending">
 						<div class="icon"> </div>
 						<div class="text"><?= $balanceAfter ?></div>
 					</div>
-					<!--
+					-->
 					<div class="sb_user-points-box">
 						<span class="sb_imgRedeemableCurrency"></span>
 						<div class="sb_progress_bar sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all"><span class="sb_currency_percent sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left" style="width: <?= $percentUserBalanceRemaining ?>%"></span><span class="sb_progressBarValue"><span><?= $balanceAfter ?></span></span></div>

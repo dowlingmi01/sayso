@@ -310,6 +310,6 @@ abstract class Game_Starbar extends Game_Abstract {
 		$profileSurvey = new Survey();
 		$profileSurvey->loadProfileSurveyForStarbar((int) $request->getParam('starbar_id'));
 		self::$profileSurveyId = $profileSurvey->id;
-		self::$userHasCompletedProfileSurvey = Survey_Response::checkIfUserHasCompletedSurvey((int) $request->getParam('user_id'), $profileSurvey->id);
+		self::$userHasCompletedProfileSurvey = ($profileSurvey->id ? Survey_Response::checkIfUserHasCompletedSurvey((int) $request->getParam('user_id'), $profileSurvey->id) : true);
 	}
 }

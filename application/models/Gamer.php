@@ -58,4 +58,11 @@ class Gamer extends Gaming_User {
 		$newGamer = self::create($userId, $starbarId);
 		return $newGamer;
 	}
+	
+	public function exportProperties($parentObject = null) {
+		$props = array(
+			'current_level' => $this->_levels->getFirst()
+		);
+		return array_merge(parent::exportProperties($parentObject), $props);
+	}
 }

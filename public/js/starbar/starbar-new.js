@@ -11,7 +11,7 @@ $SQ(function(){
 	forge.message.listen('sayso-frame-comm-' + sayso.frameId, function(content) {
 		$SQ('#sayso-starbar').trigger('frameCommunication', content);
 	});
-
+	
 	// NOTE: These variables are initialized in initElements()
 	var starbarElem; //  = $SQ('#sayso-starbar');
 
@@ -199,7 +199,7 @@ $SQ(function(){
 	// initialize the starbar
 	sayso.initStarBar = function (){
 		starbar = window.$SQ.sayso.starbar;
-
+		
 		// Starbar state
 		starbar.state.local = {
 			profile : Math.round(new Date().getTime() / 1000),
@@ -212,7 +212,7 @@ $SQ(function(){
 		activateGameElements(starbarElem, false);
 		// initializes development-only jquery
 		devInit();
-
+		
 		if( starbar.state.visibility == 'stowed') {
 			btnToggleVis.attr('class','').addClass('sb_btnStarbar-stowed');
 			elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
@@ -437,7 +437,6 @@ $SQ(function(){
 		elemPopBox.each(function(){
 			$SQ(this).removeClass('sb_popBoxActive');
 			$SQ(this).hide();
-			$SQ(this).html("");
 		});
 		elemStarbarClickable.each(function(){
 			// remove hover class from all nav items
@@ -806,7 +805,7 @@ $SQ(function(){
 	function updateGame (loadSource, setGlobalUpdate, animate) {
 		forge.message.broadcastBackground( 'update-game', loadSource == "ajax" ? null : loadSource );
 	}
-
+	
 	forge.message.listen( 'update-game', function( content ) {
 		sayso.starbar.game = content;
 		activateGameElements(null, true);
@@ -848,16 +847,16 @@ $SQ(function(){
 			animate = false;
 		}
 
-		var allLevels = sayso.starbar.game._levels.items;
-		var userLevels = sayso.starbar.game._gamer._levels.items;
-		var userPreviousLevels = sayso.starbar.previous_game._gamer._levels.items;
-		var userGoods = sayso.starbar.game._gamer._goods.items;
-		var userCurrencies = sayso.starbar.game._gamer._currencies.items;
+		var allLevels = sayso.starbar.game._levels;
+		var userLevels = sayso.starbar.game._gamer._levels;
+		var userPreviousLevels = sayso.starbar.previous_game._gamer._levels;
+		var userGoods = sayso.starbar.game._gamer._goods;
+		var userCurrencies = sayso.starbar.game._gamer._currencies;
 		var experienceCurrency = sayso.starbar.economy.experience_currency;
 		var redeemableCurrency = sayso.starbar.economy.redeemable_currency;
 
 		// The current level is the first level in the items (it is sorted by the gaming API!)
-		var userCurrentLevel = userLevels[0];
+		var userCurrentLevel = sayso.starbar.game._gamer.current_level;
 		var userNextLevel;
 
 		// When there is no game data for this user
@@ -868,8 +867,8 @@ $SQ(function(){
 			}
 		}
 
-		if (allLevels && userLevels) {
-			$SQ.each(allLevels, function (index, level) {
+		if (allLevels.count && userLevels.count) {
+			$SQ.each(allLevels.items, function (index, level) {
 				if (parseInt(userCurrentLevel.ordinal) < parseInt(level.ordinal) && (!userNextLevel || userNextLevel.ordinal > level.ordinal)) {
 					userNextLevel = level;
 				}
@@ -881,8 +880,8 @@ $SQ(function(){
 		}
 
 		var justLeveledUp = false;
-		var currentLevel = userPreviousLevels.length;
-		var newLevel = userLevels.length;
+		var currentLevel = userPreviousLevels.count;
+		var newLevel = userLevels.count;
 		if (currentLevel != newLevel) {
 			justLeveledUp = true;
 			updateAlerts(true);
@@ -921,9 +920,9 @@ $SQ(function(){
 
 		if (userPurchasesContainerElems.length > 0) {
 			userPurchasesContainerElems.each(function() {
-				if (userGoods.length > 0) {
+				if (userGoods.count > 0) {
 					$SQ(this).html('');
-					$SQ.each(userGoods, function (index, good) {
+					$SQ.each(userGoods.items, function (index, good) {
 						var goodDiv = $SQ(document.createElement('div'));
 						var goodHtml;
 						var goodImageSrc = good.url_preview;
@@ -948,8 +947,8 @@ $SQ(function(){
 		if (userCurrentLevelIconElems.length > 0) {
 			userCurrentLevelIconElems.each(function() {
 				var iconElem = $SQ(this);
-				if (allLevels && userCurrentLevel) {
-					$SQ.each(allLevels, function (index, level) {
+				if (allLevels.count && userCurrentLevel) {
+					$SQ.each(allLevels.items, function (index, level) {
 						if (level.ordinal == userCurrentLevel.ordinal) {
 							var smallImageUrl;
 							$SQ.each(level.urls.items, function (index, url) {
@@ -972,9 +971,9 @@ $SQ(function(){
 
 				var levelGroup = null;
 
-				if (allLevels && userCurrentLevel) {
+				if (allLevels.count && userCurrentLevel) {
 
-					$SQ.each(allLevels, function (index, level) {
+					$SQ.each(allLevels.items, function (index, level) {
 
 						if (index % numberOfVisibleLevels == 0) {
 							levelGroup = $SQ(document.createElement('div'));
@@ -1009,7 +1008,7 @@ $SQ(function(){
 						levelGroup.append(levelIcon);
 					});
 
-					var emptyLevelsToAdd = allLevels.length % numberOfVisibleLevels;
+					var emptyLevelsToAdd = allLevels.count % numberOfVisibleLevels;
 					while (emptyLevelsToAdd > 0) {
 						levelGroup.append('<div class="sb_userLevelIcons sb_userLevel_next"><div class="sb_userLevelImg sb_userLevel_empty"></div><p><br /></p></div>');
 						emptyLevelsToAdd--;
@@ -1045,28 +1044,26 @@ $SQ(function(){
 			});
 		}
 
-		if (userCurrencies.length == 0) {
+		if (userCurrencies.count == 0) {
 			if (currencyBalanceElems.length > 0) {
 				currencyBalanceElems.each(function() {
 					$SQ(this).html('0');
 				});
 			}
 		} else {
-			$SQ.each(userCurrencies, function (index, currency) {
+			$SQ.each(userCurrencies.items, function (index, currency) {
 				var currencyTitle = currency.title.toLowerCase();
 				var currencyType = currency.currency_type;
 				var currencyBalance = parseInt(currency.current_balance);
 				var previousCurrency = null;
 				var currencyNeedsUpdate = false;
-
-				var i = 0;
-				while (i < sayso.starbar.previous_game._gamer._currencies.items.length) {
-					if (currencyTitle == sayso.starbar.previous_game._gamer._currencies.items[i].title.toLowerCase()) {
-						previousCurrency = sayso.starbar.previous_game._gamer._currencies.items[i];
-						break;
+                
+                $SQ.each(sayso.starbar.previous_game._gamer._currencies.items, function(index, prevC) {
+					if (currencyTitle == prevC.title.toLowerCase()) {
+						previousCurrency = prevC;
+						return false;
 					}
-					i++;
-				}
+				});
 
 				if (!previousCurrency) {
 					previousCurrency = currency;

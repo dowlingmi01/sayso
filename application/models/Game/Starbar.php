@@ -155,7 +155,6 @@ abstract class Game_Starbar extends Game_Abstract {
 	 */
 	public function submitAction ($actionId, $customAmount = 0, $sharedId = null) {
 
-		$gamerRecord = new Gamer();
 		$logRecord = new GamerTransactionHistory();
 
 		try {
@@ -166,10 +165,8 @@ abstract class Game_Starbar extends Game_Abstract {
 
 			$gamer = $this->getGamer(/* load profile */);
 
-			$gamerRecord->loadDataByUniqueFields(array("user_id" => (int) $this->_request->getParam('user_id'), "gaming_id" => $gamer->getGamingId()));
-
-			if ($gamerRecord->id) {
-				$logRecord->user_gaming_id = $gamerRecord->id;
+			if ($gamer->id) {
+				$logRecord->user_gaming_id = $gamer->id;
 				$logRecord->action = $actionId;
 				if ($sharedId) $logRecord->action_on_id = $sharedId;
 				$logRecord->save();

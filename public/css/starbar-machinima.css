@@ -1379,7 +1379,7 @@
 
 #sayso-starbar #sb_popBox_user-profile .sb_user-current-level-icon
 {
-	background-image: url('../images/machinima/user_lvl.png') !important;
+	background-image: url('../images/machinima/user_lvl.png');
 	width:60px !important;
 	height:60px !important;
 }

@@ -228,6 +228,7 @@ border-radius: 10px;
 -webkit-box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
 box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
 }
+
 .cmsMenu ul ul {left:100%; margin-top:-36px; margin-left:-5px;}
 .cmsMenu li {margin:0; padding:0; list-style:none; display:inline-block; display:inline;}
 .cmsMenu a {display:block; font:normal 12px arial,sans-serif; color:#fff; line-height:17px; text-decoration:none; padding:0 20px 0 10px;}
@@ -238,10 +239,13 @@ box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
 .cmsMenu li.clicked > a {background-color:#3563B7;}
 
 .cmsMenu {padding:0; margin:0; list-style:none; text-align:left; position:relative; background:#5b80c2; height:19px;}
+
 .cmsMenu > li > a {display:inline-block; margin-right:-5px; height:18px;}
+
 .cmsMenu > li {position:relative; display:inline-block;}
 
 .cmsMenu > li {*display:inline;}
+
 .cmsMenu > li > ul {top:18px; left:-1px;}
 
 .cmsMenu ul {display:none;}
@@ -262,7 +266,21 @@ body .ui-widget-content a {
 }
 
 #tabs img {border:none}
+
 .counter { font-size:xx-small;color:blue;}
+
+#sb_overview {
+	padding:5px;
+	background-color:#85B5D9;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 1px solid #800000;
+	width:400px;
+	margin:10px;
+	color:white;
+}
+
 .sb_surveys_complete,
 .sb_social_activity {
 	padding:5px;
@@ -274,12 +292,30 @@ body .ui-widget-content a {
 	width:300px;
 	margin:10px;
 }
+
 .sb_social_activity {
 	width:600px;
 }
+
+.sb_purchases {
+	padding:5px;
+	background-color:#85B5D9;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 1px solid #800000;
+	width:600px;
+	margin:10px;
+}
+
+#tabs .sb_purchases img {
+	border:#1C3F59 thin solid;
+}
+
 .sb_level {
 	vertical-align:middle;
 }
+
 #div_results #emailaddress {
 	width:200px;
 	padding:2px 5px;
@@ -297,6 +333,7 @@ body .ui-widget-content a {
 	max-width:155px;
 	overflow:hidden;
 }
+
 .sb_media .col2 {
 	max-width:265px;
 	overflow:hidden;
@@ -311,12 +348,14 @@ body .ui-widget-content a {
 	vertical-align:top;
 	color:#5B80C2;
 }
+
 .sb_points {
 	font-size:x-large;
 	vertical-align:top;
 	color:#5B80C2;
 	margin-left:20px;
 }
+
 .sb_currency {
 	font-size:x-large;
 	vertical-align:top;
@@ -324,24 +363,14 @@ body .ui-widget-content a {
 	margin-left:20px;
 }
 
-#sb_overview {
-	padding:5px;
-	background-color:#85B5D9;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border: 1px solid #800000;
-	width:400px;
-	margin:10px;
-	color:white;
-}
-
 .sb_error {
 	color:#e33732;
 }
+
 .sb_info {
 	color:#e33732;
 }
+
 .sb_note {
 	color:blue;
 }

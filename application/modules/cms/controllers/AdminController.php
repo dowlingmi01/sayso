@@ -1083,6 +1083,16 @@
    			$info->XPbalance = $gamer->_currencies[$currencyExperience]['current_balance'];
    			$info->level = $gamer->getHighestLevel();
 
+   			// Get list of goods purchased by this user
+   			$info->goods = array();
+   			$ctr=0;
+			$goods = $gamer->getGoods();
+			foreach ($goods as $good) {
+				$info->goods[$ctr]['description'] = $good['description'];
+				$info->goods[$ctr]['url_preview'] = $good['url_preview'];
+				$ctr++;
+			}
+
    			$info->leveltitle = $economy->end_user_title;
    			$info->levelurl = $info->level->urls[1]->url;
 			$info->affiliatewarning = null;

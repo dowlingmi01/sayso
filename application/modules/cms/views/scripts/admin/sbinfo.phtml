@@ -78,3 +78,20 @@ if (count($this->info->likes) != 0) {
 }
 ?>
 </div>
+<div class="sb_purchases">
+<h2>Purchases <span style='color:white;font-size:xx-small'>(<?php echo count($this->info->goods); ?> items purchased)</span></h2>
+<?php
+if (count($this->info->goods) != 0) {
+	?>
+<table class='sb_media'>
+<tr><th>Item</th><th>Description</th></tr>
+<?php
+	foreach ($this->info->goods as $good) {
+		printf('<tr><td class="col1"><img src="%s" alt="%s" /></td><td class="col2">%s</td></tr>',$good['url_preview'],addslashes($good['description']),$good['description']);
+	}
+?>
+</table>
+<?php
+}
+?>
+</div><!-- /sb_purchases -->

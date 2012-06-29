@@ -173,6 +173,28 @@
 			return $mediaresults;
 		}
 
+		private function _usedstarbars($usersstarbars)
+		{
+			$validstarbars = array();
+			foreach ($usersstarbars as $starbar) {
+			//	printf("<h1>Starbar</h1><pre>%s</pre>",print_r($starbar,true));
+
+				$strWhere = sprintf("user_id = %s and starbar_id = %s",$starbar['user_id'],$starbar['starbar_id']);
+				$select = Zend_Registry::get('db')
+							->select()
+							->from("metrics_log",array("created","starbar_id"))
+							->where($strWhere);
+
+				$stmt = $select->query();
+				$lastseen = $stmt->fetchAll();
+				if ($lastseen) {
+					// We've seen this user on this starbar
+					$validstarbars[] = $starbar;
+				}
+			}
+			return $validstarbars;
+		}
+
 		private function _surveyanalysis($user_id,$type="survey",$status="completed")
 		{
 			$strWhere = sprintf("m.user_id='%s' and m.status='%s' and type='%s' ",$user_id,$status,$type);
@@ -855,8 +877,6 @@
             $formElements['emailaddress'] = new Form_Element_Text('emailaddress');
             $formElements['emailaddress']->setLabel("Users Email Address");
          	$formElements['submit'] = new Zend_Form_Element_Submit('submit');
-           // $formElements['submit'] ->setLabel('Give Reward') // the button's value
-				   // ->setIgnore(true); // very usefull -> it will be ignored before insertion
 
 			$form = new ZendX_JQuery_Form();
 			$form->setName("Reward");
@@ -871,11 +891,13 @@
 
 				$postData = $this->getRequest()->getPost(); // getting the $_POST data
 
+				$select = Zend_Registry::get('db')
+							->select()
+							->from("starbar");
 
-				$select = Zend_Registry::get('db')->select()->from("starbar");
 				$stmt = $select->query();
 				$starbarreference = $stmt->fetchAll();
-				// Starbar reference contains an array of starbars
+				// Starbar reference contains an array of starbars that this user has installed (or started to install)
 				/**
 				* @example Array
 (
@@ -917,11 +939,14 @@
 				if ($postData['emailaddress']!=null) {
 					// We have an email address. Get all starbars associated with this user
 					$user_email = new User_Email();
-					$usersstarbars = $user_email->getUserID($postData['emailaddress']);
+					$userdata = $user_email->getUserID($postData['emailaddress']);
 
-					if ($usersstarbars) {
+					if ($userdata) {
+						// Find out which starbars have been actually been used by this user
+						$tabs = $this->_usedstarbars($userdata);
 						// Pass the starbar details back to the view
-						$this->view->tabs = $usersstarbars;
+						$this->view->userdata = $userdata;// was usersstarbars
+						$this->view->tabs = $tabs;// was usersstarbars
 					} else {
 						$this->view->error = sprintf("No data found for user %s",$postData['emailaddress']);
 					}
@@ -941,13 +966,25 @@
 
 			// Find out what day this user arrived
 			$strWhere = sprintf("id = %s",$user_id);
-			$select = Zend_Registry::get('db')->select()->from("user",array("created","originating_starbar_id"))->where($strWhere);
+			$select = Zend_Registry::get('db')
+						->select()
+						->from("user",array("created","originating_starbar_id"))
+						->where($strWhere);
 
 			$stmt = $select->query();
 			$datecreated = $stmt->fetchAll();
+			// We now know the date this user was created, and their originating starbar (which may be null)
+
 			if ($datecreated[0]['originating_starbar_id']!=null){
+
+				// We have an originating starbar. Find out what it is called.
 				$strWhere = sprintf("id = %s",$datecreated[0]['originating_starbar_id']);
-				$select = Zend_Registry::get('db')->select()->from("starbar","label")->where($strWhere);
+
+				$select = Zend_Registry::get('db')
+							->select()
+							->from("starbar","label")
+							->where($strWhere);
+
 				$stmt = $select->query();
 				$originalstarbar = $stmt->fetchAll();
 				$firstseenstarbar = $originalstarbar[0]['label'];
@@ -957,27 +994,50 @@
 
 			// Find out what day this user was last seen
 			$strWhere = sprintf("user_id = %s",$user_id);
-			$select = Zend_Registry::get('db')->select()->from("metrics_log",array("created","starbar_id"))->where($strWhere)->order('id desc');
+			$select = Zend_Registry::get('db')
+						->select()
+						->from("metrics_log",array("created","starbar_id"))
+						->where($strWhere)
+						->order('id desc');
+
 			$stmt = $select->query();
 			$datelastseen = $stmt->fetchAll();
 
+			$info = new stdClass(); // set up the class we are going to send to the view
 
-			// What was the last starbar we saw this user on?
-			$strWhere = sprintf("id = %s",$datelastseen[0]['starbar_id']);
-			$select = Zend_Registry::get('db')->select()->from("starbar","label")->where($strWhere);
-			$stmt = $select->query();
-			$lateststarbar = $stmt->fetchAll();
+			if ($datelastseen) {
+				// User has been seen at least once since installing
+				$info->neverseen = false;
+				// What was the last starbar we saw this user on?
+				$strWhere = sprintf("id = %s",$datelastseen[0]['starbar_id']);
 
-			$info = new stdClass();
-			$info->firstseentext = $this->_ago($datecreated[0]['created']);
-			$info->firstseen = $datecreated[0]['created'];
-			$info->firstseenstarbar = $firstseenstarbar;
-			$info->lastseentext = $this->_ago($datelastseen[0]['created']);
-			$info->lastseen = $datelastseen[0]['created'];
-			$info->lastseenstarbar = $lateststarbar[0]['label'];
-			$diff = date_diff(date_create($info->lastseen),date_create($info->firstseen));
+				$select = Zend_Registry::get('db')
+							->select()
+							->from("starbar","label")
+							->where($strWhere);
 
-			$info->activedays = $this->_timeactive($diff);
+				$stmt = $select->query();
+				$lateststarbar = $stmt->fetchAll();
+
+
+				$info->firstseentext = $this->_ago($datecreated[0]['created']);
+				$info->firstseen = $datecreated[0]['created'];
+				$info->firstseenstarbar = $firstseenstarbar;
+				$info->lastseentext = $this->_ago($datelastseen[0]['created']);
+				$info->lastseen = $datelastseen[0]['created'];
+				$info->lastseenstarbar = $lateststarbar[0]['label'];
+				$diff = date_diff(date_create($info->lastseen),date_create($info->firstseen));
+
+				$info->activedays = $this->_timeactive($diff);
+
+			} else {
+				// This user has not been seen since install
+				$info->neverseen = true;
+				$info->firstseentext = $this->_ago($datecreated[0]['created']);
+				$info->firstseen = $datecreated[0]['created'];
+				$info->firstseenstarbar = $firstseenstarbar;
+			}
+
 			$this->view->info = $info;
 
 		}
@@ -1000,7 +1060,10 @@
 
 			$economy = $gameStarbar->getEconomy();
 
-			$gameStarbar->loadGamerProfile();
+			try {
+
+				$gameStarbar->loadGamerProfile();
+
 
 			$gamer = $gameStarbar->getGamer();
 			$client = $economy->getClient();
@@ -1022,6 +1085,17 @@
 
    			$info->leveltitle = $economy->end_user_title;
    			$info->levelurl = $info->level->urls[1]->url;
+			$info->affiliatewarning = null;
+
+			} catch (Api_Exception $e) {
+				// We know that code 251 is 'Gaming system error: NOT FOUND'. Notify any other errors
+				if ($e->getCode() != 251) {
+					printf( "<h2>Unknown exception [%s] caught: [%s]</h2>",$e->getCode(),$e->getMessage());
+					printf("<h3>Stack Trace</h3><pre>%s</pre>",print_r($e->getTraceAsString(),true));
+				} else {
+					$info->affiliatewarning = "Affiliate no longer exists. Game information is not available";
+				}
+			}
 
 			// Social Media Results
 			$info->likes = array();

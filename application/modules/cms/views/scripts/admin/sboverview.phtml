@@ -1,11 +1,19 @@
 <!-- views/scripts/admin/sboverview.phtml file -->
-<?php echo $this->form ?>
 <div id="sb_overview">
-<p  class='sb_overview_first'>First seen: <?php echo $this->info->firstseen; ?> (<?php echo $this->info->firstseentext; ?>) <?php echo ($this->info->firstseenstarbar) ? " on ".$this->info->firstseenstarbar: ""; ?></p>
-<p class='sb_overview_active'>Active for: <?php echo $this->info->activedays; ?></p>
-<p  class='sb_overview_last'>Last seen: <?php echo $this->info->lastseen; ?> (<?php echo $this->info->lastseentext; ?>)<?php echo ($this->info->lastseenstarbar) ? " on ".$this->info->lastseenstarbar: ""; ?></p>
+	<p  class='sb_overview_first'>First seen: <?php echo $this->info->firstseen; ?> (<?php echo $this->info->firstseentext; ?>) <?php echo ($this->info->firstseenstarbar) ? " on ".$this->info->firstseenstarbar: ""; ?></p>
+	<?php
+		if ($this->info->neverseen==true) { ?>
+			<p class='sb_error'>There is no record of this user activating the bar</p>
+		<?php
+		} else {
+		?>
+	<p class='sb_overview_active'>Active for: <?php echo $this->info->activedays; ?></p>
+	<p  class='sb_overview_last'>Last seen: <?php echo $this->info->lastseen; ?> (<?php echo $this->info->lastseentext; ?>)<?php echo ($this->info->lastseenstarbar) ? " on ".$this->info->lastseenstarbar: ""; ?></p>
+	<div class="sb_note">
+		<p>'Active for' shows the time between the first and last accesses of this user.</p>
+	</div><!-- /sb_level -->
+	<?php
+		}
+	?>
 
-</div><!-- /sb_information -->
-<div class="sb_level">
-'Active for' shows the time between the first and last accesses of this user.
-</div>
+</div><!-- /sb_overview -->

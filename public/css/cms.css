@@ -331,7 +331,17 @@ body .ui-widget-content a {
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border: 1px solid #800000;
-	width:300px;
+	width:400px;
 	margin:10px;
 	color:white;
+}
+
+.sb_error {
+	color:#e33732;
+}
+.sb_info {
+	color:#e33732;
+}
+.sb_note {
+	color:blue;
 }

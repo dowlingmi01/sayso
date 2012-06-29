@@ -21,17 +21,20 @@
 	if ($this->error) {
 		printf("<p class='error'>%s</p>",$this->error);
 	}
-	if ($this->tabs) {
-		printf("<div id='emailaddress'>%s</div>",$this->tabs[0]['email']);
+	if ($this->userdata) {
+		printf("<div id='emailaddress'>%s</div>",$this->userdata[0]['email']);
 		?>
 
 <div id='tabs'>
 	<ul>
 <?php
-		printf('<li><a href="/cms/admin/sboverview/user/%s"><span>Overview</span></a></li>',$this->tabs[0]['user_id']);
-		foreach ($this->tabs as $tabs) {
+		printf('<li><a href="/cms/admin/sboverview/user/%s"><span>Overview</span></a></li>',$this->userdata[0]['user_id']);
+		if ($this->tabs) {
+			// Only if we have any starbars that this user has used
+			foreach ($this->tabs as $tabs) {
 
-			printf("<li><a href='/cms/admin/sbinfo/bar/%s/user/%s'><span>%s</span></a></li>\n\r",$tabs['starbar_id'],$tabs['user_id'],$tabs['label']);
+				printf("<li><a href='/cms/admin/sbinfo/bar/%s/user/%s'><span>%s</span></a></li>\n\r",$tabs['starbar_id'],$tabs['user_id'],$tabs['label']);
+			}
 		}
 		?>
 		</ul>

@@ -2,8 +2,12 @@
 <?php //echo $this->form ?>
 <div class="sb_information">
 <?php
+if ($this->info->affiliatewarning) {
+	printf("<p class='sb_info'>%s</p>",$this->info->affiliatewarning);
+} else {
 	printf('<img src="%s" alt="%s" /> <span class="sb_leveltitle">%s</span><span class="sb_points">%s %s</span><span class="sb_currency">%s %s</span>',$this->info->levelurl,$this->info->level->title,$this->info->level->title,number_format($this->info->XPbalance,0),$this->info->XP,number_format($this->info->currencybalance,0),$this->info->currency);
-?>
+}
+	?>
 </div><!-- /sb_information -->
 
 <div class="sb_surveys_complete">

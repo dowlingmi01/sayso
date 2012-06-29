@@ -1885,11 +1885,13 @@
 
 #sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_reward_step p,
 #sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_reward_step p strong{
-	color: #ffffff !important;
+	color: white !important;
 }
 
 #sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_reward_step .sb_step2Actions p,
-#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_reward_step .sb_step2Actions p strong{
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_reward_step .sb_step2Actions p strong,
+#sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_reward_step .sb_rewardOrder p
+{
 	color: #333 !important;
 }
 

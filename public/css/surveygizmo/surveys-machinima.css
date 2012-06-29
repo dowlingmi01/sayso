@@ -159,19 +159,6 @@ ul.sg-list-vertical li {
 
 
 
-
-.sg-button-bar {
-	position: fixed;
-	bottom: 0;
-	border-top: 10px solid #FFFFFF;
-	border-bottom: 2px solid #FFFFFF;
-	margin-bottom: 0px;
-	background: #FFFFFF;
-	width: 98%;
-}
-
-
-
 #sg_SubmitButton {
 	margin-right: 125px;
 	float: right;
@@ -302,10 +289,17 @@ h1.sg-title {
 	text-align: right;
 }
 
+.sg-button-bar {
+	position: fixed;
+	bottom: 0;
+	border-top: 10px solid #FFFFFF;
+	border-bottom: 2px solid #FFFFFF;
+	margin-bottom: 0px;
+	background: #FFFFFF;
+	width: 98%;
+}
 
-
-#sg_BackButton.sg-button.sg-back-button{
-
+#sg_BackButton{
 	border:none !important;
 	background: none !important;
 	background: url('/images/machinima/surveys_back.png') no-repeat !important;
@@ -319,11 +313,24 @@ h1.sg-title {
 	margin-left: 115px  !important;
 }
 
-#sg_NextButton.sg-button.sg-next-button{
-
+#sg_NextButton{
 	border:none !important;
 	background: none !important;
 	background: url('/images/machinima/surveys_next.png') no-repeat !important;
+	width:37px !important;
+	height:25px !important;
+	white-space: nowrap;
+	text-indent: -3000px;
+	outline: none;
+	display:block;
+	float:right;
+	margin-right: 115px !important;
+}
+
+#sg_SubmitButton{
+	border:none !important;
+	background: none !important;
+	background: url('/images/machinima/surveys_submit.png') no-repeat !important;
 	width:37px !important;
 	height:25px !important;
 	white-space: nowrap;

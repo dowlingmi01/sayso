@@ -740,14 +740,9 @@
 	left: 0px;
 }
 
-#sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner{
-	background-color: #000;
-}
-
 #sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner .sb_popContent{
 	width: 640px;
 	height: 590px;
-	background-color: #000 !important;
 	color: #ffffff !important;
 }
 
@@ -769,7 +764,7 @@
 
 
 #sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner .sb_popContent label{
-	color: #ffffff !important;	
+	color: #ffffff !important;
 	font-size: 14px;
 	margin: 0px 5px;
 }
@@ -799,16 +794,16 @@
  text-indent: -9999px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a,
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-disabled a,
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-processing a{
+#sayso-starbar-spotlight-frame.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a,
+#sayso-starbar-spotlight-frame.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-disabled a,
+#sayso-starbar-spotlight-frame.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-processing a{
 	color: #f1b134 !important;
 }
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li a{
+#sayso-starbar-spotlight-frame.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li a{
 	color: #ffffff !important;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li{
+#sayso-starbar-spotlight-frame.sb_popBox  .sb_ui-tabs .sb_ui-tabs-nav li{
 	border-color: #ffffff !important;
 }
 
@@ -885,9 +880,9 @@
 	margin-right: -20px;
 }
 
-#sayso-starbar #starbar-player-console span.sb_mini-cinebucks-reward,
-#sayso-starbar-embed span.sb_mini-cinebucks-reward,
-#sayso-starbar #sb_popBox_spotlight ul.sb_listDeals li span.sb_mini-cinebucks-reward{
+#sayso-starbar #starbar-player-console span.sb_mini-redeemable-currency-reward,
+#sayso-starbar-embed span.sb_mini-redeemable-currency-reward,
+#sayso-starbar #sb_popBox_spotlight ul.sb_listDeals li span.sb_mini-redeemable-currency-reward{
 	background-image: url('../images/movie/img_cinebucks_tn.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
@@ -906,18 +901,18 @@
 	text-shadow: 1px 1px 1px rgba(0,0,0,.8);
 }
 
-#sayso-starbar #starbar-player-console span.sb_mini-cinebucks-reward_facebook,
-#sayso-starbar-embed span.sb_mini-cinebucks-reward.sb_mini-cinebucks-reward_facebook{
+#sayso-starbar #starbar-player-console span.sb_mini-redeemable-currency-reward_facebook,
+#sayso-starbar-embed span.sb_mini-redeemable-currency-reward.sb_mini-redeemable-currency-reward_facebook{
 	left: 54px !important;
 }
 
-#sayso-starbar #starbar-player-console span.sb_mini-cinebucks-reward.sb_mini-cinebucks-reward_twitter,
-#sayso-starbar-embed span.sb_mini-cinebucks-reward.sb_mini-cinebucks-reward_twitter{
+#sayso-starbar #starbar-player-console span.sb_mini-redeemable-currency-reward.sb_mini-redeemable-currency-reward_twitter,
+#sayso-starbar-embed span.sb_mini-redeemable-currency-reward.sb_mini-redeemable-currency-reward_twitter{
 	left: 115px !important;
 }
 
 
-#sayso-starbar #starbar-player-console span.sb_mini-cinebucks-reward.sb_mini-cinebucks-reward_email{
+#sayso-starbar #starbar-player-console span.sb_mini-redeemable-currency-reward.sb_mini-redeemable-currency-reward_email{
 	left: 150px !important;
 }
 
@@ -1359,7 +1354,12 @@
 	font-size: 12px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_container
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 p
+{
+	color: #a92614;
+}
+
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_container
 {
 	width:635px;
 	height:390px;
@@ -1373,18 +1373,20 @@
 	user-select:none;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel
 {
 	width:635px;
 	height:80px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1
 {
-	display:none;
+	margin-left:25px;
+	margin-top:20px;
+	color: #a92614;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_flow p
+#sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_flow p
 {
 	font-weight:bold;
 	margin-left:25px;
@@ -1395,83 +1397,89 @@
 	-ms-user-select:none;
 	-khtml-user-select: none;
 	user-select:none;
-	
-	
+	color: #a92614;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #sb_vid_question_phase2
+#sayso-starbar-spotlight-frame .sb_tabs #sb_vid_question_phase1
 {
 	display:none;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #sb_vid_question_final
+#sayso-starbar-spotlight-frame .sb_tabs #sb_vid_question_phase2
 {
 	display:none;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #sb_vid_question_final .sb_final_info
+#sayso-starbar-spotlight-frame .sb_tabs #sb_vid_question_final
+{
+	display:none;
+}
+
+#sayso-starbar-spotlight-frame .sb_tabs #sb_vid_question_final .sb_final_info
 {
 	margin-left:25px;
 	margin-top:2px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #sb_vid_question_final .sb_final_share
+#sayso-starbar-spotlight-frame .sb_tabs #sb_vid_question_final .sb_final_share
 {
 	margin-left:25px;
 	margin-top:10px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #sb_vid_question_final .sb_final_share > div
+#sayso-starbar-spotlight-frame .sb_tabs #sb_vid_question_final .sb_final_share > div
 {
 	magin-right:2px;
+	color: #a92614;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #sb_vid_question_final .sb_final_share .share_text
+#sayso-starbar-spotlight-frame .sb_tabs #sb_vid_question_final .sb_final_share .share_text
 {
 	color:#fff;
 	font-weight:bold;
 }
 
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #sb_vid_question_final .sb_final_info .txt
+#sayso-starbar-spotlight-frame .sb_tabs #sb_vid_question_final .sb_final_info .txt
 {
 	color:#fff;
 	margin-right:15px;
 	padding-top:2px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_flow .hl
+#sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_flow .hl
 {
 	color: #a92614;
 	font-weight:bold;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_flow .sb_sel_vid_title
+#sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_flow .sb_sel_vid_title
 {
 	color:inherit;
 	font-weight:bold;
 	font-size:13px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_flow p.inactive
+#sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_flow p.inactive
 {
 	color:#686464 !important;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts
+#sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_opts
 {
 	margin-left:30px;
 	margin-top:20px;
+	background-color: black;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts input
+#sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_opts input
 {
 	float:left;
 	margin-top:3px;
 	margin-right:5px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts .sb_rating_icon
+#sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_opts .sb_rating_icon
 {
 	width:75px;
 	height:19px;
@@ -1479,7 +1487,7 @@
 	color:#fff;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts .sb_radio_text
+#sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_opts .sb_radio_text
 {
 	color:#fff;
 	margin-left: -3px;
@@ -1488,19 +1496,19 @@
 	float:left;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts .sb_rating_icon .icon
+#sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_opts .sb_rating_icon .icon
 {
 	background: url(../images/movie/thumbs_up_gold.png);
 	height:19px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts .sb_rating_icon.stars_one .icon{width:15px;}
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts .sb_rating_icon.stars_two .icon{width:30px;}
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts .sb_rating_icon.stars_three .icon{width:45px;}
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts .sb_rating_icon.stars_four .icon{width:60px;}
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs .sb_mv_questions_opts .sb_rating_icon.stars_five .icon{width:75px;}
+#sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_opts .sb_rating_icon.stars_1 .icon{width:15px;}
+#sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_opts .sb_rating_icon.stars_2 .icon{width:30px;}
+#sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_opts .sb_rating_icon.stars_3 .icon{width:45px;}
+#sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_opts .sb_rating_icon.stars_4 .icon{width:60px;}
+#sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_opts .sb_rating_icon.stars_5 .icon{width:75px;}
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel
 {
 	width:635px;
 	height:75px;
@@ -1513,11 +1521,11 @@
 	-ms-user-select:none;
 	-khtml-user-select: none;
 	user-select:none;
-	
+
 	display:none;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .arrow_left
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .arrow_left
 {
 	height:70px;
 	width:20px;
@@ -1531,7 +1539,7 @@
 	user-select:none;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .arrow_right
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .arrow_right
 {
 	height:70px;
 	width:20px;
@@ -1545,7 +1553,7 @@
 	user-select:none;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content
 {
 	height:100%;
 	width:595px;
@@ -1559,16 +1567,16 @@
 	user-select:none;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .line_group
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .line_group
 {
 	display:none;
 }
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .line_group.active
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .line_group.active
 {
 	display:block;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb
 {
 	width:125px;
 	height:70px;
@@ -1582,54 +1590,64 @@
 	-ms-user-select:none;
 	-khtml-user-select: none;
 	user-select:none;
+	opacity:0.4;
+	filter:alpha(opacity=40);
 	/* Center images */
 }
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.first,
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.last
+
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb:hover, #sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.current_trailer
+{
+	opacity:1;
+	filter:alpha(opacity=100);
+}
+
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.first,
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.last
 {
 	width:93px;
 	height:70px;
 	float:left;
 	border:solid 1px #1C1C1C;
-	
+
 	/* First and Last Images from the carousel group */
 }
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb img
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb img
 {
 	width:125px;
 	height:70px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.first img,
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.last img
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.first img,
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.last img
 {
 	width:93px;
 	height:70px;
 }
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.first
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.first
 {
 	margin-left:4px;
 }
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.last
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.last
 {
 	margin-right:4px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1
 {
 	margin-left:25px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1 h2
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1 h2
 {
 	font-size:18px;
 	font-weight:bold;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_spotlight .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1 p
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1 p
 {
 	font-size:12px;
 	font-weight:bold;
+	color: #a92614;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_polls .sb_tabs{

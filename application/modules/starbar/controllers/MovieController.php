@@ -20,7 +20,14 @@ class Starbar_MovieController extends Starbar_ContentController
 	}
 
 	public function spotlightAction() {
+
+	}
+
+	public function trailerAction() {
 		$this->_validateRequiredParameters(array('user_id'));
+
+		// this page is fetched via an iframe, not ajax;
+		$this->_usingJsonPRenderer = false;
 
 		$request = $this->getRequest();
 		$surveyId = (int) abs($request->getParam("survey_id", 0));
@@ -29,8 +36,18 @@ class Starbar_MovieController extends Starbar_ContentController
 
 		$trailers = new SurveyCollection();
 		$trailers->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'trailer', 'new');
-		$currentTrailer = null;
+		$this->view->trailers = $trailers;
 
+		$infoForTrailers = new Survey_TrailerInfoCollection();
+		$infoForTrailers->getTrailerInfoForTrailers($trailers);
+		// re-index the trailer info by survey_id
+		$infoForTrailersIndexedArray = array();
+		foreach($infoForTrailers as $trailerInfo) {
+			$infoForTrailersIndexedArray[$trailerInfo->survey_id] = $trailerInfo;
+		}
+		$this->view->info_for_trailers = $infoForTrailersIndexedArray;
+
+		$currentTrailer = null;
 		if ($surveyId && isset($trailers[$surveyId])) {
 			$currentTrailer = $trailers[$surveyId];
 		} elseif ($trailers) {
@@ -66,6 +83,10 @@ class Starbar_MovieController extends Starbar_ContentController
 			$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=trailer&shared_id=".$currentTrailer->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
 			$this->_assignShareTrailerToView($currentTrailer, $facebookCallbackUrl);
 		}
+
+		$this->view->user_id = $this->user_id;
+		$this->view->user_key = $this->user_key;
+		$this->view->starbar_id = $this->starbar_id;
 	}
 
 	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null) {

@@ -11,7 +11,7 @@ $SQ(function(){
 	forge.message.listen('sayso-frame-comm-' + sayso.frameId, function(content) {
 		$SQ('#sayso-starbar').trigger('frameCommunication', content);
 	});
-	
+
 	// NOTE: These variables are initialized in initElements()
 	var starbarElem; //  = $SQ('#sayso-starbar');
 
@@ -199,7 +199,7 @@ $SQ(function(){
 	// initialize the starbar
 	sayso.initStarBar = function (){
 		starbar = window.$SQ.sayso.starbar;
-		
+
 		// Starbar state
 		starbar.state.local = {
 			profile : Math.round(new Date().getTime() / 1000),
@@ -212,7 +212,7 @@ $SQ(function(){
 		activateGameElements(starbarElem, false);
 		// initializes development-only jquery
 		devInit();
-		
+
 		if( starbar.state.visibility == 'stowed') {
 			btnToggleVis.attr('class','').addClass('sb_btnStarbar-stowed');
 			elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
@@ -437,6 +437,7 @@ $SQ(function(){
 		elemPopBox.each(function(){
 			$SQ(this).removeClass('sb_popBoxActive');
 			$SQ(this).hide();
+			$SQ(this).html("");
 		});
 		elemStarbarClickable.each(function(){
 			// remove hover class from all nav items
@@ -805,7 +806,7 @@ $SQ(function(){
 	function updateGame (loadSource, setGlobalUpdate, animate) {
 		forge.message.broadcastBackground( 'update-game', loadSource == "ajax" ? null : loadSource );
 	}
-	
+
 	forge.message.listen( 'update-game', function( content ) {
 		sayso.starbar.game = content;
 		activateGameElements(null, true);

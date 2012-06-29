@@ -48,7 +48,7 @@ if ($goodIsToken) {
 			<?php else : ?>
 				<p class="sb_rewardDescription">Redeem your CineBucks for<br /><strong><?= $good->description ?></strong></p>
 			<?php endif ?>
-			<span class="sb_theme_button">Redeem</span>
+			<span class="sb_theme_button sb_theme_button_alt">Redeem</span>
 		</div><!-- .sb_rewardBase -->
 		<!-- END LANDING -->
 
@@ -100,8 +100,12 @@ if ($goodIsToken) {
 					</p>
 				<?php endif ?>
 			</div>
-			<p align="center">My information is correct<br clear="all" />
-			<span class="sb_theme_button">Place Order</span></p>
+			<p align="center">My information is correct<br clear="all" /></p>
+			<?php if ($goodIsToken) : ?>
+				<p align="center"><div class="sb_theme_button sb_theme_button_alt sb_reward_place_order_btn">Order</div></p>
+			<?php else : ?>
+				<p align="center"><div class="sb_theme_button sb_theme_button_alt sb_reward_confirm_order_btn">Order</div></p>
+			<?php endif ?>
 		</div><!-- .sb_rewardOrder -->
 		<!-- END SHIPPING ADDRESS CONFIRM -->
 	</div><!-- #sb_reward_step2 -->

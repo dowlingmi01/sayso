@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $game = $this->game;
 /* @var $game Game_Starbar */
@@ -44,7 +44,7 @@ $userAddress = $this->user_address;
 			<p>Remember, you can enter as many times as you want and increase your likelihood of winning.</p>
 		<?php else : ?>
 			<p align="center"><strong><small>Your order will arrive via USPS in 4-6 weeks</small></strong></p>
-			<p><strong>Shipping Address:</strong></p> 
+			<p><strong>Shipping Address:</strong></p>
 			<p>
 				<?= $user->first_name . ' ' . $user->last_name ?><br />
 				<?= $userAddress->street1 ?><br />
@@ -55,7 +55,7 @@ $userAddress = $this->user_address;
 			</p>
 		<?php endif ?>
 		<br clear="all" />
-		<p align="center"><span class="sb_theme_button_alt">Back to Rewards Center</span></p>
+		<p align="center"><span class="sb_theme_button sb_theme_button_alt">Back to Rewards Center</span></p>
 	</div><!-- .sb_rewardOrder -->
 	<!-- END ORDER COMPLETE - SHIPPING -->
 </div><!-- #sb_reward_step3 -->

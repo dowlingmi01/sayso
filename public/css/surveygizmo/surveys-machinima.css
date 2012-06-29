@@ -29,7 +29,7 @@
 }
 
 .sg-footer {
-	
+
 	background:#FFFFFF;
 	color:black;
 	border-bottom:1px solid #FFFFFF;
@@ -137,7 +137,7 @@ ul.sg-list-vertical li {
 	margin: 0 10px 0 10px;
 	display:inline;
 	}
-	
+
 	.sg-buttons,
 	.sg-button-bar input {
 		display:inline;
@@ -145,7 +145,7 @@ ul.sg-list-vertical li {
 	.sg-button:hover {
 		background-position:0 -40px;
 		}
-	
+
 
 #sg_BackButton {
 	margin-left: 141px;
@@ -191,29 +191,8 @@ ul.sg-list-vertical li {
 }
 
 .sg-progress-bar {
-	display: block;
-	width:150px !important;
-	height:15px !important;
-	position:absolute;
-	top:8px;
-	left:161px;
+	display: none;
 }
-
-.sg-progress-bar .sg-progress-bar-inner {
-	background-image: -webkit-gradient(
-	linear,
-	left top,
-	left bottom,
-	color-stop(0.22, rgb(201,12,12)),
-	color-stop(0.61, rgb(128,8,8)));
-	background-image: -moz-linear-gradient(
-			center top,
-			rgb(201,12,12) 22%,
-			rgb(128,8,8) 61%);
-	background-color: #c90c0c;
-	height:15px !important;
-}
-
 
 .sg-progress-bar-text {
 	width: 150px;
@@ -326,11 +305,11 @@ h1.sg-title {
 
 
 #sg_BackButton.sg-button.sg-back-button{
-	
+
 	border:none !important;
 	background: none !important;
 	background: url('/images/machinima/surveys_back.png') no-repeat !important;
-	width:37px !important; 
+	width:37px !important;
 	height:25px !important;
 	white-space: nowrap;
 	text-indent: -3000px;
@@ -341,11 +320,11 @@ h1.sg-title {
 }
 
 #sg_NextButton.sg-button.sg-next-button{
-	
+
 	border:none !important;
 	background: none !important;
 	background: url('/images/machinima/surveys_next.png') no-repeat !important;
-	width:37px !important; 
+	width:37px !important;
 	height:25px !important;
 	white-space: nowrap;
 	text-indent: -3000px;

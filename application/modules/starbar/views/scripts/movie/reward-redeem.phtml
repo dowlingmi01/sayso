@@ -54,7 +54,7 @@ if ($goodIsToken) {
 
 	</div><!-- #sb_reward_step1 -->
 
-	<div id="sb_reward_step2" class="sb_reward_step">
+	<div id="sb_reward_step2" class="sb_reward_step" style="display: none;">
 		<!-- BEGIN SHIPPING ADDRESS CONFIRM -->
 		<div class="sb_rewardHeader"><span><?= $good->title ?></span></div><!-- .sb_rewardHeader -->
 		<div class="sb_rewardImg">
@@ -96,7 +96,7 @@ if ($goodIsToken) {
 						<input name="sb_address_2" class="sb_wide_input" type="text" value="<?= $userAddress->street2 ?>" /><br />
 						<input name="sb_city" type="text" placeholder="City" value="<?= $userAddress->locality ?>" /><input name="sb_state" type="text" placeholder="State/Region" value="<?= $userAddress->region ?>" />
 						<input name="sb_country" type="text" value="USA" placeholder="Country" value="<?= ($userAddress->country ? $userAddress->country : 'USA') ?>" /><input name="sb_zip" type="text" placeholder="Zip/Postal Code" value="<?= $userAddress->postalCode ?>" /><br />
-                                                <input name="sb_phone" class="sb_wide_input" type="text" placeholder="Phone" value="<?= $userAddress->phone ?>" />
+						<input name="sb_phone" class="sb_wide_input" type="text" placeholder="Phone" value="<?= $userAddress->phone ?>" />
 					</p>
 				<?php endif ?>
 			</div>
@@ -107,12 +107,12 @@ if ($goodIsToken) {
 	</div><!-- #sb_reward_step2 -->
 
 	<div id="sb_reward_step3" class="sb_reward_step" style="display: none;">
-		 <img src="//<?= BASE_DOMAIN ?>/images/hellomusic/img_ajax-loader.gif" alt="Loading..." id="sb_img-loading" style="margin: 50px auto; display:block; text-align: center;" />
+		 <img src="//<?= BASE_DOMAIN ?>/images/movie/img_ajax-loader.gif" alt="Loading..." id="sb_img-loading" style="margin: 50px auto; display:block; text-align: center;" />
 		<!-- ajax loaded after order is complete -->
 	</div><!-- #sb_reward_step3 -->
 
 </div><!-- .sb_rewardItem -->
-<script language="javascript">
+<script type="text/javascript">
 	$SQ(function(){
 		var sayso = window.sayso;
 		var rewardSteps = $SQ('#sb_rewardItem .sb_reward_step');

@@ -47,16 +47,10 @@ if ($goodIsToken) {
 				<div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentUserBalanceToCost ?>%"></span><span class="sb_progressBarValue"><span><?= $itemCost ?></span></span></div>
 			</div>
 
-			<!--
-			<div class="balance current">
-				<div class="icon"> </div>
-				<div class="text"><?= $itemCost ?></div>
-			</div>
-			 -->
 			<?php if ($goodIsToken) : ?>
-				<p class="sb_rewardDescription">Redeem your notes for a <?= $good->description ?> prize. The more tokens you purchase the better your chance of winning.</p>
+				<p class="sb_rewardDescription">Redeem your Coins for Entry Tokens to win<br /><?= $good->description ?> prize. The more tokens you purchase the better your chance of winning.</p>
 			<?php else : ?>
-				<p class="sb_rewardDescription">A <?= $good->description ?></p>
+				<p class="sb_rewardDescription">Redeem your Coins for<br /><?= $good->description ?></p>
 			<?php endif ?>
 			<div class="sb_theme_button_alt sb_redeem_btn_step1"></div>
 
@@ -81,12 +75,6 @@ if ($goodIsToken) {
 				<div class="sb_column50">
 					Current Balance:
 					<br clear="all" />
-					<!--
-					<div class="balance current">
-						<div class="icon"> </div>
-						<div class="text"><?= $currentBalance ?></div>
-					</div>
-					-->
 					<div class="sb_user-points-box">
 						<span class="sb_imgRedeemableCurrency"></span>
 						<div class="sb_progress_bar sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all"><span class="sb_currency_percent sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left" style="width: 100%"></span><span class="sb_progressBarValue"><span><?= $currentBalance ?></span></span></div>
@@ -97,12 +85,6 @@ if ($goodIsToken) {
 				<div class="sb_column50">
 					Ending Balance:
 					<br clear="all" />
-					<!--
-					<div class="balance ending">
-						<div class="icon"> </div>
-						<div class="text"><?= $balanceAfter ?></div>
-					</div>
-					-->
 					<div class="sb_user-points-box">
 						<span class="sb_imgRedeemableCurrency"></span>
 						<div class="sb_progress_bar sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all"><span class="sb_currency_percent sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left" style="width: <?= $percentUserBalanceRemaining ?>%"></span><span class="sb_progressBarValue"><span><?= $balanceAfter ?></span></span></div>
@@ -125,30 +107,14 @@ if ($goodIsToken) {
 				<?php else : ?>
 					<br /><br />
 					<p><strong class="address_title">Shipping Address</strong></p>
-					<!--
 					<p id="sb_personalInfo">
 						<input name="sb_first_name" type="text" placeholder="First Name" value="<?= $user->first_name ?>" /><input name="sb_last_name" type="text" placeholder="Last Name" value="<?= $user->last_name ?>" /><br />
 						<input name="sb_address_1" class="sb_wide_input" type="text" placeholder="Address" value="<?= $userAddress->street1 ?>" /><br />
 						<input name="sb_address_2" class="sb_wide_input" type="text" value="<?= $userAddress->street2 ?>" /><br />
 						<input name="sb_city" type="text" placeholder="City" value="<?= $userAddress->locality ?>" /><input name="sb_state" type="text" placeholder="State/Region" value="<?= $userAddress->region ?>" />
 						<input name="sb_country" type="text" value="USA" placeholder="Country" value="<?= ($userAddress->country ? $userAddress->country : 'USA') ?>" /><input name="sb_zip" type="text" placeholder="Zip/Postal Code" value="<?= $userAddress->postalCode ?>" /><br />
-                                                <input name="sb_phone" class="sb_wide_input" type="text" placeholder="Phone" value="<?= $userAddress->phone ?>" />
+						<input name="sb_phone" class="sb_wide_input" type="text" placeholder="Phone" value="<?= $userAddress->phone ?>" />
 					</p>
-					 -->
-					 <input name="sb_first_name" class="sb_wide_input" type="text" placeholder="Name" value="<?= $user->first_name ?> <?= $user->last_name ?>" />
-					 	<br />
-					 <input name="sb_address_1" class="sb_wide_input inner" type="text" placeholder="Address 1" value="<?= $userAddress->street1 ?>" />
-					 	<br />
-					 <input name="sb_address_2" class="sb_wide_input inner" type="text" placeholder="Address 2" value="<?= $userAddress->street2 ?>" />
-					 	<br />
-					 <div class="city_state_zip">
-						 <input name="sb_city" class="sb_input_city" type="text" placeholder="City" value="<?= $userAddress->locality ?>" />
-						 <select name="sb_state" class="sb_select_state">
-						 	<option>CA</option>
-						 	<option>VA</option>
-						 </select>
-						 <input name="sb_zip" class="sb_input_zip" type="text" placeholder="Zip" value="<?= $userAddress->postalCode ?>" />
-					</div>
 				<?php endif ?>
 			</div>
 			<p align="center">My information is correct<br clear="all" />

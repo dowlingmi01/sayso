@@ -554,9 +554,6 @@
 
 /* everything that has textcolor */
 
-#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-disabled a,
-#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-processing a,
-#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a:hover,
 #sayso-starbar a, #sayso-starbar a:link,
 #sayso-starbar a:active,
 #sayso-starbar a:visited,
@@ -568,6 +565,18 @@
 #sayso-starbar .sb_rewardItem .sb_rewardHeader{
 	color: #c02526;
 	font-size:11px;
+	font-weight:bold;
+	position:relative;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis; /* The sb_rewardHeader text in the container will be hidden with ... if it's too big ( recommendation )
+								this should not affect the title container in some particular cases */
+}
+
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-disabled a,
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-processing a,
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a:hover{
+	color: #c02526;
 	font-weight:bold;
 	position:relative;
 	white-space: nowrap;
@@ -857,11 +866,11 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a{
-	color: #ffffff;
+	color: #C02526;
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li{
-	border-right: 1px solid #ffffff;
+	border-left: 1px solid #C02526;
 }
 
 

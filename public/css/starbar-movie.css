@@ -1003,7 +1003,7 @@
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevelIcons{
 	float: left;
-	margin: 0px 0px 0px 0px;
+	margin: 20px 0px 0px 0px;
 	text-align: center;
 }
 
@@ -1017,11 +1017,11 @@
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_earned,
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next{
-	width: 120px;
+	width: 160px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_current{
-	width: 145px;
+	width: 183px;
 	height: 139px; /* fixed height to allow scrollPane to have correct height */
 }
 

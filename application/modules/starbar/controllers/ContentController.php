@@ -28,7 +28,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 		if( $this->frame_id )
 			$this->view->assign('frame_id', $this->frame_id);
-			
+
 		if ($this->_usingJsonPRenderer) {
 			$this->_enableRenderer(new Api_Plugin_JsonRenderer());
 			$this->render();
@@ -44,9 +44,11 @@ class Starbar_ContentController extends Api_GlobalController
 			$this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
 		}
 	}
-    public function starbarListAction() {
+
+	public function starbarListAction() {
 		$this->view->assign('starbars', User_State::getStarbarList($this->user_id));
-    }
+	}
+
 	public function rewardsAction ()
 	{
 		$gamer = Game_Starbar::getInstance()->getGamer();
@@ -130,15 +132,18 @@ class Starbar_ContentController extends Api_GlobalController
 			$user->last_name = $this->order_last_name;
 			$user->save();
 
+			$starbar = Registry::get('starbar');
+
 			/* Send a confirmation email to the admins */
 			try {
 				$userEmail = new User_Email();
 				$userEmail->loadData($user->primary_email_id);
 				$message = '
-					Snakkle Say.So redemption made for ' . $goodTitle . '
+					Redemption made for ' . $goodTitle . '
 
 					Order Details
 					=============
+					Starbar: ' . $starbar->label . '
 					First Name: ' . $this->order_first_name . '
 					Last Name: ' . $this->order_last_name . '
 					Street Address 1: ' . $this->order_address_1 . '
@@ -152,14 +157,14 @@ class Starbar_ContentController extends Api_GlobalController
 					User Email: ' . $userEmail->email . '
 					=============
 					Thank you,
-					Say.So Mailer v4.4
+					Say.So Mailer v4.729
 				';
 
 				$config = Api_Registry::getConfig();
 				$mail = new Mailer();
-				$mail->setFrom('snakkleorders@say.so')
-					 ->addTo('snakkleorders@say.so')
-					 ->setSubject('Redemption of '.$goodTitle.' for '.$userEmail->email);
+				$mail->setFrom('rewards@say.so')
+					 ->addTo('rewards@say.so')
+					 ->setSubject('['.strtoupper($starbar->short_name).'] Redemption of '.$goodTitle.' for '.$userEmail->email);
 				$mail->setBodyMultilineText($message);
 				$mail->send(new Zend_Mail_Transport_Smtp());
 			} catch (Exception $e) {
@@ -167,31 +172,33 @@ class Starbar_ContentController extends Api_GlobalController
 			}
 
 						/* Send a confirmation email to the user */
-						try {
+			try {
 				$userEmail = new User_Email();
+				$userEmail->loadData($user->primary_email_id);
 				$address = $this->order_address_1;
 				if (strlen($this->order_address_2) > 0) {
 					$address .= "<br />".$this->order_address_2;
 				}
-				$userEmail->loadData($user->primary_email_id);
-				$htmlmessage = "<h1>Snakkle Say.So redemption made for ".$goodTitle."</h1>";
-				$htmlmessage .= sprintf("<p>This is your confirmation for the redemption of the item - %s.</p>",$goodTitle);
-				$htmlmessage .= "<p>Congratulations! Your redemption is being processed.</p>";
-				$htmlmessage .= "<p>Thank you for being a member of Snakkle Say.So!</p>";
-				$htmlmessage .= "<p>- Snakkle Say.So Team</p>";
+				$htmlmessage = "<h1>Say.So redemption made for ".$goodTitle."</h1>";
+				$htmlmessage .= sprintf("<p>Nicely done! You have successfully redeemed the item \"%s\" from the Reward Center!<br />We're kinda jealous...</p>",$goodTitle);
+				$htmlmessage .= "<p>Right now, we are diligently processing your redemption so that you can receive your gift as soon as possible.</p>";
+				$htmlmessage .= "<p>Delivery times vary by item type. Please allow 4-6 weeks for delivery of physical items; 5-7 days for virtual codes and items.</p>";
+				$htmlmessage .= "<p>Thank you for being a Say.So community member and we hope you enjoy your gift!<br />- The Say.So Team</p>";
 
-				$message = 'This is your confirmation for the redemption of the item - ' . $goodTitle . '
+				$message = 'Nicely done! You have successfully redeemed the item "' . $goodTitle . '" from the Reward Center!
+					We\'re kinda jealous...
 
-					Congratulations! Your redemption is being processed.
+					Right now, we are diligently processing your redemption so that you can receive your gift as soon as possible.
 
-					Thank you for being a member of Snakkle Say.So!
+					Delivery times vary by item type. Please allow 4-6 weeks for delivery of physical items; 5-7 days for virtual codes and items.
 
-					- Snakkle Say.So Team
+					Thank you for being a Say.So community member and we hope you enjoy your gift!
+					- The Say.So Team
 				';
 
 				$config = Api_Registry::getConfig();
 				$mail = new Mailer();
-				$mail->setFrom('snakkleorders@say.so')
+				$mail->setFrom('rewards@say.so')
 					 ->addTo($userEmail->email)
 					 ->setSubject('Your Item Redemption');
 				$mail->setBodyMultilineText($message);

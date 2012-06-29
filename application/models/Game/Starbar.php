@@ -69,14 +69,14 @@ abstract class Game_Starbar extends Game_Abstract {
 	public function completeSurvey (Survey $survey) {
 		// POLL_STANDARD, SURVEY_PROFILE, QUIZ_PREMIUM, etc.
 		if (in_array($survey->type, array('survey', 'poll', 'quiz', 'trailer')) && in_array($survey->reward_category, array('standard', 'premium', 'profile'))) {
-			$this->submitAction(strtoupper($survey->type.'_'.$survey->reward_category));
+			$this->submitAction(strtoupper($survey->type.'_'.$survey->reward_category), 0, $survey->id);
 		}
 	}
 
 	public function disqualifySurvey (Survey $survey) {
 		// POLL_STANDARD_DISQUALIFIED, SURVEY_PROFILE_DISQUALIFIED, QUIZ_PREMIUM_DISQUALIFIED, etc.
 		if (in_array($survey->type, array('survey', 'poll', 'quiz', 'trailer')) && in_array($survey->reward_category, array('standard', 'premium', 'profile'))) {
-			$this->submitAction(strtoupper($survey->type.'_'.$survey->reward_category).'_DISQUALIFIED');
+			$this->submitAction(strtoupper($survey->type.'_'.$survey->reward_category).'_DISQUALIFIED', 0, $survey->id);
 		}
 	}
 
@@ -105,13 +105,13 @@ abstract class Game_Starbar extends Game_Abstract {
 				$survey = new Survey();
 				$survey->loadData($typeId);
 				// e.g. FB_QUIZ_STANDARD_SHARE, TW_SURVEY_PREMIUM_SHARE, etc.
-				$this->submitAction(strtoupper($network.'_'.$survey->type.'_'.$survey->reward_category).'_SHARE');
+				$this->submitAction(strtoupper($network.'_'.$survey->type.'_'.$survey->reward_category).'_SHARE', 0, $typeId);
 				break;
 			case self::SHARE_STARBAR :
-				$this->submitAction($network.'_SHARE_STARBAR');
+				$this->submitAction($network.'_SHARE_STARBAR', 0, $typeId);
 				break;
 			case self::SHARE_PROMOS :
-				$this->submitAction($network.'_SHARE_PROMOS');
+				$this->submitAction($network.'_SHARE_PROMOS', 0, $typeId);
 				break;
 			default :
 				throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Wrong type (' . $type . ') supplied to Game_Starbar::share(). See Game_Starbar "SHARE" constants for allowed types.'));
@@ -153,7 +153,10 @@ abstract class Game_Starbar extends Game_Abstract {
 	 *
 	 * @see Game_Abstract::submitAction()
 	 */
-	public function submitAction ($actionId, $customAmount = 0) {
+	public function submitAction ($actionId, $customAmount = 0, $sharedId = null) {
+
+		$gamerRecord = new Gamer();
+		$logRecord = new GamerTransactionHistory();
 
 		try {
 
@@ -162,6 +165,15 @@ abstract class Game_Starbar extends Game_Abstract {
 			parent::submitAction($actionId, $customAmount);
 
 			$gamer = $this->getGamer(/* load profile */);
+
+			$gamerRecord->loadDataByUniqueFields(array("user_id" => (int) $this->_request->getParam('user_id'), "gaming_id" => $gamer->getGamingId()));
+
+			if ($gamerRecord->id) {
+				$logRecord->user_gaming_id = $gamerRecord->id;
+				$logRecord->action = $actionId;
+				if ($sharedId) $logRecord->action_on_id = $sharedId;
+				$logRecord->save();
+			}
 
 			// if user just leveled up, congratulate via notification
 			if ($gamer->justLeveledUp() && $gamer->getLevels()->count() > 1) {
@@ -183,6 +195,10 @@ abstract class Game_Starbar extends Game_Abstract {
 
 		} catch (Exception $exception) {
 
+			if ($logRecord->id) {
+				$logRecord->status = 'failed';
+				$logRecord->save();
+			}
 			self::_handleException($exception, $this->_request);
 
 		}

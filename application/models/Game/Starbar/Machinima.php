@@ -20,8 +20,11 @@ class Game_Starbar_Machinima extends Game_Starbar {
 	{
 		$profile = $this->getGamer();
 
-		$currencyProfileSurveyId = $this->_economy->getCurrencyId('PROFILE_SURVEY_POINTS');
-		$currencyProfileSurvey = $profile->getCurrencies()->find('id', $currencyProfileSurveyId)->getFirst();
+		// Avoid doing profile survey lookup and check for every good -- use static variables!
+		if (parent::$userHasCompletedProfileSurvey === null || parent::$profileSurveyId === null) {
+			parent::setStaticProfileSurveyVariables($this->_request);
+		}
+
 		$currentLevel = $profile->getHighestLevel();
 
 		/*if ($good->getId() == $this->_economy->getGoodId('WEEK_ONE_GIVEAWAY')) {
@@ -40,10 +43,8 @@ class Game_Starbar_Machinima extends Game_Starbar {
 		if (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
 			$good->setNonRedeemReason('Sorry, this item is sold out.');
 			$good->setCommentForUser('Sold Out');
-		} elseif ((int) $currencyProfileSurvey->current_balance < 1) {
-			$profileSurvey = new Survey();
-			$profileSurvey->loadProfileSurveyForStarbar(4);
-			if ($profileSurvey->id) $profileSurveyLink = '<a href="//'.BASE_DOMAIN.'/starbar/machinima/embed-survey?survey_id='.$profileSurvey->id.'" class="sb_nav_element" rel="sb_popBox_surveys_hg" title="Take profile survey now!" style="position: relative; top: -5px;">Profile Survey</a>';
+		} elseif (!parent::$userHasCompletedProfileSurvey) {
+			if (parent::$profileSurveyId) $profileSurveyLink = '<a href="//'.BASE_DOMAIN.'/starbar/machinima/embed-survey?survey_id='.parent::$profileSurveyId.'" class="sb_nav_element" rel="sb_popBox_surveys_hg" title="Take profile survey now!" style="position: relative; top: -5px;">Profile Survey</a>';
 			else $profileSurveyLink = "Profile Survey";
 			$good->setNonRedeemReason('Must complete<br />'.$profileSurveyLink);
 			$good->setCommentForUser('Survey Requirement');

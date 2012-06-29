@@ -42,6 +42,9 @@ abstract class Game_Starbar extends Game_Abstract {
 	const SHARE_STARBAR = 'starbar';
 	const SHARE_PROMOS = 'promos';
 
+	public static $userHasCompletedProfileSurvey = null;
+	public static $profileSurveyId = null;
+
 	public function init() {
 		$this->loadLevels();
 		parent::init();
@@ -299,5 +302,14 @@ abstract class Game_Starbar extends Game_Abstract {
 		}
 		// log errors regardless
 		Api_Error::log($exception, $request);
+	}
+
+	protected static function setStaticProfileSurveyVariables ($request) {
+		if (self::$userHasCompletedProfileSurvey !== null && self::$profileSurveyId !== null) return;
+
+		$profileSurvey = new Survey();
+		$profileSurvey->loadProfileSurveyForStarbar((int) $request->getParam('starbar_id'));
+		self::$profileSurveyId = $profileSurvey->id;
+		self::$userHasCompletedProfileSurvey = Survey_Response::checkIfUserHasCompletedSurvey((int) $request->getParam('user_id'), $profileSurvey->id);
 	}
 }

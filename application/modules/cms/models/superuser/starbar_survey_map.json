@@ -70,7 +70,7 @@
 				"notnull",
 				"minlength(10)"
 			],
-			"help": "Day (relative to the selected starbar's launch) that this survey is available. Day 1 = launch day",
+			"help": "Day (relative to the selected starbar's launch) that this survey is available. Day 0 = always show, Day 1 = launch day",
 			"displaywhen": [
 				"add",
 				"detail",

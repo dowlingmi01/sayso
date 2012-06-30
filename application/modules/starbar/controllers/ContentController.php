@@ -104,6 +104,28 @@ class Starbar_ContentController extends Api_GlobalController
 		$user = new User();
 		$user->loadData($this->user_id);
 
+		$userEmail = new User_Email();
+		$userEmail->loadData($user->primary_email_id);
+
+		$gamer = $game->getGamer(false);
+
+		$logRecord = new GamerOrderHistory();
+		if ($gamer->id) {
+			$logRecord->user_gaming_id = $gamer->id;
+			$logRecord->first_name = $this->order_first_name;
+			$logRecord->last_name = $this->order_last_name;
+			$logRecord->street1 = $this->order_address_1;
+			$logRecord->street2 = $this->order_address_2;
+			$logRecord->locality = $this->order_city;
+			$logRecord->region = $this->order_state;
+			$logRecord->postalCode = $this->order_zip;
+			$logRecord->country = $this->order_country;
+			$logRecord->phone = $this->order_phone;
+			$logRecord->good_id = $good->id;
+			$logRecord->quantity = $this->quantity;
+			$logRecord->save();
+		}
+
 		if (isset($this->order_first_name)) {
 			// shippable item
 			// validation done in JS
@@ -136,8 +158,6 @@ class Starbar_ContentController extends Api_GlobalController
 
 			/* Send a confirmation email to the admins */
 			try {
-				$userEmail = new User_Email();
-				$userEmail->loadData($user->primary_email_id);
 				$message = '
 					Redemption made for ' . $goodTitle . '
 
@@ -173,8 +193,6 @@ class Starbar_ContentController extends Api_GlobalController
 
 						/* Send a confirmation email to the user */
 			try {
-				$userEmail = new User_Email();
-				$userEmail->loadData($user->primary_email_id);
 				$address = $this->order_address_1;
 				if (strlen($this->order_address_2) > 0) {
 					$address .= "<br />".$this->order_address_2;

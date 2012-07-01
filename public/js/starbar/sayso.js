@@ -285,7 +285,7 @@ $SQ(function () {
 
 	log('ADjuster ad handling enabled');
 
-	var adTargets = $SQ.JSON.parse(sayso.study.adTargets);
+	var adTargets = sayso.state.adTargets;
 	if (!adTargets) adTargets = {};
 
 	if (!inIframe) {
@@ -360,22 +360,15 @@ $SQ(function () {
 			 */
 
 			var serverStudies = response.data,
-				numServerStudies = serverStudies.items.length,
 				cells = [];
 
 			// studies
-			for (var s = 0; s < numServerStudies; s++) {
+			for (var s in serverStudies.items) {
 				var study = serverStudies.items[s];
 
-				numCells = study._cells.items.length;
-				if (!numCells) continue;
-
 				// cells
-				for (var c = 0; c < numCells; c++) {
+				for (var c in study._cells.items) {
 					var cell = study._cells.items[c];
-
-					var numTags = cell._tags.items.length;
-					if (!numTags) continue;
 
 					var cellIndex = cells.push({
 						id : cell.id,
@@ -384,7 +377,7 @@ $SQ(function () {
 					cellIndex--;
 
 					// tags
-					for (var t = 0; t < numTags; t++) {
+					for (var t in cell._tags.items) {
 						var tag = cell._tags.items[t];
 
 						var tagIndex = cells[cellIndex].tags.push({
@@ -398,15 +391,13 @@ $SQ(function () {
 						tagIndex--;
 
 						// domains
-						var numDomains = tag._domains.items.length;
-						for (var d = 0; d < numDomains; d++) {
+						for (var d in tag._domains.items) {
 							var domain = tag._domains.items[d];
 							if (d > 0) cells[cellIndex].tags[tagIndex].domains += '|';
 							cells[cellIndex].tags[tagIndex].domains += domain.domain;
 						} // domains
 
-						var numCreatives = tag._creatives.items.length;
-						for (var cr = 0; cr < numCreatives; cr++) {
+						for (var cr in tag._creatives.items) {
 							var creative = tag._creatives.items[cr];
 							cells[cellIndex].tags[tagIndex].creatives.push({
 								id : creative.id,
@@ -621,14 +612,7 @@ $SQ(function () {
 			// update list of ad targets so we can later verify click throughs
 			// see Page View section above where this is checked
 
-			adTargets[adTargetId] = adTarget;
-
-			ajax({
-				url: '//'+sayso.baseDomain+'/api/user-state/update-ad-targets',
-				data: {
-					'ad_targets': $SQ.JSON.stringify(adTargets)
-				}
-			});
+			forge.message.broadcastBackground('add-ad-target', adTarget);
 
 			/*
 			var clickDetectionElem = $SQ(document.createElement('div'));

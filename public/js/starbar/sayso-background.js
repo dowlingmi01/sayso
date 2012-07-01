@@ -205,6 +205,9 @@ function saveState() {
 			}
 	});
 }
+function addAdTarget( adTarget ) {
+	sayso.state.adTargets[adTarget.type + adTarget.typeId] = adTarget;
+}
 sayso.switchStarbar = function( starbarId ) {
 	if( sayso.state.currentStarbar == starbarId )
 		return;
@@ -236,6 +239,7 @@ forge.message.listen("get-state", getState, showErr);
 forge.message.listen("update-game", updateGame, showErr);
 forge.message.listen("set-visibility", setVisibility, showErr);
 forge.message.listen("starbar-switch", sayso.switchStarbar, showErr);
+forge.message.listen("add-ad-target", addAdTarget, showErr);
 forge.message.listen("get-script", getScript, showErr);
 forge.logging.info("Background script loaded");
 forge.prefs.get('firstRunDone', firstRun, showErr);

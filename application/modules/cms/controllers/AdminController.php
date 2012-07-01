@@ -876,7 +876,7 @@
 
             $formElements['emailaddress'] = new Form_Element_Text('emailaddress');
             $formElements['emailaddress']->setLabel("Users Email Address");
-         	$formElements['submit'] = new Zend_Form_Element_Submit('submit');
+         //	$formElements['submit'] = new Zend_Form_Element_Submit('submit');
 
 			$form = new ZendX_JQuery_Form();
 			$form->setName("Reward");
@@ -885,7 +885,7 @@
 			$form->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));
 			$form->addElement('submit', 'submit', array(
         		'label' => 'Get User Info',
-        		'onclick' => "$('#div_form').load('" . "/admin/rewardnew" . "', $('#div_results').serializeArray() ); return false;"
+        		'onclick' => "$SQ('#div_form').load('" . "/admin/rewardnew" . "', $SQ('#div_form').serializeArray() ); return false;"
     		));
 			if ($this->getRequest()->isPost()) { //is it a post request ?
 
@@ -1107,6 +1107,45 @@
 				}
 			}
 
+			// reward form to apply bonuses
+			$formElements = array();
+			$formElements['redeemableaward'] = new Form_Element_Text('redeemableaward');
+            $formElements['redeemableaward']->setLabel("Award Points");
+            $formElements['redeemablecurrency'] = new Form_Element_Text('redeemablecurrency');
+            $formElements['redeemablecurrency']->setLabel("Award Currency");
+            $formElements['bar']= new Form_Element_Hidden('bar');
+            $formElements['bar']->setValue($starbar_id);
+ 			$formElements['user']= new Form_Element_Hidden('user');
+            $formElements['user']->setValue($user_id);
+
+			//$formElements['submit'] = new Zend_Form_Element_Submit('submit');
+           // $formElements['submit'] ->setLabel('Give Reward') // the button's value
+			//	    ->setIgnore(true); // very usefull -> it will be ignored before insertion
+
+
+			$rewardform = new ZendX_JQuery_Form();
+			$rewardform->setName("Reward");
+			$rewardform->setAttrib('id','div_form');
+			$rewardform->addElements($formElements);
+			$rewardform->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));
+			$rewardform->addElement('submit', 'submit', array(
+        		'label' => 'Give special reward',
+        		'onclick' => "$SQ('#div_form').load('" . "/admin/reward" . "', $SQ('#div_form').serializeArray() ); return false;"
+    		));
+
+			// Here goes the post stuff
+			if ($this->getRequest()->isPost()) { //is it a post request ?
+			printf("It's a post");
+				$rewardpostData = $this->getRequest()->getPost(); // getting the $_POST data
+					printf("<h1>We have a post</h1><pre>%s</pre>",print_r($rewardpostData,true));
+
+									if ($rewardform->isValid($rewardpostData)) {
+										printf("<h2>data is valid</h2>");
+									}
+			}
+			$this->view->rewardform = $rewardform; // assigning the form to view
+
+
 			// Social Media Results
 			$info->likes = array();
 			$ctr=0;
@@ -1172,7 +1211,7 @@
             $formElements['redeemablecurrency'] = new Form_Element_Text('redeemablecurrency');
             $formElements['redeemablecurrency']->setLabel("Award Currency");
 			$formElements['submit'] = new Zend_Form_Element_Submit('submit');
-            $formElements['submit'] ->setLabel('Give Reward') // the button's value
+            $formElements['submit'] ->setLabel('Give Rewaccccrd') // the button's value
 				    ->setIgnore(true); // very usefull -> it will be ignored before insertion
 
 

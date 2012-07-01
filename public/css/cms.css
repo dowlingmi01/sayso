@@ -374,3 +374,15 @@ body .ui-widget-content a {
 .sb_note {
 	color:blue;
 }
+
+.sb_bonusrewards {
+	padding:5px;
+	background-color:#85B5D9;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 1px solid #800000;
+	width:300px;
+	height:130px;
+	margin:10px;
+}

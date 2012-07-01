@@ -1,27 +1,27 @@
 [
 	{
-	   "image" : "https://s3.amazonaws.com/say.so/media/snakkle/web_app_pics/Seinfeld.jpg",
+	   "image" : "https://s3.amazonaws.com/say.so/media/snakkle/web_app_pics/emma-stone.jpg",
 	   "correct" : 1,
 	   "answers" : [
 		   {
 			   "id" : 1,
-			   "name" : "Jerry Seinfeld",
-			   "count" : 70
+			   "name" : "Emma Stone",
+			   "count" : 34
 		   },
 		   {
 			   "id" : 2,
-			   "name" : "Ben Stiller",
-			   "count" : 44
+			   "name" : "Amanda Seyfried",
+			   "count" : 18
 		   },
 		   {
 			   "id" : 3,
-			   "name" : "Adam Sandler",
-			   "count" : 32
+			   "name" : "Kristen Stewart",
+			   "count" : 9
 		   },
 		   {
 			   "id" : 4,
-			   "name" : "Jimmy Fallon",
-			   "count" : 11
+			   "name" : "Lindsay Lohan",
+			   "count" : 39
 		   }
 	   ]
     },

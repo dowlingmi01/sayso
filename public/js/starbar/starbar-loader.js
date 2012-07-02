@@ -118,14 +118,6 @@
 						setTimeout(function () { $SQ(document).trigger('onboarding-display'); }, 2000);
 						// bind when the last step of the onboarding is selected, to mark onboarding done
 						// see starbar-new.js where this is triggered
-						$SQ(document).bind('onboarding-complete', function () {
-							$SQ.ajaxWithAuth({
-								data : {
-									status : 1 // complete
-								},
-								url : '//' + sayso.baseDomain + '/api/starbar/set-onboard-status'
-							});
-						});
 					}
 				});
 			});

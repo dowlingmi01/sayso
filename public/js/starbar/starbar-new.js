@@ -54,7 +54,7 @@ $SQ(function(){
 		var onboarding = $SQ('#sb_popBox_onboard');
 		openPopBox(onboarding, onboarding.attr('href'), false, true);
 		// trigger onboarding complete (see starbar-loader.js where this is handled)
-		$SQ(document).trigger('onboarding-complete');
+		forge.message.broadcastBackground('onboarding-complete');
 	});
 
 	// close if you click outside the starbar while in the iframe
@@ -633,7 +633,7 @@ $SQ(function(){
 								if (message.short_name == 'FB Account Connected' || message.short_name == 'TW Account Connected') {
 									updateProfile(true, true);
 								} else if (message.short_name == 'Level Up') {
-									var userCurrentLevel = sayso.starbar.game._gamer._levels.items[0];
+									var userCurrentLevel = sayso.starbar.game._gamer.current_level;
 									message.message = userCurrentLevel.description;
 								}
 
@@ -696,8 +696,9 @@ $SQ(function(){
 		if (shareType && shareId) {
 			$SQ.ajaxWithAuth({
 				url : '//'+sayso.baseDomain+'/api/gaming/share?shared_type='+shareType+'&shared_id='+shareId+'&social_network=TW',
-				success : function (response, status, jqXHR) {
-					updateGame(response.game, true, true);
+				success : function (response) {
+					if( response.status == "success" && response.game )
+						updateGame(response.game, true, true);
 				}
 			});
 		}

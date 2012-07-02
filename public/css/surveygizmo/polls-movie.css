@@ -35,9 +35,17 @@
 }
 
 .sg-result-bar {
-	background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0.22, rgb(180,180,180)), color-stop(0.61, rgb(140,140,140)));
-	background-image: -moz-linear-gradient( center top, rgb(180,180,180) 22%, rgb(140,140,140) 61%);
-	background-color: #666;
+	background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0.22, rgb(196,118,12)),
+	color-stop(0.61, rgb(253,231,113))) !important;
+	background-image: -moz-linear-gradient(
+			center top,
+			rgb(196,118,12) 22%,
+			rgb(253,231,113) 61%) !important;
+	background-color: #fcd149;
 	border-radius: 6px;
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;

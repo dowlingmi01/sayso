@@ -667,7 +667,7 @@ $SQ(function(){
 					updateGame(response.game, true, true);
 				}
 
-				if (response.data.items.length > 0) {
+				if (response.data.count > 0) {
 					$SQ.each(response.data.items, function (index, message) {
 						// Check if an alert with that message already exists, if so, do nothing
 						var currentAlert = $SQ('#starbar-alert-'+message.id);

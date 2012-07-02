@@ -45,7 +45,7 @@ class Notification_Message extends Record
 
 		if ($data) {
 			// Should the user see this notification?
-			$validMessage = $this->validateForUser($userId);
+			$validMessage = $this->validateForUser($userId, $messageGroup->starbar_id);
 		}
 
 		if ($data // We got a result
@@ -65,7 +65,7 @@ class Notification_Message extends Record
 		// If we haven't built $this by now, there are no next messages in the group for this user. All done!
 	}
 
-	public function validateForUser($userId) {
+	public function validateForUser($userId, $starbarId) {
 		// Validate based on the message's validate field
 		switch ($this->validate) {
 			case 'Facebook Connect':
@@ -84,6 +84,14 @@ class Notification_Message extends Record
 
 			case 'Taken Survey':
 				if (! Survey_Response::checkIfUserHasCompletedSurvey($userId, $this->survey_id)) return false;
+				break;
+
+			case 'New Quizzes':
+				if (! Survey_ResponseCollection::checkIfUserHasSurveys($userId, $starbarId, 'quiz', 'new')) return false;
+				break;
+
+			case 'New Trailers':
+				if (! Survey_ResponseCollection::checkIfUserHasSurveys($userId, $starbarId, 'trailer', 'new')) return false;
 				break;
 		}
 

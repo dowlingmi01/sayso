@@ -132,4 +132,31 @@ class Survey_ResponseCollection extends RecordCollection
 			$this->build($surveyResponses, new Survey_Response());
 		}
 	}
+
+	public static function checkIfUserHasSurveys ($userId, $starbarId, $type, $status) {
+		$type = str_replace("surveys", "survey", $type);
+		$type = str_replace("polls", "poll", $type);
+		$type = str_replace("quizzes", "quiz", $type);
+		$type = str_replace("trailers", "trailer", $type);
+
+		if (! in_array($type, array("survey", "poll", "quiz", "trailer"))) return false;
+
+		// @todo the 0 on the following line should take into consideration the maximum to be displayed for that user for that starbar
+		self::markUnseenSurveysNewForStarbarAndUser($starbarId, $userId, $type, 0);
+		if (in_array($type, array("survey", "poll"))) self::markOldSurveysArchivedForStarbarAndUser($starbarId, $userId, $type);
+
+		$sql = "SELECT count(sr.id)
+				FROM survey_response sr
+				INNER JOIN survey s
+					ON s.id = sr.survey_id
+					AND s.type = ?
+				INNER JOIN starbar_survey_map ssm
+					ON ssm.survey_id = s.id
+					AND ssm.starbar_id = ?
+				WHERE sr.user_id = ?
+					AND sr.status = ?
+				";
+
+		return !!(Db_Pdo::fetch($sql, $type, $starbarId, $userId, $status));
+	}
 }

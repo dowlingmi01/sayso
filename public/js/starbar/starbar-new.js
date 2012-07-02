@@ -555,6 +555,10 @@ $SQ(function(){
 					$SQ('.sb_nextPoll a').on('click.poll', function(e) {
 						$SQ(this).parents('.sb_accordion').accordion('activate', parseInt($SQ(this).attr('next_poll')));
 					});
+					$SQ('a.sb_externalShare_facebook').on('click.fb', function(e) {
+						e.preventDefault();
+						$SQ.openWindow($SQ(this).attr('href'), 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450');
+					})
 					$SQ('.sb_starbar-switch').on('click', function() {
 						forge.message.broadcastBackground( 'starbar-switch', parseInt($SQ(this).attr('rel')) );
 					});

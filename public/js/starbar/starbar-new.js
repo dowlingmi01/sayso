@@ -11,6 +11,47 @@ $SQ(function(){
 	forge.message.listen('sayso-frame-comm-' + sayso.frameId, function(content) {
 		$SQ('#sayso-starbar').trigger('frameCommunication', content);
 	});
+	var frameCommEl = document.getElementById('sayso-frame-comm');
+	if( frameCommEl ) {
+		function frameCommHandler() {
+			$SQ(frameCommEl).children().each( function() {
+				var content = JSON.parse($SQ(this).attr('value'));
+				$SQ('#sayso-starbar').trigger('frameCommunication', content);
+				$SQ(this).remove();
+			});
+		};
+		if( frameCommEl.addEventListener )
+			frameCommEl.addEventListener('saysoFrameComm', frameCommHandler);
+		else if( frameComm.attachEvent )
+			frameCommEl.attachEvent('onclick', frameCommHandler);
+
+		function defineFrameComm() {
+			window.$SQframeComm = function (par) {
+				var hiddenDiv = document.getElementById('sayso-frame-comm');
+				var dataDiv = document.createElement('div');
+				dataDiv.setAttribute( "value", JSON.stringify(par) );
+				hiddenDiv.appendChild(dataDiv);
+				if( document.createEvent ) {
+					var ev = document.createEvent('Event');
+					ev.initEvent('saysoFrameComm', false, false);
+					hiddenDiv.dispatchEvent(ev);
+				} else if( document.createEventObject ) {
+					var evObj = document.createEventObject();
+					hiddenDiv.fireEvent( 'onclick', evObj );
+				}
+			}
+			window.$SQhandleTweet = function( containerId, sharedType, sharedId ) {
+				var parentEl = document.getElementById(containerId);
+				function handleTweetEvent(event){
+					if (event && event.target && event.target.parentNode == parentEl) {
+						$SQframeComm(['handleTweet', {shared_type: sharedType, shared_id: sharedId}]);
+					}
+				}
+				twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
+			}
+		}
+		sayso.evalInPageContext(defineFrameComm);
+	}
 
 	// NOTE: These variables are initialized in initElements()
 	var starbarElem; //  = $SQ('#sayso-starbar');

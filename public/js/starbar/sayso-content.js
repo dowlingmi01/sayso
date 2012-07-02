@@ -106,7 +106,7 @@
 			sayso.evalInPageContext( 'window.$SaySoExtension = {};' );
 			var frameComm;
 			if( sayso.in_iframe && (frameComm = document.getElementById('sayso-frame-comm')) ) {
-				frameCommHandler = function() {
+				function frameCommHandler() {
 					$SQ(frameComm).children().each( function() {
 						var x = JSON.parse($SQ(this).attr('value'));
 						forge.message.broadcast( x.type, x.content );
@@ -120,7 +120,7 @@
 				frameCommHandler();
 			}
 			if( sayso.location.hostname.match('surveygizmo.com')) {
-				sgqHandler = function() {
+				function sgqHandler() {
 					var sgq = $SQ('#sayso-sgq');
 					if( sgq.length ) {
 						window.$SGQ = JSON.parse(sgq.attr('value'));

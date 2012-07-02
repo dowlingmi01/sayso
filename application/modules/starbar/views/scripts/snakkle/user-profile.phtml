@@ -94,20 +94,12 @@
 
 			<! -- TWITTER -->
 			<script type="text/javascript">
-				$SQ.getScript("//platform.twitter.com/widgets.js", function(){
-					function handleTweetEvent(event){
-						if (event) {
-							$SQ('#sayso-starbar').trigger('frameCommunication', ['handleTweet', {
-								shared_type: 'starbar',
-								shared_id: window.sayso.starbar.id
-							}]);
-						}
-					}
-					twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
-				});
+				$SQ.getScript("//platform.twitter.com/widgets.js", function(){ sayso.evalInPageContext( function() {
+					$SQhandleTweet('sayso-twitter-share-sb', 'starbar', <?= $this->starbar_id ?>);
+				})});
 			</script>
 
-			<div class="sb_externalShare sb_externalShare_twitter" rel="sb_mini-snakkle-reward_twitter">
+			<div class="sb_externalShare sb_externalShare_twitter" rel="sb_mini-snakkle-reward_twitter" id="sayso-twitter-share-sb">
 				<a class="twitter-share-button"
 					data-related="<?= $this->twitter_share_related_users ?>"
 					data-hashtags="<?= $this->twitter_share_hashtags ?>"

@@ -479,6 +479,8 @@ class Starbar_ContentController extends Api_GlobalController
 
 		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=starbar&shared_id=".$this->starbar_id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
 		$this->_assignShareAppToView($facebookCallbackUrl);
+		
+		$this->view->assign('starbar_id', $this->starbar_id);
 	}
 
 	public function userShareAction()

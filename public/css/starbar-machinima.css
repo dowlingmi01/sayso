@@ -1579,7 +1579,7 @@
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li a,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul.sb_ui-tabs-nav li a{
-	color: #fff;
+	color: #fff !important;
 	text-shadow: #000 0px 0px 4px;
 	font-size: 13px;
 	height: 40px;

@@ -241,15 +241,9 @@ $SQ(function(){
 	sayso.initStarBar = function (){
 		starbar = window.$SQ.sayso.starbar;
 
-		// Starbar state
-		starbar.state.local = {
-			profile : Math.round(new Date().getTime() / 1000),
-			game : Math.round(new Date().getTime() / 1000),
-			visibility : starbar.state.visibility
-		};
-
 		initElements();
 		updateAlerts(true);
+		updateProfileElements();
 		activateGameElements(starbarElem, false);
 		// initializes development-only jquery
 		devInit();
@@ -335,7 +329,7 @@ $SQ(function(){
 			click: function(e) {
 				e.preventDefault();
 				e.stopPropagation();
-				if (starbar.state.local.visibility == 'stowed' && !starbar.stowing){
+				if (starbar.state.visibility == 'stowed' && !starbar.stowing){
 					// manual override to have any click re-open starbar to original state
 					forge.message.broadcastBackground('set-visibility', 'open');
 				}else{
@@ -352,13 +346,13 @@ $SQ(function(){
 				}
 			},
 			mouseenter: function() {
-				if (starbar.state.local.visibility == 'stowed'){
+				if (starbar.state.visibility == 'stowed'){
 					// if it's closed
 					elemSaySoLogoBorder.addClass('sb_theme_bgGradient sb_theme_bgGlow').show();
 				}
 			},
 			mouseleave: function(){
-				if (starbar.state.local.visibility == 'stowed'){
+				if (starbar.state.visibility == 'stowed'){
 					// if it's closed
 					elemSaySoLogoBorder.removeClass('sb_theme_bgGradient sb_theme_bgGlow').hide();
 				}
@@ -549,7 +543,7 @@ $SQ(function(){
 					ajaxContentContainer.html(response.data.html);
 					// some pages perform game calls, e.g. daily deals
 					// update the game stuff if the request returns a game object
-					if (response.game) updateGame(response.game, true, true);
+					if (response.game) updateGame(response.game);
 
 					initElements();
 					$SQ('.sb_nextPoll a').on('click.poll', function(e) {
@@ -664,7 +658,7 @@ $SQ(function(){
 				}
 
 				if (response.game) {
-					updateGame(response.game, true, true);
+					updateGame(response.game);
 				}
 
 				if (response.data.count > 0) {
@@ -676,7 +670,7 @@ $SQ(function(){
 
 								// Update profile if we've just received a notification regarding FB or TW getting connected.
 								if (message.short_name == 'FB Account Connected' || message.short_name == 'TW Account Connected') {
-									updateProfile(true, true);
+									updateProfile();
 								} else if (message.short_name == 'Level Up') {
 									var userCurrentLevel = sayso.starbar.game._gamer.current_level;
 									message.message = userCurrentLevel.description;
@@ -731,8 +725,8 @@ $SQ(function(){
 	function gameCheckin() {
 		$SQ.ajaxWithAuth({
 			url : '//'+sayso.baseDomain+'/api/gaming/checkin',
-			success : function (response, status, jqXHR) {
-				updateGame(response.game, true, true);
+			success : function (response) {
+				updateGame(response.game);
 			}
 		});
 	}
@@ -743,7 +737,7 @@ $SQ(function(){
 				url : '//'+sayso.baseDomain+'/api/gaming/share?shared_type='+shareType+'&shared_id='+shareId+'&social_network=TW',
 				success : function (response) {
 					if( response.status == "success" && response.game )
-						updateGame(response.game, true, true);
+						updateGame(response.game);
 				}
 			});
 		}
@@ -800,8 +794,8 @@ $SQ(function(){
 		},
 		'updateGame': function (parameters) {
 			var newGame = parameters['newGame'];
-			if (newGame) updateGame(newGame, true, true);
-			else updateGame('ajax', true, true);
+			if (newGame) updateGame(newGame);
+			else updateGame('ajax');
 		},
 		'handleTweet': function (parameters) {
 			var sharedType = parameters['shared_type'];
@@ -849,7 +843,7 @@ $SQ(function(){
 		}
 	};
 
-	function updateGame (loadSource, setGlobalUpdate, animate) {
+	function updateGame (loadSource) {
 		forge.message.broadcastBackground( 'update-game', loadSource == "ajax" ? null : loadSource );
 	}
 
@@ -1244,56 +1238,47 @@ $SQ(function(){
 		sayso.starbar.previous_game = sayso.starbar.game;
 	} // activateGameElements
 
-	function updateProfile(setGlobalUpdate, userInitiated) {
-		$SQ.ajaxWithAuth({
-			url : '//'+sayso.baseDomain+'/api/user/get',
-			success : function (response, status, jqXHR) {
-				var user = response.data;
-				var userSocials;
+	function updateProfileElements() {
+		var user = sayso.state.user.data;
+		var userSocials;
 
-				if (user && user._user_socials && user._user_socials.items)
-					userSocials = user._user_socials.items;
+		if (user && user._user_socials && user._user_socials.items)
+			userSocials = user._user_socials.items;
 
-				// Update Profile Image and connect icons
-				if (userSocials) {
-					$SQ.each(userSocials, function (index, userSocial) {
-						var connectIcon = $SQ('#sb_profile_'+userSocial['provider']);
-						if (connectIcon && connectIcon.hasClass('sb_unconnected')) {
-							connectIcon.unbind();
-							connectIcon.attr('href', '');
-							connectIcon.removeClass('sb_unconnected');
-							connectIcon.addClass('sb_connected');
-						}
-						if (userSocial['provider'] == 'facebook') {
-							var profileImages = $SQ('img.sb_userImg');
-							if (profileImages.length > 0) {
-								profileImages.each(function(){
-		 							$SQ(this).attr('src', '//graph.facebook.com/'+userSocial['identifier']+'/picture?type=square');
-								});
-							}
-						}
-					});
+		// Update Profile Image and connect icons
+		if (userSocials) {
+			$SQ.each(userSocials, function (index, userSocial) {
+				var connectIcon = $SQ('#sb_profile_'+userSocial.provider);
+				if (connectIcon && connectIcon.hasClass('sb_unconnected')) {
+					connectIcon.unbind();
+					connectIcon.attr('href', '');
+					connectIcon.removeClass('sb_unconnected');
+					connectIcon.addClass('sb_connected');
 				}
-
-				// Update Username
-				if (user['username']) {
-					$SQ('.sb_user_title').each(function(){
-						// If the user edited their username, turn off auto-updating on
-						// level-up for fields that have it (so we don't overwrite their name)
-						if (userInitiated && $SQ(this).cleanHtml() != user['username']) {
-							$SQ(this).removeClass('sb_user_level_title');
-						}
-						$SQ(this).html(user['username']);
-					});
+				if (userSocial.provider == 'facebook') {
+					var profileImages = $SQ('img.sb_userImg');
+					if (profileImages.length > 0) {
+						profileImages.each(function(){
+		 					$SQ(this).attr('src', '//graph.facebook.com/'+userSocial.identifier+'/picture?type=square');
+						});
+					}
 				}
-			}
-		});
-
-		if (setGlobalUpdate) { // tell the starbars in other tabs to update profile info
-			starbar.state.profile = Math.round(new Date().getTime() / 1000);
-			//starbarStateUpdate();
+			});
 		}
+
+		// Update Username
+		if (user.username)
+			$SQ('.sb_user_title').removeClass('sb_user_level_title').html(user.username);
 	}
+	
+	function updateProfile() {
+		forge.message.broadcastBackground( 'update-profile');
+	}
+
+	forge.message.listen( 'update-profile', function( content ) {
+		sayso.state.user.data = content;
+		updateProfileElements();
+	});
 
 	function activateTabs(target){
 		// only set up the tabs if they're there
@@ -1481,7 +1466,7 @@ $SQ(function(){
 					savebutton_class	: "sb_theme_button",
 					cancelbutton_text	: "cancel",
 					cancelbutton_class	: "sb_theme_button sb_theme_button_grey",
-					after_save			: function() { updateProfile(true, true); }
+					after_save			: updateProfile
 				}
 			);
 		});
@@ -1602,8 +1587,6 @@ $SQ(function(){
 	});
 
 	function stowBar () {
-		starbar.state.local.visibility = 'stowed';
-
 		closePopBox(true);
 		hideAlerts();
 		elemStarbarMain.fadeTo('fast', 0);
@@ -1649,8 +1632,6 @@ $SQ(function(){
 	}
 
 	function openBar () {
-		starbar.state.local.visibility = 'open';
-
 		btnToggleVis.attr('class','');
 		elemSaySoLogoBorder.hide();
 		elemVisControls.hide();

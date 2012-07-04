@@ -76,7 +76,7 @@ function getScript( scriptName, callback ) {
 		callback( sayso.scripts[scriptName] );
 }
 function getState( data, callback ) {
-	if( sayso.state )
+	if( sayso.state && sayso.state.starbars[sayso.state.currentStarbar] )
 		callback( sayso.state );
 	else
 		sayso.pendingStateRequests.push( callback );
@@ -115,12 +115,29 @@ function gotInitialState( response ) {
 			economies : {}
 		};
 		forge.prefs.set('userKey', sayso.state.user.key);
-		getStarbar( sayso.state.currentStarbar, answerPendingRequests );
+		getUserData( function() {
+			getStarbar( sayso.state.currentStarbar, answerPendingRequests );
+		} );
 	}
 }
 function answerPendingRequests() {
 	for( var i = 0; i < sayso.pendingStateRequests.length; i++ )
 		sayso.pendingStateRequests[i](sayso.state);
+}
+function getUserData( callback ) {
+	ajaxWithAuth({
+		url : '//'+sayso.baseDomain+'/api/user/get',
+		success : function( response ) {
+			sayso.state.user.data = response.data;
+			if( callback )
+				callback();
+		}
+	});
+}
+function updateProfile() {
+	getUserData( function() {
+		forge.message.broadcast( 'update-profile', sayso.state.user.data );
+	});
 }
 function getStarbar( starbarId, callback ) {
 	var params = {
@@ -246,6 +263,7 @@ sayso.scripts = {};
 sayso.pendingStateRequests = [];
 forge.message.listen("get-state", getState, showErr);
 forge.message.listen("update-game", updateGame, showErr);
+forge.message.listen("update-profile", updateProfile, showErr);
 forge.message.listen("set-visibility", setVisibility, showErr);
 forge.message.listen("starbar-switch", sayso.switchStarbar, showErr);
 forge.message.listen("add-ad-target", addAdTarget, showErr);

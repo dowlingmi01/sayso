@@ -411,7 +411,7 @@
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details{
 	position: absolute;
 	top: 90px !important;
-	left: 14px !important;
+	/*left: 14px !important;*/
 	width: 220px;
 }
 
@@ -428,7 +428,7 @@
 	margin: 6px 0 0 0;
 }
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide p.sb_promo_link{
-	margin: 12px 0px 0px 0px;
+	margin: 12px 0 0 0;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_link a{
@@ -594,7 +594,7 @@
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a
 {
-	color: #c02526 !important;
+	/*color: #c02526 !important;*/
 }
 
 #sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step{

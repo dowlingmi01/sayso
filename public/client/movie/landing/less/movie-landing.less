@@ -1,0 +1,297 @@
+/* CSS Document */
+
+// CSS Reset
+@import "reset.less";
+
+// Core variables and mixins
+@import "variables.less"; // Modify this for custom colors, font-sizes, etc
+@import "mixins.less";
+
+// Grid system and page structure
+@import "scaffolding.less";
+@import "grid.less";
+@import "layouts.less";
+
+// Base CSS
+@import "type.less";
+@import "code.less";
+@import "forms.less";
+@import "tables.less";
+
+// Components: common
+@import "sprites.less";
+@import "dropdowns.less";
+@import "wells.less";
+@import "component-animations.less";
+@import "close.less";
+
+// Components: Buttons & Alerts
+@import "buttons.less";
+@import "button-groups.less";
+@import "alerts.less"; // Note: alerts share common CSS with buttons and thus have styles in buttons.less
+
+// Components: Nav
+@import "navs.less";
+@import "navbar.less";
+@import "breadcrumbs.less";
+@import "pagination.less";
+@import "pager.less";
+
+// Components: Popovers
+@import "modals.less";
+@import "tooltip.less";
+@import "popovers.less";
+
+// Components: Misc
+@import "thumbnails.less";
+@import "labels.less";
+@import "progress-bars.less";
+@import "accordion.less";
+@import "carousel.less";
+@import "hero-unit.less";
+
+// Utility classes
+@import "utilities.less"; // Has to be last to override when necessary
+
+
+/* BEGIN FORMATTING */
+
+body {
+	background-color:  #3c3c3c;
+	background-image: url('images/bg_page.png');
+	background-repeat: repeat;
+	#font > .sans-serif(13px,400);
+	color: @grayDark;
+}
+
+a, a:focus{
+	outline: none;
+}
+
+#wrapper{
+	width: 900px;
+	margin: 50px auto;
+	#header{
+		overflow: hidden;
+		padding: 5px 0px;
+		position: relative;
+		#logo{
+		
+		} // #logo
+		.community-link{
+			position: absolute;
+			right: 10px;
+			bottom: 10px;
+			a{
+				font-size: 15px;
+				color: @white;
+				text-decoration: none;
+			}
+		} // .community-link
+	} // #header
+	#main{
+		.border-radius(20px);
+		.box-shadow(0px 0px 10px rgba(0,0,0,1));
+		padding: 20px;
+		background-color: @white;
+		margin: 10px 0px;
+		#section-nav{
+			background-image: url('images/bg_nav-tabs.png');
+			background-repeat: no-repeat;
+			background-position: 0px 0px;
+			width: 630px;
+			height: 41px;
+			display: block;
+			clear: both;
+			margin: 0px auto;
+			&.section-1{
+				background-position: 0px 0px;
+			}
+			&.section-2{
+				background-position: 0px -45px;
+			}
+			&.section-3{
+				background-position: 0px -90px;
+			}
+			&.section-4{
+				background-position: 0px -135px;
+			}
+			ul{
+				margin: 0px 0px 0px 5px;
+				padding: 0;
+				list-style: none;
+				li{
+					float: left;
+					display: inline-block;
+					margin: 0px 5px 0px 0px;
+					a{
+						text-indent: -9999px;
+						width: 150px;
+						height: 41px;
+						display: inline-block;
+					} // a
+				} // li
+			} // ul			
+		} // #section-nav 
+		#sections{
+			height: 480px;
+			width: 760px;
+			margin: 0 auto;
+			.section{
+				.section-head{
+					text-align: center;
+					height: 120px;
+					form{
+						p{
+							margin: 10px 0px;
+						}
+						input[type=text],
+						input[type=password]{
+							margin: 0;
+							border: 1px solid @red;
+							.border-radius(0);
+							width: 250px;
+						}
+						label{
+							display: inline;
+							margin: 0px 0px 0px 10px;
+						} // label
+						input[type=submit]{
+							text-indent: -9999px;
+							width: 214px;
+							height: 50px;
+							background-image: url('images/btn_grab-it.png');
+							background-repeat: no-repeat;
+							background-position: 0px -50px;
+							border: 0;
+							.border-radius(0);
+							background-color: transparent;
+							.box-shadow(none);
+							&:disabled{
+								background-position: 0px 0px;
+							}
+							&.active{
+								background-position: 0px -50px;
+							}
+						}
+					} // form
+				} // .section-head
+			} // .section
+		} // #sections
+		.slideshow{
+			width: 760px;
+			height: 340px;
+			display: block;
+			background-image: url('images/bg_slideshow.png');
+			background-repeat: no-repeat;
+			position: relative;
+			margin: 20px 0px;
+			.slides{
+				position: absolute;
+				z-index: 0;
+				width: 700px;
+				height: 310px;
+				left: 30px;
+				.slide{
+					width: 700px;
+					height: 310px;
+					margin: 10px auto 0px auto;
+				} // .slide
+			} // .slides
+			.slide-nav{
+				width: 760px;
+				height: 340px;
+				display: block;
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: 100;
+				span{
+					width: 36px;
+					height: 36px;
+					display: block;
+					background-image: url('images/img_slide-nav.png');
+					background-repeat: no-repeat;
+					text-indent: -9999px;
+					position: absolute;
+					cursor: pointer;
+					&.prev{
+						background-position: 0px -36px;
+						top: 50%;
+						left: 2px;
+						margin: -18px 0px 0px 0px;
+					}
+					&.next{
+						background-position: 0px 0px;
+						top: 50%;
+						right: 2px;
+						margin: -18px 0px 0px 0px;
+					}
+				} // span
+			} // .slide-nav
+		} // .slideshow
+		#jump{
+			padding: 20px 0px 0px 0px;
+			text-align: center;
+			p{
+				font-size: 14px;
+				text-align: center;
+				color: @red;
+			}
+		} // #jump
+	} // #main
+} // #wrapper
+
+/* misc */
+
+img.centered {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	}
+
+img.alignright {
+	padding: 4px;
+	margin: 0 0 2px 7px;
+	display: inline;
+	}
+
+img.alignleft {
+	padding: 4px;
+	margin: 0 7px 2px 0;
+	display: inline;
+	}
+
+.alignright {
+	float: right;
+	}
+
+.alignleft {
+	float: left
+	}
+	
+.wp-caption {
+   border: 1px solid #ddd;
+   text-align: center;
+   background-color: #f3f3f3;
+   padding-top: 4px;
+   margin: 10px;
+   /* optional rounded corners for browsers that support it */
+   -moz-border-radius: 3px;
+   -khtml-border-radius: 3px;
+   -webkit-border-radius: 3px;
+   border-radius: 3px;
+}
+
+.wp-caption img {
+   margin: 0;
+   padding: 0;
+   border: 0 none;
+}
+
+.wp-caption p.wp-caption-text {
+   font-size: 11px;
+   line-height: 17px;
+   padding: 0 4px 5px;
+   margin: 0;
+}

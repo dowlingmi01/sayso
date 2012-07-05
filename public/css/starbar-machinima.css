@@ -416,14 +416,19 @@
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p{
-	margin: 12px 0px;
+	margin: 40px 0 0 0;
 	font-size: 13px;
 	line-height: 15px;
 	width:220px;
 }
-
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p.sb_promo_summary{
+	margin: 40px 0 0 0;
+}
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p.sb_promo_footer{
+	margin: 6px 0 0 0;
+}
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide p.sb_promo_link{
-	margin: 40px 0px 0px 0px;
+	margin: 12px 0px 0px 0px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_link a{
@@ -1579,7 +1584,7 @@
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs ul.sb_ui-tabs-nav li a,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs ul.sb_ui-tabs-nav li a{
-	color: #fff !important;
+	color: #fff;
 	text-shadow: #000 0px 0px 4px;
 	font-size: 13px;
 	height: 40px;

@@ -62,9 +62,9 @@
 	function validateFields() {
 		var emailadd = $SQ('#sso_fld_client_email');
 		if( emailadd.length ) {
-		emailadd = emailadd.val();
-		if( emailadd.length < 1 )
-			return "Woops - Please enter your email address";
+			emailadd = emailadd.val();
+			if( emailadd.length < 1 )
+				return "Woops - Please enter your email address";
 			var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 			if (!emailPattern.test(emailadd))
 				return "Woops - Please enter a valid email address";

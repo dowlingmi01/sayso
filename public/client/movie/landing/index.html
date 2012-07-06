@@ -3,7 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Untitled Document</title>
-<link rel="stylesheet" href="movie-landing.css">
+<link rel="stylesheet" href="movie-landing.css" />
+<script src="js/config.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script src="js/jquery.cycle.all.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -12,7 +13,7 @@
 <body>
 <div id="wrapper">
 	<div id="header">
-		<div id="logo"><img src="images/logo.png" alt="Movie Say.So"></div><!-- #logo -->
+		<div id="logo"><img src="images/logo.png" alt="Movie Say.So" /></div><!-- #logo -->
 		<div class="community-link"><a href="#">Other Communities</a></div><!-- .community-link -->
 	</div><!-- #header -->
 	<div id="main">
@@ -28,8 +29,8 @@
 			
 			<div class="slideshow">
 				<div class="slides">
-					<div class="slide"><img src="images/img_slide_1a.png" alt=""></div>
-					<div class="slide"><img src="images/img_slide_1b.png" alt=""></div>
+					<div class="slide"><img src="images/img_slide_1a.png" alt="" /></div>
+					<div class="slide"><img src="images/img_slide_1b.png" alt="" /></div>
 				</div><!-- .slides -->
 				<div class="slide-nav">
 					<span class="prev">Prev</span>
@@ -46,10 +47,10 @@
 			
 			<div class="slideshow">
 				<div class="slides">
-					<div class="slide"><img src="images/img_slide_2a.png" alt=""></div>
-					<div class="slide"><img src="images/img_slide_2b.png" alt=""></div>
-					<div class="slide"><img src="images/img_slide_2c.png" alt=""></div>
-					<div class="slide"><img src="images/img_slide_2d.png" alt=""></div>
+					<div class="slide"><img src="images/img_slide_2a.png" alt="" /></div>
+					<div class="slide"><img src="images/img_slide_2b.png" alt="" /></div>
+					<div class="slide"><img src="images/img_slide_2c.png" alt="" /></div>
+					<div class="slide"><img src="images/img_slide_2d.png" alt="" /></div>
 				</div><!-- .slides -->
 				<div class="slide-nav">
 					<span class="prev">Prev</span>
@@ -65,8 +66,8 @@
 			
 			<div class="slideshow">
 				<div class="slides">
-					<div class="slide"><img src="images/img_slide_3a.png" alt=""></div>
-					<div class="slide"><img src="images/img_slide_3b.png" alt=""></div>
+					<div class="slide"><img src="images/img_slide_3a.png" alt="" /></div>
+					<div class="slide"><img src="images/img_slide_3b.png" alt="" /></div>
 				</div><!-- .slides -->
 				<div class="slide-nav">
 					<span class="prev">Prev</span>
@@ -77,17 +78,26 @@
 	  </div><!-- #section-3 -->
 	  <div class="section tab-pane" id="section-4">
 	  	<div class="section-head">
-	  		<h2>Let’s get started</h2>
+	  	<div id="create-password">
+	  		<h2>Let's get started</h2>
 	  		<p>Start by creating your unique Say.So password so we can make sure your points and rewards and saved.</p>
 	  		<br />
 	  		<form>
-	  			<p><input type="text" placeholder="Enter a valid email address"></p>
-	  			<p><input type="password" placeholder="Enter your desired password. (6-12 characters)"></p>
-	  			<p><input type="password" placeholder="Verify your password"></p>
-	  			<p><input type="checkbox" value="" id="agreeterms"><label for="agreeterms">I agree to the <a href="#">terms</a> and <a href="#">conditions</a>.</label></p>
-	  			<input type="submit" value="Grab It" disabled="" id="btn-submit">
+	  			<p><input type="text" id="input-email" placeholder="Enter a valid email address" /></p>
+	  			<p><input type="password" id="input-password" placeholder="Enter your desired password. (6-12 characters)" /></p>
+	  			<p><input type="password" id="input-confirmation" placeholder="Verify your password" /></p>
+	  			<p><input type="checkbox" value="" id="agreeterms" /><label for="agreeterms">I agree to the <a href="#">terms</a> and <a href="#">conditions</a>.</label></p>
+	  			<input type="submit" value="Grab It" disabled="" id="btn-submit" />
 	  		</form>
 	  		<p><small>We don't share your email or password with anyone...period.</small></p>
+	  		</div>
+			  <div id="password-created" style="display: none;">
+	  			<p>Please allow the browser to install the extension.</p>
+	  			<p>If your download didn't start, please click <a id="download-retry">here</a></p>
+			  </div>
+			  <div id="no-install" style="display: none;">
+			  	<p></p>
+			  </div>
 	  	</div><!-- .section-head -->	  
 	  </div><!-- #section-4 -->
 	</div><!-- #sections -->

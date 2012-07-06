@@ -436,12 +436,12 @@ $(function(){
 
 	function validateFields() {
 		var emailadd = SaySo.elements.email.val();
-		if( emailadd.length < 1 ) {
+		if( emailadd.length < 1 )
 			return "Woops - Please enter your email address";
-			var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-			if (!emailPattern.test(emailadd))
-				return "Woops - Please enter a valid email address";
-		}
+
+		var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+		if (!emailPattern.test(emailadd))
+			return "Woops - Please enter a valid email address";
 
 		var pwd1 = SaySo.elements.password.val();
 		if( pwd1.length < 1 )

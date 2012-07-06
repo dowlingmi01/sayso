@@ -1298,6 +1298,7 @@
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_earned,
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next{
 	width: 100px;
+	margin-top:15px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_current{
@@ -1306,6 +1307,7 @@
 	height: 139px;
 	*/
 	/* fixed height to allow scrollPane to have correct height */
+	margin-top: -15px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevelIcons.sb_userLevel_current p{
@@ -2106,7 +2108,7 @@
 #sayso-starbar .sb_lineList li span.sb_title span {font-weight:bold !important;}
 #sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container{top:10px;margin-left:auto !important;margin-right:auto !important;}
 #sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group{}
-#sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_next{width:95px !important;height:65px !important;margin-top:27px !important;}
+#sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_next{width:95px !important;height:65px !important;margin-top:9px !important;}
 #sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_next .sb_userLevelImg{width:60px !important;height:63px !important;margin-left:auto !important;margin-right:auto !important;}
 #sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_current{height:105px !important;}
 #sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_current .sb_userLevelImg{width:105px !important;height:104px !important;margin-left:auto !important;margin-right:auto !important;background-image: url('../images/machinima/level_current.png');}

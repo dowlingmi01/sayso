@@ -30,17 +30,16 @@ function firstRun( firstRunDone ) {
 			});
 		}
 	} else if( forge.is.safari() ) {
-		if( !firstRunDone ) {
-			var sTabs = safari.application.activeBrowserWindow.tabs;
-			for( var i = 0; i < sTabs.length; i++ ) {
-				if( sTabs[i].url.match('sayso-installing') ) {
-					sTabs[i].url = chopURL(sTabs[i].url);
-					sTabs[i].activate();
-					return;
-				}
+		var sTabs = safari.application.activeBrowserWindow.tabs;
+		for( var i = 0; i < sTabs.length; i++ ) {
+			if( sTabs[i].url.match('sayso-installing') ) {
+				sTabs[i].url = chopURL(sTabs[i].url);
+				sTabs[i].activate();
+				return;
 			}
-			openFirstRunTab();
 		}
+		if( !firstRunDone )
+			openFirstRunTab();
 	} else if( forge.is.firefox() ) {
 		var code = '';
 		code += "var tabs = require('tabs'); \n";

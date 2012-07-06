@@ -1,4 +1,11 @@
 (function() {
+	// add trim function if needed
+	if(typeof String.prototype.trim !== 'function') {
+		String.prototype.trim = function() {
+			return this.replace(/^\s+|\s+$/g, '');
+		};
+	}
+	
 	window.saysoConf = {
 		baseDomain: getBaseDomain(),
 		bn: getBrowserNameVersion(),

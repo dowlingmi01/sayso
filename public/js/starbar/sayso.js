@@ -397,8 +397,7 @@ $SQ(function () {
 							cells[cellIndex].tags[tagIndex].domains += domain.domain;
 						} // domains
 
-						for (var cr in tag._creatives.items) {
-							var creative = tag._creatives.items[cr];
+						$SQ.each(tag._creatives.items, function( index, creative ) {
 							cells[cellIndex].tags[tagIndex].creatives.push({
 								id : creative.id,
 								url : creative.url,
@@ -407,7 +406,7 @@ $SQ(function () {
 								ad_description : creative.ad_description,
 								target_url : creative.target_url
 							});
-						} // creatives
+						}); // creatives
 					} // tags
 				} // cells
 			} // studies
@@ -478,26 +477,17 @@ $SQ(function () {
 
 					// If flash is still not found on this page, try looking inside all the <object> tags' children (i.e. the params)
 					if (!jTag || !jTag.length) {
-						objectElems = $SQ('object');
-						if (objectElems.length) {
-							objectElems.each(function (index) {
-								objectElem = $SQ(this);
-								paramTags = objectElem.children();
-								for (i = 0; i < paramTags.length; i++) {
-									if (paramTags.eq(i).attr('name').toLowerCase() == "movie") { // We are only interested in the "movie" param (i.e. the URL of the movie)
-										if (paramTags.eq(i).attr('value').indexOf(tag.tag) > -1) {
-											jTag = paramTags.eq(i);
-											jTagContainer = objectElem;
-											// Match found, need need to search any more
-											return false;
-										} else {
-											// Go to next object tag
-											return true;
-										}
-									}
-								}
-							});
-						}
+						$SQ('object param[name="movie"]').each(function() {
+							if ($SQ(this).attr('value').indexOf(tag.tag) > -1) {
+								jTag = $SQ(this);
+								jTagContainer = jTag.parent();
+								// Match found, need need to search any more
+								return false;
+							} else {
+								// Go to next object tag
+								return true;
+							}
+						});
 					}
 				}
 			} else if (tag.type == "Facebook") {

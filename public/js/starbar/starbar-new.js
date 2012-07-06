@@ -22,7 +22,7 @@ $SQ(function(){
 		};
 		if( frameCommEl.addEventListener )
 			frameCommEl.addEventListener('saysoFrameComm', frameCommHandler);
-		else if( frameComm.attachEvent )
+		else if( frameCommEl.attachEvent )
 			frameCommEl.attachEvent('onclick', frameCommHandler);
 
 		function defineFrameComm() {

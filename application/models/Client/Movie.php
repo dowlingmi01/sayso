@@ -6,8 +6,8 @@ class Client_Movie
 	public function getPostInstallURL() {
 		$env = Registry::getPseudoEnvironmentName();
 		if( $env === 'PROD' )
-			return 'http://www.say.so/movies';
+			return 'http://movie.say.so';
 		else
-			return 'http://client.' . Registry::getConfig()->baseDomain . '/movie/home';
+			return 'http://' . Registry::getConfig()->baseDomain . '/client/movie/landing';
 	}
 }

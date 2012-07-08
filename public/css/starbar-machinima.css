@@ -597,6 +597,10 @@
 	/*color: #c02526 !important;*/
 }
 
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a {
+    color: #eb1700;
+}
+
 #sayso-starbar .sb_rewardItem #sb_reward_step2.sb_reward_step{
 	padding:0 !important;
 }

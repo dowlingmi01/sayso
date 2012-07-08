@@ -53,7 +53,7 @@ $(document).ready(function (){
 		if( window.$SaySoExtension )
 			msg = 'You already have Say.So installed';
 		if( !saysoConf.bn.isSupported ) {
-			if( bn.isMobile ) {
+			if( saysoConf.bn.isMobile ) {
 				msg = 'Sorry! Movie Say.So isn\'t yet available for mobile browsers. Join us via your computer when you can!';
 			} else {
 				msg = 'Sorry, your web browser doesn\'t support the cool features of Movie Say.So. For an optimal experience, use the latest versions of Chrome (www.google.com/chrome), Firefox (www.getfirefox.com) or Safari (www.apple.com/safari). And we support Internet Explorer 8 and above.';

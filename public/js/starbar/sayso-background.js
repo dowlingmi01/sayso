@@ -234,6 +234,9 @@ function onboardingComplete() {
 	sayso.state.starbars[sayso.state.currentStarbar].onboarded = true;
 }
 sayso.switchStarbar = function( starbarId ) {
+	function broadcastSwitch() {
+		forge.message.broadcast( 'starbar-switch', sayso.state );
+	}
 	if( sayso.state.currentStarbar == starbarId )
 		return;
 	if( sayso.state.starbarList[starbarId].active ) {
@@ -243,9 +246,6 @@ sayso.switchStarbar = function( starbarId ) {
 			broadcastSwitch();
 		else
 			getStarbar( starbarId, broadcastSwitch );
-		function broadcastSwitch() {
-			forge.message.broadcast( 'starbar-switch', sayso.state );
-		}
 	} else
 		ajaxWithAuth({
 			url: '//'+sayso.baseDomain+'/api/starbar/add', 

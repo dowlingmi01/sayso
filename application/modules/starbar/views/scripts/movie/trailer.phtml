@@ -117,7 +117,9 @@
 	</div>
 </div>
 <? if (sizeof($this->trailers)) { ?>
+
 	<script src="http://www.youtube.com/player_api"></script>
+
 	<script>
 
 	var player;
@@ -212,10 +214,28 @@
 				$SQ('.sb_video_carousel').addClass('autohide');
 				$SQ('#sb_spotlight-q1').hide();
 				$SQ('#sb_vid_question_phase1').show();
+				$SQ('.sb_mv_questions_flow').hover(function(){
+                // Hover over code
+                $SQ('<p class="tooltip"></p>')
+                .text('Please view the trailer first, then rate it.')
+                .appendTo('body')
+                .fadeIn('slow');
+			        }, function() {
+			                // Hover out code
+
+			                $SQ('.tooltip').remove();
+			        }).mousemove(function(e) {
+			                var mousex = e.pageX + 20; //Get X coordinates
+			                var mousey = e.pageY + 10; //Get Y coordinates
+			                $SQ('.tooltip')
+			                .css({ top: mousey, left: mousex })
+			        });
 			}
 
 			if(event.data	==	YT.PlayerState.ENDED){
 				$SQ('input.sb_rating').removeAttr('disabled');
+				$SQ('.tooltip').remove();
+				$SQ('.sb_mv_questions_flow').unbind('mouseenter mouseleave');
 				$SQ('.sb_mv_questions_flow p').removeClass('inactive');
 
 			}

@@ -2139,6 +2139,13 @@
 
 }
 
+p.sb_reminder {
+	margin-top: 0 !important;
+}
+
+p.sb_promo_gettokens {
+	margin-bottom:0 !important;
+}
 /* Keep this at end of file. It's used for testing if CSS is loaded. */
 
 #sayso-starbar ._sayso_starbar_css_loaded {

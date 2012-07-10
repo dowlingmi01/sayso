@@ -5,23 +5,3 @@
 	<p>Note that tables in light-grey haven't been defined in the JSON file yet.</p>
 </div>
 
-<h2>Find items using json and jquery</h2>
-<a href='#' id='getItems'>get itjjems</a>
-<script type='text/javascript'>
-	$SQ(function()
-	{
-		$SQ('#getItems').click(function()
-		{
-			alert('hello');
-			$SQ.post(
-			"/async/getitems",
-			{},
-			function(data)
-			{
-				alert(data);
-			},'json'
-			);
-			return false;
-		});
-	});
-</script>

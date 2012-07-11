@@ -20,6 +20,12 @@
 			Earn <strong class="sb_theme_textHighlight sb_tooltip" title="XP - determine your access to increasingly important levels of influence.">XP</strong> &amp;
 			<strong class="sb_theme_textHighlight sb_tooltip" title="Coins - are almost as good as cash and can be redeemed for goods in the Rewards Center.">Coins</strong> for each Survey you complete. Share with your friends to earn extra points and you&#39;ll be that much closer to winning the big giveaway.
 		</p>
+		<? if (!$this->count_new_surveys) { ?>
+		<div id="surveys_tabs_3" class="sb_tabPane">
+			<p>Nice job, looks like you've taken all the surveys! Check back soon to earn more Coins and XP!</p>
+		</div><!-- #tabs_3 -->
+	<? } ?>
+
 		<? if ($this->profile_survey_id) { ?>
 			<p class="sb_tabHeader">
 				Don't forget to complete the <a href="//<?= BASE_DOMAIN ?>/starbar/machinima/embed-survey?survey_id=<?= $this->profile_survey_id ?>" class="sb_nav_element" rel="sb_popBox_surveys_hg">Profile Survey</a> to unlock the goodies in the reward center.

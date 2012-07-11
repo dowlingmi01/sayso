@@ -1,3 +1,18 @@
+<script type="text/javascript">
+$SQ(document).ready(function() {
+	$SQ('#faqsOFF h3').each(function() {
+		var tis = $SQ(this), state = false, answer = tis.next('div').hide().css('height','auto').slideUp();
+		tis.click(function() {
+			state = !state;
+			answer.slideToggle(state);
+			tis.toggleClass('active',state);
+			$SQ(this).jScrollPane();(faqs);
+		});
+	});
+
+});
+
+</script>
 <div class="sb_header">
 	<a href="http://www.saysollc.com" target="_blank"><img src="//<?= BASE_DOMAIN ?>/images/machinima/logo_machinima.png" alt="Say.So" /></a>
 </div><!-- .sb_header -->
@@ -64,7 +79,7 @@
 					<h3 class="sb_title" align="center">Here's What You Get.</h3>
 					<p align="center">Help us better serve your Machinima | Recon needs and you’ll earn Coins, virtual currency redeemable for prizes and opportunities.</p>
 					<ul class="sb_lineList">
-						<li class="sb_img_prizes"><strong class="sb_theme_textHighlight">Great Prizes.</strong> Almost everything you do as a Super Machinima | Recon member earns you Coins. Use your Coins to redeem prizes from the Rewards Center.</li>
+						<li class="sb_img_prizes"><strong class="sb_theme_textHighlight">Great Prizes.</strong> Almost everything you do as a Machinima | Recon member earns you Coins. Use your Coins to redeem prizes from the Rewards Center.</li>
 						<li class="sb_img_giveaways"><strong class="sb_theme_textHighlight">A Chance To Win A Prize Giveaways. </strong> Redeem your Coins for entry tokens for our giveaways. Buy as many entry tokens for each giveaway as you want and increase your odds of winning.</li>
 					</ul>
 				</div><!-- #tab_3 -->
@@ -99,139 +114,110 @@
 	</div><!-- #tab_2 -->
 	<div id="about_tabs_3" class="sb_tabPane">
 		<div class="sb_scrollPane">
-			<h2 class="sb_title">FAQ</h2>
-			<p>
-				<strong>What is Machinima | Recon?</strong><br />
-                                Machinima | Recon is a way to directly influence the content seen on machinima.com. Members are rewarded by answering polls, participating in surveys, and giving their opinion about Machinima | Recon content. Members gain XP and Coins. Coins can be redeemed for Machinima | Recon rewards and "Entry Tokens" into Machinima | Recon giveaways.
+		<div id="faqs">
+			<h2 class="sb_title" >FAQ</h2>
+			<h3>What is Machinima | Recon?</h3>
+                               <div><p>Machinima | Recon is a way to directly influence the content seen on machinima.com. Members are rewarded by answering polls, participating in surveys, and giving their opinion about Machinima | Recon content. Members gain XP and Coins. Coins can be redeemed for Machinima | Recon rewards and "Entry Tokens" into Machinima | Recon giveaways.
                         <a href="http://bit.ly/NKSDba" target="_blank">(more...)</a>
-                        </p>
-			<p>
-                                <strong>Do I have to pay for anything? Is there any shipping & handling fees for prizes obtained or won?</strong><br />
-                                No, this is completely free to you. The only thing we want you to do is participate.
+                        </p></div>
+			<h3>Do I have to pay for anything? Is there any shipping & handling fees for prizes obtained or won?</h3>
+                                <div><p>No, this is completely free to you. The only thing we want you to do is participate.
                         <a href="http://bit.ly/MBxNc9" target="_blank">(more...)</a>
-                        </p>
-			<p>
-				<strong>What are Experience points (XP) used for?</strong><br />
-				XP are experience points and determine your level of influence and involvement. Gaining XP will increase your Machinima | Recon level.
+                        </p></div>
+			<h3>What are Experience points (XP) used for?</h3>
+				<div><p>XP are experience points and determine your level of influence and involvement. Gaining XP will increase your Machinima | Recon level.
 			<a href="http://bit.ly/PdLcri" target="_blank">(more...)</a>
-			</p>
-			<p>
-				<strong>What are Coins used for?</strong><br />
-				Coins are the currency you earn by participating in polls, answering surveys, and sharing your ideas. In fact, virtually everything you do in Machinima | Recon will earn you Coins. Coins can be exchanged for various prizes and Entry Tokens in the Reward Center.
+			</p></div>
+			<h3>What are Coins used for?</h3>
+				<div><p>Coins are the currency you earn by participating in polls, answering surveys, and sharing your ideas. In fact, virtually everything you do in Machinima | Recon will earn you Coins. Coins can be exchanged for various prizes and Entry Tokens in the Reward Center.
 			<a href="http://bit.ly/NHLj1c" target="_blank">(more...)</a>
-			</p>
-			<p>
-				<strong>What are Entry Tokens?</strong><br />
-				 Entry Tokens are your way of entering prize giveaways. Users that have purchased an Entry Token with their Coins will be entered to win the giveaway. To view current giveaways. At the end of each giveaway period a prize will be given away to a user that has purchased an Entry Token for the giveaway. You can buy as many Entry Tokens as you want to increase your chance of winning.
+			</p></div>
+			<h3>What are Entry Tokens?</h3>
+				 <div><p>Entry Tokens are your way of entering prize giveaways. Users that have purchased an Entry Token with their Coins will be entered to win the giveaway. To view current giveaways. At the end of each giveaway period a prize will be given away to a user that has purchased an Entry Token for the giveaway. You can buy as many Entry Tokens as you want to increase your chance of winning.
 			<a href="http://bit.ly/KHQltP" target="_blank">(more...)</a>
-	    	        </p>
-			<p>
-				<strong>Do you really give away the prizes?</strong><br />
-				YES! Every prize that is won will be shipped within 4-6 weeks. Users and fans of Machinima | Recon will get the prizes for playing, not the CEO's nephew or cousin. At the end of each giveaway we will send out an email to all the Machinima | Recon users, letting you know who the lucky player is.
+	    	        </p></div>
+			<h3>Do you really give away the prizes?</h3>
+				<div><p>YES! Every prize that is won will be shipped within 4-6 weeks. Users and fans of Machinima | Recon will get the prizes for playing, not the CEO's nephew or cousin. At the end of each giveaway we will send out an email to all the Machinima | Recon users, letting you know who the lucky player is.
 			<a href="http://bit.ly/MiWbPM" target="_blank">(more...)</a>
-			</p>
-			<p>
-				<strong>How do I get my prize?</strong><br />
-				When you win a prize we will contact you by email to get the information and mailing address needed to send the prize to you.
+			</p></div>
+			<h3>How do I get my prize?</h3>
+				<div><p>When you win a prize we will contact you by email to get the information and mailing address needed to send the prize to you.
 			<a href="http://bit.ly/NHMeyM" target="_blank">(more...)</a>
-			</p>
-                        <p>
-                                <strong>Are there any geographic restrictions for playing??</strong><br />
-                                INSERT DATA
-			<a href="" target="_blank">(more...)</a>
-                        </p>
-			<p>
-				<strong>Do I have to play every day?</strong><br />
-				No, you do not have to play every day, but the more you play and participate, the more XP and Coins you can earn to exchange for Entry Tokens and other prizes.
+			</p></div>
+			<h3>Do I have to play every day?</h3>
+				<div><p>No, you do not have to play every day, but the more you play and participate, the more XP and Coins you can earn to exchange for Entry Tokens and other prizes.
 			<a href="http://bit.ly/PdMJh4" target="_blank">(more...)</a>
-			</p>
-			<p>
-				<strong>Can I stop playing at any time?</strong><br />
-				Yes, particpate as much (or as little) as you want, but remember, the more you play the better your chances of winning cool prizes.
+			</p></div>
+			<h3>Can I stop playing at any time?</h3>
+				<div><p>Yes, particpate as much (or as little) as you want, but remember, the more you play the better your chances of winning cool prizes.
 			<a href="http://bit.ly/MopXP2" target="_blank">(more...)</a>
-			</p>
-			<p>
-				<strong>How long do the surveys / games take to complete?</strong><br />
-				Usually between 5 and 15 minutes. Generally, the longer the survey is, the more XP and Coins you can earn.
+			</p></div>
+			<h3>How long do the surveys / games take to complete?</h3>
+				<div><p>Usually between 5 and 15 minutes. Generally, the longer the survey is, the more XP and Coins you can earn.
 			<a href="http://bit.ly/M1HXUR" target="_blank">(more...)</a>
-			</p>
-			<p>
-				<strong>What if I stop a survey in the middle of taking it? Do I still get credit? Do I have to restart it?</strong><br />
-				Once you start a survey you must complete it in order to earn your Machinima | Recon XP and Coins.
+			</p></div>
+			<h3>What if I stop a survey in the middle of taking it? Do I still get credit? Do I have to restart it?</h3>
+				<div><p>Once you start a survey you must complete it in order to earn your Machinima | Recon XP and Coins.
 			<a href="http://bit.ly/NKThWf" target="_blank">(more...)</a>
-			</p>
-			<p>
-                                <strong>How often can I get XP/Coins for sharing??</strong><br />
-                                For details on sharing, click here
+			</p></div>
+			<h3>How often can I get XP/Coins for sharing??</h3>
+                                <div><p>For details on sharing, click here
                         <a href="http://bit.ly/NbaQ08" target="_blank">(more...)</a>
-                        </p>
-			<p>
-				<strong>What are you doing with the information you are collecting?</strong><br />
-				We are using it to help make Machinima | Recon better for everyone.
+                        </p></div>
+			<h3>What are you doing with the information you are collecting?</h3>
+				<div><p>We are using it to help make Machinima | Recon better for everyone.
 			<a href="http://bit.ly/M6zxe4" target="_blank">(more...)</a>
-			</p>
-			<p>
-				<strong>Can I invite other people to play?</strong><br />
-				Yes, you can invite friends through Facebook or Twitter. You can also invite friends using our Send To A Friend feature found in the settings section of the bar. You can earn additional Coins by getting your friends to play.
+			</p></div>
+			<h3>Can I invite other people to play?</h3>
+				<div><p>Yes, you can invite friends through Facebook or Twitter. You can also invite friends using our Send To A Friend feature found in the settings section of the bar. You can earn additional Coins by getting your friends to play.
                         <a href="http://bit.ly/MiWCJX" target="_blank">(more...)</a>
-			</p>
-			<p>
-				<strong>Can I trade my prize for another prize?</strong><br />
-				No, the prize you win, or redeem for, is the prize you get.
+			</p></div>
+			<h3>Can I trade my prize for another prize?</h3>
+				<div><p>No, the prize you win, or redeem for, is the prize you get.
                         <a href="http://bit.ly/Kw9pcY" target="_blank">(more...)</a>
-			</p>
-			<p>
-				<strong>Can I track the status of the orders I have redeemed/won?</strong><br />
-				You will be sent a confirmation of your redemption or win. The delivery time of your item depends on the type of item you have redeemed or won. If you feel like there is a problem with your order, please contact us at machinima@say.so.
+			</p></div>
+			<h3>Can I track the status of the orders I have redeemed/won?</h3>
+				<div></p>You will be sent a confirmation of your redemption or win. The delivery time of your item depends on the type of item you have redeemed or won. If you feel like there is a problem with your order, please contact us at machinima@say.so.
                         <a href="http://bit.ly/MiWMRE" target="_blank">(more...)</a>
-                        </p>
-			<p>
-                                <strong>What is the promotional period?</strong><br />
-                        <a href="http://bit.ly/NbaaYH" target="_blank">CLICK HERE</a> for detailed information on current, planned and previous giveaway information.
-			</p>
-                        <p>
-                                <strong>How do you select the winner(s)s for drawings?</strong><br />
-                                You must redeem your Coins for Entry Tokens to be entered in the giveaways. Winners will be chosen at random from all entrants.
+                        </p></div>
+			<h3>What is the promotional period?</h3>
+                        <div><p><a href="http://bit.ly/NbaaYH" target="_blank">CLICK HERE</a> for detailed information on current, planned and previous giveaway information.
+			</p></div>
+                        <h3>How do you select the winner(s)s for drawings?</h3>
+                               <div><p>You must redeem your Coins for Entry Tokens to be entered in the giveaways. Winners will be chosen at random from all entrants.
 			<a href="http://bit.ly/PdNTsO" target="_blank">(more...)</a>
-                        </p>
-                        <p>
-                                <strong>I am missing Xp or Coins!</strong><br />
-                                For missing XP or Coins
+                        </p></div>
+                        <h3>I am missing Xp or Coins!</h3>
+                                <div><p>For missing XP or Coins
                         <a href="http://bit.ly/KHRcdS" target="_blank">(more...)</a>
-                        </p>
-                        <p>
-                                <strong>I have a question that is not included in this FAQ!</strong><br />
-                                You can check <a href="http://bit.ly/N15hhj" target="_blank">HERE</a> to see if there is an answer to a question that is not included in this FAQ. If you don't see your question or answer, please feel free to send your question using the feedback section.
-                        </p>
-                        <p>
-                                <strong>How do I contact someone?</strong><br />
-                                We value our users feedback, concerns, and suggestions and want to hear from you. You can contact us by sending us feedback section of the bar, or by emailing us directly at machinima@say.so. You can also use http://www.twitter.com/saysoapp or http://www.facebook.com/machinimarecon to get in touch or send feedback.
+                        </p></div>
+                        <h3>I have a question that is not included in this FAQ!</h3>
+                                <div><p>You can check <a href="http://bit.ly/N15hhj" target="_blank">HERE</a> to see if there is an answer to a question that is not included in this FAQ. If you don't see your question or answer, please feel free to send your question using the feedback section.
+                        </p></div>
+                        <h3>How do I contact someone?</h3>
+                                <div><p>We value our users feedback, concerns, and suggestions and want to hear from you. You can contact us by sending us feedback section of the bar, or by emailing us directly at machinima@say.so. You can also use http://www.twitter.com/saysoapp or http://www.facebook.com/machinimarecon to get in touch or send feedback.
 			<a href="http://bit.ly/Lt1UUU" target="_blank">(more...)</a>
-			</p>
-                        <p>
-                                <strong>Where can I find the official Reward and Giveaway rules?</strong><br />
-                                Links to the current Rules, Terms and Conditions, and Privacy Policies are all located at the bottom of the 'Edit Profile' tab on the bar. You can also see them
+			</p></div>
+                        <h3>Where can I find the official Reward and Giveaway rules?</h3>
+                                <div><p>Links to the current Rules, Terms and Conditions, and Privacy Policies are all located at the bottom of the 'Edit Profile' tab on the bar. You can also see them
                         <a href="http://bit.ly/MoqXTq" target="_blank">here.</a>
-			</p>
-                        <p>
-                                <strong>How do I remove the Machinima | Recon browser app?</strong><br />
-                                For Machinima | Recon bar removal instructions...
+			</p></div>
+                        <h3>How do I remove the Machinima | Recon browser app?</h3>
+                                <div><p>For Machinima | Recon bar removal instructions...
                         <a href="http://bit.ly/LxmjFm" target="_blank">(more...)</a>
-			</p>
-                        <p>
-                                <strong>How do I link my Facebook or Twitter account?</strong><br />
- 				You can check <a href="http://bit.ly/MmGbdL" target="_blank">HERE</a> for instructions on how to link your Facebook / Twitter account, or see below.
-			</p>
+			</p></div>
+                        <h3>How do I link my Facebook or Twitter account?</h3>
+ 				<div><p>You can check <a href="http://bit.ly/MmGbdL" target="_blank">HERE</a> for instructions on how to link your Facebook / Twitter account, or see below.
+
                         <ol>
 				<li>Click .Edit Profile.</li>
 				<li>Click to link your Twitter or Facebook account.</li>
 				<li>Allow access in order for the accounts to be linked.</li>
-                        </ol>
-			<p>
-				<strong>How do I disconnect my Facebook / Twitter account from the Say.So bar?</strong><br />
-                                You can check <a href="http://bit.ly/KOBN6V" target="_blank">HERE</a> for instructions on how to unlink your Facebook / Twitter account, or see below.
-			</p>
-			<p>
+                        </ol></p></div>
+			<h3>How do I disconnect my Facebook / Twitter account from the Say.So bar?</h3>
+                                <div><p>You can check <a href="http://bit.ly/KOBN6V" target="_blank">HERE</a> for instructions on how to unlink your Facebook / Twitter account, or see below.
+
+			</p><p>
 				<strong>Facebook:</strong><br />
 			</p>
 			<ol>
@@ -247,7 +233,8 @@
 				<li>Click on your name &gt; <em>Settings</em>.</li>
 				<li>Open the <em>Applications</em> tab and you will see the <em>Say.So Bar</em> listed here.</li>
 			</ol>
-			<br /><br />
+			<br /><br /></div>
+			</div><!-- /faq_outer -->
 		</div><!-- .sb_scrollPane -->
 	</div><!-- #tab_3 -->
 	<div id="about_tabs_4" class="sb_tabPane">

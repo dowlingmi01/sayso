@@ -1755,7 +1755,7 @@
 	height: 100%;
 	border: none;
 	float: none;
-	background-color: ##fff;
+	background-color: #fff;
 	margin: 0;
 }
 
@@ -2473,3 +2473,33 @@
 {
 	margin-top:50px;
 }
+
+.hidden {
+	display:none;
+}
+
+.tooltip {
+	display:none;
+	position:absolute;
+	border:1px solid #333;
+	background-color: #DC1A22;
+	padding:10px;
+	color:#fff;
+	font-size:12px;
+	font-family:Arial,sans-serif;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 2px solid #806A63;
+
+}
+
+/* Hideaway faqs */
+#faqs { position:relative; }
+#faqs h3  { cursor:pointer; }
+#faqs h3.active  { color:#d74646; }
+#faqs div   { position:relative; }
+#faqs div p  { padding:0; margin-bottom:15px; }
+
+
+

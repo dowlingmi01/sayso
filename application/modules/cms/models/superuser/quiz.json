@@ -28,6 +28,23 @@
 			]
 		},
 		{
+			"colname": "starbar_id",
+			"filterwidth":40,
+			"label": "Starbar",
+			"type": "fkey",
+			"lookuptable": "starbar",
+			"lookupfield": "id",
+			"lookuplabel": "label",
+			"default": "--Please Select a starbar--",
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
 			"colname": "user_id",
 			"type": "hidden",
 			"value": 1,
@@ -102,6 +119,16 @@
 			"displaywhen": [
 				"add",
 				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "start_after",
+			"filterwidth":40,
+			"type": "number",
+			"displaywhen": [
+				"detail",
+				"grid",
 				"edit"
 			]
 		}

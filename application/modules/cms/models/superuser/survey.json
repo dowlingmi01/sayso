@@ -51,6 +51,23 @@
 			]
 		},
 		{
+			"colname": "starbar_id",
+			"filterwidth":40,
+			"label": "Starbar",
+			"type": "fkey",
+			"lookuptable": "starbar",
+			"lookupfield": "id",
+			"lookuplabel": "label",
+			"default": "--Please Select a starbar--",
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
 			"colname": "status",
 			"type": "list",
 			"listoptions": [
@@ -127,6 +144,16 @@
 			"type": "number",
 			"displaywhen": [
 				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "start_after",
+			"filterwidth":40,
+			"type": "number",
+			"displaywhen": [
+				"detail",
+				"grid",
 				"edit"
 			]
 		}

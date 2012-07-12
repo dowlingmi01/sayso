@@ -202,6 +202,7 @@
 #sayso-starbar #starbar-player-console .sb_theme_bgGradient,
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value,
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value-fading{
+
 	background-image: -webkit-gradient(
 	linear,
 	left top,
@@ -969,7 +970,7 @@
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle{
 	position: relative;
 	display: block;
-	height: 139px;
+	height: 116px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_user_level_icons_container{
@@ -2146,6 +2147,8 @@ p.sb_reminder {
 p.sb_promo_gettokens {
 	margin-bottom:0 !important;
 }
+
+
 /* Keep this at end of file. It's used for testing if CSS is loaded. */
 
 #sayso-starbar ._sayso_starbar_css_loaded {

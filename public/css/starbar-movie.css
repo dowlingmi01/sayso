@@ -405,6 +405,12 @@
 	background-repeat: no-repeat;
 }
 
+#sb_popBox_polls.sb_popBoxActive {
+	height: 404px;
+}
+#sb_popBox_polls .sb_popBoxInner {
+	height:382px;
+}
 
 #sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow{
 	position: relative;
@@ -517,7 +523,7 @@
 
 #sayso-starbar #starbar-player-console #starbar-level .sb_popBoxInner .sb_popContent{
 	width: 570px;
-	height: 360px;
+	height: 560px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-level .sb_popContent .sb_user-level{

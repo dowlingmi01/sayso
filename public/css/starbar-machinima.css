@@ -1447,7 +1447,7 @@
 	height: 55px;
 	float: left;
 	background-image: url('../images/machinima/img_level_blank.png');
-	background-position: center center;
+	background-position: center 0 !important;
 	background-repeat: no-repeat;
 }
 

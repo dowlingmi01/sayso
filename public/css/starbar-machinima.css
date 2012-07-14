@@ -509,7 +509,7 @@
 
 #sayso-starbar #starbar-player-console #starbar-level .sb_popBoxInner .sb_popContent{
 	width: 570px;
-	height: 360px;
+	height: 347px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-points .sb_popDisclaimer {
@@ -1253,7 +1253,7 @@
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle{
 	position: relative;
 	display: block;
-	height: 139px;
+	height: 122px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_user_level_icons_container{
@@ -1335,11 +1335,30 @@
 	background-position: center 0px;
 }
 
-#sayso-starbar #sb_popBox_user-level .sb_userLevel_next{
+ .sb_userLevel_next{
 	/*
 	opacity:0.5;
 	filter:alpha(opacity=50) !important;
 	*/
+}
+
+#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent {
+height: 359px !important;
+}
+
+#sayso-starbar #sb_popBox_user-level.sb_popBoxActive {
+	height: 398px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_popBoxInner {
+	height:378px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_scrollPane {
+	height: 339px !important;
+}
+#sayso-starbar .jspContainer {
+	height:320px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_empty{

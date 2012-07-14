@@ -523,7 +523,7 @@
 
 #sayso-starbar #starbar-player-console #starbar-level .sb_popBoxInner .sb_popContent{
 	width: 570px;
-	height: 385px;
+	height: 400px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-level .sb_popContent .sb_user-level{
@@ -685,6 +685,14 @@
 	width: 65%;
 	float: left;
 }
+
+#sayso-starbar #sb_popBox_surveys.sb_popBoxActive {
+	height: 404px;
+}
+#sayso-starbar #sb_popBox_surveys .sb_popBoxInner {
+	height:382px;
+}
+
 
 #sayso-starbar #sb_popBox_surveys li .sb_theme_button{
 	position: absolute;

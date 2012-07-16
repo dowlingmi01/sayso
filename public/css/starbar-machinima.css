@@ -509,9 +509,12 @@
 
 #sayso-starbar #starbar-player-console #starbar-level .sb_popBoxInner .sb_popContent{
 	width: 570px;
-	height: 347px;
+	height: 379px;
 }
 
+#sayso-starbar #starbar-player-console #starbar-level .sb_popBoxInner .sb_popContent .jspContainer {
+	height:382px;
+}
 #sayso-starbar #starbar-player-console #starbar-points .sb_popDisclaimer {
 	color:white;
 	font-size:10px;
@@ -1343,19 +1346,19 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent {
-height: 359px !important;
+height: 359px;
 }
 
 #sayso-starbar #sb_popBox_user-level.sb_popBoxActive {
-	height: 398px;
+	height: 406px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_popBoxInner {
-	height:378px;
+	height:384px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_scrollPane {
-	height: 339px !important;
+	height: 345px;
 }
 #sayso-starbar .jspContainer {
 	height:320px;

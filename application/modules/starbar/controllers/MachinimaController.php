@@ -244,17 +244,24 @@ class Starbar_MachinimaController extends Starbar_ContentController
 		parent::_assignShareInfoToView($shareLink, $twitterShareText, $facebookShareCaption, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
 		$this->view->assign('facebook_share_image_url', 'https://s3.amazonaws.com/say.so/media/Machinima/logo_machinima.png');
 	}
+
+
 	protected $_appShareLink = 'http://Machinima.Say.So';
 	protected $_fbkAppDescription = "Say.So is your way of making a lasting impact on the communities you love. Participating in Machinima | Recon is easy - by giving your opinion, answering polls and rating Machinima content, you gain points to redeem awesome prizes from Machinima.";
+	protected $_fbkOffer = "This month Machinima | Recon is giving away a Limited Edition Star Wars Xbox 360 Slim with Kinect AND a copy of Minecraft for the XBox!";
 
 	protected function _assignShareAppToView($facebookCallbackUrl) {
-		$twAppShareText = 'Join Machinima | Recon and get access to big giveaways and awesome prizes.';
-		$fbkAppShareTitle = 'Machinima Say.So';
-		$fbkAppShareCopy = "I just earned 19 Coins for sharing Machinima | Recon!
-Join Machinima | Recon and get access to big giveaways and awesome prizes.";
+		/*$twAppShareText = 'Join Machinima | Recon and get access to big giveaways and awesome prizes.';*/
+		$twAppShareText = 'Checking out Machinima | Recon @ bit.ly/RWdbNn . Earn Coins by giving your say-so and redeem them for prizes via @saysoapp';
+		$fbkAppShareTitle = 'Checking out Machinima | Recon';
+		/*$fbkAppShareCopy = "I just earned 19 Coins for sharing Machinima | Recon!
+Join Machinima | Recon and get access to big giveaways and awesome prizes.";*/
+		$fbkAppShareCopy = $this->_fbkOffer;
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twAppShareText, $fbkAppShareCopy,  $facebookCallbackUrl, $fbkAppShareTitle, $this->_fbkAppDescription);
 	}
+
+
 	protected function _assignShareSurveyToView(Survey $survey, $completed, $facebookCallbackUrl) {
 		switch ($survey->reward_category) {
 			case "premium":
@@ -271,12 +278,17 @@ Join Machinima | Recon and get access to big giveaways and awesome prizes.";
 				$redeemable = ($completed ? 38 : 19);
 				break;
 		}
-		$twShareText = 'I just answered the survey "' . $survey->title .'" and earned ' . $redeemable . " Machinima Coins! Join Machinima Say.So and earn great prizes!";
-		$fbkShareText = 'I just earned ' . $redeemable . ' Coins for answering the survey "'. $survey->title .'".
-Join Machinima | Recon and get access to big giveaways and awesome prizes.';
+		$twShareText = 'Just pocketed ' . $redeemable .' Coins by giving my Machinima say-so and finishing the survey "' . $survey->title .'". via @saysoapp';
+		/*$fbkShareText = 'I just earned ' . $redeemable . ' Coins for answering the survey "'. $survey->title .'". Join Machinima | Recon and get access to big giveaways and awesome prizes.'; */
+
+		$fbkShareText = 'I just pocketed ' . $redeemable . ' Coins by giving my Machinima say-so and finishing the survey "'. $survey->title .'".';
+		$fbkShareText .= "\n".$this->_fbkOffer;
+
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
 	}
+
+
 	protected function _assignSharePollToView(Survey $survey, $facebookCallbackUrl) {
 		switch ($survey->reward_category) {
 			case "premium":
@@ -291,18 +303,24 @@ Join Machinima | Recon and get access to big giveaways and awesome prizes.';
 				break;
 		}
 		$pollTitle = substr_compare($survey->title, '?', -1, 1) === 0 ? substr($survey->title, 0, -1) : $survey->title;
+		$sharepollTitle = "Machinima | Recon wants to know ".$pollTitle;
 		$twShareText = 'I just answered the poll "' . $pollTitle .'" and earned ' . $redeemable . " Coins! Join Machinima | Recon and get access to big giveaways and awesome prizes!";
 		$fbkShareText = 'I just earned ' . $redeemable . ' Coins for answering the poll "'. $pollTitle .'".
 Join Machinima | Recon and get access to big giveaways and awesome prizes.';
+		$fbkShareText .= "\n".$this->_fbkOffer;
 
-		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
+		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $sharepollTitle, $this->_fbkAppDescription);
 	}
 
 	protected function _assignShareTrailerToView(Survey $survey, $facebookCallbackUrl) {
-		$twShareText = 'I answered a Quiz, "'.$survey->title.'"! Join Machinima | Recon and earn great prizes!';
-		$fbkShareText = 'I just answered a Quiz, "'.$survey->title.'"!
-Join Machinima | Recon and get access big giveaways and awesome prizes.';
-
+		/*$twShareText = 'I answered a Quiz, "'.$survey->title.'"! Join Machinima | Recon and earn great prizes!';*/
+		$twShareText = 'Gave "'.$survey->title.'" trailer thumbs up. via @saysoapp';
+		/*$fbkShareText = 'I just answered a Quiz, "'.$survey->title.'"!
+Join Machinima | Recon and get access big giveaways and awesome prizes.';*/
+		/*$fbkShareText = 'I just answered a Quiz, "'.$survey->title.'"!
+Join Machinima | Recon and get access big giveaways and awesome prizes.';*/
+		$fbkShareText = 'Gave the "'.$survey->title.'" trailer thumbs up!';
+		$fbkShareText .= "\n".$this->fbkOffer;
 		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
 	}
 }

@@ -595,9 +595,11 @@
 								this should not affect the title container in some particular cases */
 }
 
-#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a
-{
-	/*color: #c02526 !important;*/
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a,
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a:active,
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a:visited,
+#sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-active a{
+	color: #c02526;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a {
@@ -2523,6 +2525,16 @@ height: 359px;
 #faqs h3.active  { color:#d74646; }
 #faqs div   { position:relative; }
 #faqs div p  { padding:0; margin-bottom:15px; }
+
+/* Nudge to feedback page */
+#feedback #tabs {
+	width:326px;
+	background-color:blue !important;
+}
+
+#feedback #tabs li a {
+	padding:5px 8px 5px 30px;
+}
 
 
 

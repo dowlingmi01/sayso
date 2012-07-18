@@ -246,7 +246,7 @@ class Starbar_MachinimaController extends Starbar_ContentController
 	}
 
 
-	protected $_appShareLink = 'http://Machinima.Say.So';
+	protected $_appShareLink = 'http://Recon.Say.So';
 	protected $_fbkAppDescription = "Say.So is your way of making a lasting impact on the communities you love. Participating in Machinima | Recon is easy - by giving your opinion, answering polls and rating Machinima content, you gain points to redeem awesome prizes from Machinima.";
 	protected $_fbkOffer = "This month Machinima | Recon is giving away a Limited Edition Star Wars Xbox 360 Slim with Kinect AND a copy of Minecraft for the XBox!";
 
@@ -282,10 +282,11 @@ Join Machinima | Recon and get access to big giveaways and awesome prizes.";*/
 		/*$fbkShareText = 'I just earned ' . $redeemable . ' Coins for answering the survey "'. $survey->title .'". Join Machinima | Recon and get access to big giveaways and awesome prizes.'; */
 
 		$fbkShareText = 'I just pocketed ' . $redeemable . ' Coins by giving my Machinima say-so and finishing the survey "'. $survey->title .'".';
-		$fbkShareText .= "\n".$this->_fbkOffer;
+		$fbkAppDescription = $this->_fbkOffer . "\n" . $this->_fbkAppDescription;
 
 
-		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
+
+		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $fbkAppDescription);
 	}
 
 
@@ -307,9 +308,10 @@ Join Machinima | Recon and get access to big giveaways and awesome prizes.";*/
 		$twShareText = 'I just answered the poll "' . $pollTitle .'" and earned ' . $redeemable . " Coins! Join Machinima | Recon and get access to big giveaways and awesome prizes!";
 		$fbkShareText = 'I just earned ' . $redeemable . ' Coins for answering the poll "'. $pollTitle .'".
 Join Machinima | Recon and get access to big giveaways and awesome prizes.';
-		$fbkShareText .= "\n".$this->_fbkOffer;
 
-		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $sharepollTitle, $this->_fbkAppDescription);
+		$fbkAppDescription = $this->_fbkOffer . "\n" . $this->_fbkAppDescription;
+
+		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $sharepollTitle, $fbkAppDescription);
 	}
 
 	protected function _assignShareTrailerToView(Survey $survey, $facebookCallbackUrl) {
@@ -320,7 +322,9 @@ Join Machinima | Recon and get access big giveaways and awesome prizes.';*/
 		/*$fbkShareText = 'I just answered a Quiz, "'.$survey->title.'"!
 Join Machinima | Recon and get access big giveaways and awesome prizes.';*/
 		$fbkShareText = 'Gave the "'.$survey->title.'" trailer thumbs up!';
-		$fbkShareText .= "\n".$this->fbkOffer;
-		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
+
+		$fbkAppDescription = $this->_fbkOffer . "\n" . $this->_fbkAppDescription;
+
+		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $fbkAppDescription);
 	}
 }

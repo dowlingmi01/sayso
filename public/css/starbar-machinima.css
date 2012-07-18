@@ -2519,6 +2519,11 @@ height: 359px;
 
 }
 
+/* Adjust height for the user profile */
+#sayso-starbar .sb_column6040BG {
+    height: 294px;
+}
+
 /* Hideaway faqs */
 #faqs { position:relative; }
 #faqs h3  { cursor:pointer; }

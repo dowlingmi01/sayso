@@ -3730,14 +3730,15 @@ a:focus {
   margin: -18px 0px 0px 0px;
 }
 #wrapper #main #jump {
-  padding: 20px 0px 0px 0px;
-  text-align: center;
+	padding: 10px 0 0 0;
+	text-align: center;
+	color:#a31919;
+	font-size:14px;
+	font-weight:bold;
+	margin:10px 0 10px 0;
+
 }
-#wrapper #main #jump p {
-  font-size: 14px;
-  text-align: center;
-  color: #a31919;
-}
+
 /* misc */
 img.centered {
   display: block;

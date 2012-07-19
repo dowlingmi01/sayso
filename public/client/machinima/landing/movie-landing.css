@@ -3549,9 +3549,10 @@ a.thumbnail:hover {
 }
 /* BEGIN FORMATTING */
 body {
-  background-color: #3c3c3c;
+  background-color: #000;
   background-image: url('images/bg_page.png');
-  background-repeat: repeat;
+  background-position: center top;
+  background-repeat: no-repeat;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
   font-weight: 400;

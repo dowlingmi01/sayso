@@ -1161,8 +1161,9 @@
 	height: 55px;
 	float: left;
 	background-image: url('../images/movie/img_level_blank.png');
-	background-position: center center;
+	background-position: center top !important;
 	background-repeat: no-repeat;
+	background-size:contain;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points{

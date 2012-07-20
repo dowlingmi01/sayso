@@ -1639,6 +1639,11 @@
 	width: 490px;
 }
 
+/* Adjust height for the user profile */
+#sayso-starbar .sb_column6040BG {
+    height: 279px;
+}
+
 /* Keep this at end of file. It's used for testing if CSS is loaded. */
 
 #sayso-starbar ._sayso_starbar_css_loaded {

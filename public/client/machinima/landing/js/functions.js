@@ -5,19 +5,21 @@
 /* trigger when page is ready */
 $(document).ready(function (){
 	var sectionNav = $('#section-nav');
+	var jumpNav = $('#jump');
+
 	var slideshows = $('.slideshow');
-	
+
 	var termsCheckbox = $('#agreeterms');
-	
+
 	var btnSubmit = $('#btn-submit');
-	
+
 	slideshows.each(function(){
 		var mySlideshow = $(this);
 		var sectionID = mySlideshow.parents('.section').attr('id');
-		
+
 		var myPrev = $('#'+sectionID+' .slide-nav .prev');
 		var myNext = $('#'+sectionID+' .slide-nav .next');
-		
+
 		$('.slides',mySlideshow).cycle({
 			timeout: 0,
 			fx:	'fade',
@@ -25,38 +27,49 @@ $(document).ready(function (){
 			prev:	myPrev,
 			next: myNext
 		});
-		
+
 	});
 
-	
+
 	$('ul li a',sectionNav).click(function (e) {
 	  e.preventDefault();
 	  validateInstall();
 	  $(this).tab('show');
-	  
-	  var myClass = $(this).attr('data-class');	  
+
+	  var myClass = $(this).attr('data-class');
 	  sectionNav.attr('class','');
 	  sectionNav.attr('class',myClass);
-	  
+
 	  //$('#'+myClass+' #slideshow #slides').cycle();
-	  
-	  
+
+
 	});
-	
+
+	$('a',jumpNav).click(function (e) {
+	  e.preventDefault();
+	  validateInstall();
+	  $(this).tab('show');
+
+	  var myClass = $(this).attr('data-class');
+	  sectionNav.attr('class','');
+	  sectionNav.attr('class',myClass);
+
+	});
+
 	$('a[data-toggle="tab"]').on('shown', function (e) {
 	  e.target // activated tab
-	  e.relatedTarget // previous tab	  
+	  e.relatedTarget // previous tab
 	})
-	
+
 	function validateInstall() {
 		var msg = false;
 		if( window.$SaySoExtension )
 			msg = 'You already have Say.So installed';
 		if( !saysoConf.bn.isSupported ) {
 			if( saysoConf.bn.isMobile ) {
-				msg = 'Sorry! Movie Say.So isn\'t yet available for mobile browsers. Join us via your computer when you can!';
+				msg = 'Sorry! Machinima.Say.So isn\'t yet available for mobile browsers. Join us via your computer when you can!';
 			} else {
-				msg = 'Sorry, your web browser doesn\'t support the cool features of Movie Say.So. For an optimal experience, use the latest versions of Chrome (www.google.com/chrome), Firefox (www.getfirefox.com) or Safari (www.apple.com/safari). And we support Internet Explorer 8 and above.';
+				msg = 'Sorry, your web browser doesn\'t support the cool features of Machinima.Say.So. For an optimal experience, use the latest versions of Chrome (www.google.com/chrome), Firefox (www.getfirefox.com) or Safari (www.apple.com/safari). And we support Internet Explorer 8 and above.';
 			}
 		}
 		if( msg ) {
@@ -66,19 +79,19 @@ $(document).ready(function (){
 		}
 	}
 	var emailEl = $('#input-email'), passwordEl = $('#input-password'), confirmationEl = $('#input-confirmation');
-	
+
 	termsCheckbox.on('click', activateGrabIt);
 	emailEl.on('keyup change', activateGrabIt);
 	passwordEl.on('keyup change', activateGrabIt);
 	confirmationEl.on('keyup change', activateGrabIt);
-	
+
 	function activateGrabIt() {
 		if( !validateFields() )
 			btnSubmit.removeAttr('disabled');
 		else
 			btnSubmit.attr('disabled',true);
 	}
-	
+
 	function validateFields() {
 		var emailadd = emailEl.val();
 		if( emailadd.length < 1 )
@@ -97,15 +110,15 @@ $(document).ready(function (){
 			return "Woops - Your passwords do not match.<br>Please reenter your password";
 		if( pwd1.length < 6 || pwd1.length > 12 )
 			return "Woops - Your password needs to have between 6 and 12 characters.<br>Please reenter your password";
-		
+
 		if( !termsCheckbox.is(':checked') )
 			return "Woops - Please accept the terms and conditions"
-				
+
 		return false;
 	}
-	
+
 	btnSubmit.on('click', onGrabIt);
-	
+
 	function onGrabIt(e) {
 		e.preventDefault();
 		var errMsg;
@@ -130,7 +143,7 @@ $(document).ready(function (){
 		} else
 			showWarning(errMsg);
 	}
-	
+
 	function onPasswordResponse( response ) {
 		if (response.status && response.status == "error") {
 			showWarning(response.data.message);
@@ -144,18 +157,18 @@ $(document).ready(function (){
 			location.href = downloadLocation;
 		}
 	}
-	
+
 }); // end document.ready
 
 
 /* optional triggers
 
 $(window).load(function() {
-	
+
 });
 
 $(window).resize(function() {
-	
+
 });
 
 */

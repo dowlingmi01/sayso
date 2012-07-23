@@ -123,6 +123,14 @@
 			]
 		},
 		{
+			"colname": "display_number_of_questions",
+			"type": "number",
+			"displaywhen": [
+				"detail",
+				"edit"
+			]
+		},
+		{
 			"colname": "start_after",
 			"filterwidth":40,
 			"type": "number",

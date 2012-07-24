@@ -158,7 +158,7 @@ class Notification_MessageCollection extends RecordCollection
 		$queuedMessages = new Notification_MessageCollection();
 		$queuedMessages->loadQueuedMessagesForStarbarAndUser($starbarId, $userId);
 		foreach ($queuedMessages as $message) {
-			if ($message->validateForUser($userId)) {
+			if ($message->validateForUser($userId, $starbarId)) {
 				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId, false, true); // Mark notified if needed
 				$this->addItem($message);
 			} else {
@@ -171,7 +171,7 @@ class Notification_MessageCollection extends RecordCollection
 		$previouslyUnscheduledMessages = new Notification_MessageCollection();
 		$previouslyUnscheduledMessages->loadPreviouslyUnscheduledMessagesForStarbarAndUser($starbarId, $starbarStowed, $userId);
 		foreach ($previouslyUnscheduledMessages as $message) {
-			if ($message->validateForUser($userId)) { // user should see this message, so append to collection
+			if ($message->validateForUser($userId, $starbarId)) { // user should see this message, so append to collection
 				$this->addItem($message);
 				// add user_map
 				$messageUserMap = new Notification_MessageUserMap();

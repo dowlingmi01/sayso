@@ -47,7 +47,7 @@ class User_State extends Record
 
 	public function getStarbarList( $user_id ) {
 		//$sql  = "SELECT s.id, s.short_name, s.label FROM starbar_user_map sm, starbar s WHERE s.id = sm.starbar_id AND sm.user_id = ?";
-		$sql  = "SELECT s.id, s.short_name, s.label, sm.active FROM starbar s LEFT JOIN starbar_user_map sm ON (s.id = sm.starbar_id AND sm.user_id = ?) WHERE s.id > 1";
+		$sql  = "SELECT s.id, s.short_name, s.label, sm.active FROM starbar s LEFT JOIN starbar_user_map sm ON (s.id = sm.starbar_id AND sm.user_id = ?) WHERE s.id > 1 ORDER BY active DESC";
 		$result = array();
 		$res = Db_Pdo::fetchAll($sql, $user_id);
 		foreach( $res as $sb )

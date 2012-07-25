@@ -1,5 +1,12 @@
-<div><ul>
-<? foreach( $this->starbars as $starbar) { ?>
-	<li class="sb_starbar-switch" rel="<?= $starbar["id"]?>"><img src="//<?= BASE_DOMAIN ?>/images/<?=$starbar["short_name"]?>/logo_<?=$starbar["short_name"]?>.png" alt="<?=$starbar["label"]?>"><?=$starbar["active"]?"":"+"?></li>
+<? $starbars = array_values($this->starbars); ?>
+<div><ul class="sb_active_starbars">
+<? while( array_key_exists(0, $starbars) && $starbars[0]["active"] ) { ?>
+	<li class="sb_starbar-switch" rel="<?= $starbars[0]["id"]?>"><img src="//<?= BASE_DOMAIN ?>/images/<?=$starbars[0]["short_name"]?>/logo_<?=$starbars[0]["short_name"]?>.png" alt="<?=$starbars[0]["label"]?>"></li>
+<?
+		array_shift($starbars);
+} ?>
+</ul><ul class="sb_inactive_starbars">
+<? foreach( $starbars as $starbar) { ?>
+	<li class="sb_starbar-switch" rel="<?= $starbar["id"]?>"><img src="//<?= BASE_DOMAIN ?>/images/<?=$starbar["short_name"]?>/logo_<?=$starbar["short_name"]?>.png" alt="<?=$starbar["label"]?>"></li>
 <? } ?>
 </ul></div>

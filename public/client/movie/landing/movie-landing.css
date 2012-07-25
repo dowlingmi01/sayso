@@ -3697,6 +3697,7 @@ a:focus {
   width: 700px;
   height: 310px;
   margin: 10px auto 0px auto;
+  background: transparent !important;
 }
 #wrapper #main .slideshow .slide-nav {
   width: 760px;
@@ -3730,15 +3731,14 @@ a:focus {
   margin: -18px 0px 0px 0px;
 }
 #wrapper #main #jump {
-	padding: 10px 0 0 0;
-	text-align: center;
-	color:#a31919;
-	font-size:14px;
-	font-weight:bold;
-	margin:10px 0 10px 0;
-
+  padding: 20px 0px 0px 0px;
+  text-align: center;
 }
-
+#wrapper #main #jump p {
+  font-size: 14px;
+  text-align: center;
+  color: #a31919;
+}
 /* misc */
 img.centered {
   display: block;

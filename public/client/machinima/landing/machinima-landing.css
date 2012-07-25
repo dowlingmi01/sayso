@@ -3698,6 +3698,7 @@ a:focus {
   width: 700px;
   height: 310px;
   margin: 10px auto 0px auto;
+  background: transparent !important;
 }
 #wrapper #main .slideshow .slide-nav {
   width: 760px;

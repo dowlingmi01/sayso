@@ -87,12 +87,14 @@ class Notification_Message extends Record
 				break;
 
 			case 'New Quizzes':
-				if (! Survey_ResponseCollection::checkIfUserHasSurveys($userId, $starbarId, 'quiz', 'new')) return false;
-				break;
+				return false;
+//				if (! Survey_ResponseCollection::checkIfUserHasSurveys($userId, $starbarId, 'quiz', 'new')) return false;
+//				break;
 
 			case 'New Trailers':
-				if (! Survey_ResponseCollection::checkIfUserHasSurveys($userId, $starbarId, 'trailer', 'new')) return false;
-				break;
+				return false;
+//				if (! Survey_ResponseCollection::checkIfUserHasSurveys($userId, $starbarId, 'trailer', 'new')) return false;
+//				break;
 		}
 
 		return true;

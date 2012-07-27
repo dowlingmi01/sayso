@@ -1515,6 +1515,11 @@
 	color:#fff;
 }
 
+#sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_opts .sb_rating_choice_text
+{
+	width:240px;
+}
+
 #sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_opts .sb_radio_text
 {
 	color:#A92614;

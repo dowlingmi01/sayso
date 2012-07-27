@@ -1057,12 +1057,13 @@ $SQ(function(){
 				}
 
 				containerElem.cycle({
-					prev :	'#sb_userLevel_prev',
-					next:		'#sb_userLevel_next',
-					fx: 		'scrollHorz',
-					speed:	500,
-					timeout:	0,
-					startingSlide: parseInt(Math.floor((currentLevel - 1) / numberOfVisibleLevels))
+					prev :			'#sb_userLevel_prev',
+					next:			'#sb_userLevel_next',
+					fx: 			'scrollHorz',
+					speed:			500,
+					timeout:		0,
+					nowrap:			true,
+					startingSlide:	parseInt(Math.floor((currentLevel - 1) / numberOfVisibleLevels))
 				});
 			});
 		}
@@ -1270,7 +1271,7 @@ $SQ(function(){
 		if (user.username)
 			$SQ('.sb_user_title').removeClass('sb_user_level_title').html(user.username);
 	}
-	
+
 	function updateProfile() {
 		forge.message.broadcastBackground( 'update-profile');
 	}

@@ -2461,6 +2461,11 @@ height: 359px;
 	color:#fff;
 }
 
+#sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_opts .sb_rating_choice_text
+{
+	width:240px;
+}
+
 #sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_opts label
 {
 	margin-top:1px;

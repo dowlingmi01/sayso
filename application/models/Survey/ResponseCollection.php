@@ -57,33 +57,37 @@ class Survey_ResponseCollection extends RecordCollection
 		if ($lastDayOfSurveysUserShouldSee < 1) $lastDayOfSurveysUserShouldSee = 1;
 
 		if (in_array($type, array('survey', 'poll', 'quiz', 'trailer'))) {
-			$sql = "INSERT INTO survey_response (survey_id, user_id, status, created)
-						SELECT s.id, sum.user_id, 'new', now()
-						FROM survey s
-						INNER JOIN starbar_survey_map ssm
-							ON s.id = ssm.survey_id
-							AND ssm.starbar_id = ?
-							AND ssm.start_at < now()
-							AND (ssm.end_at > now() OR ssm.end_at = '0000-00-00 00:00:00')
-							AND (
-								(ssm.start_day >= ? AND ssm.start_day <= ?)
-								OR
-								(ssm.start_day IS NULL OR ssm.start_day = 0)
-							)
-						RIGHT JOIN starbar_user_map sum
-							ON sum.user_id = ?
-							AND sum.starbar_id = ?
-						WHERE s.type = ?
-							AND s.id NOT IN (SELECT survey_id FROM survey_response WHERE user_id = ?)
-							AND s.status = 'active'
-							AND (
-								(UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(sum.created)) > ssm.start_after
-								OR
-								ssm.start_after IS NULL
-							)
-						".$limitClause."
+			$sql = "SELECT s.id
+					FROM survey s
+					INNER JOIN starbar_survey_map ssm
+						ON s.id = ssm.survey_id
+						AND ssm.starbar_id = ?
+						AND ssm.start_at < now()
+						AND (ssm.end_at > now() OR ssm.end_at = '0000-00-00 00:00:00')
+						AND (
+							(ssm.start_day >= ? AND ssm.start_day <= ?)
+							OR
+							(ssm.start_day IS NULL OR ssm.start_day = 0)
+						)
+					RIGHT JOIN starbar_user_map sum
+						ON sum.user_id = ?
+						AND sum.starbar_id = ?
+					WHERE s.type = ?
+						AND s.id NOT IN (SELECT survey_id FROM survey_response WHERE user_id = ?)
+						AND s.status = 'active'
+						AND (
+							(UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(sum.created)) > ssm.start_after
+							OR
+							ssm.start_after IS NULL
+						)
+					".$limitClause."
 					";
-			Db_Pdo::execute($sql, $starbarId, $firstDayOfSurveysUserShouldSee, $lastDayOfSurveysUserShouldSee, $userId, $starbarId, $type, $userId);
+			$newSurveyIds = Db_Pdo::fetchColumn($sql, $starbarId, $firstDayOfSurveysUserShouldSee, $lastDayOfSurveysUserShouldSee, $userId, $starbarId, $type, $userId);
+			if (!$newSurveyIds || !count($newSurveyIds)) return;
+			foreach ($newSurveyIds as $newSurveyId) {
+				$newSurveyId = (int) $newSurveyId;
+				Db_Pdo::execute("INSERT INTO survey_response (survey_id, user_id, status) VALUES (" . $newSurveyId . ", " . $userId . ", 'new')");
+			}
 		}
 	}
 

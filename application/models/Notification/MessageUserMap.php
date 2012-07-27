@@ -27,16 +27,16 @@ class Notification_MessageUserMap extends Record
 					|| (!strtotime($this->notified) && $markNotified)
 				)
 			) {
-				if (!strtotime($this->notified) && $markNotified) $this->notified = date('Y-m-d H:i:s');
-				if ($markClosed) $this->closed = date('Y-m-d H:i:s');
+				if (!strtotime($this->notified) && $markNotified) $this->notified = new Zend_Db_Expr('now()');
+				if ($markClosed) $this->closed = new Zend_Db_Expr('now()');
 				$this->save();
 
 			// Otherwise insert!
 			} elseif (! $this->id){
 				$this->notification_message_id = $messageId;
 				$this->user_id = $userId;
-				if ($markNotified) $this->notified = date('Y-m-d H:i:s');
-				if ($markClosed) $this->closed = date('Y-m-d H:i:s');
+				if ($markNotified) $this->notified = new Zend_Db_Expr('now()');
+				if ($markClosed) $this->closed = new Zend_Db_Expr('now()');
 				$this->save();
 			}
 		}

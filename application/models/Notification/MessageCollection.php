@@ -39,6 +39,22 @@ class Notification_MessageCollection extends RecordCollection
 			$starbarStowedClause = " AND nm.short_name <> 'Checking in' ";
 		}
 
+		// Get previously scheduled groups to be excluded
+		$sql = "SELECT nmg.id
+				FROM notification_message_group nmg
+				INNER JOIN notification_message nm
+					ON nmg.id = nm.notification_message_group_id
+				INNER JOIN notification_message_user_map nmum
+					ON nmum.notification_message_id = nm.id
+					AND nmum.user_id = ?
+				WHERE nmg.starbar_id = ?
+				GROUP BY nmg.id
+		";
+		$data = Db_Pdo::fetchColumn($sql, $userId, $starbarId);
+		if (!$data || !count($data)) return;
+
+		$previouslyScheduledNotificationGroupIds = implode(",", $data);
+
 		$sql = "
 			SELECT * FROM (
 				SELECT nm.*
@@ -53,19 +69,15 @@ class Notification_MessageCollection extends RecordCollection
 						ON user.id = ?
 						AND ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(user.created)) > nmg.start_after
 							OR nmg.start_after IS NULL)
-					LEFT JOIN notification_message_user_map nmum
-						ON nmum.notification_message_id = nm.id
-							AND nmum.user_id = ?
-							AND nmg.id = nm.notification_message_group_id
-				WHERE nmum.id IS NULL
+				WHERE nmg.id NOT IN (".$previouslyScheduledNotificationGroupIds.")
 					".$starbarStowedClause."
-				ORDER BY nm.ordinal ASC, nmum.id DESC
+				ORDER BY nm.ordinal ASC
 			) AS S
 			GROUP BY notification_message_group_id
 			ORDER BY ordinal ASC
 		";
 
-		$data = Db_Pdo::fetchAll($sql, $starbarId, $userId, $userId);
+		$data = Db_Pdo::fetchAll($sql, $starbarId, $userId);
 
 		if ($data) {
 			$this->build($data, new Notification_Message());
@@ -130,10 +142,10 @@ class Notification_MessageCollection extends RecordCollection
 						WHERE nmum.user_id = ?
 							AND nmum.closed = '0000-00-00 00:00:00'
 					)
-				ORDER BY nm.ordinal ASC, nmum.id DESC
+					AND nmum.id IS NOT NULL
+				ORDER BY nmum.id DESC
 			) AS S
 			GROUP BY notification_message_group_id
-			ORDER BY ordinal ASC
 		";
 
 		$data = Db_Pdo::fetchAll($sql, $starbarId, $userId, $userId, $userId);

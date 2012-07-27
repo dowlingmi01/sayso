@@ -30,10 +30,10 @@ class Game_Starbar_Snakkle extends Game_Starbar {
 		if ($good->getId() == $this->_economy->getGoodId('MONTH_ONE_GIVEAWAY')) {
 			$good->setNonRedeemReason('Congrats to Spandana B from Chicago, IL on winning the first grand prize!');
 			$good->setCommentForUser('Unavailable');
-		/*} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_TWO_GIVEAWAY')) {
-			$good->setNonRedeemReason('Congrats to Mike B. from New York, NY for winning the week 2 prize!');
+		} elseif ($good->getId() == $this->_economy->getGoodId('MONTH_TWO_GIVEAWAY')) {
+			$good->setNonRedeemReason('The 2nd monthly giveaway winner will be announced soon!');
 			$good->setCommentForUser('Unavailable');
-		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_THREE_GIVEAWAY')) {
+		/*} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_THREE_GIVEAWAY')) {
 			$good->setNonRedeemReason('Congrats to Matthew L. from Black Mt, NC for winning the week 3 prize!');
 			$good->setCommentForUser('Unavailable');
 		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_FOUR_GIVEAWAY')) {

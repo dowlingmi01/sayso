@@ -190,7 +190,7 @@
 			},
 			playerVars : {
 				'iv_load_policy' :	3,
-				'controls' : 1,
+				'controls' : <?= (APPLICATION_ENV == "production" ? "0" : "1") ?>,
 				'disablekb' : 1,
 				'rel' : 0,
 				'showinfo' : 0

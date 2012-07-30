@@ -20,7 +20,15 @@ class Survey_TrailerInfo extends Record
 				$choiceTitles[] = "The trailer was worse than the movie.";
 				$choiceTitles[] = "I haven't seen the movie.";
 				break;
-			case "game":
+			case "pre-release movie":
+				$question1Title = "Rate this pre-release movie trailer.";
+				$question2Title = "Did the trailer affect your decision to want to see this movie in a theater?";
+				$choiceTitles[] = "After seeing the trailer, I have no interest in seeing this movie in a theater or otherwise.";
+				$choiceTitles[] = "The trailer didn't convince me to see it in a theater; but I'll wait and see it on DVD or stream it.";
+				$choiceTitles[] = "The trailer didn't affect my decision one way or another to see the movie.";
+				$choiceTitles[] = "The trailer made me more interested in seeing the movie in a theater.";
+				break;
+			case "pre-release game":
 				$question1Title = "Rate this pre-release game trailer.";
 				$question2Title = "Did the trailer impact your decision to want to buy or play this game?";
 				$choiceTitles[] = "After seeing the trailer, I won't buy or play the game.";

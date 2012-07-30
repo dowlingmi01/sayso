@@ -61,7 +61,8 @@
 			"type": "list",
 			"listoptions": [
 				"retro movie",
-				"game"
+				"pre-release movie",
+				"pre-release game"
 			],
 			"default": "retro movie",
 			"displaywhen": [

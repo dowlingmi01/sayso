@@ -8,6 +8,6 @@ class Client_Machinima
 		if( $env === 'PROD' )
 			return 'http://www.machinima.com/';
 		else
-			return 'http://client.' . Registry::getConfig()->baseDomain . '/machinima/home';
+			return 'http://' . Registry::getConfig()->baseDomain . '/client/machinima/landing';
 	}
 }

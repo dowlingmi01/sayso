@@ -9,7 +9,7 @@ call scripts\activate.bat
 popd
 
 pushd app
-echo var sayso = { baseDomain: '%basedomain%', version: '2.0.1' }; > src\js\config.js
+echo var sayso = { baseDomain: '%basedomain%', version: '2.0.2' }; > src\js\config.js
 if %ERRORLEVEL% NEQ 0 goto end
 call forge build || goto end
 popd

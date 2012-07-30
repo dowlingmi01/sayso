@@ -468,7 +468,7 @@ $SQ(function(){
 	} // end initElements()
 
 	function closePopBox(keepNotifications){
-		if (!elemPopBox.is(':visible')) return; // all pop boxes are already closed
+		if (!elemPopBox || !elemPopBox.is(':visible')) return; // all pop boxes are already closed
 		elemPopBox.each(function(){
 			$SQ(this).removeClass('sb_popBoxActive');
 			$SQ(this).hide();

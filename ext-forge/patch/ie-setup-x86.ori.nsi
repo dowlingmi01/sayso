@@ -30,22 +30,22 @@ Page instfiles
 
 # Installer attributes
 RequestExecutionLevel admin
-OutFile "Say.So-2.0.1-x86.exe"
+OutFile "Say.So-2.0.2-x86.exe"
 InstallDir "$PROGRAMFILES\Say.So"
 DirText "This will install Say.So on your computer. Choose a directory"
 CRCCheck on
 XPStyle on
 
 ShowInstDetails show
-!define VERSION_SHORT "2.0.1"
+!define VERSION_SHORT "2.0.2"
 ${VersionCompleteXXXX} ${VERSION_SHORT} VIPV
 VIProductVersion ${VIPV}
 VIAddVersionKey ProductName "Say.So"
-VIAddVersionKey ProductVersion "2.0.1"
+VIAddVersionKey ProductVersion "2.0.2"
 VIAddVersionKey CompanyName "Say.So LLC"
 VIAddVersionKey LegalCopyright "(c) Say.So LLC"
 VIAddVersionKey CompanyWebsite "http://www.say.so/"
-VIAddVersionKey FileVersion "2.0.1"
+VIAddVersionKey FileVersion "2.0.2"
 VIAddVersionKey FileDescription "Say.So"
 
 # Installer 
@@ -114,7 +114,7 @@ Section
         WriteRegStr   HKLM "${ARP}" "DisplayName"      "Say.So (remove only)"
         WriteRegStr   HKLM "${ARP}" "UninstallString"  "$INSTDIR\Uninstall.exe" 
         WriteRegStr   HKLM "${ARP}" "Publisher"        "Say.So LLC"
-        WriteRegStr   HKLM "${ARP}" "DisplayVersion"   "2.0.1"
+        WriteRegStr   HKLM "${ARP}" "DisplayVersion"   "2.0.2"
         WriteRegDWORD HKLM "${ARP}" "EstimatedSize"    "${ESTIMATED_SIZE}"
         
 
@@ -156,6 +156,9 @@ Section "Uninstall"
     DeleteRegValue HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Ext\CLSID"                         "{12830336-3A64-4672-0FE0-9C18A0AFA2BD}" 
     DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Say.So"
     DeleteRegKey HKCU "Software\Say.So"
+
+    ; Remove application preferences
+    DeleteRegKey HKCU "Software\AppDataLow\trigger.io\4093d42274ec11e1a41a12313d1adcbe"
 
     ; Being for the benefit of Mr AV Vendor there will be a twiddling of bits.
     Nop

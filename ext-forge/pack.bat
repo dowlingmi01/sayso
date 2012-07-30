@@ -21,7 +21,7 @@ xcopy /s app\development\forge.safariextension\* "safaribuild\%filename%.safarie
 if %ERRORLEVEL% NEQ 0 goto end
 
 pushd app\development\ie
-rem echo !define SAYSO_BASE_DOMAIN "%basedomain%" > dist\saysoconf.nsh
+copy ..\..\..\launchIE\Debug\launchIE.exe dist
 makensis /DSAYSO_BASE_DOMAIN=%basedomain% /V3 dist\setup-x86.nsi
 if %ERRORLEVEL% NEQ 0 goto end
 copy /b dist\*-x86.exe "..\..\..\..\public\install\ie\%filename%-Setup.exe"

@@ -1,6 +1,7 @@
 /*! Copyright 2011 Trigger Corp. All rights reserved. */
 (function() {
     var m = {};
+    var h = {};
     m.config = {
         modules: {
             logging: {
@@ -8,7 +9,7 @@
             }
         }
     };
-    var h = {};
+    m.config.uuid = "UUID_HERE";
     h.listeners = {};
     var d = {};
     var g = [];
@@ -167,16 +168,254 @@
         r = r.substring(0, r.length - 1);
         return q + (r ? "?" + r : "")
     };
+    h.disabledModule = function(p, q) {
+        var r = "The '" + q + "' module is disabled for this app, enable it in your app config and rebuild in order to use this function";
+        m.logging.error(r);
+        p && p({
+            message: r,
+            type: "UNAVAILABLE",
+            subtype: "DISABLED_MODULE"
+        })
+    };
     m.enableDebug = function() {
         h.debug = true;
         h.priv.call("internal.showDebugWarning", {}, null, null);
         h.priv.call("internal.hideDebugWarning", {}, null, null)
     };
     setTimeout(function() {
-        if (window.forge.debug) {
+        if (window.forge && window.forge.debug) {
             alert("Warning!\n\n'forge.debug = true;' is no longer supported\n\nUse 'forge.enableDebug();' instead.")
         }
     }, 3000);
+    m.barcode = {
+        scan: function(q, p) {
+            h.disabledModule(p, "barcode")
+        }
+    };
+    m.button = {
+        setIcon: function(q, r, p) {
+            h.disabledModule(p, "button")
+        },
+        setURL: function(q, r, p) {
+            h.disabledModule(p, "button")
+        },
+        onClicked: {
+            addListener: function(p) {
+                h.disabledModule(error, "button")
+            }
+        },
+        setBadge: function(q, r, p) {
+            h.disabledModule(p, "button")
+        },
+        setBadgeBackgroundColor: function(q, r, p) {
+            h.disabledModule(p, "button")
+        },
+        setTitle: function(r, q, p) {
+            h.disabledModule(p, "button")
+        }
+    };
+    m.contact = {
+        select: function(q, p) {
+            h.priv.call("contact.select", {}, q, p)
+        }
+    };
+    m.document = {
+        reload: function() {
+            return document.location.reload()
+        },
+        location: function(q, p) {
+            q(document.location)
+        }
+    };
+    m.event = {
+        menuPressed: {
+            addListener: function(q, p) {
+                h.addEventListener("menuPressed", q)
+            }
+        },
+        messagePushed: {
+            addListener: function(q, p) {
+                h.addEventListener("event.messagePushed", q)
+            }
+        },
+        orientationChange: {
+            addListener: function(q, p) {
+                h.addEventListener("event.orientationChange", q);
+                if (nullObj && h.currentOrientation !== nullObj) {
+                    h.priv.receive({
+                        event: "event.orientationChange"
+                    })
+                }
+            }
+        },
+        connectionStateChange: {
+            addListener: function(q, p) {
+                h.addEventListener("event.connectionStateChange", q);
+                if (nullObj && h.currentConnectionState !== nullObj) {
+                    h.priv.receive({
+                        event: "event.connectionStateChange"
+                    })
+                }
+            }
+        },
+        appPaused: {
+            addListener: function(q, p) {
+                h.addEventListener("event.appPaused", q)
+            }
+        },
+        appResumed: {
+            addListener: function(q, p) {
+                h.addEventListener("event.appResumed", q)
+            }
+        }
+    };
+    m.facebook = {
+        authorize: function(q, r, p) {
+            if (typeof q == "function") {
+                p = r;
+                r = q;
+                q = []
+            }
+            h.disabledModule(p, "facebook")
+        },
+        logout: function(q, p) {
+            h.disabledModule(p, "facebook")
+        },
+        api: function(q, t, s, r, p) {
+            if (typeof t == "function" || arguments.length == 1) {
+                p = s
+            } else {
+                if (typeof s == "function" || arguments.length == 2) {
+                    p = r
+                }
+            }
+            h.disabledModule(p, "facebook")
+        },
+        ui: function(r, q, p) {
+            h.disabledModule(p, "facebook")
+        }
+    };
+    m.file = {
+        getImage: function(q, r, p) {
+            if (typeof q === "function") {
+                p = r;
+                r = q;
+                q = {}
+            }
+            if (!q) {
+                q = {}
+            }
+            h.priv.call("file.getImage", q, r &&
+            function(t) {
+                var s = {
+                    uri: t,
+                    name: "Image",
+                    type: "image"
+                };
+                if (q.width) {
+                    s.width = q.width
+                }
+                if (q.height) {
+                    s.height = q.height
+                }
+                r(s)
+            }, p)
+        },
+        getVideo: function(q, r, p) {
+            if (typeof q === "function") {
+                p = r;
+                r = q;
+                q = {}
+            }
+            if (!q) {
+                q = {}
+            }
+            h.priv.call("file.getVideo", q, r &&
+            function(t) {
+                var s = {
+                    uri: t,
+                    name: "Video",
+                    type: "video"
+                };
+                r(s)
+            }, p)
+        },
+        getLocal: function(q, r, p) {
+            m.tools.getURL(q, function(s) {
+                r({
+                    uri: s,
+                    name: q
+                })
+            }, p)
+        },
+        base64: function(q, r, p) {
+            h.priv.call("file.base64", q, r, p)
+        },
+        string: function(q, r, p) {
+            m.request.ajax({
+                url: q.uri,
+                success: r,
+                error: p
+            })
+        },
+        URL: function(r, s, t, q) {
+            if (typeof s === "function") {
+                q = t;
+                t = s
+            }
+            var p = {};
+            for (prop in r) {
+                p[prop] = r[prop]
+            }
+            p.height = s.height || r.height || undefined;
+            p.width = s.width || r.width || undefined;
+            h.priv.call("file.URL", p, t, q)
+        },
+        isFile: function(q, r, p) {
+            if (!q || !("uri" in q)) {
+                r(false)
+            } else {
+                h.priv.call("file.isFile", q, r, p)
+            }
+        },
+        cacheURL: function(q, r, p) {
+            h.priv.call("file.cacheURL", {
+                url: q
+            }, r &&
+            function(s) {
+                r({
+                    uri: s
+                })
+            }, p)
+        },
+        remove: function(q, r, p) {
+            h.priv.call("file.remove", q, r, p)
+        },
+        clearCache: function(q, p) {
+            h.priv.call("file.clearCache", {}, q, p)
+        }
+    };
+    m.geolocation = {
+        getCurrentPosition: function(s, r, t) {
+            if (typeof(s) === "object") {
+                var q = s,
+                    u = r,
+                    p = t
+            } else {
+                var u = s,
+                    p = r,
+                    q = t
+            }
+            return navigator.geolocation.getCurrentPosition(u, p, q)
+        }
+    };
+    m.internal = {
+        ping: function(q, r, p) {
+            h.priv.call("internal.ping", {
+                data: [q]
+            }, r, p)
+        }
+    };
     m.is = {
         mobile: function() {
             return false
@@ -220,124 +459,6 @@
             wifi: function() {
                 return true
             }
-        }
-    };
-    m.button = {
-        setIcon: function(q, r, p) {
-            h.priv.call("button.setIcon", q, r, p)
-        },
-        setURL: function(q, r, p) {
-            h.priv.call("button.setURL", q, r, p)
-        },
-        onClicked: {
-            addListener: function(p) {
-                h.priv.call("button.onClicked.addListener", null, p)
-            }
-        },
-        setBadge: function(q, r, p) {
-            h.priv.call("button.setBadge", q, r, p)
-        },
-        setBadgeBackgroundColor: function(q, r, p) {
-            h.priv.call("button.setBadgeBackgroundColor", q, r, p)
-        },
-        setTitle: function(r, q, p) {
-            h.priv.call("button.setTitle", r, q, p)
-        }
-    };
-    m.message = {
-        listen: function(q, r, p) {
-            p && p({
-                message: "Forge Error: message.listen must be overridden by platform specific code",
-                type: "UNAVAILABLE"
-            })
-        },
-        broadcast: function(q, r, s, p) {
-            p && p({
-                message: "Forge Error: message.broadcast must be overridden by platform specific code",
-                type: "UNAVAILABLE"
-            })
-        },
-        broadcastBackground: function(q, r, s, p) {
-            p && p({
-                message: "Forge Error: message.broadcastBackground must be overridden by platform specific code",
-                type: "UNAVAILABLE"
-            })
-        },
-        toFocussed: function(q, r, s, p) {
-            h.priv.call("message.toFocussed", {
-                type: q,
-                content: r
-            }, s, p)
-        }
-    };
-    m.notification = {
-        create: function(s, r, q, p) {
-            h.priv.call("notification.create", {
-                title: s,
-                text: r
-            }, q, p)
-        }
-    };
-    m.request = {
-        get: function(q, r, p) {
-            m.request.ajax({
-                url: q,
-                dataType: "text",
-                success: r &&
-                function() {
-                    try {
-                        arguments[0] = JSON.parse(arguments[0])
-                    } catch (s) {}
-                    r.apply(this, arguments)
-                },
-                error: p
-            })
-        },
-        ajax: function(r) {
-            var p = r.dataType;
-            if (p == "xml") {
-                r.dataType = "text"
-            }
-            var s = r.success &&
-            function(v) {
-                try {
-                    if (p == "xml") {
-                        var u, t;
-                        if (window.DOMParser) {
-                            u = new DOMParser();
-                            t = u.parseFromString(v, "text/xml")
-                        } else {
-                            t = new ActiveXObject("Microsoft.XMLDOM");
-                            t.async = "false";
-                            t.loadXML(v)
-                        }
-                        v = t
-                    }
-                } catch (w) {}
-                r.success && r.success(v)
-            };
-            var q = r.error &&
-            function(t) {
-                if (t.status == "error" && !t.err) {
-                    m.logging.log("AJAX request to " + r.url + " failed, have you included that url in the permissions section of the config file for this app?")
-                }
-                r.error && r.error(t)
-            };
-            h.priv.call("request.ajax", r, s, q)
-        }
-    };
-    m.tools = {
-        UUID: function() {
-            return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(s) {
-                var q = Math.random() * 16 | 0;
-                var p = s == "x" ? q : (q & 3 | 8);
-                return p.toString(16)
-            }).toUpperCase()
-        },
-        getURL: function(q, r, p) {
-            h.priv.call("tools.getURL", {
-                name: q.toString()
-            }, r, p)
         }
     };
     var e = function(v, t, w) {
@@ -618,64 +739,56 @@
             }
         }
     };
-    var n = function(t) {
-            if (t == "<all_urls>") {
-                t = "*://*"
-            }
-            t = t.split("://");
-            var p = t[0];
-            var r, s;
-            if (t[1].indexOf("/") === -1) {
-                r = t[1];
-                s = ""
-            } else {
-                r = t[1].substring(0, t[1].indexOf("/"));
-                s = t[1].substring(t[1].indexOf("/"))
-            }
-            var q = "";
-            if (p == "*") {
-                q += ".*://"
-            } else {
-                q += p + "://"
-            }
-            if (r == "*") {
-                q += ".*"
-            } else {
-                if (r.indexOf("*.") === 0) {
-                    q += "(.+.)?" + r.substring(2)
-                } else {
-                    q += r
-                }
-            }
-            q += s.replace(/\*/g, ".*");
-            return "^" + q + "$"
-        };
-    m.tabs = {
-        open: function(q, r, s, p) {
-            if (typeof r === "function") {
-                p = s;
-                s = r;
-                r = false
-            }
-            h.priv.call("tabs.open", {
-                url: q,
-                keepFocus: r
+    m.media = {
+        videoPlay: function(q, r, p) {
+            h.disabledModule(p, "media")
+        }
+    };
+    m.message = {
+        listen: function(q, r, p) {
+            p && p({
+                message: "Forge Error: message.listen must be overridden by platform specific code",
+                type: "UNAVAILABLE"
+            })
+        },
+        broadcast: function(q, r, s, p) {
+            p && p({
+                message: "Forge Error: message.broadcast must be overridden by platform specific code",
+                type: "UNAVAILABLE"
+            })
+        },
+        broadcastBackground: function(q, r, s, p) {
+            p && p({
+                message: "Forge Error: message.broadcastBackground must be overridden by platform specific code",
+                type: "UNAVAILABLE"
+            })
+        },
+        toFocussed: function(q, r, s, p) {
+            h.priv.call("message.toFocussed", {
+                type: q,
+                content: r
             }, s, p)
+        }
+    };
+    m.notification = {
+        create: function(s, r, q, p) {
+            h.priv.call("notification.create", {
+                title: s,
+                text: r
+            }, q, p)
+        }
+    };
+    m.payments = {
+        purchaseProduct: function(q, r, p) {
+            h.disabledModule(p, "payments")
         },
-        openWithOptions: function(q, s, p) {
-            var r = undefined;
-            if (q.pattern) {
-                q.pattern = n(q.pattern)
+        restoreTransactions: function(q, p) {
+            h.disabledModule(p, "payments")
+        },
+        transactionReceived: {
+            addListener: function(q, p) {
+                h.disabledModule(p, "payments")
             }
-            h.priv.call("tabs.open", q, s, p)
-        },
-        closeCurrent: function(p) {
-            p = arguments[1] || p;
-            var q = m.tools.UUID();
-            location.hash = q;
-            h.priv.call("tabs.closeCurrent", {
-                hash: q
-            }, null, p)
         }
     };
     m.prefs = {
@@ -736,153 +849,72 @@
             h.priv.call("prefs.clearAll", {}, q, p)
         }
     };
-    m.file = {
-        getImage: function(q, r, p) {
-            if (typeof q === "function") {
-                p = r;
-                r = q;
-                q = {}
-            }
-            if (!q) {
-                q = {}
-            }
-            h.priv.call("file.getImage", q, r &&
-            function(t) {
-                var s = {
-                    uri: t,
-                    name: "Image",
-                    type: "image"
-                };
-                if (q.width) {
-                    s.width = q.width
-                }
-                if (q.height) {
-                    s.height = q.height
-                }
-                r(s)
-            }, p)
+    m.reload = {
+        updateAvailable: function(q, p) {
+            h.disabledModule(p, "reload")
         },
-        getVideo: function(q, r, p) {
-            if (typeof q === "function") {
-                p = r;
-                r = q;
-                q = {}
+        update: function(q, p) {
+            h.disabledModule(p, "reload")
+        },
+        applyNow: function(q, p) {
+            h.disabledModule(p, "reload")
+        },
+        switchStream: function(q, r, p) {
+            h.disabledModule(p, "reload")
+        },
+        updateReady: {
+            addListener: function(q, p) {
+                h.disabledModule(p, "reload")
             }
-            if (!q) {
-                q = {}
-            }
-            h.priv.call("file.getVideo", q, r &&
-            function(t) {
-                var s = {
-                    uri: t,
-                    name: "Video",
-                    type: "video"
-                };
-                r(s)
-            }, p)
-        },
-        getLocal: function(q, r, p) {
-            m.tools.getURL(q, function(s) {
-                r({
-                    uri: s,
-                    name: q
-                })
-            }, p)
-        },
-        base64: function(q, r, p) {
-            h.priv.call("file.base64", q, r, p)
-        },
-        string: function(q, r, p) {
+        }
+    };
+    m.request = {
+        get: function(q, r, p) {
             m.request.ajax({
-                url: q.uri,
-                success: r,
+                url: q,
+                dataType: "text",
+                success: r &&
+                function() {
+                    try {
+                        arguments[0] = JSON.parse(arguments[0])
+                    } catch (s) {}
+                    r.apply(this, arguments)
+                },
                 error: p
             })
-        },
-        URL: function(r, s, t, q) {
-            if (typeof s === "function") {
-                q = t;
-                t = s
-            }
-            var p = {};
-            for (prop in r) {
-                p[prop] = r[prop]
-            }
-            p.height = s.height || r.height || undefined;
-            p.width = s.width || r.width || undefined;
-            h.priv.call("file.URL", p, t, q)
-        },
-        isFile: function(q, r, p) {
-            if (!q || !("uri" in q)) {
-                r(false)
-            } else {
-                h.priv.call("file.isFile", q, r, p)
-            }
-        },
-        cacheURL: function(q, r, p) {
-            h.priv.call("file.cacheURL", {
-                url: q
-            }, r &&
-            function(s) {
-                r({
-                    uri: s
-                })
-            }, p)
-        },
-        remove: function(q, r, p) {
-            h.priv.call("file.remove", q, r, p)
-        },
-        clearCache: function(q, p) {
-            h.priv.call("file.clearCache", {}, q, p)
         }
     };
-    m.event = {
-        menuPressed: {
-            addListener: function(q, p) {
-                h.addEventListener("menuPressed", q)
-            }
-        },
-        messagePushed: {
-            addListener: function(q, p) {
-                h.addEventListener("event.messagePushed", q)
-            }
-        },
-        orientationChange: {
-            addListener: function(q, p) {
-                h.addEventListener("event.orientationChange", q)
-            }
-        },
-        connectionStateChange: {
-            addListener: function(q, p) {
-                h.addEventListener("event.connectionStateChange", q)
-            }
+    m.request["ajax"] = function(r) {
+        var p = r.dataType;
+        if (p == "xml") {
+            r.dataType = "text"
         }
-    };
-    m.contact = {
-        select: function(q, p) {
-            h.priv.call("contact.select", {}, q, p)
-        }
-    };
-    m.geolocation = {
-        getCurrentPosition: function(s, r, t) {
-            if (typeof(s) === "object") {
-                var q = s,
-                    u = r,
-                    p = t
-            } else {
-                var u = s,
-                    p = r,
-                    q = t
+        var s = r.success &&
+        function(v) {
+            try {
+                if (p == "xml") {
+                    var u, t;
+                    if (window.DOMParser) {
+                        u = new DOMParser();
+                        t = u.parseFromString(v, "text/xml")
+                    } else {
+                        t = new ActiveXObject("Microsoft.XMLDOM");
+                        t.async = "false";
+                        t.loadXML(v)
+                    }
+                    v = t
+                }
+            } catch (w) {}
+            r.success && r.success(v)
+        };
+        var q = r.error &&
+        function(t) {
+            if (t.status == "error" && !t.err) {
+                m.logging.log("AJAX request to " + r.url + " failed, have you included that url in the permissions section of the config file for this app?")
             }
-            return navigator.geolocation.getCurrentPosition(u, p, q)
-        }
-    };
-    m.internal = {
-        ping: function(q, r, p) {
-            h.priv.call("internal.ping", {
-                data: [q]
-            }, r, p)
-        }
+            r.error && r.error(t)
+        };
+        h.priv.call("request.ajax", r, s, q)
     };
     m.sms = {
         send: function(s, r, p) {
@@ -896,136 +928,129 @@
             h.priv.call("sms.send", q, r, p)
         }
     };
-    m.topbar = {
+    m.tabbar = {
         show: function(q, p) {
-            h.priv.call("topbar.show", {}, q, p)
+            h.disabledModule(p, "tabbar")
         },
         hide: function(q, p) {
-            h.priv.call("topbar.hide", {}, q, p)
+            h.disabledModule(p, "tabbar")
         },
-        setTitle: function(r, q, p) {
-            h.priv.call("topbar.setTitle", {
-                title: r
-            }, q, p)
-        },
-        setTitleImage: function(q, r, p) {
-            if (q && q[0] === "/") {
-                q = q.substr(1)
-            }
-            h.priv.call("topbar.setTitleImage", {
-                icon: q
-            }, r, p)
-        },
-        setTint: function(p, r, q) {
-            h.priv.call("topbar.setTint", {
-                color: p
-            }, r, q)
-        },
-        addButton: function(q, r, p) {
-            if (q.icon && q.icon[0] === "/") {
-                q.icon = q.icon.substr(1)
-            }
-            h.priv.call("topbar.addButton", q, function(s) {
-                r && h.addEventListener("topbar.buttonPressed." + s, r)
-            }, p)
+        addButton: function(r, q, p) {
+            h.disabledModule(p, "tabbar")
         },
         removeButtons: function(q, p) {
-            h.priv.call("topbar.removeButtons", {}, q, p)
+            h.disabledModule(p, "tabbar")
+        },
+        setTint: function(p, r, q) {
+            h.disabledModule(q, "tabbar")
+        },
+        setActiveTint: function(p, r, q) {
+            h.disabledModule(q, "tabbar")
+        },
+        setInactive: function(q, p) {
+            h.disabledModule(p, "tabbar")
+        }
+    };
+    var n = function(t) {
+            if (t == "<all_urls>") {
+                t = "*://*"
+            }
+            t = t.split("://");
+            var p = t[0];
+            var r, s;
+            if (t[1].indexOf("/") === -1) {
+                r = t[1];
+                s = ""
+            } else {
+                r = t[1].substring(0, t[1].indexOf("/"));
+                s = t[1].substring(t[1].indexOf("/"))
+            }
+            var q = "";
+            if (p == "*") {
+                q += ".*://"
+            } else {
+                q += p + "://"
+            }
+            if (r == "*") {
+                q += ".*"
+            } else {
+                if (r.indexOf("*.") === 0) {
+                    q += "(.+.)?" + r.substring(2)
+                } else {
+                    q += r
+                }
+            }
+            q += s.replace(/\*/g, ".*");
+            return "^" + q + "$"
+        };
+    m.tabs = {
+        open: function(q, r, s, p) {
+            if (typeof r === "function") {
+                p = s;
+                s = r;
+                r = false
+            }
+            h.priv.call("tabs.open", {
+                url: q,
+                keepFocus: r
+            }, s, p)
+        },
+        openWithOptions: function(q, s, p) {
+            var r = undefined;
+            if (q.pattern) {
+                q.pattern = n(q.pattern)
+            }
+            h.priv.call("tabs.open", q, s, p)
+        },
+        closeCurrent: function(p) {
+            p = arguments[1] || p;
+            var q = m.tools.UUID();
+            location.hash = q;
+            h.priv.call("tabs.closeCurrent", {
+                hash: q
+            }, null, p)
+        }
+    };
+    m.tools = {
+        UUID: function() {
+            return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(s) {
+                var q = Math.random() * 16 | 0;
+                var p = s == "x" ? q : (q & 3 | 8);
+                return p.toString(16)
+            }).toUpperCase()
+        },
+        getURL: function(q, r, p) {
+            h.priv.call("tools.getURL", {
+                name: q.toString()
+            }, r, p)
+        }
+    };
+    m.topbar = {
+        show: function(q, p) {
+            h.disabledModule(p, "topbar")
+        },
+        hide: function(q, p) {
+            h.disabledModule(p, "topbar")
+        },
+        setTitle: function(r, q, p) {
+            h.disabledModule(p, "topbar")
+        },
+        setTitleImage: function(q, r, p) {
+            h.disabledModule(p, "topbar")
+        },
+        setTint: function(p, r, q) {
+            h.disabledModule(q, "topbar")
+        },
+        addButton: function(q, r, p) {
+            h.disabledModule(p, "topbar")
+        },
+        removeButtons: function(q, p) {
+            h.disabledModule(p, "topbar")
         },
         homePressed: {
             addListener: function(q, p) {
-                h.addEventListener("topbar.homePressed", q)
+                h.disabledModule(p, "topbar")
             }
-        }
-    };
-    m.tabbar = {
-        show: function(q, p) {
-            h.priv.call("tabbar.show", {}, q, p)
-        },
-        hide: function(q, p) {
-            h.priv.call("tabbar.hide", {}, q, p)
-        },
-        addButton: function(r, q, p) {
-            if (r.icon && r.icon[0] === "/") {
-                r.icon = r.icon.substr(1)
-            }
-            h.priv.call("tabbar.addButton", r, function(s) {
-                q && q({
-                    remove: function(u, t) {
-                        h.priv.call("tabbar.removeButton", {
-                            id: s
-                        }, u, t)
-                    },
-                    setActive: function(u, t) {
-                        h.priv.call("tabbar.setActive", {
-                            id: s
-                        }, u, t)
-                    },
-                    onPressed: {
-                        addListener: function(u, t) {
-                            h.addEventListener("tabbar.buttonPressed." + s, u)
-                        }
-                    }
-                })
-            }, p)
-        },
-        removeButtons: function(q, p) {
-            h.priv.call("tabbar.removeButtons", {}, q, p)
-        },
-        setTint: function(p, r, q) {
-            h.priv.call("tabbar.setTint", {
-                color: p
-            }, r, q)
-        },
-        setActiveTint: function(p, r, q) {
-            h.priv.call("tabbar.setActiveTint", {
-                color: p
-            }, r, q)
-        },
-        setInactive: function(q, p) {
-            h.priv.call("tabbar.setInactive", {}, q, p)
-        }
-    };
-    m.media = {
-        videoPlay: function(q, r, p) {
-            if (!q.uri) {
-                q = {
-                    uri: q
-                }
-            }
-            h.priv.call("media.videoPlay", q, r, p)
-        }
-    };
-    m.payments = {
-        purchaseProduct: function(q, r, p) {
-            h.priv.call("payments.purchaseProduct", {
-                product: q
-            }, r, p)
-        },
-        restoreTransactions: function(q, p) {
-            h.priv.call("payments.restoreTransactions", {}, q, p)
-        },
-        transactionReceived: {
-            addListener: function(q, p) {
-                h.addEventListener("payments.transactionReceived", function(s) {
-                    var r = function() {
-                            if (s.notificationId) {
-                                h.priv.call("payments.confirmNotification", {
-                                    id: s.notificationId
-                                })
-                            }
-                        };
-                    q(s, r)
-                })
-            }
-        }
-    };
-    m.document = {
-        reload: function() {
-            return document.location.reload()
-        },
-        location: function(q, p) {
-            q(document.location)
         }
     };
     if (self && self.on) {
@@ -1220,150 +1245,14 @@
     m.file.string = function(q, r, p) {
         h.priv.call("file.string", q, r, p)
     };
-    window.forge = {
-        config: m.config,
-        enableDebug: m.enableDebug,
-        is: {
-            mobile: m.is.mobile,
-            desktop: m.is.desktop,
-            android: m.is.android,
-            ios: m.is.ios,
-            chrome: m.is.chrome,
-            firefox: m.is.firefox,
-            safari: m.is.safari,
-            ie: m.is.ie,
-            web: m.is.web,
-            orientation: {
-                portrait: m.is.orientation.portrait,
-                landscape: m.is.orientation.landscape
-            },
-            connection: {
-                connected: m.is.connection.connected,
-                wifi: m.is.connection.wifi
-            }
-        },
-        message: {
-            listen: m.message.listen,
-            broadcast: m.message.broadcast,
-            broadcastBackground: m.message.broadcastBackground,
-            toFocussed: m.message.toFocussed
-        },
-        notification: {
-            create: m.notification.create
-        },
-        request: {
-            get: m.request.get,
-            ajax: m.request.ajax
-        },
-        logging: {
-            log: m.logging.log,
-            debug: m.logging.debug,
-            info: m.logging.info,
-            warning: m.logging.warning,
-            error: m.logging.error,
-            critical: m.logging.critical
-        },
-        tabs: {
-            open: m.tabs.open,
-            openWithOptions: m.tabs.openWithOptions,
-            closeCurrent: m.tabs.closeCurrent
-        },
-        tools: {
-            UUID: m.tools.UUID,
-            getURL: m.tools.getURL
-        },
-        prefs: {
-            get: m.prefs.get,
-            set: m.prefs.set,
-            clear: m.prefs.clear,
-            clearAll: m.prefs.clearAll,
-            keys: m.prefs.keys
-        },
-        button: {
-            setIcon: m.button.setIcon,
-            setURL: m.button.setURL,
-            onClicked: {
-                addListener: m.button.onClicked.addListener
-            },
-            setBadge: m.button.setBadge,
-            setBadgeBackgroundColor: m.button.setBadgeBackgroundColor,
-            setTitle: m.button.setTitle
-        },
-        file: {
-            getImage: m.file.getImage,
-            getVideo: m.file.getVideo,
-            getLocal: m.file.getLocal,
-            isFile: m.file.isFile,
-            URL: m.file.URL,
-            base64: m.file.base64,
-            string: m.file.string,
-            cacheURL: m.file.cacheURL,
-            remove: m.file.remove,
-            clearCache: m.file.clearCache
-        },
-        media: {
-            videoPlay: m.media.videoPlay
-        },
-        event: {
-            menuPressed: {
-                addListener: m.event.menuPressed.addListener
-            },
-            messagePushed: {
-                addListener: m.event.messagePushed.addListener
-            },
-            orientationChange: {
-                addListener: m.event.orientationChange.addListener
-            },
-            connectionStateChange: {
-                addListener: m.event.connectionStateChange.addListener
-            }
-        },
-        contact: {
-            select: m.contact.select
-        },
-        geolocation: {
-            getCurrentPosition: m.geolocation.getCurrentPosition
-        },
-        internal: {
-            ping: m.internal.ping
-        },
-        sms: {
-            send: m.sms.send
-        },
-        topbar: {
-            show: m.topbar.show,
-            hide: m.topbar.hide,
-            setTitle: m.topbar.setTitle,
-            setTitleImage: m.topbar.setTitleImage,
-            setTint: m.topbar.setTint,
-            addButton: m.topbar.addButton,
-            removeButtons: m.topbar.removeButtons,
-            homePressed: {
-                addListener: m.topbar.homePressed.addListener
-            }
-        },
-        tabbar: {
-            show: m.tabbar.show,
-            hide: m.tabbar.hide,
-            addButton: m.tabbar.addButton,
-            removeButtons: m.tabbar.removeButtons,
-            setTint: m.tabbar.setTint,
-            setActiveTint: m.tabbar.setActiveTint,
-            setInactive: m.tabbar.setInactive
-        },
-        payments: {
-            purchaseProduct: m.payments.purchaseProduct,
-            restoreTransactions: m.payments.restoreTransactions,
-            transactionReceived: {
-                addListener: m.payments.transactionReceived.addListener
-            }
-        },
-        media: {
-            videoPlay: m.media.videoPlay
-        },
-        document: {
-            reload: m.document.reload,
-            location: m.document.location
+    window.forge = m;
+    window.forge["reload"] = {
+        updateAvailable: m.reload.updateAvailable,
+        update: m.reload.update,
+        applyNow: m.reload.applyNow,
+        switchStream: m.reload.switchStream,
+        updateReady: {
+            addListener: m.reload.updateReady.addListener
         }
     };
     window.forge["ajax"] = m.request.ajax;
@@ -1375,13 +1264,5 @@
     window.forge["button"]["setUrl"] = m.button.setURL;
     window.forge["button"]["setBadgeText"] = m.button.setBadge;
     window.forge["file"]["delete"] = m.file.remove;
-    window.forge["file"]["imageURL"] = m.file.URL;
-    window.forge["_get"] = h.priv.get;
-    window.forge["_receive"] = function() {
-        var p = arguments;
-        setZeroTimeout(function() {
-            h.priv.receive.apply(this, p)
-        })
-    };
-    window.forge["_dispatchMessage"] = h.dispatchMessage
+    window.forge["file"]["imageURL"] = m.file.URL
 })();

@@ -1,12 +1,43 @@
-<? $starbars = array_values($this->starbars); ?>
-<div><ul class="sb_active_starbars">
-<? while( array_key_exists(0, $starbars) && $starbars[0]["active"] ) { ?>
-	<li class="sb_starbar-switch" rel="<?= $starbars[0]["id"]?>"><img src="//<?= BASE_DOMAIN ?>/images/<?=$starbars[0]["short_name"]?>/logo_<?=$starbars[0]["short_name"]?>.png" alt="<?=$starbars[0]["label"]?>"></li>
-<?
-		array_shift($starbars);
-} ?>
-</ul><ul class="sb_inactive_starbars">
-<? foreach( $starbars as $starbar) { ?>
-	<li class="sb_starbar-switch" rel="<?= $starbar["id"]?>"><img src="//<?= BASE_DOMAIN ?>/images/<?=$starbar["short_name"]?>/logo_<?=$starbar["short_name"]?>.png" alt="<?=$starbar["label"]?>"></li>
-<? } ?>
-</ul></div>
+<?php $starbars = array_values($this->starbars); ?>
+<!-- the number in the alert bubble is hardcoded. -->
+<div class="starbar-switcher-lists">
+	<div class="starbar-switcher-list-container starbar-switcher-my-communities">
+		<p class="starbar-switcher-list-title">My Communities</p>
+		<ul class="starbar-switcher-list">
+			<?php while( array_key_exists(0, $starbars) && $starbars[0]["active"] ) : ?>
+			<li class="starbar-switcher-row" rel="<?=$starbars[0]["id"]?>">
+				<div class="starbar-switcher-cell starbar-switcher-meta">
+					<div class="starbar-switcher-alert"><!-- echo alert count here -->0</div>
+				</div>
+				<div class="starbar-switcher-cell starbar-switcher-activator<?php if($this->starbar_id == $starbars[0]["id"]) print ' starbar-switcher-active';?>">
+					<div class="sb_starbar-switch" rel="<?=$starbars[0]["id"]?>">
+						<img src="//<?=BASE_DOMAIN?>/images/<?=$starbars[0]["short_name"]?>/logo_<?=$starbars[0]["short_name"]?>.png" alt="<?=$starbars[0]["label"]?>" />
+					</div>
+				</div>				
+			</li>
+			<?php array_shift($starbars); ?>
+			<?php endwhile; ?>
+		</ul>
+	</div>
+	<div class="starbar-switcher-list-container starbar-switcher-available-communities">
+		<p class="starbar-switcher-list-title">Available Communities</p>
+		<ul class="starbar-switcher-list">
+			<?php foreach( $starbars as $starbar) : ?>
+			<li class="starbar-switcher-row" rel="<?=$starbar["id"]?>">
+				<div class="starbar-switcher-cell starbar-switcher-meta">
+					<div class="starbar-switcher-meta-actions">
+						<img class="starbar-switcher-slider" alt="Add this community" src="//<?=BASE_DOMAIN?>/images/generic/switcher/switcher-slider-icon.png" />
+						<img class="starbar-switcher-info" alt="Info on this community" src="//<?=BASE_DOMAIN?>/images/generic/switcher/switcher-info-icon.png" />
+						<div class="starbar-switcher-info-content"><?=$starbar["info"]?></div>
+					</div>
+				</div>
+				<div class="starbar-switcher-cell starbar-switcher-activator">
+					<div class="sb_starbar-switch" rel="<?= $starbar["id"]?>">
+						<img src="//<?=BASE_DOMAIN?>/images/<?=$starbar["short_name"]?>/logo_<?=$starbar["short_name"]?>.png" alt="<?=$starbar["label"]?>" />
+					</div>
+				</div>				
+			</li>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+</div>

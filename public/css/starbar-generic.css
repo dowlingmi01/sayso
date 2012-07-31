@@ -1630,3 +1630,180 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	width: 250px;
 	z-index: 20;
 }
+
+
+/* starbar switcher @MDD 07/24/12 */
+#sayso-starbar .starbar-switcher {
+	position: absolute;
+    bottom: 0;
+	z-index: 0;
+}
+#sayso-starbar .starbar-switcher-tab {
+	width: 100%;
+	height: 17px;
+	cursor: pointer;
+	background: transparent url('../images/generic/switcher/switcher-tab.png') no-repeat center top;
+	margin-bottom: -3px;
+	position: relative;
+	z-index: 2;
+}
+#sayso-starbar .starbar-switcher-drawer {
+	-webkit-border-top-left-radius: 8px;
+	-webkit-border-top-right-radius: 8px;
+	-moz-border-radius-topleft: 8px;
+	-moz-border-radius-topright: 8px;
+	border-top-left-radius: 8px;	
+	border-top-right-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background: #333;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6);
+	position: relative;
+	padding: 4px;
+	z-index: 1;
+}
+#sayso-starbar .starbar-switcher-loader {
+	height: 58px;
+	background: url(../images/generic/switcher/img_ajax-loader.gif) no-repeat center center;
+}
+#sayso-starbar .starbar-switcher-lists {
+	
+}
+#sayso-starbar .starbar-switcher-lists li {
+	list-style-type: none;
+}
+#sayso-starbar .starbar-switcher-list-container {
+	
+}
+#sayso-starbar .starbar-switcher-my-communities {
+	
+}
+#sayso-starbar .starbar-switcher-available-communities {
+	
+}
+#sayso-starbar .starbar-switcher-list-title {
+	color: #FFF;
+	font-weight: bold;
+	font-size: 11px;
+}
+#sayso-starbar .starbar-switcher-list {
+	margin: 4px 0;
+}
+#sayso-starbar .starbar-switcher-row {
+	overflow: hidden;
+	margin-bottom: 4px;
+}
+#sayso-starbar .starbar-switcher-cell {
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	box-shadow: inset 0 1px 1px #000;
+	position: relative;
+	height: 36px;
+	padding: 2px;
+	background-color: #1C1C1C;
+	/* not sure if we should prefer CSS3 (maintainability) or images (compatibility) for gradient backgrounds... */
+	background: #000 url(../images/generic/switcher/switcher-cell-gradient.png) repeat-x 0 0;
+	/*background-image: -webkit-gradient(
+		linear,
+		left top,
+		left bottom,
+		color-stop(0, #2C2C2C),
+		color-stop(1, #000000)
+	);
+	background-image: -moz-linear-gradient(
+		center top,
+		#2C2C2C 0%,
+		#000000 100%
+	);
+	background-image: linear-gradient(
+		top,
+		#2C2C2C 0%,
+		#000000 100%
+	);
+	filter: progid:DXImageTransform.Microsoft.Gradient(
+		StartColorStr='#2C2C2C',
+		EndColorStr='#000000',
+		GradientType=0
+	) !important;*/
+	
+}
+#sayso-starbar .starbar-switcher-activator {
+	margin-right: 54px;
+	line-height: 40px;
+	position: relative;
+	cursor: pointer;
+}
+#sayso-starbar .starbar-switcher-activator.starbar-switcher-active { /* highlight the currently running bar */
+	box-shadow: inset 0 0 1px rgba(255, 255, 255, 0.8);
+}
+#sayso-starbar .starbar-switcher-activator .sb_starbar-switch {
+	position: absolute;
+	bottom: 0;
+}
+#sayso-starbar .starbar-switcher-available-communities .starbar-switcher-activator img {  /* dim logos in non-selected communities */
+	opacity: 0.6;
+	position: relative;
+	filter: alpha(opacity=60);
+}
+#sayso-starbar .starbar-switcher-meta {
+	width: 48px;
+	float: right;
+	text-align: center;
+}
+#sayso-starbar .starbar-switcher-alert {
+	display: inline-block;
+	margin-top: 7px;
+	width: 23px;
+	height: 23px;
+	line-height: 18px;
+	color: #F00;
+	font-size: 10px;
+	font-weight: bold;
+	text-align: center;
+	background: url(../images/generic/switcher/switcher-alert-bubble.png) no-repeat 0 0;
+}
+#sayso-starbar .starbar-switcher-meta-actions {
+	position: relative;
+	margin-top: 3px;
+}
+#sayso-starbar .starbar-switcher-slider,
+#sayso-starbar .starbar-switcher-info {
+	cursor: pointer;
+}
+#sayso-starbar .starbar-switcher-slider {  /* shadow on slider creates too much padding - need neg margin or refactor graphic */
+	margin-bottom: -6px;
+}
+/* hidden div that holds the tooltip info */
+#sayso-starbar .starbar-switcher-info-content {
+	display: none;
+}
+#sayso-starbar .starbar-switcher-tooltip {
+	position: absolute;
+	z-index: 2147483647;
+	width: 120px;
+	left: 100%;
+	margin-left: 10px;
+}
+#sayso-starbar .starbar-switcher-tooltip-label {
+	padding: 0.5em;
+	color: #CCC;
+	line-height: 1.2;
+	font-size: 0.8em;
+	text-align: center;
+	background: #000 !important;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	border: 1px solid #000;
+	box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4), 1px 1px 1px rgba(0, 0, 0, 0.6);	
+}
+#sayso-starbar .starbar-switcher-tooltip-arrow {
+	width: 8px;
+	height: 13px;
+	position: absolute;
+	top: 50%;
+	margin-top: -6px;
+	left: -6px;
+	z-index: 1;
+	background: url(../images/generic/switcher/switcher-tooltip-arrow.png) no-repeat 0 0;
+}

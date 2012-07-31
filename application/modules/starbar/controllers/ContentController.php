@@ -480,7 +480,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=starbar&shared_id=".$this->starbar_id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
 		$this->_assignShareAppToView($facebookCallbackUrl);
-		
+
 		$this->view->assign('starbar_id', $this->starbar_id);
 	}
 
@@ -740,34 +740,32 @@ class Starbar_ContentController extends Api_GlobalController
 				break;
 		}
 
-		$statusArray = Array('completed', 'disqualified', 'archived', 'new', );
+		$surveyCollection = new SurveyCollection();
+		$surveyCollection->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, $type);
+
+		$statusArray = Array('completed', 'disqualified', 'archived', 'new');
 		$totalDisplayed = 0;
 
 		$maximumDisplayed = $this->_maximumDisplayed[$typePlural];
 
 		foreach ($statusArray as $status) {
-			$surveyCollection = new SurveyCollection();
-			$surveyCollection->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, $type, $status);
-			$numberOfSurveys = sizeof($surveyCollection);
+			$this->view->assign('count_'.$status.'_'.$typePlural, 0);
+			$this->view->assign($status.'_'.$typePlural, new SurveyCollection());
+		}
 
-			if ($maximumDisplayed && $totalDisplayed >= $maximumDisplayed && $status == 'archived') {
-				$this->view->assign('count_archived_'.$typePlural, 0);
-				$this->view->assign('count_new_'.$typePlural, 0);
-				break;
-			} elseif ($maximumDisplayed && $totalDisplayed >= $maximumDisplayed && $status == 'new') {
-				$this->view->assign('count_new_'.$typePlural, 0);
-				break;
+		foreach ($surveyCollection as $survey) {
+			$status = $survey->user_status;
+			$countVariable = 'count_'.$status.'_'.$typePlural;
+			$collectionVariable = $status.'_'.$typePlural;
+
+			if ($maximumDisplayed && $totalDisplayed >= $maximumDisplayed && ($status == 'archived' || $status == 'new')) {
+				return;
 			}
 
-			$this->view->assign($status.'_'.$typePlural, $surveyCollection);
+			$this->view->$countVariable += 1;
+			$this->view->$collectionVariable->addItem($survey);
 
-			if ($maximumDisplayed && $numberOfSurveys > ($maximumDisplayed - $totalDisplayed) && ($status == 'archived' || $status == 'new')) {
-				$numberOfSurveys = ($maximumDisplayed - $totalDisplayed);
-			}
-
-			$this->view->assign('count_'.$status.'_'.$typePlural, $numberOfSurveys);
-
-			$totalDisplayed += $numberOfSurveys;
+			$totalDisplayed += 1;
 		}
 	}
 }

@@ -84,10 +84,16 @@ class Survey_ResponseCollection extends RecordCollection
 					";
 			$newSurveyIds = Db_Pdo::fetchColumn($sql, $starbarId, $firstDayOfSurveysUserShouldSee, $lastDayOfSurveysUserShouldSee, $userId, $starbarId, $type, $userId);
 			if (!$newSurveyIds || !count($newSurveyIds)) return;
+
+			// Prepare and execute multi-row insert statement
+			$sql = "";
 			foreach ($newSurveyIds as $newSurveyId) {
 				$newSurveyId = (int) $newSurveyId;
-				Db_Pdo::execute("INSERT INTO survey_response (survey_id, user_id, status) VALUES (" . $newSurveyId . ", " . $userId . ", 'new')");
+				if ($sql) $sql .= ", ";
+				$sql .= "(" . $newSurveyId . ", " . $userId . ", 'new')";
 			}
+
+			Db_Pdo::execute("INSERT INTO survey_response (survey_id, user_id, status) VALUES ".$sql);
 		}
 	}
 

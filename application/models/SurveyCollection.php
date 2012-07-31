@@ -7,21 +7,28 @@ class SurveyCollection extends RecordCollection
 		* $userId = get surveys for this user
 		* $type = 'poll' or 'survey'
 		* $surveyUserStatus = 'new', 'completed' or 'archived', i.e. has this user completed the survey, etc.
+		* if $surveyUserStatus is null, it returns all Surveys for that user (i.e. all statuses)
 	*/
-	public function loadSurveysForStarbarAndUser ($starbarId, $userId, $type, $surveyUserStatus)
+	public function loadSurveysForStarbarAndUser ($starbarId, $userId, $type, $surveyUserStatus = null)
 	{
-		$order = "ssm.ordinal ASC";
+		$orderSql = "FIELD (user_status, 'completed', 'disqualified', 'archived', 'new'), ssm.ordinal ASC";
+		$userStatusSql = "";
 		$surveys = null;
 
 		$type = str_replace("surveys", "survey", $type);
 		$type = str_replace("polls", "poll", $type);
+		$type = str_replace("trailers", "trailer", $type);
+		$type = str_replace("quizzes", "quiz", $type);
 
-		$sql = "SELECT s.*
+		if ($surveyUserStatus && in_array($surveyUserStatus, array("new", "completed", "disqualified", "archived")))
+			$userStatusSql = " AND sr.status = '".$surveyUserStatus."' ";
+
+		$sql = "SELECT s.*, sr.status AS user_status
 				FROM survey s
 					INNER JOIN survey_response sr
 					ON s.id = sr.survey_id
 						AND sr.user_id = ?
-						AND sr.status = ?
+						".$userStatusSql."
 					INNER JOIN starbar_survey_map ssm
 					ON s.id = ssm.survey_id
 						AND ssm.starbar_id = ?
@@ -29,9 +36,9 @@ class SurveyCollection extends RecordCollection
 						AND (ssm.end_at > now() OR ssm.end_at = '0000-00-00 00:00:00')
 				WHERE s.type = ?
 					AND s.status = 'active'
-				ORDER BY ".$order."
+				ORDER BY ".$orderSql."
 				 ";
-		$surveys = Db_Pdo::fetchAll($sql, $userId, $surveyUserStatus, $starbarId, $type);
+		$surveys = Db_Pdo::fetchAll($sql, $userId, $starbarId, $type);
 
 		if ($surveys) {
 			$this->build($surveys, new Survey());

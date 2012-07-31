@@ -4,6 +4,14 @@ class Survey extends Record
 {
 	protected $_tableName = 'survey';
 
+	// Add user_status to field names, because it is used by build() inside
+	// SurveyCollection::loadSurveysForStarbarAndUser() to store the status of the survey for the current user
+	public function getFieldNames ($removeMetaFields = false) {
+		$fieldNames = parent::getFieldNames($removeMetaFields);
+		$fieldNames[] = 'user_status';
+		return $fieldNames;
+	}
+
 	public static function getNextSurveyForUser($startSurvey, $userId) {
 		// Figure out what the status of this survey is for this user
 		$surveyResponse = new Survey_Response();

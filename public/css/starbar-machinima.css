@@ -1641,14 +1641,6 @@ height: 359px;
 	font-size: 12px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_polls .sb_tabs{
-	height: 323px;
-}
-
-#sayso-starbar #starbar-player-console #sb_popBox_polls .sb_tabPane{
-	height: 313px;
-}
-
 #sayso-starbar #starbar-player-console #sb_popBox_polls .sb_tabPane .sb_tabHeader
 {
 	font-weight:bold;

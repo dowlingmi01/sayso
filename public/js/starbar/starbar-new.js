@@ -1672,175 +1672,356 @@ $SQ(function(){
 	sayso.starbar.loaded = true;
 	
 	
-	/* switcher behavior @MDD 07/25/12 */	
-	function initSwitcher(){
-		
-		starbarElem = $SQ('#sayso-starbar');
-		
-		var showSwitcher = function(e){
+	
+	
+	/* switcher behavior @MDD 07/25/12 */
+	var Switcher = {
 			
-			var handle = $SQ(this);
-			var panel = $SQ(handle.parents('#starbar-type')[0]);
-			var pngOffset = 10;  // shadow, transparent pixels, and arrow that contribute to width but should not be matched
-			var panelHeight = panel.height();
-			var panelWidth = panel.width();
-			var panelLeft = panel.css('left');
+		// elements
+		panel : null,
+		main : null,
+		container : null,
+		tab : null,
+		drawer : null,
+		loader : null,
+		
+		// misc variables
+		pngOffset : 10,  // transparent pixels surrounding profile area background graphic
+		tabHeight : 17,
+		
+		// flags
+		isCreated : false,
+		isLoaded : false,
+		isShowing : false,
+		
+		// listeners
+		onLoad :  function(response, status){
 			
-			var switcher = $SQ('.starbar-switcher', starbarElem);
-			if(switcher.length){
-				switcher.css({
-					'width' : (panelWidth - pngOffset) + 'px',
-					'left' : panelLeft
-				});
-				switcher.show();
-				switcher.animate({
-					bottom : 0
-				});
+			Switcher.isLoaded = true;
+			
+			// render element invisibly, measure, fade out loader, animate to correct height, fade in elements
+			var currentHeight = Switcher.container.height();
+			var fader = $SQ('<div>');
+			fader.css('opacity', 0);
+			fader.html(response.data.html);
+			Switcher.loader.hide();
+			Switcher.drawer.append(fader);
+			var updatedHeight = Switcher.container.height();
+			Switcher.loader.show();
+			fader.hide();
+			Switcher.container.height(currentHeight);
+			Switcher.loader.fadeOut(500, function(){
+				fader.show();
+				Switcher.container.animate({
+					height : updatedHeight
+				}, 800, function(){
+					fader.fadeTo(500, 1);
+				});	
+			});
+			
+			Switcher.assignBehavior();
+			
+		},
+		
+		// methods
+		create : function(){
+			
+			// only create shell once
+			if(Switcher.isCreated){
 				return;
-			}		
+			}
 			
-			var starbar = panel.parent();
+			Switcher.isCreated = true;
 			
-			// build it dynamically for now, to reduce potential conflicts  - probably should just have it available in DOM at some point
-			switcher = $SQ('<div>');
-			switcher.addClass('starbar-switcher');
-			switcher.css({
-				'width' : (panelWidth - pngOffset) + 'px',
-				'left' : panelLeft
+			// remove the existing popup behavior
+			$SQ('#starbar-type .sb_logo .sb_nav_element').unbind();
+			
+			// assign hover behavior to profile area, to show/hide tab
+			$SQ('#starbar-type', starbarElem).unbind().hover(Switcher.showTab, Switcher.hideTab);
+			
+			// get ancestor handles
+			Switcher.panel = $SQ('#starbar-type', starbarElem);
+			Switcher.main = $SQ('#starbar-main', starbarElem);
+			
+			// get existing dimensions and sizes
+			var panelHeight = Switcher.panel.outerHeight();
+			var panelWidth = Switcher.panel.width();
+			
+			// create and position container
+			Switcher.container = $SQ('<div>');
+			Switcher.container.addClass('starbar-switcher');
+			Switcher.container.css({
+				'width' : (panelWidth - Switcher.pngOffset) + 'px',
+				'left' : Switcher.panel.css('left')
 			});
 			
-			var tab = $SQ('<div>');
-			tab.addClass('starbar-switcher-tab');
-			tab.on('click', closeSwitcher);
-			switcher.append(tab);
+			// create tab
+			Switcher.tab = $SQ('<div>');
+			Switcher.tab.addClass('starbar-switcher-tab');
+			Switcher.container.append(Switcher.tab);
 			
-			var drawer = $SQ('<div>');
-			drawer.addClass('starbar-switcher-drawer');
-			drawer.css('padding-bottom', panelHeight + 'px');
-			switcher.append(drawer);
+			// create "drawer" (element beneath tab, with background and corners)
+			Switcher.drawer = $SQ('<div>');
+			Switcher.drawer.addClass('starbar-switcher-drawer');
+			Switcher.drawer.css('padding-bottom', panelHeight + 'px');
+			Switcher.container.append(Switcher.drawer);
 			
-			var loader = $SQ('<div>');
-			loader.addClass('starbar-switcher-loader');
-			drawer.append(loader);
-			starbar.append(switcher);
+			// create loader initially - leave it until view is loaded
+			Switcher.loader = $SQ('<div>');
+			Switcher.loader.addClass('starbar-switcher-loader');
+			Switcher.drawer.append(Switcher.loader);
+			Switcher.main.append(Switcher.container);
 			
-			//switcher.fadeIn();
-			switcher.css('bottom', -switcher.height() + 'px');
-			switcher.show();
-			switcher.animate({
-				bottom : 0
-			});
+			// if mouseout of tab, but component not fully open, hide tab
+			Switcher.tab.on('mouseout', Switcher.hideTab);
 			
+			// on tab click, show/hide component
+			Switcher.tab.on('click', Switcher.toggle);
+			
+			// initially set just below top of profile area
+			Switcher.container.css('bottom', -panelHeight + 'px');				
+		
+		},
+		
+		// ajax in view phtml
+		load : function(){
+			if(Switcher.isLoaded){
+				return;
+			};
 			$SQ.ajaxWithAuth({
 				url : '//' + sayso.baseDomain + '/starbar/content/starbar-list',
-				success : function(response, status){
-					
-					// render element invisibly, measure, fade out loader, animate to correct height, fade in elements
-					var currentHeight = switcher.height();
-					var fader = $SQ('<div>');
-					fader.css('opacity', 0);
-					fader.html(response.data.html);
-					loader.hide();
-					loader.parent().append(fader);
-					var updatedHeight = switcher.height();
-					loader.show();
-					fader.hide();
-					switcher.height(currentHeight);
-					loader.fadeOut(500, function(){
-						fader.show();
-						switcher.animate({
-							height : updatedHeight
-						}, 800, function(){
-							fader.fadeTo(500, 1);
-						});	
-					});
-					
-					// add switch functionality to 
-					$SQ('.sb_starbar-switch', starbarElem).on('click', function() {
-						closeSwitcher();
-						forge.message.broadcastBackground( 'starbar-switch', parseInt($SQ(this).attr('rel')) );
-					});
-					
-					// when "add" slider is clicked, add it and switch
-					$SQ('.starbar-switcher-slider').on('click', function(){
-						closeSwitcher();
-						var handle = $SQ(this);
-						var row = handle.parents('.starbar-switcher-row');
-						var id = row.attr('rel');
-						forge.message.broadcastBackground( 'starbar-switch', id);
-					});
-					
-					// when "info" icon is clicked, show tooltip
-					$SQ('.starbar-switcher-info', starbarElem).on('click', function(){
-						
-						var handle = $SQ(this);
-						var row = handle.parents('.starbar-switcher-row');
-						var id = row.attr('rel');						
-
-						// remove all existing tooltips
-						$SQ('.starbar-switcher-tooltip').not('[rel=' + id + ']').remove();
-						
-						// if the appropriate tooltip is already open, skip it
-						var existing = $SQ('.starbar-switcher-tooltip[rel=' + id + ']').length > 0;
-						if(existing){
-							return;
-						}						
-						
-						var drawer = handle.parents('.starbar-switcher-drawer');
-						var info = handle.siblings('.starbar-switcher-info-content').text();
-						
-						var tooltip = $SQ('<div>');
-						tooltip.attr('rel', id);
-						tooltip.css('opacity', 0);
-						tooltip.addClass('starbar-switcher-tooltip');
-						drawer.append(tooltip);
-						
-						var label = $SQ('<div>');
-						label.addClass('starbar-switcher-tooltip-label');
-						label.text(info);
-						tooltip.append(label);
-						
-						var arrow = $SQ('<div>');
-						arrow.addClass('starbar-switcher-tooltip-arrow');
-						tooltip.append(arrow);			
-						
-						var cell = handle.parents('.starbar-switcher-cell');
-						var y = cell.position().top + (cell.outerHeight() / 2) - (tooltip.outerHeight() / 2);
-						tooltip.css('top', y + 'px');
-						
-						tooltip.animate({
-							opacity : 1
-						});
-						
-						$SQ(document).bind('mousedown', function(){
-							var ref = $SQ('.starbar-switcher-tooltip');
-							ref.fadeOut(function(){
-								ref.remove();
-							});
-							$(this).unbind('mousedown', arguments.callee);
-						});
-						
-					});
-					
-				}
-			})
-			
-		};
-		
-		var closeSwitcher = function(){
-			var switcher = $SQ('.starbar-switcher', starbarElem);
-			switcher.animate({
-				bottom : -switcher.height()
-			}, 800, function(){
-				switcher.hide();
+				success : Switcher.onLoad
 			});
-		};
+		},
 		
-		// use unbind to prevent the normal popup as a temporary measure - should refactor code to remove popup listener at some point
-		$SQ('#starbar-type .sb_logo .sb_nav_element', starbarElem).unbind().bind('click', showSwitcher);
+		// show the entire component
+		show : function(){
+			Switcher.isShowing = true;
+			Switcher.tab.addClass('starbar-switcher-active');
+			Switcher.container.animate({
+				bottom: 0
+			}, Switcher.load);
+		},
+		// hide the entire component
+		hide : function(){
+			Switcher.isShowing = false;
+			Switcher.tab.removeClass('starbar-switcher-active');
+			Switcher.slideOut();
+		},
+		// hide if showig, show if hidden
+		toggle : function(){
+			if(Switcher.isShowing){
+				Switcher.hide();
+			} else {
+				Switcher.show();
+			}
+		},
 		
-	};
+		// after view is loaded, assign event handlders
+		assignBehavior : function(){				
+			// switch bar when active community is clicked
+			$SQ('.sb_starbar-switch', starbarElem).on('click', Switcher.changeBar);				
+			// when "add" slider is clicked, offer accept checkbox and 'add' button
+			$SQ('.starbar-switcher-slider', starbarElem).on('click', Switcher.offerBar);						
+			// when "info" icon is rolled over, show tooltip
+			$SQ('.starbar-switcher-info', starbarElem).on('mouseover', Switcher.showInfo);
+		},
+		
+		
+		/* DOM handlers pre-load */
+		
+		// on hover of profile area, show tab
+		showTab : function(){
+			// if the component is showing, ignore mouseouts
+			if(Switcher.isShowing){
+				return true;
+			};
+			var y = Switcher.container.outerHeight() - Switcher.panel.outerHeight() + Switcher.pngOffset;
+			Switcher.container.animate({
+				bottom : -y + 'px'
+			});		
+		},
+		// on mouseout of profile area, hide tab
+		hideTab : function(e){
+			// if the component is showing, ignore mouseouts
+			if(Switcher.isShowing){
+				return true;
+			};
+			// if mousing onto the switcher, don't hide tab
+			var onto = $SQ(e.relatedTarget);
+			if(onto.is('.starbar-switcher')){
+				return true;
+			};
+			if(onto.parents('.starbar-switcher').length > 0){
+				return true;
+			};
+			Switcher.slideOut();
+		},
+		// calculate and animate container to just beneath profile top
+		slideOut : function(){
+			var y = Switcher.container.outerHeight() - Switcher.panel.outerHeight() + Switcher.pngOffset + Switcher.tabHeight;
+			Switcher.container.animate({
+				bottom : -y + 'px'
+			});
+		},
+		
+		/* DOM handlers post-load */
+		
+		// show the 'add' button tooltip
+		offerBar : function(){
+					
+			// grab the ID now, since the button itself won't be a child of this row
+			var handle = $SQ(this);
+			var row = handle.parents('.starbar-switcher-row');
+			var id = row.attr('rel');
+			
+			// create the accept mini-form
+			var signup = $SQ('<div>');
+			signup.addClass('starbar-switcher-accept');
+			
+			// checkbox - button's enabled state is determined by this element's checked state
+			var checkbox = $SQ('<input type="checkbox" />');
+			signup.append(checkbox);
+			
+			// link target?
+			signup.append(' I agree to the <a href="#">Terms &amp; Conditions</a> ');
+			
+			// add button - start of disabled; enable if box is checked
+			var button = $SQ('<button>');
+			button.addClass('starbar-switcher-add-button');
+			button.text('ADD');
+			signup.append(button);
+			
+			// when checkbox is toggled, enable/disable appearance of button
+			checkbox.on('click', function(){
+				if(checkbox.prop('checked')){
+					button.addClass('starbar-switcher-active').unbind().bind('click', function(){
+						forge.message.broadcastBackground('starbar-switch', id)
+					});
+				} else {
+					button.removeClass('starbar-switcher-active').unbind().bind('click', function(){
+						window.alert('You must agree to our Terms & Condiditions by checking the box at left before adding this community.');
+					});
+				}
+			});
+			
+			// create the tooltip
+			var tooltip = Switcher.Tooltip.create(handle, signup);
+			
+			// assign rel to differentiate from other info tooltips
+			tooltip.attr('rel', id);
+			
+			// have it fit on one line
+			tooltip.css({
+				'width' : 'auto',
+				'white-space' : 'nowrap'
+			});
+			
+		},
+		
+		// show the bar into tooltip
+		showInfo : function(){
+			
+			// general references
+			var handle = $SQ(this);
+			var row = handle.parents('.starbar-switcher-row');
+			var id = row.attr('rel');						
+
+			// remove all existing tooltips
+			$SQ('.starbar-switcher-tooltip').not('[rel=' + id + ']').remove();
+			
+			// if the appropriate tooltip is already open, skip it
+			var existing = $SQ('.starbar-switcher-tooltip[rel=' + id + ']');
+			if(existing.length > 0){
+				existing.fadeIn();
+				return true;
+			}						
+			
+			// get info text
+			var info = handle.siblings('.starbar-switcher-info-content').text();
+			
+			// create the tooltip and populate it
+			var tooltip = Switcher.Tooltip.create(handle, info);
+			
+			// assign rel to differentiate from other info tooltips
+			tooltip.attr('rel', id);		
+			
+			// set the mouseout
+			handle.on('mouseout', function(){
+				tooltip.fadeOut(function(){
+					tooltip.remove();
+				});
+				handle.unbind('mouseout', arguments.callee);
+				handle.on('mouseover', Switcher.showInfo);
+			});
+			
+		},
+		
+		// change bar without prompt - this is taken directly from existing code
+		changeBar : function() {
+			Switcher.hide();
+			forge.message.broadcastBackground( 'starbar-switch', parseInt($SQ(this).attr('rel')) );
+		},
+			
+		// tooltips	
+		Tooltip : {
+			create : function(handle, content){
+				
+				// references to parents used throughout
+				var drawer = handle.parents('.starbar-switcher-drawer');
+				var cell = handle.parents('.starbar-switcher-cell');
+				
+				// create and populate tooltip element
+				var tooltip = $SQ('<div>');
+				tooltip.addClass('starbar-switcher-tooltip');			
+				var label = $SQ('<div>');
+				label.addClass('starbar-switcher-tooltip-label');
+				label.append(content);
+				tooltip.append(label);			
+				var arrow = $SQ('<div>');
+				arrow.addClass('starbar-switcher-tooltip-arrow');
+				tooltip.append(arrow);
+				
+				// insert into DOM
+				drawer.append(tooltip);
+				
+				// position and fade it in				
+				var y = cell.position().top + (cell.outerHeight() / 2) - (tooltip.outerHeight() / 2);
+				tooltip.css({
+					'opacity' : 0,
+					'top' : y + 'px'
+				});				
+				tooltip.animate({
+					opacity : 1
+				});				
+				
+				// close in on document mousedown, unless event.target is tooltip or child of tooltip
+				$SQ(document).bind('mousedown', function(e){
+					var firer = $SQ(e.target);
+					if(firer.is('.starbar-switcher-tooltip')){
+						return true;
+					}
+					if(firer.parents('.starbar-switcher-tooltip').length > 0){
+						return true;
+					}
+					var ref = $SQ('.starbar-switcher-tooltip');
+					ref.fadeOut(function(){
+						ref.remove();
+					});
+					$(this).unbind('mousedown', arguments.callee);
+				});
+				
+				// return it
+				return tooltip;		
+			}
+		}
+		
+	};	
 	
-	
+	// initialize switcher component - using named function for global ref
+	function initSwitcher(){		
+		// create shell, don't load up view yet
+		Switcher.create();		
+	};	
 	
 });

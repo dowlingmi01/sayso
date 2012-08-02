@@ -1654,10 +1654,21 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	width: 100%;
 	height: 17px;
 	cursor: pointer;
-	background: transparent url('../images/generic/switcher/switcher-tab.png') no-repeat center top;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-image: url(../images/generic/switcher/switcher-tab-sprite.png);
+	background-position: center bottom;
+	/*background: transparent url('../images/generic/switcher/switcher-tab.png') no-repeat center top;*/
 	margin-bottom: -3px;
 	position: relative;
 	z-index: 2;
+}
+#sayso-starbar .starbar-switcher-tab:hover {
+	background-position: center -17px;
+}
+#sayso-starbar .starbar-switcher-tab.starbar-switcher-active,
+#sayso-starbar .starbar-switcher-tab.starbar-switcher-active:hover {
+	background-position: center top;
 }
 #sayso-starbar .starbar-switcher-drawer {
 	-webkit-border-top-left-radius: 8px;
@@ -1800,7 +1811,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	padding: 0.5em;
 	color: #CCC;
 	line-height: 1.2;
-	font-size: 0.8em;
+	font-size: 10px;
 	text-align: center;
 	background: #000 !important;
 	-moz-border-radius: 4px;
@@ -1808,6 +1819,55 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	border-radius: 4px;
 	border: 1px solid #000;
 	box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4), 1px 1px 1px rgba(0, 0, 0, 0.6);
+}
+#sayso-starbar .starbar-switcher-accept {
+	color: #CCC !important;
+	font-size: 10px !important;
+}
+#sayso-starbar .starbar-switcher-accept a {
+	color: #CCC !important;
+	font-size: 10px !important;
+	font-weight: normal;
+	text-decoration: underline;
+}
+#sayso-starbar .starbar-switcher-accept input {
+	vertical-align: middle;
+	margin-right: 4px;
+}
+#sayso-starbar .starbar-switcher-add-button {
+	margin-left: 4px;
+	vertical-align: middle;
+	color: #444 !important;
+	font-weight: bold;
+	font-size: 9px !important;
+	padding: 2px 4px;
+	background-color: #888;
+	border: none;
+	-moz-border-radius: 3px;
+	=webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+#sayso-starbar .starbar-switcher-add-button.starbar-switcher-active {
+	color: #FFF !important;
+	background-color: #E11A23;
+	background-image: -webkit-gradient(
+		linear,
+		left top,
+		left bottom,
+		color-stop(0, #E11A23),
+		color-stop(1, #891313)
+	);
+	background-image: -moz-linear-gradient(
+		center top,
+		#E11A23 0%,
+		#891313 100%
+	);
+	background-image: linear-gradient(
+		top,
+		#E11A23 0%,
+		#891313 100%
+	);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.4);
 }
 #sayso-starbar .starbar-switcher-tooltip-arrow {
 	width: 8px;

@@ -1733,9 +1733,6 @@ $SQ(function(){
 			
 			Switcher.isCreated = true;
 			
-			// remove the existing popup behavior
-			$SQ('#starbar-type .sb_logo .sb_nav_element').unbind();
-			
 			// assign hover behavior to profile area, to show/hide tab
 			$SQ('#starbar-type', starbarElem).unbind().hover(Switcher.showTab, Switcher.hideTab);
 			
@@ -2037,7 +2034,9 @@ $SQ(function(){
 	// initialize switcher component - using named function for global ref
 	function initSwitcher(){		
 		// create shell, don't load up view yet
-		Switcher.create();		
+		Switcher.create();
+		// remove the existing popup behavior
+		$SQ('#starbar-type .sb_logo .sb_nav_element', starbarElem).unbind();
 	};	
 	
 });

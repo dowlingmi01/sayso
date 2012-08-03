@@ -1847,14 +1847,30 @@ $SQ(function(){
 			if(Switcher.isShowing){
 				return true;
 			};
-			// if mousing onto the switcher, don't hide tab
+			
+			// who's mousing out and who's moused onto?
+			var firer = $SQ(e.currentTarget);
 			var onto = $SQ(e.relatedTarget);
-			if(onto.is('.starbar-switcher')){
-				return true;
-			};
-			if(onto.parents('.starbar-switcher').length > 0){
-				return true;
-			};
+			
+			// if mousing-out of profile area...
+			if(firer.is('#starbar-type')){
+				// if mousing onto the switcher, don't hide tab				
+				if(onto.is('.starbar-switcher')){
+					return true;
+				};
+				if(onto.parents('.starbar-switcher').length > 0){
+					return true;
+				};
+			} else if(firer.is('.starbar-switcher-tab')){
+				// if mousing onto the switcher, don't hide tab				
+				if(onto.is('#starbar-type')){
+					return true;
+				};
+				if(onto.parents('#starbar-type').length > 0){
+					return true;
+				};
+			}
+			
 			Switcher.slideOut();
 		},
 		// calculate and animate container to just beneath profile top

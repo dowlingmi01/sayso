@@ -5,13 +5,27 @@
 
 /* override */
 #sayso-starbar #starbar-player-console #starbar-type{
-  background-image: url("../images/movie/bg_starbar-type.png");
-  height: 95px;
-  left: 100px;
+  background: transparent url("../images/movie/bg_starbar-type_mdd.png") no-repeat 0 0;
+  height: 81px;
+  left: 105px;
   position: absolute;
-  top: -20px;
-  width: 240px;
+  top: -6px;
+  width: 235px;
   z-index: 2147480011;
+}
+
+/* @MDD - separating bubble out to allow click through to switcher tab */
+#sayso-starbar #starbar-player-console #starbar-type .starbar-type-bg-bubble {
+	position: absolute;
+	top: -14px;
+	left: 179px;
+	width: 38px;
+	height: 14px;
+	background: transparent url(../images/movie/bg_starbar-type_bubble.png) no-repeat 0 0;
+}
+/* @MDD - increase width by 5 to account for changed BG size, so info links hug profile area */
+#sayso-starbar #starbar-visControls {
+	width: 105px;
 }
 
 #sayso-starbar #starbar-player-console.sb_starbar-visBG{
@@ -87,7 +101,7 @@
 	width: 144px;
 	height: 37px;
 	margin: 0px 0px 0px 0px;
-	top: 8px;
+	top: 5px;
 	left: 75px;
 }
 
@@ -100,13 +114,13 @@
 #sayso-starbar #starbar-player-console #starbar-type div.sb_userImg{
 	position: absolute;
 	left: 15px;
-	top: 25px;
+	top: 12px;
 	cursor: pointer;
 }
 
 #sayso-starbar #starbar-player-console #starbar-type .sb_content{
 	width: 140px;
-	top: 50px;
+	top: 37px;
 	left: 77px;
 	color: #ffffff;
 }

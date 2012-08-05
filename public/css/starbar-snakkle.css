@@ -3,13 +3,14 @@
 }
 
 /* override */
+/* @MDD 08/05/12 - move left by 5px (100 to 105) show nav is tight to left edge, after new width */
 #sayso-starbar #starbar-player-console #starbar-type{
-	background-image: url("../images/snakkle/bg_starbar-type.png");
+	background: transparent url("../images/snakkle/bg_starbar-type_mdd.png")  no-repeat 0 0;
   height: 74px;
-  left: 100px;
+  left: 105px;
   position: absolute;
   top: 0;
-  width: 240px;
+  width: 235px;
   z-index: 2147480011;
 }
 

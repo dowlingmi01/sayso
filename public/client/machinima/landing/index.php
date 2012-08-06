@@ -1,10 +1,10 @@
 <?php
 	$extids = array( 'development' => 'kcgjipkjdgakogjmbekhghlhdgacajbh'
-		, 'sandbox', 'fjgbjoknbfjhofpcdpfepjaicipncpob'
-		, 'demo', 'poipmplbjibkncgkiaomennpegokfjom'
-		, 'staging', 'dcdkmcnaenolmjcoijjggegpcbehgfkn'
-		, 'testing', 'dachmhjcknkhjkjpknneienbiolpoein'
-		, 'production', 'lpkeinfeenilbldefedbfcdhllhjnblc'
+		, 'sandbox' => 'fjgbjoknbfjhofpcdpfepjaicipncpob'
+		, 'demo' => 'poipmplbjibkncgkiaomennpegokfjom'
+		, 'staging' => 'dcdkmcnaenolmjcoijjggegpcbehgfkn'
+		, 'testing' => 'dachmhjcknkhjkjpknneienbiolpoein'
+		, 'production' => 'lpkeinfeenilbldefedbfcdhllhjnblc'
 		);
     $extid = $extids[getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production' ];
 ?>

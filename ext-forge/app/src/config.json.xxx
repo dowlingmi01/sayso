@@ -1,0 +1,65 @@
+{
+	"platform_version": "v1.4",
+	"name": "Say.So",
+	"author": "Say.So LLC",
+	"version": "##ProductVersion##",
+	"config_version": "3",
+	"homepage": "http://www.say.so/",
+	"description": "A fun way to have your influence recognized, and your opinions rewarded!",
+	"uuid": "4093d42274ec11e1a41a12313d1adcbe",
+	"modules": {
+		"background": {
+			"files": ["js/config.js", "js/background.js"]
+		},
+		"activations": [
+			{
+				"patterns": ["http://*/*", "https://*/*"],
+				"styles": [],
+				"scripts": ["js/config.js", "js/content.js"],
+				"run_at": "start",
+				"all_frames": true
+			}
+		],
+		"package_names": {
+			"firefox": "say.so",
+			"safari": "com.saysollc.app"
+		},
+		"update_url": {
+			"firefox": "https://app.saysollc.com/xml/firefox-extension-updates.xml",
+			"safari": "http://app.saysollc.com/xml/safari-extension-updates.plist"
+		},
+		"icons": {
+			"chrome": {
+				"16": "img/icon16.png",
+				"48": "img/icon48.png",
+				"128": "img/icon128.png"
+			},
+			"firefox": {
+				"32": "img/icon32.png",
+				"64": "img/icon64.png"
+			},
+			"safari": {
+				"32": "img/icon32.png",
+				"48": "img/icon48.png",
+				"64": "img/icon64.png"
+			}
+		},
+		"contact": true,
+		"event": true,
+		"file": true,
+		"geolocation": true,
+		"is": true,
+		"logging": {
+			"level": "INFO"
+		},
+		"message": true,
+		"notification": true,
+		"prefs": true,
+		"request": {
+			"permissions": []
+		},
+		"sms": true,
+		"tabs": true,
+		"tools": true
+	}
+}

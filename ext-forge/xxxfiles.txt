@@ -1,0 +1,6 @@
+app/src/config.json
+patch/chrome-forge.html
+patch/chrome-manifest.json
+patch/chrome-manifest.ori.json
+patch/ie-setup-x86.nsi
+patch/ie-setup-x86.ori.nsi

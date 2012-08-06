@@ -124,40 +124,49 @@
             return new String(q).toString()
         }
         var r = [];
-        var p = function(u, t) {
-                if (u instanceof Array) {
-                    var s = (t ? t : "") + "[]";
-                    for (x in u) {
-                        p(u[x], s)
+        var p = function(v, u) {
+                if (v instanceof Array) {
+                    var t = (u ? u : "") + "[]";
+                    for (var s in v) {
+                        if (!v.hasOwnProperty(s)) {
+                            continue
+                        }
+                        p(v[s], t)
                     }
                 } else {
-                    if (u instanceof Object) {
-                        for (x in u) {
-                            var s = x;
-                            if (t) {
-                                s = t + "[" + x + "]"
+                    if (v instanceof Object) {
+                        for (var s in v) {
+                            if (!v.hasOwnProperty(s)) {
+                                continue
                             }
-                            p(u[x], s)
+                            var t = s;
+                            if (u) {
+                                t = u + "[" + s + "]"
+                            }
+                            p(v[s], t)
                         }
                     } else {
-                        r.push(encodeURIComponent(t) + "=" + encodeURIComponent(u))
+                        r.push(encodeURIComponent(u) + "=" + encodeURIComponent(v))
                     }
                 }
             };
         p(q);
         return r.join("&").replace("%20", "+")
     };
-    h.generateMultipartString = function(p, r) {
-        if (typeof p === "string") {
+    h.generateMultipartString = function(q, s) {
+        if (typeof q === "string") {
             return ""
         }
-        var q = "";
-        for (key in p) {
-            q += "--" + r + "\r\n";
-            q += 'Content-Disposition: form-data; name="' + key.replace('"', '\\"') + '"\r\n\r\n';
-            q += p[key].toString() + "\r\n"
+        var r = "";
+        for (var p in q) {
+            if (!q.hasOwnProperty(p)) {
+                continue
+            }
+            r += "--" + s + "\r\n";
+            r += 'Content-Disposition: form-data; name="' + p.replace('"', '\\"') + '"\r\n\r\n';
+            r += q[p].toString() + "\r\n"
         }
-        return q
+        return r
     }, h.generateURI = function(q, p) {
         var r = "";
         if (q.indexOf("?") !== -1) {
@@ -414,7 +423,8 @@
             h.priv.call("internal.ping", {
                 data: [q]
             }, r, p)
-        }
+        },
+        call: h.priv.call
     };
     m.is = {
         mobile: function() {
@@ -463,163 +473,163 @@
     };
     var e = function(v, t, w) {
             var r = [];
-            stylize = function(z, y) {
-                return z
+            stylize = function(y, x) {
+                return y
             };
 
-            function p(y) {
-                return y instanceof RegExp || (typeof y === "object" && Object.prototype.toString.call(y) === "[object RegExp]")
+            function p(x) {
+                return x instanceof RegExp || (typeof x === "object" && Object.prototype.toString.call(x) === "[object RegExp]")
             }
-            function q(y) {
-                return y instanceof Array || Array.isArray(y) || (y && y !== Object.prototype && q(y.__proto__))
+            function q(x) {
+                return x instanceof Array || Array.isArray(x) || (x && x !== Object.prototype && q(x.__proto__))
             }
-            function s(A) {
-                if (A instanceof Date) {
+            function s(z) {
+                if (z instanceof Date) {
                     return true
                 }
-                if (typeof A !== "object") {
+                if (typeof z !== "object") {
                     return false
                 }
-                var y = Date.prototype && Object.getOwnPropertyNames(Date.prototype);
-                var z = A.__proto__ && Object.getOwnPropertyNames(A.__proto__);
-                return JSON.stringify(z) === JSON.stringify(y)
+                var x = Date.prototype && Object.getOwnPropertyNames(Date.prototype);
+                var y = z.__proto__ && Object.getOwnPropertyNames(z.__proto__);
+                return JSON.stringify(y) === JSON.stringify(x)
             }
-            function u(K, H) {
+            function u(J, G) {
                 try {
-                    if (K && typeof K.inspect === "function" && !(K.constructor && K.constructor.prototype === K)) {
-                        return K.inspect(H)
+                    if (J && typeof J.inspect === "function" && !(J.constructor && J.constructor.prototype === J)) {
+                        return J.inspect(G)
                     }
-                    switch (typeof K) {
+                    switch (typeof J) {
                     case "undefined":
                         return stylize("undefined", "undefined");
                     case "string":
-                        var y = "'" + JSON.stringify(K).replace(/^"|"$/g, "").replace(/'/g, "\\'").replace(/\\"/g, '"') + "'";
-                        return stylize(y, "string");
+                        var x = "'" + JSON.stringify(J).replace(/^"|"$/g, "").replace(/'/g, "\\'").replace(/\\"/g, '"') + "'";
+                        return stylize(x, "string");
                     case "number":
-                        return stylize("" + K, "number");
+                        return stylize("" + J, "number");
                     case "boolean":
-                        return stylize("" + K, "boolean")
+                        return stylize("" + J, "boolean")
                     }
-                    if (K === null) {
+                    if (J === null) {
                         return stylize("null", "null")
                     }
-                    if (K instanceof Document) {
-                        return (new XMLSerializer()).serializeToString(K)
+                    if (J instanceof Document) {
+                        return (new XMLSerializer()).serializeToString(J)
                     }
-                    var E = Object.keys(K);
-                    var L = t ? Object.getOwnPropertyNames(K) : E;
-                    if (typeof K === "function" && L.length === 0) {
-                        var z = K.name ? ": " + K.name : "";
-                        return stylize("[Function" + z + "]", "special")
+                    var D = Object.keys(J);
+                    var K = t ? Object.getOwnPropertyNames(J) : D;
+                    if (typeof J === "function" && K.length === 0) {
+                        var y = J.name ? ": " + J.name : "";
+                        return stylize("[Function" + y + "]", "special")
                     }
-                    if (p(K) && L.length === 0) {
-                        return stylize("" + K, "regexp")
+                    if (p(J) && K.length === 0) {
+                        return stylize("" + J, "regexp")
                     }
-                    if (s(K) && L.length === 0) {
-                        return stylize(K.toUTCString(), "date")
+                    if (s(J) && K.length === 0) {
+                        return stylize(J.toUTCString(), "date")
                     }
-                    var A, I, F;
-                    if (q(K)) {
-                        I = "Array";
-                        F = ["[", "]"]
+                    var z, H, E;
+                    if (q(J)) {
+                        H = "Array";
+                        E = ["[", "]"]
                     } else {
-                        I = "Object";
-                        F = ["{", "}"]
+                        H = "Object";
+                        E = ["{", "}"]
                     }
-                    if (typeof K === "function") {
-                        var D = K.name ? ": " + K.name : "";
-                        A = " [Function" + D + "]"
+                    if (typeof J === "function") {
+                        var C = J.name ? ": " + J.name : "";
+                        z = " [Function" + C + "]"
                     } else {
-                        A = ""
+                        z = ""
                     }
-                    if (p(K)) {
-                        A = " " + K
+                    if (p(J)) {
+                        z = " " + J
                     }
-                    if (s(K)) {
-                        A = " " + K.toUTCString()
+                    if (s(J)) {
+                        z = " " + J.toUTCString()
                     }
-                    if (L.length === 0) {
-                        return F[0] + A + F[1]
+                    if (K.length === 0) {
+                        return E[0] + z + E[1]
                     }
-                    if (H < 0) {
-                        if (p(K)) {
-                            return stylize("" + K, "regexp")
+                    if (G < 0) {
+                        if (p(J)) {
+                            return stylize("" + J, "regexp")
                         } else {
                             return stylize("[Object]", "special")
                         }
                     }
-                    r.push(K);
-                    var C = L.map(function(N) {
-                        var M, O;
-                        if (K.__lookupGetter__) {
-                            if (K.__lookupGetter__(N)) {
-                                if (K.__lookupSetter__(N)) {
-                                    O = stylize("[Getter/Setter]", "special")
+                    r.push(J);
+                    var B = K.map(function(M) {
+                        var L, N;
+                        if (J.__lookupGetter__) {
+                            if (J.__lookupGetter__(M)) {
+                                if (J.__lookupSetter__(M)) {
+                                    N = stylize("[Getter/Setter]", "special")
                                 } else {
-                                    O = stylize("[Getter]", "special")
+                                    N = stylize("[Getter]", "special")
                                 }
                             } else {
-                                if (K.__lookupSetter__(N)) {
-                                    O = stylize("[Setter]", "special")
+                                if (J.__lookupSetter__(M)) {
+                                    N = stylize("[Setter]", "special")
                                 }
                             }
                         }
-                        if (E.indexOf(N) < 0) {
-                            M = "[" + N + "]"
+                        if (D.indexOf(M) < 0) {
+                            L = "[" + M + "]"
                         }
-                        if (!O) {
-                            if (r.indexOf(K[N]) < 0) {
-                                if (H === null) {
-                                    O = u(K[N])
+                        if (!N) {
+                            if (r.indexOf(J[M]) < 0) {
+                                if (G === null) {
+                                    N = u(J[M])
                                 } else {
-                                    O = u(K[N], H - 1)
+                                    N = u(J[M], G - 1)
                                 }
-                                if (O.indexOf("\n") > -1) {
-                                    if (q(K)) {
-                                        O = O.split("\n").map(function(P) {
-                                            return "  " + P
+                                if (N.indexOf("\n") > -1) {
+                                    if (q(J)) {
+                                        N = N.split("\n").map(function(O) {
+                                            return "  " + O
                                         }).join("\n").substr(2)
                                     } else {
-                                        O = "\n" + O.split("\n").map(function(P) {
-                                            return "   " + P
+                                        N = "\n" + N.split("\n").map(function(O) {
+                                            return "   " + O
                                         }).join("\n")
                                     }
                                 }
                             } else {
-                                O = stylize("[Circular]", "special")
+                                N = stylize("[Circular]", "special")
                             }
                         }
-                        if (typeof M === "undefined") {
-                            if (I === "Array" && N.match(/^\d+$/)) {
-                                return O
+                        if (typeof L === "undefined") {
+                            if (H === "Array" && M.match(/^\d+$/)) {
+                                return N
                             }
-                            M = JSON.stringify("" + N);
-                            if (M.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/)) {
-                                M = M.substr(1, M.length - 2);
-                                M = stylize(M, "name")
+                            L = JSON.stringify("" + M);
+                            if (L.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/)) {
+                                L = L.substr(1, L.length - 2);
+                                L = stylize(L, "name")
                             } else {
-                                M = M.replace(/'/g, "\\'").replace(/\\"/g, '"').replace(/(^"|"$)/g, "'");
-                                M = stylize(M, "string")
+                                L = L.replace(/'/g, "\\'").replace(/\\"/g, '"').replace(/(^"|"$)/g, "'");
+                                L = stylize(L, "string")
                             }
                         }
-                        return M + ": " + O
+                        return L + ": " + N
                     });
                     r.pop();
-                    var J = 0;
-                    var B = C.reduce(function(M, N) {
-                        J++;
-                        if (N.indexOf("\n") >= 0) {
-                            J++
+                    var I = 0;
+                    var A = B.reduce(function(L, M) {
+                        I++;
+                        if (M.indexOf("\n") >= 0) {
+                            I++
                         }
-                        return M + N.length + 1
+                        return L + M.length + 1
                     }, 0);
-                    if (B > 50) {
-                        C = F[0] + (A === "" ? "" : A + "\n ") + " " + C.join(",\n  ") + " " + F[1]
+                    if (A > 50) {
+                        B = E[0] + (z === "" ? "" : z + "\n ") + " " + B.join(",\n  ") + " " + E[1]
                     } else {
-                        C = F[0] + A + " " + C.join(", ") + " " + F[1]
+                        B = E[0] + z + " " + B.join(", ") + " " + E[1]
                     }
-                    return C
-                } catch (G) {
+                    return B
+                } catch (F) {
                     return "[No string representation]"
                 }
             }
@@ -1174,20 +1184,20 @@
             })
         }
     };
-    m.request.ajax = function(D) {
-        var r = (D.url ? D.url : null);
-        var C = (D.success ? D.success : undefined);
-        var w = (D.error ? D.error : undefined);
-        var u = (D.username ? D.username : null);
-        var B = (D.password ? D.password : null);
-        var p = (D.accepts ? D.accepts : ["*/*"]);
-        var q = (D.cache ? D.cache : false);
-        var A = (D.contentType ? D.contentType : null);
-        var t = (D.data ? D.data : null);
-        var z = (D.dataType ? D.dataType : null);
-        var s = (D.headers ? D.headers : {});
-        var y = (D.timeout ? D.timeout : 60000);
-        var v = (D.type ? D.type : "GET");
+    m.request.ajax = function(C) {
+        var r = (C.url ? C.url : null);
+        var B = (C.success ? C.success : undefined);
+        var w = (C.error ? C.error : undefined);
+        var u = (C.username ? C.username : null);
+        var A = (C.password ? C.password : null);
+        var p = (C.accepts ? C.accepts : ["*/*"]);
+        var q = (C.cache ? C.cache : false);
+        var z = (C.contentType ? C.contentType : null);
+        var t = (C.data ? C.data : null);
+        var y = (C.dataType ? C.dataType : null);
+        var s = (C.headers ? C.headers : {});
+        var x = (C.timeout ? C.timeout : 60000);
+        var v = (C.type ? C.type : "GET");
         if (typeof p === "string") {
             p = [p]
         }
@@ -1202,44 +1212,44 @@
         }
         if (t) {
             t = h.generateQueryString(t);
-            if (!A) {
-                A = "application/x-www-form-urlencoded"
+            if (!z) {
+                z = "application/x-www-form-urlencoded"
             }
         }
         if (p) {
             s.Accept = p.join(",")
         }
-        if (A) {
-            s["Content-Type"] = A
+        if (z) {
+            s["Content-Type"] = z
         }
         h.priv.call("request.ajax", {
             url: r,
             username: u,
-            password: B,
+            password: A,
             data: t,
             headers: s,
             type: v,
-            timeout: y
-        }, function(G) {
+            timeout: x
+        }, function(F) {
             try {
-                if (z == "xml") {
-                    var F, E;
+                if (y == "xml") {
+                    var E, D;
                     if (window.DOMParser) {
-                        F = new DOMParser();
-                        E = F.parseFromString(G, "text/xml")
+                        E = new DOMParser();
+                        D = E.parseFromString(F, "text/xml")
                     } else {
-                        E = new ActiveXObject("Microsoft.XMLDOM");
-                        E.async = "false";
-                        E.loadXML(G)
+                        D = new ActiveXObject("Microsoft.XMLDOM");
+                        D.async = "false";
+                        D.loadXML(F)
                     }
-                    G = E
+                    F = D
                 } else {
-                    if (z == "json") {
-                        G = JSON.parse(G)
+                    if (y == "json") {
+                        F = JSON.parse(F)
                     }
                 }
-            } catch (H) {}
-            C(G)
+            } catch (G) {}
+            B(F)
         }, w)
     };
     m.file.string = function(q, r, p) {

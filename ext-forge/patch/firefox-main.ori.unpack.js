@@ -295,6 +295,7 @@ var apiImpl = {
                     } else {
                         b({
                             message: "HTTP error code received from server: " + g.status,
+                            statusCode: g.status,
                             type: "EXPECTED_FAILURE"
                         })
                     }

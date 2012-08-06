@@ -1,2 +1,2 @@
 set basedomain=app-dev.saysollc.com
-set filename=SaySo-DEV
+set filename=Say.So-DEV

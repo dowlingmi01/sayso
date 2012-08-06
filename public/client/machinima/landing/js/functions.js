@@ -12,6 +12,10 @@ $(document).ready(function (){
 	var termsCheckbox = $('#agreeterms');
 
 	var btnSubmit = $('#btn-submit');
+	if( saysoConf.bn.browser == 'chrome' || saysoConf.bn.browser == 'msie' && saysoConf.bn.version == 8 )
+		btnSubmit.removeClass('grab-it').addClass('create-account');
+		
+	var downloadLocation;
 
 	slideshows.each(function(){
 		var mySlideshow = $(this);
@@ -67,9 +71,9 @@ $(document).ready(function (){
 			msg = 'You already have Say.So installed';
 		if( !saysoConf.bn.isSupported ) {
 			if( saysoConf.bn.isMobile ) {
-				msg = 'Sorry! Machinima.Say.So isn\'t yet available for mobile browsers. Join us via your computer when you can!';
+				msg = 'Sorry! Machinima|Recon isn\'t yet available for mobile browsers. Join us via your computer when you can!';
 			} else {
-				msg = 'Sorry, your web browser doesn\'t support the cool features of Machinima.Say.So. For an optimal experience, use the latest versions of Chrome (www.google.com/chrome), Firefox (www.getfirefox.com) or Safari (www.apple.com/safari). And we support Internet Explorer 8 and above.';
+				msg = 'Sorry, your web browser doesn\'t support the cool features of Machinima|Recon. For an optimal experience, use the latest versions of Chrome (www.google.com/chrome), Firefox (www.getfirefox.com) or Safari (www.apple.com/safari). And we support Internet Explorer 8 and above.';
 			}
 		}
 		if( msg ) {
@@ -148,16 +152,33 @@ $(document).ready(function (){
 		if (response.status && response.status == "error") {
 			showWarning(response.data.message);
 		} else {
-			if( !document.location.href.match('sayso-installing') )
-				document.location.hash = 'sayso-installing';
-			var downloadLocation = '//' + saysoConf.baseDomain + '/starbar/install/extension?install_token=' + response.data.install_token;
+			downloadLocation = '//' + saysoConf.baseDomain + '/starbar/install/extension?install_token=' + response.data.install_token;
 			$('#create-password').hide();
-			$('#password-created').show();
 			$('#download-retry').attr('href', downloadLocation);
+			if( saysoConf.bn.browser == 'chrome' || saysoConf.bn.browser == 'msie' && saysoConf.bn.version == 8 ) {
+				$('#password-created').show();
+			} else {
+				startDownload();
+			}
+		}
+	}
+	function startDownload() {
+		if( !document.location.href.match('sayso-installing') )
+			document.location.hash = 'sayso-installing';
+		if( saysoConf.bn.browser == 'chrome' )
+			chrome.webstore.install(undefined, undefined, function(s) {console.log(s);});
+		else {
+			if(saysoConf.bn.isMac && saysoConf.bn.browser == 'safari')
+				$('#install-instructions').html('Please click on the Say.So package in the Safari downloads window to complete the instalation');
+			$('#password-created').hide();
+			$('#after-redirect').show();
 			location.href = downloadLocation;
 		}
 	}
-
+    $('#btn-install').on('click', function(e) {
+		e.preventDefault();
+		startDownload();
+    } );
 }); // end document.ready
 
 

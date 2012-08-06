@@ -136,6 +136,8 @@ class Starbar_InstallController extends Api_GlobalController {
 		$userKey->token = $install->token;
 		$userKey->origin = User_Key::ORIGIN_INSTALL;
 		$userKey->save();
+		header('P3P: CP="NOI ADM DEV PSAi COM NAV OUR OTR STP IND DEM"');
+		setcookie('user_key', $install->token, time()+(86400*365), '/', null, null, true);
 		return $this->_resultType(new Object(array('install_token' => $install->token)));
 	}
 	public function extensionAction() {
@@ -156,7 +158,7 @@ class Starbar_InstallController extends Api_GlobalController {
 		
 		$env = Registry::getPseudoEnvironmentName();
 		
-		$fileName = ($env === 'PROD' ? 'Say.So' : 'SaySo-' . $env);
+		$fileName = 'Say.So' . ($env === 'PROD' ? '' : '-' . $env);
 
 		header('P3P: CP="NOI ADM DEV PSAi COM NAV OUR OTR STP IND DEM"');
 		setcookie('user_key', $this->install_token, time()+(86400*365), '/', null, null, true);

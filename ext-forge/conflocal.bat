@@ -1,2 +1,2 @@
-set basedomain=local.sayso.com
-set filename=SaySo-LOCAL
+set basedomain=local.saysollc.com
+set filename=Say.So-LOCAL

@@ -2,7 +2,7 @@
 	"platform_version": "v1.4",
 	"name": "Say.So",
 	"author": "Say.So LLC",
-	"version": "2.0.2",
+	"version": "2.0.3",
 	"config_version": "3",
 	"homepage": "http://www.say.so/",
 	"description": "A fun way to have your influence recognized, and your opinions rewarded!",
@@ -25,7 +25,6 @@
 			"safari": "com.saysollc.app"
 		},
 		"update_url": {
-			"chrome": "http://app.saysollc.com/xml/chrome-extension-updates.xml",
 			"firefox": "https://app.saysollc.com/xml/firefox-extension-updates.xml",
 			"safari": "http://app.saysollc.com/xml/safari-extension-updates.plist"
 		},

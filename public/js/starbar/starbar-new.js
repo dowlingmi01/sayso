@@ -242,6 +242,7 @@ $SQ(function(){
 		starbar = window.$SQ.sayso.starbar;
 
 		initElements();
+		
 		updateAlerts(true);
 		updateProfileElements();
 		activateGameElements(starbarElem, false);
@@ -253,6 +254,9 @@ $SQ(function(){
 			elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
 		}
 
+		/* MDD 07/30/12 adding switcher behavior */		
+		initSwitcher();
+		
 		sayso.log('Loaded and Ready');
 	};
 
@@ -466,8 +470,7 @@ $SQ(function(){
 
 		}); // end btnExternalShare
 		
-		/* MDD 07/30/12 adding switcher behavior */		
-		initSwitcher();
+		
 
 	} // end initElements()
 
@@ -1680,6 +1683,13 @@ $SQ(function(){
 	// initialize switcher component - using named function for global ref
 	function initSwitcher(){
 		
+		// fake-preload images
+		var preload = function(){
+			for(var i = 0; i < arguments.length; i++){
+				new Image().src = arguments[i];
+			}
+		};
+		
 		/* switcher behavior @MDD 07/25/12 */
 		var Switcher = {
 				
@@ -1747,16 +1757,43 @@ $SQ(function(){
 				return Switcher.slider.get(0).scrollHeight;
 			},
 			
-			// methods
+			/* methods */
+			
+			// assign initial handlers, preload backgrounds
+			prepare : function(){
+				
+				// remove the existing popup behavior
+				$SQ('#starbar-type .sb_logo .sb_nav_element', starbarElem).unbind().removeClass('sb_nav_element');
+				
+				// preload the tab - chrome must think it should be rendered so use positioning to hide
+				var preloadedTab = $SQ('<div>');
+				preloadedTab.addClass('starbar-switcher-tab');
+				preloadedTab.css({
+					position: 'absolute',
+					top : '-99999px'
+				});
+				starbarElem.append(preloadedTab);
+				
+				// initialize on first mouseover - this prevents wonky layout when bar is initially hidden
+				$SQ('#starbar-type', starbarElem).unbind().bind('mouseover', Switcher.create);
+				
+			},
+			
+			// create, position, handle, add to dom
 			create : function(){
 				
 				// only create shell once
 				if(Switcher.isCreated){
 					return;
-				}
+				};
 				
+				// remove preloaded tab graphic
+				$SQ('.starbar-switcher-tab').remove();
+				
+				// remove existing if lingering from previous bar load operation
 				$SQ('.starbar-switcher', starbarElem).remove();
 				
+				// indicate we exist
 				Switcher.isCreated = true;
 				
 				// assign hover behavior to profile area, to show/hide tab
@@ -1792,7 +1829,8 @@ $SQ(function(){
 				
 				// create loader initially - leave it until view is loaded
 				Switcher.loader = $SQ('<div>');
-				Switcher.loader.addClass('starbar-switcher-loader');
+				Switcher.loader.addClass('sb_img_loading');
+				Switcher.loader.addClass('starbar-switcher-loader');				
 				Switcher.slider.append(Switcher.loader);
 				
 				// insert the entire component into #starbar-main
@@ -1810,7 +1848,10 @@ $SQ(function(){
 				});
 				
 				// everything should be rendered properly now, go ahead and reveal
-				Switcher.container.show();					
+				Switcher.container.show();
+				
+				// and animate tab in first time
+				Switcher.showTab();
 			
 			},
 			
@@ -1841,7 +1882,7 @@ $SQ(function(){
 				}
 				Switcher.isShowing = true;
 				Switcher.tab.addClass('starbar-switcher-active');
-				Switcher.slider.animate({
+				Switcher.slider.stop(true, false).animate({
 					height : Switcher.getContentHeight() + Switcher.getPanelHeight()
 				});
 			},
@@ -1865,12 +1906,12 @@ $SQ(function(){
 			
 			// after view is loaded, assign event handlders
 			assignBehavior : function(){				
+
 				// switch bar when active community is clicked
 				$SQ('.starbar-switcher-my-communities .sb_starbar-switch', starbarElem).on('click', Switcher.changeBar);				
-				// when "add" slider is clicked, offer accept checkbox and 'add' button
-				$SQ('.starbar-switcher-slider', starbarElem).on('click', Switcher.offerBar);						
-				// when "info" icon is rolled over, show tooltip
-				$SQ('.starbar-switcher-info', starbarElem).on('mouseover', Switcher.showInfo);
+					
+				// when meta box is rolled over, show tooltip
+				$SQ('.starbar-switcher-available-communities .starbar-switcher-meta', starbarElem).on('mouseenter', Switcher.showInfo);
 			},
 			
 			
@@ -1882,7 +1923,7 @@ $SQ(function(){
 				if(Switcher.isShowing){
 					return true;
 				};
-				Switcher.slider.animate({
+				Switcher.slider.stop(true, false).animate({
 					height : Switcher.getPanelHeight() - Switcher.paddingOffset - Switcher.pngOffset
 				});		
 			},
@@ -1921,20 +1962,40 @@ $SQ(function(){
 			},
 			// calculate and animate container to just beneath profile top
 			slideOut : function(){
-				Switcher.slider.animate({
+				Switcher.slider.stop(true, false).animate({
 					height: Switcher.getPanelHeight() - Switcher.tabHeight - Switcher.paddingOffset - Switcher.pngOffset
 				});
 			},
 			
 			/* DOM handlers post-load */
 			
-			// show the 'add' button tooltip
-			offerBar : function(){
-						
-				// grab the ID now, since the button itself won't be a child of this row
+			// show the bar into tooltip
+			showInfo : function(){
+				
+				// general references
 				var handle = $SQ(this);
 				var row = handle.parents('.starbar-switcher-row');
-				var id = row.attr('rel');
+				var id = row.attr('rel');						
+	
+				// remove all existing tooltips not assigned to this bar
+				$SQ('.starbar-switcher-tooltip').not('[rel=' + id + ']').remove();
+				
+				// if the appropriate tooltip is already open, skip it
+				var existing = $SQ('.starbar-switcher-tooltip[rel=' + id + ']');
+				if(existing.length > 0){
+					existing.fadeIn();
+					return true;
+				}						
+				
+				// create the container to insert into the tooltop
+				var container = $SQ('<div>');
+				
+				// get info text and stick it in a new div
+				var info = handle.find('.starbar-switcher-info-content').text();
+				var content = $SQ('<div>');
+				content.addClass('starbar-switcher-detail');
+				content.text(info);
+				container.append(content);
 				
 				// create the accept mini-form
 				var signup = $SQ('<div>');
@@ -1966,55 +2027,15 @@ $SQ(function(){
 					}
 				});
 				
-				// create the tooltip
-				var tooltip = Switcher.Tooltip.create(handle, signup);
-				
-				// assign rel to differentiate from other info tooltips
-				tooltip.attr('rel', id);
-				
-				// have it fit on one line
-				tooltip.css({
-					'width' : 'auto',
-					'white-space' : 'nowrap'
-				});
-				
-			},
-			
-			// show the bar into tooltip
-			showInfo : function(){
-				
-				// general references
-				var handle = $SQ(this);
-				var row = handle.parents('.starbar-switcher-row');
-				var id = row.attr('rel');						
-	
-				// remove all existing tooltips
-				$SQ('.starbar-switcher-tooltip').not('[rel=' + id + ']').remove();
-				
-				// if the appropriate tooltip is already open, skip it
-				var existing = $SQ('.starbar-switcher-tooltip[rel=' + id + ']');
-				if(existing.length > 0){
-					existing.fadeIn();
-					return true;
-				}						
-				
-				// get info text
-				var info = handle.siblings('.starbar-switcher-info-content').text();
+				// add it to main container
+				container.append(signup);
 				
 				// create the tooltip and populate it
-				var tooltip = Switcher.Tooltip.create(handle, info);
+				var tooltip = Switcher.Tooltip.create(handle, container);
 				
 				// assign rel to differentiate from other info tooltips
 				tooltip.attr('rel', id);		
 				
-				// set the mouseout
-				handle.on('mouseout', function(){
-					tooltip.fadeOut(function(){
-						tooltip.remove();
-					});
-					handle.unbind('mouseout', arguments.callee);
-					handle.on('mouseover', Switcher.showInfo);
-				});
 				
 			},
 			
@@ -2026,11 +2047,43 @@ $SQ(function(){
 				
 			// tooltips	
 			Tooltip : {
+				// how long to wait before fading out
+				delay : 1500,
+				// distance to perform transition
+				offset : 4,
+				// reference to the activating element
+				handle : null,
+				// reference to the active tootlip
+				element : null,
+				// schedule to close
+				timer : null,
+				// fade out and remove from dom
+				close : function(){
+					Switcher.Tooltip.handle.unbind('mouseenter', Switcher.Tooltip.enterHandler);
+					Switcher.Tooltip.handle.unbind('mouseleave', Switcher.Tooltip.leaveHandler);
+					Switcher.Tooltip.element.unbind();
+					Switcher.Tooltip.element.fadeOut(function(){
+						Switcher.Tooltip.element.remove();
+					});
+				},
+				// clear timer when either handle or tooltip is entered
+				enterHandler : function(){
+					window.clearTimeout(Switcher.Tooltip.timer);
+				},
+				// resume timer when handle or tooltip is exited
+				leaveHandler : function(){
+					window.clearTimeout(Switcher.Tooltip.timer);
+					Switcher.Tooltip.timer = window.setTimeout(Switcher.Tooltip.close, Switcher.Tooltip.delay);
+				},
+				
 				create : function(handle, content){
+					
+					// remove any existing tooltips
+					$SQ('.starbars-switcher-tooltip').remove();
 					
 					// references to parents used throughout
 					var drawer = handle.parents('.starbar-switcher-drawer');
-					var cell = handle.parents('.starbar-switcher-cell');
+					var cell = handle.is('.starbar-switcher-cell') ? handle : handle.parents('.starbar-switcher-cell');
 					
 					// create and populate tooltip element
 					var tooltip = $SQ('<div>');
@@ -2050,10 +2103,11 @@ $SQ(function(){
 					var y = cell.position().top + (cell.outerHeight() / 2) - (tooltip.outerHeight() / 2);
 					tooltip.css({
 						'opacity' : 0,
-						'top' : y + 'px'
+						'top' : (y - Switcher.Tooltip.offset) + 'px'
 					});				
 					tooltip.animate({
-						opacity : 1
+						'opacity' : 1,
+						'top' : y + 'px'
 					});				
 					
 					// close in on document mousedown, unless event.target is tooltip or child of tooltip
@@ -2065,24 +2119,30 @@ $SQ(function(){
 						if(firer.parents('.starbar-switcher-tooltip').length > 0){
 							return true;
 						}
-						var ref = $SQ('.starbar-switcher-tooltip');
-						ref.fadeOut(function(){
-							ref.remove();
-						});
+						Switcher.Tooltip.close();
 						$(this).unbind('mousedown', arguments.callee);
 					});
 					
+					// schedule close
+					handle.bind('mouseenter', Switcher.Tooltip.enterHandler);
+					handle.bind('mouseleave', Switcher.Tooltip.leaveHandler);
+					tooltip.bind('mouseenter', Switcher.Tooltip.enterHandler);
+					tooltip.bind('mouseleave', Switcher.Tooltip.leaveHandler);
+					
+					// cache references
+					Switcher.Tooltip.handle = handle;
+					Switcher.Tooltip.element = tooltip;
+					
 					// return it
-					return tooltip;		
+					return tooltip;
+				
 				}
 			}
 			
 		};
 		
-		// create shell, don't load up view yet
-		Switcher.create();
-		// remove the existing popup behavior
-		$SQ('#starbar-type .sb_logo .sb_nav_element', starbarElem).unbind();
+		Switcher.prepare();
+		
 	};	
 	
 });

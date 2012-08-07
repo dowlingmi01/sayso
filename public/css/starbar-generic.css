@@ -1684,9 +1684,16 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	padding: 4px;
 	z-index: 1;
 }
+/* override existing sb_img_loading definitions */
 #sayso-starbar .starbar-switcher-loader {
-	height: 58px;
-	background: url(../images/generic/switcher/img_ajax-loader.gif) no-repeat center center;
+    height: 51px !important;
+	background-position: center center;
+    left: auto !important;
+    margin: auto !important;
+    position: static !important;
+    text-indent: inherit !important;
+    top: auto !important;
+    width: auto !important;
 }
 #sayso-starbar .starbar-switcher-lists {
 
@@ -1803,7 +1810,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar .starbar-switcher-tooltip {
 	position: absolute;
 	z-index: 2147483647;
-	width: 120px;
+	width: 150px;
 	left: 100%;
 	margin-left: 10px;
 }
@@ -1820,6 +1827,10 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	border: 1px solid #000;
 	box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4), 1px 1px 1px rgba(0, 0, 0, 0.6);
 }
+#sayso-starbar .starbar-switcher-detail {
+	margin-bottom: 1em;
+}
+#sayso-starbar .starbar-switcher-detail,
 #sayso-starbar .starbar-switcher-accept {
 	color: #CCC !important;
 	font-size: 10px !important;

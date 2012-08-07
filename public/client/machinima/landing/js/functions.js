@@ -179,6 +179,28 @@ $(document).ready(function (){
 		e.preventDefault();
 		startDownload();
     } );
+    
+	$('.sso_fld').each( function() {
+		var pwd = $(this);
+		var txt = $('#'+pwd.attr('id')+'_txt');
+		if( txt.length ) {
+			if( saysoConf.bn.browser == 'msie' ) {
+				pwd.hide()
+				txt.focus( function() {
+					txt.hide();
+					pwd.show();
+					pwd.focus();
+				});
+				pwd.blur( function() {
+					if( pwd.val() == '' ) {
+						pwd.hide();
+						txt.show();
+					}
+				});
+			} else
+				txt.hide();
+		}
+	});
 }); // end document.ready
 
 

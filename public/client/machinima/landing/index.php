@@ -98,9 +98,12 @@
 	  		<p>Start by creating your unique Say.So password so we can make sure your points and rewards and saved.</p>
 	  		<br />
 	  		<form>
-	  			<p><input type="text" id="input-email" placeholder="Enter a valid email address" /></p>
-	  			<p><input type="password" id="input-password" placeholder="Enter your desired password. (6-12 characters)" /></p>
-	  			<p><input type="password" id="input-confirmation" placeholder="Verify your password" /></p>
+	  			<p><input type="text" id="input-email" class="sso_fld" placeholder="Enter a valid email address" />
+	  			<input type="text" id="input-email_txt" value="Enter a valid email address" /></p>
+	  			<p><input type="password" id="input-password" class="sso_fld" placeholder="Enter your desired password. (6-12 characters)" />
+	  			<input type="text" id="input-password_txt" value="Enter your desired password. (6-12 characters)" /></p>
+	  			<p><input type="password" id="input-confirmation" class="sso_fld" placeholder="Verify your password" />
+	  			<input type="text" id="input-confirmation_txt" value="Verify your password" /></p>
 	  			<p><input type="checkbox" value="" id="agreeterms" /><label for="agreeterms">I agree to the <a href="#">terms</a> and <a href="#">conditions</a>.</label></p>
 	  			<input type="submit" value="Grab It" disabled="" id="btn-submit" class="grab-it" />
 	  		</form>

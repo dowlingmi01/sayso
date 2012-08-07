@@ -1,9 +1,21 @@
+<?php
+	$extids = array( 'development' => 'kcgjipkjdgakogjmbekhghlhdgacajbh'
+		, 'sandbox' => 'fjgbjoknbfjhofpcdpfepjaicipncpob'
+		, 'demo' => 'poipmplbjibkncgkiaomennpegokfjom'
+		, 'staging' => 'dcdkmcnaenolmjcoijjggegpcbehgfkn'
+		, 'testing' => 'dachmhjcknkhjkjpknneienbiolpoein'
+		, 'production' => 'lpkeinfeenilbldefedbfcdhllhjnblc'
+		);
+    $extid = $extids[getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production' ];
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>movie.say.so Installation</title>
 <link rel="stylesheet" href="movie-landing.css" />
+<link rel="chrome-webstore-item"
+    href="https://chrome.google.com/webstore/detail/<?= $extid?>" />
 <script src="js/config.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script src="js/jquery.cycle.all.js"></script>
@@ -83,16 +95,26 @@
 	  		<p>Start by creating your unique Say.So password so we can make sure your points and rewards and saved.</p>
 	  		<br />
 	  		<form>
-	  			<p><input type="text" id="input-email" placeholder="Enter a valid email address" /></p>
-	  			<p><input type="password" id="input-password" placeholder="Enter your desired password. (6-12 characters)" /></p>
-	  			<p><input type="password" id="input-confirmation" placeholder="Verify your password" /></p>
+	  			<p><input type="text" id="input-email" class="sso_fld" placeholder="Enter a valid email address" />
+	  			<input type="text" id="input-email_txt" value="Enter a valid email address" /></p>
+	  			<p><input type="password" id="input-password" class="sso_fld" placeholder="Enter your desired password. (6-12 characters)" />
+	  			<input type="text" id="input-password_txt" value="Enter your desired password. (6-12 characters)" /></p>
+	  			<p><input type="password" id="input-confirmation" class="sso_fld" placeholder="Verify your password" />
+	  			<input type="text" id="input-confirmation_txt" value="Verify your password" /></p>
 	  			<p><input type="checkbox" value="" id="agreeterms" /><label for="agreeterms">I agree to the <a href="http://app.saysollc.com/docs/movie/Say.So_App_EULA.pdf" target="_blank">terms and conditions</a>.</label></p>
-	  			<input type="submit" value="Grab It" disabled="" id="btn-submit" />
+	  			<input type="submit" value="Grab It" disabled="" id="btn-submit" class="grab-it" />
 	  		</form>
 	  		<p><small>We don't share your email or password with anyone...period.</small></p>
 	  		</div>
 			  <div id="password-created" style="display: none;">
-	  			<p>Please allow the browser to install the extension.</p>
+	  			<p>Your Say.So password was created. You can now install the extension.</p>
+	  			<form>
+	  				<input type="submit" value="Install" id="btn-install" class="grab-it" />
+	  			</form>
+	  			
+			  </div>
+			  <div id="after-redirect" style="display: none;">
+	  			<p id="install-instructions">Please allow the browser to install the extension.</p>
 	  			<p>If your download didn't start, please click <a id="download-retry">here</a></p>
 			  </div>
 			  <div id="no-install" style="display: none;">

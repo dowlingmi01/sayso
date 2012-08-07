@@ -12,7 +12,7 @@
 		locationCookie: getLocationCookie()
 	}
 	function getBaseDomain() {
-		if( location.host.match('saysollc\.com|local\.sayso\.com') )
+		if( location.host.match('saysollc\.com') )
 			return location.host;
 		else
 			return 'app.saysollc.com';
@@ -36,6 +36,7 @@
 			bn.isSupported = false;
 			return bn;
 		}
+		bn.isMac = (ua.indexOf('Mac OS X') >= 0);
 		for( i = 0; i < identStrs.length; i++ )
 			if( (j = ua.indexOf(identStrs[i])) >= 0 ) {
 				bn.browser = identStrs[i].toLowerCase();

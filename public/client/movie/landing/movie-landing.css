@@ -3659,7 +3659,6 @@ a:focus {
   text-indent: -9999px;
   width: 214px;
   height: 50px;
-  background-image: url('images/btn_grab-it.png');
   background-repeat: no-repeat;
   background-position: 0px -50px;
   border: 0;
@@ -3670,6 +3669,12 @@ a:focus {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
+}
+#wrapper #main #sections .section .section-head form input[type=submit].grab-it {
+  background-image: url('images/btn_grab-it.png');
+}
+#wrapper #main #sections .section .section-head form input[type=submit].create-account {
+  background-image: url('images/btn_create-account.png');
 }
 #wrapper #main #sections .section .section-head form input[type=submit]:disabled {
   background-position: 0px 0px;

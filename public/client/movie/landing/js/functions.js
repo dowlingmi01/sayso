@@ -6,11 +6,16 @@
 $(document).ready(function (){
 	var sectionNav = $('#section-nav');
 	var jumpNav = $('#jump');
+
 	var slideshows = $('.slideshow');
 
 	var termsCheckbox = $('#agreeterms');
 
 	var btnSubmit = $('#btn-submit');
+	if( saysoConf.bn.browser == 'chrome' || saysoConf.bn.browser == 'msie' && saysoConf.bn.version == 8 )
+		btnSubmit.removeClass('grab-it').addClass('create-account');
+		
+	var downloadLocation;
 
 	slideshows.each(function(){
 		var mySlideshow = $(this);
@@ -52,9 +57,6 @@ $(document).ready(function (){
 	  var myClass = $(this).attr('data-class');
 	  sectionNav.attr('class','');
 	  sectionNav.attr('class',myClass);
-
-	  //$('#'+myClass+' #slideshow #slides').cycle();
-
 
 	});
 
@@ -150,16 +152,55 @@ $(document).ready(function (){
 		if (response.status && response.status == "error") {
 			showWarning(response.data.message);
 		} else {
-			if( !document.location.href.match('sayso-installing') )
-				document.location.hash = 'sayso-installing';
-			var downloadLocation = '//' + saysoConf.baseDomain + '/starbar/install/extension?install_token=' + response.data.install_token;
+			downloadLocation = '//' + saysoConf.baseDomain + '/starbar/install/extension?install_token=' + response.data.install_token;
 			$('#create-password').hide();
-			$('#password-created').show();
 			$('#download-retry').attr('href', downloadLocation);
+			if( saysoConf.bn.browser == 'chrome' || saysoConf.bn.browser == 'msie' && saysoConf.bn.version == 8 ) {
+				$('#password-created').show();
+			} else {
+				startDownload();
+			}
+		}
+	}
+	function startDownload() {
+		if( !document.location.href.match('sayso-installing') )
+			document.location.hash = 'sayso-installing';
+		if( saysoConf.bn.browser == 'chrome' )
+			chrome.webstore.install(undefined, undefined, function(s) {console.log(s);});
+		else {
+			if(saysoConf.bn.isMac && saysoConf.bn.browser == 'safari')
+				$('#install-instructions').html('Please click on the Say.So package in the Safari downloads window to complete the instalation');
+			$('#password-created').hide();
+			$('#after-redirect').show();
 			location.href = downloadLocation;
 		}
 	}
-
+    $('#btn-install').on('click', function(e) {
+		e.preventDefault();
+		startDownload();
+    } );
+    
+	$('.sso_fld').each( function() {
+		var pwd = $(this);
+		var txt = $('#'+pwd.attr('id')+'_txt');
+		if( txt.length ) {
+			if( saysoConf.bn.browser == 'msie' ) {
+				pwd.hide()
+				txt.focus( function() {
+					txt.hide();
+					pwd.show();
+					pwd.focus();
+				});
+				pwd.blur( function() {
+					if( pwd.val() == '' ) {
+						pwd.hide();
+						txt.show();
+					}
+				});
+			} else
+				txt.hide();
+		}
+	});
 }); // end document.ready
 
 

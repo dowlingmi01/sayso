@@ -1990,8 +1990,11 @@ $SQ(function(){
 				// create the container to insert into the tooltop
 				var container = $SQ('<div>');
 				
+				// get the contextual element
+				var context = handle.find('.starbar-switcher-info-content');
+				
 				// get info text and stick it in a new div
-				var info = handle.find('.starbar-switcher-info-content').text();
+				var info = context.text();
 				var content = $SQ('<div>');
 				content.addClass('starbar-switcher-detail');
 				content.text(info);
@@ -2005,8 +2008,9 @@ $SQ(function(){
 				var checkbox = $SQ('<input type="checkbox" />');
 				signup.append(checkbox);
 				
-				// link target?
-				signup.append(' I agree to the <a href="#">Terms &amp; Conditions</a> ');
+				// link target
+				var termsURL = '/docs/' + context.attr('rel') + '/Say.So_App_EULA.pdf';
+				signup.append(' I agree to the <a target="_blank" href="' + termsURL + '">Terms &amp; Conditions</a> ');
 				
 				// add button - start of disabled; enable if box is checked
 				var button = $SQ('<button>');

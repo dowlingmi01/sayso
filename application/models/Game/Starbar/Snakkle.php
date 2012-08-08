@@ -31,7 +31,7 @@ class Game_Starbar_Snakkle extends Game_Starbar {
 			$good->setNonRedeemReason('Congrats to Spandana B from Chicago, IL on winning the first grand prize!');
 			$good->setCommentForUser('Unavailable');
 		} elseif ($good->getId() == $this->_economy->getGoodId('MONTH_TWO_GIVEAWAY')) {
-			$good->setNonRedeemReason('The 2nd monthly giveaway winner will be announced soon!');
+			$good->setNonRedeemReason("Congrats to Jennifer G from Levittown, NY for winning our 2nd month's Ipad drawing.");
 			$good->setCommentForUser('Unavailable');
 		/*} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_THREE_GIVEAWAY')) {
 			$good->setNonRedeemReason('Congrats to Matthew L. from Black Mt, NC for winning the week 3 prize!');

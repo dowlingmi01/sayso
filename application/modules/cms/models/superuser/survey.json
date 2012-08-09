@@ -140,6 +140,20 @@
 			]
 		},
 		{
+			"colname": "size",
+			"type": "list",
+			"listoptions": [
+				"small",
+				"large"
+			],
+			"default": "small",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
 			"colname": "display_number_of_questions",
 			"type": "number",
 			"displaywhen": [

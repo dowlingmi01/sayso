@@ -340,3 +340,7 @@ h1.sg-title {
 	float:right;
 	margin-right: 115px !important;
 }
+
+.sg-counter {
+	margin: 10px 0 10px 0;
+}

@@ -303,6 +303,11 @@ class Starbar_ContentController extends Api_GlobalController
 			else $nextSurveyId = -1;
 
 			$this->view->assign('next_survey_id', $nextSurveyId);
+
+			if ($survey->requires_age) {
+				$userAge = Survey_Response::getAgeOfUser($this->user_id, $this->starbar_id);
+				$this->view->assign('user_age', $userAge);
+			}
 		}
 
 	}

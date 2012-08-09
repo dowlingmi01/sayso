@@ -53,7 +53,7 @@ class Survey_Response extends Record
 		$userProfileSurveyResponse->loadDataByUniqueFields(array('survey_id' => $profileSurvey->id, 'user_id' => $userId));
 		if (!$userProfileSurveyResponse->id) return;
 
-		$userAgeQuestionResponse = new Survey_Question_Response();
+		$userAgeQuestionResponse = new Survey_QuestionResponse();
 		$userAgeQuestionResponse->loadDataByUniqueFields(array('survey_response_id' => $userProfileSurveyResponse->id, 'data_type' => 'integer'));
 		if (!$userAgeQuestionResponse->id) return;
 

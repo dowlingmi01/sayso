@@ -1,4 +1,5 @@
-DROP FUNCTION IF EXISTS browser;
+DELIMITER $$
+DROP FUNCTION IF EXISTS browser$$
 CREATE FUNCTION `browser`(user_agent VARCHAR(255)) RETURNS varchar(255) CHARSET latin1
 BEGIN
 	-- Function logic here

@@ -1,4 +1,5 @@
-DROP FUNCTION IF EXISTS operatingsystem;
+DELIMITER $$
+DROP FUNCTION IF EXISTS operatingsystem$$
 CREATE FUNCTION `operatingsystem`(user_agent VARCHAR(255)) RETURNS varchar(255) CHARSET latin1
 BEGIN
 	-- Function logic here

@@ -1,4 +1,5 @@
-DROP FUNCTION IF EXISTS domain;
+DELIMITER $$
+DROP FUNCTION IF EXISTS domain$$
 CREATE FUNCTION `domain`(fullurl VARCHAR(255)) RETURNS varchar(255) CHARSET latin1
 BEGIN
 	-- Function logic here

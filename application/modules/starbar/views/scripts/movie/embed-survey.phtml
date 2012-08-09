@@ -27,7 +27,7 @@
 			+ "&starbar_id=" + $SQ.sayso.starbar.id;
 		var iframeContainerId = "starbar-survey-<?= $this->survey->id ?>";
 		<? if ($this->survey->size == "large") { ?>
-			$SQ.insertCommunicationIframe(link, iframeContainerId, 640, 410, 'auto'); // Add new iframe!
+			$SQ.insertCommunicationIframe(link + "&size=large", iframeContainerId, 640, 410, 'auto'); // Add new iframe!
 		<? } else { ?>
 			$SQ.insertCommunicationIframe(link, iframeContainerId, 500, 295, 'auto'); // Add new iframe!
 		<? } ?>

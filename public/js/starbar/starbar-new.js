@@ -254,8 +254,9 @@ $SQ(function(){
 			elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
 		}
 
-		/* MDD 07/30/12 adding switcher behavior */		
-		initSwitcher();
+		if( starbar.id > 2 ) // Disabled for Snakkle
+			/* MDD 07/30/12 adding switcher behavior */		
+			initSwitcher();
 		
 		sayso.log('Loaded and Ready');
 	};
@@ -1761,9 +1762,6 @@ $SQ(function(){
 			
 			// assign initial handlers, preload backgrounds
 			prepare : function(){
-				
-				// remove the existing popup behavior
-				$SQ('#starbar-type .sb_logo .sb_nav_element', starbarElem).unbind().removeClass('sb_nav_element');
 				
 				// preload the tab - chrome must think it should be rendered so use positioning to hide
 				var preloadedTab = $SQ('<div>');

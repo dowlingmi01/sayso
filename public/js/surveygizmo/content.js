@@ -14,8 +14,13 @@
 	cssSGQ.rel = 'stylesheet';
 	cssSGQ.href = '//' + $SGQ.base_domain + '/css/surveygizmo/surveys-' + $SGQ.starbar_short_name + '.css';
 	document.body.appendChild(cssSGQ);
-	
-	if ($SGQ.size == "large") $SQ('head').append( $SQ('<link rel="stylesheet" type="text/css" />').attr('href', '//' + $SGQ.base_domain + '/css/surveygizmo/surveys-large-' + $SGQ.starbar_short_name + '.css') );
+
+	if ($SGQ.size == "large") {
+		var cssLargeSGQ = document.createElement('link');
+		cssLargeSGQ.rel = 'stylesheet';
+		cssLargeSGQ.href = '//' + $SGQ.base_domain + '/css/surveygizmo/surveys-large-' + $SGQ.starbar_short_name + '.css';
+		document.body.appendChild(cssLargeSGQ);
+	}
 
 	var maximumTimeToWait = 8000; // 8 seconds
 	var timeBetweenChecks = 150;
@@ -25,9 +30,9 @@
 			&& $SQ('.sg-footer-hook-2').css('text-align') == "right" // indicates that css is done loading
 		);
 	}
-	
+
 	afterSQloads();
-	
+
 	function afterSQloads () {
 		var totalTimeWaitedSoFar = 0;
 		$SQ.doTimeout('waitForEverything', timeBetweenChecks, function() {

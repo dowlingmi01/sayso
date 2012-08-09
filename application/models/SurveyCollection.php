@@ -28,9 +28,10 @@ class SurveyCollection extends RecordCollection
 			$profileSurvey = new Survey();
 			$profileSurvey->loadProfileSurveyForStarbar($starbarId);
 			// Only show premium surveys to people who have completed the profile survey
-			if (!Survey_Response::checkIfUserHasCompletedSurvey($userId, $profileSurvey->id))
+			if (!Survey_Response::checkIfUserHasCompletedSurvey($userId, $profileSurvey->id)) {
 				$optionalFilterSql = " AND s.reward_category != 'premium' ";
 				$optionalFilterSql .= " AND s.requires_age IS NOT TRUE ";
+			}
 		}
 
 		$sql = "SELECT s.*, sr.status AS user_status

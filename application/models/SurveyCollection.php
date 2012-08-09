@@ -11,7 +11,7 @@ class SurveyCollection extends RecordCollection
 	*/
 	public function loadSurveysForStarbarAndUser ($starbarId, $userId, $type, $surveyUserStatus = null)
 	{
-		$orderSql = "FIELD (user_status, 'completed', 'disqualified', 'archived', 'new'), ssm.ordinal ASC";
+		$orderSql = "FIELD (user_status, 'completed', 'disqualified', 'archived', 'new'), FIELD (reward_category, 'profile', 'premium', 'standard'), ssm.ordinal ASC";
 		$userStatusSql = "";
 		$surveys = null;
 

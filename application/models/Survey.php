@@ -151,6 +151,14 @@ class Survey extends Record
 				set_time_limit(60);
 
 				$questionData = $questionsData[$mainQuestionCounter];
+				$externalQuestionId = (int) $questionData['id'];
+
+				// Check if the survey question has already been added to this survey, in case this survey was already processed (partially or fully)
+				$surveyQuestionCheck = new Survey_Question();
+				$surveyQuestionCheck->loadDataByUniqueFields(array('survey_id' => $this->id, 'external_question_id' => $externalQuestionId));
+				// Skip this question if it has already been added
+				$messages[] = "Question with external_id ".$externalQuestionId." already added to this survey (survey id ".$this->id.")";
+				if ($surveyQuestionCheck->id) continue;
 
 				$questionType = strtolower($questionData['_subtype']);
 				$needToSaveQuestionAgain = false;
@@ -176,7 +184,7 @@ class Survey extends Record
 						$pipedQuestion->option_array = array();
 						$pipedQuestion->piped_from_survey_question_id = $pipedFromQuestion->id; // id in local DB
 						$pipedQuestion->title = $questionData['title']['English'];
-						$pipedQuestion->external_question_id = (int) $questionData['id'];
+						$pipedQuestion->external_question_id = $externalQuestionId;
 						$pipedQuestion->number_of_choices = count($questionData['options']);
 						$pipedQuestion->ordinal = $questionOrdinal * 10;
 						$questionOrdinal++;
@@ -275,7 +283,7 @@ class Survey extends Record
 							} else {
 								$question->title = $pipedOption->title;
 							}
-							$question->external_question_id = (int) $questionData['id'];
+							$question->external_question_id = $externalQuestionId;
 							$question->external_pipe_choice_id = $pipedOption->external_choice_id;
 							$question->ordinal = $questionOrdinal * 10;
 							$questionOrdinal++;
@@ -300,7 +308,7 @@ class Survey extends Record
 						$question->data_type = 'none';
 						$question->piped_from_survey_question_id = $pipedFromQuestion->id; // id in local DB
 						$question->title = $questionData['title']['English'];
-						$question->external_question_id = (int) $questionData['id'];
+						$question->external_question_id = $externalQuestionId;
 						$question->ordinal = $questionOrdinal * 10;
 						$questionOrdinal++;
 
@@ -325,7 +333,7 @@ class Survey extends Record
 						$question->data_type = 'none';
 						$question->piped_from_survey_question_id = $pipedFromQuestion->id; // id in local DB
 						$question->title = $questionData['title']['English'];
-						$question->external_question_id = (int) $questionData['id'];
+						$question->external_question_id = $externalQuestionId;
 						$question->ordinal = $questionOrdinal * 10;
 						$questionOrdinal++;
 
@@ -340,7 +348,7 @@ class Survey extends Record
 				// Parent question that pipes into several sub-questions (by default, they don't have the piped_from property set, so we'll fake it)
 				} elseif ($questionType == "table" && isset($questionData['sub_question_skus']) && $questionData['sub_question_skus'] && count($questionData['sub_question_skus'])) { // Not a piped question, but still a table -- look for sub_question_skus
 
-					$masterQuestionExternalId = (int) $questionData['id'];
+					$masterQuestionExternalId = $externalQuestionId;
 					$masterQuestionTitle = (isset($questionData['title']['English']) ? $questionData['title']['English'] : "");
 
 					$question = new Survey_Question();
@@ -349,7 +357,7 @@ class Survey extends Record
 					$question->data_type = 'none';
 					$question->option_array = array();
 					$question->title = $questionData['title']['English'];
-					$question->external_question_id = (int) $questionData['id'];
+					$question->external_question_id = $externalQuestionId;
 					$question->number_of_choices = count($questionData['options']);
 					$question->ordinal = $questionOrdinal * 10;
 					$questionOrdinal++;
@@ -400,7 +408,7 @@ class Survey extends Record
 					$masterQuestion->survey_id = $this->id;
 					$masterQuestion->choice_type = 'none';
 					$masterQuestion->data_type = 'none';
-					$masterQuestion->external_question_id = (int) $questionData['id'];
+					$masterQuestion->external_question_id = $externalQuestionId;
 					$masterQuestion->title = $questionData['title']['English'];
 					$masterQuestion->ordinal = $questionOrdinal * 10;
 					$questionOrdinal++;
@@ -417,7 +425,7 @@ class Survey extends Record
 						$question->data_type = 'string';
 						$question->piped_from_survey_question_id = $masterQuestion->id; // id in local DB
 						$question->title = $masterQuestion->title . " : " . $optionData['title']['English'];
-						$question->external_question_id = (int) $questionData['id'];
+						$question->external_question_id = $externalQuestionId;
 						$question->external_pipe_choice_id = (int) $optionData['id'];;
 						$question->ordinal = $questionOrdinal * 10;
 						$questionOrdinal++;
@@ -431,7 +439,7 @@ class Survey extends Record
 
 					$question = new Survey_Question();
 					$question->survey_id = $this->id;
-					$question->external_question_id = (int) $questionData['id'];
+					$question->external_question_id = $externalQuestionId;
 					$question->title = $questionData['title']['English'];
 					$question->ordinal = $questionOrdinal * 10;
 					$questionOrdinal++;

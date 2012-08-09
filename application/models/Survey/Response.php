@@ -44,22 +44,6 @@ class Survey_Response extends Record
 		return !!(Db_Pdo::fetch($sql, $userId, $surveyId));
 	}
 
-	public static function getAgeOfUser($userId, $starbarId) {
-		$profileSurvey = new Survey();
-		$profileSurvey->loadProfileSurveyForStarbar($starbarId);
-		if (!$profileSurvey->id) return;
-
-		$userProfileSurveyResponse = new Survey_Response();
-		$userProfileSurveyResponse->loadDataByUniqueFields(array('survey_id' => $profileSurvey->id, 'user_id' => $userId));
-		if (!$userProfileSurveyResponse->id) return;
-
-		$userAgeQuestionResponse = new Survey_QuestionResponse();
-		$userAgeQuestionResponse->loadDataByUniqueFields(array('survey_response_id' => $userProfileSurveyResponse->id, 'data_type' => 'integer'));
-		if (!$userAgeQuestionResponse->id) return;
-
-		return $userAgeQuestionResponse->response_integer;
-	}
-
 	public function deleteQuestionResponses() {
 		if (!$this->id) return;
 		$sql = "DELETE FROM survey_question_response WHERE survey_response_id = ?";

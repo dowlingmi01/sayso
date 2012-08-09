@@ -22,27 +22,16 @@
 	<script type="text/javascript">
 		var protocol = ('https:' == $SQ.sayso.location.protocol ? 'https:' : 'http:');
 
-		var iframeWidth = 500;
-		var iframeHeight = 295;
-
 		var link = protocol
 			+ "//<?= BASE_DOMAIN ?>/starbar/snakkle/survey-redirect?survey_id=<?= $this->survey->id ?>&next_survey_id=<?= $this->next_survey_id ?>&user_id="
 			+ $SQ.sayso.starbar.user.id
 			+ "&user_key=" + $SQ.sayso.starbar.user.key
 			+ "&starbar_id=" + $SQ.sayso.starbar.id;
-
-		<? if ($this->survey->requires_age && $this->user_age) { ?>
-			link += "&age=<?= $this->user_age?>";
-		<? } ?>
-
-		<? if ($this->survey->size == "large") { ?>
-			link += "&size=large";
-			iframeWidth = 640;
-			iframeHeight = 410;
-		<? } ?>
-
 		var iframeContainerId = "starbar-survey-<?= $this->survey->id ?>";
-
-		$SQ.insertCommunicationIframe(link, iframeContainerId, iframeWidth, iframeHeight, 'auto'); // Add new iframe!
+		<? if ($this->survey->size == "large") { ?>
+			$SQ.insertCommunicationIframe(link + "&size=large", iframeContainerId, 640, 410, 'auto'); // Add new iframe!
+		<? } else { ?>
+			$SQ.insertCommunicationIframe(link, iframeContainerId, 500, 295, 'auto'); // Add new iframe!
+		<? } ?>
 	</script>
 <? } ?>

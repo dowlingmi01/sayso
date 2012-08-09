@@ -303,11 +303,6 @@ class Starbar_ContentController extends Api_GlobalController
 			else $nextSurveyId = -1;
 
 			$this->view->assign('next_survey_id', $nextSurveyId);
-
-			if ($survey->requires_age) {
-				$userAge = Survey_Response::getAgeOfUser($this->user_id, $this->starbar_id);
-				$this->view->assign('user_age', $userAge);
-			}
 		}
 
 	}
@@ -394,8 +389,6 @@ class Starbar_ContentController extends Api_GlobalController
 	{
 		$this->_validateRequiredParameters(array('survey_id', 'user_id', 'next_survey_id', 'frame_id'));
 
-		$request = $this->getRequest();
-
 		$survey = new Survey();
 		$survey->loadData($this->survey_id);
 
@@ -414,7 +407,6 @@ class Starbar_ContentController extends Api_GlobalController
 		$redirectUrl .= "&starbar_short_name=" . $this->view->starbar->short_name;
 		$redirectUrl .= "&srid=" . $surveyResponse->id;
 		$redirectUrl .= "&size=" . $survey->size;
-		$redirectUrl .= "&age=" . (int) $request->getParam('age');
 		$redirectUrl .= "&frame_id=" . $this->frame_id;
 		$redirectUrl .= "&xdm_c=" . $this->frame_id;
 		if (APPLICATION_ENV == "production") {

@@ -170,18 +170,6 @@
 				"grid",
 				"edit"
 			]
-		},
-		{
-			"colname": "requires_age",
-			"label": "Age Dependent?",
-			"type": "checkbox",
-			"default": false,
-			"help": "Used for surveys only -- surveys that have questions based on age and need the age passed to them as a variable",
-			"displaywhen": [
-				"add",
-				"detail",
-				"edit"
-			]
 		}
 	],
 	"subobjects": [

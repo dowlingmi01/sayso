@@ -7,7 +7,7 @@
 			<?php while( array_key_exists(0, $starbars) && $starbars[0]["active"] ) : ?>
 			<li class="starbar-switcher-row" rel="<?=$starbars[0]["id"]?>">
 				<div class="starbar-switcher-cell starbar-switcher-meta">
-					<div class="starbar-switcher-alert"><!-- echo alert count here -->0</div>
+					<div class="starbar-switcher-alert"><!-- echo alert count here --><?=$starbars[0]["notifications"]?></div>
 				</div>
 				<div class="starbar-switcher-cell starbar-switcher-activator<?php if($this->starbar_id == $starbars[0]["id"]) print ' starbar-switcher-active';?>">
 					<div class="sb_starbar-switch" rel="<?=$starbars[0]["id"]?>">

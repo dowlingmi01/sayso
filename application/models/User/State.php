@@ -50,8 +50,12 @@ class User_State extends Record
 		$sql  = "SELECT s.id, s.short_name, s.label, s.info, sm.active FROM starbar s LEFT JOIN starbar_user_map sm ON (s.id = sm.starbar_id AND sm.user_id = ?) WHERE s.id > 2 ORDER BY active DESC";
 		$result = array();
 		$res = Db_Pdo::fetchAll($sql, $user_id);
-		foreach( $res as $sb )
+		foreach( $res as $sb ) {
+			$messages = new Notification_MessageCollection();
+			$messages->loadAllNotificationMessagesForStarbarAndUser($sb["id"], true, $user_id, null);
+			$sb["notifications"] = $messages->count();
 			$result[$sb["id"]] = $sb;
+		}
 		return $result;
 	}
 }

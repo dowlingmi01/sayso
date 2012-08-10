@@ -51,9 +51,10 @@ class Notification_MessageCollection extends RecordCollection
 				GROUP BY nmg.id
 		";
 		$data = Db_Pdo::fetchColumn($sql, $userId, $starbarId);
-		if (!$data || !count($data)) return;
-
-		$previouslyScheduledNotificationGroupIds = implode(",", $data);
+		if (!$data || !count($data)) 
+			$previouslyScheduledNotificationGroupIds = "-1";
+		else
+			$previouslyScheduledNotificationGroupIds = implode(",", $data);
 
 		$sql = "
 			SELECT * FROM (
@@ -260,7 +261,7 @@ class Notification_MessageCollection extends RecordCollection
 			}
 		}
 
-		if ($loadGame) {
+		if ($loadGame && $request) {
 			$game->loadGamerProfile();
 			$request->setParam(Api_AbstractController::GAME, $game);
 		}

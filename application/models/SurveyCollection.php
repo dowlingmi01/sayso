@@ -34,9 +34,9 @@ class SurveyCollection extends RecordCollection
 						AND ssm.starbar_id = ?
 						AND ssm.start_at < now()
 						AND (ssm.end_at > now() OR ssm.end_at = '0000-00-00 00:00:00')
-					LEFT OUTER JOIN report_cell rc
+					INNER JOIN report_cell rc
 						ON (
-							s.report_cell_id = rc.id
+							IFNULL(s.report_cell_id, 1) = rc.id
 							AND (rc.id = 1 OR rc.comma_delimited_list_of_users LIKE '%,".$userId.",%')
 						)
 				WHERE s.type = ?

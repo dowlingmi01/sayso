@@ -1013,15 +1013,15 @@ class Devadmin_IndexController extends Api_GlobalController
 
 	public function everyFiveMinutesAction() {
 		$this->view->messages = Survey_ResponseCollection::processAllResponsesPendingProcessing();
-		if (!$this->view->messages) $this->view->messages = array();
+
+		ReportCellCollection::processAllReportCellConditions();
+		$this->view->messages = array_merge($this->view->messages, array("Report Cell Processing Complete!"));
+
 		quicklog(implode("\n", $this->view->messages));
 	}
 
 
 	public function everyHourAction () {
-		$reportCells = new ReportCellCollection();
-		$reportCells::processAllReportCellConditions();
-
-		$this->view->messages = array("Processing Complete!");
+		$this->view->messages = array("Nothing to do!");
 	}
 }

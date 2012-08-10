@@ -695,7 +695,7 @@
 								if (array_key_exists("subobjects",$saysojson->getJson())) {
 									foreach ($saysojson->getJson('subobjects') as $key=>$value) {
 
-										$this->_subobject($value['table'],$value['fk'],$formElements["id"]->getValue(),$cnt,$realtable,$value['lookuporder']);
+										$this->_subobject($value['table'],$value['fk'],$formElements["id"]->getValue(),$cnt,$realtable,(isset($value['lookuporder']) ? $value['lookuporder'] : null));
 										$cnt++;
 									}
 

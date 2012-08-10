@@ -46,7 +46,7 @@ class Starbar_ContentController extends Api_GlobalController
 	}
 
 	public function starbarListAction() {
-		$this->view->assign('starbars', User_State::getStarbarList($this->user_id));
+		$this->view->assign('starbars', User_State::getStarbarList($this->user_id, $this->starbar_id));
 		$this->view->assign('starbar_id', $this->starbar_id);
 	}
 

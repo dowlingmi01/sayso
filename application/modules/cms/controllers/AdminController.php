@@ -215,7 +215,7 @@
 		*
 		* @author Peter Connolly
 		*/
-		private function _subobject($fktablename,$fkfield,$fkval,$gridid,$realtable="")
+		private function _subobject($fktablename,$fkfield,$fkval,$gridid,$realtable="",$lookuporder="id desc")
 		{
 			$griddata = array();
 
@@ -249,7 +249,7 @@
 
 					$strWhere = sprintf("%s = %s",$fkfield,$fkval);
 
-					$select = Zend_Registry::get('db')->select()->from($realfktablename,$columnlist)->where($strWhere)->order("id desc");
+					$select = Zend_Registry::get('db')->select()->from($realfktablename,$columnlist)->where($strWhere)->order($lookuporder);
 
 					$grid2   = new Cms_Matrix();
 					$grid2->setNoFilters(true); // We don't need to see filters on subobjects
@@ -695,7 +695,7 @@
 								if (array_key_exists("subobjects",$saysojson->getJson())) {
 									foreach ($saysojson->getJson('subobjects') as $key=>$value) {
 
-										$this->_subobject($value['table'],$value['fk'],$formElements["id"]->getValue(),$cnt,$realtable);
+										$this->_subobject($value['table'],$value['fk'],$formElements["id"]->getValue(),$cnt,$realtable,$value['lookuporder']);
 										$cnt++;
 									}
 
@@ -885,7 +885,7 @@
 			$form->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));
 			$form->addElement('submit', 'submit', array(
         		'label' => 'Get User Info',
-        		'onclick' => "$SQ('#div_form').load('" . "/admin/rewardnew" . "', $SQ('#div_form').serializeArray() ); return false;"
+        		'onclick' => "$('#div_form').load('" . "/admin/rewardnew" . "', $('#div_form').serializeArray() ); return false;"
     		));
 			if ($this->getRequest()->isPost()) { //is it a post request ?
 
@@ -1077,6 +1077,8 @@
 			$currencyRedeemable = $economy->getCurrencyId($currencyRed);
 			$currencyExperience = $economy->getCurrencyId($currencyExp);
 
+			$info = new stdClass();
+			printf("<h1>PTC We're at point 1</h1>");
    			$info->currency = ucwords(strtolower(str_replace('_',' ',$currencyRed)));
    			$info->currencybalance = $gamer->_currencies[$currencyRedeemable]['current_balance'];
    			$info->XP = ucwords(strtolower(str_replace('_',' ',$currencyExp)));
@@ -1113,6 +1115,9 @@
             $formElements['redeemableaward']->setLabel("Award Points");
             $formElements['redeemablecurrency'] = new Form_Element_Text('redeemablecurrency');
             $formElements['redeemablecurrency']->setLabel("Award Currency");
+            $formElements['emailaddress'] = new Form_Element_Text('emailaddress');
+            $formElements['emailaddress']->setValue($userdata[0]['email']);
+            $formElements['emailaddress']->setValue('jimbanister@gmail.com');/* PTC Bodge for testing */
             $formElements['bar']= new Form_Element_Hidden('bar');
             $formElements['bar']->setValue($starbar_id);
  			$formElements['user']= new Form_Element_Hidden('user');
@@ -1130,14 +1135,14 @@
 			$rewardform->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));
 			$rewardform->addElement('submit', 'submit', array(
         		'label' => 'Give special reward',
-        		'onclick' => "$SQ('#div_form').load('" . "/admin/reward" . "', $SQ('#div_form').serializeArray() ); return false;"
+        		'onclick' => "$('#div_form').load('" . "/admin/reward/" . "', $('#div_form').serializeArray() ); return false;"
     		));
 
 			// Here goes the post stuff
 			if ($this->getRequest()->isPost()) { //is it a post request ?
-			printf("It's a post");
+
 				$rewardpostData = $this->getRequest()->getPost(); // getting the $_POST data
-					printf("<h1>We have a post</h1><pre>%s</pre>",print_r($rewardpostData,true));
+					//printf("<h1>We have a post</h1><pre>%s</pre>",print_r($rewardpostData,true));
 
 									if ($rewardform->isValid($rewardpostData)) {
 										printf("<h2>data is valid</h2>");
@@ -1199,7 +1204,7 @@
 		*/
 		public function rewardAction()
 		{
-			 $this->_helper->layout->disableLayout();
+			// $this->_helper->layout->disableLayout();
 
 			$formElements = array();
 
@@ -1313,9 +1318,14 @@ print_r($data);
 					$where = $saysojson->getTableAttr('where');
 					$realtable = strtolower($saysojson->getTableAttr('tablename'));
 					if ($where==null) {
-						$select = Zend_Registry::get('db')->select()->from($realtable,$columnlist)->order("id desc");
+						$select = Zend_Registry::get('db')->select()->from($realtable,$columnlist);;
 					} else {
-						$select = Zend_Registry::get('db')->select()->from($realtable,$columnlist)->where($where)->order("id desc");
+						$select = Zend_Registry::get('db')->select()->from($realtable,$columnlist)->where($where);
+					}
+					if ($sortorder!=null) {
+						$select->order($sortorder);
+					} else {
+						$select->order("id desc");
 					}
 					$grid   = new Cms_Matrix();
 					$grid->setJqgParams(array('altRows' => true));// rows will alternate color

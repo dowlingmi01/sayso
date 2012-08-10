@@ -139,14 +139,6 @@
 				"detail",
 				"edit"
 			]
-		},
-		{
-			"colname": "display_number_of_questions",
-			"type": "number",
-			"displaywhen": [
-				"detail",
-				"edit"
-			]
 		}
 	],
 	"subobjects": [

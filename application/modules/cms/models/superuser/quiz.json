@@ -147,16 +147,6 @@
 				"detail",
 				"edit"
 			]
-		},
-		{
-			"colname": "start_after",
-			"filterwidth":40,
-			"type": "number",
-			"displaywhen": [
-				"detail",
-				"grid",
-				"edit"
-			]
 		}
 	],
 	"subobjects": [

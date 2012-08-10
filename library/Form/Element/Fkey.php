@@ -46,7 +46,7 @@ class Form_Element_Fkey extends Zend_Form_Element_Select
 		}
 
 	//	$sql = sprintf("SELECT %s as a, %s as b FROM %s %s ORDER BY %s ASC",$this->_options['lookupfield'],$this->_options['lookuplabel'],$this->_options['lookuptable'],$where, $this->_options['lookuplabel']);
-		$sql = sprintf("SELECT %s as a, %s as b FROM %s %s ORDER BY %s",$this->_options['lookupfield'],$this->_options['lookuplabel'],$this->_options['lookuptable'],$where, $this->_options['lookuporder']);
+		$sql = sprintf("SELECT %s as a, %s as b FROM %s %s ORDER BY %s",$this->_options['lookupfield'],$this->_options['lookuplabel'],$this->_options['lookuptable'],$where, (isset($this->_options['lookuporder']) ? $this->_options['lookuporder'] : $this->_options['lookuplabel']));
 
 		if ($this->_options['default']!== NULL) {
 			$opts[]=$this->_options['default'];

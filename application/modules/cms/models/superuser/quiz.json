@@ -45,6 +45,24 @@
 			]
 		},
 		{
+			"colname": "report_cell_id",
+			"filterwidth":40,
+			"label": "Users who can see this",
+			"help": "Leaving this blank means all users can see the content",
+			"type": "fkey",
+			"lookuptable": "report_cell",
+			"lookupfield": "id",
+			"lookuplabel": "CONCAT('(', category, ') ', title)",
+			"lookuporder": "category ASC, id ASC",
+			"default": "--Please Select a user group--",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
 			"colname": "user_id",
 			"type": "hidden",
 			"value": 1,

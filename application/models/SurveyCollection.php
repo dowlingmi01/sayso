@@ -34,12 +34,11 @@ class SurveyCollection extends RecordCollection
 						AND ssm.starbar_id = ?
 						AND ssm.start_at < now()
 						AND (ssm.end_at > now() OR ssm.end_at = '0000-00-00 00:00:00')
-					INNER JOIN report_cell rc
+					LEFT OUTER JOIN report_cell rc
 						ON (
 							s.report_cell_id = rc.id
 							AND (rc.id = 1 OR rc.comma_delimited_list_of_users LIKE '%,".$userId.",%')
 						)
-						OR (s.report_cell_id IS NULL AND rc.id IS NULL)
 				WHERE s.type = ?
 					AND s.status = 'active'
 				ORDER BY ".$orderSql."

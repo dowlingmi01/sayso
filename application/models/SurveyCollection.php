@@ -26,14 +26,20 @@ class SurveyCollection extends RecordCollection
 		$sql = "SELECT s.*, sr.status AS user_status
 				FROM survey s
 					INNER JOIN survey_response sr
-					ON s.id = sr.survey_id
+						ON s.id = sr.survey_id
 						AND sr.user_id = ?
 						".$userStatusSql."
 					INNER JOIN starbar_survey_map ssm
-					ON s.id = ssm.survey_id
+						ON s.id = ssm.survey_id
 						AND ssm.starbar_id = ?
 						AND ssm.start_at < now()
 						AND (ssm.end_at > now() OR ssm.end_at = '0000-00-00 00:00:00')
+					INNER JOIN report_cell rc
+						ON (
+							s.report_cell_id = rc.id
+							AND (rc.id = 1 OR rc.comma_delimited_list_of_users LIKE '%,".$userId.",%')
+						)
+						OR (s.report_cell_id IS NULL AND rc.id IS NULL)
 				WHERE s.type = ?
 					AND s.status = 'active'
 				ORDER BY ".$orderSql."

@@ -69,6 +69,12 @@ class Survey_ResponseCollection extends RecordCollection
 							OR
 							(ssm.start_day IS NULL OR ssm.start_day = 0)
 						)
+					INNER JOIN report_cell rc
+						ON (
+							s.report_cell_id = rc.id
+							AND (rc.id = 1 OR rc.comma_delimited_list_of_users LIKE '%,".$userId.",%')
+						)
+						OR (s.report_cell_id IS NULL AND rc.id IS NULL)
 					RIGHT JOIN starbar_user_map sum
 						ON sum.user_id = ?
 						AND sum.starbar_id = ?

@@ -1024,14 +1024,4 @@ class Devadmin_IndexController extends Api_GlobalController
 
 		$this->view->messages = array("Processing Complete!");
 	}
-
-
-	public function reprocessProfileSurveyAction () {
-		$profileSurvey = new Survey();
-		$profileSurvey->loadProfileSurveyForStarbar(2);
-		$profileSurvey->processing_status = "pending";
-		$messages = $profileSurvey->retrieveQuestionsAndChoicesFromSurveyGizmo();
-		var_dump($messages);
-		exit;
-	}
 }

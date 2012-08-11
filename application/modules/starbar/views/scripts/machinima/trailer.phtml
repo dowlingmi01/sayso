@@ -117,7 +117,7 @@
 	</div>
 </div>
 <? if (sizeof($this->trailers)) { ?>
-	<script src="http://www.youtube.com/player_api"></script>
+	<script src="https://www.youtube.com/iframe_api"></script>
 	<script>
 
 	var player;
@@ -177,7 +177,7 @@
 	});
 
 
-	function onYouTubePlayerAPIReady() {
+	function onYouTubeIframeAPIReady() {
 
 		player = new YT.Player('sb_video_container', {
 

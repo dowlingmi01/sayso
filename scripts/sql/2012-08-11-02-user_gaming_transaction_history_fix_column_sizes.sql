@@ -1,0 +1,3 @@
+ALTER TABLE user_gaming_transaction_history MODIFY experience_points integer;
+ALTER TABLE user_gaming_transaction_history MODIFY redeemable_points integer;
+

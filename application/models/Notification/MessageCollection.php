@@ -216,7 +216,8 @@ class Notification_MessageCollection extends RecordCollection
 	*/
 	public function processNewQueuedMessagesForStarbarAndUser ($starbarId, $userId, $request) {
 		$messageUserMap = new Notification_MessageUserMap();
-		$game = Game_Starbar::getInstance();
+		if( $request )
+			$game = Game_Starbar::getInstance();
 
 		$sql = "
 			SELECT nm.*
@@ -247,8 +248,10 @@ class Notification_MessageCollection extends RecordCollection
 						$loadGame = true;
 						break;
 					case 'Checking in':
-						$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId);
-						$game->checkin();
+						if( $request ) {
+							$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId);
+							$game->checkin();
+						}
 						break;
 					case 'FB Account Connected':
 					case 'TW Account Connected':

@@ -242,7 +242,7 @@ $SQ(function(){
 		starbar = window.$SQ.sayso.starbar;
 
 		initElements();
-		
+
 		updateAlerts(true);
 		updateProfileElements();
 		activateGameElements(starbarElem, false);
@@ -255,9 +255,9 @@ $SQ(function(){
 		}
 
 		if( starbar.id > 2 ) // Disabled for Snakkle
-			/* MDD 07/30/12 adding switcher behavior */		
+			/* MDD 07/30/12 adding switcher behavior */
 			initSwitcher();
-		
+
 		sayso.log('Loaded and Ready');
 	};
 
@@ -372,7 +372,7 @@ $SQ(function(){
 			if ($SQ(this).attr('id') == 'sb_starbar-logo'){
 				return;
 			}
-			
+
 
 			$SQ(this).unbind();
 			$SQ(this).bind({
@@ -470,8 +470,8 @@ $SQ(function(){
 				});
 
 		}); // end btnExternalShare
-		
-		
+
+
 
 	} // end initElements()
 
@@ -1331,6 +1331,11 @@ $SQ(function(){
 			var headerHeight = $SQ('.sb_popContent  .sb_column60 .sb_header',target).biggestHeight();
 		}
 
+		var ajaxContainer = $SQ('.sb_popContent #sayso-starbar-ajax-content', target);
+		if (ajaxContainer.length > 0){
+			headerHeight += parseInt(ajaxContainer.css('margin-top')) + parseInt(ajaxContainer.css('margin-bottom'));
+		}
+
 		var panes = $SQ('.sb_scrollPane',target);
 		panes.each(function(i) {
 			// Add height of all the paragraphs (or anything with the class "sb_tabHeader" really)
@@ -1675,25 +1680,25 @@ $SQ(function(){
 
 	// flag so we know this file has loaded
 	sayso.starbar.loaded = true;
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	// initialize switcher component - using named function for global ref
 	function initSwitcher(){
-		
+
 		// fake-preload images
 		var preload = function(){
 			for(var i = 0; i < arguments.length; i++){
 				new Image().src = arguments[i];
 			}
 		};
-		
+
 		/* switcher behavior @MDD 07/25/12 */
 		var Switcher = {
-				
+
 			// elements
 			panel : null,
 			main : null,
@@ -1702,24 +1707,24 @@ $SQ(function(){
 			drawer : null,
 			slider : null,
 			loader : null,
-			
+
 			// misc variables
 			pngOffset : 10,  // transparent pixels surrounding profile area background graphic
 			tabHeight : 17,
 			paddingOffset : 8,  // top + bottom padding of drawer element
 			differential : 7,  // needed to offset panel height measurement routine
 			loaderOffset : 51,  // space to show while loading
-			
+
 			// flags
 			isCreated : false,
 			isLoaded : false,
 			isShowing : false,
-			
+
 			// listeners
 			onLoad :  function(response, status){
-				
+
 				Switcher.isLoaded = true;
-				
+
 				// render element invisibly, measure, fade out loader, animate to correct height, fade in elements
 				Switcher.loader.hide();
 				var fader = $SQ('<div>');
@@ -1736,15 +1741,15 @@ $SQ(function(){
 					fader.show();
 					fader.fadeTo(500, 1);
 				});
-				
+
 				Switcher.assignBehavior();
-				
+
 			},
-			
+
 			log : function(message){
-				$SQ(document.body).append(message + '<br />');	
+				$SQ(document.body).append(message + '<br />');
 			},
-			
+
 			// get height of panel itself
 			getPanelHeight : function(){
 				// can't use height (or any derivation) because some profile areas have extra space pulled beneath window.  instead measure window and top
@@ -1752,17 +1757,17 @@ $SQ(function(){
 				var windowHeight = $SQ(window).height();
 				return windowHeight - top + Switcher.differential;
 			},
-			
+
 			// get height of actual content
 			getContentHeight : function(){
 				return Switcher.slider.get(0).scrollHeight;
 			},
-			
+
 			/* methods */
-			
+
 			// assign initial handlers, preload backgrounds
 			prepare : function(){
-				
+
 				// preload the tab - chrome must think it should be rendered so use positioning to hide
 				var preloadedTab = $SQ('<div>');
 				preloadedTab.addClass('starbar-switcher-tab');
@@ -1771,36 +1776,36 @@ $SQ(function(){
 					top : '-99999px'
 				});
 				starbarElem.append(preloadedTab);
-				
+
 				// initialize on first mouseover - this prevents wonky layout when bar is initially hidden
 				$SQ('#starbar-type', starbarElem).unbind().bind('mouseover', Switcher.create);
-				
+
 			},
-			
+
 			// create, position, handle, add to dom
 			create : function(){
-				
+
 				// only create shell once
 				if(Switcher.isCreated){
 					return;
 				};
-				
+
 				// remove preloaded tab graphic
 				$SQ('.starbar-switcher-tab').remove();
-				
+
 				// remove existing if lingering from previous bar load operation
 				$SQ('.starbar-switcher', starbarElem).remove();
-				
+
 				// indicate we exist
 				Switcher.isCreated = true;
-				
+
 				// assign hover behavior to profile area, to show/hide tab
 				$SQ('#starbar-type', starbarElem).unbind().hover(Switcher.showTab, Switcher.hideTab);
-				
+
 				// get ancestor handles
 				Switcher.panel = $SQ('#starbar-type', starbarElem);
 				Switcher.main = $SQ('#starbar-main', starbarElem);
-				
+
 				// create and position container
 				Switcher.container = $SQ('<div>');
 				Switcher.container.hide();
@@ -1809,50 +1814,50 @@ $SQ(function(){
 					'width' : (Switcher.panel.width() - Switcher.pngOffset) + 'px',
 					'left' : Switcher.panel.css('left')
 				});
-				
+
 				// create tab
 				Switcher.tab = $SQ('<div>');
 				Switcher.tab.addClass('starbar-switcher-tab');
 				Switcher.container.append(Switcher.tab);
-				
+
 				// create "drawer" (element beneath tab, with background and corners)
 				Switcher.drawer = $SQ('<div>');
 				Switcher.drawer.addClass('starbar-switcher-drawer');
 				Switcher.container.append(Switcher.drawer);
-				
+
 				// create overflow: hidden element that we'll control height through
 				Switcher.slider = $SQ('<div>');
 				Switcher.slider.css('overflow', 'hidden');
 				Switcher.drawer.append(Switcher.slider);
-				
+
 				// create loader initially - leave it until view is loaded
 				Switcher.loader = $SQ('<div>');
 				Switcher.loader.addClass('sb_img_loading');
-				Switcher.loader.addClass('starbar-switcher-loader');				
+				Switcher.loader.addClass('starbar-switcher-loader');
 				Switcher.slider.append(Switcher.loader);
-				
+
 				// insert the entire component into #starbar-main
 				Switcher.main.append(Switcher.container);
-				
+
 				// if mouseout of tab, but component not fully open, hide tab
 				Switcher.tab.on('mouseout', Switcher.hideTab);
-				
+
 				// on tab click, show/hide component
 				Switcher.tab.on('click', Switcher.toggle);
-				
+
 				// hide the tab until moused over
 				Switcher.slider.css({
 					height: (Switcher.getPanelHeight() - Switcher.tabHeight - Switcher.paddingOffset - Switcher.pngOffset) + 'px'
 				});
-				
+
 				// everything should be rendered properly now, go ahead and reveal
 				Switcher.container.show();
-				
+
 				// and animate tab in first time
 				Switcher.showTab();
-			
+
 			},
-			
+
 			// ajax in view phtml
 			load : function(){
 				if(Switcher.isLoaded){
@@ -1868,7 +1873,7 @@ $SQ(function(){
 					success : Switcher.onLoad
 				});
 			},
-			
+
 			// show the entire component
 			show : function(){
 				if(!Switcher.isLoaded){
@@ -1901,20 +1906,20 @@ $SQ(function(){
 					Switcher.show();
 				}
 			},
-			
+
 			// after view is loaded, assign event handlders
-			assignBehavior : function(){				
+			assignBehavior : function(){
 
 				// switch bar when active community is clicked
-				$SQ('.starbar-switcher-my-communities .sb_starbar-switch', starbarElem).on('click', Switcher.changeBar);				
-					
+				$SQ('.starbar-switcher-my-communities .sb_starbar-switch', starbarElem).on('click', Switcher.changeBar);
+
 				// when meta box is rolled over, show tooltip
 				$SQ('.starbar-switcher-available-communities .starbar-switcher-meta', starbarElem).on('mouseenter', Switcher.showInfo);
 			},
-			
-			
+
+
 			/* DOM handlers pre-load */
-			
+
 			// on hover of profile area, show tab
 			showTab : function(){
 				// if the component is showing, ignore mouseouts
@@ -1923,7 +1928,7 @@ $SQ(function(){
 				};
 				Switcher.slider.stop(true, false).animate({
 					height : Switcher.getPanelHeight() - Switcher.paddingOffset - Switcher.pngOffset
-				});		
+				});
 			},
 			// on mouseout of profile area, hide tab
 			hideTab : function(e){
@@ -1931,14 +1936,14 @@ $SQ(function(){
 				if(Switcher.isShowing){
 					return true;
 				};
-				
+
 				// who's mousing out and who's moused onto?
 				var firer = $SQ(e.currentTarget);
 				var onto = $SQ(e.relatedTarget);
-				
+
 				// if mousing-out of profile area...
 				if(firer.is('#starbar-type')){
-					// if mousing onto the switcher, don't hide tab				
+					// if mousing onto the switcher, don't hide tab
 					if(onto.is('.starbar-switcher')){
 						return true;
 					};
@@ -1947,7 +1952,7 @@ $SQ(function(){
 					};
 				// if mousing-out of the tab...
 				} else if(firer.is('.starbar-switcher-tab')){
-					// if mousing onto the profile area, don't hide tab				
+					// if mousing onto the profile area, don't hide tab
 					if(onto.is('#starbar-type')){
 						return true;
 					};
@@ -1955,7 +1960,7 @@ $SQ(function(){
 						return true;
 					};
 				}
-				
+
 				Switcher.slideOut();
 			},
 			// calculate and animate container to just beneath profile top
@@ -1964,58 +1969,58 @@ $SQ(function(){
 					height: Switcher.getPanelHeight() - Switcher.tabHeight - Switcher.paddingOffset - Switcher.pngOffset
 				});
 			},
-			
+
 			/* DOM handlers post-load */
-			
+
 			// show the bar into tooltip
 			showInfo : function(){
-				
+
 				// general references
 				var handle = $SQ(this);
 				var row = handle.parents('.starbar-switcher-row');
-				var id = row.attr('rel');						
-	
+				var id = row.attr('rel');
+
 				// remove all existing tooltips not assigned to this bar
 				$SQ('.starbar-switcher-tooltip').not('[rel=' + id + ']').remove();
-				
+
 				// if the appropriate tooltip is already open, skip it
 				var existing = $SQ('.starbar-switcher-tooltip[rel=' + id + ']');
 				if(existing.length > 0){
 					existing.fadeIn();
 					return true;
-				}						
-				
+				}
+
 				// create the container to insert into the tooltop
 				var container = $SQ('<div>');
-				
+
 				// get the contextual element
 				var context = handle.find('.starbar-switcher-info-content');
-				
+
 				// get info text and stick it in a new div
 				var info = context.text();
 				var content = $SQ('<div>');
 				content.addClass('starbar-switcher-detail');
 				content.text(info);
 				container.append(content);
-				
+
 				// create the accept mini-form
 				var signup = $SQ('<div>');
 				signup.addClass('starbar-switcher-accept');
-				
+
 				// checkbox - button's enabled state is determined by this element's checked state
 				var checkbox = $SQ('<input type="checkbox" />');
 				signup.append(checkbox);
-				
+
 				// link target
 				var termsURL = '/docs/' + context.attr('rel') + '/Say.So_App_EULA.pdf';
 				signup.append(' I agree to the <a target="_blank" href="' + termsURL + '">Terms &amp; Conditions</a> ');
-				
+
 				// add button - start of disabled; enable if box is checked
 				var button = $SQ('<button>');
 				button.addClass('starbar-switcher-add-button');
 				button.text('ADD');
 				signup.append(button);
-				
+
 				// when checkbox is toggled, enable/disable appearance of button
 				checkbox.on('click', function(){
 					if(checkbox.prop('checked')){
@@ -2028,26 +2033,26 @@ $SQ(function(){
 						});
 					}
 				});
-				
+
 				// add it to main container
 				container.append(signup);
-				
+
 				// create the tooltip and populate it
 				var tooltip = Switcher.Tooltip.create(handle, container);
-				
+
 				// assign rel to differentiate from other info tooltips
-				tooltip.attr('rel', id);		
-				
-				
+				tooltip.attr('rel', id);
+
+
 			},
-			
+
 			// change bar without prompt - this is taken directly from existing code
 			changeBar : function() {
 				Switcher.hide();
 				forge.message.broadcastBackground( 'starbar-switch', parseInt($SQ(this).attr('rel')) );
 			},
-				
-			// tooltips	
+
+			// tooltips
 			Tooltip : {
 				// how long to wait before fading out
 				delay : 1500,
@@ -2077,41 +2082,41 @@ $SQ(function(){
 					window.clearTimeout(Switcher.Tooltip.timer);
 					Switcher.Tooltip.timer = window.setTimeout(Switcher.Tooltip.close, Switcher.Tooltip.delay);
 				},
-				
+
 				create : function(handle, content){
-					
+
 					// remove any existing tooltips
 					$SQ('.starbars-switcher-tooltip').remove();
-					
+
 					// references to parents used throughout
 					var drawer = handle.parents('.starbar-switcher-drawer');
 					var cell = handle.is('.starbar-switcher-cell') ? handle : handle.parents('.starbar-switcher-cell');
-					
+
 					// create and populate tooltip element
 					var tooltip = $SQ('<div>');
-					tooltip.addClass('starbar-switcher-tooltip');			
+					tooltip.addClass('starbar-switcher-tooltip');
 					var label = $SQ('<div>');
 					label.addClass('starbar-switcher-tooltip-label');
 					label.append(content);
-					tooltip.append(label);			
+					tooltip.append(label);
 					var arrow = $SQ('<div>');
 					arrow.addClass('starbar-switcher-tooltip-arrow');
 					tooltip.append(arrow);
-					
+
 					// insert into DOM
 					drawer.append(tooltip);
-					
-					// position and fade it in				
+
+					// position and fade it in
 					var y = cell.position().top + (cell.outerHeight() / 2) - (tooltip.outerHeight() / 2);
 					tooltip.css({
 						'opacity' : 0,
 						'top' : (y - Switcher.Tooltip.offset) + 'px'
-					});				
+					});
 					tooltip.animate({
 						'opacity' : 1,
 						'top' : y + 'px'
-					});				
-					
+					});
+
 					// close in on document mousedown, unless event.target is tooltip or child of tooltip
 					$SQ(document).bind('mousedown', function(e){
 						var firer = $SQ(e.target);
@@ -2124,27 +2129,27 @@ $SQ(function(){
 						Switcher.Tooltip.close();
 						$(this).unbind('mousedown', arguments.callee);
 					});
-					
+
 					// schedule close
 					handle.bind('mouseenter', Switcher.Tooltip.enterHandler);
 					handle.bind('mouseleave', Switcher.Tooltip.leaveHandler);
 					tooltip.bind('mouseenter', Switcher.Tooltip.enterHandler);
 					tooltip.bind('mouseleave', Switcher.Tooltip.leaveHandler);
-					
+
 					// cache references
 					Switcher.Tooltip.handle = handle;
 					Switcher.Tooltip.element = tooltip;
-					
+
 					// return it
 					return tooltip;
-				
+
 				}
 			}
-			
+
 		};
-		
+
 		Switcher.prepare();
-		
-	};	
-	
+
+	};
+
 });

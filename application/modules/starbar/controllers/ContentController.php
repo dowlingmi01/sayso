@@ -24,6 +24,16 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function postDispatch()
 	{
+		$request = $this->getRequest();
+
+		$userActionLog = new User_ActionLog();
+		$userActionLog->user_id = (int) $this->user_id;
+		$userActionLog->starbar_id = (int) $this->starbar_id;
+		$userActionLog->survey_id = (int) $request->getParam('survey_id');
+		$userActionLog->good_id = (int) $request->getParam('good_id');
+		$userActionLog->action = $request->getActionName();
+		$userActionLog->save();
+
 		$this->_assignStarbarToView();
 
 		if( $this->frame_id )

@@ -2012,7 +2012,7 @@ $SQ(function(){
 				signup.append(checkbox);
 
 				// link target
-				var termsURL = '/docs/' + context.attr('rel') + '/Say.So_App_EULA.pdf';
+				var termsURL = '//'+sayso.baseDomain+'/docs/' + context.attr('rel') + '/Say.So_App_EULA.pdf';
 				signup.append(' I agree to the <a target="_blank" href="' + termsURL + '">Terms &amp; Conditions</a> ');
 
 				// add button - start of disabled; enable if box is checked

@@ -117,8 +117,13 @@
 	</div>
 </div>
 <? if (sizeof($this->trailers)) { ?>
-	<script src="https://www.youtube.com/iframe_api"></script>
 	<script>
+
+	//Load player api asynchronously.
+    var newTag = document.createElement('script');
+    newTag.src = "//www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(newTag, firstScriptTag);
 
 	var player;
 	var defaults	=	{

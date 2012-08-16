@@ -45,6 +45,14 @@ select#survey_id {
 	font-size: 1em;
 	font-weight: bold;
 }
+
+.jqplot-axis.jqplot-yaxis {
+	max-width: 460px;
+}
+
+.jqplot-yaxis-tick {
+	background-color: #FFF;
+}
 </style>
 <script type="text/javascript">
 	$.jqplot.config.enablePlugins = true;
@@ -155,7 +163,7 @@ select#survey_id {
 
 						<? if (count($surveyQuestion->option_array)) { ?>
 							<br />Users can choose <b><?= ($surveyQuestion->choice_type == "single" ? "a single response" : "multiple responses") ?></b>
-							<div id="chart_<?= $surveyQuestion->id ?>" class="chart"></div>
+							<div id="chart_<?= $surveyQuestion->id ?>" class="chart" style="height: <?= (150 + (count($surveyQuestion->option_array) * 30)) ?>px;"></div>
 							<script type="text/javascript">
 								var data_<?= $surveyQuestion->id ?> = new Array();
 								var labels_<?= $surveyQuestion->id ?> = new Array();

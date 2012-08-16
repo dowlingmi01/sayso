@@ -915,7 +915,7 @@ class Devadmin_IndexController extends Api_GlobalController
 		$this->view->headScript()->appendFile('/js/jqplot/jquery.jqplot.min.js');
 		$this->view->headScript()->appendFile('/js/jqplot/plugins/jqplot.barRenderer.min.js');
 		$this->view->headScript()->appendFile('/js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js');
-		$this->view->headScript()->appendFile('/js/jqplot/plugins/jqplot.pointLabels.js');
+		$this->view->headScript()->appendFile('/js/jqplot/plugins/jqplot.pointLabels.min.js');
 
 		$request = $this->getRequest();
 		$surveyId = (int) $request->getParam("survey_id", false);

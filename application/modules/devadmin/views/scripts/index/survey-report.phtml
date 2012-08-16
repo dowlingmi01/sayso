@@ -52,6 +52,7 @@ select#survey_id {
 
 .jqplot-yaxis-tick {
 	background-color: #FFF;
+	z-index: 300;
 }
 </style>
 <script type="text/javascript">
@@ -285,4 +286,8 @@ select#survey_id {
 	}
 
 	loadSurveysIntoSelect(<?= $this->survey_id ?>);
+
+	$('.jqplot-yaxis-tick').each(function(index) {
+		$(this).attr('title', $(this).text());
+	});
 </script>

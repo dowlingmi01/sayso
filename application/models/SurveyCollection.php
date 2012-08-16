@@ -61,4 +61,14 @@ class SurveyCollection extends RecordCollection
 			$this->build($surveys, new Survey());
 		}
 	}
+
+	static public function getAllSurveysForAllStarbars() {
+		$sql = "SELECT ssm.starbar_id AS unique_starbar_id, s.*
+				FROM starbar_survey_map ssm, survey s
+				WHERE s.id = ssm.survey_id
+					AND ssm.starbar_id > 1
+				ORDER BY s.type ASC, s.reward_category DESC, s.id ASC
+				";
+		return Db_Pdo::fetchAll($sql);
+	}
 }

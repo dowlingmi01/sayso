@@ -1,70 +1,238 @@
 <br />
-<form id="reportForm" method="get">
-	<select name="report_cell_id" onchange="$SQ('#reportForm').submit();">
-		<option value="0">Choose a bucket, any bucket</option>
-		<? foreach ($this->report_cells as $reportCell) { ?>
-			<option value="<?= $reportCell->id ?>" <? if ($this->report_cell_id == $reportCell->id) { echo 'selected'; } ?>><?= strtoupper($reportCell->category) . ": " . $reportCell->title . "(" . (int) $reportCell->number_of_users . ")"?></option>
-		<? } ?>
-	</select><br /><br />
-	<select name="survey_id" onchange="$SQ('#reportForm').submit();">
-		<option value="0">Choose a survey, any survey</option>
-		<? foreach ($this->surveys as $survey) { ?>
-			<option value="<?= $survey->id ?>" <? if ($this->survey_id == $survey->id) { echo 'selected'; } ?>><?= strtoupper($survey->type) . ": " . $survey->title ?></option>
-		<? } ?>
-	</select><br /><br />
+<style>
+body {
+	font: 11px Verdana;
+	margin-left: 20px;
+	margin-bottom: 50px;
+	background-color: #CCC;
+}
+
+h2 {
+	margin: 0;
+	font-weight: normal;
+}
+
+h3 {
+	margin: 50px 0 5px 0;
+}
+
+div.chart {
+	margin: auto;
+	width: 950px;
+	height: 300px;
+}
+
+div#reportSettings {
+	width: 980px;
+	border: 1px solid #666;
+	background-color: #FFF;
+	padding: 10px;
+}
+
+div#report {
+	margin-top: 20px;
+	width: 980px;
+	border: 1px solid #666;
+	background-color: #FFF;
+	padding: 10px;
+}
+
+select#survey_id {
+	width: 780px;
+}
+
+.jqplot-point-label, table.jqplot-table-legend, table.jqplot-cursor-legend, .jqplot-axis {
+	font-size: 1em;
+	font-weight: bold;
+}
+</style>
+<script type="text/javascript">
+	$.jqplot.config.enablePlugins = true;
+
+	function renderGraph(divId, labels, values) {
+		var labels = labels.reverse();
+        var values = values.reverse();
+		$.jqplot(divId, [values], {
+			series: [{
+				renderer:$.jqplot.BarRenderer,
+				rendererOptions: {
+					barDirection: 'horizontal',
+					varyBarColor: true,
+					barMargin: 50 / labels.length
+				}
+			}],
+			axes: {
+				yaxis: {
+					renderer: $.jqplot.CategoryAxisRenderer,
+					ticks: labels,
+					tickOptions:{
+						showGridline:true,
+						markSize:0
+					}
+				},
+				xaxis:{
+					tickOptions:{formatString:'%d\%'}
+				}
+			}
+		});
+	}
+
+	var surveys = {
+		<?
+		// set up empty arrays for every starbar/content type combination
+		$firstStarbar = true;
+		foreach($this->starbars as $starbar) {
+			if (!$firstStarbar) echo ",";
+			echo "starbar" . $starbar['id'] . ": {";
+			$firstSurveyType = true;
+			foreach (array("survey", "poll", "trailer", "quiz") as $surveyType) {
+				if (!$firstSurveyType) echo ",";
+				echo $surveyType . ": new Array()";
+				$firstSurveyType = false;
+			}
+			echo "}";
+			$firstStarbar = false;
+		}
+		?>
+	};
+
+	<? foreach ($this->surveys as $survey) { ?>
+		<? if ($this->survey_id == $survey['id']) { $chosenSurvey = $survey; } ?>
+		surveys.starbar<?= $survey['unique_starbar_id'] ?>.<?= $survey['type'] ?>.push({
+			id: <?= $survey['id'] ?>,
+			title: "<?= str_replace('"', '\\"', $survey['title']) ?>"
+		});
+	<? } ?>
+
+</script>
+<form id="reportForm" action="survey-report" method="get">
+
+	<div id="reportSettings">
+		<b>Filter content (not a filter for users!):</b><br />
+		Content from:
+		<select id="starbar_id" name="starbar_id" onchange="loadSurveysIntoSelect(parseInt($('select#survey_id').val()));">
+			<option value="">Choose a starbar</option>
+			<? foreach ($this->starbars as $starbar) { ?>
+				<option value="<?= (int) $starbar['id'] ?>" <? if ($this->starbar_id == (int) $starbar['id']) { echo 'selected'; } ?>><?= $starbar['label'] ?></option>
+			<? } ?>
+		</select>
+		<select id="survey_type" name="survey_type" onchange="loadSurveysIntoSelect(parseInt($('select#survey_id').val()));">
+			<option value="">Choose a type of content</option>
+			<? foreach (array("survey", "poll", "trailer", "quiz") as $surveyType) { ?>
+				<option <? if ($this->survey_type == $surveyType) { echo 'selected'; } ?>><?= $surveyType ?></option>
+			<? } ?>
+		</select><br /><br />
+
+		<b>Select content to report on:</b><br />
+		<select id="survey_id" name="survey_id" onchange="$('#reportForm').submit();">
+			<option value="0">Choose a <?= ($this->survey_type ? $this->survey_type : "starbar and type of content first!") ?></option>
+		</select><br /><br />
+
+		<b>Select user group to report on:</b><br />
+		<select name="report_cell_id" onchange="$('#reportForm').submit();">
+			<option value="">Choose a group</option>
+			<? foreach ($this->report_cells as $reportCell) { ?>
+				<? if ($this->report_cell_id == $reportCell->id) { $chosenReportCell = $reportCell; } ?>>
+				<option value="<?= $reportCell->id ?>" <? if ($this->report_cell_id == $reportCell->id) { echo 'selected'; } ?>><?= strtoupper($reportCell->category) . ": " . $reportCell->title . " (" . (int) $reportCell->number_of_users . " users)"?></option>
+			<? } ?>
+		</select><br /><br />
+	</div>
+
 	<? if ($this->survey_id && $this->report_cell_id) { ?>
-		<? $questionNumber = 1 ?>
-		<? foreach ($this->survey_questions as $surveyQuestion) { ?>
-			<? $surveyQuestion = $this->survey_question_array[$surveyQuestion->id] ?>
-			<? $questionCalculation = $this->calculation_array[$surveyQuestion->id][0] ?>
+		<div id="report">
+			<h1><?= $chosenSurvey['title'] ?> - Report</h1>
+			<h2>User Group: <b><?= $chosenReportCell['title'] ?></b></h2>
+			<? $questionNumber = 1 ?>
+			<? foreach ($this->survey_questions as $surveyQuestion) { ?>
+				<? if ($surveyQuestion->data_type != "none" || $surveyQuestion->choice_type != "none") { ?>
+					<? $questionCalculation = $this->calculation_array[$surveyQuestion->id][0] ?>
 
-			<h3><?= $questionNumber ?>. <?= $surveyQuestion->title ?></h3>
-			Number of responses: <b><?= (int) $questionCalculation->number_of_responses ?></b>
-
-			<? if ($questionCalculation->number_of_responses) { ?>
-				<? if ($surveyQuestion->data_type != "none") { ?><span>(<a href="#" onclick="getResponsesForQuestion(this, <?= $this->report_cell_id ?>, <?= $surveyQuestion->id ?>); return false;">view</a>)</span><? } ?>
-				<br />
-				<div id="responses_question_<?= $surveyQuestion->id ?>" name="responses_question_<?= $surveyQuestion->id ?>" style="display: hidden;"></div>
-
-				<? if ($questionCalculation->number_of_responses) { ?>
-					<? if ($questionCalculation->average) echo "Average: " . $questionCalculation->average . "<br />" ?>
-					<? if ($questionCalculation->median) echo "Median: " . $questionCalculation->median . "<br />" ?>
-					<? if ($questionCalculation->stardard_deviation) echo "Std. Dev.: " . $questionCalculation->stardard_deviation . "<br />" ?>
-
-					<? if ($surveyQuestion->piped_from_survey_question_id) { ?>
-					 	<? $surveyQuestion->option_array = $this->survey_question_array[$surveyQuestion->piped_from_survey_question_id]->option_array ?>
-					<? } ?>
-
-
-					<? if (count($surveyQuestion->option_array)) { ?>
-						Choices (users can pick <b><?= ($surveyQuestion->choice_type == "single" ? "one response" : "multiple responses") ?></b>):
-						<ol>
-						<? foreach ($surveyQuestion->option_array as $surveyQuestionChoice) { ?>
-							<? if (isset($this->calculation_array[$surveyQuestion->id][$surveyQuestionChoice->id])) { ?>
-								<? $choiceCalculation = $this->calculation_array[$surveyQuestion->id][$surveyQuestionChoice->id] ?>
-							<? } else { ?>
-								<? $choiceCalculation = new ReportCell_SurveyCalculation() ?>
-							<? } ?>
-							<li>
-								<?= $surveyQuestionChoice->title ?> <b>(<?= (int) $choiceCalculation->number_of_responses ?> users</b> - <?= round($choiceCalculation->number_of_responses / $questionCalculation->number_of_responses * 100, 2) ?>%)<br />
-							</li>
+					<h3><a name="question_<?= $surveyQuestion->id ?>"></a><?= $questionNumber ?>. <?= $surveyQuestion->title ?></h3>
+					<? if ($questionCalculation->number_of_responses) { ?>
+						<? if ($surveyQuestion->piped_from_survey_question_id) { ?>
+							<? $surveyQuestion->option_array = $this->survey_questions[$surveyQuestion->piped_from_survey_question_id]->option_array ?>
 						<? } ?>
-						</ol>
-						<br />
+
+						<? if (count($surveyQuestion->option_array)) { ?>
+							<br />Users can choose <b><?= ($surveyQuestion->choice_type == "single" ? "a single response" : "multiple responses") ?></b>
+							<div id="chart_<?= $surveyQuestion->id ?>" class="chart"></div>
+							<script type="text/javascript">
+								var data_<?= $surveyQuestion->id ?> = new Array();
+								var labels_<?= $surveyQuestion->id ?> = new Array();
+								<? foreach ($surveyQuestion->option_array as $surveyQuestionChoice) { ?>
+									<? if (isset($this->calculation_array[$surveyQuestion->id][$surveyQuestionChoice->id])) { ?>
+										<? $choiceCalculation = $this->calculation_array[$surveyQuestion->id][$surveyQuestionChoice->id] ?>
+									<? } else { ?>
+										<? $choiceCalculation = new ReportCell_SurveyCalculation() ?>
+									<? } ?>
+
+									data_<?= $surveyQuestion->id ?>.push(<?= round($choiceCalculation->number_of_responses / $questionCalculation->number_of_responses * 100, 2) ?>);
+									labels_<?= $surveyQuestion->id ?>.push("<?= str_replace('"', '\\"', $surveyQuestionChoice->title) . " (" . (int) $choiceCalculation->number_of_responses . ")" ?>");
+								<? } ?>
+
+								renderGraph("chart_<?= $surveyQuestion->id ?>", labels_<?= $surveyQuestion->id ?>, data_<?= $surveyQuestion->id ?>);
+							</script>
+						<? } ?>
+
+
+						<? /*if (count($surveyQuestion->option_array)) { ?>
+							<ol>
+							<? foreach ($surveyQuestion->option_array as $surveyQuestionChoice) { ?>
+								<? if (isset($this->calculation_array[$surveyQuestion->id][$surveyQuestionChoice->id])) { ?>
+									<? $choiceCalculation = $this->calculation_array[$surveyQuestion->id][$surveyQuestionChoice->id] ?>
+								<? } else { ?>
+									<? $choiceCalculation = new ReportCell_SurveyCalculation() ?>
+								<? } ?>
+								<li>
+									<?= $surveyQuestionChoice->title ?> <b>(<?= (int) $choiceCalculation->number_of_responses ?> users</b> - <?= round($choiceCalculation->number_of_responses / $questionCalculation->number_of_responses * 100, 2) ?>%)<br />
+								</li>
+							<? } ?>
+							</ol>
+						<? }*/ ?>
 					<? } ?>
+					<br />Number of responses: <b><?= (int) $questionCalculation->number_of_responses ?></b>
+					<? if ($questionCalculation->number_of_responses) { ?>
+						<? if ($surveyQuestion->data_type != "none") { ?><span>(<a href="#" onclick="getResponsesForQuestion(this, <?= $this->report_cell_id ?>, <?= $surveyQuestion->id ?>); return false;">view all typed responses</a>)</span><? } ?>
+						<br />
+						<div id="responses_question_<?= $surveyQuestion->id ?>" style="display: hidden;"></div>
+
+						<? if ($questionCalculation->average) echo "Average: " . $questionCalculation->average . "<br />" ?>
+						<? if ($questionCalculation->median) echo "Median: " . $questionCalculation->median . "<br />" ?>
+						<? if ($questionCalculation->stardard_deviation) echo "Std. Dev.: " . $questionCalculation->stardard_deviation . "<br />" ?>
+					<? } ?>
+
+					<? $questionNumber++ ?>
 				<? } ?>
 			<? } ?>
-			<? $questionNumber++ ?>
-		<? } ?>
+		</div>
 	<? } ?>
 </form>
 <script type="text/javascript">
+	function loadSurveysIntoSelect(chosen_survey_id) {
+		var starbarId = parseInt($('select#starbar_id').val());
+		var starbarLabel = $('select#starbar_id option:selected').text();
+		var surveyType = $('select#survey_type').val();
+		var survey;
+		var selectedText;
+		var options = '<option value="">Choose a starbar and content type first!</option>';
+		if (starbarId > 0 && surveyType != "") {
+			options = '<option value="">Choose a '+starbarLabel+' '+surveyType+'</option>';
+			for (surveyIndex in surveys['starbar'+starbarId][surveyType]) {
+				survey = surveys['starbar'+starbarId][surveyType][surveyIndex];
+				if (chosen_survey_id == survey['id']) selectedText = " selected ";
+				else selectedText = "";
+				options += '<option value="'+survey['id']+'" '+selectedText+'>'+survey['title']+'</option>';
+			}
+		}
+		$('select#survey_id').html(options);
+	}
+
 	function getResponsesForQuestion(callingElement, cellId, questionId) {
 		cellId = parseInt(cellId);
 		questionId = parseInt(questionId);
-		callingElement = $SQ(callingElement);
+		callingElement = $(callingElement);
 		if (cellId > 0 && questionId > 0) {
-			$SQ.ajax({
+			$.ajax({
 				url : 'survey-question-responses',
 				beforeSend : function(x) {
 					if (x && x.overrideMimeType) {
@@ -76,7 +244,7 @@
 					survey_question_id : questionId
 				},
 				success : function (response, status) {
-					responsesDiv = $SQ('#responses_question_'+questionId);
+					responsesDiv = $('#responses_question_'+questionId);
 					if (responsesDiv.length == 1) {
 						responsesDiv.html(response);
 						responsesDiv.css({
@@ -87,7 +255,7 @@
 							'display' : 'block'
 						});
 						callingElement.parent().html('(<a href="#" onclick="hideResponsesForQuestion(this, '+cellId+', '+questionId+'); return false;">hide</a>)');
-						location.hash = 'responses_question_'+questionId;
+						location.hash = 'question_'+questionId;
 					}
 				}
 			});
@@ -97,8 +265,8 @@
 	function hideResponsesForQuestion(callingElement, cellId, questionId) {
 		cellId = parseInt(cellId);
 		questionId = parseInt(questionId);
-		callingElement = $SQ(callingElement);
-		responsesDiv = $SQ('#responses_question_'+questionId);
+		callingElement = $(callingElement);
+		responsesDiv = $('#responses_question_'+questionId);
 		if (responsesDiv.length == 1) {
 			responsesDiv.css({
 				'display' : 'none'
@@ -107,4 +275,6 @@
 		}
 
 	}
+
+	loadSurveysIntoSelect(<?= $this->survey_id ?>);
 </script>

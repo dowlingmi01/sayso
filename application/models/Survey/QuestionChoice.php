@@ -4,12 +4,12 @@ class Survey_QuestionChoice extends Record
 {
 	protected $_tableName = 'survey_question_choice';
 
-	public function getArrayOfUsersWhoChoseThisChoice($surveyQuestionId, $commaDelimitedUserIdFilterList = null) {
+	public function getStringOfUsersWhoChoseThisChoice($surveyQuestionId, $commaDelimitedUserIdFilterList = null) {
 		if (!$this->id) return;
 		if (!$surveyQuestionId) return;
 
 		$sql = "
-			SELECT sr.user_id
+			SELECT GROUP_CONCAT(DISTINCT sr.user_id) AS user_id_list
 			FROM survey_response sr, survey_question_response sqr
 			WHERE sqr.survey_response_id = sr.id
 				AND sr.processing_status = 'completed'
@@ -22,7 +22,8 @@ class Survey_QuestionChoice extends Record
 			$sql .= " AND sr.user_id IN (" . trimCommas($commaDelimitedUserIdFilterList) . ")";
 		}
 
-		return Db_Pdo::fetchColumn($sql, $surveyQuestionId, $this->id);
+		$result = Db_Pdo::fetch($sql, $surveyQuestionId, $this->id);
+		return $result['user_id_list'];
 	}
 
 	public function getArrayOfQuestionsThatShareThisChoice() {

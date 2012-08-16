@@ -20,13 +20,6 @@ class ReportCell_Survey extends Record
 		$surveyQuestions = new Survey_QuestionCollection();
 		$surveyQuestions->loadAllQuestionsForSurvey($this->survey_id);
 
-		// Add response_array to survey questions
-		foreach ($surveyQuestions as $questionId => $surveyQuestion) {
-			if ($surveyQuestion->data_type == 'integer' || $surveyQuestion->data_type == 'decimal' || $surveyQuestion->data_type == 'monetary') {
-				$surveyQuestions[$questionId]->loadAllResponses($reportCell->comma_delimited_list_of_users);
-			}
-		}
-
 		// Now go through all the questions and numeric responses and calculate stuff!
 		foreach ($surveyQuestions as $surveyQuestion) {
 			$reportCellSurveyCalculation = new ReportCell_SurveyCalculation();
@@ -34,34 +27,18 @@ class ReportCell_Survey extends Record
 			$reportCellSurveyCalculation->parent_type = "survey_question";
 			$reportCellSurveyCalculation->survey_question_id = $surveyQuestion->id;
 
-			$userArray = $surveyQuestion->getArrayOfUsersWhoAnsweredThisQuestion($reportCell->comma_delimited_list_of_users);
-			if (count($userArray)) {
-				$reportCellSurveyCalculation->number_of_responses = count($userArray);
-				$reportCellSurveyCalculation->comma_delimited_list_of_users = ',' . implode(',', $userArray) . ',';
+			$reportCellSurveyCalculation->comma_delimited_list_of_users = ',' . $surveyQuestion->getStringOfUsersWhoAnsweredThisQuestion($reportCell->comma_delimited_list_of_users) . ',';
+			if ($reportCellSurveyCalculation->comma_delimited_list_of_users == ",,") {
+				$reportCellSurveyCalculation->comma_delimited_list_of_users = "";
+				$reportCellSurveyCalculation->number_of_responses = 0;
+			} else {
+				$reportCellSurveyCalculation->number_of_responses = substr_count($reportCellSurveyCalculation->comma_delimited_list_of_users, ',') - 1;
 			}
 
-			if (
-				($surveyQuestion->data_type == 'integer' || $surveyQuestion->data_type == 'decimal' || $surveyQuestion->data_type == 'monetary')
-				&& count($surveyQuestion->response_array)
-			) {
-				$runningTotal = 0.0;
-				$squareDeviationsTotal = 0.0;
-				$numberOfResponses = 0;
-
-				// Calculate the total for the average
-				foreach ($surveyQuestion->response_array as $responseValue) {
-					$runningTotal += $responseValue;
-					$numberOfResponses++;
-				}
-				$reportCellSurveyCalculation->average = $runningTotal / $numberOfResponses;
-				$reportCellSurveyCalculation->median = $surveyQuestion->response_array[intval(floor(count($surveyQuestion->response_array)/2.0))];
-
-				// Calculate the standard deviation using the average
-				foreach ($surveyQuestion->response_array as $responseValue) {
-					$deviation = $reportCellSurveyCalculation->average - $responseValue;
-					$squareDeviationsTotal += $deviation * $deviation;
-				}
-				$reportCellSurveyCalculation->stardard_deviation = sqrt($squareDeviationsTotal / ($numberOfResponses - 1));
+			if ($surveyQuestion->data_type == 'integer' || $surveyQuestion->data_type == 'decimal' || $surveyQuestion->data_type == 'monetary') {
+				$reportCellSurveyCalculation->average = $surveyQuestion->getAverage($reportCell->comma_delimited_list_of_users);
+				$reportCellSurveyCalculation->stardard_deviation = $surveyQuestion->getStandardDeviation($reportCell->comma_delimited_list_of_users);
+				$reportCellSurveyCalculation->median = $surveyQuestion->getMedian($reportCell->comma_delimited_list_of_users);
 			}
 
 			$reportCellSurveyCalculation->save();
@@ -85,10 +62,12 @@ class ReportCell_Survey extends Record
 					$reportCellSurveyCalculation->survey_question_id = $sharingQuestionId;
 					$reportCellSurveyCalculation->survey_question_choice_id = $surveyQuestionChoice->id;
 
-					$userArray = $surveyQuestionChoice->getArrayOfUsersWhoChoseThisChoice($sharingQuestionId, $reportCell->comma_delimited_list_of_users);
-					if (count($userArray)) {
-						$reportCellSurveyCalculation->number_of_responses = count($userArray);
-						$reportCellSurveyCalculation->comma_delimited_list_of_users = ',' . implode(',', $userArray) . ',';
+					$reportCellSurveyCalculation->comma_delimited_list_of_users = ',' . $surveyQuestionChoice->getStringOfUsersWhoChoseThisChoice($sharingQuestionId, $reportCell->comma_delimited_list_of_users) . ',';
+					if ($reportCellSurveyCalculation->comma_delimited_list_of_users == ",,") {
+						$reportCellSurveyCalculation->comma_delimited_list_of_users = "";
+						$reportCellSurveyCalculation->number_of_responses = 0;
+					} else {
+						$reportCellSurveyCalculation->number_of_responses = substr_count($reportCellSurveyCalculation->comma_delimited_list_of_users, ',') - 1;
 					}
 
 					$reportCellSurveyCalculation->save();
@@ -101,10 +80,12 @@ class ReportCell_Survey extends Record
 				$reportCellSurveyCalculation->survey_question_id = $surveyQuestionChoice->survey_question_id;
 				$reportCellSurveyCalculation->survey_question_choice_id = $surveyQuestionChoice->id;
 
-				$userArray = $surveyQuestionChoice->getArrayOfUsersWhoChoseThisChoice($surveyQuestionChoice->survey_question_id, $reportCell->comma_delimited_list_of_users);
-				if (count($userArray)) {
-					$reportCellSurveyCalculation->number_of_responses = count($userArray);
-					$reportCellSurveyCalculation->comma_delimited_list_of_users = ',' . implode(',', $userArray) . ',';
+				$reportCellSurveyCalculation->comma_delimited_list_of_users = ',' . $surveyQuestionChoice->getStringOfUsersWhoChoseThisChoice($surveyQuestionChoice->survey_question_id, $reportCell->comma_delimited_list_of_users) . ',';
+				if ($reportCellSurveyCalculation->comma_delimited_list_of_users == ",,") {
+					$reportCellSurveyCalculation->comma_delimited_list_of_users = "";
+					$reportCellSurveyCalculation->number_of_responses = 0;
+				} else {
+					$reportCellSurveyCalculation->number_of_responses = substr_count($reportCellSurveyCalculation->comma_delimited_list_of_users, ',') - 1;
 				}
 
 				$reportCellSurveyCalculation->save();

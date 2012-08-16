@@ -907,11 +907,23 @@ class Devadmin_IndexController extends Api_GlobalController
 
 
 	public function surveyReportAction () {
+		// increase memory limit for this session only
+		ini_set('memory_limit', '512M');
+
+		$this->view->headLink()->appendStylesheet('/js/jqplot/jquery.jqplot.min.css');
+		$this->view->headScript()->appendFile('//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js');
+		$this->view->headScript()->appendFile('/js/jqplot/jquery.jqplot.min.js');
+		$this->view->headScript()->appendFile('/js/jqplot/plugins/jqplot.barRenderer.min.js');
+		$this->view->headScript()->appendFile('/js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js');
+		$this->view->headScript()->appendFile('/js/jqplot/plugins/jqplot.pointLabels.js');
+
 		$request = $this->getRequest();
 		$surveyId = (int) $request->getParam("survey_id", false);
 		$reportCellId = (int) $request->getParam("report_cell_id", 1);
+		$surveyType = $request->getParam("survey_type");
+		$starbarId = (int) $request->getParam("starbar_id");
+
 		$surveyQuestions = null;
-		$surveyQuestionArray = array();
 		$calculationArray = array();
 
 		if ($surveyId) {
@@ -931,7 +943,7 @@ class Devadmin_IndexController extends Api_GlobalController
 			}
 
 			if ($reportCellSurvey->id) {
-				// Survey has been taken since the last time it was processed
+				// Survey has been taken since the last time it was processed, so re-process it
 				if ($reportCellSurvey->last_processed < $survey->last_response) {
 					$reportCellSurvey->process();
 				}
@@ -941,8 +953,6 @@ class Devadmin_IndexController extends Api_GlobalController
 
 				// Place survey questions into an array, where the key is the survey_question_id
 				foreach ($surveyQuestions as $surveyQuestion) {
-					$surveyQuestion->option_array = array();
-					$surveyQuestionArray[$surveyQuestion->id] = $surveyQuestion;
 					$calculationArray[$surveyQuestion->id] = array();
 				}
 
@@ -950,7 +960,7 @@ class Devadmin_IndexController extends Api_GlobalController
 				$surveyQuestionChoices->loadAllChoicesForSurvey($surveyId);
 
 				foreach ($surveyQuestionChoices as $surveyQuestionChoice) {
-					$surveyQuestionArray[$surveyQuestionChoice->survey_question_id]->option_array[$surveyQuestionChoice->id] = $surveyQuestionChoice;
+					$surveyQuestions[$surveyQuestionChoice->survey_question_id]->option_array[$surveyQuestionChoice->id] = $surveyQuestionChoice;
 				}
 
 				$reportCellSurveyCalculations = new ReportCell_SurveyCalculationCollection();
@@ -970,14 +980,22 @@ class Devadmin_IndexController extends Api_GlobalController
 			}
 		}
 
+		$sql = "SELECT *
+				FROM starbar
+				WHERE id > 1
+				ORDER BY id
+				";
+		$starbars = Db_Pdo::fetchAll($sql);
+		$this->view->starbars = $starbars;
+		$this->view->starbar_id = $starbarId;
+		$this->view->survey_type = $surveyType;
+
 		$this->view->survey_id = $surveyId;
 		$this->view->report_cell_id = $reportCellId;
 		$this->view->calculation_array = $calculationArray;
-		$this->view->survey_question_array = $surveyQuestionArray;
 		$this->view->survey_questions = $surveyQuestions; // Ordered properly
 
-		$surveys = new SurveyCollection();
-		$surveys->loadAllSurveys();
+		$surveys = SurveyCollection::getAllSurveysForAllStarbars();
 		$this->view->surveys = $surveys;
 
 		$reportCells = new ReportCellCollection();
@@ -1025,13 +1043,4 @@ class Devadmin_IndexController extends Api_GlobalController
 		$this->view->messages = array("Nothing to do!");
 	}
 
-	
-	public function reprocessProfileSurveyAction () {
-		$profileSurvey = new Survey();
-		$profileSurvey->loadProfileSurveyForStarbar(2);
-		$profileSurvey->processing_status = "pending";
-		$messages = $profileSurvey->retrieveQuestionsAndChoicesFromSurveyGizmo();
-		var_dump($messages);
-		exit;
-	}
 }

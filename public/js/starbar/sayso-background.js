@@ -66,7 +66,7 @@ function getScript( scriptName, callback ) {
 		var url = "http://" + sayso.baseDomain + "/js/" + scriptName;
 		forge.request.get( url + "?_=" + ( new Date() ).getTime()
 				, function(content) {
-					sayso.scripts[scriptName] = content + "\n//@ sourceURL=" + url;
+					sayso.scripts[scriptName] = content + (forge.is.ie() ? "" : "\n//@ sourceURL=" + url);
 					callback( sayso.scripts[scriptName] );
 				}
 				, showErr

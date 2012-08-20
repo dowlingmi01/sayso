@@ -1,0 +1,88 @@
+<br />
+<style>
+	body { font: 11px Verdana; }
+	div.order { float: left; border: 1px solid #CCC; margin: 5px; width: 300px; padding: 2px; }
+	div.token { background-color: #DDF; }
+	div.physical { background-color: #DFD; }
+</style>
+<form id="orderHistoryForm" method="get">
+	<input type="hidden" id="weeks_ago" name="weeks_ago" value="<?= $this->weeks_ago ?>" />
+	<b>Order History</b><br />
+	<select name="starbar_id" onchange="$SQ('#orderHistoryForm').submit();">
+		<option value="0">Choose a starbar, any starbar</option>
+		<? foreach ($this->starbars as $starbar) { ?>
+			<option value="<?= $starbar['id'] ?>" <? if ($this->starbar_id == $starbar['id']) { echo 'selected'; } ?>><?= $starbar['label'] ?></option>
+		<? } ?>
+	</select><br />
+	<input type="checkbox" value="1" name="hide_tokens" id="hide_tokens" <?= ($this->hide_tokens ? "checked" : "") ?> onclick="hideItems();"> <label for="hide_tokens">Hide Tokens?</label><br />
+	<input type="checkbox" value="1" name="hide_physicals" id="hide_physicals" <?= ($this->hide_physicals ? "checked" : "") ?> onclick="hideItems();"> <label for="hide_physicals" <?= ($this->hide_physicals ? "checked" : "") ?> onclick="hideItems();">Hide Physical Items?</label><br />
+	<br />
+	<? if ($this->starbar_id) { ?>
+		<a href="javascript:$SQ('#weeks_ago').val(<?= ($this->weeks_ago + 1) ?>); $SQ('#orderHistoryForm').submit();">Previous week</a>
+		<? if ($this->weeks_ago) { ?>
+			| <a href="javascript:$SQ('#weeks_ago').val(<?= ($this->weeks_ago - 1) ?>); $SQ('#orderHistoryForm').submit();">Following week</a>
+		<? } ?>
+		<br /><br />
+		<b><?= (int) count($this->orders) ?> orders</b> for <?= $this->start_date ?> to <?= $this->end_date ?>
+		<br /><br />
+		<? if (count($this->orders)) { ?>
+			<? foreach ($this->orders as $order) { ?>
+				<?
+					$gamer = $this->gamers[$order->user_gaming_id];
+					// Assumes email.id == email.user_id, which is true so far
+					$email = $this->emails[$gamer->user_id];
+					$good = $this->goods[$order->good_id];
+					$isToken = $good->isToken();
+				?>
+				<div class="order <?= ($isToken ? "token" : "physical") ?>">
+					<? if ($isToken) { ?>
+						<b>TOKEN</b><br />
+					<? } else {?>
+						<b>PHYSICAL ITEM</b><br />
+					<? } ?>
+					Order ID: <?= $order->id ?><br />
+					User ID: <?= $gamer->user_id ?><br />
+					User Email: <?= $email->email ?><br />
+					Order Time: <?= date($this->readable_date_format, strtotime($order->created)) ?><br />
+					Good Purchased: <b><?= $good->title ?></b><br />
+					Good Cost: <?= $good->cost ?><br />
+					Quantity Purchased: <?= $order->quantity ?><br />
+					<? if (!$isToken) { ?>
+						<br />
+						Order Details:<br />
+						First Name: <?= $order->first_name ?><br />
+						Last Name: <?= $order->last_name ?><br />
+						Street Address 1: <?= $order->street1 ?><br />
+						Street Address 2: <?= $order->street2 ?><br />
+						City: <?= $order->locality ?><br />
+						State/Province: <?= $order->region ?><br />
+						Country: <?= $order->country ?><br />
+						Postal/Zip Code: <?= $order->postalCode ?><br />
+						Phone: <?= $order->phone ?><br />
+					<? } ?>
+				</div>
+			<? } ?>
+		<? } ?>
+	<? } ?>
+</form>
+
+<script>
+	function hideItems() {
+		var hideTokens = $SQ('#hide_tokens').is(':checked');
+		var hidePhysicals = $SQ('#hide_physicals').is(':checked');
+
+		if (hideTokens) {
+			$SQ('.token').hide();
+		} else {
+			$SQ('.token').show();
+		}
+
+		if (hidePhysicals) {
+			$SQ('.physical').hide();
+		} else {
+			$SQ('.physical').show();
+		}
+	}
+
+	hideItems();
+</script>

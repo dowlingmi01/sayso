@@ -1029,6 +1029,37 @@ class Devadmin_IndexController extends Api_GlobalController
 	}
 
 
+	public function orderHistoryAction() {
+		$request = $this->getRequest();
+		$weeksAgo = (int) $request->getParam('weeks_ago');
+		$this->view->weeks_ago = $weeksAgo;
+
+		$this->view->readable_date_format = "l Y-m-d \\a\\t H:i:s";
+		$starbarId = (int) $request->getParam('starbar_id');
+		$this->view->hide_tokens = (int) $request->getParam('hide_tokens');
+		$this->view->hide_physicals = (int) $request->getParam('hide_physicals');
+
+		if ($starbarId) {
+			$starbar = new Starbar();
+			$starbar->loadData($starbarId);
+			$request->setParam('user_id', 1);
+			$game = Game_Starbar::getInstance();
+
+			$this->view->starbar_id = $starbar->id;
+
+			list($this->view->start_date, $this->view->end_date, $this->view->orders, $this->view->goods, $this->view->gamers, $this->view->emails) = GamerOrderHistoryCollection::getOrderHistory($starbarId, $game, $weeksAgo, $this->view->readable_date_format);
+		}
+
+		$sql = "SELECT *
+				FROM starbar
+				WHERE id > 1
+				ORDER BY id
+				";
+		$starbars = Db_Pdo::fetchAll($sql);
+		$this->view->starbars = $starbars;
+	}
+
+
 	public function everyFiveMinutesAction() {
 		$this->view->messages = Survey_ResponseCollection::processAllResponsesPendingProcessing();
 

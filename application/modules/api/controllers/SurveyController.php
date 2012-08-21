@@ -23,7 +23,7 @@ class Api_SurveyController extends Api_GlobalController
 		$surveyResponse = new Survey_Response();
 		$surveyResponse->loadDataByUniqueFields(array("survey_id" => $this->survey_id, "user_id" => $this->user_id));
 
-		if (!$surveyQuestion->id || !$surveyResponse->id) return $this->_resultType(false);
+		if (!$surveyQuestion->id || !$surveyResponse->id || $surveyResponse->status == "completed" || $surveyResponse->status == "disqualified") return $this->_resultType(false);
 
 		// Find the user's choice
 		$surveyQuestionChoice = new Survey_QuestionChoice();
@@ -66,7 +66,7 @@ class Api_SurveyController extends Api_GlobalController
 		$surveyResponse = new Survey_Response();
 		$surveyResponse->loadDataByUniqueFields(array("survey_id" => $this->survey_id, "user_id" => $this->user_id));
 
-		if (!$surveyQuestion->id || !$surveyResponse->id) return $this->_resultType(false);
+		if (!$surveyQuestion->id || !$surveyResponse->id || $surveyResponse->status == "completed" || $surveyResponse->status == "disqualified") return $this->_resultType(false);
 
 		// Find the user's choice
 		$surveyQuestionChoice = new Survey_QuestionChoice();
@@ -108,7 +108,7 @@ class Api_SurveyController extends Api_GlobalController
 		$surveyResponse = new Survey_Response();
 		$surveyResponse->loadDataByUniqueFields(array("survey_id" => $this->survey_id, "user_id" => $this->user_id));
 
-		if (!$surveyResponse->id || $surveyResponse->status == 'completed') return $this->_resultType(false);
+		if (!$surveyResponse->id || $surveyResponse->status == 'completed' || $surveyResponse->status == "disqualified") return $this->_resultType(false);
 
 		// Delete any existing responses (in case of previous partial response, for whatever reason)
 		$surveyResponse->deleteQuestionResponses();

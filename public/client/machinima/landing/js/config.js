@@ -9,7 +9,8 @@
 	window.saysoConf = {
 		baseDomain: getBaseDomain(),
 		bn: getBrowserNameVersion(),
-		locationCookie: getLocationCookie()
+		locationCookie: getLocationCookie(),
+		origination: getOrigination()
 	}
 	function getBaseDomain() {
 		if( location.host.match('saysollc\.com') )
@@ -54,7 +55,14 @@
 		bn.isSupported = false;
 		return bn;
 	}
-
+	function getOrigination() {
+		var originationParam = getUrlParam('sayso-install');
+		if( originationParam ) {
+			setCookie('sayso-install', originationParam);
+			return originationParam;
+		} else
+			return getCookie('sayso-install') || 'p-1';
+	}
 	function getLocationCookie() {
 		var locationCookie = getCookie( 'sayso-location' );
 		

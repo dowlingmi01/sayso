@@ -37,28 +37,15 @@
 			$this->view->headScript()->appendFile('/js/cms/jquery.ui.slider.js');
 			$this->view->headScript()->appendFile('/js/cms/jquery.ui.datepicker.js');
 			$this->view->headScript()->appendFile('/js/cms/jquery.ui.timepicker-addon.js');
+			$this->view->headScript()->appendFile('/modules/common.js');
 			$this->view->headScript()->appendFile('/js/cms/jquery.Menu.js');
 			$this->view->headScript()->appendFile('/js/cms/jquery.ui.tabs.js');
+
 			$this->view->headScript()->appendFile('/js/cms/init.js');
 //printf("<h1>All original parameters</h1><pre>%s</pre>",print_r($this->_getAllParams(),true));
 			$crumb = new Breadcrumb($this->_getAllParams());
 			$this->view->breadcrumb = $crumb->getBreadcrumb();
 
-			$newParams = $crumb->getParameters();
-
-			// Zap any existing parameters
-			foreach ($this->_getAllParams() as $key=>$value) {
-			//	$this->_setParam($key,null);
-			}
-
-			foreach ($newParams as $key=>$value) {
-			//	$this->_setParam($key,$value);
-			}
-
-			// Changing the action (by _setParam) doesn't do anything unless we forward...
-			if (($this->_getParam('action')!= $this->getRequest()->getActionName()) && ($this->_getParam('action') != null)) {
-			//	$this->_forward($this->_getParam('action'),'admin','cms');
-			}
 		}
 
 		/**
@@ -74,7 +61,21 @@
 			if (!$this->rd) {
 				$this->rd = $this->_helper->Redirector;
 			}
+			parent::init();
 
+		if (!$this->_request->isXmlHttpRequest())
+		{
+			$this->setLayoutBasics();
+
+			$scripts = $this->view->headScript();
+			$scripts->appendFile('/js/pubsub.js');
+			$scripts->appendFile('/js/jquery.lightbox_me.js');
+			$scripts->appendFile('/js/mustache.js');
+			$scripts->appendFile('/js/templates.js');
+			$scripts->appendFile('/js/bind.js');
+			$scripts->appendFile('/modules/admin/index/index.js');
+			$this->view->headLink()->appendStylesheet('/modules/admin/index/index.css', 'screen');
+		}
 		}
 
 		/**
@@ -84,7 +85,10 @@
 		*/
 		public function indexAction()
 		{
-
+			$auth = Zend_Auth::getInstance();
+			if ($auth->hasIdentity()) {
+				$this->view->identity = $auth->getIdentity();
+			}
 
 		}
 
@@ -97,7 +101,6 @@
 		{
 			date_default_timezone_set("America/Denver");
 		    $c = getdate();
-		    //printf("<h1>In _ago, date passed is</h1><pre>%s</pre><h1>Current date is</h1><pre>%s</pre>",print_r($d,true),print_r($c,true));
      		$p = array('year', 'mon', 'mday', 'hours', 'minutes', 'seconds');
      		$display = array('year', 'month', 'day', 'hour', 'minute', 'second');
      		$factor = array(0, 12, 30, 24, 60, 60);
@@ -159,7 +162,6 @@
 		{
 			$strWhere = sprintf("m.user_id='%s' and m.starbar_id='%s' and s.short_name='%s' ",$user_id,$starbar_id,$social_media);
 
-//printf("userID is [%s], bar is [%s]",$user_id,$starbar_id);
 			$select = Zend_Registry::get('db')->select()
 						->from(array('m'=>'metrics_social_activity'),array("url","content","created"))
 						->join(array('s'=>'lookup_social_activity_type'),'s.id=m.social_activity_type_id')
@@ -177,7 +179,6 @@
 		{
 			$validstarbars = array();
 			foreach ($usersstarbars as $starbar) {
-			//	printf("<h1>Starbar</h1><pre>%s</pre>",print_r($starbar,true));
 
 				$strWhere = sprintf("user_id = %s and starbar_id = %s",$starbar['user_id'],$starbar['starbar_id']);
 				$select = Zend_Registry::get('db')
@@ -872,11 +873,11 @@
 
 		public function userAction()
 		{
+
 			$formElements = array();
 
             $formElements['emailaddress'] = new Form_Element_Text('emailaddress');
             $formElements['emailaddress']->setLabel("Users Email Address");
-         //	$formElements['submit'] = new Zend_Form_Element_Submit('submit');
 
 			$form = new ZendX_JQuery_Form();
 			$form->setName("Reward");
@@ -946,6 +947,8 @@
 						$tabs = $this->_usedstarbars($userdata);
 						// Pass the starbar details back to the view
 						$this->view->userdata = $userdata;// was usersstarbars
+
+						$_SESSION['userunderobservation'] = $postData['emailaddress'];
 						$this->view->tabs = $tabs;// was usersstarbars
 					} else {
 						$this->view->error = sprintf("No data found for user %s",$postData['emailaddress']);
@@ -1078,12 +1081,14 @@
 			$currencyExperience = $economy->getCurrencyId($currencyExp);
 
 			$info = new stdClass();
-			printf("<h1>PTC We're at point 1</h1>");
+
    			$info->currency = ucwords(strtolower(str_replace('_',' ',$currencyRed)));
    			$info->currencybalance = $gamer->_currencies[$currencyRedeemable]['current_balance'];
    			$info->XP = ucwords(strtolower(str_replace('_',' ',$currencyExp)));
    			$info->XPbalance = $gamer->_currencies[$currencyExperience]['current_balance'];
+   			$info->starbar_id = $starbar_id;
    			$info->level = $gamer->getHighestLevel();
+
 
    			// Get list of goods purchased by this user
    			$info->goods = array();
@@ -1115,9 +1120,9 @@
             $formElements['redeemableaward']->setLabel("Award Points");
             $formElements['redeemablecurrency'] = new Form_Element_Text('redeemablecurrency');
             $formElements['redeemablecurrency']->setLabel("Award Currency");
-            $formElements['emailaddress'] = new Form_Element_Text('emailaddress');
-            $formElements['emailaddress']->setValue($userdata[0]['email']);
-            $formElements['emailaddress']->setValue('jimbanister@gmail.com');/* PTC Bodge for testing */
+            $formElements['emailaddress'] = new Form_Element_Hidden('emailaddress');
+            $formElements['emailaddress']->setValue($_SESSION['userunderobservation']);
+
             $formElements['bar']= new Form_Element_Hidden('bar');
             $formElements['bar']->setValue($starbar_id);
  			$formElements['user']= new Form_Element_Hidden('user');
@@ -1125,24 +1130,25 @@
 
 			//$formElements['submit'] = new Zend_Form_Element_Submit('submit');
            // $formElements['submit'] ->setLabel('Give Reward') // the button's value
-			//	    ->setIgnore(true); // very usefull -> it will be ignored before insertion
+				    //->setIgnore(true); // very usefull -> it will be ignored before insertion
 
-
+//print_r($userdata);
 			$rewardform = new ZendX_JQuery_Form();
 			$rewardform->setName("Reward");
-			$rewardform->setAttrib('id','div_form');
+			$rewardform->setAttrib('id','sb_bonus_'.$starbar_id);
 			$rewardform->addElements($formElements);
 			$rewardform->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));
 			$rewardform->addElement('submit', 'submit', array(
         		'label' => 'Give special reward',
-        		'onclick' => "$('#div_form').load('" . "/admin/reward/" . "', $('#div_form').serializeArray() ); return false;"
+        		'onclick' => "alert('now!');$('#sb_overview').load('" . "/cms/admin/notifyreward" . "', $('#sb_bonus_2').serializeArray() ); return false;"
+
     		));
 
 			// Here goes the post stuff
 			if ($this->getRequest()->isPost()) { //is it a post request ?
 
 				$rewardpostData = $this->getRequest()->getPost(); // getting the $_POST data
-					//printf("<h1>We have a post</h1><pre>%s</pre>",print_r($rewardpostData,true));
+					printf("<h1>We have a post</h1><pre>%s</pre>",print_r($rewardpostData,true));
 
 									if ($rewardform->isValid($rewardpostData)) {
 										printf("<h2>data is valid</h2>");
@@ -1199,13 +1205,19 @@
 
 		}
 
+		public function notifyrewardAction()
+		{
+			 $this->_helper->layout->disableLayout();
+			 printf("In notifyreward action");
+
+		}
 		/**
 		* Reward User with point
 		*/
 		public function rewardAction()
 		{
-			// $this->_helper->layout->disableLayout();
-
+			 $this->_helper->layout->disableLayout();
+printf("In reward action");
 			$formElements = array();
 
 			$formElements['starbar'] = new Form_Element_Starbar('starbar_id');
@@ -1228,7 +1240,8 @@
 						if ($this->getRequest()->isPost()) { //is it a post request ?
 
 							$postData = $this->getRequest()->getPost(); // getting the $_POST data
-
+printf("It's a post!");
+printf("<h1>Point 1</h1><pre>%s</pre>",print_r($postData,true));
 							if ($form->isValid($postData)) {
 
 								$formData = $form->getValues(); // data filtered
@@ -1270,8 +1283,7 @@ $data = $client->getData();
 									$client->namedTransactionGroup(5256049)->postExecute($emaildata[0]['gaming_id']);
 								}
 $data = $client->getData();
-printf("Here is the print_r");
-print_r($data);
+
 								$currencyBalance = (int) $data['currency_balances'][0]['current_balance'];
 
 								$this->view->message = "Reward successfully applied. User now has ".$currencyBalance;
@@ -1316,9 +1328,10 @@ print_r($data);
 					// Find the columns we want to see on the grid
 					$columnlist = $saysojson->getCMSColumns("displaywhen","grid");
 					$where = $saysojson->getTableAttr('where');
+					$sortorder = $saysojson->getTableAttr('lookuporder');
 					$realtable = strtolower($saysojson->getTableAttr('tablename'));
 					if ($where==null) {
-						$select = Zend_Registry::get('db')->select()->from($realtable,$columnlist);;
+						$select = Zend_Registry::get('db')->select()->from($realtable,$columnlist);
 					} else {
 						$select = Zend_Registry::get('db')->select()->from($realtable,$columnlist)->where($where);
 					}

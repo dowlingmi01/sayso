@@ -1,17 +1,12 @@
 <?php
-// Breadcrumbs code
-/**
-* If a match is found here for the controller/action/table, the appropriate label is used. If not, the breadcrumb is derived
-*
-* @var mixed
-*/
-
+	$auth = Zend_Auth::getInstance();
 ?>
 <!DOCTYPE html>
+<!-- layout.phtml -->
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>Say.So | CMS</title>
+		<title>Say.So | CMS <?= (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'staging')) ? " - " . ucwords(APPLICATION_ENV) : "") ?></title>
 		<?= $this->headLink(); ?>
 				<?php printf("<!--csshelper included below-->"); ?>
 				<?= $this->cssHelper(); ?>
@@ -40,8 +35,15 @@
 
 	</head>
 	<body>
+		<div class="masthead">
+			<div class="logo">
+				<img alt="Say.So Dashboard" src="/images/sayso-dashboard-logo.png" />
+			</div>
+			<?php echo $this->partial('partials/common-auth.phtml', 'admin') ?>
+		</div><!-- /masthead -->
 		<div id="layout">
 
+				<?php if ($auth->hasIdentity()): ?>
 
 					<div id="common">
 
@@ -98,29 +100,8 @@
 										<li><a href="/cms/admin/view/table/survey">Polls/Surveys</a></li>
 										<li><a href="/cms/admin/view/table/quiz">Quizzes</a></li>
 										<li><a href="/cms/admin/view/table/trailer">Trailers</a></li>
-										<!--<li><a href="/cms/admin/view/table/survey_question">Question</a></li>
-										<li><a href="/cms/admin/view/table/survey_question_choice">Question Choice</a></li>
-										<li><a href="#url">Question Group</a></li>
-										<li><a href="#url">Question Choice Group</a></li>
-										<li><a href="#url">Question Response</a></li>
-										<li><a href="/cms/admin/view/table/survey_response">Response</a></li>
-										<li><a href="#url">User Map</a></li>-->
 									</ul>
 								</li>
-								<!--<li><a href="#url">User</a>
-									<ul>
-										<li><a href="#url">User</a></li>
-										<li><a href="#url">Address</a></li>
-										<li><a href="#url">Avatar</a></li>
-										<li><a href="#url">Child</a></li>
-										<li><a href="#url">Email</a></li>
-										<li><a href="#url">Gaming</a></li>
-										<li><a href="#url">Key</a></li>
-										<li><a href="#url">Role</a></li>
-										<li><a href="#url">Social</a></li>
-										<li><a href="#url">State</a></li>
-									</ul>
-								</li>-->
 								<li><a href="#">The Closet</a>
 									<ul>
 										<li><a href="#url">Admin</a>
@@ -130,12 +111,7 @@
 												<li><a href="/cms/admin/view/table/admin_user_admin_role">User/Admin</a></li>
 											</ul>
 										</li>
-										<!--<li><a href="#url">External</a>
-											<ul>
-												<li><a href="#url">User</a></li>
-												<li><a href="#url">User/Install</a></li>
-											</ul>
-										</li>-->
+
 										<li><a href="#url">Lookup</a>
 											<ul>
 												<li><a href="/cms/admin/view/table/lookup_age_range">Age Range</a></li>
@@ -205,6 +181,10 @@ if (sizeof($messages) > 0)
 				<?= $this->layout()->content ?>
 
 			</div>
+
+		<?php else: ?>
+		<?php printf("Please log in"); ?>
+		<?php endif; /* END OF if ($auth->hasIdentity()) */ ?>
 		</div>
 	</body>
 </html>

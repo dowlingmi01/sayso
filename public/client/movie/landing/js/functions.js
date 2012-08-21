@@ -129,7 +129,7 @@ $(document).ready(function (){
 		if(!(errMsg = validateFields())) {
 			var ajaxData = {
 					client_name : 'movie',
-					install_origination : 'p-1',
+					install_origination : saysoConf.origination,
 					user_agent_supported : true,
 					install_url : document.location.href,
 					location_token : saysoConf.locationCookie,

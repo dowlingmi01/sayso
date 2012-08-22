@@ -982,7 +982,6 @@ class Devadmin_IndexController extends Api_GlobalController
 
 		$sql = "SELECT *
 				FROM starbar
-				WHERE id > 1
 				ORDER BY id
 				";
 		$starbars = Db_Pdo::fetchAll($sql);

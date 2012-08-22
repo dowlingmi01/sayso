@@ -80,6 +80,11 @@ class Starbar_ContentController extends Api_GlobalController
 	public function rewardRedeemAction () {
 		$good = Api_Adapter::getInstance()->call('Gaming', 'getGoodFromStore');
 
+		$game = Game_Starbar::getInstance();
+		if (!$game->goodCanBePurchased($good, $this->quantity)) {
+			throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'User ' . $this->user_id . ' illegally attempted to purchase good ' . $this->good_id . ' with quantity ' . $this->quantity));
+		}
+
 		$user = new User();
 		$user->loadData($this->user_id);
 

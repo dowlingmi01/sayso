@@ -16,7 +16,7 @@ class Game_Starbar_Movie extends Game_Starbar {
 	 *
 	 * @see Game_Abstract::_visitGood()
 	 */
-	protected function _visitGood (Gaming_BigDoor_Good $good)
+	protected function _visitGood (Gaming_BigDoor_Good $good, $quantity = 1)
 	{
 		$profile = $this->getGamer();
 
@@ -48,7 +48,7 @@ class Game_Starbar_Movie extends Game_Starbar {
 			else $profileSurveyLink = "Profile Survey";
 			$good->setNonRedeemReason('Must complete<br />'.$profileSurveyLink);
 			$good->setCommentForUser('Survey Requirement');
-		} elseif ($profile->getCurrencyByType('redeemable')->current_balance < $good->cost) {
+		} elseif ($profile->getCurrencyByType('redeemable')->current_balance < ($good->cost * $quantity)) {
 			$good->setNonRedeemReason('Earn more CineBucks by<br />completing polls and surveys!');
 			$good->setCommentForUser('Insufficient CineBucks');
 		}

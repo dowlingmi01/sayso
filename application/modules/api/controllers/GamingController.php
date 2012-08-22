@@ -136,18 +136,14 @@ class Api_GamingController extends Api_GlobalController
 			$cache->save($data);
 		}
 
-		//$maxId = 0;
 		$goods = new ItemCollection();
 		foreach ($data as $goodData) {
 			$good = new Gaming_BigDoor_Good();
 			$good->setPrimaryCurrencyId($game->getPurchaseCurrencyId());
 			$good->build($goodData);
 			$good->accept($game);
-			//if ($good->id > $maxId) $maxId = $good->id;
-			//if ($good->id <= 2093 || getenv('APPLICATION_ENV') != 'production') $goods[] = $good; // Don't show new goods on production
 			$goods[] = $good;
 		}
-		//var_dump($maxId);exit;
 
 		return $this->_resultType($goods);
 	}

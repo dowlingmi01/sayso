@@ -82,7 +82,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 		$game = Game_Starbar::getInstance();
 		if (!$game->goodCanBePurchased($good)) {
-			throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'User ' . $this->user_id . ' illegally attempted to purchase good ' . $this->good_id . ' with quantity ' . $this->quantity));
+			throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'User ' . $this->user_id . ' illegally attempted to purchase good ' . $this->good_id));
 		}
 
 		$user = new User();

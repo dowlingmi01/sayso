@@ -112,6 +112,9 @@ class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 				<? if ($status == 'new' || $status == 'archived') { // User can take this survey ?>
 					<li class="<?= $listItemClass ?>">
 						<div class="sb_surveyInfo">
+						<? if ($survey->reward_category == "premium") { ?>
+								<span class="sb_img_x10Value"></span>
+							<? } ?>
 							<h3><?= $survey->title ?></h3>
 							<p><? if ($survey->display_number_of_questions) { ?><?= $survey->display_number_of_questions ?> Questions - <? } ?>Earn <strong class="<?= $strongClass ?>"><?= $numberOfRedeemablePoints ?> <span class="sb_currency_title" data-currency-type="redeemable"></span></strong> and <strong class="<?= $strongClass ?>"><?= $numberOfExperiencePoints ?> <span class="sb_currency_title" data-currency-type="experience"></span></strong></p>
 						</div><!-- .sb_surveyInfo -->

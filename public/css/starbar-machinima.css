@@ -1656,6 +1656,10 @@ height: 359px;
 	background-image : url('../images/machinima/double_value.png');
 }
 
+#sayso-starbar #starbar-player-console .sb_img_x10Value
+{
+	background-image : url('../images/machinima/10times_value.png');
+}
 
 
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_tabs{

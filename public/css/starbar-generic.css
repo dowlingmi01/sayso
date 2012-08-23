@@ -1316,6 +1316,14 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	background-repeat: no-repeat;
 	margin: -2px 5px 0px -5px;
 }
+#sayso-starbar #starbar-player-console .sb_img_x10Value {
+	width: 27px;
+	height: 26px;
+	float: left;
+	background-image: url('../images/generic/img_coin_x10.png');
+	background-repeat: no-repeat;
+	margin: -2px 5px 0px -5px;
+}
 #sayso-starbar #starbar-player-console .sb_img_nextTriangle {
 	width: 20px;
 	height: 20px;

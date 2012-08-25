@@ -616,6 +616,13 @@ html {
 	margin: 5px 0px 5px 0px;
 	line-height: 18px;
 }
+
+#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent p.termsandconditions
+{
+	font-size:12px;
+	line-height:1;
+}
+
 #sayso-starbar #starbar-player-console .sb_popBox .sb_header {
 	overflow: hidden;
 	margin-bottom: 10px;

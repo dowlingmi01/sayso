@@ -45,7 +45,7 @@ class User_State extends Record
 		$this->save();
 	}
 
-	public function getStarbarList( $user_id, $starbar_id = 0 ) {
+	static public function getStarbarList( $user_id, $starbar_id = 0 ) {
 		//$sql  = "SELECT s.id, s.short_name, s.label FROM starbar_user_map sm, starbar s WHERE s.id = sm.starbar_id AND sm.user_id = ?";
 		$sql  = "SELECT s.id, s.short_name, s.label, s.info, sm.active FROM starbar s LEFT JOIN starbar_user_map sm ON (s.id = sm.starbar_id AND sm.user_id = ?) WHERE s.id > 2 ORDER BY active DESC";
 		$result = array();

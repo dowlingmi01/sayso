@@ -611,6 +611,7 @@ html {
 	width: 500px;
 	padding: 5px 5px 5px 10px !important;
 }
+
 #sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent p,
 #sayso-starbar #sb_innerOverlay p{
 	margin: 5px 0px 5px 0px;
@@ -619,10 +620,24 @@ html {
 
 #sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent p.termsandconditions
 {
-	font-size:12px;
+	font-size:9px;
 	line-height:1;
+	color:#f0f0f0;
+}
+#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent p.termsandconditions strong
+{
+	color:white;
 }
 
+#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent #footnote
+{
+	margin-left:-11px;
+	padding-left:11px;
+	margin-right:-11px;
+	padding-right:11px;
+	background-color:#383838;
+	color:#fff !important;
+}
 #sayso-starbar #starbar-player-console .sb_popBox .sb_header {
 	overflow: hidden;
 	margin-bottom: 10px;

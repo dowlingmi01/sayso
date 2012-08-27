@@ -381,8 +381,12 @@
 }
 
 /* SCROLLPANE */
-
-
+/*#sayso-starbar #sb_popBox_rewards  {
+	height: 409px;
+}
+#sayso-starbar #starbar-player-console .sb_popBox.sb_popBoxLg #sb_popBox_rewards .sb_popBoxInner {
+	height: 300px;
+}*/
 
 /* promo area */
 
@@ -2136,6 +2140,7 @@
 #sayso-starbar #starbar-player-console #sb_popBox_rewards {
 	left: auto;
 	right: 0;
+	height:452px;
 }
 
 #sayso-starbar #sb_popBox_rewards.sb_triangle-border:before{

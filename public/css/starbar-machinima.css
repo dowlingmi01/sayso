@@ -2103,6 +2103,7 @@ height: 359px;
 #sayso-starbar #starbar-player-console #sb_popBox_rewards {
 	left: auto;
 	right: 0;
+	height:452px;
 }
 
 #sayso-starbar #sb_popBox_rewards.sb_triangle-border:before{
@@ -2115,6 +2116,10 @@ height: 359px;
 	left: 487px;
 }
 
+#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent p.termsandconditions
+{
+margin-top:10px;
+}
 /* accordions */
 
 #sayso-starbar #starbar-player-console .sb_popBox .sb_accordion{

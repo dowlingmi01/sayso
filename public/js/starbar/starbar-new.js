@@ -243,7 +243,7 @@ $SQ(function(){
 
 		initElements();
 
-		updateAlerts(true);
+		updateAlerts();
 		updateProfileElements();
 		activateGameElements(starbarElem, false);
 		// initializes development-only jquery
@@ -487,7 +487,7 @@ $SQ(function(){
 			$SQ('span.sb_nav_border').removeClass('sb_theme_navOnGradient');
 		});
 
-		if (!keepNotifications) updateAlerts(false);
+		if (!keepNotifications) updateAlerts();
 
 		return;
 	}
@@ -649,7 +649,7 @@ $SQ(function(){
 		}
 	}
 
-	function updateAlerts(reverseOrder) {
+	function updateAlerts() {
 		var starbarStowed = "false";
 		if (starbar.state.visibility == 'stowed') starbarStowed = "true";
 
@@ -695,11 +695,8 @@ $SQ(function(){
 								}
 
 								newAlertHtml += '</div><!-- .sb_content --></div><!-- .sb_inner --></div><!-- #sb_alert-new -->';
-								if (reverseOrder) {
-									elemAlertContainer.prepend(newAlertHtml);
-								} else {
-									elemAlertContainer.append(newAlertHtml);
-								}
+
+								elemAlertContainer.prepend(newAlertHtml);
 
 								newAlerts = true;
 							} else {
@@ -934,7 +931,7 @@ $SQ(function(){
 		var newLevel = userLevels.count;
 		if (currentLevel != newLevel) {
 			justLeveledUp = true;
-			updateAlerts(true);
+			updateAlerts();
 		}
 
 		// When there is no game data for this user
@@ -1675,7 +1672,7 @@ $SQ(function(){
 	}
 
 	$SQ(window).focus(function () {
-        updateAlerts(false);
+        updateAlerts();
     });
 
 	// flag so we know this file has loaded

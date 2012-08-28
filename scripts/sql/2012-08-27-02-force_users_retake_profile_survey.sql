@@ -1,17 +1,17 @@
 START TRANSACTION
 ;
 INSERT notification_message
-     ( notification_message_group_id, ordinal
+     ( survey_id, notification_message_group_id, ordinal
      , message
-     , notification_area, popbox_to_open, color, created )
+     , validate, notification_area, popbox_to_open, color, created )
 VALUES
-     ( 401, 10
+     ( 71, 401, 10
      , 'WHOOPS! We made a mistake! You may qualify for additional PREMIUM CONTENT and COINS!'
-     , 'alerts', NULL, 'Green', now()
+     , 'Take Survey', 'alerts', NULL, 'Green', now()
      ),
-     ( 401, 20
+     ( 71, 401, 20
      , 'Take the FULL PROFILE SURVEY to see if you qualify. It only takes a few minutes and you will need to take it to re-unlock the Reward Center! Sorry!'
-     , 'alerts', 'surveys', 'Green', now()
+     , 'Take Survey', 'alerts', 'surveys', 'Green', now()
      )
 ;
 SET @notif_id = last_insert_id()

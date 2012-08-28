@@ -252,7 +252,7 @@ class Starbar_MachinimaController extends Starbar_ContentController
 
 	protected function _assignShareAppToView($facebookCallbackUrl) {
 		/*$twAppShareText = 'Join Machinima | Recon and get access to big giveaways and awesome prizes.';*/
-		$twAppShareText = 'Checking out Machinima | Recon @ bit.ly/RWdbNn . Earn Coins by giving your Machinima say-so and redeem them for prizes';
+		$twAppShareText = 'Checking out Machinima | Recon. Earn Coins by giving your Machinima say-so and redeem them for prizes';
 		$fbkAppShareTitle = 'Checking out Machinima | Recon...';
 		/*$fbkAppShareCopy = "I just earned 19 Coins for sharing Machinima | Recon!
 Join Machinima | Recon and get access to big giveaways and awesome prizes.";*/

@@ -636,8 +636,7 @@ $SQ(function(){
 
 			if (animate) {
 				target.delay(300).slideUp('fast');
-				// setTimeout is called in the global scope, so it needs to find the target again
-				setTimeout("$SQ('#"+target.attr('id')+"').annihilate()", 600);
+				setTimeout(function(){ target.annihilate(); }, 600);
 			} else {
 				target.annihilate();
 			}

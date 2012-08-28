@@ -90,12 +90,7 @@ abstract class Game_Starbar extends Game_Abstract {
 			throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Cannot award user. No social network specified.'));
 		}
 
-		$userState = new User_State();
-		$userState->loadDataByUniqueFields(array("user_id" => $this->_request->getParam('user_id')));
-
-		if (!$userState->canShare($network, $type, $typeId)) {
-			throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Cannot award user. Already shared '.$network.'-'.$type.'-'.$typeId.'.'));
-		}
+		$shareString = "";
 
 		switch ($type) {
 			case self::SHARE_POLL :
@@ -108,17 +103,45 @@ abstract class Game_Starbar extends Game_Abstract {
 				$survey = new Survey();
 				$survey->loadData($typeId);
 				// e.g. FB_QUIZ_STANDARD_SHARE, TW_SURVEY_PREMIUM_SHARE, etc.
-				$this->submitAction(strtoupper($network.'_'.$survey->type.'_'.$survey->reward_category).'_SHARE', 0, $typeId);
+				$shareString = strtoupper($network.'_'.$survey->type.'_'.$survey->reward_category).'_SHARE';
 				break;
 			case self::SHARE_STARBAR :
-				$this->submitAction($network.'_SHARE_STARBAR', 0, $typeId);
+				$shareString = $network.'_SHARE_STARBAR';
 				break;
 			case self::SHARE_PROMOS :
-				$this->submitAction($network.'_SHARE_PROMOS', 0, $typeId);
+				$shareString = $network.'_SHARE_PROMOS';
 				break;
 			default :
 				throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Wrong type (' . $type . ') supplied to Game_Starbar::share(). See Game_Starbar "SHARE" constants for allowed types.'));
 		}
+
+		if ($shareString && $this->canShare($shareString, $type, $typeId)) {
+			$this->submitAction($shareString, 0, $typeId);
+		}
+	}
+
+	public function canShare($shareString, $type, $typeId) {
+		$gamer = $this->getGamer(false);
+		$typeId = (int) $typeId;
+		if ($gamer->id) {
+			$sql = "
+				SELECT id
+				FROM user_gaming_transaction_history
+				WHERE user_gaming_id = ?
+					AND action = ?
+			";
+			if ($typeId) $sql .= " AND action_on_id = " . $typeId . " ";
+
+			if ($type == self::SHARE_STARBAR) $sql .= " AND created > now() - INTERVAL 1 day ";
+
+			$result = Db_Pdo::fetch($sql, $gamer->id, $shareString);
+
+			if (!$result || !isset($result['id'])) {
+				return true;
+			}
+		}
+		throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Cannot award user_gaming_id '.$gamer->id.'. Already shared '.$shareString.'-'.$typeId.'.'));
+		return false;
 	}
 
 	public function viewPromos () {

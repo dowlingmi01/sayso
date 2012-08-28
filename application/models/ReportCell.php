@@ -66,9 +66,14 @@ class ReportCell extends Record
 						$tableName = "starbar_user_map";
 						$tableReference = "sum" . $conditionCounter;
 						break;
+					case "study_ad":
+						$tableName = "study_ad_user_map";
+						$tableReference = "saum" . $conditionCounter;
+						break;
 					case "report_cell":
 						$tableName = "user";
 						$tableReference = "u" . $conditionCounter;
+						break;
 					default:
 						break;
 				}
@@ -157,6 +162,19 @@ class ReportCell extends Record
 								break;
 						}
 						break;
+					case "study_ad":
+						switch ($reportCellUserCondition->comparison_type) {
+							case "viewed":
+								$conditionSql = $tableReference . ".type = 'view'";
+								break;
+							case "clicked":
+								$conditionSql = $tableReference . ".type = 'click'";
+								break;
+							default:
+								break;
+						}
+						if ($conditionSql) $conditionSql .= " AND " . $tableReference . ".study_ad_id = " . $reportCellUserCondition->compare_study_ad_id;
+						break;
 					case "report_cell":
 						$compareReportCell = new ReportCell();
 						$compareReportCell->loadData($reportCellUserCondition->compare_report_cell_id);
@@ -201,15 +219,16 @@ class ReportCell extends Record
 							$conditionsSql .= " AND " . $conditionSql;
 							break;
 						case "starbar_user_map":
+						case "study_ad_user_map":
 							switch ($this->condition_type) {
 								case "or":
 									if ($conditionsSql) $conditionsSql .= " UNION ";
-									$conditionsSql .= "SELECT sum" . $conditionCounter . ".user_id FROM starbar_user_map sum" . $conditionCounter;
+									$conditionsSql .= "SELECT " . $tableReference . ".user_id FROM " . $tableName . " " . $tableReference;
 									$conditionsSql .= " WHERE " . $conditionSql;
 									break;
 								case "and":
-									$conditionsSql .= " INNER JOIN starbar_user_map sum" . $conditionCounter;
-									$conditionsSql .= " ON sum" . $conditionCounter . ".user_id = u.id";
+									$conditionsSql .= " INNER JOIN " . $tableName . " " . $tableReference;
+									$conditionsSql .= " ON " . $tableReference . ".user_id = u.id";
 									$conditionsSql .= " AND " . $conditionSql;
 									break;
 								default:

@@ -19,33 +19,33 @@ function drawSingleRow(v)
 	 * 7 metrics_creative_click_thru
 	 */
 
-	switch(parseInt(v.metrics_type))
+	switch(v.type)
 	{
-		case 1:
+		case 'search':
 			rowTypeName = 'Search';
 			rowStyle	= 'updates-row-search';
 			break;
-		case 2:
+		case 'page view':
 			rowTypeName = 'Page View';
 			rowStyle	= 'updates-row-page-view';
 			break;
-		case 3:
+		case 'social activity':
 			rowTypeName = 'Social Activity';
 			rowStyle	= 'updates-row-social-activity';
 			break;
-		case 4:
+		case 'campaign view':
 			rowTypeName = 'Campaign Impression';
 			rowStyle	= 'updates-row-campaign-impression';
 			break;
-		case 5:
+		case 'campaign click':
 			rowTypeName = 'Campaign Click-Thru';
 			rowStyle	= 'updates-row-campaign-click-thru';
 			break;
-		case 6:
+		case 'creative view':
 			rowTypeName = 'Creative Impression';
 			rowStyle	= 'updates-row-creative-impression';
 			break;
-		case 7:
+		case 'creative click':
 			rowTypeName = 'Creative Click-Thru ';
 			rowStyle	= 'updates-row-creative-click-thru';
 			break;

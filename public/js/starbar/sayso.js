@@ -288,41 +288,44 @@ $SQ(function () {
 	var adTargets = sayso.state.adTargets;
 	if (!adTargets) adTargets = {};
 
+	var studyAdClicks = [];
+
 	if (!inIframe) {
 		// ADjuster Click-Thrus ------------------------
 
 		log('Ad Targets: ', adTargets);
 		// { creative12 : { urlSegment : 'foo/diamonds', type : 'creative', type_id : 12 }, campaign234 : { etc
 		for (var key in adTargets) {
-			var adTarget = adTargets[key];
-			if (sayso.location.href.indexOf(adTarget.urlSegment) > -1) {
-				// click thru!
-				ajax({
-					url : '//' + sayso.baseDomain + '/api/metrics/track-click-thru',
-					data : {
-						url : sayso.location.href,
-						url_segment : adTarget.urlSegment,
-						type : adTarget.type,
-						type_id : adTarget.typeId
-					},
-					success : function (response) {
-						log('ADjuster: Click Through (' + adTarget.type + '/' + adTarget.typeId + ')');
-					}
-				});
-				break;
+			var viewedStudyAd = adTargets[key];
+			if (sayso.location.href.indexOf(viewedStudyAd.ad_target) > -1) {
+				studyAdClicks.push(viewedStudyAd.id);
 			}
+		}
+
+		if (studyAdClicks.length > 0) {
+			// click thrus!
+			ajax({
+				url : '//' + sayso.baseDomain + '/api/metrics/track-study-ad-clicks',
+				data : {
+					url : sayso.location.href,
+					study_ad_clicks : $SQ.JSON.stringify(studyAdClicks)
+				},
+				success : function (response) {
+					log('ADjuster: Click Through (' + adTarget.type + '/' + adTarget.typeId + ')');
+				}
+			});
 		}
 	}
 
 	// ADjuster Setup Studies ------------------------
 
+	var studyAdViews = [];
+	var adsFound = 0;
+	var replacements = 0;
+
 	// non-existent OR expired studies
 	ajax({
 		url : '//' + sayso.baseDomain + '/api/study/get-all',
-		data : {
-			page_number : 1,
-			page_size : 5
-		},
 		success : function (response) {
 
 			if (response.status === 'error') {
@@ -330,334 +333,175 @@ $SQ(function () {
 				return;
 			}
 
-			// Simplify server studies into something manageable (and storable)
+			var studyAds = response.data;
+			var studyAd = null;
 
-			/* Example study cells array
+			if (!inIframe) log('Current Study Ads: ', studyAds);
 
-			cells = [
-				 {
-					 id : 1,
-					 tags : [
-						 {
-							 id : 1,
-							 tag : 'embed*=blah',
-							 target_url : 'buystuff.com',
-							 domains : [
-								 'foo.com',
-								 'bar.com'
-							 ],
-							 creatives : [
-								 {
-									 id : 1,
-									 url : 'http/to/the/creative',
-									 target_url : 'buymorestuff.com'
-								 }
-							 ]
-						 }
-					 ]
-				 }
-			 ];
-			 */
-
-			var serverStudies = response.data,
-				cells = [];
-
-			// studies
-			for (var s in serverStudies.items) {
-				var study = serverStudies.items[s];
-
-				// cells
-				for (var c in study._cells.items) {
-					var cell = study._cells.items[c];
-
-					var cellIndex = cells.push({
-						id : cell.id,
-						tags : []
-					});
-					cellIndex--;
-
-					// tags
-					for (var t in cell._tags.items) {
-						var tag = cell._tags.items[t];
-
-						var tagIndex = cells[cellIndex].tags.push({
-							id : tag.id,
-							tag : tag.tag,
-							type : tag.type,
-							target_url : tag.target_url,
-							domains : '',
-							creatives : []
-						});
-						tagIndex--;
-
-						// domains
-						for (var d in tag._domains.items) {
-							var domain = tag._domains.items[d];
-							if (d > 0) cells[cellIndex].tags[tagIndex].domains += '|';
-							cells[cellIndex].tags[tagIndex].domains += domain.domain;
-						} // domains
-
-						$SQ.each(tag._creatives.items, function( index, creative ) {
-							cells[cellIndex].tags[tagIndex].creatives.push({
-								id : creative.id,
-								url : creative.url,
-								type : creative.type,
-								ad_title : creative.ad_title,
-								ad_description : creative.ad_description,
-								target_url : creative.target_url
-							});
-						}); // creatives
-					} // tags
-				} // cells
-			} // studies
-
-			if (!inIframe) log('Current Cells: ', cells);
-
-			processStudyCells(cells);
-
-		}
-	});
-
-	/**
-	 * Process all study cells
-	 */
-	function processStudyCells (cells) {
-
-		var cellAdActivity = {}, // { id : 1, tagViews : [], creativeViews : []}
-			currentActivity = null,
-			adsFound = 0,
-			replacements = 0;
-
-		var numCells = cells.length;
-		for (var c = 0; c < numCells; c++) {
-			var cell = cells[c],
-				tags = cell.tags;
-
-			// setup the object that will be sent back
-			// to the server, where cell id is the top
-			// level key for each group of tag/creative views
-			currentActivity = cellAdActivity[cell.id] = {
-				tagViews : [],
-				creativeViews : []
-			};
-
-			var numTags = tags.length;
-			for (var t = 0; t < numTags; t++) {
-				var tag = tags[t];
-				if (inIframe) {
+			// study ads
+			for (var a in studyAds.items) {
+				studyAd = studyAds.items[a];
+				if (inIframe || sayso.location.host.match(studyAd.existing_ad_domain)) {
 					// @hack, for iframes currently firing ad detection on all domains
 					// @todo figure out how to pass "top" location data into child iframes
 					// so we can check to make sure the iframes parent matches before firing
-					processTag (tag);
-				} else {
-					if (sayso.location.host.match(tag.domains)) processTag(tag);
+					processStudyAd(studyAd);
 				}
-			}
+			} // study ads
+
+			studyAdsProcessingComplete();
 		}
-
-		/**
-		 * Process each tag including ad detection and/or replacement
-		 * - running this method assumes a domain matches for the current URL
-		 * - this function inherits currentActivity for the current cell
-		 */
-		function processTag (tag) {
-			log('Tag.tag: ');
-			log(tag.tag);
-
-			var jTag = false;
-			var jTagContainer = false;
-
-			if (tag.type == "Image") {
-				jTag = $SQ('img[src*="' + tag.tag + '"]');
-			} else if (tag.type == "Flash") {
-				jTag = $SQ('embed[src*="' + tag.tag + '"]');
-				if (!jTag || !jTag.length) {
-					// Try to search (using jQuery) for the param element (though on IE and possibly other browsers, params are not in the DOM).
-					jTag = $SQ('param[name="movie"][value*="'+tag.tag+'"]');
-
-					// If flash is still not found on this page, try looking inside all the <object> tags' children (i.e. the params)
-					if (!jTag || !jTag.length) {
-						$SQ('object param[name="movie"]').each(function() {
-							if ($SQ(this).attr('value').indexOf(tag.tag) > -1) {
-								jTag = $SQ(this);
-								jTagContainer = jTag.parent();
-								// Match found, need need to search any more
-								return false;
-							} else {
-								// Go to next object tag
-								return true;
-							}
-						});
-					}
-				}
-			} else if (tag.type == "Facebook") {
-				jTag = $SQ('div[id*="' + tag.tag + '-id_"]');
-			}
+	});
 
 
+	/**
+	 * Process each tag including ad detection and/or replacement
+	 * - running this method assumes a domain matches for the current URL
+	 * - this function inherits currentActivity for the current cell
+	 */
+	function processStudyAd (studyAd) {
+		log('studyAd.existing_ad_tag: ');
+		log(studyAd.existing_ad_tag);
+
+		var jTag = false;
+		var jTagContainer = false;
+
+		if (studyAd.existing_ad_type == "image") {
+			jTag = $SQ('img[src*="' + studyAd.existing_ad_tag + '"]');
+		} else if (studyAd.existing_ad_type == "flash") {
+			jTag = $SQ('embed[src*="' + studyAd.existing_ad_tag + '"]');
 			if (!jTag || !jTag.length) {
-				log('No Matches');
-				return;
-			}
+				// Try to search (using jQuery) for the param element (though on IE and possibly other browsers, params are not in the DOM).
+				jTag = $SQ('param[name="movie"][value*="'+studyAd.existing_ad_tag+'"]');
 
-			log('Match', jTag);
-
-			if (!jTagContainer) jTagContainer = jTag.parent();
-
-			if (jTagContainer.is('object')) {
-				// If we found a param tag inside an <object> tag, we want the parent of *that*
-				jTagContainer = jTagContainer.parent();
-			}
-
-			jTagContainer.css('position', 'relative');
-
-			// tag exists
-			adsFound++;
-			var adTarget = null,
-				adTargetId = ''; // used as a JS optimization for searching the adTargets object
-
-			var numCreatives = tag.creatives.length;
-			if (numCreatives) { // ADjuster Creative ------------
-
-				replacements++;
-
-				// @hack just grab the first creative for now
-				// @todo enable cycling through each creative
-				var creative = tag.creatives[0];
-
-				// replace ad
-				adWidth = jTag.innerWidth();
-				adHeight = jTag.innerHeight();
-				var newTag = $SQ(document.createElement('div'));
-				newTag.css({
-					'width': adWidth+'px',
-					'height': adHeight+'px',
-					'overflow': 'hidden',
-					'display': 'block'
-				});
-				switch (creative.type) {
-					case "Image":
-						newTag.html('<a id="sayso-adcreative-'+creative.id+'" href="'+creative.target_url+'" target="_new"><img src="'+creative.url+'" alt="'+creative.ad_title+'" title="'+creative.ad_title+'" border=0 /></a>');
-						break;
-					case "Flash":
-						newTag.html(''); // @todo, insert <object><param><param><embed></object> etc. for flash ads
-						break;
-					case "Facebook":
-						newTag.html(' \
-							<div class="fbEmu fbEmuEgo"> \
-								<a class="fbEmuTitleBodyImageLink emuEvent1  fbEmuLink" href="'+creative.target_url+'" target="_blank"> \
-									<div class="fbEmuTitleBodyImageDiv"> \
-										<div class="title"><span class="forceLTR">'+creative.ad_title+'</span></div> \
-										<div class="clearfix uiImageBlock image_body_block"> \
-											<div class="image fbEmuImage uiImageBlockImage uiImageBlockMediumImage lfloat"> \
-												<img class="img" src="'+creative.url+'" alt=""> \
-											</div> \
-											<div class="uiImageBlockContent "> \
-												<div class="body"><div class="forceLTR">'+creative.ad_description+'</div></div> \
-											</div> \
-										</div> \
-									</div> \
-								</a> \
-								<div class="inline"><div class="action"><span class="fbEmuContext">&nbsp;</span></div></div> \
-							</div> \
-						');
-						break;
-				}
-				jTagContainer.html('').append(newTag);
-				jTagContainer.css({
-					'width': adWidth+'px',
-					'height': adHeight+'px',
-					'left': 0,
-					'top': 0
-				});
-
-				// record view of the creative
-				currentActivity.creativeViews.push(creative.id);
-
-				adTarget = {
-					urlSegment : creative.target_url,
-					type : 'creative',
-					typeId : creative.id
-				};
-				adTargetId = 'creative' + creative.id;
-
-				log('ADjuster: Creative Replacement');
-
-			} else { // ADjuster Campaign ------------------------
-
-				// track ad view
-				currentActivity.tagViews.push(tag.id);
-
-				adTarget = {
-					urlSegment : tag.target_url,
-					type : 'campaign',
-					typeId : tag.id
-				};
-				adTargetId = 'campaign' + tag.id;
-
-				log('ADjuster: Campaign View');
-
-			}
-
-			// update list of ad targets so we can later verify click throughs
-			// see Page View section above where this is checked
-
-			forge.message.broadcastBackground('add-ad-target', adTarget);
-
-			/*
-			var clickDetectionElem = $SQ(document.createElement('div'));
-			clickDetectionElem.css({
-				'position': 'absolute',
-				'top': 0,
-				'right': 0,
-				'bottom': 0,
-				'left': 0,
-				'background': 'none',
-				'background-color': 'none',
-				'background-image': 'none',
-				'display': 'block',
-				'z-index': '2000000000',
-				'cursor': 'pointer'
-			});
-
-			jTagContainer.prepend(clickDetectionElem);
-			//clickDetectionElem.css('display', 'block');
-
-			jTagContainer.bind({
-				'click': function(e) {
-					log('Click detected at X='+e.pageX+', Y='+e.pageY);
-					log('Click offset detected at X='+e.offsetX+', Y='+e.offsetY);
-					ajax({
-						// Replace this with proper ajax call to record the click
-						url : '//' + sayso.baseDomain + '/api/study/get-all',
-						data : {
-							page_number : 1,
-							page_size : 10
-						},
-						success : function (response) {
+				// If flash is still not found on this page, try looking inside all the <object> tags' children (i.e. the params)
+				if (!jTag || !jTag.length) {
+					$SQ('object param[name="movie"]').each(function() {
+						if ($SQ(this).attr('value').indexOf(studyAd.existing_ad_tag) > -1) {
+							jTag = $SQ(this);
+							jTagContainer = jTag.parent();
+							// Match found, need need to search any more
+							return false;
+						} else {
+							// Go to next object tag
+							return true;
 						}
 					});
-					//clickDetectionElem.css('display', 'none');
 				}
-			});
-			*/
+			}
+		} else if (studyAd.existing_ad_type == "facebook") {
+			jTag = $SQ('div[id*="' + studyAd.existing_ad_tag + '-id_"]');
 		}
 
-		// Track ad views!
 
-		// load timer is used so that asynchronous JS does not run this Ajax call too early
-		// and to prevent the need for deeply nested callbacks
+		if (!jTag || !jTag.length) {
+			log('No Matches');
+			return;
+		}
 
+		log('Match', jTag);
+
+		if (!jTagContainer) jTagContainer = jTag.parent();
+
+		if (jTagContainer.is('object')) {
+			// If we found a param tag inside an <object> tag, we want the parent of *that*
+			jTagContainer = jTagContainer.parent();
+		}
+
+		jTagContainer.css('position', 'relative');
+
+		// tag exists
+		adsFound++;
+		var adTarget = null,
+			adTargetId = ''; // used as a JS optimization for searching the adTargets object
+
+		if (studyAd.type == "creative") { // ADjuster Creative ------------
+
+			replacements++;
+
+			// replace ad
+			adWidth = jTag.innerWidth();
+			adHeight = jTag.innerHeight();
+			var newTag = $SQ(document.createElement('div'));
+			newTag.css({
+				'width': adWidth+'px',
+				'height': adHeight+'px',
+				'overflow': 'hidden',
+				'display': 'block'
+			});
+			switch (studyAd.replacement_ad_type) {
+				case "image":
+					newTag.html('<a id="sayso-adcreative-'+studyAd.id+'" href="'+studyAd.ad_target+'" target="_new"><img src="'+studyAd.replacement_ad_url+'" alt="'+creative.ad_title+'" title="'+studyAd.replacement_ad_title+'" border=0 /></a>');
+					break;
+				case "flash":
+					newTag.html(''); // @todo, insert <object><param><param><embed></object> etc. for flash ads
+					break;
+				case "facebook":
+					newTag.html(' \
+						<div class="fbEmu fbEmuEgo"> \
+							<a class="fbEmuTitleBodyImageLink emuEvent1  fbEmuLink" href="'+studyAd.ad_target+'" target="_blank"> \
+								<div class="fbEmuTitleBodyImageDiv"> \
+									<div class="title"><span class="forceLTR">'+studyAd.replacement_ad_title+'</span></div> \
+									<div class="clearfix uiImageBlock image_body_block"> \
+										<div class="image fbEmuImage uiImageBlockImage uiImageBlockMediumImage lfloat"> \
+											<img class="img" src="'+studyAd.replacement_ad_url+'" alt=""> \
+										</div> \
+										<div class="uiImageBlockContent "> \
+											<div class="body"><div class="forceLTR">'+studyAd.replacement_ad_description+'</div></div> \
+										</div> \
+									</div> \
+								</div> \
+							</a> \
+							<div class="inline"><div class="action"><span class="fbEmuContext">&nbsp;</span></div></div> \
+						</div> \
+					');
+					break;
+			}
+			jTagContainer.html('').append(newTag);
+			jTagContainer.css({
+				'width': adWidth+'px',
+				'height': adHeight+'px',
+				'left': 0,
+				'top': 0
+			});
+
+			// record view of the creative
+			studyAdViews.push(studyAd.id);
+
+			log('ADjuster: Creative Replacement');
+
+		} else { // ADjuster Campaign ------------------------
+
+			// record view of the campaign
+			studyAdViews.push(studyAd.id);
+
+			log('ADjuster: Campaign View');
+
+		}
+
+		// update list of ad targets so we can later verify click throughs
+		// see Page View section above where this is checked
+
+		forge.message.broadcastBackground('add-ad-target', studyAd);
+	}
+
+	// Track ad views!
+
+	// load timer is used so that asynchronous JS does not run this Ajax call too early
+	// and to prevent the need for deeply nested callbacks
+
+	function studyAdsProcessingComplete() {
 		new $SQ.jsLoadTimer().setMaxCount(50).start(
 			function () { return adsFound; }, // if
 			function () {										 // then
 				log('Ads matched ' + adsFound + '. Ads replaced ' + replacements);
 				ajax({
-					url : '//' + sayso.baseDomain + '/api/metrics/track-ad-views',
+					url : '//' + sayso.baseDomain + '/api/metrics/track-study-ad-views',
 					data : {
 						// note: user_id, starbar_id are included in ajax() wrapper
 						// study_id is associated via cell id, which is included in cellAdActivity
-						cell_activity : $SQ.JSON.stringify(cellAdActivity)
+						url : sayso.location.href,
+						study_ad_views : $SQ.JSON.stringify(studyAdViews)
 					},
 					success : function (response) {
 
@@ -669,8 +513,6 @@ $SQ(function () {
 			}
 		);
 	}
-
-
 
 	adminFunctions(); // not sure how to approach this just yet. Probably need to pass a user role id (e.g. admin+) in the request, and check that first.
 

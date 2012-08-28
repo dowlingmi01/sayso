@@ -736,7 +736,103 @@ class Devadmin_IndexController extends Api_GlobalController
 		$this->view->emails = $emails;
 	}
 
+
 	public function measureAdsAction () {
+		$request = $this->getRequest();
+
+		$operation = $request->getParam("operation", false);
+		$studyType = $request->getParam("study_type", false);
+		$tagType = $request->getParam("tag_type", false);
+		$tag = $request->getParam("tag", false);
+		$domain = $request->getParam("domain", false);
+		$adTarget = $request->getParam("ad_target", false);
+		$studyAdIdToDelete = $request->getParam("study_ad_id_to_delete", false);
+
+		if ($operation == "delete" && $studyAdIdToDelete) {
+			$studyAd = new Study_Ad();
+			$studyAd->loadData($studyAdIdToDelete);
+			$studyAd->delete();
+
+			Api_Cache::getInstance('Study_Ads_GetAll_RecentOrder')->remove(); // clear studies cache
+		}
+
+		if (
+			$operation == "add"
+			&& $studyType
+			&& $tag
+			&& $tagType
+			&& ($domain || $tagType == "facebook")
+			&& ($adTarget || $studyType == "creative")
+		) {
+			$newStudyAd = new Study_Ad();
+			$newStudyAd->type = $studyType;
+			$newStudyAd->existing_ad_type = $tagType;
+			$newStudyAd->existing_ad_tag = $tag;
+			$newStudyAd->existing_ad_domain = ($tagType == "facebook" ? "www.facebook.com" : $domain);
+
+			if ($studyType == "creative") {
+				if ($tagType == "facebook") {
+					$newStudyAd->replacement_ad_type = "facebook";
+					$newStudyAd->replacement_ad_url = "https://s3.amazonaws.com/say.so/media/Say.So_FB.jpg";
+					$newStudyAd->replacement_ad_title = "Say.So can test your AD here!";
+					$newStudyAd->replacement_ad_description = "Pre-test your ad creative with Say.So's revolutionary product, ADjuster&trade;";
+				} else {
+					$newStudyAd->replacement_ad_type = "image";
+					$newStudyAd->replacement_ad_title = "http://s3.amazonaws.com/say.so/ADj+CREATIVE+300x250+PLACEHOLDER.jpg";
+					$newStudyAd->replacement_ad_description = "Say.So can test your AD here!";
+				}
+				$newStudyAd->ad_target = "http://say.so/";
+				$newStudyAd->save();
+				$newStudyAd->ad_target = "http://say.so/?".$newStudyAd->id;
+				$newStudyAd->save();
+			} else {
+				$newStudyAd->ad_target = $adTarget;
+				$newStudyAd->save();
+			}
+
+			if ($newStudyAd->id) {
+				$reportCellForViews = new ReportCell();
+				$reportCellForViews->title = "Viewed study ID " . $newStudyAd->id . " - " . $newStudyAd->existing_ad_type . " AD: " . $newStudyAd->existing_ad_tag;
+				$reportCellForViews->condition_type = "and";
+				$reportCellForViews->category = "Study";
+				$reportCellForViews->save();
+
+				if ($reportCellForViews->id) {
+					$userConditionForViews = new ReportCell_UserCondition();
+					$userConditionForViews->report_cell_id = $reportCellForViews->id;
+					$userConditionForViews->condition_type = "study_ad";
+					$userConditionForViews->comparison_type = "viewed";
+					$userConditionForViews->compare_study_ad_id = $newStudyAd->id;
+					$userConditionForViews->save();
+				}
+
+				$reportCellForClicks = new ReportCell();
+				$reportCellForClicks->title = "Clicked study ID " . $newStudyAd->id . " - " . $newStudyAd->existing_ad_type . " AD: " . $newStudyAd->existing_ad_tag;
+				$reportCellForClicks->condition_type = "and";
+				$reportCellForClicks->category = "Study";
+				$reportCellForClicks->save();
+
+				if ($reportCellForClicks->id) {
+					$userConditionForClicks = new ReportCell_UserCondition();
+					$userConditionForClicks->report_cell_id = $reportCellForClicks->id;
+					$userConditionForClicks->condition_type = "study_ad";
+					$userConditionForClicks->comparison_type = "clicked";
+					$userConditionForClicks->compare_study_ad_id = $newStudyAd->id;
+					$userConditionForClicks->save();
+				}
+			}
+
+			Api_Cache::getInstance('Study_Ads_GetAll_RecentOrder')->remove(); // clear studies cache
+		}
+
+		$currentStudyAds = new Study_AdCollection();
+		$currentStudyAds->loadAllStudyAds();
+
+		$this->view->current_study_ads = $currentStudyAds;
+	}
+
+
+	/*public function measureAdsAction () {
 		$request = $this->getRequest();
 
 		$operation = $request->getParam("operation", false);
@@ -863,7 +959,7 @@ class Devadmin_IndexController extends Api_GlobalController
 		}
 
 		$this->view->current_studies = $currentStudies;
-	}
+	}*/
 
 
 	public function processSurveyAction () {

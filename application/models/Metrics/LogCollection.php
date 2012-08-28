@@ -115,29 +115,29 @@ class Metrics_LogCollection
 		$types = array();
 		if($this->pollMetrics)
 		{
-			$types[] = 1;
+			$types[] = 'search';
 		}
 		if($this->pollPageView)
 		{
-			$types[] = 2;
+			$types[] = 'page view';
 		}
 		if($this->pollSocial)
 		{
-			$types[] = 3;
+			$types[] = 'social activity';
 		}
 		if($this->pollTags)
 		{
-			$types[] = 4;
-			$types[] = 5;
+			$types[] = 'campaign view';
+			$types[] = 'campaign click';
 		}
 		if($this->pollCreatives)
 		{
-			$types[] = 6;
-			$types[] = 7;
+			$types[] = 'creative view';
+			$types[] = 'creative click';
 		}
 		if(!empty($types))
 		{
-			$conditions[] = " m.metrics_type IN(" . implode(",", $types) . ") ";
+			$conditions[] = " m.type IN('" . implode("','", $types) . "') ";
 		}
 
 		// user_id

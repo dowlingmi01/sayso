@@ -778,8 +778,8 @@ class Devadmin_IndexController extends Api_GlobalController
 					$newStudyAd->replacement_ad_description = "Pre-test your ad creative with Say.So's revolutionary product, ADjuster&trade;";
 				} else {
 					$newStudyAd->replacement_ad_type = "image";
-					$newStudyAd->replacement_ad_title = "http://s3.amazonaws.com/say.so/ADj+CREATIVE+300x250+PLACEHOLDER.jpg";
-					$newStudyAd->replacement_ad_description = "Say.So can test your AD here!";
+					$newStudyAd->replacement_ad_url = "http://s3.amazonaws.com/say.so/ADj+CREATIVE+300x250+PLACEHOLDER.jpg";
+					$newStudyAd->replacement_ad_title = "Say.So can test your AD here!";
 				}
 				$newStudyAd->ad_target = "http://say.so/";
 				$newStudyAd->save();

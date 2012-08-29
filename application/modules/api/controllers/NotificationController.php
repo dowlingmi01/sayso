@@ -13,7 +13,9 @@ class Api_NotificationController extends Api_GlobalController
 		$messages = new Notification_MessageCollection();
 		$messages->loadAllNotificationMessagesForStarbarAndUser($this->starbar_id, $this->starbar_stowed, $this->user_id, $this->_request);
 
-		return $this->_resultType($messages);
+		$res = new Collection();
+		$res->setItems(array_values($messages->getArray()));
+		return $this->_resultType($res);
 	}
 
 	// This function is called whenever a notification message is closed:

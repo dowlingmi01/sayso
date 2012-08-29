@@ -3,7 +3,7 @@ setlocal
 
 call conf%1.bat || goto end
 
-set productversion=2.0.3
+set productversion=2.0.4
 
 echo BaseDomain=%basedomain%> dict.txt
 echo ProductVersion=%productversion%>> dict.txt

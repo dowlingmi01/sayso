@@ -38,6 +38,7 @@ copy ..\..\..\launchIE\Debug\launchIE.exe dist
 makensis /DSAYSO_BASE_DOMAIN=%basedomain% /V3 dist\setup-x86.nsi
 if %ERRORLEVEL% NEQ 0 goto end
 copy /b dist\*-x86.exe "..\..\..\..\public\install\ie\%filename%-Setup.exe"
+signtool sign /t http://tsa.starfieldtech.com "..\..\..\..\public\install\ie\%filename%-Setup.exe"
 popd
 
 goto done

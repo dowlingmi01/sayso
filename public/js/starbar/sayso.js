@@ -431,7 +431,7 @@ $SQ(function () {
 			});
 			switch (studyAd.replacement_ad_type) {
 				case "image":
-					newTag.html('<a id="sayso-adcreative-'+studyAd.id+'" href="'+studyAd.ad_target+'" target="_new"><img src="'+studyAd.replacement_ad_url+'" alt="'+creative.ad_title+'" title="'+studyAd.replacement_ad_title+'" border=0 /></a>');
+					newTag.html('<a id="sayso-adcreative-'+studyAd.id+'" href="'+studyAd.ad_target+'" target="_new"><img src="'+studyAd.replacement_ad_url+'" alt="'+studyAd.replacement_ad_title+'" title="'+studyAd.replacement_ad_title+'" border=0 /></a>');
 					break;
 				case "flash":
 					newTag.html(''); // @todo, insert <object><param><param><embed></object> etc. for flash ads

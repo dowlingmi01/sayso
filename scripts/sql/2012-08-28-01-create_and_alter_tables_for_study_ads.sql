@@ -131,10 +131,11 @@ UPDATE metrics_log SET type = 'campaign click' WHERE metrics_type = 5;
 UPDATE metrics_log SET type = 'creative view' WHERE metrics_type = 6;
 UPDATE metrics_log SET type = 'creative click' WHERE metrics_type = 7;
 
+CREATE INDEX metrics_log_type ON metrics_log (type);
+
 ALTER TABLE report_cell CHANGE category category enum('Internal', 'Custom', 'Panel', 'Gender', 'Age Range', 'Marital Status', 'Education', 'Ethnicity', 'Income', 'Parental Status', 'Study') NOT NULL DEFAULT 'Internal';
 ALTER TABLE report_cell CHANGE title title VARCHAR(2000) NOT NULL;
 ALTER TABLE report_cell_user_condition CHANGE condition_type condition_type enum('choice', 'string', 'integer', 'decimal', 'monetary', 'starbar', 'report_cell', 'study_ad') NOT NULL;
 ALTER TABLE report_cell_user_condition CHANGE comparison_type comparison_type enum('<', '>', '=', '<=', '>=', '!=', 'contains', 'does not contain', 'viewed', 'clicked') NOT NULL;
 ALTER TABLE report_cell_user_condition ADD COLUMN compare_study_ad_id int(10) DEFAULT NULL AFTER compare_survey_question_choice_id;
 ALTER TABLE report_cell_user_condition ADD CONSTRAINT rcuc_csa_id FOREIGN KEY (compare_study_ad_id) REFERENCES study_ad (id) ON DELETE CASCADE ON UPDATE CASCADE;
-

@@ -131,6 +131,8 @@ UPDATE metrics_log SET type = 'campaign click' WHERE metrics_type = 5;
 UPDATE metrics_log SET type = 'creative view' WHERE metrics_type = 6;
 UPDATE metrics_log SET type = 'creative click' WHERE metrics_type = 7;
 
+ALTER TABLE metrics_log CHANGE metrics_type metrics_type tinyint(3) unsigned DEFAULT NULL;
+
 CREATE INDEX metrics_log_type ON metrics_log (type);
 
 ALTER TABLE report_cell CHANGE category category enum('Internal', 'Custom', 'Panel', 'Gender', 'Age Range', 'Marital Status', 'Education', 'Ethnicity', 'Income', 'Parental Status', 'Study') NOT NULL DEFAULT 'Internal';

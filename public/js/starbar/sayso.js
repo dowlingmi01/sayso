@@ -27,8 +27,6 @@ $SQ(function () {
 		warn = sayso.warn,
 		inIframe = sayso.in_iframe;
 
-	if (!sayso.study) sayso.study = {};
-
 	var ajax = function (options) {
 		options.data = $SQ.extend(options.data || {}, {
 			user_id : starbar.user.id,
@@ -324,16 +322,9 @@ $SQ(function () {
 	var replacements = 0;
 
 	// non-existent OR expired studies
-	ajax({
-		url : '//' + sayso.baseDomain + '/api/study/get-all',
-		success : function (response) {
+	forge.message.broadcastBackground('get-studies', {},
+		function (studyAds) {
 
-			if (response.status === 'error') {
-				sayso.warn(response.data);
-				return;
-			}
-
-			var studyAds = response.data;
 			var studyAd = null;
 
 			if (!inIframe) log('Current Study Ads: ', studyAds);
@@ -351,7 +342,7 @@ $SQ(function () {
 
 			studyAdsProcessingComplete();
 		}
-	});
+	);
 
 
 	/**

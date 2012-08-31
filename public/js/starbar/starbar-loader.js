@@ -129,7 +129,6 @@
 		sayso.starbar = response.starbars[response.currentStarbar];
 		sayso.starbar.user = response.user;
 		sayso.starbar.state = {visibility: sayso.state.starbarVisibility, profile: sayso.state.profileTS, game: sayso.state.gameTS};
-		sayso.study = { studies: sayso.state.studies, studiesTimestamp: sayso.state.studiesTS, adTargets: '{}' };
 		sayso.starbar.game = sayso.state.economies[sayso.starbar.economyId].game;
 
 		sayso.starbar.economy = sayso.state.economies[sayso.starbar.economyId];

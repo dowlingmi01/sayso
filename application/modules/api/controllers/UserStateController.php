@@ -71,6 +71,8 @@ class Api_UserStateController extends Api_GlobalController
 		$userState->base_domain = BASE_DOMAIN;
 		$userState->user_key = $this->user_key;
 		$userState->starbar_list = $userState->getStarbarList($userState->user_id);
+		$userState->studies = Api_Adapter::getInstance()->call('Study', 'getAll');
+		$userState->interval_studies = Api_Registry::getConfig()->interval->studies;
 
 		return $this->_resultType($userState);
 	}

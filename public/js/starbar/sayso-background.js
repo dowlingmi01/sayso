@@ -107,7 +107,8 @@ function gotInitialState( response ) {
 			profileTS : response.data.last_update_profile,
 			gameTS : response.data.last_update_game,
 			studies : response.data.studies,
-			studiesTS : response.data.last_update_studies,
+			studiesTS : new Date(),
+			intervalStudies : response.data.interval_studies,
 			adTargets : {},
 			starbars : {},
 			starbarList : response.data.starbar_list,
@@ -125,7 +126,7 @@ function answerPendingRequests() {
 }
 function getUserData( callback ) {
 	ajaxWithAuth({
-		url : '//'+sayso.baseDomain+'/api/user/get',
+		url : 'api/user/get',
 		success : function( response ) {
 			sayso.state.user.data = response.data;
 			if( callback )
@@ -183,8 +184,8 @@ function ajaxWithAuth(options) {
 
 	options.dataType = 'json';
 		
-	options.url = 'http:' + options.url;
-	options.error = showErr;
+	options.url = 'http://' + sayso.baseDomain + '/' + options.url;
+	options.error = options.error || showErr;
 	var success = options.success;
 	if( success )
 		options.success = function( response ) { success(response); };
@@ -197,7 +198,7 @@ function updateGame( content ) {
 		forge.message.broadcast( 'update-game', content );
 	} else
 		ajaxWithAuth({
-			url : '//'+sayso.baseDomain+'/api/gaming/get-game',
+			url : 'api/gaming/get-game',
 			success : function(response) {
 				if( response.data )
 					updateGame( response.data );
@@ -213,7 +214,7 @@ function setVisibility( visibility ) {
 }
 function saveState() {
 	ajaxWithAuth( {
-			url: '//'+sayso.baseDomain+'/api/user-state/update',
+			url: 'api/user-state/update',
 			data: {
 				'visibility': sayso.state.starbarVisibility,
 				'last_update_profile': sayso.state.profileTS,
@@ -226,7 +227,7 @@ function addAdTarget( adTarget ) {
 }
 function onboardingComplete() {
 	ajaxWithAuth({
-		url: '//' + sayso.baseDomain + '/api/starbar/set-onboard-status',
+		url: 'api/starbar/set-onboard-status',
 		data: {
 			status : 1 // complete
 		}
@@ -248,7 +249,7 @@ sayso.switchStarbar = function( starbarId ) {
 			getStarbar( starbarId, broadcastSwitch );
 	} else
 		ajaxWithAuth({
-			url: '//'+sayso.baseDomain+'/api/starbar/add', 
+			url: 'api/starbar/add', 
 			data: { new_starbar_id: starbarId },
 			success: function( response ) {
 				if( response.status == 'success') {
@@ -257,6 +258,26 @@ sayso.switchStarbar = function( starbarId ) {
 				}
 			}
 		});
+}
+function getStudies( ignored, callback ) {
+	if( !sayso.studiesReq && (new Date()) - sayso.state.studiesTS > sayso.state.intervalStudies * 1000 ) {
+		sayso.studiesReq = true;
+		ajaxWithAuth({
+			url: 'api/study/get-all', 
+			success: function( response ) {
+				sayso.studiesReq = false;
+				if( response.status == 'success') {
+					sayso.state.studies = response.data;
+					sayso.state.studiesTS = new Date();
+				}
+			},
+			error: function(errObject) {
+				sayso.studiesReq = false;
+				showErr(errObject);
+			}
+		});
+	}
+	callback( sayso.state.studies );
 }
 sayso.scripts = {};
 sayso.pendingStateRequests = [];
@@ -267,6 +288,7 @@ forge.message.listen("set-visibility", setVisibility, showErr);
 forge.message.listen("starbar-switch", sayso.switchStarbar, showErr);
 forge.message.listen("add-ad-target", addAdTarget, showErr);
 forge.message.listen("onboarding-complete", onboardingComplete, showErr);
+forge.message.listen("get-studies", getStudies, showErr);
 forge.message.listen("get-script", getScript, showErr);
 forge.logging.info("Background script loaded");
 forge.prefs.get('firstRunDone', firstRun, showErr);

@@ -33,7 +33,9 @@
 			// Only if we have any starbars that this user has used
 			foreach ($this->tabs as $tabs) {
 
-				printf("<li><a href='/cms/admin/sbinfo/bar/%s/user/%s'><span>%s</span></a></li>\n\r",$tabs['starbar_id'],$tabs['user_id'],$tabs['label']);
+				printf("<li><a href='/cms/admin/sbinfo?starbar=%s&user=%s'><span>%s</span></a></li>\n\r",$tabs['starbar_id'],$tabs['user_id'],$tabs['label']);
+
+
 			}
 		}
 		?>

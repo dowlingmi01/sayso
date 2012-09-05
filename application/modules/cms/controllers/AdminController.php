@@ -873,6 +873,9 @@
 
 		public function userAction()
 		{
+			if ($this->getRequest()->isPost()) { //is it a post request ?
+				$this->_helper->layout->disableLayout();
+			}
 
 			$formElements = array();
 
@@ -886,7 +889,7 @@
 			$form->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));
 			$form->addElement('submit', 'submit', array(
         		'label' => 'Get User Info',
-        		'onclick' => "$('#div_form').load('" . "/admin/rewardnew" . "', $('#div_form').serializeArray() ); return false;"
+        		'onclick' => "$('#main').load('" . "/cms/admin/user" . "', $('#div_form').serializeArray() ); return false;"
     		));
 			if ($this->getRequest()->isPost()) { //is it a post request ?
 
@@ -1049,60 +1052,87 @@
 		public function sbinfoAction()
 		{
 			$this->_helper->layout->disableLayout();
-			$starbar_id = $this->getRequest()->getParam('bar');
+
 			$user_id = $this->getRequest()->getParam('user');
+			$starbar_id = $this->getRequest()->getParam('starbar');
 
-			$starbar = new Starbar();
-			$starbar->loadData($starbar_id);
 
-			$this->getRequest()->setParam('user_id', $user_id);  // required to be set to *something*
+			// Get the post variables
+			$postData =$this->_getAllParams();
+
+			$this->getRequest()->setParam('user_id',$user_id);
 			$this->getRequest()->setParam('starbar_id',$starbar_id);
 
+			$starbar = new Starbar();
+			$starbar->loadData($starbar_id);  // Create a starbar object for the bar we are investigating for this user
+
+			$email = new User_Email();
+
+			$email->loadData($user_id);
 
 			$gameStarbar = Game_Starbar::getInstance();
 
 			$economy = $gameStarbar->getEconomy();
 
+
 			try {
 
 				$gameStarbar->loadGamerProfile();
 
-
-			$gamer = $gameStarbar->getGamer();
-			$client = $economy->getClient();
-
-   			$attributeFullId = $economy->getAttributeId("FULL_STORE");
-   			$currencyTokenPointsId = $economy->getCurrencyId("TOKEN_POINTS");
-   			$currencyPurchasePointsId = $economy->getCurrencyId("PURCHASE_POINTS");
-
-   			$currencyRed = $economy->getCurrencyTitleFromType("redeemable");
-   			$currencyExp = $economy->getCurrencyTitleFromType("experience");
-			$currencyRedeemable = $economy->getCurrencyId($currencyRed);
-			$currencyExperience = $economy->getCurrencyId($currencyExp);
-
-			$info = new stdClass();
-
-   			$info->currency = ucwords(strtolower(str_replace('_',' ',$currencyRed)));
-   			$info->currencybalance = $gamer->_currencies[$currencyRedeemable]['current_balance'];
-   			$info->XP = ucwords(strtolower(str_replace('_',' ',$currencyExp)));
-   			$info->XPbalance = $gamer->_currencies[$currencyExperience]['current_balance'];
-   			$info->starbar_id = $starbar_id;
-   			$info->level = $gamer->getHighestLevel();
+				$info = new stdClass(); // Variable created in order to transport data into the view
+				$client = $economy->getClient();
 
 
-   			// Get list of goods purchased by this user
-   			$info->goods = array();
-   			$ctr=0;
-			$goods = $gamer->getGoods();
-			foreach ($goods as $good) {
-				$info->goods[$ctr]['description'] = $good['description'];
-				$info->goods[$ctr]['url_preview'] = $good['url_preview'];
-				$ctr++;
-			}
+				$gamer = $gameStarbar->getGamer();
+				$gamer->removeProfileCache();
 
-   			$info->leveltitle = $economy->end_user_title;
-   			$info->levelurl = $info->level->urls[1]->url;
-			$info->affiliatewarning = null;
+				$client->getEndUser($gamer->getGamingId());
+
+				$data = $client->getData(); // Gives us an object which contains the currency balances. Other methods are unreliable, as they seem to get caught in a 7-day cache somewhere in the system.
+
+
+				$gamer->loadProfile($client, $gameStarbar); // In case loadGamerProfile doesn't work
+				$gamingid = $gamer->getGamingId();
+
+
+				$redeemablecurrency = $economy->getCurrencyIdByType('redeemable');
+				$experiencecurrency = $economy->getCurrencyIdByType('experience');
+
+				foreach ($data->currency_balances as $currency) {
+
+				    if ($currency->currency_id==$experiencecurrency) {
+				    	$info->experiencebalance = $currency->current_balance;
+					}
+
+					if ($currency->currency_id==$redeemablecurrency) {
+						$info->redeemablebalance = $currency->current_balance;
+					}
+				}
+
+   				$currencyRed = $economy->getCurrencyTitleFromType("redeemable");
+   				$currencyExp = $economy->getCurrencyTitleFromType("experience");
+
+   				$info->currency = ucwords(strtolower(str_replace('_',' ',$currencyRed)));
+
+   				$info->XP = ucwords(strtolower(str_replace('_',' ',$currencyExp)));
+
+   				$info->starbar_id = $starbar_id;
+   				$info->level = $gamer->getHighestLevel();
+
+
+   				// Get list of goods purchased by this user
+   				$info->goods = array();
+   				$ctr=0;
+				$goods = $gamer->getGoods();
+				foreach ($goods as $good) {
+					$info->goods[$ctr]['description'] = $good['description'];
+					$info->goods[$ctr]['url_preview'] = $good['url_preview'];
+					$ctr++;
+				}
+
+   				$info->leveltitle = $economy->end_user_title;
+   				$info->levelurl = $info->level->urls[1]->url;
+				$info->affiliatewarning = null;
 
 			} catch (Api_Exception $e) {
 				// We know that code 251 is 'Gaming system error: NOT FOUND'. Notify any other errors
@@ -1116,46 +1146,39 @@
 
 			// reward form to apply bonuses
 			$formElements = array();
-			$formElements['redeemableaward'] = new Form_Element_Text('redeemableaward');
-            $formElements['redeemableaward']->setLabel("Award Points");
+
             $formElements['redeemablecurrency'] = new Form_Element_Text('redeemablecurrency');
-            $formElements['redeemablecurrency']->setLabel("Award Currency");
+            $formElements['redeemablecurrency']->setLabel("Experience Points");
+            $formElements['redeemableaward'] = new Form_Element_Text('redeemableaward');
+            $formElements['redeemableaward']->setLabel("Redeemable Points");
             $formElements['emailaddress'] = new Form_Element_Hidden('emailaddress');
             $formElements['emailaddress']->setValue($_SESSION['userunderobservation']);
 
-            $formElements['bar']= new Form_Element_Hidden('bar');
+            $formElements['bar']= new Form_Element_Hidden('starbar_id');
             $formElements['bar']->setValue($starbar_id);
- 			$formElements['user']= new Form_Element_Hidden('user');
+ 			$formElements['user']= new Form_Element_Hidden('user_id');
             $formElements['user']->setValue($user_id);
 
-			//$formElements['submit'] = new Zend_Form_Element_Submit('submit');
-           // $formElements['submit'] ->setLabel('Give Reward') // the button's value
-				    //->setIgnore(true); // very usefull -> it will be ignored before insertion
-
-//print_r($userdata);
 			$rewardform = new ZendX_JQuery_Form();
 			$rewardform->setName("Reward");
 			$rewardform->setAttrib('id','sb_bonus_'.$starbar_id);
-			$rewardform->addElements($formElements);
 			$rewardform->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));
+			$rewardform->addElement('hidden', 'plaintext', array(
+    					'description' => 'Positive numbers - add points. Negative numbers - remove points',
+    					'ignore' => true,
+    					'decorators' => array(
+        					array('Description', array('escape'=>false, 'tag'=>'')),
+    					),
+			));
+			$rewardform->addElements($formElements);
 			$rewardform->addElement('submit', 'submit', array(
-        		'label' => 'Give special reward',
-        		'onclick' => "alert('now!');$('#sb_overview').load('" . "/cms/admin/notifyreward" . "', $('#sb_bonus_2').serializeArray() ); return false;"
-
+        		'label' => 'Adjust Points',
+        		'onclick' => "$('#sb_bonusrewards_".$starbar_id."').load('" . "/cms/admin/notifyreward" . "', $('#sb_bonus_".$starbar_id."').serializeArray() ); return false;"
     		));
 
-			// Here goes the post stuff
-			if ($this->getRequest()->isPost()) { //is it a post request ?
+    		// We don't handle the post here - that's handled in the notifyrewardAction
 
-				$rewardpostData = $this->getRequest()->getPost(); // getting the $_POST data
-					printf("<h1>We have a post</h1><pre>%s</pre>",print_r($rewardpostData,true));
-
-									if ($rewardform->isValid($rewardpostData)) {
-										printf("<h2>data is valid</h2>");
-									}
-			}
 			$this->view->rewardform = $rewardform; // assigning the form to view
-
 
 			// Social Media Results
 			$info->likes = array();
@@ -1207,16 +1230,84 @@
 
 		public function notifyrewardAction()
 		{
-			 $this->_helper->layout->disableLayout();
-			 printf("In notifyreward action");
+			$this->_helper->layout->disableLayout();
 
+			if (!$this->getRequest()->isPost()) { //is it a post request ?
+			 	printf("You should not be here. Execution terminated");
+			} else {
+				// It's a post request. We can take it from here.
+				$formData = $_POST;
+
+
+			  	$starbar = new Starbar();
+				$starbar->loadData($_POST['starbar_id']);
+				$request = $this->getRequest();
+
+				$request->setParam('user_id',$_POST['user_id']);
+				$gameStarbar = Game_Starbar::getInstance();
+
+				$economy = $gameStarbar->getEconomy();
+
+				$email = new User_Email();
+				$emaildata = $email->getUserID($_POST['emailaddress']);
+
+				/* Get the correct gaming_id for this starbar */
+				for ($ctr=0;$ctr<count($emaildata);$ctr++) {
+					if ($emaildata[$ctr]['starbar_id'] == $_POST['starbar_id']) {
+						$gaming_id = $emaildata[$ctr]['gaming_id'];
+					}
+				}
+
+				$client = $economy->getClient();
+				$client->addCustomParameter('verbosity', '9');
+				$gamer = $gameStarbar->getGamer();
+
+				$gamerCurrencies = $gamer->getCurrencies();
+
+				if (isset($formData['redeemablecurrency'])) {
+
+					$actionID = $economy->getActionId('ADHOC_EXPERIENCEPOINTS');
+					$client->setParameterPost('amount',$formData['redeemablecurrency']);
+					$result = $client->namedTransactionGroup($actionID)->postExecute($gaming_id);
+
+				}
+
+				if (isset($formData['redeemableaward'])) {
+					$actionID = $economy->getActionId('ADHOC_REDEEMABLEPOINTS');
+					$client->setParameterPost('amount',$formData['redeemableaward']);
+					$client->namedTransactionGroup($actionID)->postExecute($gaming_id);
+				}
+
+				$client->getEndUser($gamer->getGamingId());
+
+				$data = $client->getData();
+				$redeemablecurrency = $economy->getCurrencyIdByType('redeemable');
+				$experiencecurrency = $economy->getCurrencyIdByType('experience');
+
+				$info = new stdClass(); // Variable created in order to transport data into the view
+
+				foreach ($data->currency_balances as $currency) {
+
+				    if ($currency->currency_id==$experiencecurrency) {
+				    	$info->experiencebalance = (int)$currency->current_balance;
+					}
+
+					if ($currency->currency_id==$redeemablecurrency) {
+						$info->redeemablebalance = (int)$currency->current_balance;
+					}
+				}
+
+	printf("<h2>Points adjustment</h2><p>User now has <strong>%s</strong> experience points, and <strong>%s</strong> redeemable points.</p>",$info->experiencebalance,$info->redeemablebalance);
+
+  			}
 		}
+
 		/**
 		* Reward User with point
 		*/
 		public function rewardAction()
 		{
-			 $this->_helper->layout->disableLayout();
+			//PTC Wed $this->_helper->layout->disableLayout();
 printf("In reward action");
 			$formElements = array();
 
@@ -1263,6 +1354,7 @@ printf("<h1>Point 1</h1><pre>%s</pre>",print_r($postData,true));
 
 								$emaildata = $email->getUserID($formData['emailaddress']);
 								//  In getInstance, we pass the key and secret (obtainable from publisher.bigdoor.com)
+
 								$client = Gaming_BigDoor_HttpClient::getInstance('43bfbce697bd4be99c9bf276f9c6b086', '35eb12f3e87144a0822cf1d18d93d867');
 
 								// Set the enduser by passing the gaming_id from the user_gaming table

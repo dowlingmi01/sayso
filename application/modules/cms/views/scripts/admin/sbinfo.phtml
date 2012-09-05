@@ -8,7 +8,7 @@ if ($this->info->affiliatewarning) {
 	printf("<p class='sb_info'>%s</p>",$this->info->affiliatewarning);
 	printf("</div><!-- /sb_information -->");
 } else {
-	printf('<img src="%s" alt="%s" /> <span class="sb_leveltitle">%s</span><span class="sb_points">%s %s</span><span class="sb_currency">%s %s</span>',$this->info->levelurl,$this->info->level->title,$this->info->level->title,number_format($this->info->XPbalance,0),$this->info->XP,number_format($this->info->currencybalance,0),$this->info->currency);
+	printf('<img src="%s" alt="%s" /> <span class="sb_leveltitle">%s</span><span class="sb_points">%s %s</span><span class="sb_currency">%s %s</span>',$this->info->levelurl,$this->info->level->title,$this->info->level->title,number_format($this->info->experiencebalance,0),$this->info->XP,number_format($this->info->redeemablebalance,0),$this->info->currency);
 	printf("</div><!-- /sb_information -->");
 	?>
 	<div id="<?php echo 'sb_bonusrewards_'.$this->info->starbar_id; ?>" class="sb_bonusrewards">

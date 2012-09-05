@@ -41,8 +41,17 @@
 			</div>
 			<?php echo $this->partial('partials/common-auth.phtml', 'admin') ?>
 		</div><!-- /masthead -->
+		<div class="navigation">
+			<ul>
+				<li><a href="#">Study Builder</a></li>
+				<li class="active"><a href="#">Content Manager</a></li>
+				<li><a href="#">Communities</a></li>
+				<li><a href="#">Panel Manager</a></li>
+				<li><a href="#">Analytics &amp; Reporting</a></li>
+				<li><a href="/admin/user">User Management</a></li>
+			</ul>
+		</div><!-- end .navigation -->
 		<div id="layout">
-
 				<?php if ($auth->hasIdentity()): ?>
 
 					<div id="common">

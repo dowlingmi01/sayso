@@ -24,10 +24,10 @@ class Notification_MessageUserMap extends Record
 			if ($this->id
 				&& (
 					$markClosed
-					|| (!strtotime($this->notified) && $markNotified)
+					|| ($markNotified && !(strtotime($this->notified) > 0))
 				)
 			) {
-				if (!strtotime($this->notified) && $markNotified) $this->notified = new Zend_Db_Expr('now()');
+				if ($markNotified && !(strtotime($this->notified) > 0)) $this->notified = new Zend_Db_Expr('now()');
 				if ($markClosed) $this->closed = new Zend_Db_Expr('now()');
 				$this->save();
 

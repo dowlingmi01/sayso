@@ -951,7 +951,11 @@
 						// Pass the starbar details back to the view
 						$this->view->userdata = $userdata;// was usersstarbars
 
-						$_SESSION['userunderobservation'] = $postData['emailaddress'];
+						//$_SESSION['userunderobservation'] = $postData['emailaddress'];
+						//$testSpace = new Zend_Session_Namespace('testSpace');
+						//$this->getRequest()->setParam('userunderobservation',$postData['emailaddress']);
+						$sessionvar = new Zend_Session_Namespace('sessionvar');
+						$sessionvar->userunderobservation = $postData['emailaddress'];
 						$this->view->tabs = $tabs;// was usersstarbars
 					} else {
 						$this->view->error = sprintf("No data found for user %s",$postData['emailaddress']);
@@ -1152,7 +1156,9 @@
             $formElements['redeemableaward'] = new Form_Element_Text('redeemableaward');
             $formElements['redeemableaward']->setLabel("Redeemable Points");
             $formElements['emailaddress'] = new Form_Element_Hidden('emailaddress');
-            $formElements['emailaddress']->setValue($_SESSION['userunderobservation']);
+           // $formElements['emailaddress']->setValue($_SESSION['userunderobservation']);
+           $sessionvar = new Zend_Session_Namespace('sessionvar');
+           $formElements['emailaddress']->setValue($sessionvar->userunderobservation);
 
             $formElements['bar']= new Form_Element_Hidden('starbar_id');
             $formElements['bar']->setValue($starbar_id);
@@ -1261,7 +1267,7 @@
 				$client = $economy->getClient();
 				$client->addCustomParameter('verbosity', '9');
 				$gamer = $gameStarbar->getGamer();
-
+$results = array();
 				$gamerCurrencies = $gamer->getCurrencies();
 
 				if (isset($formData['redeemablecurrency'])) {
@@ -1269,13 +1275,14 @@
 					$actionID = $economy->getActionId('ADHOC_EXPERIENCEPOINTS');
 					$client->setParameterPost('amount',$formData['redeemablecurrency']);
 					$result = $client->namedTransactionGroup($actionID)->postExecute($gaming_id);
-
+$results[] = $result;
 				}
 
 				if (isset($formData['redeemableaward'])) {
 					$actionID = $economy->getActionId('ADHOC_REDEEMABLEPOINTS');
 					$client->setParameterPost('amount',$formData['redeemableaward']);
-					$client->namedTransactionGroup($actionID)->postExecute($gaming_id);
+					$result = $client->namedTransactionGroup($actionID)->postExecute($gaming_id);
+					$results[] = $result;
 				}
 
 				$client->getEndUser($gamer->getGamingId());
@@ -1298,6 +1305,7 @@
 				}
 
 	printf("<h2>Points adjustment</h2><p>User now has <strong>%s</strong> experience points, and <strong>%s</strong> redeemable points.</p>",$info->experiencebalance,$info->redeemablebalance);
+	//printf("<pre>%s</pre>",print_r($results,true));
 
   			}
 		}

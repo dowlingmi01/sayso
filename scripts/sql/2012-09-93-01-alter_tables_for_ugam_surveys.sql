@@ -1,0 +1,1 @@
+ALTER TABLE survey CHANGE origin origin enum('SurveyGizmo', 'Internal', 'UGAM');

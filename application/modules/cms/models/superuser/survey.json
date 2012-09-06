@@ -1,7 +1,9 @@
 {
 	"table": [
 		{
+			"comment": "This json is for surveys only, a subset of all surveys (i.e. polls, quizzes, etc.)",
 			"tablename": "Survey",
+			"where": "type='survey'",
 			"model": "Survey",
 			"permissions":[
 				"allowgrid",
@@ -36,12 +38,13 @@
 			]
 		},
 		{
-			"colname": "type",
+			"colname": "origin",
 			"type": "list",
 			"listoptions": [
-				"poll",
-				"survey"
+				"SurveyGizmo",
+				"UGAM"
 			],
+			"default": "SurveyGizmo",
 			"displaywhen": [
 				"add",
 				"grid",
@@ -175,6 +178,7 @@
 			"colname": "display_number_of_questions",
 			"type": "number",
 			"displaywhen": [
+				"add",
 				"detail",
 				"edit"
 			]

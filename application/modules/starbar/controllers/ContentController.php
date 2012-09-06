@@ -311,13 +311,6 @@ class Starbar_ContentController extends Api_GlobalController
 			$this->view->assign('survey_already_completed', true);
 		} else {
 			$this->view->assign('survey_already_completed', false);
-
-			// Find the next survey after this survey for this user
-			$nextSurvey = Survey::getNextSurveyForUser($survey, $this->user_id);
-			if ($nextSurvey->id) $nextSurveyId = $nextSurvey->id;
-			else $nextSurveyId = -1;
-
-			$this->view->assign('next_survey_id', $nextSurveyId);
 		}
 
 	}
@@ -330,7 +323,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function surveyDisqualifyAction ()
 	{
-		$this->_validateRequiredParameters(array('srid', 'next_survey_id'));
+		$this->_validateRequiredParameters(array('srid'));
 		// this page is fetched via an iframe, not ajax;
 		$this->_usingJsonPRenderer = false;
 
@@ -346,16 +339,14 @@ class Starbar_ContentController extends Api_GlobalController
 		$survey = new Survey();
 		$survey->loadData($surveyResponse->survey_id);
 
+		// Find the next survey after this survey for this user before marking the survey disqualified
+		$nextSurvey = Survey::getNextSurveyForUser($survey, $this->user_id);
+
 		$surveyResponse->status = "disqualified";
 		$surveyResponse->processing_status = "pending";
 		$surveyResponse->completed_disqualified = new Zend_Db_Expr('now()');
 		$surveyResponse->save();
 		Game_Starbar::getInstance()->disqualifySurvey($survey);
-
-		$nextSurvey = new Survey();
-		if ($this->next_survey_id != -1) {
-			$nextSurvey->loadData($this->next_survey_id);
-		}
 
 		$this->view->assign('survey', $survey);
 		$this->view->assign('next_survey', $nextSurvey);
@@ -366,7 +357,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function surveyCompleteAction ()
 	{
-		$this->_validateRequiredParameters(array('srid', 'next_survey_id'));
+		$this->_validateRequiredParameters(array('srid'));
 		// this page is fetched via an iframe, not ajax;
 		$this->_usingJsonPRenderer = false;
 
@@ -382,16 +373,14 @@ class Starbar_ContentController extends Api_GlobalController
 		$survey = new Survey();
 		$survey->loadData($surveyResponse->survey_id);
 
+		// Find the next survey after this survey for this user before marking the survey completed
+		$nextSurvey = Survey::getNextSurveyForUser($survey, $this->user_id);
+
 		$surveyResponse->status = "completed";
 		$surveyResponse->processing_status = "pending";
 		$surveyResponse->completed_disqualified = new Zend_Db_Expr('now()');
 		$surveyResponse->save();
 		Game_Starbar::getInstance()->completeSurvey($survey);
-
-		$nextSurvey = new Survey();
-		if ($this->next_survey_id != -1) {
-			$nextSurvey->loadData($this->next_survey_id);
-		}
 
 		$this->view->assign('survey', $survey);
 		$this->view->assign('next_survey', $nextSurvey);
@@ -402,7 +391,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function surveyRedirectAction ()
 	{
-		$this->_validateRequiredParameters(array('survey_id', 'user_id', 'next_survey_id', 'frame_id'));
+		$this->_validateRequiredParameters(array('survey_id', 'user_id', 'frame_id'));
 
 		$survey = new Survey();
 		$survey->loadData($this->survey_id);
@@ -417,19 +406,41 @@ class Starbar_ContentController extends Api_GlobalController
 
 		$protocol = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']) ? "https" : "http");
 
-		$redirectUrl = $protocol . "://www.surveygizmo.com/s3/" . $survey->external_id . "/" . $survey->external_key;
-		$redirectUrl .= "?next_survey_id=" . $this->next_survey_id;
-		$redirectUrl .= "&starbar_short_name=" . $this->view->starbar->short_name;
-		$redirectUrl .= "&srid=" . $surveyResponse->id;
-		$redirectUrl .= "&size=" . $survey->size;
-		$redirectUrl .= "&frame_id=" . $this->frame_id;
-		$redirectUrl .= "&xdm_c=" . $this->frame_id;
-		if (APPLICATION_ENV == "production") {
-			$redirectUrl .= "&testing=false";
-		} else {
-			$redirectUrl .= "&base_domain=" . BASE_DOMAIN;
-			$redirectUrl .= "&testing=true";
+		switch ($survey->origin) {
+			case "SurveyGizmo":
+				$redirectUrl = $protocol . "://www.surveygizmo.com/s3/" . $survey->external_id . "/" . $survey->external_key;
+				$redirectUrl .= "?starbar_short_name=" . $this->view->starbar->short_name;
+				$redirectUrl .= "&srid=" . $surveyResponse->id;
+				$redirectUrl .= "&size=" . $survey->size;
+				$redirectUrl .= "&frame_id=" . $this->frame_id;
+				if (APPLICATION_ENV == "production") {
+					$redirectUrl .= "&testing=false";
+				} else {
+					$redirectUrl .= "&base_domain=" . BASE_DOMAIN;
+					$redirectUrl .= "&testing=true";
+				}
+				break;
+
+			case "UGAM":
+				$redirectUrl = $protocol . "://survey.confirmit.com/wix/" . $survey->external_key . ".aspx";
+				$redirectUrl .= "?starbar_id=" . $this->view->starbar->id;
+				$redirectUrl .= "&user_id=" . $this->user_id;
+				$redirectUrl .= "&user_key=" . $this->user_key;
+				$redirectUrl .= "&starbar_short_name=" . $this->view->starbar->short_name;
+				$redirectUrl .= "&srid=" . $surveyResponse->id;
+				$redirectUrl .= "&frame_id=" . $this->frame_id;
+				$redirectUrl .= "&base_domain=" . BASE_DOMAIN;
+				if (APPLICATION_ENV == "production") {
+					$redirectUrl .= "&testing=false";
+				} else {
+					$redirectUrl .= "&testing=true";
+				}
+				break;
+
+			default:
+				exit;
 		}
+
 
 		$this->_redirect($redirectUrl);
 	}

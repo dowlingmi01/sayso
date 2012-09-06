@@ -3,7 +3,7 @@
 		{
 			"comment": "This json is for quizzes, a subset of Polls/Surveys",
 			"viewname": "Quiz",
-			"where": "type=3",
+			"where": "type='quiz'",
 			"tablename": "survey",
 			"model": "Survey",
 			"permissions":[

@@ -50,7 +50,7 @@
 
 				var protocol = ('https:' == document.location.protocol ? 'https:' : 'http:');
 
-				var redirectParameters = "?srid=" + $SGQ.srid + "&next_survey_id=" + $SGQ.next_survey_id + "&user_id=" + $SQ.sayso.starbar.user.id + "&user_key=" + $SQ.sayso.starbar.user.key + "&starbar_id=" + $SQ.sayso.starbar.id + "&frame_id=" + $SGQ.xdm_c;
+				var redirectParameters = "?srid=" + $SGQ.srid + "&user_id=" + $SQ.sayso.starbar.user.id + "&user_key=" + $SQ.sayso.starbar.user.key + "&starbar_id=" + $SQ.sayso.starbar.id + "&frame_id=" + $SGQ.frame_id;
 				if ($SQ('.sg-disqualify').length == 1) {
 					window.location.href = protocol + "//" + $SGQ.base_domain + "/starbar/" + $SGQ.starbar_short_name + "/survey-disqualify" + redirectParameters;
 					return;

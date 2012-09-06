@@ -2041,24 +2041,6 @@
 /* POSITION ALL OF THE POPBOX TRIANGLES */
 
 
-/* surveys */
-
-#sayso-starbar #sb_popBox_surveys.sb_triangle-border:before,
-#sayso-starbar #sb_popBox_surveys_lg.sb_triangle-border:before,
-#sayso-starbar #sb_popBox_surveys_hg.sb_triangle-border:before{
-	left: 125px;
-}
-#sayso-starbar #sb_popBox_surveys.sb_triangle-border:after,
-#sayso-starbar #sb_popBox_surveys_lg.sb_triangle-border:after,
-#sayso-starbar #sb_popBox_surveys_hg.sb_triangle-border:after{
-	left: 126px;
-}
-#sayso-starbar #sb_popBox_surveys .sb_triangle-solid:after,
-#sayso-starbar #sb_popBox_surveys_lg .sb_triangle-solid:after,
-#sayso-starbar #sb_popBox_surveys_hg .sb_triangle-solid:after{
-	left: 123px;
-}
-
 /* quizzes */
 
 #sayso-starbar #sb_popBox_spotlight.sb_triangle-border:before{

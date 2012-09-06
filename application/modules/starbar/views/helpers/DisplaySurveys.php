@@ -57,7 +57,9 @@ class Starbar_View_Helper_DisplaySurveys extends Zend_View_Helper_Abstract
 				$listItemClass = "sb_list".(($i % 2) ? "Odd" : "Even");
 
 				// Used for new and archived, ignored for completed/disqualified
-				if ($survey->size == "large") {
+				if ($survey->origin == "UGAM") {
+					$popBoxToOpen = "sb_popBox_surveys_ug";
+				} else if ($survey->size == "large") {
 					$popBoxToOpen = "sb_popBox_surveys_hg";
 				} else {
 					$popBoxToOpen = "sb_popBox_surveys_lg";

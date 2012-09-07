@@ -510,7 +510,7 @@ $SQ(function () {
 	function adminFunctions () {
 		// Detect and log flash files on this page to assist admin find tags
 		var tempLink = document.createElement('a');
-		lastIndex = 0;
+		lastIndex = -1;
 
 		$SQ('embed').each(function(index) {
 			var embedElem = $SQ(this);
@@ -520,8 +520,8 @@ $SQ(function () {
 			if (embedElem.parent().is('object')) {
 				embedElem = embedElem.parent(); // just for logging purposes, since chrome will only highlight the embed if it is NOT contained in an <object>
 			}
-			lastIndex = index+1;
-			log('Tag '+lastIndex+' (copy and paste this): "'+filename+'"\nElement '+lastIndex+' (roll over this to visually confirm): ', embedElem);
+			log('Tag '+(index+1)+' (copy and paste this): "'+filename+'"\nElement '+(index+1)+' (roll over this to visually confirm): ', embedElem);
+			lastIndex = index;
 		});
 
 		lastIndex++;

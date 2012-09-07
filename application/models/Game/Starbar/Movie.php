@@ -27,9 +27,10 @@ class Game_Starbar_Movie extends Game_Starbar {
 
 		$currentLevel = $profile->getHighestLevel();
 
-		/*if ($good->getId() == $this->_economy->getGoodId('WEEK_ONE_GIVEAWAY')) {
-			$good->setNonRedeemReason('Congrats to Jansen W. from Glen Allen, VA for winning the week 1 prize!');
+		if ($good->getId() == $this->_economy->getGoodId('MONTH_ONE_GIVEAWAY')) {
+			$good->setNonRedeemReason("We'll be announcing the winner of the first monthly giveaway winner soon!");
 			$good->setCommentForUser('Unavailable');
+		/*
 		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_TWO_GIVEAWAY')) {
 			$good->setNonRedeemReason('Congrats to Mike B. from New York, NY for winning the week 2 prize!');
 			$good->setCommentForUser('Unavailable');
@@ -40,7 +41,7 @@ class Game_Starbar_Movie extends Game_Starbar {
 			$good->setNonRedeemReason('HUGE Congrats to Michael A. from Fishers, IN for winning the grand prize!');
 			$good->setCommentForUser('Unavailable');
 		*/
-		if (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
+		} elseif (!$good->isToken() && $good->inventory_sold >= $good->inventory_total) {
 			$good->setNonRedeemReason('Sorry, this item is sold out.');
 			$good->setCommentForUser('Sold Out');
 		} elseif (!parent::$userHasCompletedProfileSurvey) {

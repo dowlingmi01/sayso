@@ -254,9 +254,8 @@ $SQ(function(){
 			elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
 		}
 
-		if( starbar.id > 2 ) // Disabled for Snakkle
-			/* MDD 07/30/12 adding switcher behavior */
-			initSwitcher();
+		/* MDD 07/30/12 adding switcher behavior */
+		initSwitcher();
 
 		sayso.log('Loaded and Ready');
 	};

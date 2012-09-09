@@ -1241,7 +1241,7 @@ class Devadmin_IndexController extends Api_GlobalController
 							// prepare the csv line/row
 							while ($i < $numberOfResponses) {
 								if (isset($csvRow[$responseArray[$i] . '-' . $responseArray[$i+1]]))
-									$csvRow[$responseArray[$i] . '-' . $responseArray[$i+1]] = $responseArray[$i+2];
+									$csvRow[$responseArray[$i] . '-' . $responseArray[$i+1]] = "\"" . $responseArray[$i+2] . "\"";
 								$i += 3;
 							}
 							// echo the csv line

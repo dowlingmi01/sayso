@@ -76,15 +76,18 @@ class Api_MetricsController extends Api_GlobalController
 		$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'url', 'study_ad_views'));
 
 		$studyAdViews = json_decode($this->study_ad_views, true);
+		$studyAd = new Study_Ad();
 
 		foreach ($studyAdViews as $studyAdId) {
-			$studyAdUserMap = new Study_AdUserMap();
-			$studyAdUserMap->user_id = $this->user_id;
-			$studyAdUserMap->starbar_id = $this->starbar_id;
-			$studyAdUserMap->study_ad_id = $studyAdId;
-			$studyAdUserMap->url = $this->url;
-			$studyAdUserMap->type = 'view';
-			$studyAdUserMap->save();
+			if ($studyAd->loadDataByUniqueFields(array("id" => $studyAdId))) { // Check if study_ad record exists
+				$studyAdUserMap = new Study_AdUserMap();
+				$studyAdUserMap->user_id = $this->user_id;
+				$studyAdUserMap->starbar_id = $this->starbar_id;
+				$studyAdUserMap->study_ad_id = $studyAdId;
+				$studyAdUserMap->url = $this->url;
+				$studyAdUserMap->type = 'view';
+				$studyAdUserMap->save();
+			}
 		}
 
 		return $this->_resultType(true);
@@ -95,15 +98,18 @@ class Api_MetricsController extends Api_GlobalController
 		$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'url', 'study_ad_clicks'));
 
 		$studyAdClicks = json_decode($this->study_ad_clicks, true);
+		$studyAd = new Study_Ad();
 
 		foreach ($studyAdClicks as $studyAdId) {
-			$studyAdUserMap = new Study_AdUserMap();
-			$studyAdUserMap->user_id = $this->user_id;
-			$studyAdUserMap->starbar_id = $this->starbar_id;
-			$studyAdUserMap->study_ad_id = $studyAdId;
-			$studyAdUserMap->url = $this->url;
-			$studyAdUserMap->type = 'click';
-			$studyAdUserMap->save();
+			if ($studyAd->loadDataByUniqueFields(array("id" => $studyAdId))) { // Check if study_ad record exists
+				$studyAdUserMap = new Study_AdUserMap();
+				$studyAdUserMap->user_id = $this->user_id;
+				$studyAdUserMap->starbar_id = $this->starbar_id;
+				$studyAdUserMap->study_ad_id = $studyAdId;
+				$studyAdUserMap->url = $this->url;
+				$studyAdUserMap->type = 'click';
+				$studyAdUserMap->save();
+			}
 		}
 
 		return $this->_resultType(true);

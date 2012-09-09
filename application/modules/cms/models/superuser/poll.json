@@ -1,0 +1,183 @@
+{
+	"table": [
+		{
+			"comment": "This json is for polls, a subset of Surveys",
+			"viewname": "Poll",
+			"where": "type='poll'",
+			"tablename": "survey",
+			"model": "Survey",
+			"permissions":[
+				"allowgrid",
+				"allowadd",
+				"allowdelete",
+				"allowedit",
+				"allowdetails"
+			]
+		}
+	],
+	"columns": [
+		{
+			"colname": "id",
+			"type": "hidden",
+
+			"displaywhen": [
+				"grid",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "starbar_id",
+			"filterwidth":40,
+			"label": "Starbar",
+			"type": "fkey",
+			"lookuptable": "starbar",
+			"lookupfield": "id",
+			"lookuplabel": "label",
+			"default": "--Please Select a starbar--",
+			"displaywhen": [
+				"add",
+				"grid",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "report_cell_id",
+			"filterwidth":40,
+			"label": "Users who can see this",
+			"help": "Leaving this blank means all users can see the content",
+			"type": "fkey",
+			"lookuptable": "report_cell",
+			"lookupfield": "id",
+			"lookuplabel": "CONCAT('(', category, ') ', title)",
+			"lookuporder": "category ASC, id ASC",
+			"default": "--Please Select a user group--",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "user_id",
+			"type": "hidden",
+			"value": 1,
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "type",
+			"type": "hidden",
+			"value": "poll",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "origin",
+			"type": "hidden",
+			"value": "SurveyGizmo",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "status",
+			"type": "list",
+			"listoptions": [
+				"active",
+				"inactive"
+			],
+			"default": "active",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "title",
+			"type": "text",
+			"label": "Poll Title",
+			"width": 600,
+			"filterwidth":250,
+			"validate": [
+				"notnull",
+				"minlength(10)"
+			],
+			"displaywhen": [
+				"add",
+				"grid",
+				"delete",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "reward_category",
+			"type": "list",
+			"listoptions": [
+				"standard",
+				"premium"
+			],
+			"default": "standard",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		},
+		{
+			"colname": "external_id",
+			"type": "number",
+			"width":40,
+			"filterwidth":40,
+			"help": "Used for polls/surveys only",
+			"displaywhen": [
+				"add",
+				"detail",
+				"grid",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "external_key",
+			"type": "text",
+			"width": 360,
+			"help": "Used for polls/surveys only",
+			"displaywhen": [
+				"add",
+				"detail",
+				"edit"
+			]
+		}
+	],
+	"subobjects": [
+		{
+			"Title":"Starbars",
+			"table": "starbar_survey_map",
+			"fk": "survey_id"
+		},
+		{
+			"Comment": "Even when using a view, the fk should point to the fk on the real table",
+			"Title": "Questions",
+			"table": "survey_question",
+			"fk": "survey_id"
+		}
+	]
+}

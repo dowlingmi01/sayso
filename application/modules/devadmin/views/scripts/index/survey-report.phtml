@@ -23,6 +23,7 @@ div.chart {
 }
 
 div#reportSettings {
+	position: relative;
 	width: 980px;
 	border: 1px solid #666;
 	background-color: #FFF;
@@ -53,6 +54,12 @@ select#survey_id {
 .jqplot-yaxis-tick {
 	background-color: #FFF;
 	z-index: 300;
+}
+
+#reportSubmit {
+	position: absolute;
+	right: 22px;
+	bottom: 22px;
 }
 </style>
 <script type="text/javascript">
@@ -117,6 +124,10 @@ select#survey_id {
 <form id="reportForm" action="survey-report" method="get">
 
 	<div id="reportSettings">
+		<div id="reportSubmit">
+			<input type="button" onclick="$('#reportForm').attr('action', 'survey-report'); $('#reportForm').submit();" value="View Report">
+			<input type="button" onclick="$('#reportForm').attr('action', 'survey-csv-export'); $('#reportForm').submit();" value="Download CSV Report">
+		</div>
 		<b>Filter content (not a filter for users!):</b><br />
 		Content from:
 		<select id="starbar_id" name="starbar_id" onchange="loadSurveysIntoSelect(parseInt($('select#survey_id').val()));">
@@ -133,12 +144,12 @@ select#survey_id {
 		</select><br /><br />
 
 		<b>Select content to report on:</b><br />
-		<select id="survey_id" name="survey_id" onchange="$('#reportForm').submit();">
+		<select id="survey_id" name="survey_id">
 			<option value="0">Choose a <?= ($this->survey_type ? $this->survey_type : "starbar and type of content first!") ?></option>
 		</select><br /><br />
 
 		<b>Select user group to report on:</b><br />
-		<select name="report_cell_id" onchange="$('#reportForm').submit();">
+		<select name="report_cell_id">
 			<option value="">Choose a group</option>
 			<? foreach ($this->report_cells as $reportCell) { ?>
 				<? if ($this->report_cell_id == $reportCell->id) { $chosenReportCell = $reportCell; } ?>>

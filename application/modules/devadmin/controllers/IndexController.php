@@ -1022,12 +1022,13 @@ class Devadmin_IndexController extends Api_GlobalController
 		$surveyQuestions = null;
 		$calculationArray = array();
 
+		$survey = new Survey();
+
 		if ($surveyId) {
-			$survey = new Survey();
 			$survey->loadData($surveyId);
 		}
 
-		if ($surveyId && $reportCellId) {
+		if ($survey->id && $reportCellId) {
 			$reportCellSurvey = new ReportCell_Survey();
 			$reportCellSurvey->loadDataByUniqueFields(array("report_cell_id" => $reportCellId, "survey_id" => $surveyId));
 
@@ -1096,6 +1097,162 @@ class Devadmin_IndexController extends Api_GlobalController
 		$reportCells = new ReportCellCollection();
 		$reportCells->loadAllReportCells();
 		$this->view->report_cells = $reportCells;
+	}
+
+	public function surveyCsvExportAction () {
+		// increase memory limit for this session only
+		ini_set('memory_limit', '512M');
+
+		$request = $this->getRequest();
+		$surveyId = (int) $request->getParam("survey_id", false);
+		$reportCellId = (int) $request->getParam("report_cell_id", 1);
+		$surveyType = $request->getParam("survey_type");
+		$starbarId = (int) $request->getParam("starbar_id");
+
+		$surveyQuestions = null;
+		$calculationArray = array();
+		$survey = new Survey();
+		$reportCell = new ReportCell();
+
+		if ($surveyId) {
+			$survey->loadData($surveyId);
+		}
+
+		if ($reportCellId) {
+			$reportCell->loadData($reportCellId);
+		}
+
+		if ($survey->id && $reportCell->id) {
+			$reportCellSurvey = new ReportCell_Survey();
+			$reportCellSurvey->loadDataByUniqueFields(array("report_cell_id" => $reportCellId, "survey_id" => $surveyId));
+
+			// Survey/report cell combination has never been processed before (or was deleted)
+			if (!$reportCellSurvey->id) {
+				$reportCellSurvey->report_cell_id = $reportCellId;
+				$reportCellSurvey->survey_id = $surveyId;
+				$reportCellSurvey->save();
+			}
+
+			if ($reportCellSurvey->id) {
+				// Survey has been taken since the last time it was processed, so re-process it
+				if ($reportCellSurvey->last_processed < $survey->last_response) {
+					$reportCellSurvey->process();
+				}
+
+				$surveyQuestions = new Survey_QuestionCollection();
+				$surveyQuestions->loadAllQuestionsForSurvey($surveyId);
+
+				// Place survey questions into an array, where the key is the survey_question_id
+				foreach ($surveyQuestions as $surveyQuestion) {
+					$calculationArray[$surveyQuestion->id] = array();
+				}
+
+				$surveyQuestionChoices = new Survey_QuestionChoiceCollection();
+				$surveyQuestionChoices->loadAllChoicesForSurvey($surveyId);
+
+				foreach ($surveyQuestionChoices as $surveyQuestionChoice) {
+					$surveyQuestions[$surveyQuestionChoice->survey_question_id]->option_array[$surveyQuestionChoice->id] = $surveyQuestionChoice;
+				}
+
+				$reportCellSurveyCalculations = new ReportCell_SurveyCalculationCollection();
+				$reportCellSurveyCalculations->loadAllCalculationsForReportCellSurvey($reportCellSurvey->id);
+
+				foreach ($reportCellSurveyCalculations as $reportCellSurveyCalculation) {
+					switch ($reportCellSurveyCalculation->parent_type) {
+						case "survey_question":
+							$calculationArray[$reportCellSurveyCalculation->survey_question_id][0] = $reportCellSurveyCalculation;
+							break;
+
+						case "survey_question_choice":
+							$calculationArray[$reportCellSurveyCalculation->survey_question_id][$reportCellSurveyCalculation->survey_question_choice_id] = $reportCellSurveyCalculation;
+							break;
+					}
+				}
+
+				$csvHeader = array();
+				$csvEmptyRow = array();
+
+				// Prepare arrays for CSV
+				foreach ($surveyQuestions AS $surveyQuestion) {
+					$questionCalculation = $calculationArray[$surveyQuestion->id][0];
+					if ($questionCalculation->number_of_responses) {
+						if ($surveyQuestion->piped_from_survey_question_id) {
+							$surveyQuestion->option_array = $surveyQuestions[$surveyQuestion->piped_from_survey_question_id]->option_array;
+						}
+						if (count($surveyQuestion->option_array)) {
+							foreach ($surveyQuestion->option_array as $surveyQuestionChoice) {
+								$csvHeader[$surveyQuestion->id . '-' . $surveyQuestionChoice->id] = "\"" . str_replace("\"", "\\\"", $surveyQuestion->title . ' - ' . $surveyQuestionChoice->title) . "\"";
+								$csvEmptyRow[$surveyQuestion->id . '-' . $surveyQuestionChoice->id] = false;
+							}
+						} else {
+							$csvHeader[$surveyQuestion->id . '-' . 0] = "\"" . str_replace("\"", "\\\"", $surveyQuestion->title) . "\"";
+							// Use false so isset() below (line ~1235) returns true if the row exists, so we don't skip columns, and we don't insert columns that don't exist
+							$csvEmptyRow[$surveyQuestion->id . '-' . 0] = false;
+						}
+					}
+				}
+
+				// Grab CSV responses from DB
+
+				if ($reportCell->id == 1) {
+					$surveyResponsesUserFilterClause = "";
+				} else {
+					$surveyResponsesUserFilterClause = " WHERE sr.user_id IN (" . trimCommas($reportCell->comma_delimited_list_of_users) . ") ";
+				}
+				$surveyResponsesSql = "
+					SELECT sr.user_id AS user_id, GROUP_CONCAT(CONCAT(sqr.survey_question_id, ',', IFNULL(sqr.survey_question_choice_id, 0), ',\"', IFNULL(sqr.response_csv, ''), '\"')) AS user_response
+					FROM survey_question_response sqr
+					INNER JOIN survey_response sr
+						ON sqr.survey_response_id = sr.id
+					INNER JOIN survey_question sq
+						ON sqr.survey_question_id = sq.id
+						AND sq.survey_id = ?
+					" . $surveyResponsesUserFilterClause . "
+					GROUP BY sqr.survey_response_id
+					ORDER BY sr.user_id
+				";
+				$surveyResponsesData = Db_Pdo::fetchAll($surveyResponsesSql, $surveyId);
+
+				if ($surveyResponsesData) {
+					$pstTime = new DateTime("now", new DateTimeZone('PDT'));
+					$filename = $pstTime->format("Ymd-Hi") . " ". $survey->title . " - " . $reportCell->title . ".csv";
+
+					// HTTP Header for CSV file
+					header("Content-type: text/csv");
+					header("Content-Disposition: attachment; filename=".$filename);
+					header("Pragma: no-cache");
+					header("Expires: 0");
+
+					// CSV Header Row
+					echo "User ID," . implode(',', $csvHeader) . "\n";
+
+					foreach ($surveyResponsesData as $surveyResponse) {
+						$userId = $surveyResponse['user_id'];
+						$responseArray = str_getcsv($surveyResponse['user_response']);
+						// Data returned by DB in the format A,B,C,A,B,C,A,B,C,... for each response (i.e. all responses for one survey for one user)
+						// A = question_id
+						// B = choice_id (0 for none)
+						// C = "csv value of response"
+						$numberOfResponses = count($responseArray);
+						$csvRow = $csvEmptyRow;
+
+						$i = 0;
+						if ($numberOfResponses && ($numberOfResponses % 3) == 0) {
+							// prepare the csv line/row
+							while ($i < $numberOfResponses) {
+								if (isset($csvRow[$responseArray[$i] . '-' . $responseArray[$i+1]]))
+									$csvRow[$responseArray[$i] . '-' . $responseArray[$i+1]] = $responseArray[$i+2];
+								$i += 3;
+							}
+							// echo the csv line
+							echo $userId . ',' . implode(',', $csvRow) . "\n";
+						}
+					}
+
+					exit;
+				}
+			}
+		}
 	}
 
 

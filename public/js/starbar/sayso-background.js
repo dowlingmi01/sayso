@@ -183,13 +183,13 @@ function ajaxWithAuth(options) {
 	options.data.user_key = sayso.state.user.key;
 
 	options.dataType = 'json';
-		
+
 	options.url = 'http://' + sayso.baseDomain + '/' + options.url;
 	options.error = options.error || showErr;
 	var success = options.success;
 	if( success )
 		options.success = function( response ) { success(response); };
-	
+
 	return forge.request.ajax(options);
 }
 function updateGame( content ) {
@@ -225,6 +225,15 @@ function saveState() {
 function addAdTarget( adTarget ) {
 	sayso.state.adTargets[adTarget.type + adTarget.typeId] = adTarget;
 }
+function deleteAdTargets( studyAdIdArray ) {
+	for (var key in sayso.state.adTargets) {
+		for (var i = 0; i < studyAdIdArray.length; i++) {
+			if (sayso.state.adTargets[key].id == studyAdIdArray[i]) {
+				delete sayso.state.adTargets[key];
+			}
+		}
+	}
+}
 function onboardingComplete() {
 	ajaxWithAuth({
 		url: 'api/starbar/set-onboard-status',
@@ -249,7 +258,7 @@ sayso.switchStarbar = function( starbarId ) {
 			getStarbar( starbarId, broadcastSwitch );
 	} else
 		ajaxWithAuth({
-			url: 'api/starbar/add', 
+			url: 'api/starbar/add',
 			data: { new_starbar_id: starbarId },
 			success: function( response ) {
 				if( response.status == 'success') {
@@ -263,7 +272,7 @@ function getStudies( ignored, callback ) {
 	if( !sayso.studiesReq && (new Date()) - sayso.state.studiesTS > sayso.state.intervalStudies * 1000 ) {
 		sayso.studiesReq = true;
 		ajaxWithAuth({
-			url: 'api/study/get-all', 
+			url: 'api/study/get-all',
 			success: function( response ) {
 				sayso.studiesReq = false;
 				if( response.status == 'success') {
@@ -287,6 +296,7 @@ forge.message.listen("update-profile", updateProfile, showErr);
 forge.message.listen("set-visibility", setVisibility, showErr);
 forge.message.listen("starbar-switch", sayso.switchStarbar, showErr);
 forge.message.listen("add-ad-target", addAdTarget, showErr);
+forge.message.listen("delete-ad-targets", deleteAdTargets, showErr);
 forge.message.listen("onboarding-complete", onboardingComplete, showErr);
 forge.message.listen("get-studies", getStudies, showErr);
 forge.message.listen("get-script", getScript, showErr);

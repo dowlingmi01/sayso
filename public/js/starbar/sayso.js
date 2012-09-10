@@ -310,6 +310,7 @@ $SQ(function () {
 				},
 				success : function (response) {
 					log('ADjuster: Click Through (' + adTarget.type + '/' + adTarget.typeId + ')');
+					forge.message.broadcastBackground('delete-ad-targets', studyAdClicks);
 				}
 			});
 		}

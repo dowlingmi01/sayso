@@ -5,7 +5,7 @@ class ReportCellCollection extends RecordCollection
 	public function loadAllReportCells() {
 		$sql = "SELECT *
 				FROM report_cell
-				ORDER BY category ASC, id ASC
+				ORDER BY FIELD(category, 'Internal', 'Panel', 'Gender', 'Age Range', 'Marital Status', 'Education', 'Ethnicity', 'Income', 'Parental Status', 'Geography', 'Custom', 'Study'), id ASC
 				";
 		$reportCells = Db_Pdo::fetchAll($sql);
 

@@ -1,0 +1,1 @@
+ALTER TABLE report_cell CHANGE category category enum('Internal', 'Custom', 'Panel', 'Gender', 'Age Range', 'Marital Status', 'Education', 'Ethnicity', 'Income', 'Parental Status', 'Study', 'Geography') NOT NULL DEFAULT 'Internal';

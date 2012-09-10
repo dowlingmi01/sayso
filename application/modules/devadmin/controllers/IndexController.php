@@ -621,9 +621,9 @@ class Devadmin_IndexController extends Api_GlobalController
 		$goodId = (int) $request->getParam('named_good_id');
 
 		switch ($goodId) {
-			case 3462001:
-				$startTime = mktime(0, 0, 0, 5, 9, 2012);
-				$endTime = mktime(23, 59, 59, 6, 15, 2012);
+			case 3810011:
+				$startTime = mktime(0, 0, 0, 7, 1, 2012);
+				$endTime = mktime(23, 59, 59, 9, 10, 2012);
 				break;
 			default:
 				$goodId = false;
@@ -649,7 +649,7 @@ class Devadmin_IndexController extends Api_GlobalController
 					if ($cache->test()) {
 						$transactions = array_merge($transactions, $cache->load());
 					} else {
-						$client = Gaming_BigDoor_HttpClient::getInstance('43bfbce697bd4be99c9bf276f9c6b086', '35eb12f3e87144a0822cf1d18d93d867');
+						$client = Gaming_BigDoor_HttpClient::getInstance('db28806caf654e6bbe6b79a103ba50bb', '49a400cfbbed457993798d3c1774f953');
 						$client->setParameterGet('max_records', 10000);
 						$client->setParameterGet('named_good', $goodId);
 						$client->setParameterGet('start_time', $stepStartTime);

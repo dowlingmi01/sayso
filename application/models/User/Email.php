@@ -27,5 +27,9 @@ class User_Email extends Record implements Titled
 			return null;
 		}
 	}
+
+	static public function getTestEmailPatterns() {
+		return array("/.*@say.so/", "/.*@saysollc.com/", "/.*@interpretllc.com/");
+	}
 }
 

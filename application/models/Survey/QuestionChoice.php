@@ -20,6 +20,8 @@ class Survey_QuestionChoice extends Record
 		if ($commaDelimitedUserIdFilterList) {
 			// add to $sql
 			$sql .= " AND sr.user_id IN (" . trimCommas($commaDelimitedUserIdFilterList) . ")";
+		} else {
+			$sql .= " AND sr.user_id IN (SELECT id FROM user WHERE type != 'test')";
 		}
 
 		$result = Db_Pdo::fetch($sql, $surveyQuestionId, $this->id);

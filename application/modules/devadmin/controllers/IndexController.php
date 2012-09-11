@@ -1002,6 +1002,42 @@ class Devadmin_IndexController extends Api_GlobalController
 	}
 
 
+	public function surveyResponsesAction () {
+		$request = $this->getRequest();
+		$surveyId = (int) $request->getParam("survey_id", false);
+		$survey = new Survey();
+		
+		if ($surveyId) {
+			$survey->loadData($surveyId);
+		}
+
+		if ($survey->id) {
+			$sql = "SELECT sr.user_id, sr.id FROM survey_response sr INNER JOIN user u ON sr.user_id = u.id WHERE sr.survey_id = ? ORDER BY sr.user_id";
+			$responses = Db_Pdo::fetchAll($sql, $surveyId);
+
+			if ($responses) {
+				$pstTime = new DateTime("now", new DateTimeZone('PDT'));
+				$filename = $pstTime->format("Ymd-Hi") . " ". $survey->title . " - Responses.csv";
+
+				// HTTP Header for CSV file
+				header("Content-type: text/csv");
+				header("Content-Disposition: attachment; filename=".$filename);
+				header("Pragma: no-cache");
+				header("Expires: 0");
+
+				// CSV Header Row
+				echo "User ID,srid\n";
+
+				foreach ($responses as $response) {
+					echo $response['user_id'] . "," . $response['id'] . "\n";
+				}
+
+				exit;
+			}
+		}
+	}
+
+
 	public function surveyReportAction () {
 		// increase memory limit for this session only
 		ini_set('memory_limit', '512M');

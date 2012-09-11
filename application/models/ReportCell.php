@@ -62,6 +62,10 @@ class ReportCell extends Record
 						$tableName = "survey_question_response";
 						$tableReference = "sqr" . $conditionCounter;
 						break;
+					case "survey":
+						$tableName = "survey_response";
+						$tableReference = "sr" . $conditionCounter;
+						break;
 					case "starbar":
 						$tableName = "starbar_user_map";
 						$tableReference = "sum" . $conditionCounter;
@@ -152,6 +156,17 @@ class ReportCell extends Record
 							$conditionSql .= " AND " . $tableReference . ".data_type = '" . $reportCellUserCondition->condition_type . "')";
 						}
 						break;
+					case "survey":
+						switch ($reportCellUserCondition->comparison_type) {
+							case "=":
+							case "!=":
+								$conditionSql = "(" . $tableReference . ".survey_id = " . $reportCellUserCondition->compare_survey_id;
+								$conditionSql .= $tableReference . ".status " . $reportCellUserCondition->comparison_type . " '" . $reportCellUserCondition->compare_string . "')";
+								break;
+							default:
+								break;
+						}
+						break;
 					case "starbar":
 						switch ($reportCellUserCondition->comparison_type) {
 							case "=":
@@ -220,6 +235,7 @@ class ReportCell extends Record
 							break;
 						case "starbar_user_map":
 						case "study_ad_user_map":
+						case "survey_response":
 							switch ($this->condition_type) {
 								case "or":
 									if ($conditionsSql) $conditionsSql .= " UNION ";
@@ -262,13 +278,20 @@ class ReportCell extends Record
 			if ($conditionsSql) {
 				switch ($this->condition_type) {
 					case "or":
-						$sql = $conditionsSql;
+						$sql = "
+							SELECT user_id
+							FROM (" . $conditionsSql . ") AS all_matching_users
+							INNER JOIN user u
+								ON u.id = all_matching_users.user_id
+								AND u.type != 'test'
+						";
 						break;
 					case "and":
 						$sql = "
 							SELECT DISTINCT(u.id)
 							FROM user u
 							" . $conditionsSql . "
+							WHERE u.type != 'test'
 						";
 						break;
 					default:
@@ -289,7 +312,7 @@ class ReportCell extends Record
 				}
 			}
 		} else { // report cell id = 1
-			$sql = "SELECT count(id) AS userCount FROM user";
+			$sql = "SELECT count(id) AS userCount FROM user WHERE type != 'test'";
 			$results = Db_Pdo::fetch($sql);
 
 			if (isset($results['userCount'])) {

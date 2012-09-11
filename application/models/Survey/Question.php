@@ -50,6 +50,8 @@ class Survey_Question extends Record
 
 		if (trimCommas($commaDelimitedUserIdFilterList)) {
 			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id AND sr.user_id IN (" . trimCommas($commaDelimitedUserIdFilterList) . ") ";
+		} else { // filter out test users
+			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id INNER JOIN user u ON sr.user_id = u.id AND u.type != 'test' ";
 		}
 
 		// Select the field, and order the responses by that field so we can calculate the median
@@ -88,6 +90,8 @@ class Survey_Question extends Record
 
 		if (trimCommas($commaDelimitedUserIdFilterList)) {
 			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id AND sr.user_id IN (" . trimCommas($commaDelimitedUserIdFilterList) . ") ";
+		} else { // filter out test users
+			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id INNER JOIN user u ON sr.user_id = u.id AND u.type != 'test' ";
 		}
 
 		// Select the field, and order the responses by that field so we can calculate the median
@@ -117,6 +121,8 @@ class Survey_Question extends Record
 
 		if (trimCommas($commaDelimitedUserIdFilterList)) {
 			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id AND sr.user_id IN (" . trimCommas($commaDelimitedUserIdFilterList) . ") ";
+		} else { // filter out test users
+			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id INNER JOIN user u ON sr.user_id = u.id AND u.type != 'test' ";
 		}
 
 		$sql = "SELECT COUNT(sqr." . $field . ") AS number_of_responses FROM survey_question_response sqr " . $joinClause . " WHERE sqr.survey_question_id = ?";
@@ -157,6 +163,8 @@ class Survey_Question extends Record
 
 		if (trimCommas($commaDelimitedUserIdFilterList)) {
 			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id AND sr.user_id IN (" . trimCommas($commaDelimitedUserIdFilterList) . ") ";
+		} else { // filter out test users
+			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id INNER JOIN user u ON sr.user_id = u.id AND u.type != 'test' ";
 		}
 
 		// Select the field, and order the responses by that field so we can calculate the median

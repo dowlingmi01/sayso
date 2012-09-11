@@ -3,47 +3,47 @@
 class User extends Record implements Titled
 {
 	protected $_tableName = 'user';
-	
+
 	/**
 	 * @var User_Email
 	 */
 	protected $_email;
-	
+
 	/**
 	 * @var Preference_General
 	 */
 	protected $_generalPreference;
-	
+
 	/**
 	 * @var Preference_SurveyTypeCollection
 	 */
 	protected $_surveyTypes;
-	
+
 	/**
 	 * @var User_Social
 	 */
 	protected $_userSocials;
-	
+
 	/**
 	 * Plain text password as provided by user
 	 * - stored as a protected property so we
 	 *   we don't confuse this with the md5'd
 	 *   (and salted) 'password' field
-	 *   
+	 *
 	 * @var string
 	 */
 	protected $_plainTextPassword;
-	
+
 	public function getTitle ()
 	{
 		if ($this->username) return $this->username;
 		return Game_Starbar::getInstance()->getGamer()->getHighestLevel()->title;
 	}
-	
+
 	public function setEmail (User_Email $email) {
 		$this->_email = $email;
 	}
-	
+
 	public function getEmail () {
 		if (!$this->_email) {
 			if ($this->primary_email_id) {
@@ -55,33 +55,33 @@ class User extends Record implements Titled
 		}
 		return $this->_email;
 	}
-	
+
 	public function setPreference (Preference_General $pref) {
 		$this->_generalPreference = $pref;
 	}
-	
+
 	public function getPreference () {
 		if (!$this->_generalPreference) {
 			// @todo look it up
 		}
 		return $this->_generalPreference;
 	}
-	
+
 	public function setSurveyTypes (Preference_SurveyTypeCollection $surveyTypes) {
 		$this->_surveyTypes = $surveyTypes;
 	}
-	
+
 	public function getSurveyTypes () {
 		if (!$this->_surveyTypes) {
 			// @todo look it up
 		}
 		return $this->_surveyTypes;
 	}
-	
+
 	public function setUserSocials (User_SocialCollection $userSocials) {
 		$this->_userSocials = $userSocials;
 	}
-	
+
 	public function getUserSocials () {
 		if (!$this->_userSocials) {
 			$userSocials = new User_SocialCollection();
@@ -90,36 +90,36 @@ class User extends Record implements Titled
 		}
 		return $this->_userSocials;
 	}
-	
+
 	public function loadUserSocials () {
 		$userSocials = new User_SocialCollection();
 		$userSocials->loadForUser($this->getId());
 		$this->_userSocials = $userSocials;
 	}
-	
+
 	/**
 	 * Set the plain text password as provided by the user
 	 * for instance, on registration or for password change
-	 * 
+	 *
 	 * @param string $password
 	 */
 	public function setPlainTextPassword ($password)
 	{
 		$this->_plainTextPassword = $password;
 	}
-	
+
 	/**
 	 * Override save() to handle
 	 * - generating new password hash (as necessary)
 	 * - saving aggregate records (e.g. email)
-	 * - updating primary_*_id columns 
-	 * 
+	 * - updating primary_*_id columns
+	 *
 	 * @see Record::save()
 	 */
 	public function save () {
-		
-		if ($this->_plainTextPassword) { // new user password OR password change 
-			
+
+		if ($this->_plainTextPassword) { // new user password OR password change
+
 			// ensure password salt and the password are always generated AND
 			// inserted at the same time, so password can be rebuilt for login
 			$this->password_salt = createRandomCode(3);
@@ -130,6 +130,18 @@ class User extends Record implements Titled
 		if ($this->_email) {
 			$this->_email->user_id = $this->getId();
 			$this->_email->save();
+
+			// check if this is a test email address, if so, mark the user as such (unless they already are)
+			if ($this->type != 'test') {
+				$testEmailPatterns = User_Email::getTestEmailPatterns();
+				foreach ($testEmailPatterns as $testEmailPattern) {
+					if (preg_match($testEmailPattern, $this->_email->email) == 1) {
+						$this->type = 'test';
+						break; // exit the loop
+					}
+				}
+			}
+
 			// update primary email address & re-save the User
 			$this->primary_email_id = $this->_email->getId();
 			parent::save();
@@ -173,7 +185,7 @@ class User extends Record implements Titled
 		);
 		return array_intersect_key($this->getData(), array_flip($fields));
 	}
-	
+
 	public function exportProperties($parentObject = null) {
 		$props = array(
 			'_email' => $this->getEmail()->getTitle(),

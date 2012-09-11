@@ -1006,7 +1006,7 @@ class Devadmin_IndexController extends Api_GlobalController
 		$request = $this->getRequest();
 		$surveyId = (int) $request->getParam("survey_id", false);
 		$survey = new Survey();
-		
+
 		if ($surveyId) {
 			$survey->loadData($surveyId);
 		}
@@ -1018,6 +1018,8 @@ class Devadmin_IndexController extends Api_GlobalController
 			if ($responses) {
 				$pstTime = new DateTime("now", new DateTimeZone('PDT'));
 				$filename = $pstTime->format("Ymd-Hi") . " ". $survey->title . " - Responses.csv";
+				$filename = str_replace(",", "", $filename);
+				$filename = str_replace(".", "", $filename);
 
 				// HTTP Header for CSV file
 				header("Content-type: text/csv");
@@ -1252,6 +1254,8 @@ class Devadmin_IndexController extends Api_GlobalController
 				if ($surveyResponsesData) {
 					$pstTime = new DateTime("now", new DateTimeZone('PDT'));
 					$filename = $pstTime->format("Ymd-Hi") . " ". $survey->title . " - " . $reportCell->title . ".csv";
+					$filename = str_replace(",", "", $filename);
+					$filename = str_replace(",.", "", $filename);
 
 					// HTTP Header for CSV file
 					header("Content-type: text/csv");

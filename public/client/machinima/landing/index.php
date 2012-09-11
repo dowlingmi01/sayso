@@ -26,7 +26,7 @@
 <div id="wrapper">
 	<div id="header">
 		<div id="logo"><img src="images/logo.png" alt="Machinima Say.So" /></div><!-- #logo -->
-		<div class="community-link"><a href="#">Other Communities</a></div><!-- .community-link -->
+		<div class="community-link"><!--<a href="#">Other Communities</a>--></div><!-- .community-link -->
 	</div><!-- #header -->
 	<div id="main">
 
@@ -81,8 +81,8 @@
 				<div class="slides">
 					<div class="slide"><img src="images/img_slide_3a.png" alt="" /></div>
 					<div class="slide"><img src="images/img_slide_3b.png" alt="" /></div>
-                   
-					
+
+
 				</div><!-- .slides -->
 				<div class="slide-nav">
 					<span class="prev">Prev</span>
@@ -114,7 +114,7 @@
 	  			<form>
 	  				<input type="submit" value="Install" id="btn-install" class="grab-it" />
 	  			</form>
-	  			
+
 			  </div>
 			  <div id="after-redirect" style="display: none;">
 	  			<p id="install-instructions">Please allow the browser to install the extension.</p>

@@ -66,6 +66,9 @@ class Api_UserStateController extends Api_GlobalController
 			$userState->reload();
 		} else if( !$userState->id ) {
 			return $this->_resultType(false);
+		} else if( $userState->starbar_id == 2 ) {
+        	$starbar->loadData(3);
+			$userState->addStarbar($starbar, $this->_request);
 		}
 
 		$userState->base_domain = BASE_DOMAIN;

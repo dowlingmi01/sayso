@@ -124,29 +124,31 @@
             return new String(q).toString()
         }
         var r = [];
-        var p = function(v, u) {
-                if (v instanceof Array) {
-                    var t = (u ? u : "") + "[]";
-                    for (var s in v) {
-                        if (!v.hasOwnProperty(s)) {
+        var p = function(w, v) {
+                if (w instanceof Array) {
+                    var t = 0;
+                    for (var s in w) {
+                        var u = (v ? v : "") + "[" + t + "]";
+                        t += 1;
+                        if (!w.hasOwnProperty(s)) {
                             continue
                         }
-                        p(v[s], t)
+                        p(w[s], u)
                     }
                 } else {
-                    if (v instanceof Object) {
-                        for (var s in v) {
-                            if (!v.hasOwnProperty(s)) {
+                    if (w instanceof Object) {
+                        for (var s in w) {
+                            if (!w.hasOwnProperty(s)) {
                                 continue
                             }
-                            var t = s;
-                            if (u) {
-                                t = u + "[" + s + "]"
+                            var u = s;
+                            if (v) {
+                                u = v + "[" + s + "]"
                             }
-                            p(v[s], t)
+                            p(w[s], u)
                         }
                     } else {
-                        r.push(encodeURIComponent(u) + "=" + encodeURIComponent(v))
+                        r.push(encodeURIComponent(v) + "=" + encodeURIComponent(w))
                     }
                 }
             };
@@ -226,6 +228,19 @@
     m.contact = {
         select: function(q, p) {
             h.priv.call("contact.select", {}, q, p)
+        }
+    };
+    m.display = {
+        orientation: {
+            forcePortrait: function(q, p) {
+                h.disabledModule(p, "display")
+            },
+            forceLandscape: function(q, p) {
+                h.disabledModule(p, "display")
+            },
+            allowAny: function(q, p) {
+                h.disabledModule(p, "display")
+            }
         }
     };
     m.document = {

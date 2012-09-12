@@ -1,8 +1,8 @@
 {
 	"name": "Say.So",
-	"version": "2.0.4",
+	"version": "2.0.5",
 	"description": "A fun way to have your influence recognized, and your opinions rewarded!",
-	"permissions": ["http://*/*", "https://*/*", "tabs", "notifications"],
+	"permissions": ["http://*/*", "https://*/*", "tabs", "notifications", "webRequest"],
 	"background": {"page": "forge.html"},
 	"homepage_url": "http://www.say.so/",
 	"content_security_policy": "script-src 'self' https://app.saysollc.com; object-src 'self'",

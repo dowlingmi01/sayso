@@ -1,1 +1,1 @@
-var sayso = { baseDomain: 'app.saysollc.com', version: '2.0.4' }; 
+var sayso = { baseDomain: 'app.saysollc.com', version: '2.0.5' }; 

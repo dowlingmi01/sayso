@@ -2,7 +2,7 @@
 	"name": "##FileName##",
 	"version": "##ProductVersion##",
 	"description": "A fun way to have your influence recognized, and your opinions rewarded!",
-	"permissions": ["http://*/*", "https://*/*", "tabs", "notifications"],
+	"permissions": ["http://*/*", "https://*/*", "tabs", "notifications", "webRequest"],
 	"background": {"page": "forge.html"},
 	"homepage_url": "http://www.say.so/",
 	"content_security_policy": "script-src 'self' https://##BaseDomain##; object-src 'self'",

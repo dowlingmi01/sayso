@@ -30,22 +30,22 @@ Page instfiles
 
 # Installer attributes
 RequestExecutionLevel admin
-OutFile "Say.So-2.0.4-x86.exe"
+OutFile "Say.So-2.0.5-x86.exe"
 InstallDir "$PROGRAMFILES\Say.So"
 DirText "This will install Say.So on your computer. Choose a directory"
 CRCCheck on
 XPStyle on
 
 ShowInstDetails show
-!define VERSION_SHORT "2.0.4"
+!define VERSION_SHORT "2.0.5"
 ${VersionCompleteXXXX} ${VERSION_SHORT} VIPV
 VIProductVersion ${VIPV}
 VIAddVersionKey ProductName "Say.So"
-VIAddVersionKey ProductVersion "2.0.4"
+VIAddVersionKey ProductVersion "2.0.5"
 VIAddVersionKey CompanyName "Say.So LLC"
 VIAddVersionKey LegalCopyright "(c) Say.So LLC"
 VIAddVersionKey CompanyWebsite "http://www.say.so/"
-VIAddVersionKey FileVersion "2.0.4"
+VIAddVersionKey FileVersion "2.0.5"
 VIAddVersionKey FileDescription "Say.So"
 
 # Installer 
@@ -114,7 +114,7 @@ Section
         WriteRegStr   HKLM "${ARP}" "DisplayName"      "Say.So (remove only)"
         WriteRegStr   HKLM "${ARP}" "UninstallString"  "$INSTDIR\Uninstall.exe" 
         WriteRegStr   HKLM "${ARP}" "Publisher"        "Say.So LLC"
-        WriteRegStr   HKLM "${ARP}" "DisplayVersion"   "2.0.4"
+        WriteRegStr   HKLM "${ARP}" "DisplayVersion"   "2.0.5"
         WriteRegDWORD HKLM "${ARP}" "EstimatedSize"    "${ESTIMATED_SIZE}"
         
 

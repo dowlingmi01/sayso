@@ -2,6 +2,8 @@
 
 class ReportCell extends Record
 {
+	const ALL_USERS_REPORT_CELL = 1;
+
 	protected $_tableName = 'report_cell';
 
 	public function processAllSurveys() {
@@ -42,7 +44,18 @@ class ReportCell extends Record
 
 		$conditionsSql = "";
 
-		if ($this->id > 1) { // The first report cell contains all users (no conditions)
+		if ($this->id == self::ALL_USERS_REPORT_CELL) { // the all-users bucket
+			$sql = "SELECT count(id) AS userCount FROM user WHERE type != 'test'";
+			$results = Db_Pdo::fetch($sql);
+
+			if (isset($results['userCount'])) {
+				$this->number_of_users = $results['userCount'];
+			}
+			$this->comma_delimited_list_of_users = "";
+			$this->conditions_processed = 1; // Refers to conditions being processed
+			$this->save();
+
+		} else { // all other buckets
 			$reportCellUserConditions = new ReportCell_UserConditionCollection();
 			$reportCellUserConditions->loadAllForReportCell($this->id);
 			$conditionCounter = 1;
@@ -311,16 +324,6 @@ class ReportCell extends Record
 					$this->save();
 				}
 			}
-		} else { // report cell id = 1
-			$sql = "SELECT count(id) AS userCount FROM user WHERE type != 'test'";
-			$results = Db_Pdo::fetch($sql);
-
-			if (isset($results['userCount'])) {
-				$this->number_of_users = $results['userCount'];
-			}
-			$this->comma_delimited_list_of_users = "";
-			$this->conditions_processed = 1; // Refers to conditions being processed
-			$this->save();
 		}
 	}
 

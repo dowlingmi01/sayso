@@ -1012,7 +1012,7 @@ class Devadmin_IndexController extends Api_GlobalController
 		}
 
 		if ($survey->id) {
-			$sql = "SELECT sr.user_id, sr.id FROM survey_response sr INNER JOIN user u ON sr.user_id = u.id WHERE sr.survey_id = ? ORDER BY sr.user_id";
+			$sql = "SELECT sr.user_id, sr.id FROM survey_response sr INNER JOIN user u ON sr.user_id = u.id AND u.type != 'test' WHERE sr.survey_id = ? ORDER BY sr.user_id";
 			$responses = Db_Pdo::fetchAll($sql, $surveyId);
 
 			if ($responses) {
@@ -1143,7 +1143,7 @@ class Devadmin_IndexController extends Api_GlobalController
 		ini_set('memory_limit', '512M');
 
 		$request = $this->getRequest();
-		$surveyId = (int) $request->getParam("survey_id", false);
+		$surveyId = (int) $request->getParam("survey_id", 0);
 		$reportCellId = (int) $request->getParam("report_cell_id", 1);
 		$surveyType = $request->getParam("survey_type");
 		$starbarId = (int) $request->getParam("starbar_id");
@@ -1234,7 +1234,7 @@ class Devadmin_IndexController extends Api_GlobalController
 				// Grab CSV responses from DB
 
 				if ($reportCell->id == 1) {
-					$surveyResponsesUserFilterClause = "";
+					$surveyResponsesUserFilterClause = " INNER JOIN user u ON sr.user_id = u.id AND u.type != 'test' ";
 				} else {
 					$surveyResponsesUserFilterClause = " WHERE sr.user_id IN (" . trimCommas($reportCell->comma_delimited_list_of_users) . ") ";
 				}
@@ -1252,6 +1252,11 @@ class Devadmin_IndexController extends Api_GlobalController
 				";
 				$surveyResponsesData = Db_Pdo::fetchAll($surveyResponsesSql, $surveyId);
 
+				// Survey responses returned by DB are in the format A,B,C,A,B,C,A,B,C,... for each response
+				// (i.e. all responses for one survey for one user in one string)
+				// A = question_id
+				// B = choice_id (0 for none)
+				// C = "csv value of response" (between quotes)
 				if ($surveyResponsesData) {
 					$pstTime = new DateTime("now", new DateTimeZone('PDT'));
 					$filename = $pstTime->format("Ymd-Hi") . " ". $survey->title . " - " . $reportCell->title;
@@ -1271,10 +1276,6 @@ class Devadmin_IndexController extends Api_GlobalController
 					foreach ($surveyResponsesData as $surveyResponse) {
 						$userId = $surveyResponse['user_id'];
 						$responseArray = str_getcsv($surveyResponse['user_response']);
-						// Data returned by DB in the format A,B,C,A,B,C,A,B,C,... for each response (i.e. all responses for one survey for one user)
-						// A = question_id
-						// B = choice_id (0 for none)
-						// C = "csv value of response"
 						$numberOfResponses = count($responseArray);
 						$csvRow = $csvEmptyRow;
 
@@ -1282,6 +1283,10 @@ class Devadmin_IndexController extends Api_GlobalController
 						if ($numberOfResponses && ($numberOfResponses % 3) == 0) {
 							// prepare the csv line/row
 							while ($i < $numberOfResponses) {
+								// A,B,C,A,B,C,A,B,C,...
+								// $responseArray[$i]     A = question_id
+								// $responseArray[$i+1]   B = choice_id (0 for none)
+								// $responseArray[$i+2]   C = "csv value of response" (between quotes)
 								if (isset($csvRow[$responseArray[$i] . '-' . $responseArray[$i+1]]))
 									$csvRow[$responseArray[$i] . '-' . $responseArray[$i+1]] = "\"" . $responseArray[$i+2] . "\"";
 								$i += 3;

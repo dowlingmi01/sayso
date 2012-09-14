@@ -333,12 +333,8 @@ $SQ(function () {
 			// study ads
 			for (var a in studyAds.items) {
 				studyAd = studyAds.items[a];
-				if (inIframe || sayso.location.host.match(studyAd.existing_ad_domain)) {
-					// @hack, for iframes currently firing ad detection on all domains
-					// @todo figure out how to pass "top" location data into child iframes
-					// so we can check to make sure the iframes parent matches before firing
+				if (studyAd && studyAd.existing_ad_tag && (inIframe ? sayso.parentLocation : sayso.location).host.match(studyAd.existing_ad_domain))
 					processStudyAd(studyAd);
-				}
 			} // study ads
 
 			studyAdsProcessingComplete();
@@ -492,7 +488,7 @@ $SQ(function () {
 					data : {
 						// note: user_id, starbar_id are included in ajax() wrapper
 						// study_id is associated via cell id, which is included in cellAdActivity
-						url : sayso.location.href,
+						url : (inIframe ? sayso.parentLocation : sayso.location).href,
 						study_ad_views : $SQ.JSON.stringify(studyAdViews)
 					},
 					success : function (response) {

@@ -91,8 +91,20 @@
 	sayso.log = safeLog('log', sayso.debug);
 	sayso.warn = safeLog('warn', sayso.debug);
 	
-	sayso.current_url = window.location.href;
+	sayso.frameId = randomString( 10 );
+	sayso.current_url = sayso.location.href;
 	sayso.in_iframe = forge.is.firefox() ? (unsafeWindow.window !== unsafeWindow.top) : (window.top != window);
+	if( !sayso.in_iframe ) {
+		function handleParentReq( event ) {
+			var prefix = 'sayso-parent-req-';
+			if( event.data.slice(0, prefix.length) == prefix )
+				forge.message.broadcast('parent-location-' + event.data.slice(prefix.length), sayso.location);
+		}
+		if( window.addEventListener )
+			window.addEventListener('message', handleParentReq);
+		else if( window.attachEvent )
+			window.attachEvent('onmessage', handleParentReq);
+	}
 
 	sayso.loadScript('starbar/jquery-1.7.1.min.js', jQueryLoaded);
 	sayso.url_match_prepend = '^(?:http|https){1}://(?:[\\w.-]+[.])?';
@@ -102,6 +114,7 @@
 	function jQueryLoaded() {
 		$SQ.sayso = sayso;
 		$SQ.jsLoadTimer = jsLoadTimer;
+		$SQ.randomString = randomString;
 		$SQ(function(){
 			sayso.evalInPageContext( 'window.$SaySoExtension = {};' );
 			var frameComm;
@@ -149,7 +162,22 @@
 				sayso.flags = 'none';
 
 				// ADjuster can run asynchronously
-				sayso.loadScript('starbar/sayso.js');
+				if( sayso.in_iframe ) {
+					forge.message.listen('parent-location-' + sayso.frameId, function( l ) {
+						if( !sayso.parentLocation ) {
+							sayso.parentLocation = l;
+							sayso.loadScript('starbar/sayso.js');
+						}
+					});
+					function requestParentLocation() {
+						if( !sayso.parentLocation ) {
+							sayso.evalInPageContext( "top.postMessage( 'sayso-parent-req-" + sayso.frameId + "', '*' );");
+							setTimeout(requestParentLocation, 200);
+						}
+					}
+					requestParentLocation();
+				} else
+					sayso.loadScript('starbar/sayso.js');
 				
 				// Only load starbar if conditions are met
 				if( shouldLoadStarbar() )
@@ -273,4 +301,31 @@
 		}
 		return '';
 	}
+	
+	/*
+	* This function takes two parameters: integer value for string length and optional
+	* boolean value true if you want to include special characters in your generated string.
+	* From: http://jquery-howto.blogspot.com/2009/10/javascript-jquery-password-generator.html
+	*/
+	function randomString(length, special) {
+		var iteration = 0;
+		var randomString = "";
+		var randomNumber;
+		if(special == undefined){
+			var special = false;
+		}
+		while(iteration < length){
+			randomNumber = (Math.floor((Math.random() * 100)) % 94) + 33;
+			if(!special){
+				if ((randomNumber >=33) && (randomNumber <=47)) { continue; }
+				if ((randomNumber >=58) && (randomNumber <=64)) { continue; }
+				if ((randomNumber >=91) && (randomNumber <=96)) { continue; }
+				if ((randomNumber >=123) && (randomNumber <=126)) { continue; }
+			}
+			iteration++;
+			randomString += String.fromCharCode(randomNumber);
+		}
+		return randomString;
+	}
+
 })();

@@ -7,7 +7,6 @@ $SQ(function(){
 	var sayso = window.$SQ.sayso,
 		starbar = window.$SQ.sayso.starbar;
 
-	sayso.frameId = $SQ.randomString( 10 );
 	forge.message.listen('sayso-frame-comm-' + sayso.frameId, function(content) {
 		$SQ('#sayso-starbar').trigger('frameCommunication', content);
 	});

@@ -7,27 +7,33 @@ class Survey_Question extends Record
 	public $option_array; // Used during import process for convenience... not a DB field
 	public $response_array; // Used during reporting preprocessing for convenience... not a DB field
 
-	public function getStringOfUsersWhoAnsweredThisQuestion($commaDelimitedUserIdFilterList = null) {
+	public function getCountOfUsersInReportCellWhoAnsweredThisQuestion($reportCellId = 1) {
 		if (!$this->id) return;
 
+		$joinClause;
+		if ($reportCellId > 1) {
+			$joinClause = " INNER JOIN report_cell_user_map rcum ON rcum.user_id = sr.user_id AND rcum.report_cell_id = ". $reportCellId . " ";
+		} else { // filter out test users
+			$joinClause = " INNER JOIN user u ON sr.user_id = u.id AND u.type != 'test' ";
+		}
+
 		$sql = "
-			SELECT GROUP_CONCAT(DISTINCT sr.user_id) AS user_id_list
-			FROM survey_response sr, survey_question_response sqr
-			WHERE sqr.survey_response_id = sr.id
-				AND sr.processing_status = 'completed'
+			SELECT COUNT(sr.user_id) AS number_of_users
+			FROM survey_response sr
+			INNER JOIN survey_question_response sqr
+				ON sqr.survey_response_id = sr.id
+			".$joinClause."
+			WHERE sr.processing_status = 'completed'
 				AND sqr.survey_question_id = ?
 		";
 
-		if ($commaDelimitedUserIdFilterList) {
-			// add to $sql
-			$sql .= " AND sr.user_id IN (" . trimCommas($commaDelimitedUserIdFilterList) . ")";
-		}
+		$data = Db_Pdo::fetch($sql, $this->id);
 
-		$result = Db_Pdo::fetch($sql, $this->id);
-		return $result['user_id_list'];
+		if ($data) return (int) $data['number_of_users'];
+		return 0;
 	}
 
-	public function loadAllResponses($commaDelimitedUserIdFilterList = null) {
+	public function loadAllResponses($reportCellId = 1) {
 		if (!$this->id || !$this->data_type) return;
 
 		switch ($this->data_type) {
@@ -48,8 +54,8 @@ class Survey_Question extends Record
 
 		$joinClause = "";
 
-		if (trimCommas($commaDelimitedUserIdFilterList)) {
-			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id AND sr.user_id IN (" . trimCommas($commaDelimitedUserIdFilterList) . ") ";
+		if ($reportCellId > 1) {
+			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id INNER JOIN report_cell_user_map rcum ON rcum.user_id = sr.user_id AND rcum.report_cell_id = ". $reportCellId . " ";
 		} else { // filter out test users
 			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id INNER JOIN user u ON sr.user_id = u.id AND u.type != 'test' ";
 		}
@@ -69,7 +75,7 @@ class Survey_Question extends Record
 		$this->response_array = $responseArray;
 	}
 
-	public function getAverage($commaDelimitedUserIdFilterList = null) {
+	public function getAverage($reportCellId = 1) {
 		if (!$this->id || !$this->data_type) return;
 
 		switch ($this->data_type) {
@@ -88,8 +94,8 @@ class Survey_Question extends Record
 
 		$joinClause = "";
 
-		if (trimCommas($commaDelimitedUserIdFilterList)) {
-			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id AND sr.user_id IN (" . trimCommas($commaDelimitedUserIdFilterList) . ") ";
+		if ($reportCellId > 1) {
+			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id INNER JOIN report_cell_user_map rcum ON rcum.user_id = sr.user_id AND rcum.report_cell_id = ". $reportCellId . " ";
 		} else { // filter out test users
 			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id INNER JOIN user u ON sr.user_id = u.id AND u.type != 'test' ";
 		}
@@ -100,7 +106,7 @@ class Survey_Question extends Record
 		return floatval($result['average_value']);
 }
 
-	public function getMedian($commaDelimitedUserIdFilterList = null) {
+	public function getMedian($reportCellId = 1) {
 		if (!$this->id || !$this->data_type) return;
 
 		switch ($this->data_type) {
@@ -119,8 +125,8 @@ class Survey_Question extends Record
 
 		$joinClause = "";
 
-		if (trimCommas($commaDelimitedUserIdFilterList)) {
-			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id AND sr.user_id IN (" . trimCommas($commaDelimitedUserIdFilterList) . ") ";
+		if ($reportCellId > 1) {
+			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id INNER JOIN report_cell_user_map rcum ON rcum.user_id = sr.user_id AND rcum.report_cell_id = ". $reportCellId . " ";
 		} else { // filter out test users
 			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id INNER JOIN user u ON sr.user_id = u.id AND u.type != 'test' ";
 		}
@@ -142,7 +148,7 @@ class Survey_Question extends Record
 		}
 	}
 
-	public function getStandardDeviation($commaDelimitedUserIdFilterList = null) {
+	public function getStandardDeviation($reportCellId = 1) {
 		if (!$this->id || !$this->data_type) return;
 
 		switch ($this->data_type) {
@@ -161,8 +167,8 @@ class Survey_Question extends Record
 
 		$joinClause = "";
 
-		if (trimCommas($commaDelimitedUserIdFilterList)) {
-			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id AND sr.user_id IN (" . trimCommas($commaDelimitedUserIdFilterList) . ") ";
+		if ($reportCellId > 1) {
+			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id INNER JOIN report_cell_user_map rcum ON rcum.user_id = sr.user_id AND rcum.report_cell_id = ". $reportCellId . " ";
 		} else { // filter out test users
 			$joinClause = " INNER JOIN survey_response sr ON sqr.survey_response_id = sr.id INNER JOIN user u ON sr.user_id = u.id AND u.type != 'test' ";
 		}

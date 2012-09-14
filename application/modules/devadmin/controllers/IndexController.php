@@ -1233,10 +1233,12 @@ class Devadmin_IndexController extends Api_GlobalController
 
 				// Grab CSV responses from DB
 
-				if ($reportCell->id == 1) {
-					$surveyResponsesUserFilterClause = " INNER JOIN user u ON sr.user_id = u.id AND u.type != 'test' ";
+				$joinClause = "";
+				if ($reportCell->id > 1) {
+					// add to $sql
+					$joinClause = " INNER JOIN report_cell_user_map rcum ON rcum.user_id = sr.user_id AND rcum.report_cell_id = ". $reportCell->id . " ";
 				} else {
-					$surveyResponsesUserFilterClause = " WHERE sr.user_id IN (" . trimCommas($reportCell->comma_delimited_list_of_users) . ") ";
+					$joinClause = " INNER JOIN user u ON sr.user_id = u.id AND u.type != 'test' ";
 				}
 				$surveyResponsesSql = "
 					SELECT sr.user_id AS user_id, GROUP_CONCAT(CONCAT(sqr.survey_question_id, ',', IFNULL(sqr.survey_question_choice_id, 0), ',\"', IFNULL(sqr.response_csv, ''), '\"')) AS user_response
@@ -1246,7 +1248,7 @@ class Devadmin_IndexController extends Api_GlobalController
 					INNER JOIN survey_question sq
 						ON sqr.survey_question_id = sq.id
 						AND sq.survey_id = ?
-					" . $surveyResponsesUserFilterClause . "
+					" . $joinClause . "
 					GROUP BY sqr.survey_response_id
 					ORDER BY sr.user_id
 				";
@@ -1320,7 +1322,7 @@ class Devadmin_IndexController extends Api_GlobalController
 		}
 
 		if ($reportCell->id && $surveyQuestion->id) {
-			$surveyQuestion->loadAllResponses($reportCell->comma_delimited_list_of_users);
+			$surveyQuestion->loadAllResponses($reportCell->id);
 			$this->view->responses = $surveyQuestion->response_array;
 		} else {
 			$this->view->responses = array();

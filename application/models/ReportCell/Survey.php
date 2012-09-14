@@ -27,18 +27,12 @@ class ReportCell_Survey extends Record
 			$reportCellSurveyCalculation->parent_type = "survey_question";
 			$reportCellSurveyCalculation->survey_question_id = $surveyQuestion->id;
 
-			$reportCellSurveyCalculation->comma_delimited_list_of_users = ',' . $surveyQuestion->getStringOfUsersWhoAnsweredThisQuestion($reportCell->comma_delimited_list_of_users) . ',';
-			if ($reportCellSurveyCalculation->comma_delimited_list_of_users == ",,") {
-				$reportCellSurveyCalculation->comma_delimited_list_of_users = "";
-				$reportCellSurveyCalculation->number_of_responses = 0;
-			} else {
-				$reportCellSurveyCalculation->number_of_responses = substr_count($reportCellSurveyCalculation->comma_delimited_list_of_users, ',') - 1;
-			}
+			$reportCellSurveyCalculation->number_of_responses = $surveyQuestion->getCountOfUsersInReportCellWhoAnsweredThisQuestion($reportCell->id);
 
 			if ($surveyQuestion->data_type == 'integer' || $surveyQuestion->data_type == 'decimal' || $surveyQuestion->data_type == 'monetary') {
-				$reportCellSurveyCalculation->average = $surveyQuestion->getAverage($reportCell->comma_delimited_list_of_users);
-				$reportCellSurveyCalculation->stardard_deviation = $surveyQuestion->getStandardDeviation($reportCell->comma_delimited_list_of_users);
-				$reportCellSurveyCalculation->median = $surveyQuestion->getMedian($reportCell->comma_delimited_list_of_users);
+				$reportCellSurveyCalculation->average = $surveyQuestion->getAverage($reportCell->id);
+				$reportCellSurveyCalculation->stardard_deviation = $surveyQuestion->getStandardDeviation($reportCell->id);
+				$reportCellSurveyCalculation->median = $surveyQuestion->getMedian($reportCell->id);
 			}
 
 			$reportCellSurveyCalculation->save();
@@ -62,13 +56,7 @@ class ReportCell_Survey extends Record
 					$reportCellSurveyCalculation->survey_question_id = $sharingQuestionId;
 					$reportCellSurveyCalculation->survey_question_choice_id = $surveyQuestionChoice->id;
 
-					$reportCellSurveyCalculation->comma_delimited_list_of_users = ',' . $surveyQuestionChoice->getStringOfUsersWhoChoseThisChoice($sharingQuestionId, $reportCell->comma_delimited_list_of_users) . ',';
-					if ($reportCellSurveyCalculation->comma_delimited_list_of_users == ",,") {
-						$reportCellSurveyCalculation->comma_delimited_list_of_users = "";
-						$reportCellSurveyCalculation->number_of_responses = 0;
-					} else {
-						$reportCellSurveyCalculation->number_of_responses = substr_count($reportCellSurveyCalculation->comma_delimited_list_of_users, ',') - 1;
-					}
+					$reportCellSurveyCalculation->number_of_responses = $surveyQuestionChoice->getCountOfUsersInReportCellWhoChoseThisChoice($sharingQuestionId, $reportCell->id);
 
 					$reportCellSurveyCalculation->save();
 				}
@@ -80,14 +68,7 @@ class ReportCell_Survey extends Record
 				$reportCellSurveyCalculation->survey_question_id = $surveyQuestionChoice->survey_question_id;
 				$reportCellSurveyCalculation->survey_question_choice_id = $surveyQuestionChoice->id;
 
-				$reportCellSurveyCalculation->comma_delimited_list_of_users = ',' . $surveyQuestionChoice->getStringOfUsersWhoChoseThisChoice($surveyQuestionChoice->survey_question_id, $reportCell->comma_delimited_list_of_users) . ',';
-				if ($reportCellSurveyCalculation->comma_delimited_list_of_users == ",,") {
-					$reportCellSurveyCalculation->comma_delimited_list_of_users = "";
-					$reportCellSurveyCalculation->number_of_responses = 0;
-				} else {
-					$reportCellSurveyCalculation->number_of_responses = substr_count($reportCellSurveyCalculation->comma_delimited_list_of_users, ',') - 1;
-				}
-
+				$reportCellSurveyCalculation->number_of_responses = $surveyQuestionChoice->getCountOfUsersInReportCellWhoChoseThisChoice($surveyQuestionChoice->survey_question_id, $reportCell->id);
 				$reportCellSurveyCalculation->save();
 			}
 		}

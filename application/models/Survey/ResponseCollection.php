@@ -57,37 +57,38 @@ class Survey_ResponseCollection extends RecordCollection
 		if ($lastDayOfSurveysUserShouldSee < 1) $lastDayOfSurveysUserShouldSee = 1;
 
 		if (in_array($type, array('survey', 'poll', 'quiz', 'trailer'))) {
-			$sql = "SELECT s.id
-					FROM survey s
-					INNER JOIN starbar_survey_map ssm
-						ON s.id = ssm.survey_id
-						AND ssm.starbar_id = ?
-						AND ssm.start_at < now()
-						AND (ssm.end_at > now() OR ssm.end_at = '0000-00-00 00:00:00')
-						AND (
-							(ssm.start_day >= ? AND ssm.start_day <= ?)
-							OR
-							(ssm.start_day IS NULL OR ssm.start_day = 0)
-						)
-					INNER JOIN report_cell rc
-						ON (
-							IFNULL(s.report_cell_id, 1) = rc.id
-							AND (rc.id = 1 OR rc.comma_delimited_list_of_users LIKE '%,".$userId.",%')
-						)
-					RIGHT JOIN starbar_user_map sum
-						ON sum.user_id = ?
-						AND sum.starbar_id = ?
-					WHERE s.type = ?
-						AND s.id NOT IN (SELECT survey_id FROM survey_response WHERE user_id = ?)
-						AND s.status = 'active'
-						AND (
-							(UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(sum.created)) > ssm.start_after
-							OR
-							ssm.start_after IS NULL
-						)
-					".$limitClause."
-					";
-			$newSurveyIds = Db_Pdo::fetchColumn($sql, $starbarId, $firstDayOfSurveysUserShouldSee, $lastDayOfSurveysUserShouldSee, $userId, $starbarId, $type, $userId);
+			$sql = "
+				SELECT s.id
+				FROM survey s
+				INNER JOIN starbar_survey_map ssm
+					ON s.id = ssm.survey_id
+					AND ssm.starbar_id = ?
+					AND ssm.start_at < now()
+					AND (ssm.end_at > now() OR ssm.end_at = '0000-00-00 00:00:00')
+					AND (
+						(ssm.start_day >= ? AND ssm.start_day <= ?)
+						OR
+						(ssm.start_day IS NULL OR ssm.start_day = 0)
+					)
+				INNER JOIN report_cell_user_map rcum
+					ON (
+						IFNULL(s.report_cell_id, 1) = rcum.report_cell_id
+						AND (rcum.report_cell_id = 1 OR rcum.user_id = ?)
+					)
+				RIGHT JOIN starbar_user_map sum
+					ON sum.user_id = ?
+					AND sum.starbar_id = ?
+				WHERE s.type = ?
+					AND s.id NOT IN (SELECT survey_id FROM survey_response WHERE user_id = ?)
+					AND s.status = 'active'
+					AND (
+						(UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(sum.created)) > ssm.start_after
+						OR
+						ssm.start_after IS NULL
+					)
+				".$limitClause."
+			";
+			$newSurveyIds = Db_Pdo::fetchColumn($sql, $starbarId, $firstDayOfSurveysUserShouldSee, $lastDayOfSurveysUserShouldSee, $userId, $userId, $starbarId, $type, $userId);
 			if (!$newSurveyIds || !count($newSurveyIds)) return;
 
 			// Prepare and execute multi-row insert statement

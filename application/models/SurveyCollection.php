@@ -23,27 +23,28 @@ class SurveyCollection extends RecordCollection
 		if ($surveyUserStatus && in_array($surveyUserStatus, array("new", "completed", "disqualified", "archived")))
 			$userStatusSql = " AND sr.status = '".$surveyUserStatus."' ";
 
-		$sql = "SELECT s.*, sr.status AS user_status
-				FROM survey s
-					INNER JOIN survey_response sr
-						ON s.id = sr.survey_id
-						AND sr.user_id = ?
-						".$userStatusSql."
-					INNER JOIN starbar_survey_map ssm
-						ON s.id = ssm.survey_id
-						AND ssm.starbar_id = ?
-						AND ssm.start_at < now()
-						AND (ssm.end_at > now() OR ssm.end_at = '0000-00-00 00:00:00')
-					INNER JOIN report_cell rc
-						ON (
-							IFNULL(s.report_cell_id, 1) = rc.id
-							AND (rc.id = 1 OR rc.comma_delimited_list_of_users LIKE '%,".$userId.",%')
-						)
-				WHERE s.type = ?
-					AND s.status = 'active'
-				ORDER BY ".$orderSql."
-				 ";
-		$surveys = Db_Pdo::fetchAll($sql, $userId, $starbarId, $type);
+		$sql = "
+			SELECT s.*, sr.status AS user_status
+			FROM survey s
+			INNER JOIN survey_response sr
+				ON s.id = sr.survey_id
+				AND sr.user_id = ?
+				".$userStatusSql."
+			INNER JOIN starbar_survey_map ssm
+				ON s.id = ssm.survey_id
+				AND ssm.starbar_id = ?
+				AND ssm.start_at < now()
+				AND (ssm.end_at > now() OR ssm.end_at = '0000-00-00 00:00:00')
+			INNER JOIN report_cell_user_map rcum
+				ON (
+					IFNULL(s.report_cell_id, 1) = rcum.report_cell_id
+					AND (rcum.report_cell_id = 1 OR rcum.user_id = ?)
+				)
+			WHERE s.type = ?
+				AND s.status = 'active'
+			ORDER BY ".$orderSql."
+		";
+		$surveys = Db_Pdo::fetchAll($sql, $userId, $starbarId, $userId, $type);
 
 		if ($surveys) {
 			$this->build($surveys, new Survey());

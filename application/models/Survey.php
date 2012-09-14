@@ -34,17 +34,21 @@ class Survey extends Record
 		return new Survey();
 	}
 
-	public function getArrayOfUsersWhoResponded($commaDelimitedUserIdFilterList = null) {
+	public function getCountOfUsersInReportCellWhoResponded($reportCellId = 1) {
 		if (!$this->id) return;
 
-		$sql = "SELECT user_id FROM survey_response WHERE survey_id = ? AND processing_status = 'completed'";
-
-		if ($commaDelimitedUserIdFilterList) {
-			// add to $sql
-			$sql .= " AND user_id IN (" . trimCommas($commaDelimitedUserIdFilterList) . ")";
+		$joinClause;
+		if ($reportCellId > 1) {
+			$joinClause = " INNER JOIN report_cell_user_map rcum ON rcum.user_id = sr.user_id AND rcum.report_cell_id = ". $reportCellId . " ";
+		} else { // filter out test users
+			$joinClause = " INNER JOIN user u ON sr.user_id = u.id AND u.type != 'test' ";
 		}
 
-		return Db_Pdo::fetchColumn($sql, $this->id);
+		$sql = "SELECT count(sr.user_id) AS number_of_users FROM survey_response sr ".$joinClause." WHERE sr.survey_id = ? AND sr.processing_status = 'completed'";
+		$data = Db_Pdo::fetch($sql, $this->id);
+
+		if ($data) return (int) $data['number_of_users'];
+		return 0;
 	}
 
 	public function beforeInsert() {

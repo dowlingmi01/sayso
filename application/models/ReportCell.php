@@ -27,12 +27,7 @@ class ReportCell extends Record
 			$reportCellSurvey->report_cell_id = $this->id;
 			$reportCellSurvey->survey_id = $survey->id;
 
-			$userArray = $survey->getArrayOfUsersWhoResponded($this->comma_delimited_list_of_users);
-			if (count($userArray)) {
-				$reportCellSurvey->number_of_responses = count($userArray);
-				$reportCellSurvey->comma_delimited_list_of_users = ',' . implode(',', $userArray) . ',';
-			}
-
+			$reportCellSurvey->number_of_responses = $survey->getCountOfUsersInReportCellWhoResponded($this->id);
 			$reportCellSurvey->save();
 
 			$reportCellSurvey->process();
@@ -47,11 +42,9 @@ class ReportCell extends Record
 		if ($this->id == self::ALL_USERS_REPORT_CELL) { // the all-users bucket
 			$sql = "SELECT count(id) AS userCount FROM user WHERE type != 'test'";
 			$results = Db_Pdo::fetch($sql);
-
 			if (isset($results['userCount'])) {
 				$this->number_of_users = $results['userCount'];
 			}
-			$this->comma_delimited_list_of_users = "";
 			$this->conditions_processed = 1; // Refers to conditions being processed
 			$this->save();
 
@@ -88,8 +81,18 @@ class ReportCell extends Record
 						$tableReference = "saum" . $conditionCounter;
 						break;
 					case "report_cell":
-						$tableName = "user";
-						$tableReference = "u" . $conditionCounter;
+						switch ($reportCellUserCondition->comparison_type) {
+							case "=":
+								$tableName = "report_cell_user_map";
+								$tableReference = "rcum" . $conditionCounter;
+								break;
+							case "!=":
+								$tableName = "user";
+								$tableReference = "u" . $conditionCounter;
+								break;
+							default:
+								break;
+						}
 						break;
 					default:
 						break;
@@ -204,19 +207,15 @@ class ReportCell extends Record
 						if ($conditionSql) $conditionSql .= " AND " . $tableReference . ".study_ad_id = " . $reportCellUserCondition->compare_study_ad_id;
 						break;
 					case "report_cell":
-						$compareReportCell = new ReportCell();
-						$compareReportCell->loadData($reportCellUserCondition->compare_report_cell_id);
-						if ($compareReportCell->id && trimCommas($compareReportCell->comma_delimited_list_of_users)) {
-							switch ($reportCellUserCondition->comparison_type) {
-								case "=":
-									$conditionSql = $tableReference . ".id IN (" . trimCommas($compareReportCell->comma_delimited_list_of_users) . ")";
-									break;
-								case "!=":
-									$conditionSql = $tableReference . ".id NOT IN (" . trimCommas($compareReportCell->comma_delimited_list_of_users) . ")";
-									break;
-								default:
-									break;
-							}
+						switch ($reportCellUserCondition->comparison_type) {
+							case "=": // $tableReference is to report_cell_user_map table
+								$conditionSql = $tableReference . ".report_cell_id = " . $reportCellUserCondition->compare_report_cell_id;
+								break;
+							case "!=": // $tableReference is to user table
+								$conditionSql = $tableReference . ".id NOT IN ( SELECT user_id FROM report_cell_user_map WHERE report_cell_id = " . $reportCellUserCondition->compare_report_cell_id . " )";
+								break;
+							default:
+								break;
 						}
 						break;
 					default:
@@ -249,6 +248,7 @@ class ReportCell extends Record
 						case "starbar_user_map":
 						case "study_ad_user_map":
 						case "survey_response":
+						case "report_cell_user_map":
 							switch ($this->condition_type) {
 								case "or":
 									if ($conditionsSql) $conditionsSql .= " UNION ";
@@ -292,7 +292,7 @@ class ReportCell extends Record
 				switch ($this->condition_type) {
 					case "or":
 						$sql = "
-							SELECT user_id
+							SELECT DISTINCT(user_id)
 							FROM (" . $conditionsSql . ") AS all_matching_users
 							INNER JOIN user u
 								ON u.id = all_matching_users.user_id
@@ -312,18 +312,39 @@ class ReportCell extends Record
 				}
 
 				$arrayOfUserIds = Db_Pdo::fetchColumn($sql);
-				if (sizeof($arrayOfUserIds)) {
-					$this->comma_delimited_list_of_users = ',' . implode(',', $arrayOfUserIds) . ',';
-					$this->number_of_users = count($arrayOfUserIds);
-					$this->conditions_processed = 1;
-					$this->save();
-				} else {
-					$this->comma_delimited_list_of_users = "";
-					$this->number_of_users = 0;
-					$this->conditions_processed = 1;
-					$this->save();
+				$this->number_of_users = count($arrayOfUserIds);
+				$this->deleteUserMaps();
+
+				if ($this->number_of_users) {
+					$valuesToInsert = "";
+					$valuesToInsertCount = 0;
+					foreach($arrayOfUserIds as $userId) {
+						if ($valuesToInsert) {
+							if ($valuesToInsertCount > 500) { // Insert records 500 rows at a time
+								Db_Pdo::execute("INSERT INTO report_cell_user_map (report_cell_id, user_id) VALUES " . $valuesToInsert);
+								$valuesToInsert = "";
+								$valuesToInsertCount = 0;
+							} else {
+						 		$valuesToInsert .= ",";
+							}
+						}
+						$valuesToInsert .= "(" . $this->id . ", " . $userId . ")";
+						$valuesToInsertCount++;
+					}
+
+					if ($valuesToInsert) {
+						Db_Pdo::execute("INSERT INTO report_cell_user_map (report_cell_id, user_id) VALUES " . $valuesToInsert);
+					}
 				}
+				$this->conditions_processed = 1;
+				$this->save();
 			}
+		}
+	}
+
+	public function deleteUserMaps() {
+		if ($this->id) {
+			Db_Pdo::execute("DELETE FROM report_cell_user_map WHERE report_cell_id = ?", $this->id);
 		}
 	}
 

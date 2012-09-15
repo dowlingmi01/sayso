@@ -319,28 +319,49 @@ $SQ(function () {
 	// ADjuster Setup Studies ------------------------
 
 	var studyAdViews = [];
+	var sessionAdViews = [];
 	var adsFound = 0;
 	var replacements = 0;
+	var numberOfAdChecks = 0;
 
-	// non-existent OR expired studies
-	forge.message.broadcastBackground('get-studies', {},
-		function (studyAds) {
+	function processStudyAds () {
+		// non-existent OR expired studies
+		forge.message.broadcastBackground('get-studies', {},
+			function (studyAds) {
 
-			var studyAd = null;
+				var studyAd = null;
 
-			if (!inIframe) log('Current Study Ads: ', studyAds);
+				if (!inIframe && numberOfAdChecks == 0) log('Current Study Ads: ', studyAds);
 
-			// study ads
-			for (var a in studyAds.items) {
-				studyAd = studyAds.items[a];
-				if (studyAd && studyAd.existing_ad_tag && (inIframe ? sayso.parentLocation : sayso.location).host.match(studyAd.existing_ad_domain))
-					processStudyAd(studyAd);
-			} // study ads
+				// study ads
+				for (var a in studyAds.items) {
+					studyAd = studyAds.items[a];
+					if (
+						studyAd
+						&& studyAd.existing_ad_tag // there's a tag to search for
+						&& ($SQ.inArray(studyAd.id, sessionAdViews) == -1) // ad hasn't already been viewed in this session
+						&& (inIframe ? sayso.parentLocation : sayso.location).host.match(studyAd.existing_ad_domain) // we're on the right domain
+					) {
+						processStudyAd(studyAd);
+					}
+				} // study ads
 
-			studyAdsProcessingComplete();
+				studyAdsProcessingComplete();
+			}
+		);
+	}
+
+	$SQ.doTimeout('process-study-ads', 3000, function () {
+		if (numberOfAdChecks < 5) {
+			processStudyAds();
+			numberOfAdChecks++;
+		} else {
+			// Stop the loop
+			return false;
 		}
-	);
-
+		return true;
+	});
+	$SQ.doTimeout('process-study-ads', true); // run once immediately
 
 	/**
 	 * Process each tag including ad detection and/or replacement
@@ -348,8 +369,8 @@ $SQ(function () {
 	 * - this function inherits currentActivity for the current cell
 	 */
 	function processStudyAd (studyAd) {
-		log('studyAd.existing_ad_tag: ');
-		log(studyAd.existing_ad_tag);
+		// log('studyAd.existing_ad_tag: ');
+		// log(studyAd.existing_ad_tag);
 
 		var jTag = false;
 		var jTagContainer = false;
@@ -426,21 +447,16 @@ $SQ(function () {
 					break;
 				case "facebook":
 					newTag.html(' \
-						<div class="fbEmu fbEmuEgo"> \
-							<a class="fbEmuTitleBodyImageLink emuEvent1  fbEmuLink" href="'+studyAd.ad_target+'" target="_blank"> \
-								<div class="fbEmuTitleBodyImageDiv"> \
-									<div class="title"><span class="forceLTR">'+studyAd.replacement_ad_title+'</span></div> \
-									<div class="clearfix uiImageBlock image_body_block"> \
-										<div class="image fbEmuImage uiImageBlockImage uiImageBlockMediumImage lfloat"> \
-											<img class="img" src="'+studyAd.replacement_ad_url+'" alt=""> \
-										</div> \
-										<div class="uiImageBlockContent "> \
-											<div class="body"><div class="forceLTR">'+studyAd.replacement_ad_description+'</div></div> \
-										</div> \
-									</div> \
-								</div> \
-							</a> \
-							<div class="inline"><div class="action"><span class="fbEmuContext">&nbsp;</span></div></div> \
+						<div class="_24n _24y"> \
+							<div class="uiSelector inlineBlock emu_x emuEventfad_hide _24x uiSelectorRight"></div> \
+							<div class="title"><a class="forceLTR" href="'+studyAd.ad_target+'" target="_blank">'+studyAd.replacement_ad_title+'</a></div> \
+							<div class="clearfix image_body_block"> \
+								<a class="emuEvent1 _24x image fbEmuImage _8o _8s lfloat" href="'+studyAd.ad_target+'" target="_blank"> \
+									<img class="img" src="'+studyAd.replacement_ad_url+'" alt=""> \
+								</a> \
+								<div class="_8m"><div class="body"><a class="forceLTR emuEvent1 _24x" href="'+studyAd.ad_target+'" target="_blank">'+studyAd.replacement_ad_description+'</a></div></div> \
+							</div> \
+							<div class="inline"><div class="action"></div></div> \
 						</div> \
 					');
 					break;
@@ -455,6 +471,7 @@ $SQ(function () {
 
 			// record view of the creative
 			studyAdViews.push(studyAd.id);
+			sessionAdViews.push(studyAd.id);
 
 			log('ADjuster: Creative Replacement');
 
@@ -462,6 +479,7 @@ $SQ(function () {
 
 			// record view of the campaign
 			studyAdViews.push(studyAd.id);
+			sessionAdViews.push(studyAd.id);
 
 			log('ADjuster: Campaign View');
 
@@ -479,27 +497,25 @@ $SQ(function () {
 	// and to prevent the need for deeply nested callbacks
 
 	function studyAdsProcessingComplete() {
-		new $SQ.jsLoadTimer().setMaxCount(50).start(
-			function () { return adsFound; }, // if
-			function () {										 // then
-				log('Ads matched ' + adsFound + '. Ads replaced ' + replacements);
-				ajax({
-					url : '//' + sayso.baseDomain + '/api/metrics/track-study-ad-views',
-					data : {
-						// note: user_id, starbar_id are included in ajax() wrapper
-						// study_id is associated via cell id, which is included in cellAdActivity
-						url : (inIframe ? sayso.parentLocation : sayso.location).href,
-						study_ad_views : $SQ.JSON.stringify(studyAdViews)
-					},
-					success : function (response) {
-
-					}
-				});
-			},
-			function () { // else
-				log('No ads match');
-			}
-		);
+		if (adsFound) {
+			log('Ads matched ' + adsFound + '. Ads replaced ' + replacements);
+			ajax({
+				url : '//' + sayso.baseDomain + '/api/metrics/track-study-ad-views',
+				data : {
+					// note: user_id, starbar_id are included in ajax() wrapper
+					// study_id is associated via cell id, which is included in cellAdActivity
+					url : (inIframe ? sayso.parentLocation : sayso.location).href,
+					study_ad_views : $SQ.JSON.stringify(studyAdViews)
+				},
+				success : function (response) {
+					studyAdViews = [];
+					adsFound = 0;
+					replacements = 0;
+				}
+			});
+		} else {
+			log('No ads match');
+		}
 	}
 
 	adminFunctions(); // not sure how to approach this just yet. Probably need to pass a user role id (e.g. admin+) in the request, and check that first.

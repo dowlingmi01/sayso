@@ -422,8 +422,9 @@ class Starbar_ContentController extends Api_GlobalController
 				break;
 
 			case "UGAM":
-				$redirectUrl = $protocol . "://survey.confirmit.com/wix/" . $survey->external_key . ".aspx";
-				$redirectUrl .= "?starbar_id=" . $this->view->starbar->id;
+				$redirectUrl = $protocol . "://" . $survey->external_key;
+				$redirectUrl .= (strpos($redirectUrl, "?") === false ? "?" : "&");
+				$redirectUrl .= "starbar_id=" . $this->view->starbar->id;
 				$redirectUrl .= "&user_id=" . $this->user_id;
 				$redirectUrl .= "&user_key=" . $this->user_key;
 				$redirectUrl .= "&starbar_short_name=" . $this->view->starbar->short_name;

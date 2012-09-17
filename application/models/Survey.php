@@ -51,6 +51,12 @@ class Survey extends Record
 		return 0;
 	}
 
+	public function beforeSave() {
+		if ($this->origin == "UGAM" && strpos($this->external_key, "://") !== false) {
+			$this->external_key = strtr(strtr($this->external_key, "http://", ""), "https://", "");
+		}
+	}
+
 	public function beforeInsert() {
 		if ($this->type && !$this->origin) {
 			if ($this->type == "poll" || $this->type == "survey") {

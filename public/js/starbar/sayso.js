@@ -268,8 +268,8 @@ $SQ(function () {
 			sayso.log('In comment widget!!'); // can't get this working, iframe loads into a hidden div ?
 			var comment = $SQ('textarea.connect_comment_widget_full_input_textarea').val();
 			sayso.log(comment);
-		} else { // location.href.match('facebook.com/plugins|facebook.com/widgets')
-			$SQ('a.connect_widget_like_button').unbind('click').click(function () {
+		} else if (sayso.location.href.match('facebook.com/plugins/like')) {
+			$SQ('.pluginConnectButton button').click(function () {
 				var likedUrl = decodeURIComponent(/href=([^&]*)/g.exec(sayso.location.search)[1]);
 				behaviorTracker.socialActivity(likedUrl, '', 1)
 			});

@@ -53,7 +53,7 @@ class Survey extends Record
 
 	public function beforeSave() {
 		if ($this->origin == "UGAM" && strpos($this->external_key, "://") !== false) {
-			$this->external_key = strtr(strtr($this->external_key, "http://", ""), "https://", "");
+			$this->external_key = str_replace(str_replace($this->external_key, "http://", ""), "https://", "");
 		}
 	}
 

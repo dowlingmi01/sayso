@@ -335,4 +335,25 @@ abstract class Game_Starbar extends Game_Abstract {
 		self::$profileSurveyId = $profileSurvey->id;
 		self::$userHasCompletedProfileSurvey = ($profileSurvey->id ? Survey_Response::checkIfUserHasCompletedSurvey((int) $request->getParam('user_id'), $profileSurvey->id) : true);
 	}
+
+	public function getGoodsFromStore() {
+		$goodsData = null;
+		$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $this->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
+
+		if ($cache->test()) {
+			$goodsData = $cache->load();
+		} else {
+			$client = $this->getHttpClient();
+			$client->setCustomParameters(array(
+				'attribute_friendly_id' => 'bdm-product-variant',
+				'verbosity' => 9,
+				'max_records' => 100
+			));
+			$client->getNamedTransactionGroup('store');
+			$goodsData = $client->getData();
+			$cache->save($goodsData);
+		}
+
+		return $goodsData;
+	}
 }

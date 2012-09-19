@@ -1,51 +1,52 @@
 <br />
-<script type="text/javascript">
-$SQ.jQueryRandom = 0;
-$SQ.extend($SQ.expr[":"],
-{
-	random: function(a, i, m, r) {
-		if (i == 0) {
-			$SQ.jQueryRandom = Math.floor(Math.random() * r.length);
-		};
-		return i == $SQ.jQueryRandom;
-	}
-});
-</script>
+<style>
+body {
+	font: 11px Verdana;
+	margin-left: 20px;
+	margin-bottom: 50px;
+	background-color: #CCC;
+}
+
+div#raffleSettings {
+	position: relative;
+	width: 980px;
+	border: 1px solid #666;
+	background-color: #FFF;
+	padding: 10px;
+}
+
+</style>
 <form id="raffleForm" method="get">
-	<input type="hidden" id="named_good_id" name="named_good_id" value="<?= $this->named_good_id ?>">
-	&nbsp; &nbsp; <b>RaffleMeister Pro 2011 Ultimate v9.452.799</b><br />
+	<input type="hidden" id="operation" name="operation" value="">
+	&nbsp; &nbsp; <b>RaffleMeister Pro 2012 Xtreme v12.001.000</b><br />
 	&nbsp; &nbsp;
-	<a href="#" onclick="$SQ('#named_good_id').val(3810011); $SQ('#raffleForm').submit(); return false;">Movie Bar Month 1 Token</a>
-	<style>
-		.ticket {
-			width: 200px;
-			margin: 3px;
-			padding: 5px;
-			float: left;
-			border: 1px solid black;
-			font-size: 9px;
-			font-family: Courier New;
-		}
-	</style>
-	<? if ($this->named_good_id && count($this->transactions) && count($this->matched_gamers)) { ?>
-		<div id='winner' style='width: 500px; margin: 20px;'></div>
-		&nbsp; &nbsp; <a href="#" onclick="$SQ('#winner').html($SQ('.ticket:random').clone()).css('border', '5px solid green');$SQ(this).hide(); return false;">Pick a random winner!</a><br /><br />
-		<?
-		$i = 1;
-		foreach ($this->transactions AS $transaction) {
-			if ($this->matched_gamers->hasItem($transaction->good_sender)) {
-				$matchedGamer = $this->matched_gamers->getItem($transaction->good_sender);
-				$ticketNumber = str_pad($i,6, "0", STR_PAD_LEFT);
-				echo "<div class='ticket' id='".$ticketNumber."'>";
-				echo "Raffle Ticket #".$ticketNumber."<br />";
-				echo "BD ID: ".$matchedGamer->id."<br />";
-				echo "Purchase Date: ".date('d F Y, h:i:sa', $transaction->created_timestamp-(8*60*60))." PST<br />";
-				echo "Local USER ID: ".$matchedGamer->user_id."<br />";
-				echo "Local Email: ".$matchedGamer->email."<br />";
-				echo "</div>";
-			}
-			$i++;
-		}
-		?>
-	<? } ?>
+	<div id="raffleSettings">
+		<b></b><br />
+		<select id="starbar_id" name="starbar_id" onchange="$('#operation').val(''); $('#raffleForm').submit();">
+			<option value="">Choose a starbar</option>
+			<? foreach ($this->starbars as $starbar) { ?>
+				<option value="<?= (int) $starbar['id'] ?>" <? if ($this->starbar_id == (int) $starbar['id']) { echo 'selected'; } ?>><?= $starbar['label'] ?></option>
+			<? } ?>
+		</select><br />
+		<br />
+		<? if (count($this->tokens)) { ?>
+			<select id="good_id" name="good_id">
+				<option value="">Choose a token</option>
+				<? foreach ($this->tokens as $token) { ?>
+					<option value="<?= $token['good']->getId() ?>" <? if ($this->good_id == $token['good']->getId()) { echo 'selected'; } ?>><?= $token['good']->title ?> (<?= $token['total_purchased'] ?> purchased)</option>
+				<? } ?>
+			</select><br />
+			<br />
+			<a href="javascript: $('#operation').val('pick-winner'); $('#raffleForm').submit();">Pick a<? if ($this->winning_transaction->id) echo "nother"; ?> winner!</a>
+			<? if ($this->winning_transaction->id) { ?>
+				<h1>Winner!</h1><br />
+				User ID: <?= $this->winning_user->id ?><br />
+				User Gaming ID: <?= $this->winning_gamer->id ?><br />
+				User First Name: <?= $this->winning_user->first_name ?><br />
+				User Last Name: <?= $this->winning_user->last_name ?><br />
+				User Email: <?= $this->winning_user_email->email ?><br />
+				Order ID: <?= $this->winning_transaction->id?><br />
+			<? } ?>
+		<? } ?>
+	</div>
 </form>

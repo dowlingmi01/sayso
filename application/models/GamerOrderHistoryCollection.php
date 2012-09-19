@@ -5,32 +5,17 @@ class GamerOrderHistoryCollection extends RecordCollection
 	static public function getOrderHistory($starbarId = 0, $game = null, $weeksAgo = 0, $readableDateFormat = "l Y-m-d H:i:s") {
 		if (!$starbarId || !$game) return;
 
-		$economy = $game->getEconomy();
-		$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $economy->getKey(), Api_Cache::LIFETIME_WEEK);
-		if ($cache->test()) {
-			$data = $cache->load();
-		} else {
-			$client = $game->getHttpClient();
-			$client->setCustomParameters(array(
-				'attribute_friendly_id' => 'bdm-product-variant',
-				'verbosity' => 9,
-				'max_records' => 100
-			));
-			$client->getNamedTransactionGroup('store');
-			$data = $client->getData();
-			// leave cache saving to (api) GamingController.php
-			// $cache->save($data);
-		}
+		$goodsData = $game->getGoodsFromStore();
 
 		$allGoods = new ItemCollection();
-		foreach ($data as $goodData) {
+
+		foreach ($goodsData as $goodData) {
 			$good = new Gaming_BigDoor_Good();
 			$good->setPrimaryCurrencyId($game->getPurchaseCurrencyId());
 			$good->setGame($game);
 			$good->build($goodData);
-			$allGoods[] = $good;
+			$allGoods[$good->getId()] = $good;
 		}
-
 
 		$weeksAgo = (int) abs($weeksAgo);
 

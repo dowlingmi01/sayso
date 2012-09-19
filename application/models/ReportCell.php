@@ -68,7 +68,7 @@ class ReportCell extends Record
 						$tableName = "survey_question_response";
 						$tableReference = "sqr" . $conditionCounter;
 						break;
-					case "survey":
+					case "survey_status":
 						$tableName = "survey_response";
 						$tableReference = "sr" . $conditionCounter;
 						break;
@@ -172,7 +172,7 @@ class ReportCell extends Record
 							$conditionSql .= " AND " . $tableReference . ".data_type = '" . $reportCellUserCondition->condition_type . "')";
 						}
 						break;
-					case "survey":
+					case "survey_status":
 						switch ($reportCellUserCondition->comparison_type) {
 							case "=":
 							case "!=":
@@ -268,12 +268,12 @@ class ReportCell extends Record
 							switch ($this->condition_type) {
 								case "or":
 									if ($conditionsSql) $conditionsSql .= " UNION ";
-									$conditionsSql .= "SELECT u" . $conditionCounter . ".id FROM user u" . $conditionCounter;
+									$conditionsSql .= "SELECT " . $tableReference . ".id FROM " . $tableName . " " . $tableReference;
 									$conditionsSql .= " WHERE " . $conditionSql;
 									break;
 								case "and":
-									$conditionsSql .= " INNER JOIN user u" . $conditionCounter;
-									$conditionsSql .= " ON u" . $conditionCounter . ".id = u.id";
+									$conditionsSql .= " INNER JOIN " . $tableName . " " . $tableReference;
+									$conditionsSql .= " ON " . $tableReference . ".id = u.id";
 									$conditionsSql .= " AND " . $conditionSql;
 									break;
 								default:
@@ -302,6 +302,9 @@ class ReportCell extends Record
 						";
 						$removedUsersTable = "report_cell_user_map removed_matching_users";
 						$removedUsersCondition = " new_matching_users.user_id = removed_matching_users.user_id ";
+
+						// Simulate FULL OUTER JOIN WHERE table1.id IS NULL OR table2.id IS NULL
+						// by doing two LEFT OUTER JOINs
 
 						$sqlUsersAdded = "
 							SELECT DISTINCT(new_matching_users.user_id) AS new_matching_user_id

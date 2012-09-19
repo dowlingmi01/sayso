@@ -121,23 +121,10 @@ class Api_GamingController extends Api_GlobalController
 	public function getGoodsFromStoreAction () {
 		$this->_validateRequiredParameters(array('user_key'));
 		$game = Game_Starbar::getInstance();
-		$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
-		if ($cache->test()) {
-			$data = $cache->load();
-		} else {
-			$client = $game->getHttpClient();
-			$client->setCustomParameters(array(
-				'attribute_friendly_id' => 'bdm-product-variant',
-				'verbosity' => 9,
-				'max_records' => 100
-			));
-			$client->getNamedTransactionGroup('store');
-			$data = $client->getData();
-			$cache->save($data);
-		}
+		$goodsData = $game->getGoodsFromStore();
 
 		$goods = new ItemCollection();
-		foreach ($data as $goodData) {
+		foreach ($goodsData as $goodData) {
 			$good = new Gaming_BigDoor_Good();
 			$good->setPrimaryCurrencyId($game->getPurchaseCurrencyId());
 			$good->build($goodData);

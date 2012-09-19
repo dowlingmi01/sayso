@@ -617,6 +617,112 @@ class Devadmin_IndexController extends Api_GlobalController
 	}
 
 	public function raffleMeisterAction () {
+		$this->view->headScript()->appendFile('//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js');
+		$request = $this->getRequest();
+		$operation = $request->getParam('operation');
+		$starbarId = $request->getParam('starbar_id');
+		$goodId = $request->getParam('good_id');
+
+		$tokens = array();
+		$quantities = array();
+
+		$sql = "SELECT *
+				FROM starbar
+				WHERE id > 1
+				";
+		$starbars = Db_Pdo::fetchAll($sql);
+
+		$this->view->starbars = $starbars;
+		$this->view->operation = $operation;
+		$this->view->starbar_id = $starbarId;
+		$this->view->good_id = $goodId;
+
+		if ($starbarId) {
+			$starbar = new Starbar();
+			$starbar->loadData($starbarId);
+			$request->setParam('user_id', 1);
+			$gameStarbar = Game_Starbar::getInstance();
+
+			$this->view->starbar_id = $starbar->id;
+			$economy = $gameStarbar->getEconomy();
+
+			$sql = "
+				SELECT ugoh.good_id, SUM(ugoh.quantity) AS total_purchased
+				FROM user_gaming_order_history ugoh
+				INNER JOIN user_gaming ug
+					ON ugoh.user_gaming_id = ug.id
+					AND ug.starbar_id = ?
+				GROUP BY ugoh.good_id
+				ORDER BY total_purchased DESC
+			";
+
+			$purchasedGoods = Db_Pdo::fetchAll($sql, $starbarId);
+
+			$goodsData = $gameStarbar->getGoodsFromStore();
+
+			$goods = new ItemCollection();
+
+			foreach ($goodsData as $goodData) {
+				$good = new Gaming_BigDoor_Good();
+				$good->setPrimaryCurrencyId($gameStarbar->getPurchaseCurrencyId());
+				$good->build($goodData);
+				$goods[(int) $good->getId()] = $good;
+			}
+
+			foreach ($purchasedGoods as $purchasedGood) {
+				$purchasedGoodId = (int) $purchasedGood['good_id'];
+				$totalQuantityPurchased = (int) $purchasedGood['total_purchased'];
+				if (isset($goods[$purchasedGoodId])) {
+					$good = $goods[$purchasedGoodId];
+					$good->setGame($gameStarbar);
+					if ($good->isToken()) {
+						$tokens[$good->getId()] = array("good" => $good, "total_purchased" => $totalQuantityPurchased);
+					}
+				}
+			}
+		}
+
+		$this->view->tokens = $tokens;
+
+		$this->view->winning_transaction = new GamerOrderHistory();
+
+		if ($operation == "pick-winner" && $goodId && isset($tokens[$goodId])) {
+			$token = $tokens[$goodId];
+
+			$totalQuantityPurchased = $token["total_purchased"];
+			$randomWinner = mt_rand(1, $totalQuantityPurchased);
+
+			Db_Pdo::execute("SET @cumulative_sum = 0");
+
+			$sql = "
+				SELECT ugoh.*, (@cumulative_sum := @cumulative_sum + ugoh.quantity) as cumulative_quantity
+				FROM user_gaming_order_history ugoh
+				WHERE good_id = ?
+				HAVING cumulative_quantity >= ?
+				ORDER BY ugoh.id ASC
+				LIMIT 1;
+			";
+			$winningTransactionResult = Db_Pdo::fetch($sql, $goodId, $randomWinner);
+
+			if ($winningTransactionResult) {
+				$this->view->winning_transaction = new GamerOrderHistory($winningTransactionResult);
+				$this->view->winning_gamer = new Gamer();
+				$this->view->winning_gamer->loadData($this->view->winning_transaction->user_gaming_id);
+				$this->view->winning_user = new User();
+				if ($this->view->winning_gamer->id && $this->view->winning_gamer->user_id) {
+					$this->view->winning_user->loadData($this->view->winning_gamer->user_id);
+				}
+				$this->view->winning_user_email = new User_Email();
+				if ($this->view->winning_user->id && $this->view->winning_user->primary_email_id) {
+					$this->view->winning_user_email->loadData($this->view->winning_user->primary_email_id);
+				}
+			}
+		}
+
+	}
+
+	/*
+	public function raffleMeisterAction () {
 		$request = $this->getRequest();
 		$goodId = (int) $request->getParam('named_good_id');
 
@@ -702,7 +808,7 @@ class Devadmin_IndexController extends Api_GlobalController
 		}
 
 		$this->view->named_good_id = $goodId;
-	}
+	}*/
 
 	public function emailsInstalledAction () {
 		$sql = "

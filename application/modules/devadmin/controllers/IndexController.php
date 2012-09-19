@@ -243,7 +243,7 @@ class Devadmin_IndexController extends Api_GlobalController
 						$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $economy->getKey(), Api_Cache::LIFETIME_WEEK);
 						$cache->remove();
 						// To avoid reloading the form and setting the inventory again
-						$this->_redirect("inventory?starbar_id=".$starbarId."&named_good_id=".$goodId);
+						$this->_redirect("/devadmin/index/inventory?starbar_id=".$starbarId."&named_good_id=".$goodId);
 					}
 				} else {
 					if ($newInventory != "") {
@@ -256,7 +256,7 @@ class Devadmin_IndexController extends Api_GlobalController
 						$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $economy->getKey(), Api_Cache::LIFETIME_WEEK);
 						$cache->remove();
 						// To avoid reloading the form and setting the inventory again
-						$this->_redirect("inventory?starbar_id=".$starbarId."&named_good_id=".$goodId);
+						$this->_redirect("/devadmin/index/inventory?starbar_id=".$starbarId."&named_good_id=".$goodId);
 					}
 				}
 			}

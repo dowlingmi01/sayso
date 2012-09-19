@@ -174,73 +174,98 @@ class Devadmin_IndexController extends Api_GlobalController
 
 	public function inventoryAction () {
 		$request = $this->getRequest();
+
+		$starbarId = $request->getParam('starbar_id');
 		$goodId = $request->getParam('named_good_id');
 		$newInventory = $request->getParam('new_inventory');
 
-		$client = new Gaming_BigDoor_HttpClient('43bfbce697bd4be99c9bf276f9c6b086', '35eb12f3e87144a0822cf1d18d93d867');
-		$client->getNamedGoodCollection(2296001);
-		$data = $client->getData();
-		$unfilteredGoods = $data->named_goods;
-		$goods = array();
+		$sql = "SELECT *
+				FROM starbar
+				WHERE id > 1
+				";
+		$starbars = Db_Pdo::fetchAll($sql);
+		$this->view->starbars = $starbars;
 
-		// Keep only items for this environment
-		foreach ($unfilteredGoods as $good) {
-			if (strpos($good->end_user_title, ' (Variant)') !== false) {
-				foreach ($good->attributes as $attribute) {
-					if ($attribute->friendly_id == "environment-".APPLICATION_ENV) {
-						$goods[] = $good;
-						continue 2; // Go to next unfiltered good
+		if ($starbarId) {
+			$starbar = new Starbar();
+			$starbar->loadData($starbarId);
+			$request->setParam('user_id', 1);
+			$gameStarbar = Game_Starbar::getInstance();
+
+			$this->view->starbar_id = $starbar->id;
+			$economy = $gameStarbar->getEconomy();
+
+			$client = $economy->getClient();
+			$namedGoodCollectionId = $economy->getGoodId("NAMED_GOOD_COLLECTION");
+
+			$client->getNamedGoodCollection($namedGoodCollectionId);
+			$data = $client->getData();
+			$unfilteredGoods = $data->named_goods;
+			$goods = array();
+
+			// Keep only items for this environment
+			foreach ($unfilteredGoods as $good) {
+				if (strpos($good->end_user_title, ' (Variant)') !== false) {
+					foreach ($good->attributes as $attribute) {
+						if ($attribute->friendly_id == "environment-".APPLICATION_ENV) {
+							$goods[] = $good;
+							continue 2; // Go to next unfiltered good
+						}
 					}
 				}
 			}
-		}
 
-		// Filter out tokens
-		foreach ($goods as $goodIndex => $good) {
-			foreach ($good->attributes as $attribute) {
-				if ($attribute->friendly_id == "giveaway-token") {
-					unset($goods[$goodIndex]);
+			// Filter out tokens
+			foreach ($goods as $goodIndex => $good) {
+				foreach ($good->attributes as $attribute) {
+					if ($attribute->friendly_id == "giveaway-token") {
+						unset($goods[$goodIndex]);
+					}
 				}
 			}
-		}
 
-		$remainingInventory = "";
-		$soldInventory = "";
+			$remainingInventory = "N/A";
+			$soldInventory = "N/A (probably)";
 
-		if ($goodId) {
-			$client->namedGoodCollection(2296001)->namedGood($goodId)->getInventory();
-			$data = $client->getData();
-			if ($data) {
-				$soldInventory = $data->sold_inventory;
-				$remainingInventory = $data->total_inventory - $soldInventory;
-				if ($newInventory != "") {
-					$newInventory = abs($newInventory);
-					$remainingInventory = $newInventory;
-					$client->setParameterPost('total_inventory', $remainingInventory+$soldInventory);
-					$client->namedGoodCollection(2296001)->namedGood($goodId)->putInventory();
+			if ($goodId) {
+				$client->namedGoodCollection($namedGoodCollectionId)->namedGood($goodId)->getInventory();
+				$data = $client->getData();
+				if ($data) {
+					$soldInventory = $data->sold_inventory;
+					$remainingInventory = $data->total_inventory - $soldInventory;
+					if ($newInventory != "") {
+						$newInventory = abs($newInventory);
+						$remainingInventory = $newInventory;
+						$client->setParameterPost('total_inventory', $remainingInventory+$soldInventory);
+						$client->namedGoodCollection($namedGoodCollectionId)->namedGood($goodId)->putInventory();
 
-					$game = Game_Starbar::getInstance();
-					$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
-					$cache->remove();
-				}
-			} else {
-				if ($newInventory != "") {
-					$newInventory = abs($newInventory);
-					$remainingInventory = $newInventory;
-					$client->setParameterPost('total_inventory', $remainingInventory);
-					$client->namedGoodCollection(2296001)->namedGood($goodId)->postInventory(); // post CREATES inventory
+						$game = Game_Starbar::getInstance();
+						$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $economy->getKey(), Api_Cache::LIFETIME_WEEK);
+						$cache->remove();
+						// To avoid reloading the form and setting the inventory again
+						$this->_redirect("inventory?starbar_id=".$starbarId."&named_good_id=".$goodId);
+					}
+				} else {
+					if ($newInventory != "") {
+						$newInventory = abs($newInventory);
+						$remainingInventory = $newInventory;
+						$client->setParameterPost('total_inventory', $remainingInventory);
+						$client->namedGoodCollection($namedGoodCollectionId)->namedGood($goodId)->postInventory(); // post CREATES inventory
 
-					$game = Game_Starbar::getInstance();
-					$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
-					$cache->remove();
+						$game = Game_Starbar::getInstance();
+						$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $economy->getKey(), Api_Cache::LIFETIME_WEEK);
+						$cache->remove();
+						// To avoid reloading the form and setting the inventory again
+						$this->_redirect("inventory?starbar_id=".$starbarId."&named_good_id=".$goodId);
+					}
 				}
 			}
-		}
 
-		$this->view->named_goods = $goods;
-		$this->view->named_good_id = $goodId;
-		$this->view->remaining_inventory = $remainingInventory;
-		$this->view->sold_inventory = $soldInventory;
+			$this->view->named_goods = $goods;
+			$this->view->named_good_id = $goodId;
+			$this->view->remaining_inventory = $remainingInventory;
+			$this->view->sold_inventory = $soldInventory;
+		}
 	}
 
 	public function goodsAction () {

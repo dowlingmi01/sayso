@@ -1,12 +1,20 @@
 <br />
-<form id="inventoryForm" method="post">
-	<select name="named_good_id" onchange="$SQ('#new_inventory').attr('value', ''); $SQ('#inventoryForm').submit();">
-		<option value="0">Choose a good, any good</option>
-		<? foreach ($this->named_goods as $good) { ?>
-			<? $title = str_replace('(Variant)', '', $good->end_user_title) ?>
-			<option value="<?= $good->id ?>" <? if ($this->named_good_id == $good->id) { echo 'selected'; } ?>><?= $title ?></option>
+<form id="inventoryForm" method="get">
+	<select id="starbar_id" name="starbar_id" onchange="<? if ($this->starbar_id) { ?>$SQ('#named_good_id').val('0');<? } ?> <? if ($this->named_good_id) { ?>$SQ('#new_inventory').attr('value', '');<? } ?> $SQ('#inventoryForm').submit();">
+		<option value="">Choose a starbar</option>
+		<? foreach ($this->starbars as $starbar) { ?>
+			<option value="<?= (int) $starbar['id'] ?>" <? if ($this->starbar_id == (int) $starbar['id']) { echo 'selected'; } ?>><?= $starbar['label'] ?></option>
 		<? } ?>
-	</select>
+	</select><br />
+	<? if ($this->starbar_id) { ?>
+		<select id="named_good_id" name="named_good_id" onchange="<? if ($this->named_good_id) { ?>$SQ('#new_inventory').attr('value', '');<? } ?> $SQ('#inventoryForm').submit();">
+			<option value="0">Choose a good, any good</option>
+			<? foreach ($this->named_goods as $good) { ?>
+				<? $title = str_replace('(Variant)', '', $good->end_user_title) ?>
+				<option value="<?= $good->id ?>" <? if ($this->named_good_id == $good->id) { echo 'selected'; } ?>><?= $title ?></option>
+			<? } ?>
+		</select>
+	<? } ?>
 	<? if ($this->named_good_id) { ?>
 		<br />
 		Remaining Inventory: <input type="text" name="new_inventory" id="new_inventory" value="<?= $this->remaining_inventory ?>" />

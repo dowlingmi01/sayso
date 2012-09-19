@@ -18,7 +18,7 @@ class Survey_Question extends Record
 		}
 
 		$sql = "
-			SELECT COUNT(sr.user_id) AS number_of_users
+			SELECT COUNT(DISTINCT sr.user_id) AS number_of_users
 			FROM survey_response sr
 			INNER JOIN survey_question_response sqr
 				ON sqr.survey_response_id = sr.id

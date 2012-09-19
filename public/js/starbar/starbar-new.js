@@ -473,6 +473,11 @@ $SQ(function(){
 
 	} // end initElements()
 
+	function changeBgImage (image, id) {
+		var element = document.getElementById(id);
+		element.style.backgroundImage = "url("+image+")";
+	}
+
 	function closePopBox(keepNotifications){
 		if (!elemPopBox || !elemPopBox.is(':visible')) return; // all pop boxes are already closed
 		elemPopBox.each(function(){
@@ -1036,17 +1041,20 @@ $SQ(function(){
 						levelIcon.addClass('sb_userLevelIcons');
 						if (level.ordinal == userCurrentLevel.ordinal) {
 							levelIcon.addClass('sb_userLevel_current');
-							levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+bigImageUrl+'\')"></div>');
-							//<p><strong class="sb_theme_textHighlight">'+level.title+'</strong><br /><small class="sb_xpRequired">'+level.ordinal+'</small></p>
+							levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+bigImageUrl+'\')"><div class="sb_theme_textNotifyCurrent"><p><small class="sb_xpRequired">'+level.ordinal+'</small></p></div></div>');
+
 						} else {
 							if (level.ordinal < userCurrentLevel.ordinal) {
 								levelIcon.addClass('sb_userLevel_earned');
-								levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+smallImageUrl+'\')"></div>');
-								//<p>'+level.title+'<br /><small class="sb_xpRequired">'+level.ordinal+'</small></p>
+								//levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+smallImageUrl+'\')"><div class="sb_theme_textNotifyEarned"><p><small class="sb_xpRequired">'+level.ordinal+'</small></p></div></div>');
+
+								levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+smallImageUrl+'\')"><p>'+level.ordinal+'</p></div>');
+
+
 							} else { // level.ordinal > userCurrentLevel.ordinal
-								levelIcon.addClass('sb_userLevel_next');
-								levelIcon.html('<div class="sb_userLevelImg"></div>');
-								//<p>'+level.title+'<br /><small class="sb_xpRequired">'+level.ordinal+'</small></p>
+
+							 	levelIcon.addClass('sb_userLevel_next');
+                                levelIcon.html('<div class="sb_userLevelImg" onmouseover="this.style.backgroundImage=\'url('+smallImageUrl+')\';this.innerHTML=\'<p>'+level.ordinal+'</p>\'" onmouseout="this.style.backgroundImage=\'url(http://app.saysollc.com/images/machinima/level_blank.png)\';this.innerHTML=\'\'"></div>');
 							}
 						}
 						levelGroup.append(levelIcon);

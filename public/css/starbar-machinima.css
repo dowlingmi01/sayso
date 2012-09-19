@@ -916,10 +916,10 @@
 	height: 40%;
 }
 
-#sayso-starbar #starbar-player-console .sb_xpRequired{
+#sayso-starbar #starbar-player-console .sb_xpRequired {
 	background-image: url('../images/machinima/img_star_sm.png');
 	background-repeat: no-repeat;
-	background-position: 0px 3px;
+	background-position: 0 0; /* Was 0px 3px; */
 	height: 20px;
 	padding: 7px 7px 3px 23px;
 	font-size: 11px;
@@ -927,7 +927,62 @@
 	color: #333;
 	display: inline;
 }
+#sayso-starbar #starbar-player-console .sb_userLevel_next p{
+	position:relative;
+	top:50px;
+	color:#333;
+	background-image: url('../images/machinima/img_star_sm.png');
+	background-repeat: no-repeat;
+	font-weight:bold;
+	background-position: 0 3px;
+	height: 20px;
+	padding: 7px 7px 3px 23px;
+	font-size: 11px;
+	line-height: 22px;
+	display:inline;
+}
 
+#sayso-starbar #starbar-player-console .sb_userLevel_earned p{
+	position:relative;
+	top:50px;
+	color:#333;
+	background-image: url('../images/machinima/img_star_sm.png');
+	background-repeat: no-repeat;
+	font-weight:bold;
+	background-position: 24px 3px;
+	height: 20px;
+	padding: 7px 7px 3px 23px;
+	font-size: 11px;
+	line-height: 22px;
+	display:inline;
+}
+#sayso-starbar #starbar-player-console .sb_theme_textNotifyNext {
+	top:8px;
+	position:absolute;
+}
+
+#sayso-starbar #starbar-player-console .sb_theme_textNotifyNext p,
+#sayso-starbar #starbar-player-console .sb_theme_textNotifyEarned p,
+#sayso-starbar #starbar-player-console .sb_theme_textNotifyCurrent p {
+	color:#B5141A;
+	font-weight:bold;
+}
+
+#sayso-starbar #starbar-player-console .sb_theme_textNotifyEarned {
+	top:8px;
+	position:absolute;
+	margin-left:25px;
+}
+
+#sayso-starbar #starbar-player-console .sb_theme_textNotifyCurrent {
+	position:absolute;
+	margin-left:25px;
+}
+
+#sayso-starbar #starbar-player-console .sb_theme_textNotifyCurrent p .sb_xpRequired {
+	color:#333;
+	margin-left:-4px;
+}
 
 #sayso-starbar #starbar-player-console .sb_imgRedeemableCurrency{
 	background-image: url('../images/machinima/p_icon.png');
@@ -1263,6 +1318,8 @@
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_user_level_icons_container{
 	margin: 0px 25px;
+	height:105px;
+	left:45px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav{
@@ -1307,20 +1364,19 @@
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_earned,
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next{
 	width: 100px;
-	margin-top:15px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_current{
-	/*
+
 	width: 100px;
 	height: 139px;
-	*/
 	/* fixed height to allow scrollPane to have correct height */
 	margin-top: -15px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevelIcons.sb_userLevel_current p{
 	display: block;
+	padding-top:90px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevelImg{
@@ -1337,7 +1393,12 @@
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next .sb_userLevelImg{
 	margin: 14px 0px 0px 0px;
 	height: 69px;
-	background-position: center 0px;
+	background-position: center -2px;
+}
+
+#sayso-starbar #sb_popBox_user-level .sb_userLevel_current .sb_userLevelImg{
+	margin: 4px 0px 0px 0px;
+	background-position: center 12px;
 }
 
  .sb_userLevel_next{
@@ -2121,7 +2182,7 @@ margin-top:10px;
 #sayso-starbar .sb_lineList li span.sb_title span {font-weight:bold !important;}
 #sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container{top:10px;margin-left:auto !important;margin-right:auto !important;}
 #sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group{}
-#sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_next{width:95px !important;height:65px !important;margin-top:9px !important;}
+#sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_next{width:95px !important;height:65px !important;}
 #sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_next .sb_userLevelImg{width:60px !important;height:63px !important;margin-left:auto !important;margin-right:auto !important;}
 #sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_current{height:105px !important;}
 #sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_current .sb_userLevelImg{width:105px !important;height:104px !important;margin-left:auto !important;margin-right:auto !important;background-image: url('../images/machinima/level_current.png');}

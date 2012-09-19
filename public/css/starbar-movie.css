@@ -430,7 +430,7 @@
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week1{
 	display: block;
-	background-image: url('../images/movie/img_promo_week1_bg.jpg');
+	background-image: url('../images/movie/img_promo_2.jpg');
 	background-position: top right;
 }
 
@@ -646,7 +646,37 @@
 	display: inline;
 }
 
+/* START */
+#sayso-starbar #starbar-player-console .sb_userLevel_next p{
+	position:relative;
+	top:50px;
+	color:#333;
+	background-image: url('../images/movie/img_star_sm.png');
+	background-repeat: no-repeat;
+	font-weight:bold;
+	background-position: 0 3px;
+	height: 20px;
+	padding: 7px 7px 3px 23px;
+	font-size: 11px;
+	line-height: 22px;
+	display:inline;
+}
 
+#sayso-starbar #starbar-player-console .sb_userLevel_earned p{
+	position:relative;
+	top:50px;
+	color:#333;
+	background-image: url('../images/movie/img_star_sm.png');
+	background-repeat: no-repeat;
+	font-weight:bold;
+	background-position: 24px 3px;
+	height: 20px;
+	padding: 7px 7px 3px 23px;
+	font-size: 11px;
+	line-height: 22px;
+	display:inline;
+}
+/* END */
 #sayso-starbar #starbar-player-console .sb_imgCinebucks{
 	background-image: url('../images/movie/img_cinebucks.png');
 	width: 30px;
@@ -1002,6 +1032,7 @@
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_user_level_icons_container{
 	margin: 0px 25px;
+	height:105px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav{
@@ -1031,7 +1062,7 @@
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevelIcons{
 	float: left;
-	margin: 20px 0px 0px 0px;
+	margin: 9px 0px 0px 0px;
 	text-align: center;
 }
 
@@ -1087,7 +1118,7 @@
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_user-level-box{
-	margin: 18px 0px 0px 0px;
+	margin: 15px 0px 0px 0px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_rewardsCenterLink{

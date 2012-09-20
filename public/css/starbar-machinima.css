@@ -927,6 +927,22 @@
 	color: #333;
 	display: inline;
 }
+
+#sayso-starbar #starbar-player-console .sb_userLevel_current p{
+	position:relative;
+	top:80px;
+	color:#333;
+	background-image: url('../images/machinima/img_star.png');
+	background-repeat: no-repeat;
+	font-weight:bold;
+	background-position: 0 3px;
+	height: 20px;
+	font-size: 11px;
+	line-height: 22px;
+	display:inline;
+	padding-left:10px;
+}
+
 #sayso-starbar #starbar-player-console .sb_userLevel_next p{
 	position:relative;
 	top:50px;
@@ -940,6 +956,7 @@
 	font-size: 11px;
 	line-height: 22px;
 	display:inline;
+	z-index:-5;
 }
 
 #sayso-starbar #starbar-player-console .sb_userLevel_earned p{
@@ -1364,6 +1381,7 @@
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_earned,
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next{
 	width: 100px;
+	z-index:-5;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_current{
@@ -1376,7 +1394,8 @@
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevelIcons.sb_userLevel_current p{
 	display: block;
-	padding-top:90px;
+	padding:10px 0 0 29px;
+	left:-10px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevelImg{
@@ -1386,14 +1405,18 @@
 	display: block;
 	background-repeat: no-repeat;
 	background-position: center bottom;
+	z-index:5;
 }
 
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_earned .sb_userLevelImg,
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next .sb_userLevelImg{
 	margin: 14px 0px 0px 0px;
-	height: 69px;
+	height: 100px !important; /* was 69px;*/
 	background-position: center -2px;
+
+	z-index:10 !important;
+	/*background-color:yellow;*/
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_current .sb_userLevelImg{
@@ -1433,6 +1456,7 @@ height: 359px;
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next .sb_userLevelImg{
 	background-image: url('../images/machinima/level_blank.png');
+	height:100px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_user-level-box{

@@ -1024,41 +1024,84 @@ $SQ(function(){
 
 					$SQ.each(allLevels.items, function (index, level) {
 
-						if (index % numberOfVisibleLevels == 0) {
-							levelGroup = $SQ(document.createElement('div'));
-							levelGroup.addClass('sb_userLevelIcons_group');
-							containerElem.append(levelGroup);
-						}
+                        if (index % numberOfVisibleLevels == 0) {
+                                levelGroup = $SQ(document.createElement('div'));
+                                levelGroup.addClass('sb_userLevelIcons_group');
+                                containerElem.append(levelGroup);
+                        }
 
-						var smallImageUrl, bigImageUrl;
-						$SQ.each(level.urls.items, function (index, url) {
-							if (url.url.indexOf('_B.png') != -1) bigImageUrl = url.url;
-							if (url.url.indexOf('_S.png') != -1) smallImageUrl = url.url;
-						});
+                        var smallImageUrl, bigImageUrl;
+                        $SQ.each(level.urls.items, function (index, url) {
+                                if (url.url.indexOf('_B.png') != -1) bigImageUrl = url.url;
+                                if (url.url.indexOf('_S.png') != -1) smallImageUrl = url.url;
+                        });
 
-						var levelIcon = $SQ(document.createElement('div'));
+                        var levelIcon = $SQ(document.createElement('div'));
 
-						levelIcon.addClass('sb_userLevelIcons');
-						if (level.ordinal == userCurrentLevel.ordinal) {
-							levelIcon.addClass('sb_userLevel_current');
-							levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+bigImageUrl+'\')"><div class="sb_theme_textNotifyCurrent"><p><small class="sb_xpRequired">'+level.ordinal+'</small></p></div></div>');
+                        levelIcon.addClass('sb_userLevelIcons');
 
-						} else {
-							if (level.ordinal < userCurrentLevel.ordinal) {
-								levelIcon.addClass('sb_userLevel_earned');
-								//levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+smallImageUrl+'\')"><div class="sb_theme_textNotifyEarned"><p><small class="sb_xpRequired">'+level.ordinal+'</small></p></div></div>');
+                        if (level.ordinal == userCurrentLevel.ordinal) {
+							/* THIS IS THE CURRENT LEVEL */
 
-								levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+smallImageUrl+'\')"><p>'+level.ordinal+'</p></div>');
-
-
-							} else { // level.ordinal > userCurrentLevel.ordinal
-
-							 	levelIcon.addClass('sb_userLevel_next');
-                                levelIcon.html('<div class="sb_userLevelImg" onmouseover="this.style.backgroundImage=\'url('+smallImageUrl+')\';this.innerHTML=\'<p>'+level.ordinal+'</p>\'" onmouseout="this.style.backgroundImage=\'url(http://app.saysollc.com/images/machinima/level_blank.png)\';this.innerHTML=\'\'"></div>');
+							switch (sayso.starbar.shortName) {
+								case "movie":
+									currentlevelText = "L"+(index+1)+'. '+level.title+'</p><p>'+level.ordinal+' Stars';
+								break;
+								case "machinima":
+									currentlevelText = level.ordinal;
+									break;
+								default:
+									currentlevelText = level.ordinal;
 							}
-						}
-						levelGroup.append(levelIcon);
-					});
+
+							levelIcon.addClass('sb_userLevel_current');
+							levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+bigImageUrl+'\')"><div class="sb_theme_textNotifyCurrent"><p>'+currentlevelText+'</p></div></div>');
+
+                        } else {
+
+                                if (level.ordinal < userCurrentLevel.ordinal) {
+
+                                    switch (sayso.starbar.shortName) {
+										case "movie":
+                                            earnedlevelText = "L"+(index+1)+". "+level.title+"</p><p>"+level.ordinal+" Stars";
+											break;
+										case "machinima":
+											earnedlevelText = level.ordinal;
+											break;
+										default:
+											earnedlevelText = level.ordinal;
+									}
+
+                                        levelIcon.addClass('sb_userLevel_earned');
+										levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+smallImageUrl+'\')"><p>'+earnedlevelText+'</p></div>');
+
+                                } else { // level.ordinal > userCurrentLevel.ordinal
+
+							        /* THIS IS A FUTURE LEVEL */
+
+									switch (sayso.starbar.shortName) {
+										case "movie":
+											blankImageUrl = "http://app.saysollc.com/images/movie/img_level_blank.png";
+											nextlevelText = "L"+(index+1)+". "+level.title+"</p><p>"+level.ordinal+" Stars";
+										break;
+										case "machinima":
+											blankImageUrl = "http://app.saysollc.com/images/machinima/level_blank.png";
+											nextlevelText = level.ordinal;
+											break;
+										default:
+											// Using the Machinima circle as the default image
+											blankImageUrl = "http://app.saysollc.com/images/machinima/level_blank.png";
+											nextlevelText = level.ordinal;
+									}
+
+							 		levelIcon.addClass('sb_userLevel_next');
+							        levelIcon.html('<div class="sb_userLevelImg" onmouseover="this.style.backgroundImage=\'url('+smallImageUrl+')\';this.innerHTML=\'<p>'+nextlevelText+'</p>\'" onmouseout="this.style.backgroundImage=\'url('+blankImageUrl+')\';this.innerHTML=\'\'"></div>');
+
+                                }
+                        }
+                        levelGroup.append(levelIcon);
+                });
+
 
 					var emptyLevelsToAdd = allLevels.count % numberOfVisibleLevels;
 					while (emptyLevelsToAdd > 0) {

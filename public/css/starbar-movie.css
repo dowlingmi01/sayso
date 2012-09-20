@@ -609,6 +609,9 @@
 }
 
 /* other special formatting styles */
+#sayso-starbar #starbar-player-console .sb_userLevel_current .sb_userLevelImg {
+	margin-top:-10px;
+}
 
 #sayso-starbar #starbar-player-console .sb_notesEarned{
 	background-image: url('../images/movie/img_cinebucks_sm.png');
@@ -649,31 +652,34 @@
 /* START */
 #sayso-starbar #starbar-player-console .sb_userLevel_next p{
 	position:relative;
-	top:50px;
+	top:60px;
 	color:#333;
-	background-image: url('../images/movie/img_star_sm.png');
-	background-repeat: no-repeat;
-	font-weight:bold;
-	background-position: 0 3px;
-	height: 20px;
-	padding: 7px 7px 3px 23px;
+	z-index:-5;
 	font-size: 11px;
-	line-height: 22px;
+	line-height:8px !important;
+	padding:0;
+	display:inline;
+}
+
+#sayso-starbar #starbar-player-console .sb_userLevel_current p{
+	position:relative;
+	top:79px;
+	color:#333;
+	z-index:-5;
+	font-size: 11px;
+	line-height:8px !important;
+	padding:0;
 	display:inline;
 }
 
 #sayso-starbar #starbar-player-console .sb_userLevel_earned p{
 	position:relative;
-	top:50px;
+	top:60px;
 	color:#333;
-	background-image: url('../images/movie/img_star_sm.png');
-	background-repeat: no-repeat;
-	font-weight:bold;
-	background-position: 24px 3px;
-	height: 20px;
-	padding: 7px 7px 3px 23px;
+	z-index:-5;
 	font-size: 11px;
-	line-height: 22px;
+	line-height:8px !important;
+	padding:0;
 	display:inline;
 }
 /* END */
@@ -1057,6 +1063,7 @@
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav#sb_userLevel_next{
 	background-image: url('../images/movie/img_carousel_right.png');
 	right: 0;
+	z-index:10;
 }
 
 
@@ -1094,6 +1101,7 @@
 	display: block;
 	background-repeat: no-repeat;
 	background-position: center bottom;
+	z-index:5;
 }
 
 
@@ -1115,6 +1123,7 @@
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next .sb_userLevelImg{
 	background-image: url('../images/movie/img_level_blank.png');
+	height:100px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_user-level-box{

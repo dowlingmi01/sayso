@@ -348,7 +348,7 @@
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_popBoxInner .sb_popContent{
-	width: 525px;
+	width: 520px;
 	height: 290px;
 	padding: 0 !important;
 	margin: 0 !important;
@@ -386,13 +386,12 @@
 
 #sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow{
 	position: relative;
-	margin: 5px 0px 0px 10px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week1{
 	display: block;
 	background-image: url('../images/machinima/img_promo_2.png');
-	background-position: left bottom;
+	background-position: 0 0;
 	margin-top:2px;
 }
 
@@ -424,11 +423,32 @@
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p.sb_promo_summary{
 	margin: 40px 0 0 0;
 }
+
+/* Used when the redominent promo color is black */
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p.sb_promo_summary_white{
+	margin: 66px 0 0 20px;
+	color:white;
+	width:260px;
+}
+
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p.sb_promo_footer{
 	margin: 6px 0 0 0;
 }
+
+/* Used when the redominent promo color is black */
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p.sb_promo_footer_white{
+	margin: 6px 0 0 20px;
+	color:white;
+}
+
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide p.sb_promo_link{
 	margin: 12px 0 0 0;
+}
+
+/* Used when the predominent color is black on the promo */
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide p.sb_promo_link_black{
+	margin: 12px 0 0 20px;
+	color:white !important;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_link a{
@@ -448,6 +468,23 @@
 
 }
 
+/* Used when the predominent color is black on the promo */
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_link_black a{
+	background-image: url('../images/machinima/tokens_black_btn.png');
+	background-repeat: no-repeat;
+	/*
+	background-position: right 50%;
+	height: 20px;
+	line-height: 20px;
+	font-size: 14px;
+	font-weight: bold;
+	*/
+	padding: 0px 30px 0px 0px;
+	display: inline-block;
+	width:163px;
+	height:23px;
+
+}
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p small,
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p small strong{
@@ -455,11 +492,25 @@
 	font-weight: normal !important;
 }
 
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p.sb_promo_footer_white small {
+	color:white;
+}
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p small a{
 	color: black;
 	text-decoration: underline;
 	font-weight: normal !important;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p.sb_promo_footer_white small a{
+	color: white;
+	text-decoration: underline;
+	font-weight: normal !important;
+}
+
+
+#sayso-starbar #starbar-player-console #sb_popBox_promo.sb_popBox .sb_popBoxInner {
+	background-color:black !important;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow_nav{

@@ -24,8 +24,11 @@
 </script>
 <div id="sayso-starbar-embed">
 	<br />
-	<? if (!$this->survey->premium) { ?>
+	<? if ($this->survey->reward_category != "premium") { ?>
 		Sorry, it appears that you do not qualify for the <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong> survey. Don't worry, we'll still give you some Coins and XP for trying!<br /><br />
+	<? } ?>
+	<? if ($this->pixel_iframe_url) { ?>
+		<iframe src="<?= $this->pixel_iframe_url?>" width="1" height="1" border="0" class="sb_pixel_iframe"></iframe>
 	<? } ?>
 	<div id="sb-survey-disqualified">
 		<? if ($this->survey->reward_category == "premium") { ?>

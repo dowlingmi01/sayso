@@ -20,6 +20,9 @@
 <div id="sayso-starbar-embed">
 	<br />
 	Thank you for completing the <strong class="sb_theme_textHighlight"> "<?= $this->survey->title ?>"</strong> survey!<br /><br />
+	<? if ($this->pixel_iframe_url) { ?>
+		<iframe src="<?= $this->pixel_iframe_url?>" width="1" height="1" border="0" class="sb_pixel_iframe"></iframe>
+	<? } ?>
 	<div id="sb-survey-completed">
 		<? if ($this->survey->reward_category == "premium") { ?>
 			<p>Excellent! You earned <strong class="sb_theme_textHighlight_alt">375 CineBucks</strong> &amp; <strong class="sb_theme_textHighlight_alt">5000 CineStars</strong></p>

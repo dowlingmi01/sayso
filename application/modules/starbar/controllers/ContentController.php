@@ -348,6 +348,10 @@ class Starbar_ContentController extends Api_GlobalController
 		$surveyResponse->save();
 		Game_Starbar::getInstance()->disqualifySurvey($survey);
 
+		// Set to http://www.samplicio.us/router2/ClientCallBack.aspx?fedResponseStatus=20&fedResponseID=xxxxx
+		// for federated users who are disqualified on the survey (note fedResponseStatus = 20)
+		$this->view->assign('pixel_iframe_url', "");
+
 		$this->view->assign('survey', $survey);
 		$this->view->assign('next_survey', $nextSurvey);
 
@@ -381,6 +385,10 @@ class Starbar_ContentController extends Api_GlobalController
 		$surveyResponse->completed_disqualified = new Zend_Db_Expr('now()');
 		$surveyResponse->save();
 		Game_Starbar::getInstance()->completeSurvey($survey);
+
+		// Set to http://www.samplicio.us/router2/ClientCallBack.aspx?fedResponseStatus=10&fedResponseID=xxxxx
+		// for federated users who have completed the survey (note fedResponseStatus = 10)
+		$this->view->assign('pixel_iframe_url', "");
 
 		$this->view->assign('survey', $survey);
 		$this->view->assign('next_survey', $nextSurvey);

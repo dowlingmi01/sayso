@@ -61,7 +61,9 @@ abstract class Game_Starbar extends Game_Abstract {
 	public function checkin () {
 		$this->submitAction('STARBAR_CHECKIN');
 	}
-
+//public function checkin () {
+//		$this->submitAction('STARBAR_CHECKIN');
+//	}
     /* was testRewardNotes*/
 	public function rewardNotes () {
 		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'demo'))) {
@@ -194,6 +196,15 @@ abstract class Game_Starbar extends Game_Abstract {
 			if ($gamer->id) {
 				$logRecord->user_gaming_id = $gamer->id;
 				$logRecord->action = $actionId;
+
+				// Get defined currency and points for this BD ID.
+				// Note that these values come from the XML file, not from BD itself.
+
+				$logRecord->experience_points = $this->_economy->getActionExperiencePoints($actionId);
+				$logRecord->redeemable_points = $this->_economy->getActionRedeemablePoints($actionId);
+				$logRecord->starbar_id = $this->_request->getParam('starbar_id');
+				$logRecord->source = 'Say.So Starbar';
+
 				if ($sharedId) $logRecord->action_on_id = $sharedId;
 				$logRecord->save();
 			}
@@ -334,26 +345,5 @@ abstract class Game_Starbar extends Game_Abstract {
 		$profileSurvey->loadProfileSurveyForStarbar((int) $request->getParam('starbar_id'));
 		self::$profileSurveyId = $profileSurvey->id;
 		self::$userHasCompletedProfileSurvey = ($profileSurvey->id ? Survey_Response::checkIfUserHasCompletedSurvey((int) $request->getParam('user_id'), $profileSurvey->id) : true);
-	}
-
-	public function getGoodsFromStore() {
-		$goodsData = null;
-		$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $this->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
-
-		if ($cache->test()) {
-			$goodsData = $cache->load();
-		} else {
-			$client = $this->getHttpClient();
-			$client->setCustomParameters(array(
-				'attribute_friendly_id' => 'bdm-product-variant',
-				'verbosity' => 9,
-				'max_records' => 100
-			));
-			$client->getNamedTransactionGroup('store');
-			$goodsData = $client->getData();
-			$cache->save($goodsData);
-		}
-
-		return $goodsData;
 	}
 }

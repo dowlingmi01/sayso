@@ -770,6 +770,7 @@ $SQ(function(){
 
 				// if the frame (and container and its parent) are in a scrollpane, re-initialize it and scroll if necessary
 				var scrollPane = openFrameContainerParent.parents('.sb_scrollPane');
+
 				if (scrollPane.length > 0) {
 					scrollPane.jScrollPane(); // re-initialize the scroll pane now that the content size may be different
 					if (openFrameContainerParent.position()) {  // if the accordion is open
@@ -1359,21 +1360,22 @@ $SQ(function(){
 	function activateScroll(target){
 		// first, resize the scrollpane dynamically to fit whatever height it lives in (.content.height() - .header.height())
 		var contentHeight = $SQ('.sb_popContent', target).height();
+		var headerHeight = 0;
 
 		// add height of the header + any margins / paddings
 		if ($SQ('.sb_popContent .sb_header', target).length > 0){
-			var headerHeight = $SQ('.sb_popContent .sb_header',target).biggestHeight();
+			headerHeight = $SQ('.sb_popContent .sb_header',target).biggestHeight();
 		}else{
-			var headerHeight = 0;
+			headerHeight = 0;
 		}
 
-		// recalculate if we're using 2 column layout.
+		// recalculate if we're using 2 column layout. e.g the user profile popup
 		if ($SQ('.sb_popContent .sb_column60', target).length > 0){
-			var headerHeight = $SQ('.sb_popContent  .sb_column60 .sb_header',target).biggestHeight();
+			headerHeight = $SQ('.sb_popContent  .sb_column60 .sb_header',target).biggestHeight();
 		}
 
 		if ($SQ('.sb_popContent .sb_column40', target).length > 0){
-			var headerHeight = $SQ('.sb_popContent  .sb_column60 .sb_header',target).biggestHeight();
+			headerHeight = $SQ('.sb_popContent  .sb_column60 .sb_header',target).biggestHeight();
 		}
 
 		var ajaxContainer = $SQ('.sb_popContent #sayso-starbar-ajax-content', target);
@@ -1390,11 +1392,13 @@ $SQ(function(){
 
 			// special rule to handle if there are 2 columns in a popbox, check to see if any doesn't have a header, if it doesn't, change the height of the scroll.
 			var parent = $SQ(this).parent();
+
 			if (parent.children(':first').hasClass('sb_scrollPane')){
 				$SQ(this).css('height',contentHeight);
 			}else{
-				$SQ(this).css('height',contentHeight-(headerHeight+paragraphHeight));
+				$SQ(this).css('height',contentHeight-(paragraphHeight+headerHeight));
 			}
+
 			$SQ(this).jScrollPane();
 		});
 	}

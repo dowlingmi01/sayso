@@ -570,7 +570,13 @@
 	position: relative;
 }
 
-
+/* Poll Area */
+#sayso-starbar #sb_popBox_polls .sb_scrollPane {
+	height: 345px;
+}
+#sayso-starbar .jspContainer {
+	height:320px;
+}
 /* JQUERY OVERRIDES */
 
 
@@ -2179,6 +2185,8 @@
 #sayso-starbar #starbar-player-console .sb_popBox .sb_accordion{
 	width: 490px;
 }
+
+#sayso-starbar #sb_popBox_polls #sayso-starbar-ajax-content {margin-bottom:20px;}
 
 /* Tooltips */
 .tooltip {

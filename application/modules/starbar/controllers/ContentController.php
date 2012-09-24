@@ -348,9 +348,16 @@ class Starbar_ContentController extends Api_GlobalController
 		$surveyResponse->save();
 		Game_Starbar::getInstance()->disqualifySurvey($survey);
 
+		$user = new User();
+		$user->loadData($this->user_id);
+
 		// Set to http://www.samplicio.us/router2/ClientCallBack.aspx?fedResponseStatus=20&fedResponseID=xxxxx
 		// for federated users who are disqualified on a federated survey (note fedResponseStatus = 20)
-		$this->view->assign('pixel_iframe_url', "");
+		if ($user->federated_id && $survey->is_federated) {
+			$this->view->assign('pixel_iframe_url', "http://www.samplicio.us/router2/ClientCallBack.aspx?fedResponseStatus=20&fedResponseID=".$user->federated_id);
+		} else {
+			$this->view->assign('pixel_iframe_url', "");
+		}
 
 		$this->view->assign('survey', $survey);
 		$this->view->assign('next_survey', $nextSurvey);
@@ -386,9 +393,16 @@ class Starbar_ContentController extends Api_GlobalController
 		$surveyResponse->save();
 		Game_Starbar::getInstance()->completeSurvey($survey);
 
+		$user = new User();
+		$user->loadData($this->user_id);
+
 		// Set to http://www.samplicio.us/router2/ClientCallBack.aspx?fedResponseStatus=10&fedResponseID=xxxxx
 		// for federated users who have completed a federated survey (note fedResponseStatus = 10)
-		$this->view->assign('pixel_iframe_url', "");
+		if ($user->federated_id && $survey->is_federated) {
+			$this->view->assign('pixel_iframe_url', "http://www.samplicio.us/router2/ClientCallBack.aspx?fedResponseStatus=10&fedResponseID=".$user->federated_id);
+		} else {
+			$this->view->assign('pixel_iframe_url', "");
+		}
 
 		$this->view->assign('survey', $survey);
 		$this->view->assign('next_survey', $nextSurvey);

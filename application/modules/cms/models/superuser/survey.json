@@ -54,6 +54,16 @@
 			]
 		},
 		{
+			"colname": "is_federated",
+			"type": "checkbox",
+			"default": false,
+			"displaywhen": [
+				"add",
+				"edit",
+				"detail"
+			]
+		},
+		{
 			"colname": "starbar_id",
 			"filterwidth":40,
 			"label": "Starbar",

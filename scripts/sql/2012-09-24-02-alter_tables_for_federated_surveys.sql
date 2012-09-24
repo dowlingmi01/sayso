@@ -1,0 +1,1 @@
+ALTER TABLE survey ADD COLUMN is_federated BOOL DEFAULT NULL AFTER origin;

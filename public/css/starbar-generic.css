@@ -674,6 +674,13 @@ html {
 	padding: 0;
 	margin: 0;
 }
+#sayso-starbar #starbar-player-console iframe.sb_pixel_iframe {
+	border: none;
+	padding: 0;
+	margin: 0;
+	width: 1px;
+	height: 1px;
+}
 /* larger popboxes */
 #sayso-starbar #starbar-player-console .sb_popBox.sb_popBoxLg .sb_popBoxInner .sb_popContent {
 	height: 380px;

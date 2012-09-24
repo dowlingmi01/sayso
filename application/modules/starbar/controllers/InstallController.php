@@ -125,6 +125,8 @@ class Starbar_InstallController extends Api_GlobalController {
 				$user->setPlainTextPassword($this->user_password);
 				$user->setEmail( $email );
 				$user->originating_starbar_id = $install->starbar_id;
+				if( $this->federated_id )
+					$user->federated_id = $this->federated_id;
 				$user->save();
 			}
 			$install->user_id = $user->id;

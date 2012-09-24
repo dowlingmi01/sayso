@@ -136,6 +136,7 @@ $(document).ready(function (){
 					referrer : document.referrer,
 					user_email: emailEl.val(),
 					user_password: passwordEl.val(),
+					federated_id: saysoConf.fedResponseId,
 					renderer: 'jsonp'
 				};
 			$.ajax( {

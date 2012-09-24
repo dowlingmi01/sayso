@@ -10,6 +10,7 @@
 		baseDomain: getBaseDomain(),
 		bn: getBrowserNameVersion(),
 		locationCookie: getLocationCookie(),
+		fedResponseId: getFedResponseId(),
 		origination: getOrigination()
 	}
 	function getBaseDomain() {
@@ -62,6 +63,14 @@
 			return originationParam;
 		} else
 			return getCookie('sayso-install') || 'p-1';
+	}
+	function getFedResponseId() {
+		var originationParam = getUrlParam('fedResponseId');
+		if( originationParam ) {
+			setCookie('sayso-fedResponseId', originationParam);
+			return originationParam;
+		} else
+			return getCookie('sayso-fedResponseId');
 	}
 	function getLocationCookie() {
 		var locationCookie = getCookie( 'sayso-location' );

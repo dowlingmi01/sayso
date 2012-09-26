@@ -669,12 +669,12 @@ html {
 #sayso-starbar #starbar-player-console .sb_popBox .sb_header h2 {
 	display: inline-block;
 }
-#sayso-starbar #starbar-player-console iframe {
+#sayso-starbar #starbar-player-console iframe, #sayso-starbar-embed iframe {
 	border: none;
 	padding: 0;
 	margin: 0;
 }
-#sayso-starbar #starbar-player-console iframe.sb_pixel_iframe {
+#sayso-starbar #starbar-player-console iframe.sb_pixel_iframe, #sayso-starbar-embed iframe.sb_pixel_iframe {
 	border: none;
 	padding: 0;
 	margin: 0;

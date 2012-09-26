@@ -469,7 +469,7 @@ dd#no_csrf_foo-element {
 	margin-right: 0;
 }
 .navigation ul li.active {
-	z-index: 2;
+	z-index: 1;
 	background-image: none;
 }
 .navigation ul li a {

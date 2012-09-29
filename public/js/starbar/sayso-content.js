@@ -58,6 +58,18 @@
 				);
 	}
 
+	sayso.setLocalStateFromBackground = function( response ) {
+		sayso.state = response;
+		sayso.starbar = response.starbars[response.currentStarbar];
+		sayso.starbar.user = response.user;
+		sayso.starbar.state = {visibility: sayso.state.starbarVisibility, profile: sayso.state.profileTS, game: sayso.state.gameTS};
+		sayso.starbar.game = sayso.state.economies[sayso.starbar.economyId].game;
+
+		sayso.starbar.economy = sayso.state.economies[sayso.starbar.economyId];
+		
+		sayso.notifications = [];
+	}
+	
 	function safeLog (type, debug) { // <-- closure here allows re-use for log() and warn()
 		return function () {
 			var args = Array.prototype.slice.call(arguments);
@@ -86,6 +98,11 @@
 	String.prototype.trim = function() {
 		return this.replace(/^\s+|\s+$/g,'');
 	};
+	
+	if( sayso.location.host == sayso.baseDomain && sayso.location.pathname == '/starbar/content/close-window' ) {
+		if( sayso.location.search.indexOf('update_notifications') >= 0 )
+			forge.message.broadcastBackground('update-notifications');
+	}
 	
 	sayso.debug = true;
 	sayso.log = safeLog('log', sayso.debug);
@@ -151,13 +168,7 @@
 			
 			}
 			forge.message.broadcastBackground( "get-state", {}, function( response ) {
-				sayso.state = response;
-				sayso.starbar = response.starbars[response.currentStarbar];
-				sayso.starbar.user = response.user;
-				sayso.starbar.state = {visibility: sayso.state.starbarVisibility, profile: sayso.state.profileTS, game: sayso.state.gameTS};
-				sayso.starbar.game = sayso.state.economies[sayso.starbar.economyId].game;
-
-				sayso.starbar.economy = sayso.state.economies[sayso.starbar.economyId];
+				sayso.setLocalStateFromBackground(response);
 
 				sayso.flags = 'none';
 
@@ -213,6 +224,7 @@
 
 		var blackList = [ // never OK
 			'facebook.com/dialog', 'facebook.com/plugins', 'facebook.com/login', 'twitter.com/intent', 'twitter.com/widgets',
+			'facebook.com/connect', 'api.twitter.com/oauth/authorize',
 			'stumbleupon.com/badge', 'reddit.com/static', 'static.addtoany.com/menu',
 			'plusone.google.com', 'intensedebate/empty',
 			'mail.google.com',

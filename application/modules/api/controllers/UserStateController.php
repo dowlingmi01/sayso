@@ -69,14 +69,17 @@ class Api_UserStateController extends Api_GlobalController
 		} else if( $userState->starbar_id == 2 ) {
         	$starbar->loadData(3);
 			$userState->addStarbar($starbar, $this->_request);
-		}
+		} else
+        	$starbar->loadData($userState->starbar_id);
 
 		$userState->base_domain = BASE_DOMAIN;
 		$userState->user_key = $this->user_key;
 		$userState->starbar_list = $userState->getStarbarList($userState->user_id);
 		$userState->studies = Api_Adapter::getInstance()->call('Study', 'getAll');
-		$userState->interval_studies = Api_Registry::getConfig()->interval->studies;
+		$userState->notifications = Api_Adapter::getInstance()->call('Notification', 'getAll', array('starbar_id'=>$userState->starbar_id, 'starbar_stowed'=>($userState->visibility=='stowed'?'true':'false')));
 
+		$this->_setIntervals();
+		
 		return $this->_resultType($userState);
 	}
 

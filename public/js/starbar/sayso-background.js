@@ -108,16 +108,20 @@ function gotInitialState( response ) {
 			gameTS : response.data.last_update_game,
 			studies : response.data.studies,
 			studiesTS : new Date(),
-			intervalStudies : response.data.interval_studies,
+			notifications : response.data.notifications,
+			notificationsTS : new Date(),
 			adTargets : {},
 			starbars : {},
 			starbarList : response.data.starbar_list,
 			economies : {}
 		};
+		setIntervals(response.intervals);
 		forge.prefs.set('userKey', sayso.state.user.key);
 		getUserData( function() {
 			getStarbar( sayso.state.currentStarbar, answerPendingRequests );
 		} );
+		processNotifications(sayso.state.notifications.items, []);
+		checkForNotifications();
 	}
 }
 function answerPendingRequests() {
@@ -187,15 +191,30 @@ function ajaxWithAuth(options) {
 	options.url = 'http://' + sayso.baseDomain + '/' + options.url;
 	options.error = options.error || showErr;
 	var success = options.success;
-	if( success )
-		options.success = function( response ) { success(response); };
+	
+	options.success = function( response ) { 
+		setIntervals( response.intervals );
+		if( success )
+			success(response);
+	};
 
 	return forge.request.ajax(options);
 }
+function setIntervals( intervals ) {
+	if( !intervals )
+		return;
+	if( intervals.notifications )
+		sayso.state.intervalNotifications = intervals.notifications;
+	if( intervals.studies )
+		sayso.state.intervalStudies = intervals.studies;
+}
 function updateGame( content ) {
 	if( content ) {
+		var previousLevel = sayso.state.economies[sayso.state.starbars[sayso.state.currentStarbar].economyId].game._gamer.current_level;
 		sayso.state.economies[sayso.state.starbars[sayso.state.currentStarbar].economyId].game = content;
 		forge.message.broadcast( 'update-game', content );
+		if( previousLevel != content._gamer.current_level )
+			getNotificationsFromServer();
 	} else
 		ajaxWithAuth({
 			url : 'api/gaming/get-game',
@@ -245,7 +264,9 @@ function onboardingComplete() {
 }
 sayso.switchStarbar = function( starbarId ) {
 	function broadcastSwitch() {
+		sayso.state.notifications.items = [];
 		forge.message.broadcast( 'starbar-switch', sayso.state );
+		getNotificationsFromServer();
 	}
 	if( sayso.state.currentStarbar == starbarId )
 		return;
@@ -288,17 +309,95 @@ function getStudies( ignored, callback ) {
 	}
 	callback( sayso.state.studies );
 }
+function checkForNotifications() {
+	var remainingTime =  sayso.state.notificationsTS - (new Date()) + sayso.state.intervalNotifications * 1000;
+	if( remainingTime < 0 ) {
+		getNotificationsFromServer();
+		remainingTime = sayso.state.intervalNotifications * 1000;
+	}
+	setTimeout(checkForNotifications, remainingTime + 100);
+}
+function getNotificationsFromServer() {
+	ajaxWithAuth( {
+		url: 'api/notification/get-all',
+		data: { starbar_stowed: sayso.state.starbarList[sayso.state.currentStarbar].starbarVisibility == 'stowed' },
+		success: function(response) {
+			if(response.game) {
+				updateGame(response.game);
+			}
+			processNotifications(response.data.items);
+			sayso.state.notifications = response.data;
+			sayso.state.notificationsTS = new Date();
+			forge.message.broadcast('set-notifications', sayso.state.notifications.items);
+		}
+	});
+}
+function processNotifications( newSet, oldSet ) {
+	if(!oldSet)
+		oldSet = sayso.state.notifications.items;
+	var i;
+	var oldKeys = {};
+	for( i = 0; i < oldSet.length; i++ )
+		oldKeys[oldSet[i].id] = oldSet[i];
+	for( i = 0; i < newSet.length; i++ )
+		if( !oldKeys[newSet[i].id] ) {
+			if (newSet[i].notification_area) {
+				// Update profile if we've just received a notification regarding FB or TW getting connected.
+				if (newSet[i].short_name == 'FB Account Connected' || newSet[i].short_name == 'TW Account Connected') {
+					updateProfile();
+				} else if (newSet[i].short_name == 'Level Up') {
+					newSet[i].message = sayso.state.economies[sayso.state.starbars[sayso.state.currentStarbar].economyId].game._gamer.current_level.description;
+				}
+				newSet[i].html = htmlForNotification( newSet[i] );
+			} else {
+				// Messages with no notification area should not be shown, they are sent silently to initiate certain actions
+				ajaxWithAuth({ // Mark closed, those notifications are meant to be received only once.
+					url : 'api/notification/close',
+					data: { message_id: newSet[i].id }
+				});
+				newSet.splice(i, 1);
+				i--;
+			}
+		} else
+			newSet[i].html = oldKeys[newSet[i].id].html;
+}
+function htmlForNotification(notification) {
+	var html = '<div class="sb_starbar-alert sb_starbar-alert-'+notification.notification_area+'" id="starbar-alert-'+notification.id+'"><div class="sb_inner"><div class="sb_content sb_theme_bgAlert'+notification.color+'">';
+	if (notification['popbox_to_open']) {
+		html += '<a href="//'+sayso.baseDomain+'/starbar/'+sayso.state.starbarList[sayso.state.currentStarbar].short_name+'/'+notification.popbox_to_open+'" class="sb_nav_element sb_alert" rel="sb_popBox_'+notification.popbox_to_open+'">'+notification.message+'</a>'
+	} else {
+		html += '<a href="#" class="sb_nav_element sb_alert" rel="">'+notification.message+'</a>';
+	}
+
+	html += '</div><!-- .sb_content --></div><!-- .sb_inner --></div><!-- #sb_alert-new -->';
+	return html;
+}
+function closeNotification( messageId ) {
+	ajaxWithAuth({
+		url : 'api/notification/close',
+		data: { message_id: messageId }
+	});
+	var notifications = sayso.state.notifications.items;
+	for( var i = 0; i < notifications.length; i++ )
+		if( notifications[i].id == messageId ) {
+			notifications.splice(i, 1);
+			sayso.state.notifications.count--;
+			forge.message.broadcast('set-notifications', sayso.state.notifications.items);
+		}
+}
 sayso.scripts = {};
 sayso.pendingStateRequests = [];
 forge.message.listen("get-state", getState, showErr);
 forge.message.listen("update-game", updateGame, showErr);
 forge.message.listen("update-profile", updateProfile, showErr);
+forge.message.listen("update-notifications", getNotificationsFromServer, showErr);
 forge.message.listen("set-visibility", setVisibility, showErr);
 forge.message.listen("starbar-switch", sayso.switchStarbar, showErr);
 forge.message.listen("add-ad-target", addAdTarget, showErr);
 forge.message.listen("delete-ad-targets", deleteAdTargets, showErr);
 forge.message.listen("onboarding-complete", onboardingComplete, showErr);
 forge.message.listen("get-studies", getStudies, showErr);
+forge.message.listen("close-notification", closeNotification, showErr);
 forge.message.listen("get-script", getScript, showErr);
 forge.logging.info("Background script loaded");
 forge.prefs.get('firstRunDone', firstRun, showErr);

@@ -15,6 +15,9 @@ class Api_NotificationController extends Api_GlobalController
 
 		$res = new Collection();
 		$res->setItems(array_values($messages->getArray()));
+		
+		$this->_setIntervals();
+		
 		return $this->_resultType($res);
 	}
 

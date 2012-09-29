@@ -92,7 +92,7 @@ $SQ(function(){
 	// and the user is on the Starbar's base domain (e.g. hellomusic.com)
 	$SQ(document).bind('onboarding-display', function () {
 		var onboarding = $SQ('#sb_popBox_onboard');
-		openPopBox(onboarding, onboarding.attr('href'), false, true);
+		openPopBox(onboarding, onboarding.attr('href'), false);
 		// trigger onboarding complete (see starbar-loader.js where this is handled)
 		forge.message.broadcastBackground('onboarding-complete');
 	});
@@ -242,7 +242,8 @@ $SQ(function(){
 
 		initElements();
 
-		updateAlerts();
+		setNotifications(sayso.state.notifications.items);
+
 		updateProfileElements();
 		activateGameElements(starbarElem, false);
 		// initializes development-only jquery
@@ -397,10 +398,9 @@ $SQ(function(){
 						thisPopBox = $SQ('#'+targetPopBox);
 					}
 
-					// set a delay before closing the alert element
 					if ($SQ(this).hasClass('sb_alert')){
-						var notification = $SQ(this).closest('.sb_starbar-alert');
-						hideAlerts(notification, true, true);
+						var notificationElement = $SQ(this).closest('.sb_starbar-alert');
+						closeNotification(notificationElement);
 					}
 
 					// if it was already open, close it and remove the class (unless trying to refresh from inside the popBox).
@@ -412,7 +412,7 @@ $SQ(function(){
 
 						// check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
 		  				var thisPopBoxSrc = $SQ(this).attr('href');
-			  			openPopBox(thisPopBox, thisPopBoxSrc, true, $SQ(this).hasClass('sb_alert'));
+			  			openPopBox(thisPopBox, thisPopBoxSrc, true);
 
 						// try to turn on the nav highlight if it opened a "large" sub popbox
 						if (targetPopBox != ''){
@@ -478,7 +478,7 @@ $SQ(function(){
 		element.style.backgroundImage = "url("+image+")";
 	}
 
-	function closePopBox(keepNotifications){
+	function closePopBox(){
 		if (!elemPopBox || !elemPopBox.is(':visible')) return; // all pop boxes are already closed
 		elemPopBox.each(function(){
 			$SQ(this).removeClass('sb_popBoxActive');
@@ -490,8 +490,6 @@ $SQ(function(){
 			$SQ('span.sb_nav_border').removeClass('sb_theme_navOnGradient');
 		});
 
-		if (!keepNotifications) updateAlerts();
-
 		return;
 	}
 
@@ -500,23 +498,12 @@ $SQ(function(){
 	* src: the URL to load into the popBox (set to false to not load via AJAX)
 	* withLoadingElement: true to insert loading elements before loading via AJAX (ignored if src is false)
 	*/
-	function openPopBox(popBox, src, withLoadingElement, keepNotificationsOpen){
+	function openPopBox(popBox, src, withLoadingElement){
 		var ajaxContentContainer = null;
 		var loadingElement = null;
-		var alertContainers = $SQ('.sb_alerts_container');
-
-		// Close the last (i.e. the visible) alert from each alert (notification) container if the user opens a popBox
-		// Unless the popBox is opening because the user clicked an alert
-		// If there is a popBox already open, don't close any notifications
-		if (!keepNotificationsOpen && alertContainers.length > 0 && $SQ('.sb_popBoxActive').length == 0) {
-			alertContainers.each(function(){
-		 		var alertsInContainer = $SQ('.sb_starbar-alert', $SQ(this));
-		 		if (alertsInContainer.length > 0) hideAlerts(alertsInContainer.last(), true, true);
-			});
-		}
 
 		hideOverlay();
-		closePopBox(keepNotificationsOpen);
+		closePopBox();
 
 		if (src && withLoadingElement) {  // insert loading elements into popBox, then load content into inner container
 			// fill in the container with loading div and container divs
@@ -564,10 +551,6 @@ $SQ(function(){
 						e.preventDefault();
 						$SQ.openWindow($SQ(this).attr('href'), 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450');
 					})
-					$SQ('.sb_starbar-switch').on('click', function() {
-						// @MDD 08/05/12 - moving to initSwitcher
-						//forge.message.broadcastBackground( 'starbar-switch', parseInt($SQ(this).attr('rel')) );
-					});
 					showPopBoxContents(popBox, loadingElement, ajaxContentContainer);
 				}
 			});
@@ -613,122 +596,42 @@ $SQ(function(){
 		if ($SQ.fx.off) ajaxContentContainer.css('filter', ''); // Fix for IE8 and below
 	}
 
-	function showAlerts(target){
-		if (target){
-			target.delay(200).slideDown('fast');
-		}else{
-			elemAlerts = $SQ('.sb_starbar-alert', elemPlayerConsole);
-			if (elemAlerts.length > 0) {
-				elemAlerts.each(function(){
-					$SQ(this).delay(200).slideDown('fast');
-				});
+    function closeNotification( element ) {
+		var notification_id = element.attr('id').match(/(?:[0-9]+)/);
+		forge.message.broadcastBackground('close-notification', notification_id[0]);
+    }
+	function setNotifications( newSet ) {
+		var oldSet = sayso.notifications;
+		var newKeys = {}, oldKeys = {}, areas = {};
+		var newNotifications = false;
+		var i;
+		for( i = 0; i < newSet.length; i++ )
+			newKeys[newSet[i].id] = newSet[i];
+		for( i = 0; i < oldSet.length; i++ ) {
+			oldKeys[oldSet[i].id] = oldSet[i];
+			if( !newKeys[oldSet[i].id] ) {
+				var oldElem = $SQ('#starbar-alert-'+oldSet[i].id);
+				oldElem.delay(300).slideUp('fast');
+				setTimeout(function(){ oldElem.annihilate(); }, 600);
 			}
 		}
-		return;
-	}
-
-	function hideAlerts(target, performAjaxCall, animate){
-		if (target){
-			if (performAjaxCall) {
-				var notification_id = target.attr('id').match(/(?:[0-9]+)/);
-				$SQ.ajaxWithAuth({
-					url : '//'+sayso.baseDomain+'/api/notification/close?message_id='+notification_id,
-					success : function (response, status) {}
-				});
+		for( i = 0; i < newSet.length; i++ ) {
+			if( !oldKeys[newSet[i].id] ) {
+				newNotifications = true;
+				var newElem = $SQ(newSet[i].html);
+				if( !areas[newSet[i].notification_area] )
+					newElem.prependTo('#starbar-alert-container-'+newSet[i].notification_area);
+				else
+					newElem.insertBefore('#starbar-alert-'+areas[newSet[i].notification_area]);
+				newElem.delay(200).slideDown('fast');
 			}
-
-			if (animate) {
-				target.delay(300).slideUp('fast');
-				setTimeout(function(){ target.annihilate(); }, 600);
-			} else {
-				target.annihilate();
-			}
-		} else {
-			elemAlerts = $SQ('.sb_starbar-alert', elemPlayerConsole);
-			elemAlerts.each(function(){
-				hideAlerts($SQ(this), performAjaxCall, animate);
-			});
+			areas[newSet[i].notification_area] = newSet[i].id;
 		}
+		sayso.notifications = newSet;
+		if( newNotifications )
+			initElements();
 	}
-
-	function updateAlerts() {
-		var starbarStowed = "false";
-		if (starbar.state.visibility == 'stowed') starbarStowed = "true";
-
-		$SQ.ajaxWithAuth({
-			url : '//'+sayso.baseDomain+'/api/notification/get-all?starbar_stowed='+starbarStowed+'&starbar_id='+sayso.starbar.id,
-			success : function (response, status, jqXHR) {
-				var randomString = $SQ.randomString(10);
-				var newAlerts = false;
-
-				elemAlerts = $SQ('.sb_starbar-alert', elemPlayerConsole);
-				if (elemAlerts.length > 0) {
-					elemAlerts.each(function(){
-						$SQ(this).addClass('sb_starbar-alert_'+randomString);
-					});
-				}
-
-				if (response.game) {
-					updateGame(response.game);
-				}
-
-				if (response.data.count > 0) {
-					$SQ.each(response.data.items, function (index, message) {
-						// Check if an alert with that message already exists, if so, do nothing
-						var currentAlert = $SQ('#starbar-alert-'+message.id);
-						if (currentAlert.length == 0) { // New Alert
-							if (message.notification_area) {
-
-								// Update profile if we've just received a notification regarding FB or TW getting connected.
-								if (message.short_name == 'FB Account Connected' || message.short_name == 'TW Account Connected') {
-									updateProfile();
-								} else if (message.short_name == 'Level Up') {
-									var userCurrentLevel = sayso.starbar.game._gamer.current_level;
-									message.message = userCurrentLevel.description;
-								}
-
-								var elemAlertContainer = $SQ('#starbar-alert-container-'+message.notification_area);
-
-								var newAlertHtml = '<div class="sb_starbar-alert sb_starbar-alert-'+message.notification_area+'" id="starbar-alert-'+message.id+'"><div class="sb_inner"><div class="sb_content sb_theme_bgAlert'+message.color+'">';
-								if (message['popbox_to_open']) {
-									newAlertHtml += '<a href="//'+sayso.baseDomain+'/starbar/'+sayso.starbar.shortName+'/'+message.popbox_to_open+'" class="sb_nav_element sb_alert" rel="sb_popBox_'+message.popbox_to_open+'">'+message.message+'</a>'
-								} else {
-									newAlertHtml += '<a href="#" class="sb_nav_element sb_alert" rel="">'+message.message+'</a>';
-								}
-
-								newAlertHtml += '</div><!-- .sb_content --></div><!-- .sb_inner --></div><!-- #sb_alert-new -->';
-
-								elemAlertContainer.prepend(newAlertHtml);
-
-								newAlerts = true;
-							} else {
-								// Messages with no notification area should not be shown, they are sent silently to initiate certain actions
-								$SQ.ajaxWithAuth({ // Mark closed, those notifications are meant to be received only once.
-									url : '//'+sayso.baseDomain+'/api/notification/close?message_id='+message.id,
-									success : function (response, status) {}
-								});
-							}
-						} else { // Alert already exist, remove the class with the random string that we just added
-							currentAlert.removeClass('sb_starbar-alert_'+randomString);
-						}
-					});
-
-					if (elemAlerts.length > 0) {
-						elemAlerts.each(function(){
-							if ($SQ(this).hasClass('sb_starbar-alert_'+randomString)) { // Alert has been closed elsewhere, or should no longer be shown!
-								hideAlerts($SQ(this), false, true); // Animate but don't submit anything via ajax, since alert should already be closed for the code to get here
-							}
-						});
-					}
-
-					if (newAlerts) {
-						initElements();
-						showAlerts();
-					}
-				}
-			}
-		});
-	}
+	forge.message.listen('set-notifications', setNotifications);
 
 	function gameCheckin() {
 		$SQ.ajaxWithAuth({
@@ -814,7 +717,7 @@ $SQ(function(){
 		'openSurvey': function (parameters) {
 			var surveyId = parameters['survey_id'];
 
-			openPopBox($SQ('#sb_popBox_surveys_lg'), '//'+sayso.baseDomain+'/starbar/' + sayso.starbar.shortName + '/embed-survey?survey_id='+surveyId, true, true);
+			openPopBox($SQ('#sb_popBox_surveys_lg'), '//'+sayso.baseDomain+'/starbar/' + sayso.starbar.shortName + '/embed-survey?survey_id='+surveyId, true);
 		},
 		'openSurveyFromSave': function (parameters) {
 			var surveyId = parameters['survey_id'];
@@ -824,23 +727,14 @@ $SQ(function(){
 			var popBoxId = '#sb_popBox_surveys_lg';
 			if (size == "large") popBoxId = '#sb_popBox_surveys_hg';
 
-			openPopBox($SQ(popBoxId), '//'+sayso.baseDomain+'/starbar/' + sayso.starbar.shortName + '/embed-survey?survey_id='+surveyId+"&snc="+snc, true, true);
+			openPopBox($SQ(popBoxId), '//'+sayso.baseDomain+'/starbar/' + sayso.starbar.shortName + '/embed-survey?survey_id='+surveyId+"&snc="+snc, true);
 		},
 		'hideOverlay': function () {
 			hideOverlay();
 		},
 		'refreshRewardCenter': function () {
 			closePopBox();
-			openPopBox($SQ('#sb_popBox_rewards'), '//'+sayso.baseDomain+'/starbar/' + sayso.starbar.shortName + '/rewards', true, true);
-		},
-		'hideAlertByNotificationMessageId': function (parameters) {
-			var performAjaxCall = parameters['perform_ajax_call'];
-			var animate = parameters['animate'];
-			var messageId = parameters['message_id'];
-			var target = $SQ('#starbar-alert-'+messageId);
-			if (target.length == 1) {
-				hideAlerts(target, performAjaxCall, animate);
-			}
+			openPopBox($SQ('#sb_popBox_rewards'), '//'+sayso.baseDomain+'/starbar/' + sayso.starbar.shortName + '/rewards', true);
 		},
 		'fixPlaceholders': function (parameters) {
 			var target = parameters['target'];
@@ -905,7 +799,6 @@ $SQ(function(){
 		var experienceCurrency = sayso.starbar.economy.experience_currency;
 		var redeemableCurrency = sayso.starbar.economy.redeemable_currency;
 
-		// The current level is the first level in the items (it is sorted by the gaming API!)
 		var userCurrentLevel = sayso.starbar.game._gamer.current_level;
 		var userNextLevel;
 
@@ -934,7 +827,6 @@ $SQ(function(){
 		var newLevel = userLevels.count;
 		if (currentLevel != newLevel) {
 			justLeveledUp = true;
-			updateAlerts();
 		}
 
 		// When there is no game data for this user
@@ -1651,8 +1543,7 @@ $SQ(function(){
 	});
 
 	function stowBar () {
-		closePopBox(true);
-		hideAlerts();
+		closePopBox();
 		elemStarbarMain.fadeTo('fast', 0);
 		btnToggleVis.attr('class','').addClass('sb_btnStarbar-closed');
 		btnSaySoLogo.css('backgroundPosition','3px 0px');
@@ -1700,13 +1591,11 @@ $SQ(function(){
 		elemSaySoLogoBorder.hide();
 		elemVisControls.hide();
 		elemPlayerConsole.addClass('sb_starbar-visBG');
-		hideAlerts();
 		if (sayso.disableJqueryEffects) {
 			elemPlayerConsole.attr('class','').addClass('sb_starbar-visOpen');
 			elemStarbarMain.fadeTo('fast', 1);
 			elemVisControls.fadeTo('fast', 1);
 			btnToggleVis.attr('class','').addClass('sb_btnStarbar-open');
-			showAlerts();
 		} else {
 			elemPlayerConsole.animate(
 				{ width: '100%' },
@@ -1717,23 +1606,13 @@ $SQ(function(){
 					elemStarbarMain.fadeTo('fast', 1);
 					elemVisControls.fadeTo('fast', 1);
 					btnToggleVis.attr('class','').addClass('sb_btnStarbar-open');
-					showAlerts();
 				}
 			);
 		}
 	}
 
-	$SQ(window).focus(function () {
-        updateAlerts();
-    });
-
 	// flag so we know this file has loaded
 	sayso.starbar.loaded = true;
-
-
-
-
-
 
 	// initialize switcher component - using named function for global ref
 	function initSwitcher(){

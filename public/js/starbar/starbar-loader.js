@@ -124,14 +124,8 @@
 	} // end loadStarbar()
 
 	forge.message.listen( 'starbar-switch', function( response ) {
-		sayso.state = response;
-		sayso.starbar = response.starbars[response.currentStarbar];
-		sayso.starbar.user = response.user;
-		sayso.starbar.state = {visibility: sayso.state.starbarVisibility, profile: sayso.state.profileTS, game: sayso.state.gameTS};
-		sayso.starbar.game = sayso.state.economies[sayso.starbar.economyId].game;
-
-		sayso.starbar.economy = sayso.state.economies[sayso.starbar.economyId];
-
+		sayso.setLocalStateFromBackground(response);
+		
 		sayso.starbar.loaded = true;
 		$SQ('#sayso-starbar').html('');
 		loadStarbar();

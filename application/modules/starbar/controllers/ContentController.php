@@ -598,7 +598,7 @@ class Starbar_ContentController extends Api_GlobalController
 				$messageUserMap = new Notification_MessageUserMap();
 				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, false);
 			}
-			$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id);
+			$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id."&update_notifications=true");
 		} else {
 			$this->_redirect($facebook->getLoginUrl());
 		}
@@ -672,7 +672,7 @@ class Starbar_ContentController extends Api_GlobalController
 					}
 				}
 
-				$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id);
+				$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id."&update_notifications=true");
 				return;
 			} catch (Exception $e) {}
 
@@ -713,14 +713,14 @@ class Starbar_ContentController extends Api_GlobalController
 
 			// Send hidden notification to make the user request an update to game info, and to disable sharing that same item on FB again
 			$message = new Notification_Message();
-			$message->loadByShortNameAndStarbarId('Facebook Post', $this->starbar_id);
+			$message->loadByShortNameAndStarbarId('Update Game', $this->starbar_id);
 
 			if ($message->id) {
 				$messageUserMap = new Notification_MessageUserMap();
 				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, false);
 			}
 		}
-		$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id);
+		$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id."&update_notifications=true");
 	}
 
 	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null)

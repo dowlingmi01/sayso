@@ -240,166 +240,168 @@
 					// Create the grid
 					// Find the columns we want to see on the grid
 					$columnlist = $saysojson->getCMSColumnsAssoc("displaywhen","subgrid");
-
-					// Hide the ID column in this table
-					if (array_key_exists('id',$columnlist)) {
-						// Note that the id here is the id in the subobject table, not the one from the main table
-						$columnlist['hiddenid'] = 'id';
-						unset($columnlist['id']);
-					}
-
-					$strWhere = sprintf("%s = %s",$fkfield,$fkval);
-
-					$select = Zend_Registry::get('db')->select()->from($realfktablename,$columnlist)->where($strWhere)->order($lookuporder);
-
-					$grid2   = new Cms_Matrix();
-					$grid2->setNoFilters(true); // We don't need to see filters on subobjects
-					$grid2->setJqgParams(array('altRows' => true));// rows will alternate color
-					$grid2->setSource(new Bvb_Grid_Source_Zend_Select($select));
-
-					// Process columns
-					foreach ($columnlist as $key=>$value) {
-
-						// Hide the 'hiddenid' column - it shouldn't be seen by the user.
-						if ($key=="hiddenid") {
-							$grid2->updateColumn($key,array('hidden' => true));
-						} else {
-							// we want to hide any hidden columns
-							$coltype = $saysojson->getColAttr($value,'type');
-							if ($coltype=="hidden") {
-							    $grid2->updateColumn($value,array('hidden' => true));
-							}
-
-							// Set column widths
-							$colwidth =  $saysojson->getColAttr($value,'width');
-							if ($colwidth==Null) {
-								$grid2->updateColumn($value,array('style'=>'width:150px'));
-							} else {
-								$width = sprintf("width:%spx",$colwidth);
-								$grid2->updateColumn($value,array('style'=>$width));
-							}
-
-							// Set column title
-							if ($saysojson->getColAttr($value,'label')!=null) {
-								$grid2->updateColumn($value,array('title'=>$saysojson->getColAttr($value,'label')));
-							}
-
-							// Cross reference any foreign keys
-							if ($coltype=="fkey") {
-								// For fkeys, we know we will have a lookuptable, lookupfield and lookuplabel
-
-								$lookuptable = $saysojson->getColAttr($value,'lookuptable');
-								$lookupfield = $saysojson->getColAttr($value,'lookupfield');
-								$lookuplabel = $saysojson->getColAttr($value,'lookuplabel');
-
-								$fieldname = sprintf("{{%s}}",$value);
-
-
-								$grid2->updateColumn($value,array(
-										'callback' => array(
-										'function'=>array($this,'_getDataField'),
-												'params'=>array($fieldname,
-																$lookuptable,
-																$lookupfield,
-																$lookuplabel
-																)
-										)));
-							}
-
-							if ($coltype=='checkbox') {
-								// For Checkboxes, we can replace the value '1' with a tick
-								$fieldname = sprintf("{{%s}}",$value);
-								$grid2->updateColumn($value,array(
-										'callback' => array(
-										'function'=>array($this,'_generateTickMark'),
-												'params'=>array($fieldname,
-																$value
-																)
-										)));
-							}
-						}
-					}
-
-					if ($saysojson->checkTablePermission("allowedit")) {
-
-						$extraColumnEdit = new Bvb_Grid_Extra_Column();
-						$extraColumnEdit
-							->position('left')
-							->name('editit')
-							->title(' ')
-							->callback(
-								array(
-									'function'  => array($this, '_generateEditButtonLink'),
-									'params'	=> array('{{hiddenid}}',$fktablename,$tablenamepolite)
-								)
-							);
-						$grid2->addExtraColumns($extraColumnEdit);
-
-					}
-
-					if ($saysojson->checkTablePermission("allowdetails")) {
-
-						$extraColumnDetails = new Bvb_Grid_Extra_Column();
-						$extraColumnDetails
-							->position('left')
-							->name('details')
-							->title(' ')
-							->callback(
-								array(
-									'function'  => array($this, '_generateDetailsButtonLink'),
-									'params'	=> array('{{hiddenid}}',$fktablename,$tablenamepolite)
-								)
-							);
-
-						$grid2->addExtraColumns($extraColumnDetails);
-					}
-
-					if ($saysojson->checkTablePermission("allowdelete")) {
-
-						$extraColumnDelete = new Bvb_Grid_Extra_Column();
-						$extraColumnDelete
-							->position('right')
-							->name('delete')
-							->title(' ')
-							->callback(
-								array(
-									'function'  => array($this, '_generateDeleteButtonLink'),
-									'params'	=> array('{{hiddenid}}',$fktablename)
-								)
-							);
-						$grid2->addExtraColumns($extraColumnDelete);
-
-					}
-
-					$form = new Bvb_Grid_Form($class='Zend_Form', $options=array());
-
-					$grid2->setGridId($gridid);
-
-					$grid2->setForm($form);
-
-					if ($saysojson->checkTablePermission("allowadd")) {
-						$fullURL = $this->_getFullURL();
-						$tablename = $this->getRequest()->getParam('table');
-						$tablename = $realtable ;
-						$id = $this->getRequest()->getParam('id');
-						if (($tablename != null) && ($id!=null)) {
-							$redirect = "pt/".$tablename."/pi/".$id;
-						}
-
-						$griddata['newrecord'] = sprintf('<span class="newlink"><a href="/cms/admin/add/table/%s/%s"><img src="/images/icons/add.png" style="width:16px;" alt="Add" Title="Add" /> Add New %s</a></span>',$fktablename,$redirect,$tablenamepolite);
-					}
-
-					if ($saysojson->getTableAttr('label')!=null) {
-						$griddata['title'] = $saysojson->getTableAttr('label');
+					if (empty($columnlist)) {
+						$this->view->message = sprintf("E04: No fields defined for subgrid in %s.json",$fktablename);
 					} else {
-						$griddata['title'] = $tablenamepolite;
+						// Hide the ID column in this table
+						if (array_key_exists('id',$columnlist)) {
+							// Note that the id here is the id in the subobject table, not the one from the main table
+							$columnlist['hiddenid'] = 'id';
+							unset($columnlist['id']);
+						}
+
+						$strWhere = sprintf("%s = %s",$fkfield,$fkval);
+
+						$select = Zend_Registry::get('db')->select()->from($realfktablename,$columnlist)->where($strWhere)->order($lookuporder);
+
+						$grid2   = new Cms_Matrix();
+						$grid2->setNoFilters(true); // We don't need to see filters on subobjects
+						$grid2->setJqgParams(array('altRows' => true));// rows will alternate color
+						$grid2->setSource(new Bvb_Grid_Source_Zend_Select($select));
+
+						// Process columns
+						foreach ($columnlist as $key=>$value) {
+
+							// Hide the 'hiddenid' column - it shouldn't be seen by the user.
+							if ($key=="hiddenid") {
+								$grid2->updateColumn($key,array('hidden' => true));
+							} else {
+								// we want to hide any hidden columns
+								$coltype = $saysojson->getColAttr($value,'type');
+								if ($coltype=="hidden") {
+								    $grid2->updateColumn($value,array('hidden' => true));
+								}
+
+								// Set column widths
+								$colwidth =  $saysojson->getColAttr($value,'width');
+								if ($colwidth==Null) {
+									$grid2->updateColumn($value,array('style'=>'width:150px'));
+								} else {
+									$width = sprintf("width:%spx",$colwidth);
+									$grid2->updateColumn($value,array('style'=>$width));
+								}
+
+								// Set column title
+								if ($saysojson->getColAttr($value,'label')!=null) {
+									$grid2->updateColumn($value,array('title'=>$saysojson->getColAttr($value,'label')));
+								}
+
+								// Cross reference any foreign keys
+								if ($coltype=="fkey") {
+									// For fkeys, we know we will have a lookuptable, lookupfield and lookuplabel
+
+									$lookuptable = $saysojson->getColAttr($value,'lookuptable');
+									$lookupfield = $saysojson->getColAttr($value,'lookupfield');
+									$lookuplabel = $saysojson->getColAttr($value,'lookuplabel');
+
+									$fieldname = sprintf("{{%s}}",$value);
+
+
+									$grid2->updateColumn($value,array(
+											'callback' => array(
+											'function'=>array($this,'_getDataField'),
+													'params'=>array($fieldname,
+																	$lookuptable,
+																	$lookupfield,
+																	$lookuplabel
+																	)
+											)));
+								}
+
+								if ($coltype=='checkbox') {
+									// For Checkboxes, we can replace the value '1' with a tick
+									$fieldname = sprintf("{{%s}}",$value);
+									$grid2->updateColumn($value,array(
+											'callback' => array(
+											'function'=>array($this,'_generateTickMark'),
+													'params'=>array($fieldname,
+																	$value
+																	)
+											)));
+								}
+							}
+						}
+
+						if ($saysojson->checkTablePermission("allowedit")) {
+
+							$extraColumnEdit = new Bvb_Grid_Extra_Column();
+							$extraColumnEdit
+								->position('left')
+								->name('editit')
+								->title(' ')
+								->callback(
+									array(
+										'function'  => array($this, '_generateEditButtonLink'),
+										'params'	=> array('{{hiddenid}}',$fktablename,$tablenamepolite)
+									)
+								);
+							$grid2->addExtraColumns($extraColumnEdit);
+
+						}
+
+						if ($saysojson->checkTablePermission("allowdetails")) {
+
+							$extraColumnDetails = new Bvb_Grid_Extra_Column();
+							$extraColumnDetails
+								->position('left')
+								->name('details')
+								->title(' ')
+								->callback(
+									array(
+										'function'  => array($this, '_generateDetailsButtonLink'),
+										'params'	=> array('{{hiddenid}}',$fktablename,$tablenamepolite)
+									)
+								);
+
+							$grid2->addExtraColumns($extraColumnDetails);
+						}
+
+						if ($saysojson->checkTablePermission("allowdelete")) {
+
+							$extraColumnDelete = new Bvb_Grid_Extra_Column();
+							$extraColumnDelete
+								->position('right')
+								->name('delete')
+								->title(' ')
+								->callback(
+									array(
+										'function'  => array($this, '_generateDeleteButtonLink'),
+										'params'	=> array('{{hiddenid}}',$fktablename)
+									)
+								);
+							$grid2->addExtraColumns($extraColumnDelete);
+
+						}
+
+						$form = new Bvb_Grid_Form($class='Zend_Form', $options=array());
+
+						$grid2->setGridId($gridid);
+
+						$grid2->setForm($form);
+
+						if ($saysojson->checkTablePermission("allowadd")) {
+							$fullURL = $this->_getFullURL();
+							$tablename = $this->getRequest()->getParam('table');
+							$tablename = $realtable ;
+							$id = $this->getRequest()->getParam('id');
+							if (($tablename != null) && ($id!=null)) {
+								$redirect = "pt/".$tablename."/pi/".$id;
+							}
+
+							$griddata['newrecord'] = sprintf('<span class="newlink"><a href="/cms/admin/add/table/%s/%s"><img src="/images/icons/add.png" style="width:16px;" alt="Add" Title="Add" /> Add New %s</a></span>',$fktablename,$redirect,$tablenamepolite);
+						}
+
+						if ($saysojson->getTableAttr('label')!=null) {
+							$griddata['title'] = $saysojson->getTableAttr('label');
+						} else {
+							$griddata['title'] = $tablenamepolite;
+
+						}
+						$this->_gridAssociatedData[] = $griddata;
+						$DeployedGrid = $grid2->deploy();
+						$this->_gridCollection[] = $DeployedGrid;
 
 					}
-					$this->_gridAssociatedData[] = $griddata;
-					$DeployedGrid = $grid2->deploy();
-					$this->_gridCollection[] = $DeployedGrid;
-
-
 				} else {
 
 					$this->view->message = sprintf("E03: File [%s] is missing",$file);
@@ -968,6 +970,87 @@
 			$this->view->form = $form; // assigning the form to view
 		}
 
+		public function goodAction()
+		{
+			if ($this->getRequest()->isPost()) { //is it a post request ?
+				$this->_helper->layout->disableLayout();
+			}
+
+			$formElements = array();
+			$formElements['starbarid'] = new Form_Element_Select('starbarid');
+			$formElements['starbarid']->setLabel('Starbar')
+					->setDescription('Please select the Starbar that this item belongs to')
+					->setRequired(true)
+					->setMultiOptions(array(
+					    '2' => 'Snakkle',
+					    '3' => 'Movie',
+					    '4' => 'Machinima'
+
+					));
+
+            $formElements['goodid'] = new Form_Element_Text('goodid');
+            $formElements['goodid']->setLabel("Good ID (e.g 4204004)");
+
+			$form = new ZendX_JQuery_Form();
+			$form->setName("Good Info");
+			$form->setAttrib('id','div_form');
+			$form->addElements($formElements);
+			$form->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));
+			$form->addElement('submit', 'submit', array(
+        		'label' => 'Get Good Info',
+        		'onclick' => "$('#main').load('" . "/cms/admin/good" . "', $('#div_form').serializeArray() ); return false;"
+    		));
+			if ($this->getRequest()->isPost()) { //is it a post request ?
+
+				$postData = $this->getRequest()->getPost(); // getting the $_POST data
+
+				if ($postData['goodid']!=null) {
+					//DebugBreak('1;d=1');
+$request = $this->getRequest();
+		$goodId = $postData['goodid'];
+
+		$request->getParam('named_good_id');
+		$newInventory = $request->getParam('new_inventory');
+
+		$this->getRequest()->setParam('user_id',1);
+		$this->getRequest()->setParam('starbar_id',$request->getParam('starbarid'));
+ 		$gameStarbar = Game_Starbar::getInstance();
+		$goodsData = $gameStarbar->getGoodsFromStore();
+		$goods = new ItemCollection();
+
+			foreach ($goodsData as $goodData) {
+			    $good = new Gaming_BigDoor_Good();
+			    $good->setPrimaryCurrencyId($gameStarbar->getPurchaseCurrencyId());
+			    $good->build($goodData);
+			    $goods[(int) $good->getId()] = $good;
+			}
+
+		  // if ($goods[$goodId]!=Null) {
+		   $info->id = $goodId;
+		   $info->starbar = $request->getParam('starbarid');
+			$info->title = $goods[$goodId]['title'];
+			$info->cost = $goods[$goodId]['cost'];
+			$info->sold = $goods[$goodId]['inventory_sold'];
+			$info->total = $goods[$goodId]['inventory_total'];
+
+
+				$this->view->info = $info; // Assign the output variables to view
+  // }
+ //  else {
+ //  	   $this->view->error = "Good not found in this starbar";
+ //  }
+				$this->view->form = $form; // assigning the form to view, in case the user wants another search
+
+				} else {
+					$this->view->error = "Please enter a Good ID";
+				}
+
+			}
+			$this->view->form = $form; // assigning the form to view
+
+		}
+
+
 		// Called by AJAX from /cms/admin/user
 		public function sboverviewAction()
 		{
@@ -1231,6 +1314,91 @@
    			$this->view->info = $info;
 			$registry = Registry::getInstance();
 			$registry->offsetUnset('starbar');
+
+		}
+
+		// Called by AJAX from /cms/admin/user
+		public function snakklexferAction()
+		{
+			// Get a list of all tmp_user_transfer users where starbar is snakkle
+			//DebugBreak('1;d=1');
+			$transferusers = new User_TransferCollection();
+			$transferusers->loadForStarbarBlock('Snakkle',307,308);
+			//$transferusers->loadForStarbar('Snakkle');
+			$cnt = 0;
+			$this->getRequest()->setParam('starbar_id','2');// We know that Starbar ID 2 is Snakkle
+			$starbar = new Starbar();
+			$starbar->loadData('2');  // Create a starbar object for the bar we are investigating for this user
+
+			printf("<table><tr><th>&nbsp;</th><th>ID</th><th>Email</th><th>Level</th><th>Experience Points</th><th>Redeemable Points</th></tr>");
+
+			foreach($transferusers as $user) {
+				$cnt++;
+			//	printf("gaming id is [%s], email is [%s]",$user->gaming_id,$user->email);
+				$user_id = $user->user_id;
+				$user_email = $user->email;
+				$gaming_id = $user->gaming_id;
+
+			//****************************************************
+				$this->getRequest()->setParam('user_id',$user_id);
+				$email = new User_Email();
+
+				$email->loadData($user_id);
+				$gameStarbar = Game_Starbar::getInstance();
+				$economy = $gameStarbar->getEconomy();
+				$gameStarbar->loadGamerProfile();
+
+				$client = $economy->getClient();
+
+
+				$gamer = $gameStarbar->getGamer();
+				$gamer->loadProfile($client, $gameStarbar); // In case loadGamerProfile doesn't work
+//$user->gaming_id = $gamer->gaming_id;
+				$client->getEndUser($user->gaming_id);
+
+				$data = $client->getData(); // Gives us an object which contains the currency balances. Other methods are unreliable, as they seem to get caught in a 7-day cache somewhere in the system.
+
+				$gamingid = $gamer->getGamingId();
+				$level = $gamer->getHighestLevel();
+							// Check that $gamingid is the same as $gaming_id - otherwise we have a problem.
+
+				$redeemablecurrency = $economy->getCurrencyIdByType('redeemable');
+				$experiencecurrency = $economy->getCurrencyIdByType('experience');
+
+				$user->experiencepoints = 0;
+				$user->redeemablepoints = 0;
+				$user->level = 'Not known';
+
+				//if ($data->currency_balances) {
+					foreach ($data->currency_balances as $currency) {
+
+						if ($currency->currency_id==$experiencecurrency) {
+							$user->experiencepoints = $currency->current_balance;
+							$experiencepoints = $user->experiencepoints;
+						}
+
+						if ($currency->currency_id==$redeemablecurrency) {
+							$user->redeemablepoints = $currency->current_balance;
+							$redeemablepoints = $user->redeemablepoints;
+						}
+					}
+				//}
+				$user->level =  $data->level_summaries[0]->end_user_title;//gameStarbar->getHighestLevel();
+							//$level = $user->level->title;
+
+							//var_dump($user->level);
+				printf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",$cnt,$user->user_id,$user->email,$user->level,$user->experiencepoints,$user->redeemablepoints);
+
+
+				unset($client);
+				unset($data);
+				unset($gamer);
+				unset($economy);
+
+				$user->save();
+			}
+			printf("</table>");
+			printf("completed. %s records updated.",$cnt);
 
 		}
 

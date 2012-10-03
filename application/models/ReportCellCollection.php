@@ -2,10 +2,16 @@
 
 class ReportCellCollection extends RecordCollection
 {
-	public function loadAllReportCells() {
-		$sql = "SELECT *
-				FROM report_cell
-				ORDER BY FIELD(category, 'Internal', 'Panel', 'Gender', 'Age Range', 'Marital Status', 'Education', 'Ethnicity', 'Income', 'Parental Status', 'Geography', 'Custom', 'Study'), id ASC
+	public function loadAllReportCells($filterStarbarId = null) {
+		$filterClause = "";
+		if ($filterStarbarId) {
+			$filterClause = " LEFT JOIN report_cell_user_condition rcuc ON rcuc.report_cell_id = rc.id WHERE (rcuc.compare_starbar_id IS NULL OR rcuc.compare_starbar_id = " . $filterStarbarId . ")";
+		}
+
+		$sql = "SELECT rc.*
+				FROM report_cell rc
+				" . $filterClause . "
+				ORDER BY FIELD(rc.category, 'Internal', 'Panel', 'Gender', 'Age Range', 'Marital Status', 'Education', 'Ethnicity', 'Income', 'Parental Status', 'Geography', 'Custom', 'Study'), rc.id ASC
 				";
 		$reportCells = Db_Pdo::fetchAll($sql);
 

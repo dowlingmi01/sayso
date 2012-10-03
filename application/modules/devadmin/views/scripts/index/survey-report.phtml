@@ -7,13 +7,47 @@ body {
 	background-color: #CCC;
 }
 
+h1 {
+	margin: 10px 0 20px 0;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+div#report_header {
+	margin-top: 30px;
+	background-color: black;
+	color: white;
+	width: 980px;
+	padding: 11px;
+	font-size: 13px;
+}
+
+div#report_header h1 {
+	font-size: 17px;
+	margin: 0;
+	margin-bottom: 20px;
+	color: #C02526;
+}
+
+div#report_header span {
+	font-weight: bold;
+	color: #C02526;
+}
+
+img.white_logo {
+	width: 220px;
+	display: inline;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+
 h2 {
 	margin: 0;
 	font-weight: normal;
 }
 
 h3 {
-	margin: 50px 0 5px 0;
+	margin: 40px 0 5px 0;
 }
 
 div.chart {
@@ -31,11 +65,10 @@ div#reportSettings {
 }
 
 div#report {
-	margin-top: 20px;
 	width: 980px;
 	border: 1px solid #666;
 	background-color: #FFF;
-	padding: 10px;
+	padding: 20px 10px 10px 10px;
 }
 
 select#survey_id {
@@ -128,16 +161,22 @@ select#survey_id {
 			<input type="button" onclick="$('#reportForm').attr('action', 'survey-report'); $('#reportForm').submit();" value="View Report">
 			<input type="button" onclick="$('#reportForm').attr('action', 'survey-csv-export'); $('#reportForm').submit();" value="Download CSV Report">
 		</div>
-		<b>Filter content (not a filter for users!):</b><br />
-		Content from:
-		<select id="starbar_id" name="starbar_id" onchange="loadSurveysIntoSelect(parseInt($('select#survey_id').val()));">
-			<option value="">Choose a starbar</option>
-			<? foreach ($this->starbars as $starbar) { ?>
-				<option value="<?= (int) $starbar['id'] ?>" <? if ($this->starbar_id == (int) $starbar['id']) { echo 'selected'; } ?>><?= $starbar['label'] ?></option>
-			<? } ?>
-		</select>
-		<select id="survey_type" name="survey_type" onchange="loadSurveysIntoSelect(parseInt($('select#survey_id').val()));">
-			<option value="">Choose a type of content</option>
+		<? if ($this->single_starbar_id) { ?>
+			<h1><? if ($this->white_logo_url) { ?><img class="white_logo" src="<?= $this->white_logo_url ?>"><? } ?> STANDARD CONTENT REPORTINGS &amp; ANALYTICS</h1>
+			<input type="hidden" id="starbar_id" name="starbar_id" value="<?= $this->starbar_id ?>">
+			Content type:
+		<? } else {?>
+			<b>Filter content (not a filter for users!):</b><br />
+			Content from:
+			<select id="starbar_id" name="starbar_id" onchange="loadSurveysIntoSelect(parseInt($('#survey_id').val()));">
+				<option value="">Please choose a starbar</option>
+				<? foreach ($this->starbars as $starbar) { ?>
+					<option value="<?= (int) $starbar['id'] ?>" <? if ($this->starbar_id == (int) $starbar['id']) { echo 'selected'; } ?>><?= $starbar['label'] ?></option>
+				<? } ?>
+			</select>
+		<? } ?>
+		<select id="survey_type" name="survey_type" onchange="loadSurveysIntoSelect(parseInt($('#survey_id').val()));">
+			<option value="">Please choose a type of content</option>
 			<? foreach (array("survey", "poll", "trailer", "quiz") as $surveyType) { ?>
 				<option <? if ($this->survey_type == $surveyType) { echo 'selected'; } ?>><?= $surveyType ?></option>
 			<? } ?>
@@ -145,12 +184,12 @@ select#survey_id {
 
 		<b>Select content to report on:</b><br />
 		<select id="survey_id" name="survey_id">
-			<option value="0">Choose a <?= ($this->survey_type ? $this->survey_type : "starbar and type of content first!") ?></option>
+			<option value="0">Please choose a <?= ($this->survey_type ? $this->survey_type : "type of content first") ?></option>
 		</select><br /><br />
 
 		<b>Select user group to report on:</b><br />
 		<select name="report_cell_id">
-			<option value="">Choose a group</option>
+			<option value="">Please choose a group</option>
 			<? foreach ($this->report_cells as $reportCell) { ?>
 				<? if ($this->report_cell_id == $reportCell->id) { $chosenReportCell = $reportCell; } ?>>
 				<option value="<?= $reportCell->id ?>" <? if ($this->report_cell_id == $reportCell->id) { echo 'selected'; } ?>><?= strtoupper($reportCell->category) . ": " . $reportCell->title . " (" . (int) $reportCell->number_of_users . " users)"?></option>
@@ -159,8 +198,16 @@ select#survey_id {
 	</div>
 
 	<? if ($this->survey_id && $this->report_cell_id) { ?>
+		<div id="report_header">
+			<? if ($this->black_logo_url) { ?>
+				<h1><img class="black_logo" src="<?= $this->black_logo_url ?>"></h1>
+			<? } else { ?>
+				<h1>REPORTING &amp; ANALYTICS</h1>
+			<? } ?>
+			<span class="content_type"><?= strtoupper($chosenSurvey['type']) ?> - </span>
+			<?= $chosenSurvey['title'] ?>
+		</div>
 		<div id="report">
-			<h1><?= $chosenSurvey['title'] ?> - Report</h1>
 			<h2>User Group: <b><?= $chosenReportCell['title'] ?></b></h2>
 			<? $questionNumber = 1 ?>
 			<? foreach ($this->survey_questions as $surveyQuestion) { ?>
@@ -229,14 +276,17 @@ select#survey_id {
 </form>
 <script type="text/javascript">
 	function loadSurveysIntoSelect(chosen_survey_id) {
-		var starbarId = parseInt($('select#starbar_id').val());
-		var starbarLabel = $('select#starbar_id option:selected').text();
+		var starbarId = parseInt($('#starbar_id').val());
+		var starbarLabel = $('#starbar_id').text();
+		if ($('#starbar_id option').length) {
+			starbarLabel = $('#starbar_id option:selected').text();
+		}
 		var surveyType = $('select#survey_type').val();
 		var survey;
 		var selectedText;
-		var options = '<option value="">Choose a starbar and content type first!</option>';
+		var options = '<option value="">Please choose a content type first</option>';
 		if (starbarId > 0 && surveyType != "") {
-			options = '<option value="">Choose a '+starbarLabel+' '+surveyType+'</option>';
+			options = '<option value="">Please choose a '+starbarLabel+' '+surveyType+'</option>';
 			for (surveyIndex in surveys['starbar'+starbarId][surveyType]) {
 				survey = surveys['starbar'+starbarId][surveyType][surveyIndex];
 				if (chosen_survey_id == survey['id']) selectedText = " selected ";

@@ -6,6 +6,8 @@ require_once APPLICATION_PATH . '/modules/api/controllers/GlobalController.php';
 
 class Devadmin_IndexController extends Api_GlobalController
 {
+	protected $single_starbar_id = null;
+
 	public function preDispatch() {
 		// i.e. for everything based on Generic Starbar, use these includes
 		$this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
@@ -1185,7 +1187,12 @@ class Devadmin_IndexController extends Api_GlobalController
 		$surveyId = (int) $request->getParam("survey_id", false);
 		$reportCellId = (int) $request->getParam("report_cell_id", 1);
 		$surveyType = $request->getParam("survey_type");
-		$starbarId = (int) $request->getParam("starbar_id");
+
+		if ($this->single_starbar_id) {
+			$starbarId = $this->single_starbar_id;
+		} else {
+			$starbarId = (int) $request->getParam("starbar_id");
+		}
 
 		$surveyQuestions = null;
 		$calculationArray = array();
@@ -1245,13 +1252,20 @@ class Devadmin_IndexController extends Api_GlobalController
 			}
 		}
 
+		$starbarFilterClause = "";
+		if ($this->single_starbar_id) {
+			$starbarFilterClause = " WHERE id = " . $this->single_starbar_id . " ";
+		}
+
 		$sql = "SELECT *
 				FROM starbar
+				" . $starbarFilterClause . "
 				ORDER BY id
 				";
 		$starbars = Db_Pdo::fetchAll($sql);
 		$this->view->starbars = $starbars;
 		$this->view->starbar_id = $starbarId;
+		$this->view->single_starbar_id = $this->single_starbar_id;
 		$this->view->survey_type = $surveyType;
 
 		$this->view->survey_id = $surveyId;
@@ -1259,11 +1273,11 @@ class Devadmin_IndexController extends Api_GlobalController
 		$this->view->calculation_array = $calculationArray;
 		$this->view->survey_questions = $surveyQuestions; // Ordered properly
 
-		$surveys = SurveyCollection::getAllSurveysForAllStarbars();
+		$surveys = SurveyCollection::getAllSurveysForAllStarbars($this->single_starbar_id);
 		$this->view->surveys = $surveys;
 
 		$reportCells = new ReportCellCollection();
-		$reportCells->loadAllReportCells();
+		$reportCells->loadAllReportCells($this->single_starbar_id);
 		$this->view->report_cells = $reportCells;
 	}
 

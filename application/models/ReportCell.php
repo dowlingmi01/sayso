@@ -60,7 +60,8 @@ class ReportCell extends Record
 
 				// Set table name (e.g. survey_question_response) and table reference (e.g. sqr1, sqr2, etc.)
 				switch ($reportCellUserCondition->condition_type) {
-					case "choice":
+					case "single":
+					case "multiple":
 					case "string":
 					case "integer":
 					case "decimal":
@@ -100,13 +101,25 @@ class ReportCell extends Record
 
 				// Set SQL for this condition
 				switch ($reportCellUserCondition->condition_type) {
-					case "choice":
+					case "single":
 						switch ($reportCellUserCondition->comparison_type) {
 							case "=":
 							case "!=":
 								$conditionSql = "(" . $tableReference . ".survey_question_choice_id " . $reportCellUserCondition->comparison_type . " " . $reportCellUserCondition->compare_survey_question_choice_id;
 								$conditionSql .= " AND " . $tableReference . ".survey_question_id = " . $reportCellUserCondition->compare_survey_question_id;
-								$conditionSql .= " AND " . $tableReference . ".data_type = '" . $reportCellUserCondition->condition_type . "')";
+								$conditionSql .= " AND " . $tableReference . ".data_type = 'choice')";
+								break;
+							default:
+								break;
+						}
+						break;
+					case "multiple":
+						switch ($reportCellUserCondition->comparison_type) {
+							case "in":
+							case "not in":
+								$conditionSql = "(" . $tableReference . ".survey_question_choice_id " . $reportCellUserCondition->comparison_type . " (" . $reportCellUserCondition->compare_string . ")";
+								$conditionSql .= " AND " . $tableReference . ".survey_question_id = " . $reportCellUserCondition->compare_survey_question_id;
+								$conditionSql .= " AND " . $tableReference . ".data_type = 'choice')";
 								break;
 							default:
 								break;
@@ -185,9 +198,11 @@ class ReportCell extends Record
 						break;
 					case "starbar":
 						switch ($reportCellUserCondition->comparison_type) {
-							case "=":
-							case "!=":
-								$conditionSql = $tableReference . ".starbar_id " . $reportCellUserCondition->comparison_type . " " . $reportCellUserCondition->compare_starbar_id;
+							case "in":
+							case "not in":
+								$tempComparisonType = str_replace($reportCellUserCondition->comparison_type, "in", "=");
+								$tempComparisonType = str_replace($tempComparisonType, "not ", "!");
+								$conditionSql = $tableReference . ".starbar_id " . $tempComparisonType . " " . $reportCellUserCondition->compare_starbar_id;
 								break;
 							default:
 								break;
@@ -207,15 +222,20 @@ class ReportCell extends Record
 						if ($conditionSql) $conditionSql .= " AND " . $tableReference . ".study_ad_id = " . $reportCellUserCondition->compare_study_ad_id;
 						break;
 					case "report_cell":
-						switch ($reportCellUserCondition->comparison_type) {
-							case "=": // $tableReference is to report_cell_user_map table
-								$conditionSql = $tableReference . ".report_cell_id = " . $reportCellUserCondition->compare_report_cell_id;
-								break;
-							case "!=": // $tableReference is to user table
-								$conditionSql = $tableReference . ".id NOT IN ( SELECT user_id FROM report_cell_user_map WHERE report_cell_id = " . $reportCellUserCondition->compare_report_cell_id . " )";
-								break;
-							default:
-								break;
+						$compareReportCell = new ReportCell();
+						$compareReportCell->loadData($reportCellUserCondition->compare_report_cell_id);
+						if ($compareReportCell->id) {
+							if (!$compareReportCell->conditions_processed) $compareReportCell->processConditions();
+							switch ($reportCellUserCondition->comparison_type) {
+								case "in": // $tableReference is to report_cell_user_map table
+									$conditionSql = $tableReference . ".report_cell_id = " . $reportCellUserCondition->compare_report_cell_id; // == $compareReportCell->id
+									break;
+								case "not in": // $tableReference is to user table
+									$conditionSql = $tableReference . ".id NOT IN ( SELECT user_id FROM report_cell_user_map WHERE report_cell_id = " . $reportCellUserCondition->compare_report_cell_id . " )";
+									break;
+								default:
+									break;
+							}
 						}
 						break;
 					default:
@@ -285,13 +305,20 @@ class ReportCell extends Record
 					}
 				}
 				$conditionCounter++;
-			}
+			} // end of foreach on conditions
 
 			// SQL for all conditions created, make final additions and run!
 			if ($conditionsSql) {
 				$usersAdded = array();
 				$usersRemoved = array();
 
+				// To "or" the conditions, we UNION all the SELECT statements and that union is our "new_matching_users"
+				// To "and" the conditions, we do one SELECT with lots of INNER JOINs, and the intersection is our "new_matching_users"
+				// We compare the new_matching_users to the existing users, which we call "removed_matching_users"
+				// They columns are called "new" and "removed" because rows common to both lists are removed, so all that remains is
+				// a list of new users to add ($usersAdded) to the report_cell, i.e. user_ids in the "new_matching_users" column, and
+				// a list of users that are in the report_cell but no longer in the list returned by the report_cell's conditions,
+				// that we are meant to remove, in the "removed_matching_users" column.
 				switch ($this->condition_type) {
 					case "or":
 						$newUsersTable = "(" . $conditionsSql . ") AS new_matching_users";

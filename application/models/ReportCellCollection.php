@@ -5,7 +5,7 @@ class ReportCellCollection extends RecordCollection
 	public function loadAllReportCells($filterStarbarId = null) {
 		$filterClause = "";
 		if ($filterStarbarId) {
-			$filterClause = " LEFT JOIN report_cell_user_condition rcuc ON rcuc.report_cell_id = rc.id WHERE (rcuc.compare_starbar_id IS NULL OR rcuc.compare_starbar_id = " . $filterStarbarId . ")";
+			$filterClause = " LEFT JOIN report_cell_user_condition rcuc ON rcuc.report_cell_id = rc.id WHERE rc.category != 'study' AND (rcuc.compare_starbar_id IS NULL OR rcuc.compare_starbar_id = " . $filterStarbarId . ")";
 		}
 
 		$sql = "SELECT rc.*

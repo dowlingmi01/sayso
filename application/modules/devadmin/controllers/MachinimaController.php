@@ -6,6 +6,8 @@ class Devadmin_MachinimaController extends Devadmin_IndexController {
 
 	public function preDispatch() {
 		parent::preDispatch();
+
+		$this->view->headTitle()->set("Recon Reports");
 	}
 
 	public function surveyReportAction () {

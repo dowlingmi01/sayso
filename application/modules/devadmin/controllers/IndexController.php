@@ -18,6 +18,7 @@ class Devadmin_IndexController extends Api_GlobalController
 		$this->view->headScript()->appendFile('/js/starbar/jquery.jeip.js');
 		$this->view->headScript()->appendFile('/js/starbar/jquery.cycle.all.js');
 		$this->view->headScript()->appendFile('/js/starbar/jquery.easyTooltip.js');
+		$this->view->headTitle()->set("ADj Tester " . (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'staging')) ? " - " . ucwords(APPLICATION_ENV) : ""));
 	}
 
 	public function indexAction () {

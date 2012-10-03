@@ -94,6 +94,16 @@ select#survey_id {
 	right: 22px;
 	bottom: 22px;
 }
+
+@media print {
+	.do_not_print {
+		display:none;
+	}
+
+	#report h3 {
+		page-break-before:always;
+	}
+}
 </style>
 <script type="text/javascript">
 	$.jqplot.config.enablePlugins = true;
@@ -156,7 +166,7 @@ select#survey_id {
 </script>
 <form id="reportForm" action="survey-report" method="get">
 
-	<div id="reportSettings">
+	<div id="reportSettings" class="do_not_print">
 		<div id="reportSubmit">
 			<input type="button" onclick="$('#reportForm').attr('action', 'survey-report'); $('#reportForm').submit();" value="View Report">
 			<input type="button" onclick="$('#reportForm').attr('action', 'survey-csv-export'); $('#reportForm').submit();" value="Download CSV Report">
@@ -196,8 +206,15 @@ select#survey_id {
 			<? } ?>
 		</select><br /><br />
 	</div>
+</form>
 
 	<? if ($this->survey_id && $this->report_cell_id) { ?>
+		<!--
+		<form id="pdfForm" method="post" action="survey-pdf-export" target="_new">
+			<input type="hidden" id="html_to_render" name="html_to_render" value="">
+			<input type="button" class="do_not_print" onclick="$('#html_to_render').val($('html').html()); /*console.log($('#html_to_render').val());*/ $('#pdfForm').submit();" value="Download PDF Report">
+		</form>
+		-->
 		<div id="report_header">
 			<? if ($this->black_logo_url) { ?>
 				<h1><img class="black_logo" src="<?= $this->black_logo_url ?>"></h1>
@@ -273,7 +290,6 @@ select#survey_id {
 			<? } ?>
 		</div>
 	<? } ?>
-</form>
 <script type="text/javascript">
 	function loadSurveysIntoSelect(chosen_survey_id) {
 		var starbarId = parseInt($('#starbar_id').val());
@@ -303,7 +319,7 @@ select#survey_id {
 		callingElement = $(callingElement);
 		if (cellId > 0 && questionId > 0) {
 			$.ajax({
-				url : 'survey-question-responses',
+				url : '../index/survey-question-responses',
 				beforeSend : function(x) {
 					if (x && x.overrideMimeType) {
 						x.overrideMimeType("application/j-son;charset=UTF-8");

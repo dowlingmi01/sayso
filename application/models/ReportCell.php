@@ -200,8 +200,8 @@ class ReportCell extends Record
 						switch ($reportCellUserCondition->comparison_type) {
 							case "in":
 							case "not in":
-								$tempComparisonType = str_replace($reportCellUserCondition->comparison_type, "in", "=");
-								$tempComparisonType = str_replace($tempComparisonType, "not ", "!");
+								$tempComparisonType = str_replace("in", "=", $reportCellUserCondition->comparison_type);
+								$tempComparisonType = str_replace("not ", "!", $tempComparisonType);
 								$conditionSql = $tableReference . ".starbar_id " . $tempComparisonType . " " . $reportCellUserCondition->compare_starbar_id;
 								break;
 							default:

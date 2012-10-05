@@ -3,7 +3,7 @@ setlocal
 
 call conf%1.bat || goto end
 
-set productversion=2.0.5
+set productversion=2.0.6
 
 echo BaseDomain=%basedomain%> dict.txt
 echo ProductVersion=%productversion%>> dict.txt
@@ -19,7 +19,10 @@ popd
 pushd app
 echo var sayso = { baseDomain: '%basedomain%', version: '%productversion%' }; > src\js\config.js
 if %ERRORLEVEL% NEQ 0 goto end
-call forge build || goto end
+call forge build firefox || goto end
+call forge build chrome || goto end
+call forge build safari || goto end
+call forge build ie || goto end
 popd
 
 goto done

@@ -3,6 +3,10 @@ setlocal
 
 echo Patching...
 
+echo harness-options.json
+fc app\development\firefox\harness-options.json patch\harness-options.ori.json > nul
+if %ERRORLEVEL% NEQ 0 goto end
+
 echo firefox-all
 fc app\development\firefox\resources\f\data\forge\all.js patch\firefox-all.ori.js > nul
 if %ERRORLEVEL% NEQ 0 goto end
@@ -21,6 +25,9 @@ if %ERRORLEVEL% NEQ 0 goto end
 
 echo chrome-forge
 fc app\development\chrome\forge.html patch\chrome-forge.ori.html > nul
+if %ERRORLEVEL% NEQ 0 goto end
+
+copy patch\harness-options.json app\development\firefox\harness-options.json
 if %ERRORLEVEL% NEQ 0 goto end
 
 copy patch\firefox-all.js app\development\firefox\resources\f\data\forge\all.js

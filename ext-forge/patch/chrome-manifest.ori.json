@@ -1,6 +1,6 @@
 {
 	"name": "Say.So",
-	"version": "2.0.5",
+	"version": "2.0.6",
 	"description": "A fun way to have your influence recognized, and your opinions rewarded!",
 	"permissions": ["http://*/*", "https://*/*", "tabs", "notifications"],
 	"background": {"page": "forge.html"},

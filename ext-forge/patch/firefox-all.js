@@ -125,30 +125,34 @@
         }
         var r = [];
         var p = function(w, v) {
-                if (w instanceof Array) {
-                    var t = 0;
-                    for (var s in w) {
-                        var u = (v ? v : "") + "[" + t + "]";
-                        t += 1;
-                        if (!w.hasOwnProperty(s)) {
-                            continue
-                        }
-                        p(w[s], u)
-                    }
+                if (w === null) {
+                    return
                 } else {
-                    if (w instanceof Object) {
+                    if (w instanceof Array) {
+                        var t = 0;
                         for (var s in w) {
+                            var u = (v ? v : "") + "[" + t + "]";
+                            t += 1;
                             if (!w.hasOwnProperty(s)) {
                                 continue
-                            }
-                            var u = s;
-                            if (v) {
-                                u = v + "[" + s + "]"
                             }
                             p(w[s], u)
                         }
                     } else {
-                        r.push(encodeURIComponent(v) + "=" + encodeURIComponent(w))
+                        if (w instanceof Object) {
+                            for (var s in w) {
+                                if (!w.hasOwnProperty(s)) {
+                                    continue
+                                }
+                                var u = s;
+                                if (v) {
+                                    u = v + "[" + s + "]"
+                                }
+                                p(w[s], u)
+                            }
+                        } else {
+                            r.push(encodeURIComponent(v) + "=" + encodeURIComponent(w))
+                        }
                     }
                 }
             };
@@ -164,12 +168,16 @@
             if (!q.hasOwnProperty(p)) {
                 continue
             }
+            if (q[p] === null) {
+                continue
+            }
             r += "--" + s + "\r\n";
             r += 'Content-Disposition: form-data; name="' + p.replace('"', '\\"') + '"\r\n\r\n';
             r += q[p].toString() + "\r\n"
         }
         return r
-    }, h.generateURI = function(q, p) {
+    };
+    h.generateURI = function(q, p) {
         var r = "";
         if (q.indexOf("?") !== -1) {
             r += q.split("?")[1] + "&";
@@ -1075,6 +1083,13 @@
         homePressed: {
             addListener: function(q, p) {
                 h.disabledModule(p, "topbar")
+            }
+        }
+    };
+    m.urlhandler = {
+        urlLoaded: {
+            addListener: function(q, p) {
+                h.disabledModule(p, "urlhandler")
             }
         }
     };

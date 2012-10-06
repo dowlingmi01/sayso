@@ -83,11 +83,11 @@ class ReportCell extends Record
 						break;
 					case "report_cell":
 						switch ($reportCellUserCondition->comparison_type) {
-							case "=":
+							case "in":
 								$tableName = "report_cell_user_map";
 								$tableReference = "rcum" . $conditionCounter;
 								break;
-							case "!=":
+							case "not in":
 								$tableName = "user";
 								$tableReference = "u" . $conditionCounter;
 								break;

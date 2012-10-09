@@ -347,16 +347,16 @@ class ReportCell extends Record
 				$usersRemoved = array();
 				$cu = 0;
 				$pr = 0;
-				while (isset($currentUsersInReportCell[$cu]) || isset($currentUsersInReportCell[$pr])) {
+				while (isset($currentUsersInReportCell[$cu]) || isset($previousUsersInReportCell[$pr])) {
 					if ( // user is in current list but not previous list
-						(isset($currentUsersInReportCell[$cu]) && !isset($currentUsersInReportCell[$pr])) ||
-						($currentUsersInReportCell[$cu] < $currentUsersInReportCell[$pr])
+						(isset($currentUsersInReportCell[$cu]) && !isset($previousUsersInReportCell[$pr])) ||
+						($currentUsersInReportCell[$cu] < $previousUsersInReportCell[$pr])
 					) {
 						$usersAdded[] = $currentUsersInReportCell[$cu];
 						$cu++;
 					} elseif ( // user is in previous list but not current list
-						(!isset($currentUsersInReportCell[$cu]) && isset($currentUsersInReportCell[$pr])) ||
-						($currentUsersInReportCell[$cu] > $currentUsersInReportCell[$pr])
+						(!isset($currentUsersInReportCell[$cu]) && isset($previousUsersInReportCell[$pr])) ||
+						($currentUsersInReportCell[$cu] > $previousUsersInReportCell[$pr])
 					) {
 						$usersRemoved[] = $previousUsersInReportCell[$pr];
 						$pr++;

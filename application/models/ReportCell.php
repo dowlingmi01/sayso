@@ -309,86 +309,63 @@ class ReportCell extends Record
 
 			// SQL for all conditions created, make final additions and run!
 			if ($conditionsSql) {
-				$usersAdded = array();
-				$usersRemoved = array();
 
-				// To "or" the conditions, we UNION all the SELECT statements and that union is our "new_matching_users"
-				// To "and" the conditions, we do one SELECT with lots of INNER JOINs, and the intersection is our "new_matching_users"
-				// We compare the new_matching_users to the existing users, which we call "removed_matching_users"
-				// They columns are called "new" and "removed" because rows common to both lists are removed, so all that remains is
-				// a list of new users to add ($usersAdded) to the report_cell, i.e. user_ids in the "new_matching_users" column, and
-				// a list of users that are in the report_cell but no longer in the list returned by the report_cell's conditions,
-				// that we are meant to remove, in the "removed_matching_users" column.
 				switch ($this->condition_type) {
 					case "or":
-						$newUsersTable = "(" . $conditionsSql . ") AS new_matching_users";
-						$newUsersCondition = "
+						$sql = "
+							SELECT DISTINCT(user_id)
+							FROM (" . $conditionsSql . ") AS all_matching_users
 							INNER JOIN user u
-								ON u.id = new_matching_users.user_id
+								ON u.id = all_matching_users.user_id
 								AND u.type != 'test'
+							ORDER BY user_id
 						";
-						$removedUsersTable = "report_cell_user_map removed_matching_users";
-						$removedUsersCondition = " new_matching_users.user_id = removed_matching_users.user_id ";
-
-						// Simulate FULL OUTER JOIN WHERE table1.id IS NULL OR table2.id IS NULL
-						// by doing two LEFT OUTER JOINs
-
-						$sqlUsersAdded = "
-							SELECT DISTINCT(new_matching_users.user_id) AS new_matching_user_id
-							FROM " . $newUsersTable . "
-							" . $newUsersCondition . "
-							LEFT OUTER JOIN " . $removedUsersTable . "
-								ON " . $removedUsersCondition . "
-								AND removed_matching_users.report_cell_id = " . $this->id . "
-							WHERE removed_matching_users.user_id IS NULL
-						";
-
-						$sqlUsersRemoved = "
-							SELECT DISTINCT(removed_matching_users.user_id) AS removed_matching_user_id
-							FROM " . $removedUsersTable . "
-							LEFT OUTER JOIN " . $newUsersTable . "
-								ON " . $removedUsersCondition . "
-							WHERE removed_matching_users.report_cell_id = " . $this->id . "
-								AND new_matching_users.user_id IS NULL
-						";
-
-						$usersAdded = Db_Pdo::fetchColumn($sqlUsersAdded);
-						$usersRemoved = Db_Pdo::fetchColumn($sqlUsersRemoved);
 						break;
 					case "and":
-						$newUsersTable = " user u " . $conditionsSql;
-						$newUsersCondition = " u.type != 'test' ";
-						$removedUsersTable = " report_cell_user_map removed_matching_users ";
-						$removedUsersCondition = " u.id = removed_matching_users.user_id ";
-
-						$sqlUsersAdded = "
-							SELECT DISTINCT(u.id) AS new_matching_user_id
-							FROM " . $newUsersTable . "
-							LEFT OUTER JOIN " . $removedUsersTable . "
-								ON " . $removedUsersCondition . "
-								AND removed_matching_users.report_cell_id = " . $this->id . "
-							WHERE " . $newUsersCondition . "
-								AND removed_matching_users.user_id IS NULL
+						$sql = "
+							SELECT DISTINCT(u.id)
+							FROM user u
+							" . $conditionsSql . "
+							WHERE u.type != 'test'
+							ORDER BY u.id
 						";
-
-						$sqlUsersRemoved = "
-							SELECT DISTINCT(removed_matching_users.user_id) AS removed_matching_user_id
-							FROM " . $removedUsersTable . "
-							LEFT OUTER JOIN " . $newUsersTable . "
-								ON " . $removedUsersCondition . "
-							WHERE removed_matching_users.report_cell_id = " . $this->id . "
-								AND u.id IS NULL
-						";
-
-						$usersAdded = Db_Pdo::fetchColumn($sqlUsersAdded);
-						$usersRemoved = Db_Pdo::fetchColumn($sqlUsersRemoved);
 						break;
 					default:
-						break;
+					break;
 				}
+
+                $currentUsersInReportCell = Db_Pdo::fetchColumn($sql);
+                $this->number_of_users = count($currentUsersInReportCell);
+
+				$sql = "SELECT user_id FROM report_cell_user_map WHERE report_cell_id = " . $this->id;
+				$previousUsersInReportCell = Db_Pdo::fetchColumn($sql);
+				$previousNumberOfUsers = count($previousUsersInReportCell);
 
 
 				$reportCellUserListUpdated = false;
+				$usersAdded = array();
+				$usersRemoved = array();
+				$cu = 0;
+				$pr = 0;
+				while (isset($currentUsersInReportCell[$cu]) || isset($currentUsersInReportCell[$pr])) {
+					if ( // user is in current list but not previous list
+						(isset($currentUsersInReportCell[$cu]) && !isset($currentUsersInReportCell[$pr])) ||
+						($currentUsersInReportCell[$cu] < $currentUsersInReportCell[$pr])
+					) {
+						$usersAdded[] = $currentUsersInReportCell[$cu];
+						$cu++;
+					} elseif ( // user is in previous list but not current list
+						(!isset($currentUsersInReportCell[$cu]) && isset($currentUsersInReportCell[$pr])) ||
+						($currentUsersInReportCell[$cu] > $currentUsersInReportCell[$pr])
+					) {
+						$usersRemoved[] = $previousUsersInReportCell[$pr];
+						$pr++;
+					} // user in both lists, go to next item on both lists
+
+					// $currentUsersInReportCell[$cu] == $previousUsersInReportCell[$pr]
+					$cu++;
+					$pr++;
+				}
 
 				if (count($usersAdded)) {
 					$reportCellUserListUpdated = true; // this report cell has new users, force reprocessing of surveys for this report_cell
@@ -396,7 +373,7 @@ class ReportCell extends Record
 					$valuesToInsertCount = 0;
 					foreach($usersAdded as $userId) {
 						if ($valuesToInsert) {
-							if ($valuesToInsertCount > 500) { // Insert records 500 rows at a time
+							if ($valuesToInsertCount > 500) { // Insert up to records 500 rows at a time
 								Db_Pdo::execute("INSERT INTO report_cell_user_map (report_cell_id, user_id) VALUES " . $valuesToInsert);
 								$valuesToInsert = "";
 								$valuesToInsertCount = 0;
@@ -406,7 +383,6 @@ class ReportCell extends Record
 						}
 						$valuesToInsert .= "(" . $this->id . ", " . $userId . ")";
 						$valuesToInsertCount++;
-						$this->number_of_users++;
 					}
 
 					if ($valuesToInsert) {
@@ -430,7 +406,6 @@ class ReportCell extends Record
 						}
 						$valuesToRemove .= "user_id = " . $userId;
 						$valuesToRemoveCount++;
-						$this->number_of_users--;
 					}
 
 					if ($valuesToRemove) {

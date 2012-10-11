@@ -248,7 +248,7 @@ class Starbar_MachinimaController extends Starbar_ContentController
 
 	protected $_appShareLink = 'http://Recon.Say.So';
 	protected $_fbkAppDescription = "Say.So is your way of making a lasting impact on the communities you love. Participating in Machinima | Recon is easy - by giving your opinion, answering polls and rating Machinima content, you gain points to redeem awesome prizes from Machinima.";
-	protected $_fbkOffer = "This month Machinima | Recon is giving away a Limited Edition Star Wars Xbox 360 Slim with Kinect AND a copy of Minecraft for the XBox!";
+	protected $_fbkOffer = "This month Machinima | Recon is giving away 36 prizes of Steam Tokens and Machinima coins. You asked for it, we listened!";
 
 	protected function _assignShareAppToView($facebookCallbackUrl) {
 		/*$twAppShareText = 'Join Machinima | Recon and get access to big giveaways and awesome prizes.';*/
@@ -281,10 +281,9 @@ Join Machinima | Recon and get access to big giveaways and awesome prizes.";*/
 		$surveyTitle = substr_compare($survey->title, '?', -1, 1) === 0 ? substr($survey->title, 0, -1) : $survey->title;
 		$shareSurveyTitle = "Machinima | Recon wants to know ".$surveyTitle;
 
-		$twShareText = 'Just pocketed ' . $redeemable .' Coins by giving my Machinima say-so and finishing the survey "' . $survey->title .'". via @saysoapp';
-		/*$fbkShareText = 'I just earned ' . $redeemable . ' Coins for answering the survey "'. $survey->title .'". Join Machinima | Recon and get access to big giveaways and awesome prizes.'; */
+		$twShareText = "I've just finished a Machinima | Recon survey and earned " . $redeemable ." Coins. Get the Machinima | Recon app @ ";
 
-		$fbkShareText = 'I just pocketed ' . $redeemable . ' Coins by giving my Machinima say-so and finishing the survey "'. $survey->title .'".';
+		$fbkShareText = "I've just finished a Machinima | Recon survey and earned " . $redeemable ." Coins. Get the Machinima | Recon app @ http://Recon.Say.So";
 		$fbkAppDescription = $this->_fbkOffer . "\n" . $this->_fbkAppDescription;
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $shareSurveyTitle, $fbkAppDescription);
@@ -306,9 +305,8 @@ Join Machinima | Recon and get access to big giveaways and awesome prizes.";*/
 		}
 		$pollTitle = substr_compare($survey->title, '?', -1, 1) === 0 ? substr($survey->title, 0, -1) : $survey->title;
 		$sharepollTitle = "Machinima | Recon wants to know ".$pollTitle;
-		$twShareText = 'I just answered the poll "' . $pollTitle .'" and earned ' . $redeemable . " Coins! Join Machinima | Recon and get access to big giveaways and awesome prizes!";
-		$fbkShareText = 'I just earned ' . $redeemable . ' Coins for answering the poll "'. $pollTitle .'".
-Join Machinima | Recon and get access to big giveaways and awesome prizes.';
+		$twShareText = "I've just finished a Machinima | Recon poll and earned " . $redeemable ." Coins. Get the Machinima | Recon app @ ";
+		$fbkShareText = "I've just finished a Machinima | Recon poll and earned " . $redeemable ." Coins. Get the Machinima | Recon app @ http://Recon.Say.So";
 
 		$fbkAppDescription = $this->_fbkOffer . "\n" . $this->_fbkAppDescription;
 
@@ -316,13 +314,24 @@ Join Machinima | Recon and get access to big giveaways and awesome prizes.';
 	}
 
 	protected function _assignShareTrailerToView(Survey $survey, $facebookCallbackUrl) {
-		/*$twShareText = 'I answered a Quiz, "'.$survey->title.'"! Join Machinima | Recon and earn great prizes!';*/
-		$twShareText = 'Gave "'.$survey->title.'" trailer thumbs up. via @saysoapp';
-		/*$fbkShareText = 'I just answered a Quiz, "'.$survey->title.'"!
-Join Machinima | Recon and get access big giveaways and awesome prizes.';*/
-		/*$fbkShareText = 'I just answered a Quiz, "'.$survey->title.'"!
-Join Machinima | Recon and get access big giveaways and awesome prizes.';*/
-		$fbkShareText = 'Gave the "'.$survey->title.'" trailer thumbs up!';
+		switch ($survey->reward_category) {
+			case "premium":
+				$experience = ($completed ? 5000 : 1000);
+				$redeemable = ($completed ? 375 : 75);
+				break;
+			case "profile":
+				$experience = ($completed ? 2000 : 500);
+				$redeemable = ($completed ? 150 : 38);
+				break;
+			case "standard":
+			default:
+				$experience = ($completed ? 500 : 250);
+				$redeemable = ($completed ? 38 : 19);
+				break;
+		}
+
+		$twShareText = "I've just finished a Machinima | Recon trailer and earned " . $redeemable ." Coins. Get the Machinima | Recon app @ ";
+		$fbkShareText = "I've just finished a Machinima | Recon trailer and earned " . $redeemable ." Coins. Get the Machinima | Recon app @ http://Recon.Say.So";
 
 		$fbkAppDescription = $this->_fbkOffer . "\n" . $this->_fbkAppDescription;
 

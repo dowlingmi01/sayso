@@ -149,6 +149,18 @@ Join Movie Say.So and get access to big giveaways and awesome prizes.";
 	}
 
 	protected function _assignShareTrailerToView(Survey $survey, $facebookCallbackUrl) {
+		switch ($survey->reward_category) {
+			case "premium":
+				$experience = 500;
+				$redeemable = 38;
+				break;
+			case "profile":
+			case "standard":
+			default:
+				$experience = 250;
+				$redeemable = 19;
+				break;
+		}
 		$twShareText = "I've just finished a Movie Say.So trailer and earned " . $redeemable ." Coins. Get the Movie Say.So app @";
 		$fbkShareText = "I've just finished a Movie Say.So trailer and earned " . $redeemable ." Coins. Get the Movie Say.So app @ http://Movie.Say.So";
 

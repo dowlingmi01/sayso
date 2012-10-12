@@ -314,19 +314,17 @@ Join Machinima | Recon and get access to big giveaways and awesome prizes.";*/
 	}
 
 	protected function _assignShareTrailerToView(Survey $survey, $facebookCallbackUrl) {
+
 		switch ($survey->reward_category) {
 			case "premium":
-				$experience = ($completed ? 5000 : 1000);
-				$redeemable = ($completed ? 375 : 75);
+				$experience = 500;
+				$redeemable = 38;
 				break;
 			case "profile":
-				$experience = ($completed ? 2000 : 500);
-				$redeemable = ($completed ? 150 : 38);
-				break;
 			case "standard":
 			default:
-				$experience = ($completed ? 500 : 250);
-				$redeemable = ($completed ? 38 : 19);
+				$experience = 250;
+				$redeemable = 19;
 				break;
 		}
 

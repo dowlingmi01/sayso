@@ -38,6 +38,7 @@ class ReportCell extends Record
 		$commaDelimitedListOfUsers = null;
 
 		$conditionsSql = "";
+		$sql = "";
 
 		if ($this->id == self::ALL_USERS_REPORT_CELL) { // the all-users bucket
 			$sql = "SELECT count(id) AS userCount FROM user WHERE type != 'test'";
@@ -334,8 +335,12 @@ class ReportCell extends Record
 					break;
 				}
 
-                $currentUsersInReportCell = Db_Pdo::fetchColumn($sql);
-                $this->number_of_users = count($currentUsersInReportCell);
+				if ($sql) {
+					$currentUsersInReportCell = Db_Pdo::fetchColumn($sql);
+				} else {
+					$currentUsersInReportCell = array();
+				}
+				$this->number_of_users = count($currentUsersInReportCell);
 
 				$sql = "SELECT user_id FROM report_cell_user_map WHERE report_cell_id = " . $this->id;
 				$previousUsersInReportCell = Db_Pdo::fetchColumn($sql);
@@ -366,12 +371,14 @@ class ReportCell extends Record
 					) {
 						$usersRemoved[] = $previousUsersInReportCell[$pr];
 						$pr++;
-					} // user in both lists, go to next item on both lists
+					} else { // user in both lists, go to next item on both lists
 
-					// $currentUsersInReportCell[$cu] == $previousUsersInReportCell[$pr]
-					$cu++;
-					$pr++;
+						// $currentUsersInReportCell[$cu] == $previousUsersInReportCell[$pr]
+						$cu++;
+						$pr++;
+					}
 				}
+
 
 				if (count($usersAdded)) {
 					$reportCellUserListUpdated = true; // this report cell has new users, force reprocessing of surveys for this report_cell

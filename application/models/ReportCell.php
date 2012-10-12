@@ -53,6 +53,7 @@ class ReportCell extends Record
 			$reportCellUserConditions = new ReportCell_UserConditionCollection();
 			$reportCellUserConditions->loadAllForReportCell($this->id);
 			$conditionCounter = 1;
+			$this->number_of_users = 0;
 
 			foreach ($reportCellUserConditions as $reportCellUserCondition) {
 				$tableName = "";
@@ -431,10 +432,10 @@ class ReportCell extends Record
 					$sql = "DELETE FROM report_cell_survey WHERE report_cell_id = ?";
 					Db_Pdo::execute($sql, $this->id);
 				}
-
-				$this->conditions_processed = 1;
-				$this->save();
 			}
+
+			$this->conditions_processed = 1;
+			$this->save();
 		}
 	}
 

@@ -37,14 +37,14 @@ class SurveyCollection extends RecordCollection
 				AND (ssm.end_at > now() OR ssm.end_at = '0000-00-00 00:00:00')
 			INNER JOIN report_cell_user_map rcum
 				ON (
-					IFNULL(s.report_cell_id, 1) = rcum.report_cell_id
-					AND (rcum.report_cell_id = 1 OR rcum.user_id = ?)
+					IFNULL(s.report_cell_id, ?) = rcum.report_cell_id
+					AND (rcum.report_cell_id = ? OR rcum.user_id = ?)
 				)
 			WHERE s.type = ?
 				AND s.status = 'active'
 			ORDER BY ".$orderSql."
 		";
-		$surveys = Db_Pdo::fetchAll($sql, $userId, $starbarId, $userId, $type);
+		$surveys = Db_Pdo::fetchAll($sql, $userId, $starbarId, ReportCell::ALL_USERS_REPORT_CELL, ReportCell::ALL_USERS_REPORT_CELL, $userId, $type);
 
 		if ($surveys) {
 			$this->build($surveys, new Survey());

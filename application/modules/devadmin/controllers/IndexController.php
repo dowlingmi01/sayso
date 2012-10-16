@@ -1138,20 +1138,35 @@ class Devadmin_IndexController extends Api_GlobalController
 
 	public function surveyResponsesAction () {
 		$request = $this->getRequest();
+		$reportCellId = (int) $request->getParam("report_cell_id", 1);
+		$reportCell = new ReportCell();
 		$surveyId = (int) $request->getParam("survey_id", false);
 		$survey = new Survey();
+
+		$reportCell->loadData($reportCellId);
 
 		if ($surveyId) {
 			$survey->loadData($surveyId);
 		}
 
 		if ($survey->id) {
-			$sql = "SELECT sr.user_id, sr.id FROM survey_response sr INNER JOIN user u ON sr.user_id = u.id AND u.type != 'test' WHERE sr.survey_id = ? ORDER BY sr.user_id";
-			$responses = Db_Pdo::fetchAll($sql, $surveyId);
+			$sql = "
+				SELECT sr.user_id, sr.id
+				FROM survey_response sr
+				INNER JOIN report_cell_user_map rcum
+					ON rcum.report_cell_id = ?
+					AND (rcum.report_cell_id = ? OR sr.user_id = rcum.user_id)
+				INNER JOIN user u
+					ON sr.user_id = u.id
+					AND u.type != 'test'
+				WHERE sr.survey_id = ?
+				ORDER BY sr.user_id
+			";
+			$responses = Db_Pdo::fetchAll($sql, $reportCellId, ReportCell::ALL_USERS_REPORT_CELL, $surveyId);
 
 			if ($responses) {
 				$pstTime = new DateTime("now", new DateTimeZone('PDT'));
-				$filename = strtr($pstTime->format("Ymd-Hi") . " ". $survey->title . " - Responses", ",.", "");
+				$filename = preg_replace("/[,.]+/", $pstTime->format("Ymd-Hi") . " ". $survey->title . " - " . $reportCell->title . " - Responses");
 				$filename .= ".csv";
 
 				// HTTP Header for CSV file
@@ -1282,6 +1297,39 @@ class Devadmin_IndexController extends Api_GlobalController
 		$this->view->report_cells = $reportCells;
 	}
 
+
+	/*public function surveyPdfExportAction () {
+		$this->_validateRequiredParameters(array('html_to_render'));
+		try
+		{
+			// create an API client instance
+			$client = new Pdfcrowd("SaySo", "ce1a34e07ace1bb6d2709068994e3c9f");
+
+			// convert a web page and store the generated PDF into a $pdf variable
+
+			$client->enableJavaScript(false);
+			//$client->usePrintMedia(true);
+			$client->setPageWidth(1042);
+
+			$pdf = $client->convertHtml($this->html_to_render);
+
+			// set HTTP response headers
+			header("Content-Type: application/pdf");
+			header("Cache-Control: no-cache");
+			header("Accept-Ranges: none");
+			header("Content-Disposition: attachment; filename=\"google_com.pdf\"");
+
+			// send the generated PDF
+			echo $pdf;
+			exit;
+		}
+		catch(PdfcrowdException $why)
+		{
+			echo "Pdfcrowd Error: " . $why;
+			exit;
+		}
+	}*/
+
 	public function surveyCsvExportAction () {
 		// increase memory limit for this session only
 		ini_set('memory_limit', '512M');
@@ -1405,7 +1453,7 @@ class Devadmin_IndexController extends Api_GlobalController
 				// C = "csv value of response" (between quotes)
 				if ($surveyResponsesData) {
 					$pstTime = new DateTime("now", new DateTimeZone('PDT'));
-					$filename = strtr($pstTime->format("Ymd-Hi") . " ". $survey->title . " - " . $reportCell->title, ",.", "");
+					$filename = preg_replace("/[,.]+/", $pstTime->format("Ymd-Hi") . " ". $survey->title . " - " . $reportCell->title);
 					$filename .= ".csv";
 
 					// HTTP Header for CSV file

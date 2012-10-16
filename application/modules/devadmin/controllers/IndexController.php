@@ -1166,7 +1166,7 @@ class Devadmin_IndexController extends Api_GlobalController
 
 			if ($responses) {
 				$pstTime = new DateTime("now", new DateTimeZone('PDT'));
-				$filename = preg_replace("/[,.]+/", $pstTime->format("Ymd-Hi") . " ". $survey->title . " - " . $reportCell->title . " - Responses");
+				$filename = preg_replace("/[,.]+/", "", $pstTime->format("Ymd-Hi") . " ". $survey->title . " - " . $reportCell->title . " - Responses");
 				$filename .= ".csv";
 
 				// HTTP Header for CSV file
@@ -1453,7 +1453,7 @@ class Devadmin_IndexController extends Api_GlobalController
 				// C = "csv value of response" (between quotes)
 				if ($surveyResponsesData) {
 					$pstTime = new DateTime("now", new DateTimeZone('PDT'));
-					$filename = preg_replace("/[,.]+/", $pstTime->format("Ymd-Hi") . " ". $survey->title . " - " . $reportCell->title);
+					$filename = preg_replace("/[,.]+/", "", $pstTime->format("Ymd-Hi") . " ". $survey->title . " - " . $reportCell->title);
 					$filename .= ".csv";
 
 					// HTTP Header for CSV file

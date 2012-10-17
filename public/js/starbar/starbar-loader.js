@@ -16,9 +16,12 @@
 
 	var starbarContainer = document.getElementById('sayso-starbar')
 
-	$SQ.ajaxWithAuth = ajaxWithAuth;
-	$SQ.cssLoadTimer = cssLoadTimer;
-	$SQ.insertCommunicationIframe = insertCommunicationIframe;
+	sayso.fn.insertCommunicationIframe = insertCommunicationIframe;
+	
+	// Until views are updated to use the new names
+	$SQ.ajaxWithAuth = sayso.fn.ajaxWithAuth;
+	$SQ.insertCommunicationIframe = sayso.fn.insertCommunicationIframe;
+	sayso.evalInPageContext = sayso.fn.evalInPageContext;
 
 	// App loading
 
@@ -51,7 +54,7 @@
 				];
 
 	for( var jsi = 0; jsi < jsDep.length; jsi++ )
-		window.sayso.loadScript('starbar/'+jsDep[jsi]);
+		sayso.fn.loadScript('starbar/'+jsDep[jsi]);
 
 
 	fixFlashElements();
@@ -92,14 +95,14 @@
 		customCssLoadTimer.start('_sayso_starbar_css_loaded', function () {
 
 
-			var jQueryLibraryLoadTimer = new $SQ.jsLoadTimer();
+			var jQueryLibraryLoadTimer = new jsLoadTimer();
 			jQueryLibraryLoadTimer.start('window.jQueryUILoaded', function () {
 
 				// finally, inject the HTML!
 				$SQ('#sayso-starbar').append(sayso.starbar.html);
 
 
-				var starbarJsTimer = new $SQ.jsLoadTimer();
+				var starbarJsTimer = new jsLoadTimer();
 				starbarJsTimer.start('window.sayso.starbar.loaded', function () {
 					// initialize the starbar
 					sayso.initStarBar();
@@ -124,37 +127,12 @@
 	} // end loadStarbar()
 
 	forge.message.listen( 'starbar-switch', function( response ) {
-		sayso.setLocalStateFromBackground(response);
+		sayso.fn.setLocalStateFromBackground(response);
 		
 		sayso.starbar.loaded = true;
 		$SQ('#sayso-starbar').html('');
 		loadStarbar();
 	});
-
-	function ajaxWithAuth(options) {
-		options.data = $SQ.extend(options.data || {}, {
-			renderer : 'json',
-			starbar_id : sayso.starbar.id,
-			user_id : sayso.starbar.user.id,
-			user_key : sayso.starbar.user.key
-		});
-
-		if (!options.dataType)
-			options.dataType = 'json';
-
-		if( !options.frame_id && sayso.frameId ) {
-			options.frame_id = sayso.frameId;
-			options.xdm_c = sayso.frameId;
-		}
-
-		options.beforeSend = function(x) {
-			if (x && x.overrideMimeType) {
-				x.overrideMimeType("application/j-son;charset=UTF-8");
-			}
-		};
-		options.url = 'http:' + options.url;
-		return forge.request.ajax(options);
-	}
 
 	function insertCommunicationIframe(link, container, width, height, scrolling) {
 		// This function inserts the iframe (with x-domain communication enabled!)
@@ -163,18 +141,76 @@
 		if (link.indexOf("?") == -1) link += "?";
 		else link += "&";
 
-		var ifr = $SQ(document.createElement("iframe")).attr({src: link+"frame_id="+$SQ.sayso.frameId+"&xdm_c="+$SQ.sayso.frameId, scrolling: scrolling}).css({
+		var ifr = $SQ(document.createElement("iframe")).attr({src: link+"frame_id="+sayso.frameId+"&xdm_c="+sayso.frameId, scrolling: scrolling}).css({
 			height: parseInt(height)+"px",
 			width: parseInt(width)+"px",
 			margin: 0,
 			border: 0
 		});
 		$SQ('#'+container).append(ifr);
-		$SQ.sayso.starbar.openFrameContainer = $SQ('#'+container);
-		$SQ.sayso.starbar.openFrame = $SQ.sayso.starbar.openFrameContainer.children('iframe');
+		sayso.starbar.openFrameContainer = $SQ('#'+container);
+		sayso.starbar.openFrame = sayso.starbar.openFrameContainer.children('iframe');
 	}
 
 	// functions to control load order
+	function jsLoadTimer () {
+
+		var _counter = 0,
+			_maxCount = 400, // # of reps X wait time in milliseconds
+			_waitTime = 50,
+			_symbol = '',
+			_callback = null,
+			_elseCallback = null,
+			_timeout = null,
+			_instance = this,
+			ref = null;
+
+		function _checkAgain () {
+			if (_counter++ <= _maxCount) {
+				_timeout = setTimeout(_waitUntilJsLoaded, _waitTime);
+			} else {
+				if (typeof _elseCallback === 'function') {
+					_elseCallback();
+				}
+			}
+		}
+		function _waitUntilJsLoaded () {
+			try {
+				if ((typeof _symbol === 'function' && _symbol()) || (typeof _symbol === 'string' && eval(_symbol))) {
+					if (_timeout) clearTimeout(_timeout);
+					try {
+						_callback();
+					} catch (exception) {
+						sayso.warn(exception);
+					}
+					return;
+				} else {
+					_checkAgain();
+				}
+			} catch (exception) {
+				_checkAgain();
+			}
+		}
+		this.setMaxCount = function (max) {
+			_maxCount = max;
+			return this;
+		};
+		this.setInterval = function (interval) {
+			_waitTime = interval;
+			return this;
+		};
+		this.setLocalReference = function (reference) {
+			ref = reference;
+			return this;
+		};
+		this.start = function (symbol, callback, elseCallback) {
+			_symbol = symbol;
+			_callback = callback;
+			_elseCallback = elseCallback;
+			_waitUntilJsLoaded();
+			return this;
+		};
+	}
 
 	function cssLoadTimer () {
 

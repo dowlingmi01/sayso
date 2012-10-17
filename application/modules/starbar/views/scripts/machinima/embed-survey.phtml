@@ -35,13 +35,13 @@
 <? } else { ?>
 	<div id="starbar-survey-<?= $this->survey->id ?>" class="sb_survey_container"></div>
 	<script type="text/javascript">
-		var protocol = ('https:' == $SQ.sayso.location.protocol ? 'https:' : 'http:');
+		var protocol = ('https:' == sayso.location.protocol ? 'https:' : 'http:');
 
 		var link = protocol
 			+ "//<?= BASE_DOMAIN ?>/starbar/machinima/survey-redirect?survey_id=<?= $this->survey->id ?>"
-			+ "&user_id=" + $SQ.sayso.starbar.user.id
-			+ "&user_key=" + $SQ.sayso.starbar.user.key
-			+ "&starbar_id=" + $SQ.sayso.starbar.id;
+			+ "&user_id=" + sayso.starbar.user.id
+			+ "&user_key=" + sayso.starbar.user.key
+			+ "&starbar_id=" + sayso.starbar.id;
 		var iframeContainerId = "starbar-survey-<?= $this->survey->id ?>";
 		<? if ($this->survey->origin == "UGAM") { ?>
 			$SQ.insertCommunicationIframe(link, iframeContainerId, 970, 500, 'auto'); // Add new iframe!

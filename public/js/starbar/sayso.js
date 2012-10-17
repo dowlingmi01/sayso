@@ -1,10 +1,6 @@
-// available to this script:
-//	 $SQ.jsLoadTimer
-// (see sayso-state.js)
-
 $SQ(function () {
 
-	var starbar = $SQ.sayso.starbar;
+	var starbar = sayso.starbar;
 
 	// Check required params
 
@@ -27,18 +23,6 @@ $SQ(function () {
 		warn = sayso.warn,
 		inIframe = sayso.in_iframe;
 
-	var ajax = function (options) {
-		options.data = $SQ.extend(options.data || {}, {
-			user_id : starbar.user.id,
-			user_key : starbar.user.key,
-			starbar_id : starbar.id,
-			renderer : 'json'
-		});
-		options.dataType = 'json';
-		options.url = 'http:' + options.url;
-		return forge.request.ajax(options);
-	};
-
 	if (inIframe) log('iFrame', sayso.location.host);
 
 	/**
@@ -47,7 +31,7 @@ $SQ(function () {
 	var behaviorTracker = new function () {
 
 		this.pageView = function () {
-			ajax({
+			sayso.fn.ajaxWithAuth({
 				url : '//' + sayso.baseDomain + '/api/metrics/page-view-submit',
 				data : {
 					url : encodeURIComponent(sayso.location.protocol + '//' + sayso.location.host + sayso.location.pathname)
@@ -57,7 +41,7 @@ $SQ(function () {
 		};
 
 		this.search = function (url, data) {
-			ajax({
+			sayso.fn.ajaxWithAuth({
 				url	 : url,
 				data	: data,
 				success : function (response) {
@@ -68,10 +52,8 @@ $SQ(function () {
 
 		// social activity
 
-		// see KRL for Facebook Like logic
-
 		this.socialActivity = function (url, content, type_id) {
-			ajax({
+			sayso.fn.ajaxWithAuth({
 				url : '//' + sayso.baseDomain + '/api/metrics/social-activity-submit',
 				data : {
 					type_id : type_id,
@@ -302,7 +284,7 @@ $SQ(function () {
 
 		if (studyAdClicks.length > 0) {
 			// click thrus!
-			ajax({
+			sayso.fn.ajaxWithAuth({
 				url : '//' + sayso.baseDomain + '/api/metrics/track-study-ad-clicks',
 				data : {
 					url : sayso.location.href,
@@ -499,11 +481,9 @@ $SQ(function () {
 	function studyAdsProcessingComplete() {
 		if (adsFound) {
 			log('Ads matched ' + adsFound + '. Ads replaced ' + replacements);
-			ajax({
+			sayso.fn.ajaxWithAuth({
 				url : '//' + sayso.baseDomain + '/api/metrics/track-study-ad-views',
 				data : {
-					// note: user_id, starbar_id are included in ajax() wrapper
-					// study_id is associated via cell id, which is included in cellAdActivity
 					url : (inIframe ? sayso.parentLocation : sayso.location).href,
 					study_ad_views : $SQ.JSON.stringify(studyAdViews)
 				},

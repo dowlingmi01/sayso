@@ -15,7 +15,8 @@
 			forge.logging.error( e );
 			return;
 		}
-	sayso.evalInPageContext = function( arg ) {
+	sayso.fn = sayso.fn || {};
+	sayso.fn.evalInPageContext = function evalInPageContext( arg ) {
 		var scriptEl = document.createElement('script');
 		if( typeof arg === "function" )
 			scriptEl.text = '(' + arg + ')();';
@@ -25,7 +26,7 @@
 		document.body.removeChild(scriptEl);
 	}
 
-	sayso.loadScript = function(scriptName, onSuccess) {
+	sayso.fn.loadScript = function loadScript(scriptName, onSuccess) {
 		forge.message.broadcastBackground( "get-script", scriptName
 					, function(content) {
 						if( window.execScript )
@@ -41,24 +42,7 @@
 				);
 	}
 
-	sayso.loadExternalScript = function(scriptURL, onSuccess) {
-		forge.request.get( scriptURL
-					, function(content) {
-						content = content + "\n//@ sourceURL=" + scriptURL;
-						if( window.execScript )
-							window.execScript(content)
-						else
-							eval(content);
-						if( onSuccess )
-							onSuccess();
-					}
-					, function(errObject) {
-						forge.logging.error(errObject.message);
-					}
-				);
-	}
-
-	sayso.setLocalStateFromBackground = function( response ) {
+	sayso.fn.setLocalStateFromBackground = function setLocalStateFromBackground( response ) {
 		sayso.state = response;
 		sayso.starbar = response.starbars[response.currentStarbar];
 		sayso.starbar.user = response.user;
@@ -68,6 +52,26 @@
 		sayso.starbar.economy = sayso.state.economies[sayso.starbar.economyId];
 		
 		sayso.notifications = [];
+	}
+	
+	sayso.fn.ajaxWithAuth = function ajaxWithAuth(options) {
+		options.data = $SQ.extend(options.data || {}, {
+			renderer : 'json',
+			starbar_id : sayso.starbar.id,
+			user_id : sayso.starbar.user.id,
+			user_key : sayso.starbar.user.key
+		});
+
+		if (!options.dataType)
+			options.dataType = 'json';
+
+		if( !options.frame_id && sayso.frameId ) {
+			options.frame_id = sayso.frameId;
+			options.xdm_c = sayso.frameId;
+		}
+
+		options.url = 'http:' + options.url;
+		return forge.request.ajax(options);
 	}
 	
 	function safeLog (type, debug) { // <-- closure here allows re-use for log() and warn()
@@ -123,17 +127,13 @@
 			window.attachEvent('onmessage', handleParentReq);
 	}
 
-	sayso.loadScript('starbar/jquery-1.7.1.min.js', jQueryLoaded);
+	sayso.fn.loadScript('starbar/jquery-1.7.1.min.js', jQueryLoaded);
 	sayso.url_match_prepend = '^(?:http|https){1}://(?:[\\w.-]+[.])?';
 	sayso.ie_version = getInternetExplorerVersion();
-
 	
 	function jQueryLoaded() {
-		$SQ.sayso = sayso;
-		$SQ.jsLoadTimer = jsLoadTimer;
-		$SQ.randomString = randomString;
 		$SQ(function(){
-			sayso.evalInPageContext( 'window.$SaySoExtension = {};' );
+			sayso.fn.evalInPageContext( 'window.$SaySoExtension = {};' );
 			var frameComm;
 			if( sayso.in_iframe && (frameComm = document.getElementById('sayso-frame-comm')) ) {
 				function frameCommHandler() {
@@ -155,7 +155,7 @@
 					if( sgq.length ) {
 						window.$SGQ = JSON.parse(sgq.attr('value'));
 						sgq.remove();
-						sayso.loadScript('surveygizmo/content.js');
+						sayso.fn.loadScript('surveygizmo/content.js');
 					}
 				};
 				
@@ -168,7 +168,7 @@
 			
 			}
 			forge.message.broadcastBackground( "get-state", {}, function( response ) {
-				sayso.setLocalStateFromBackground(response);
+				sayso.fn.setLocalStateFromBackground(response);
 
 				sayso.flags = 'none';
 
@@ -177,22 +177,22 @@
 					forge.message.listen('parent-location-' + sayso.frameId, function( l ) {
 						if( !sayso.parentLocation ) {
 							sayso.parentLocation = l;
-							sayso.loadScript('starbar/sayso.js');
+							sayso.fn.loadScript('starbar/sayso.js');
 						}
 					});
 					function requestParentLocation() {
 						if( !sayso.parentLocation ) {
-							sayso.evalInPageContext( "top.postMessage( 'sayso-parent-req-" + sayso.frameId + "', '*' );");
+							sayso.fn.evalInPageContext( "top.postMessage( 'sayso-parent-req-" + sayso.frameId + "', '*' );");
 							setTimeout(requestParentLocation, 200);
 						}
 					}
 					requestParentLocation();
 				} else
-					sayso.loadScript('starbar/sayso.js');
+					sayso.fn.loadScript('starbar/sayso.js');
 				
 				// Only load starbar if conditions are met
 				if( shouldLoadStarbar() )
-					sayso.loadScript('starbar/starbar-loader.js');
+					sayso.fn.loadScript('starbar/starbar-loader.js');
 				
 			});
 		});
@@ -244,65 +244,6 @@
 		
 		return true;
 	}
-	function jsLoadTimer () {
-
-		var _counter = 0,
-			_maxCount = 400, // # of reps X wait time in milliseconds
-			_waitTime = 50,
-			_symbol = '',
-			_callback = null,
-			_elseCallback = null,
-			_timeout = null,
-			_instance = this,
-			ref = null;
-
-		function _checkAgain () {
-			if (_counter++ <= _maxCount) {
-				_timeout = setTimeout(_waitUntilJsLoaded, _waitTime);
-			} else {
-				if (typeof _elseCallback === 'function') {
-					_elseCallback();
-				}
-			}
-		}
-		function _waitUntilJsLoaded () {
-			try {
-				if ((typeof _symbol === 'function' && _symbol()) || (typeof _symbol === 'string' && eval(_symbol))) {
-					if (_timeout) clearTimeout(_timeout);
-					try {
-						_callback();
-					} catch (exception) {
-						sayso.warn(exception);
-					}
-					return;
-				} else {
-					_checkAgain();
-				}
-			} catch (exception) {
-				_checkAgain();
-			}
-		}
-		this.setMaxCount = function (max) {
-			_maxCount = max;
-			return this;
-		};
-		this.setInterval = function (interval) {
-			_waitTime = interval;
-			return this;
-		};
-		this.setLocalReference = function (reference) {
-			ref = reference;
-			return this;
-		};
-		this.start = function (symbol, callback, elseCallback) {
-			_symbol = symbol;
-			_callback = callback;
-			_elseCallback = elseCallback;
-			_waitUntilJsLoaded();
-			return this;
-		};
-	}
-
 	function getCookie (find) {
 		var cookies = document.cookie.split(';');
 		for(var i = 0; i < cookies.length; i++) {

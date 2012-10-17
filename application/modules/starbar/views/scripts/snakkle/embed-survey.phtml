@@ -20,13 +20,13 @@
 <? } else { ?>
 	<div id="starbar-survey-<?= $this->survey->id ?>" class="sb_survey_container"></div>
 	<script type="text/javascript">
-		var protocol = ('https:' == $SQ.sayso.location.protocol ? 'https:' : 'http:');
+		var protocol = ('https:' == sayso.location.protocol ? 'https:' : 'http:');
 
 		var link = protocol
 			+ "//<?= BASE_DOMAIN ?>/starbar/snakkle/survey-redirect?survey_id=<?= $this->survey->id ?>&next_survey_id=<?= $this->next_survey_id ?>&user_id="
-			+ $SQ.sayso.starbar.user.id
-			+ "&user_key=" + $SQ.sayso.starbar.user.key
-			+ "&starbar_id=" + $SQ.sayso.starbar.id;
+			+ sayso.starbar.user.id
+			+ "&user_key=" + sayso.starbar.user.key
+			+ "&starbar_id=" + sayso.starbar.id;
 		var iframeContainerId = "starbar-survey-<?= $this->survey->id ?>";
 		<? if ($this->survey->size == "large") { ?>
 			$SQ.insertCommunicationIframe(link + "&size=large", iframeContainerId, 640, 410, 'auto'); // Add new iframe!

@@ -1,7 +1,7 @@
 <div id="sb_spotlight_iframe_container"></div>
 <script type="text/javascript">
 $SQ(function(){
-	var link = "//<?= BASE_DOMAIN ?>/starbar/movie/trailer?user_id="+$SQ.sayso.starbar.user.id+"&user_key="+$SQ.sayso.starbar.user.key+"&starbar_id="+$SQ.sayso.starbar.id;
+	var link = "//<?= BASE_DOMAIN ?>/starbar/movie/trailer?user_id="+sayso.starbar.user.id+"&user_key="+sayso.starbar.user.key+"&starbar_id="+sayso.starbar.id;
 	var iFrameContainerId = 'sb_spotlight_iframe_container';
 	$SQ.insertCommunicationIframe(link, iFrameContainerId, 640, 590, "no");
 });

@@ -4,8 +4,7 @@
 
 $SQ(function(){
 
-	var sayso = window.$SQ.sayso,
-		starbar = window.$SQ.sayso.starbar;
+	var starbar = sayso.starbar;
 
 	forge.message.listen('sayso-frame-comm-' + sayso.frameId, function(content) {
 		$SQ('#sayso-starbar').trigger('frameCommunication', content);
@@ -49,7 +48,7 @@ $SQ(function(){
 				twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
 			}
 		}
-		sayso.evalInPageContext(defineFrameComm);
+		sayso.fn.evalInPageContext(defineFrameComm);
 	}
 
 	// NOTE: These variables are initialized in initElements()
@@ -238,7 +237,7 @@ $SQ(function(){
 
 	// initialize the starbar
 	sayso.initStarBar = function (){
-		starbar = window.$SQ.sayso.starbar;
+		starbar = sayso.starbar;
 
 		initElements();
 
@@ -535,7 +534,7 @@ $SQ(function(){
 		popBox.addClass('sb_popBoxActive');
 
 		if (src) {
-			$SQ.ajaxWithAuth({
+			sayso.fn.ajaxWithAuth({
 				url : src,
 				success : function (response, status) {
 					ajaxContentContainer.html(response.data.html);
@@ -634,7 +633,7 @@ $SQ(function(){
 	forge.message.listen('set-notifications', setNotifications);
 
 	function gameCheckin() {
-		$SQ.ajaxWithAuth({
+		sayso.fn.ajaxWithAuth({
 			url : '//'+sayso.baseDomain+'/api/gaming/checkin',
 			success : function (response) {
 				updateGame(response.game);
@@ -644,7 +643,7 @@ $SQ(function(){
 
 	function handleTweet (shareType, shareId) {
 		if (shareType && shareId) {
-			$SQ.ajaxWithAuth({
+			sayso.fn.ajaxWithAuth({
 				url : '//'+sayso.baseDomain+'/api/gaming/share?shared_type='+shareType+'&shared_id='+shareId+'&social_network=TW',
 				success : function (response) {
 					if( response.status == "success" && response.game )
@@ -1329,7 +1328,7 @@ $SQ(function(){
 
 							// The container for the new iFrame is in the link's 'ref' attribute
 							var iFrameContainerId = activeLink.attr('rel');
-							$SQ.insertCommunicationIframe(link, iFrameContainerId, 470, parseInt(activeLink.attr('iframeHeight')), "no");
+							sayso.fn.insertCommunicationIframe(link, iFrameContainerId, 470, parseInt(activeLink.attr('iframeHeight')), "no");
 
 							activeLink.attr('loaded', 'true');
 						}
@@ -1796,7 +1795,7 @@ $SQ(function(){
 				Switcher.slider.animate({
 					'height' : Switcher.getPanelHeight() + Switcher.loaderOffset
 				});
-				$SQ.ajaxWithAuth({
+				sayso.fn.ajaxWithAuth({
 					url : '//' + sayso.baseDomain + '/starbar/content/starbar-list',
 					success : Switcher.onLoad
 				});

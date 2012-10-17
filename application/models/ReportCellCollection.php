@@ -11,7 +11,7 @@ class ReportCellCollection extends RecordCollection
 		$sql = "SELECT rc.*
 				FROM report_cell rc
 				" . $filterClause . "
-				ORDER BY FIELD(rc.category, 'Internal', 'Panel', 'Gender', 'Age Range', 'Marital Status', 'Education', 'Ethnicity', 'Income', 'Parental Status', 'Geography', 'Custom', 'Study'), rc.id ASC
+				ORDER BY FIELD(rc.category, 'Internal', 'Panel', 'Gender', 'Age Range', 'Marital Status', 'Education', 'Ethnicity', 'Industry', 'Income', 'Parental Status', 'Geography', 'Custom', 'Study'), rc.id ASC
 				";
 		$reportCells = Db_Pdo::fetchAll($sql);
 

@@ -192,7 +192,7 @@ class ReportCell extends Record
 							case "=":
 							case "!=":
 								$conditionSql = "(" . $tableReference . ".survey_id = " . $reportCellUserCondition->compare_survey_id;
-								$conditionSql .= $tableReference . ".status " . $reportCellUserCondition->comparison_type . " '" . $reportCellUserCondition->compare_string . "')";
+								$conditionSql .= " AND " . $tableReference . ".status " . $reportCellUserCondition->comparison_type . " '" . $reportCellUserCondition->compare_string . "')";
 								break;
 							default:
 								break;

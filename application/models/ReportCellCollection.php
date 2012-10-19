@@ -36,7 +36,7 @@ class ReportCellCollection extends RecordCollection
 		$sql = "SELECT *
 				FROM report_cell
 				WHERE conditions_processed IS NOT true
-
+				AND processing_type = 'automatic'
 				AND id NOT IN (
 
 					SELECT rc.id

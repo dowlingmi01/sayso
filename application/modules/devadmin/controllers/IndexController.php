@@ -1136,6 +1136,15 @@ class Devadmin_IndexController extends Api_GlobalController
 	}
 
 
+	public function userGroupEditorAction () {
+		$this->view->headScript()->appendFile('//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js');
+		$this->view->headScript()->appendFile('/js/dig/dig.js');
+		$this->view->headLink()->appendStylesheet('/css/dig/dig.css');
+
+		$this->view->report_cell_id = $this->report_cell_id;
+	}
+
+
 	public function surveyResponsesAction () {
 		$request = $this->getRequest();
 		$reportCellId = (int) $request->getParam("report_cell_id", 1);
@@ -1192,8 +1201,10 @@ class Devadmin_IndexController extends Api_GlobalController
 		// increase memory limit for this session only
 		ini_set('memory_limit', '512M');
 
+		$this->view->headLink()->appendStylesheet('/css/dig/dig.css');
 		$this->view->headLink()->appendStylesheet('/js/jqplot/jquery.jqplot.min.css');
 		$this->view->headScript()->appendFile('//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js');
+		$this->view->headScript()->appendFile('/js/dig/dig.js');
 		$this->view->headScript()->appendFile('/js/jqplot/jquery.jqplot.min.js');
 		$this->view->headScript()->appendFile('/js/jqplot/plugins/jqplot.barRenderer.min.js');
 		$this->view->headScript()->appendFile('/js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js');
@@ -1286,6 +1297,13 @@ class Devadmin_IndexController extends Api_GlobalController
 
 		$this->view->survey_id = $surveyId;
 		$this->view->report_cell_id = $reportCellId;
+
+		if ($reportCellId) {
+			$reportCell = new ReportCell();
+			$reportCell->loadData($reportCellId);
+			$this->view->chosen_report_cell = $reportCell;
+		}
+
 		$this->view->calculation_array = $calculationArray;
 		$this->view->survey_questions = $surveyQuestions; // Ordered properly
 

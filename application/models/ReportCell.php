@@ -35,8 +35,6 @@ class ReportCell extends Record
 	}
 
 	public function processConditions() {
-		$commaDelimitedListOfUsers = null;
-
 		$conditionsSql = "";
 		$sql = "";
 
@@ -431,6 +429,11 @@ class ReportCell extends Record
 					// The group of users has changed, so force report_cell_survey reprocessing the next time a report is needed
 					$sql = "DELETE FROM report_cell_survey WHERE report_cell_id = ?";
 					Db_Pdo::execute($sql, $this->id);
+				}
+
+				// stop automatically processing this cell if we've reached the quota (note that processing can still be run manually)
+				if ($this->quota && $this->number_of_users >= $this->quota && $this->processing_type == "automatic") {
+					$this->processing_type = "manual";
 				}
 			}
 

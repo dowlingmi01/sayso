@@ -1,0 +1,191 @@
+input, select {
+	font-family: Verdana;
+	font-size: 11px;
+}
+
+div.node {
+	margin-left: 0px;
+	padding: 10px 0 20px 20px;
+	position: relative;
+}
+
+.top_node {
+	width: 1000px;
+	font-family: Verdana;
+	font-size: 11px;
+	padding: 2px;
+	margin: 10px 10px 20px 0;
+	position: relative;
+	line-height: 23px;
+}
+
+div.node.report_cell {
+	margin-top: 15px;
+}
+
+div.node.report_cell input.editor.title {
+	position: absolute;
+	float: left;
+	margin-left: 80px;
+	top: 9px;
+	z-index: 10;
+}
+
+div.node.report_cell_user_condition {
+	margin: 0 0 0 50px;
+	padding: 28px 0 15px 30px;
+}
+
+div.report_cell_user_condition.create, .edited div.report_cell_user_condition.create {
+	padding-top: 29px;
+	padding-bottom: 5px;
+}
+
+div.vertical_line {
+	position: absolute;
+	top: 0;
+	left: -30px;
+	width: 40px;
+	height: 100%;
+	border-left: 2px solid #929292;
+}
+
+div.horizontal_line {
+	position: absolute;
+	top: 39px;
+	width: 100%;
+	height: 0;
+	border-bottom: 2px solid #929292;
+}
+
+div.spacer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 15px;
+	background-color: #FFFFFF;
+}
+
+div.node.hide_line {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	width: 32px;
+	float: left;
+}
+
+select {
+	max-width: 50%;
+	margin: 0 15px 0 0;
+	z-index: 10;
+	border: 1px solid #AAAAAA;
+}
+
+input {
+	border: 1px solid #AAAAAA;
+	padding: 2px;
+}
+
+select.report_cell_condition_type {
+	margin-right: 30px;
+}
+input.editor.title {
+	width: 500px;
+}
+
+span.detail {
+	font-size: 10px;
+	color: #666666;
+}
+
+div.save {
+	visibility: hidden;
+	position: absolute;
+	float: right;
+	right: 20px;
+	z-index: 5000;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.edited div.save {
+	visibility: visible;
+}
+
+div.reprocess {
+	position: absolute;
+	float: right;
+	right: 20px;
+	z-index: 5000;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.edited div.reprocess {
+	visibility: hidden;
+}
+
+a {
+	text-decoration: none;
+}
+
+div.node.report_cell.edited, div.node.report_cell.edited div {
+	background-color: #FFFFE4;
+}
+
+div.node.report_cell div.node.report_cell.edited, div.node.report_cell div.node.report_cell.edited div {
+	background-color: #EEEED3;
+}
+
+div.node.report_cell div.node.report_cell div.node.report_cell.edited, div.node.report_cell div.node.report_cell div.node.report_cell.edited div {
+	background-color: #DDDDC2;
+}
+
+div.node.report_cell div.node.report_cell div.node.report_cell div.node.report_cell.edited, div.node.report_cell div.node.report_cell div.node.report_cell div.node.report_cell.edited div {
+	background-color: #CCCCB1;
+}
+
+div.node.edited.hidden {
+	border-top: 2px dashed #BBBB33;
+}
+
+div.node, div.node div {
+	background-color: #E4E4E4;
+}
+
+div.node.report_cell div.node.report_cell, div.node.report_cell div.node.report_cell div {
+	background-color: #D3D3D3;
+}
+
+div.node.report_cell div.node.report_cell div.node.report_cell, div.node.report_cell div.node.report_cell div.node.report_cell div {
+	background-color: #C2C2C2;
+}
+
+div.node.report_cell div.node.report_cell div.node.report_cell div.node.report_cell, div.node.report_cell div.node.report_cell div.node.report_cell div.node.report_cell div {
+	background-color: #B1B1B1;
+}
+
+div.node.hidden {
+	border-top: 2px dashed #AAAAAA;
+}
+
+div.node.hidden {
+	height: 0px;
+	width: 625px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	overflow: hidden;
+}
+
+.top_node.confirm_save .node.edited, .top_node.confirm_save .node.edited div {
+	background-color: #D3E4D3 !important;
+}
+
+.top_node.confirm_save div.node.edited.hidden {
+	border-top: 2px dashed #D7FFD7;
+}
+
+.node.confirm_delete, .node.confirm_delete div {
+	background-color: #E4D3D3 !important;
+}

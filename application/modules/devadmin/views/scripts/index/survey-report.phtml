@@ -17,7 +17,7 @@ div#report_header {
 	margin-top: 30px;
 	background-color: black;
 	color: white;
-	width: 980px;
+	width: 1005px;
 	padding: 11px;
 	font-size: 13px;
 }
@@ -52,20 +52,20 @@ h3 {
 
 div.chart {
 	margin: auto;
-	width: 950px;
+	width: 975px;
 	height: 300px;
 }
 
 div#reportSettings {
 	position: relative;
-	width: 980px;
+	width: 1005px;
 	border: 1px solid #666;
 	background-color: #FFF;
 	padding: 10px;
 }
 
 div#report {
-	width: 980px;
+	width: 1005px;
 	border: 1px solid #666;
 	background-color: #FFF;
 	padding: 20px 10px 10px 10px;
@@ -81,7 +81,7 @@ select#survey_id {
 }
 
 .jqplot-axis.jqplot-yaxis {
-	max-width: 460px;
+	max-width: 485px;
 }
 
 .jqplot-yaxis-tick {
@@ -110,7 +110,7 @@ select#survey_id {
 
 	function renderGraph(divId, labels, values) {
 		var labels = labels.reverse();
-        var values = values.reverse();
+		var values = values.reverse();
 		$.jqplot(divId, [values], {
 			series: [{
 				renderer:$.jqplot.BarRenderer,
@@ -197,14 +197,32 @@ select#survey_id {
 			<option value="0">Please choose a <?= ($this->survey_type ? $this->survey_type : "type of content first") ?></option>
 		</select><br /><br />
 
-		<b>Select user group to report on:</b><br />
-		<select name="report_cell_id">
-			<option value="">Please choose a group</option>
-			<? foreach ($this->report_cells as $reportCell) { ?>
-				<? if ($this->report_cell_id == $reportCell->id) { $chosenReportCell = $reportCell; } ?>>
-				<option value="<?= $reportCell->id ?>" <? if ($this->report_cell_id == $reportCell->id) { echo 'selected'; } ?>><?= strtoupper($reportCell->category) . ": " . $reportCell->title . " (" . (int) $reportCell->number_of_users . " users)"?></option>
-			<? } ?>
-		</select><br /><br />
+		<? if (APPLICATION_ENV == "production" && $this->single_starbar_id) { ?>
+			<b>Select user group to report on:</b><br />
+			<select name="report_cell_id">
+				<option value="">Please choose a group</option>
+				<? foreach ($this->report_cells as $reportCell) { ?>
+					<? if ($this->report_cell_id == $reportCell->id) { $chosenReportCell = $reportCell; } ?>>
+					<option value="<?= $reportCell->id ?>" <? if ($this->report_cell_id == $reportCell->id) { echo 'selected'; } ?>><?= strtoupper($reportCell->category) . ": " . $reportCell->title . " (" . (int) $reportCell->number_of_users . " users)"?></option>
+				<? } ?>
+			</select><br /><br />
+		<? } else { ?>
+			<div id="report_cell_dig"></div>
+			<script type="text/javascript">
+			$(document).ready(function () {
+				var digOptions = {
+					form_id: 'reportForm',
+					single_starbar_id: <?= ($this->single_starbar_id ? $this->single_starbar_id : 0) ?>,
+					hidden_by_default: true,
+					label: "Select user group to report on: ",
+					new_option: "New User Group",
+					sort:[{field: 'ordinal'}]
+				};
+				window.reportCellTopNode = dig('report_cell_id', 'report_cell_dig', 'report_cell', '<?= ($this->report_cell_id ? $this->report_cell_id : 0) ?>', digOptions);
+			});
+			</script>
+			<br style="clear :both" /><br />
+		<? } ?>
 	</div>
 </form>
 
@@ -225,7 +243,7 @@ select#survey_id {
 			<?= $chosenSurvey['title'] ?>
 		</div>
 		<div id="report">
-			<h2>User Group: <b><?= $chosenReportCell['title'] ?></b></h2>
+			<h2>User Group: <b><?= $this->chosen_report_cell->title ?></b></h2>
 			<? $questionNumber = 1 ?>
 			<? foreach ($this->survey_questions as $surveyQuestion) { ?>
 				<? if ($surveyQuestion->data_type != "none" || $surveyQuestion->choice_type != "none") { ?>

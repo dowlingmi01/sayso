@@ -120,6 +120,7 @@ class Metrics_LogCollection
 		if($this->pollPageView)
 		{
 			$types[] = 'page view';
+			$types[] = 'video view';
 		}
 		if($this->pollSocial)
 		{

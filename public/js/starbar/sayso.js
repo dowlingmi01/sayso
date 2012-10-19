@@ -22,6 +22,8 @@ $SQ(function () {
 	var log = sayso.log,
 		warn = sayso.warn,
 		inIframe = sayso.in_iframe;
+		
+	var topLocation = inIframe ? sayso.parentLocation : sayso.location;
 
 	if (inIframe) log('iFrame', sayso.location.host);
 
@@ -37,6 +39,18 @@ $SQ(function () {
 					url : encodeURIComponent(sayso.location.protocol + '//' + sayso.location.host + sayso.location.pathname)
 				},
 				success : function (response) {}
+			});
+		};
+
+		this.videoView = function (type, id) {
+			sayso.fn.ajaxWithAuth({
+				url : '//' + sayso.baseDomain + '/api/metrics/video-view-submit',
+				data : {
+					  video_type : type
+					, video_id : id
+					, video_url : sayso.location.href
+					, page_url : topLocation.href
+				},
 			});
 		};
 
@@ -77,6 +91,19 @@ $SQ(function () {
 		behaviorTracker.pageView();
 	}
 
+	// ================================================================
+	// Video View
+	{
+		var m = sayso.location.href.match(/youtube\..*\/watch.*[?&]v=([\w\-]{11})/);
+		if( m )
+			behaviorTracker.videoView('youtube', m[1] );
+		else if( m = sayso.location.href.match(/youtube\..*\/embed\/([\w\-]{11})/) )
+			behaviorTracker.videoView('youtube', m[1] );
+		else if( sayso.location.href.match(/youtube\./) && (m = $SQ('div.player-root[data-video-id]')).length )
+			behaviorTracker.videoView('youtube', m.attr('data-video-id') );
+			
+	}
+	
 	// ================================================================
 	// Search
 
@@ -322,7 +349,7 @@ $SQ(function () {
 						studyAd
 						&& studyAd.existing_ad_tag // there's a tag to search for
 						&& ($SQ.inArray(studyAd.id, sessionAdViews) == -1) // ad hasn't already been viewed in this session
-						&& (inIframe ? sayso.parentLocation : sayso.location).host.match(studyAd.existing_ad_domain) // we're on the right domain
+						&& topLocation.host.match(studyAd.existing_ad_domain) // we're on the right domain
 					) {
 						processStudyAd(studyAd);
 					}
@@ -484,7 +511,7 @@ $SQ(function () {
 			sayso.fn.ajaxWithAuth({
 				url : '//' + sayso.baseDomain + '/api/metrics/track-study-ad-views',
 				data : {
-					url : (inIframe ? sayso.parentLocation : sayso.location).href,
+					url : topLocation.href,
 					study_ad_views : $SQ.JSON.stringify(studyAdViews)
 				},
 				success : function (response) {

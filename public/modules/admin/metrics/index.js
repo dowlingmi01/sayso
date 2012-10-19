@@ -29,6 +29,10 @@ function drawSingleRow(v)
 			rowTypeName = 'Page View';
 			rowStyle	= 'updates-row-page-view';
 			break;
+		case 'video view':
+			rowTypeName = 'Video View';
+			rowStyle	= 'updates-row-page-view';
+			break;
 		case 'social activity':
 			rowTypeName = 'Social Activity';
 			rowStyle	= 'updates-row-social-activity';

@@ -30,6 +30,21 @@ class Api_MetricsController extends Api_GlobalController
 
 	}
 
+	public function videoViewSubmitAction () {
+		$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'video_type', 'video_id', 'video_url'));
+		$metric = new Metrics_VideoView();
+		$metric->user_id = $this->user_id;
+		$metric->starbar_id = $this->starbar_id;
+		$metric->video_type = $this->video_type;
+		$metric->video_id = $this->video_id;
+		$metric->video_url = $this->video_url;
+		if( $this->page_url && ($this->video_url != $this->page_url) )
+			$metric->page_url = $this->page_url;
+		$metric->save();
+
+		return $this->_resultType($metric);
+	}
+
 	public function searchEngineSubmitAction () {
 		$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'query', 'type_id'));
 

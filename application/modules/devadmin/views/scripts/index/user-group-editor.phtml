@@ -3,6 +3,26 @@
 <script type="text/javascript">
 
 $(document).ready(function () {
+	// pre-cache starbars and surveys .. this is optional but improves initial loading performance
+	var originalCache = window.originalNodeCache;
+	originalCache.starbar = {};
+	<? $firstStarbar = true ?>
+	<? foreach($this->starbars as $starbar) { ?>
+		originalCache.starbar["<?= $starbar['id'] ?>"] = {
+			id: <?= $starbar['id'] ?>,
+			label: "<?= $starbar['label'] ?>",
+			survey: {}
+		};
+	<? } ?>
+
+	<? foreach ($this->surveys as $survey) { ?>
+		originalCache.starbar["<?= $survey['unique_starbar_id'] ?>"].survey["<?= $survey['id'] ?>"] = {
+			id: <?= $survey['id'] ?>,
+			label: "<?= str_replace('"', '\\"', $survey['title']) ?>",
+			type: "<?= $survey['type'] ?>"
+		};
+	<? } ?>
+
 	var digOptions = {
 		label: "Edit User Group: ",
 		new_option: "New User Group",

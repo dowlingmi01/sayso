@@ -10,7 +10,6 @@ function, which is added to the window object below
 
 	/*
 	This function starts the Dynamic Interface Generator. Currently creates a <select> tag to choose a top node
-	* formId: optional (otherwise set to null). the id of the form this is contained in (e.g. <form id="some_id_here"></form>)
 	* selectName: required. the name attribute of the created <select> tag
 	* containerId: required. the id of the element to contain the top node and top record (e.g. <div id="some_id_here"></div>)
 	* recordType: required: the top record type (only 'report_cell' is supported, for now)
@@ -20,6 +19,8 @@ function, which is added to the window object below
 		* single_starbar_id: run in single starbar mode (alters some queries
 		* options are also passed throguh to the renderEditorSelect() function that renders the list of report cells, e.g.:
 		* label: passed through to renderEditorSelect to render the visible label for the outermost <select>
+		* form_id: optional. the id of the form this is contained in (e.g. <form id="some_id_here"></form>)
+			the form submit function is overwritten, so that it ensures you save before submitting
 	*/
 	function dig (selectName, containerId, recordType, recordId, options) {
 		options = options || {};
@@ -46,6 +47,7 @@ function, which is added to the window object below
 		topNode.label = options.label;
 		topNode.hidden_by_default = options.hidden_by_default;
 		topNode.single_starbar_id = options.single_starbar_id;
+		topNode.new_option = options.new_option;
 		$.extend(options, {selected_id: recordId});
 		topNode.renderEditorSelect(selectName, recordType, options);
 
@@ -61,6 +63,7 @@ function, which is added to the window object below
 					return false;
 				}
 				$('.editor[name*="dig_"]', outerForm).prop('disabled', true);
+				// form gets submitted after this function returns
 			})
 		}
 
@@ -76,21 +79,23 @@ function, which is added to the window object below
 	top_node <---- only one top node per instance
 		|-- properties (form_id, label, hidden_by_default, etc.))
 		|-- functions
-		|-- child_record_type
-				|-- child_record_id (this is a node)
-						|-- record properties (id, title, compare_report_cell_id, etc.)
-						|-- functions
-						|-- child_record_type
-							|-- ...
-						|-- node_info
-				|-- child_record_id (this is a node)
-						|-- ...
-		|-- node_info (explained below)
+		|-- child_record_type (this is an object, but not a node)
+		|		|-- child_record_id (this is a node)
+		|		|		|-- record properties (id, title, compare_report_cell_id, etc.)
+		|		|		|-- functions
+		|		|		|-- child_record_type
+		|		|		|		|-- child_record_id (this is a node)
+		|		|		|		+-- ...
+		|		|		+-- node_info
+		|		+-- child_record_id (this is a node)
+		|				|-- ...
+		|				+-- ...
+		+-- node_info (explained below)
 
 	Other than the top_node, nodes always (at the moment) represent records in the DB
 	i.e. some nodes are unmodified records from the database, some are records that have been read and
 	updated (updates not yet saved to database), some are created using the interface
-	(and usually updated later) and not yet in the database)
+	(and usually updated later) and not yet in the database
 
 	Anyway, createEmptyNode() doesn't directly load any record data into the node, it just sets up the
 	node_info object (explained next) and the node's functions
@@ -103,7 +108,7 @@ function, which is added to the window object below
 
 		var emptyNode = {
 			node_info: {
-				parent: parent, // a pointer to the parent node
+				parent: parent, // a pointer to the parent _node_ (not the container object)
 				type: type,  // the record type (e.g. 'report_cell', 'report_cell_user_condition'
 				element: options.element, // the html element this record will be rendered in
 				editable: options.editable, // can the user edit this node?
@@ -126,21 +131,26 @@ function, which is added to the window object below
 				if (this.node_info.type == 'top') options.record_not_updated = true;
 
 				if (this[field] !== updatedValue && !options.record_not_updated) {
+					// the updatedValue is an object, so load each node into the parent
 					if (typeof updatedValue == "object") {
 						if (options.do_not_mark_parent_updated) {
 							this[field] = {};
 							this.node_info.element.children('.node.'+field).not('.create').annihilate();
 							for (var c in updatedValue) {
 								if (newRecordDefaults[this.node_info.type] && newRecordDefaults[this.node_info.type].parent_id_field) {
+									// so getCopyFromCache() knows where to load the record from
+									// (e.g. setting options['report_cell_id'] when loading a report_cell_user_condition into a report_cell
 									options[newRecordDefaults[this.node_info.type].parent_id_field] = this.id;
 								}
 								loadInto(this, field, updatedValue[c].id, {do_not_mark_parent_updated: true});
 							}
 						}
+					// special exception when choosing a survey question for a report_cell_user_condition (which selects two things at once)
 					} else if (this.node_info.type == 'report_cell_user_condition' && field == "compare_survey_question_id") {
 						var updatedValues = updatedValue.split("-");
 						this.condition_type = updatedValues[0];
 						this.compare_survey_question_id = updatedValues[1];
+					// regular field, update it with the new value
 					} else {
 						this[field] = updatedValue;
 					}
@@ -629,7 +639,7 @@ function, which is added to the window object below
 				$.ajax(ajaxOptions);
 
 				// restart the node interface, forcing the cache to be overwritten so it can be read from the server again
-				if (savedId) dig(this.select_name, this.node_info.element.attr('id'), this.node_info.top_record_type, savedId, {existing_top_node: this, single_starbar_id: this.single_starbar_id, label: this.label, hidden_by_default: this.hidden_by_default});
+				if (savedId) dig(this.select_name, this.node_info.element.attr('id'), this.node_info.top_record_type, savedId, {existing_top_node: this, single_starbar_id: this.single_starbar_id, label: this.label, hidden_by_default: this.hidden_by_default, form_id: this.form_id, new_option: this.new_option});
 				else alert('Save failed :(');
 
 				return savedId;
@@ -655,7 +665,7 @@ function, which is added to the window object below
 				$.ajax(ajaxOptions);
 
 				// restart the node interface, forcing the cache to be overwritten so it can be read from the server again
-				if (successful) dig(this.select_name, this.node_info.element.attr('id'), this.node_info.top_record_type, this.node_info.top_record_id, {existing_top_node: this, single_starbar_id: this.single_starbar_id, label: this.label, hidden_by_default: this.hidden_by_default, form_id: this.form_id});
+				if (successful) dig(this.select_name, this.node_info.element.attr('id'), this.node_info.top_record_type, this.node_info.top_record_id, {existing_top_node: this, single_starbar_id: this.single_starbar_id, label: this.label, hidden_by_default: this.hidden_by_default, form_id: this.form_id, new_option: this.new_option});
 				else alert('Reprocess failed :(');
 
 				return successful;
@@ -883,7 +893,7 @@ function, which is added to the window object below
 				if (cache.report_cell_user_condition_condition_type[this.condition_type] && cache.report_cell_user_condition_condition_type[this.condition_type].primary == false) {
 					selectedConditionType = "question"; // the condition_type is later derived from the question's type (single, multiple, integer, decimal, monetary, string)
 				}
-				this.renderEditorSelect('condition_type', 'report_cell_user_condition_condition_type', {selected_id: selectedConditionType, filter: [{field: 'primary', value: true}], html_after: '<br />'});
+				this.renderEditorSelect('condition_type', 'report_cell_user_condition_condition_type', {selected_id: selectedConditionType, filter: [{field: 'primary', value: true}], html_after: "<br />"});
 
 				if (this.node_info.editable) {
 					var deleteLink = $('<a href="#">delete</a>');
@@ -1110,15 +1120,16 @@ function, which is added to the window object below
 			case 'report_cell_user_condition_condition_type':
 			case 'study_ad':
 			case 'report_cell':
+			case 'survey_type':
 			case 'starbar':
 				cacheLocation = cache;
 				break;
-			case 'survey_type':
+			/*case 'survey_type':
 				if (options.starbar_id) {
 					cacheLocation = cache.starbar[options.starbar_id+""];
 				} else {
 					return;
-				}
+				}*/
 			case 'survey':
 				if (id) {
 					cacheLocation = cache;
@@ -1508,7 +1519,29 @@ function, which is added to the window object below
 				},
 				fields: [ "compare_survey_question_id", "compare_string" ],
 				primary: true
+			}
+		},
+		survey_type: {
+			"survey": {
+				id: "survey",
+				label: "Survey",
+				type: "survey"
 			},
+			"poll": {
+				id: "poll",
+				label: "Poll",
+				type: "poll"
+			},
+			"trailer": {
+				id: "trailer",
+				label: "Trailer",
+				type: "trailer"
+			}/*,
+			"quiz": {
+				id: "quiz",
+				label: "Quiz",
+				type: "quiz"
+			}*/
 		}
 	};
 

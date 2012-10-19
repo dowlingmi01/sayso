@@ -1142,6 +1142,17 @@ class Devadmin_IndexController extends Api_GlobalController
 		$this->view->headLink()->appendStylesheet('/css/dig/dig.css');
 
 		$this->view->report_cell_id = $this->report_cell_id;
+
+		$sql = "SELECT *
+				FROM starbar
+				ORDER BY id
+				";
+		$starbars = Db_Pdo::fetchAll($sql);
+		$this->view->starbars = $starbars;
+
+		$surveys = SurveyCollection::getAllSurveysForAllStarbars();
+		$this->view->surveys = $surveys;
+
 	}
 
 

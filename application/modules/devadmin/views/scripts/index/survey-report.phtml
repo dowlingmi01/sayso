@@ -209,17 +209,37 @@ select#survey_id {
 		<? } else { ?>
 			<div id="report_cell_dig"></div>
 			<script type="text/javascript">
-			$(document).ready(function () {
-				var digOptions = {
-					form_id: 'reportForm',
-					single_starbar_id: <?= ($this->single_starbar_id ? $this->single_starbar_id : 0) ?>,
-					hidden_by_default: true,
-					label: "Select user group to report on: ",
-					new_option: "New User Group",
-					sort:[{field: 'ordinal'}]
-				};
-				window.reportCellTopNode = dig('report_cell_id', 'report_cell_dig', 'report_cell', '<?= ($this->report_cell_id ? $this->report_cell_id : 0) ?>', digOptions);
-			});
+				// pre-cache starbars and surveys .. this is optional but improves initial loading performance
+				var originalCache = window.originalNodeCache;
+				originalCache.starbar = {};
+				<? $firstStarbar = true ?>
+				<? foreach($this->starbars as $starbar) { ?>
+					originalCache.starbar["<?= $starbar['id'] ?>"] = {
+						id: <?= $starbar['id'] ?>,
+						label: "<?= $starbar['label'] ?>",
+						survey: {}
+					};
+				<? } ?>
+
+				<? foreach ($this->surveys as $survey) { ?>
+					originalCache.starbar["<?= $survey['unique_starbar_id'] ?>"].survey["<?= $survey['id'] ?>"] = {
+						id: <?= $survey['id'] ?>,
+						label: "<?= str_replace('"', '\\"', $survey['title']) ?>",
+						type: "<?= $survey['type'] ?>"
+					};
+				<? } ?>
+
+				$(document).ready(function () {
+					var digOptions = {
+						form_id: 'reportForm',
+						single_starbar_id: <?= ($this->single_starbar_id ? $this->single_starbar_id : 0) ?>,
+						hidden_by_default: true,
+						label: "Select user group to report on: ",
+						new_option: "New User Group",
+						sort:[{field: 'ordinal'}]
+					};
+					window.reportCellTopNode = dig('report_cell_id', 'report_cell_dig', 'report_cell', '<?= ($this->report_cell_id ? $this->report_cell_id : 0) ?>', digOptions);
+				});
 			</script>
 			<br style="clear :both" /><br />
 		<? } ?>

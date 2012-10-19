@@ -385,7 +385,7 @@ class ReportCell extends Record
 					$valuesToInsertCount = 0;
 					foreach($usersAdded as $userId) {
 						if ($valuesToInsert) {
-							if ($valuesToInsertCount > 500) { // Insert up to records 500 rows at a time
+							if ($valuesToInsertCount > 2000) { // Insert up to records 2000 rows at a time
 								Db_Pdo::execute("INSERT INTO report_cell_user_map (report_cell_id, user_id) VALUES " . $valuesToInsert);
 								$valuesToInsert = "";
 								$valuesToInsertCount = 0;
@@ -408,7 +408,7 @@ class ReportCell extends Record
 					$valuesToRemoveCount = 0;
 					foreach($usersRemoved as $userId) {
 						if ($valuesToRemove) {
-							if ($valuesToRemoveCount > 500) { // Remove records 500 rows at a time
+							if ($valuesToRemoveCount > 2000) { // Remove records 2000 rows at a time
 								Db_Pdo::execute("DELETE FROM report_cell_user_map WHERE report_cell_id = " . $this->id . " AND (" . $valuesToRemove . ")");
 								$valuesToRemove = "";
 								$valuesToRemoveCount = 0;

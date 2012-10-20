@@ -22,7 +22,7 @@ function, which is added to the window object below
 		* form_id: optional. the id of the form this is contained in (e.g. <form id="some_id_here"></form>)
 			the form submit function is overwritten, so that it ensures you save before submitting
 	*/
-	function dig (selectName, containerId, recordType, recordId, options) {
+	function dig (containerId, recordType, recordId, options) {
 		options = options || {};
 		cache = $.extend(true, {}, originalCache);
 		window.liveNodeCache = cache; // for debugging access...
@@ -36,20 +36,20 @@ function, which is added to the window object below
 			topNode.node_info.top_record_type = recordType;
 			topNode.node_info.top_record_id = recordId;
 			topNode.node_info.element = container;
+			options = topNode.start_options;
 		} else {
 			var topNode = createEmptyNode(null, 'top', {element: container, top_record_type: recordType, top_record_id: recordId});
 			topNode.node_info.element.data('node', topNode);
 			topNode.node_info.editable = true;
+			topNode.start_options = $.extend({}, options);
 		}
 
-		topNode.form_id = options.form_id;
-		topNode.select_name = selectName;
-		topNode.label = options.label;
-		topNode.hidden_by_default = options.hidden_by_default;
-		topNode.single_starbar_id = options.single_starbar_id;
-		topNode.new_option = options.new_option;
-		$.extend(options, {selected_id: recordId});
-		topNode.renderEditorSelect(selectName, recordType, options);
+		if (options.select_name) {
+			$.extend(options, {selected_id: recordId});
+			topNode.renderEditorSelect(options.select_name, recordType, options);
+		} else {
+			// loadInto
+		}
 
 		// disable the node interface elements before submitting the outer form
 		// so they don't get submitted with the outer form
@@ -245,7 +245,7 @@ function, which is added to the window object below
 									toggleViewContainer.append('(').append(toggleViewLink).append(')');
 									reportCell.node_info.element.before(toggleViewContainer);
 
-									if (this.hidden_by_default && (!reportCell.node_info.updated_since_loading)) {
+									if (this.start_options.hidden_by_default && (!reportCell.node_info.updated_since_loading)) {
 										toggleViewLink.trigger('click');
 									}
 
@@ -282,21 +282,23 @@ function, which is added to the window object below
 												var survey = getCopyFromCache('survey', surveyQuestion.survey_id);
 												this.compare_survey_question_survey_id = survey.id;
 												this.compare_survey_question_survey_type = survey.type;
-												this.compare_survey_question_starbar_id = getStarbarIdForSurvey(survey.id, this.node_info.top_node.single_starbar_id);
+												this.compare_survey_question_starbar_id = this.node_info.top_node.start_options.single_starbar_id || getStarbarIdForSurvey(survey.id);
+												options.record_not_updated = true;
 											}
-											this.renderEditorSelect('compare_survey_question_starbar_id', 'starbar', {single_starbar_id: this.node_info.top_node.single_starbar_id, label: "<span class='detail'>Filters (survey question location): </span> "});
+											this.renderEditorSelect('compare_survey_question_starbar_id', 'starbar', {single_starbar_id: this.node_info.top_node.start_options.single_starbar_id, label: "<span class='detail'>Filters (survey question location): </span> "});
 											break;
 										case "survey_status":
 											if (this.compare_survey_id) {
 												var survey = getCopyFromCache('survey', this.compare_survey_id);
-												this.compare_survey_starbar_id = getStarbarIdForSurvey(survey.id, this.node_info.top_node.single_starbar_id);
+												this.compare_survey_starbar_id = this.node_info.top_node.start_options.single_starbar_id || getStarbarIdForSurvey(survey.id);
 												this.compare_survey_type = survey.type;
+												options.record_not_updated = true;
 											}
-											this.renderEditorSelect('compare_survey_starbar_id', 'starbar', {single_starbar_id: this.node_info.top_node.single_starbar_id, label: "<span class='detail'>Filters (survey location): </span> "});
+											this.renderEditorSelect('compare_survey_starbar_id', 'starbar', {single_starbar_id: this.node_info.top_node.start_options.single_starbar_id, label: "<span class='detail'>Filters (survey location): </span> "});
 											break;
 										case "starbar":
 											this.renderEditorSelect('comparison_type', 'comparison_type', {report_cell_user_condition_condition_type: this.condition_type, label: "Match users who are "});
-											this.renderEditorSelect('compare_starbar_id', 'starbar', {single_starbar_id: this.node_info.top_node.single_starbar_id});
+											this.renderEditorSelect('compare_starbar_id', 'starbar', {single_starbar_id: this.node_info.top_node.start_options.single_starbar_id});
 											break;
 										case "study_ad":
 											this.renderEditorSelect('comparison_type', 'comparison_type', {report_cell_user_condition_condition_type: this.condition_type, label: "Match users who have "});
@@ -306,7 +308,7 @@ function, which is added to the window object below
 										case "report_cell":
 											this.renderEditorSelect('comparison_type', 'comparison_type', {report_cell_user_condition_condition_type: this.condition_type, label: "Match users who are "});
 											var topReportCellId = (this.node_info.top_node.node_info.top_record_type == "report_cell" && this.node_info.top_node.node_info.top_record_id > 0 ? this.node_info.top_node.node_info.top_record_id : null);
-											this.renderEditorSelect('compare_report_cell_id', 'report_cell', {single_starbar_id: this.node_info.top_node.single_starbar_id, sort:[{field: 'ordinal'}], new_option: "New User Group"});
+											this.renderEditorSelect('compare_report_cell_id', 'report_cell', {single_starbar_id: this.node_info.top_node.start_options.single_starbar_id, sort:[{field: 'ordinal'}], new_option: "New User Group"});
 											break;
 										default:
 											break;
@@ -342,7 +344,7 @@ function, which is added to the window object below
 								editorElement.nextAll('.editor').annihilate(); // remove everything after this element
 
 								if (updatedValue) {
-									this.renderEditorSelect('compare_survey_question_survey_type', 'survey_type', {starbar_id: updatedValue});
+									this.renderEditorSelect('compare_survey_question_survey_type', 'survey_type', {starbar_id: (updatedValue || this.node_info.top_node.start_options.single_starbar_id)});
 								}
 								break;
 
@@ -350,7 +352,7 @@ function, which is added to the window object below
 								editorElement.nextAll('.editor').annihilate(); // remove everything after this element
 
 								if (updatedValue) {
-									this.renderEditorSelect('compare_survey_question_survey_id', 'survey', { starbar_id: this.compare_survey_question_starbar_id, filter: [{field: 'type', value: updatedValue}]});
+									this.renderEditorSelect('compare_survey_question_survey_id', 'survey', {starbar_id: (this.compare_survey_question_starbar_id || this.node_info.top_node.start_options.single_starbar_id), filter: [{field: 'type', value: updatedValue}]});
 								}
 								break;
 
@@ -372,7 +374,7 @@ function, which is added to the window object below
 											this.renderEditorSelect('compare_survey_question_choice_id', 'survey_question_choice', {survey_question_id: this.compare_survey_question_id});
 											break;
 										case "multiple":
-											var surveyQuestion = getCopyFromCache('survey_question', this.compare_survey_question_choice_id);
+											var surveyQuestion = getCopyFromCache('survey_question', this.compare_survey_question_id);
 											break;
 										case "integer":
 											this.renderEditorSelect('comparison_type', 'comparison_type', {report_cell_user_condition_condition_type: this.condition_type, label: "and who entered a value "});
@@ -565,7 +567,7 @@ function, which is added to the window object below
 			getChildrenThatAreObjects: function() {
 				var children = [];
 				for (key in this) {
-					if (key != "node_info" && typeof this[key] == "object") {
+					if (key != "node_info" && key != "start_options" && typeof this[key] == "object") {
 						children.push(key);
 					}
 				}
@@ -639,7 +641,7 @@ function, which is added to the window object below
 				$.ajax(ajaxOptions);
 
 				// restart the node interface, forcing the cache to be overwritten so it can be read from the server again
-				if (savedId) dig(this.select_name, this.node_info.element.attr('id'), this.node_info.top_record_type, savedId, {existing_top_node: this, single_starbar_id: this.single_starbar_id, label: this.label, hidden_by_default: this.hidden_by_default, form_id: this.form_id, new_option: this.new_option});
+				if (savedId) dig(this.node_info.element.attr('id'), this.node_info.top_record_type, savedId, {existing_top_node: this});
 				else alert('Save failed :(');
 
 				return savedId;
@@ -665,7 +667,7 @@ function, which is added to the window object below
 				$.ajax(ajaxOptions);
 
 				// restart the node interface, forcing the cache to be overwritten so it can be read from the server again
-				if (successful) dig(this.select_name, this.node_info.element.attr('id'), this.node_info.top_record_type, this.node_info.top_record_id, {existing_top_node: this, single_starbar_id: this.single_starbar_id, label: this.label, hidden_by_default: this.hidden_by_default, form_id: this.form_id, new_option: this.new_option});
+				if (successful) dig(this.node_info.element.attr('id'), this.node_info.top_record_type, this.node_info.top_record_id, {existing_top_node: this});
 				else alert('Reprocess failed :(');
 
 				return successful;
@@ -830,9 +832,9 @@ function, which is added to the window object below
 				}
 
 				if (chosenByDefault) {
-					this.updateField(selectElement, field, selectedId, {hidden_by_default: this.node_info.top_node.hidden_by_default});
+					this.updateField(selectElement, field, selectedId, {hidden_by_default: this.node_info.top_node.start_options.hidden_by_default});
 				} else if (selectedFound) {
-					this.updateField(selectElement, field, selectedId, {record_not_updated: true, hidden_by_default: this.node_info.top_node.hidden_by_default});
+					this.updateField(selectElement, field, selectedId, {record_not_updated: true, hidden_by_default: this.node_info.top_node.start_options.hidden_by_default});
 				}
 
 				selectElement.html(optionsHtml);
@@ -1131,10 +1133,12 @@ function, which is added to the window object below
 					return;
 				}*/
 			case 'survey':
-				if (id) {
+				if (id && cache['survey'] && cache['survey'][id]) {
 					cacheLocation = cache;
 				} else if (options.starbar_id) {
 					cacheLocation = cache.starbar[options.starbar_id+""];
+				} else if (id) {
+					cacheLocation = cache;
 				} else {
 					return;
 				}
@@ -1176,7 +1180,7 @@ function, which is added to the window object below
 		}
 
 		if (!id) { // get list
-			if (typeof cacheLocation[type] === "undefined" || Object.keys(cacheLocation[type]).length < 2) {
+			if (typeof cacheLocation[type] === "undefined" || !Object.keys(cacheLocation[type]).length) {
 				cacheLocation[type] = getFromServer(type, null, options)
 			}
 
@@ -1261,9 +1265,9 @@ function, which is added to the window object below
 		}
 	}
 
-	function getStarbarIdForSurvey(surveyId, single_starbar_id) {
-		getCopyFromCache('starbar', null, {single_starbar_id: single_starbar_id}); // in case not loaded from server
-		var survey = getFromServer('survey', surveyId)[surveyId];
+	function getStarbarIdForSurvey(surveyId) {
+		getCopyFromCache('starbar', null); // in case not loaded from server
+		var survey = getCopyFromCache('survey', surveyId);
 		for (var surveyStarbar in survey.starbar) {
 			for (var cachedStarbar in cache.starbar) {
 				if (surveyStarbar == cachedStarbar) return cachedStarbar;

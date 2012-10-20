@@ -19,16 +19,18 @@ $(document).ready(function () {
 		originalCache.starbar["<?= $survey['unique_starbar_id'] ?>"].survey["<?= $survey['id'] ?>"] = {
 			id: <?= $survey['id'] ?>,
 			label: "<?= str_replace('"', '\\"', $survey['title']) ?>",
-			type: "<?= $survey['type'] ?>"
+			type: "<?= $survey['type'] ?>",
+			fully_loaded: true
 		};
 	<? } ?>
 
 	var digOptions = {
+		select_name: 'report_cell_id',
 		label: "Edit User Group: ",
 		new_option: "New User Group",
 		sort:[{field: 'ordinal'}]
 	};
-	window.reportCellTopNode = dig('report_cell_id', 'some_container', 'report_cell', '<?= ($this->report_cell_id ? $this->report_cell_id : 0) ?>', digOptions);
+	window.reportCellTopNode = dig('some_container', 'report_cell', '<?= ($this->report_cell_id ? $this->report_cell_id : 0) ?>', digOptions);
 });
 
 </script>

@@ -43,6 +43,7 @@ $SQ(function () {
 		};
 
 		this.videoView = function (type, id) {
+			this.videoId = id;
 			sayso.fn.ajaxWithAuth({
 				url : '//' + sayso.baseDomain + '/api/metrics/video-view-submit',
 				data : {
@@ -99,9 +100,20 @@ $SQ(function () {
 			behaviorTracker.videoView('youtube', m[1] );
 		else if( m = sayso.location.href.match(/youtube\..*\/embed\/([\w\-]{11})/) )
 			behaviorTracker.videoView('youtube', m[1] );
-		else if( sayso.location.href.match(/youtube\./) && (m = $SQ('div.player-root[data-video-id]')).length )
-			behaviorTracker.videoView('youtube', m.attr('data-video-id') );
-			
+		else if( sayso.location.href.match(/youtube\./) )
+			$SQ.doTimeout(3000, function checkForVideoPlayer() {
+				var vid;
+				if( behaviorTracker.videoId )
+					return false;
+				else if( (vid = $SQ('div.player-root[data-video-id]')).length ) {
+					vid = vid.attr('data-video-id');
+					if( vid.length == 11 ) {
+						behaviorTracker.videoView('youtube', vid);
+						return false;
+					}
+				}
+				return true;
+			});
 	}
 	
 	// ================================================================

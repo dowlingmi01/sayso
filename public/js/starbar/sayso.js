@@ -395,50 +395,54 @@ $SQ(function () {
 
 		var jTag = false;
 		var jTagContainer = false;
-
-		if (studyAd.existing_ad_type == "image") {
-			jTag = $SQ('img[src*="' + studyAd.existing_ad_tag + '"]');
-		} else if (studyAd.existing_ad_type == "flash") {
-			jTag = $SQ('embed[src*="' + studyAd.existing_ad_tag + '"]');
-			if (!jTag || !jTag.length) {
-				// Try to search (using jQuery) for the param element (though on IE and possibly other browsers, params are not in the DOM).
-				jTag = $SQ('param[name="movie"][value*="'+studyAd.existing_ad_tag+'"]');
-
-				// If flash is still not found on this page, try looking inside all the <object> tags' children (i.e. the params)
+		if( studyAd.existing_ad_type == "video" ) {
+			if( !behaviorTracker.videoId || behaviorTracker.videoId != studyAd.existing_ad_tag )
+				return;
+		} else {
+			if (studyAd.existing_ad_type == "image") {
+				jTag = $SQ('img[src*="' + studyAd.existing_ad_tag + '"]');
+			} else if (studyAd.existing_ad_type == "flash") {
+				jTag = $SQ('embed[src*="' + studyAd.existing_ad_tag + '"]');
 				if (!jTag || !jTag.length) {
-					$SQ('object param[name="movie"]').each(function() {
-						if ($SQ(this).attr('value').indexOf(studyAd.existing_ad_tag) > -1) {
-							jTag = $SQ(this);
-							jTagContainer = jTag.parent();
-							// Match found, need need to search any more
-							return false;
-						} else {
-							// Go to next object tag
-							return true;
-						}
-					});
+					// Try to search (using jQuery) for the param element (though on IE and possibly other browsers, params are not in the DOM).
+					jTag = $SQ('param[name="movie"][value*="'+studyAd.existing_ad_tag+'"]');
+
+					// If flash is still not found on this page, try looking inside all the <object> tags' children (i.e. the params)
+					if (!jTag || !jTag.length) {
+						$SQ('object param[name="movie"]').each(function() {
+							if ($SQ(this).attr('value').indexOf(studyAd.existing_ad_tag) > -1) {
+								jTag = $SQ(this);
+								jTagContainer = jTag.parent();
+								// Match found, need need to search any more
+								return false;
+							} else {
+								// Go to next object tag
+								return true;
+							}
+						});
+					}
 				}
+			} else if (studyAd.existing_ad_type == "facebook") {
+				jTag = $SQ('div[id*="' + studyAd.existing_ad_tag + '-id_"]');
 			}
-		} else if (studyAd.existing_ad_type == "facebook") {
-			jTag = $SQ('div[id*="' + studyAd.existing_ad_tag + '-id_"]');
+
+
+			if (!jTag || !jTag.length) {
+				log('No Matches');
+				return;
+			}
+
+			log('Match', jTag);
+
+			if (!jTagContainer) jTagContainer = jTag.parent();
+
+			if (jTagContainer.is('object')) {
+				// If we found a param tag inside an <object> tag, we want the parent of *that*
+				jTagContainer = jTagContainer.parent();
+			}
+
+			jTagContainer.css('position', 'relative');
 		}
-
-
-		if (!jTag || !jTag.length) {
-			log('No Matches');
-			return;
-		}
-
-		log('Match', jTag);
-
-		if (!jTagContainer) jTagContainer = jTag.parent();
-
-		if (jTagContainer.is('object')) {
-			// If we found a param tag inside an <object> tag, we want the parent of *that*
-			jTagContainer = jTagContainer.parent();
-		}
-
-		jTagContainer.css('position', 'relative');
 
 		// tag exists
 		adsFound++;
@@ -509,7 +513,8 @@ $SQ(function () {
 		// update list of ad targets so we can later verify click throughs
 		// see Page View section above where this is checked
 
-		forge.message.broadcastBackground('add-ad-target', studyAd);
+		if( studyAd.ad_target )
+			forge.message.broadcastBackground('add-ad-target', studyAd);
 	}
 
 	// Track ad views!

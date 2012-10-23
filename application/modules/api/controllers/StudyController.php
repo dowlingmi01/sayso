@@ -26,19 +26,8 @@ class Api_StudyController extends Api_GlobalController
 	}
 
 	public function getAllAction () {
-
-		// @todo when new studies are created, delete the cache(s) via:
-		// Api_Cache::clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array('studies'));
-
-		$cache = Api_Cache::getInstance('Study_Ads_GetAll_RecentOrder', Api_Cache::LIFETIME_HOUR);
-		if ($cache->test()) {
-			$studyAds = $cache->load();
-		} else {
-			$studyAds = new Study_AdCollection();
-			$studyAds->loadAllStudyAds();
-			$cache->save($studyAds);
-		}
-		//ObjectExporter_Array::$escapeQuotes = true;
+		$studyAds = new Study_AdCollection();
+		$studyAds->loadAllStudyAds($this->user_id);
 		return $this->_resultType($studyAds);
 	}
 

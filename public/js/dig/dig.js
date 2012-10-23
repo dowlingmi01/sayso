@@ -151,7 +151,7 @@ function, which is added to the window object below
 						this.condition_type = updatedValues[0];
 						this.compare_survey_question_id = updatedValues[1];
 					// regular field, update it with the new value
-					} else {
+					} else if (this.node_info.type != 'top') {
 						this[field] = updatedValue;
 					}
 				}
@@ -525,7 +525,7 @@ function, which is added to the window object below
 				var saveData = {};
 
 				for (var key in this) {
-					if (typeof this[key] == "function" && !includeFunctions) {
+					if (key == "start_options" || (typeof this[key] == "function" && !includeFunctions)) {
 						continue; // skip
 					} else if (key == "node_info") {
 						saveData[key] = {};

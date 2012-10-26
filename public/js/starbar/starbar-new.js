@@ -58,6 +58,7 @@ $SQ(function(){
 	var btnToggleVis; //  = $SQ('#sayso-starbar #starbar-visControls #starbar-toggleVis');
 	var btnSaySoLogo; // = $SQ('#sayso-starbar #starbar-visControls #sb_starbar-logo');
 	var btnExternalShare; // = $SQ('.sb_externalShare',starbarElem);
+	var btnMission; //= $SQ('.sb_mission_toggle', starbarElem);
 
 
 	// container elements
@@ -236,13 +237,15 @@ $SQ(function(){
 	/* FUNCTIONS */
 
 	// initialize the starbar
-	sayso.initStarBar = function (){
+	sayso.initStarBar = function initStarBar(){
 		starbar = sayso.starbar;
 
 		initElements();
 
 		setNotifications(sayso.state.notifications.items);
 
+		setMission();
+		
 		updateProfileElements();
 		activateGameElements(starbarElem, false);
 		// initializes development-only jquery
@@ -267,6 +270,7 @@ $SQ(function(){
 		btnToggleVis = $SQ('#starbar-visControls #starbar-toggleVis', starbarElem);
 		btnSaySoLogo = $SQ('#starbar-visControls #sb_starbar-logo', starbarElem);
 		btnExternalShare = $SQ('.sb_externalShare',starbarElem);
+		btnMission = $SQ('.sb_mission_toggle', starbarElem);
 
 		// container elements
 		elemSaySoLogoSemiStowed = $SQ('#sb_starbar-logoSemiStowed', starbarElem);
@@ -632,6 +636,25 @@ $SQ(function(){
 	}
 	forge.message.listen('set-notifications', setNotifications);
 
+	function setMission() {
+		if( sayso.state.missionAvailable ) {
+			if( !sayso.state.missionSaveRef )
+				sayso.state.missionSaveRef = btnMission.attr('href');
+			btnMission.attr('href', '//'+sayso.baseDomain+'/starbar/'+sayso.starbar.shortName+'/mission');
+			btnMission.attr('rel', 'sb_popBox_mission');
+			btnMission.addClass('sb_mission_available');
+		} else {
+			if( sayso.state.missionSaveRef )
+				btnMission.attr('href', sayso.state.missionSaveRef);
+			btnMission.removeClass('sb_mission_available');
+			btnMission.removeAttr('rel');
+		}
+	}
+	forge.message.listen('set-mission-available', function(data) {
+		sayso.state.missionAvailable = data;
+		setMission();
+	});
+	
 	function gameCheckin() {
 		sayso.fn.ajaxWithAuth({
 			url : '//'+sayso.baseDomain+'/api/gaming/checkin',

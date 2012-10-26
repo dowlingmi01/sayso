@@ -96,6 +96,15 @@
 
 }
 
+#sayso-starbar #starbar-player-console #starbar-nav ul li span.sb_mission_available span.sb_mission_button{
+  display: block;
+  width:95px;
+  height:37px;
+  margin: 0;
+  text-indent: -9999px;
+  background: url('../images/machinima/mission_button_banner.png') top right no-repeat;
+}
+
 #sayso-starbar #starbar-player-console #starbar-nav ul li{
 	box-shadow: inset -1px 0 0px rgba(255,255,255,.1);
 }
@@ -1211,6 +1220,22 @@
 	height: 460px;
 }
 
+/* mission */
+
+#sayso-starbar #sb_popBox_mission.sb_popBox{
+	left: 0px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox .sb_popBoxInner .sb_popContent{
+	width: 656px;
+	height: 582px;
+}
+#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox .sb_popBoxInner{
+	padding: 0px;
+}
+#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox .sb_popBoxInner .sb_popContent {
+	padding: 0px !important;
+}
 /* REUSABLE: user level box and user score */
 
 #sayso-starbar #starbar-player-console .sb_user-level-box{
@@ -2155,6 +2180,18 @@ height: 359px;
 	left: 231px;
 }
 #sayso-starbar #sb_popBox_spotlight .sb_triangle-solid:after{
+	left: 227px;
+}
+
+/* mission */
+
+#sayso-starbar #sb_popBox_mission.sb_triangle-border:before{
+	left: 230px;
+}
+#sayso-starbar #sb_popBox_mission.sb_triangle-border:after{
+	left: 231px;
+}
+#sayso-starbar #sb_popBox_mission .sb_triangle-solid:after{
 	left: 227px;
 }
 

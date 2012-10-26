@@ -110,6 +110,7 @@ function gotInitialState( response ) {
 			studiesTS : new Date(),
 			notifications : response.data.notifications,
 			notificationsTS : new Date(),
+			missionAvailable : response.data.mission_available,
 			adTargets : {},
 			starbars : {},
 			starbarList : response.data.starbar_list,
@@ -385,6 +386,11 @@ function closeNotification( messageId ) {
 			forge.message.broadcast('set-notifications', sayso.state.notifications.items);
 		}
 }
+function missionComplete() {
+	sayso.state.missionAvailable = false;
+	forge.message.broadcast('set-mission-available', false);
+	getNotificationsFromServer();
+}
 sayso.scripts = {};
 sayso.pendingStateRequests = [];
 forge.message.listen("get-state", getState, showErr);
@@ -398,6 +404,7 @@ forge.message.listen("delete-ad-targets", deleteAdTargets, showErr);
 forge.message.listen("onboarding-complete", onboardingComplete, showErr);
 forge.message.listen("get-studies", getStudies, showErr);
 forge.message.listen("close-notification", closeNotification, showErr);
+forge.message.listen("mission-complete", missionComplete, showErr);
 forge.message.listen("get-script", getScript, showErr);
 forge.logging.info("Background script loaded");
 forge.prefs.get('firstRunDone', firstRun, showErr);

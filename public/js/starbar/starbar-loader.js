@@ -128,6 +128,8 @@
 
 	forge.message.listen( 'starbar-switch', function( response ) {
 		sayso.fn.setLocalStateFromBackground(response);
+		sayso.state.missionAvailable = false;
+		sayso.state.missionSaveRef = null;
 		
 		sayso.starbar.loaded = true;
 		$SQ('#sayso-starbar').html('');

@@ -77,6 +77,7 @@ class Api_UserStateController extends Api_GlobalController
 		$userState->starbar_list = $userState->getStarbarList($userState->user_id);
 		$userState->studies = Api_Adapter::getInstance()->call('Study', 'getAll');
 		$userState->notifications = Api_Adapter::getInstance()->call('Notification', 'getAll', array('starbar_id'=>$userState->starbar_id, 'starbar_stowed'=>($userState->visibility=='stowed'?'true':'false')));
+		$userState->mission_available = Survey_ResponseCollection::checkIfUserHasSurveys($userState->user_id, $userState->starbar_id, 'mission', 'new');
 
 		$this->_setIntervals();
 		

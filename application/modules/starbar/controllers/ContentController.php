@@ -722,7 +722,17 @@ class Starbar_ContentController extends Api_GlobalController
 		}
 		$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id."&update_notifications=true");
 	}
-
+    public function missionAction() {
+		Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'mission', 0);
+		$surveyCollection = new SurveyCollection();
+		$surveyCollection->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'mission');
+		if($surveyCollection->count()) {
+			$survey = $surveyCollection->getFirst();
+			$missionInfo = new Survey_MissionInfo();
+			$missionInfo->loadDataBySurveyId($survey->id);
+			$this->view->assign('mission_short_name', $missionInfo->short_name);
+		}
+    }
 	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null)
 	{
 		$config = Api_Registry::getConfig();

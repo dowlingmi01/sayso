@@ -142,5 +142,42 @@ class Api_SurveyController extends Api_GlobalController
 
 		return $this->_resultType(true);
 	}
+	public function userMissionSubmitAction() {
+		$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'top_frame_id', 'mission_short_name', 'mission_data'));
+		
+		$missionInfo = new Survey_MissionInfo();
+		$missionInfo->loadDataByUniqueFields(array('short_name'=>$this->mission_short_name));
+		if( !$missionInfo->id )
+			return $this->_resultType(false);
+		
+		$surveyResponse = new Survey_Response();
+		$surveyResponse->loadDataByUniqueFields(array("survey_id" => $missionInfo->survey_id, "user_id" => $this->user_id));
+
+		if (!$surveyResponse->id || $surveyResponse->status == 'completed' || $surveyResponse->status == "disqualified")
+			return $this->_resultType(false);
+		
+		$missionProgress = new Survey_MissionProgress();
+		$missionProgress->survey_id = $missionInfo->survey_id;
+		$missionProgress->user_id = $this->user_id;
+		$missionProgress->top_frame_id = $this->top_frame_id;
+		$missionProgress->stage = $this->mission_data['stage'];
+		$missionProgress->save();
+			
+        if( $this->mission_data['stage'] == $missionInfo->number_of_stages ) {
+        	// TODO Validate and save answers
+        	
+			$surveyResponse->status = 'completed';
+ 			$surveyResponse->processing_status = 'completed';
+ 			$surveyResponse->data_download = new Zend_Db_Expr('now()');
+			$surveyResponse->completed_disqualified = new Zend_Db_Expr('now()');
+			$surveyResponse->save();
+			
+			$survey = new Survey();
+			$survey->loadData($missionInfo->survey_id);
+			
+			Game_Starbar::getInstance()->completeSurvey($survey);
+		}
+		return $this->_resultType(true);
+	}
 
 }

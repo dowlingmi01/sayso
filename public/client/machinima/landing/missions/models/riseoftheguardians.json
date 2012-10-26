@@ -1,0 +1,220 @@
+{
+  "title": "Rise of the Guardians",
+  "description": "<p><img src=\"assets/images/riseoftheguardians/Headline_InfoPage.png\" /></p><p>We need your say-so! Complete the 5 steps below to learn more abou the upcoming moving <em>Rise of the Guardians</em> and let us know what you think.</p><p><img src=\"assets/images/Mission_Badge_Sm.png\" /></p><p>Completing the mission will earn you BONUS Coins and a chance to</p><h4 style='color:#600'>WIN TICKETS TO THE PREMIERE OF RISE OF THE GUARDIANS!</h4>",
+  "validation": "<h3>Congrutulations, you completed the mission!</h3><h4>Your feedback is appreciated.</h4><p><img src=\"assets/images/Mission_Badge_Sm.png\" /></p><p>The drawing will take place on xx/xx</p><p></p>You earned XX points</p>",
+  "stages": [
+    {
+      "id": 1,
+      "title": "RotG Poll",
+      "type": "poll",
+	  "background": "assets/images/riseoftheguardians/Stage1_Bg_Image.jpg",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Are you familiar with <em>Rise of the Guardians?</em>"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "Yes. I am very familiar with the movie."
+          },
+          {
+            "id": 2,
+            "text": "Yes. I have heard about it but don't know much else."
+          },
+          {
+            "id": 3,
+            "text": "No. I haven't heard of this movie before today."
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "title": "Watch",
+      "type": "video",
+	  "background": "assets/images/riseoftheguardians/Stage2_Bg_Image.jpg",
+      "data": {
+        "url": "aPLiBxhoug0",
+        "question": {
+          "id": 1,
+          "text": "After watching this trailer, how likely is it that you will see this movie?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "I probably won't see it."
+          },
+          {
+            "id": 2,
+            "text": "I might rent it at some point."
+          },
+          {
+            "id": 3,
+            "text": "I'll watch it if I can stream it or download it."
+          },
+          {
+            "id": 4,
+            "text": "I am definitely seeing this in the theater."
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "title": "Visit",
+      "type": "site-survey",
+	  "background": "",
+      "data": {
+        "url": "http://www.riseoftheguardians.com/",
+        "questions": [
+          {
+            "id": 1,
+            "correct": 5,
+            "question": "Which Guardian does not speak?",
+            "answers": [
+              {
+                "id": 1,
+                "text": "Jack Frost"
+              },
+              {
+                "id": 2,
+                "text": "North"
+              },
+              {
+                "id": 3,
+                "text": "Toothfairy"
+              },
+              {
+                "id": 4,
+                "text": "Bunnymund"
+              },
+              {
+                "id": 5,
+                "text": "Sandman"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "correct": 2,
+            "question": "Who is the leader of the Guardians?",
+            "answers": [
+              {
+                "id": 1,
+                "text": "Jack Frost"
+              },
+              {
+                "id": 2,
+                "text": "North"
+              },
+              {
+                "id": 3,
+                "text": "Toothfairy"
+              },
+              {
+                "id": 4,
+                "text": "Bunnymund"
+              },
+              {
+                "id": 5,
+                "text": "Sandman"
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "correct": 3,
+            "question": "Which Guardian is part hummingbird?",
+            "answers": [
+              {
+                "id": 1,
+                "text": "Jack Frost"
+              },
+              {
+                "id": 2,
+                "text": "North"
+              },
+              {
+                "id": 3,
+                "text": "Toothfairy"
+              },
+              {
+                "id": 4,
+                "text": "Bunnymund"
+              },
+              {
+                "id": 5,
+                "text": "Sandman"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "title": "Poll",
+      "type": "image-poll",
+	  "background": "",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "If you had a chance to ask a question of any of the talent listed below from <em>Rise of the Guardians</em>, who would you choose?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "image": "assets/images/riseoftheguardians/Alec.jpg",
+            "label": "Alec Baldwin",
+            "text": "Alec Baldwin (Voice of \"North\")."
+          },
+          {
+            "id": 2,
+            "image": "assets/images/riseoftheguardians/Del_Toro.jpg",
+            "label": "Guillermo Del Toro",
+            "text": "Guillermo Del Toro (Executive producer)."
+          },
+          {
+            "id": 3,
+            "image": "assets/images/riseoftheguardians/Isla.jpg",
+            "label": "Isla Fisher",
+            "text": "Isla Fisher (Voice of \"Tooth\")."
+          },
+          {
+            "id": 4,
+            "image": "assets/images/riseoftheguardians/Ramsey.jpg",
+            "label": "Peter Ramsey",
+            "text": "Peter Ramsey (Director)."
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "title": "Feedback",
+      "type": "poll",
+	  "background": "assets/images/riseoftheguardians/Stage5_Bg_Image.jpg",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "After watching this trailer and finding out more about the movie, how likely is it that you will see this movie in theaters?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "Very likely."
+          },
+          {
+            "id": 2,
+            "text": "Somewhat likely."
+          },
+          {
+            "id": 3,
+            "text": "Not at all likely."
+          }
+        ]
+      }
+    }
+  ]
+}

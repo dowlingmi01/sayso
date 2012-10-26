@@ -65,9 +65,8 @@
 		if (!options.dataType)
 			options.dataType = 'json';
 
-		if( !options.frame_id && sayso.frameId ) {
-			options.frame_id = sayso.frameId;
-			options.xdm_c = sayso.frameId;
+		if( sayso.topFrameId ) {
+			options.data.top_frame_id = sayso.topFrameId;
 		}
 
 		options.url = 'http:' + options.url;
@@ -112,14 +111,16 @@
 	sayso.log = safeLog('log', sayso.debug);
 	sayso.warn = safeLog('warn', sayso.debug);
 	
-	sayso.frameId = randomString( 10 );
+	sayso.frameId = Math.floor(Math.random()*2e9) + 1;
 	sayso.current_url = sayso.location.href;
 	sayso.in_iframe = forge.is.firefox() ? (unsafeWindow.window !== unsafeWindow.top) : (window.top != window);
 	if( !sayso.in_iframe ) {
+		sayso.topFrameId = sayso.frameId;
 		function handleParentReq( event ) {
 			var prefix = 'sayso-parent-req-';
 			if( event.data.slice(0, prefix.length) == prefix )
-				forge.message.broadcast('parent-location-' + event.data.slice(prefix.length), sayso.location);
+				forge.message.broadcast('parent-location-' + event.data.slice(prefix.length)
+					, { location: sayso.location, frameId: sayso.frameId });
 		}
 		if( window.addEventListener )
 			window.addEventListener('message', handleParentReq);
@@ -171,12 +172,15 @@
 				sayso.fn.setLocalStateFromBackground(response);
 
 				sayso.flags = 'none';
+				
+				var missionShortName;
 
 				// ADjuster can run asynchronously
 				if( sayso.in_iframe ) {
-					forge.message.listen('parent-location-' + sayso.frameId, function( l ) {
+					forge.message.listen('parent-location-' + sayso.frameId, function( m ) {
 						if( !sayso.parentLocation ) {
-							sayso.parentLocation = l;
+							sayso.parentLocation = m.location;
+							sayso.topFrameId = m.frameId;
 							sayso.fn.loadScript('starbar/sayso.js');
 						}
 					});
@@ -187,6 +191,38 @@
 						}
 					}
 					requestParentLocation();
+				} else if( missionShortName = sayso.location.href.match(/(?:.say.so|.saysollc.com\/.*)\/mission\/(.*)\//)) {
+					missionShortName = missionShortName[1];
+					function handleMissionProgress( event ) {
+						var data;
+						try {
+							data = JSON.parse(event.data);
+						} catch( e ) {
+							return;
+						}
+						var prefix = 'sayso-mission-progress';
+						if( data[0] && data[0].slice && data[0].slice(0, prefix.length) == prefix ) {
+							data = data[1];
+							sayso.fn.ajaxWithAuth( {
+								url: '//'+sayso.baseDomain+'/api/survey/user-mission-submit',
+								data: {
+									mission_short_name: missionShortName,
+									mission_data: data
+								},
+								type : 'POST',
+								success: function() {
+									if( data.stage == data.data.stages.length ) {
+										forge.message.broadcastBackground('mission-complete');
+									}
+								}
+							});
+						}
+					}
+					if( window.addEventListener )
+						window.addEventListener('message', handleMissionProgress);
+					else if( window.attachEvent )
+						window.attachEvent('onmessage', handleMissionProgress);
+						return; // DO NOT LOAD STARBAR
 				} else
 					sayso.fn.loadScript('starbar/sayso.js');
 				
@@ -228,7 +264,7 @@
 			'stumbleupon.com/badge', 'reddit.com/static', 'static.addtoany.com/menu',
 			'plusone.google.com', 'intensedebate/empty',
 			'mail.google.com',
-			'(?:sayso.com|saysollc.com)/html/communicator', '(?:sayso.com|saysollc.com)/starbar'
+			'saysollc.com/html/communicator', 'saysollc.com/starbar'
 		];
 
 		var bi = 0;
@@ -244,41 +280,4 @@
 		
 		return true;
 	}
-	function getCookie (find) {
-		var cookies = document.cookie.split(';');
-		for(var i = 0; i < cookies.length; i++) {
-			var name = cookies[i].slice(0, cookies[i].indexOf('=')).trim();
-			if (name === find) {
-				return cookies[i].slice(cookies[i].indexOf('=')+1).trim();
-			}
-		}
-		return '';
-	}
-	
-	/*
-	* This function takes two parameters: integer value for string length and optional
-	* boolean value true if you want to include special characters in your generated string.
-	* From: http://jquery-howto.blogspot.com/2009/10/javascript-jquery-password-generator.html
-	*/
-	function randomString(length, special) {
-		var iteration = 0;
-		var randomString = "";
-		var randomNumber;
-		if(special == undefined){
-			var special = false;
-		}
-		while(iteration < length){
-			randomNumber = (Math.floor((Math.random() * 100)) % 94) + 33;
-			if(!special){
-				if ((randomNumber >=33) && (randomNumber <=47)) { continue; }
-				if ((randomNumber >=58) && (randomNumber <=64)) { continue; }
-				if ((randomNumber >=91) && (randomNumber <=96)) { continue; }
-				if ((randomNumber >=123) && (randomNumber <=126)) { continue; }
-			}
-			iteration++;
-			randomString += String.fromCharCode(randomNumber);
-		}
-		return randomString;
-	}
-
 })();

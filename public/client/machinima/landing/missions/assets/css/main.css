@@ -1,0 +1,370 @@
+/* overrides */
+
+body {
+	background: #000 url(../images/riseoftheguardians/Info_Bg_Image.png) no-repeat center 60px fixed;
+	font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
+	font-size: 14px;
+	color: #FFF;
+	line-height: 1.3;
+	overflow-y: scroll;
+	padding-bottom: 80px;
+}
+p {
+	margin-bottom: 0.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-weight: bold;
+}
+h1 {
+	font-size: 2em;
+}
+h2 {
+	font-size: 1.75em;
+}
+h3 {
+	font-size: 1.5em;
+}
+h4 {
+	font-size: 1.25em;
+}
+h5 {
+	font-size: 1em;
+}
+h6 {
+	font-size: 0.8em;
+}
+input[type="radio"] {
+	background: transparent;
+}
+
+/* generics */
+.box-layout {
+	display: table;
+	width: 100%;
+}
+.box-layout > div {
+	display: table-row;
+}
+.box-layout > div > div {
+	display: table-cell;
+}
+.box-layout .box-layout-expandable {
+	width: 50%;
+	background-repeat: repeat-x;
+}
+.attention {
+	color: #600;
+}
+.hidden {
+	display: none;
+}
+
+/* application specific */
+.mission-next-button {
+	margin: 40px auto 10px;
+	width: 52px;
+	height: 52px;
+	cursor: pointer;
+	background: transparent url(../images/Start_Button_Sprite.png) no-repeat 0 0;
+}
+.mission-next-button:hover {
+	background-position: 0 bottom;
+}
+
+#mission-ajax-overlay {
+	display: none;
+	position: fixed;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.5) url(../images/img_ajax-loader.gif) no-repeat center center;
+}
+
+#mission {
+	height: 100%;
+	position: relative;
+}
+
+#mission-content {
+	width: 1090px;
+	margin: 58px auto 0;
+	z-index: 1;
+	overflow: auto;
+}
+
+#mission-frame {
+	border: none;
+	width: 100%;
+	height: 100%;
+}
+
+/* sliding panel */
+#mission-slide-layout {
+	position: fixed;
+	min-width: 1090px;
+	bottom: 0;
+	z-index: 2;
+}
+#mission-slide {
+	width: 400px;
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	margin-left: -200px;
+	background: #000;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+	z-index: 2;
+}
+#mission-slide-content {
+	width: 300px;
+	margin: 10px auto 0;
+}
+#mission-slide-status {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+#mission-slide-activator {
+	display: none;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 20px;
+	height: 20px;
+	background: transparent url(../images/Slider_Sprite.png) no-repeat 0 0;
+	cursor: pointer;
+}
+#mission-slide-activator.active {
+	background-position: 0 bottom;
+}
+
+#mission-iris-top {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 3;
+}
+
+#mission-iris-bottom {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	z-index: 4;
+}
+
+#mission-iris-top .box-layout-expandable {
+	background-position: 0 0;
+	background-image : url(../images/Top_Bar_Repeat.png);
+}
+
+#mission-iris-bottom .box-layout-expandable {
+	background-position: 0 bottom;
+	background-image : url(../images/Bottom_Bar_Main_Repeat.png);
+}
+
+#mission-controls {
+	width: 1090px;
+	height: 121px;
+	background: url(../images/Bottom_Bar_Main.png) no-repeat center bottom;
+}
+#mission-controls-bounds  {
+	width: 520px;
+	margin: 0 auto;
+	text-align: center;
+	padding-top: 20px;
+}
+#mission-controls-bounds > img {
+	display: inline-block;
+}
+
+#mission-progress {
+	position: relative;
+	width: 400px;
+	margin: 0 auto;
+}
+	
+#mission-progress-bar {
+	background: #000;
+	height: 14px;
+	border: 1px solid #FFF;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	-moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+#mission-progress-bar-seek {
+	height: 100%;
+	width: 10%;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	-moz-box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.2);
+	-webkit-box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.2);
+	box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.2);
+	background-image: -webkit-gradient(
+		linear,
+		left top,
+		left bottom,
+		color-stop(0, #C62C26),
+		color-stop(1, #6D1113)
+	);
+	background-image: -moz-linear-gradient(
+		center top,
+		#C62C26 0%,
+		#6D1113 100%
+	);
+	background-image: linear-gradient(
+		top,
+		#C62C26 0%,
+		#6D1113 100%
+	);
+	filter: progid:DXImageTransform.Microsoft.Gradient(
+		StartColorStr='#C62C26',
+		EndColorStr='#6D1113',
+		GradientType=0
+	);
+}
+
+#mission-progress-token {
+	width: 37px;
+	height: 38px;
+	background: transparent url(../images/Token_For_ProgressBar.png) no-repeat 0 0;
+	position: absolute;
+	left: -18px;
+	top: -12px;  /* half height (38 / 2 = 19) - half progress bar height (14 / 2 = 7) ...  19 - 7 = 12 */
+}
+
+#mission-progress-indicator {
+	width: 32px;
+	height: 38px;
+	background: transparent url(../images/Progress_Indicator.png) no-repeat 0 0;
+	position: absolute;
+	top: -9px;
+	left: 10%;
+	margin-left: -16px;
+}
+
+#mission-progress-status {
+	position: relative;
+	width: 400px;
+	margin: 13px 0 0 10%;
+}
+
+
+#mission-progress-labels {
+
+}
+#mission-progress-labels > ul {
+
+}
+#mission-progress-labels > ul > li {
+	display: none;
+	float: left;
+	color: #CCC;
+	font-size: 0.8em;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+
+/* stages */
+#mission-introduction {
+	width: 600px;
+	margin: 20px auto;
+	text-align: center;
+}
+
+#mission-introduction .mission-titles span {
+	padding: 0 10px;
+}
+
+
+/* templates */
+.mission-poll {
+	width: 600px;
+	margin: 60px auto 0;
+}
+.mission-poll h3 {
+	text-align: center;
+}
+.mission-poll ul {
+	margin: 30px 0 0 100px;
+}
+.mission-poll li {
+	margin-bottom: 1em;
+}
+
+.mission-video {
+	width: 600px;
+	margin: 60px auto 0;
+	position: relative;
+	z-index: 1;
+}
+.mission-video h3 {
+	text-align: center;
+}
+.mission-video .mission-poll {
+	display: none;
+}
+
+.mission-visit {
+	position: relative;
+	min-width: 1090px;
+	text-align: center;
+	z-index: 1;
+}
+.mission-visit iframe {
+	border: 0;
+	width: 100%;
+}
+.mission-slide-start {
+	height: 20px;
+	line-height: 20px;
+	margin: 0 auto;
+	cursor: pointer;
+	text-align: center;
+}
+.mission-slide-start i {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background: url(../images/Slider_Sprite.png) no-repeat right 0;
+	vertical-align: middle;
+	margin-left: 4px;
+}
+.mission-slide-sets {
+
+}
+.mission-slide-set {
+	display: none;
+}
+.mission-slide-set h4 {
+
+}
+.mission-slide-set ul {
+	margin-top: 30px;
+	text-align: left;
+}
+
+.mission-image-poll {
+	margin-top: 20px;
+}
+.mission-image-poll h3 {
+	text-align: center;
+	margin-bottom: 20px;
+}
+.mission-image-poll li {
+	float: left;	
+}
+.mission-image-poll ul li label {
+	display: block;
+	padding: 0 10px;
+	text-align: center;
+}

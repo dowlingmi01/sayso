@@ -8,7 +8,7 @@ $SQ(function(){
 			},
 
 			annihilate: function() {
-				this.attr('id', 'sb_oldElement_'+$SQ.randomString(10));
+				this.attr('id', 'sb_oldElement_'+Math.round(Math.random()*1e10));
 				this.removeClass();
 				this.detach();
 				this.empty();

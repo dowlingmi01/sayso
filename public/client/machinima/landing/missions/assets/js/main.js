@@ -251,7 +251,7 @@ $(function(){
 			var questionId = container.data('id');
 			var stage = MissionSurvey.Model.data.stages[MissionSurvey.Controller.index];
 			var question = _.find(stage.data.questions, function(element){
-				return element.id == questionId;
+				return element.question.id == questionId;
 			});
 			question.selectedAnswerId = answerId;
 			MissionSurvey.Slider.next();

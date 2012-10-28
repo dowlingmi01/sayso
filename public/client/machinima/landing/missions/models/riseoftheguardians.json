@@ -69,9 +69,11 @@
         "url": "http://www.riseoftheguardians.com/",
         "questions": [
           {
-            "id": 1,
+            "question": {
+              "id": 1,
+              "text": "Which Guardian does not speak?"
+            },
             "correct": 5,
-            "question": "Which Guardian does not speak?",
             "answers": [
               {
                 "id": 1,
@@ -96,9 +98,11 @@
             ]
           },
           {
-            "id": 2,
+            "question": {
+              "id": 2,
+              "text": "Who is the leader of the Guardians?"
+            },
             "correct": 2,
-            "question": "Who is the leader of the Guardians?",
             "answers": [
               {
                 "id": 1,
@@ -123,9 +127,11 @@
             ]
           },
           {
-            "id": 3,
+            "question": {
+              "id": 3,
+              "text": "Which Guardian is part hummingbird?"
+            },
             "correct": 3,
-            "question": "Which Guardian is part hummingbird?",
             "answers": [
               {
                 "id": 1,

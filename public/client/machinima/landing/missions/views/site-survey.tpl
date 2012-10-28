@@ -11,9 +11,9 @@
 						<p>Check out {{{url}}} and answer the following questions</p>
 						<p class="mission-slide-start">Question 1<i></i></p>
 					</div>
-					{{#questions}}
+					{{#questions}}{{#question}}
 					<div class="mission-slide-set" data-id="{{id}}">
-						<h4>{{{question}}}</h4>
+						<h4>{{{text}}}</h4>{{/question}}
 						<ul>
 							{{#answers}}
 							<li>

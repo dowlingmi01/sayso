@@ -21,7 +21,7 @@ class Task_Router_Cli extends Zend_Controller_Router_Abstract
 		if ($arguments)
 		{
 			$command = array_shift($arguments);
-			if (!preg_match('~\W~', $command))
+			if (!preg_match('~[^\w-]~', $command))
 			{				
 				$dispatcher->setModuleName('cli');
 				$dispatcher->setControllerName($command);

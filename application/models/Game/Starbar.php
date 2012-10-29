@@ -72,8 +72,11 @@ abstract class Game_Starbar extends Game_Abstract {
 	}
 
 	public function completeSurvey (Survey $survey) {
-		// POLL_STANDARD, SURVEY_PROFILE, QUIZ_PREMIUM, etc.
-		if (in_array($survey->type, array('survey', 'poll', 'quiz', 'trailer')) && in_array($survey->reward_category, array('standard', 'premium', 'profile'))) {
+		if( $survey->custom_reward_experience && $survey->custom_reward_redeemable ) {
+			$this->submitAction('ADHOC_EXPERIENCEPOINTS', $survey->custom_reward_experience);
+			$this->submitAction('ADHOC_REDEEMABLEPOINTS', $survey->custom_reward_redeemable);
+		} else if (in_array($survey->type, array('survey', 'poll', 'quiz', 'trailer')) && in_array($survey->reward_category, array('standard', 'premium', 'profile'))) {
+			// POLL_STANDARD, SURVEY_PROFILE, QUIZ_PREMIUM, etc.
 			$this->submitAction(strtoupper($survey->type.'_'.$survey->reward_category), 0, $survey->id);
 		}
 	}

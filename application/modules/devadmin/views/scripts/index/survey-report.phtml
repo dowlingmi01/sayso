@@ -144,7 +144,7 @@ select#survey_id {
 			if (!$firstStarbar) echo ",";
 			echo "starbar" . $starbar['id'] . ": {";
 			$firstSurveyType = true;
-			foreach (array("survey", "poll", "trailer", "quiz") as $surveyType) {
+			foreach (array("survey", "poll", "trailer", "quiz", "mission") as $surveyType) {
 				if (!$firstSurveyType) echo ",";
 				echo $surveyType . ": new Array()";
 				$firstSurveyType = false;
@@ -187,7 +187,7 @@ select#survey_id {
 		<? } ?>
 		<select id="survey_type" name="survey_type" onchange="loadSurveysIntoSelect(parseInt($('#survey_id').val()));">
 			<option value="">Please choose a type of content</option>
-			<? foreach (array("survey", "poll", "trailer", "quiz") as $surveyType) { ?>
+			<? foreach (array("survey", "poll", "trailer", "quiz", "mission") as $surveyType) { ?>
 				<option <? if ($this->survey_type == $surveyType) { echo 'selected'; } ?>><?= $surveyType ?></option>
 			<? } ?>
 		</select><br /><br />

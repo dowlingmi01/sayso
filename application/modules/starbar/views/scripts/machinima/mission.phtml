@@ -1,5 +1,8 @@
+<?
+	$baseUrl = (APPLICATION_ENV == "production" ? "//recon.say.so" : BASE_DOMAIN . "/client/machinima/landing");
+?>
 <div style="width: 656px; height: 582px; background-image: url('//<?= BASE_DOMAIN ?>/images/machinima/mission_entry_<?= $this->mission_short_name ?>.jpg'); background-repeat: no-repeat; position: relative;">
-<a href="//<?= BASE_DOMAIN ?>/client/machinima/landing/mission/<?= $this->mission_short_name ?>/" target="_blank"
+<a id="sb_mission_launch" href="//<?= $baseUrl ?>/mission/<?= $this->mission_short_name ?>/" target="_blank"
  style="height: 54px; width: 54px; position: absolute; bottom: 12px; left: 302px;"></a>
 <span href="//<?= BASE_DOMAIN ?>/starbar/machinima/spotlight" class="sb_nav_element" rel="sb_popBox_spotlight" style="position: absolute; top: 0px; right: 0px; width: 106px; height: 32px; background-image: none;"></span>
  </div>

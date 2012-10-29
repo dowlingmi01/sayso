@@ -472,7 +472,7 @@ $SQ(function(){
 
 		}); // end btnExternalShare
 
-
+        $SQ('#sb_mission_launch').on('click', closePopBox);
 
 	} // end initElements()
 
@@ -648,6 +648,8 @@ $SQ(function(){
 				btnMission.attr('href', sayso.state.missionSaveRef);
 			btnMission.removeClass('sb_mission_available');
 			btnMission.removeAttr('rel');
+			if( $SQ('#sb_popBox_mission').hasClass('sb_popBoxActive'))
+				closePopBox();
 		}
 	}
 	forge.message.listen('set-mission-available', function(data) {

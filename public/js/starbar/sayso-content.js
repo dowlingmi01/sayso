@@ -210,9 +210,12 @@
 									mission_data: data
 								},
 								type : 'POST',
-								success: function() {
-									if( data.stage == data.data.stages.length ) {
-										forge.message.broadcastBackground('mission-complete');
+								success: function(response) {
+									if( response.status && response.status == 'success') {
+										if( response.game )
+											forge.message.broadcastBackground( 'update-game', response.game );
+										if( data.stage == data.data.stages.length )
+											forge.message.broadcastBackground('mission-complete');
 									}
 								}
 							});

@@ -1,7 +1,7 @@
 {
   "title": "Rise of the Guardians",
   "description": "<p><img src=\"assets/images/riseoftheguardians/Headline_InfoPage.png\" /></p><p>We need your say-so! Complete the 5 steps below to learn more about the upcoming movie <em>Rise of the Guardians</em> and let us know what you think.</p><p><img src=\"assets/images/riseoftheguardians/Mission_Badge_Sm.png\" /></p><p>Completing the mission will earn you BONUS Coins and a chance to</p><h4 style='color:#600'>WIN TICKETS TO THE PREMIERE OF RISE OF THE GUARDIANS!</h4>",
-  "validation": "<h3>Congratulations, you completed the mission!</h3><h4>Your feedback is appreciated.</h4><p><img src=\"assets/images/Mission_Badge_Sm.png\" /></p><p>The drawing will take place on 11/06</p><p></p>You earned 57 coins and 750 XP.</p>",
+  "validation": "<h3>Congratulations, you completed the mission!</h3><h4>Your feedback is appreciated.</h4><p><img src=\"assets/images/riseoftheguardians/Mission_Badge_Sm.png\" /></p><p>The drawing will take place on 11/06</p><p></p>You earned 57 coins and 750 XP.</p>",
   "reward_experience": 750,
   "reward_redeemable": 57,
   "stages": [

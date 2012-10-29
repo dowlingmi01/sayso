@@ -180,7 +180,7 @@ class Api_SurveyController extends Api_GlobalController
 				}
 				foreach( $answers as $answer ) {
 					$surveyQuestionResponse = new Survey_QuestionResponse();
-					$surveyQuestionResponse->datatype = 'choice';
+					$surveyQuestionResponse->data_type = 'choice';
 					$surveyQuestionResponse->survey_response_id = $surveyResponse->id;
 					$surveyQuestionResponse->survey_question_id = $answer['question_id'];
 					$surveyQuestionResponse->survey_question_choice_id = $answer['answer_id'];

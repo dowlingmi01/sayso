@@ -61,6 +61,8 @@ class Cli_ImportMissionJsonController extends Api_GlobalController
 			$survey->type = 'mission';
 			$survey->origin = 'internal';
 			$survey->title = $missionData['title'];
+			$survey->custom_reward_experience = $missionData['reward_experience'];
+			$survey->custom_reward_redeemable = $missionData['reward_redeemable'];
 			$survey->save();
 			$messages[] = "New survey id: ". $survey->id;
 			

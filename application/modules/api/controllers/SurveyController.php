@@ -164,7 +164,31 @@ class Api_SurveyController extends Api_GlobalController
 		$missionProgress->save();
 			
         if( $this->mission_data['stage'] == $missionInfo->number_of_stages ) {
-        	// TODO Validate and save answers
+        	try {
+				$fileLocation = realpath(APPLICATION_PATH . '/../public/client/machinima/landing/missions/models');
+				$filePath = $fileLocation . '/' . $this->mission_short_name . '.json';
+				$fileContents = file_get_contents($filePath);
+				$missionData = Zend_Json::decode($fileContents);
+				$answerStages = $this->mission_data['data']['stages'];
+				$answers = array();
+				foreach( $missionData['stages'] as $stageNum => $stage ) {
+					if( array_key_exists('question', $stage['data']) )
+						$this->_verifyMissionAnswer( $stage['data'], $answerStages[$stageNum]['data'], $answers );
+					else
+						foreach($stage['data']['questions'] as $questNum => $question)
+							$this->_verifyMissionAnswer( $question, $answerStages[$stageNum]['data']['questions'][$questNum], $answers );
+				}
+				foreach( $answers as $answer ) {
+					$surveyQuestionResponse = new Survey_QuestionResponse();
+					$surveyQuestionResponse->datatype = 'choice';
+					$surveyQuestionResponse->survey_response_id = $surveyResponse->id;
+					$surveyQuestionResponse->survey_question_id = $answer['question_id'];
+					$surveyQuestionResponse->survey_question_choice_id = $answer['answer_id'];
+					$surveyQuestionResponse->save();
+				}
+			} catch( Exception $e ) {
+				return $this->_resultType(false);
+			}
         	
 			$surveyResponse->status = 'completed';
  			$surveyResponse->processing_status = 'completed';
@@ -179,5 +203,15 @@ class Api_SurveyController extends Api_GlobalController
 		}
 		return $this->_resultType(true);
 	}
-
+	private function _verifyMissionAnswer( $questionDef, $userAns, &$answers ) {
+		$answerId = $userAns['selectedAnswerId'];
+		if( !$answerId )
+			throw new Exception('Invalid data.');
+		foreach( $questionDef['answers'] as $answer )
+			if( $answer['id'] == $answerId ) {
+				$answers[] = array( 'question_id' => $questionDef['question']['id'], 'answer_id'=>$answerId);
+				return;
+			}
+		throw new Exception('Invalid data.');
+	}
 }

@@ -81,13 +81,13 @@
 
 		var cssGeneric = document.createElement('link');
 		cssGeneric.rel = 'stylesheet';
-		cssGeneric.href = '//' + sayso.baseDomain + '/css/starbar-generic.css';
+		cssGeneric.href = '//' + sayso.baseDomain + '/css/starbar-generic.css?_=' + sayso.state.cacheDefeatTS;
 		starbarContainer.appendChild(cssGeneric);
 
 		// load the specific CSS for this Starbar
 		var cssStarbar = document.createElement('link');
 		cssStarbar.rel = 'stylesheet';
-		cssStarbar.href = sayso.starbar.css;
+		cssStarbar.href = sayso.starbar.css + '?_=' + sayso.state.cacheDefeatTS;
 		starbarContainer.appendChild(cssStarbar);
 
 		// append the HTML to the DOM

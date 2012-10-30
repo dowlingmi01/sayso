@@ -98,6 +98,7 @@ function gotInitialState( response ) {
 	} else {
 		sayso.flags = response.data.flags;
 		sayso.state = {
+			cacheDefeatTS : ( new Date() ).getTime(),
 			currentStarbar : response.data.starbar_id,
 			user : {
 				id : response.data.user_id,
@@ -121,13 +122,13 @@ function gotInitialState( response ) {
 		getUserData( function() {
 			getStarbar( sayso.state.currentStarbar, answerPendingRequests );
 		} );
-		processNotifications(sayso.state.notifications.items, []);
-		checkForNotifications();
 	}
 }
 function answerPendingRequests() {
 	for( var i = 0; i < sayso.pendingStateRequests.length; i++ )
 		sayso.pendingStateRequests[i](sayso.state);
+	processNotifications(sayso.state.notifications.items, []);
+	checkForNotifications();
 }
 function getUserData( callback ) {
 	ajaxWithAuth({

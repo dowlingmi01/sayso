@@ -69,15 +69,6 @@ $(function(){
 	
 	// post data to server - passing the .stages property back with each question object populated with a .selectedAnswerId property
 	MissionSurvey.Model.post = function(){
-		// remove the next line once the post URL is specified
-		return console.log('Posting data to server - remove this line - data sent:', this.data.stages);
-		$.ajax({
-			url : '???',
-			type : 'POST',
-			data : MissionSurvey.Model.data.stages,
-			error : $.noop,  // if you want something to happen on error, provide a handler here
-			sucess : $.noop  // if you want to react to a return, provide a handler here
-		});
 	};
 	
 	// load up the JSON and start the process
@@ -211,13 +202,17 @@ $(function(){
 	MissionSurvey.Controller.addHook('video', function(stage){
 		// on video complete, hide it and show the poll
 		MissionSurvey.VideoPlayer.render('mission-video-container', stage.data.url, function(){
-			/*
-			 * we need to hide the video but keep it accessible since it's register for state change callbacks with the YTJSAPI...
-			 * IE8 throws errors when state change fires and there's no element in the DOM
-			 * so stick the container in a hidden element
-			*/ 			
-			var player = $('.mission-trailer');
-			$('#trash').append(player);
+			if( html5video ) {
+				$('.mission-trailer').remove();
+			} else {
+				/*
+				 * we need to hide the video but keep it accessible since it's register for state change callbacks with the YTJSAPI...
+				 * IE8 throws errors when state change fires and there's no element in the DOM
+				 * so stick the container in a hidden element
+				*/ 			
+				var player = $('.mission-trailer');
+				$('#trash').append(player);
+			}
 			// and fade in the question/answer element
 			$('.mission-video .mission-poll').fadeIn();
 		});		
@@ -356,7 +351,7 @@ $(function(){
 		'version' : 3,
 		'rel' : 0,
 		'autoplay' : 1,
-		'controls' : 1,
+		'controls' : (location.host.match(/say\.so/) ? 0 : 1),
 		'disablekb' : 1,
 		'showinfo' : 0,
 		'iv_load_policy' : 3		
@@ -372,6 +367,7 @@ $(function(){
 		MissionSurvey.VideoPlayer.values = {
 			height: MissionSurvey.VideoPlayer.height,
 			width: MissionSurvey.VideoPlayer.width,
+			playerVars: MissionSurvey.VideoPlayer.options,
 			events : {}
 		};
 		MissionSurvey.VideoPlayer.rendered = false;
@@ -400,8 +396,7 @@ $(function(){
 			window.onYouTubeIframeAPIReady = function() {
 				new YT.Player(
 					MissionSurvey.VideoPlayer.elementId,
-					MissionSurvey.VideoPlayer.values,
-					MissionSurvey.VideoPlayer.options
+					MissionSurvey.VideoPlayer.values
 				);
 			}
 		};

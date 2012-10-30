@@ -540,7 +540,19 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function userLevelAction ()
 	{
-
+		$sql = "SELECT s.title, i.short_name
+		          FROM survey s, survey_response sr, starbar_survey_map m, survey_mission_info i
+		         WHERE s.id = sr.survey_id
+		           AND s.id = m.survey_id
+		           AND s.id = i.survey_id
+		           AND m.starbar_id = ?
+		           AND sr.status = 'completed'
+		           AND sr.user_id = ?
+		           AND s.type = 'mission'";
+		$badges = Db_Pdo::fetchAll($sql, $this->starbar_id, $this->user_id);
+		if($badges)
+			$this->view->assign('badges', $badges);
+		
 	}
 
 	public function facebookConnectAction ()

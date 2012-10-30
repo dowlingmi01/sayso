@@ -1,0 +1,134 @@
+<?php
+
+	$starbar = $this->starbar;
+	/* @var $starbar Starbar */
+
+	$user = $this->user;
+	/* @var $user User */
+
+	switch ($starbar->getVisibility()){
+		case 'closed':
+			$buttonVisibility = 'sb_btnStarbar-closed';
+			$starbarVisibility = 'sb_starbar-visClosed';
+			break;
+		case 'stowed':
+			$buttonVisibility = 'sb_btnStarbar-stowed';
+			$starbarVisibility = 'sb_starbar-visStowed';
+			break;
+		case 'open':
+		default :
+			$buttonVisibility = 'sb_btnStarbar-open';
+			$starbarVisibility = 'sb_starbar-visOpen';
+			break;
+	}
+?>
+<link type="text/css" rel="stylesheet" media="screen" href="//<?= BASE_DOMAIN ?>/css/jquery.jscrollpane.css" />
+<div id="starbar-player-semiStowed">
+	<div id="sb_starbar-logoSemiStowed">
+		<span class="sb_starbar-logo"></span>
+	</div><!-- #starbar-toggleVis -->
+</div>
+<div id="starbar-player-console" class="<?= $starbarVisibility ?>">
+	<div id="starbar-wrapper">
+		<div id="starbar-visControls">
+			<div id="starbar-toggleVis" class="<?= $buttonVisibility ?>"></div><!-- #starbar-toggleVis -->
+			<a href="//<?= BASE_DOMAIN ?>/starbar/movie/about-sayso" class="sb_nav_element sb_starbar-logo" id="sb_starbar-logo" rel="sb_popBox_about-saySo">say.so</a>
+			<div class="starbar-infoLinks">
+				<a href="//<?= BASE_DOMAIN ?>/starbar/movie/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">About</a>
+				<a href="//<?= BASE_DOMAIN ?>/starbar/movie/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">FAQs</a>
+				<a href="//<?= BASE_DOMAIN ?>/starbar/movie/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">Help</a>
+			</div><!-- .starbar-infoLinks -->
+			<div id="sb_popBox_about-saySo" class="sb_popBox">
+			</div><!-- .sb_popBox -->
+			<div id="sb_popBox_onboard" class="sb_popBox" href="//<?= BASE_DOMAIN ?>/starbar/movie/onboard">
+			</div><!-- #sb_popBox_onboard -->
+		</div><!-- #starbar-visControls -->
+		<div id="starbar-main">
+			<div id="starbar-type">
+				<div class="starbar-type-bg-bubble"></div>
+				<div class="sb_inner">
+					<div class="sb_changeTheme"><span>Check out other starbars</span></div><!-- .changeTheme -->
+					<div class="sb_logo">
+						<img src="//<?= BASE_DOMAIN ?>/images/movie/logo_movie_mdd.png" alt="Movie logo"/>
+					</div><!-- .logo -->
+					<div class="sb_userImg">
+						<a href="//<?= BASE_DOMAIN ?>/starbar/movie/user-profile" class="sb_nav_element" rel="sb_popBox_user-profile">
+							<? if ($this->facebook_social->identifier) { ?>
+								<img class="sb_userImg" src="//graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $user->getTitle() ?>" />
+							<? } else { ?>
+								<img class="sb_userImg" src="//<?= BASE_DOMAIN ?>/images/movie/img_user.jpg" alt="<?= $user->getTitle() ?>" />
+							<? } ?>
+						</a>
+					</div><!-- .userImg -->
+					<div class="sb_content">
+						<h2>Hi <a href="//<?= BASE_DOMAIN ?>/starbar/movie/user-profile" class="sb_nav_element sb_user_title <?= ($this->user->username ? "" : "sb_user_level_title") ?>" rel="sb_popBox_user-profile"><?= $user->getTitle() ?></a></h2>
+						<a href="//<?= BASE_DOMAIN ?>/starbar/movie/user-profile" class="sb_nav_element" rel="sb_popBox_user-profile">Edit Profile</a>
+						</div><!-- .sb_content -->
+						<div id="sb_popBox_user-profile" class="sb_popBox sb_triangle-border">
+						</div><!-- .sb_popBox -->
+						<div id="sb_popBox_user-profile_lg" class="sb_popBox sb_popBoxLg sb_triangle-border">
+						</div><!-- .sb_popBox -->
+						<div id="sb_popBox_user-share" class="sb_popBox sb_triangle-border">
+						</div><!-- .sb_popBox -->
+				</div><!-- .inner -->
+			</div><!-- #starbar-type -->
+			<div class="sb_alerts_container" id="starbar-alert-container-promos">
+			</div>
+			<div id="starbar-nav">
+				<ul>
+					<li id="nav_polls" class="sb_theme_bgGradient"><span href="//<?= BASE_DOMAIN ?>/starbar/movie/polls" class="sb_nav_element"><span class="sb_nav_border">Polls</span><!--<span class="sb_nav_notify">5</span>--></span>
+						<div id="sb_popBox_polls" class="sb_popBox sb_triangle-border">
+						</div><!-- .sb_popBox -->
+					</li>
+					<li id="nav_surveys" class="sb_theme_bgGradient"><span href="//<?= BASE_DOMAIN ?>/starbar/movie/surveys" class="sb_nav_element"><span class="sb_nav_border">Surveys</span></span>
+						<div id="sb_popBox_surveys" class="sb_popBox sb_triangle-border">
+						</div><!-- .sb_popBox survey list -->
+
+						<div id="sb_popBox_surveys_lg" class="sb_popBox sb_popBoxLg sb_triangle-border">
+						</div><!-- .sb_popBox regular surveys (large) -->
+						<div id="sb_popBox_surveys_hg" class="sb_popBox sb_popBoxHg sb_triangle-border">
+						</div><!-- .sb_popBox premium surveys (huge!) -->
+						<div id="sb_popBox_surveys_ug" class="sb_popBox sb_popBoxUg sb_triangle-border">
+						</div><!-- .sb_popBox surveys (ugam) -->
+					</li>
+					<li id="nav_spotlight" class="sb_theme_bgGradient"><span href="//<?= BASE_DOMAIN ?>/starbar/movie/spotlight" class="sb_nav_element"><span class="sb_nav_border">Spotlight</span></span>
+						<div id="sb_popBox_spotlight" class="sb_popBox sb_triangle-border">
+						</div><!-- .sb_popBox -->
+					</li>
+				</ul>
+			</div><!-- #starbar-nav -->
+			<div id="starbar-promo">
+				<a href="//<?= BASE_DOMAIN ?>/starbar/movie/promos" class="sb_nav_element sb_top_level_element">
+					<img src="//<?= BASE_DOMAIN ?>/images/movie/img_promo.png" alt="Promo" />
+				</a>
+				<div id="sb_popBox_promo" class="sb_popBox sb_triangle-border">
+				</div><!-- .sb_popBox -->
+			</div><!-- #starbar-promo -->
+			<div class="sb_alerts_container" id="starbar-alert-container-alerts">
+			</div>
+			<div id="starbar-level">
+				<a href="//<?= BASE_DOMAIN ?>/starbar/movie/user-level" class="sb_nav_element" rel="sb_popBox_user-level">
+					<div class="sb_content">
+						<div class="sb_user-level">L<span class="sb_user_level_number"></span>: <span class="sb_user_level_title"></span></div>
+						<div class="sb_user-level-box">
+							<span class="sb_user-level-star"></span>
+							<div class="sb_progress_bar"><span class="sb_currency_percent" data-currency-type="experience"></span><span class="sb_progressBarValue sb_currency_balance" data-currency-type="experience"></span></div>
+						</div><!-- .user-level-box -->
+					</div><!-- .sb_content -->
+				</a>
+				<div id="sb_popBox_user-level" class="sb_popBox sb_triangle-border"></div><!-- .sb_popBox -->
+			</div><!-- #starbar-level -->
+			<div id="starbar-points">
+				<a href="//<?= BASE_DOMAIN ?>/starbar/movie/rewards" class="sb_nav_element" rel="sb_popBox_rewards">
+					<div class="sb_content">
+						<div class="sb_user-points-box">
+							<span class="sb_imgCinebucks"></span>
+							<div class="sb_progress_bar"><span class="sb_currency_percent"></span><span class="sb_progressBarValue sb_currency_balance" data-currency-type="redeemable"></span></div>
+						</div><!-- .user-points-box -->
+					</div><!-- .sb_content -->
+				</a>
+				<div id="sb_popBox_rewards" class="sb_popBox sb_popBoxLg sb_triangle-border"></div><!-- .sb_popBox_rewards -->
+			</div><!-- #starbar-points -->
+		</div><!-- #starbar-main -->
+	</div><!-- #starbar-wrapper -->
+</div><!-- #starbar-player-console -->

@@ -1,0 +1,339 @@
+<?= $this->partial('remote/init-remote.phtml', null, array('starbar' => $this->starbar, 'frame_id' => $this->frame_id)); ?>
+<div id="sayso-starbar-embed">
+	<div id="sayso-starbar-spotlight-frame">
+		<div class="sb_tabs">
+
+			<div id="spotlight_tabs_1" class="sb_tabPane">
+				<img src="//<?= BASE_DOMAIN ?>/images/movie/img_header_spotlight.png" alt="Spotlight" />
+
+				<? if (sizeof($this->trailers)) { ?>
+
+					<div class="sb_scrollPane">
+						<div class="sb_video_container" id="sb_video_container"></div>
+						<div class="sb_spotlight-questions" id="sb_spotlight-q1">
+							<h2>What&#39;s your Say.So on this trailer?</h2>
+							<p id="individual_vid_title"><?= $this->info_for_trailers[$this->current_trailer->id]->entertainment_title ?></p>
+						</div><!-- .sb_spotlight-questions -->
+
+						<div id="sb_vid_question_phase1" class="sb_mv_questions_flow">
+							<p class="inactive"><?= $this->first_question->title ?></p>
+
+							<div class="sb_mv_questions_opts">
+								<? foreach ($this->first_question_choices as $choice) { ?>
+									<input type="radio" name="first_choice_id" id="sb_thumb_<?= $choice->id ?>" class="sb_rating" value="<?= $choice->id ?>" disabled="disabled">
+									<label class="sb_radio_text" for="sb_thumb_<?= $choice->id ?>">
+										<div class="sb_rating_icon stars_<?= $choice->value ?>">
+											<div class="icon"></div>
+										</div>
+									</label>
+								<? } ?>
+							</div>
+
+						</div>
+
+						<div id="sb_vid_question_phase2" class="sb_mv_questions_flow">
+							<p><?= $this->second_question->title ?></p>
+							<div class="sb_mv_questions_opts">
+								<? $i = 0 ?>
+								<? foreach ($this->second_question_choices as $choice) { ?>
+									<? if ($i == 2) { ?>
+										</div>
+										<br />
+										<div class="sb_mv_questions_opts" style="clear: both;">
+									<? } ?>
+									<input type="radio" name="second_choice_id" id="sb_choice_<?= $choice->id ?>" class="sb_expectations" value="<?= $choice->id ?>">
+									<label class="sb_radio_text" for="sb_choice_<?= $choice->id ?>"><div class="sb_rating_choice_text"><?= $choice->title ?></div></label>
+									<? $i ++ ?>
+								<? } ?>
+							</div>
+						</div>
+
+						<div id="sb_vid_question_final" class="sb_mv_questions_flow">
+							<p>Congratulations! You earned <span class="hl">250 CineStars</span> &amp; <span class="hl">19 CineBucks</span></p>
+							<div class="sb_final_share">
+								<div class="sb_externalShares">
+									<? $shareReward = 8 ?>
+									<a class="sb_externalShare sb_externalShare_facebook" rel="sb_mini-redeemable-currency-reward_facebook" href="#"
+										onclick="$SQ.openWindow('//www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($this->share_link) ?>&caption=<?= urlencode($this->facebook_share_caption) ?>&picture=<?= urlencode($this->facebook_share_image_url) ?>&redirect_uri=<?= urlencode($this->facebook_share_callback_url) ?>&name=<?= urlencode($this->facebook_title) ?>&description=<?= urlencode($this->facebook_description) ?>', 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450'); return false;">
+										<img src="//<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
+									</a>
+									<span class="sb_mini-redeemable-currency-reward sb_mini-redeemable-currency-reward_facebook" id="sb_mini-redeemable-currency-reward_facebook">+<?= $shareReward ?></span>
+									<div class="sb_externalShare sb_externalShare_twitter" rel="sb_mini-redeemable-currency-reward_twitter">
+										<a class="twitter-share-button"
+											data-related="<?= $this->twitter_share_related_users ?>"
+											data-hashtags="<?= $this->twitter_share_hashtags ?>"
+											data-via="<?= $this->twitter_share_via_user ?>"
+											data-url="<?= $this->share_link ?>"
+											data-text="<?= $this->twitter_share_text ?>"
+											data-count="none"
+											href="https://twitter.com/intent/tweet">
+												<img src="//<?= BASE_DOMAIN ?>/images/generic/logo_twitter.png" alt="Twitter" />
+										</a>
+									</div>
+									<span class="sb_mini-redeemable-currency-reward sb_mini-redeemable-currency-reward_twitter" id="sb_mini-redeemable-currency-reward_twitter">+<?= $shareReward ?></span>
+									Share this poll to earn extra points
+								</div>
+							</div>
+
+						</div>
+
+						<div style="clear:both;"></div>
+
+						<div class="sb_video_carousel">
+							<div class="arrow_left"></div>
+
+							<div class="scroll_content">
+								<div class="line_group">
+									<? $i = 0 ?>
+									<? foreach ($this->trailers as $trailer) { ?>
+										<? if ($i > 0 && (($i % 5) == 0)) { ?>
+											</div>
+											<div class="line_group">
+										<? } ?>
+										<?
+											if (($i % 5) == 0) $thumbClass = "thumb first";
+											elseif(($i % 5) == 4) $thumbClass = "thumb last";
+											else $thumbClass = "thumb";
+
+											if ($trailer->id == $this->current_trailer->id) $thumbClass .= " current_trailer";
+										?>
+										<div class="<?= $thumbClass?>" title="<?= $this->info_for_trailers[$trailer->id]->entertainment_title ?>" href="trailer?survey_id=<?= $trailer->id ?>"><img src="http://img.youtube.com/vi/<?= $this->info_for_trailers[$trailer->id]->video_key ?>/1.jpg" /></div>
+										<? $i++ ?>
+									<? } ?>
+								</div>
+							</div>
+
+							<div class="arrow_right"></div>
+						</div>
+					</div>
+				<? } else {?>
+					<p>Nice job, looks like you've watched all the trailers!<br />Check back soon to earn more CineStars and CineBucks!</p>
+				<? } ?>
+
+
+			</div><!-- #tabs_1 -->
+
+		</div><!-- .tabs -->
+	</div>
+</div>
+<? if (sizeof($this->trailers)) { ?>
+
+	<script>
+
+	//Load player api asynchronously.
+	var newTag = document.createElement('script');
+	newTag.src = "//www.youtube.com/iframe_api";
+	var firstScriptTag = document.getElementsByTagName('script')[0];
+	firstScriptTag.parentNode.insertBefore(newTag, firstScriptTag);
+
+	var player;
+	var defaults	=	{
+		autohide	:	false
+	};
+	var answers		=	{
+		q1	:	false,
+		q2	:	false
+	};
+
+	var currentTrailer	= $SQ('.thumb.current_trailer');
+	var selectedLineGroup = false;
+	if (currentTrailer.length == 1) selectedLineGroup = currentTrailer.parent();
+	if (selectedLineGroup) selectedLineGroup.addClass('active');
+
+	$SQ('.sb_video_carousel').show();
+
+	$SQ('input.sb_rating').bind('change' , function(){
+		answers.q1	=	$SQ(this).val();
+		if( answers.q1 ) {
+			$SQ('#sb_vid_question_phase1').hide();
+			$SQ('#sb_vid_question_phase2').show();
+			$SQ('#sb_vid_question_final').hide();
+			$SQ('.sb_video_carousel').css('margin-top', '24px');
+		}
+	});
+
+	$SQ('input.sb_expectations').bind('change', function(){
+		answers.q2	=	$SQ(this).val();
+		if( answers.q2 ) {
+			$SQ.ajax({
+				url : "//<?= BASE_DOMAIN ?>/api/survey/user-trailer-submit?survey_id=<?= $this->current_trailer->id ?>&first_choice_id="+answers.q1+"&second_choice_id="+answers.q2+"&user_id=<?= $this->user_id ?>&user_key=<?= $this->user_key ?>&starbar_id=<?= $this->starbar_id ?>",
+				dataType : "json",
+				beforeSend : function(x) {
+					if (x && x.overrideMimeType) {
+						x.overrideMimeType("application/j-son;charset=UTF-8");
+					}
+				},
+				success : function (response, status) {
+					if (response.game)
+						$SQ.remoteControl.updateGame(response.game);
+
+					defaults.autohide	=	false;
+					$SQ('.sb_video_carousel').removeClass('autohide');
+					$SQ('#sb_vid_question_phase1').hide();
+					$SQ('#sb_vid_question_phase2').hide();
+					$SQ('.sb_externalShares').fadeTo(0, 0.01);
+					$SQ('#sb_vid_question_final').show();
+					setTimeout(function() {
+						$SQ('.sb_externalShares').fadeTo(500, 1);
+					}, 500);
+				}
+
+			});
+		}
+	});
+
+
+	function onYouTubeIframeAPIReady() {
+
+		player = new YT.Player('sb_video_container', {
+
+			height: '390',
+			width: '635',
+			videoId: '<?= $this->info_for_trailers[$this->current_trailer->id]->video_key ?>',
+			events: {
+				'onReady': onPlayerReady,
+				'onStateChange': onPlayerStateChange
+			},
+			playerVars : {
+				'iv_load_policy' :	3,
+				'controls' : <?= (APPLICATION_ENV == "production" ? "0" : "1") ?>,
+				'disablekb' : 1,
+				'rel' : 0,
+				'showinfo' : 0
+			}
+
+		});
+
+	}
+
+	function onPlayerReady(event) {
+		//event.target.playVideo();
+	}
+
+	function onPlayerStateChange(event) {
+		if ( ! answers.q1 ) { // Once the user has answered
+			if(event.data	==	YT.PlayerState.PLAYING)
+			{
+				defaults.autohide	=	true;
+				$SQ('.sb_video_carousel').addClass('autohide');
+				$SQ('#sb_spotlight-q1').hide();
+				$SQ('#sb_vid_question_phase1').show();
+				$SQ('.sb_mv_questions_flow').hover(function(){
+                // Hover over code
+                $SQ('<p class="tooltip"></p>')
+                .text('Please view the trailer first, then rate it.')
+                .appendTo('body')
+                .fadeIn('slow');
+			        }, function() {
+			                // Hover out code
+
+			                $SQ('.tooltip').remove();
+			        }).mousemove(function(e) {
+			                var mousex = e.pageX + 20; //Get X coordinates
+			                var mousey = e.pageY + 10; //Get Y coordinates
+			                $SQ('.tooltip')
+			                .css({ top: mousey, left: mousex })
+			        });
+			}
+
+			if(event.data	==	YT.PlayerState.ENDED){
+				$SQ('input.sb_rating').removeAttr('disabled');
+				$SQ('.tooltip').remove();
+				$SQ('.sb_mv_questions_flow').unbind('mouseenter mouseleave');
+				$SQ('.sb_mv_questions_flow p').removeClass('inactive');
+
+			}
+		}
+	}
+
+	$SQ('.thumb').click(function(){
+		if (!($SQ(this).hasClass('current_trailer'))) {
+		    player.stopVideo();
+
+			var link = $SQ(this).attr('href');
+			link += "&user_id=<?= $this->user_id ?>&user_key=<?= $this->user_key ?>&starbar_id=<?= $this->starbar_id ?>"
+			window.location = link;
+		}
+	});
+
+	$SQ('.sb_video_carousel').mouseenter(function(e){
+		if( $SQ(this).hasClass('autohide') ){
+
+			$SQ(this).removeClass('autohide');
+			$SQ('.sb_mv_questions_flow:visible').addClass('tmpAuto')
+			.css('height', '60px')
+			.children()
+			.hide();
+		}
+	}).mouseleave(function(e){
+		if(defaults.autohide){
+
+			$SQ(this).addClass('autohide');
+			$SQ('.sb_mv_questions_flow.tmpAuto').css('height','32px').removeClass('tmpAuto').children().show();
+		}
+	});
+
+	$SQ('.arrow_left, .arrow_right').bind('click', function(){
+
+		var selected	=	false;
+		var prev		=	false;
+		var next		=	false;
+		var dir 		= 	$SQ(this).attr('class').split("_")[1];
+
+		if( $SQ('.line_group.active').length > 0 )					selected =	$SQ('.line_group.active');
+		if( $SQ(selected[0].previousElementSibling).length > 0 ) 	prev	 = 	$SQ(selected[0].previousElementSibling);
+		if( $SQ(selected[0].nextElementSibling).length > 0 ) 		next 	 = 	$SQ(selected[0].nextElementSibling);
+
+		switch(dir)
+		{
+			case 'left' :
+
+				if( prev !== false ) {
+					$SQ('.line_group').hide();
+					selected.removeClass('active');
+					prev.addClass('active');
+					$SQ('.line_group.active').fadeIn("slow");
+				}
+
+			break;
+
+			case 'right' :
+
+				if( next !== false ) {
+					$SQ('.line_group').hide();
+					selected.removeClass('active');
+					next.addClass('active');
+					$SQ('.line_group.active').fadeIn("slow");
+				}
+
+			break;
+		}
+
+	});
+
+	$SQ.getScript("//platform.twitter.com/widgets.js", function(){
+		function handleTweetEvent(event){
+			if (event) {
+				$SQ.remoteControl.handleTweet('trailer', <?= $this->current_trailer->id ?>);
+			}
+		}
+		twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
+	});
+
+	// SET UP EXTERNAL SHARE BEHAVIORS
+	$SQ('.sb_externalShare').each(function(){
+		// for some reason, the hover behavior set in the CSS is totally ignored. :(
+			$SQ(this).hover(function(){
+				$SQPoints = $SQ('#'+$SQ(this).attr('rel'));
+				$SQ(this).css('background-position','0px -20px');
+				$SQPoints.show();
+			},
+			function(){
+				$SQPoints = $SQ('#'+$SQ(this).attr('rel'));
+				$SQ(this).css('background-position','0px 0px');
+				$SQPoints.hide();
+			});
+
+	}); // end btnExternalShare
+	</script>
+<? } ?>

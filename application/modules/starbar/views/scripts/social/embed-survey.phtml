@@ -1,0 +1,37 @@
+<? if (!$this->survey_already_completed) { ?>
+	<div class="sb_outerOverlay"></div>
+<? } ?>
+<img src="//<?= BASE_DOMAIN ?>/images/movie/img_header_surveys.png" alt="Surveys" />
+<p class="sb_alignRight"><a href="//<?= BASE_DOMAIN ?>/starbar/movie/surveys" class="sb_theme_iconChange sb_them_textHighlight sb_nav_element" rel="sb_popBox_surveys">Switch Survey</a></p>
+<? if ($this->survey->reward_category == "premium" || $this->survey->reward_category == "profile") { ?>
+	<div class="sb_theme_textHighlight_alt sb_survey_title"><?= $this->survey->title ?></div>
+<? } else { ?>
+	<div class="sb_survey_title"><?= $this->survey->title ?></div>
+<? } ?>
+
+<? if ($this->survey_already_completed) { ?>
+	<br />
+	You have already completed this survey.
+<? } elseif ($this->survey->status == "inactive") { ?>
+	<br />
+	This survey is currently unavailable. Please try again later.
+<? } else { ?>
+	<div id="starbar-survey-<?= $this->survey->id ?>" class="sb_survey_container"></div>
+	<script type="text/javascript">
+		var protocol = ('https:' == sayso.location.protocol ? 'https:' : 'http:');
+
+		var link = protocol
+			+ "//<?= BASE_DOMAIN ?>/starbar/movie/survey-redirect?survey_id=<?= $this->survey->id ?>&next_survey_id=<?= $this->next_survey_id ?>&user_id="
+			+ sayso.starbar.user.id
+			+ "&user_key=" + sayso.starbar.user.key
+			+ "&starbar_id=" + sayso.starbar.id;
+		var iframeContainerId = "starbar-survey-<?= $this->survey->id ?>";
+		<? if ($this->survey->origin == "UGAM") { ?>
+			$SQ.insertCommunicationIframe(link, iframeContainerId, 970, 500, 'auto'); // Add new iframe!
+		<? } else if ($this->survey->size == "large") { ?>
+			$SQ.insertCommunicationIframe(link + "&size=large", iframeContainerId, 640, 410, 'auto'); // Add new iframe!
+		<? } else { ?>
+			$SQ.insertCommunicationIframe(link, iframeContainerId, 500, 295, 'auto'); // Add new iframe!
+		<? } ?>
+	</script>
+<? } ?>

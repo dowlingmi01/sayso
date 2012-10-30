@@ -1,0 +1,54 @@
+<div class="sb_header">
+	<img src="//<?= BASE_DOMAIN ?>/images/movie/img_header_my-account.png" alt="My Account" />
+</div><!-- .sb_header -->
+<div class="sb_scrollPane">
+	<ul class="sb_lineList">
+		<li>
+			<h3 class="sb_title">Levels</h3>
+			<div class="sb_userLevel_cycle">
+
+				<div class="sb_userLevel_nav" id="sb_userLevel_prev"></div>
+
+				<div class="sb_user_level_icons_container" rel="3">
+
+					<!-- all icons live inside of here, groups of 5 (by default -- overwrite with rel attribute on the div) inside div class="sb_userLevelIcons_group" -->
+					<!--
+					The icon for the user's current level needs to be the active slide. Configurable in starbar-new.js
+					Panels without the user's current level have 4 picks
+					-->
+
+				</div><!-- .sb_user_level_icons_container -->
+
+				<div class="sb_userLevel_nav" id="sb_userLevel_next"></div>
+
+			</div><!-- .sb_userLevel_cycle -->
+		</li>
+		<li>
+			<div class="sb_column5050">
+				<div class="sb_column50">
+					<h3 class="sb_title"><span class="sb_currency_title" data-currency-type="experience"></span></h3>
+					<div class="sb_user-level-box">
+						<span class="sb_user-level-star"></span>
+						<div class="sb_progress_bar"><span class="sb_currency_percent" data-currency-type="experience"></span><span class="sb_progressBarValue sb_currency_balance" data-currency-type="experience"></span></div>
+					</div><!-- .user-level-box -->
+					<small>Level up at <span class="sb_currency_balance_next_level"></span> <span class="sb_currency_title" data-currency-type="experience"></span></small>
+				</div><!-- .sb_column50 -->
+				<div class="sb_column50">
+					<div class="sb_alignLeft">
+						<h3 class="sb_title"><span class="sb_currency_title" data-currency-type="redeemable"></span></h3>
+						<div class="sb_user-points-box">
+							<span class="sb_imgCinebucks"></span>
+							<div class="sb_progress_bar"><span class="sb_currency_percent"></span><span class="sb_progressBarValue sb_currency_balance" data-currency-type="redeemable"></span></div>
+						</div><!-- .user-points-box -->
+					</div>
+					<strong><a href="//<?= BASE_DOMAIN ?>/starbar/movie/rewards" class="sb_rewardsCenterLink sb_nav_element" rel="sb_popBox_rewards">Rewards Center</a></strong>
+				</div><!-- .sb_column50 -->
+			</div><!-- .sb_column_5050 -->
+		</li>
+		<li>
+			<h3 class="sb_title" style="color: #000;">My Purchases</h3>
+			<div class="sb_user_purchases">
+			</div>
+		</li>
+	</ul>
+</div><!-- .sb_scrollPane -->

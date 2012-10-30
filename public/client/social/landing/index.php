@@ -12,8 +12,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>movie.say.so Installation</title>
-<link rel="stylesheet" href="movie-landing.css" />
+<title>social.say.so Installation</title>
+<link rel="stylesheet" href="landing.css" />
 <link rel="chrome-webstore-item"
     href="https://chrome.google.com/webstore/detail/<?= $extid?>" />
 <script src="js/config.js"></script>
@@ -25,7 +25,7 @@
 <body>
 <div id="wrapper">
 	<div id="header">
-		<div id="logo"><img src="images/logo.png" alt="Movie Say.So" /></div><!-- #logo -->
+		<div id="logo"><img src="images/logo.png" alt="Social Say.So" /></div><!-- #logo -->
 		<div class="community-link"><!--<a href="#">Other Communities</a>--></div><!-- .community-link -->
 	</div><!-- #header -->
 	<div id="main">
@@ -103,7 +103,7 @@
 	  			<input type="text" id="input-password_txt" value="Enter your desired password. (6-12 characters)" /></p>
 	  			<p><input type="password" id="input-confirmation" class="sso_fld" placeholder="Verify your password" />
 	  			<input type="text" id="input-confirmation_txt" value="Verify your password" /></p>
-	  			<p><input type="checkbox" value="" id="agreeterms" /><label for="agreeterms">I agree to the <a href="http://app.saysollc.com/docs/movie/Say.So_App_EULA.pdf" target="_blank">terms and conditions</a>.</label></p>
+	  			<p><input type="checkbox" value="" id="agreeterms" /><label for="agreeterms">I agree to the <a href="http://app.saysollc.com/docs/social/Say.So_App_EULA.pdf" target="_blank">terms and conditions</a>.</label></p>
 	  			<input type="submit" value="Grab It" disabled="" id="btn-submit" class="grab-it" />
 	  		</form>
 	  		<p><small>We don't share your email or password with anyone...period.</small></p>

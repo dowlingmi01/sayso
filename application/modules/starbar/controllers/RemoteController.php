@@ -84,6 +84,10 @@ class Starbar_RemoteController extends Api_GlobalController
 		return $this->commonStarbar();
 	}
 
+	public function socialAction () {
+		return $this->commonStarbar();
+	}
+
 	public function machinimaAction () {
 		return $this->commonStarbar();
 	}

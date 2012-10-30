@@ -71,9 +71,9 @@ $(document).ready(function (){
 			msg = 'You already have Say.So installed';
 		if( !saysoConf.bn.isSupported ) {
 			if( saysoConf.bn.isMobile ) {
-				msg = 'Sorry! Movie Say.So isn\'t yet available for mobile browsers. Join us via your computer when you can!';
+				msg = 'Sorry! Social Say.So isn\'t yet available for mobile browsers. Join us via your computer when you can!';
 			} else {
-				msg = 'Sorry, your web browser doesn\'t support the cool features of Movie Say.So. For an optimal experience, use the latest versions of Chrome (www.google.com/chrome), Firefox (www.getfirefox.com) or Safari (www.apple.com/safari). And we support Internet Explorer 8 and above.';
+				msg = 'Sorry, your web browser doesn\'t support the cool features of Social Say.So. For an optimal experience, use the latest versions of Chrome (www.google.com/chrome), Firefox (www.getfirefox.com) or Safari (www.apple.com/safari). And we support Internet Explorer 8 and above.';
 			}
 		}
 		if( msg ) {
@@ -128,7 +128,7 @@ $(document).ready(function (){
 		var errMsg;
 		if(!(errMsg = validateFields())) {
 			var ajaxData = {
-					client_name : 'movie',
+					client_name : 'social',
 					install_origination : saysoConf.origination,
 					user_agent_supported : true,
 					install_url : document.location.href,

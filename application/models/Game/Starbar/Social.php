@@ -10,7 +10,7 @@
  * @author davidbjames
  *
  */
-class Game_Starbar_Movie extends Game_Starbar {
+class Game_Starbar_Social extends Game_Starbar {
 
 	/**
 	 *
@@ -45,7 +45,7 @@ class Game_Starbar_Movie extends Game_Starbar {
 			$good->setNonRedeemReason('Sorry, this item is sold out.');
 			$good->setCommentForUser('Sold Out');
 		} elseif (!parent::$userHasCompletedProfileSurvey) {
-			if (parent::$profileSurveyId) $profileSurveyLink = '<a href="//'.BASE_DOMAIN.'/starbar/movie/embed-survey?survey_id='.parent::$profileSurveyId.'" class="sb_nav_element" rel="sb_popBox_surveys_hg" title="Take profile survey now!" style="position: relative; top: -5px;">Profile Survey</a>';
+			if (parent::$profileSurveyId) $profileSurveyLink = '<a href="//'.BASE_DOMAIN.'/starbar/social/embed-survey?survey_id='.parent::$profileSurveyId.'" class="sb_nav_element" rel="sb_popBox_surveys_hg" title="Take profile survey now!" style="position: relative; top: -5px;">Profile Survey</a>';
 			else $profileSurveyLink = "Profile Survey";
 			$good->setNonRedeemReason('Must complete<br />'.$profileSurveyLink);
 			$good->setCommentForUser('Survey Requirement');

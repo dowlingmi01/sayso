@@ -2,14 +2,14 @@
 
 require_once APPLICATION_PATH . '/modules/starbar/controllers/ContentController.php';
 
-class Starbar_MovieController extends Starbar_ContentController
+class Starbar_SocialController extends Starbar_ContentController
 {
 	protected $_maximumDisplayed = array('polls' => 0, 'surveys' => 0, 'trailers' => 0);
 
 	public function postDispatch() {
 		parent::postDispatch();
 		if (!$this->_usingJsonPRenderer) {
-			$this->view->headLink()->appendStylesheet('/css/starbar-movie.css');
+			$this->view->headLink()->appendStylesheet('/css/starbar-social.css');
 		}
 	}
 
@@ -94,14 +94,14 @@ class Starbar_MovieController extends Starbar_ContentController
 		$this->view->assign('facebook_share_image_url', 'https://s3.amazonaws.com/say.so/media/moviebar/logo_moviebar.png');
 	}
 
-	protected $_appShareLink = 'http://Movie.Say.So';
-	protected $_fbkAppDescription = "Say.So is your way of making a lasting impact on the communities you love. Participating in Movie Say.So is easy - by giving your opinion, answering polls and rating new and retro movie trailers, you gain points to redeem awesome prizes for movie buffs.";
+	protected $_appShareLink = 'http://Social.Say.So';
+	protected $_fbkAppDescription = "Say.So is your way of making a lasting impact on the communities you love. Participating in Social Say.So is easy - by giving your opinion, answering polls and rating new and retro movie trailers, you gain points to redeem awesome prizes for movie buffs.";
 
 	protected function _assignShareAppToView($facebookCallbackUrl) {
-		$twAppShareText = 'Join Movie Say.So and get access to big giveaways and awesome prizes. Movie.Say.So';
-		$fbkAppShareTitle = 'Movie Say.So';
-		$fbkAppShareCopy = "I just earned 19 CineBucks for sharing Movie Say.So!
-Join Movie Say.So and get access to big giveaways and awesome prizes.";
+		$twAppShareText = 'Join Social Say.So and get access to big giveaways and awesome prizes.';
+		$fbkAppShareTitle = 'Social Say.So';
+		$fbkAppShareCopy = "I just earned 19 CineBucks for sharing Social Say.So!
+Join Social Say.So and get access to big giveaways and awesome prizes.";
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twAppShareText, $fbkAppShareCopy,  $facebookCallbackUrl, $fbkAppShareTitle, $this->_fbkAppDescription);
 	}
@@ -122,8 +122,8 @@ Join Movie Say.So and get access to big giveaways and awesome prizes.";
 				$redeemable = ($completed ? 38 : 19);
 				break;
 		}
-		$twShareText = "I've just finished a Movie Say.So survey and earned " . $redeemable ." Coins. Get the Movie Say.So app @";
-		$fbkShareText = "I've just finished a Movie Say.So survey and earned " . $redeemable ." Coins. Get the Movie Say.So app @ http://Movie.Say.So";
+		$twShareText = "I've just finished a Social Say.So survey and earned " . $redeemable ." Coins. Get the Social Say.So app @";
+		$fbkShareText = "I've just finished a Social Say.So survey and earned " . $redeemable ." Coins. Get the Social Say.So app @ http://Social.Say.So";
 
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
@@ -142,8 +142,8 @@ Join Movie Say.So and get access to big giveaways and awesome prizes.";
 				$redeemable = 19;
 				break;
 		}
-		$twShareText = "I've just finished a Movie Say.So poll and earned " . $redeemable ." Coins. Get the Movie Say.So app @";
-		$fbkShareText = "I've just finished a Movie Say.So poll and earned " . $redeemable ." Coins. Get the Movie Say.So app @ http://Movie.Say.So";
+		$twShareText = "I've just finished a Social Say.So poll and earned " . $redeemable ." Coins. Get the Social Say.So app @";
+		$fbkShareText = "I've just finished a Social Say.So poll and earned " . $redeemable ." Coins. Get the Social Say.So app @ http://Social.Say.So";
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
 	}
@@ -161,8 +161,8 @@ Join Movie Say.So and get access to big giveaways and awesome prizes.";
 				$redeemable = 19;
 				break;
 		}
-		$twShareText = "I've just finished a Movie Say.So trailer and earned " . $redeemable ." Coins. Get the Movie Say.So app @";
-		$fbkShareText = "I've just finished a Movie Say.So trailer and earned " . $redeemable ." Coins. Get the Movie Say.So app @ http://Movie.Say.So";
+		$twShareText = "I've just finished a Social Say.So trailer and earned " . $redeemable ." Coins. Get the Social Say.So app @";
+		$fbkShareText = "I've just finished a Social Say.So trailer and earned " . $redeemable ." Coins. Get the Social Say.So app @ http://Social.Say.So";
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
 	}

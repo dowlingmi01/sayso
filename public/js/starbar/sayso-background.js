@@ -125,9 +125,9 @@ function gotInitialState( response ) {
 	}
 }
 function answerPendingRequests() {
+	processNotifications(sayso.state.notifications.items, []);
 	for( var i = 0; i < sayso.pendingStateRequests.length; i++ )
 		sayso.pendingStateRequests[i](sayso.state);
-	processNotifications(sayso.state.notifications.items, []);
 	checkForNotifications();
 }
 function getUserData( callback ) {

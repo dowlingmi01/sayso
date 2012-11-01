@@ -4,8 +4,13 @@
 			<div class="sb_header no-border">
 				<!--<img src="//<?= BASE_DOMAIN ?>/images/machinima/logo_big.png" alt="Machinima logo" />-->
 			</div><!-- .sb_header -->
+			<img usemap="#promo_map" src="//<?= BASE_DOMAIN ?>/images/machinima/img_promo_3.png"><br>
+			<map name="promo_map">
+				<area shape="rect" coords="168,258,357,282" href="//<?= BASE_DOMAIN ?>/starbar/machinima/rewards?chosen_good_id=first" class="sb_nav_element"  rel="sb_popBox_rewards">
+				<area shape="rect" coords="192,282,262,295" href="//<?= BASE_DOMAIN ?>/starbar/machinima/embed-survey?survey_id=<?= $this->profile_survey_id ?>" class="sb_nav_element" rel="sb_popBox_surveys_hg">
+			</map>
 
-			<div class="sb_promo_details" style="width: 250px; top: 80px;">
+			<!--<div class="sb_promo_details" style="width: 250px; top: 80px;">
 				<p class="sb_promo_summary_white">Enter to win by redeeming Coins for monthly giveaway tokens in the Reward Center. You can redeem multiple tokens to increase your odds of winning.</p>
 				<p class="sb_promo_link_black">
 					<a href="//<?= BASE_DOMAIN ?>/starbar/machinima/rewards?chosen_good_id=first" class="sb_nav_element sb_theme_textHighlight_alt" rel="sb_popBox_rewards"></a>

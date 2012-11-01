@@ -369,8 +369,8 @@
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_promoBG{
-	width: 525px;
-	height: 290px;
+	width: 520px;
+	height: 296px;
 	background-repeat: no-repeat;
 
 }
@@ -399,7 +399,7 @@
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week1{
 	display: block;
-	background-image: url('../images/machinima/img_promo_2.png');
+	background-image: url('../images/machinima/img_promo_3.png');
 	background-position: 0 0;
 	margin-top:2px;
 }
@@ -519,7 +519,7 @@
 
 
 #sayso-starbar #starbar-player-console #sb_popBox_promo.sb_popBox .sb_popBoxInner {
-	background-color:black !important;
+	padding: 5px 0 10px 0;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow_nav{

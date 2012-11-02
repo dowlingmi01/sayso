@@ -737,7 +737,7 @@ class Starbar_ContentController extends Api_GlobalController
     public function missionAction() {
 		Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'mission', 0);
 		$surveyCollection = new SurveyCollection();
-		$surveyCollection->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'mission');
+		$surveyCollection->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'mission', 'new');
 		if($surveyCollection->count()) {
 			$survey = $surveyCollection->getFirst();
 			$missionInfo = new Survey_MissionInfo();

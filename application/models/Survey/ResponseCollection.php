@@ -150,34 +150,13 @@ class Survey_ResponseCollection extends RecordCollection
 	}
 
 	public static function checkIfUserHasSurveys ($userId, $starbarId, $type, $status) {
-		$type = str_replace("surveys", "survey", $type);
-		$type = str_replace("polls", "poll", $type);
-		$type = str_replace("quizzes", "quiz", $type);
-		$type = str_replace("trailers", "trailer", $type);
-
 		if (! in_array($type, array("survey", "poll", "quiz", "trailer", "mission"))) return false;
 
 		// @todo the 0 on the following line should take into consideration the maximum to be displayed for that user for that starbar
 		self::markUnseenSurveysNewForStarbarAndUser($starbarId, $userId, $type, 0);
 		if (in_array($type, array("survey", "poll"))) self::markOldSurveysArchivedForStarbarAndUser($starbarId, $userId, $type);
-
-		$sql = "SELECT count(sr.id) AS `count`
-				FROM survey_response sr
-				INNER JOIN survey s
-					ON s.id = sr.survey_id
-					AND s.type = ?
-				INNER JOIN starbar_survey_map ssm
-					ON ssm.survey_id = s.id
-					AND ssm.starbar_id = ?
-				INNER JOIN report_cell_user_map rcum
-					ON (
-						IFNULL(s.report_cell_id, 1) = rcum.report_cell_id
-						AND (rcum.report_cell_id = 1 OR rcum.user_id = ?)
-					)
-				WHERE sr.user_id = ?
-					AND sr.status = ?
-				";
-        $result = (Db_Pdo::fetch($sql, $type, $starbarId, $userId, $userId, $status)); 
-		return !!$result['count'];
+		$surveyCollection = new SurveyCollection();
+		$surveyCollection->loadSurveysForStarbarAndUser($starbarId, $userId, $type, $status);
+		return $surveyCollection->count() > 0;
 	}
 }

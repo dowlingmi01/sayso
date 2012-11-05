@@ -241,7 +241,7 @@ function, which is added to the window object below
 			var saveData = {};
 
 			for (var key in this) {
-				if (key == "start_options" || (typeof this[key] == "function" && !includeFunctions)) {
+				if (key == "cache" || key == "start_options" || (typeof this[key] == "function" && !includeFunctions)) {
 					continue; // skip
 				} else if (key == "node_info") {
 					saveData[key] = {};
@@ -283,7 +283,7 @@ function, which is added to the window object below
 		getChildrenThatAreObjects: function() {
 			var children = [];
 			for (key in this) {
-				if (key != "node_info" && key != "start_options" && typeof this[key] == "object") {
+				if (key != "cache" && key != "node_info" && key != "start_options" && typeof this[key] == "object") {
 					children.push(key);
 				}
 			}
@@ -335,6 +335,7 @@ function, which is added to the window object below
 
 		// sends this node (or the getSaveData() version of it) to the server to be saved. the server returns the saved id to be re-loaded at the top.
 		saveToServer: function () {
+			log(this);
 			if (!this.validate()) return;
 
 			var parameters = {

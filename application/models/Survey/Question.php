@@ -61,7 +61,7 @@ class Survey_Question extends Record
 		}
 
 		// Select the field, and order the responses by that field so we can calculate the median
-		$sql = "SELECT sqr." . $field . " FROM survey_question_response sqr " . $joinClause . " WHERE sqr.survey_question_id = ? ORDER BY " . $field;
+		$sql = "SELECT sqr." . $field . " FROM survey_question_response sqr " . $joinClause . " WHERE sqr.survey_question_id = ? AND sqr." . $field . " IS NOT NULL ORDER BY " . $field;
 		$responseArray = Db_Pdo::fetchColumn($sql, $this->id);
 
 		// Cast integer and decimal/monetary values to the right type

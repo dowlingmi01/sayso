@@ -1156,6 +1156,38 @@ class Devadmin_IndexController extends Api_GlobalController
 	}
 
 
+	public function userGroupEmailsAction () {
+		$this->view->headScript()->appendFile('//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js');
+		$this->view->headScript()->appendFile('/js/dig/dig.js');
+		$this->view->headLink()->appendStylesheet('/css/dig/dig.css');
+
+		$this->view->report_cell_id = $this->report_cell_id;
+
+		$sql = "SELECT *
+				FROM starbar
+				ORDER BY id
+				";
+		$starbars = Db_Pdo::fetchAll($sql);
+		$this->view->starbars = $starbars;
+
+		$surveys = SurveyCollection::getAllSurveysForAllStarbars();
+		$this->view->surveys = $surveys;
+
+		if (((int)$this->report_cell_id) > 1) {
+			$sql = "
+				SELECT email
+				FROM user_email
+				INNER JOIN report_cell_user_map
+					ON user_email.user_id = report_cell_user_map.user_id
+					AND report_cell_user_map.report_cell_id = ?
+				ORDER BY user_email.user_id
+			";
+			$emails = Db_Pdo::fetchColumn($sql, $this->report_cell_id);
+			$this->view->emails = implode(",", $emails);
+		}
+	}
+
+
 	public function surveyResponsesAction () {
 		$request = $this->getRequest();
 		$reportCellId = (int) $request->getParam("report_cell_id", 1);

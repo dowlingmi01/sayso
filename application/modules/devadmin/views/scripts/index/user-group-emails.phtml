@@ -1,0 +1,109 @@
+<br />
+<style>
+body {
+	font: 11px Verdana;
+	margin-left: 20px;
+	margin-bottom: 50px;
+	background-color: #CCC;
+}
+
+h1 {
+	margin: 10px 0 20px 0;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+h2 {
+	margin: 0;
+	font-weight: normal;
+}
+
+h3 {
+	margin: 40px 0 5px 0;
+}
+
+div#reportSettings {
+	position: relative;
+	width: 1005px;
+	border: 1px solid #666;
+	background-color: #FFF;
+	padding: 10px;
+}
+
+#reportSubmit {
+	position: absolute;
+	right: 22px;
+	bottom: 22px;
+}
+
+textarea {
+	width: 1021px;
+	height: 100px;
+}
+</style>
+<form id="emailsForm" action="user-group-emails" method="get">
+
+	<div id="reportSettings" class="do_not_print">
+		<div id="reportSubmit">
+			<input type="button" onclick="$('#emailsForm').submit();" value="Show Email Addresses in Group">
+		</div>
+
+		<div id="report_cell_dig"></div>
+		<script type="text/javascript">
+			// pre-cache starbars and surveys .. this is optional but improves initial loading performance
+			var originalCache = window.originalNodeCache;
+			originalCache.starbar = {};
+			<? $firstStarbar = true ?>
+			<? foreach($this->starbars as $starbar) { ?>
+				originalCache.starbar["<?= $starbar['id'] ?>"] = {
+					id: <?= $starbar['id'] ?>,
+					label: "<?= $starbar['label'] ?>",
+					survey: {}
+				};
+			<? } ?>
+
+			<? foreach ($this->surveys as $survey) { ?>
+				originalCache.starbar["<?= $survey['unique_starbar_id'] ?>"].survey["<?= $survey['id'] ?>"] = {
+					id: <?= $survey['id'] ?>,
+					label: "<?= str_replace('"', '\\"', $survey['title']) ?>",
+					type: "<?= $survey['type'] ?>",
+					fully_loaded: true
+				};
+			<? } ?>
+
+			$(document).ready(function () {
+				var digOptions = {
+					form_id: 'emailsForm',
+					select_name: 'report_cell_id',
+					single_starbar_id: <?= ($this->single_starbar_id ? $this->single_starbar_id : 0) ?>,
+					hidden_by_default: true,
+					label: "Select user group: ",
+					new_option: "New User Group",
+					sort:[{field: 'ordinal'}]
+				};
+				window.reportCellTopNode = dig('report_cell_dig', 'report_cell', '<?= ($this->report_cell_id ? $this->report_cell_id : 0) ?>', digOptions);
+			});
+		</script>
+		<br style="clear :both" /><br />
+	</div>
+</form>
+
+<? if ($this->emails) { ?>
+	<br />
+	(<a href="#" onclick="$('#emails').select(); return false;">Select All</a>)<br />
+	<textarea id="emails"><?= $this->emails?></textarea>
+
+	<script type="text/javascript">
+		$("#emails").focus(function() {
+		    var $this = $(this);
+		    $this.select();
+
+		    // Work around Chrome's little problem
+		    $this.mouseup(function() {
+		        // Prevent further mouseup intervention
+		        $this.unbind("mouseup");
+		        return false;
+		    });
+		});
+    </script>
+<? } ?>

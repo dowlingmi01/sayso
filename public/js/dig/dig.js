@@ -170,16 +170,16 @@ function, which is added to the window object below
 			// Perform actions based on the field that was updated (and update the updatedValue based on this, in case it's a new id)
 			if (recordSettings[this.node_info.type] &&
 				recordSettings[this.node_info.type][field] &&
-				typeof recordSettings[this.node_info.type][field].on_change == "function"
+				typeof recordSettings[this.node_info.type][field].onChange == "function"
 			) {
-				var newUpdatedValue = recordSettings[this.node_info.type][field].on_change(this, editorElement, field, updatedValue, options);
-				// if the on_change function returns something, set the updatedValue to it
+				var newUpdatedValue = recordSettings[this.node_info.type][field].onChange(this, editorElement, field, updatedValue, options);
+				// if the onChange function returns something, set the updatedValue to it
 				if (typeof newUpdatedValue != "undefined") updatedValue = newUpdatedValue;
 			}
 
 			// Perform actions based on the type of node that was updated
-			if (recordSettings[this.node_info.type] && typeof recordSettings[this.node_info.type].on_change == "function") {
-				recordSettings[this.node_info.type].on_change(this, editorElement, field, updatedValue, options);
+			if (recordSettings[this.node_info.type] && typeof recordSettings[this.node_info.type].onChange == "function") {
+				recordSettings[this.node_info.type].onChange(this, editorElement, field, updatedValue, options);
 			}
 
 			// Update the cache, and update duplicates of this node (i.e. nodes that have the same type and id as this one)
@@ -225,9 +225,9 @@ function, which is added to the window object below
 			this.node_info.element.addClass('edited');
 
 			if (recordSettings[this.node_info.type] &&
-				recordSettings[this.node_info.type].mark_updated == "function"
+				recordSettings[this.node_info.type].markUpdated == "function"
 			) {
-				recordSettings[this.node_info.type].mark_updated(this, updatedOriginal, editorElement, field, updatedValue, options);
+				recordSettings[this.node_info.type].markUpdated(this, updatedOriginal, editorElement, field, updatedValue, options);
 			}
 
 			if (this.node_info.parent && !options.do_not_mark_parent_updated) this.node_info.parent.markUpdated(updatedOriginal, editorElement, field, updatedValue, options);
@@ -335,7 +335,6 @@ function, which is added to the window object below
 
 		// sends this node (or the getSaveData() version of it) to the server to be saved. the server returns the saved id to be re-loaded at the top.
 		saveToServer: function () {
-			log(this);
 			if (!this.validate()) return;
 
 			var parameters = {
@@ -606,8 +605,8 @@ function, which is added to the window object below
 
 			justCreated = true;
 		} else { // load existing
-			if (recordSettings[type] && typeof recordSettings[type].get_load_into_parameters == "function") {
-				$.extend(options, recordSettings[type].get_load_into_parameters(parentOfNewNode, id, options));
+			if (recordSettings[type] && typeof recordSettings[type].getLoadIntoParameters == "function") {
+				$.extend(options, recordSettings[type].getLoadIntoParameters(parentOfNewNode, id, options));
 			}
 			$.extend(true, newNode, getCopyFromCache(parentOfNewNode.node_info.top_node.cache, type, id, options));
 		}
@@ -621,8 +620,8 @@ function, which is added to the window object below
 			newNode.node_info.created_since_loading
 			|| (
 				recordSettings[type]
-				&& typeof recordSettings[type].is_editable == "function"
-				&& recordSettings[type].is_editable(newNode, parentOfNewNode, id, options)
+				&& typeof recordSettings[type].isEditable == "function"
+				&& recordSettings[type].isEditable(newNode, parentOfNewNode, id, options)
 			)
 		) {
 			newNode.node_info.editable = true;
@@ -666,7 +665,7 @@ function, which is added to the window object below
 			var selectsToChange = $('select.' + selectClass);
 			var newOptionHtml = '<option value="'+newId+'">'+newLabel+'</option>';
 			selectsToChange.each(function (index) {
-				$('option[value = "new"]', node).after($(newOptionHtml));
+				$('option[value = "new"]', $(this)).after($(newOptionHtml));
 			});
 			editorElement.val(newId);
 		}
@@ -745,8 +744,8 @@ function, which is added to the window object below
 		var cacheLocation = null;
 		var originalData = false;
 
-		if (recordSettings[type] && typeof recordSettings[type].get_cache_location == "function") {
-			cacheLocation = recordSettings[type].get_cache_location(cache, id, options);
+		if (recordSettings[type] && typeof recordSettings[type].getCacheLocation == "function") {
+			cacheLocation = recordSettings[type].getCacheLocation(cache, id, options);
 		}
 
 		if (!cacheLocation) return false;
@@ -790,8 +789,8 @@ function, which is added to the window object below
 			record_id: (id || -1)
 		};
 
-		if (recordSettings[type] && typeof recordSettings[type].get_server_request_parameters == "function") {
-			var extraParameters = recordSettings[type].get_server_request_parameters(id, options);
+		if (recordSettings[type] && typeof recordSettings[type].getServerRequestParameters == "function") {
+			var extraParameters = recordSettings[type].getServerRequestParameters(id, options);
 			if (extraParameters) {
 				if (typeof extraParameters == "object") {
 					$.extend(parameters, extraParameters);
@@ -1118,15 +1117,15 @@ function, which is added to the window object below
 
 	var recordSettings = {
 		top: {
-			mark_updated: function (topNode, updatedOriginal, editorElement, field, updatedValue, options) {
+			markUpdated: function (topNode, updatedOriginal, editorElement, field, updatedValue, options) {
 				topNode.updateDuplicates(updatedOriginal, editorElement, field, updatedOriginal[field], options);
 			},
-			on_change: function (topNode, editorElement, field, updatedValue, options) {
+			onChange: function (topNode, editorElement, field, updatedValue, options) {
 				options.do_not_mark_parent_updated = true; // stop markUpdated() from being called at the end of updateField
 			},
 			report_cell_id: {
 				clear_next: '', // remove everything after the editorElement when this field changes
-				on_change: function (topNode, editorElement, field, updatedValue, options) {
+				onChange: function (topNode, editorElement, field, updatedValue, options) {
 					topNode.report_cell = {}; // remove the old report_cell from the node
 
 					if (updatedValue) {
@@ -1211,24 +1210,24 @@ function, which is added to the window object below
 					}
 
 					return updatedValue;
-				} // end of top.report_cell_id.on_change
+				} // end of top.report_cell_id.onChange
 			} // end of top.report_cell_id
 		},
 
 		// =====================================
 
 		report_cell: {
-			is_editable: function (newNode, parentOfNewNode, id, options) {
+			isEditable: function (newNode, parentOfNewNode, id, options) {
 				if ( newNode.category == 'Custom' ) return true; // can only edit custom report_cells
 			},
-			get_server_request_parameters: function (id, options) {
+			getServerRequestParameters: function (id, options) {
 				var extraParameters = { single_starbar_id: options.single_starbar_id };
 				return extraParameters;
 			},
-			get_cache_location: function (cache, id, options) {
+			getCacheLocation: function (cache, id, options) {
 				return cache;
 			},
-			mark_updated: function (reportCell, updatedOriginal, editorElement, field, updatedValue, options) {
+			markUpdated: function (reportCell, updatedOriginal, editorElement, field, updatedValue, options) {
 				reportCell.node_info.top_node.cache['report_cell'][reportCell.id] = reportCell.getSaveData(false, 1);
 			},
 			render: function(reportCell) {
@@ -1265,7 +1264,7 @@ function, which is added to the window object below
 				}
 			},
 			title: {
-				on_change: function (reportCell, editorElement, field, updatedValue, options) {
+				onChange: function (reportCell, editorElement, field, updatedValue, options) {
 					if (!updatedValue) updatedValue = "Untitled User Group " + reportCell.id
 					var newText = reportCell.category.toUpperCase() + ': ' + updatedValue + ' (' + reportCell.number_of_users + ' users)';
 
@@ -1295,18 +1294,18 @@ function, which is added to the window object below
 		// =====================================
 
 		report_cell_user_condition: {
-			is_editable: function (newNode, parentOfNewNode, id, options) {
+			isEditable: function (newNode, parentOfNewNode, id, options) {
 				if (parentOfNewNode.node_info.editable) return true;
 			},
-			get_load_into_parameters: function (parentOfNewNode, id, options) {
+			getLoadIntoParameters: function (parentOfNewNode, id, options) {
 				return { report_cell_id: parentOfNewNode.id };
 			},
-			get_cache_location: function (cache, id, options) {
+			getCacheLocation: function (cache, id, options) {
 				if (options.report_cell_id) {
 					return cache.report_cell[options.report_cell_id+""];
 				}
 			},
-			mark_updated: function (condition, updatedOriginal, editorElement, field, updatedValue, options) {
+			markUpdated: function (condition, updatedOriginal, editorElement, field, updatedValue, options) {
 				if (condition.report_cell && condition.report_cell[condition.compare_report_cell_id]) {
 					condition.node_info.top_node.cache['report_cell'][condition.compare_report_cell_id + ""] = condition.report_cell[condition.compare_report_cell_id].getSaveData(false, 1);
 				}
@@ -1348,7 +1347,7 @@ function, which is added to the window object below
 			condition_type: {
 				default_value: 'report_cell',
 				clear_next: '', // remove everything after the editorElement when this field changes
-				on_change: function (condition, editorElement, field, updatedValue, options) {
+				onChange: function (condition, editorElement, field, updatedValue, options) {
 					if (updatedValue) {
 						switch (updatedValue) { // rebuild interface as needed
 							case "question":
@@ -1396,7 +1395,7 @@ function, which is added to the window object below
 			},
 			compare_survey_type: {
 				clear_next: '.editor', // remove everything after editorElement with the class 'editor' when this field changes
-				on_change: function (condition, editorElement, field, updatedValue, options) {
+				onChange: function (condition, editorElement, field, updatedValue, options) {
 					if (updatedValue) {
 						condition.renderEditorSelect('compare_survey_id', 'survey', { starbar_id: condition.compare_survey_starbar_id, filter: [{field: 'type', value: updatedValue}], label: "<br />Match users who saw this " + updatedValue+ " "});
 					}
@@ -1404,7 +1403,7 @@ function, which is added to the window object below
 			},
 			compare_survey_starbar_id: {
 				clear_next: '.editor',
-				on_change: function (condition, editorElement, field, updatedValue, options) {
+				onChange: function (condition, editorElement, field, updatedValue, options) {
 					if (updatedValue) {
 						condition.renderEditorSelect('compare_survey_type', 'survey_type', {starbar_id: updatedValue});
 					}
@@ -1412,7 +1411,7 @@ function, which is added to the window object below
 			},
 			compare_survey_id: {
 				clear_next: '.editor',
-				on_change: function (condition, editorElement, field, updatedValue, options) {
+				onChange: function (condition, editorElement, field, updatedValue, options) {
 					if (updatedValue) {
 						condition.renderEditorSelect('comparison_type', 'comparison_type', {report_cell_user_condition_condition_type: condition.condition_type, label: "and whose current survey status "});
 						condition.renderEditorSelect('compare_string', 'compare_string_choice', {report_cell_user_condition_condition_type: condition.condition_type});
@@ -1421,7 +1420,7 @@ function, which is added to the window object below
 			},
 			compare_survey_question_starbar_id: {
 				clear_next: '.editor',
-				on_change: function (condition, editorElement, field, updatedValue, options) {
+				onChange: function (condition, editorElement, field, updatedValue, options) {
 					if (updatedValue) {
 						condition.renderEditorSelect('compare_survey_question_survey_type', 'survey_type', {starbar_id: (updatedValue || condition.node_info.top_node.start_options.single_starbar_id)});
 					}
@@ -1429,7 +1428,7 @@ function, which is added to the window object below
 			},
 			compare_survey_question_survey_type: {
 				clear_next: '.editor',
-				on_change: function (condition, editorElement, field, updatedValue, options) {
+				onChange: function (condition, editorElement, field, updatedValue, options) {
 					if (updatedValue) {
 						condition.renderEditorSelect('compare_survey_question_survey_id', 'survey', {starbar_id: (condition.compare_survey_question_starbar_id || condition.node_info.top_node.start_options.single_starbar_id), filter: [{field: 'type', value: updatedValue}]});
 					}
@@ -1437,7 +1436,7 @@ function, which is added to the window object below
 			},
 			compare_survey_question_survey_id: {
 				clear_next: '.editor',
-				on_change: function (condition, editorElement, field, updatedValue, options) {
+				onChange: function (condition, editorElement, field, updatedValue, options) {
 					if (updatedValue) {
 						condition.renderEditorSelect('compare_survey_question_id', 'survey_question', {selected_id: condition.condition_type + '-' + condition.compare_survey_question_id, starbar_id: condition.compare_survey_question_starbar_id, survey_id: condition.compare_survey_question_survey_id, label: "<br />Match users who answered "});
 					}
@@ -1445,7 +1444,7 @@ function, which is added to the window object below
 			},
 			compare_survey_question_id: {
 				clear_next: '.editor',
-				on_change: function (condition, editorElement, field, updatedValue, options) {
+				onChange: function (condition, editorElement, field, updatedValue, options) {
 					if (updatedValue) {
 						var updatedValues = updatedValue.split("-");
 						condition.condition_type = updatedValues[0];
@@ -1481,7 +1480,7 @@ function, which is added to the window object below
 			},
 			compare_report_cell_id: {
 				clear_next: '',
-				on_change: function (condition, editorElement, field, updatedValue, options) {
+				onChange: function (condition, editorElement, field, updatedValue, options) {
 					condition.report_cell = {}; // remove the old report_cell from the node
 
 					if (updatedValue) {
@@ -1533,7 +1532,7 @@ function, which is added to the window object below
 		// =====================================
 
 		report_cell_condition_type: {
-			get_cache_location: function (cache, id, options) {
+			getCacheLocation: function (cache, id, options) {
 				return cache;
 			}
 		},
@@ -1541,7 +1540,7 @@ function, which is added to the window object below
 		// =====================================
 
 		report_cell_user_condition_condition_type: {
-			get_cache_location: function (cache, id, options) {
+			getCacheLocation: function (cache, id, options) {
 				return cache;
 			}
 		},
@@ -1549,10 +1548,10 @@ function, which is added to the window object below
 		// =====================================
 
 		study_ad: {
-			get_server_request_parameters: function (id, options) {
+			getServerRequestParameters: function (id, options) {
 				return true;
 			},
-			get_cache_location: function (cache, id, options) {
+			getCacheLocation: function (cache, id, options) {
 				return cache;
 			}
 		},
@@ -1560,7 +1559,7 @@ function, which is added to the window object below
 		// =====================================
 
 		survey_type: {
-			get_cache_location: function (cache, id, options) {
+			getCacheLocation: function (cache, id, options) {
 				return cache;
 			}
 		},
@@ -1568,10 +1567,10 @@ function, which is added to the window object below
 		// =====================================
 
 		starbar: {
-			get_server_request_parameters: function (id, options) {
+			getServerRequestParameters: function (id, options) {
 				return { single_starbar_id: options.single_starbar_id };
 			},
-			get_cache_location: function (cache, id, options) {
+			getCacheLocation: function (cache, id, options) {
 				return cache;
 			}
 		},
@@ -1579,12 +1578,12 @@ function, which is added to the window object below
 		// =====================================
 
 		survey: {
-			get_server_request_parameters: function (id, options) {
+			getServerRequestParameters: function (id, options) {
 				if (!id && !options.starbar_id) return false;
 				if (options.starbar_id) return { starbar_id: options.starbar_id };
 				return true;
 			},
-			get_cache_location: function (cache, id, options) {
+			getCacheLocation: function (cache, id, options) {
 				if (id && cache['survey'] && cache['survey'][id]) { // id specified, and it is cached
 					return cache;
 				} else if (options.starbar_id) { // starbar specified
@@ -1598,11 +1597,11 @@ function, which is added to the window object below
 		// =====================================
 
 		survey_question: {
-			get_server_request_parameters: function (id, options) {
+			getServerRequestParameters: function (id, options) {
 				if (!id && !options.survey_id) return false;
 				return { survey_id: options.survey_id };
 			},
-			get_cache_location: function (cache, id, options) {
+			getCacheLocation: function (cache, id, options) {
 				if (id) {
 					return cache;
 				} else if (options.starbar_id && options.survey_id) {
@@ -1614,7 +1613,7 @@ function, which is added to the window object below
 		// =====================================
 
 		survey_question_choice: {
-			get_cache_location: function (cache, id, options) {
+			getCacheLocation: function (cache, id, options) {
 				if (options.survey_question_id) {
 					return cache.survey_question[options.survey_question_id];
 				}
@@ -1624,7 +1623,7 @@ function, which is added to the window object below
 		// =====================================
 
 		comparison_type: {
-			get_cache_location: function (cache, id, options) {
+			getCacheLocation: function (cache, id, options) {
 				if (options.report_cell_user_condition_condition_type) {
 					return cache.report_cell_user_condition_condition_type[options.report_cell_user_condition_condition_type+""];
 				}
@@ -1634,7 +1633,7 @@ function, which is added to the window object below
 		// =====================================
 
 		compare_string_choice: {
-			get_cache_location: function (cache, id, options) {
+			getCacheLocation: function (cache, id, options) {
 				if (options.report_cell_user_condition_condition_type) {
 					return cache.report_cell_user_condition_condition_type[options.report_cell_user_condition_condition_type+""];
 				}

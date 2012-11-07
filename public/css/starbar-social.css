@@ -172,7 +172,7 @@
 	width: 95px !important;
 	background-position: center 58% !important;
 }
-
+/* change this color */
 #sayso-starbar #starbar-player-console #starbar-nav ul li span.sb_nav_notify{
 	padding: 2px 3px 0px 3px;
 	min-width:  6px;
@@ -181,7 +181,7 @@
 	top: 13px;
 	right: 5px;
 	color: #383838;
-	background-color: #92c20c;
+	background-color: #4f186b;
 	font-size: 9px;
 	text-align:  center;
 	line-height: 9px;
@@ -213,6 +213,7 @@
 	background-color: #fcd149;
 }
 
+/* change this gradient */
 #sayso-starbar #starbar-player-console .sb_theme_bgGradient,
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value,
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value-fading{
@@ -221,12 +222,12 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(97,17,16)),
-	color-stop(0.61, rgb(9,1,2)));
+	color-stop(0.22, rgb(77,21,100)),
+	color-stop(0.61, rgb(30,5,50)));
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(97,17,16) 22%,
-			rgb(9,1,2) 61%);
+			rgb(77,21,100) 22%,
+			rgb(30,5,50) 61%);
 	background-color: #4f186b;
 }
 

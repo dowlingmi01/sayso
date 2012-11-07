@@ -156,7 +156,7 @@
 			center top,
 			rgb(51,51,51) 22%,
 			rgb(36,36,36) 61%);
-    border-bottom: 1px solid #631210;
+    border-bottom: 1px solid #5E1682;
     border-top: 1px solid #4d3739;
     display: block;
     height: 8px;
@@ -227,7 +227,7 @@
 			center top,
 			rgb(97,17,16) 22%,
 			rgb(9,1,2) 61%);
-	background-color: #611110;
+	background-color: #4f186b;
 }
 
 
@@ -242,7 +242,7 @@
 			center top,
 			rgb(191,46,20) 22%,
 			rgb(82,5,20) 61%);
-	background-color: #bf2e14;
+	background-color: #4f186b;
 }
 
 
@@ -280,7 +280,7 @@
 			center top,
 			rgb(195,220,116) 22%,
 			rgb(139,170,43) 61%);
-	background-color: #92c20c;
+	background-color: #4f186b;
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_bgGradient_error,
@@ -297,7 +297,7 @@
 			center top,
 			rgb(201,12,12) 22%,
 			rgb(128,8,8) 61%);
-	background-color: #c90c0c;
+	background-color: #4f186b;
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_bgGradientGrey{
@@ -350,12 +350,12 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_textHighlight, #sayso-starbar-embed .sb_theme_textHighlight{
-	color: #991B17 !important;
+	color: #4f186b !important;
 	text-shadow: none !important;
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_textHighlight_alt, #sayso-starbar-embed .sb_theme_textHighlight_alt{
-	color: #92c20c !important;
+	color: #4f186b !important;
 	text-shadow: none !important;
 }
 
@@ -375,7 +375,7 @@
 	padding: 0px 20px 0px 0px;
 	height: 16px;
 	line-height: 16px;
-	color: #991B17;
+	color: #4f186b;
 	display: inline-block;
 	margin: 5px 0px 0px 0px;
 }
@@ -597,11 +597,11 @@
 #sayso-starbar #starbar-player-console #starbar-type .sb_content .sb_popBox a,
 #sayso-starbar #sb_popBox_user-profile .sb_currency_balance,
 #sayso-starbar .sb_rewardItem .sb_rewardHeader{
-	color: #991b17;
+	color: #5e1682;
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a{
-	color: #991b17 !important;
+	color: #5e1682 !important;
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a{
@@ -611,7 +611,7 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li{
-	border-left: 1px solid #991b17;
+	border-left: 1px solid #5e1682;
 }
 
 /* other special formatting styles */
@@ -817,7 +817,7 @@
 }
 
 #sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner .sb_popContent h2{
-	color: #991B17;
+	color: #5e1682;
 	margin: 10px 0px 0px 0px;
 	font-size: 28px;
 	font-weight: normal;
@@ -1245,11 +1245,11 @@
 
 #sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points .sb_current-level .sb_user_level_title{
 	text-transform:  uppercase;
-	color: #991B17;
+	color: #5e1682;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points .sb_currency_title{
-	color: #991B17;
+	color: #5e1682;
 }
 
 /* ABOUT SAYSO POPBOX */

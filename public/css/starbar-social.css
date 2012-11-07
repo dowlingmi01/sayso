@@ -230,18 +230,18 @@
 	background-color: #4f186b;
 }
 
-
+/* change this gradient */
 #sayso-starbar .sb_theme_button{
 	background-image: -webkit-gradient(
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(191,46,20)),
-	color-stop(0.61, rgb(82,5,20)));
+	color-stop(0.22, rgb(79,21,102)),
+	color-stop(0.61, rgb(28,5,47)));
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(191,46,20) 22%,
-			rgb(82,5,20) 61%);
+			rgb(79,21,102) 22%,
+			rgb(28,5,47) 61%);
 	background-color: #4f186b;
 }
 
@@ -282,7 +282,7 @@
 			rgb(139,170,43) 61%);
 	background-color: #4f186b;
 }
-
+/* change this gradient */
 #sayso-starbar #starbar-player-console .sb_theme_bgGradient_error,
 #sayso-starbar .sb_progress_bar_error.sb_ui-progressbar .sb_ui-progressbar-value,
 #sayso-starbar .sb_progress_bar_error.sb_ui-progressbar .sb_ui-progressbar-value-fading,
@@ -291,12 +291,12 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(201,12,12)),
-	color-stop(0.61, rgb(128,8,8)));
+	color-stop(0.22, rgb(79,21,102)),
+	color-stop(0.61, rgb(28,5,47)));
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(201,12,12) 22%,
-			rgb(128,8,8) 61%);
+			rgb(79,21,102) 22%,
+			rgb(28,5,47) 61%);
 	background-color: #4f186b;
 }
 

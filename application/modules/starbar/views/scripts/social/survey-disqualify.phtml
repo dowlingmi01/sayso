@@ -20,20 +20,20 @@
 <div id="sayso-starbar-embed">
 	<br />
 	<? if ($this->survey->reward_category != "premium") { ?>
-		Sorry, it appears that you do not qualify for the <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong> survey. Don't worry, we'll still give you some CineBucks and CineStars for trying!<br /><br />
+    Sorry, it appears that you do not qualify for the <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong> survey. Don't worry, we'll still give you some<span class="sb_tabHeader"> Social Say.So</span> and <span class="sb_tabHeader">Social Pay.So</span> for trying!<br /><br />
 	<? } ?>
 	<? if ($this->pixel_iframe_url) { ?>
 		<iframe src="<?= $this->pixel_iframe_url?>" width="1" height="1" border="0" class="sb_pixel_iframe"></iframe>
 	<? } ?>
 	<div id="sb-survey-disqualified">
 		<? if ($this->survey->reward_category == "premium") { ?>
-			<p>Nice! You still banked <strong class="sb_theme_textHighlight_alt">75 CineBucks</strong> &amp; <strong class="sb_theme_textHighlight_alt">1000 CineStars</strong>. Remember to check out the Rewards Center to redeem your CineBucks for stuff!</p>
+			<p>Nice! You still banked <strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">Social Say.So</span></strong> &amp; <strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">Social Pay.So</span></strong>. Remember to check out the Rewards Center to redeem your CineBucks for stuff!</p>
 			<? $shareReward = 30 ?>
 		<? } elseif ($this->survey->reward_category == "profile") { ?>
-			<p>You earned <strong class="sb_theme_textHighlight">50 CineBucks</strong> &amp;	<strong class="sb_theme_textHighlight">500 CineStars</strong></p>
+	  <p>You earned <strong class="sb_theme_textHighlight">50 </strong><strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">Social Pay.So</span></strong> &amp;	<strong class="sb_theme_textHighlight">500 </strong><strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">Social Say.So</span></strong></p>
 			<? $shareReward = 15 ?>
 		<? } else { ?>
-			<p>You earned <strong class="sb_theme_textHighlight">25 CineBucks</strong> &amp;	<strong class="sb_theme_textHighlight">250 CineStars</strong></p>
+	  <p>You earned <strong class="sb_theme_textHighlight">25 </strong><strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">Social Pay.So</span></strong> &amp;	<strong class="sb_theme_textHighlight">250 </strong><strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">Social Say.So</span></strong></p>
 			<? $shareReward = 8 ?>
 		<? } ?>
 		<div class="sb_externalShares">
@@ -42,7 +42,7 @@
 				<img src="//<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
 			</a>
 			<span class="sb_mini-redeemable-currency-reward sb_mini-redeemable-currency-reward_facebook" id="sb_mini-redeemable-currency-reward_facebook">+<?= $shareReward ?></span>
-			<div class="sb_externalShare sb_externalShare_twitter" rel="sb_mini-redeemable-currency-reward_twitter">
+		  <div class="sb_externalShare sb_externalShare_twitter" rel="sb_mini-redeemable-currency-reward_twitter">
 				<a class="twitter-share-button"
 					data-related="<?= $this->twitter_share_related_users ?>"
 					data-hashtags="<?= $this->twitter_share_hashtags ?>"
@@ -56,12 +56,14 @@
 			</div>
 			<span class="sb_mini-redeemable-currency-reward sb_mini-redeemable-currency-reward_twitter" id="sb_mini-redeemable-currency-reward_twitter">+<?= $shareReward ?></span>
 			Share this survey to earn extra points
-		</div>
-	</div>
-		<br />
+	  AND as even more bonus you'll get XX <strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">Social Pay.So</span></strong> for every friend that joins Say.So and completes the profile survey.<br />
 		<? if ($this->next_survey->id) { ?>
-			Try the next survey: "<a href="#" onclick="$SQ.remoteControl.openSurvey(<?= $this->next_survey->id ?>); return false;"><?= ($this->next_survey->title) ?></a>"
+			Try the next survey: "<a href="#" onclick="$SQ.remoteControl.openSurvey(<?= $this->next_survey->id ?>); return false;">
+			<?= ($this->next_survey->title) ?>
+			</a>"
 		<? } ?>
+</div>
+	</div>
 </div>
 <script type="text/javascript">
 	// SET UP EXTERNAL SHARE BEHAVIORS

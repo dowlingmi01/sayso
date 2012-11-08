@@ -11,7 +11,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>social.say.so Installation</title>
 <link rel="stylesheet" href="landing.css" />
 <link rel="chrome-webstore-item"
@@ -21,6 +21,14 @@
 <script src="js/jquery.cycle.all.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/functions.js"></script>
+<style type="text/css">
+a:link {
+	color: #5e1682;
+}
+a:hover {
+	color: #9413C4;
+}
+</style>
 </head>
 <body>
 <div id="wrapper">
@@ -33,10 +41,8 @@
 	<div id="sections" class="tab-content">
 	  <div class="section tab-pane active" id="section-1">
 	  	<div class="section-head">
-	  		<h2>Are you a film fiend? Do you salivate over movie trailers?</h2>
-	  		<p>Are your days filled by streaming online movies, attending midnight premiers and watching endless DVD's? If so, you may have the Movie say-so we are looking for!</p>
-	  		<p>Earn real prizes and entry into awesome giveaways by answering polls about your favorite movies, rating new and retro trailers and giving your say-so about anything and everything movie related! 
-</p>
+	  		<h2>Headline to go here</h2>
+	  		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate  velit esse cillum dolore</p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">
@@ -56,7 +62,7 @@
 	  <div class="section tab-pane" id="section-2">
 	  	<div class="section-head">
 	  		<h2>What can I do?</h2>
-	  		<p>Earn CineBucks by taking movie polls, answering surveys and rating new and retro trailers. Redeem CineBucks for items in our Reward Center.</p>
+	  		<p>Earn Social Pay.So by taking movie polls, answering surveys and rating new and retro trailers. Redeem Social Pay.So for items in our Reward Center.</p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">

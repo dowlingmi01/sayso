@@ -222,12 +222,12 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(77,21,100)),
-	color-stop(0.61, rgb(30,5,50)));
+	color-stop(0.22, rgb(79,21,102)),
+	color-stop(0.61, rgb(28,5,47)));
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(77,21,100) 22%,
-			rgb(30,5,50) 61%);
+			rgb(79,21,102) 22%,
+			rgb(28,5,47) 61%);
 	background-color: #4f186b;
 }
 
@@ -1738,7 +1738,7 @@
 {
 	font-size:12px;
 	font-weight:bold;
-	color: #a92614;
+	color: #5e1682;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_tabs{
@@ -1880,18 +1880,20 @@
 	padding: 0px 5px 10px 5px;
 }
 
+/*rewards center button */
+
 #sayso-starbar .sb_rewardItem:hover .sb_theme_button{
 	background-image: -webkit-gradient(
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(191,46,20)),
-	color-stop(0.61, rgb(82,5,20))) !important;
+	color-stop(0.22, rgb(79,21,102)),
+	color-stop(0.61, rgb(28,5,47))) !important;
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(191,46,20) 22%,
-			rgb(82,5,20) 61%) !important;
-	background-color: #bf2e14;
+			rgb(79,21,102) 22%,
+			rgb(28,5,47) 61%) !important;
+	background-color: #5e1682;
 }
 
 #sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_rewardBase{

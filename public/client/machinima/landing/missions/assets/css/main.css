@@ -1,7 +1,7 @@
 /* overrides */
 
 body {
-	background: #000 url(../images/riseoftheguardians/Info_Bg_Image.png) no-repeat center 60px fixed;
+	background: #000 url(../images/mission/Info_Bg_Image.png) no-repeat center 60px fixed;
 	font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
 	font-size: 14px;
 	color: #FFF;
@@ -234,7 +234,7 @@ input[type="radio"] {
 #mission-progress-token {
 	width: 37px;
 	height: 38px;
-	background: transparent url(../images/riseoftheguardians/Token_For_ProgressBar.png) no-repeat 0 0;
+	background: transparent url(../images/mission/Token_For_ProgressBar.png) no-repeat 0 0;
 	position: absolute;
 	left: -18px;
 	top: -12px;  /* half height (38 / 2 = 19) - half progress bar height (14 / 2 = 7) ...  19 - 7 = 12 */

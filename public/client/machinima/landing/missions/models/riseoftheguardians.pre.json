@@ -7,7 +7,7 @@
   "stages": [
     {
       "id": 1,
-      "title": "RotG Poll",
+      "short_title": "RotG Poll",
       "type": "poll",
 	  "background": "assets/images/riseoftheguardians/Stage1_Bg_Image.jpg",
       "data": {
@@ -33,11 +33,12 @@
     },
     {
       "id": 2,
-      "title": "Watch",
+      "short_title": "Watch",
       "type": "video",
 	  "background": "assets/images/riseoftheguardians/Stage2_Bg_Image.jpg",
       "data": {
         "url": "aPLiBxhoug0",
+        "title": "Watch the Trailer",
         "question": {
           "id": 1,
           "text": "After watching this trailer, how likely is it that you will see this movie?"
@@ -64,11 +65,12 @@
     },
     {
       "id": 3,
-      "title": "Visit",
+      "short_title": "Visit",
       "type": "site-survey",
 	  "background": "",
       "data": {
         "url": "http://www.riseoftheguardians.com/",
+        "title": "Check out http://www.riseoftheguardians.com/ and answer the following questions",
         "questions": [
           {
             "question": {
@@ -162,7 +164,7 @@
     },
     {
       "id": 4,
-      "title": "Poll",
+      "short_title": "Poll",
       "type": "image-poll",
 	  "background": "",
       "data": {
@@ -200,7 +202,7 @@
     },
     {
       "id": 5,
-      "title": "Feedback",
+      "short_title": "Feedback",
       "type": "poll",
 	  "background": "assets/images/riseoftheguardians/Stage5_Bg_Image.jpg",
       "data": {

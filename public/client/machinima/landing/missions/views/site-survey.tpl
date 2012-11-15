@@ -8,7 +8,7 @@
 				<div class="mission-slide-sets">
 					<div class="mission-slide-instructions">
 						<h3 class="attention">Pop Quiz!</h3>
-						<p>Check out {{{url}}} and answer the following questions</p>
+						<p>{{{title}}}</p>
 						<p class="mission-slide-start">Question 1<i></i></p>
 					</div>
 					{{#questions}}{{#question}}

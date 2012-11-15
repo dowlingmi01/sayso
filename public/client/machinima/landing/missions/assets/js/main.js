@@ -56,7 +56,7 @@ $(function(){
 		// write the steps to the bottom of the intro and show steps
 		var labels = $('#mission-progress-labels > ul');
 		json.stages.forEach(function(element, index){
-			titles.createElement('span', 'Stage ' + ( index + 1 ) + ': ' + element.title);
+			titles.createElement('span', 'Stage ' + ( index + 1 ) + ': ' + element.short_title);
 			labels.createElement('li', 'Stage ' + ( index + 1 ) );
 		});		
 		// assign initial widths to stage labels
@@ -372,14 +372,6 @@ $(function(){
 		};
 		MissionSurvey.VideoPlayer.rendered = false;
 		MissionSurvey.VideoPlayer.render = function(elementId, videoId, complete){
-			// only load the API once
-			if(!this.rendered){			
-				var script = document.createElement('script');
-				script.src = "//www.youtube.com/iframe_api";
-				var first = document.getElementsByTagName('script')[0];
-				first.parentNode.insertBefore(script, first);
-				this.rendered = true;
-			}
 			// update values
 			this.elementId = elementId;
 			this.values.videoId = videoId;
@@ -392,8 +384,18 @@ $(function(){
 				}
 				return false;
 			};
+			// only load the API once
+			if(!this.rendered){			
+				var script = document.createElement('script');
+				script.src = "//www.youtube.com/iframe_api";
+				var first = document.getElementsByTagName('script')[0];
+				first.parentNode.insertBefore(script, first);
+				this.rendered = true;
+				window.onYouTubeIframeAPIReady = startPlayer;
+			} else
+				startPlayer();
 			// load it
-			window.onYouTubeIframeAPIReady = function() {
+			function startPlayer() {
 				new YT.Player(
 					MissionSurvey.VideoPlayer.elementId,
 					MissionSurvey.VideoPlayer.values

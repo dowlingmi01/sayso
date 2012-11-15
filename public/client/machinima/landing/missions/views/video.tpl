@@ -1,6 +1,6 @@
 <div class="mission-video">
 	<div class="mission-trailer">
-		<h3>Watch the Trailer</h3>
+		<h3>{{{title}}}</h3>
 		<div id="mission-video-container"></div>
 	</div>
 	<div class="mission-poll">

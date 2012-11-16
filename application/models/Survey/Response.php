@@ -44,6 +44,40 @@ class Survey_Response extends Record
 		return !!(Db_Pdo::fetch($sql, $userId, $surveyId));
 	}
 
+	/**
+	* This function checks to see if the user can see a specific survey
+	*
+	* @param int $userId
+	* @param int $surveyId
+	*/
+	public static function canUserSeeSurvey($userId, $surveyId) {
+		$sql = "SELECT user_id FROM survey_response WHERE status = 'new' AND user_id = ? AND survey_id = ?";
+		return !!(Db_Pdo::fetch($sql, $userId, $surveyId));
+	}
+
+	/**
+	* Add a survey for a user if they do not already have access to the survey
+	*
+	* @param mixed $userId
+	* @param mixed $surveyId
+	*/
+	public static function addSurveyforUser($userId,$surveyId) {
+		if (!self::checkIfUserHasCompletedSurvey($userId,$surveyId)) {
+			// Hasn't been completed.
+			if (!self::canUserSeeSurvey($userId,$surveyId)) {
+				// Hasn't been completed, and user can't see it. Add this survey response record
+				$newResponse = new Survey_Response();
+				$newResponse->id = null; // Force a new record to be inserted
+				$newResponse->survey_id = $surveyId;
+				$newResponse->user_id = $userId;
+				$newResponse->status = 'new';
+				$newResponse->processing_status = 'not required';
+				return !!($newResponse->save());
+			}
+		}
+		return false;
+	}
+
 	public function deleteQuestionResponses() {
 		if (!$this->id) return;
 		$sql = "DELETE FROM survey_question_response WHERE survey_response_id = ?";

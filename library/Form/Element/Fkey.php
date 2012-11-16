@@ -45,7 +45,6 @@ class Form_Element_Fkey extends Zend_Form_Element_Select
 			$where = sprintf("WHERE %s",$this->_options['where']);
 		}
 
-	//	$sql = sprintf("SELECT %s as a, %s as b FROM %s %s ORDER BY %s ASC",$this->_options['lookupfield'],$this->_options['lookuplabel'],$this->_options['lookuptable'],$where, $this->_options['lookuplabel']);
 		$sql = sprintf("SELECT %s as a, %s as b FROM %s %s ORDER BY %s",$this->_options['lookupfield'],$this->_options['lookuplabel'],$this->_options['lookuptable'],$where, (isset($this->_options['lookuporder']) ? $this->_options['lookuporder'] : $this->_options['lookuplabel']));
 
 		if ($this->_options['default']!== NULL) {
@@ -160,18 +159,21 @@ class Form_Element_Fkey extends Zend_Form_Element_Select
 			switch ($action) {
 
 				case "add" :
+				case "duplicate" :
 					break;
 
 				case "detail" :
 				case "delete" :
 					$this->setReadOnly();
 					break;
-
 				case "edit":
 					// Is it a writeonly field?
 					if ($this->_getAttribute("writeonly")) {
 						$this->setReadOnly();
 					}
+					break;
+
+				default:
 					break;
 			}
 		}

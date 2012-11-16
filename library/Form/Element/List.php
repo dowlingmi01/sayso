@@ -120,7 +120,7 @@ class Form_Element_List extends Zend_Form_Element_Select {
 			switch ($action) {
 
 				case "add" :
-
+				case "duplicate" :
 					break;
 
 				case "detail" :

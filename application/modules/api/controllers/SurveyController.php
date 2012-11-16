@@ -98,6 +98,10 @@ class Api_SurveyController extends Api_GlobalController
 		return $this->_resultType(new Object(array("correct_survey_question_choice_id" => $correctSurveyQuestionChoiceId)));
 	}
 
+	/**
+	* Runs after the user has completed the two trailer questions
+	*
+	*/
 	public function userTrailerSubmitAction() {
 		$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'survey_id', 'first_choice_id', 'second_choice_id'));
 
@@ -138,31 +142,33 @@ class Api_SurveyController extends Api_GlobalController
 		$surveyResponse->completed_disqualified = new Zend_Db_Expr('now()');
 		$surveyResponse->save();
 
+		//PTC it came from here
+
 		Game_Starbar::getInstance()->completeSurvey($survey);
 
 		return $this->_resultType(true);
 	}
 	public function userMissionSubmitAction() {
 		$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'top_frame_id', 'mission_short_name', 'mission_data'));
-		
+
 		$missionInfo = new Survey_MissionInfo();
 		$missionInfo->loadDataByUniqueFields(array('short_name'=>$this->mission_short_name));
 		if( !$missionInfo->id )
 			return $this->_resultType(false);
-		
+
 		$surveyResponse = new Survey_Response();
 		$surveyResponse->loadDataByUniqueFields(array("survey_id" => $missionInfo->survey_id, "user_id" => $this->user_id));
 
 		if (!$surveyResponse->id || $surveyResponse->status == 'completed' || $surveyResponse->status == "disqualified")
 			return $this->_resultType(false);
-		
+
 		$missionProgress = new Survey_MissionProgress();
 		$missionProgress->survey_id = $missionInfo->survey_id;
 		$missionProgress->user_id = $this->user_id;
 		$missionProgress->top_frame_id = $this->top_frame_id;
 		$missionProgress->stage = $this->mission_data['stage'];
 		$missionProgress->save();
-			
+
         if( $this->mission_data['stage'] == $missionInfo->number_of_stages ) {
         	try {
 				$fileLocation = realpath(APPLICATION_PATH . '/../public/client/machinima/landing/missions/models');
@@ -189,20 +195,47 @@ class Api_SurveyController extends Api_GlobalController
 			} catch( Exception $e ) {
 				return $this->_resultType(false);
 			}
-        	
+
 			$surveyResponse->status = 'completed';
  			$surveyResponse->processing_status = 'completed';
  			$surveyResponse->data_download = new Zend_Db_Expr('now()');
 			$surveyResponse->completed_disqualified = new Zend_Db_Expr('now()');
 			$surveyResponse->save();
-			
+
 			$survey = new Survey();
 			$survey->loadData($missionInfo->survey_id);
-			
+
 			Game_Starbar::getInstance()->completeSurvey($survey);
 		}
 		return $this->_resultType(true);
 	}
+
+	/**
+	* Called from Ajax (trailer.phtml) when a trailer has been viewed by the user.
+	* If there is a related_survey_id, a check is done to see if the user is permitted
+	* to see that survey, and if so, it is inserted as a link
+	*
+	*/
+	public function markSurveyNewForUserAction()	{
+
+		$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'related_survey_id'));
+
+		if ($this->related_survey_id!=null) {
+			// We have a related survey.
+
+			// Check if this user has already seen this survey
+			if (Survey_Response::checkIfUserHasCompletedSurvey($this->user_id,$this->related_survey_id)) {
+				return false;
+			} else {
+				// User has not seen this survey. Add it to their list
+				Survey_Response::addSurveyForUser($this->user_id,$this->related_survey_id);
+				return true;
+			}
+		} else {
+			return false; // There is no related survey for this trailer
+		}
+	}
+
 	private function _verifyMissionAnswer( $questionDef, $userAns, &$answers ) {
 		$answerId = $userAns['selectedAnswerId'];
 		if( !$answerId )

@@ -1,9 +1,9 @@
 {
 	"table": [
 		{
-			"comment": "Trailers are a subset of Polls/Surveys used for the Spotlight section",
-			"viewname": "Trailer",
-			"where": "type='trailer'",
+			"comment": "<strong>Trailer Wraparounds</strong> are a subset of Surveys. They can be designed here, or imported from existing Survey Gizmo Surveys",
+			"viewname": "Wraparound",
+			"where": "type='wrap-around'",
 			"tablename": "survey",
 			"model": "Survey",
 			"permissions":[
@@ -28,41 +28,6 @@
 			]
 		},
 		{
-		    "colname": "starbar_id",
-		    "filterwidth":40,
-		    "label": "Starbar",
-		    "type": "fkey",
-		    "lookuptable": "starbar",
-		    "lookupfield": "id",
-		    "lookuplabel": "label",
-		    "default": "--Please Select a starbar--",
-		    "displaywhen": [
-		            "add",
-		            "grid",
-		            "detail",
-		            "delete",
-		            "edit"
-		    ]
-		},
-		{
-			"colname": "report_cell_id",
-			"filterwidth":40,
-			"label": "Users who can see this",
-			"help": "Leaving this blank means all users can see the content",
-			"type": "fkey",
-			"lookuptable": "report_cell",
-			"lookupfield": "id",
-			"lookuplabel": "CONCAT('(', category, ') ', title)",
-			"lookuporder": "category ASC, id ASC",
-			"default": "--Please Select a user group--",
-			"displaywhen": [
-				"add",
-				"detail",
-				"delete",
-				"edit"
-			]
-		},
-		{
 			"colname": "user_id",
 			"type": "hidden",
 			"value": 1,
@@ -76,7 +41,18 @@
 		{
 			"colname": "type",
 			"type": "hidden",
-			"value": "trailer",
+			"value": "wrap-around",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "origin",
+			"type": "hidden",
+			"value": "SurveyGizmo",
 			"displaywhen": [
 				"add",
 				"detail",
@@ -101,8 +77,7 @@
 		{
 			"colname": "title",
 			"type": "text",
-			"label": "Trailer Title",
-			"help":"The title of this trailer quiz (not necessarily movie/game title)",
+			"label": "Wraparound Title",
 			"width": 600,
 			"filterwidth":250,
 			"validate": [
@@ -119,12 +94,34 @@
 		},
 		{
 			"colname": "reward_category",
-			"type": "list",
-			"listoptions": [
-				"standard",
-				"premium"
-			],
-			"default": "standard",
+			"type": "hidden",
+			"value": "standard",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "external_id",
+			"type": "number",
+			"width":40,
+			"filterwidth":40,
+			"help": "Obtained from SurveyGizmo. Required.",
+			"displaywhen": [
+				"add",
+				"detail",
+				"grid",
+				"delete",
+				"edit"
+			]
+		},
+		{
+			"colname": "external_key",
+			"type": "text",
+			"width": 360,
+			"help": "Obtained from SurveyGizmo. Required.",
 			"displaywhen": [
 				"add",
 				"detail",
@@ -136,12 +133,6 @@
 		{
 			"Title":"Starbars",
 			"table": "starbar_survey_map",
-			"fk": "survey_id"
-		},
-		{
-			"Title":"Trailer Info",
-			"table": "survey_trailer_info",
-			"fkoptional": "wraparound_id",
 			"fk": "survey_id"
 		},
 		{

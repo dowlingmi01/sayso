@@ -479,3 +479,20 @@ dd#no_csrf_foo-element {
 .navigation ul li.active a {
 	color: #4A70BA;
 }
+
+#tablecomment {
+	color:#466cb5;
+	padding-left:30px;
+}
+
+#tablecomment strong {
+	font-weight:bold;
+}
+
+#tablecomment li {
+	padding-left:50px;
+}
+
+#tabs th a span {
+	color:white !important;
+}

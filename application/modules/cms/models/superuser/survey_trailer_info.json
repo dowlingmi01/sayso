@@ -8,6 +8,7 @@
 				"allowadd",
 				"allowdelete",
 				"allowedit",
+				"allowduplicate",
 				"allowdetails"
 			]
 		}
@@ -35,6 +36,7 @@
 				"add",
 				"grid",
 				"detail",
+				"duplicate",
 				"edit"
 			],
 			"attributes": [
@@ -44,6 +46,7 @@
 		{
 			"colname": "entertainment_title",
 			"type": "text",
+			"width": 600,
 			"label": "Movie/Game Title",
 			"validate": [
 				"notnull"
@@ -53,6 +56,7 @@
 				"grid",
 				"subgrid",
 				"detail",
+				"duplicate",
 				"edit"
 			]
 		},
@@ -60,18 +64,54 @@
 			"colname": "category",
 			"type": "list",
 			"listoptions": [
-				"retro movie",
 				"pre-release movie",
-				"pre-release game"
+				"current movie",
+				"sneak-peek movie",
+				"retro movie",
+				"pre-release game",
+				"current game",
+				"sneak-peek game",
+				"retro game",
+				"pre-release TV show",
+				"current TV show",
+				"sneak-peek TV show",
+				"retro TV show",
+				"pre-release music video",
+				"current music video",
+				"sneak-peek music video",
+				"retro music video"
 			],
 			"default": "retro movie",
 			"displaywhen": [
 				"add",
 				"detail",
+				"duplicate",
 				"edit"
 			]
 		},
 		{
+			"colname": "wraparound_id",
+			"filterwidth":40,
+			"label": "Wrap-around Survey",
+			"type": "fkey",
+			"lookuptable": "survey",
+			"lookupfield": "id",
+			"lookuplabel": "title",
+			"lookuporder": "title ASC",
+			"where": "type='wrap-around'",
+			"default": "--Please Select a wrap-around survey--",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"duplicate",
+				"edit"
+			],
+			"attributes": [
+				"writeonly"
+			]
+		},
+			{
 			"colname": "video_key",
 			"type": "text",
 			"label": "Video Key",
@@ -83,6 +123,73 @@
 			"displaywhen": [
 				"add",
 				"detail",
+				"duplicate",
+				"edit"
+			]
+		},
+		{
+			"colname": "related_survey_id",
+			"filterwidth":40,
+			"label": "Extra Credit Survey",
+			"type": "fkey",
+			"lookuptable": "survey",
+			"lookupfield": "id",
+			"lookuplabel": "title",
+			"lookuporder": "title ASC",
+			"where": "type='survey' and status='active' and processing_status='completed' and (end_at > curdate() or end_at = 0)",
+			"default": "--Please Select an Extra Credit follow-on survey--",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"duplicate",
+				"edit"
+			]
+		},
+		{
+			"colname": "related_survey",
+			"type": "text",
+			"width": 600,
+			"label": "Extra Credit Text",
+			"help": "Enter the text which will become the link for the extra credit survey",
+			"displaywhen": [
+				"add",
+				"grid",
+				"subgrid",
+				"detail",
+				"duplicate",
+				"edit"
+			]
+		},
+		{
+			"colname": "start_date",
+			"filterwidth":110,
+			"type": "datetime",
+			"validate": [
+				"notnull"
+			],
+			"displaywhen": [
+				"grid",
+				"add",
+				"detail",
+				"subgrid",
+				"duplicate",
+				"edit"
+			]
+		},
+		{
+			"colname": "end_date",
+			"filterwidth":110,
+			"type": "datetime",
+			"validate": [
+				"notnull"
+			],
+			"displaywhen": [
+				"grid",
+				"add",
+				"detail",
+				"subgrid",
+				"duplicate",
 				"edit"
 			]
 		}

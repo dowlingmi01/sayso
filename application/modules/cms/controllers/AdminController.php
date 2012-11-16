@@ -23,6 +23,10 @@
 
 		private $_newElements = array();
 
+		/**
+		* Define the CSS and Javascript files that will be included automatically when this
+		* controller is called.
+		*/
 		public function preDispatch() {
 			// i.e. for everything based on Generic Starbar, use these includes
 			$this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
@@ -42,7 +46,6 @@
 			$this->view->headScript()->appendFile('/js/cms/jquery.ui.tabs.js');
 
 			$this->view->headScript()->appendFile('/js/cms/init.js');
-//printf("<h1>All original parameters</h1><pre>%s</pre>",print_r($this->_getAllParams(),true));
 			$crumb = new Breadcrumb($this->_getAllParams());
 			$this->view->breadcrumb = $crumb->getBreadcrumb();
 
@@ -63,19 +66,19 @@
 			}
 			parent::init();
 
-		if (!$this->_request->isXmlHttpRequest())
-		{
-			$this->setLayoutBasics();
+			if (!$this->_request->isXmlHttpRequest())
+			{
+				$this->setLayoutBasics();
 
-			$scripts = $this->view->headScript();
-			$scripts->appendFile('/js/pubsub.js');
-			$scripts->appendFile('/js/jquery.lightbox_me.js');
-			$scripts->appendFile('/js/mustache.js');
-			$scripts->appendFile('/js/templates.js');
-			$scripts->appendFile('/js/bind.js');
-			$scripts->appendFile('/modules/admin/index/index.js');
-			$this->view->headLink()->appendStylesheet('/modules/admin/index/index.css', 'screen');
-		}
+				$scripts = $this->view->headScript();
+				$scripts->appendFile('/js/pubsub.js');
+				$scripts->appendFile('/js/jquery.lightbox_me.js');
+				$scripts->appendFile('/js/mustache.js');
+				$scripts->appendFile('/js/templates.js');
+				$scripts->appendFile('/js/bind.js');
+				$scripts->appendFile('/modules/admin/index/index.js');
+				$this->view->headLink()->appendStylesheet('/modules/admin/index/index.css', 'screen');
+			}
 		}
 
 		/**
@@ -169,7 +172,7 @@
 						->order('m.id desc')
 						->limit(10,0);
 			$stmt = $select->query();
-			//printf("Select query is [%s]",$select);
+
 			$mediaresults = $stmt->fetchAll();
 
 			return $mediaresults;
@@ -268,6 +271,11 @@
 							} else {
 								// we want to hide any hidden columns
 								$coltype = $saysojson->getColAttr($value,'type');
+
+								if ($coltype=="datetime") {
+								    $grid2->updateColumn($value, array('format'=> array('date',array('date_format'=>'dd-MM-yyyy'))));
+								}
+
 								if ($coltype=="hidden") {
 								    $grid2->updateColumn($value,array('hidden' => true));
 								}
@@ -349,6 +357,23 @@
 								->callback(
 									array(
 										'function'  => array($this, '_generateDetailsButtonLink'),
+										'params'	=> array('{{hiddenid}}',$fktablename,$tablenamepolite)
+									)
+								);
+
+							$grid2->addExtraColumns($extraColumnDetails);
+						}
+
+						if ($saysojson->checkTablePermission("allowduplicate")) {
+
+							$extraColumnDetails = new Bvb_Grid_Extra_Column();
+							$extraColumnDetails
+								->position('left')
+								->name('duplicate')
+								->title(' ')
+								->callback(
+									array(
+										'function'  => array($this, '_generateDuplicateButtonLink'),
 										'params'	=> array('{{hiddenid}}',$fktablename,$tablenamepolite)
 									)
 								);
@@ -698,7 +723,7 @@
 								if (array_key_exists("subobjects",$saysojson->getJson())) {
 									foreach ($saysojson->getJson('subobjects') as $key=>$value) {
 
-										$this->_subobject($value['table'],$value['fk'],$formElements["id"]->getValue(),$cnt,$realtable,(isset($value['lookuporder']) ? $value['lookuporder'] : null));
+										$this->_subobject($value['table'], $value['fk'],$formElements["id"]->getValue(),$cnt,$realtable,(isset($value['lookuporder']) ? $value['lookuporder'] : null));
 										$cnt++;
 									}
 
@@ -873,6 +898,161 @@
 			}
 		}
 
+		public function duplicateAction()
+		{
+
+			$longid = explode("?",$this->getRequest()->getParam('id'));
+			$id = $longid[0];
+			if ($id===null) {
+				printf("<p>No ID found. Cannot display.</p>");
+			} else {
+
+				$longtable = explode("?",$this->getRequest()->getParam('table'));
+				$tablename = strtolower($longtable[0]);
+				$tablenamepolite = ucwords(str_replace("_"," ",$tablename));
+				if ($tablename !== null) {
+
+					// Search for the json file
+					// set file to read - Move relative from 'public' to find it.
+
+					$userlevel = "superuser";
+					// @todo Userlevel will be changed once logins and user level permissions are included.
+
+					$file = sprintf('../application/modules/cms/models/%s/%s.json',$userlevel,$tablename);
+
+					$saysojson = new Json($file);
+
+					if ($saysojson->validJson($tablename)) {
+						if ($saysojson->checkTablePermission('allowduplicate')) {
+							$columnlist = $saysojson->getCMSColumns("displaywhen","duplicate");
+
+							if ($columnlist) {
+								$realtable = strtolower($saysojson->getTableAttr('tablename'));
+								$select = Zend_Registry::get('db')->select()->from($realtable,$columnlist)->where("id = ?",$id);
+
+								$stmt = $select->query();
+								$currentData = $stmt->fetchAll();
+								if (count($currentData) == 1) {
+									$currentData = $currentData[0];
+
+									// currentData contains a list of fields and values from the table,
+									// which we can put in as initial values
+
+									// Start with a blank formelements array, and add the array items
+									// as we go
+									$formElements = array();
+									foreach ($saysojson->getJson('columns') as $key=>$value) {
+
+										if (in_array($value['colname'],$columnlist)) {
+
+											// Process the form fields for this table
+											// We know there will be a colname and a type
+											$colname = $value['colname'];
+											$coltype = $value['type'];
+
+											$coloptions = array();
+											foreach ($value as $colkey=>$colvalue) {
+												if (($colkey!='colname') and ($colkey!='type')) {
+													$coloptions[$colkey] = $colvalue;
+												}
+											}
+
+											$coloptions['meta']['tablename'] = $tablename;
+											$coloptions['meta']['colname'] = $colname;
+
+
+											$elementmodel = "Form_Element_".ucfirst(strtolower($coltype));
+											$formElements[$colname] = new $elementmodel($colname);
+											$formElements[$colname]->buildElement("duplicate",$coloptions);
+
+											// general aspects of a form element
+
+											// Override the field label
+											if (array_key_exists('label',$coloptions)) {
+												$formElements[$colname]->setLabel($coloptions['label']);
+											}
+
+											// Assign a default value
+											if (array_key_exists('value',$coloptions)) {
+												$formElements[$colname]->setValue($coloptions['value']);
+											}
+
+											// Assign a value from the edited record - if there is one. This may override any default value
+											if (array_key_exists($colname,$currentData) && array_key_exists($colname,$formElements)) {
+												$formElements[$colname]->setValue($currentData[$colname]);
+											}
+
+											// Display Width
+											if (array_key_exists('width',$coloptions)) {
+												$formElements[$colname]->setAttrib("size", $coloptions['width']);
+											}
+										}
+									}
+
+									// All column elements have been built. Add the standard form elements
+
+									$formElements['submityes'] = new Zend_Form_Element_Submit('dup');
+									$formElements['submityes'] ->setLabel(sprintf('Confirm Duplicate')); // the button's value
+
+									$formElements['submitno'] = new Zend_Form_Element_Submit('del');
+									$formElements['submitno'] ->setLabel(sprintf('Cancel')); // the button's value
+
+									$form = new ZendX_JQuery_Form();
+									$form->setName($realtable);
+									$form->addElements($formElements);
+
+									$form->addElement('hash', 'no_csrf_foo', array('salt' => 'uniquesay.so'));
+
+								if ($this->getRequest()->isPost()) { //is it a post request ?
+									$postData = $this->getRequest()->getPost(); // getting the $_POST data
+
+									if ($form->isValid($postData)) {
+										if ($postData['dup']=="Confirm Duplicate") {
+											$formData = $form->getValues(); // data filtered
+											$tablefrommodel = $saysojson->getModel();
+											$model = new $tablefrommodel();
+
+											unset($formData['no_csrf_foo']); // Remove the salt - we don't need it for the duplicate
+
+											$model->setData($formData);
+											$result = $model->save();
+
+											$this->msg->addMessage('Record successfully duplicated');
+											$this->rd->gotoSimple('view','admin','cms',array('table' => 'trailer'));
+
+											} else {
+												// Delete cancelled
+												$this->view->message = "Duplicate cancelled";
+												$this->rd->gotoSimple('view','admin','cms',array('table' => 'trailer'));
+											}
+										} else {
+											$form->populate($postData); // show errors and populate form with $postData
+										}
+									}
+
+									$this->view->tablename = $tablenamepolite;
+
+									$this->view->BackLink = sprintf('<span class="backlink"><a href="/cms/admin/view/table/%s/"><img src="/images/icons/arrow_left.png" style="width:16px;" alt="Back" Title="Back" /> Back</a></span>',$tablename);
+
+									$this->view->form = $form; // assigning the form to view
+								} else {
+									$this->view->message = sprintf("E05: Invalid ID [%s] for %s",$id,$tablename);
+								}
+							} else {
+								$this->view->message = sprintf("E08: No fields set to allow Duplicate in the model %s",$tablename);
+							}
+						} else {
+							$this->view->message = sprintf("E06: Duplicate not allowed for %s",$tablename);
+						}
+					} else {
+
+						$this->view->message = sprintf("E07: Table definition [%s] does not exist in the JSON file",$tablename);
+
+					}
+				}
+			}
+		}
+
 		public function userAction()
 		{
 			if ($this->getRequest()->isPost()) { //is it a post request ?
@@ -952,10 +1132,6 @@
 						$tabs = $this->_usedstarbars($userdata);
 						// Pass the starbar details back to the view
 						$this->view->userdata = $userdata;// was usersstarbars
-
-						//$_SESSION['userunderobservation'] = $postData['emailaddress'];
-						//$testSpace = new Zend_Session_Namespace('testSpace');
-						//$this->getRequest()->setParam('userunderobservation',$postData['emailaddress']);
 						$sessionvar = new Zend_Session_Namespace('sessionvar');
 						$sessionvar->userunderobservation = $postData['emailaddress'];
 						$this->view->tabs = $tabs;// was usersstarbars
@@ -1006,40 +1182,36 @@
 
 				if ($postData['goodid']!=null) {
 					//DebugBreak('1;d=1');
-$request = $this->getRequest();
-		$goodId = $postData['goodid'];
+					$request = $this->getRequest();
+					$goodId = $postData['goodid'];
 
-		$request->getParam('named_good_id');
-		$newInventory = $request->getParam('new_inventory');
+					$request->getParam('named_good_id');
+					$newInventory = $request->getParam('new_inventory');
 
-		$this->getRequest()->setParam('user_id',1);
-		$this->getRequest()->setParam('starbar_id',$request->getParam('starbarid'));
- 		$gameStarbar = Game_Starbar::getInstance();
-		$goodsData = $gameStarbar->getGoodsFromStore();
-		$goods = new ItemCollection();
+					$this->getRequest()->setParam('user_id',1);
+					$this->getRequest()->setParam('starbar_id',$request->getParam('starbarid'));
+ 					$gameStarbar = Game_Starbar::getInstance();
+					$goodsData = $gameStarbar->getGoodsFromStore();
+					$goods = new ItemCollection();
 
-			foreach ($goodsData as $goodData) {
-			    $good = new Gaming_BigDoor_Good();
-			    $good->setPrimaryCurrencyId($gameStarbar->getPurchaseCurrencyId());
-			    $good->build($goodData);
-			    $goods[(int) $good->getId()] = $good;
-			}
+					foreach ($goodsData as $goodData) {
+					    $good = new Gaming_BigDoor_Good();
+					    $good->setPrimaryCurrencyId($gameStarbar->getPurchaseCurrencyId());
+					    $good->build($goodData);
+					    $goods[(int) $good->getId()] = $good;
+					}
 
-		  // if ($goods[$goodId]!=Null) {
-		   $info->id = $goodId;
-		   $info->starbar = $request->getParam('starbarid');
-			$info->title = $goods[$goodId]['title'];
-			$info->cost = $goods[$goodId]['cost'];
-			$info->sold = $goods[$goodId]['inventory_sold'];
-			$info->total = $goods[$goodId]['inventory_total'];
+		   			$info->id = $goodId;
+		   			$info->starbar = $request->getParam('starbarid');
+					$info->title = $goods[$goodId]['title'];
+					$info->cost = $goods[$goodId]['cost'];
+					$info->sold = $goods[$goodId]['inventory_sold'];
+					$info->total = $goods[$goodId]['inventory_total'];
 
 
-				$this->view->info = $info; // Assign the output variables to view
-  // }
- //  else {
- //  	   $this->view->error = "Good not found in this starbar";
- //  }
-				$this->view->form = $form; // assigning the form to view, in case the user wants another search
+					$this->view->info = $info; // Assign the output variables to view
+
+					$this->view->form = $form; // assigning the form to view, in case the user wants another search
 
 				} else {
 					$this->view->error = "Please enter a Good ID";
@@ -1725,6 +1897,9 @@ $data = $client->getData();
 
 					}
 
+					// Retrieve the table comment, if any
+					$this->view->tablecomment = $saysojson->getTableAttr('comment');
+
 					$this->view->jquerywidth = $jquerywidth;
 					$this->view->grid = $grid->deploy();
 
@@ -1832,6 +2007,32 @@ $data = $client->getData();
 			} else {
 
 				$link = '<a href="' .$this->view->url(array('action' => 'detail', 'id' => intval($id))). '" class="button-details" title="Edit"><img src="/images/icons/information.png" style="width:16px;" alt="Details" Title="Details" /></a>';
+			}
+			return $link;
+		}
+
+		/**
+		* Generate a button which will activate the view action
+		*
+		* @param mixed $id
+		* @author Peter Connolly
+		*/
+		public function _generateDuplicateButtonLink($id,$tablename=null,$tablenamepolite=null)
+		{
+			$currentURL = $this->view->url();
+
+			if ($tablename!=null) {
+				$reverse = strrev($currentURL);
+				// If the last character is a /, remove it
+				if ($reverse[0]=="/") {
+					$currentURL = substr($currentURL,0,strlen($currentURL)-1);
+				}
+
+				$link = '<a href="' .$this->view->url(array('action' => 'duplicate', 'table'=> $tablename, 'id' => intval($id))). '" class="button-details" title="Duplicate"><img src="/images/icons/duplicate.png" style="width:16px;" alt="Duplicate" Title="Duplicate" /></a>';
+
+			} else {
+
+				$link = '<a href="' .$this->view->url(array('action' => 'duplicate', 'id' => intval($id))). '" class="button-duplicate" title="Duplicate"><img src="/images/icons/duplicate.png" style="width:16px;" alt="Duplicate" Title="Duplicate" /></a>';
 			}
 			return $link;
 		}

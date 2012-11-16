@@ -1,4 +1,6 @@
 <!-- views/scripts/admin/view.phtml file -->
 <h2>View <?php echo $this->tablename; ?></h2>
+<?php ($this->tablecomment)?printf("<div id='tablecomment'>%s</div>",$this->tablecomment):""; ?>
 <?php echo ($this->newRecordLink)?$this->newRecordLink:""; ?>
 <?php echo $this->grid ?>
+

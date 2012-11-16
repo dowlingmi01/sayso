@@ -1,0 +1,6 @@
+ALTER TABLE `survey_trailer_info` MODIFY COLUMN `category`  enum("pre-release movie","current movie","sneak-peek movie","retro movie","pre-release game","current game","sneak-peek game","retro game","pre-release TV show","current TV show","sneak-peek TV show","retro TV show","pre-release music video","current music video","sneak-peek music video","retro music video") CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `survey_id`;
+ALTER TABLE `survey_trailer_info` ADD COLUMN `wraparound_id`  int(10) NULL DEFAULT NULL COMMENT 'Links to the survey_id of the Wrap-around Survey' AFTER `category`;
+ALTER TABLE `survey_trailer_info` MODIFY COLUMN `video_key`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
+ALTER TABLE `survey_trailer_info` ADD COLUMN `related_survey`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `video_key`;
+ALTER TABLE `survey_trailer_info` ADD COLUMN `related_survey_id`  int(10) NULL DEFAULT NULL AFTER `related_survey`;
+ALTER TABLE `survey_trailer_info` MODIFY COLUMN `created`  timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ;

@@ -1,0 +1,1 @@
+ALTER TABLE `survey` MODIFY COLUMN `type`  enum('survey','poll','quiz','trailer','mission','wrap-around');

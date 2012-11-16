@@ -2546,6 +2546,11 @@ margin-top:10px;
 	display:none;
 }
 
+#sayso-starbar-spotlight-frame .sb_tabs #sb_vid_related_survey
+{
+	display:none;
+}
+
 #sayso-starbar-spotlight-frame .sb_tabs #sb_vid_question_final p {
 	margin-top:10px;
 }

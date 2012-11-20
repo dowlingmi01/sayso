@@ -50,13 +50,16 @@ $(function(){
 		// create the intro container
 		var container = MissionSurvey.Views.content.empty().createElement('div#mission-introduction');		
 		// write the intro to the DOM
-		container.html(json.description);		
+		container.html(json.description);
+		
+		MissionSurvey.Views.body.css('background-image', 'url(' + json.background + ')');
+		$('#mission-progress-token').css('background-image', 'url(' + json.progress_token + ')');
 		// container to hold the titles of each stage
-		var titles = container.createElement('div.mission-titles');		
+//		var titles = container.createElement('div.mission-titles');		
 		// write the steps to the bottom of the intro and show steps
 		var labels = $('#mission-progress-labels > ul');
 		json.stages.forEach(function(element, index){
-			titles.createElement('span', 'Stage ' + ( index + 1 ) + ': ' + element.short_title);
+//			titles.createElement('span', 'Stage ' + ( index + 1 ) + ': ' + element.short_title);
 			labels.createElement('li', 'Stage ' + ( index + 1 ) );
 		});		
 		// assign initial widths to stage labels
@@ -191,15 +194,16 @@ $(function(){
 	/* add hooks */
 	
 	// poll hooks
-	MissionSurvey.Controller.addHook('poll', function(stage){
+	function pollHook(stage) {
 		MissionSurvey.Views.content.find('input[type="radio"]').on('change', function(e){
 			stage.data.selectedAnswerId = $(this).val();
 			MissionSurvey.Controller.satisfied = true;
 		});
-	});
+	}
+	MissionSurvey.Controller.addHook('poll', pollHook);
 	
 	// video hooks
-	MissionSurvey.Controller.addHook('video', function(stage){
+	function videoHook(stage) {
 		// on video complete, hide it and show the poll
 		MissionSurvey.VideoPlayer.render('mission-video-container', stage.data.url, function(){
 			if( html5video ) {
@@ -214,13 +218,16 @@ $(function(){
 				$('#trash').append(player);
 			}
 			// and fade in the question/answer element
-			$('.mission-video .mission-poll').fadeIn();
+			$('.mission-video .mission-video-poll').fadeIn();
 		});		
-		// upate the Model
-		MissionSurvey.Views.content.find('input[type="radio"]').on('change', function(e){
-			stage.data.selectedAnswerId = $(this).val();
-			MissionSurvey.Controller.satisfied = true;
-		});
+	}
+	MissionSurvey.Controller.addHook('video', function(stage){
+		videoHook(stage);
+		pollHook(stage);
+	});
+	MissionSurvey.Controller.addHook('video-image', function(stage){
+		videoHook(stage);
+		imagePollHook(stage);
 	});
 	
 	// visit hooks
@@ -254,7 +261,7 @@ $(function(){
 	});
 	
 	// image poll hooks
-	MissionSurvey.Controller.addHook('image-poll', function(stage){
+	function imagePollHook(stage) {
 		// figure out how many answers and size the columns accordingly
 		var quantity = 1 / stage.data.answers.length;
 		var percent = Math.floor( quantity * 100) + '%';
@@ -265,7 +272,8 @@ $(function(){
 			MissionSurvey.Controller.satisfied = true;
 			MissionSurvey.Controller.next();
 		});
-	});
+	}
+	MissionSurvey.Controller.addHook('image-poll', imagePollHook);
 	
 	/* other API */
 	

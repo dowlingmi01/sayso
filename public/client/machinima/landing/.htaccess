@@ -1,4 +1,3 @@
 RewriteEngine On
 RewriteRule ^mission/([^/]+)/models/survey.json$ missions/models/$1.json [PT,L]
-RewriteRule ^mission/([^/]+)/assets/images/mission/(.*)$ missions/assets/images/$1/$2 [PT,L]
 RewriteRule ^mission/[^/]+/(.*)$ missions/$1 [PT,L]

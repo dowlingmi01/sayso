@@ -21,7 +21,7 @@ class Survey_QuestionResponse extends Record
 				$this->response_csv = "" . $this->response_decimal;
 				break;
 			case "string":
-				$this->response_csv = strtr($this->response_decimal, '"', '\\"');
+				$this->response_csv = strtr($this->response_string, '"', '\\"');
 				break;
 		}
 	}

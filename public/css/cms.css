@@ -241,11 +241,20 @@ dl.zend_form dd ul.errors li {
 	/*display:none;*/
 }
 
-/* Set the width of the 4th*/
+/* Set the width of the 4th column */
 
 #filter_idlist {
 	width:30px;
 	text-align:center;
+}
+
+/* margins for the filter line */
+#list table tr:first-child + tr td {
+	padding:7px 2px 0 2px !important;
+}
+
+#list table th a{
+	color:white;
 }
 
 /* Menu CMS */

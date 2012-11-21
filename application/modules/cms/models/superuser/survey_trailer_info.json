@@ -90,16 +90,16 @@
 			]
 		},
 		{
-			"colname": "wraparound_id",
+			"colname": "trailer_template_id",
 			"filterwidth":40,
-			"label": "Wrap-around Survey",
+			"label": "Trailer Template Survey",
 			"type": "fkey",
 			"lookuptable": "survey",
 			"lookupfield": "id",
 			"lookuplabel": "title",
 			"lookuporder": "title ASC",
-			"where": "type='wrap-around'",
-			"default": "--Please Select a wrap-around survey--",
+			"where": "type='trailer template'",
+			"default": "--Please Select a Trailer Template survey--",
 			"displaywhen": [
 				"add",
 				"detail",

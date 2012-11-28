@@ -63,6 +63,46 @@ $SQ('#end_at').datetimepicker({
         $SQ('#start_at').datetimepicker('option', 'maxDate', new Date(end.getTime()) );
     }
 });
+
+$SQ('#start_date').datetimepicker({
+	dateFormat: 'yy-mm-dd',
+    onClose: function(dateText, inst) {
+        var endDateTextBox = $SQ('#end_date');
+        if (endDateTextBox.val() != '') {
+            var testStartDate = new Date(dateText);
+            var testEndDate = new Date(endDateTextBox.val());
+            if (testStartDate > testEndDate)
+                endDateTextBox.val(dateText);
+        }
+        else {
+            endDateTextBox.val(dateText);
+        }
+    },
+    onSelect: function (selectedDateTime){
+        var start = $SQ(this).datetimepicker('getDate');
+        $SQ('#end_date').datetimepicker('option', 'minDate', new Date(start.getTime()));
+    }
+});
+$SQ('#end_date').datetimepicker({
+	dateFormat: 'yy-mm-dd',
+    onClose: function(dateText, inst) {
+        var startDateTextBox = $SQ('#start_date');
+        if (startDateTextBox.val() != '') {
+            var testStartDate = new Date(startDateTextBox.val());
+            var testEndDate = new Date(dateText);
+            if (testStartDate > testEndDate)
+                startDateTextBox.val(dateText);
+        }
+        else {
+            startDateTextBox.val(dateText);
+        }
+    },
+    onSelect: function (selectedDateTime){
+        var end = $SQ(this).datetimepicker('getDate');
+        $SQ('#start_date').datetimepicker('option', 'maxDate', new Date(end.getTime()) );
+    }
+});
+
 $SQ('#tabs').tabs();
 
 });

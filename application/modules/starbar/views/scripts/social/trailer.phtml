@@ -49,7 +49,7 @@
 						</div>
 
 						<div id="sb_vid_question_final" class="sb_mv_questions_flow">
-							<p>Congratulations! You earned <span class="hl">250 Social Say.So</span> &amp; <span class="hl">19 Social Pay.So</span></p>
+							<p>Congratulations! You earned <span class="hl">250 Social SaySo</span> &amp; <span class="hl">19 Social PaySo</span></p>
 							<div class="sb_final_share">
 						  <div class="sb_externalShares">
 									<? $shareReward = 8 ?>
@@ -108,7 +108,7 @@
 					</div>
 				<? } else {?>
 					<p>Nice job, looks like you've watched all the trailers!<br />
-				    Check back soon to earn more Social Say.So and Social Pay.So!</p>
+				    Check back soon to earn more Social SaySo and Social PaySo!</p>
 				<? } ?>
 
 
@@ -221,25 +221,25 @@
 				$SQ('#sb_vid_question_phase1').show();
 				$SQ('.sb_mv_questions_flow').hover(function(){
                 // Hover over code
-                $SQ('<p class="tooltip"></p>')
+                $SQ('<p class="sayso-tooltip"></p>')
                 .text('Please view the trailer first, then rate it.')
                 .appendTo('body')
                 .fadeIn('slow');
 			        }, function() {
 			                // Hover out code
 
-			                $SQ('.tooltip').remove();
+			                $SQ('.sayso-tooltip').remove();
 			        }).mousemove(function(e) {
 			                var mousex = e.pageX + 20; //Get X coordinates
 			                var mousey = e.pageY + 10; //Get Y coordinates
-			                $SQ('.tooltip')
+			                $SQ('.sayso-tooltip')
 			                .css({ top: mousey, left: mousex })
 			        });
 			}
 
 			if(event.data	==	YT.PlayerState.ENDED){
 				$SQ('input.sb_rating').removeAttr('disabled');
-				$SQ('.tooltip').remove();
+				$SQ('.sayso-tooltip').remove();
 				$SQ('.sb_mv_questions_flow').unbind('mouseenter mouseleave');
 				$SQ('.sb_mv_questions_flow p').removeClass('inactive');
 

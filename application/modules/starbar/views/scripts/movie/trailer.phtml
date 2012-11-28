@@ -220,25 +220,25 @@
 				$SQ('#sb_vid_question_phase1').show();
 				$SQ('.sb_mv_questions_flow').hover(function(){
                 // Hover over code
-                $SQ('<p class="tooltip"></p>')
+                $SQ('<p class="sayso-tooltip"></p>')
                 .text('Please view the trailer first, then rate it.')
                 .appendTo('body')
                 .fadeIn('slow');
 			        }, function() {
 			                // Hover out code
 
-			                $SQ('.tooltip').remove();
+			                $SQ('.sayso-tooltip').remove();
 			        }).mousemove(function(e) {
 			                var mousex = e.pageX + 20; //Get X coordinates
 			                var mousey = e.pageY + 10; //Get Y coordinates
-			                $SQ('.tooltip')
+			                $SQ('.sayso-tooltip')
 			                .css({ top: mousey, left: mousex })
 			        });
 			}
 
 			if(event.data	==	YT.PlayerState.ENDED){
 				$SQ('input.sb_rating').removeAttr('disabled');
-				$SQ('.tooltip').remove();
+				$SQ('.sayso-tooltip').remove();
 				$SQ('.sb_mv_questions_flow').unbind('mouseenter mouseleave');
 				$SQ('.sb_mv_questions_flow p').removeClass('inactive');
 

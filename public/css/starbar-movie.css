@@ -2189,7 +2189,8 @@
 #sayso-starbar #sb_popBox_polls #sayso-starbar-ajax-content {margin-bottom:20px;}
 
 /* Tooltips */
-#sayso-starbar .tooltip {
+#sayso-starbar .tooltip,
+.sayso-tooltip {
 	display:none;
 	position:absolute;
 	border:1px solid #333;

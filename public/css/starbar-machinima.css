@@ -2680,7 +2680,8 @@ margin-top:10px;
 	display:none;
 }
 
-#sayso-starbar .tooltip {
+#sayso-starbar .tooltip,
+.sayso-tooltip {
 	display:none;
 	position:absolute;
 	border:1px solid #333;

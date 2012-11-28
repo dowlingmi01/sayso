@@ -68,6 +68,7 @@ $(function(){
 		// write the start button and label, assign 'next' behavior
 		container.createElement('div.mission-next-button').on('click', MissionSurvey.Controller.getHandler('next'));
 		container.createElement('p', 'ACCEPT MISSION');		
+		window.postMessage(JSON.stringify(['sayso-mission-progress', { stage: -1, data: MissionSurvey.Model.data }]), '*');
 	};
 	
 	// post data to server - passing the .stages property back with each question object populated with a .selectedAnswerId property

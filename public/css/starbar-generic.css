@@ -1186,22 +1186,22 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 /* Component containers
 ----------------------------------*/
 
-.sb_ui-widget-content {
+#sayso-starbar .sb_ui-widget-content {
 	border: 1px solid #aaaaaa;
 	color: #222222;
 }
-.sb_ui-widget-content a {
+#sayso-starbar .sb_ui-widget-content a {
 	color: #222222;
 }
-.sb_ui-widget-header {
+#sayso-starbar .sb_ui-widget-header {
 	border: 1px solid #aaaaaa;
 	color: #222222;
 	font-weight: bold;
 }
-.sb_ui-widget-header a {
+#sayso-starbar .sb_ui-widget-header a {
 	color: #222222;
 }
-.sb_ui-corner-left {
+#sayso-starbar .sb_ui-corner-left {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -1574,7 +1574,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar-loading-ajax {
 	float: left;
 }
-.sb_popBoxLoading {
+#sayso-starbar .sb_popBoxLoading {
 	float: left;
 	position: absolute;
 	width: 100%;

@@ -2192,7 +2192,7 @@
 #sayso-starbar #sb_popBox_polls #sayso-starbar-ajax-content {margin-bottom:20px;}
 
 /* Tooltips */
-.tooltip {
+#sayso-starbar .tooltip {
 	display:none;
 	position:absolute;
 	border:1px solid #333;
@@ -2208,11 +2208,11 @@
 
 }
 
-p.sb_reminder {
+#sayso-starbar p.sb_reminder {
 	margin-top: 0 !important;
 }
 
-p.sb_promo_gettokens {
+#sayso-starbar p.sb_promo_gettokens {
 	margin-bottom:0 !important;
 }
 

@@ -2676,11 +2676,11 @@ margin-top:10px;
 	margin-top:50px;
 }
 
-.hidden {
+#sayso-starbar .hidden {
 	display:none;
 }
 
-.tooltip {
+#sayso-starbar .tooltip {
 	display:none;
 	position:absolute;
 	border:1px solid #333;
@@ -2702,19 +2702,19 @@ margin-top:10px;
 }
 
 /* Hideaway faqs */
-#faqs { position:relative; }
-#faqs h3  { cursor:pointer; }
-#faqs h3.active  { color:#d74646; }
-#faqs div   { position:relative; }
-#faqs div p  { padding:0; margin-bottom:15px; }
+#sayso-starbar #faqs { position:relative; }
+#sayso-starbar #faqs h3  { cursor:pointer; }
+#sayso-starbar #faqs h3.active  { color:#d74646; }
+#sayso-starbar #faqs div   { position:relative; }
+#sayso-starbar #faqs div p  { padding:0; margin-bottom:15px; }
 
 /* Nudge to feedback page */
-#feedback #tabs {
+#sayso-starbar #feedback #tabs {
 	width:326px;
 	background-color:blue !important;
 }
 
-#feedback #tabs li a {
+#sayso-starbar #feedback #tabs li a {
 	padding:5px 8px 5px 30px;
 }
 

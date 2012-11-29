@@ -1186,22 +1186,22 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 /* Component containers
 ----------------------------------*/
 
-#sayso-starbar .sb_ui-widget-content {
+.sb_ui-widget-content {
 	border: 1px solid #aaaaaa;
 	color: #222222;
 }
-#sayso-starbar .sb_ui-widget-content a {
+.sb_ui-widget-content a {
 	color: #222222;
 }
-#sayso-starbar .sb_ui-widget-header {
+.sb_ui-widget-header {
 	border: 1px solid #aaaaaa;
 	color: #222222;
 	font-weight: bold;
 }
-#sayso-starbar .sb_ui-widget-header a {
+.sb_ui-widget-header a {
 	color: #222222;
 }
-#sayso-starbar .sb_ui-corner-left {
+.sb_ui-corner-left {
 	position: absolute;
 	top: 0;
 	left: 0;

@@ -302,13 +302,21 @@ input[type="radio"] {
 }
 
 .mission-video {
-	width: 600px;
+	width: 700px;
 	margin: 60px auto 0;
 	position: relative;
 	z-index: 1;
 }
 .mission-video h3 {
 	text-align: center;
+}
+.mission-video-caption {
+	text-align: center;
+	margin-top: 10px;
+}
+.mission-video-container iframe {
+	display: block;
+	margin: 0 auto;
 }
 .mission-video .mission-poll {
 	display: none;

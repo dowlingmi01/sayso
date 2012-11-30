@@ -1,9 +1,9 @@
 {
   "title": "Battlestar Galactica",
   "description": "<div style=\"height: 344px;\"></div>",
-  "background": "assets/images/battlestargalactica/Info_Bg_Image.jpg",
+  "background": "assets/images/battlestargalactica/Info_Bg_Image.png",
   "progress_token": "assets/images/battlestargalactica/Token_For_ProgressBar.png",
-  "validation": "<h3>Congratulations, you completed the mission!</h3><h4>Your feedback is appreciated.</h4><p>You've earned the Battlestar Galactica Badge and have entered into the drawing to win a BSG: Blood and Chrome Blu-ray Combo Pack</p><p><img src=\"assets/images/battlestargalactica/Mission_Badge_FinalFrame.png\" /></p><p>The drawing will take place on XX/XX</p><p>You earned XX coins and XXX XP.</p><p>You may close this tab at any time.</p>",
+  "validation": "<h3>Congratulations, you completed the mission!</h3><h4>Your feedback is appreciated.</h4><p>You've earned the Battlestar Galactica Badge and have entered into the drawing to win a Battlestar Galactica: Blood and Chrome Blu-ray Combo Pack</p><p><img src=\"assets/images/battlestargalactica/Mission_Badge_FinalFrame.png\" /></p><p>The drawing will take place on XX/XX</p><p>You earned XX coins and XXX XP.</p><p>You may close this tab at any time.</p>",
   "reward_experience": 750,
   "reward_redeemable": 57,
   "stages": [
@@ -45,7 +45,7 @@
 	  "background": "",
       "data": {
         "url": "http://www.machinima.com/shows/battlestar-galactica",
-        "title": "Scan this web page below and watch Episode 1 of Battlestar Galactica: Blood and Chrome to find the answers to the following questions",
+        "title": "Scan this web page above and watch Episode 1 of Battlestar Galactica: Blood and Chrome to find the answers to the following questions",
         "questions": [
           {
             "question": {
@@ -154,31 +154,32 @@
       "id": 2,
       "short_title": "Watch",
       "type": "video",
-	  "background": "assets/images/battlestargalactica/Stage3_Bg_Image.jpg",
+	  "background": "assets/images/battlestargalactica/Stage3_Bg_Image.png",
       "data": {
         "title": "<img src=\"assets/images/battlestargalactica/Video_Header_Stage3.png\" />",
+        "caption": "Please watch the video and answer the question that will follow.",
         "url": "KXCnuArj4b8",
         "question": {
           "id": 1,
-          "text": "Which of the following ships is among the &ldquo;fleet of ghost ships&rdquo;?"
+          "text": "Which of the following ships is among the &ldquo;fleet of ghost ships?&rdquo;"
         },
         "correct": 2,
         "answers": [
           {
             "id": 1,
-            "text": "Sherwood."
+            "text": "Sherwood"
           },
           {
             "id": 2,
-            "text": "Loki."
+            "text": "Loki"
           },
           {
             "id": 3,
-            "text": "Valhalla."
+            "text": "Valhalla"
           },
           {
             "id": 4,
-            "text": "Ragnarok."
+            "text": "Ragnarok"
           }
         ]
       }
@@ -190,6 +191,7 @@
 	  "background": "assets/images/battlestargalactica/Stage4_Bg_Image.jpg",
       "data": {
         "title": "<img src=\"assets/images/battlestargalactica/Video_Header_Stage4.png\" />",
+        "caption": "Please watch the video and answer the question that will follow.",
         "url": "aPLiBxhoug0",
         "question": {
           "id": 1,
@@ -200,25 +202,25 @@
             "id": 1,
             "image": "assets/images/battlestargalactica/Mary.jpg",
             "label": "Mary McDonnell",
-            "text": "Mary McDonnell."
+            "text": "Mary McDonnell"
           },
           {
             "id": 2,
             "image": "assets/images/battlestargalactica/Katee.jpg",
             "label": "Katee Sackhoff",
-            "text": "Katee Sackhoff."
+            "text": "Katee Sackhoff"
           },
           {
             "id": 3,
             "image": "assets/images/battlestargalactica/Tricia.jpg",
             "label": "Tricia Helfer",
-            "text": "Tricia Helfer."
+            "text": "Tricia Helfer"
           },
           {
             "id": 4,
             "image": "assets/images/battlestargalactica/Grace.jpg",
             "label": "Grace Park",
-            "text": "Grace Park."
+            "text": "Grace Park"
           }
         ]
       }

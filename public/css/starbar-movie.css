@@ -430,10 +430,25 @@
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week1{
 	display: block;
-	background-image: url('../images/movie/img_promo_2.jpg');
-	background-position: top right;
 }
 
+#sayso-starbar #starbar-player-console #starbar-promo #slide1{
+	float:left;
+	margin-left:7px;
+	height:232px;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo #slide2{
+	float:left;
+	margin-left:7px;
+	display: none;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo #slide3{
+	float:left;
+	margin-left:7px;
+	display: none;
+}
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide{
 	padding: 0px;
 	margin: 0;
@@ -448,14 +463,15 @@
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details{
 	position: absolute;
-	width: 240px;
-	top: 135px;
+	width: 500px;
+	top: 238px;
+	left:5px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details p{
-	margin: 12px 0px;
-	font-size: 12px;
-	line-height: 15px;
+	margin: 0px;
+	font-size: 10px;
+	line-height: 10px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide p.sb_promo_link{
@@ -504,11 +520,32 @@
 	cursor: pointer;
 }
 
-#sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow_nav .sb_prev{
+#sayso-starbar #starbar-player-console #sb_slideshow .arrow_left {
+	width:15px;
+	height:200px;
+	float:left;
+	z-index:100;
+	margin-left:-257px;
+	background-image: url('../images/movie/img_arrow_left_red.png');
+	background-repeat:no-repeat;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow_nav .sb_prev
+{
 	background-image: url('../images/generic/img_arrow_left.png');
 }
 
-#sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow_nav .sb_next{
+#sayso-starbar #starbar-player-console #sb_slideshow  .arrow_right {
+	width:15px;
+	height:200px;
+	float:right;
+	z-index:100;
+	background-image: url('../images/movie/img_arrow_right_red.png');
+	background-repeat:no-repeat;
+}
+
+#sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow_nav .sb_next
+{
 	background-image: url('../images/generic/img_arrow_right.png');
 }
 
@@ -2212,6 +2249,12 @@
 
 #sayso-starbar p.sb_promo_gettokens {
 	margin-bottom:0 !important;
+	width:250px;
+	text-align:center;
+}
+#sayso-starbar p.sb_promo_gettoken {
+	margin-bottom:0 !important;
+	text-align:center;
 }
 
 

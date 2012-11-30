@@ -1,20 +1,86 @@
 <div id="sb_slideshow">
-	<div class="sb_promoBG sb_promo_week1">
+	<div class="sb_promoBG">
 		<div class="sb_slide">
-			<div class="sb_header">
-				<img src="//<?= BASE_DOMAIN ?>/images/movie/img_header_giveaway.png" alt="Giveaway" />
-			</div><!-- .sb_header -->
+		<div class="sb_promo_carousel">
 
-			<div class="sb_promo_details" style="width: 217px; top: 87px; left: 5px;">
-				<p>Watch all your favorite flicks in amazing detail on this 37", 1080p LCD LG HDTV.</p>
-				<p>Enter to win by redeeming CineBucks for monthly giveaway tokens in the Reward Center. You can redeem multiple tokens to increase your odds of winning. The winner will be drawn on November 1st, 2012.</p>
-				<p class="sb_promo_gettokens"><a href="//<?= BASE_DOMAIN ?>/starbar/movie/rewards?chosen_good_id=first" class="sb_nav_element sb_theme_textHighlight_alt" rel="sb_popBox_rewards">
-				<img src="//<?= BASE_DOMAIN ?>/images/movie/img_get-your-tokens.png" alt="Get Your Tokens" />
-				</a></p>
+				<ul>
 
-				<p class="sb_reminder" style="width:350px;padding-top:5px"><small><strong class="sb_theme_textHighlight">Remember</strong> - Take the <a href="//<?= BASE_DOMAIN ?>/starbar/movie/embed-survey?survey_id=<?= $this->profile_survey_id ?>" class="sb_nav_element" rel="sb_popBox_surveys_hg">Profile Survey</a> to be eligible for the giveaways.</small></p>
+						<li id="slide1" class="active">
+						<p class="sb_promo_gettokens"><a href="//<?= BASE_DOMAIN ?>/starbar/movie/rewards" class="sb_nav_element sb_theme_textHighlight_alt" rel="sb_popBox_rewards">
+							<img src="//<?= BASE_DOMAIN ?>/images/movie/Monthly_Giveaway_Nov1.png" alt="Christmas Story Giveaway" />
+							</a></p>
+						</li><!-- slide1 -->
+						<li id="slide2">
+						<p class="sb_promo_gettokens"><a href="//<?= BASE_DOMAIN ?>/starbar/movie/rewards" class="sb_nav_element sb_theme_textHighlight_alt" rel="sb_popBox_rewards">
+							<img src="//<?= BASE_DOMAIN ?>/images/movie/Monthly_Giveaway_Nov2.png" alt="Die Hard Giveaway" />
+							</a></p>
+						</li><!-- slide2 -->
+						<li id="slide3">
+						<p class="sb_promo_gettokens"><a href="//<?= BASE_DOMAIN ?>/starbar/movie/rewards" class="sb_nav_element sb_theme_textHighlight_alt" rel="sb_popBox_rewards">
+							<img src="//<?= BASE_DOMAIN ?>/images/movie/Monthly_Giveaway_Nov3.png" alt="Nightmare Before Christmas Giveaway" />
+							</a></p>
+						</li><!-- slide3 -->
+				</ul>
+			<div class="arrow_left"></div>
+			<div class="arrow_right"></div>
+
+		</div><!-- sb_promo_carousel -->
+
+
+			<div class="sb_promo_details">
+			<p class="sb_promo_gettoken"><a href="//<?= BASE_DOMAIN ?>/starbar/movie/rewards" class="sb_nav_element sb_theme_textHighlight_alt" rel="sb_popBox_rewards">
+                                <img src="//<?= BASE_DOMAIN ?>/images/movie/img_get-your-tokens_small.png" alt="Get Your Tokens" />
+                                </a></p>
+				<p>Enter to win by redeeming CineBucks for monthly giveaway tokens in the Reward Center. You can redeem multiple tokens to increase your odds of winning. The winner will be drawn on December 21st, 2012.</p>
+				<p><strong class="sb_theme_textHighlight">Remember</strong> - Take the <a href="//<?= BASE_DOMAIN ?>/starbar/movie/embed-survey?survey_id=<?= $this->profile_survey_id ?>" class="sb_nav_element" rel="sb_popBox_surveys_hg">Profile Survey</a> to be eligible for the giveaways.</small></p>
 			</div><!-- .sb_promo_details -->
 
 		</div><!-- .sb_slide -->
 	</div><!-- .sb_promo_week1 -->
 </div><!-- #sb_slideshow -->
+
+<script type="text/javascript">
+$SQ('.arrow_left, .arrow_right').bind('click', function(){
+
+		var selected	=	false;
+		var prev		=	false;
+		var next		=	false;
+		var dir 		= 	$SQ(this).attr('class').split("_")[1];
+
+		if( $SQ('li.active').length > 0 )					selected =	$SQ('li.active');
+		if( $SQ(selected[0].previousElementSibling).length > 0 ) 	prev	 = 	$SQ(selected[0].previousElementSibling);
+		if( $SQ(selected[0].nextElementSibling).length > 0 ) 		next 	 = 	$SQ(selected[0].nextElementSibling);
+
+		switch(dir)
+		{
+			case 'left' :
+
+				var currli = $SQ('.sb_promo_carousel li:visible');
+		        // get next list item
+		        var nextli = currli.prev();
+		        // if nextli length is 0, make it equal to first li
+		        if (nextli.length == 0) {
+		            nextli = currli.siblings(':last');
+		        }
+		        currli.hide();
+		        nextli.show();
+
+			break;
+
+			case 'right' :
+
+				var currli = $SQ('.sb_promo_carousel li:visible');
+		        // get next list item
+		        var nextli = currli.next();
+		        // if nextli length is 0, make it equal to first li
+		        if (nextli.length == 0) {
+		            nextli = currli.siblings(':first');
+		        }
+		        currli.hide();
+		        nextli.show();
+
+			break;
+		}
+
+	});
+	</script>

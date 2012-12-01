@@ -41,8 +41,10 @@ a:hover {
 	<div id="sections" class="tab-content">
 	  <div class="section tab-pane active" id="section-1">
 	  	<div class="section-head">
-	  		<h2>Headline to go here</h2>
-	  		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate  velit esse cillum dolore</p>
+	  		<h2>What is Social Say.So?</h2>
+	  		<p>Are you a social or mobile gaming fanatic? Do you eagerly await for<br />
+	  		  new items in Farmville or a sequel to Plants VS. Zombies? If so,<br />
+  		    you're probably a perfect fit for Social Say.So!</p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">
@@ -62,7 +64,9 @@ a:hover {
 	  <div class="section tab-pane" id="section-2">
 	  	<div class="section-head">
 	  		<h2>What can I do?</h2>
-	  		<p>Earn Social Pay.So by taking movie polls, answering surveys and rating new and retro trailers. Redeem Social Pay.So for items in our Reward Center.</p>
+	  		<p>Earn Social PaySos by taking polls, answering surveys and giving your
+opinion on social, casual and mobile gaming. Redeem Social PaySos for
+items in our Reward Center.</p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">
@@ -81,7 +85,8 @@ a:hover {
 	  <div class="section tab-pane" id="section-3">
 	  	<div class="section-head">
 	  		<h2>What do I get?</h2>
-	  		<p>Great Prizes - The Reward Center is full of prizes designed specifically for movie fanatics. </p>
+	  		<p>Great Prizes - The Reward Center is full of prizes designed
+specifically for social game fanatics.</p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">
@@ -100,7 +105,9 @@ a:hover {
 	  	<div class="section-head">
 	  	<div id="create-password">
 	  		<h2>Let's get started</h2>
-	  		<p>Start by creating your unique Say.So password so we can make sure your points and rewards and saved.</p>
+	  		<p>Start by creating your unique Say.So password so we can make sure your
+points and rewards are saved. "Please allow the browser to install the
+extension.</p>
 	  		<br />
 	  		<form>
 	  			<p><input type="text" id="input-email" class="sso_fld" placeholder="Enter a valid email address" />

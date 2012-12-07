@@ -1735,7 +1735,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar .starbar-switcher {
 	position: absolute;
     bottom: 0;
-	z-index: 0;
+	z-index: 2147480010;
 }
 #sayso-starbar .starbar-switcher-tab {
 	width: 100%;

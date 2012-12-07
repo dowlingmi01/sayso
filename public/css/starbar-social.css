@@ -164,6 +164,15 @@
     text-indent: -9999px;
 }
 
+#sayso-starbar #starbar-player-console #starbar-nav ul li span.sb_mission_available span.sb_mission_button{
+  display: block;
+  width:95px;
+  height:37px;
+  margin: 0;
+  text-indent: -9999px;
+  background: url('../images/social/mission_button_banner.png') top right no-repeat;
+}
+
 #sayso-starbar #starbar-player-console #starbar-nav ul li{
 	box-shadow: 0;
 }
@@ -1702,6 +1711,43 @@
 
 	/* First and Last Images from the carousel group */
 }
+
+#sayso-starbar .sb_score_tabs,
+.sb_score_tabs  {
+	float:right;
+	width:400px;
+	text-align:right;
+	font-size:13px;
+	color: #5E1682;
+	margin-top: 4px;
+	font-family:arial,sans-serif;
+}
+
+#sayso-starbar .sb_score_tabs ul li:first-child,
+.sb_score_tabs ul li:first-child{
+	border: none;
+}
+
+#sayso-starbar .sb_score_tabs ul li,
+.sb_score_tabs ul li {
+	display: inline;
+	border-left: 1px solid #5E1682;
+	font-weight:bold;
+	padding-left: 7px;
+	margin-left: 5px;
+}
+
+.sb_score_tabs ul {
+	margin:0 10px 0 0;
+}
+
+.sb_score_tabs a,
+.sb_score_tabs a:hover,
+.sb_score_tabs a:visited
+{
+	color:#5E1682;
+	text-decoration:none;
+}
 #sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb img
 {
 	width:125px;
@@ -2217,7 +2263,96 @@
 	margin-bottom:0 !important;
 }
 
+/* MISSION RULES */
+/* mission */
 
+#sayso-starbar #sb_popBox_mission.sb_popBox{
+	left: 0px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox .sb_popBoxInner .sb_popContent{
+	/*width: 656px;
+	height: 582px;*/
+	width: 674px;
+	height: 578px;
+}
+#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox .sb_popBoxInner{
+	padding: 10px;
+}
+#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox .sb_popBoxInner .sb_popContent {
+	padding: 0px !important;
+}
+#sayso-starbar #sb_popBox_mission.sb_triangle-border:before{
+	left: 230px;
+}
+#sayso-starbar #sb_popBox_mission.sb_triangle-border:after{
+	left: 231px;
+}
+#sayso-starbar #sb_popBox_mission .sb_triangle-solid:after{
+	left: 227px;
+}
+#sayso-starbar #starbar-player-console #sb_popBox_mission li#slide1{
+	float:left;
+	margin: 20px 0 0 50px;
+	height:232px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_mission li#slide2{
+	float:left;
+	margin: 20px 0 0 50px;
+	display: none;
+	height:232px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_mission li#slide3{
+	float:left;
+	margin: 20px 0 0 50px;
+	display: none;
+	height:232px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_mission li img {
+	margin-bottom:20px;
+}
+
+#sayso-starbar #starbar-player-console .sb_mission_carousel ul {
+	list-style-type:none;
+}
+
+#sayso-starbar #starbar-player-console .sb_mission_carousel .arrow_left {
+	width:37px;
+	height:340px;/* The extra height gives us a bigger hitting area on the image */
+	float:left;
+	z-index:100;
+	margin-left:-625px;
+	background-image: url('../images/social/img_arrow-left_circle.png');
+	background-repeat:no-repeat;
+	background-position:center center;
+}
+
+#sayso-starbar #starbar-player-console .sb_mission_carousel .arrow_right {
+	width:37px;
+	height:340px;/* The extra height gives us a bigger hitting area on the image */
+	float:right;
+	z-index:100;
+	background-image: url('../images/social/img_arrow-right_circle.png');
+	background-repeat:no-repeat;
+	background-position:center center;
+	margin-top:-252px;
+	margin-right:11px;
+}
+
+#sayso-starbar .sb_number, .sb_number {
+padding: 2px 5px 2px 4px;
+background-color: purple;
+color: white !important;
+font-weight:bold;
+margin: 2px;
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px;
+}
+/* /MISSION RULES */
 /* Keep this at end of file. It's used for testing if CSS is loaded. */
 
 #sayso-starbar ._sayso_starbar_css_loaded {

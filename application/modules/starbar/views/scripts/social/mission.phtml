@@ -1,0 +1,100 @@
+<?
+	if( $this->missions_exist ) {
+	$baseUrl = (APPLICATION_ENV == "production" ? "social.say.so" : BASE_DOMAIN . "/client/social/landing");
+?>
+<div style="width: 656px; height: 582px;">
+	<div class="sb_score_tabs">
+		<ul>
+			<li><a href="#"><span class='sb_number'><?= $this->missioncount ?></span>Mission<?= $this->missioncount!=1?'s':'';?></a></li>
+			<li><a href="//<?= BASE_DOMAIN ?>/starbar/social/spotlight?type=trailers" class="sb_nav_element"><span class='sb_number'><?= $this->trailercount ?></span>Trailer<?= $this->trailercount!=1?'s':'';?></a></li>
+		</ul>
+	</div><!-- /sb_score_tabs -->
+
+	<div id="spotlight_tabs_1" class="sb_tabPane sb_ui-tabs-panel sb_ui-widget-content sb_ui-corner-bottom">
+		<img src="//<?= BASE_DOMAIN ?>/images/social/img_header_spotlight.png" alt="Spotlight" />
+		<p class="sb_tabHeader">
+			Earn <strong class="sb_theme_textHighlight">750 Social SaySos</strong> &amp; <strong class="sb_theme_textHighlight">75 Social PaySos</strong> for each Mission you complete. Share with your friends to earn extra points and you'll be that much closer to winning the big giveaway.
+		</p>
+	</div><!-- /spotlight_tabs_1 -->
+
+	<div class="sb_mission_carousel">
+
+		<ul>
+		<?php
+			$slidectr = 0;
+			$firstclass = " class='active'"; // We need to mark the first li as active. The loop then sets it to null.
+			foreach ($this->mission_info as $mission) {
+				$slidectr++;
+				printf("<li id='slide%s'%s><img src='//%s%s' />",$slidectr, $firstclass,BASE_DOMAIN, $mission->preview_image);
+				$firstclass = '';
+				printf("<h2>%s</h2><p>%s</p>",$mission->title,$mission->description);
+				printf('<a id="sb_mission_launch" href="http://%s/mission/%s/" target="_blank"><img src="//%s/images/social/img_accept-mission.png" alt="Accept Mission" /></a></li>',$baseUrl,$mission->short_name,BASE_DOMAIN);
+			}
+		?>
+		</ul>
+	<?php
+		if ($slidectr > 1) {
+			// We only dispay the arrows if there is more than one available mission
+	?>
+			<div class="arrow_left"></div>
+			<div class="arrow_right"></div>
+		<?php
+		}
+		?>
+
+	</div><!-- /sb_mission_carousel -->
+
+	<span href="//<?= BASE_DOMAIN ?>/starbar/social/spotlight" class="sb_nav_element" rel="sb_popBox_spotlight" style="position: absolute; top: 0px; right: 0px; width: 106px; height: 32px; background-image: none;"></span>
+</div>
+<?
+	} else {
+?>
+<script>forge.message.broadcastBackground('mission-complete');</script>
+<?
+ 	}
+?>
+<script type="text/javascript">
+$SQ('.arrow_left, .arrow_right').bind('click', function(){
+
+		var selected	=	false;
+		var prev		=	false;
+		var next		=	false;
+		var dir 		= 	$SQ(this).attr('class').split("_")[1];
+
+		if( $SQ('li.active').length > 0 )					selected =	$SQ('li.active');
+		if( $SQ(selected[0].previousElementSibling).length > 0 ) 	prev	 = 	$SQ(selected[0].previousElementSibling);
+		if( $SQ(selected[0].nextElementSibling).length > 0 ) 		next 	 = 	$SQ(selected[0].nextElementSibling);
+
+		switch(dir)
+		{
+			case 'left' :
+
+				var currli = $SQ('.sb_mission_carousel li:visible');
+		        // get next list item
+		        var nextli = currli.prev();
+		        // if nextli length is 0, make it equal to first li
+		        if (nextli.length == 0) {
+		            nextli = currli.siblings(':last');
+		        }
+		        currli.hide();
+		        nextli.show();
+
+			break;
+
+			case 'right' :
+
+				var currli = $SQ('.sb_mission_carousel li:visible');
+		        // get next list item
+		        var nextli = currli.next();
+		        // if nextli length is 0, make it equal to first li
+		        if (nextli.length == 0) {
+		            nextli = currli.siblings(':first');
+		        }
+		        currli.hide();
+		        nextli.show();
+
+			break;
+		}
+
+	});
+	</script>

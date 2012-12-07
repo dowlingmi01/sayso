@@ -38,6 +38,17 @@ class Starbar_SocialController extends Starbar_ContentController
 		$trailers->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'trailer', 'new');
 		$this->view->trailers = $trailers;
 
+		// Get a count of available missions
+		// Also count the trailers for this user, and make that value available to the view
+		Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'mission', 0);
+		$missionCollection = new SurveyCollection();
+		$missionCollection->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'mission', 'new');
+
+		$this->view->assign('missioncount',count($missionCollection));
+		$this->view->assign('trailercount',count($trailers));
+		// End of counting trailers for this user
+
+
 		$infoForTrailers = new Survey_TrailerInfoCollection();
 		$infoForTrailers->getTrailerInfoForTrailers($trailers);
 		// re-index the trailer info by survey_id
@@ -100,7 +111,7 @@ class Starbar_SocialController extends Starbar_ContentController
 	protected function _assignShareAppToView($facebookCallbackUrl) {
 		$twAppShareText = 'Join Social Say.So and get access to big giveaways and awesome prizes.';
 		$fbkAppShareTitle = 'Social Say.So';
-		$fbkAppShareCopy = "I just earned 19 CineBucks for sharing Social Say.So!
+		$fbkAppShareCopy = "I just earned 19 Social PaySos for sharing Social Say.So!
 Join Social Say.So and get access to big giveaways and awesome prizes.";
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twAppShareText, $fbkAppShareCopy,  $facebookCallbackUrl, $fbkAppShareTitle, $this->_fbkAppDescription);

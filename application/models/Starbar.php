@@ -145,5 +145,26 @@ class Starbar extends Record
 		);
 		return array_merge(parent::exportProperties($parentObject), $props);
 	}
+
+	/**
+	* Given a starbar shortname, returns the integer ID of that starbar
+	*
+	* @author Peter Connolly
+	* @param string $starbarShortName
+	* @return integer ID of starbar if match is found, 99 if not found
+	* @example $starbar_id = Starbar::getIdByShortName('machinima');
+	* @see ImportMissionJsonController.php
+	*/
+	public static function getIdByShortName($starbarShortName) {
+		$sql = "select id from starbar where short_name = ?";
+
+		$data = Db_Pdo::fetch($sql, $starbarShortName);
+
+		if ($data) {
+			return (int) $data['id'];
+		} else {
+			return 99;
+		}
+	}
 }
 

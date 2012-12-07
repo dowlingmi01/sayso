@@ -2,6 +2,8 @@
 RewriteEngine On
 RewriteRule ^client/machinima/landing/mission/([^/]+)/models/survey.json$ client/machinima/landing/missions/models/$1.json [PT,L]
 RewriteRule ^client/machinima/landing/mission/[^/]+/(.*)$ client/machinima/landing/missions/$1 [PT,L]
+RewriteRule ^client/social/landing/mission/([^/]+)/models/survey.json$ client/social/landing/missions/models/$1.json [PT,L]
+RewriteRule ^client/social/landing/mission/[^/]+/(.*)$ client/social/landing/missions/$1 [PT,L]
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d

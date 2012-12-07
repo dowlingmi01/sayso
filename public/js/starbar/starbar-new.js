@@ -245,7 +245,7 @@ $SQ(function(){
 		setNotifications(sayso.state.notifications.items);
 
 		setMission();
-		
+
 		updateProfileElements();
 		activateGameElements(starbarElem, false);
 		// initializes development-only jquery
@@ -502,6 +502,7 @@ $SQ(function(){
 	* withLoadingElement: true to insert loading elements before loading via AJAX (ignored if src is false)
 	*/
 	function openPopBox(popBox, src, withLoadingElement){
+
 		var ajaxContentContainer = null;
 		var loadingElement = null;
 
@@ -562,6 +563,16 @@ $SQ(function(){
 		}
 	}
 
+	/**
+	* Displays contents of a popbox
+	*
+	* @see openPopBox
+	*
+	* @access private
+	* @param popBox
+	* @param loadingElement
+	* @param ajaxContentContainer
+	*/
 	function showPopBoxContents(popBox, loadingElement, ajaxContentContainer) {
 		activateGameElements(popBox, false);
 		activateAccordion(popBox);
@@ -656,7 +667,7 @@ $SQ(function(){
 		sayso.state.missionAvailable = data;
 		setMission();
 	});
-	
+
 	function gameCheckin() {
 		sayso.fn.ajaxWithAuth({
 			url : '//'+sayso.baseDomain+'/api/gaming/checkin',
@@ -737,6 +748,13 @@ $SQ(function(){
 			var sharedType = parameters['shared_type'];
 			var sharedId = parameters['shared_id'];
 			if (sharedType && sharedId) handleTweet(sharedType, sharedId);
+		},
+		'openPopBox': function (parameters) {
+
+			var popBox = parameters['pop_box'];
+			var src = parameters['src'];
+			var withLoadingElement = parameters['with_loading_element'];
+			openPopBox($SQ(popBox), src, withLoadingElement);
 		},
 		'openSurvey': function (parameters) {
 			var surveyId = parameters['survey_id'];

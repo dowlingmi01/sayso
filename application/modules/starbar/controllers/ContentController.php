@@ -552,7 +552,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$badges = Db_Pdo::fetchAll($sql, $this->starbar_id, $this->user_id);
 		if($badges)
 			$this->view->assign('badges', $badges);
-		
+
 	}
 
 	public function facebookConnectAction ()
@@ -734,17 +734,34 @@ class Starbar_ContentController extends Api_GlobalController
 		}
 		$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id."&update_notifications=true");
 	}
+
     public function missionAction() {
+
 		Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'mission', 0);
 		$surveyCollection = new SurveyCollection();
 		$surveyCollection->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'mission', 'new');
-		if($surveyCollection->count()) {
-			$survey = $surveyCollection->getFirst();
+
+		foreach ($surveyCollection as $mission) {
 			$missionInfo = new Survey_MissionInfo();
-			$missionInfo->loadDataBySurveyId($survey->id);
-			$this->view->assign('mission_short_name', $missionInfo->short_name);
+			$missionInfo->loadDataBySurveyId($mission->id);
+			$missionInfo->title = $mission->title;
+			$missionInfoCollection[] = $missionInfo;
 		}
+
+		// Also count the trailers for this user, and make that value available to the view
+		Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'trailer', 0);
+		$trailerCollection = new SurveyCollection();
+		$trailerCollection->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'trailer', 'new');
+
+		if($surveyCollection->count()) {
+			$this->view->assign('missions_exist', TRUE);
+			$this->view->assign('missioncount',count($surveyCollection));
+			$this->view->assign('trailercount',count($trailerCollection));
+			$this->view->assign('mission_info', $missionInfoCollection);
+		}
+
     }
+
 	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null)
 	{
 		$config = Api_Registry::getConfig();

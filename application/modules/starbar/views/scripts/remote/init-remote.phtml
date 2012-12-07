@@ -12,11 +12,11 @@ $game = $this->game;
 </script>
 <script src="//<?= BASE_DOMAIN ?>/js/starbar/sayso-shared.js" type="text/javascript"></script>
 <script type="text/javascript">
-	
+
 	$SQ.frameComm = function( par ) {
 		$SQ('#sayso-frame-comm').append($SQ(document.createElement("div")).attr( {
 			value: JSON.stringify({
-				type: 'sayso-frame-comm-<?= $this->frame_id?>' 
+				type: 'sayso-frame-comm-<?= $this->frame_id?>'
 			, content: par })}));
 		var hiddenDiv = document.getElementById('sayso-frame-comm');
 		if( document.createEvent ) {
@@ -58,6 +58,17 @@ $game = $this->game;
 			$SQ.frameComm( ['openSurvey', {
 				survey_id: surveyId
 			}]);
+		},
+		openPopBox: function (popBox, src, withLoadingElement) {
+
+			$SQ.frameComm( ['openPopBox', {
+				pop_box: popBox,
+				src: src,
+				with_loading_element: withLoadingElement
+			}]);
+		},
+		setMission: function () {
+			$SQ.frameComm( ['setMission']);
 		},
 		hideOverlay: function () {
 			$SQ.frameComm( ['hideOverlay']);

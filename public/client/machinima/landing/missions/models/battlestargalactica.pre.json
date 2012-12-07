@@ -3,7 +3,7 @@
   "description": "<div style=\"height: 344px;\"></div>",
   "background": "assets/images/battlestargalactica/Info_Bg_Image.png",
   "progress_token": "assets/images/battlestargalactica/Token_For_ProgressBar.png",
-  "validation": "<h3>Congratulations, you completed the mission!</h3><h4>Your feedback is appreciated.</h4><p>You've earned the Battlestar Galactica Badge and have entered into the drawing to win a Battlestar Galactica: Blood and Chrome Blu-ray Combo Pack</p><p><img src=\"assets/images/battlestargalactica/Mission_Badge_FinalFrame.png\" /></p><p>The drawing will take place on XX/XX</p><p>You earned XX coins and XXX XP.</p><p>You may close this tab at any time.</p>",
+  "validation": "<h3>Congratulations, you completed the mission!</h3><h4>Your feedback is appreciated.</h4><p>You've earned the Battlestar Galactica Badge and have entered into the drawing to win a Battlestar Galactica: Blood and Chrome Blu-ray Combo Pack</p><p><img src=\"assets/images/battlestargalactica/Mission_Badge_FinalFrame.png\" /></p><p>The drawing will take place on 12/21.</p><p>If you want to see how you did, go to <a href=\"http://bgm.saysollc.com\" style=\"color: #D00000;\" target=\"_blank\">bgm.saysollc.com</a></p><p>You earned 57 coins and 750 XP.</p><p>You may close this tab at any time.</p>",
   "reward_experience": 750,
   "reward_redeemable": 57,
   "stages": [
@@ -14,7 +14,7 @@
 	  "background": "assets/images/battlestargalactica/Stage1_Bg_Image.jpg",
       "data": {
         "question": {
-          "id": 2,
+          "id": 1,
           "text": "What is your prior experience with Battlestar Galactica?"
         },
         "correct": 2,
@@ -39,7 +39,7 @@
       }
     },
     {
-      "id": 3,
+      "id": 2,
       "short_title": "Visit",
       "type": "site-survey",
 	  "background": "",
@@ -99,7 +99,7 @@
           },
           {
             "question": {
-              "id": 2,
+              "id": 3,
               "text": "How many kills does William Adama's hero Deke Tornvald &ldquo;The Minute Man&rdquo; have?"
             },
             "correct": 4,
@@ -124,7 +124,7 @@
           },
           {
             "question": {
-              "id": 2,
+              "id": 4,
               "text": "At the beginning of the episode, Adama is in a flight simulator. What level did he get to?"
             },
             "correct": 2,
@@ -151,7 +151,7 @@
       }
     },
     {
-      "id": 2,
+      "id": 3,
       "short_title": "Watch",
       "type": "video",
 	  "background": "assets/images/battlestargalactica/Stage3_Bg_Image.png",
@@ -159,6 +159,7 @@
         "title": "<img src=\"assets/images/battlestargalactica/Video_Header_Stage3.png\" />",
         "caption": "Please watch the video and answer the question that will follow.",
         "url": "KXCnuArj4b8",
+        "enableControls" : 1,
         "question": {
           "id": 1,
           "text": "Which of the following ships is among the &ldquo;fleet of ghost ships?&rdquo;"
@@ -185,14 +186,15 @@
       }
     },
     {
-      "id": 2,
+      "id": 4,
       "short_title": "Watch More",
       "type": "video-image",
 	  "background": "assets/images/battlestargalactica/Stage4_Bg_Image.jpg",
       "data": {
         "title": "<img src=\"assets/images/battlestargalactica/Video_Header_Stage4.png\" />",
         "caption": "Please watch the video and answer the question that will follow.",
-        "url": "aPLiBxhoug0",
+        "url": "mH8EDRptVAQ",
+        "enableControls" : 1,
         "question": {
           "id": 1,
           "text": "The Cylon who kills Dr. Kelly is voiced by which actress, who also portrayed Number Six in the 2004 series?"
@@ -226,7 +228,7 @@
       }
     },
     {
-      "id": 1,
+      "id": 5,
       "short_title": "Poll",
       "type": "poll",
 	  "background": "assets/images/battlestargalactica/Stage5_Bg_Image.jpg",
@@ -238,23 +240,23 @@
         "answers": [
           {
             "id": 1,
-            "text": "Very."
+            "text": "Very"
           },
           {
             "id": 2,
-            "text": "Somewhat."
+            "text": "Somewhat"
           },
           {
             "id": 3,
-            "text": "Don't know."
+            "text": "Don't know"
           },
           {
             "id": 4,
-            "text": "Somewhat Unlikely."
+            "text": "Somewhat Unlikely"
           },
           {
-            "id": 3,
-            "text": "Not Likely."
+            "id": 5,
+            "text": "Not Likely"
           }
         ]
       }

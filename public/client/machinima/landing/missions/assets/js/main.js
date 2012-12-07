@@ -206,7 +206,7 @@ $(function(){
 	// video hooks
 	function videoHook(stage) {
 		// on video complete, hide it and show the poll
-		MissionSurvey.VideoPlayer.render('mission-video-container', stage.data.url, function(){
+		MissionSurvey.VideoPlayer.render('mission-video-container', stage.data, function(){
 			if( html5video ) {
 				$('.mission-trailer').remove();
 			} else {
@@ -360,7 +360,6 @@ $(function(){
 		'version' : 3,
 		'rel' : 0,
 		'autoplay' : 1,
-		'controls' : (location.host.match(/say\.so/) ? 0 : 1),
 		'disablekb' : 1,
 		'showinfo' : 0,
 		'iv_load_policy' : 3		
@@ -380,10 +379,11 @@ $(function(){
 			events : {}
 		};
 		MissionSurvey.VideoPlayer.rendered = false;
-		MissionSurvey.VideoPlayer.render = function(elementId, videoId, complete){
+		MissionSurvey.VideoPlayer.render = function(elementId, stageData, complete){
 			// update values
 			this.elementId = elementId;
-			this.values.videoId = videoId;
+			this.values.videoId = stageData.url;
+			this.values.playerVars.controls = (location.host.match(/say\.so/) && !stageData.enableControls ? 0 : 1);
 			this.values.events.onStateChange = function(event){
 				if(event && event.preventDefault){
 					event.preventDefault();

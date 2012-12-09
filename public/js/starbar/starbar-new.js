@@ -923,7 +923,7 @@ $SQ(function(){
 						userPurchasesContainerElems.append(goodDiv);
 					});
 				} else {
-					$SQ(this).html('<p>Head to the Rewards Center to redeem your '+redeemableCurrency+' for awesome gear!</p>');
+					$SQ(this).html('<p>Head to the Rewards Center to redeem your '+redeemableCurrency+' for awesome prizes!</p>');
 				}
 			});
 		}

@@ -25,13 +25,13 @@
 	<? } ?>
 	<div id="sb-survey-completed">
 		<? if ($this->survey->reward_category == "premium") { ?>
-			<p>Excellent! You earned <strong class="sb_theme_textHighlight_alt">375  <strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">Social Pay.So</span></strong></strong> &amp; <strong class="sb_theme_textHighlight_alt">5000  <strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">Social Say.So</span></strong></strong></p>
+			<p>Excellent! You earned <strong class="sb_theme_textHighlight_alt">375  <strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">PaySos</span></strong></strong> &amp; <strong class="sb_theme_textHighlight_alt">5000 <strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">SaySos</span></strong></strong></p>
 			<? $shareReward = 30 ?>
 		<? } elseif ($this->survey->reward_category == "profile") { ?>
-<p>Excellent! You earned <strong class="sb_theme_textHighlight_alt">150 <strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">Social Pay.So</span></strong></strong> &amp; <strong class="sb_theme_textHighlight_alt">2000  <strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">Social Say.So</span></strong></strong></p>
+<p>Excellent! You earned <strong class="sb_theme_textHighlight_alt">150 <strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">PaySos</span></strong></strong> &amp; <strong class="sb_theme_textHighlight_alt">2000 <strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">SaySos</span></strong></strong></p>
 			<? $shareReward = 15 ?>
 		<? } else { ?>
-<p>Excellent! You earned <strong class="sb_theme_textHighlight">38 </strong><strong class="sb_theme_textHighlight_alt"><strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">Social Pay.So</span></strong></strong> &amp; <strong class="sb_theme_textHighlight">500  <strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">Social Say.So</span></strong></strong></p>
+<p>Excellent! You earned <strong class="sb_theme_textHighlight">38 </strong><strong class="sb_theme_textHighlight_alt"><strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">PaySos</span></strong></strong> &amp; <strong class="sb_theme_textHighlight">500  <strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">SaySos</span></strong></strong></p>
 			<? $shareReward = 8 ?>
 		<? } ?>
   <div class="sb_externalShares">
@@ -52,8 +52,7 @@
 						<img src="//<?= BASE_DOMAIN ?>/images/generic/logo_twitter.png" alt="Twitter" />
 				</a>
 			</div>
-			<span class="sb_mini-redeemable-currency-reward sb_mini-redeemable-currency-reward_twitter" id="sb_mini-redeemable-currency-reward_twitter">+<?= $shareReward ?></span>Share this survey to earn extra points
-    AND as even more bonus you'll get XX <strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">Social Pay.So</span></strong> for every friend that joins Say.So and completes the profile survey.<br />
+			<span class="sb_mini-redeemable-currency-reward sb_mini-redeemable-currency-reward_twitter" id="sb_mini-redeemable-currency-reward_twitter">+<?= $shareReward ?></span>Share this survey to earn extra points<br />
 		<? if ($this->next_survey->id) { ?>
 			Try the next survey: "<a href="#" onclick="$SQ.remoteControl.openSurvey(<?= $this->next_survey->id ?>); return false;"><?= ($this->next_survey->title) ?></a>"
 		<? } ?>

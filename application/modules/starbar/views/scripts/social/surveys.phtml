@@ -15,11 +15,11 @@
 	<div id="surveys_tabs_1" class="sb_tabPane">
 		<img src="//<?= BASE_DOMAIN ?>/images/social/img_header_surveys.png" alt="Surveys" />
 		<p class="sb_tabHeader">
-			Here's where your SaySo really counts! Complete surveys to earn <strong class="sb_theme_textHighlight">Social Say.So</strong> &amp; <strong class="sb_theme_textHighlight"> Social Pay.So</strong>. Share surveys for bonus Social Say.So &amp; Social Pay.So and look for special surveys that are worth even more!
+			Here's where your SaySo really counts! Complete surveys to earn <strong class="sb_theme_textHighlight">Social SaySos</strong> &amp; <strong class="sb_theme_textHighlight"> PaySos</strong>. Share surveys for bonus SaySos &amp; PaySos and look for special surveys that are worth even more!
 		</p>
 		<? if ($this->profile_survey_id) { ?>
 		  <p class="sb_tabHeader">
-				Don't forget to complete the <a href="//<?= BASE_DOMAIN ?>/starbar/social/embed-survey?survey_id=<?= $this->profile_survey_id ?>" class="sb_nav_element" rel="sb_popBox_surveys_hg">Profile Survey</a> to unlock the goodies in the reward center.
+				Don't forget to complete the <a href="//<?= BASE_DOMAIN ?>/starbar/social/embed-survey?survey_id=<?= $this->profile_survey_id ?>" class="sb_nav_element" rel="sb_popBox_surveys_hg">Profile Survey</a> to unlock the goodies in the Reward Center.
 	  </p>
 		<? } ?>
 		<div class="sb_scrollPane">
@@ -43,7 +43,7 @@
 	<? if ($this->count_archived_surveys) { ?>
 		<div id="surveys_tabs_3" class="sb_tabPane">
 			<img src="//<?= BASE_DOMAIN ?>/images/social/img_header_surveys.png" alt="Surveys" />
-			<p class="sb_tabHeader">We'd still love your opinion on these archived surveys, and you can still earn by completing them! Same deal &ndash; earn <strong class="sb_theme_textHighlight">Social Say.So</strong> &amp; <strong class="sb_theme_textHighlight"> Social Pay.So</strong> for each one you complete.</p>
+			<p class="sb_tabHeader">We'd still love your opinion on these archived surveys, and you can still earn by completing them! Same deal &ndash; earn <strong class="sb_theme_textHighlight">Social SaySos</strong> &amp; <strong class="sb_theme_textHighlight"> PaySos</strong> for each one you complete.</p>
 			<div class="sb_scrollPane">
 				<? $this->displaySurveys('archived', $this->starbar) ?>
 				<br />

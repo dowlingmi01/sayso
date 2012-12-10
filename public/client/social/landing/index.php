@@ -73,8 +73,7 @@ items in our Reward Center.</p>
 				<div class="slides">
 					<div class="slide"><img src="images/img_slide_2a.png" alt="" /></div>
 					<div class="slide"><img src="images/img_slide_2b.png" alt="" /></div>
-					<div class="slide"><img src="images/img_slide_2c.png" alt="" /></div>
-					<div class="slide"><img src="images/img_slide_2d.png" alt="" /></div>
+					
 				</div><!-- .slides -->
 				<div class="slide-nav">
 					<span class="prev">Prev</span>

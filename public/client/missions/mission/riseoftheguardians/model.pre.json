@@ -1,7 +1,7 @@
 {
   "title": "Rise of the Guardians",
-  "description": "<p><img src=\"assets/images/riseoftheguardians/Headline_InfoPage.png\" /></p><p>We need your say-so! Complete the 5 steps below to learn more about the upcoming movie <em>Rise of the Guardians</em> and let us know what you think.</p><p><img src=\"assets/images/riseoftheguardians/Mission_Badge_Sm.png\" /></p><p>Completing the mission will earn you BONUS Coins and a chance to</p><h4 style='color:#600'>WIN TICKETS TO THE PREMIERE OF RISE OF THE GUARDIANS!</h4>",
-  "validation": "<h3>Congratulations, you completed the mission!</h3><h4>Your feedback is appreciated.</h4><p><img src=\"assets/images/riseoftheguardians/Mission_Badge_Sm.png\" /></p><p>The drawing will take place on 11/05</p><p>You earned 57 coins and 750 XP.</p><p>You may close this tab at any time.</p>",
+  "description": "<p><img src=\"mission/images/Headline_InfoPage.png\" /></p><p>We need your say-so! Complete the 5 steps below to learn more about the upcoming movie <em>Rise of the Guardians</em> and let us know what you think.</p><p><img src=\"mission/images/Mission_Badge_Sm.png\" /></p><p>Completing the mission will earn you BONUS Coins and a chance to</p><h4 style='color:#600'>WIN TICKETS TO THE PREMIERE OF RISE OF THE GUARDIANS!</h4>",
+  "validation": "<h3>Congratulations, you completed the mission!</h3><h4>Your feedback is appreciated.</h4><p><img src=\"mission/images/Mission_Badge_Sm.png\" /></p><p>The drawing will take place on 11/05</p><p>You earned 57 coins and 750 XP.</p><p>You may close this tab at any time.</p>",
   "reward_experience": 750,
   "reward_redeemable": 57,
   "stages": [
@@ -9,7 +9,7 @@
       "id": 1,
       "short_title": "RotG Poll",
       "type": "poll",
-	  "background": "assets/images/riseoftheguardians/Stage1_Bg_Image.jpg",
+	  "background": "mission/images/Stage1_Bg_Image.jpg",
       "data": {
         "question": {
           "id": 1,
@@ -35,7 +35,7 @@
       "id": 2,
       "short_title": "Watch",
       "type": "video",
-	  "background": "assets/images/riseoftheguardians/Stage2_Bg_Image.jpg",
+	  "background": "mission/images/Stage2_Bg_Image.jpg",
       "data": {
         "url": "aPLiBxhoug0",
         "title": "Watch the Trailer",
@@ -175,25 +175,25 @@
         "answers": [
           {
             "id": 1,
-            "image": "assets/images/riseoftheguardians/Alec.jpg",
+            "image": "mission/images/Alec.jpg",
             "label": "Alec Baldwin",
             "text": "Alec Baldwin (Voice of \"North\")."
           },
           {
             "id": 2,
-            "image": "assets/images/riseoftheguardians/Del_Toro.jpg",
+            "image": "mission/images/Del_Toro.jpg",
             "label": "Guillermo Del Toro",
             "text": "Guillermo Del Toro (Executive producer)."
           },
           {
             "id": 3,
-            "image": "assets/images/riseoftheguardians/Isla.jpg",
+            "image": "mission/images/Isla.jpg",
             "label": "Isla Fisher",
             "text": "Isla Fisher (Voice of \"Tooth\")."
           },
           {
             "id": 4,
-            "image": "assets/images/riseoftheguardians/Ramsey.jpg",
+            "image": "mission/images/Ramsey.jpg",
             "label": "Peter Ramsey",
             "text": "Peter Ramsey (Director)."
           }
@@ -204,7 +204,7 @@
       "id": 5,
       "short_title": "Feedback",
       "type": "poll",
-	  "background": "assets/images/riseoftheguardians/Stage5_Bg_Image.jpg",
+	  "background": "mission/images/Stage5_Bg_Image.jpg",
       "data": {
         "question": {
           "id": 1,

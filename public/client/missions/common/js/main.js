@@ -78,7 +78,7 @@ $(function(){
 	// load up the JSON and start the process
 	MissionSurvey.Model.load = function(){
 		$.ajax({
-			url : 'models/survey.json',
+			url : 'mission/model.json',
 			dataType : 'json',
 			error : this.onError,
 			success : this.onLoad
@@ -134,7 +134,7 @@ $(function(){
 		var type = stage.type;
 		var index = this.index;
 		// ...then load the template and update the UI
-		$.getCached('views/' + type + '.tpl', function(raw){
+		$.getCached('common/views/' + type + '.tpl', function(raw){
 			MissionSurvey.Views.content.fadeTo(MissionSurvey.Options.STAGE_TRANSITION_DURATION, 0, function(){
 				// populate the template
 				var html = Mustache.render(raw, stage.data);

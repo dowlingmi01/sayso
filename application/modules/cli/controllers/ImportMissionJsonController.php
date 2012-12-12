@@ -32,11 +32,11 @@ class Cli_ImportMissionJsonController extends Api_GlobalController
 			if( ! $mission_short_name )
 				throw new Exception("Missing mission_short_name.");
 				
-			$fileLocation = realpath(APPLICATION_PATH . '/../public/client/machinima/landing/missions/models');
+			$fileLocation = realpath(APPLICATION_PATH . '/../public/client/missions/mission/' . $mission_short_name);
 			if( ! is_writable($fileLocation) )
-				throw new Exception("Models dir is not writable.");
+				throw new Exception("Mission dir is not writable.");
 			
-			$filePath =  $fileLocation . '/' . $mission_short_name . '.pre.json';
+			$filePath =  $fileLocation . '/model.pre.json';
 			$fileContents = file_get_contents($filePath);
 			if( $fileContents === FALSE )
 				throw new Exception("Could not read json file.");
@@ -73,11 +73,6 @@ class Cli_ImportMissionJsonController extends Api_GlobalController
 			$missionInfo->save();
 			$messages[] = "New survey_mission_info id: ". $missionInfo->id;
 			
-			$starbarSurveyMap = new Starbar_SurveyMap();
-			$starbarSurveyMap->starbar_id = 4;
-			$starbarSurveyMap->survey_id = $survey->id;
-			$starbarSurveyMap->save();
-			
 			foreach( $missionData['stages'] as &$stage ) {
 				if( array_key_exists('question', $stage['data']) )
 					$this->_processMissionQuestion( $stage['data'], $survey->id );
@@ -87,7 +82,7 @@ class Cli_ImportMissionJsonController extends Api_GlobalController
 			}
 			$json = Zend_Json::encode($missionData);
 
-			$filePath = $fileLocation . '/' . $mission_short_name . '.json';
+			$filePath =  $fileLocation . '/model.json';
 			$result = file_put_contents($filePath, $json);
 			if( $result === FALSE )
 				throw new Exception("Error writing file");

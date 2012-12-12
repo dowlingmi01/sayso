@@ -37,18 +37,18 @@ class Cli_UpdateMissionJsonController extends Api_GlobalController
 			if( ! $mission_short_name )
 				throw new Exception("Missing mission_short_name.");
 				
-			$fileLocation = realpath(APPLICATION_PATH . '/../public/client/machinima/landing/missions/models');
+			$fileLocation = realpath(APPLICATION_PATH . '/../public/client/missions/mission/' . $mission_short_name);
 			if( ! is_writable($fileLocation) )
 				throw new Exception("Models dir is not writable.");
 			
-			$filePath =  $fileLocation . '/' . $mission_short_name . '.pre.json';
+			$filePath =  $fileLocation . '/model.pre.json';
 			$fileContents = file_get_contents($filePath);
 			if( $fileContents === FALSE )
 				throw new Exception("Could not read pre.json file.");
 
 			$missionData = Zend_Json::decode($fileContents);
 			
-			$filePath =  $fileLocation . '/' . $mission_short_name . '.json';
+			$filePath =  $fileLocation . '/model.json';
 			$fileContents = file_get_contents($filePath);
 			if( $fileContents === FALSE )
 				throw new Exception("Could not read json file.");
@@ -66,8 +66,8 @@ class Cli_UpdateMissionJsonController extends Api_GlobalController
 			}
 			$json = Zend_Json::encode($missionData);
 
-			$filePath = $fileLocation . '/' . $mission_short_name . '.json';
-			$filePath2 = $fileLocation . '/' . $mission_short_name . '.bak.json';
+			$filePath =  $fileLocation . '/model.json';
+			$filePath2 =  $fileLocation . '/model.bak.json';
 			if( !rename($filePath, $filePath2) )
 				throw new Exception("Error renaming json file");
 			$result = file_put_contents($filePath, $json);

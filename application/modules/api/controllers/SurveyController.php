@@ -171,8 +171,8 @@ class Api_SurveyController extends Api_GlobalController
 
         if( $this->mission_data['stage'] == $missionInfo->number_of_stages ) {
         	try {
-				$fileLocation = realpath(APPLICATION_PATH . '/../public/client/machinima/landing/missions/models');
-				$filePath = $fileLocation . '/' . $this->mission_short_name . '.json';
+				$fileLocation = realpath(APPLICATION_PATH . '/../public/client/missions/mission/' . $this->mission_short_name);
+				$filePath = $fileLocation . '/model.json';
 				$fileContents = file_get_contents($filePath);
 				$missionData = Zend_Json::decode($fileContents);
 				$answerStages = $this->mission_data['data']['stages'];

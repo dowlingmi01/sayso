@@ -1,0 +1,208 @@
+{
+  "title": "Puzzle Games",
+  "description": "<div style=\"height: 344px;\"></div>",
+  "background": "mission/images/Info_Bg_Image.png",
+  "preview_image": "/client/missions/mission/puzzlegames/images/001_Mission_Billboard.jpg",
+  "description":"It's PUZZLE WEEK! Test your knowledge and give us your opinion on the latest puzzle games!",
+  "progress_token": "mission/images/Token_For_ProgressBar.png",
+  "validation": "<h3>Congratulations, you completed the mission!</h3><h4>Your feedback is appreciated.</h4><p>You earned 57 PaySos and 750 SaySos.</p><p>You may close this tab at any time.</p>",
+  "reward_experience": 750,
+  "reward_redeemable": 57,
+  "stages": [
+    {
+      "id": 1,
+      "short_title": "Poll",
+      "type": "image-poll",
+	  "background": "",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Which one of these images comes from the game 'Bejeweled 3'?"
+        },
+        "correct": 1,
+        "answers": [
+         {
+            "id": 1,
+            "image": "mission/images/q1_i1.jpg",
+            "label": "",
+            "text": ""
+          },
+          {
+            "id": 2,
+            "image": "mission/images/q1_i2.jpg",
+            "label": "",
+            "text": ""
+          },
+          {
+            "id": 3,
+            "image": "mission/images/q1_i3.jpg",
+            "label": "",
+            "text": ""
+          },
+          {
+            "id": 4,
+            "image": "mission/images/q1_i4.jpg",
+            "label": "",
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "short_title": "Watch",
+      "type": "video",
+	  "background": "",
+      "data": {
+        "title": "",
+        "caption": "After watching this review of Cut the Rope: Experiments, would you purchase it?",
+        "url": "e-IA9_E4dAQ",
+        "enableControls" : 1,
+        "question": {
+          "id": 1,
+          "text": "After watching this review of Cut the Rope: Experiments, would you purchase it?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "Yes"
+          },
+          {
+            "id": 2,
+            "text": "No"
+          },
+          {
+            "id": 3,
+            "text": "Depends on the price"
+          },
+          {
+            "id": 4,
+            "text": "Possibly as a gift"
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "short_title": "Visit",
+      "type": "site-survey",
+	  "background": "",
+      "data": {
+        "url": "http://www.thegamehomepage.com/play/red-remover/",
+        "title": "Gaz Game",
+        "questions": [
+          {
+            "question": {
+              "id": 1,
+              "text": "After playing a few levels of Red Remover, would you continue to play the game?"
+            },
+            "answers": [
+              {
+                "id": 1,
+                "text": "Yes"
+              },
+              {
+                "id": 2,
+                "text": "No"
+              },
+              {
+                "id": 3,
+                "text": "If I had the time"
+              },
+              {
+                "id": 4,
+                "text": "I didn't play the game"
+              }
+            ]
+          },
+          {
+            "question": {
+              "id": 2,
+              "text": "what is level 5 called?"
+            },
+            "correct": 2,
+            "answers": [
+              {
+                "id": 1,
+                "text": "Timmbbeerr!"
+              },
+              {
+                "id": 2,
+                "text": "Move Over"
+              },
+              {
+                "id": 3,
+                "text": "Together Now"
+              },
+              {
+                "id": 4,
+                "text": "Tutorial: Blue Shapes"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "short_title": "Poll",
+      "type": "poll",
+	  "background": "",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Now that you have participated in puzzle games week on Social Say.So, do you think you will play more puzzle games?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "Yes"
+          },
+          {
+            "id": 2,
+            "text": "No"
+          },
+          {
+            "id": 3,
+            "text": "I might play a few games"
+          },
+          {
+            "id": 4,
+            "text": "Not Sure"
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "short_title": "Question",
+      "type": "poll",
+	  "background": "",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "What puzzle game has sold more than 100million copies for cell phones alone since 2005?"
+        },
+        "correct": 3,
+        "answers": [
+          {
+            "id": 1,
+            "text": "Bejeweled"
+          },
+          {
+            "id": 2,
+            "text": "Cut the Rope"
+          },
+          {
+            "id": 3,
+            "text": "Tetris"
+          },
+          {
+            "id": 4,
+            "text": "Lumines"
+          }
+        ]
+      }
+    }
+  ]
+}

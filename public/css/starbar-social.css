@@ -2319,6 +2319,10 @@
 	list-style-type:none;
 }
 
+#sayso-starbar #starbar-player-console .sb_mission_carousel ul li p{
+	width:606px;
+}
+
 #sayso-starbar #starbar-player-console .sb_mission_carousel .arrow_left {
 	width:37px;
 	height:340px;/* The extra height gives us a bigger hitting area on the image */

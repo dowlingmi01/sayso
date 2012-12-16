@@ -28,24 +28,25 @@ class Cli_ImportMissionJsonController extends Api_GlobalController
 		try {
 			$mission_short_name = $_SERVER['argv'][2];
 			$override = (array_key_exists(3, $_SERVER['argv']) && $_SERVER['argv'][3] == 'override');
-			
+
 			if( ! $mission_short_name )
 				throw new Exception("Missing mission_short_name.");
-				
+
 			$fileLocation = realpath(APPLICATION_PATH . '/../public/client/missions/mission/' . $mission_short_name);
+
 			if( ! is_writable($fileLocation) )
-				throw new Exception("Mission dir is not writable.");
-			
+				throw new Exception("Mission dir [".$fileLocation."] is not writable.");
+
 			$filePath =  $fileLocation . '/model.pre.json';
 			$fileContents = file_get_contents($filePath);
 			if( $fileContents === FALSE )
 				throw new Exception("Could not read json file.");
 
 			$missionData = Zend_Json::decode($fileContents);
-			
+
 			$missionInfo = new Survey_MissionInfo();
 			$missionInfo->loadDataByUniqueFields(array('short_name'=>$mission_short_name));
-			
+
             Record::beginTransaction();
 
 			if( $missionInfo->id ) {
@@ -55,7 +56,7 @@ class Cli_ImportMissionJsonController extends Api_GlobalController
 				$survey->loadData($missionInfo->survey_id);
 				$survey->delete();
 			}
-			
+
 			$messages = array();
 			$survey = new Survey();
 			$survey->type = 'mission';
@@ -65,20 +66,24 @@ class Cli_ImportMissionJsonController extends Api_GlobalController
 			$survey->custom_reward_redeemable = $missionData['reward_redeemable'];
 			$survey->save();
 			$messages[] = "New survey id: ". $survey->id;
-			
+
 			$missionInfo = new Survey_MissionInfo();
 			$missionInfo->survey_id = $survey->id;
 			$missionInfo->short_name = $mission_short_name;
 			$missionInfo->number_of_stages = count($missionData['stages']);
+			$missionInfo->preview_image = $missionData['preview_image'];
+			$missionInfo->description = $missionData['description'];
 			$missionInfo->save();
 			$messages[] = "New survey_mission_info id: ". $missionInfo->id;
-			
+
 			foreach( $missionData['stages'] as &$stage ) {
+
 				if( array_key_exists('question', $stage['data']) )
 					$this->_processMissionQuestion( $stage['data'], $survey->id );
 				else
 					foreach($stage['data']['questions'] as &$question)
 						$this->_processMissionQuestion( $question, $survey->id );
+
 			}
 			$json = Zend_Json::encode($missionData);
 
@@ -86,9 +91,9 @@ class Cli_ImportMissionJsonController extends Api_GlobalController
 			$result = file_put_contents($filePath, $json);
 			if( $result === FALSE )
 				throw new Exception("Error writing file");
-				
+
             Record::commitTransaction();
-				
+
 			$messages[] = Zend_Json::prettyPrint($json, array("indent" => "   "));
 			return $messages;
 		} catch( Exception $e ) {
@@ -104,7 +109,7 @@ class Cli_ImportMissionJsonController extends Api_GlobalController
 		$surveyQuestion->save();
 		$question['question']['id'] = $surveyQuestion->id;
 		$correct = array_key_exists('correct', $question) ? $question['correct'] : -1;
-		
+
 		foreach($question['answers'] as &$answer) {
 			$surveyQuestionChoice = new Survey_QuestionChoice();
 			$surveyQuestionChoice->survey_question_id = $surveyQuestion->id;

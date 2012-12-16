@@ -1,0 +1,208 @@
+{
+  "title": "Sports Games",
+  "description": "<div style=\"height: 344px;\"></div>",
+  "background": "mission/images/Info_Bg_Image.png",
+  "preview_image": "/client/missions/mission/sportsgames/images/001_Mission_Billboard.jpg",
+  "description":"It's SPORTS WEEK! Test your knowledge and give us your opinion on the latest sports games!",
+  "progress_token": "mission/images/Token_For_ProgressBar.png",
+  "validation": "<h3>Congratulations, you completed the mission!</h3><h4>Your feedback is appreciated.</h4><p>You earned 57 PaySos and 750 SaySos.</p><p>You may close this tab at any time.</p>",
+  "reward_experience": 750,
+  "reward_redeemable": 57,
+  "stages": [
+    {
+      "id": 1,
+      "short_title": "Poll",
+      "type": "image-poll",
+	  "background": "",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Which sports game was released in 1972 and is widely regarded as the worlds first commercially successful video game?"
+        },
+        "correct": 2,
+        "answers": [
+         {
+            "id": 1,
+            "image": "mission/images/q1_i1.jpg",
+            "label": "Track and Field",
+            "text": "Track and Field"
+          },
+          {
+            "id": 2,
+            "image": "mission/images/q1_i2.jpg",
+            "label": "Pong",
+            "text": "Pong"
+          },
+          {
+            "id": 3,
+            "image": "mission/images/q1_i3.jpg",
+            "label": "Pole Position",
+            "text": "Pole Position"
+          },
+          {
+            "id": 4,
+            "image": "mission/images/q1_i4.jpg",
+            "label": "Activision Tennis",
+            "text": "Activision Tennis"
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "short_title": "Watch",
+      "type": "video",
+	  "background": "",
+      "data": {
+        "title": "",
+        "caption": "After watching this review for the EA iPad app 'FIFA SOCCER 13', would you download it?",
+        "url": "VH3kSQ19xVM",
+        "enableControls" : 1,
+        "question": {
+          "id": 1,
+          "text": "After watching this review for the EA iPad app 'FIFA SOCCER 13', would you download it?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "Yes"
+          },
+          {
+            "id": 2,
+            "text": "No"
+          },
+          {
+            "id": 3,
+            "text": "Depends on the price"
+          },
+          {
+            "id": 4,
+            "text": "Possibly as a gift"
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "short_title": "Visit",
+      "type": "site-survey",
+	  "background": "",
+      "data": {
+        "url": "http://www.foddy.net/Athletics.html",
+        "title": "QWOP Game",
+        "questions": [
+          {
+            "question": {
+              "id": 1,
+              "text": "After playing a few rounds, what is the farthest you were able to run?"
+            },
+            "answers": [
+              {
+                "id": 1,
+                "text": "Negative metres"
+              },
+              {
+                "id": 2,
+                "text": "Past 5 metres"
+              },
+              {
+                "id": 3,
+                "text": "Past 10 metres"
+              },
+              {
+                "id": 4,
+                "text": "Past 50 metres"
+              }
+            ]
+          },
+          {
+            "question": {
+              "id": 2,
+              "text": "Which song plays as you start to make your Olympic dash?"
+            },
+            "correct": 2,
+            "answers": [
+              {
+                "id": 1,
+                "text": "Eye Of The Tiger"
+              },
+              {
+                "id": 2,
+                "text": "The Chariots of Fire theme song"
+              },
+              {
+                "id": 3,
+                "text": "The Rocky theme song"
+              },
+              {
+                "id": 4,
+                "text": "The Olympic theme song"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "short_title": "Poll",
+      "type": "poll",
+	  "background": "",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Now that you have participated in sports week on Social Say.So, do you think you will play more social games?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "Yes"
+          },
+          {
+            "id": 2,
+            "text": "No"
+          },
+          {
+            "id": 3,
+            "text": "I might play a few games"
+          },
+          {
+            "id": 4,
+            "text": "Not Sure"
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "short_title": "Question",
+      "type": "poll",
+	  "background": "",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Which popular sports series is known for a curse in which players featured on the game box have commonly succumbed to season or career ending injuries?"
+        },
+        "correct": 3,
+        "answers": [
+          {
+            "id": 1,
+            "text": "FIFA"
+          },
+          {
+            "id": 2,
+            "text": "WWE"
+          },
+          {
+            "id": 3,
+            "text": "Madden"
+          },
+          {
+            "id": 4,
+            "text": "Tiger Woods PGA Tour"
+          }
+        ]
+      }
+    }
+  ]
+}

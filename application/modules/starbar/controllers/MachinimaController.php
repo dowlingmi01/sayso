@@ -247,7 +247,7 @@ class Starbar_MachinimaController extends Starbar_ContentController
 	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null) {
 		parent::_assignShareInfoToView($shareLink, $twitterShareText, $facebookShareCaption, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
 
-		$this->view->assign('facebook_share_image_url', 'http://app-dev.saysollc.com/images/social/FB_Share_Icon_100px.jpg');
+		$this->view->assign('facebook_share_image_url', 'https://s3.amazonaws.com/say.so/media/misc/ma_FB_Share_Icon_100px.jpg');
 	}
 
 
@@ -309,13 +309,13 @@ Join Machinima | Recon and get access to big giveaways and awesome prizes.";*/
 				break;
 		}
 		$pollTitle = substr_compare($survey->title, '?', -1, 1) === 0 ? substr($survey->title, 0, -1) : $survey->title;
-		$sharepollTitle = "Machinima | Recon wants to know '".$pollTitle."'";
+		$sharePollTitle = "Machinima | Recon wants to know '".$pollTitle."'";
 		$twShareText = "I've finished a Machinima | Recon poll and earned " . $redeemable ." Coins. Get the Machinima | Recon app @ ";
 		$fbkShareText = "I just earned " . $redeemable ." Coins for answering the poll '".$pollTitle."'";
 
 		$fbkAppDescription = $this->_fbkOffer . "\n" . $this->_fbkAppDescription;
 
-		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $sharepollTitle, $fbkAppDescription);
+		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $sharePollTitle , $fbkAppDescription);
 	}
 
 	protected function _assignShareTrailerToView(Survey $survey, $facebookCallbackUrl) {
@@ -332,8 +332,6 @@ Join Machinima | Recon and get access to big giveaways and awesome prizes.";*/
 				$redeemable = 19;
 				break;
 		}
-		$TrailerTitle = substr_compare($survey->title, '?', -1, 1) === 0 ? substr($survey->title, 0, -1) : $survey->title;
-		$sharepollTitle = $TrailerTitle;
 		$twShareText = "I've rated Machinima | Recon content and earned " . $redeemable ." Coins. Get the Machinima | Recon app @ ";
 		$fbkShareText = "I've rated Machinima | Recon content and earned " . $redeemable ." Coins.";
 

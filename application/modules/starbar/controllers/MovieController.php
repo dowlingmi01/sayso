@@ -91,7 +91,7 @@ class Starbar_MovieController extends Starbar_ContentController
 
 	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null) {
 		parent::_assignShareInfoToView($shareLink, $twitterShareText, $facebookShareCaption, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
-		$this->view->assign('facebook_share_image_url', '//'.BASE_DOMAIN.'/images/movie/FB_Share_Icon_100px.jpg');
+		$this->view->assign('facebook_share_image_url', 'https://s3.amazonaws.com/say.so/media/misc/mo_FB_Share_Icon_100px.jpg');
 	}
 
 	protected $_appShareLink = 'http://Movie.Say.So';
@@ -144,11 +144,11 @@ class Starbar_MovieController extends Starbar_ContentController
 				break;
 		}
 		$pollTitle = substr_compare($survey->title, '?', -1, 1) === 0 ? substr($survey->title, 0, -1) : $survey->title;
-		$sharepollTitle = $pollTitle;
+		$sharePollTitle = $pollTitle;
 		$fbkShareText = "I've had my say, what do you think? '".$pollTitle."'";;
 		$twShareText = "I'm another ".$redeemable." Cinebucks closer to more movie loot! Join Movie Say.So and earn great prizes! Movie Say.So http://movie.say.so via @saysoapp";
 
-		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $sharepollTitle, $this->_fbkAppDescription);
+		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $sharePollTitle, $this->_fbkAppDescription);
 	}
 
 	protected function _assignShareTrailerToView(Survey $survey, $facebookCallbackUrl) {

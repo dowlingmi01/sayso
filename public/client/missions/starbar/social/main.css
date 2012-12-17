@@ -378,8 +378,21 @@ font-weight: bold;
 .mission-image-poll li {
 	float: left;
 }
+
+/* Force a line break before the third li */
+.mission-image-poll li:nth-child(3) {
+	clear:both;
+}
 .mission-image-poll ul li label {
 	display: block;
 	padding: 0 10px;
 	text-align: center;
+}
+
+.mission-image-poll-answers {
+	margin-left:18%;
+}
+
+.mission-image-poll-answers li {
+	margin-left:10%;
 }

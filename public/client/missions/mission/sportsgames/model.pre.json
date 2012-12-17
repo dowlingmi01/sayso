@@ -86,7 +86,7 @@
       "id": 3,
       "short_title": "Visit",
       "type": "site-survey",
-	  "background": "",
+	  "background": "mission/images/Stage_3_bg.jpg",
       "data": {
         "url": "http://www.foddy.net/Athletics.html",
         "title": "QWOP Game",
@@ -147,7 +147,7 @@
       "id": 4,
       "short_title": "Poll",
       "type": "poll",
-	  "background": "",
+	  "background": "mission/images/Stage_4_bg.jpg",
       "data": {
         "question": {
           "id": 1,
@@ -177,7 +177,7 @@
       "id": 5,
       "short_title": "Question",
       "type": "poll",
-	  "background": "",
+	  "background": "mission/images/Stage_5_bg.jpg",
       "data": {
         "question": {
           "id": 1,

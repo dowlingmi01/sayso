@@ -358,21 +358,20 @@
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_popBoxInner .sb_popContent{
 	width: 520px;
-	height: 290px;
+	height: 304px;
 	padding: 0 !important;
 	margin: 0 !important;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo img
 {
-	margin-top:3px;
+	margin: 1px 0 0 1px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_promoBG{
 	width: 520px;
-	height: 296px;
+	height: 304px;
 	background-repeat: no-repeat;
-
 }
 
 /*
@@ -395,13 +394,6 @@
 
 #sayso-starbar #starbar-player-console #starbar-promo #sb_slideshow{
 	position: relative;
-}
-
-#sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week1{
-	display: block;
-	background-image: url('../images/machinima/img_promo_3.png');
-	background-position: 0 0;
-	margin-top:2px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide{

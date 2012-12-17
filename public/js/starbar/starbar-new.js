@@ -1415,8 +1415,8 @@ $SQ(function(){
 			$SQ('#sb_slideshow', target).cycle({
 				timeout: 0,
 				speed: 500,
-				next: '#sb_slideshow_nav .sb_next',
-				prev: '#sb_slideshow_nav .sb_prev'
+				next: '#sb_slideshow .sb_next',
+				prev: '#sb_slideshow .sb_prev'
 			});
 		}
 	}

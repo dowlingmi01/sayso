@@ -285,21 +285,43 @@ input[type="radio"] {
 	color: #FCCF4C;
 font-weight: bold;
 }
+
 #mission-introduction .mission-titles span {
 	padding: 0 10px;
 }
 
+#mission-conclusion {
+	width: 100%;
+	margin: 0 auto 0 auto;
+	text-align: center;
+	background-image:none;
+	background-color:black;
+}
+
+#mission-conclusion h3{
+	width: 100%;
+}
+
+
+#mission-conclusion>p {
+	font-weight: bold;
+	font-size:16pt;
+}
+
+#mission-conclusion .mission-titles span {
+	padding: 0 10px;
+}
 
 /* templates */
 .mission-poll {
-	width: 600px;
 	margin: 60px auto 0;
+	width:700px;
 }
 .mission-poll h3 {
 	text-align: center;
 }
 .mission-poll ul {
-	margin: 30px 0 0 100px;
+	margin: 30px 0 0 30%;
 }
 .mission-poll li {
 	margin-bottom: 1em;
@@ -371,10 +393,20 @@ font-weight: bold;
 .mission-image-poll {
 	margin-top: 20px;
 }
-.mission-image-poll h3 {
+.mission-image-poll h3,
+.mission-trailer h3,
+.mission-poll h3,
+.mission-video-poll h3,
+#mission-conclusion h3 {
 	text-align: center;
 	margin-bottom: 20px;
+	font-size:24pt;
 }
+
+#mission-content label {
+	font-size:16pt;
+}
+
 .mission-image-poll li {
 	float: left;
 }

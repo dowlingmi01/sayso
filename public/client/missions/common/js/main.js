@@ -1,6 +1,6 @@
 // closure for DOM ready
 $(function(){
-		
+
 	// cache template files for reuse
 	(function($){
 		var cache = {};
@@ -15,13 +15,13 @@ $(function(){
 			}
 		}
 	})(jQuery);
-	
+
 	// fake console.log for IE
 	console = window.console || { log : $.noop };
-	
+
 	// namespace
 	var MissionSurvey = {};
-	
+
 	// constants
 	MissionSurvey.Options = {
 		STAGE_TRANSITION_DURATION : 200,
@@ -29,52 +29,52 @@ $(function(){
 		PROGRESS_TRANSITION_DURATION : 1000,
 		LOADER_TRANSITION_DURATION : 200
 	};
-	
+
 	// model
 	MissionSurvey.Model = {};
-	
+
 	// placeholder for json
 	MissionSurvey.Model.data = {};
-	
+
 	// handle errors
 	MissionSurvey.Model.onError = function(jqXHR, textStatus, errorThrown){
 		console.log(jqXHR, textStatus, errorThrown);
-	};	
-	
+	};
+
 	// on startup json loaded
 	MissionSurvey.Model.onLoad = function(json){
 		// save data
 		MissionSurvey.Model.data = json;
 		// calculate dimensions for each step, based on total stages.  this'll work in theory, but if you go much past 5 it'll start to layout wierd
-		MissionSurvey.Controller.step = 1 / json.stages.length;			
+		MissionSurvey.Controller.step = 1 / json.stages.length;
 		// create the intro container
-		var container = MissionSurvey.Views.content.empty().createElement('div#mission-introduction');		
+		var container = MissionSurvey.Views.content.empty().createElement('div#mission-introduction');
 		// write the intro to the DOM
 		container.html(json.description);
-		
+
 		MissionSurvey.Views.body.css('background-image', 'url(' + json.background + ')');
 		$('#mission-progress-token').css('background-image', 'url(' + json.progress_token + ')');
 		// container to hold the titles of each stage
-//		var titles = container.createElement('div.mission-titles');		
+//		var titles = container.createElement('div.mission-titles');
 		// write the steps to the bottom of the intro and show steps
 		var labels = $('#mission-progress-labels > ul');
 		json.stages.forEach(function(element, index){
 //			titles.createElement('span', 'Stage ' + ( index + 1 ) + ': ' + element.short_title);
 			labels.createElement('li', 'Stage ' + ( index + 1 ) );
-		});		
+		});
 		// assign initial widths to stage labels
 		var percent = Math.floor( MissionSurvey.Controller.step * 100 ) + '%';
-		$('#mission-progress-labels > ul > li').css('width', percent).show();		
+		$('#mission-progress-labels > ul > li').css('width', percent).show();
 		// write the start button and label, assign 'next' behavior
 		container.createElement('div.mission-next-button').on('click', MissionSurvey.Controller.getHandler('next'));
-		container.createElement('p', 'ACCEPT MISSION');		
+		container.createElement('p', 'ACCEPT MISSION');
 		window.postMessage(JSON.stringify(['sayso-mission-progress', { stage: -1, data: MissionSurvey.Model.data }]), '*');
 	};
-	
+
 	// post data to server - passing the .stages property back with each question object populated with a .selectedAnswerId property
 	MissionSurvey.Model.post = function(){
 	};
-	
+
 	// load up the JSON and start the process
 	MissionSurvey.Model.load = function(){
 		$.ajax({
@@ -84,14 +84,14 @@ $(function(){
 			success : this.onLoad
 		});
 	};
-	
+
 	// views
 	MissionSurvey.Views = {};
 	MissionSurvey.Views.body = $(document.body);
 	MissionSurvey.Views.content = $('#mission-content');
 	MissionSurvey.Views.indicator = $('#mission-progress-indicator');
 	MissionSurvey.Views.seekbar = $('#mission-progress-bar-seek');
-	
+
 	// controller
 	MissionSurvey.Controller = {};
 	MissionSurvey.Controller.watcher = $({});
@@ -120,7 +120,8 @@ $(function(){
 		if(complete){
 			MissionSurvey.Views.content.fadeTo(MissionSurvey.Options.STAGE_TRANSITION_DURATION, 0, function(){
 				// write out-tro to DOM
-				var container = MissionSurvey.Views.content.empty().createElement('div#mission-introduction');
+				var container = MissionSurvey.Views.content.empty().createElement('div#mission-conclusion');
+				MissionSurvey.Views.body.css('background-image', 'none');
 				container.html(MissionSurvey.Model.data.validation);
 				// fade it in
 				MissionSurvey.Views.content.fadeTo(MissionSurvey.Options.STAGE_TRANSITION_DURATION, 1);
@@ -152,7 +153,7 @@ $(function(){
 				MissionSurvey.Controller.watcher.trigger('change', [stage, index]);
 				// animate in
 				MissionSurvey.Views.content.fadeTo(MissionSurvey.Options.STAGE_TRANSITION_DURATION, 1);
-			});			
+			});
 		});
 	};
 	MissionSurvey.Controller.showProgress = function(){
@@ -181,9 +182,9 @@ $(function(){
 			});
 		}
 	};
-	
+
 	/* add event listeners */
-	
+
 	// on change
 	MissionSurvey.Controller.watcher.on('change', function(event, stage, index){
 		// reset flag for required input
@@ -191,9 +192,9 @@ $(function(){
 		// for site visits, don't scroll body
 		MissionSurvey.Views.body.css('overflow-y', ( stage.type == 'site-survey' ) ? 'hidden' : 'scroll');
 	});
-	
+
 	/* add hooks */
-	
+
 	// poll hooks
 	function pollHook(stage) {
 		MissionSurvey.Views.content.find('input[type="radio"]').on('change', function(e){
@@ -202,7 +203,7 @@ $(function(){
 		});
 	}
 	MissionSurvey.Controller.addHook('poll', pollHook);
-	
+
 	// video hooks
 	function videoHook(stage) {
 		// on video complete, hide it and show the poll
@@ -214,13 +215,13 @@ $(function(){
 				 * we need to hide the video but keep it accessible since it's register for state change callbacks with the YTJSAPI...
 				 * IE8 throws errors when state change fires and there's no element in the DOM
 				 * so stick the container in a hidden element
-				*/ 			
+				*/
 				var player = $('.mission-trailer');
 				$('#trash').append(player);
 			}
 			// and fade in the question/answer element
 			$('.mission-video .mission-video-poll').fadeIn();
-		});		
+		});
 	}
 	MissionSurvey.Controller.addHook('video', function(stage){
 		videoHook(stage);
@@ -230,7 +231,7 @@ $(function(){
 		videoHook(stage);
 		imagePollHook(stage);
 	});
-	
+
 	// visit hooks
 	MissionSurvey.Controller.addHook('site-survey', function(stage){
 		// only way to have iframe scale with window is by forcing it
@@ -260,7 +261,7 @@ $(function(){
 			MissionSurvey.Slider.next();
 		});
 	});
-	
+
 	// image poll hooks
 	function imagePollHook(stage) {
 		// figure out how many answers and size the columns accordingly
@@ -275,9 +276,9 @@ $(function(){
 		});
 	}
 	MissionSurvey.Controller.addHook('image-poll', imagePollHook);
-	
+
 	/* other API */
-	
+
 	// slider API
 	MissionSurvey.Slider = {};
 	MissionSurvey.Slider.index = -1;
@@ -330,7 +331,7 @@ $(function(){
 				MissionSurvey.Slider.open();
 				// animate in
 				$(this).fadeTo(MissionSurvey.Options.SLIDE_TRANSITION_DURATION, 1);
-			});			
+			});
 		} else {
 			MissionSurvey.Controller.satisfied = true;
 			MissionSurvey.Controller.next();
@@ -349,7 +350,7 @@ $(function(){
 		// animate in
 		this.open();
 	};
-	
+
 	// video API
 	MissionSurvey.VideoPlayer = {};
 	MissionSurvey.VideoPlayer.width = 560;
@@ -362,15 +363,15 @@ $(function(){
 		'autoplay' : 1,
 		'disablekb' : 1,
 		'showinfo' : 0,
-		'iv_load_policy' : 3		
-	};	
-	
+		'iv_load_policy' : 3
+	};
+
 	// can we use HTML5 video?  if so, prefer that to the JS-SWF embed...
 	var html5video = !!document.createElement('video').canPlayType;
-	
+
 	// use IFrame API if HTML5 is supported, otherwise SWFObject
 	if(html5video){
-		
+
 		MissionSurvey.VideoPlayer.elementId = null;
 		MissionSurvey.VideoPlayer.values = {
 			height: MissionSurvey.VideoPlayer.height,
@@ -394,7 +395,7 @@ $(function(){
 				return false;
 			};
 			// only load the API once
-			if(!this.rendered){			
+			if(!this.rendered){
 				var script = document.createElement('script');
 				script.src = "//www.youtube.com/iframe_api";
 				var first = document.getElementsByTagName('script')[0];
@@ -411,16 +412,16 @@ $(function(){
 				);
 			}
 		};
-		
+
 	} else {
-		
+
 		// HTML5 video not supported, use the SWF object instead - this will prevent errors in IE8 as well (which should always fail the test anyway)
-		
-		MissionSurvey.VideoPlayer.id = 'sayso-player-object';		
+
+		MissionSurvey.VideoPlayer.id = 'sayso-player-object';
 		MissionSurvey.VideoPlayer.minimumVersion = '10.1';
 		MissionSurvey.VideoPlayer.params = { 'allowScriptAccess' : 'always' };
 		MissionSurvey.VideoPlayer.attributes = { 'id' : MissionSurvey.VideoPlayer.id };
-		
+
 		MissionSurvey.VideoPlayer.render = function(elementId, videoId, complete){
 			window.onYouTubePlayerStateChange = function(state) {
 				// if it's done (state is 0)
@@ -444,13 +445,13 @@ $(function(){
 				this.height,
 				this.minimumVersion,
 				null,
-				null, 
+				null,
 				this.params,
 				this.attributes
 			);
 		};
-		
-	};	
+
+	};
 
 	// show/hide loader when making ajax calls
 	$(document).ajaxSend(function(){
@@ -459,7 +460,7 @@ $(function(){
 	$(document).ajaxComplete(function(){
 		$('#mission-ajax-overlay').fadeOut(MissionSurvey.Options.LOADER_TRANSITION_DURATION);
 	});
-	
+
 	// startup
 	MissionSurvey.Model.load();
 

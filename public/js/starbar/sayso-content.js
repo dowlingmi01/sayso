@@ -111,30 +111,62 @@
 	sayso.log = safeLog('log', sayso.debug);
 	sayso.warn = safeLog('warn', sayso.debug);
 	
+	sayso.msgHandlers = {};
+	function handleMessage( event ) {
+		var data;
+		try {
+			data = JSON.parse(event.data);
+		} catch( e ) {
+			return;
+		}
+		var prefix = 'sayso-';
+		var evt;
+		if( data[0] && data[0].slice && data[0].slice(0, prefix.length) == prefix && sayso.msgHandlers[(evt=data[0].slice(prefix.length))])
+			sayso.msgHandlers[evt](data[1]);
+	}
+	if( window.addEventListener )
+		window.addEventListener('message', handleMessage);
+	else if( window.attachEvent )
+		window.attachEvent('onmessage', handleMessage);
+	
 	sayso.frameId = Math.floor(Math.random()*2e9) + 1;
 	sayso.current_url = sayso.location.href;
 	sayso.in_iframe = forge.is.firefox() ? (unsafeWindow.window !== unsafeWindow.top) : (window.top != window);
 	if( !sayso.in_iframe ) {
 		sayso.topFrameId = sayso.frameId;
-		function handleParentReq( event ) {
-			var prefix = 'sayso-parent-req-';
-			if( event.data.slice(0, prefix.length) == prefix )
-				forge.message.broadcast('parent-location-' + event.data.slice(prefix.length)
-					, { location: sayso.location, frameId: sayso.frameId });
+		function handleParentReq( childFrameId ) {
+			forge.message.broadcast('parent-location-' + childFrameId
+				, { location: sayso.location, frameId: sayso.frameId });
 		}
-		if( window.addEventListener )
-			window.addEventListener('message', handleParentReq);
-		else if( window.attachEvent )
-			window.attachEvent('onmessage', handleParentReq);
+		sayso.msgHandlers['parent-req'] = handleParentReq;
 	}
 
 	sayso.fn.loadScript('starbar/jquery-1.7.1.min.js', jQueryLoaded);
 	sayso.url_match_prepend = '^(?:http|https){1}://(?:[\\w.-]+[.])?';
 	sayso.ie_version = getInternetExplorerVersion();
 	
+	function injectBeacon() {
+		window.$SaySoExtension = {};
+		$SaySoExtension.ssBeacon = function ssBeacon( ssData ) {
+			window.postMessage(JSON.stringify(['sayso-beacon', ssData]), '*');
+		}
+	}
+	function handleBeacon ( ssData ) {
+		if( typeof ssData == 'string' ) {
+			try {
+				ssData = JSON.parse( ssData );
+			} catch( e ) {
+				sayso.log('Invalid Beacon')
+				return;
+			}
+		}
+		sayso.log( 'Received Beacon data: ', ssData );
+	}
+	
 	function jQueryLoaded() {
 		$SQ(function(){
-			sayso.fn.evalInPageContext( 'window.$SaySoExtension = {};' );
+			sayso.msgHandlers['beacon'] = handleBeacon;
+			sayso.fn.evalInPageContext( injectBeacon );
 			var frameComm;
 			if( sayso.in_iframe && (frameComm = document.getElementById('sayso-frame-comm')) ) {
 				function frameCommHandler() {
@@ -186,46 +218,33 @@
 					});
 					function requestParentLocation() {
 						if( !sayso.parentLocation ) {
-							sayso.fn.evalInPageContext( "top.postMessage( 'sayso-parent-req-" + sayso.frameId + "', '*' );");
+							sayso.fn.evalInPageContext( "top.postMessage( '[\"sayso-parent-req\", " + sayso.frameId + "]', '*' );");
 							setTimeout(requestParentLocation, 200);
 						}
 					}
 					requestParentLocation();
 				} else if( missionShortName = sayso.location.href.match(/(?:.say.so|.saysollc.com\/.*)\/mission\/(.*)\//)) {
 					missionShortName = missionShortName[1];
-					function handleMissionProgress( event ) {
-						var data;
-						try {
-							data = JSON.parse(event.data);
-						} catch( e ) {
-							return;
-						}
-						var prefix = 'sayso-mission-progress';
-						if( data[0] && data[0].slice && data[0].slice(0, prefix.length) == prefix ) {
-							data = data[1];
-							sayso.fn.ajaxWithAuth( {
-								url: '//'+sayso.baseDomain+'/api/survey/user-mission-submit',
-								data: {
-									mission_short_name: missionShortName,
-									mission_data: data
-								},
-								type : 'POST',
-								success: function(response) {
-									if( response.status && response.status == 'success') {
-										if( response.game )
-											forge.message.broadcastBackground( 'update-game', response.game );
-										if( data.stage == data.data.stages.length )
-											forge.message.broadcastBackground('mission-complete');
-									}
+					function handleMissionProgress( data ) {
+						sayso.fn.ajaxWithAuth( {
+							url: '//'+sayso.baseDomain+'/api/survey/user-mission-submit',
+							data: {
+								mission_short_name: missionShortName,
+								mission_data: data
+							},
+							type : 'POST',
+							success: function(response) {
+								if( response.status && response.status == 'success') {
+									if( response.game )
+										forge.message.broadcastBackground( 'update-game', response.game );
+									if( data.stage == data.data.stages.length )
+										forge.message.broadcastBackground('mission-complete');
 								}
-							});
-						}
+							}
+						});
 					}
-					if( window.addEventListener )
-						window.addEventListener('message', handleMissionProgress);
-					else if( window.attachEvent )
-						window.attachEvent('onmessage', handleMissionProgress);
-						return; // DO NOT LOAD STARBAR
+					sayso.msgHandlers['mission-progress'] = handleMissionProgress;
+					return; // DO NOT LOAD STARBAR
 				} else
 					sayso.fn.loadScript('starbar/sayso.js');
 				

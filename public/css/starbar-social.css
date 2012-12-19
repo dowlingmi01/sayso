@@ -668,7 +668,7 @@
 /* START */
 #sayso-starbar #starbar-player-console .sb_userLevel_next p{
 	position:relative;
-	top:60px;
+	top:80px;
 	color:#333;
 	z-index:-5;
 	font-size: 11px;
@@ -679,7 +679,7 @@
 
 #sayso-starbar #starbar-player-console .sb_userLevel_current p{
 	position:relative;
-	top:79px;
+	top:105px;
 	color:#333;
 	z-index:-5;
 	font-size: 11px;
@@ -1049,12 +1049,13 @@
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle{
 	position: relative;
 	display: block;
-	height: 116px;
+	height: 136px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_user_level_icons_container{
 	margin: 0px 25px;
-	height:105px;
+	width: 520px;
+	height:125px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav{
@@ -1099,11 +1100,11 @@
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_earned,
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next{
-	width: 160px;
+	width: 130px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_current{
-	width: 183px;
+	width: 130px;
 	height: 139px; /* fixed height to allow scrollPane to have correct height */
 }
 
@@ -1112,7 +1113,7 @@
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevelImg{
-	height: 85px;
+	height: 95px;
 	width: 100%;
 	display: block;
 	background-repeat: no-repeat;

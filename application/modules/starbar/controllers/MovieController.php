@@ -98,7 +98,7 @@ class Starbar_MovieController extends Starbar_ContentController
 	protected $_fbkAppDescription = "Say.So is your way of making a lasting impact on the community you love (and showing off how much you know about movies). Participating in Movie Say.So is simple - give your opinion, gain points, redeem awesome prizes for movie buffs.";
 
 	protected function _assignShareAppToView($facebookCallbackUrl) {
-		$twAppShareText = "I'm cementing my position as the ultimate film guru and earning some sweet movie swag. Show off your knowledge too.";
+		$twAppShareText = "I'm cementing my position as the ultimate film guru and earning some sweet movie swag. Show off your knowledge too. ";
 		$fbkAppShareTitle = 'Movie Say.So';
 		$fbkAppShareCopy = "I'm cementing my position as the ultimate film guru and earning some sweet movie swag. Try showing off your knowledge too";
 
@@ -146,7 +146,7 @@ class Starbar_MovieController extends Starbar_ContentController
 		$pollTitle = substr_compare($survey->title, '?', -1, 1) === 0 ? substr($survey->title, 0, -1) : $survey->title;
 		$sharePollTitle = $pollTitle;
 		$fbkShareText = "I've had my say, what do you think? '".$pollTitle."'";;
-		$twShareText = "I'm another ".$redeemable." Cinebucks closer to more movie loot! Join Movie Say.So and earn great prizes! Movie Say.So http://movie.say.so via @saysoapp";
+		$twShareText = "I'm another ".$redeemable." Cinebucks closer to more movie loot! Join Movie Say.So and earn great prizes! @";
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $sharePollTitle, $this->_fbkAppDescription);
 	}
@@ -164,8 +164,8 @@ class Starbar_MovieController extends Starbar_ContentController
 				$redeemable = 19;
 				break;
 		}
-		$twShareText = "Check out this quiz at Movie Say.So! I did and now I'm on my way to earning great prizes! http://movie.say.so via @saysoapp";
-		$fbkShareText = "Check out this quiz at Movie Say.So! I did and now I'm on my way to earning great prizes! http://movie.say.so via @saysoapp";
+		$twShareText = "Check out this quiz at Movie Say.So! I did and now I'm on my way to earning great prizes! @";
+		$fbkShareText = "Check out this quiz on ".$survey->title." at Movie Say.So! I did and now I'm on my way to earning great prizes! http://movie.say.so";
 
 		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
 	}

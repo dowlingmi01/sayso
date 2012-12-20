@@ -133,10 +133,10 @@ class Starbar_SocialController extends Starbar_ContentController
 				break;
 		}
 		$twShareText = "I've finished a Social Say.So survey and earned " . $redeemable ." PaySos. Get the Social Say.So app @";
-		$fbkShareText = "I just pocketed " . $redeemable ." PaySos by giving my opinion and finishing the survey '".$survey->title."'. Get the Social Say.So app @ http://Social.Say.So";
+		$fbkShareText = "I just pocketed " . $redeemable ." PaySos by giving my opinion and finishing the survey '".$survey->title."'.";
 
-
-		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
+		$shareTitle = "Social Say.So wants to know how I feel about '".$survey->title."'";
+		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $shareTitle, $this->_fbkAppDescription);
 	}
 
 	protected function _assignSharePollToView(Survey $survey, $facebookCallbackUrl) {
@@ -152,10 +152,12 @@ class Starbar_SocialController extends Starbar_ContentController
 				$redeemable = 19;
 				break;
 		}
-		$twShareText = "I just earned " . $redeemable ." PaySos for answering the poll '".$survey->title."'.";
-		$fbkShareText = "I've finished a Social Say.So poll and earned " . $redeemable ." PaySos. Get the Social Say.So app @ http://Social.Say.So";
 
-		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $survey->title, $this->_fbkAppDescription);
+		$shareTitle = "Social Say.So wants to know '".$survey->title."'";
+		$twShareText = "I've finished a Social Say.So poll and earned " . $redeemable . " PaySos. Get the Social Say.So app @";
+		$fbkShareText = "I just earned " . $redeemable ." PaySos for answering the poll '".$survey->title."'";
+
+		$this->_assignShareInfoToView($this->_appShareLink, $twShareText, $fbkShareText, $facebookCallbackUrl, $shareTitle, $this->_fbkAppDescription);
 	}
 
 	protected function _assignShareTrailerToView(Survey $survey, $facebookCallbackUrl) {

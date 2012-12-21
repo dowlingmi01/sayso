@@ -20,7 +20,7 @@
 <div id="sayso-starbar-embed">
 	<br />
 	<? if ($this->survey->reward_category != "premium") { ?>
-    Sorry, it appears that you do not qualify for the <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong> survey. Don't worry, we'll still give you some<span class="sb_tabHeader"> Social SaySos</span> and <span class="sb_tabHeader">PaySos</span> for trying!<br /><br />
+    Sorry, it appears that you do not qualify for the <strong class="sb_theme_textHighlight"><?= $this->survey->title ?></strong> survey. Don't worry, we'll still give you some<span class="sb_tabHeader"> Social SaySo</span> and <span class="sb_tabHeader">PaySos</span> for trying!<br /><br />
 	<? } ?>
 	<? if ($this->pixel_iframe_url) { ?>
 		<iframe src="<?= $this->pixel_iframe_url?>" width="1" height="1" border="0" class="sb_pixel_iframe"></iframe>
@@ -33,7 +33,7 @@
 	  <p>You earned <strong class="sb_theme_textHighlight">50 </strong><strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">Social PaySos</span></strong> &amp;	<strong class="sb_theme_textHighlight">500 </strong><strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">SaySo</span></strong></p>
 			<? $shareReward = 15 ?>
 		<? } else { ?>
-	  <p>You earned <strong class="sb_theme_textHighlight">25 </strong><strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">Social PaySos</span></strong> &amp;	<strong class="sb_theme_textHighlight">250 </strong><strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">SaySos</span></strong></p>
+	  <p>You earned <strong class="sb_theme_textHighlight">25 </strong><strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">Social PaySos</span></strong> and your	<strong class="sb_theme_textHighlight_alt"><span class="sb_tabHeader">SaySo</span></strong> has been increased by <strong class="sb_theme_textHighlight">250 </strong></p>
 			<? $shareReward = 8 ?>
 		<? } ?>
 		<div class="sb_externalShares">

@@ -1,7 +1,7 @@
 /* overrides */
 
 body {
-	background: #000 no-repeat center 60px fixed;
+	background: #000 no-repeat center top fixed;
 	font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
 	font-size: 14px;
 	color: #FFF;
@@ -305,7 +305,7 @@ font-weight: bold;
 
 #mission-conclusion>p {
 	font-weight: bold;
-	font-size:16pt;
+	font-size:16px;
 }
 
 #mission-conclusion .mission-titles span {
@@ -400,11 +400,11 @@ font-weight: bold;
 #mission-conclusion h3 {
 	text-align: center;
 	margin-bottom: 20px;
-	font-size:24pt;
+	font-size:24px;
 }
 
 #mission-content label {
-	font-size:16pt;
+	font-size:16px;
 }
 
 .mission-image-poll li {

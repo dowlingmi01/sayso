@@ -24,7 +24,7 @@
 			$firstclass = " class='active'"; // We need to mark the first li as active. The loop then sets it to null.
 			foreach ($this->mission_info as $mission) {
 				$slidectr++;
-				printf("<li id='slide%s'%s><img src='//%s%s' />",$slidectr, $firstclass,BASE_DOMAIN, $mission->preview_image);
+				printf("<li id='slide%s'%s><a href='http://%s/mission/%s/' target='_blank'><img src='//%s%s' /></a>",$slidectr, $firstclass,$baseUrl,$mission->short_name,BASE_DOMAIN, $mission->preview_image);
 				$firstclass = '';
 				printf("<h2>%s</h2><p>%s</p>",$mission->title,$mission->description);
 				printf('<a id="sb_mission_launch" href="http://%s/mission/%s/" target="_blank"><img src="//%s/images/social/img_accept-mission.png" alt="Accept Mission" /></a></li>',$baseUrl,$mission->short_name,BASE_DOMAIN);

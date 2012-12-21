@@ -86,7 +86,7 @@
       "id": 3,
       "short_title": "Visit",
       "type": "site-survey",
-	  "background": "mission/images/Stage_3_bg.png",
+	  "background": "",
       "data": {
         "url": "http://www.foddy.net/Athletics.html",
         "title": "QWOP Game",
@@ -103,15 +103,15 @@
               },
               {
                 "id": 2,
-                "text": "Past 5 metres"
+                "text": "Less than 5 metres"
               },
               {
                 "id": 3,
-                "text": "Past 10 metres"
+                "text": "Less than 10 metres"
               },
               {
                 "id": 4,
-                "text": "Past 50 metres"
+                "text": "Past 10 metres"
               }
             ]
           },

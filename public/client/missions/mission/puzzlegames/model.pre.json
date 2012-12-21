@@ -86,7 +86,7 @@
       "id": 3,
       "short_title": "Visit",
       "type": "site-survey",
-	  "background": "mission/images/Stage_3_bg.jpg",
+	  "background": "",
       "data": {
         "url": "http://www.thegamehomepage.com/play/red-remover/",
         "title": "Gaz Game",

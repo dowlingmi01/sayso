@@ -93,6 +93,10 @@ class Notification_Message extends Record
 			case 'New Trailers':
 				if (! Survey_ResponseCollection::checkIfUserHasSurveys($userId, $starbarId, 'trailer', 'new')) return false;
 				break;
+
+			case 'New Missions':
+				if (! Survey_ResponseCollection::checkIfUserHasSurveys($userId, $starbarId, 'mission', 'new')) return false;
+				break;
 		}
 
 		return true;

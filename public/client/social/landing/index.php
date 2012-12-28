@@ -42,9 +42,9 @@ a:hover {
 	  <div class="section tab-pane active" id="section-1">
 	  	<div class="section-head">
 	  		<h2>What is Social Say.So?</h2>
-	  		<p>Are you a social or mobile gaming fanatic? Do you eagerly await for<br />
-	  		  new items in Farmville or a sequel to Plants VS. Zombies? If so,<br />
-  		    you're probably a perfect fit for Social Say.So!</p>
+	  		<p>Do you eagerly await new quests in <b>The Sims Social</b>, new items<br />
+	  		  in <b>Farmville</b>, or a sequel to <b>Plants vs. Zombies</b>?<br />
+	  		  If so, you're probably a perfect fit for Social Say.So!</p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">
@@ -73,7 +73,7 @@ items in our Reward Center.</p>
 				<div class="slides">
 					<div class="slide"><img src="images/img_slide_2a.png" alt="" /></div>
 					<div class="slide"><img src="images/img_slide_2b.png" alt="" /></div>
-					
+
 				</div><!-- .slides -->
 				<div class="slide-nav">
 					<span class="prev">Prev</span>

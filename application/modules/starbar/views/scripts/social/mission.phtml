@@ -27,7 +27,7 @@
 				printf("<li id='slide%s'%s><a href='http://%s/mission/%s/' target='_blank'><img src='//%s%s' /></a>",$slidectr, $firstclass,$baseUrl,$mission->short_name,BASE_DOMAIN, $mission->preview_image);
 				$firstclass = '';
 				printf("<h2>%s</h2><p>%s</p>",$mission->title,$mission->description);
-				printf('<a id="sb_mission_launch" href="http://%s/mission/%s/" target="_blank"><img src="//%s/images/social/img_accept-mission.png" alt="Accept Mission" /></a></li>',$baseUrl,$mission->short_name,BASE_DOMAIN);
+				printf("<a class='sb_mission_launch' href='http://%s/mission/%s/' target='_blank'><img src='http://%s/images/social/img_accept-mission.png' alt='Accept Mission' /></a></li>",$baseUrl,$mission->short_name,BASE_DOMAIN);
 			}
 		?>
 		</ul>

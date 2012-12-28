@@ -50,8 +50,8 @@ class Game_Starbar_Social extends Game_Starbar {
 			$good->setNonRedeemReason('Must complete<br />'.$profileSurveyLink);
 			$good->setCommentForUser('Survey Requirement');
 		} elseif ($profile->getCurrencyByType('redeemable')->current_balance < ($good->cost * $quantity)) {
-			$good->setNonRedeemReason('Earn more CineBucks by<br />completing polls and surveys!');
-			$good->setCommentForUser('Insufficient CineBucks');
+			$good->setNonRedeemReason('Earn more Social PaySos by<br />completing polls and surveys!');
+			$good->setCommentForUser('Insufficient Social PaySos');
 		}
 
 		if ($good->inventory_total > $good->inventory_sold && (($good->inventory_total - $good->inventory_sold) < 4)) {

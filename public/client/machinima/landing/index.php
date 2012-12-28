@@ -104,7 +104,7 @@
 	  			<input type="text" id="input-password_txt" value="Enter your desired password. (6-12 characters)" /></p>
 	  			<p><input type="password" id="input-confirmation" class="sso_fld" placeholder="Verify your password" />
 	  			<input type="text" id="input-confirmation_txt" value="Verify your password" /></p>
-	  			<p><input type="checkbox" value="" id="agreeterms" /><label for="agreeterms">I agree to the <a href="#">terms</a> and <a href="#">conditions</a>.</label></p>
+	  			<p><input type="checkbox" value="" id="agreeterms" /><label for="agreeterms">I agree to the <a href="http://app.saysollc.com/docs/machinima/Say.So_App_EULA.pdf" target="_blank">terms and conditions</a>.</label></p>
 	  			<input type="submit" value="Grab It" disabled="" id="btn-submit" class="grab-it" />
 	  		</form>
 	  		<p><small>We don't share your email or password with anyone...period.</small></p>

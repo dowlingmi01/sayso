@@ -450,10 +450,14 @@
 	position: relative;
 }
 
-#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_header{
+ #starbar-promo .sb_slide .sb_header{
 	background: none;
 	margin: 0;
 	padding: 0;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox p.sb_tabHeader {
+	width/*/**/:670px\9;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details{
@@ -2333,6 +2337,11 @@
 	background-image: url('../images/social/img_arrow-left_circle.png');
 	background-repeat:no-repeat;
 	background-position:center center;
+	/*IE Specific overrides*/
+	position/*/**/:absolute\9;
+	margin-top/*/**/:-252px\9;
+	margin-left/*/**/:25px\9;
+
 }
 
 #sayso-starbar #starbar-player-console .sb_mission_carousel .arrow_right {
@@ -2345,6 +2354,10 @@
 	background-position:center center;
 	margin-top:-252px;
 	margin-right:11px;
+	/*IE Specific overrides*/
+	position/*/**/:absolute\9;
+	margin-left/*/**/:610px\9;
+
 }
 
 #sayso-starbar .sb_number, .sb_number {

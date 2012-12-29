@@ -13,7 +13,7 @@ class Survey_TrailerInfoCollection extends RecordCollection
 				SELECT *
 				FROM survey_trailer_info
 				WHERE survey_id IN (" . $commaDelimitedTrailerIdList . ")
-				AND ((start_date < date(now()) AND end_date >= date(now())) OR (start_date is null))
+				AND ((start_date < now() AND end_date >= now()) OR (start_date is null))
 				ORDER BY FIND_IN_SET(survey_id, '" . $commaDelimitedTrailerIdList . "')
 			";
 

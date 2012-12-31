@@ -3,7 +3,7 @@ INSERT metrics_event_type VALUES
 (3, 'brandboost_interstitial_screen'),
 (4, 'brandboost_end_screen');
 
-INSERT metrics_property_lookup_value VALUES
+INSERT metrics_property VALUES
 (1, 'brandboost_session_id', 'int'),
 (2, 'brandboost_campaign_id', 'lookup'),
 (3, 'brandboost_partner_name', 'lookup'),

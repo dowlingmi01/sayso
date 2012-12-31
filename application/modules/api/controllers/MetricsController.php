@@ -86,6 +86,11 @@ class Api_MetricsController extends Api_GlobalController
 		return $this->_resultType($metric);
 	}
 
+	public function eventSubmitAction() {
+		$this->_validateRequiredParameters(array('user_id', 'event_name', 'event_data'));
+		Metrics_Event::save($this->event_name, $this->event_data, $this->user_id);
+	}
+	
 	public function trackStudyAdViewsAction () {
 
 		$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'url', 'study_ad_views'));

@@ -102,6 +102,19 @@
 		return this.replace(/^\s+|\s+$/g,'');
 	};
 	
+	function urlParams(query) {
+	    var match,
+	        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+	        search = /([^&=]+)=?([^&]*)/g,
+	        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+			result = {};
+
+	    while (match = search.exec(query))
+	       result[decode(match[1])] = decode(match[2]);
+	       
+	    return result;
+	}
+
 	if( sayso.location.host == sayso.baseDomain && sayso.location.pathname == '/starbar/content/close-window' ) {
 		if( sayso.location.search.indexOf('update_notifications') >= 0 )
 			forge.message.broadcastBackground('update-notifications');
@@ -214,6 +227,14 @@
 							sayso.parentLocation = m.location;
 							sayso.topFrameId = m.frameId;
 							sayso.fn.loadScript('starbar/sayso.js');
+							if( sayso.location.host == 'vex.wildtangent.com') {
+								var brandBoostStage = sayso.location.pathname.match(/\/(?:Vex\/)?(\w+)(?:.aspx)?/);
+								if( brandBoostStage ) {
+									var par = urlParams(sayso.location.search.substring(1));
+									forge.message.broadcastBackground( 'brandboost-event', { stage: brandBoostStage[1], urlParams: par, topFrameId: sayso.topFrameId } );
+									sayso.log(par);
+								}
+							}
 						}
 					});
 					function requestParentLocation() {

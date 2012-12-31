@@ -392,6 +392,36 @@ function missionComplete() {
 	forge.message.broadcast('set-mission-available', false);
 	getNotificationsFromServer();
 }
+function brandBoostEvent( data ) {
+	sayso.brandBoostSessions = sayso.brandBoostSessions || {};
+	var sessionId;
+	var eventNames = { Begin: 'launch_screen', Interstitial: 'interstitial_screen', End: 'end_screen' };
+	var fields = {a: 'campaign_id', pn: 'partner_name', gn: 'game_name', i: 'item_id', sponsorName: 'sponsor_name', uid: 'uid'};
+	var eventData = {};
+	
+	if(!eventNames[data.stage])
+		return;
+		
+	eventName = 'brandboost_' + eventNames[data.stage];
+	
+	if( data.stage == 'Begin' ) {
+		sessionId = Math.floor(Math.random()*2e9) + 1;
+		sayso.brandBoostSessions[data.topFrameId] = sessionId;
+	} else
+		sessionId = sayso.brandBoostSessions[data.topFrameId];
+		
+	if( sessionId )
+		eventData.brandboost_session_id = sessionId;
+		
+	for( field in fields )
+		if( data.urlParams[field] )
+			eventData['brandboost_' + fields[field]] = data.urlParams[field];
+			
+	ajaxWithAuth( {
+		url: 'api/metrics/event-submit',
+		data: { event_name: eventName, event_data: eventData }
+	});
+}
 sayso.scripts = {};
 sayso.pendingStateRequests = [];
 forge.message.listen("get-state", getState, showErr);
@@ -406,6 +436,7 @@ forge.message.listen("onboarding-complete", onboardingComplete, showErr);
 forge.message.listen("get-studies", getStudies, showErr);
 forge.message.listen("close-notification", closeNotification, showErr);
 forge.message.listen("mission-complete", missionComplete, showErr);
+forge.message.listen("brandboost-event", brandBoostEvent, showErr);
 forge.message.listen("get-script", getScript, showErr);
 forge.logging.info("Background script loaded");
 forge.prefs.get('firstRunDone', firstRun, showErr);

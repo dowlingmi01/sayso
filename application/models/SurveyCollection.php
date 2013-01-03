@@ -13,12 +13,26 @@ class SurveyCollection extends RecordCollection
 	{
 		$orderSql = "FIELD (user_status, 'completed', 'disqualified', 'archived', 'new'), FIELD (reward_category, 'profile', 'premium', 'standard'), ssm.ordinal ASC";
 		$userStatusSql = "";
+		$trailerClause = "";
 		$surveys = null;
 
 		$type = str_replace("surveys", "survey", $type);
 		$type = str_replace("polls", "poll", $type);
 		$type = str_replace("trailers", "trailer", $type);
 		$type = str_replace("quizzes", "quiz", $type);
+
+		// We need to have a special clause for trailers, to check that there is a
+		// valid survey_trailer_info record available for viewing
+		if ($type=='trailer') {
+			$trailerClause = "
+				INNER JOIN survey_trailer_info sti
+			    ON (
+			    	sti.survey_id = s.id
+			    	AND (sti.start_date<now() OR sti.start_date = '0000-00-00 00:00:00')
+					AND (sti.end_date>now() OR sti.end_date = '0000-00-00 00:00:00')
+			    )
+			    ";
+		}
 
 		if ($surveyUserStatus && in_array($surveyUserStatus, array("new", "completed", "disqualified", "archived")))
 			$userStatusSql = " AND sr.status = '".$surveyUserStatus."' ";
@@ -40,6 +54,7 @@ class SurveyCollection extends RecordCollection
 					IFNULL(s.report_cell_id, ?) = rcum.report_cell_id
 					AND (rcum.report_cell_id = ? OR rcum.user_id = ?)
 				)
+			".$trailerClause."
 			WHERE s.type = ?
 				AND s.status = 'active'
 			ORDER BY ".$orderSql."

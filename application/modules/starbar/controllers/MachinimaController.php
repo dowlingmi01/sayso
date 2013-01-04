@@ -213,10 +213,11 @@ class Starbar_MachinimaController extends Starbar_ContentController
 		}
 
 		if ($currentTrailer) {
+			$activeSurveyTrailerInfoId = $infoForTrailersIndexedArray[$currentTrailer->id]->id;
 			$this->view->current_trailer = $currentTrailer;
 
 			$firstQuestion = new Survey_Question();
-			$firstQuestion->loadDataByUniqueFields(array('survey_id' => $currentTrailer->id, 'ordinal' => 1));
+			$firstQuestion->loadDataByUniqueFields(array('survey_id' => $currentTrailer->id, 'ordinal' => 1, 'survey_trailer_info_id'=>$activeSurveyTrailerInfoId));
 
 			$this->view->first_question = $firstQuestion;
 
@@ -226,7 +227,7 @@ class Starbar_MachinimaController extends Starbar_ContentController
 			$this->view->first_question_choices = $firstQuestionChoices;
 
 			$secondQuestion = new Survey_Question();
-			$secondQuestion->loadDataByUniqueFields(array('survey_id' => $currentTrailer->id, 'ordinal' => 2));
+			$secondQuestion->loadDataByUniqueFields(array('survey_id' => $currentTrailer->id, 'ordinal' => 2, 'survey_trailer_info_id'=>$activeSurveyTrailerInfoId));
 
 			$this->view->second_question = $secondQuestion;
 

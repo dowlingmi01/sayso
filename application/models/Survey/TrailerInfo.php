@@ -15,7 +15,6 @@ class Survey_TrailerInfo extends Record
 			// Get the survey questions for the trailer
 			$surveyQuestions = new Survey_QuestionCollection();
 			$surveyQuestions->loadAllQuestionsForSurvey($this->trailer_template_id);
-
 			$questionCtr = 0;
 			foreach ($surveyQuestions as $surveyQuestion) {
 
@@ -24,6 +23,7 @@ class Survey_TrailerInfo extends Record
 				$question->loadData($surveyQuestion->id);
 				$question->id = null; // Treats this as an Insert instead of an Edit
 				$question->survey_id = $this->survey_id;
+				$question->survey_trailer_info_id = $this->id;
 				$question->external_question_id = null;
 				$question->ordinal = $questionCtr;
 				$question->save();

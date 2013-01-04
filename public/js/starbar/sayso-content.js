@@ -129,6 +129,8 @@
 		var data;
 		try {
 			data = JSON.parse(event.data);
+			if( typeof data == 'string' )
+				data = JSON.parse(data);
 		} catch( e ) {
 			return;
 		}

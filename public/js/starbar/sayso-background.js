@@ -397,7 +397,7 @@ function brandBoostEvent( data ) {
 	var sessionId;
 	var eventNames = { Begin: 'launch_screen', Interstitial: 'interstitial_screen', End: 'end_screen' };
 	var fields = {a: 'campaign_id', pn: 'partner_name', gn: 'game_name', i: 'item_id', sponsorName: 'sponsor_name', uid: 'uid'};
-	var eventData = {};
+	var eventData = { event_source: 'brandBoostEvent' };
 	
 	if(!eventNames[data.stage])
 		return;
@@ -422,6 +422,12 @@ function brandBoostEvent( data ) {
 		data: { event_name: eventName, event_data: eventData }
 	});
 }
+function submitEvent( data ) {
+	ajaxWithAuth( {
+		url: 'api/metrics/event-submit',
+		data: data
+	});
+}
 sayso.scripts = {};
 sayso.pendingStateRequests = [];
 forge.message.listen("get-state", getState, showErr);
@@ -437,6 +443,7 @@ forge.message.listen("get-studies", getStudies, showErr);
 forge.message.listen("close-notification", closeNotification, showErr);
 forge.message.listen("mission-complete", missionComplete, showErr);
 forge.message.listen("brandboost-event", brandBoostEvent, showErr);
+forge.message.listen("submit-event", submitEvent, showErr);
 forge.message.listen("get-script", getScript, showErr);
 forge.logging.info("Background script loaded");
 forge.prefs.get('firstRunDone', firstRun, showErr);

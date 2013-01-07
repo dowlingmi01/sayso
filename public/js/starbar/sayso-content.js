@@ -171,11 +171,19 @@
 			try {
 				ssData = JSON.parse( ssData );
 			} catch( e ) {
-				sayso.log('Invalid Beacon')
+				sayso.log('Invalid Beacon', ssData)
 				return;
 			}
 		}
+		if( !ssData.event_name ) {
+			sayso.log('Invalid Beacon', ssData)
+			return;
+		}
 		sayso.log( 'Received Beacon data: ', ssData );
+		var eventName = ssData.event_name;
+		delete ssData.event_name;
+		ssData.event_source = 'handleBeacon';
+		forge.message.broadcastBackground('submit-event', { event_name: eventName, event_data: ssData });
 	}
 	
 	function jQueryLoaded() {
@@ -236,6 +244,20 @@
 									forge.message.broadcastBackground( 'brandboost-event', { stage: brandBoostStage[1], urlParams: par, topFrameId: sayso.topFrameId } );
 									sayso.log(par);
 								}
+							}
+							if( sayso.location.href.match(/:\/\/simssoc.game.playfish.com\/g\/fb\/simssoc\//) ) {
+								var elementFound = false;
+								function monitorElement() {
+									if( $SQ('div#overlay div#bank').length ) {
+										if( !elementFound ) {
+											elementFound = true;
+											forge.message.broadcastBackground('submit-event', { event_name: 'add_cash', event_data: { event_source: 'monitorElement', game_name: 'simssocial', game_source: 'facebook', add_cash_stage: 'open'} } );
+										}
+									} else if( elementFound )
+										elementFound = false;
+									setTimeout( monitorElement, 1000 );
+								}
+								monitorElement();
 							}
 						}
 					});

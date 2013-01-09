@@ -64,7 +64,7 @@ abstract class Game_Starbar extends Game_Abstract {
 //public function checkin () {
 //		$this->submitAction('STARBAR_CHECKIN');
 //	}
-    /* was testRewardNotes*/
+	/* was testRewardNotes*/
 	public function rewardNotes () {
 		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'demo'))) {
 			$this->submitAction('TEST_REWARD_NOTES');
@@ -343,30 +343,30 @@ abstract class Game_Starbar extends Game_Abstract {
 
 	 public function getGoodsFromStore() {
 
-        $goodsData = null;
-        $cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $this->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
+		$goodsData = null;
+		$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $this->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
 
-        if ($cache->test()) {
+		if ($cache->test()) {
 
-            $goodsData = $cache->load();
+			$goodsData = $cache->load();
 
-        } else {
+		} else {
 
-            $client = $this->getHttpClient();
-            $client->setCustomParameters(array(
-                'attribute_friendly_id' => 'bdm-product-variant',
-                'verbosity' => 9,
-                'max_records' => 100
-            ));
+			$client = $this->getHttpClient();
+			$client->setCustomParameters(array(
+				'attribute_friendly_id' => 'bdm-product-variant',
+				'verbosity' => 9,
+				'max_records' => 200
+			));
 
-            $client->getNamedTransactionGroup('store');
-            $goodsData = $client->getData();
-            $cache->save($goodsData);
+			$client->getNamedTransactionGroup('store');
+			$goodsData = $client->getData();
+			$cache->save($goodsData);
 
-        }
+		}
 
-        return $goodsData;
-    }
+		return $goodsData;
+	}
 
 
 	protected static function setStaticProfileSurveyVariables ($request) {

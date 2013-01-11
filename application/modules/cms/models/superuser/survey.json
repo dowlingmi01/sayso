@@ -38,6 +38,17 @@
 			]
 		},
 		{
+			"colname": "type",
+			"type": "hidden",
+			"value": "survey",
+			"displaywhen": [
+				"add",
+				"detail",
+				"delete",
+				"edit"
+			]
+		},
+		{
 			"colname": "origin",
 			"type": "list",
 			"listoptions": [

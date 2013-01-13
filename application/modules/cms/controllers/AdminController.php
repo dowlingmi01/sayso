@@ -754,6 +754,7 @@
 		*/
 		public function deleteAction()
 		{
+
 			$longid = explode("?",$this->getRequest()->getParam('id'));
 			$id = $longid[0];
 			if ($id===null) {
@@ -808,7 +809,7 @@
 											}
 										}
 
-										$coloptions['meta']['tablename'] = $tablename;
+										$coloptions['meta']['tablename'] = $realtable; // not $tablename;
 										$coloptions['meta']['colname'] = $colname;
 
 
@@ -870,7 +871,7 @@
 
 										} else {
 											// Delete cancelled
-											$this->view->message = "Delete cancelled";
+											$this->msg->addMessage('Delete cancelled');
 											$this->rd->gotoSimple('view','admin','cms',array('table' => $tablename));
 										}
 									} else {
@@ -1022,7 +1023,7 @@
 
 											} else {
 												// Delete cancelled
-												$this->view->message = "Duplicate cancelled";
+												$this->msg->addMessage('Duplicate cancelled');
 												$this->rd->gotoSimple('view','admin','cms',array('table' => 'trailer'));
 											}
 										} else {
@@ -1181,7 +1182,7 @@
 				$postData = $this->getRequest()->getPost(); // getting the $_POST data
 
 				if ($postData['goodid']!=null) {
-					//DebugBreak('1;d=1');
+
 					$request = $this->getRequest();
 					$goodId = $postData['goodid'];
 
@@ -1493,7 +1494,7 @@
 		public function snakklexferAction()
 		{
 			// Get a list of all tmp_user_transfer users where starbar is snakkle
-			//DebugBreak('1;d=1');
+
 			$transferusers = new User_TransferCollection();
 			$transferusers->loadForStarbarBlock('Snakkle',307,308);
 			//$transferusers->loadForStarbar('Snakkle');
@@ -2165,7 +2166,8 @@ $data = $client->getData();
 								$model->setData($formData);
 								$result = $model->save();
 
-								$this->view->message = "Record successfully added ".$result;
+
+								$this->msg->addMessage('Record successfully added');
 
 								if (($parenttable!=null) && ($parentid!=null))
 								{
@@ -2175,7 +2177,8 @@ $data = $client->getData();
 										$this->rd->gotoSimple('detail','admin','cms',array('table' => $parenttable,'id'=>$parentid));
 									}
 								} else {
-									$form->reset();
+									$this->rd->gotoSimple('add','admin','cms',array('table' => $tablename));
+									//$form->reset();
 								}
 
 							} else {

@@ -864,10 +864,25 @@
 										$tablefrommodel = $saysojson->getModel();
 										$model = new $tablefrommodel();
 										$model->setData($formData);
-										$result = $model->delete();
+										try {
 
-										$this->msg->addMessage('Record successfully deleted');
-										$this->rd->gotoSimple('view','admin','cms',array('table' => $tablename));
+											$result = $model->delete();
+
+											$this->msg->addMessage('Record successfully deleted');
+											$this->rd->gotoSimple('view','admin','cms',array('table' => $tablename));
+
+											} catch (Zend_Db_Exception $e) {
+												$previous = $e->getPrevious();
+
+												if ($previous->getCode()==23000) {
+													$this->msg->addMessage('Record cannot be deleted.<br /> Responses to this '.$tablename.' exist<br /> and must be removed first');
+													$this->rd->gotoSimple('delete','admin','cms',array('table' => $tablename,'id'=>$id));
+												} else {
+													$this->msg->addMessage('Record cannot be deleted.<br />Reason:'.$previous->getMessage());
+													$this->rd->gotoSimple('delete','admin','cms',array('table' => $tablename,'id'=>$id));
+												}
+
+											}
 
 										} else {
 											// Delete cancelled

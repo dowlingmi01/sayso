@@ -1,0 +1,208 @@
+{
+  "title": "Card Games",
+  "description": "<div style=\"height: 344px;\"></div>",
+  "background": "mission/images/Info_Bg_Image.jpg",
+  "preview_image": "/client/missions/mission/cardgames/images/001_Mission_Billboard.jpg",
+  "description":"",
+  "progress_token": "mission/images/Token_For_ProgressBar.png",
+  "validation": "<h3>Congratulations, you completed the mission!</h3><img src='mission/images/Final_Frame.jpg' alt='' /><p>You earned 57 PaySo and 750 SaySo.</p><p>You may close this tab at any time.</p>",
+  "reward_experience": 750,
+  "reward_redeemable": 57,
+  "stages": [
+    {
+      "id": 1,
+      "short_title": "Poll",
+      "type": "image-poll",
+	  "background": "",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "In Poker, which hand out of the following is the best?"
+        },
+        "correct": 2,
+        "answers": [
+         {
+            "id": 1,
+            "image": "mission/images/q1_i1.jpg",
+            "label": "",
+            "text": ""
+          },
+          {
+            "id": 2,
+            "image": "mission/images/q1_i2.jpg",
+            "label": "",
+            "text": ""
+          },
+          {
+            "id": 3,
+            "image": "mission/images/q1_i3.jpg",
+            "label": "",
+            "text": ""
+          },
+          {
+            "id": 4,
+            "image": "mission/images/q1_i4.jpg",
+            "label": "",
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "short_title": "Watch",
+      "type": "video",
+	  "background": "",
+      "data": {
+        "title": "After watching this review for the card battling game by Square Enix 'Guardian Cross', would you download it?",
+        "caption": "",
+        "url": "MlYtkQPMHJU",
+        "enableControls" : 1,
+        "question": {
+          "id": 1,
+          "text": "After watching this review for the card battling game by Square Enix 'Guardian Cross', would you download it?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "Yes"
+          },
+          {
+            "id": 2,
+            "text": "No"
+          },
+          {
+            "id": 3,
+            "text": "I might check it out"
+          },
+          {
+            "id": 4,
+            "text": "I don't have an iOS phone/tablet"
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "short_title": "Visit",
+      "type": "site-survey",
+	  "background": "",
+      "data": {
+        "url": "http://www.pogo.com/games/rainy-day-spider-solitaire#game",
+        "title": "Rainy Day Spider Solitaire",
+        "questions": [
+          {
+            "question": {
+              "id": 1,
+              "text": "After playing a round of Rainy Day Spider Solitaire, would continue playing?"
+            },
+            "answers": [
+              {
+                "id": 1,
+                "text": "Yes"
+              },
+              {
+                "id": 2,
+                "text": "No"
+              },
+              {
+                "id": 3,
+                "text": "If I had the time"
+              },
+              {
+                "id": 4,
+                "text": "I didn't play the game"
+              }
+            ]
+          },
+          {
+            "question": {
+              "id": 2,
+              "text": "How many levels of play does Rainy Day Spider have?"
+            },
+            "correct": 3,
+            "answers": [
+              {
+                "id": 1,
+                "text": "1"
+              },
+              {
+                "id": 2,
+                "text": "2"
+              },
+              {
+                "id": 3,
+                "text": "3"
+              },
+              {
+                "id": 4,
+                "text": "4"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "short_title": "Question",
+      "type": "poll",
+	  "background": "mission/images/Stage_4_bg.jpg",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Asked on the popular U.S. trivia game 'Cash Cab', which 'specific variety of solitaire has come with Microsoft Windows since 1995?'"
+        },
+        "correct": 3,
+        "answers": [
+          {
+            "id": 1,
+            "text": "Solitaire"
+          },
+          {
+            "id": 2,
+            "text": "Freecell"
+          },
+          {
+            "id": 3,
+            "text": "Spider Solitaire"
+          },
+          {
+            "id": 4,
+            "text": "Windows Solitaire"
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "short_title": "Poll",
+      "type": "poll",
+	  "background": "mission/images/Stage_4_bg.jpg",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Which type of card game do you most enjoy playing?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "Traditional Card Games (Poker, Blackjack, Rummy)"
+          },
+          {
+            "id": 2,
+            "text": "Trading/Collecting Card Games (Magic: The Gathering, Pokemon)"
+          },
+          {
+            "id": 3,
+            "text": "Non Traditional Card Games (Uno, Skip-Bo)"
+          },
+          {
+            "id": 4,
+            "text": "Very Non Traditional (Cards Against Humanity, Gloom)"
+          }
+        ]
+      }
+    }
+  ]
+}

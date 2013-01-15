@@ -1,0 +1,208 @@
+{
+  "title": "Tower Defense Games",
+  "description": "<div style=\"height: 344px;\"></div>",
+  "background": "mission/images/Info_Bg_Image.jpg",
+  "preview_image": "/client/missions/mission/towergames/images/001_Mission_Billboard.jpg",
+  "description":"",
+  "progress_token": "mission/images/Token_For_ProgressBar.png",
+  "validation": "<h3>Congratulations, you completed the mission!</h3><img src='mission/images/Final_Frame.jpg' alt='' /><p>You earned 57 PaySo and 750 SaySo.</p><p>You may close this tab at any time.</p>",
+  "reward_experience": 750,
+  "reward_redeemable": 57,
+  "stages": [
+    {
+      "id": 1,
+      "short_title": "Poll",
+      "type": "image-poll",
+	  "background": "",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Which one of these Zombies from Plants vs. Zombies are not affected by Snow Peas?"
+        },
+        "correct": 1,
+        "answers": [
+         {
+            "id": 1,
+            "image": "mission/images/q1_i1.gif",
+            "label": "",
+            "text": ""
+          },
+          {
+            "id": 2,
+            "image": "mission/images/q1_i2.gif",
+            "label": "",
+            "text": ""
+          },
+          {
+            "id": 3,
+            "image": "mission/images/q1_i3.gif",
+            "label": "",
+            "text": ""
+          },
+          {
+            "id": 4,
+            "image": "mission/images/q1_i4.gif",
+            "label": "",
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "short_title": "Watch",
+      "type": "video",
+	  "background": "",
+      "data": {
+        "title": "After watching this review for the Xbox defense tower game 'SOUTH PARK: LET'S GO TOWER DEFENSE PLAY!', would you download it?",
+        "caption": "",
+        "url": "F-QP-7UdXrA",
+        "enableControls" : 1,
+        "question": {
+          "id": 1,
+          "text": "After watching this review for the Xbox defense tower game 'SOUTH PARK: LET'S GO TOWER DEFENSE PLAY!', would you download it?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "Yes"
+          },
+          {
+            "id": 2,
+            "text": "No"
+          },
+          {
+            "id": 3,
+            "text": "I might check it out"
+          },
+          {
+            "id": 4,
+            "text": "I don't have an Android phone"
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "short_title": "Visit",
+      "type": "site-survey",
+	  "background": "",
+      "data": {
+        "url": "http://armorgames.com/play/12141/kingdom-rush",
+        "title": "Kingdom Rush",
+        "questions": [
+          {
+            "question": {
+              "id": 1,
+              "text": "After playing a level of Kingdom Rush, would continue playing?"
+            },
+            "answers": [
+              {
+                "id": 1,
+                "text": "Yes"
+              },
+              {
+                "id": 2,
+                "text": "No"
+              },
+              {
+                "id": 3,
+                "text": "If I had the time"
+              },
+              {
+                "id": 4,
+                "text": "I didn't play the game"
+              }
+            ]
+          },
+          {
+            "question": {
+              "id": 2,
+              "text": "When you start the game, which area of the map are you defending?"
+            },
+            "correct": 4,
+            "answers": [
+              {
+                "id": 1,
+                "text": "Hushwood"
+              },
+              {
+                "id": 2,
+                "text": "Stormcloud Temple"
+              },
+              {
+                "id": 3,
+                "text": "Forsaken Valley"
+              },
+              {
+                "id": 4,
+                "text": "Southport"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "short_title": "Question",
+      "type": "poll",
+	  "background": "mission/images/Stage_4_bg.jpg",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Which real life tower has had more than 200,000,000 people visit, making it the most visited paid monument in the world?"
+        },
+        "correct": 3,
+        "answers": [
+          {
+            "id": 1,
+            "text": "Leaning Tower of Pisa"
+          },
+          {
+            "id": 2,
+            "text": "Big Ben"
+          },
+          {
+            "id": 3,
+            "text": "Eiffel Tower"
+          },
+          {
+            "id": 4,
+            "text": "CN Tower"
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "short_title": "Poll",
+      "type": "poll",
+	  "background": "mission/images/Stage_4_bg.jpg",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Now that you have participated in tower defense games week on Social Say.So, do you think you will play more tower defense games?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "Yes"
+          },
+          {
+            "id": 2,
+            "text": "No"
+          },
+          {
+            "id": 3,
+            "text": "I already play a lot of tower defense games"
+          },
+          {
+            "id": 4,
+            "text": "Not sure"
+          }
+        ]
+      }
+    }
+  ]
+}

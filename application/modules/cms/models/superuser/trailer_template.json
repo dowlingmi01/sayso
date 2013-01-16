@@ -131,11 +131,6 @@
 	],
 	"subobjects": [
 		{
-			"Title":"Starbars",
-			"table": "starbar_survey_map",
-			"fk": "survey_id"
-		},
-		{
 			"Comment": "Even when using a view, the fk should point to the fk on the real table",
 			"Title": "Questions",
 			"table": "survey_question",

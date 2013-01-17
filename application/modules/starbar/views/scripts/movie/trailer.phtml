@@ -1,4 +1,5 @@
 <?= $this->partial('remote/init-remote.phtml', null, array('starbar' => $this->starbar, 'frame_id' => $this->frame_id)); ?>
+
 <div id="sayso-starbar-embed">
 	<div id="sayso-starbar-spotlight-frame">
 		<div class="sb_tabs">
@@ -49,7 +50,19 @@
 						</div>
 
 						<div id="sb_vid_question_final" class="sb_mv_questions_flow">
-							<p>Congratulations! You earned <span class="hl">250 CineStars</span> &amp; <span class="hl">19 CineBucks</span></p>
+							<p>Congratulations! You earned <span class="hl">250 CineStars</span> &amp; <span class="hl">19 CineBucks</span>
+<?php
+
+							if (($this->info_for_trailers[$this->current_trailer->id]->related_survey != null) && ($this->info_for_trailers[$this->current_trailer->id]->related_survey_id != null)) {
+								// We have a related survey. Is this user able to see the survey?
+
+								printf('<span id="sb_vid_related_survey"><a href="#" onclick="$SQ.remoteControl.openSurvey(%s); return false;">%s</a></span>&nbsp;&nbsp;',$this->info_for_trailers[$this->current_trailer->id]->related_survey_id,$this->info_for_trailers[$this->current_trailer->id]->related_survey);
+
+							}
+?></p>
+
+
+
 							<div class="sb_final_share">
 								<div class="sb_externalShares">
 									<? $shareReward = 8 ?>
@@ -117,7 +130,6 @@
 	</div>
 </div>
 <? if (sizeof($this->trailers)) { ?>
-
 	<script>
 
 	//Load player api asynchronously.
@@ -169,6 +181,27 @@
 
 					defaults.autohide	=	false;
 					$SQ('.sb_video_carousel').removeClass('autohide');
+
+					$SQ.ajax({
+						url : "//<?= BASE_DOMAIN ?>/api/survey/mark-survey-new-for-user?related_survey_id=<?= $this->info_for_trailers[$this->current_trailer->id]->related_survey_id ?>&related_survey=<?= $this->info_for_trailers[$this->current_trailer->id]->related_survey ?>&user_id=<?= $this->user_id ?>&user_key=<?= $this->user_key ?>&starbar_id=<?= $this->starbar_id ?>",
+						dataType : "json",
+						beforeSend : function(x) {
+							if (x && x.overrideMimeType) {
+								x.overrideMimeType("application/j-son;charset=UTF-8");
+							}
+						},
+						success: function(response,status) {
+							console.log('Trailer Success',response, status);
+
+							$SQ('#sb_vid_related_survey').show();
+						},
+						error: function() {
+							// Don't show the related survey div
+							console.log('Trailer Failed');
+						}
+					});
+
+
 					$SQ('#sb_vid_question_phase1').hide();
 					$SQ('#sb_vid_question_phase2').hide();
 					$SQ('.sb_externalShares').fadeTo(0, 0.01);

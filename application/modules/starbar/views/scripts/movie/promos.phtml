@@ -1,86 +1,32 @@
 <div id="sb_slideshow">
-	<div class="sb_promoBG">
+	<div class="sb_promoBG sb_promo_week1">
 		<div class="sb_slide">
-		<div class="sb_promo_carousel">
-
-				<ul>
-
-						<li id="slide1" class="active">
-						<p class="sb_promo_gettokens"><a href="//<?= BASE_DOMAIN ?>/starbar/movie/rewards" class="sb_nav_element sb_theme_textHighlight_alt" rel="sb_popBox_rewards">
-							<img src="//<?= BASE_DOMAIN ?>/images/movie/Monthly_Giveaway_Nov1.png" alt="Christmas Story Giveaway" />
-							</a></p>
-						</li><!-- slide1 -->
-						<li id="slide2">
-						<p class="sb_promo_gettokens"><a href="//<?= BASE_DOMAIN ?>/starbar/movie/rewards" class="sb_nav_element sb_theme_textHighlight_alt" rel="sb_popBox_rewards">
-							<img src="//<?= BASE_DOMAIN ?>/images/movie/Monthly_Giveaway_Nov2.png" alt="Die Hard Giveaway" />
-							</a></p>
-						</li><!-- slide2 -->
-						<li id="slide3">
-						<p class="sb_promo_gettokens"><a href="//<?= BASE_DOMAIN ?>/starbar/movie/rewards" class="sb_nav_element sb_theme_textHighlight_alt" rel="sb_popBox_rewards">
-							<img src="//<?= BASE_DOMAIN ?>/images/movie/Monthly_Giveaway_Nov3.png" alt="Nightmare Before Christmas Giveaway" />
-							</a></p>
-						</li><!-- slide3 -->
-				</ul>
-			<div class="arrow_left"></div>
-			<div class="arrow_right"></div>
-
-		</div><!-- sb_promo_carousel -->
-
-
-			<div class="sb_promo_details">
-			<p class="sb_promo_gettoken"><a href="//<?= BASE_DOMAIN ?>/starbar/movie/rewards" class="sb_nav_element sb_theme_textHighlight_alt" rel="sb_popBox_rewards">
-                                <img src="//<?= BASE_DOMAIN ?>/images/movie/img_get-your-tokens_small.png" alt="Get Your Tokens" />
-                                </a></p>
-				<p>Enter to win by redeeming CineBucks for monthly giveaway tokens in the Reward Center. You can redeem multiple tokens to increase your odds of winning. The winner will be drawn on December 21st, 2012.</p>
-				<p><strong class="sb_theme_textHighlight">Remember</strong> - Take the <a href="//<?= BASE_DOMAIN ?>/starbar/movie/embed-survey?survey_id=<?= $this->profile_survey_id ?>" class="sb_nav_element" rel="sb_popBox_surveys_hg">Profile Survey</a> to be eligible for the giveaways.</small></p>
-			</div><!-- .sb_promo_details -->
-
+			<img id="promo_image_1" usemap="#promo_map_1" src="//<?= BASE_DOMAIN ?>/images/movie/img_promo_1.png" style="width: 533px; height: 297px;"><br>
+			<map name="promo_map_1">
+				<area shape="rect" coords="193,225,363,247" href="//<?= BASE_DOMAIN ?>/starbar/movie/rewards" class="sb_nav_element"  rel="sb_popBox_rewards"><!-- GET YOUR TOKENS -->
+				<area shape="rect" coords="314,225,384,271" href="//<?= BASE_DOMAIN ?>/starbar/movie/embed-survey?survey_id=<?= $this->profile_survey_id ?>" class="sb_nav_element" rel="sb_popBox_surveys_hg"><!-- TAKE THE PROFILE SURVEY -->
+				<area shape="rect" coords="197,273,356,295" class="sb_next" href="#"><!-- NEXT PROMO -->
+			</map>
 		</div><!-- .sb_slide -->
 	</div><!-- .sb_promo_week1 -->
+	<div class="sb_promoBG sb_promo_week2">
+		<div class="sb_slide">
+			<img id="promo_image_2" usemap="#promo_map_2" src="//<?= BASE_DOMAIN ?>/images/movie/img_promo_2.png" style="width: 533px; height: 297px;"><br>
+			<map name="promo_map_2">
+				<area shape="rect" coords="193,225,363,247" href="//<?= BASE_DOMAIN ?>/starbar/movie/rewards" class="sb_nav_element"  rel="sb_popBox_rewards">
+				<area shape="rect" coords="314,225,384,271" href="//<?= BASE_DOMAIN ?>/starbar/movie/embed-survey?survey_id=<?= $this->profile_survey_id ?>" class="sb_nav_element" rel="sb_popBox_surveys_hg"><!-- TAKE THE PROFILE SURVEY -->
+				<area shape="rect" coords="197,273,356,295" class="sb_next" href="#">
+			</map>
+		</div><!-- .sb_slide -->
+	</div><!-- .sb_promo_week2 -->
+	<!--
+<div class="sb_promoBG sb_promo_3">
+		<div class="sb_slide">
+			<img id="promo_image_3" usemap="#promo_map_3" src="//<?= BASE_DOMAIN ?>/images/movie/img_promo_3.png" style="width: 518px; height: 312px;"><br>
+			<map name="promo_map_3">
+				<area shape="rect" coords="268,265,488,310" href="//<?= BASE_DOMAIN ?>/starbar/movie/rewards" class="sb_nav_element"  rel="sb_popBox_rewards">
+				<area shape="rect" coords="0,265,203,290" class="sb_next" href="#">
+			</map>
+		</div>
+	</div>-->
 </div><!-- #sb_slideshow -->
-
-<script type="text/javascript">
-$SQ('.arrow_left, .arrow_right').bind('click', function(){
-
-		var selected	=	false;
-		var prev		=	false;
-		var next		=	false;
-		var dir 		= 	$SQ(this).attr('class').split("_")[1];
-
-		if( $SQ('li.active').length > 0 )					selected =	$SQ('li.active');
-		if( $SQ(selected[0].previousElementSibling).length > 0 ) 	prev	 = 	$SQ(selected[0].previousElementSibling);
-		if( $SQ(selected[0].nextElementSibling).length > 0 ) 		next 	 = 	$SQ(selected[0].nextElementSibling);
-
-		switch(dir)
-		{
-			case 'left' :
-
-				var currli = $SQ('.sb_promo_carousel li:visible');
-		        // get next list item
-		        var nextli = currli.prev();
-		        // if nextli length is 0, make it equal to first li
-		        if (nextli.length == 0) {
-		            nextli = currli.siblings(':last');
-		        }
-		        currli.hide();
-		        nextli.show();
-
-			break;
-
-			case 'right' :
-
-				var currli = $SQ('.sb_promo_carousel li:visible');
-		        // get next list item
-		        var nextli = currli.next();
-		        // if nextli length is 0, make it equal to first li
-		        if (nextli.length == 0) {
-		            nextli = currli.siblings(':first');
-		        }
-		        currli.hide();
-		        nextli.show();
-
-			break;
-		}
-
-	});
-	</script>

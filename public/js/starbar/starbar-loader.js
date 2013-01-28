@@ -12,12 +12,12 @@
 
 	// Insert the starbar container
  	if ($SQ('#sayso-starbar').length < 1)
- 		$SQ('body').append('<div id="sayso-starbar" style="position: fixed; left: 0px; bottom: 0px; width: 100%; background: none; margin-bottom: -3px; z-index: 9999;"></div><div id="sayso-frame-comm" style="display:none;"></div>');
+ 		$SQ('body').append('<div id="sayso-starbar" style="position: fixed; left: 0px; bottom: 0px; width: 100%; background: none; margin-bottom: -3px; z-index: 2147480011;"></div><div id="sayso-frame-comm" style="display:none;"></div>');
 
 	var starbarContainer = document.getElementById('sayso-starbar')
 
 	sayso.fn.insertCommunicationIframe = insertCommunicationIframe;
-	
+
 	// Until views are updated to use the new names
 	$SQ.ajaxWithAuth = sayso.fn.ajaxWithAuth;
 	$SQ.insertCommunicationIframe = sayso.fn.insertCommunicationIframe;
@@ -130,7 +130,7 @@
 		sayso.fn.setLocalStateFromBackground(response);
 		sayso.state.missionAvailable = false;
 		sayso.state.missionSaveRef = null;
-		
+
 		sayso.starbar.loaded = true;
 		$SQ('#sayso-starbar').html('');
 		loadStarbar();

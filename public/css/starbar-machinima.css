@@ -559,6 +559,10 @@
 	text-align: center;
 }
 
+#sayso-starbar #starbar-player-console #starbar-level .sb_content .sb_user-level{
+	text-align: center;
+}
+
 #sayso-starbar #starbar-player-console #starbar-level .sb_popBoxInner .sb_popContent{
 	width: 570px;
 	height: 379px;

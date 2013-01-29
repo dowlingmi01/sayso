@@ -76,7 +76,7 @@ with connection:
 					print "Deleting backed up data for " + tableName + "..."
 					rowsDeleted = 1
 					while (rowsDeleted > 0):
-						cursor.execute("DELETE FROM " + tableName + " WHERE id < " + backupBeforeId + " LIMIT " + str(maximumRowsToDeletePerQuery) + ";")
+						cursor.execute("DELETE FROM " + tableName + " WHERE id < " + backupBeforeId + " ORDER BY id ASC LIMIT " + str(maximumRowsToDeletePerQuery) + ";")
 						rowsDeleted = cursor.rowcount;
 						connection.commit()
 					print "Deleting backed up data for " + tableName + " complete!"

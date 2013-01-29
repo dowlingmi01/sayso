@@ -196,7 +196,6 @@
 			"colname": "display_number_of_questions",
 			"type": "number",
 			"displaywhen": [
-				"add",
 				"detail",
 				"edit"
 			]

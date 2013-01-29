@@ -46,8 +46,8 @@
 			$this->view->headScript()->appendFile('/js/cms/jquery.ui.tabs.js');
 
 			$this->view->headScript()->appendFile('/js/cms/init.js');
-			$crumb = new Breadcrumb($this->_getAllParams());
-			$this->view->breadcrumb = $crumb->getBreadcrumb();
+
+			Breadcrumb::startBreadcrumbTrail();
 
 		}
 
@@ -79,6 +79,8 @@
 				$scripts->appendFile('/modules/admin/index/index.js');
 				$this->view->headLink()->appendStylesheet('/modules/admin/index/index.css', 'screen');
 			}
+
+
 		}
 
 		/**
@@ -465,6 +467,8 @@
 
 					if ($saysojson->validJson($tablename)) {
 
+						$this->view->breadcrumb = Breadcrumb::add("Edit ".$tablename,$_SERVER['REQUEST_URI']);
+
 						$realtablename = strtolower($saysojson->getTableAttr('tablename'));
 
 						if ($saysojson->checkTablePermission("allowedit")) {
@@ -647,6 +651,10 @@
 					$saysojson = new Json($file);
 
 					if ($saysojson->validJson($tablename)) {
+
+
+					$this->view->breadcrumb = Breadcrumb::getTrail();
+
 						if ($saysojson->checkTablePermission('allowdetails')) {
 							$columnlist = $saysojson->getCMSColumns("displaywhen","detail");
 
@@ -689,7 +697,6 @@
 
 									// general aspects of a form element
 
-
 									// Override the field label
 									if (array_key_exists('label',$coloptions)) {
 										$formElements[$colname]->setLabel($coloptions['label']);
@@ -709,6 +716,14 @@
 									if (array_key_exists('width',$coloptions)) {
 										$formElements[$colname]->setAttrib("size", $coloptions['width']/8);
 									}
+								}
+
+								if (array_key_exists('title',$currentData)) {
+									// Set the breadcrumb
+									$this->view->breadcrumb = Breadcrumb::add($currentData['title'],$_SERVER['REQUEST_URI']);
+								} else {
+									// Set the breadcrumb
+									$this->view->breadcrumb = Breadcrumb::add("Detail ".$tablename,$_SERVER['REQUEST_URI']);
 								}
 
 								$form = new ZendX_JQuery_Form();
@@ -777,6 +792,9 @@
 					$saysojson = new Json($file);
 
 					if ($saysojson->validJson($tablename)) {
+
+						$this->view->breadcrumb = Breadcrumb::add("Delete ".$tablename,$_SERVER['REQUEST_URI']);
+
 						if ($saysojson->checkTablePermission('allowdelete')) {
 							$columnlist = $saysojson->getCMSColumns("displaywhen","delete");
 
@@ -939,6 +957,9 @@
 					$saysojson = new Json($file);
 
 					if ($saysojson->validJson($tablename)) {
+
+						$this->view->breadcrumb = Breadcrumb::add("Duplicate ".$tablename,$_SERVER['REQUEST_URI']);
+
 						if ($saysojson->checkTablePermission('allowduplicate')) {
 							$columnlist = $saysojson->getCMSColumns("displaywhen","duplicate");
 
@@ -1071,6 +1092,7 @@
 
 		public function userAction()
 		{
+			$this->view->breadcrumb = Breadcrumb::add("Edit User",$_SERVER['REQUEST_URI']);
 			if ($this->getRequest()->isPost()) { //is it a post request ?
 				$this->_helper->layout->disableLayout();
 			}
@@ -1780,6 +1802,10 @@ $data = $client->getData();
 
 				if ($saysojson->validJson($tablename)) {
 
+					// Set the breadcrumb
+					Breadcrumb::resetBreadcrumbTrail(); // Back to the start
+					$this->view->breadcrumb = Breadcrumb::add("View all ".$tablename."s",$_SERVER['REQUEST_URI']);
+
 					// Create the grid
 					// Find the columns we want to see on the grid
 					$columnlist = $saysojson->getCMSColumns("displaywhen","grid");
@@ -2077,6 +2103,8 @@ $data = $client->getData();
 				$saysojson = new Json($file);
 
 				if ($saysojson->validJson($tablename)) {
+
+					$this->view->breadcrumb = Breadcrumb::add("Add ".$tablename,$_SERVER['REQUEST_URI']);
 
 					$realtable = strtolower($saysojson->getTableAttr('tablename'));
 

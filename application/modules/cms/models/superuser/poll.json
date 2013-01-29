@@ -37,10 +37,7 @@
 			"lookuplabel": "label",
 			"default": "--Please Select a starbar--",
 			"displaywhen": [
-				"add",
-				"grid",
 				"detail",
-				"delete",
 				"edit"
 			]
 		},

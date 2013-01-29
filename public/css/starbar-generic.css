@@ -21,6 +21,10 @@
 	filter: none !important;
 	width: auto;
 	height: auto;
+	min-height: auto;
+	min-width: auto;
+	max-height: auto;
+	max-width: auto;
 }
 #sayso-starbar article, #sayso-starbar aside, #sayso-starbar details, #sayso-starbar figcaption, #sayso-starbar figure, #sayso-starbar footer, #sayso-starbar header, #sayso-starbar hgroup, #sayso-starbar menu, #sayso-starbar nav, #sayso-starbar section {
 	display: block;

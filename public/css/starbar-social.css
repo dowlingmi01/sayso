@@ -546,10 +546,6 @@
 	text-align: center;
 }
 
-#sayso-starbar #starbar-player-console #starbar-level .sb_content .sb_user-level{
-	text-align: center;
-}
-
 #sayso-starbar #starbar-player-console #starbar-level .sb_popBoxInner .sb_popContent{
 	width: 570px;
 	height: 400px;
@@ -2300,24 +2296,18 @@
 #sayso-starbar #sb_popBox_mission .sb_triangle-solid:after{
 	left: 227px;
 }
+
+/* Default settings for all mission popboxes */
+#sayso-starbar #starbar-player-console #sb_popBox_mission li{
+	float:left;
+	margin: 20px 0 0 50px;
+	display:none;
+	height:232px;
+}
+
+/* Make the first slide visible */
 #sayso-starbar #starbar-player-console #sb_popBox_mission li#slide1{
-	float:left;
-	margin: 20px 0 0 50px;
-	height:232px;
-}
-
-#sayso-starbar #starbar-player-console #sb_popBox_mission li#slide2{
-	float:left;
-	margin: 20px 0 0 50px;
-	display: none;
-	height:232px;
-}
-
-#sayso-starbar #starbar-player-console #sb_popBox_mission li#slide3{
-	float:left;
-	margin: 20px 0 0 50px;
-	display: none;
-	height:232px;
+	display:block;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_mission li img {

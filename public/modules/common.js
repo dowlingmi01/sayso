@@ -103,7 +103,7 @@ function dialogAlert($html)
 {
 	$('#system-message').html($html).dialog({
 		modal   : true,
-		hide	: "explode",
+		hide	: "fade",
 		buttons : {'Ok': function(){$(this).dialog( "close" );}}
 	});
 }

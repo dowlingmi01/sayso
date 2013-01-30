@@ -2209,7 +2209,6 @@ $data = $client->getData();
 								$model->setData($formData);
 								$result = $model->save();
 
-
 								$this->msg->addMessage('Record successfully added');
 
 								if (($parenttable!=null) && ($parentid!=null))
@@ -2220,7 +2219,7 @@ $data = $client->getData();
 										$this->rd->gotoSimple('detail','admin','cms',array('table' => $parenttable,'id'=>$parentid));
 									}
 								} else {
-									$this->rd->gotoSimple('add','admin','cms',array('table' => $tablename));
+									$this->rd->gotoSimple('detail','admin','cms',array('table' => $tablename,'id'=>$model->id));
 									//$form->reset();
 								}
 

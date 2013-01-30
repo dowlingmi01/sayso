@@ -37,17 +37,14 @@
 			"lookuplabel": "label",
 			"default": "--Please Select a starbar--",
 			"displaywhen": [
-				"add",
-				"grid",
 				"detail",
-				"delete",
 				"edit"
 			]
 		},
 		{
 			"colname": "report_cell_id",
 			"filterwidth":40,
-			"label": "Users who can see this",
+			"label": "User Group",
 			"help": "Leaving this blank means all users can see the content",
 			"type": "fkey",
 			"lookuptable": "report_cell",
@@ -145,12 +142,6 @@
 		{
 			"Title":"Starbars",
 			"table": "starbar_survey_map",
-			"fk": "survey_id"
-		},
-		{
-			"Comment": "Even when using a view, the fk should point to the fk on the real table",
-			"Title": "Mission Questions",
-			"table": "quiz_question",
 			"fk": "survey_id"
 		}
 	]

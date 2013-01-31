@@ -1720,7 +1720,6 @@
 #sayso-starbar .sb_score_tabs,
 .sb_score_tabs  {
 	float:right;
-	width:400px;
 	text-align:right;
 	font-size:13px;
 	color: #5E1682;
@@ -2298,7 +2297,7 @@
 }
 
 /* Default settings for all mission popboxes */
-#sayso-starbar #starbar-player-console #sb_popBox_mission li{
+#sayso-starbar #starbar-player-console #sb_popBox_mission .sb_mission_carousel li{
 	float:left;
 	margin: 20px 0 0 50px;
 	display:none;
@@ -2306,7 +2305,7 @@
 }
 
 /* Make the first slide visible */
-#sayso-starbar #starbar-player-console #sb_popBox_mission li#slide1{
+#sayso-starbar #starbar-player-console #sb_popBox_mission  .sb_mission_carousel li#slide1{
 	display:block;
 }
 

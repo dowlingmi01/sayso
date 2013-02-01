@@ -1,0 +1,208 @@
+{
+  "title": "Food Games Games",
+  "description": "<div style=\"height: 344px;\"></div>",
+  "background": "mission/images/Info_Bg_Image.jpg",
+  "preview_image": "/client/missions/mission/006foodgames/images/Mission_Billboard_006.jpg",
+  "description":"",
+  "progress_token": "mission/images/Token_For_ProgressBar.png",
+  "validation": "<h3>Congratulations, you completed the mission!</h3><img src='mission/images/Final_Frame.jpg' alt='' /><p>You earned 57 PaySo and 750 SaySo.</p><p>You may close this tab at any time.</p>",
+  "reward_experience": 750,
+  "reward_redeemable": 57,
+  "stages": [
+    {
+      "id": 1,
+      "short_title": "Poll",
+      "type": "image-poll",
+	  "background": "",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Which food related Facebook game debuted in August 2012 and quickly became the No. 1 Facebook game within the first month of its release?"
+        },
+        "correct": 2,
+        "answers": [
+         {
+            "id": 1,
+            "image": "mission/images/q1_i1.jpg",
+            "label": "Fruit Ninja Frenzy",
+            "text": "Fruit Ninja Frenzy"
+          },
+          {
+            "id": 2,
+            "image": "mission/images/q1_i2.jpg",
+            "label": "ChefVille",
+            "text": "ChefVille"
+          },
+          {
+            "id": 3,
+            "image": "mission/images/q1_i3.jpg",
+            "label": "Caféland",
+            "text": "Caféland"
+          },
+          {
+            "id": 4,
+            "image": "mission/images/q1_i4.jpg",
+            "label": "Café World",
+            "text": "Café World"
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "short_title": "Watch",
+      "type": "video",
+	  "background": "",
+      "data": {
+        "title": "After checking out the following review for the 'Foodspotting', do you think you would download or use this app?",
+        "caption": "",
+        "url": "YCr2avRV_fc",
+        "enableControls" : 1,
+        "question": {
+          "id": 1,
+          "text": "After checking out the following review for the 'Foodspotting', do you think you would download or use this app?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "I already use Foodspotting"
+          },
+          {
+            "id": 2,
+            "text": "Yes, this app looks fantastic"
+          },
+          {
+            "id": 3,
+            "text": "The app looks good, but the review is awful."
+          },
+          {
+            "id": 4,
+            "text": "No, this app looks awful"
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "short_title": "Visit",
+      "type": "site-survey",
+	  "background": "",
+      "data": {
+        "url": "http://www.king.com/games/puzzle-games/i-scream-ice-cream/?language=en_US&action=play",
+        "title": "I Scream Ice Cream",
+        "questions": [
+          {
+            "question": {
+              "id": 1,
+              "text": "After checking out this brief demo of 'I Scream Ice Cream', would you create an account at King.com to continue playing?"
+            },
+            "answers": [
+              {
+                "id": 1,
+                "text": "Yes! This game is great!"
+              },
+              {
+                "id": 2,
+                "text": "I already have an account at King.com"
+              },
+              {
+                "id": 3,
+                "text": "No, it wasn't that good."
+              },
+              {
+                "id": 4,
+                "text": "I didn't actually play the game."
+              }
+            ]
+          },
+          {
+            "question": {
+              "id": 2,
+              "text": "How many moves do you have to complete the demo level?"
+            },
+            "correct": 3,
+            "answers": [
+              {
+                "id": 1,
+                "text": "5"
+              },
+              {
+                "id": 2,
+                "text": "10"
+              },
+              {
+                "id": 3,
+                "text": "15"
+              },
+              {
+                "id": 4,
+                "text": "20"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "short_title": "Question",
+      "type": "poll",
+	  "background": "",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Which celebrity chef offers an app for '20 Minute Meals'?"
+        },
+        "correct": 4,
+        "answers": [
+          {
+            "id": 1,
+            "text": "Rachel Ray"
+          },
+          {
+            "id": 2,
+            "text": "Bobby Flay"
+          },
+          {
+            "id": 3,
+            "text": "Paula Deen"
+          },
+          {
+            "id": 4,
+            "text": "Jamie Oliver"
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "short_title": "Poll",
+      "type": "poll",
+	  "background": "",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "If you had to choose one food related app to download, it would most likely be..."
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "A food related game."
+          },
+          {
+            "id": 2,
+            "text": "A coupon or shopping app."
+          },
+          {
+            "id": 3,
+            "text": "A restaurant review app."
+          },
+          {
+            "id": 4,
+            "text": "A recipe or cooking app."
+          }
+        ]
+      }
+    }
+  ]
+}

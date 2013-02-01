@@ -1,0 +1,208 @@
+{
+  "title": "Celebrity Games",
+  "description": "<div style=\"height: 344px;\"></div>",
+  "background": "mission/images/Info_Bg_Image.jpg",
+  "preview_image": "/client/missions/mission/005celebritygames/images/Mission_Billboard_005.jpg",
+  "description":"",
+  "progress_token": "mission/images/Token_For_ProgressBar.png",
+  "validation": "<h3>Congratulations, you completed the mission!</h3><img src='mission/images/Final_Frame.jpg' alt='' /><p>You earned 57 PaySo and 750 SaySo.</p><p>You may close this tab at any time.</p>",
+  "reward_experience": 750,
+  "reward_redeemable": 57,
+  "stages": [
+    {
+      "id": 1,
+      "short_title": "Poll",
+      "type": "image-poll",
+	  "background": "",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Which celebrity talk show host accidentally tweeted a glowing review of their Microsoft Surface tablet from their iPad?"
+        },
+        "correct": 2,
+        "answers": [
+         {
+            "id": 1,
+            "image": "mission/images/q1_i1.jpg",
+            "label": "Jimmy Fallon",
+            "text": "Jimmy Fallon"
+          },
+          {
+            "id": 2,
+            "image": "mission/images/q1_i2.jpg",
+            "label": "Oprah Winfrey",
+            "text": "Oprah Winfrey"
+          },
+          {
+            "id": 3,
+            "image": "mission/images/q1_i3.jpg",
+            "label": "Jay Leno",
+            "text": "Jay Leno"
+          },
+          {
+            "id": 4,
+            "image": "mission/images/q1_i4.jpg",
+            "label": "Ellen Degeneres",
+            "text": "Ellen Degeneres"
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "short_title": "Watch",
+      "type": "video",
+	  "background": "",
+      "data": {
+        "title": "What do you think of this 'GagaVille: Lady Gaga goes to FarmVille' commercial?",
+        "caption": "",
+        "url": "aqVUmnPLnBA",
+        "enableControls" : 1,
+        "question": {
+          "id": 1,
+          "text": "What do you think of this 'GagaVille: Lady Gaga goes to FarmVille' commercial?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "Fantastic!"
+          },
+          {
+            "id": 2,
+            "text": "Great"
+          },
+          {
+            "id": 3,
+            "text": "OK"
+          },
+          {
+            "id": 4,
+            "text": "Awful"
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "short_title": "Visit",
+      "type": "site-survey",
+	  "background": "",
+      "data": {
+        "url": "http://www.mtv.com/games/arcade/game/play.jhtml?arcadeGameId=10309677",
+        "title": "Jersey Shore Yourself GTL",
+        "questions": [
+          {
+            "question": {
+              "id": 1,
+              "text": "After reviewing the 'Jersey Shore Yourself GTL' game, did you create a Jersery Shore version of yourself? "
+            },
+            "answers": [
+              {
+                "id": 1,
+                "text": "Yes, I admit it... I 'Snookified' myself."
+              },
+              {
+                "id": 2,
+                "text": "Yes, I might even have to show off my Guido/Guidette."
+              },
+              {
+                "id": 3,
+                "text": "No, I started to create a character but stopped partially through."
+              },
+              {
+                "id": 4,
+                "text": "No, I wouldn't touch this game."
+              }
+            ]
+          },
+          {
+            "question": {
+              "id": 2,
+              "text": "Which Jersey Shore castmate helps guide you through this game?"
+            },
+            "correct": 4,
+            "answers": [
+              {
+                "id": 1,
+                "text": "Snookie"
+              },
+              {
+                "id": 2,
+                "text": "JWoww"
+              },
+              {
+                "id": 3,
+                "text": "Vinny"
+              },
+              {
+                "id": 4,
+                "text": "Pauly D"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "short_title": "Question",
+      "type": "poll",
+	  "background": "",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Which celebrity admitted to having a major Farmville addiction?"
+        },
+        "correct": 2,
+        "answers": [
+          {
+            "id": 1,
+            "text": "Emma Watson"
+          },
+          {
+            "id": 2,
+            "text": "Emma Stone"
+          },
+          {
+            "id": 3,
+            "text": "Emma Roberts"
+          },
+          {
+            "id": 4,
+            "text": "Emma Thompson"
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "short_title": "Poll",
+      "type": "poll",
+	  "background": "",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Have you purchased any celebrity related games, expansions, virtual items or apps?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "Yes"
+          },
+          {
+            "id": 2,
+            "text": "No"
+          },
+          {
+            "id": 3,
+            "text": "I wouldn't admit it if I did."
+          },
+          {
+            "id": 4,
+            "text": "I can't remember."
+          }
+        ]
+      }
+    }
+  ]
+}

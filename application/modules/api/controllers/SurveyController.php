@@ -218,7 +218,7 @@ class Api_SurveyController extends Api_GlobalController
 	*/
 	public function markSurveyNewForUserAction()	{
 
-		$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id', 'related_survey_id'));
+		$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
 
 		if ($this->related_survey_id!=null) {
 			// We have a related survey.

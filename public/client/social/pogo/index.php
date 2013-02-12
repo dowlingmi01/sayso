@@ -65,7 +65,7 @@ a:hover {
 	  	<div class="section-head">
 	  		<h2><img src="images/WhatCanDo_Header.png" width="285" height="114" alt="Pogo" /></h2>
 	  		<p><strong>Earn Social PaySos by taking polls, answering surveys and giving your
-opinion on social, casual and mobile gaming.<br>Redeem Social PaySos for
+opinion on social, casual<br>and mobile gaming. Redeem Social PaySos for
 items in our Reward Center.</strong></p>
 			</div><!-- .section-head -->
 
@@ -105,7 +105,7 @@ specifically for social game fanatics.</strong></p>
 	  	<div id="create-password">
 	  		<h2><img src="images/GetStarted_Header.png" width="285" height="114" alt="Pogo" /></h2>
 	  		<p><strong>Start by creating your unique Say.So password so we can make sure your
-points and rewards are saved. "Please allow the browser to install the
+points and rewards are saved. <br />Please allow the browser to install the
 extension.</strong></p>
 	  		<br />
 	  		<form>

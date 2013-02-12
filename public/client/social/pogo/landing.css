@@ -3568,9 +3568,9 @@ a:focus {
   margin: 50px auto;
 }
 #wrapper #header {
-  overflow: hidden;
-  padding: 5px 0px;
-  position: relative;
+	overflow: hidden;
+	padding: 0px 0px;
+	position: relative;
 }
 #wrapper #header .community-link {
   position: absolute;
@@ -3583,15 +3583,15 @@ a:focus {
   text-decoration: none;
 }
 #wrapper #main {
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  border-radius: 20px;
-  -webkit-box-shadow: 0px 0px 10px #000000;
-  -moz-box-shadow: 0px 0px 10px #000000;
-  box-shadow: 0px 0px 10px #000000;
-  padding: 20px;
-  background-color: #ffffff;
-  margin: 10px 0px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	-webkit-box-shadow: 0px 0px 10px #000000;
+	-moz-box-shadow: 0px 0px 10px #000000;
+	box-shadow: 0px 0px 10px #000000;
+	padding: 10px;
+	background-color: #ffffff;
+	margin: 5px 0px;
 }
 #wrapper #main #section-nav {
   background-image: url('images/bg_nav-tabs.png');

@@ -41,11 +41,11 @@ a:hover {
 	<div id="sections" class="tab-content">
 	  <div class="section tab-pane active" id="section-1">
 	  	<div class="section-head">
-	  		<h2>What is Social Say.So?</h2>
-	  		<p>Do you eagerly await new quests in <b>The Sims Social</b>, new items<br />
-	  		  in <b>Farmville</b>, or a sequel to <b>Plants vs. Zombies</b>?<br />
-	  		  If so, you're probably a perfect fit for Social Say.So!</p>
-			</div><!-- .section-head -->
+	  		<h2><img src="images/Pogo_logo.png" width="285" height="95" alt="Pogo" /></h2>
+  		  <p><strong>Pogo is partnering with Social Say.So!<br />
+  		  </strong><strong>Review games, get awesome rewards and give your opinion on Pogo.com!</strong> </p>
+</div>
+	  	<!-- .section-head -->
 
 			<div class="slideshow">
 				<div class="slides">
@@ -63,17 +63,17 @@ a:hover {
 	  </div><!-- #section-1 -->
 	  <div class="section tab-pane" id="section-2">
 	  	<div class="section-head">
-	  		<h2>What can I do?</h2>
-	  		<p>Earn Social PaySos by taking polls, answering surveys and giving your
-opinion on social, casual and mobile gaming. Redeem Social PaySos for
-items in our Reward Center.</p>
+	  		<h2><img src="images/WhatCanDo_Header.png" width="285" height="114" alt="Pogo" /></h2>
+	  		<p><strong>Earn Social PaySos by taking polls, answering surveys and giving your
+opinion on social, casual and mobile gaming.<br>Redeem Social PaySos for
+items in our Reward Center.</strong></p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">
 				<div class="slides">
 					<div class="slide"><img src="images/img_slide_2a.png" alt="" /></div>
 					<div class="slide"><img src="images/img_slide_2b.png" alt="" /></div>
-
+					
 				</div><!-- .slides -->
 				<div class="slide-nav">
 					<span class="prev">Prev</span>
@@ -83,9 +83,9 @@ items in our Reward Center.</p>
 	  </div><!-- #section-2 -->
 	  <div class="section tab-pane" id="section-3">
 	  	<div class="section-head">
-	  		<h2>What do I get?</h2>
-	  		<p>Great Prizes - The Reward Center is full of prizes designed
-specifically for social game fanatics.</p>
+	  		<h2><img src="images/WhatGet_Header.png" width="285" height="114" alt="Pogo" /></h2>
+	  		<p><strong>Great Prizes - The Reward Center is full of prizes designed
+specifically for social game fanatics.</strong></p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">
@@ -103,10 +103,10 @@ specifically for social game fanatics.</p>
 	  <div class="section tab-pane" id="section-4">
 	  	<div class="section-head">
 	  	<div id="create-password">
-	  		<h2>Let's get started</h2>
-	  		<p>Start by creating your unique Say.So password so we can make sure your
+	  		<h2><img src="images/GetStarted_Header.png" width="285" height="114" alt="Pogo" /></h2>
+	  		<p><strong>Start by creating your unique Say.So password so we can make sure your
 points and rewards are saved. "Please allow the browser to install the
-extension.</p>
+extension.</strong></p>
 	  		<br />
 	  		<form>
 	  			<p><input type="text" id="input-email" class="sso_fld" placeholder="Enter a valid email address" />

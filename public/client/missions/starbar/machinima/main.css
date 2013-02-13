@@ -70,7 +70,9 @@ input[type="radio"] {
 .mission-next-button:hover {
 	background-position: 0 bottom;
 }
-
+#mission-introduction .mission-next-button {
+	margin: 420px auto 10px;
+}
 #mission-ajax-overlay {
 	display: none;
 	position: fixed;
@@ -186,7 +188,7 @@ input[type="radio"] {
 	width: 400px;
 	margin: 0 auto;
 }
-	
+
 #mission-progress-bar {
 	background: #000;
 	height: 14px;
@@ -285,6 +287,28 @@ input[type="radio"] {
 	padding: 0 10px;
 }
 
+#mission-conclusion {
+	width: 100%;
+	margin: 0 auto 0 auto;
+	text-align: center;
+	background-image:none;
+	background-color:black;
+}
+
+#mission-conclusion h3{
+	width: 100%;
+}
+
+
+#mission-conclusion>p {
+	font-weight: bold;
+	font-size:16px;
+}
+
+#mission-conclusion .mission-titles span {
+	padding: 0 10px;
+}
+
 
 /* templates */
 .mission-poll {
@@ -372,7 +396,7 @@ input[type="radio"] {
 	margin-bottom: 20px;
 }
 .mission-image-poll li {
-	float: left;	
+	float: left;
 }
 .mission-image-poll ul li label {
 	display: block;

@@ -1,0 +1,258 @@
+{
+  "title": "Academy Awards",
+  "description": "<div style=\"height: 344px;\"></div>",
+  "background": "mission/images/Intro_Bg.png",
+  "preview_image": "/client/missions/mission/academyawards/images/Intro_Bg.png",
+  "description":"",
+  "progress_token": "mission/images/Token_For_ProgressBar.png",
+  "validation": "<h3>Congratulations, you completed the mission!</h3><img src='mission/images/Final_Frame.png' alt='' /><p>You earned 57 PaySo and 750 SaySo.</p><p>You may close this tab at any time.</p>",
+  "reward_experience": 750,
+  "reward_redeemable": 57,
+  "stages": [
+  {
+      "id": 1,
+      "short_title": "Question",
+      "type": "poll",
+	  "background": "mission/images/Stage1_bg.png",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Right now the show is only available on ABC. If it was also available online, through live streaming, would that make you more interested?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "Less interested than before"
+          },
+          {
+            "id": 2,
+            "text": "No Change"
+          },
+          {
+            "id": 3,
+            "text": "Much more interested"
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "short_title": "Question",
+      "type": "poll",
+	  "background": "mission/images/Stage2_bg.png",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "The host of this year’s Academy Awards is Seth MacFarlane. On a scale of 1-5, how much sway does the show’s host have on your decision to watch the awards show or not?<br /><img src='mission/images/q2_i1.jpg' alt='Seth MacFarlane' />"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "1-Absolutely no sway (I could care less who the host is)"
+          },
+          {
+            "id": 2,
+            "text": "2"
+          },
+          {
+            "id": 3,
+            "text": "3-Indifferent (I choose to watch because of other reasons than the host)"
+          },
+          {
+            "id": 4,
+            "text": "4"
+          },
+          {
+            "id": 5,
+            "text": "5-Extremely strong sway (I choose to watch based on the host)"
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "short_title": "Question",
+      "type": "poll",
+	  "background": "mission/images/Stage3_bg.png",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Regardless of who is hosting, do the movies nominated have an impact on whether you watch or not? Using the same scale, tell us how much sway the nominated movies have on your decision to watch the awards show or not."
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "1-Absolutely no sway (I could care less which movies are nominated)"
+          },
+          {
+            "id": 2,
+            "text": "2"
+          },
+          {
+            "id": 3,
+            "text": "3-Indifferent (I choose to watch because of other reasons than the movies nominated)"
+          },
+          {
+            "id": 4,
+            "text": "4"
+          },
+          {
+            "id": 5,
+            "text": "5-Extremely strong sway (I choose to watch based on which movies are nominated)"
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "short_title": "Question",
+      "type": "poll",
+	  "background": "mission/images/Stage4_bg.png",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Compared to other years, are you more or less interested in watching this year’s Academy Awards show?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "Much less interested"
+          },
+          {
+            "id": 2,
+            "text": "Less interested"
+          },
+          {
+            "id": 3,
+            "text": "Neither, about the same"
+          },
+          {
+            "id": 4,
+            "text": "More interested"
+          },
+          {
+            "id": 5,
+            "text": "Much more interested"
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "short_title": "Poll",
+      "type": "image-poll",
+	  "background": "mission/images/Stage5_bg.png",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "This movie, which is nominated this year, is the first film since Warren Beatty's 1981 epic 'Reds' to earn spots in all four acting categories as well as best picture, director and screenplay:"
+        },
+        "correct": 3,
+        "answers": [
+         {
+            "id": 1,
+            "image": "mission/images/q5_i1.jpg",
+            "label": "Argo",
+            "text": "Argo"
+          },
+          {
+            "id": 2,
+            "image": "mission/images/q5_i2.jpg",
+            "label": "Django Unchained",
+            "text": "Django Unchained"
+          },
+          {
+            "id": 3,
+            "image": "mission/images/q5_i3.jpg",
+            "label": "Silver Linings Playbook",
+            "text": "Silver Linings Playbook"
+          },
+          {
+            "id": 4,
+            "image": "mission/images/q5_i4.jpg",
+            "label": "Les Misérables",
+            "text": "Les Misérables"
+          }
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "short_title": "Poll",
+      "type": "image-poll",
+	  "background": "mission/images/Stage6_bg.png",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "This person, who is competing for an Academy Award for his work in the movie Lincoln, has the most nominations of any living person with 48:"
+        },
+        "correct": 2,
+        "answers": [
+         {
+            "id": 1,
+            "image": "mission/images/q6_i1.jpg",
+            "label": "Steven Spielberg",
+            "text": "Steven Spielberg"
+          },
+          {
+            "id": 2,
+            "image": "mission/images/q6_i2.jpg",
+            "label": "John Williams",
+            "text": "John Williams"
+          },
+          {
+            "id": 3,
+            "image": "mission/images/q6_i3.jpg",
+            "label": "Daniel Day-Lewis",
+            "text": "Daniel Day-Lewis"
+          },
+          {
+            "id": 4,
+            "image": "mission/images/q6_i4.jpg",
+            "label": "Sally Field",
+            "text": "Sally Field"
+          }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "short_title": "Poll",
+      "type": "image-poll",
+	  "background": "mission/images/Stage7_bg.png",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "This is the first Academy Award nomination for which of the following actors?"
+        },
+        "correct": 2,
+        "answers": [
+         {
+            "id": 1,
+            "image": "mission/images/q7_i1.jpg",
+            "label": "Alan Arkin",
+            "text": "Alan Arkin"
+          },
+          {
+            "id": 2,
+            "image": "mission/images/q7_i2.jpg",
+            "label": "Christoph Waltz",
+            "text": "Christoph Waltz"
+          },
+          {
+            "id": 3,
+            "image": "mission/images/q7_i3.jpg",
+            "label": "Tommy Lee Jones",
+            "text": "Tommy Lee Jones"
+          },
+          {
+            "id": 4,
+            "image": "mission/images/q7_i4.jpg",
+            "label": "Hugh Jackman",
+            "text": "Hugh Jackman"
+          }
+        ]
+      }
+    }
+  ]
+}

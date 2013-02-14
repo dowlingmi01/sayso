@@ -43,7 +43,7 @@
       "data": {
         "question": {
           "id": 1,
-          "text": "The host of this year’s Academy Awards is Seth MacFarlane. On a scale of 1-5, how much sway does the show’s host have on your decision to watch the awards show or not?<br /><img src='mission/images/q2_i1.jpg' alt='Seth MacFarlane' />"
+          "text": "<img src='mission/images/q2_i1.jpg' style='float:right' alt='Seth MacFarlane' />The host of this year’s Academy Awards is Seth MacFarlane. On a scale of 1-5, how much sway does the show’s host have on your decision to watch the awards show or not?"
         },
         "answers": [
           {
@@ -223,7 +223,7 @@
       "data": {
         "question": {
           "id": 1,
-          "text": "This is the first Academy Award nomination for which of the following actors?"
+          "text": "This year marks the first Academy Award nomination for which actor?"
         },
         "correct": 2,
         "answers": [

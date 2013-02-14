@@ -1220,6 +1220,8 @@
 
 #sayso-starbar #sb_popBox_mission.sb_popBox{
 	left: 0px;
+	height:584px;
+	padding-top:6px;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox .sb_popBoxInner .sb_popContent{

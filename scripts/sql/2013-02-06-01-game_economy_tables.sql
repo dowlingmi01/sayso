@@ -5,6 +5,8 @@ ALTER TABLE economy
 ;
 ALTER TABLE user_gaming ADD imported timestamp NULL AFTER starbar_id
 ;
+SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO'
+;
 INSERT user (id) VALUES (0)
 ;
 CREATE TABLE game_asset
@@ -100,7 +102,7 @@ CREATE TABLE game_level
      , modified                          timestamp     NOT NULL DEFAULT '0000-00-00 00:00:00'
      , PRIMARY KEY (id)
      , CONSTRAINT game_level_asset_id FOREIGN KEY (game_asset_id) REFERENCES game_asset (id)
-     )
+     ) DEFAULT CHARSET=utf8
 ;
 CREATE OR REPLACE VIEW game_purchasable_view AS
 SELECT id, economy_id, name, bdid, img_url, p.type, price

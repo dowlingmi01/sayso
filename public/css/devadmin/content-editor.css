@@ -1,0 +1,77 @@
+table {
+	width: 100%;
+	max-width: 100%;
+}
+
+tr, td, div {
+	overflow: hidden;
+}
+
+th,td {
+	text-align: left;
+	padding: 5px;
+	margin: 0px;
+	vertical-align: top;
+}
+
+tr, div {
+	height: 50px;
+}
+
+tr.header {
+	height: 20px;
+}
+
+td {
+	position: relative;
+}
+
+pre {
+	width: 1px;
+	height: 1px;
+	margin: 0px;
+}
+
+tr.data:hover, tr.data:hover {
+	background-color: #EEEEEE;
+}
+
+tr.edit, tr.edit:hover {
+	background-color: #FFFFE4;
+	height: 200px;
+}
+
+input, textarea {
+	border: 1px solid black;
+	margin: 0px;
+	padding: 2px;
+}
+
+input {
+	width: 97%;
+	height: 20px;
+}
+
+textarea {
+	width: 99%;
+	height: 200px;
+}
+
+a.save {
+	position: absolute;
+	top: 35px;
+	right: 5px;
+	color: green;
+	text-decoration: none;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+a.reset {
+	position: absolute;
+	top: 42px;
+	left: 5px;
+	color: red;
+	text-decoration: none;
+	font-size: 9px;
+}

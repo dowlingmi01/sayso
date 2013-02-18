@@ -66,14 +66,15 @@ class Devadmin_IndexController extends Api_GlobalController
 
 	public function userSearchTrackingReportAction () {
 		$totalUsers = 0;
+		$totalSearches = 0;
 
 		// SELECT user_id, COUNT(user_id) as total_visits FROM metrics_log WHERE user_id > 122 AND metrics_type = 1 AND ((content LIKE '%guitar%' AND content LIKE '%center%') OR (content LIKE '%guitar%' AND content LIKE '%centre%')) GROUP BY user_id ORDER BY user_id
 
 		$request = $this->getRequest();
-		$csv = "user_id,number_of_searches\n";
+		$csv = "User ID,Number Of Searches\n";
 		$keywords = trim($request->getParam('keywords', ""));
 		if ($keywords) {
-			$keywordArray = explode(" ", $keywords);
+			$keywordArray = explode("1", $keywords);
 			$keywordClause = "((";
 			foreach ($keywordArray as $keyword) {
 				if ($keyword == "|") {
@@ -94,6 +95,9 @@ class Devadmin_IndexController extends Api_GlobalController
 				$totalSearches += (int)$row['searches'];
 				$totalUsers += 1;
 			}
+
+			$csv .= "Total Users,Total Searches\n";
+			$csv .= $totalUsers.",".$totalSearches."\n";
 		}
 
 		$this->view->total_searches = $totalSearches;
@@ -1138,8 +1142,8 @@ class Devadmin_IndexController extends Api_GlobalController
 
 	public function userGroupEditorAction () {
 		$this->view->headScript()->appendFile('//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js');
-		$this->view->headScript()->appendFile('/js/dig/dig.js');
-		$this->view->headLink()->appendStylesheet('/css/dig/dig.css');
+		$this->view->headScript()->appendFile('/js/devadmin/dig.js');
+		$this->view->headLink()->appendStylesheet('/css/devadmin/dig.css');
 
 		$this->view->report_cell_id = $this->report_cell_id;
 
@@ -1158,8 +1162,8 @@ class Devadmin_IndexController extends Api_GlobalController
 
 	public function userGroupEmailsAction () {
 		$this->view->headScript()->appendFile('//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js');
-		$this->view->headScript()->appendFile('/js/dig/dig.js');
-		$this->view->headLink()->appendStylesheet('/css/dig/dig.css');
+		$this->view->headScript()->appendFile('/js/devadmin/dig.js');
+		$this->view->headLink()->appendStylesheet('/css/devadmin/dig.css');
 
 		$this->view->report_cell_id = $this->report_cell_id;
 
@@ -1608,9 +1612,31 @@ class Devadmin_IndexController extends Api_GlobalController
 				ORDER BY id
 				";
 		$starbars = Db_Pdo::fetchAll($sql);
+
 		$this->view->starbars = $starbars;
 	}
 
+
+	public function contentEditorAction() {
+		$this->view->headScript()->appendFile('//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js');
+		$this->view->headScript()->appendFile('//ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js');
+		$this->view->headScript()->appendFile('/js/devadmin/content-editor.js');
+		$this->view->headLink()->appendStylesheet('/css/devadmin/content-editor.css');
+
+		Api_Cache::quickRemove('Starbar_Content_Starbar_Id_Index');
+		Api_Cache::quickRemove('Starbar_Content_Content_Key_Index');
+		Api_Cache::quickRemove('Starbar_Content_Keys');
+		$this->view->starbar_content = Starbar_ContentCollection::getAllContent();
+		$this->view->keys = Starbar_ContentKeyCollection::getAllKeys();
+
+		$sql = "SELECT *
+				FROM starbar
+				WHERE id > 2
+				";
+		$starbars = Db_Pdo::fetchAll($sql);
+		array_unshift($starbars, array('id' => '-1', 'label' => 'Default'));
+		$this->view->starbars = $starbars;
+	}
 
 	public function everyFiveMinutesAction() {
 		$this->view->messages = Survey_ResponseCollection::processAllResponsesPendingProcessing();

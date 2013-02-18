@@ -1,0 +1,56 @@
+<div id="sb_innerOverlay">
+	<div class="sb_innerOverlayBackground"></div>
+	<div class="sb_innerOverlayContent"></div>
+</div>
+<div class="sb_scrollPane">
+	<img src="//<?= BASE_DOMAIN ?>/images/<?= $this->text('CONFIG_SHORT_TITLE') ?>/img_header_rewards-center.png" alt="Rewards Center" />
+	<!--<p>Hundreds of items have been redeemed already -- grab the NEW items before they're gone! And remember to get your Giveaway Tokens!</p>-->
+	<?= $this->text('POPUP_REWARD_CENTER_HEADER') ?>
+	<div class="sb_rewards">
+		<?= $this->partialLoop('content/reward.phtml', $this->rewards) ?>
+	</div><!-- .sb_rewards -->
+</div><!-- .sb_scrollPane -->
+<?= $this->text('POPUP_REWARD_CENTER_FOOTNOTE') ?>
+
+<script language="javascript">
+	$SQ(function(){
+		var sayso = window.sayso;
+		var overlay = $SQ('#sayso-starbar #sb_innerOverlay');
+
+		var overlayContent = $SQ('.sb_innerOverlayContent', overlay);
+
+		$SQ(document).bind('sb_cbox_cleanup', function () {
+			overlay.hide();
+		});
+
+		// select a reward
+		$SQ('#sayso-starbar .sb_rewards .sb_rewardItem')
+			.not('.sb_rewardItem_disabled')
+			.unbind('click').bind('click', function(e){
+
+				overlayContent.html('').fadeTo(0, 0);
+				overlay.fadeOut(0).fadeIn(500);
+
+				var container = $SQ(this).dataContainer();
+
+				$SQ.ajaxWithAuth({
+					url : '//' + sayso.baseDomain + '/starbar/content/reward-redeem',
+					data : { good_id : container.getId() },
+					success : function (response) {
+						overlayContent.html(response.data.html).fadeTo(200, 1);
+					}
+				});
+			});
+		});
+
+		<? if ($this->chosen_good_id == "first") { ?>
+			var firstItem = $SQ('#sayso-starbar .sb_rewards .sb_rewardItem').first();
+			if (!firstItem.hasClass('sb_rewardItem_disabled')) firstItem.trigger('click');
+		<? } elseif ($this->chosen_good_id) { ?>
+			$SQ('#sayso-starbar .sb_rewards .sb_rewardItem').not('.sb_rewardItem_disabled').each(function (index) {
+				if (parseInt($SQ(this).attr('data-id')) == parseInt(<?= $this->chosen_good_id ?>)) {
+					$SQ(this).trigger('click');
+				}
+			});
+		<? } ?>
+</script>

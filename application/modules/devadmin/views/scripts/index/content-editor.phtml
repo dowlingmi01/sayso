@@ -1,0 +1,44 @@
+<br>
+<table cellspacing=0 cellpadding=0 border=0>
+	<tr class="header">
+		<th width="10%">Key</th>
+		<? $columnWidth = (int) floor(90 / count($this->starbars)) ?>
+		<? foreach ($this->starbars as $starbar) { ?>
+			<th width="<?= $columnWidth ?>%"><?= $starbar['label'] ?></th>
+		<? } ?>
+	</tr>
+	<? foreach ($this->starbar_content as $keyId => $content) { ?>
+		<tr class="data" data-key_id="<?= $keyId ?>">
+			<td class="key" data-original_content="<?= $this->keys[$keyId] ?>"></td>
+			<? foreach ($this->starbars as $starbar) { ?>
+				<?
+				$starbarId = (int) $starbar['id'];
+				if ($starbarId == -1) $starbarId = 0;
+				$starbarContent = (isset($content[$starbarId]) ? $content[$starbarId] : '');
+				$starbarContent = str_replace("\"", "&quot;", $starbarContent);
+				$starbarContent = str_replace("<", "&lt;", $starbarContent);
+				$starbarContent = str_replace(">", "&gt;", $starbarContent);
+				?>
+				<td class="content content_<?= $starbar['id'] ?>" data-original_content="<?= $starbarContent ?>"></td>
+			<? } ?>
+		</tr>
+	<? } ?>
+</table>
+<script type="text/javascript">
+	var starbars = new Array();
+	<? $i = 0 ?>
+	<? foreach ($this->starbars as $starbar) { ?>
+		starbars[<?= $i ?>] = {id: <?= $starbar['id'] ?>, label: "<?= $starbar['label'] ?>"};
+		<? $i++ ?>
+	<? } ?>
+	$('tr.data td').each(function(i) {
+		var $this = $(this);
+		var $div = $('<div></div>');
+		var content = $this.data('original_content');
+		$div.text(content);
+		$this.append($div);
+	});
+</script>
+<br><a href="#" onclick="addNewRow(); return false;">Add New Key</a><br>
+<br><a href="#" onclick="addNewRow(5); return false;">Add 5 New Keys</a><br>
+<br><br><br><br><br>

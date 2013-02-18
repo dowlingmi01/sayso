@@ -10,6 +10,8 @@ class Starbar_ContentController extends Api_GlobalController
 	// To be set by inherited classes, e.g. HellomusicController
 	protected $_maximumDisplayed = array('polls' => 0, 'surveys' => 0);
 
+	public $starbar_content;
+
 	public function preDispatch()
 	{
 		try {
@@ -57,7 +59,6 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function starbarListAction() {
 		$this->view->assign('starbars', User_State::getStarbarList($this->user_id, $this->starbar_id));
-		$this->view->assign('starbar_id', $this->starbar_id);
 	}
 
 	public function rewardsAction ()
@@ -274,7 +275,6 @@ class Starbar_ContentController extends Api_GlobalController
 
 		$this->view->user_id = $this->user_id;
 		$this->view->user_key = $this->user_key;
-		$this->view->starbar_id = $this->starbar_id;
 
 		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=poll&shared_id=".$survey->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
 		$this->_assignSharePollToView($survey, $facebookCallbackUrl);
@@ -529,8 +529,6 @@ class Starbar_ContentController extends Api_GlobalController
 
 		$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=starbar&shared_id=".$this->starbar_id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
 		$this->_assignShareAppToView($facebookCallbackUrl);
-
-		$this->view->assign('starbar_id', $this->starbar_id);
 	}
 
 	public function userShareAction()
@@ -762,6 +760,10 @@ class Starbar_ContentController extends Api_GlobalController
 
     }
 
+	public function spotlightAction() {
+
+	}
+
 	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null)
 	{
 		$config = Api_Registry::getConfig();
@@ -781,6 +783,11 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('facebook_description', $facebookDescription);
 	}
 
+	protected function _assignShareAppToView(){}
+	protected function _assignShareSurveyToView(){}
+	protected function _assignSharePollToView(){}
+	protected function _assignShareTrailerToView(){}
+
 	protected function _assignStarbarToView()
 	{
 		if (Registry::isRegistered('starbar')) {
@@ -798,6 +805,7 @@ class Starbar_ContentController extends Api_GlobalController
 		}
 
 		$this->view->assign('starbar', $starbar);
+		$this->view->assign('starbar_id', $starbar->id);
 	}
 
 	// Sets view variables to display polls and surveys:

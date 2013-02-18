@@ -1,0 +1,134 @@
+<?= $this->partial('remote/init-remote.phtml', null, array('starbar' => $this->starbar, 'frame_id' => $this->frame_id)); ?>
+<div id="sayso-starbar-external">
+	<script type="text/javascript">document.write("<scr"+"ipt type=\"text/javascript\" src=\"//www.surveygizmo.com/s3/polljs/<?= $this->survey->external_id ?>-<?= $this->survey->external_key ?>/\"></scr"+"ipt>");</script>
+</div>
+<link href='/css/surveygizmo/polls-<?= $this->starbar->short_name ?>.css' rel='stylesheet' media='all' type='text/css' />
+<script type="text/javascript">
+	$SQ(function () {
+		function enableClickableRadios() {
+			// Ensure that poll.js is loaded (it's loaded at the bottom of the SG content)
+			if ((typeof SG_init_page) != 'undefined' && (typeof SGSurvey) != 'undefined') {
+				var externalContentElem = $SQ('#sayso-starbar-external');
+				var domain = $SQ('#sg_SubmitButton').data("domain");
+				var survey = null;
+
+				// SG_init_page still fails sometimes, if poll.js is partially loaded
+				try
+				{
+					SG_init_page($SQ('#survey-wrapper-<?= $this->survey->external_id ?>'));
+					survey = new SGSurvey(SGAPI.surveyData["<?= $this->survey->external_id ?>"], false);
+					survey.InitPage(3);
+
+					// If we've made it this far, everything has loaded properly.
+					clearInterval(repeatUntilEmbedLoads);
+
+					$i = 15; // Check if CSS has loaded a maximum of 15 times, i.e. for 3000 ms, or 3 seconds
+					// After that assume it has (or give up regardless) and show the poll
+					var cssCheckInterval = setInterval(function(){
+						if (externalContentElem.css('display') == 'inline-table') { // Our css is loaded!
+							clearInterval(cssCheckInterval);
+							externalContentElem.css('display', 'block');
+							$SQ.remoteControl.loadComplete(true, 77+$SQ('.sg-survey-form').outerHeight());
+						}
+						$i--;
+						if ($i < 1) externalContentElem.css('display', 'inline-table');
+					}, 200);
+
+					// Make the radio buttons clickable
+					var elemRadios = $SQ('input:radio');
+					elemRadios.each(function(){
+						$SQ(this).bind({
+							click: function(event){
+								$SQ(this).attr('checked', 'checked');
+
+								// Simulate what survey.Vote(domain) does... which is submit the vote via ajax
+								var vote=$SQ("#sg_FormFor<?= $this->survey->external_id ?>").serialize();
+								var link=["//",domain,"/s3/polljs/<?= $this->survey->external_id ?>-<?= $this->survey->external_key ?>?_vote=",escape(vote)].join("");
+								$SQ.ajax({url:link,dataType:"jsonp"});
+
+								$SQ.ajax({
+									dataType:"json",
+									url : "//<?= BASE_DOMAIN ?>/api/survey/user-poll-submit?survey_id=<?= $this->survey->id ?>&user_id=<?= $this->user_id ?>&user_key=<?= $this->user_key ?>&starbar_id=<?= $this->starbar_id ?>&external_choice_id="+$SQ(this).attr('value'),
+									beforeSend : function(x) {
+										if (x && x.overrideMimeType) {
+											x.overrideMimeType("application/j-son;charset=UTF-8");
+										}
+									},
+									success : function (response, status, jqXHR) {
+										$SQ.remoteControl.updateGame(response.game);
+									}
+								});
+
+								survey.ShowResults(domain);
+								setTimeout(function() {
+									$SQ('#sb-survey-completed').fadeTo(500, 1);
+								}, 500);
+							}
+						});
+					});
+
+					$SQ.getScript("//platform.twitter.com/widgets.js", function(){
+						function handleTweetEvent(event){
+							if (event) {
+								$SQ.remoteControl.handleTweet('poll', <?= $this->survey->id ?>);
+							}
+						}
+						twttr.events.bind('tweet', function(event) { handleTweetEvent(event) });
+					});
+				}
+				catch (err) {}
+			}
+		}
+
+		var repeatUntilEmbedLoads = setInterval(enableClickableRadios, 100);
+	});
+
+</script>
+<div id="sayso-starbar-embed">
+	<div id="sb-survey-completed">
+		<? if ($this->survey->reward_category == "premium") { ?>
+			<?= $this->text('POPUP_POLL_PREMIUM_COMPLETED') ?>
+		<? } else { ?>
+			<?= $this->text('POPUP_POLL_STANDARD_COMPLETED') ?>
+		<? } ?>
+		<? $shareReward = 8 ?>
+		<div class="sb_externalShares">
+			<a class="sb_externalShare sb_externalShare_facebook" rel="sb_mini-redeemable-currency-reward_facebook" href="#"
+				onclick="$SQ.openWindow('//www.facebook.com/dialog/feed?app_id=<?= urlencode($this->facebook_app_id) ?>&link=<?= urlencode($this->share_link) ?>&caption=<?= urlencode($this->facebook_share_caption) ?>&picture=<?= urlencode($this->facebook_share_image_url) ?>&redirect_uri=<?= urlencode($this->facebook_share_callback_url) ?>&name=<?= urlencode($this->facebook_title) ?>&description=<?= urlencode($this->facebook_description) ?>', 'sb_window_open', 'location=1,status=1,scrollbars=0,width=981,height=450'); return false;">
+				<img src="//<?= BASE_DOMAIN ?>/images/generic/facebook-share-icon.png" alt="Facebook" />
+			</a>
+			<span class="sb_mini-redeemable-currency-reward sb_mini-redeemable-currency-reward_facebook" id="sb_mini-redeemable-currency-reward_facebook">+<?= $shareReward ?></span>
+			<div class="sb_externalShare sb_externalShare_twitter" rel="sb_mini-redeemable-currency-reward_twitter">
+				<a class="twitter-share-button"
+					data-related="<?= $this->twitter_share_related_users ?>"
+					data-hashtags="<?= $this->twitter_share_hashtags ?>"
+					data-via="<?= $this->twitter_share_via_user ?>"
+					data-url="<?= $this->share_link ?>"
+					data-text="<?= $this->twitter_share_text ?>"
+					data-count="none"
+					href="https://twitter.com/intent/tweet">
+						<img src="//<?= BASE_DOMAIN ?>/images/generic/logo_twitter.png" alt="Twitter" />
+				</a>
+			</div>
+			<span class="sb_mini-redeemable-currency-reward sb_mini-redeemable-currency-reward_twitter" id="sb_mini-redeemable-currency-reward_twitter">+<?= $shareReward ?></span>
+			<?= $this->text('POPUP_POLL_SHARE') ?>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	// SET UP EXTERNAL SHARE BEHAVIORS
+	$SQ('.sb_externalShare').each(function(){
+		// for some reason, the hover behavior set in the CSS is totally ignored. :(
+			$SQ(this).hover(function(){
+				$SQPoints = $SQ('#'+$SQ(this).attr('rel'));
+				$SQ(this).css('background-position','0px -20px');
+				$SQPoints.show();
+			},
+			function(){
+				$SQPoints = $SQ('#'+$SQ(this).attr('rel'));
+				$SQ(this).css('background-position','0px 0px');
+				$SQPoints.hide();
+			});
+
+	}); // end btnExternalShare
+</script>

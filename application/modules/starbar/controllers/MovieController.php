@@ -19,10 +19,6 @@ class Starbar_MovieController extends Starbar_ContentController
 		parent::userProfileAction();
 	}
 
-	public function spotlightAction() {
-
-	}
-
 	public function trailerAction() {
 		$this->_validateRequiredParameters(array('user_id'));
 

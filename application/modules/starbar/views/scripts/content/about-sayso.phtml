@@ -1,0 +1,79 @@
+<div class="sb_header">
+	<a href="http://say.so/" target="_blank"><img src="//<?= BASE_DOMAIN ?>/images/<?= $this->text('CONFIG_SHORT_TITLE') ?>/logo_<?= $this->text('CONFIG_SHORT_TITLE') ?>.png" alt="<?= $this->text('CONFIG_TITLE') ?>" /></a>
+</div><!-- .sb_header -->
+<div class="sb_tabs">
+	<ul>
+		<li><a href="#about_tabs_1">About</a></li>
+		<li><a href="#about_tabs_6">Bill of Rights</a></li>
+		<li><a href="#about_tabs_2">Help</a></li>
+		<li><a href="#about_tabs_3">FAQs</a></li>
+		<li><a href="#about_tabs_4">Feedback</a></li>
+		<? if ($this->show_testing_function) { ?>
+			<li><a href="#about_tabs_5">Testing</a></li>
+		<? } ?>
+	</ul>
+	<div id="about_tabs_1" class="sb_tabPane">
+		<div class="sb_scrollPane">
+			<?= $this->text('POPUP_ABOUT_ABOUT') ?>
+			<?= $this->text('POPUP_ABOUT_DOCUMENTS') ?>
+		</div><!-- .sb_scrollPane -->
+	</div><!-- #tab_1 -->
+	<div id="about_tabs_2" class="sb_tabPane">
+		<div class="sb_scrollPane">
+			<?= $this->text('POPUP_ABOUT_HELP') ?>
+		</div><!-- .sb_scrollPane -->
+	</div><!-- #tab_2 -->
+	<div id="about_tabs_3" class="sb_tabPane">
+		<div class="sb_scrollPane">
+			<?= $this->text('POPUP_ABOUT_FAQ') ?>
+		</div><!-- .sb_scrollPane -->
+	</div><!-- #tab_3 -->
+	<div id="about_tabs_4" class="sb_tabPane">
+		<div class="sb_scrollPane">
+			<?= $this->text('POPUP_ABOUT_FEEDBACK') ?>
+		</div><!-- .sb_scrollPane -->
+	</div><!-- #tab_4 -->
+	<div id="about_tabs_6" class="sb_tabPane">
+		<div class="sb_scrollPane">
+			<?= $this->text('POPUP_ABOUT_BILL_OF_RIGHTS') ?>
+		</div><!-- .sb_scrollPane -->
+	</div><!-- #tab_6 -->
+	<? if ($this->show_testing_function) { ?>
+		<div id="about_tabs_5" class="sb_tabPane sb_testingFunctions">
+			<div class="sb_scrollPane">
+				<h2 class="sb_title">Top Secret Testing Functions</h2>
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/reset-surveys-and-polls">Reset surveys and polls</a></p>
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/reset-external">Reset Facebook and Twitter External accounts and username</a></p>
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/reset-notifications">Reset Notifications and User Creation Time</a></p>
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/reset-gamer">Reset Game info to just after install (1000 chops, 100 notes)</a></p>
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/reset-all" style="color: red;">Reset this user to 'just created, just installed' state (i.e. All of the Above)</a></p>
+				<br />
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/complete-survey?survey_type=survey&survey_reward_category=profile">Simulate completing *the* profile survey</a></p>
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/complete-survey?survey_type=survey&survey_reward_category=premium">Simulate completing the primary survey (points only)</a></p>
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/complete-survey?survey_type=survey&survey_reward_category=standard">Simulate completing a regular survey (points only)</a></p><br />
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/complete-survey?survey_type=poll&survey_reward_category=standard">Simulate completing a regular poll (points only)</a></p>
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/complete-survey?survey_type=poll&survey_reward_category=premium">Simulate completing a premium poll (points only)</a></p><br />
+				<p><a href="//<?= BASE_DOMAIN ?>/api/test/reward-notes" style="color: green;">Receive 5000 notes</a></p>
+			</div><!-- .sb_scrollPane -->
+		</div><!-- #tab_5 -->
+	<? } ?>
+</div><!-- .sb_tabs -->
+
+<script language="javascript">
+	$SQ('span#onboard_tabs_5').click(function(){
+		$SQ("#about_tabs_2 .sb_tabs").tabs("select",4)
+	});
+
+	$SQ('#sb_popBox_about-saySo .sb_header').insertBefore('#sb_popBox_about-saySo .sb_popBoxInner');
+
+	$SQ('.sb_testingFunctions a').on('click', function(e){
+		e.preventDefault();
+		$SQ.ajaxWithAuth( {
+			url : $SQ(this).attr('href'),
+			success : function(r) {
+				if( r.game )
+					$SQ("#sayso-starbar").trigger("frameCommunication", ["updateGame", { newGame: r.game }]);
+			}
+		} );
+	});
+</script>

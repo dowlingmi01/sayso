@@ -1,0 +1,62 @@
+<div class="sb_tabs">
+	<ul>
+		<? if ($this->count_new_surveys) { ?>
+			<li><a href="#surveys_tabs_1"><?= $this->count_new_surveys ?> New!</a></li>
+		<? } else { ?>
+			<li><a href="#surveys_tabs_1">New</a></li>
+		<? } ?>
+		<? if ($this->count_completed_surveys || $this->count_disqualified_surveys) { ?>
+			<li><a href="#surveys_tabs_2">Completed</a></li>
+		<? } ?>
+		<? if ($this->count_archived_surveys) { ?>
+			<li><a href="#surveys_tabs_3">Archive</a></li>
+		<? } ?>
+	</ul>
+	<div id="surveys_tabs_1" class="sb_tabPane">
+		<img src="//<?= BASE_DOMAIN ?>/images/<?= $this->text('CONFIG_SHORT_TITLE') ?>/img_header_surveys.png" alt="Surveys" />
+		<p class="sb_tabHeader">
+			<?= $this->text('POPUP_SURVEYS_NEW') ?>
+		</p>
+		<? if ($this->profile_survey_id) { ?>
+			<p class="sb_tabHeader">
+				<?= $this->text('POPUP_SURVEYS_PROFILE_SURVEY_REMINDER') ?>
+			</p>
+		<? } ?>
+		<div class="sb_scrollPane">
+			<? $this->displaySurveys('new', $this->starbar) ?>
+		</div><!-- .sb_scrollPane -->
+	</div><!-- #tabs_1 -->
+
+	<? if ($this->count_completed_surveys || $this->count_disqualified_surveys) { ?>
+		<div id="surveys_tabs_2" class="sb_tabPane">
+			<img src="//<?= BASE_DOMAIN ?>/images/<?= $this->text('CONFIG_SHORT_TITLE') ?>/img_header_surveys.png" alt="Surveys" />
+			<p class="sb_tabHeader">
+				<?= $this->text('POPUP_SURVEYS_COMPLETED') ?>
+			</p>
+			<div class="sb_scrollPane">
+				<ul class="sb_outlineList">
+					<? $this->displaySurveys('completed', $this->starbar) ?>
+					<? $this->displaySurveys('disqualified', $this->starbar) ?>
+				</ul>
+			</div><!-- .sb_scrollPane -->
+		</div><!-- #tabs_2 -->
+	<? } ?>
+
+	<? if ($this->count_archived_surveys) { ?>
+		<div id="surveys_tabs_3" class="sb_tabPane">
+			<img src="//<?= BASE_DOMAIN ?>/images/<?= $this->text('CONFIG_SHORT_TITLE') ?>/img_header_surveys.png" alt="Surveys" />
+			<p class="sb_tabHeader">
+				<?= $this->text('POPUP_SURVEYS_ARCHIVED') ?>
+			</p>
+			<p class="sb_tabHeader"></p>
+			<div class="sb_scrollPane">
+				<? $this->displaySurveys('archived', $this->starbar) ?>
+				<br />
+				<? if ($this->count_new_surveys) { ?>
+					<p align="right"><a href="#" class="sb_nav_tabs sb_theme_button" rel="1"><span class="sb_theme_buttonArrow">Take a New Survey</span></a></p>
+				<? } ?>
+			</div><!-- .sb_scrollPane -->
+		</div><!-- #tabs_3 -->
+	<? } ?>
+
+</div><!-- .tabs -->

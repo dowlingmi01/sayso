@@ -65,4 +65,9 @@ class Gamer extends Gaming_User {
 		);
 		return array_merge(parent::exportProperties($parentObject), $props);
 	}
+	public function loadProfile (Gaming_BigDoor_HttpClient $client, Game_Abstract $game) {
+		parent::loadProfile($client, $game);
+		if( !$this->imported )
+			Game_Transaction::run($this->user_id, $this->starbar_id, 'IMPORT_BD_USER', array('gamer'=>$this));
+	}
 }

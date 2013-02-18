@@ -210,6 +210,13 @@ abstract class Game_Starbar extends Game_Abstract {
 
 				if ($sharedId) $logRecord->action_on_id = $sharedId;
 				$logRecord->save();
+				if( $gamer->imported ) {
+					$parameters = array('gamer'=>$gamer);
+					if( $sharedId )
+						$parameters['survey_id'] = $sharedId;
+						
+					Game_Transaction::run($gamer->user_id, $gamer->starbar_id, $actionId, $parameters);
+				}
 			}
 
 			// if user just leveled up, congratulate via notification
@@ -226,6 +233,9 @@ abstract class Game_Starbar extends Game_Abstract {
 					$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, (int) $this->_request->getParam('user_id'));
 				}
 
+				if( $gamer->imported )
+					Game_Transaction::run($gamer->user_id, $gamer->starbar_id, 'CHECK_BD_LEVEL', array('gamer'=>$gamer));
+				
 				// remove cache so "just leveled up" logic is not re-used
 				$gamer->removeProfileCache();
 			}
@@ -257,10 +267,10 @@ abstract class Game_Starbar extends Game_Abstract {
 	 * so we need to make sure the starbar is registered.
 	 *
 	 * @param Gaming_User $gamer
-	 * @param Zend_Controller_Request_Http $request
+	 * @param Zend_Controller_Request_Abstract $request
 	 * @return Game_Starbar | NullObject
 	 */
-	public static function create (Gaming_User $gamer, Zend_Controller_Request_Http $request, Starbar $starbar = null) {
+	public static function create (Gaming_User $gamer, Zend_Controller_Request_Abstract $request, Starbar $starbar = null) {
 
 		try {
 			if (!Registry::isRegistered('starbar')) {
@@ -322,10 +332,10 @@ abstract class Game_Starbar extends Game_Abstract {
 	 *   whether they show up or not in either env.
 	 *
 	 * @param Exception $exception
-	 * @param Zend_Controller_Request_Http $request
+	 * @param Zend_Controller_Request_Abstract $request
 	 * @throws Exception
 	 */
-	protected static function _handleException (Exception $exception, Zend_Controller_Request_Http $request) {
+	protected static function _handleException (Exception $exception, Zend_Controller_Request_Abstract $request) {
 
 		$debugGame = $request->getParam('debug_game');
 		// on local dev: throw game exceptions -- use debug_game=false to supress exceptions
@@ -376,5 +386,9 @@ abstract class Game_Starbar extends Game_Abstract {
 		$profileSurvey->loadProfileSurveyForStarbar((int) $request->getParam('starbar_id'));
 		self::$profileSurveyId = $profileSurvey->id;
 		self::$userHasCompletedProfileSurvey = ($profileSurvey->id ? Survey_Response::checkIfUserHasCompletedSurvey((int) $request->getParam('user_id'), $profileSurvey->id) : true);
+	}
+	public function purchaseGood (Gaming_BigDoor_Good $good, $quantity = 1) {
+		parent::purchaseGood($good, $quantity);
+		Game_Transaction::purchaseBDGood($this->getGamer(false), $good, $quantity);
 	}
 }

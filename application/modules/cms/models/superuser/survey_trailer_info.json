@@ -61,41 +61,6 @@
 			]
 		},
 		{
-			"colname": "category",
-			"type": "list",
-			"listoptions": [
-				"pre-release movie",
-				"current movie",
-				"sneak-peek movie",
-				"retro movie",
-				"pre-release game",
-				"current game",
-				"sneak-peek game",
-				"retro game",
-				"pre-release music video",
-				"current music video",
-				"sneak-peek music video",
-				"retro music video",
-				"Pre-Release Machinima Series Trailer",
-				"Current  Machinima Series Trailer",
-				"Sneak-Peek Machinima Series Trailer",
-				"Retro  Machinima Series Trailer",
-				"Machinima Episode",
-				"YouTube Clip",
-				"Movie Clip",
-				"TV Clip",
-				"TV Commercial",
-				"Behind the Scenes Clip"
-			],
-			"default": "retro movie",
-			"displaywhen": [
-				"add",
-				"detail",
-				"duplicate",
-				"edit"
-			]
-		},
-		{
 			"colname": "trailer_template_id",
 			"filterwidth":40,
 			"label": "Trailer Template Survey",

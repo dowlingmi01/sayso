@@ -4,7 +4,8 @@
 	* @author Peter Connolly, March 2012
 	*/
 
-	 require_once APPLICATION_PATH . '/modules/admin/controllers/CommonController.php';
+	require_once APPLICATION_PATH . '/modules/admin/controllers/CommonController.php';
+	require_once 'surveygizmo.php';
 
 	class Cms_AdminController extends Admin_CommonController
 	{
@@ -1784,6 +1785,7 @@ $data = $client->getData();
 		*/
 		public function viewAction()
 		{
+
 			$longtable = explode("?",$this->getRequest()->getParam('table'));
 			// We need to strip any parameters off the table name - they're added at times by the debugger if we're using it. There are no sideeffects if there are no parameters.
 			$tablename = strtolower($longtable[0]);
@@ -2194,7 +2196,9 @@ $data = $client->getData();
 
 								// Remove any fields not required in the save
 								foreach ($formData as $key=>$value) {
-									if (strpos($key,"_notrequired")!==false) {
+									if ((strpos($key,"_notrequired")===true)
+										| (strpos($key,"nocol")===true))
+									  {
 										unset($formData[$key]);
 									}
 								}

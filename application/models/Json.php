@@ -111,10 +111,8 @@ class Json extends Zend_Json {
 			if (array_key_exists($matchkey,$value)) {
 				if (in_array($matchvalue,$value[$matchkey])) {
 					if (!$recursive) {
-					//	$returnarray[$value['colname']] = $value['colname'];
 						$returnarray[] = $value['colname'];
 					} else {
-				//		$returnarray[$value] = $value;
 						$returnarray[] = $value;
 					}
 				}
@@ -141,10 +139,8 @@ class Json extends Zend_Json {
 				if (in_array($matchvalue,$value[$matchkey])) {
 					if (!$recursive) {
 						$returnarray[$value['colname']] = $value['colname'];
-						//$returnarray[] = $value['colname'];
 					} else {
 						$returnarray[$value] = $value;
-						//$returnarray[] = $value;
 					}
 				}
 			}

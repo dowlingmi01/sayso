@@ -1,10 +1,10 @@
 <?php
 /**
-* Skeleton for a Select form element
+* Skeleton for a Survey List form element - a dropdown list of available surveys
 *
 * @author Peter Connolly
 */
-class Form_Element_List extends Zend_Form_Element_Select {
+class Form_Element_Surveylist extends Zend_Form_Element_Select {
 	/**
 	* Indicates action being processed (e.g, edit, add, view, detail)
 	*
@@ -50,21 +50,32 @@ class Form_Element_List extends Zend_Form_Element_Select {
 	{
 		// Set the default title
 		$this->setLabel(ucwords(str_replace("_"," ",$this->getName())));
-
 		return parent::init();
 	}
 
 	private function _setParams()
 	{
+		$surveytype = (array_key_exists('surveytype',$this->_options)!==false?$this->_options['surveytype']:"survey");
+		$sg = new SurveyGizmo();
+		$surveylist = $sg->getSurveyList($surveytype);
+		// Gives an array of available surveys - id and title. We'll also need the key, but that is derived later.
+		$listoptions = array();
 
-		if (array_key_exists("listoptions",$this->_options)) {
-			$listoptions = array();
+		if (!empty($surveylist)) {
 
-			foreach ($this->_options['listoptions'] as $listkey=>$listvalue) {
-				$listoptions[$listvalue] = $listvalue;
+			// We have at least one survey to add to the list. Add the default value from the json first.
+			$listoptions[0] = (array_key_exists('default',$this->_options)!==false?$this->_options['default']:"--Please Select an SG ".ucfirst($surveytype)."--");
+
+			foreach ($surveylist as $listkey=>$listvalue) {
+				$listoptions[$listvalue['external_id']] = $listvalue['title'];
 			}
+
 			$this->setMultiOptions($listoptions);
 
+		} else {
+			$listoptions['0'] = "No unused ".$surveytype."s found" ;
+			$this->setMultiOptions($listoptions);
+			$this->setReadOnly();
 		}
 
 	}
@@ -72,6 +83,30 @@ class Form_Element_List extends Zend_Form_Element_Select {
 	public function setReadOnly()
 	{
 		$this->setAttrib('disabled', 'disabled');
+	}
+
+	private function _addClickHandler()
+	{
+		$script = "
+			var txtID = $(this).val();
+			var txtTitle = $(this).find('option:selected').text();
+			if (txtID==0) {
+				$('#title').val('');
+				txtTitle = '';
+			} else {
+			    $('#title').val(txtTitle);
+
+			    /* Convert the title into an external key */
+ 			    txtTitle = txtTitle.replace(/\./g,' '); /* Replace dots with spaces */
+ 			    txtTitle = txtTitle.replace(/[^A-Za-z0-9 ]+/g,''); /* Remove non-alphabetic characters */
+			    txtTitle = txtTitle.replace(/\s\s+/g,' '); /* Replace multiple spaces with one*/
+	  		    txtTitle = txtTitle.replace(/\s/g,'-'); /* Replace spaces with hyphen */
+            }
+
+			$('#external_key').val(txtTitle);
+			$('#external_id').val(txtID);
+		";
+		$this->setAttrib('onChange',$script);
 	}
 
 	private function _getAttribute($attrib)
@@ -121,6 +156,7 @@ class Form_Element_List extends Zend_Form_Element_Select {
 			switch ($action) {
 
 				case "add" :
+					$this->_addClickHandler();
 				case "duplicate" :
 					break;
 
@@ -137,7 +173,7 @@ class Form_Element_List extends Zend_Form_Element_Select {
 					break;
 			}
 		}
-
+		$this->setAttrib('size', '0');
 		return $this;
 	}
 }

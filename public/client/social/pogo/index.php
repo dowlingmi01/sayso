@@ -64,8 +64,7 @@ a:hover {
 	  <div class="section tab-pane" id="section-2">
 	  	<div class="section-head">
 	  		<h2><img src="images/WhatCanDo_Header.png" width="285" height="114" alt="Pogo" /></h2>
-	  		<p><strong>Earn Social PaySos by taking polls, answering surveys and giving your
-opinion on social, casual<br>and mobile gaming. Redeem Social PaySos for
+	  		<p><strong>Earn Social PaySos by taking polls, answering surveys and giving your opinion on casual, social <br>and mobile gaming. Redeem Social PaySos for
 items in our Reward Center.</strong></p>
 			</div><!-- .section-head -->
 
@@ -84,8 +83,7 @@ items in our Reward Center.</strong></p>
 	  <div class="section tab-pane" id="section-3">
 	  	<div class="section-head">
 	  		<h2><img src="images/WhatGet_Header.png" width="285" height="114" alt="Pogo" /></h2>
-	  		<p><strong>Great Prizes - The Reward Center is full of prizes designed
-specifically for social game fanatics.</strong></p>
+	  		<p><strong>Great Prizes - The Reward Center is full of prizes designed specifically for Pogo game fanatics.</strong></p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">

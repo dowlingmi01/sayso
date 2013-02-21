@@ -1,0 +1,202 @@
+{
+  "title": "Sims Games",
+  "description": "<div style=\"height: 344px;\"></div>",
+  "background": "mission/images/Info_Bg_Image.jpg",
+  "preview_image": "/client/missions/mission/008thesimsgames/images/Mission_Billboard_008.jpg",
+  "description":"",
+  "progress_token": "mission/images/Token_For_ProgressBar.png",
+  "validation": "<h3>Congratulations, you completed the mission!</h3><img src='mission/images/Final_Frame.jpg' alt='' /><p>You earned 57 PaySo and 750 SaySo.</p><p>You may close this tab at any time.</p>",
+  "reward_experience": 750,
+  "reward_redeemable": 57,
+  "stages": [
+    {
+      "id": 1,
+      "short_title": "Poll",
+      "type": "image-poll",
+	  "background": "",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Which character has appeared in the most Sims games?"
+        },
+        "correct": 1,
+        "answers": [
+         {
+            "id": 1,
+            "image": "mission/images/q1_i1.jpg",
+            "label": "Bella Goth",
+            "text": "Bella Goth"
+          },
+          {
+            "id": 2,
+            "image": "mission/images/q1_i2.jpg",
+            "label": "Drew Carey",
+            "text": "Drew Carey"
+          },
+          {
+            "id": 3,
+            "image": "mission/images/q1_i3.jpg",
+            "label": "Gobias Koffi",
+            "text": "Gobias Koffi"
+          },
+          {
+            "id": 4,
+            "image": "mission/images/q1_i4.jpg",
+            "label": "Katy Perry",
+            "text": "Katy Perry"
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "short_title": "Watch",
+      "type": "video",
+	  "background": "",
+      "data": {
+        "title": "After viewing this trailer for the Sims 3 expansion pack 'University Life', do you think you would purchase it?",
+        "caption": "University Life",
+        "url": "0w7hU7gAe00",
+        "enableControls" : 1,
+        "question": {
+          "id": 1,
+          "text": "After viewing this trailer for the Sims 3 expansion pack 'University Life', do you think you would purchase it?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "Yes, I purchase all the expansion packs for The Sims 3."
+          },
+          {
+            "id": 2,
+            "text": "Yes, I don't purchase all the expansion packs for The Sims 3, but this one looks excellent."
+          },
+          {
+            "id": 3,
+            "text": "No, I wouldn't pay for this expansion."
+          },
+          {
+            "id": 4,
+            "text": "No, I have no interest in The Sims 3 game/expansion packs."
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "short_title": "Visit",
+      "type": "site-survey",
+	  "background": "",
+      "data": {
+        "url": "http://sims.wikia.com/wiki/The_Sims_Wiki",
+        "title": "Visit the Sims wiki page and respond:",
+        "questions": [
+          {
+            "question": {
+              "id": 1,
+              "text": "Do you use or contribute to Sim related fan sites like this one?"
+            },
+            "answers": [
+              {
+                "id": 1,
+                "text": "Yes"
+              },
+              {
+                "id": 2,
+                "text": "No"
+              },
+              {
+                "id": 3,
+                "text": "Sometimes"
+              },
+              {
+                "id": 4,
+                "text": "I am not really a Sims fan."
+              }
+            ]
+          },
+          {
+            "question": {
+              "id": 2,
+              "text": "According to this Sims Wikipedia portal, how do you get Santa Claus to appear when playing  'The Sims: Livin' Large'?"
+            },
+            "correct": 2,
+            "answers": [
+              {
+                "id": 1,
+                "text": "Avoid making the 'naughty list' by refusing to harm other Sims. "
+              },
+              {
+                "id": 2,
+                "text": "Place cookies next to a fireplace and Christmas tree and wait until approximately 3 am."
+              },
+              {
+                "id": 3,
+                "text": "Throw a giant party around a Christmas tree, Santa will show up shortly thereafter."
+              },
+              {
+                "id": 4,
+                "text": "Trick question - there is no Santa Claus in The Sims: Livin' Large."
+              }
+            ]
+          },
+          {
+            "question": {
+              "id": 3,
+              "text": "Which cheat code would give you access to extra money in The Sims?"
+            },
+            "correct": 3,
+            "answers": [
+              {
+                "id": 1,
+                "text": "ballons"
+              },
+              {
+                "id": 2,
+                "text": "ka ching"
+              },
+              {
+                "id": 3,
+                "text": "rosebud"
+              },
+              {
+                "id": 4,
+                "text": "addmoney"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "short_title": "Question",
+      "type": "poll",
+	  "background": "",
+      "data": {
+        "question": {
+          "id": 1,
+          "text": "Which Maxis franchise is your favorite?"
+        },
+        "answers": [
+          {
+            "id": 1,
+            "text": "The Sims"
+          },
+          {
+            "id": 2,
+            "text": "Sim City"
+          },
+          {
+            "id": 3,
+            "text": "Spore"
+          },
+          {
+            "id": 4,
+            "text": "I haven't played any games from these franchises."
+          }
+        ]
+      }
+    }
+  ]
+}

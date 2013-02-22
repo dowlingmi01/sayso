@@ -43,9 +43,9 @@ class Starbar_Content extends Record
 		} // } else { //should probably do something if the key isn't found, such as sending an email to admins to warn that content may be missing
 
 		if (preg_match_all("/%([a-zA-Z0-9_-]+)%/", $content, $subkeyMatches)) {
-			foreach ($subkeyMatches as $subkey) {
-				if (!isset($subkeyContent[$subkey[0]])) { // we already looked up this subkey
-					$subkeyContent[$subkey[0]] = self::getByStarbarAndKey($subkey[1], $starbarId, $tree);
+			foreach ($subkeyMatches[1] as $subkeyMatch) {
+				if (!isset($subkeyContent[$subkeyMatch])) { // we already looked up this subkey
+					$subkeyContent[$subkeyMatch] = self::getByStarbarAndKey($subkeyMatch, $starbarId, $tree);
 				}
 			}
 

@@ -11,10 +11,10 @@
 
 <? if ($this->survey_already_completed) { ?>
 	<br />
-	You have already completed this survey.
+	<?= $this->text('POPUP_SURVEY_ALREADY_COMPLETED') ?>
 <? } elseif ($this->survey->status == "inactive") { ?>
 	<br />
-	This survey is currently unavailable. Please try again later.
+	<?= $this->text('POPUP_SURVEY_INACTIVE') ?>
 <? } else { ?>
 	<div id="starbar-survey-<?= $this->survey->id ?>" class="sb_survey_container"></div>
 	<script type="text/javascript">

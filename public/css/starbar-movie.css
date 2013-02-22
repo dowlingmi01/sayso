@@ -1346,8 +1346,8 @@
 	background-position: 0px 10px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_chops,
-#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_chops{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_experience,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_experience{
 	background-image: url('../images/movie/img_star_lg.png');
 }
 

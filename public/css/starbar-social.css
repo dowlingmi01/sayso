@@ -703,7 +703,7 @@
 	display:inline;
 }
 /* END */
-#sayso-starbar #starbar-player-console .sb_imgCinebucks{
+#sayso-starbar #starbar-player-console .sb_imgRedeemable{
 	background-image: url('../images/social/img_cinebucks.png');
 	width: 30px;
 	height: 30px;
@@ -1320,13 +1320,13 @@
 	background-position: 0px 10px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_chops,
-#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_chops{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_experience,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_experience{
 	background-image: url('../images/social/img_star_lg.png');
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_cinebucks,
-#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_cinebucks{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_redeemable,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_redeemable{
 	background-image: url('../images/social/img_cinebucks_lg.png');
 }
 
@@ -1975,16 +1975,16 @@
 	width: 100%;
 }
 
-#sayso-starbar #starbar-player-console .sb_rewardItem .sb_user-points-box .sb_imgCinebucks{
+#sayso-starbar #starbar-player-console .sb_rewardItem .sb_user-points-box .sb_imgRedeemable{
 	top: 7px;
 	left: -3px;
 }
 
-#sayso-starbar .sb_rewardItem .sb_reward_step .sb_user-points-box .sb_imgCinebucks{
+#sayso-starbar .sb_rewardItem .sb_reward_step .sb_user-points-box .sb_imgRedeemable{
 	left: 10px !important;
 }
 
-#sayso-starbar .sb_rewardItem #sb_reward_step2 .sb_user-points-box .sb_imgCinebucks{
+#sayso-starbar .sb_rewardItem #sb_reward_step2 .sb_user-points-box .sb_imgRedeemable{
 	left: 0px !important;
 	top: 0px;
 }

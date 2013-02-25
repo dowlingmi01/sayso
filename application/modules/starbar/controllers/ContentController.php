@@ -764,6 +764,86 @@ class Starbar_ContentController extends Api_GlobalController
 
 	}
 
+	public function trailerAction() {
+		$this->_validateRequiredParameters(array('user_id'));
+
+		// this page is fetched via an iframe, not ajax;
+		$this->_usingJsonPRenderer = false;
+
+		$request = $this->getRequest();
+		$surveyId = (int) abs($request->getParam("survey_id", 0));
+
+		Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'trailers', $this->_maximumDisplayed['trailers']);
+
+		$trailers = new SurveyCollection();
+		$trailers->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'trailer', 'new');
+		$this->view->trailers = $trailers;
+
+		if ($this->starbar_id > 4) { // for newer bars, grab the missions and assign them to the view
+			// Get a count of available missions
+			// Also count the trailers for this user, and make that value available to the view
+			Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'mission', 0);
+			$missionCollection = new SurveyCollection();
+			$missionCollection->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'mission', 'new');
+
+			$this->view->assign('missioncount',count($missionCollection));
+		}
+
+		$this->view->assign('trailercount',count($trailers));
+
+
+		$infoForTrailers = new Survey_TrailerInfoCollection();
+		$infoForTrailers->getTrailerInfoForTrailers($trailers);
+		// re-index the trailer info by survey_id
+		$infoForTrailersIndexedArray = array();
+		foreach($infoForTrailers as $trailerInfo) {
+			$infoForTrailersIndexedArray[$trailerInfo->survey_id] = $trailerInfo;
+		}
+		$this->view->info_for_trailers = $infoForTrailersIndexedArray;
+
+		$currentTrailer = null;
+		if ($surveyId && isset($trailers[$surveyId])) {
+			$currentTrailer = $trailers[$surveyId];
+		} elseif ($trailers) {
+			foreach ($trailers as $trailer) {
+				$currentTrailer = $trailer;
+				break;
+			}
+		}
+
+		if ($currentTrailer) {
+			$activeSurveyTrailerInfoId = $infoForTrailersIndexedArray[$currentTrailer->id]->id;
+			$this->view->current_trailer = $currentTrailer;
+
+			$firstQuestion = new Survey_Question();
+			$firstQuestion->loadDataByUniqueFields(array('survey_id' => $currentTrailer->id, 'ordinal' => 1, 'survey_trailer_info_id'=>$activeSurveyTrailerInfoId));
+
+			$this->view->first_question = $firstQuestion;
+
+			$firstQuestionChoices = new Survey_QuestionChoiceCollection();
+			$firstQuestionChoices->loadAllChoicesForSurveyQuestion($firstQuestion->id);
+
+			$this->view->first_question_choices = $firstQuestionChoices;
+
+			$secondQuestion = new Survey_Question();
+			$secondQuestion->loadDataByUniqueFields(array('survey_id' => $currentTrailer->id, 'ordinal' => 2, 'survey_trailer_info_id'=>$activeSurveyTrailerInfoId));
+
+			$this->view->second_question = $secondQuestion;
+
+			$secondQuestionChoices = new Survey_QuestionChoiceCollection();
+			$secondQuestionChoices->loadAllChoicesForSurveyQuestion($secondQuestion->id);
+
+			$this->view->second_question_choices = $secondQuestionChoices;
+
+			$facebookCallbackUrl = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=trailer&shared_id=".$currentTrailer->id."&user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
+			$this->_assignShareTrailerToView($currentTrailer, $facebookCallbackUrl);
+		}
+
+		$this->view->user_id = $this->user_id;
+		$this->view->user_key = $this->user_key;
+		$this->view->starbar_id = $this->starbar_id;
+	}
+
 	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null)
 	{
 		$config = Api_Registry::getConfig();

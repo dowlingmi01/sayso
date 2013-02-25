@@ -413,7 +413,7 @@ function brandBoostEvent( data ) {
 	if( sessionId )
 		eventData.brandboost_session_id = sessionId;
 		
-	for( field in fields )
+	for( var field in fields )
 		if( data.urlParams[field] )
 			eventData['brandboost_' + fields[field]] = data.urlParams[field];
 			
@@ -423,6 +423,8 @@ function brandBoostEvent( data ) {
 	});
 }
 function submitEvent( data ) {
+    if( !(data instanceof Object) )
+        data = JSON.parse(JSON.stringify(data));
 	ajaxWithAuth( {
 		url: 'api/metrics/event-submit',
 		data: data

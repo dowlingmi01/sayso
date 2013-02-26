@@ -1,6 +1,6 @@
 /**
- * Starbar
- */
+* Starbar
+*/
 
 $SQ(function(){
 
@@ -106,34 +106,34 @@ $SQ(function(){
 	});
 
 	/**
-	 * Get the data container of a given DOM object
-	 * - a "data container" (per this convention) is any DOM object
-	 *   with the HTML5 data attribute "data-id", indicating
-	 *   an identifiable record, within which the current object
-	 *   is a child
-	 * - default is to return the *first* parent container (index 0)
-	 *   but can be specified via parentIndex param (e.g. *second* (outer) parent == 1)
-	 * - you can also access the data container even if the current element
-	 *   IS the data container (i.e. it contains the "data-id" attr)
-	 *
-	 * - example: $('a.facebook').dataContainer().find('.button').show()
-	 * - example: $('a.facebook').dataContainer(1).getId() <-- get the id of an outer container
-	 * - example:
-	 *	 <div class="reward" data-id="<?= $reward->getId() ?>">
-	 *		 <a>Redeem!</a>
-	 *	 </div>
-	 *	 <script type="text/javascript">
-	 *		 $SQ('div.reward a').click(function () {
-	 *			 var rewardId = $SQ(this).dataContainer().getId();
-	 *			 // redeem this reward
-	 *		 });
-	 *	 </script>
-	 *
-	 * @author davidbjames
-	 *
-	 * @param integer parentIndex OPTIONAL defaults to 0 (first parent)
-	 * @return jQuery object of the data/parent element
-	 */
+	* Get the data container of a given DOM object
+	* - a "data container" (per this convention) is any DOM object
+	*   with the HTML5 data attribute "data-id", indicating
+	*   an identifiable record, within which the current object
+	*   is a child
+	* - default is to return the *first* parent container (index 0)
+	*   but can be specified via parentIndex param (e.g. *second* (outer) parent == 1)
+	* - you can also access the data container even if the current element
+	*   IS the data container (i.e. it contains the "data-id" attr)
+	*
+	* - example: $('a.facebook').dataContainer().find('.button').show()
+	* - example: $('a.facebook').dataContainer(1).getId() <-- get the id of an outer container
+	* - example:
+	*	 <div class="reward" data-id="<?= $reward->getId() ?>">
+	*		 <a>Redeem!</a>
+	*	 </div>
+	*	 <script type="text/javascript">
+	*		 $SQ('div.reward a').click(function () {
+	*			 var rewardId = $SQ(this).dataContainer().getId();
+	*			 // redeem this reward
+	*		 });
+	*	 </script>
+	*
+	* @author davidbjames
+	*
+	* @param integer parentIndex OPTIONAL defaults to 0 (first parent)
+	* @return jQuery object of the data/parent element
+	*/
 	$SQ.fn.dataContainer = function (parentIndex) {
 
 		var _container;
@@ -164,36 +164,36 @@ $SQ(function(){
 		var _id = _container.attr('data-id');
 
 		/**
-		 * Get the ID of the object
-		 * - this usually corresponds to the record ID
-		 * @returns integer
-		 */
+		* Get the ID of the object
+		* - this usually corresponds to the record ID
+		* @returns integer
+		*/
 		_container.getId = function () {
 			return typeof _id === 'undefined' ? 0 : parseInt(_id);
 		};
 
 		/**
-		 * Attach an object to this data container
-		 * @param object|string object
-		 */
+		* Attach an object to this data container
+		* @param object|string object
+		*/
 		_container.setObject = function (object) {
 			_container.data('object', typeof(object) === 'string' ? object : $SQ.JSON.stringify(object));
 			return _container;
 		};
 
 		/**
-		 * Get the object from this data container
-		 * @returns object
-		 */
+		* Get the object from this data container
+		* @returns object
+		*/
 		_container.getObject = function () {
 			return $SQ.JSON.parse(_container.data('object'));
 		};
 
 		/**
-		 * Copy the current data container to another DOM node
-		 * @param target
-		 * @returns object "data container"
-		 */
+		* Copy the current data container to another DOM node
+		* @param target
+		* @returns object "data container"
+		*/
 		_container.copy = function (target) {
 			if (typeof _container.data('object') !== 'undefined') {
 				target.data('object', _container.data('object'));
@@ -203,10 +203,10 @@ $SQ(function(){
 		};
 
 		/**
-		 * Move the current data container to another DOM node
-		 * @param target
-		 * @returns object "data container"
-		 */
+		* Move the current data container to another DOM node
+		* @param target
+		* @returns object "data container"
+		*/
 		_container.move = function (target) {
 			var newContainer = _container.copy(target);
 			_container.reset();
@@ -214,8 +214,8 @@ $SQ(function(){
 		};
 
 		/**
-		 * Reset the data container (remove id and object)
-		 */
+		* Reset the data container (remove id and object)
+		*/
 		_container.reset = function () {
 			_container.removeAttr('data-id');
 			_container.removeData('object');
@@ -223,8 +223,8 @@ $SQ(function(){
 		};
 
 		/**
-		 * Remove the data container completely
-		 */
+		* Remove the data container completely
+		*/
 		_container.removeNow = function () {
 			_container.fadeTo(400, 0, function() {
 				_container.remove();
@@ -317,7 +317,7 @@ $SQ(function(){
 
 
 		/*
-		 Set up handlers for expanding / minimizing the starbar when "hide" or logo is clicked
+		Set up handlers for expanding / minimizing the starbar when "hide" or logo is clicked
 		*/
 		btnToggleVis.unbind();
 		btnToggleVis.click(function(event){
@@ -414,8 +414,8 @@ $SQ(function(){
 						// this menu item's popBox is active
 
 						// check if the clickable area had an href. If so, load it into the pop box, then open it. Otherwise, just open it.
-		  				var thisPopBoxSrc = $SQ(this).attr('href');
-			  			openPopBox(thisPopBox, thisPopBoxSrc, true);
+						var thisPopBoxSrc = $SQ(this).attr('href');
+						openPopBox(thisPopBox, thisPopBoxSrc, true);
 
 						// try to turn on the nav highlight if it opened a "large" sub popbox
 						if (targetPopBox != ''){
@@ -428,13 +428,13 @@ $SQ(function(){
 					}
 				},
 				mouseenter: function(event){
-				event.preventDefault();
+					event.preventDefault();
 					if ($SQ(this).parent().hasClass('sb_theme_bgGradient')){
 						$SQ('span.sb_nav_border', this).addClass('sb_theme_navOnGradient');
 					}
 				},
 				mouseleave: function(event){
-				event.preventDefault();
+					event.preventDefault();
 					var thisPopBox = $SQ(this).next('.sb_popBox');
 					// only remove the "hover" class for the nav item if it's box isn't active
 					if (($SQ(this).parent().hasClass('sb_theme_bgGradient')) && (!thisPopBox.hasClass('sb_popBoxActive'))){
@@ -459,20 +459,20 @@ $SQ(function(){
 		// SET UP EXTERNAL SHARE BEHAVIORS
 		$SQ.each(btnExternalShare,function(){
 			// for some reason, the hover behavior set in the CSS is totally ignored. :(
-				$SQ(this).hover(function(){
-					$SQPoints = $SQ('#'+$SQ(this).attr('rel'));
-					$SQ(this).css('background-position','0px -20px');
-					$SQPoints.show();
+			$SQ(this).hover(function(){
+				$SQPoints = $SQ('#'+$SQ(this).attr('rel'));
+				$SQ(this).css('background-position','0px -20px');
+				$SQPoints.show();
 				},
 				function(){
 					$SQPoints = $SQ('#'+$SQ(this).attr('rel'));
 					$SQ(this).css('background-position','0px 0px');
 					$SQPoints.hide();
-				});
+			});
 
 		}); // end btnExternalShare
 
-        $SQ('#sb_mission_launch').on('click', closePopBox);
+		$SQ('#sb_mission_launch').on('click', closePopBox);
 
 	} // end initElements()
 
@@ -610,10 +610,10 @@ $SQ(function(){
 		if ($SQ.fx.off) ajaxContentContainer.css('filter', ''); // Fix for IE8 and below
 	}
 
-    function closeNotification( element ) {
+	function closeNotification( element ) {
 		var notification_id = element.attr('id').match(/(?:[0-9]+)/);
 		forge.message.broadcastBackground('close-notification', notification_id[0]);
-    }
+	}
 	function setNotifications( newSet ) {
 		var oldSet = sayso.notifications;
 		var newKeys = {}, oldKeys = {}, areas = {};
@@ -690,7 +690,7 @@ $SQ(function(){
 	}
 
 	String.prototype.toCamelCase = function () {
-    	return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+		return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 	};
 
 	var frameCommunicationFunctions = {
@@ -735,9 +735,9 @@ $SQ(function(){
 					setTimeout(function() {
 						// Note that setTimeout works in global scope
 						sayso.starbar.openFrameContainer.children('.sayso-starbar-loading-external').css('display', 'none');
-					}, 200);
+						}, 200);
 				}
-			}, 200);
+				}, 200);
 		},
 		'updateGame': function (parameters) {
 			var newGame = parameters['newGame'];
@@ -798,18 +798,18 @@ $SQ(function(){
 	});
 
 	/* This function activates/updates several game-related elements:
-	 * 1. Progress bars (with or without an actual progress bar), e.g.
-	   * With: <div class="sb_progress_bar"><span class="sb_currency_percent" data-currency="chops"></span><span class="sb_progressBarValue sb_currency_balance" data-currency="chops"></span></div>
-	   * Without: <div class="sb_progress_bar"><span class="sb_currency_percent"></span><span class="sb_progressBarValue sb_currency_balance" data-currency="notes"></span></div>
-	   * (note the lack of a data-currency attribute for the sb_currency_percent span in the second example, thus the percent is always "" or 0)
-	 * 2. Elements that contain a currency's balance only, e.g. <span class="sb_currency_balance" data-currency="notes"></span>
-	 * 3. Elements that contain the user's level number, e.g. <span class="sb_user_level_number"></span>
-	 * 4. Elements that contain the user's level title, e.g. <span class="sb_user_level_title"></span>
-	 * 5. Elements that contain the level icons for the user, e.g. <div class="sb_user_level_icons_container"></div>
-	 * 6. Elements that contain the leveling currency balance required to reach the next level, e.g. <span class="sb_currency_balance_next_level"></span>
-	 * 7. Elements that contain the user's purchased items, e.g. <div class="sb_user_purchases"></div>
-	 * 8. Elements that contain a currency title (either redeemable points or experience points)
-	 */
+	* 1. Progress bars (with or without an actual progress bar), e.g.
+	* With: <div class="sb_progress_bar"><span class="sb_currency_percent" data-currency="chops"></span><span class="sb_progressBarValue sb_currency_balance" data-currency="chops"></span></div>
+	* Without: <div class="sb_progress_bar"><span class="sb_currency_percent"></span><span class="sb_progressBarValue sb_currency_balance" data-currency="notes"></span></div>
+	* (note the lack of a data-currency attribute for the sb_currency_percent span in the second example, thus the percent is always "" or 0)
+	* 2. Elements that contain a currency's balance only, e.g. <span class="sb_currency_balance" data-currency="notes"></span>
+	* 3. Elements that contain the user's level number, e.g. <span class="sb_user_level_number"></span>
+	* 4. Elements that contain the user's level title, e.g. <span class="sb_user_level_title"></span>
+	* 5. Elements that contain the level icons for the user, e.g. <div class="sb_user_level_icons_container"></div>
+	* 6. Elements that contain the leveling currency balance required to reach the next level, e.g. <span class="sb_currency_balance_next_level"></span>
+	* 7. Elements that contain the user's purchased items, e.g. <div class="sb_user_purchases"></div>
+	* 8. Elements that contain a currency title (either redeemable points or experience points)
+	*/
 	function activateGameElements (target, animate) {
 
 		var userPurchasesContainerElems = $SQ('.sb_user_purchases', target);
@@ -852,12 +852,23 @@ $SQ(function(){
 			}
 		}
 
-		if (allLevels.count && userLevels.count) {
-			$SQ.each(allLevels.items, function (index, level) {
+		// Sort the levels by ordinal
+		var sortedLevels = [];
+		$SQ.each(allLevels.items, function (index, level) {
+			sortedLevels.push(level);
+		});
+		sortedLevels.sort(function(a, b) {
+			var x = a['ordinal']; var y = b['ordinal'];
+			return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+		});
+
+		if (sortedLevels.length && userCurrentLevel) {
+			for (var index in sortedLevels) {
+				var level = sortedLevels[index];
 				if (parseInt(userCurrentLevel.ordinal) < parseInt(level.ordinal) && (!userNextLevel || userNextLevel.ordinal > level.ordinal)) {
 					userNextLevel = level;
 				}
-			});
+			};
 		}
 
 		if (!userNextLevel) { // There should always be a next level for the user, but just in case...
@@ -931,8 +942,9 @@ $SQ(function(){
 		if (userCurrentLevelIconElems.length > 0) {
 			userCurrentLevelIconElems.each(function() {
 				var iconElem = $SQ(this);
-				if (allLevels.count && userCurrentLevel) {
-					$SQ.each(allLevels.items, function (index, level) {
+				if (sortedLevels.length && userCurrentLevel) {
+					for (var index in sortedLevels) {
+						var level = sortedLevels[index];
 						if (level.ordinal == userCurrentLevel.ordinal) {
 							var smallImageUrl;
 							$SQ.each(level.urls.items, function (index, url) {
@@ -941,7 +953,7 @@ $SQ(function(){
 							iconElem.css("background-image", "url('"+smallImageUrl+"')");
 							iconElem.css("background-position", "center bottom");
 						}
-					})
+					}
 				}
 			});
 		}
@@ -955,33 +967,34 @@ $SQ(function(){
 
 				var levelGroup = null;
 
-				if (allLevels.count && userCurrentLevel) {
+				if (sortedLevels.length && userCurrentLevel) {
 
-					$SQ.each(allLevels.items, function (index, level) {
+					for (var index in sortedLevels) {
+						var level = sortedLevels[index];
 
-                        if (index % numberOfVisibleLevels == 0) {
-                                levelGroup = $SQ(document.createElement('div'));
-                                levelGroup.addClass('sb_userLevelIcons_group');
-                                containerElem.append(levelGroup);
-                        }
+						if (index % numberOfVisibleLevels == 0) {
+							levelGroup = $SQ(document.createElement('div'));
+							levelGroup.addClass('sb_userLevelIcons_group');
+							containerElem.append(levelGroup);
+						}
 
-                        var smallImageUrl, bigImageUrl;
-                        $SQ.each(level.urls.items, function (index, url) {
-                                if (url.url.indexOf('_B.png') != -1) bigImageUrl = url.url;
-                                if (url.url.indexOf('_S.png') != -1) smallImageUrl = url.url;
-                        });
+						var smallImageUrl, bigImageUrl;
+						$SQ.each(level.urls.items, function (index, url) {
+							if (url.url.indexOf('_B.png') != -1) bigImageUrl = url.url;
+							if (url.url.indexOf('_S.png') != -1) smallImageUrl = url.url;
+						});
 
-                        var levelIcon = $SQ(document.createElement('div'));
+						var levelIcon = $SQ(document.createElement('div'));
 
-                        levelIcon.addClass('sb_userLevelIcons');
+						levelIcon.addClass('sb_userLevelIcons');
 
-                        if (level.ordinal == userCurrentLevel.ordinal) {
+						if (level.ordinal == userCurrentLevel.ordinal) {
 							/* THIS IS THE CURRENT LEVEL */
 
 							switch (sayso.starbar.shortName) {
 								case "movie":
 									currentlevelText = "L"+(index+1)+'. '+level.title+'</p><p>'+level.ordinal+' Stars';
-								break;
+									break;
 								case "machinima":
 									currentlevelText = level.ordinal;
 									break;
@@ -992,53 +1005,53 @@ $SQ(function(){
 							levelIcon.addClass('sb_userLevel_current');
 							levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+bigImageUrl+'\')"><div class="sb_theme_textNotifyCurrent"><p>'+currentlevelText+'</p></div></div>');
 
-                        } else {
+						} else {
 
-                                if (level.ordinal < userCurrentLevel.ordinal) {
+							if (level.ordinal < userCurrentLevel.ordinal) {
 
-                                    switch (sayso.starbar.shortName) {
-										case "movie":
-                                            earnedlevelText = "L"+(index+1)+". "+level.title+"</p><p>"+level.ordinal+" Stars";
-											break;
-										case "machinima":
-											earnedlevelText = level.ordinal;
-											break;
-										default:
-											earnedlevelText = level.ordinal;
-									}
-
-                                        levelIcon.addClass('sb_userLevel_earned');
-										levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+smallImageUrl+'\')"><p>'+earnedlevelText+'</p></div>');
-
-                                } else { // level.ordinal > userCurrentLevel.ordinal
-
-							        /* THIS IS A FUTURE LEVEL */
-
-									switch (sayso.starbar.shortName) {
-										case "movie":
-											blankImageUrl = "http://app.saysollc.com/images/movie/img_level_blank.png";
-											nextlevelText = "L"+(index+1)+". "+level.title+"</p><p>"+level.ordinal+" Stars";
+								switch (sayso.starbar.shortName) {
+									case "movie":
+										earnedlevelText = "L"+(index+1)+". "+level.title+"</p><p>"+level.ordinal+" Stars";
 										break;
-										case "machinima":
-											blankImageUrl = "http://app.saysollc.com/images/machinima/level_blank.png";
-											nextlevelText = level.ordinal;
-											break;
-										default:
-											// Using the Machinima circle as the default image
-											blankImageUrl = "http://app.saysollc.com/images/machinima/level_blank.png";
-											nextlevelText = level.ordinal;
-									}
+									case "machinima":
+										earnedlevelText = level.ordinal;
+										break;
+									default:
+										earnedlevelText = level.ordinal;
+								}
 
-							 		levelIcon.addClass('sb_userLevel_next');
-							        levelIcon.html('<div class="sb_userLevelImg" onmouseover="this.style.backgroundImage=\'url('+smallImageUrl+')\';this.innerHTML=\'<p>'+nextlevelText+'</p>\'" onmouseout="this.style.backgroundImage=\'url('+blankImageUrl+')\';this.innerHTML=\'\'"></div>');
+								levelIcon.addClass('sb_userLevel_earned');
+								levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+smallImageUrl+'\')"><p>'+earnedlevelText+'</p></div>');
 
-                                }
-                        }
-                        levelGroup.append(levelIcon);
-                });
+							} else { // level.ordinal > userCurrentLevel.ordinal
+
+								/* THIS IS A FUTURE LEVEL */
+
+								switch (sayso.starbar.shortName) {
+									case "movie":
+										blankImageUrl = "http://app.saysollc.com/images/movie/img_level_blank.png";
+										nextlevelText = "L"+(index+1)+". "+level.title+"</p><p>"+level.ordinal+" Stars";
+										break;
+									case "machinima":
+										blankImageUrl = "http://app.saysollc.com/images/machinima/level_blank.png";
+										nextlevelText = level.ordinal;
+										break;
+									default:
+										// Using the Machinima circle as the default image
+										blankImageUrl = "http://app.saysollc.com/images/machinima/level_blank.png";
+										nextlevelText = level.ordinal;
+								}
+
+								levelIcon.addClass('sb_userLevel_next');
+								levelIcon.html('<div class="sb_userLevelImg" onmouseover="this.style.backgroundImage=\'url('+smallImageUrl+')\';this.innerHTML=\'<p>'+nextlevelText+'</p>\'" onmouseout="this.style.backgroundImage=\'url('+blankImageUrl+')\';this.innerHTML=\'\'"></div>');
+
+							}
+						}
+						levelGroup.append(levelIcon);
+					};
 
 
-					var emptyLevelsToAdd = allLevels.count % numberOfVisibleLevels;
+					var emptyLevelsToAdd = sortedLevels.length % numberOfVisibleLevels;
 					while (emptyLevelsToAdd > 0) {
 						levelGroup.append('<div class="sb_userLevelIcons sb_userLevel_next"><div class="sb_userLevelImg sb_userLevel_empty"></div><p><br /></p></div>');
 						emptyLevelsToAdd--;
@@ -1089,7 +1102,7 @@ $SQ(function(){
 				var previousCurrency = null;
 				var currencyNeedsUpdate = false;
 
-                $SQ.each(sayso.starbar.previous_game._gamer._currencies.items, function(index, prevC) {
+				$SQ.each(sayso.starbar.previous_game._gamer._currencies.items, function(index, prevC) {
 					if (currencyTitle == prevC.title.toLowerCase()) {
 						previousCurrency = prevC;
 						return false;
@@ -1184,13 +1197,13 @@ $SQ(function(){
 									);
 									setTimeout(function() {
 										fadingBarElem.fadeTo(parseInt(animationDuration*3/5), 1);
-									}, parseInt(animationDuration*2/5));
+										}, parseInt(animationDuration*2/5));
 
 									setTimeout(function() {
 										progressBarElem.css('width', newWidth+'px');
 										animatingBarElem.annihilate();
 										fadingBarElem.annihilate();
-									}, animationDuration);
+										}, animationDuration);
 								} else if (animate && justLeveledUp) {
 									var animatingBarElem = $SQ(document.createElement('div'));
 									var progressBarElem = $SQthis; // so it can be accessed from setTimeout()
@@ -1205,15 +1218,15 @@ $SQ(function(){
 									);
 									setTimeout(function() {
 										progressBarElem.fadeTo(parseInt(animationDuration), 0);
-									}, parseInt(animationDuration*2/5));
+										}, parseInt(animationDuration*2/5));
 									setTimeout(function() {
 										progressBarElem.css('width', newWidth+'px');
 										progressBarElem.fadeTo(parseInt(animationDuration*3/5), 1);
 										animatingBarElem.fadeTo(parseInt(animationDuration*3/5), 0);
-									}, parseInt(animationDuration*7/5));
+										}, parseInt(animationDuration*7/5));
 									setTimeout(function() {
 										animatingBarElem.annihilate();
-									}, animationDuration*2);
+										}, animationDuration*2);
 								} else { // No animation
 									$SQthis.css('width', newWidth+'px');
 								}
@@ -1249,7 +1262,7 @@ $SQ(function(){
 					var profileImages = $SQ('img.sb_userImg');
 					if (profileImages.length > 0) {
 						profileImages.each(function(){
-		 					$SQ(this).attr('src', '//graph.facebook.com/'+userSocial.identifier+'/picture?type=square');
+							$SQ(this).attr('src', '//graph.facebook.com/'+userSocial.identifier+'/picture?type=square');
 						});
 					}
 				}
@@ -1276,16 +1289,16 @@ $SQ(function(){
 			$SQ('.sb_tabs', target).each(function(){
 				$SQ(this).tabs({
 					show: function(event, ui){
-							// re-call the scrollbar to re-initialize to avoid the "flash" of narrow content.
-							activateScroll(target);
+						// re-call the scrollbar to re-initialize to avoid the "flash" of narrow content.
+						activateScroll(target);
 
-							// adding ID to determine which tab is selected
-							$SQ('ul.sb_ui-tabs-nav', this).attr('id','');
-							$SQ('ul.sb_ui-tabs-nav', this).attr('id','sb_ui-tabs-nav_'+eval(ui.index+1));
+						// adding ID to determine which tab is selected
+						$SQ('ul.sb_ui-tabs-nav', this).attr('id','');
+						$SQ('ul.sb_ui-tabs-nav', this).attr('id','sb_ui-tabs-nav_'+eval(ui.index+1));
 
-							// reset child tabs to 0
-							$SQ('.sb_tabPane ul.sb_ui-tabs-nav', this).attr('id','');
-						}
+						// reset child tabs to 0
+						$SQ('.sb_tabPane ul.sb_ui-tabs-nav', this).attr('id','');
+					}
 				});
 			});
 		}
@@ -1380,7 +1393,7 @@ $SQ(function(){
 						if (activeFooter){
 							setTimeout(function(){
 								activeFooter.fadeTo(500, 1);
-							}, 2000);
+								}, 2000);
 						}
 					},
 					change: function (event, ui){
@@ -1447,7 +1460,7 @@ $SQ(function(){
 
 		// tooltip binding
 		elemTooltip.each(function(){
-		 	$SQ(this).easyTooltip();
+			$SQ(this).easyTooltip();
 		});
 	}
 
@@ -1567,7 +1580,7 @@ $SQ(function(){
 			overlay.fadeTo(200, 0);
 			setTimeout(function () {
 				overlay.annihilate();
-			}, 200);
+				}, 200);
 		}
 	}
 
@@ -1575,12 +1588,12 @@ $SQ(function(){
 	forge.message.listen('set-visibility', function( visibility ) {
 		starbar.state.visibility = visibility;
 		switch (visibility){
-		case 'stowed':
-			stowBar();
-			break;
-		case 'open':
-			openBar();
-			break;
+			case 'stowed':
+				stowBar();
+				break;
+			case 'open':
+				openBar();
+				break;
 		}
 	});
 
@@ -1591,13 +1604,13 @@ $SQ(function(){
 		btnSaySoLogo.css('backgroundPosition','3px 0px');
 
 		if (sayso.disableJqueryEffects) {
-            starbar.stowing = true;
+			starbar.stowing = true;
 			elemPlayerConsole.attr('class','').addClass('sb_starbar-visClosed');
 			setTimeout(function () {
 				btnToggleVis.attr('class','').addClass('sb_btnStarbar-stowed');
 				elemPlayerConsole.attr('class','').addClass('sb_starbar-visStowed');
-                starbar.stowing = false;
-			}, 1000);
+				starbar.stowing = false;
+				}, 1000);
 		} else {
 			elemPlayerConsole.animate(
 				{ width: '100' },
@@ -1610,7 +1623,7 @@ $SQ(function(){
 					elemPlayerConsole.fadeTo(500, 0);
 					setTimeout(function () {
 						elemPlayerConsole.hide();
-					}, 510);
+						}, 510);
 					setTimeout(function () {
 						btnToggleVis.attr('class','').addClass('sb_btnStarbar-stowed');
 						btnSaySoLogo.css('backgroundPosition','');
@@ -1619,10 +1632,10 @@ $SQ(function(){
 						elemPlayerConsole.show();
 						elemPlayerConsole.fadeTo(157, 1); // 157 found to work best for some bizarre reason
 						elemSaySoLogoSemiStowed.fadeTo(500, 0);
-					}, 1000);
+						}, 1000);
 					setTimeout(function () {
 						elemSaySoLogoSemiStowed.parent().hide();
-					}, 1500);
+						}, 1500);
 				}
 			);
 		}
@@ -1706,10 +1719,10 @@ $SQ(function(){
 				Switcher.loader.show();
 				Switcher.slider.animate({
 					'height' : updatedHeight
-				}, function(){
-					Switcher.loader.remove();
-					fader.show();
-					fader.fadeTo(500, 1);
+					}, function(){
+						Switcher.loader.remove();
+						fader.show();
+						fader.fadeTo(500, 1);
 				});
 
 				Switcher.assignBehavior();

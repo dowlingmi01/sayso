@@ -1641,7 +1641,10 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	text-indent: -9999px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardItem_disabledMsg h1, #sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardItem_disabledMsg p, #sayso-starbar #sb_popBox_user-level .sb_userLevelIcons.sb_userLevel_current p {
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardItem_disabledMsg h1,
+#sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardItem_disabledMsg p,
+#sayso-starbar #sb_popBox_user-level .sb_userLevelIcons.sb_userLevel_current p,
+#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent p {
 	text-align: center;
 }
 

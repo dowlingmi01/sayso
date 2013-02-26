@@ -1,7 +1,7 @@
 {
   "title": "Board Games",
   "description": "<div style=\"height: 344px;\"></div>",
-  "background": "mission/images/Info_Bg_Image.jpg",
+  "background": "mission/images/Intro_frame.jpg",
   "preview_image": "/client/missions/mission/007boardgames/images/Mission_Billboard_007.jpg",
   "description":"",
   "progress_token": "mission/images/Token_For_ProgressBar.png",

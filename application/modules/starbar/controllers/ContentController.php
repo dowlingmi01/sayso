@@ -863,10 +863,10 @@ class Starbar_ContentController extends Api_GlobalController
 		$this->view->assign('facebook_description', $facebookDescription);
 	}
 
-	protected function _assignShareAppToView(){}
-	protected function _assignShareSurveyToView(){}
-	protected function _assignSharePollToView(){}
-	protected function _assignShareTrailerToView(){}
+	protected function _assignShareAppToView($facebookCallbackUrl){}
+	protected function _assignShareSurveyToView(Survey $survey, $completed, $facebookCallbackUrl){}
+	protected function _assignSharePollToView(Survey $survey, $facebookCallbackUrl){}
+	protected function _assignShareTrailerToView(Survey $survey, $facebookCallbackUrl){}
 
 	protected function _assignStarbarToView()
 	{

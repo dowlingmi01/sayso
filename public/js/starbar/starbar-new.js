@@ -1051,10 +1051,12 @@ $SQ(function(){
 					};
 
 
-					var emptyLevelsToAdd = sortedLevels.length % numberOfVisibleLevels;
-					while (emptyLevelsToAdd > 0) {
-						levelGroup.append('<div class="sb_userLevelIcons sb_userLevel_next"><div class="sb_userLevelImg sb_userLevel_empty"></div><p><br /></p></div>');
-						emptyLevelsToAdd--;
+					var emptyLevelsToAdd = numberOfVisibleLevels - (sortedLevels.length % numberOfVisibleLevels);
+					if (emptyLevelsToAdd < numberOfVisibleLevels) {
+						while (emptyLevelsToAdd > 0) {
+							levelGroup.append('<div class="sb_userLevelIcons sb_userLevel_next"><div class="sb_userLevelImg sb_userLevel_empty"></div><p><br /></p></div>');
+							emptyLevelsToAdd--;
+						}
 					}
 				}
 

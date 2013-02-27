@@ -6,13 +6,6 @@ class Starbar_SocialController extends Starbar_ContentController
 {
 	protected $_maximumDisplayed = array('polls' => 0, 'surveys' => 0, 'trailers' => 0);
 
-	public function postDispatch() {
-		parent::postDispatch();
-		if (!$this->_usingJsonPRenderer) {
-			$this->view->headLink()->appendStylesheet('/css/starbar-social.css');
-		}
-	}
-
 	public function userProfileAction () {
 		Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'trailers', $this->_maximumDisplayed['trailers']);
 		$this->_assignSurveysToView('trailers');

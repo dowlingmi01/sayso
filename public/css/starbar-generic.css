@@ -1644,7 +1644,9 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardItem_disabledMsg h1,
 #sayso-starbar #starbar-player-console #sb_popBox_rewards .sb_rewardItem .sb_rewardItem_disabledMsg p,
 #sayso-starbar #sb_popBox_user-level .sb_userLevelIcons.sb_userLevel_current p,
-#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent div.sb_userLevelImg p {
+#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent div.sb_userLevelImg p,
+#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent div#onboard_tabs_4 h2,
+#sayso-starbar #starbar-player-console .sb_popBox .sb_popBoxInner .sb_popContent div#onboard_tabs_4 p {
 	text-align: center;
 }
 

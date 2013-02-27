@@ -1249,13 +1249,9 @@ class Devadmin_IndexController extends Api_GlobalController
 		ini_set('memory_limit', '512M');
 
 		$this->view->headLink()->appendStylesheet('/css/dig/dig.css');
-		$this->view->headLink()->appendStylesheet('/js/jqplot/jquery.jqplot.min.css');
 		$this->view->headScript()->appendFile('//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js');
 		$this->view->headScript()->appendFile('/js/dig/dig.js');
-		$this->view->headScript()->appendFile('/js/jqplot/jquery.jqplot.min.js');
-		$this->view->headScript()->appendFile('/js/jqplot/plugins/jqplot.barRenderer.min.js');
-		$this->view->headScript()->appendFile('/js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js');
-		$this->view->headScript()->appendFile('/js/jqplot/plugins/jqplot.pointLabels.min.js');
+		$this->view->headScript()->appendFile('//www.google.com/jsapi');
 
 		$request = $this->getRequest();
 		$surveyId = (int) $request->getParam("survey_id", false);

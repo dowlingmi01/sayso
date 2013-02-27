@@ -53,7 +53,6 @@ h3 {
 div.chart {
 	margin: auto;
 	width: 975px;
-	height: 300px;
 }
 
 div#reportSettings {
@@ -75,20 +74,6 @@ select#survey_id {
 	width: 780px;
 }
 
-.jqplot-point-label, table.jqplot-table-legend, table.jqplot-cursor-legend, .jqplot-axis {
-	font-size: 1em;
-	font-weight: bold;
-}
-
-.jqplot-axis.jqplot-yaxis {
-	max-width: 485px;
-}
-
-.jqplot-yaxis-tick {
-	background-color: #FFF;
-	z-index: 300;
-}
-
 #reportSubmit {
 	position: absolute;
 	right: 22px;
@@ -106,35 +91,64 @@ select#survey_id {
 }
 </style>
 <script type="text/javascript">
-	$.jqplot.config.enablePlugins = true;
+	var charts = [];
+	var chart, rows;
 
-	function renderGraph(divId, labels, values) {
-		var labels = labels.reverse();
-		var values = values.reverse();
-		$.jqplot(divId, [values], {
-			series: [{
-				renderer:$.jqplot.BarRenderer,
-				rendererOptions: {
-					barDirection: 'horizontal',
-					varyBarColor: true,
-					barMargin: 50 / labels.length
-				}
-			}],
-			axes: {
-				yaxis: {
-					renderer: $.jqplot.CategoryAxisRenderer,
-					ticks: labels,
-					tickOptions:{
-						showGridline:true,
-						markSize:0
-					}
-				},
-				xaxis:{
-					tickOptions:{formatString:'%d\%'}
-				}
+	$(document).ready(function () {
+		var data;
+
+		function renderChart(chart) {
+			var chartHeight;
+			var chartLegend;
+
+			switch (chart.type) {
+				case "PieChart":
+					chartHeight = 400;
+					chartLegend = null;
+					break;
+				default:
+					chart.type = "BarChart";
+					chartLegend = {position: 'bottom'};
+					chartHeight = (130 + (20 * chart.rows.length));
 			}
+
+			$('#' + chart.div_id).height(chartHeight + 20);
+
+			// reset data and put the new chart's rows into it
+			if (data.getNumberOfRows()) data.removeRows(0, data.getNumberOfRows()); // clear the data
+			data.insertRows(0, chart.rows);
+
+			// https://developers.google.com/chart/interactive/docs/reference#google.visualization.drawchart
+			google.visualization.drawChart({
+				chartType: chart.type,
+				dataTable: data,
+				containerId: chart.div_id,
+				options: {
+					vAxis: {title: chart.title},
+					chartArea: {height: chartHeight},
+					legend: chartLegend,
+					is3D: true
+				}
+			});
+		}
+
+		function renderCharts() {
+			for (var i in charts) {
+				renderChart(charts[i]);
+			}
+		}
+
+		google.load('visualization', '1.0', {
+			packages:	["corechart"],
+			callback:	function () {
+							data = new google.visualization.DataTable();
+							data.addColumn('string', 'Choice');
+							data.addColumn('number', 'Number of Users');
+							renderCharts();
+						}
 		});
-	}
+	});
+
 
 	var surveys = {
 		<?
@@ -279,22 +293,26 @@ select#survey_id {
 
 						<? if (count($surveyQuestion->option_array)) { ?>
 							<br />Users can choose <b><?= ($surveyQuestion->choice_type == "single" ? "a single response" : "multiple responses") ?></b>
-							<div id="chart_<?= $surveyQuestion->id ?>" class="chart" style="height: <?= (150 + (count($surveyQuestion->option_array) * 30)) ?>px;"></div>
+							<div id="chart_<?= $surveyQuestion->id ?>" class="chart"></div>
 							<script type="text/javascript">
-								var data_<?= $surveyQuestion->id ?> = new Array();
-								var labels_<?= $surveyQuestion->id ?> = new Array();
+								rows = [];
 								<? foreach ($surveyQuestion->option_array as $surveyQuestionChoice) { ?>
 									<? if (isset($this->calculation_array[$surveyQuestion->id][$surveyQuestionChoice->id])) { ?>
 										<? $choiceCalculation = $this->calculation_array[$surveyQuestion->id][$surveyQuestionChoice->id] ?>
 									<? } else { ?>
 										<? $choiceCalculation = new ReportCell_SurveyCalculation() ?>
 									<? } ?>
-
-									data_<?= $surveyQuestion->id ?>.push(<?= round($choiceCalculation->number_of_responses / $questionCalculation->number_of_responses * 100, 2) ?>);
-									labels_<?= $surveyQuestion->id ?>.push("<?= str_replace('"', '\\"', $surveyQuestionChoice->title) . " (" . (int) $choiceCalculation->number_of_responses . ")" ?>");
+									rows.push(["<?= str_replace('"', '\\"', $surveyQuestionChoice->title) ?>", <?= (int) $choiceCalculation->number_of_responses ?>]),
 								<? } ?>
 
-								renderGraph("chart_<?= $surveyQuestion->id ?>", labels_<?= $surveyQuestion->id ?>, data_<?= $surveyQuestion->id ?>);
+								chart = {};
+								chart.div_id = "chart_<?= $surveyQuestion->id ?>";
+								chart.rows = rows.slice(0); // copy the rows[] array into chart.rows
+								chart.title = "<?= str_replace('"', '\\"', $surveyQuestion->title) ?>";
+								<? if ($surveyQuestion->choice_type == "single") { ?>
+									chart.type = "PieChart";
+								<? } ?>
+								charts.push($.extend(true, {}, chart)); // push a copy of the chart to charts[]
 							</script>
 						<? } ?>
 

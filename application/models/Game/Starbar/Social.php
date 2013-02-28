@@ -27,8 +27,8 @@ class Game_Starbar_Social extends Game_Starbar {
 
 		$currentLevel = $profile->getHighestLevel();
 
-		if ($good->getId() == $this->_economy->getGoodId('MONTH_ONE_GIVEAWAY')) {
-			$good->setNonRedeemReason("We'll be announcing the winner of the first monthly giveaway winner soon!");
+		if ($good->getId() == $this->_economy->getGoodId('MONTH_ONE_TOKEN_SPORTS') || $good->getId() == $this->_economy->getGoodId('MONTH_ONE_TOKEN_SIMS')) {
+			$good->setNonRedeemReason("We'll be announcing the winners of the first monthly giveaways winner soon!");
 			$good->setCommentForUser('Unavailable');
 		/*
 		} elseif ($good->getId() == $this->_economy->getGoodId('WEEK_TWO_GIVEAWAY')) {

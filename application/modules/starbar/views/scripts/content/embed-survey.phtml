@@ -2,7 +2,7 @@
 	<div class="sb_outerOverlay"></div>
 <? } ?>
 <img src="//<?= BASE_DOMAIN ?>/images/<?= $this->text('CONFIG_SHORT_TITLE') ?>/img_header_surveys.png" alt="Surveys" />
-<p class="sb_alignRight"><a href="//<?= BASE_DOMAIN ?>/starbar/content/surveys" class="sb_theme_iconChange sb_them_textHighlight sb_nav_element" rel="sb_popBox_surveys">Switch Survey</a></p>
+<p class="sb_alignRight"><a href="//<?= BASE_DOMAIN ?>/starbar/<?= $this->text('CONFIG_SHORT_TITLE') ?>/surveys" class="sb_theme_iconChange sb_them_textHighlight sb_nav_element" rel="sb_popBox_surveys">Switch Survey</a></p>
 <? if ($this->survey->reward_category == "premium" || $this->survey->reward_category == "profile") { ?>
 	<div class="sb_theme_textHighlight_alt sb_survey_title"><?= $this->survey->title ?></div>
 <? } else { ?>
@@ -21,7 +21,7 @@
 		var protocol = ('https:' == sayso.location.protocol ? 'https:' : 'http:');
 
 		var link = protocol
-			+ "//<?= BASE_DOMAIN ?>/starbar/content/survey-redirect?survey_id=<?= $this->survey->id ?>&next_survey_id=<?= $this->next_survey_id ?>&user_id="
+			+ "//<?= BASE_DOMAIN ?>/starbar/<?= $this->text('CONFIG_SHORT_TITLE') ?>/survey-redirect?survey_id=<?= $this->survey->id ?>&next_survey_id=<?= $this->next_survey_id ?>&user_id="
 			+ sayso.starbar.user.id
 			+ "&user_key=" + sayso.starbar.user.key
 			+ "&starbar_id=" + sayso.starbar.id;

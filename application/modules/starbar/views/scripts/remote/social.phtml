@@ -32,15 +32,15 @@
 	<div id="starbar-wrapper">
 		<div id="starbar-visControls">
 			<div id="starbar-toggleVis" class="<?= $buttonVisibility ?>"></div><!-- #starbar-toggleVis -->
-			<a href="//<?= BASE_DOMAIN ?>/starbar/content/about-sayso" class="sb_nav_element sb_starbar-logo" id="sb_starbar-logo" rel="sb_popBox_about-saySo">say.so</a>
+			<a href="//<?= BASE_DOMAIN ?>/starbar/social/about-sayso" class="sb_nav_element sb_starbar-logo" id="sb_starbar-logo" rel="sb_popBox_about-saySo">say.so</a>
 			<div class="starbar-infoLinks">
-				<a href="//<?= BASE_DOMAIN ?>/starbar/content/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">About</a>
-				<a href="//<?= BASE_DOMAIN ?>/starbar/content/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">FAQs</a>
-				<a href="//<?= BASE_DOMAIN ?>/starbar/content/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">Help</a>
+				<a href="//<?= BASE_DOMAIN ?>/starbar/social/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">About</a>
+				<a href="//<?= BASE_DOMAIN ?>/starbar/social/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">FAQs</a>
+				<a href="//<?= BASE_DOMAIN ?>/starbar/social/about-sayso" class="sb_nav_element" rel="sb_popBox_about-saySo">Help</a>
 			</div><!-- .starbar-infoLinks -->
 			<div id="sb_popBox_about-saySo" class="sb_popBox">
 			</div><!-- .sb_popBox -->
-			<div id="sb_popBox_onboard" class="sb_popBox" href="//<?= BASE_DOMAIN ?>/starbar/content/onboard">
+			<div id="sb_popBox_onboard" class="sb_popBox" href="//<?= BASE_DOMAIN ?>/starbar/social/onboard">
 			</div><!-- #sb_popBox_onboard -->
 		</div><!-- #starbar-visControls -->
 		<div id="starbar-main">
@@ -52,7 +52,7 @@
 						<img src="//<?= BASE_DOMAIN ?>/images/social/logo_social_mdd.png" alt="Social logo"/>
 					</div><!-- .logo -->
 					<div class="sb_userImg">
-						<a href="//<?= BASE_DOMAIN ?>/starbar/content/user-profile" class="sb_nav_element" rel="sb_popBox_user-profile">
+						<a href="//<?= BASE_DOMAIN ?>/starbar/social/user-profile" class="sb_nav_element" rel="sb_popBox_user-profile">
 							<? if ($this->facebook_social->identifier) { ?>
 								<img class="sb_userImg" src="//graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $user->getTitle() ?>" />
 							<? } else { ?>
@@ -61,8 +61,8 @@
 						</a>
 					</div><!-- .userImg -->
 					<div class="sb_content">
-						<h2>Hi <a href="//<?= BASE_DOMAIN ?>/starbar/content/user-profile" class="sb_nav_element sb_user_title <?= ($this->user->username ? "" : "sb_user_level_title") ?>" rel="sb_popBox_user-profile"><?= $user->getTitle() ?></a></h2>
-						<a href="//<?= BASE_DOMAIN ?>/starbar/content/user-profile" class="sb_nav_element" rel="sb_popBox_user-profile">Edit Profile</a>
+						<h2>Hi <a href="//<?= BASE_DOMAIN ?>/starbar/social/user-profile" class="sb_nav_element sb_user_title <?= ($this->user->username ? "" : "sb_user_level_title") ?>" rel="sb_popBox_user-profile"><?= $user->getTitle() ?></a></h2>
+						<a href="//<?= BASE_DOMAIN ?>/starbar/social/user-profile" class="sb_nav_element" rel="sb_popBox_user-profile">Edit Profile</a>
 						</div><!-- .sb_content -->
 						<div id="sb_popBox_user-profile" class="sb_popBox sb_triangle-border">
 						</div><!-- .sb_popBox -->
@@ -76,11 +76,11 @@
 			</div>
 			<div id="starbar-nav">
 				<ul>
-					<li id="nav_polls" class="sb_theme_bgGradient"><span href="//<?= BASE_DOMAIN ?>/starbar/content/polls" class="sb_nav_element"><span class="sb_nav_border">Polls</span><!--<span class="sb_nav_notify">5</span>--></span>
+					<li id="nav_polls" class="sb_theme_bgGradient"><span href="//<?= BASE_DOMAIN ?>/starbar/social/polls" class="sb_nav_element"><span class="sb_nav_border">Polls</span><!--<span class="sb_nav_notify">5</span>--></span>
 						<div id="sb_popBox_polls" class="sb_popBox sb_triangle-border">
 						</div><!-- .sb_popBox -->
 					</li>
-					<li id="nav_surveys" class="sb_theme_bgGradient"><span href="//<?= BASE_DOMAIN ?>/starbar/content/surveys" class="sb_nav_element"><span class="sb_nav_border">Surveys</span></span>
+					<li id="nav_surveys" class="sb_theme_bgGradient"><span href="//<?= BASE_DOMAIN ?>/starbar/social/surveys" class="sb_nav_element"><span class="sb_nav_border">Surveys</span></span>
 						<div id="sb_popBox_surveys" class="sb_popBox sb_triangle-border">
 						</div><!-- .sb_popBox survey list -->
 
@@ -91,7 +91,7 @@
 						<div id="sb_popBox_surveys_ug" class="sb_popBox sb_popBoxUg sb_triangle-border">
 						</div><!-- .sb_popBox surveys (ugam) -->
 					</li>
-					<li id="nav_spotlight" class="sb_theme_bgGradient"><span href="//<?= BASE_DOMAIN ?>/starbar/content/spotlight" class="sb_nav_element sb_mission_toggle"><span class="sb_nav_border">Quizzes</span><span class="sb_mission_button"></span></span>
+					<li id="nav_spotlight" class="sb_theme_bgGradient"><span href="//<?= BASE_DOMAIN ?>/starbar/social/spotlight" class="sb_nav_element sb_mission_toggle"><span class="sb_nav_border">Quizzes</span><span class="sb_mission_button"></span></span>
 						<div id="sb_popBox_spotlight" class="sb_popBox sb_triangle-border">
 						</div><!-- .sb_popBox -->
 						<div id="sb_popBox_mission" class="sb_popBox sb_triangle-border">
@@ -100,7 +100,7 @@
 				</ul>
 			</div><!-- #starbar-nav -->
 			<div id="starbar-promo">
-				<a href="//<?= BASE_DOMAIN ?>/starbar/content/promos" class="sb_nav_element sb_top_level_element">
+				<a href="//<?= BASE_DOMAIN ?>/starbar/social/promos" class="sb_nav_element sb_top_level_element">
 					<img src="//<?= BASE_DOMAIN ?>/images/social/img_promo.png" alt="Promo" />
 				</a>
 				<div id="sb_popBox_promo" class="sb_popBox sb_triangle-border">
@@ -109,7 +109,7 @@
 			<div class="sb_alerts_container" id="starbar-alert-container-alerts">
 			</div>
 			<div id="starbar-level">
-				<a href="//<?= BASE_DOMAIN ?>/starbar/content/user-level" class="sb_nav_element" rel="sb_popBox_user-level">
+				<a href="//<?= BASE_DOMAIN ?>/starbar/social/user-level" class="sb_nav_element" rel="sb_popBox_user-level">
 					<div class="sb_content">
 						<div class="sb_user-level">L<span class="sb_user_level_number"></span>: <span class="sb_user_level_title"></span></div>
 						<div class="sb_user-level-box">
@@ -121,7 +121,7 @@
 				<div id="sb_popBox_user-level" class="sb_popBox sb_triangle-border"></div><!-- .sb_popBox -->
 			</div><!-- #starbar-level -->
 			<div id="starbar-points">
-				<a href="//<?= BASE_DOMAIN ?>/starbar/content/rewards" class="sb_nav_element" rel="sb_popBox_rewards">
+				<a href="//<?= BASE_DOMAIN ?>/starbar/social/rewards" class="sb_nav_element" rel="sb_popBox_rewards">
 					<div class="sb_content">
 						<div class="sb_user-points-box">
 							<span class="sb_imgRedeemable"></span>

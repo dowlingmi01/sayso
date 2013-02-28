@@ -204,7 +204,7 @@ if ($goodIsToken) {
 							$SQ('.sb_rewardOrder',currentBox).html(loadingImg);
 
 							$SQ.ajaxWithAuth({
-								url : '//' + sayso.baseDomain + '/starbar/content/reward-redeemed',
+								url : '//' + sayso.baseDomain + '/starbar/' + sayso.starbar.shortName + '/reward-redeemed',
 								data : params,
 								beforeSend: function(){
 

@@ -43,7 +43,11 @@ class Starbar_ContentController extends Api_GlobalController
 
 		if ($this->_usingJsonPRenderer) {
 			$this->_enableRenderer(new Api_Plugin_JsonRenderer());
-			$this->render();
+			if ($this->starbar_id == 3) { // Machinima not unified yet
+				$this->render();
+			} else {
+				$this->render('content/' . $request->getActionName(), null, true);
+			}
 			return $this->_resultType(new Object(array('html' => $this->getResponse()->getBody())));
 		} else {
 			// iframe loaded content, hence the need for all JS dependencies
@@ -609,7 +613,7 @@ class Starbar_ContentController extends Api_GlobalController
 				$messageUserMap = new Notification_MessageUserMap();
 				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, false);
 			}
-			$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id."&update_notifications=true");
+			$this->_redirect("/starbar/content/close-window?user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id."&update_notifications=true");
 		} else {
 			$this->_redirect($facebook->getLoginUrl());
 		}
@@ -625,7 +629,7 @@ class Starbar_ContentController extends Api_GlobalController
 			/* Build TwitterOAuth object with client credentials. */
 			$connection = new TwitterOAuth($config->twitter->consumer_key, $config->twitter->consumer_secret);
 
-			$callbackUrl = 'https://'.BASE_DOMAIN.'/starbar/content/twitter-connect-result?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id;
+			$callbackUrl = "https://".BASE_DOMAIN."/starbar/content/twitter-connect-result?user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id;
 
 			/* Get temporary credentials and set the callback URL. */
 			$twitterRequestToken = $connection->getRequestToken($callbackUrl);
@@ -642,7 +646,7 @@ class Starbar_ContentController extends Api_GlobalController
 		if ($success) {
 			$this->_redirect("https://api.twitter.com/oauth/authorize?oauth_token=".$twitterRequestToken['oauth_token']);
 		} else {
-			$this->_redirect('/starbar/content/twitter-fail?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id);
+			$this->_redirect("/starbar/content/twitter-fail?user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id);
 		}
 	}
 
@@ -683,11 +687,11 @@ class Starbar_ContentController extends Api_GlobalController
 					}
 				}
 
-				$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id."&update_notifications=true");
+				$this->_redirect("/starbar/content/close-window?user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id."&update_notifications=true");
 				return;
 			} catch (Exception $e) {}
 
-			$this->_redirect('/starbar/content/twitter-fail?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id);
+			$this->_redirect("/starbar/content/twitter-fail?user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id);
 		} else
 			$this->_redirect("/starbar/content/twitter-connect-redirect?user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id);
 	}
@@ -731,7 +735,7 @@ class Starbar_ContentController extends Api_GlobalController
 				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $this->user_id, false);
 			}
 		}
-		$this->_redirect('/starbar/content/close-window?user_id='.$this->user_id.'&user_key='.$this->user_key."&starbar_id=".$this->starbar_id."&update_notifications=true");
+		$this->_redirect("/starbar/content/close-window?user_id=".$this->user_id."&user_key=".$this->user_key."&starbar_id=".$this->starbar_id."&update_notifications=true");
 	}
 
     public function missionAction() {

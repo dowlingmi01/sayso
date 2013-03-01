@@ -59,6 +59,11 @@ class Starbar_ContentController extends Api_GlobalController
 			$this->view->headScript()->appendFile('/js/starbar/jquery.cycle.all.js');
 			$this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
 			$this->view->headLink()->appendStylesheet('/css/starbar-' . $this->view->starbar->short_name . '.css');
+
+			if ($this->starbar_id != 3) { // Machinima not unified yet
+				$this->_helper->viewRenderer->setNoController();
+				$this->_helper->viewRenderer->setScriptAction('content/' . $request->getActionName());
+			}
 		}
 	}
 

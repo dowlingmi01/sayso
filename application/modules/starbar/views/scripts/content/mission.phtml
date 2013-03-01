@@ -1,9 +1,9 @@
 <?
 	if( $this->missions_exist ) {
 		if (APPLICATION_ENV == "production")
-			$baseUrl = $this->getText('CONFIG_DEFAULT_SHARE_LINK');
+			$baseUrl = $this->text('CONFIG_DEFAULT_SHARE_LINK');
 		else
-			$baseUrl = "http://" . BASE_DOMAIN . "/client/" . $this->getText('CONFIG_SHORT_TITLE') . "/landing";
+			$baseUrl = "http://" . BASE_DOMAIN . "/client/" . $this->text('CONFIG_SHORT_TITLE') . "/landing";
 ?>
 <div style="width: 656px; height: 582px;">
 	<div class="sb_score_tabs">
@@ -11,7 +11,7 @@
 <?php
 	if ($this->missioncount > 0) {
 		?>
-		<li><a href="#" onclick="$SQ.remoteControl.openPopBox('#sb_popBox_mission', '//<?= BASE_DOMAIN ?>/starbar/<?= $this->getText('CONFIG_SHORT_TITLE') ?>/mission', true); return false;" class="sb_nav_element sb_mission_button spotthis"><span class='sb_number'><?= $this->missioncount ?></span>Mission<?= $this->missioncount!=1?'s':'';?></a></li>
+		<li><a href="#" onclick="$SQ.remoteControl.openPopBox('#sb_popBox_mission', '//<?= BASE_DOMAIN ?>/starbar/<?= $this->text('CONFIG_SHORT_TITLE') ?>/mission', true); return false;" class="sb_nav_element sb_mission_button spotthis"><span class='sb_number'><?= $this->missioncount ?></span>Mission<?= $this->missioncount!=1?'s':'';?></a></li>
 		<?php
 	} else {
 		?>
@@ -42,7 +42,7 @@
 				printf("<li id='slide%s'%s><a href='%s/mission/%s/' target='_blank'><img src='//%s%s' /></a>",$slidectr, $firstclass,$baseUrl,$mission->short_name,BASE_DOMAIN, $mission->preview_image);
 				$firstclass = '';
 				printf("<h2>%s</h2><p>%s</p>",$mission->title,$mission->description);
-				printf("<a class='sb_mission_launch' href='%s/mission/%s/' target='_blank'><img src='//%s/images/%s/img_accept-mission.png' alt='Accept Mission' /></a></li>",$baseUrl,$mission->short_name,BASE_DOMAIN, $this->getText('CONFIG_SHORT_TITLE'));
+				printf("<a class='sb_mission_launch' href='%s/mission/%s/' target='_blank'><img src='//%s/images/%s/img_accept-mission.png' alt='Accept Mission' /></a></li>",$baseUrl,$mission->short_name,BASE_DOMAIN, $this->text('CONFIG_SHORT_TITLE'));
 			}
 		?>
 		</ul>

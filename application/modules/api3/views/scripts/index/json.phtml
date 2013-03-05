@@ -1,0 +1,11 @@
+<?php
+	header('Content-type: text/json');
+
+	if (isset($this->api_response))
+	{
+		echo $this->api_response;
+	} else {
+		echo "";
+		//TODO: throw an error here if it's empty?
+	}
+?>

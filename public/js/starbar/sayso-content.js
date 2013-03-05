@@ -50,10 +50,10 @@
 		sayso.starbar.game = sayso.state.economies[sayso.starbar.economyId].game;
 
 		sayso.starbar.economy = sayso.state.economies[sayso.starbar.economyId];
-		
+
 		sayso.notifications = [];
 	}
-	
+
 	sayso.fn.ajaxWithAuth = function ajaxWithAuth(options) {
 		options.data = $SQ.extend(options.data || {}, {
 			renderer : 'json',
@@ -72,7 +72,7 @@
 		options.url = 'http:' + options.url;
 		return forge.request.ajax(options);
 	}
-	
+
 	function safeLog (type, debug) { // <-- closure here allows re-use for log() and warn()
 		return function () {
 			var args = Array.prototype.slice.call(arguments);
@@ -101,7 +101,7 @@
 	String.prototype.trim = function() {
 		return this.replace(/^\s+|\s+$/g,'');
 	};
-	
+
 	function urlParams(query) {
 	    var match,
 	        pl     = /\+/g,  // Regex for replacing addition symbol with a space
@@ -111,7 +111,7 @@
 
 	    while (match = search.exec(query))
 	       result[decode(match[1])] = decode(match[2]);
-	       
+
 	    return result;
 	}
 
@@ -119,11 +119,11 @@
 		if( sayso.location.search.indexOf('update_notifications') >= 0 )
 			forge.message.broadcastBackground('update-notifications');
 	}
-	
+
 	sayso.debug = true;
 	sayso.log = safeLog('log', sayso.debug);
 	sayso.warn = safeLog('warn', sayso.debug);
-	
+
 	sayso.msgHandlers = {};
 	function handleMessage( event ) {
 		var data;
@@ -143,7 +143,7 @@
 		window.addEventListener('message', handleMessage);
 	else if( window.attachEvent )
 		window.attachEvent('onmessage', handleMessage);
-	
+
 	sayso.frameId = Math.floor(Math.random()*2e9) + 1;
 	sayso.current_url = sayso.location.href;
 	sayso.in_iframe = forge.is.firefox() ? (unsafeWindow.window !== unsafeWindow.top) : (window.top != window);
@@ -159,7 +159,7 @@
 	sayso.fn.loadScript('starbar/jquery-1.7.1.min.js', jQueryLoaded);
 	sayso.url_match_prepend = '^(?:http|https){1}://(?:[\\w.-]+[.])?';
 	sayso.ie_version = getInternetExplorerVersion();
-	
+
 	function injectBeacon() {
 		window.$SaySoExtension = {};
 		$SaySoExtension.ssBeacon = function ssBeacon( ssData ) {
@@ -185,7 +185,7 @@
 		ssData.event_source = 'handleBeacon';
 		forge.message.broadcastBackground('submit-event', { event_name: eventName, event_data: ssData });
 	}
-	
+
 	function jQueryLoaded() {
 		$SQ(function(){
 			sayso.msgHandlers['beacon'] = handleBeacon;
@@ -214,20 +214,20 @@
 						sayso.fn.loadScript('surveygizmo/content.js');
 					}
 				};
-				
+
 				if( $SQ('#sayso-sgq').length )
 					sgqHandler();
 				else if( document.addEventListener )
 					document.addEventListener('saysoSGQ', sgqHandler);
 				else if( document.attachEvent )
 					document.attachEvent('onafterupdate', sgqHandler);
-			
+
 			}
 			forge.message.broadcastBackground( "get-state", {}, function( response ) {
 				sayso.fn.setLocalStateFromBackground(response);
 
 				sayso.flags = 'none';
-				
+
 				var missionShortName;
 
 				// ADjuster can run asynchronously
@@ -292,11 +292,11 @@
 					return; // DO NOT LOAD STARBAR
 				} else
 					sayso.fn.loadScript('starbar/sayso.js');
-				
+
 				// Only load starbar if conditions are met
 				if( shouldLoadStarbar() )
 					sayso.fn.loadScript('starbar/starbar-loader.js');
-				
+
 			});
 		});
 	}
@@ -304,9 +304,9 @@
 	function shouldLoadStarbar() {
 		if( sayso.in_iframe )
 			return false;
-			
+
 		if (!sayso.starbar.html.length) return; // for some reason, no markup was returned
-			
+
 		if (window.opener && $SQ(window).width() < 720) { // probably a popup..
 
 			var whiteList = ['facebook.com/pages/SaySo'], // always OK
@@ -342,9 +342,9 @@
 				return false;
 			}
 		}
-		
+
 		if ($SQ('embed[type*="pdf"]').length > 0) return false; // Don't load on Google Docs
-		
+
 		return true;
 	}
 })();

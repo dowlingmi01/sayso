@@ -24,14 +24,7 @@ class Api3_UserController extends Api3_GlobalController
 			$sql = "SELECT *
 					FROM user
 				";
-
-			$limit = $this->_calculateLimit((int)$actionParams["results_per_page"]);
-			$offset = $this->_calculateOffset((int)$actionParams["page_number"], $limit);
-
-			if ($limit != "all")
-			{
-				$sql .= " LIMIT {$offset}, {$limit}";
-			}
+			$sql .= $this->_prepareLimitSql((int)$actionParams["results_per_page"], (int)$actionParams["page_number"]);
 
 			//TODO: try catch?
 			$data = Db_Pdo::fetchAll($sql);

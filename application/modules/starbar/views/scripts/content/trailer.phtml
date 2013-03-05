@@ -6,9 +6,9 @@
 			<? if ($this->missioncount > 0) { ?>
 				<li><a href="#" onclick="$SQ.remoteControl.openPopBox('#sb_popBox_mission', '//<?= BASE_DOMAIN ?>/starbar/social/mission', true); return false;" class="sb_nav_element sb_mission_button spotthis"><span class='sb_number'><?= $this->missioncount ?></span>Mission<?= $this->missioncount!=1?'s':'';?></a></li>
 			<? } else { ?>
-				<li><a href="#" class="sb_nav_element sb_mission_button"><span class='sb_number'><?= $this->missioncount ?></span>Mission<?= $this->missioncount!=1?'s':'';?></a></li>
+				<li><a href="#" onclick="return false;" class="sb_nav_element sb_mission_button"><span class='sb_number'><?= $this->missioncount ?></span>Mission<?= $this->missioncount!=1?'s':'';?></a></li>
 			<? } ?>
-			<li><a href="#" class="sb_nav_element"><span class='sb_number'><?= $this->trailercount ?></span>Trailer<?= $this->trailercount!=1?'s':'';?></a></li>
+			<li><a href="#" onclick="return false;" class="sb_nav_element"><span class='sb_number'><?= $this->trailercount ?></span>Trailer<?= $this->trailercount!=1?'s':'';?></a></li>
 		</ul>
 	</div><!-- /sb_score_tabs -->
 <? } ?>

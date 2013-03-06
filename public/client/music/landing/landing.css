@@ -323,7 +323,7 @@ h1 small {
 h2 {
 	font-size: 24px;
 	line-height: normal;
-	color: #472395;
+	color: #0f3a91;
 }
 h2 small {
   font-size: 18px;
@@ -3550,14 +3550,14 @@ a.thumbnail:hover {
 }
 /* BEGIN FORMATTING */
 body {
-  background-color: #3c3c3c;
-  background-image: url('images/bg_page.png');
-  background-repeat: repeat;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 18px;
-  color: #333333;
+	background-color: #FFF;
+	background-image: url('images/bg_page.png');
+	background-repeat: repeat;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 18px;
+	color: #333333;
 }
 a,
 a:focus {

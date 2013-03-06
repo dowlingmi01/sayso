@@ -59,6 +59,16 @@ multi request getAllSurveys & getAllUsers - with page limits - error on one requ
 
 <hr />
 <?php
+$data_format = json_encode(array("api_user"=>314, "api_key"=>"JUHkjh234JH9", "continue_on_error"=>FALSE, "requests"=>array("firstRequest"=>array( "action_class"=>"survey", "action"=>"getAllSurveys","results_per_page"=>25, "page_number"=>15), "secondRequest"=>array( "action_class"=>"ussdfsdfer", "action"=>"getAllUsers","results_per_page"=>10, "page_number"=>100))));
+?>
+multi request getAllSurveys & getAllUsers - with page limits - error on one request - bad class - continue_on_error == FALSE
+<form action="http://local.saysollc.com/api3/" method="post">
+	<input type="hidden" name="data" value='<?= $data_format; ?>' />
+	<input type="submit" />
+</form>
+
+<hr />
+<?php
 $data_format = json_encode(array("apieeeee_user"=>314, "api_key"=>"JUHkjh234JH9", "requests"=>array("firstRequest"=>array( "action_class"=>"survey", "action"=>"getAllSurveys","results_per_page"=>25, "page_number"=>15), "secondRequest"=>array( "action_class"=>"user", "action"=>"getAllUsers","results_per_page"=>10, "page_number"=>100))));
 ?>
 multi request getAllSurveys & getAllUsers - with page limits - - bad user id field
@@ -68,6 +78,7 @@ multi request getAllSurveys & getAllUsers - with page limits - - bad user id fie
 </form>
 
 <hr />
+
 <?php
 
 $apiUser = 314;

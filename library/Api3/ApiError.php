@@ -18,7 +18,7 @@ class Api3_ApiError
 
 		"auth_failed_api"				=> array("type" => "api",		"message" => "API authentication failed"),
 		"auth_failed_action"				=> array("type" => "action",	"message" => "Action authentication failed"),
-		"auth_auth_error"				=> array("type" => "api",		"message" => "Authentication error. All authentications have been revoked."),
+		"auth_invalid_user_type"			=> array("type" => "api",		"message" => "Authentication error. Invalid user type. All authentications have been revoked."),
 
 		"invalid_action_class"				=> array("type" => "action",	"message" => "Invalid api class"),
 		"invalid_action"					=> array("type" => "action",	"message" => "Invalid action"),
@@ -27,7 +27,9 @@ class Api3_ApiError
 
 		"missing_params_api_instance"		=> array("type" => "api",		"message" => "Api user & key or json request are required"),
 		"missing_params_request"			=> array("type" => "api",		"message" => "Required parameters missing"),
-		"missing_user_credentials"			=> array("type" => "api",		"message" => "(api_id & api_key) or (admin_user_id & admin_user_key) are required parameters"),
+		"missing_user_credentials"			=> array("type" => "api",		"message" => "api_id & api_key are required parameters"),
+
+		"continue_on_errors"				=> array("type" => "api",		"message" => "A sibling request encountered an error with continue_on_errors set to FALSE. No response provided."),
 	);
 
 	private $_errors = array();
@@ -77,13 +79,29 @@ class Api3_ApiError
 	 * if an error of type api is found, it will break and return that alone.
 	 * this allows for the proper ordering of errors.
 	 * for example, if an invalid_class error is thrown, it's logical that a subsequent
-	 * invalid_ation error would occur even if the action does exist.
+	 * invalid_action error would occur even if the action does exist.
 	 * a return of invalid_action does not help a developer fix their code if thrown out of order.
 	 *
 	 * @param Api3_Response $response
 	 */
-	public function processErrors($response)
+	public function processErrors($response, $request)
 	{
+		//check for the continue_on_erors setting
+		if($request->continue_on_error === FALSE)
+		{
+			foreach($response->responses as $key => $value)
+			{
+				if ($this->_errors[0]["response_name"] != $key)
+				{
+					$response->responses->$key = "";
+					$response->responses->$key = array(
+												"errors_returned" => 1,
+												"error_message" => $this->_error_codes["continue_on_errors"]["message"]
+											);
+				}
+			}
+		}
+
 		foreach ($this->_errors as $key => $value)
 		{
 			if ($value["type"] == 'api' || $value["type"] == "other")

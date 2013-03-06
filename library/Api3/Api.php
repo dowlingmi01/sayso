@@ -74,15 +74,6 @@ class Api3_Api
 		//authenticate api access
 		$this->auth->authenticate($this->request, $this->error);
 
-		//TODO: not sure this is the place for this
-		if (isset($this->request->api_user))
-		{
-			$this->request->requester_type = "program";
-		} elseif (isset($this->request->admin_api_user)) {
-			$this->request->requester_type = "admin";
-		} else {
-			$this->error->newError("missing_user_credentials");
-		}
 	}
 
 	/**returns an instance of Api3_Api with response, request,
@@ -103,19 +94,26 @@ class Api3_Api
 	public static function getInstance ($apiId = NULL, $apiKey = NULL, $request_json = NULL)
 	{
 		//prepare the request params for consistent handling
-		if ($request_json)
+		if ($request_json) //external api request
 		{
 			$request = $request_json;
-		} elseif ($apiId && $apiKey) {
+		} elseif ($apiId && $apiKey) { //internal program request
 			$request = json_encode(array('api_user'=>$apiId, 'api_key'=>$apiKey));
 		} else {
-			self::$_instance->error->newError("missing_params_api_instance");
+			//in case Api3_Error is not yet loaded - set it here and apply error after $_instance has been checked
+			$error = "missing_params_api_instance";
 		}
 
 		//return the instance
 		if (!self::$_instance)
 		{
 			self::$_instance = new self($request);
+		}
+
+		//set error if triggered above
+		if (isset($error))
+		{
+			self::$_instance->error->newError("missing_params_api_instance");
 		}
 
 		return self::$_instance;
@@ -134,52 +132,54 @@ class Api3_Api
 	 */
 	public function getResponse()
 	{
-		//TODO: check for set up errors before processing
-
-		//check api auth
-		if ($this->auth->getAuthStatus() === TRUE)
+		//check for set up errors before processing anything
+		if ($this->error->checkForErrors() === FALSE)
 		{
-			//make sure our request object is strucutured properly
-			if (isset($this->request->requests))
+			//check api auth
+			if ($this->auth->getAuthStatus() === TRUE)
 			{
-				//iterate through each request for individual processing and error handling
-				foreach ($this->request->requests as $key=>$value)
+				//make sure our request object is strucutured properly
+				if (isset($this->request->requests))
 				{
-					//authenticate action access
-					$this->auth->actionAuthentication($value->action);
-					if ($this->auth->getAuthStatus(TRUE) === TRUE) //action auth passed
+					//iterate through each request for individual processing and error handling
+					foreach ($this->request->requests as $key=>$value)
 					{
-						//send to the proper model for processing
-						$logicResponse = $this->_callAction($value, $key);
-
-						//check response from model for an error code
-						if (isset($logicResponse))
+						//authenticate action access
+						$this->auth->actionAuthentication($value->action);
+						if ($this->auth->getAuthStatus(TRUE) === TRUE) //action auth passed
 						{
-							//deal with logic response
-							$this->response->responses->$key = $logicResponse;
-						} elseif ($this->error->checkForErrors() === TRUE) {
-							//do nothing
-						}else { //catch all for unknown errors
-							$this->error->newError("error_unknown", $key);
-							//TODO: log for research
-						}
-					} else { //action auth failed
-						$this->error->newError("auth_failed_action", $key);
-					}
-				}
-			} else { //request is not properly structured
-				$this->error->newError("missing_params_request");
-			}
-		} else { //api auth failed
-			//prepare error on api authentication
-			$this->error->newError("auth_failed_api");
-		}
+							//send to the proper model for processing
+							$logicResponse = $this->_callAction($value, $key);
 
+							//check response from model for an error code
+							if (isset($logicResponse))
+							{
+								//deal with logic response
+								$this->response->responses->$key = $logicResponse;
+							} elseif ($this->error->checkForErrors() === TRUE) {
+								//do nothing
+								//TODO: possibly find a better way to do this
+							}else { //catch all for unknown errors
+								$this->error->newError("error_unknown", $key);
+								//TODO: log for research
+							}
+						} else { //action auth failed
+							$this->error->newError("auth_failed_action", $key);
+						}
+					}
+				} else { //request is not properly structured
+					$this->error->newError("missing_params_request");
+				}
+			} else { //api auth failed
+				//prepare error on api authentication
+				$this->error->newError("auth_failed_api");
+			}
+		}
+		
 		//process errors before returning anything.
 		if ($this->error->checkForErrors() === TRUE)
 		{
-			//do something
-			$this->error->processErrors($this->response);
+			$this->error->processErrors($this->response, $this->request);
 		}
 		//formats the response object for output
 		$formattedResponse = $this->_formatResponse();

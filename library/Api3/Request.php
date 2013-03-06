@@ -31,29 +31,6 @@ class Api3_Request
 	 */
 	public $api_key;
 
-	/**defines and sets the default value for the requester type
-	 * this is to distinguish between 'admin' users (CMS) and
-	 * program calls (usage in the bar code)
-	 *
-	 * accepted values:
-	 *	admin - default
-	 *	program
-	 *
-	 * @var string
-	 */
-	public $requester_type = "admin";
-
-	/**sets format of the api response
-	 *
-	 * accepted values
-	 *	json - default
-	 *	array
-	 *	php
-	 *
-	 * @var string
-	 */
-	public $response_format = "json";
-
 	/**for single requests, we are going to format it as a multi request
 	 * but we need to leave some nodes at the top level
 	 * this array defines the nodes to be left alone in such case
@@ -64,19 +41,33 @@ class Api3_Request
 	private $_top_level_params = array(
 				"api_user",
 				"api_key",
-				"admin_api_user",
-				"admin_api_key",
-				"response_format"
+				"response_format",
+				"continue_on_error",
+				"user_type"
+
 			);
 
-	/**sets defaults for optional request level parameters
+	/**sets defaults for optional parameters
 	 * so they can be omited in requests
+	 *	request
+	 *		this is for default optional parameters that each
+	 *		requests should have set
+	 *	api
+	 *		this is for default optional parameters that all
+	 *		api calls should have set
 	 *
 	 * @var array
 	 */
 	private $_default_parameters = array(
-				"page_number"		=> 1,
-				"results_per_page"	=> 0
+							"request"	=> array(
+								"page_number"		=> 1,
+								"results_per_page"	=> 0
+							),
+							"api"		=> array(
+								"continue_on_error"	=> TRUE,
+								"user_type"		=> "admin",
+								"response_format"	=> "json"
+							)
 	);
 
 ////////////////////////////////////////////////////////////////////////
@@ -132,24 +123,51 @@ class Api3_Request
 			//now that they are set up properly, iterate through each request and add defaults if needed.
 			foreach ($this->requests as $requestParam => $requestParamValue)
 			{
-				$this->_applyDefaultParameters($requestParam);
+				$this->_applyDefaultRequestParameters($requestParam);
 			}
 
-		} elseif ((isset($requestParams->api_key) && isset($requestParams->api_user)) || (isset($requestParams->admin_api_key) && isset($requestParams->admin_api_user))) { //processing for api instantiation only
+		} elseif (isset($requestParams->api_key) && isset($requestParams->api_user)) { //processing for api instantiation only
 			foreach ($requestParams as $key=>$value)
 			{
 				$this->$key = $value;
 			}
+		} else {
+			$this->error->newError("missing_user_credentials");
 		}
+		$this->_applyDefaultApiParameters();
 	}
 
-	protected function _applyDefaultParameters($requestName)
+	/**applies default values to parameters that are not sent in
+	 *  because they are optional to send in
+	 * but are required by the internal api processing as defined in
+	 * $this->_default_parameters["request"]
+	 *
+	 * @param string $requestName
+	 */
+	protected function _applyDefaultRequestParameters($requestName)
 	{
-		foreach ($this->_default_parameters as $key => $value)
+		foreach ($this->_default_parameters["request"] as $key => $value)
 		{
 			if (!isset($this->requests->$requestName->$key))
 			{
 				$this->requests->$requestName->$key = $value;
+			}
+		}
+	}
+
+	/**applies default values to parameters that are not sent in
+	 *  because they are optional to send in
+	 *but are required by the internal api processing as defined in
+	 * $this->_default_parameters["api"]
+	 *
+	 */
+	protected function _applyDefaultApiParameters()
+	{
+		foreach ($this->_default_parameters["api"] as $key => $value)
+		{
+			if (!isset($this->$key))
+			{
+				$this->$key = $value;
 			}
 		}
 	}

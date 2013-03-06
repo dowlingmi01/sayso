@@ -1,11 +1,11 @@
 #sayso-starbar #starbar-player-console{
-	background-image: url('../images/music/bg_bar.png');
+	background-image: url('../images/social/bg_bar.png');
 }
 
 
 /* override */
 #sayso-starbar #starbar-player-console #starbar-type{
-  background: transparent url("../images/music/bg_starbar-type_mdd.png") no-repeat 0 0;
+  background: transparent url("../images/social/bg_starbar-type_mdd.png") no-repeat 0 0;
   height: 81px;
   left: 105px;
   position: absolute;
@@ -21,7 +21,7 @@
 	left: 179px;
 	width: 38px;
 	height: 14px;
-	background: transparent url(../images/music/bg_starbar-type_bubble.png) no-repeat 0 0;
+	background: transparent url(../images/social/bg_starbar-type_bubble.png) no-repeat 0 0;
 }
 /* @MDD - increase width by 5 to account for changed BG size, so info links hug profile area */
 #sayso-starbar #starbar-visControls {
@@ -29,7 +29,7 @@
 }
 
 #sayso-starbar #starbar-player-console.sb_starbar-visBG{
-	background-image: url('../images/music/bg_bar.png');
+	background-image: url('../images/social/bg_bar.png');
 	background-repeat: repeat-x ;
 	background-position: 0px bottom;
 }
@@ -40,7 +40,7 @@
 #sayso-starbar #starbar-player-console.sb_starbar-visStowed .sb_starbar-logo:hover,
 #sayso-starbar #sb_starbar-logoSemiStowed .sb_starbar-logo,
 #sayso-starbar #sb_starbar-logoSemiStowed .sb_starbar-logo:hover{
-    background-image: url("../images/music/logo_sayso.png");
+    background-image: url("../images/social/logo_sayso.png");
     background-position: 0px 0;
     background-repeat: no-repeat;
     cursor: pointer;
@@ -164,15 +164,6 @@
     text-indent: -9999px;
 }
 
-#sayso-starbar #starbar-player-console #starbar-nav ul li span.sb_mission_available span.sb_mission_button{
-  display: block;
-  width:95px;
-  height:37px;
-  margin: 0;
-  text-indent: -9999px;
-  background: url('../images/music/mission_button_banner.png') top right no-repeat;
-}
-
 #sayso-starbar #starbar-player-console #starbar-nav ul li{
 	box-shadow: 0;
 }
@@ -190,7 +181,7 @@
 	top: 13px;
 	right: 5px;
 	color: #383838;
-	background-color: #4f186b;
+	background-color: #0b2f76;
 	font-size: 9px;
 	text-align:  center;
 	line-height: 9px;
@@ -199,13 +190,13 @@
 }
 
 #sayso-starbar #starbar-player-console #starbar-nav ul li#nav_surveys span.sb_nav_element {
-	background-image: url('../images/music/nav_surveys.png');
+	background-image: url('../images/social/nav_surveys.png');
 }
 #sayso-starbar #starbar-player-console #starbar-nav ul li#nav_spotlight span.sb_nav_element {
-	background-image: url('../images/music/nav_spotlight.png');
+	background-image: url('../images/social/nav_spotlight.png');
 }
 #sayso-starbar #starbar-player-console #starbar-nav ul li#nav_polls span.sb_nav_element{
-	background-image: url('../images/music/nav_polls.png');
+	background-image: url('../images/social/nav_polls.png');
 }
 /* special color classes */
 #sayso-starbar #starbar-player-console .sb_theme_navOnGradient{
@@ -237,7 +228,7 @@
 			center top,
 			rgb(79,21,102) 22%,
 			rgb(28,5,47) 61%);
-	background-color: #4f186b;
+	background-color: #0b2f76;
 }
 
 /* change this gradient */
@@ -252,7 +243,7 @@
 			center top,
 			rgb(79,21,102) 22%,
 			rgb(28,5,47) 61%);
-	background-color: #4f186b;
+	background-color: #0b2f76;
 }
 
 
@@ -290,7 +281,7 @@
 			center top,
 			rgb(195,220,116) 22%,
 			rgb(139,170,43) 61%);
-	background-color: #4f186b;
+	background-color: #0b2f76;
 }
 /* change this gradient */
 #sayso-starbar #starbar-player-console .sb_theme_bgGradient_error,
@@ -301,13 +292,13 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(79,21,102)),
-	color-stop(0.61, rgb(28,5,47)));
+	color-stop(0.22, rgb(11,44,111)),
+	color-stop(0.61, rgb(2,9,22)));
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(79,21,102) 22%,
-			rgb(28,5,47) 61%);
-	background-color: #4f186b;
+			rgb(11,44,111) 22%,
+			rgb(2,9,22) 61%);
+	background-color: #0b2f76;
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_bgGradientGrey{
@@ -360,12 +351,12 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_textHighlight, #sayso-starbar-embed .sb_theme_textHighlight{
-	color: #4f186b !important;
+	color: #0b2f76 !important;
 	text-shadow: none !important;
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_textHighlight_alt, #sayso-starbar-embed .sb_theme_textHighlight_alt{
-	color: #4f186b !important;
+	color: #0b2f76 !important;
 	text-shadow: none !important;
 }
 
@@ -376,7 +367,7 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_theme_iconChange{
-	background-image: url('../images/music/img_change.png');
+	background-image: url('../images/social/img_change.png');
 	background-repeat: no-repeat;
 	background-position: right 0px;
 	font-weight: bold;
@@ -385,7 +376,7 @@
 	padding: 0px 20px 0px 0px;
 	height: 16px;
 	line-height: 16px;
-	color: #4f186b;
+	color: #0b2f76;
 	display: inline-block;
 	margin: 5px 0px 0px 0px;
 }
@@ -421,8 +412,8 @@
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_popBoxInner .sb_popContent{
-	width: 535px;
-	height: 343px;
+	width: 515px;
+	height: 292px;
 	padding: 0 !important;
 	margin: 0 !important;
 }
@@ -440,7 +431,7 @@
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_promo_week1{
 	display: block;
-	background-image: url('../images/music/img_promo_2.jpg');
+	background-image: url('../images/social/img_promo_2.jpg');
 	background-position: top right;
 }
 
@@ -450,14 +441,10 @@
 	position: relative;
 }
 
- #starbar-promo .sb_slide .sb_header{
+#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_header{
 	background: none;
 	margin: 0;
 	padding: 0;
-}
-
-#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox p.sb_tabHeader {
-	width/*/**/:670px\9;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details{
@@ -477,7 +464,7 @@
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_link a{
-	background-image: url('../images/music/img_arrow_right_solid.png');
+	background-image: url('../images/social/img_arrow_right_solid.png');
 	background-repeat: no-repeat;
 	background-position: right 50%;
 	height: 20px;
@@ -634,7 +621,7 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_notesEarned{
-	background-image: url('../images/music/img_cinebucks_sm.png');
+	background-image: url('../images/social/img_cinebucks_sm.png');
 	background-repeat: no-repeat;
 	background-position: 2px 2px;
 	padding: 3px 5px 3px 30px;
@@ -645,7 +632,7 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_xpEarned{
-	background-image: url('../images/music/img_star_sm.png');
+	background-image: url('../images/social/img_star_sm.png');
 	background-repeat: no-repeat;
 	background-position: 2px 3px;
 	padding: 3px 7px 3px 30px;
@@ -658,7 +645,7 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_xpRequired{
-	background-image: url('../images/music/img_star_sm.png');
+	background-image: url('../images/social/img_star_sm.png');
 	background-repeat: no-repeat;
 	background-position: 2px 3px;
 	height: 20px;
@@ -672,7 +659,7 @@
 /* START */
 #sayso-starbar #starbar-player-console .sb_userLevel_next p{
 	position:relative;
-	top:80px;
+	top:60px;
 	color:#333;
 	z-index:-5;
 	font-size: 11px;
@@ -683,7 +670,7 @@
 
 #sayso-starbar #starbar-player-console .sb_userLevel_current p{
 	position:relative;
-	top:105px;
+	top:79px;
 	color:#333;
 	z-index:-5;
 	font-size: 11px;
@@ -703,8 +690,8 @@
 	display:inline;
 }
 /* END */
-#sayso-starbar #starbar-player-console .sb_imgRedeemable{
-	background-image: url('../images/music/img_cinebucks.png');
+#sayso-starbar #starbar-player-console .sb_imgCinebucks{
+	background-image: url('../images/social/img_cinebucks.png');
 	width: 30px;
 	height: 30px;
 	display: inline-block;
@@ -724,11 +711,11 @@
 
 /* loading animated gif */
 #sayso-starbar .sb_img_loading, .sayso-starbar-loading-external .sb_img_loading{
-	background-image: url('../images/music/img_ajax-loader.gif') !important;
+	background-image: url('../images/social/img_ajax-loader.gif') !important;
 }
 
 #sayso-starbar #starbar-player-console h3.sb_theme_iconComplete{
-	background-image: url("../images/music/img_complete.png");
+	background-image: url("../images/social/img_complete.png");
   background-position: 5px 0;
   background-repeat: no-repeat;
 	display: inline-block;
@@ -808,7 +795,7 @@
 	width: 18px;
 	height: 40px;
 	display: inline-block;
-	background-image:  url('../images/music/img_arrow-right_lg.png');
+	background-image:  url('../images/social/img_arrow-right_lg.png');
 	background-repeat: no-repeat;
 	position: absolute;
 	right: 10px;
@@ -873,7 +860,7 @@
  margin: 0px 5px;
  background-repeat: repeat-x;
  background-position:  0px 0px;
- background-image: url('../images/music/img_spotlight-rate.png');
+ background-image: url('../images/social/img_spotlight-rate.png');
  display: inline-block;
  text-indent: -9999px;
 }
@@ -917,7 +904,7 @@
 	z-index: 1000;
 	top: -5px;
 	left: 0;
-	background-image: url('../images/music/img_star.png');
+	background-image: url('../images/social/img_star.png');
 	background-repeat: no-repeat;
 	width: 27px;
 	height: 27px;
@@ -928,7 +915,7 @@
 	z-index: 1000;
 	top: -5px;
 	left: 0px;
-	background-image: url('../images/music/img_note_sm.png');
+	background-image: url('../images/social/img_note_sm.png');
 	background-repeat: no-repeat;
 	width: 14px;
 	height: 20px;
@@ -940,7 +927,7 @@
 	height: 20px;
 	display: inline-block;
 	text-indent: -9999px;
-	background-image: url('../images/music/img_share_twitter.png');
+	background-image: url('../images/social/img_share_twitter.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px !important;
 }
@@ -951,7 +938,7 @@
 	height: 20px;
 	display: inline-block;
 	text-indent: -9999px;
-	background-image: url('../images/music/img_share_facebook.png');
+	background-image: url('../images/social/img_share_facebook.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px !important;
 }
@@ -967,7 +954,7 @@
 #sayso-starbar #starbar-player-console span.sb_mini-redeemable-currency-reward,
 #sayso-starbar-embed span.sb_mini-redeemable-currency-reward,
 #sayso-starbar #sb_popBox_spotlight ul.sb_listDeals li span.sb_mini-redeemable-currency-reward{
-	background-image: url('../images/music/img_cinebucks_tn.png');
+	background-image: url('../images/social/img_cinebucks_tn.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
 	font-size: 13px;
@@ -1053,13 +1040,12 @@
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle{
 	position: relative;
 	display: block;
-	height: 136px;
+	height: 116px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_user_level_icons_container{
 	margin: 0px 25px;
-	width: 520px;
-	height:125px;
+	height:105px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav{
@@ -1077,12 +1063,12 @@
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav#sb_userLevel_prev{
-	background-image: url('../images/music/img_carousel_left.png');
+	background-image: url('../images/social/img_carousel_left.png');
 	left: 0;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav#sb_userLevel_next{
-	background-image: url('../images/music/img_carousel_right.png');
+	background-image: url('../images/social/img_carousel_right.png');
 	right: 0;
 	z-index:10;
 }
@@ -1104,11 +1090,11 @@
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_earned,
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next{
-	width: 130px;
+	width: 160px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_current{
-	width: 130px;
+	width: 183px;
 	height: 139px; /* fixed height to allow scrollPane to have correct height */
 }
 
@@ -1117,7 +1103,7 @@
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevelImg{
-	height: 95px;
+	height: 85px;
 	width: 100%;
 	display: block;
 	background-repeat: no-repeat;
@@ -1139,11 +1125,11 @@
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_empty{
-	background-image: url('../images/music/img_level_empty.png');
+	background-image: url('../images/social/img_level_empty.png');
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next .sb_userLevelImg{
-	background-image: url('../images/music/img_level_blank.png');
+	background-image: url('../images/social/img_level_blank.png');
 	height:100px;
 }
 
@@ -1157,7 +1143,7 @@
 	width: 147px;
 	height: 20px;
 	display: inline-block;
-	background-image: url('../images/music/img_rewards-center.png');
+	background-image: url('../images/social/img_rewards-center.png');
 	background-repeat: no-repeat;
 	color: #000;
 	text-indent: -9999px;
@@ -1234,7 +1220,7 @@
 	width: 55px;
 	height: 55px;
 	float: left;
-	background-image: url('../images/music/img_level_blank.png');
+	background-image: url('../images/social/img_level_blank.png');
 	background-position: center top !important;
 	background-repeat: no-repeat;
 	background-size:contain;
@@ -1320,47 +1306,47 @@
 	background-position: 0px 10px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_experience,
-#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_experience{
-	background-image: url('../images/music/img_star_lg.png');
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_chops,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_chops{
+	background-image: url('../images/social/img_star_lg.png');
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_redeemable,
-#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_redeemable{
-	background-image: url('../images/music/img_cinebucks_lg.png');
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_cinebucks,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_cinebucks{
+	background-image: url('../images/social/img_cinebucks_lg.png');
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_polls,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_polls{
-	background-image: url('../images/music/img_poll_lg.png');
+	background-image: url('../images/social/img_poll_lg.png');
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_surveys,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_surveys{
-	background-image: url('../images/music/img_survey_lg.png');
+	background-image: url('../images/social/img_survey_lg.png');
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_quizzes,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_quizzes{
-	background-image: url('../images/music/img_quizzes_lg.png');
+	background-image: url('../images/social/img_quizzes_lg.png');
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_gear,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_gear{
-	background-image: url('../images/music/img_gear_lg.png');
+	background-image: url('../images/social/img_gear_lg.png');
 	padding-left: 60px;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_prizes,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_prizes{
-	background-image: url('../images/music/img_prizes_lg.png');
+	background-image: url('../images/social/img_prizes_lg.png');
 	padding-left: 60px;
 	background-position: 0px 5px;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_giveaways,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_giveaways{
-	background-image: url('../images/music/img_giveaways_lg.png');
+	background-image: url('../images/social/img_giveaways_lg.png');
 	padding-left: 60px;
 }
 
@@ -1372,7 +1358,7 @@
 	left: -10px;
 	right: auto;
 	bottom: 0px;
-	background-image: url('../images/music/img_onboard_nav.png');
+	background-image: url('../images/social/img_onboard_nav.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
 	padding: 0;
@@ -1603,7 +1589,7 @@
 
 #sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_opts .sb_rating_icon .icon
 {
-	background: url(../images/music/thumbs_up_gold.png);
+	background: url(../images/social/thumbs_up_gold.png);
 	height:19px;
 }
 
@@ -1635,7 +1621,7 @@
 	height:70px;
 	width:20px;
 	float:left;
-	background: url(../images/music/movie_thumb_arrows.png) no-repeat top;
+	background: url(../images/social/movie_thumb_arrows.png) no-repeat top;
 	-webkit-user-select:none;
 	-moz-user-select:none;
 	-o-user-select:none;
@@ -1649,7 +1635,7 @@
 	height:70px;
 	width:20px;
 	float:left;
-	background: url(../images/music/movie_thumb_arrows.png) no-repeat bottom;
+	background: url(../images/social/movie_thumb_arrows.png) no-repeat bottom;
 	-webkit-user-select:none;
 	-moz-user-select:none;
 	-o-user-select:none;
@@ -1715,42 +1701,6 @@
 	border:solid 1px #1C1C1C;
 
 	/* First and Last Images from the carousel group */
-}
-
-#sayso-starbar .sb_score_tabs,
-.sb_score_tabs  {
-	float:right;
-	text-align:right;
-	font-size:13px;
-	color: #5E1682;
-	margin-top: 4px;
-	font-family:arial,sans-serif;
-}
-
-#sayso-starbar .sb_score_tabs ul li:first-child,
-.sb_score_tabs ul li:first-child{
-	border: none;
-}
-
-#sayso-starbar .sb_score_tabs ul li,
-.sb_score_tabs ul li {
-	display: inline;
-	border-left: 1px solid #5E1682;
-	font-weight:bold;
-	padding-left: 7px;
-	margin-left: 5px;
-}
-
-.sb_score_tabs ul {
-	margin:0 10px 0 0;
-}
-
-.sb_score_tabs a,
-.sb_score_tabs a:hover,
-.sb_score_tabs a:visited
-{
-	color:#5E1682;
-	text-decoration:none;
 }
 #sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb img
 {
@@ -1850,18 +1800,18 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_ui-icon-triangle-1-s {
-	background-image: url('../images/music/img_arrow_down.png');
+	background-image: url('../images/social/img_arrow_down.png');
 	width: 18px;
 	height: 18px;
 }
 #sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_ui-icon-triangle-1-e {
-	background-image: url('../images/music/img_arrow_right.png');
+	background-image: url('../images/social/img_arrow_right.png');
 	width: 18px;
 	height: 18px;
 }
 
 #sayso-starbar #starbar-player-console .sb_img_nextTriangle{
-	background-image: url("../images/music/img_arrow_right.png");
+	background-image: url("../images/social/img_arrow_right.png");
   float: right;
   height: 20px;
   margin-left: 4px;
@@ -1975,16 +1925,16 @@
 	width: 100%;
 }
 
-#sayso-starbar #starbar-player-console .sb_rewardItem .sb_user-points-box .sb_imgRedeemable{
+#sayso-starbar #starbar-player-console .sb_rewardItem .sb_user-points-box .sb_imgCinebucks{
 	top: 7px;
 	left: -3px;
 }
 
-#sayso-starbar .sb_rewardItem .sb_reward_step .sb_user-points-box .sb_imgRedeemable{
+#sayso-starbar .sb_rewardItem .sb_reward_step .sb_user-points-box .sb_imgCinebucks{
 	left: 10px !important;
 }
 
-#sayso-starbar .sb_rewardItem #sb_reward_step2 .sb_user-points-box .sb_imgRedeemable{
+#sayso-starbar .sb_rewardItem #sb_reward_step2 .sb_user-points-box .sb_imgCinebucks{
 	left: 0px !important;
 	top: 0px;
 }
@@ -2242,8 +2192,7 @@
 #sayso-starbar #sb_popBox_polls #sayso-starbar-ajax-content {margin-bottom:20px;}
 
 /* Tooltips */
-#sayso-starbar .tooltip,
-.sayso-tooltip {
+.tooltip {
 	display:none;
 	position:absolute;
 	border:1px solid #333;
@@ -2259,111 +2208,15 @@
 
 }
 
-#sayso-starbar p.sb_reminder {
+p.sb_reminder {
 	margin-top: 0 !important;
 }
 
-#sayso-starbar p.sb_promo_gettokens {
+p.sb_promo_gettokens {
 	margin-bottom:0 !important;
 }
 
-/* MISSION RULES */
-/* mission */
 
-#sayso-starbar #sb_popBox_mission.sb_popBox{
-	left: 0px;
-}
-
-#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox .sb_popBoxInner .sb_popContent{
-	/*width: 656px;
-	height: 582px;*/
-	width: 674px;
-	height: 578px;
-}
-#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox .sb_popBoxInner{
-	padding: 10px;
-}
-#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox .sb_popBoxInner .sb_popContent {
-	padding: 0px !important;
-}
-#sayso-starbar #sb_popBox_mission.sb_triangle-border:before{
-	left: 230px;
-}
-#sayso-starbar #sb_popBox_mission.sb_triangle-border:after{
-	left: 231px;
-}
-#sayso-starbar #sb_popBox_mission .sb_triangle-solid:after{
-	left: 227px;
-}
-
-/* Default settings for all mission popboxes */
-#sayso-starbar #starbar-player-console #sb_popBox_mission .sb_mission_carousel li{
-	float:left;
-	margin: 20px 0 0 50px;
-	display:none;
-	height:232px;
-}
-
-/* Make the first slide visible */
-#sayso-starbar #starbar-player-console #sb_popBox_mission  .sb_mission_carousel li#slide1{
-	display:block;
-}
-
-#sayso-starbar #starbar-player-console #sb_popBox_mission li img {
-	margin-bottom:20px;
-}
-
-#sayso-starbar #starbar-player-console .sb_mission_carousel ul {
-	list-style-type:none;
-}
-
-#sayso-starbar #starbar-player-console .sb_mission_carousel ul li p{
-	width:606px;
-}
-
-#sayso-starbar #starbar-player-console .sb_mission_carousel .arrow_left {
-	width:37px;
-	height:340px;/* The extra height gives us a bigger hitting area on the image */
-	float:left;
-	z-index:100;
-	margin-left:-625px;
-	background-image: url('../images/music/img_arrow-left_circle.png');
-	background-repeat:no-repeat;
-	background-position:center center;
-	/*IE Specific overrides*/
-	position/*/**/:absolute\9;
-	margin-top/*/**/:-252px\9;
-	margin-left/*/**/:25px\9;
-
-}
-
-#sayso-starbar #starbar-player-console .sb_mission_carousel .arrow_right {
-	width:37px;
-	height:340px;/* The extra height gives us a bigger hitting area on the image */
-	float:right;
-	z-index:100;
-	background-image: url('../images/music/img_arrow-right_circle.png');
-	background-repeat:no-repeat;
-	background-position:center center;
-	margin-top:-252px;
-	margin-right:11px;
-	/*IE Specific overrides*/
-	position/*/**/:absolute\9;
-	margin-left/*/**/:610px\9;
-
-}
-
-#sayso-starbar .sb_number, .sb_number {
-padding: 2px 5px 2px 4px;
-background-color: purple;
-color: white !important;
-font-weight:bold;
-margin: 2px;
--webkit-border-radius: 3px;
--moz-border-radius: 3px;
-border-radius: 3px;
-}
-/* /MISSION RULES */
 /* Keep this at end of file. It's used for testing if CSS is loaded. */
 
 #sayso-starbar ._sayso_starbar_css_loaded {

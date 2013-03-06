@@ -156,7 +156,7 @@
 			center top,
 			rgb(51,51,51) 22%,
 			rgb(36,36,36) 61%);
-    border-bottom: 1px solid #5E1682;
+    border-bottom: 1px solid #0b2f76;
     border-top: 1px solid #4d3739;
     display: block;
     height: 8px;
@@ -222,12 +222,12 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(79,21,102)),
-	color-stop(0.61, rgb(28,5,47)));
+	color-stop(0.22, rgb(14,57,103)),
+	color-stop(0.61, rgb(10,3,61)));
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(79,21,102) 22%,
-			rgb(28,5,47) 61%);
+			rgb(14,57,103) 22%,
+			rgb(10,3,61) 61%);
 	background-color: #0b2f76;
 }
 
@@ -237,12 +237,12 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(79,21,102)),
-	color-stop(0.61, rgb(28,5,47)));
+	color-stop(0.22, rgb(14,57,103)),
+	color-stop(0.61, rgb(10,3,61)));
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(79,21,102) 22%,
-			rgb(28,5,47) 61%);
+			rgb(14,57,103) 22%,
+			rgb(10,3,61) 61%);
 	background-color: #0b2f76;
 }
 
@@ -254,12 +254,12 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(196,118,12)),
-	color-stop(0.61, rgb(253,231,113))) !important;
+	color-stop(0.22, rgb(14,57,103)),
+	color-stop(0.61, rgb(10,3,61)));
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(196,118,12) 22%,
-			rgb(253,231,113) 61%) !important;
+			rgb(14,57,103) 22%,
+			rgb(10,3,61) 61%) !important;
 	background-color: #fcd149;
 }
 
@@ -275,12 +275,12 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(195,220,116)),
-	color-stop(0.61, rgb(139,170,43)));
+	color-stop(0.22, rgb(14,57,103)),
+	color-stop(0.61, rgb(10,3,61)));
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(195,220,116) 22%,
-			rgb(139,170,43) 61%);
+			rgb(14,57,103) 22%,
+			rgb(10,3,61) 61%);
 	background-color: #0b2f76;
 }
 /* change this gradient */
@@ -292,12 +292,12 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(11,44,111)),
-	color-stop(0.61, rgb(2,9,22)));
+	color-stop(0.22, rgb(14,57,103)),
+	color-stop(0.61, rgb(10,3,61)));
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(11,44,111) 22%,
-			rgb(2,9,22) 61%);
+			rgb(14,57,103) 22%,
+			rgb(10,3,61) 61%);
 	background-color: #0b2f76;
 }
 
@@ -598,11 +598,11 @@
 #sayso-starbar #starbar-player-console #starbar-type .sb_content .sb_popBox a,
 #sayso-starbar #sb_popBox_user-profile .sb_currency_balance,
 #sayso-starbar .sb_rewardItem .sb_rewardHeader{
-	color: #5e1682;
+	color: #0b2f76;
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-tabs-selected a{
-	color: #5e1682 !important;
+	color: #0b2f76 !important;
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a{
@@ -612,7 +612,7 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li{
-	border-left: 1px solid #5e1682;
+	border-left: 1px solid #0b2f76;
 }
 
 /* other special formatting styles */
@@ -818,7 +818,7 @@
 }
 
 #sayso-starbar #sb_popBox_spotlight.sb_popBox .sb_popBoxInner .sb_popContent h2{
-	color: #5e1682;
+	color: #0b2f76;
 	margin: 10px 0px 0px 0px;
 	font-size: 28px;
 	font-weight: normal;
@@ -1246,11 +1246,11 @@
 
 #sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points .sb_current-level .sb_user_level_title{
 	text-transform:  uppercase;
-	color: #5e1682;
+	color: #0b2f76;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_user-profile .sb_user-points .sb_currency_title{
-	color: #5e1682;
+	color: #0b2f76;
 }
 
 /* ABOUT SAYSO POPBOX */
@@ -1432,7 +1432,7 @@
 
 #sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 p
 {
-	color: #a92614;
+	color: #0b2f76;
 	margin-top: 10px;
 }
 
@@ -1460,7 +1460,7 @@
 {
 	margin-left:25px;
 	margin-top:15px;
-	color: #a92614;
+	color: #0b2f76;
 }
 
 #sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1 #individual_vid_title
@@ -1479,7 +1479,7 @@
 	-ms-user-select:none;
 	-khtml-user-select: none;
 	user-select:none;
-	color: #a92614;
+	color: #0b2f76;
 }
 
 #sayso-starbar-spotlight-frame .sb_tabs #sb_vid_question_phase1
@@ -1516,7 +1516,7 @@
 #sayso-starbar-spotlight-frame .sb_tabs #sb_vid_question_final .sb_final_share > div
 {
 	magin-right:2px;
-	color: #a92614;
+	color: #0b2f76;
 }
 
 #sayso-starbar-spotlight-frame .sb_tabs #sb_vid_question_final .sb_final_share .share_text
@@ -1535,7 +1535,7 @@
 
 #sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_flow .hl
 {
-	color: #a92614;
+	color: #0b2f76;
 	font-weight:bold;
 }
 
@@ -1580,7 +1580,7 @@
 
 #sayso-starbar-spotlight-frame .sb_tabs .sb_mv_questions_opts .sb_radio_text
 {
-	color:#A92614;
+	color:#0b2f76;
 	margin-left: -3px;
 	margin-right: 10px;
 	margin-top: 1px;
@@ -1738,7 +1738,7 @@
 {
 	font-size:12px;
 	font-weight:bold;
-	color: #5e1682;
+	color: #0b2f76;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_tabs{
@@ -1887,13 +1887,13 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(79,21,102)),
-	color-stop(0.61, rgb(28,5,47))) !important;
+	color-stop(0.22, rgb(14,57,103)),
+	color-stop(0.61, rgb(10,3,61)))) !important;
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(79,21,102) 22%,
-			rgb(28,5,47) 61%) !important;
-	background-color: #5e1682;
+			rgb(14,57,103) 22%,
+			rgb(10,3,61) 61%) !important;
+	background-color: #0b2f76;
 }
 
 #sayso-starbar #sb_innerOverlay .sb_rewardItem .sb_rewardBase{

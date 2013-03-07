@@ -18,15 +18,14 @@ class Game_Transaction {
 		}
 		$this->_parameters = $parameters;
 	}
-	public function execute() {
+	protected function _getBDBalances() {
 		$currencies = array();
 		if( $this->_gamer ) {
-			foreach( $this->_gamer->_currencies as $currency )
-				if( $currency->currency_type) {
-					$asset = $this->_economy->getCurrencyByBDId($currency->id);
-					$currencies[$asset['id']]['previous'] = $currency->previous_balance;
-					$currencies[$asset['id']]['current'] = $currency->current_balance;
-				}
+			foreach( $this->_gamer->_currencies as $currency ) {
+				$asset = $this->_economy->getCurrencyByBDId($currency->id);
+				$currencies[$asset['id']]['previous'] = $currency->previous_balance;
+				$currencies[$asset['id']]['current'] = $currency->current_balance;
+			}
 			$current_level_bd = $this->_gamer->_levels->count();
 			if( $this->_gamer->justLeveledUp() )
 				$previous_level_bd = $current_level_bd - 1;
@@ -35,22 +34,30 @@ class Game_Transaction {
 			$currencies[$this->_economy->_level_asset_id] = array( 'current' => $current_level_bd, 'previous' => $previous_level_bd );
 		}
 		
-		$sql = 'SELECT * FROM game_transaction_type_line WHERE game_transaction_type_id = ?';
-		$transaction_type_lines = Db_Pdo::fetchAll($sql, $this->_transaction_type['id']);
-		$sql = 'INSERT INTO game_transaction (game_transaction_type_id, user_id, survey_id) VALUES (?, ?, ?)';
-		Db_Pdo::execute($sql, $this->_transaction_type['id'], $this->_user_id, $this->_survey_id );
-		$transaction_id = Db_Pdo::getPdo()->lastInsertId();
+		return $currencies;
+	}
+	protected function _saveLines( $transaction_id, $lines, $bdBalances ) {
 		$sql = 'INSERT INTO game_transaction_line (game_transaction_id, game_asset_id, amount, previous_balance_bd, current_balance_bd) VALUES (?, ?, ?, ?, ?)';
-		foreach( $transaction_type_lines as $transaction_type_line ) {
-			if( array_key_exists($transaction_type_line['game_asset_id'], $currencies) ) {
-				$previous_balance_bd = $currencies[$transaction_type_line['game_asset_id']]['previous'];
-				$current_balance_bd = $currencies[$transaction_type_line['game_asset_id']]['current'];
+		foreach( $lines as $line ) {
+			if( array_key_exists($line['game_asset_id'], $bdBalances) ) {
+				$previous_balance_bd = $bdBalances[$line['game_asset_id']]['previous'];
+				$current_balance_bd = $bdBalances[$line['game_asset_id']]['current'];
 			} else {
 				$previous_balance_bd = null;
 				$current_balance_bd = null;
 			}
-			Db_Pdo::execute($sql, $transaction_id, $transaction_type_line['game_asset_id'], $transaction_type_line['amount'], $previous_balance_bd, $current_balance_bd );
+			Db_Pdo::execute($sql, $transaction_id, $line['game_asset_id'], $line['amount'], $previous_balance_bd, $current_balance_bd );
 		}
+		
+	}
+	public function execute() {
+		$bdBalances = $this->_getBDBalances();
+		$sql = 'SELECT * FROM game_transaction_type_line WHERE game_transaction_type_id = ?';
+		$lines = Db_Pdo::fetchAll($sql, $this->_transaction_type['id']);
+		$sql = 'INSERT INTO game_transaction (game_transaction_type_id, user_id, survey_id) VALUES (?, ?, ?)';
+		Db_Pdo::execute($sql, $this->_transaction_type['id'], $this->_user_id, $this->_survey_id );
+		$transaction_id = Db_Pdo::getPdo()->lastInsertId();
+		$this->_saveLines($transaction_id, $lines, $bdBalances);
 	}
 	static public function run($user_id, $economy_id, $short_name, $parameters = array()) {
 		try {
@@ -58,6 +65,8 @@ class Game_Transaction {
 			if( !$economy->imported )
 				return;
 			$transaction_type = $economy->_transaction_types[$short_name];
+            if( !$transaction_type )
+                throw new Exception('Unknown transaction_type ' . $short_name . ' in economy ' . $economy_id);
 			$transactionClass = 'Game_Transaction' . ($transaction_type['class'] ? '_' . $transaction_type['class'] : '');
 			$transaction = new $transactionClass($transaction_type, $user_id, $parameters);
 			$transaction->execute();
@@ -73,7 +82,7 @@ class Game_Transaction {
 		$level = $res[0]['balance'];
 		
 		$sql = 'SELECT credits - debits as balance FROM game_balance WHERE user_id = ? AND game_asset_id = ?';
-		$res = Db_Pdo::fetchAll($sql, $user_id, $economy->experience_currency_id);
+		$res = Db_Pdo::fetchAll($sql, $user_id, $economy->getCurrencyIdByTypeId(Economy::CURRENCY_EXPERIENCE));
 		$experience = $res[0]['balance'];
 		
 		if( array_key_exists('gamer', $parameters) )
@@ -92,30 +101,9 @@ class Game_Transaction {
 		
 		$bigDoorEconomyConfig = APPLICATION_PATH . '/../../library/Gaming/BigDoor/config/' . $economyName . '.xml';
 		if (!is_readable($bigDoorEconomyConfig)) {
-			DebugBreak();
 			throw new Exception('BigDoor configuration/economy (' . $economyName . ') file missing from Gaming/BigDoor/config. Unable to create economy.');
 		}
 		$economyMap = simplexml_load_file($bigDoorEconomyConfig);
-		$currency_ids = array();
-		$bd_currency_ids = array();
-		foreach($economyMap->currencies->currency as $currency) {
-			if( $currency->currency_type ) {
-				$sql = "INSERT INTO game_asset (economy_id, type, name, bdid) VALUES (?, 'currency', ?, ?)";
-				Db_Pdo::execute($sql, $economy_id, $currency->name, $currency->id );
-				$currency_id = Db_Pdo::getPdo()->lastInsertId();
-				$currency_ids[$currency->currency_type.''] = $currency_id;
-				$bd_currency_ids[$currency->currency_type.''] = $currency->id;
-			}
-		}
-		foreach($economyMap->actions->action as $action) 
-			if( $action->experience_points ) {
-				$sql = "INSERT INTO game_transaction_type (economy_id, short_name, class, name) VALUES (?, ?, '', '')";
-				Db_Pdo::execute($sql, $economy_id, $action->name);
-				$transaction_type_id = Db_Pdo::getPdo()->lastInsertId();
-				$sql = "INSERT INTO game_transaction_type_line (game_transaction_type_id, game_asset_id, amount) VALUES (?, ?, ?)";
-				Db_Pdo::execute($sql, $transaction_type_id, $currency_ids['experience'], $action->experience_points);
-				Db_Pdo::execute($sql, $transaction_type_id, $currency_ids['redeemable'], $action->redeemable_points);
-			}
 
 		// Import Goods Store	
 		$goodsData = null;
@@ -138,9 +126,13 @@ class Game_Transaction {
 			$cache->save($goodsData);
 		}
 		
+		$sql = "SELECT * FROM game_currency_view WHERE economy_id = ? AND game_currency_type_id = ?";
+		$res = Db_Pdo::fetchAll($sql, $economy_id, Economy::CURRENCY_REDEEMABLE);
+		$redeemable_bdid = $res[0]['bdid'];
+		
 		foreach( $goodsData as $goodData )  {
 			$good = new Gaming_BigDoor_Good();
-			$good->setPrimaryCurrencyId($bd_currency_ids['redeemable']);
+			$good->setPrimaryCurrencyId($redeemable_bdid);
 			$good->build($goodData);
 			if( $good->isForCurrentEnvironment() ) {
 				$goods[] = $good;
@@ -189,8 +181,6 @@ class Game_Transaction {
 			$ord++;
 		}
 		
-		$economy->redeemable_currency_id = $currency_ids['redeemable'];
-		$economy->experience_currency_id = $currency_ids['experience'];
 		$economy->imported = new Zend_Db_Expr('now()');
 		$economy->save();
 		
@@ -201,7 +191,7 @@ class Game_Transaction {
 		try {
 			if( $gamer->imported ) {
 				$ggood = Economy::getForId($gamer->starbar_id)->getPurchasableByBDId($good->id);
-				Game_Transaction::run($gamer->user_id, $gamer->starbar_id, 'PURCHASE', array('asset_id' => $ggood['id'], 'quantity' => $quantity));
+				Game_Transaction::run($gamer->user_id, $gamer->starbar_id, 'PURCHASE', array('asset_id' => $ggood['id'], 'quantity' => $quantity, 'gamer' => $gamer));
 			}
 		} catch ( Exception $e ) {
 			self::_handleException( $e );

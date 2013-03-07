@@ -73,8 +73,8 @@ abstract class Game_Starbar extends Game_Abstract {
 
 	public function completeSurvey (Survey $survey) {
 		if( $survey->custom_reward_experience && $survey->custom_reward_redeemable ) {
-			$this->submitAction('ADHOC_EXPERIENCEPOINTS', $survey->custom_reward_experience);
-			$this->submitAction('ADHOC_REDEEMABLEPOINTS', $survey->custom_reward_redeemable);
+			$this->submitAction('ADHOC_EXPERIENCEPOINTS', $survey->custom_reward_experience, $survey->id);
+			$this->submitAction('ADHOC_REDEEMABLEPOINTS', $survey->custom_reward_redeemable, $survey->id);
 		} else if (in_array($survey->type, array('survey', 'poll', 'quiz', 'trailer')) && in_array($survey->reward_category, array('standard', 'premium', 'profile'))) {
 			// POLL_STANDARD, SURVEY_PROFILE, QUIZ_PREMIUM, etc.
 			$this->submitAction(strtoupper($survey->type.'_'.$survey->reward_category), 0, $survey->id);
@@ -214,6 +214,8 @@ abstract class Game_Starbar extends Game_Abstract {
 					$parameters = array('gamer'=>$gamer);
 					if( $sharedId )
 						$parameters['survey_id'] = $sharedId;
+                    if( $customAmount )
+                        $parameters['custom_amount'] = $customAmount;
 						
 					Game_Transaction::run($gamer->user_id, $gamer->starbar_id, $actionId, $parameters);
 				}

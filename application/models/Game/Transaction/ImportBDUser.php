@@ -2,11 +2,10 @@
 class Game_Transaction_ImportBDUser extends Game_Transaction {
 	public function execute() {
 		$currencies = array();
-		foreach( $this->_gamer->_currencies as $currency )
-			if( $currency->currency_type) {
-				$asset = $this->_economy->getCurrencyByBDId($currency->id);
-				$currencies[$asset['id']] = $currency->current_balance;
-			}
+		foreach( $this->_gamer->_currencies as $currency ) {
+			$asset = $this->_economy->getCurrencyByBDId($currency->id);
+			$currencies[$asset['id']] = $currency->current_balance;
+		}
 		$nonTokenPresent = false;
 		$goods = array();
 		foreach( $this->_gamer->_goods as $bdgood ) {

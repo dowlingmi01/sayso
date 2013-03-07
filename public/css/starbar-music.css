@@ -164,6 +164,15 @@
     text-indent: -9999px;
 }
 
+#sayso-starbar #starbar-player-console #starbar-nav ul li span.sb_mission_available span.sb_mission_button{
+  display: block;
+  width:95px;
+  height:37px;
+  margin: 0;
+  text-indent: -9999px;
+  background: url('../images/music/mission_button_banner.png') top right no-repeat;
+}
+
 #sayso-starbar #starbar-player-console #starbar-nav ul li{
 	box-shadow: 0;
 }
@@ -198,22 +207,22 @@
 #sayso-starbar #starbar-player-console #starbar-nav ul li#nav_polls span.sb_nav_element{
 	background-image: url('../images/music/nav_polls.png');
 }
-/* special color classes */
+/* change this gradient */
 #sayso-starbar #starbar-player-console .sb_theme_navOnGradient{
 	background-image: -webkit-gradient(
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(196,118,12)),
-	color-stop(0.61, rgb(253,231,113))) !important;
+	color-stop(0.22, rgb(12,47,117)),
+	color-stop(0.61, rgb(1,3,8))) !important;
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(196,118,12) 22%,
-			rgb(253,231,113) 61%) !important;
+			rgb(12,47,117) 22%,
+			rgb(1,3,8) 61%) !important;
 	background-color: #fcd149;
 }
 
-/* change this gradient */
+/* NAV COLOR GRADIENT - CHANGE */
 #sayso-starbar #starbar-player-console .sb_theme_bgGradient,
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value,
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value-fading{
@@ -237,12 +246,12 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(14,57,103)),
-	color-stop(0.61, rgb(10,3,61)));
+	color-stop(0.22, rgb(15,60,150)),
+	color-stop(0.61, rgb(4,22,55)));
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(14,57,103) 22%,
-			rgb(10,3,61) 61%);
+			rgb(15,60,150) 22%,
+			rgb(4,22,55) 61%);
 	background-color: #0b2f76;
 }
 
@@ -254,12 +263,12 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(14,57,103)),
-	color-stop(0.61, rgb(10,3,61)));
+	color-stop(0.22, rgb(196,118,12)),
+	color-stop(0.61, rgb(253,231,113))) !important;
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(14,57,103) 22%,
-			rgb(10,3,61) 61%) !important;
+			rgb(196,118,12) 22%,
+			rgb(253,231,113) 61%) !important;
 	background-color: #fcd149;
 }
 
@@ -275,12 +284,12 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(14,57,103)),
-	color-stop(0.61, rgb(10,3,61)));
+	color-stop(0.22, rgb(15,60,150)),
+	color-stop(0.61, rgb(4,22,55)));
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(14,57,103) 22%,
-			rgb(10,3,61) 61%);
+			rgb(15,60,150) 22%,
+			rgb(4,22,55) 61%);
 	background-color: #0b2f76;
 }
 /* change this gradient */
@@ -292,12 +301,12 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(14,57,103)),
-	color-stop(0.61, rgb(10,3,61)));
+	color-stop(0.22, rgb(15,60,150)),
+	color-stop(0.61, rgb(4,22,55)));
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(14,57,103) 22%,
-			rgb(10,3,61) 61%);
+			rgb(15,60,150) 22%,
+			rgb(4,22,55) 61%);
 	background-color: #0b2f76;
 }
 
@@ -306,12 +315,12 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(63,64,65)),
-	color-stop(0.61, rgb(28,29,28)));
+	color-stop(0.22, rgb(63,63,63)),
+	color-stop(0.61, rgb(28,28,28)));
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(63,64,65) 22%,
-			rgb(28,29,28) 61%);
+			rgb(63,63,63) 22%,
+			rgb(28,28,28) 61%);
 	background-color: #1c1d1c;
 }
 
@@ -333,7 +342,7 @@
 
 
 #sayso-starbar #starbar-player-console .sb_theme_button_flat{
-	background-color: #627484;
+	background-color: #666;
 	padding: 3px 5px;
 	border-radius: 6px;
 	-moz-border-radius: 6px;
@@ -412,8 +421,8 @@
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_popBoxInner .sb_popContent{
-	width: 515px;
-	height: 292px;
+	width: 535px;
+	height: 343px;
 	padding: 0 !important;
 	margin: 0 !important;
 }
@@ -441,10 +450,14 @@
 	position: relative;
 }
 
-#sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_header{
+ #starbar-promo .sb_slide .sb_header{
 	background: none;
 	margin: 0;
 	padding: 0;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox p.sb_tabHeader {
+	width/*/**/:670px\9;
 }
 
 #sayso-starbar #starbar-player-console #starbar-promo .sb_slide .sb_promo_details{
@@ -589,6 +602,7 @@
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-disabled a,
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li.sb_ui-state-processing a,
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav li a:hover,
+
 #sayso-starbar a, #sayso-starbar a:link,
 #sayso-starbar a:active,
 #sayso-starbar a:visited,
@@ -659,7 +673,7 @@
 /* START */
 #sayso-starbar #starbar-player-console .sb_userLevel_next p{
 	position:relative;
-	top:60px;
+	top:80px;
 	color:#333;
 	z-index:-5;
 	font-size: 11px;
@@ -670,7 +684,7 @@
 
 #sayso-starbar #starbar-player-console .sb_userLevel_current p{
 	position:relative;
-	top:79px;
+	top:105px;
 	color:#333;
 	z-index:-5;
 	font-size: 11px;
@@ -690,7 +704,7 @@
 	display:inline;
 }
 /* END */
-#sayso-starbar #starbar-player-console .sb_imgCinebucks{
+#sayso-starbar #starbar-player-console .sb_imgRedeemable{
 	background-image: url('../images/music/img_cinebucks.png');
 	width: 30px;
 	height: 30px;
@@ -1040,12 +1054,13 @@
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle{
 	position: relative;
 	display: block;
-	height: 116px;
+	height: 136px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_user_level_icons_container{
 	margin: 0px 25px;
-	height:105px;
+	width: 520px;
+	height:125px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_cycle .sb_userLevel_nav{
@@ -1090,11 +1105,11 @@
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_earned,
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_next{
-	width: 160px;
+	width: 130px;
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevel_current{
-	width: 183px;
+	width: 130px;
 	height: 139px; /* fixed height to allow scrollPane to have correct height */
 }
 
@@ -1103,7 +1118,7 @@
 }
 
 #sayso-starbar #sb_popBox_user-level .sb_userLevelImg{
-	height: 85px;
+	height: 95px;
 	width: 100%;
 	display: block;
 	background-repeat: no-repeat;
@@ -1306,13 +1321,13 @@
 	background-position: 0px 10px;
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_chops,
-#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_chops{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_experience,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_experience{
 	background-image: url('../images/music/img_star_lg.png');
 }
 
-#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_cinebucks,
-#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_cinebucks{
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_redeemable,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_redeemable{
 	background-image: url('../images/music/img_cinebucks_lg.png');
 }
 
@@ -1432,7 +1447,7 @@
 
 #sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 p
 {
-	color: #0b2f76;
+	color: #a92614;
 	margin-top: 10px;
 }
 
@@ -1702,6 +1717,42 @@
 
 	/* First and Last Images from the carousel group */
 }
+
+#sayso-starbar .sb_score_tabs,
+.sb_score_tabs  {
+	float:right;
+	text-align:right;
+	font-size:13px;
+	color: #0b2f76;
+	margin-top: 4px;
+	font-family:arial,sans-serif;
+}
+
+#sayso-starbar .sb_score_tabs ul li:first-child,
+.sb_score_tabs ul li:first-child{
+	border: none;
+}
+
+#sayso-starbar .sb_score_tabs ul li,
+.sb_score_tabs ul li {
+	display: inline;
+	border-left: 1px solid #0b2f76;
+	font-weight:bold;
+	padding-left: 7px;
+	margin-left: 5px;
+}
+
+.sb_score_tabs ul {
+	margin:0 10px 0 0;
+}
+
+.sb_score_tabs a,
+.sb_score_tabs a:hover,
+.sb_score_tabs a:visited
+{
+	color:#0b2f76;
+	text-decoration:none;
+}
 #sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb img
 {
 	width:125px;
@@ -1739,6 +1790,7 @@
 	font-size:12px;
 	font-weight:bold;
 	color: #0b2f76;
+	;
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_tabs{
@@ -1887,12 +1939,12 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(14,57,103)),
-	color-stop(0.61, rgb(10,3,61)))) !important;
+	color-stop(0.22, rgb(15,60,150)),
+	color-stop(0.61, rgb(4,22,55))) !important;
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(14,57,103) 22%,
-			rgb(10,3,61) 61%) !important;
+			rgb(15,60,150) 22%,
+			rgb(4,22,55) 61%) !important;
 	background-color: #0b2f76;
 }
 
@@ -1925,16 +1977,16 @@
 	width: 100%;
 }
 
-#sayso-starbar #starbar-player-console .sb_rewardItem .sb_user-points-box .sb_imgCinebucks{
+#sayso-starbar #starbar-player-console .sb_rewardItem .sb_user-points-box .sb_imgRedeemable{
 	top: 7px;
 	left: -3px;
 }
 
-#sayso-starbar .sb_rewardItem .sb_reward_step .sb_user-points-box .sb_imgCinebucks{
+#sayso-starbar .sb_rewardItem .sb_reward_step .sb_user-points-box .sb_imgRedeemable{
 	left: 10px !important;
 }
 
-#sayso-starbar .sb_rewardItem #sb_reward_step2 .sb_user-points-box .sb_imgCinebucks{
+#sayso-starbar .sb_rewardItem #sb_reward_step2 .sb_user-points-box .sb_imgRedeemable{
 	left: 0px !important;
 	top: 0px;
 }
@@ -2192,11 +2244,12 @@
 #sayso-starbar #sb_popBox_polls #sayso-starbar-ajax-content {margin-bottom:20px;}
 
 /* Tooltips */
-.tooltip {
+#sayso-starbar .tooltip,
+.sayso-tooltip {
 	display:none;
 	position:absolute;
 	border:1px solid #333;
-	background-color: #DC1A22;
+	background-color: #0b2f76;
 	padding:10px;
 	color:#fff;
 	font-size:12px;
@@ -2205,18 +2258,113 @@
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border: 2px solid #806A63;
-
 }
 
-p.sb_reminder {
+#sayso-starbar p.sb_reminder {
 	margin-top: 0 !important;
 }
 
-p.sb_promo_gettokens {
+#sayso-starbar p.sb_promo_gettokens {
 	margin-bottom:0 !important;
 }
 
+/* MISSION RULES */
+/* mission */
 
+#sayso-starbar #sb_popBox_mission.sb_popBox{
+	left: 0px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox .sb_popBoxInner .sb_popContent{
+	/*width: 656px;
+	height: 582px;*/
+	width: 674px;
+	height: 578px;
+}
+#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox .sb_popBoxInner{
+	padding: 10px;
+}
+#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox .sb_popBoxInner .sb_popContent {
+	padding: 0px !important;
+}
+#sayso-starbar #sb_popBox_mission.sb_triangle-border:before{
+	left: 230px;
+}
+#sayso-starbar #sb_popBox_mission.sb_triangle-border:after{
+	left: 231px;
+}
+#sayso-starbar #sb_popBox_mission .sb_triangle-solid:after{
+	left: 227px;
+}
+
+/* Default settings for all mission popboxes */
+#sayso-starbar #starbar-player-console #sb_popBox_mission .sb_mission_carousel li{
+	float:left;
+	margin: 20px 0 0 50px;
+	display:none;
+	height:232px;
+}
+
+/* Make the first slide visible */
+#sayso-starbar #starbar-player-console #sb_popBox_mission  .sb_mission_carousel li#slide1{
+	display:block;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_mission li img {
+	margin-bottom:20px;
+}
+
+#sayso-starbar #starbar-player-console .sb_mission_carousel ul {
+	list-style-type:none;
+}
+
+#sayso-starbar #starbar-player-console .sb_mission_carousel ul li p{
+	width:606px;
+}
+
+#sayso-starbar #starbar-player-console .sb_mission_carousel .arrow_left {
+	width:37px;
+	height:340px;/* The extra height gives us a bigger hitting area on the image */
+	float:left;
+	z-index:100;
+	margin-left:-625px;
+	background-image: url('../images/music/img_arrow-left_circle.png');
+	background-repeat:no-repeat;
+	background-position:center center;
+	/*IE Specific overrides*/
+	position/*/**/:absolute\9;
+	margin-top/*/**/:-252px\9;
+	margin-left/*/**/:25px\9;
+
+}
+
+#sayso-starbar #starbar-player-console .sb_mission_carousel .arrow_right {
+	width:37px;
+	height:340px;/* The extra height gives us a bigger hitting area on the image */
+	float:right;
+	z-index:100;
+	background-image: url('../images/music/img_arrow-right_circle.png');
+	background-repeat:no-repeat;
+	background-position:center center;
+	margin-top:-252px;
+	margin-right:11px;
+	/*IE Specific overrides*/
+	position/*/**/:absolute\9;
+	margin-left/*/**/:610px\9;
+
+}
+
+#sayso-starbar .sb_number, .sb_number {
+padding: 2px 5px 2px 4px;
+background-color: purple;
+color: white !important;
+font-weight:bold;
+margin: 2px;
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px;
+}
+/* /MISSION RULES */
 /* Keep this at end of file. It's used for testing if CSS is loaded. */
 
 #sayso-starbar ._sayso_starbar_css_loaded {

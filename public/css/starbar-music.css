@@ -255,7 +255,7 @@
 	background-color: #0b2f76;
 }
 
-
+/* progress bar */
 
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value,
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value-fading{
@@ -263,12 +263,12 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(196,118,12)),
+	color-stop(0.22, rgb(88,88,88)),
 	color-stop(0.61, rgb(253,231,113))) !important;
 	background-image: -moz-linear-gradient(
 			center top,
-			rgb(196,118,12) 22%,
-			rgb(253,231,113) 61%) !important;
+			rgb(88,88,88) 22%,
+			rgb(200,200,200) 61%) !important;
 	background-color: #fcd149;
 }
 
@@ -635,7 +635,7 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_notesEarned{
-	background-image: url('../images/music/img_cinebucks_sm.png');
+	background-image: url('../images/music/img_payso_sm.png');
 	background-repeat: no-repeat;
 	background-position: 2px 2px;
 	padding: 3px 5px 3px 30px;
@@ -646,7 +646,7 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_xpEarned{
-	background-image: url('../images/music/img_star_sm.png');
+	background-image: url('../images/music/img_sayso_sm.png');
 	background-repeat: no-repeat;
 	background-position: 2px 3px;
 	padding: 3px 7px 3px 30px;
@@ -659,7 +659,7 @@
 }
 
 #sayso-starbar #starbar-player-console .sb_xpRequired{
-	background-image: url('../images/music/img_star_sm.png');
+	background-image: url('../images/music/img_sayso_sm.png');
 	background-repeat: no-repeat;
 	background-position: 2px 3px;
 	height: 20px;
@@ -705,7 +705,7 @@
 }
 /* END */
 #sayso-starbar #starbar-player-console .sb_imgRedeemable{
-	background-image: url('../images/music/img_cinebucks.png');
+	background-image: url('../images/music/img_payso.png');
 	width: 30px;
 	height: 30px;
 	display: inline-block;
@@ -918,7 +918,7 @@
 	z-index: 1000;
 	top: -5px;
 	left: 0;
-	background-image: url('../images/music/img_star.png');
+	background-image: url('../images/music/img_sayso.png');
 	background-repeat: no-repeat;
 	width: 27px;
 	height: 27px;
@@ -968,7 +968,7 @@
 #sayso-starbar #starbar-player-console span.sb_mini-redeemable-currency-reward,
 #sayso-starbar-embed span.sb_mini-redeemable-currency-reward,
 #sayso-starbar #sb_popBox_spotlight ul.sb_listDeals li span.sb_mini-redeemable-currency-reward{
-	background-image: url('../images/music/img_cinebucks_tn.png');
+	background-image: url('../images/music/img_payso_tn.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
 	font-size: 13px;
@@ -1323,12 +1323,12 @@
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_experience,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_experience{
-	background-image: url('../images/music/img_star_lg.png');
+	background-image: url('../images/music/img_sayso_lg.png');
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_redeemable,
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_lineList li.sb_img_redeemable{
-	background-image: url('../images/music/img_cinebucks_lg.png');
+	background-image: url('../images/music/img_payso_lg.png');
 }
 
 #sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_lineList li.sb_img_polls,

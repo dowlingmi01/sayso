@@ -4,85 +4,41 @@ class Api3_Authentication
 {
 	/**
 	 *
-	 * @var Api3_Authentication
+	 * @var bool
 	 */
-	private static $_instance;
+	protected $_api_auth  = FALSE;
 
 	/**
 	 *
 	 * @var bool
 	 */
-	private $_api_auth  = FALSE;
-
-	/**
-	 *
-	 * @var bool
-	 */
-	private $_action_auth  = FALSE;
+	protected $_action_auth  = FALSE;
 
 /////////////////////////////////////////////////
 
-	/**checks for api user and key then
-	 * routes the api authentication calls
+	/**This needs to be developed
+	 * Default placeholder for now
+	 *
+	 * overload this in the specific implementation
+	 *
+	 * @return boolean
 	 */
-	public function authenticate($request, $error)
+	public function apiAuthentication()
 	{
-		//check for api_user and api_key
-		if (isset($request->api_user) && isset($request->api_key))
-		{
-			switch ($request->user_type) {
-				case "admin" :
-					$this->_apiAdminUserAuthentication();
-					break;
-				case "program" :
-					$this->_apiProgramUserAuthentication();
-					break;
-				//no known user type. reset all authentications
-				default :
-					$this->_action_auth = FALSE;
-					$this->_api_auth = FALSE;
-					$error->newError("auth_invalid_user_type");
-			}
-		} else {
-			$error->newError("missing_user_credentials");
-		}
+		$this->_api_auth = FALSE;
 	}
 
 	/**This needs to be developed
 	 * Default placeholder for now
 	 *
-	 * @return boolean
-	 */
-	private function _apiAdminUserAuthentication()
-	{
-		$this->_api_auth = TRUE; //default placeholder
-		//$this->_api_auth = FALSE; //default placeholder
-		//TODO: authenticate for admin access
-	}
-
-	/**This needs to be developed
-	 * Default placeholder for now
-	 *
-	 * @return boolean
-	 */
-	private function _apiProgramUserAuthentication()
-	{
-		$this->_api_auth = TRUE; //default placeholder
-		//$this->_api_auth = FALSE; //default placeholder
-		//TODO: authenticate for program access
-	}
-
-	/**This needs to be developed
-	 * Default placeholder for now
+	 * overload this in the specific implementation
 	 *
 	 * @return boolean
 	 */
 	public function actionAuthentication($action)
 	{
-		$this->_action_auth = TRUE; //default placeholder
-		//$this->_action_auth = FALSE; //default placeholder
+		$this->_action_auth = FALSE;
 		return $this->_action_auth;
-		//TODO: authenticate for action access
 	}
 
 	/**returns the private property value of the requested
@@ -107,5 +63,28 @@ class Api3_Authentication
 	public function resetActionAuth()
 	{
 		$this->_action_auth = FALSE;
+	}
+
+	/**returns an instance of the authentication class as
+	 * determined by the submitted user type
+	 *
+	 * this must be called from the $Api3_Api context so that
+	 * $this-> works as intended.
+	 *
+	 * @return \className|boolean
+	 */
+	public function getAuthentication()
+	{
+		$user_type = $this->getUserType();
+		//check if file exists
+		$className = $this->module_name . "Authentication_" . ucfirst($user_type) . "Controller";
+		if (class_exists($className))
+		{
+			//load an instance of it
+			return new $className;
+		} else {
+			$this->error->newError("auth_load_fail");
+			return FALSE;
+		}
 	}
 }

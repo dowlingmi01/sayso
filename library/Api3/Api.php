@@ -15,13 +15,13 @@ class Api3_Api
 	 *
 	 * @var string
 	 */
-	private $module_dir = "api3";
+	private $_module_dir = "api3";
 
 	/**sets the controller class prefix for this module
 	 *
 	 * @var string
 	 */
-	private $module_name = "Api3_";
+	public $module_name = "Api3_";
 
 	/**the error object
 	 *
@@ -70,9 +70,9 @@ class Api3_Api
 		$this->response = new Api3_Response($this->request, $this->error);
 
 		//initialize Auth object
-		$this->auth = new Api3_Authentication();
+		$this->auth = Api3_Authentication::getAuthentication();
 		//authenticate api access
-		$this->auth->authenticate($this->request, $this->error);
+		$this->auth->apiAuthentication($this->request, $this->error);
 
 	}
 
@@ -132,50 +132,8 @@ class Api3_Api
 	 */
 	public function getResponse()
 	{
-		//check for set up errors before processing anything
-		if ($this->error->checkForErrors() === FALSE)
-		{
-			//check api auth
-			if ($this->auth->getAuthStatus() === TRUE)
-			{
-				//make sure our request object is strucutured properly
-				if (isset($this->request->requests))
-				{
-					//iterate through each request for individual processing and error handling
-					foreach ($this->request->requests as $key=>$value)
-					{
-						//authenticate action access
-						$this->auth->actionAuthentication($value->action);
-						if ($this->auth->getAuthStatus(TRUE) === TRUE) //action auth passed
-						{
-							//send to the proper model for processing
-							$logicResponse = $this->_callAction($value, $key);
+		$this->_processResponse();
 
-							//check response from model for an error code
-							if (isset($logicResponse))
-							{
-								//deal with logic response
-								$this->response->responses->$key = $logicResponse;
-							} elseif ($this->error->checkForErrors() === TRUE) {
-								//do nothing
-								//TODO: possibly find a better way to do this
-							}else { //catch all for unknown errors
-								$this->error->newError("error_unknown", $key);
-								//TODO: log for research
-							}
-						} else { //action auth failed
-							$this->error->newError("auth_failed_action", $key);
-						}
-					}
-				} else { //request is not properly structured
-					$this->error->newError("missing_params_request");
-				}
-			} else { //api auth failed
-				//prepare error on api authentication
-				$this->error->newError("auth_failed_api");
-			}
-		}
-		
 		//process errors before returning anything.
 		if ($this->error->checkForErrors() === TRUE)
 		{
@@ -189,44 +147,87 @@ class Api3_Api
 		return $formattedResponse;
 	}
 
+	/**processes the response and filter off some potential errors
+	 *
+	 * @return void()
+	 */
+	private function _processResponse()
+	{
+		//check for set up errors before processing
+		if ($this->error->checkForErrors() === TRUE)
+			return;
+
+		//check api auth
+		if ($this->auth->getAuthStatus() !== TRUE)
+			return $this->error->newError("auth_failed_api");
+
+		//make sure our request object is strucutured properly
+		if (!isset($this->request->requests))
+			return $this->error->newError("missing_params_request");
+
+		//iterate through each request for individual processing and error handling
+		foreach ($this->request->requests as $key=>$value)
+		{
+			//authenticate action access
+			$this->auth->actionAuthentication($value->action);
+			if ($this->auth->getAuthStatus(TRUE) !== TRUE)
+				return $this->error->newError("auth_failed_action", $key);
+
+			//send to the proper model for processing
+			$logicResponse = $this->_callAction($value, $key);
+
+			//check response from model for an error code
+			if (isset($logicResponse) && $logicResponse instanceof stdClass)
+			{
+				//deal with logic response
+				$this->response->responses->$key = $logicResponse;
+			} elseif (isset($logicResponse) && is_string($logicResponse)) {
+				//deal with error
+				$this->error->newError($logicResponse, $key);
+			}else {
+				//catch all for unknown errors
+				$this->error->newError("error_unknown", $key);
+				//TODO: log for research
+			}
+		}
+	}
+
 	/**calls the requested action
 	 *
-	 * @param Api3_Request $requestObject
-	 * @return stdClas | void
+	 * @param Api3_Request $request_object
+	 * @param string $request_name
+	 * @return stdClass | void
 	 */
-	private function _callAction($requestObject, $requestName) {
+	private function _callAction($request_object, $request_name) {
 		//prepare the class name for loading
-		$actionClass = $this->module_name . ucfirst($requestObject->action_class) . "Controller";
+		$actionClass = $this->module_name . ucfirst($request_object->action_class) . "Controller";
 		//prepare the file name for loading
-		$classFileName = ucfirst($requestObject->action_class) . "Controller";
+		$classFileName = ucfirst($request_object->action_class) . "Controller";
 		//assign action name to a variable for dynamic loading
-		$actionName = $requestObject->action;
+		$actionName = $request_object->action;
 
 		//load the class file so the method can be called
 		//auto load won't work in Zend because we are calling a controller
-		$fileToLoad = APPLICATION_PATH . '/modules/' . $this->module_dir . '/controllers/' . $classFileName . '.php';
-		if (file_exists($fileToLoad))
+		$fileToLoad = APPLICATION_PATH . '/modules/' . $this->_module_dir . '/controllers/' . $classFileName . '.php';
+
+		if (!file_exists($fileToLoad))
+			return "invalid_action_class";
+
+		include_once APPLICATION_PATH . '/modules/' . $this->_module_dir . '/controllers/' . $classFileName . '.php';
+
+		//make sure the method exists and run its logic
+		if (!method_exists($actionClass, $actionName))
+			return "invalid_action";
+
+		$logicResultClass = new $actionClass();
+		$logicResult = $logicResultClass->$actionName($request_object, $request_name);
+
+		//catch errors or return logic
+		if (!$logicResult instanceof Api3_ApiError)
 		{
-			include_once APPLICATION_PATH . '/modules/' . $this->module_dir . '/controllers/' . $classFileName . '.php';
-
-			//make sure the method exists and run its logic
-			if (method_exists($actionClass, $actionName))
-			{
-				$logicResultClass = new $actionClass();
-				$logicResult = $logicResultClass->$actionName($requestObject);
-
-				//catch errors or return logic
-				if (!$logicResult instanceof Api3_ApiError)
-				{
-					return $logicResult;
-				} else {
-					$this->error->newError($logicResult->getError(), $requestName);
-				}
-			} else { //method does not exist
-				$this->error->newError("invalid_action", $requestName);
-			}
-		} else { //class does not exist
-			$this->error->newError("invalid_action_class", $requestName);
+			return $logicResult;
+		} else {
+			return $logicResult->getError();
 		}
 
 	}
@@ -237,7 +238,7 @@ class Api3_Api
 	 *
 	 * @return mixed - json | array | Api3_Response
 	 */
-	protected function _formatResponse()
+	private function _formatResponse()
 	{
 		//allows for easily adding future response types eg json-d
 		switch ($this->request->response_format)
@@ -267,7 +268,7 @@ class Api3_Api
 		$this->auth->resetActionAuth();
 	}
 
-	/**
+	/**sets the parameters to the request object
 	 *
 	 * @param array $params
 	 */
@@ -275,5 +276,14 @@ class Api3_Api
 	{
 		//TODO: check for errors first
 		$this->request = new Api3_Request(json_encode($params), $this->error);
+	}
+
+	/**accessor to user_type property
+	 *
+	 * @return string
+	 */
+	public function getUserType()
+	{
+		return $this->request->user_type;
 	}
 }

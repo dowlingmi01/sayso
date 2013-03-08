@@ -88,7 +88,7 @@ class Api3_GlobalController //extends Zend_Controller_Action
 	 * @param  \stdClass $params
 	 * @return Api3_ApiError | array
 	 */
-	public function getValidParams($filters, $validators, $params)
+	public function getValidParams($filters, $validators, $params, $request_name)
 	{
 		$validated_input = new Zend_Filter_Input($filters, $validators, (array)$params);
 
@@ -97,7 +97,7 @@ class Api3_GlobalController //extends Zend_Controller_Action
 			return $validated_input->getEscaped();
 		} else {
 			//TODO: send back specific error message from Zend_Filter_Input
-			return Api3_ApiError::newError("endpoint_parameter_validation_failed");
+			return Api3_ApiError::getNewError("endpoint_parameter_validation_failed", $request_name);
 		}
 	}
 

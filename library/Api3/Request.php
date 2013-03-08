@@ -65,7 +65,7 @@ class Api3_Request
 							),
 							"api"		=> array(
 								"continue_on_error"	=> TRUE,
-								"user_type"		=> "admin",
+								"user_type"		=> "user",
 								"response_format"	=> "json"
 							)
 	);
@@ -95,7 +95,7 @@ class Api3_Request
 	 *
 	 * @param string $request_json
 	 */
-	protected function _processRequest ($requestJson)
+	private function _processRequest ($requestJson)
 	{
 		$requestParams = json_decode($requestJson);
 		//proessing required for requests with params

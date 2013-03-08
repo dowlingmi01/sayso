@@ -39,6 +39,16 @@ multi request getAllSurveys & getAllUsers - with page limits
 
 <hr />
 <?php
+$data_format = json_encode(array("api_user"=>314, "api_key"=>"JUHkjh234JH9", "requests"=>array("firstRequest"=>array( "action_class"=>"survey", "action"=>"getAllSurveys","results_per_page"=>"abc", "page_number"=>15), "secondRequest"=>array( "action_class"=>"user", "action"=>"getAllUsers","results_per_page"=>10, "page_number"=>100))));
+?>
+multi request getAllSurveys & getAllUsers - with page limits - invalid data type
+<form action="http://local.saysollc.com/api3/" method="post">
+	<input type="hidden" name="data" value='<?= $data_format; ?>' />
+	<input type="submit" />
+</form>
+
+<hr />
+<?php
 $data_format = json_encode(array("api_user"=>314, "api_key"=>"JUHkjh234JH9", "requests"=>array("firstRequest"=>array( "action_class"=>"survey", "action"=>"getAllSurveys","results_per_page"=>25, "page_number"=>15), "secondRequest"=>array( "action_class"=>"user", "action"=>"getAllffffUsers","results_per_page"=>10, "page_number"=>100))));
 ?>
 multi request getAllSurveys & getAllUsers - with page limits - error on one request - bad action

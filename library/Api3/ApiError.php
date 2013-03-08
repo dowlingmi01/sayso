@@ -13,12 +13,12 @@ class Api3_ApiError
 	 * @var array
 	 */
 	private $_error_codes = array(
-		100							=> array("type" => "other",		"message" => "Success"),
 		"error_unknown"					=> array("type" => "api",		"message" => "Unknown error occured"),
 
 		"auth_failed_api"				=> array("type" => "api",		"message" => "API authentication failed"),
 		"auth_failed_action"				=> array("type" => "action",	"message" => "Action authentication failed"),
 		"auth_invalid_user_type"			=> array("type" => "api",		"message" => "Authentication error. Invalid user type. All authentications have been revoked."),
+		"auth_load_fail"					=> array("type" => "api",		"message" => "Authentication error. Invalid user type submitted."),
 
 		"invalid_action_class"				=> array("type" => "action",	"message" => "Invalid api class"),
 		"invalid_action"					=> array("type" => "action",	"message" => "Invalid action"),
@@ -28,6 +28,9 @@ class Api3_ApiError
 		"missing_params_api_instance"		=> array("type" => "api",		"message" => "Api user & key or json request are required"),
 		"missing_params_request"			=> array("type" => "api",		"message" => "Required parameters missing"),
 		"missing_user_credentials"			=> array("type" => "api",		"message" => "api_id & api_key are required parameters"),
+
+		"endpoint_parameter_validation_failed"=> array("type" => "action",	"message" => "Endpoint data type validation failed."),
+		"endpoint_failed"				=> array("type" => "action",	"message" => "Endpoint parameter filter and validation failed."),
 
 		"continue_on_errors"				=> array("type" => "api",		"message" => "A sibling request encountered an error with continue_on_errors set to FALSE. No response provided."),
 	);
@@ -54,10 +57,31 @@ class Api3_ApiError
 		} else { //this is more a debug catch all for incorrect errors
 			$this->_errors[] = array(
 							"code"			=> "invalid_error",
-							"message"			=> "There was an error throwing the requested error.",
+							"message"			=> "There was an error throwing the requested error. The error you passed {$error}, is not defined.",
 							"type"			=> "api"
 						);
 		}
+	}
+
+	public static function getNewError($error, $responseName = "default")
+	{
+		$newError = new self();
+		if (array_key_exists($error, $newError->_error_codes))
+		{
+			$newError->_errors[] = array(
+							"code"			=> $error,
+							"message"			=> $newError->_error_codes[$error]["message"],
+							"type"			=> $newError->_error_codes[$error]["type"],
+							"response_name"	=> $responseName
+						);
+		} else { //this is more a debug catch all for incorrect errors
+			$newError->_errors[] = array(
+							"code"			=> "invalid_error",
+							"message"			=> "There was an error throwing the requested error. The error you passed {$error}, is not defined.",
+							"type"			=> "api"
+						);
+		}
+		return $newError;
 	}
 
 	/**returns whether there are any errors in the current instantiation of the Error object

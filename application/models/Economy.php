@@ -80,6 +80,11 @@ class Economy extends Record
 			throw new Exception('Unknown Purchasable BDID ' . $bdid . ' in economy ' . $this->id);
 		return $this->_purchasables[$this->_bdids[$bdid]];
 	}
+	public function getPurchasableIdByBDId( $bdid ) {
+		if( !array_key_exists($bdid, $this->_bdids) )
+			throw new Exception('Unknown Purchasable BDID ' . $bdid . ' in economy ' . $this->id);
+		return $this->_bdids[$bdid];
+	}
 	const CURRENCY_EXPERIENCE = 1;
 	const CURRENCY_REDEEMABLE = 2;
 	const CURRENCY_TRACKING_CHECKIN = 3;

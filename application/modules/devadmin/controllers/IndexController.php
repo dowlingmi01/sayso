@@ -249,6 +249,8 @@ class Devadmin_IndexController extends Api_GlobalController
 						$game = Game_Starbar::getInstance();
 						$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $economy->getKey(), Api_Cache::LIFETIME_WEEK);
 						$cache->remove();
+						
+						Game_Transaction::adjustBDStock($starbarId, $goodId, $newInventory);
 						// To avoid reloading the form and setting the inventory again
 						$this->_redirect("/devadmin/index/inventory?starbar_id=".$starbarId."&named_good_id=".$goodId);
 					}
@@ -262,6 +264,8 @@ class Devadmin_IndexController extends Api_GlobalController
 						$game = Game_Starbar::getInstance();
 						$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $economy->getKey(), Api_Cache::LIFETIME_WEEK);
 						$cache->remove();
+						
+						Game_Transaction::adjustBDStock($starbarId, $goodId, $newInventory);
 						// To avoid reloading the form and setting the inventory again
 						$this->_redirect("/devadmin/index/inventory?starbar_id=".$starbarId."&named_good_id=".$goodId);
 					}
@@ -642,6 +646,13 @@ class Devadmin_IndexController extends Api_GlobalController
 				//$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
 				$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $economy->getKey());
 				$cache->remove();
+				
+				Game_Transaction::addGood($starbarId, array(
+					'description' => $productTitle,
+					'bdid' => $namedGoodProductVariantId,
+					'type' => ($type == 'token' ? 'token' : 'physical'),
+					'cost' => $price
+				), $initialInventory);
 
 				exit;
 			}

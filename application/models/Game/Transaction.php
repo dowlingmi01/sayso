@@ -197,6 +197,33 @@ class Game_Transaction {
 			self::_handleException( $e );
 		}
 	}
+	public static function addGood( $economy_id, $good_data, $initial_stock ) {
+		try {
+			if( !Economy::getForId($economy_id)->imported )
+				return;
+			$sql = "INSERT INTO game_asset (economy_id, type, name, bdid) VALUES (?, 'purchasable', ?, ?)";
+			Db_Pdo::execute($sql, $economy_id, $good_data['description'], $good_data['bdid']);
+			$asset_id = Db_Pdo::getPdo()->lastInsertId();
+			$sql = "INSERT INTO game_purchasable (game_asset_id, type, price) VALUES (?, ?, ?)";
+			Db_Pdo::execute($sql, $asset_id, $good_data['type'], $good_data['cost']);
+			if( $good_data['type'] != 'token') {
+				$stock = array('asset_id'=>$asset_id, 'quantity'=>$initial_stock);
+				self::run(self::HOUSE_USER_ID, $economy_id, 'INITIAL_STOCK', $stock);
+			}
+		} catch ( Exception $e ) {
+			self::_handleException( $e );
+		}
+	}
+	public static function adjustBDStock( $economy_id, $good_bdid, $quantity ) {
+		try {
+			if( !Economy::getForId($economy_id)->imported )
+				return;
+			$stock = array('asset_id'=>Economy::getForId($economy_id)->getPurchasableIdByBDId($good_bdid), 'quantity'=>$quantity);
+			self::run(self::HOUSE_USER_ID, $economy_id, 'ADJUST_STOCK', $stock);
+		} catch ( Exception $e ) {
+			self::_handleException( $e );
+		}
+	}
 	protected static function _handleException (Exception $exception) {
 		// because Api_Exception unregisters the renderer, we need to restore it here
 		if ($exception instanceof Api_Exception) {

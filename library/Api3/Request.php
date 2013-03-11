@@ -126,14 +126,12 @@ class Api3_Request
 				$this->_applyDefaultRequestParameters($requestParam);
 			}
 
-		} elseif (isset($requestParams->api_key) && isset($requestParams->api_user)) { //processing for api instantiation only
+		} else { //processing for api instantiation only
 			foreach ($requestParams as $key=>$value)
 			{
 				$this->$key = $value;
 			}
-		} else {
-			$this->error->newError("missing_user_credentials");
-		}
+		} 
 		$this->_applyDefaultApiParameters();
 	}
 

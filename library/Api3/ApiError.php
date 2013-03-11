@@ -27,7 +27,7 @@ class Api3_ApiError
 
 		"missing_params_api_instance"		=> array("type" => "api",		"message" => "Api user & key or json request are required"),
 		"missing_params_request"			=> array("type" => "api",		"message" => "Required parameters missing"),
-		"missing_user_credentials"			=> array("type" => "api",		"message" => "api_id & api_key are required parameters"),
+		"missing_params_user_auth"		=> array("type" => "api",		"message" => "Missing api_user or api_key parameters"),
 
 		"endpoint_parameter_validation_failed"=> array("type" => "action",	"message" => "Endpoint data type validation failed."),
 		"endpoint_failed"				=> array("type" => "action",	"message" => "Endpoint parameter filter and validation failed."),

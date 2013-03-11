@@ -11,7 +11,13 @@ class Api3_Authentication_UserController  extends Api3_Authentication
 	 */
 	public function apiAuthentication($request, $error)
 	{
-		$this->_api_auth = TRUE;
+		if (!isset($request->api_key) || !isset($request->api_user))
+		{
+			$error->newError("missing_params_user_auth");
+			$this->_api_auth = FALSE;
+		} else {
+			$this->_api_auth = TRUE;
+		}
 	}
 
 	/**This needs to be developed

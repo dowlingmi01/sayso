@@ -1,8 +1,10 @@
 <?
 	if( $this->missions_exist ) {
-		if (APPLICATION_ENV == "production")
+		if (APPLICATION_ENV == "production") {
 			$baseUrl = $this->text('CONFIG_DEFAULT_SHARE_LINK');
-		else
+			if( substr($baseUrl, -1) == '/' )
+				$baseUrl = substr($baseUrl, 0, -1);
+		} else
 			$baseUrl = "http://" . BASE_DOMAIN . "/client/" . $this->text('CONFIG_SHORT_TITLE') . "/landing";
 ?>
 <div style="width: 656px; height: 582px;">

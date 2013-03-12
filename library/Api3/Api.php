@@ -86,19 +86,22 @@ class Api3_Api
 	 *	$apiId, $apiKey pair is for accessing the API directly from
 	 *	code only the user id and user key are required.
 	 *
-	 * @param string $apiId
-	 * @param string $apiKey
+	 * @param string $api_id
+	 * @param string $api_key
+	 * @param string $api_user_type
 	 * @param string $request_json - json fomat
 	 * @return Api3_Api
 	 */
-	public static function getInstance ($apiId = NULL, $apiKey = NULL, $request_json = NULL)
+	public static function getInstance ($api_id = NULL, $api_key = NULL, $api_user_type = NULL, $request_json = NULL)
 	{
 		//prepare the request params for consistent handling
 		if ($request_json) //external api request
 		{
 			$request = $request_json;
-		} elseif ($apiId && $apiKey) { //internal program request
-			$request = json_encode(array('api_user'=>$apiId, 'api_key'=>$apiKey));
+		} elseif ($api_id && $api_key) { //internal program request
+			$userCredentials = array('api_user'=>$api_id, 'api_key'=>$api_key);
+			isset($api_user_type) ? array_push($userCredentials, array("user_type" => $api_user_type)) : "";
+			$request = json_encode($userCredentials);
 		} else {
 			//in case Api3_Error is not yet loaded - set it here and apply error after $_instance has been checked
 			$error = "missing_params_api_instance";
@@ -149,7 +152,7 @@ class Api3_Api
 
 	/**processes the response and filter off some potential errors
 	 *
-	 * @return void()
+	 * @return void
 	 */
 	private function _processResponse()
 	{
@@ -176,16 +179,37 @@ class Api3_Api
 			//send to the proper model for processing
 			$logicResponse = $this->_callAction($value, $key);
 
-			//check response from model for an error code
-			if (isset($logicResponse) && $logicResponse instanceof stdClass)
+			//check response from _callAction for an errors or process logic
+			//TODO clean this up
+			if (isset($logicResponse) && $logicResponse instanceof stdClass && !isset($logicResponse->error))
 			{
 				//deal with logic response
 				$this->response->responses->$key = $logicResponse;
-			} elseif (isset($logicResponse) && is_string($logicResponse)) {
+			} elseif (isset($logicResponse) && $logicResponse instanceof stdClass && isset($logicResponse->error)) { //accept custom errors from the endpoints
+
+				//prepare the custom error
+				$errorName = $logicResponse->error_name;
+				$errorStructure = new stdClass();
+				foreach ($logicResponse->errors as $errorKey => $errorValue)
+				{
+					if ($errorValue instanceof stdClass)
+					{
+						//loop again
+						foreach($errorValue as $param => $result)
+						{
+							$errorStructure->$errorKey->$param = $result;
+						}
+					} else {
+						$errorStructure->$errorKey = $errorValue;
+					}
+				}
+				//send it in
+				$this->error->newError($errorName, $key, $errorStructure);
+
+			} elseif (isset($logicResponse) && is_string($logicResponse)) { //handle errors thrown by the api
 				//deal with error
 				$this->error->newError($logicResponse, $key);
-			}else {
-				//catch all for unknown errors
+			} else { //catch all for unknown errors
 				$this->error->newError("error_unknown", $key);
 				//TODO: log for research
 			}
@@ -223,13 +247,7 @@ class Api3_Api
 		$logicResult = $logicResultClass->$actionName($request_object, $request_name);
 
 		//catch errors or return logic
-		if (!$logicResult instanceof Api3_ApiError)
-		{
-			return $logicResult;
-		} else {
-			return $logicResult->getError();
-		}
-
+		return $logicResult;
 	}
 
 	/**Format the data that the API has prepared to match the requested

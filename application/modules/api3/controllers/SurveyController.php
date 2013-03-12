@@ -19,7 +19,7 @@ class Api3_SurveyController extends Api3_GlobalController
 		if ($actionParams = $this->getValidParams($this->_filters, $this->_validators, $params, $request_name))
 		{
 		//check for validation errors
-			if (!$actionParams instanceof Api3_ApiError)
+			if (!isset($actionParams->error))
 			{
 				//logic
 				$sql = "SELECT *
@@ -43,7 +43,8 @@ class Api3_SurveyController extends Api3_GlobalController
 				return $actionParams;
 			}
 		} else {
-			return Api3_ApiError::getNewError("endpoint_failed", $request_name);
+			//return Api3_ApiError::getNewError("endpoint_failed", $request_name);
+			//TODO: prepare error in global controller
 		}
 	}
 }

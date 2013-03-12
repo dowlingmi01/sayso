@@ -91,13 +91,13 @@ class Api3_GlobalController //extends Zend_Controller_Action
 	public function getValidParams($filters, $validators, $params, $request_name)
 	{
 		$validated_input = new Zend_Filter_Input($filters, $validators, (array)$params);
+		$failedParams = array();
 
 		if ($validated_input->isValid()) {
 			//get request
 			return $validated_input->getEscaped();
 		} else {
-			//TODO: send back specific error message from Zend_Filter_Input
-			return Api3_ApiError::getNewError("endpoint_parameter_validation_failed", $request_name);
+			return $this->_prepareFailedParameterResponse($validated_input);
 		}
 	}
 
@@ -132,6 +132,45 @@ class Api3_GlobalController //extends Zend_Controller_Action
 			$response->records->$key = $record;
 		}
 
+		return $response;
+	}
+
+	/**
+	 *
+	 * @param Zend_Filter_Input $errors
+	 */
+	private function _prepareFailedParameterResponse($validated_input)
+	{
+		$response = new stdClass();
+		$response->error = TRUE;
+		$response->error_name = "failed_validation";
+
+		if ($validated_input->hasInvalid())
+		{
+			$invalid = $validated_input->getInvalid();
+			foreach ($invalid as $paramName => $paramArray) {
+
+				foreach ($paramArray as $key => $value)
+				{
+					$response->errors->$paramName->$key = $value;
+				}
+			}
+		}
+		if ($validated_input->hasMissing())
+		{
+			$missing = $validated_input->getMissing();
+			foreach ($missing as $key => $value) {
+				$response->errors->$key->missing = $value;
+			}
+		}
+		if ($validated_input->hasUnknown())
+		{
+			$unknown = $validated_input->getUnknown();
+			foreach ($unknown as $key => $value) {
+				//$response->$key->unknown = $value;
+				//TODO: filter things that need don't get validated
+			}
+		}
 		return $response;
 	}
 
@@ -176,4 +215,8 @@ class Api3_GlobalController //extends Zend_Controller_Action
 			}
 			return " LIMIT {$offset}, {$limit}";
 		}
-	}}
+	}
+
+	//TODO: make a function to handle other custom errros
+
+}

@@ -35,16 +35,22 @@ class Api3_ApiError
 		"continue_on_errors"				=> array("type" => "api",		"message" => "A sibling request encountered an error with continue_on_errors set to FALSE. No response provided."),
 	);
 
+	/**holds the errors as they are porcessed
+	 *
+	 * @var array
+	 */
 	private $_errors = array();
 
 ////////////////////////////////////////
 
-	/**adds an error to the Api3_Error object
+	/**sets an error in the Api3_Error object
 	 *
-	 * @param type $error
-	 * @param type $responseName
+	 * @param string $error
+	 * @param string $responseName
+	 * @param bool | mixed $custom_error
+	 *	this is a custom error message that can be passed
 	 */
-	public function newError($error, $responseName = "default")
+	public function newError($error, $responseName = "default", $custom_error = FALSE)
 	{
 		if (array_key_exists($error, $this->_error_codes))
 		{
@@ -54,34 +60,22 @@ class Api3_ApiError
 							"type"			=> $this->_error_codes[$error]["type"],
 							"response_name"	=> $responseName
 						);
-		} else { //this is more a debug catch all for incorrect errors
+		} elseif ($custom_error) {
+			//inject a custom error e.g. failed param validation
+			//message param can accept a string, array, or object. it will be converted to json later
+			$this->_errors[] = array(
+							"code"			=> $error,
+							"message"			=> $custom_error,
+							"type"			=> "action",
+							"response_name"	=> $responseName
+						);
+		} else { //this is a debug to catch all incorrect errors
 			$this->_errors[] = array(
 							"code"			=> "invalid_error",
 							"message"			=> "There was an error throwing the requested error. The error you passed {$error}, is not defined.",
 							"type"			=> "api"
 						);
 		}
-	}
-
-	public static function getNewError($error, $responseName = "default")
-	{
-		$newError = new self();
-		if (array_key_exists($error, $newError->_error_codes))
-		{
-			$newError->_errors[] = array(
-							"code"			=> $error,
-							"message"			=> $newError->_error_codes[$error]["message"],
-							"type"			=> $newError->_error_codes[$error]["type"],
-							"response_name"	=> $responseName
-						);
-		} else { //this is more a debug catch all for incorrect errors
-			$newError->_errors[] = array(
-							"code"			=> "invalid_error",
-							"message"			=> "There was an error throwing the requested error. The error you passed {$error}, is not defined.",
-							"type"			=> "api"
-						);
-		}
-		return $newError;
 	}
 
 	/**returns whether there are any errors in the current instantiation of the Error object
@@ -107,9 +101,11 @@ class Api3_ApiError
 	 * a return of invalid_action does not help a developer fix their code if thrown out of order.
 	 *
 	 * @param Api3_Response $response
+	 * @param Api3_Request $request
 	 */
 	public function processErrors($response, $request)
 	{
+		$count = count($this->_errors);
 		//check for the continue_on_erors setting
 		if($request->continue_on_error === FALSE)
 		{
@@ -118,16 +114,17 @@ class Api3_ApiError
 				if ($this->_errors[0]["response_name"] != $key)
 				{
 					$response->responses->$key = "";
-					$response->responses->$key = array(
-												"errors_returned" => 1,
-												"error_message" => $this->_error_codes["continue_on_errors"]["message"]
-											);
+
+					$response->responses->$key->errors_returned = $count;
+					$response->responses->$key->errors->continue_on_errors = $this->_error_codes["continue_on_errors"]["message"];
 				}
 			}
 		}
-
+		//process the errors
 		foreach ($this->_errors as $key => $value)
 		{
+			//if type=api stop processing errors
+			//api types do not allow return values
 			if ($value["type"] == 'api' || $value["type"] == "other")
 			{
 				if (isset($response->responses))
@@ -137,13 +134,13 @@ class Api3_ApiError
 				$response->error_code = $value["code"];
 				$response->error_message = $value["message"];
 				break;
-			} else {
+			} else { //action type errors are returned for each request
 				if (isset($response->responses->$value["response_name"]->records))
 				{
 					unset($response->responses->$value["response_name"]->records);
 				}
-				$response->responses->$value["response_name"]->errors_returned = 1;
-				$response->responses->$value["response_name"]->error_message = $value["message"];
+				$response->responses->$value["response_name"]->errors_returned = $count;
+				$response->responses->$value["response_name"]->errors->$value["code"] = $value["message"];
 			}
 		}
 	}
@@ -152,8 +149,8 @@ class Api3_ApiError
 	 *
 	 * @return string
 	 */
-	public function getError()
+	public function getErrors()
 	{
-		return $this->_errors[0]["code"];
+		return $this->_errors;
 	}
 }

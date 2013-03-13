@@ -270,7 +270,7 @@ class Survey extends Record
 					}
 
 				// Piped question, text value (string by default)
-				} elseif ($questionType == "textbox" && isset($questionData['properties']['piped_from']) && $questionData['properties']['piped_from']) {
+				} elseif (($questionType == "textbox" || $questionType == "essay") && isset($questionData['properties']['piped_from']) && $questionData['properties']['piped_from']) {
 
 					$pipedFrom = (int) $questionData['properties']['piped_from'];
 					if ($pipedFrom && isset($questionArray[$pipedFrom]) && isset($questionArray[$pipedFrom]->option_array)) {
@@ -445,7 +445,7 @@ class Survey extends Record
 					}
 
 				// Non-piped, non-table questions (i.e. all other questions, except 'logic' questions and 'action' questions, which aren't really questions)
-				} elseif (in_array($questionType, array("checkbox", "menu", "radio", "textbox", "rank"))) {
+				} elseif (in_array($questionType, array("checkbox", "menu", "radio", "textbox", "essay", "rank"))) {
 
 					$question = new Survey_Question();
 					$question->survey_id = $this->id;
@@ -467,6 +467,7 @@ class Survey extends Record
 							$question->option_array = array();
 							break;
 						case "textbox":
+						case "essay":
 							$question->choice_type = 'none';
 							$question->data_type = 'string'; // Default to string
 							break;

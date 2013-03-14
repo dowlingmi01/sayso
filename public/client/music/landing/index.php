@@ -42,9 +42,9 @@ a:hover {
 	  <div class="section tab-pane active" id="section-1">
 	  	<div class="section-head">
 	  		<h2>What is Social Say.So?</h2>
-	  		<p>Are you a social or mobile gaming fanatic? Do you eagerly await for<br />
-	  		  new items in Farmville or a sequel to Plants VS. Zombies? If so,<br />
-  		    you're probably a perfect fit for Social Say.So!</p>
+	  		<p>Are you a music enthusiast? Do you eagerly await the release <br />
+	  		 of new albums  or music videos? Are you an indie artist looking for exposure? <br />
+  		 If so, you're probably a perfect fit for Music Say.So!</p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">

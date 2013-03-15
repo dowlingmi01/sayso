@@ -1654,6 +1654,9 @@ $results = array();
 					$actionID = $economy->getActionId('ADHOC_EXPERIENCEPOINTS');
 					$client->setParameterPost('amount',$formData['redeemablecurrency']);
 					$result = $client->namedTransactionGroup($actionID)->postExecute($gaming_id);
+					if( !$client->hasError() )
+						Game_Transaction::run( $_POST['user_id'], $_POST['starbar_id'], 'ADHOC_EXPERIENCEPOINTS'
+						                     , array('custom_amount'=>$formData['redeemablecurrency']) );
 $results[] = $result;
 				}
 
@@ -1661,6 +1664,9 @@ $results[] = $result;
 					$actionID = $economy->getActionId('ADHOC_REDEEMABLEPOINTS');
 					$client->setParameterPost('amount',$formData['redeemableaward']);
 					$result = $client->namedTransactionGroup($actionID)->postExecute($gaming_id);
+					if( !$client->hasError() )
+						Game_Transaction::run( $_POST['user_id'], $_POST['starbar_id'], 'ADHOC_REDEEMABLEPOINTS'
+						                     , array('custom_amount'=>$formData['redeemableaward']) );
 					$results[] = $result;
 				}
 

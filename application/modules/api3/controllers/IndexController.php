@@ -15,7 +15,7 @@ class Api3_IndexController extends Zend_Controller_Action
 		//only process if a request has been made.
 		if ($requestData)
 		{
-			$api = Api3_Api::getInstance(NULL, NULL, $requestData);
+			$api = Api3_Api::getInstance(NULL, NULL, NULL, $requestData);
 			$this->_disableLayout();
 			$this->_helper->viewRenderer->setRender('json');
 			$this->view->api_response = $api->getResponse();

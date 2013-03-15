@@ -14,7 +14,7 @@ class Api3_GlobalController //extends Zend_Controller_Action
 
 	/**declares the _validators array
 	 *
-	 * this can't be set here as some settings are (forgot the word)
+	 * this can't be set here as some settings are expressions
 	 * so they are set in the constructor
 	 *
 	 * @var array
@@ -30,55 +30,106 @@ class Api3_GlobalController //extends Zend_Controller_Action
 						'*'  => 'StringTrim',
 					);
 
-	/**defines a default response node
+	/**declares records_returned
 	 *
 	 * @var int
 	 */
 	protected $_records_returned;
 
-	/**defines a default response node
+	/**declares total_records
 	 *
 	 * @var int
 	 */
 	protected $_total_records;
 
-	/**defines a default response node
+	/**declares page_number
 	 *
 	 * @var int
 	 */
 	protected $_page_number;
 
-	/**defines a default response node
+	/**declares total_pages
 	 *
 	 * @var int
 	 */
 	protected $_total_pages;
 
-	/**defines a default response node
+	/**declares results_per_page
 	 *
 	 * @var int
 	 */
 	protected $_results_per_page;
 
+	/**defines a default response
+	 *
+	 * @var \stdClass
+	 */
+	protected $_results;
+
 //////////////////////////////////////////////
 
-	/**
-	 * constructor
+	/**applies the session endpoint data to the object for ease of access
+	 * populates the _validator as it takes expressions and cannot be set
+	 *	in the declaration above
 	 *
-	 * sets the default _validators array
 	 */
 	public function __construct()
 	{
+		//get session data
+		$endpoint = new Zend_Session_Namespace("endpoint");
+
+		//sets the results node
+		$this->_results = new stdClass();
+
+		$this->request_name = $endpoint->request_name;
+		$this->auth = $endpoint->auth;
+
 		$this->_validators = array(
 							"results_per_page" => array(
 												new Zend_Validate_Int(),
-												"allowEmpty" => true
+												"allowEmpty" => FALSE
 											),
 							"page_number" => array(
 												new Zend_Validate_Int(),
-												"allowEmpty" => true
-											)
+												"allowEmpty" => FALSE
+											),
+							"request_name" => array(
+												new Zend_Validate_Int(),
+												"allowEmpty" => FALSE
+											),
 						);
+	}
+
+	/**automates some of the post-construct functionality that all endpoints share
+	 *	merges the default validators with the endpoint specific ones
+	 *	merges the default filters with the endpoint specific ones
+	 *	runs the validator function
+	 *
+	 *	returns the valid parameters
+	 *
+	 * @param array $data
+	 * @param array $validators
+	 * @param array $filters
+	 * @return array
+	 */
+	protected function _preProcess($data, $validators = NULL, $filters = NULL)
+	{
+		//merge the user spcificed validators
+		if ($validators)
+			$this->_validators = array_merge($this->_validators, $validators);
+		//merge the user specifiec filters
+		if ($filters)
+			$this->_filters = array_merge($this->_filters, $filters);
+		//validate the parameters
+		return $this->_getValidParams($this->_filters, $this->_validators, $data, $this->request_name);
+	}
+
+	/**seems like it should be used !?
+	 *
+	 */
+	protected function _postProcess()
+	{
+
 	}
 
 	/**returns the validated and filtered params
@@ -88,7 +139,7 @@ class Api3_GlobalController //extends Zend_Controller_Action
 	 * @param  \stdClass $params
 	 * @return Api3_ApiError | array
 	 */
-	public function getValidParams($filters, $validators, $params, $request_name)
+	private function _getValidParams($filters, $validators, $params, $request_name)
 	{
 		$validated_input = new Zend_Filter_Input($filters, $validators, (array)$params);
 		$failedParams = array();
@@ -104,15 +155,28 @@ class Api3_GlobalController //extends Zend_Controller_Action
 	/**sets and calculates default responses (pagination)
 	 * formats the endpoint response for return to the Api object
 	 *
-	 * @param mixed $data
+	 * @param array $data
 	 * @param array $params
 	 * @param int $count - the total records possible without pagination
 	 * @return  \stdClass
 	 */
-	protected function _prepareResponse($data, $params, $count)
+	protected function _prepareResponse($data, $params, $count = 1)
 	{
 		//records returned
-		$response->records_reurned = $this->_records_returned = count($data);
+		if ($data instanceof stdClass)
+		{
+			//iterate
+			$recordsReturned = 0;
+			foreach ($data as $key)
+			{
+				$recordsReturned++;
+			}
+			$response->records_reurned = $this->_records_returned = $recordsReturned;
+		} elseif (is_array($data)) {
+			$response->records_reurned = $this->_records_returned = count($data);
+		} else {
+			$response->records_reurned = $this->_records_returned = 1;
+		}
 
 		//total records
 		$response->total_records = $this->_total_records = $count;
@@ -126,6 +190,7 @@ class Api3_GlobalController //extends Zend_Controller_Action
 		//total pages
 		$response->total_pages = $this->_total_pages = (int)($this->_total_records / $this->_results_per_page) + (($this->_total_records % $this->_results_per_page) > 0 ? 1 : 0);
 
+		//TODO: make this more extensible to accept values that may not be part of the data set
 		foreach($data as $record)
 		{
 			$key = $record[$this->_key_identifier];
@@ -174,12 +239,27 @@ class Api3_GlobalController //extends Zend_Controller_Action
 		return $response;
 	}
 
+	/**sets a custom error
+	 *
+	 * @param array $error
+	 */
+	protected function _prepareError($errors)
+	{
+		$response = new stdClass();
+		$response->error = TRUE;
+		$response->error_name = "custom_error";
+		foreach ($errors as $key => $value) {
+			$response->errors->{$response->error_name}->{$errors["code"]} = $errors["message"];
+		}
+		return $response;
+	}
+
 	/**calculates the limit based on $results_per_page
 	 *
 	 * @param type $results_per_page
 	 * @return int | string="all"
 	 */
-	protected function _calculateLimit($results_per_page)
+	private function _calculateLimit($results_per_page)
 	{
 		return isset($results_per_page) && $results_per_page != 0 ? (int)$results_per_page : "all";
 	}
@@ -190,7 +270,7 @@ class Api3_GlobalController //extends Zend_Controller_Action
 	 * @param int $limit
 	 * @return int
 	 */
-	protected function _calculateOffset($page_number, $limit)
+	private function _calculateOffset($page_number, $limit)
 	{
 		return isset($page_number) ? ($page_number*$limit)-1 : 0;
 	}
@@ -217,6 +297,18 @@ class Api3_GlobalController //extends Zend_Controller_Action
 		}
 	}
 
-	//TODO: make a function to handle other custom errros
-
+	/**provides a tool for getting a count of results
+	 * may not be applicable to all situations
+	 *
+	 * @param array | \stdClass $results
+	 * @return int
+	 */
+	protected function _countResults($results)
+	{
+		$count =0;
+		foreach ($results as $value) {
+			$count++;
+		}
+		return $count;
+	}
 }

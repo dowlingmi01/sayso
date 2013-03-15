@@ -17,6 +17,7 @@ class Api3_Authentication_UserController  extends Api3_Authentication
 			$this->_api_auth = FALSE;
 		} else {
 			$this->_api_auth = TRUE;
+			$this->user_id = $request->api_user;
 		}
 	}
 

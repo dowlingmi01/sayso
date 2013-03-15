@@ -243,8 +243,13 @@ class Api3_Api
 		if (!method_exists($actionClass, $actionName))
 			return "invalid_action";
 
+		//set up session data all endpoints may use
+		$sessionData = new Zend_Session_Namespace('endpoint');
+		$sessionData->request_name = $request_name;
+		$sessionData->auth = $this->auth;
+
 		$logicResultClass = new $actionClass();
-		$logicResult = $logicResultClass->$actionName($request_object, $request_name);
+		$logicResult = $logicResultClass->$actionName($request_object);
 
 		//catch errors or return logic
 		return $logicResult;
@@ -274,9 +279,13 @@ class Api3_Api
 
 	}
 
-	/**
-	 * reset the request and response objects keeping the auth
-	 *  object for reusability without having reauthenticate
+	/**reset the
+	 *	request
+	 *	response  and
+	 *	error objects
+	 * as well as the per request session data
+	 * while keeping the auth object for reusability without having
+	 *	to re-authenticate
 	 */
 	private function _resetObject()
 	{
@@ -284,6 +293,11 @@ class Api3_Api
 		$this->request = new Api3_Request();
 		$this->response = new Api3_Response();
 		$this->auth->resetActionAuth();
+		//reset per request session data
+		$session = new Zend_Session_Namespace("endpoint");
+		foreach ($session as $key=> $value) {
+			unset($session->$key);
+		}
 	}
 
 	/**sets the parameters to the request object

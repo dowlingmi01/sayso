@@ -99,6 +99,26 @@ multi request getAllSurveys & getAllUsers - with page limits - - bad user id fie
 </form>
 
 <hr />
+<?php
+$data_format = json_encode(array("api_user"=>9001, "api_key"=>"JUHkjh234JH9", "action_class"=>"notification", "action"=>"getUserNotifications",  "starbar_id"=>5, "starbar_stowed"=>"false"));
+?>
+Notification endpoint - getUserNotifications
+<form action="http://local.saysollc.com/api3/" method="post">
+	<input type="hidden" name="data" value='<?= $data_format; ?>' />
+	<input type="submit" />
+</form>
+
+<hr />
+<?php
+$data_format = json_encode(array("api_user"=>9001, "api_key"=>"JUHkjh234JH9", "action_class"=>"notification", "action"=>"updateStatus",  "message_id"=>33));
+?>
+Notification endpoint - updateStatus
+<form action="http://local.saysollc.com/api3/" method="post">
+	<input type="hidden" name="data" value='<?= $data_format; ?>' />
+	<input type="submit" />
+</form>
+
+<hr />
 
 <?php
 

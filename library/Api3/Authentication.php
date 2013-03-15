@@ -14,6 +14,12 @@ class Api3_Authentication
 	 */
 	protected $_action_auth  = FALSE;
 
+	/**set the user id
+	 *
+	 * @var int
+	 */
+	public $user_id ;
+
 /////////////////////////////////////////////////
 
 	/**This needs to be developed

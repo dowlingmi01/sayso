@@ -2,7 +2,6 @@
 
 class Api3_SurveyController extends Api3_GlobalController
 {
-
 	/**returns all surveys with optional pagination
 	 *
 	 * this is more an easy test case to prove the concept
@@ -11,40 +10,33 @@ class Api3_SurveyController extends Api3_GlobalController
 	 * @param \stdClass $params
 	 * @return int|\stdClass
 	 */
-	public  function getAllSurveys($params, $request_name)
+	public  function getAllSurveys($params)
 	{
 		//define custom validators and filters
 
+		$preProcess = $this->_preProcess($params);
+
 		//validate
-		if ($actionParams = $this->getValidParams($this->_filters, $this->_validators, $params, $request_name))
-		{
+		if (!$preProcess)
+			return _prepareError(get_class() . "_failed", "Failed to get valid params from validator.");
 		//check for validation errors
-			if (!isset($actionParams->error))
-			{
-				//logic
-				$sql = "SELECT *
-						FROM survey
-					";
-				$sql .= $this->_prepareLimitSql((int)$actionParams["results_per_page"], (int)$actionParams["page_number"]);
+		if (isset($preProcess->error))
+			return $preProcess;
 
-				$data = Db_Pdo::fetchAll($sql);
+		//logic
+		$sql = "SELECT *
+				FROM survey
+			";
+		$sql .= $this->_prepareLimitSql((int)$preProcess["results_per_page"], (int)$preProcess["page_number"]);
 
-				//count logic
-				$sql = "SELECT count(id) c
-						FROM survey";
-				$data2 = Db_Pdo::fetch($sql);
-				$totalResults = (int)$data2["c"];
+		$data = Db_Pdo::fetchAll($sql);
 
-				//processes the logic and adds the pagination stuff
-				$resultSet = $this->_prepareResponse($data, $actionParams, $totalResults);
+		//count logic
+		$totalResults = $this->_countResults($data);
 
-				return $resultSet;
-			} else {
-				return $actionParams;
-			}
-		} else {
-			//return Api3_ApiError::getNewError("endpoint_failed", $request_name);
-			//TODO: prepare error in global controller
-		}
+		//processes the logic and adds the pagination stuff
+		$resultSet = $this->_prepareResponse($data, $preProcess, $totalResults);
+
+		return $resultSet;
 	}
 }

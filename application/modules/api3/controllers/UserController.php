@@ -10,40 +10,35 @@ class Api3_UserController extends Api3_GlobalController
 	 * @param \stdClass $params
 	 * @return int|\stdClass
 	 */
-	public  function getAllUsers($params, $request_name)
+	public  function getAllUsers($params)
 	{
 		//define custom validators and filters
 
 		//validate
-		if ($actionParams = $this->getValidParams($this->_filters, $this->_validators, $params, $request_name))
-		{
+		$preProcess = $this->_preProcess($params);
+
+		//validate
+		if (!$preProcess)
+			return _prepareError(get_class() . "_failed", "Failed to get valid params from validator.");
 		//check for validation errors
-			if (!$actionParams instanceof Api3_ApiError)
-			{
-				//logic
-				$sql = "SELECT *
-						FROM user
-					";
-				$sql .= $this->_prepareLimitSql((int)$actionParams["results_per_page"], (int)$actionParams["page_number"]);
+		if (isset($preProcess->error))
+			return $preProcess;
 
-				//TODO: try catch?
-				$data = Db_Pdo::fetchAll($sql);
+		//logic
+		$sql = "SELECT *
+				FROM user
+			";
+		$sql .= $this->_prepareLimitSql((int)$preProcess["results_per_page"], (int)$preProcess["page_number"]);
 
-				//count logic
-				$sql = "SELECT count(id) c
-						FROM user";
-				$data2 = Db_Pdo::fetch($sql);
-				$totalResults = (int)$data2["c"];
+		//TODO: try catch?
+		$data = Db_Pdo::fetchAll($sql);
 
-				//processes the logic and adds the pagination stuff
-				$resultSet = $this->_prepareResponse($data, $actionParams, $totalResults);
+		//count logic
+		$totalResults = $this->_countResults($data);
 
-				return $resultSet;
-			} else {
-				return $actionParams;
-			}
-		} else {
-			return Api3_ApiError::getNewError("endpoint_failed", $request_name);
-		}
+		//processes the logic and adds the pagination stuff
+		$resultSet = $this->_prepareResponse($data, $preProcess, $totalResults);
+
+		return $resultSet;
 	}
 }

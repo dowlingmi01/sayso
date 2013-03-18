@@ -6,6 +6,16 @@ class Starbar_SocialController extends Starbar_ContentController
 {
 	protected $_maximumDisplayed = array('polls' => 0, 'surveys' => 0, 'trailers' => 0);
 
+	public function rewardsAction () {
+		parent::rewardsAction();
+		// Filter out sold out items
+		foreach($this->view->rewards as $good) {
+			if ($good->inventory_sold >= $good->inventory_total) {
+				$this->view->rewards->removeItem($good->id);
+			}
+		}
+	}
+
 	public function userProfileAction () {
 		Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'trailers', $this->_maximumDisplayed['trailers']);
 		$this->_assignSurveysToView('trailers');

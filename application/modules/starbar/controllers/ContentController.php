@@ -944,8 +944,11 @@ class Starbar_ContentController extends Api_GlobalController
 			$countVariable = 'count_'.$status.'_'.$typePlural;
 			$collectionVariable = $status.'_'.$typePlural;
 
-			if ($maximumDisplayed && $totalDisplayed >= $maximumDisplayed && ($status == 'archived' || $status == 'new')) {
-				return;
+			if (
+				($maximumDisplayed && $totalDisplayed >= $maximumDisplayed && ($status == 'archived' || $status == 'new'))
+				|| $this->view->$countVariable >= 50
+				) {
+				continue;
 			}
 
 			$this->view->$countVariable += 1;

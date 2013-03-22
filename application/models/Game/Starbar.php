@@ -210,7 +210,7 @@ abstract class Game_Starbar extends Game_Abstract {
 
 				if ($sharedId) $logRecord->action_on_id = $sharedId;
 				$logRecord->save();
-				if( $gamer->imported ) {
+				if( $gamer->imported && !is_numeric($this->_client->getData())) {
 					$parameters = array('gamer'=>$gamer);
 					if( $sharedId )
 						$parameters['survey_id'] = $sharedId;

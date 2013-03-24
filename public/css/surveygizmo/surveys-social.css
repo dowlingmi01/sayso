@@ -291,7 +291,7 @@ h1.sg-title {
 
 .sg-button-bar {
 	position: fixed;
-	bottom: 0;
+	bottom: 13px;
 	border-top: 10px solid #FFFFFF;
 	border-bottom: 2px solid #FFFFFF;
 	margin-bottom: 0px;

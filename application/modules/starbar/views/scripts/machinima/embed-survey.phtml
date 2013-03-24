@@ -6,19 +6,6 @@
 	<img src="//<?= BASE_DOMAIN ?>/images/machinima/surveys_logo.png" alt="Machinima logo" />
 	</h2>
 </div><!-- .sb_header -->
-<ul class="survey_st_nav">
-		<? if ($this->count_new_surveys) { ?>
-			<li><a href="#surveys_tabs_1"><?= $this->count_new_surveys ?> New!</a></li>
-		<? } else { ?>
-			<li><a href="#surveys_tabs_1">New</a></li>
-		<? } ?>
-		<? if ($this->count_completed_surveys || $this->count_disqualified_surveys) { ?>
-			<li><a href="#surveys_tabs_2">Completed</a></li>
-		<? } ?>
-		<? if ($this->count_archived_surveys) { ?>
-			<li><a href="#surveys_tabs_3">Archive</a></li>
-		<? } ?>
-</ul>
 <p class="sb_alignRight"><a href="//<?= BASE_DOMAIN ?>/starbar/machinima/surveys" class="sb_theme_iconChange sb_nav_element" rel="sb_popBox_surveys">Switch Survey</a></p>
 <? if ($this->survey->reward_category == "premium" || $this->survey->reward_category == "profile") { ?>
 	<div class="sb_theme_textHighlight_alt sb_survey_title embed"><?= $this->survey->title ?></div>

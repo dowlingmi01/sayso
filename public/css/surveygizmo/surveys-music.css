@@ -280,7 +280,7 @@ h1.sg-title {
 	margin: -16px 0 0 -32px;
 	width: 32px;
 	height: 32px;
-	background-image: url('/images/machinima/img_ajax-loader.gif');
+	background-image: url('/images/music/img_ajax-loader.gif');
 	background-repeat: no-repeat;
 	text-indent: -9999px;
 }
@@ -302,7 +302,7 @@ h1.sg-title {
 #sg_BackButton{
 	border:none !important;
 	background: none !important;
-	background: url('/images/machinima/surveys_back.png') no-repeat !important;
+	background: url('/images/music/surveys_back.png') no-repeat !important;
 	width:37px !important;
 	height:25px !important;
 	white-space: nowrap;
@@ -316,7 +316,7 @@ h1.sg-title {
 #sg_NextButton{
 	border:none !important;
 	background: none !important;
-	background: url('/images/machinima/surveys_next.png') no-repeat !important;
+	background: url('/images/music/surveys_next.png') no-repeat !important;
 	width:37px !important;
 	height:25px !important;
 	white-space: nowrap;

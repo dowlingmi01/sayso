@@ -255,7 +255,7 @@
 	background-color: #0b2f76;
 }
 
-/* progress bar */
+/* main progress bar for pay.so and say.so */
 
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value,
 #sayso-starbar .sb_ui-progressbar .sb_ui-progressbar-value-fading{
@@ -706,7 +706,7 @@
 /* END */
 #sayso-starbar #starbar-player-console .sb_imgRedeemable{
 	background-image: url('../images/music/img_payso.png');
-	width: 30px;
+	width: 33px;
 	height: 30px;
 	display: inline-block;
 	position: absolute;
@@ -906,7 +906,7 @@
 	height: 30px;
 	position: relative;
 	display: block;
-	padding: 10px 0px 0px 0px;
+	padding: 14px 0px 0px 0px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-level .sb_user-points-box{
@@ -920,7 +920,7 @@
 	left: 0;
 	background-image: url('../images/music/img_sayso.png');
 	background-repeat: no-repeat;
-	width: 27px;
+	width: 35px;
 	height: 27px;
 }
 
@@ -2355,14 +2355,14 @@
 }
 
 #sayso-starbar .sb_number, .sb_number {
-padding: 2px 5px 2px 4px;
-background-color: purple;
-color: white !important;
-font-weight:bold;
-margin: 2px;
--webkit-border-radius: 3px;
--moz-border-radius: 3px;
-border-radius: 3px;
+	padding: 2px 5px 2px 4px;
+	background-color: #0b2f76;
+	color: white !important;
+	font-weight:bold;
+	margin: 2px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 }
 /* /MISSION RULES */
 /* Keep this at end of file. It's used for testing if CSS is loaded. */

@@ -63,14 +63,10 @@
 	linear,
 	left top,
 	left bottom,
-	color-stop(0.22, rgb(204,23,31)),
-	color-stop(0.61,  rgb(140,13,18))
+	color-stop(0.22, rgb(9,72,200)),
+	color-stop(0.61,  rgb(7,34,85))
 	);
-	background-image: -moz-linear-gradient(
-		center top,
-		rgb(204,23,31) 22%,
-		rgb(140,13,18) 61%
-	);
+	
 }
 
 .sg-result-percent {

@@ -330,8 +330,8 @@ h1.sg-title {
 #sg_SubmitButton{
 	border:none !important;
 	background: none !important;
-	background: url('/images/machinima/surveys_submit.png') no-repeat !important;
-	width:37px !important;
+	background: url('/images/music/surveys_submit.png') no-repeat !important;
+	width:51px !important;
 	height:25px !important;
 	white-space: nowrap;
 	text-indent: -3000px;

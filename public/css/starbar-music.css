@@ -706,8 +706,8 @@
 /* END */
 #sayso-starbar #starbar-player-console .sb_imgRedeemable{
 	background-image: url('../images/music/img_payso.png');
-	width: 33px;
-	height: 30px;
+	width: 29px;
+	height: 29px;
 	display: inline-block;
 	position: absolute;
 	z-index: 1000;
@@ -906,7 +906,7 @@
 	height: 30px;
 	position: relative;
 	display: block;
-	padding: 14px 0px 0px 0px;
+	padding: 16px 0px 0px 0px;
 }
 
 #sayso-starbar #starbar-player-console #starbar-level .sb_user-points-box{

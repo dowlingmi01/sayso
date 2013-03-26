@@ -200,7 +200,8 @@
 			"type": "list",
 			"listoptions": [
 				"small",
-				"large"
+				"large",
+				"huge"
 			],
 			"default": "small",
 			"displaywhen": [

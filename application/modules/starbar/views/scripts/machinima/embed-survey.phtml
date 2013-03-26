@@ -32,6 +32,8 @@
 		var iframeContainerId = "starbar-survey-<?= $this->survey->id ?>";
 		<? if ($this->survey->origin == "UGAM") { ?>
 			$SQ.insertCommunicationIframe(link, iframeContainerId, 970, 500, 'auto'); // Add new iframe!
+		<? } else if ($this->survey->size == "huge") { ?>
+			$SQ.insertCommunicationIframe(link + "&size=huge", iframeContainerId, 970, 500, 'auto'); // Add new iframe!
 		<? } else if ($this->survey->size == "large") { ?>
 			$SQ.insertCommunicationIframe(link + "&size=large", iframeContainerId, 640, 410, 'auto'); // Add new iframe!
 		<? } else { ?>

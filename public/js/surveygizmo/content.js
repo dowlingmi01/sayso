@@ -15,10 +15,10 @@
 	cssSGQ.href = '//' + $SGQ.base_domain + '/css/surveygizmo/surveys-' + $SGQ.starbar_short_name + '.css';
 	document.body.appendChild(cssSGQ);
 
-	if ($SGQ.size == "large") {
+	if ($SGQ.size == "large" || $SGQ.size == "huge") {
 		var cssLargeSGQ = document.createElement('link');
 		cssLargeSGQ.rel = 'stylesheet';
-		cssLargeSGQ.href = '//' + $SGQ.base_domain + '/css/surveygizmo/surveys-large-' + $SGQ.starbar_short_name + '.css';
+		cssLargeSGQ.href = '//' + $SGQ.base_domain + '/css/surveygizmo/surveys-' + $SGQ.size + '-' + $SGQ.starbar_short_name + '.css';
 		document.body.appendChild(cssLargeSGQ);
 	}
 

@@ -140,34 +140,16 @@
 		},
 		{
 			"colname": "external_id",
-			"type": "surveylist",
-			"label": "Pick a Survey",
-			"defaultv": "--Please Select an SG Survey--",
-			"surveytype":"survey",
-			"help": "Pick from list of available surveys",
-			"displaywhen": [
-				"add"
-			]
-		},
-		{
-			"colname": "external_id",
 			"type": "number",
 			"width":40,
 			"filterwidth":40,
 			"help": "Used for polls/surveys only -- ignored for quizzes",
 			"displaywhen": [
+				"add",
 				"detail",
+				"grid",
 				"delete",
 				"edit"
-			]
-		},
-		{
-			"colname": "external_key",
-			"type": "hidden",
-			"width": 360,
-			"help": "Used for polls/surveys only -- ignored for quizzes",
-			"displaywhen": [
-				"add"
 			]
 		},
 		{
@@ -176,6 +158,7 @@
 			"width": 360,
 			"help": "Used for polls/surveys only -- ignored for quizzes",
 			"displaywhen": [
+				"add",
 				"detail",
 				"edit"
 			]

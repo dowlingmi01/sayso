@@ -1195,22 +1195,22 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 /* Component containers
 ----------------------------------*/
 
-.sb_ui-widget-content {
-	border: 1px solid #aaaaaa;
+#sayso-starbar .sb_ui-widget-content {
+	/*border: 1px solid #aaaaaa;*/
 	color: #222222;
 }
-.sb_ui-widget-content a {
+#sayso-starbar .sb_ui-widget-content a {
 	color: #222222;
 }
-.sb_ui-widget-header {
-	border: 1px solid #aaaaaa;
+#sayso-starbar .sb_ui-widget-header {
+	/*border: 1px solid #aaaaaa;*/
 	color: #222222;
 	font-weight: bold;
 }
-.sb_ui-widget-header a {
+#sayso-starbar .sb_ui-widget-header a {
 	color: #222222;
 }
-.sb_ui-corner-left {
+#sayso-starbar .sb_ui-corner-left {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -1960,7 +1960,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 	background-color: #888;
 	border: none;
 	-moz-border-radius: 3px;
-	=webkit-border-radius: 3px;
+	-webkit-border-radius: 3px;
 	border-radius: 3px;
 }
 #sayso-starbar .starbar-switcher-add-button.starbar-switcher-active {

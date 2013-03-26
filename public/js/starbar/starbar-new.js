@@ -1179,7 +1179,7 @@ $SQ(function(){
 							if (!$SQthis.hasClass('sb_ui-progressbar-value')) {
 								$SQthis.addClass('sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left');
 							}
-							if ($SQthis.attr('data-currency') == currencyTitle) {
+							if ($SQthis.attr('data-currency-type') == currencyType) {
 								if (animate && !justLeveledUp) {
 									var animatingBarElem = $SQ(document.createElement('div'));
 									var fadingBarElem = $SQ(document.createElement('div'));

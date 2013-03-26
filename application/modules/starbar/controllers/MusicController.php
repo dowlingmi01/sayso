@@ -14,7 +14,7 @@ class Starbar_MusicController extends Starbar_ContentController
 
 	protected function _assignShareInfoToView($shareLink = null, $twitterShareText = null, $facebookShareCaption = null, $facebookCallbackUrl = null, $facebookTitle = null, $facebookDescription = null) {
 		parent::_assignShareInfoToView($shareLink, $twitterShareText, $facebookShareCaption, $facebookCallbackUrl, $facebookTitle, $facebookDescription);
-		$this->view->assign('facebook_share_image_url', 'https://s3.amazonaws.com/say.so/media/misc/so_FB_Share_Icon_100px.jpg');
+		$this->view->assign('facebook_share_image_url', 'https://s3.amazonaws.com/say.so/media/misc/mu_FB_Share_Icon_100px.jpg');
 	}
 
 	protected $_appShareLink = 'http://Music.Say.So';

@@ -1669,7 +1669,8 @@ $results[] = $result;
 						                     , array('custom_amount'=>$formData['redeemableaward']) );
 					$results[] = $result;
 				}
-
+				if (isset($formData['redeemablecurrency'])||isset($formData['redeemableaward']))
+					$gamer->removeProfileCache();
 				$client->getEndUser($gamer->getGamingId());
 
 				$data = $client->getData();

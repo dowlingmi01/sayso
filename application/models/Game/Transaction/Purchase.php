@@ -1,7 +1,6 @@
 <?php
 class Game_Transaction_Purchase extends Game_Transaction {
 	public function execute() {
-		$bdBalances = $this->_getBDBalances();
 		$asset_id = $this->_parameters['asset_id'];
 		$good = $this->_economy->_purchasables[$asset_id];
 		$price = $good['price'];
@@ -19,9 +18,9 @@ class Game_Transaction_Purchase extends Game_Transaction {
 		
 		$lines[] = array('game_asset_id'=>$asset_id, 'amount'=>$quantity);
 		$lines[] = array('game_asset_id'=>$redeemable_id, 'amount'=>- $quantity * $price);
-		$lines[] = array('game_asset_id'=>$tracking_purchase_id, 'amount'=>1);
+		$lines[] = array('game_asset_id'=>$tracking_purchase_id, 'amount'=>$quantity);
 		if( $good['type'] == 'token' )
-			$lines[] = array('game_asset_id'=>$tracking_token_id, 'amount'=>1);
-		$this->_saveLines($transaction_id, $lines, $bdBalances);
+			$lines[] = array('game_asset_id'=>$tracking_token_id, 'amount'=>$quantity);
+		$this->_saveLines($transaction_id, $lines);
 	}
 }

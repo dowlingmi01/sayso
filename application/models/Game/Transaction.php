@@ -36,7 +36,8 @@ class Game_Transaction {
 		
 		return $currencies;
 	}
-	protected function _saveLines( $transaction_id, $lines, $bdBalances ) {
+	protected function _saveLines( $transaction_id, $lines ) {
+		$bdBalances = $this->_getBDBalances();
 		$sql = 'INSERT INTO game_transaction_line (game_transaction_id, game_asset_id, amount, previous_balance_bd, current_balance_bd) VALUES (?, ?, ?, ?, ?)';
 		foreach( $lines as $line ) {
 			if( array_key_exists($line['game_asset_id'], $bdBalances) ) {
@@ -51,13 +52,12 @@ class Game_Transaction {
 		
 	}
 	public function execute() {
-		$bdBalances = $this->_getBDBalances();
 		$sql = 'SELECT * FROM game_transaction_type_line WHERE game_transaction_type_id = ?';
 		$lines = Db_Pdo::fetchAll($sql, $this->_transaction_type['id']);
 		$sql = 'INSERT INTO game_transaction (game_transaction_type_id, user_id, survey_id) VALUES (?, ?, ?)';
 		Db_Pdo::execute($sql, $this->_transaction_type['id'], $this->_user_id, $this->_survey_id );
 		$transaction_id = Db_Pdo::getPdo()->lastInsertId();
-		$this->_saveLines($transaction_id, $lines, $bdBalances);
+		$this->_saveLines($transaction_id, $lines);
 	}
 	static public function run($user_id, $economy_id, $short_name, $parameters = array()) {
 		try {
@@ -77,13 +77,8 @@ class Game_Transaction {
 		}
 	}
 	static public function checkUserLevel( Economy $economy, $user_id, $parameters ) {
-		$sql = 'SELECT credits - debits as balance FROM game_balance WHERE user_id = ? AND game_asset_id = ?';
-		$res = Db_Pdo::fetchAll($sql, $user_id, $economy->_level_asset_id);
-		$level = $res[0]['balance'];
-		
-		$sql = 'SELECT credits - debits as balance FROM game_balance WHERE user_id = ? AND game_asset_id = ?';
-		$res = Db_Pdo::fetchAll($sql, $user_id, $economy->getCurrencyIdByTypeId(Economy::CURRENCY_EXPERIENCE));
-		$experience = $res[0]['balance'];
+		$level = self::getBalance($user_id, $economy->_level_asset_id);
+		$experience = self::getBalance($user_id, $economy->getCurrencyIdByTypeId(Economy::CURRENCY_EXPERIENCE));
 		
 		if( array_key_exists('gamer', $parameters) )
 			$parameters = array( 'gamer' => $parameters['gamer'] );
@@ -237,5 +232,10 @@ class Game_Transaction {
 			$logger->addWriter($logWriter);
 		}
 		$logger->log($message, Zend_Log::INFO);
+	}
+	public static function getBalance($user_id, $asset_id) {
+		$sql = 'SELECT credits - debits as balance FROM game_balance WHERE user_id = ? AND game_asset_id = ?';
+		$res = Db_Pdo::fetchAll($sql, $user_id, $asset_id);
+		return count($res) ? $res[0]['balance'] : 0;
 	}
 }

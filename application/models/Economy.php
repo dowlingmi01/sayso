@@ -4,7 +4,7 @@ class Economy extends Record
 {
 	protected $_tableName = 'economy';
 	protected static $_economies = array();
-	public $_currencies, $_purchasables, $_levels, $_bdids, $currency_types, $_transaction_types, $_level_asset_id;
+	public $_currencies, $_purchasables, $_levels, $_bdids, $_currency_types, $_transaction_types, $_level_asset_id;
 
 	public function exportData() {
 		$fields = array(

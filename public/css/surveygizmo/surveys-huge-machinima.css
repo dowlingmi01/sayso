@@ -5,10 +5,10 @@
 
 /* !----- Basic Structure ----- */
 .sg-wrapper {
-	width: 930px;
+	width:945px;
 }
 .sg-question-set {
-	width: 922px;
+	width: 900px;
 }
 ul.sg-list-vertical li {
 	min-width: 290px;

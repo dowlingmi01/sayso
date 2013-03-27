@@ -768,6 +768,7 @@ $SQ(function(){
 
 			var popBoxId = '#sb_popBox_surveys_lg';
 			if (size == "large") popBoxId = '#sb_popBox_surveys_hg';
+			if (size == "huge") popBoxId = '#sb_popBox_surveys_ug';
 
 			openPopBox($SQ(popBoxId), '//'+sayso.baseDomain+'/starbar/' + sayso.starbar.shortName + '/embed-survey?survey_id='+surveyId+"&snc="+snc, true);
 		},

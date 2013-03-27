@@ -100,7 +100,7 @@ multi request getAllSurveys & getAllUsers - with page limits - - bad user id fie
 
 <hr />
 <?php
-$data_format = json_encode(array("api_user"=>9001, "api_key"=>"JUHkjh234JH9", "action_class"=>"notification", "action"=>"getUserNotifications",  "starbar_id"=>5, "starbar_stowed"=>"false"));
+$data_format = json_encode(array("api_user"=>9001, "api_key"=>"JUHkjh234JH9", "action_class"=>"notification", "action"=>"getUserNotifications", "starbar_id"=>5, "starbar_stowed"=>"false"));
 ?>
 Notification endpoint - getUserNotifications
 <form action="http://local.saysollc.com/api3/" method="post">
@@ -110,7 +110,7 @@ Notification endpoint - getUserNotifications
 
 <hr />
 <?php
-$data_format = json_encode(array("api_user"=>9001, "api_key"=>"JUHkjh234JH9", "action_class"=>"notification", "action"=>"updateStatus",  "message_id"=>33));
+$data_format = json_encode(array("api_user"=>9001, "api_key"=>"JUHkjh234JH9", "action_class"=>"notification", "action"=>"updateStatus",  "message_id"=>33, "mark_closed"=>"true", "mark_notified" => "false"));
 ?>
 Notification endpoint - updateStatus
 <form action="http://local.saysollc.com/api3/" method="post">
@@ -119,12 +119,30 @@ Notification endpoint - updateStatus
 </form>
 
 <hr />
+<?php
+$data_format = json_encode(array("api_user"=>9001, "api_key"=>"JUHkjh234JH9", "action_class"=>"notification", "action"=>"saveStatusByShortNameAndStarbar",  "short_name"=>"Welcome", "starbar_id"=>5));
+?>
+Notification endpoint - updateStatusByShortNameAndStarbar
+<form action="http://local.saysollc.com/api3/" method="post">
+	<input type="hidden" name="data" value='<?= $data_format; ?>' />
+	<input type="submit" />
+</form>
+
+<hr />
+<?php
+$data_format = json_encode(array("api_user"=>9001, "api_key"=>"JUHkjh234JH9", "action_class"=>"notification", "action"=>"saveStatusByShortNameAndStarbar",  "short_name"=>"Wesdfsdflcome", "starbar_id"=>5));
+?>
+Notification endpoint - updateStatusByShortNameAndStarbar - test bad short_name
+<form action="http://local.saysollc.com/api3/" method="post">
+	<input type="hidden" name="data" value='<?= $data_format; ?>' />
+	<input type="submit" />
+</form>
+
+<hr />
 
 <?php
-
-$apiUser = 314;
-$apiKey = "JUHkjh234JH9";
-$api = Api3_Api::getInstance($apiUser, $apiKey);
+$apiCredentials = array("user_id" => 314, "user_key" => "JUHkjh234JH9");
+$api = Api3_Api::getInstance($apiCredentials);
 
 
 

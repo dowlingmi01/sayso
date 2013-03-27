@@ -1,107 +1,125 @@
 <?php
 /**
- * the Api object encapsulates the request, response, error
- * and auth objects for easier passing around within the code.
+ * <p>The Api object encapsulates the request, response, error
+ * and auth objects for easier passing around within the code.</p>
+ *
+ * @package Api3
  */
 class Api3_Api
 {
 	/**
+	 * The api instance.
 	 *
 	 * @var Api3_Api
 	 */
 	private static $_instance;
 
-	/** sets the directory of the module
+	/**
+	 * Sets the directory of the module.
 	 *
 	 * @var string
 	 */
-	private $_module_dir = "api3";
+	private $_moduleDir = "api3";
 
-	/**sets the controller class prefix for this module
+	/**
+	 * Sets the controller class prefix for this module.
 	 *
 	 * @var string
 	 */
-	public $module_name = "Api3_";
+	private $_moduleName = "Api3_";
 
-	/**the error object
+	/**
+	 * The error object.
 	 *
 	 * @var Api3_Error
 	 */
-	private $error;
+	private $_error;
 
-	/**the request object
+	/**
+	 * The request object.
 	 *
 	 * @var Api3_Request
 	 */
-	private $request;
+	private $_request;
 
-	/**the response object
+	/**
+	 * The response object.
 	 *
 	 * @var Api3_Response
 	 */
-	private $response;
+	private $_response;
 
-	/**the auth object
+	/**
+	 * The auth object.
 	 *
 	 * @var Api3_Autentication
 	 */
-	private $auth;
+	private $_auth;
 
 ////////////////////////////////////////////////////
 
-	/**Private constructor
-	 * sets the error object
-	 * sets the request object
-	 * sets the response object
-	 * sets the auth object
+	/**
+	 * Private constructor
 	 *
-	 * @param string $request - json format
-	 * TODO: accept more than json
+	 * <p>Sets the error object.</p>
+	 * <p>Sets the request object.</p>
+	 * <p>Sets the response object.</p>
+	 * <p>Sets the auth object.</p>
+	 *
+	 * @param string $request json format
 	 */
 	private function __construct($request)
 	{
+		//TODO: accept more than json.
 		//initialize ApiError object
-		$this->error = new Api3_ApiError();
+		$this->_error = new Api3_ApiError();
 
 		//initialize the Request object
-		$this->request = new Api3_Request($request, $this->error);
+		$this->_request = new Api3_Request($request);
 
 		//initialize Response object
-		$this->response = new Api3_Response($this->request, $this->error);
+		$this->_response = new Api3_Response($this->_request);
 
 		//initialize Auth object
-		$this->auth = Api3_Authentication::getAuthentication();
+		$this->_auth = Api3_Authentication::getAuthentication();
 		//authenticate api access
-		$this->auth->apiAuthentication($this->request, $this->error);
+		$this->_auth->apiAuthentication($this->_request, $this->_error);
 
 	}
 
-	/**returns an instance of Api3_Api with response, request,
-	 *	and auth arrtibutes populated
+	/**
+	 * Returns an instance of Api3_Api with response, request,
+	 *	and auth arrtibutes populated.
 	 *
-	 * NOTE: input parameters first looks for $request_json
-	 *	then checks the $apiId, $apiKey pair
-	 *This is to handle the different entry points of the API
-	 *	$request_json has all the required parameters
-	 *	$apiId, $apiKey pair is for accessing the API directly from
-	 *	code only the user id and user key are required.
+	 *<p>Input parameters first looks for <code>$request_json</code>
+	 *	then checks the <code>$apiLoginCredentials</code> array</p>
+	 *<p>This is to handle the different entry points of the API</p>
+	 *<p><code>$request_json</code> has all the required parameters</p>
+	 *<p><code>$apiLoginCredentials</code> is for accessing the API directly from
+	 *	code. Only the user id and user key are required. The user type is optional.</p>
 	 *
-	 * @param string $api_id
-	 * @param string $api_key
-	 * @param string $api_user_type
-	 * @param string $request_json - json fomat
+	 * @param array $apiLoginCredentials
+	 *	<p><b>required params:</b>
+	 *		user_id,
+	 *		user_key</p>
+	 *	<p><b>option params:</b>
+	 *		user_type</p>
+	 * @param string $request_json (json fomat)
 	 * @return Api3_Api
 	 */
-	public static function getInstance ($api_id = NULL, $api_key = NULL, $api_user_type = NULL, $request_json = NULL)
+	public static function getInstance ($apiLoginCredentials = NULL, $request_json = NULL)
 	{
 		//prepare the request params for consistent handling
 		if ($request_json) //external api request
 		{
 			$request = $request_json;
-		} elseif ($api_id && $api_key) { //internal program request
-			$userCredentials = array('api_user'=>$api_id, 'api_key'=>$api_key);
-			isset($api_user_type) ? array_push($userCredentials, array("user_type" => $api_user_type)) : "";
-			$request = json_encode($userCredentials);
+		} elseif ($apiLoginCredentials) { //internal program request
+			$validLoginCredentials = self::_proessLoginCredentials($apiLoginCredentials);
+
+			if ($validLoginCredentials === FALSE)
+				$error = "missing_params_user_auth";
+			else
+				$request = json_encode($validLoginCredentials);
 		} else {
 			//in case Api3_Error is not yet loaded - set it here and apply error after $_instance has been checked
 			$error = "missing_params_api_instance";
@@ -116,206 +134,231 @@ class Api3_Api
 		//set error if triggered above
 		if (isset($error))
 		{
-			self::$_instance->error->newError("missing_params_api_instance");
+			self::$_instance->_error->newError("missing_params_api_instance");
 		}
 
 		return self::$_instance;
 	}
 
-	/**process all api calls
+	/**
+	 * Formats the user credentials as passed from the api instantiation.
+	 * Returns false if required parameters are missing.
 	 *
-	 * checks the Api->auth object for api access
-	 * checks for single or multi requests
-	 * authorizes action access
-	 * processes the requested logic
-	 * prepares logic response into the Api->response object
+	 * @param array $apiLoginCredentials
+	 * @return boolean|array
+	 */
+	private static function _proessLoginCredentials($apiLoginCredentials)
+	{
+		if (!isset($apiLoginCredentials["user_id"]) || $apiLoginCredentials["user_id"] == "")
+			return FALSE;
+		if (!isset($apiLoginCredentials["user_key"]) || $apiLoginCredentials["user_key"] == "")
+			return FALSE;
+		$userCredentials = array('api_user'=>$apiLoginCredentials["user_id"], 'api_key'=>$apiLoginCredentials["user_key"]);
+		isset($apiLoginCredentials["user_type"]) ? array_push($userCredentials, array("user_type" => $apiLoginCredentials["user_key"])) : "";
+		return $userCredentials;
+	}
+
+	/**
+	 * Processes all api calls.
 	 *
-	 * @return mixed string | array | stdClass
-	 *	depends on the response_format requested
+	 *<p>Processes request.</p>
+	 * <p>Formats response.</p>
+	 * <p>Resets objects for this request/response.</p>
+	 *
+	 * @return mixed Depends on the response_format requested.
 	 */
 	public function getResponse()
 	{
-		$this->_processResponse();
+		//process request
+		//this function sets the response object based on the request object
+		$this->_processRequest();
 
 		//process errors before returning anything.
-		if ($this->error->checkForErrors() === TRUE)
-		{
-			$this->error->processErrors($this->response, $this->request);
-		}
+		if ($this->_error->checkForErrors() === TRUE)
+			$this->_error->processErrors($this->_response, $this->_request);
+
 		//formats the response object for output
 		$formattedResponse = $this->_formatResponse();
-		$this->_resetObject();
 
-		//outputs the response as it was requested
+		//reset all one time use objects and settings
+		$this->_resetObjects();
+
+		//outputs the formattted response
 		return $formattedResponse;
 	}
 
-	/**processes the response and filter off some potential errors
+	/**
+	 * Processes the response and filter off some potential errors.
 	 *
-	 * @return void
+	 * <p>Checks for errors.</p>
+	 * <p>Checks auth status.</p>
+	 * <p>Checks to make sure a proper request exists.</p>
+	 * <p>For each request:</p>
+	 *<p>Check action auth.</p>
+	 *<p>Send request to endpoint.</p>
+	 *<p>Validate endpoint response.</p>
+	 *<p>Handle errors.</p>
 	 */
-	private function _processResponse()
+	private function _processRequest()
 	{
 		//check for set up errors before processing
-		if ($this->error->checkForErrors() === TRUE)
+		if ($this->_error->checkForErrors() === TRUE)
 			return;
 
 		//check api auth
-		if ($this->auth->getAuthStatus() !== TRUE)
-			return $this->error->newError("auth_failed_api");
+		if ($this->_auth->getAuthStatus() !== TRUE)
+			return $this->_error->newError("auth_failed_api");
 
 		//make sure our request object is strucutured properly
-		if (!isset($this->request->requests))
-			return $this->error->newError("missing_params_request");
+		if (!isset($this->_request->requests))
+			return $this->_error->newError("missing_params_request");
 
 		//iterate through each request for individual processing and error handling
-		foreach ($this->request->requests as $key=>$value)
+		foreach ($this->_request->requests as $key=>$value)
 		{
 			//authenticate action access
-			$this->auth->actionAuthentication($value->action);
-			if ($this->auth->getAuthStatus(TRUE) !== TRUE)
-				return $this->error->newError("auth_failed_action", $key);
+			$this->_auth->actionAuthentication($value->submittedParameters->action);
+			if ($this->_auth->getAuthStatus(TRUE) !== TRUE)
+				return $this->_error->newError("auth_failed_action", $key);
 
 			//send to the proper model for processing
 			$logicResponse = $this->_callAction($value, $key);
 
 			//check response from _callAction for an errors or process logic
-			//TODO clean this up
-			if (isset($logicResponse) && $logicResponse instanceof stdClass && !isset($logicResponse->error))
+			if (isset($logicResponse) && $logicResponse instanceof Api3_EndpointResponse)
 			{
-				//deal with logic response
-				$this->response->responses->$key = $logicResponse;
-			} elseif (isset($logicResponse) && $logicResponse instanceof stdClass && isset($logicResponse->error)) { //accept custom errors from the endpoints
-
-				//prepare the custom error
-				$errorName = $logicResponse->error_name;
-				$errorStructure = new stdClass();
-				foreach ($logicResponse->errors as $errorKey => $errorValue)
+				if (!isset($logicResponse->errors))
 				{
-					if ($errorValue instanceof stdClass)
-					{
-						//loop again
-						foreach($errorValue as $param => $result)
-						{
-							$errorStructure->$errorKey->$param = $result;
-						}
-					} else {
-						$errorStructure->$errorKey = $errorValue;
-					}
+					//deal with logic response
+					$this->_response->responses->$key = $logicResponse;
+				} else {
+					$errorName = $logicResponse->errors->meta->errorName;
+					unset ($logicResponse->errors->meta);
+					//send it in
+					$this->_error->newError($errorName, $key, $logicResponse->errors);
 				}
-				//send it in
-				$this->error->newError($errorName, $key, $errorStructure);
-
 			} elseif (isset($logicResponse) && is_string($logicResponse)) { //handle errors thrown by the api
 				//deal with error
-				$this->error->newError($logicResponse, $key);
+				$this->_error->newError($logicResponse, $key);
 			} else { //catch all for unknown errors
-				$this->error->newError("error_unknown", $key);
-				//TODO: log for research
+				$this->_error->newError("error_unknown", $key);
+				//TODO: log unknown erros
 			}
 		}
 	}
 
-	/**calls the requested action
+	/**
+	 * Calls a single endpoint
 	 *
-	 * @param Api3_Request $request_object
-	 * @param string $request_name
-	 * @return stdClass | void
+	 * <p>Based on the action_class and action params of the requestObject
+	 * this function loads the requested class.</p>
+	 * <p>The structure of this API is such that Zend cannont auto load endpoints
+	 * so we have to manually load them.</p>
+	 *
+	 * @param Api3_Request $requestObject Formated request parameters.
+	 * @param string $requestName The name of the request.
+	 * @return stdClass The return logic may contain an error or the endpoint response.
 	 */
-	private function _callAction($request_object, $request_name) {
+	private function _callAction($requestObject, $requestName) {
 		//prepare the class name for loading
-		$actionClass = $this->module_name . ucfirst($request_object->action_class) . "Controller";
+		$actionClass = $this->_moduleName . ucfirst($requestObject->submittedParameters->action_class) . "Controller";
 		//prepare the file name for loading
-		$classFileName = ucfirst($request_object->action_class) . "Controller";
+		$classFileName = ucfirst($requestObject->submittedParameters->action_class) . "Controller";
 		//assign action name to a variable for dynamic loading
-		$actionName = $request_object->action;
+		$actionName = $requestObject->submittedParameters->action;
 
 		//load the class file so the method can be called
 		//auto load won't work in Zend because we are calling a controller
-		$fileToLoad = APPLICATION_PATH . '/modules/' . $this->_module_dir . '/controllers/' . $classFileName . '.php';
+		$fileToLoad = APPLICATION_PATH . '/modules/' . $this->_moduleDir . '/controllers/' . $classFileName . '.php';
 
 		if (!file_exists($fileToLoad))
 			return "invalid_action_class";
 
-		include_once APPLICATION_PATH . '/modules/' . $this->_module_dir . '/controllers/' . $classFileName . '.php';
+		include_once APPLICATION_PATH . '/modules/' . $this->_moduleDir . '/controllers/' . $classFileName . '.php';
 
 		//make sure the method exists and run its logic
 		if (!method_exists($actionClass, $actionName))
 			return "invalid_action";
 
-		//set up session data all endpoints may use
-		$sessionData = new Zend_Session_Namespace('endpoint');
-		$sessionData->request_name = $request_name;
-		$sessionData->auth = $this->auth;
+		$requestObject->auth = $this->_auth;
 
-		$logicResultClass = new $actionClass();
-		$logicResult = $logicResultClass->$actionName($request_object);
+		//load the endpoint
+		$logicResultClass = new $actionClass($requestName, $this->_auth);
+		$logicResult = $logicResultClass->$actionName($requestObject);
 
-		//catch errors or return logic
 		return $logicResult;
 	}
 
-	/**Format the data that the API has prepared to match the requested
-	 *  output format
+	/**
+	 * Format the data that the API has prepared to match the requested
+	 *  output format.
 	 *
-	 *
-	 * @return mixed - json | array | Api3_Response
+	 * @return mixed - json|array|Api3_Response
 	 */
 	private function _formatResponse()
 	{
 		//allows for easily adding future response types eg json-d
-		switch ($this->request->response_format)
+		switch ($this->_request->response_format)
 		{
 			case "json":
-				$formattedObject = json_encode($this->response);
+				$formattedObject = json_encode($this->_response);
 				break;
 			case "array":
-				$formattedObject = (array)$this->response;
+				$formattedObject = (array)$this->_response;
 				break;
 			default:
-				$formattedObject = $this->response;
+				$formattedObject = $this->_response;
 		}
 		return $formattedObject;
 
 	}
 
-	/**reset the
-	 *	request
-	 *	response  and
-	 *	error objects
-	 * as well as the per request session data
+	/**
+	 *Resets objects after they have been used.
+	 *
+	 * <p>Reset the:<br />
+	 *	request,<br />
+	 *	response,<br />
+	 *	and error objects<br />
 	 * while keeping the auth object for reusability without having
-	 *	to re-authenticate
+	 * to re-authenticate</p>
 	 */
-	private function _resetObject()
+	private function _resetObjects()
 	{
-		$this->error = new Api3_ApiError();
-		$this->request = new Api3_Request();
-		$this->response = new Api3_Response();
-		$this->auth->resetActionAuth();
-		//reset per request session data
-		$session = new Zend_Session_Namespace("endpoint");
-		foreach ($session as $key=> $value) {
-			unset($session->$key);
-		}
+		$this->_error = new Api3_ApiError();
+		$this->_request = new Api3_Request();
+		$this->_response = new Api3_Response();
+		$this->_auth->resetActionAuth();
 	}
 
-	/**sets the parameters to the request object
+	/**
+	 * Sets the parameters to the request object.
 	 *
 	 * @param array $params
 	 */
 	public function setRequest($params)
 	{
 		//TODO: check for errors first
-		$this->request = new Api3_Request(json_encode($params), $this->error);
+		$this->_request = new Api3_Request(json_encode($params));
 	}
 
-	/**accessor to user_type property
+	/**
+	 * Accessor to user_type property.
 	 *
 	 * @return string
 	 */
 	public function getUserType()
 	{
-		return $this->request->user_type;
+		return $this->_request->user_type;
+	}
+
+	/**
+	 * Accessor to _moduleName property.
+	 *
+	 * @return string
+	 */
+	public function getModuleName()
+	{
+		return $this->_moduleName;
 	}
 }

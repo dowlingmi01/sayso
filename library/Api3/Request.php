@@ -1,40 +1,46 @@
 <?php
 /**
- * sets up the default structure and default values for the
- * request object for passing around the api
- * these values can be overridden in the API call
+ * <p>Sets up the default structure and default values for the
+ *  request object for passing around the api
+ *  these values can be overridden in the API call.</p>
  *
+ * @package Api3
  */
 class Api3_Request
 {
-	/**defines the class that houses the endpoint
+	/**
+	 * The class that houses the endpoint
 	 *
 	 * @var string
 	 */
 	public $action_class;
 
-	/**defines the endpoint (method) of $action_class
+	/**
+	 * The endpoint (method) of $action_class
 	 *
 	 * @var string
 	 */
 	public $action;
 
-	/**the user id
+	/**
+	 * The user id
 	 *
 	 * @var int
 	 */
 	public $api_user;
 
-	/** the user key
+	/**
+	 * The user key
 	 *
 	 * @var string
 	 */
 	public $api_key;
 
-	/**for single requests, we are going to format it as a multi request
-	 * but we need to leave some nodes at the top level
-	 * this array defines the nodes to be left alone in such case
-	 * everything else can be assumed to be a request parameter
+	/**
+	 * For single requests, we are going to format it as a multi request
+	 * but we need to leave some nodes at the top level.
+	 * This array defines the nodes to be left alone in such case.
+	 * Everything else can be assumed to be a request parameter
 	 *
 	 * @var array
 	 */
@@ -47,39 +53,41 @@ class Api3_Request
 
 			);
 
-	/**sets defaults for optional parameters
-	 * so they can be omited in requests
-	 *	request
-	 *		this is for default optional parameters that each
-	 *		requests should have set
-	 *	api
-	 *		this is for default optional parameters that all
-	 *		api calls should have set
+	/**
+	 * Sets defaults for optional parameters
+	 * so they can be omited in requests:
+	 *	<b>request -</b>
+	 *		This is for default optional parameters that each
+	 *		requests should have set.
+	 *	<b>api - </b>
+	 *		This is for default optional parameters that all
+	 *		api calls should have set.
 	 *
 	 * @var array
 	 */
 	private $_default_parameters = array(
-							"request"	=> array(
-								"page_number"		=> 1,
-								"results_per_page"	=> 0
-							),
-							"api"		=> array(
-								"continue_on_error"	=> TRUE,
-								"user_type"		=> "user",
-								"response_format"	=> "json"
-							)
+							"request"		=> array(
+											"page_number"		=> 1,
+											"results_per_page"	=> 0
+										),
+							"api"			=> array(
+											"continue_on_error"	=> TRUE,
+											"user_type"		=> "user",
+											"response_format"	=> "json"
+										)
 	);
 
 ////////////////////////////////////////////////////////////////////////
 
-	/**constructs the request object
-	 *	checks if a json string has been passed
-	 *	then sets the requester_type based on
-	 *		the user id variable passed
+	/**
+	 * Constructs the request object.
 	 *
-	 * @param string $data - json format
+	 * <p>If <code>$data</code> is passed,
+	 *  populate the Api3_Request object.</p>
+	 *
+	 * @param string $data (json format)
 	 */
-	public function __construct($data = NULL, Api3_ApiError $error = NULL) {
+	public function __construct($data = NULL) {
 
 		if ($data)
 		{
@@ -87,11 +95,12 @@ class Api3_Request
 		}
 	}
 
-	/**Takes the json request and converts it to a php object
+	/**
+	 * Takes the json request and converts it to a php object.
 	 *
-	 * All requests must be in json format until extended. This converts the request
+	 *<p>All requests must be in json format until extended. This converts the request
 	 * to a format the php scripts can more easily manage and writes
-	 * it to the Request object.
+	 * it to the Request object.</p>
 	 *
 	 * @param string $request_json
 	 */
@@ -99,7 +108,7 @@ class Api3_Request
 	{
 		$requestParams = json_decode($requestJson);
 		//proessing required for requests with params
-		if (isset($requestParams->action) || isset($requestParams->requests))
+		if (isset($requestParams->action) || isset($requestParams->requests)) //$data was passed to the construtor and has requests in it.
 		{
 			//apply structure to the request object as needed
 			if (!isset($requestParams->requests)) //single request - needs to be formatted
@@ -108,7 +117,11 @@ class Api3_Request
 				{
 					if (!in_array($key, $this->_top_level_params)) //write request level nodes to the $this->request->requests->default node
 					{
-						$this->requests->default->$key = $value;
+						if (!isset($this->requests->default) || !$this->requests->default instanceof Api3_EndpointRequest)
+						{
+							$this->requests->default = new Api3_EndpointRequest();
+						}
+						$this->requests->default->submittedParameters->$key = $value;
 					} else { //write top level nodes to the $this->request node
 						$this->$key = $value;
 					}
@@ -116,29 +129,41 @@ class Api3_Request
 			} else { //straight move, it's already formatted
 				foreach ($requestParams as $key=>$value)
 				{
-					$this->$key = $value;
+					if ($key == "requests")
+					{
+						foreach ($value as $name => $content) {
+							$this->requests->$name =  new Api3_EndpointRequest();
+							$this->requests->$name->submittedParameters = $content;
+						}
+					} else {
+						$this->$key = $value;
+					}
 				}
 			}
 
 			//now that they are set up properly, iterate through each request and add defaults if needed.
+			//TODO: find a better way to get the object key name
 			foreach ($this->requests as $requestParam => $requestParamValue)
 			{
 				$this->_applyDefaultRequestParameters($requestParam);
 			}
 
-		} else { //processing for api instantiation only
+		} else { //$data was passed to the constructor but only has login info. Processing for api instantiation only.
 			foreach ($requestParams as $key=>$value)
 			{
 				$this->$key = $value;
 			}
-		} 
+		}
 		$this->_applyDefaultApiParameters();
 	}
 
-	/**applies default values to parameters that are not sent in
-	 *  because they are optional to send in
+	/**
+	 * Apply default request values to optional parameters.
+	 *
+	 * <p>Applies default values to parameters that are not sent in
+	 * because they are optional to send in
 	 * but are required by the internal api processing as defined in
-	 * $this->_default_parameters["request"]
+	 *  <code>$this->_default_parameters["request"]</code></p>
 	 *
 	 * @param string $requestName
 	 */
@@ -146,17 +171,20 @@ class Api3_Request
 	{
 		foreach ($this->_default_parameters["request"] as $key => $value)
 		{
-			if (!isset($this->requests->$requestName->$key))
+			if (!isset($this->requests->$requestName->submittedParameters->$key))
 			{
-				$this->requests->$requestName->$key = $value;
+				$this->requests->$requestName->submittedParameters->$key = $value;
 			}
 		}
 	}
 
-	/**applies default values to parameters that are not sent in
-	 *  because they are optional to send in
-	 *but are required by the internal api processing as defined in
-	 * $this->_default_parameters["api"]
+	/**
+	 *Apply default values to api parameters.
+	 *
+	 *<p>Applies default values to parameters that are not sent in
+	 * because they are optional to send in
+	 * but are required by the internal api processing as defined in
+	 * <code>$this->_default_parameters["api"]</code></p>
 	 *
 	 */
 	protected function _applyDefaultApiParameters()

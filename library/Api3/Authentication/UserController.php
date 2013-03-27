@@ -1,13 +1,19 @@
 <?php
+/**
+ * Application specific authentication functions and
+ * overloads for user type users.
+ *
+ * @package Api
+ */
 
 class Api3_Authentication_UserController  extends Api3_Authentication
 {
-	/**This needs to be developed
+	/**
+	 * This needs to be developed
 	 * Default placeholder for now
 	 *
 	 *@param Api3_Request
 	 * @param Api3_Error
-	 * @return boolean
 	 */
 	public function apiAuthentication($request, $error)
 	{
@@ -29,7 +35,6 @@ class Api3_Authentication_UserController  extends Api3_Authentication
 	 */
 	public function actionAuthentication($action)
 	{
-		$this->_action_auth = TRUE;
-		return $this->_action_auth;
+		return$this->_action_auth = TRUE;
 	}
 }

@@ -1,7 +1,8 @@
 <?php
 /**
- * This is the parent class for the new API
- * It will be extended for each API module
+ * This is just a place holder for the test actions.
+ *
+ * @package Api3
  */
 class Api3_TestController extends Zend_Controller_Action
 {

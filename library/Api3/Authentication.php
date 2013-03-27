@@ -1,20 +1,28 @@
 <?php
-
+/**
+ * <p>Sets the default structure and provides some common
+ * authentication related functions for passing around the api.</p>
+ *
+ * @package Api3
+ */
 class Api3_Authentication
 {
 	/**
+	 * Whether the call is authorized to access the api.
 	 *
 	 * @var bool
 	 */
 	protected $_api_auth  = FALSE;
 
 	/**
+	 * Whether the action is authorized to access the requested action
 	 *
 	 * @var bool
 	 */
 	protected $_action_auth  = FALSE;
 
-	/**set the user id
+	/**
+	 * User id
 	 *
 	 * @var int
 	 */
@@ -22,10 +30,11 @@ class Api3_Authentication
 
 /////////////////////////////////////////////////
 
-	/**This needs to be developed
+	/**
+	 * This needs to be developed
 	 * Default placeholder for now
 	 *
-	 * overload this in the specific implementation
+	 * Overload this in the specific implementation
 	 *
 	 * @return boolean
 	 */
@@ -34,21 +43,21 @@ class Api3_Authentication
 		$this->_api_auth = FALSE;
 	}
 
-	/**This needs to be developed
+	/**
+	 * This needs to be developed
 	 * Default placeholder for now
 	 *
-	 * overload this in the specific implementation
+	 * Overload this in the specific implementation
 	 *
 	 * @return boolean
 	 */
-	public function actionAuthentication($action)
+	public function actionAuthentication()
 	{
 		$this->_action_auth = FALSE;
-		return $this->_action_auth;
 	}
 
-	/**returns the private property value of the requested
-	 * authnetication call
+	/**
+	 * Status accessor
 	 *
 	 * @param bool $isActionStatus
 	 * @return string
@@ -56,14 +65,13 @@ class Api3_Authentication
 	public function getAuthStatus($isActionStatus = FALSE)
 	{
 		if ($isActionStatus)
-		{
 			return $this->_action_auth;
-		} else {
+		else
 			return $this->_api_auth;
-		}
 	}
 
-	/**resets the authentication for actions
+	/**
+	 * Resets the authentication for actions
 	 *
 	 */
 	public function resetActionAuth()
@@ -71,25 +79,28 @@ class Api3_Authentication
 		$this->_action_auth = FALSE;
 	}
 
-	/**returns an instance of the authentication class as
+	/**
+	 * Returns an instance of the authentication class as
 	 * determined by the submitted user type
 	 *
-	 * this must be called from the $Api3_Api context so that
-	 * $this-> works as intended.
+	 * <p>This must be called from the $Api3_Api context so that
+	 * $this-> works as intended.</p>
 	 *
 	 * @return \className|boolean
 	 */
 	public function getAuthentication()
 	{
+		//_rquest object is private....
 		$user_type = $this->getUserType();
+		$moduleName = $this->getModuleName();
 		//check if file exists
-		$className = $this->module_name . "Authentication_" . ucfirst($user_type) . "Controller";
+		$className = $moduleName . "Authentication_" . ucfirst($user_type) . "Controller";
 		if (class_exists($className))
 		{
 			//load an instance of it
 			return new $className;
 		} else {
-			$this->error->newError("auth_load_fail");
+			$this->_error->newError("auth_load_fail");
 			return FALSE;
 		}
 	}

@@ -1,14 +1,18 @@
 <?php
 /**
- * the Api object encapsulates the request, response,
- * and auth objects for easier passing around within the code.
+ * <p>The Api error object</p>
+ *
+ * @package Api3
  */
 class Api3_ApiError
 {
-	/**type dictates how the error is processed
-	 *	api type will not return any results
-	 *	action errors only affect the action called
-	 *		other called actions may still return results
+	/**
+	 * List of api level errors
+	 *
+	 *<p>Type dictates how the error is processed.</p>
+	 *<p>"api" type will not return any results.</p>
+	 *<p>"action" errors only affect the action called.</p>
+	 *<p>Other called actions may still return results.</p>
 	 *
 	 * @var array
 	 */
@@ -35,7 +39,8 @@ class Api3_ApiError
 		"continue_on_errors"				=> array("type" => "api",		"message" => "A sibling request encountered an error with continue_on_errors set to FALSE. No response provided."),
 	);
 
-	/**holds the errors as they are porcessed
+	/**
+	 * Holds the errors as they are porcessed.
 	 *
 	 * @var array
 	 */
@@ -43,12 +48,12 @@ class Api3_ApiError
 
 ////////////////////////////////////////
 
-	/**sets an error in the Api3_Error object
+	/**
+	 * Sets an error in the Api3_Error object.
 	 *
-	 * @param string $error
-	 * @param string $responseName
-	 * @param bool | mixed $custom_error
-	 *	this is a custom error message that can be passed
+	 * @param string $error			The name of the error
+	 * @param string $responseName	The name of the response node the error gets applied to
+	 * @param bool|mixed $custom_error	The custom error message that can be passed
 	 */
 	public function newError($error, $responseName = "default", $custom_error = FALSE)
 	{
@@ -78,27 +83,27 @@ class Api3_ApiError
 		}
 	}
 
-	/**returns whether there are any errors in the current instantiation of the Error object
+	/**
+	 * Whether there are any errors in the current instantiation of the Error object
 	 *
 	 * @return boolean
 	 */
 	public function checkForErrors()
 	{
 		if (count($this->_errors) > 0)
-		{
 			return TRUE;
-		} else {
+		else
 			return FALSE;
-		}
 	}
 
-	/**inserts or replaces response with the appropriate error message
+	/**
+	 * Inserts or replaces response with the appropriate error message.
 	 *
-	 * if an error of type api is found, it will break and return that alone.
-	 * this allows for the proper ordering of errors.
-	 * for example, if an invalid_class error is thrown, it's logical that a subsequent
+	 * <p>If an error of type api is found, it will break and return that alone.
+	 *  This allows for the proper ordering of errors.</p>
+	 *<p>For example, if an invalid_class error is thrown, it's logical that a subsequent
 	 * invalid_action error would occur even if the action does exist.
-	 * a return of invalid_action does not help a developer fix their code if thrown out of order.
+	 * a return of invalid_action does not help a developer fix their code if thrown out of order.</p>
 	 *
 	 * @param Api3_Response $response
 	 * @param Api3_Request $request
@@ -135,22 +140,23 @@ class Api3_ApiError
 				$response->error_message = $value["message"];
 				break;
 			} else { //action type errors are returned for each request
+				//remove the response if one got through
 				if (isset($response->responses->$value["response_name"]->records))
 				{
 					unset($response->responses->$value["response_name"]->records);
 				}
+
+				//set the error
 				$response->responses->$value["response_name"]->errors_returned = $count;
-				$response->responses->$value["response_name"]->errors->$value["code"] = $value["message"];
+
+				//api errors are handled differently (string) than endpoint errors (Api3_EndpointError)
+				if (is_string($value["message"]))
+				{
+					$response->responses->$value["response_name"]->errors->$value["code"] = $value["message"];
+				} else {
+					$response->responses->$value["response_name"]->errors = $value["message"];
+				}
 			}
 		}
-	}
-
-	/**returns the code of the first error thrown in the error object
-	 *
-	 * @return string
-	 */
-	public function getErrors()
-	{
-		return $this->_errors;
 	}
 }

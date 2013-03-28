@@ -80,14 +80,16 @@ class Game_Transaction {
 		$level = self::getBalance($user_id, $economy->_level_asset_id);
 		$experience = self::getBalance($user_id, $economy->getCurrencyIdByTypeId(Economy::CURRENCY_EXPERIENCE));
 		
-		if( array_key_exists('gamer', $parameters) )
-			$parameters = array( 'gamer' => $parameters['gamer'] );
-		else
-			$parameters = array();
-		
-		$threshold = $economy->_levels[$level+1]['threshold'];
-		if( $experience >= $threshold )
-			self::run($user_id, $economy->id, 'LEVEL_UP', $parameters);
+		if( array_key_exists( $level+1, $economy->_levels ) ) {
+			$threshold = $economy->_levels[$level+1]['threshold'];
+			if( $experience >= $threshold ) {
+				if( array_key_exists('gamer', $parameters) )
+					$parameters = array( 'gamer' => $parameters['gamer'] );
+				else
+					$parameters = array();
+				self::run($user_id, $economy->id, 'LEVEL_UP', $parameters);
+			}
+		}
 	}
 	static public function importBDEconomy($economy_id) {
 		$economy = new Economy();

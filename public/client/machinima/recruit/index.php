@@ -34,7 +34,7 @@
 	  <div class="section tab-pane active" id="section-1">
 	  	<div class="section-head">
 	  		<h2>What is Machinima Recon?</h2>
-	  		<p>Are you a Machinima junkie?  Do you eagerly await new shows and trailers?  Are you interested in making Machinima better for everyone?  If so, you might be a perfect recruit for Machinima | Recon!</p>
+	  		<p>You have been selected to join Machinma Recon, an exclusive community brought to you by Machinima! Explore Machinima's amazing content, give us your opinions, and earn rewards while you do it!</p>
 
 			</div><!-- .section-head -->
 

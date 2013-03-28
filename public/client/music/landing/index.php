@@ -65,9 +65,8 @@ a:hover {
 	  <div class="section tab-pane" id="section-2">
 	  	<div class="section-head">
 	  		<h2>What can I do?</h2>
-	  		<p>Earn Social PaySos by taking polls, answering surveys and giving your
-opinion on social, casual and mobile gaming. Redeem Social PaySos for
-items in our Reward Center.</p>
+	  		<p>Earn Music PaySos by taking polls, answering surveys and giving <br />
+            your opinion on music, concerts and artists. <br />Redeem Music PaySos for items in our Reward Center.</p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">
@@ -85,8 +84,7 @@ items in our Reward Center.</p>
 	  <div class="section tab-pane" id="section-3">
 	  	<div class="section-head">
 	  		<h2>What do I get?</h2>
-	  		<p>Great Prizes - The Reward Center is full of prizes designed
-specifically for social game fanatics.</p>
+	  		<p>Great Prizes - The Reward Center is full of prizes designed <br />specifically for music fans.</p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">

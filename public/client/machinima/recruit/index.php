@@ -40,6 +40,7 @@
 
 			<div class="slideshow">
 				<div class="slides">
+               		 <div class="slide"><img src="images/img_slide_intro.png" alt="" /></div>
 					<div class="slide"><img src="images/img_slide_1a.png" alt="" /></div>
 					<div class="slide"><img src="images/img_slide_1b.png" alt="" /></div>
                     <div class="slide"><img src="images/img_slide_1c.png" alt="" /></div>

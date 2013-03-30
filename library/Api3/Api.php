@@ -235,8 +235,11 @@ class Api3_Api
 					$errorName = $logicResponse->errors->meta->errorName;
 					unset ($logicResponse->errors->meta);
 					//send it in
-					$this->_error->newError($errorName, $key, $logicResponse->errors);
+					$this->_error->newError($errorName, $key, $logicResponse->errors->errors);
 				}
+			} elseif (isset($logicResponse) && $logicResponse instanceof Exception) { //exceptions thrown by the endpoint
+				//deal with error
+				$this->_error->newError("endpoint_exception", $key, $logicResponse->getMessage());
 			} elseif (isset($logicResponse) && is_string($logicResponse)) { //handle errors thrown by the api
 				//deal with error
 				$this->_error->newError($logicResponse, $key);
@@ -284,8 +287,11 @@ class Api3_Api
 
 		//load the endpoint
 		$logicResultClass = new $actionClass($requestName, $this->_auth);
-		$logicResult = $logicResultClass->$actionName($requestObject);
-
+		try {
+			$logicResult = $logicResultClass->$actionName($requestObject);
+		} catch(Exception $e) {
+			$logicResult = $e;
+		}
 		return $logicResult;
 	}
 

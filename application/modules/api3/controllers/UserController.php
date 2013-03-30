@@ -19,14 +19,9 @@ class Api3_UserController extends Api3_GlobalController
 	 */
 	public  function getAllUsers(Api3_EndpointRequest $request)
 	{
-		$response = new Api3_EndpointResponse($request);
+		$validators = array("page_number" => "int_required_notEmpty", "results_per_page" => "int_required_notEmpty");
 
-		$request->addValidators(array("page_number" => "int_required_notEmpty", "results_per_page" => "int_required_notEmpty"));
-
-		$request->preProcess();
-
-		if ($request->hasErrors())
-			return $response->addError();
+		$response = new Api3_EndpointResponse($request, NULL, $validators);
 
 		//logic
 		$sql = "SELECT *
@@ -35,14 +30,10 @@ class Api3_UserController extends Api3_GlobalController
 		$sql .= $this->_prepareLimitSql((int)$request->validParameters["results_per_page"], (int)$request->validParameters["page_number"]);
 
 		//count logic
-		$db = Zend_Registry::get('db');
-		$count = $db->fetchOne("SELECT count(id) FROM user");
+		$countSql = "SELECT count(id) FROM user";
 
 		$response->addRecordsFromSql($sql);
-		$response->addPagination($count);
-
-		if ($response->hasErrors())
-			return $response->addError();
+		$response->setPaginationBySql($countSql);
 
 		return $response;
 	}

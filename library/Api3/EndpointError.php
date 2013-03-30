@@ -36,11 +36,16 @@ class Api3_EndpointError
 	/**
 	 * Writes a predefined error to the object.
 	 *
-	 * @param string $name
 	 * @param mixed $value
+	 * @param string $name
 	 */
-	public function addError($name, $value)
+	public function addError($value, $name = NULL)
 	{
-		$this->errors->$name = $value;
+		if (!$name)
+		{
+			$this->errors = $value;
+		} else {
+			$this->errors->$name = $value;
+		}
 	}
 }

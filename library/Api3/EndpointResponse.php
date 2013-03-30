@@ -31,14 +31,33 @@ class Api3_EndpointResponse
 	private $_dafaultResultsPerPage = 50;
 
 	/**
+	 *Filters to be applied be to the request params.
+	 *
+	 * @var array
+	 */
+	private $_filters = array();
+
+	/**
+	 *Validators to be applied to the request params.
+	 *
+	 * @var array
+	 */
+	private $_validators = array();
+
+//////////////////////////////////////////////////////
+
+	/**
 	 * Constructor
 	 *
 	 * <p>Sets the request object to be available in the response object.</p>
 	 *
 	 * @param Api3_EndpointRequest $request
 	 */
-	public function __construct($request) {
+	public function __construct($request, $filters = NULL, $validators = NULL) {
 		$this->_request = $request;
+		$this->setFilters($filters);
+		$this->setValidators($validators);
+		$this->_validateParams();
 	}
 
 	/**
@@ -57,14 +76,114 @@ class Api3_EndpointResponse
 		}
 	}
 
-	public function addRecord()
+	/**
+	 * Validates the request params.
+	 *
+	 * <p>Runs <code>$this->submittedParameters</code>
+	 * through each of the filters. Then does the same for
+	 * validators. <p>
+	 * <p>To catch empty params as FALSE, it will write FALSE
+	 * for any filter params that are not submitted.</p>
+	 * <p>To get a complete list of validated and escaped params,
+	 * all params must be sent through the validator. If a param is
+	 * in the filter arry and not the validator array, it will not be
+	 * accessable through <code>$this->validParameters</code>
+	 * </p>
+	 *
+	 */
+	private function _validateParams()
 	{
+		//filter - do this separately from Zend_Filter_Input because it doesn't work right - the validator process is converting bool to string, so we have to recast it.
+		$filteredParams = (array)$this->_request->submittedParameters;
+		if ($this->_filters)
+			foreach ($this->_filters as $key => $value) {
+				if (isset($this->_request->submittedParameters->$key))
+					$filteredParams[$key] = $value->filter($this->_request->submittedParameters->$key);
+				else
+					//TODO: see if this will cause problems with other param types that are omited
+					$filteredParams[$key] = FALSE;
+			}
 
+		//validate
+		//note: The filter param is intentionally left NULL as Zend_Filter_Input will convert bool to string. So we handle this separtely.
+		$validatedInput = new Zend_Filter_Input(NULL, $this->_validators, $filteredParams);
+
+		if ($validatedInput->isValid()) {
+			//get request
+			$this->_request->validParameters = $validatedInput->getEscaped();
+
+			//recast bools
+			foreach ($this->_request->validParameters as $key => $value) {
+				if (is_bool($filteredParams[$key]))
+				{
+					$this->_request->validParameters[$key] = (bool)$value;
+				}
+			}
+		} else {
+			$this->errors = $this->_prepareFailedParameterResponse($validatedInput);
+		}
 	}
 
-	public function addRecords()
+	/**
+	 * Prepares an error for situations where the parameter validation fails.
+	 *
+	 * @param Zend_Filter_Input $validated_input
+	 * @return Api3_EndpointError
+	 */
+	private function _prepareFailedParameterResponse($validated_input)
 	{
+		$endpointError = new Api3_EndpointError("failed_validation");
 
+		if ($validated_input->hasInvalid())
+		{
+			$invalid = $validated_input->getInvalid();
+			foreach ($invalid as $paramName => $paramArray)
+			{
+				foreach ($paramArray as $key => $value)
+				{
+					$error = new stdClass();
+					$error->$key = $value;
+					$endpointError->addError($error, $paramName);
+				}
+			}
+		}
+		if ($validated_input->hasMissing())
+		{
+			$missing = $validated_input->getMissing();
+			foreach ($missing as $key => $value) {
+				$error = new stdClass();
+				$error->missing = $value;
+				$endpointError->addError($error, $key);
+			}
+		}
+		if ($validated_input->hasUnknown())
+		{
+			$unknown = $validated_input->getUnknown();
+			foreach ($unknown as $key => $value) {
+				//TODO: filter/escape things that need don't get validated
+			}
+		}
+		return $endpointError;
+	}
+
+	/**
+	 * Adds the validators to the request object.
+	 *
+	 * @param array $validatorsArray
+	 */
+	public function setValidators($validatorsArray)
+	{
+		$this->_validators = $validatorsArray ? Api3_EndpointValidator::getValidators($validatorsArray) : "";
+	}
+
+	/**
+	 * Adds the filters to the request object.
+	 *
+	 * @param array $filtersArray
+	 */
+	public function setFilters($filtersArray)
+	{
+		$this->_filters = $filtersArray ? Api3_EndpointValidator::getFilters($filtersArray) : "";
 	}
 
 	/**
@@ -76,9 +195,9 @@ class Api3_EndpointResponse
 	 * @param string $name
 	 * @param mixed $value
 	 */
-	public function addContext($name, $value)
+	public function setResultVariable($name, $value)
 	{
-		$this->contexts->$name = $value;
+		$this->variables->$name = $value;
 	}
 
 	public function addContexts()
@@ -89,27 +208,29 @@ class Api3_EndpointResponse
 	/**
 	 * Adds an error to the response object.
 	 *
-	 * <p>The value of <code>$customError</code> can be a string, array, or object structure.</p>
-	 * <p>It will be passed as it is to the api output.</p>
+	 * <p>The value of <code>$customError</code> can be a string,
+	 *  array, or object structure.</p>
+	 * <p>It will be passed as it is structured to the api output.</p>
+	 * <p>If <code>$customError</code> is an array or object, it
+	 * needs a param called "code" and one called "message"</p>
 	 *
-	 * @param mixed $customError
-	 * @return \Api3_EndpointResponse
+	 * @param mixed $customError The error to display. It can be a string, array, or object.
 	 */
-	public function addError($customError = NULL)
+	public function setResponseError($customError)
 	{
-		$this->errors = new Api3_EndpointError();
-
-		if (!$customError)
+		if (is_string($customError))
 		{
-			$errorName = $this->_request->error->meta->errorName;
-			$errorMessage = $this->_request->error->errors;
+			$this->errors = new Api3_EndpointError($customError);
+			$this->errors->addError($customError);
+		} elseif (is_array($customError)) {
+			$this->errors = new Api3_EndpointError($customError["code"]);
+			$this->errors->addError($customError["message"]);
+		} elseif (is_object($customError)) {
+			$this->errors = new Api3_EndpointError($customError->code);
+			$this->errors->addError($customError->message);
 		} else {
-			$errorName = $customError["code"];
-			$errorMessage = $customError["message"];
+			throw new Exception("You must provide a proper error structure.");
 		}
-		$this->errors->meta->errorName =$errorName;
-		$this->errors->{$this->errors->meta->errorName} = $errorMessage;
-		return $this;
 	}
 
 	/**
@@ -142,6 +263,32 @@ class Api3_EndpointResponse
 	}
 
 	/**
+	 * Get the response of another endpoint.
+	 *
+	 * @param type $action
+	 * @param type $class
+	 * @param type $params
+	 * @param type $requestName
+	 * @return Api3_EndpointResponse
+	 * @throws Exception
+	 */
+	public function getFromOtherEndpoint($action, $class, $params, $requestName)
+	{
+		//TODO: validate action authentication.
+		//format $params
+		$request = new Api3_EndpointRequest();
+		$request->loadParams($params, $this->_request->auth);
+
+		$otherClass = new $class($requestName, $this->_request->auth);
+		$otherEndpointResponse = $otherClass->$action($request);
+		if ($otherEndpointResponse)
+			return $otherEndpointResponse;
+		else
+			throw new Exception("Endpoint {$action} failed.");
+	}
+
+
+	/**
 	 * Adds the response of another endpoint to the response of this endpoint.
 	 *
 	 * @param string $action The name of the action in the other endpoint to call.
@@ -151,25 +298,51 @@ class Api3_EndpointResponse
 	 */
 	public function addFromOtherEndpoint($action, $class, $params, $requestName)
 	{
-		//TODO: validate action authentication.
-		//format $params
-		$request = new Api3_EndpointRequest();
-		$request->loadParams($params, $this->_request->auth);
-
-		$otherClass = new $class($requestName, $this->_request->auth);
-		$otherEndpointResponse = $otherEndpointResult = $otherClass->$action($request);
+		$otherEndpointResponse = $this->getFromOtherEndpoint($action, $class, $params, $requestName);
 
 		if (isset($otherEndpointResponse->contexts))
 			$this->contexts = $otherEndpointResponse->contexts;
 		if (isset($otherEndpointResponse->records))
 			$this->records = $otherEndpointResponse->records;
-
-		//TODO: check for errors from other endpoint
 	}
 
-	public function getRecords()
+	/**
+	 * Converts a Collection object into an associative array.
+	 *
+	 * @param Collection $collection
+	 * @return array
+	 */
+	public function getRecordsFromCollection(Collection $collection)
 	{
+		$data = $collection->getArray();
 
+		//format the result set and add the _key_idntifier value to the result set so the api can fomrat the response correctly
+		$formattedData = array();
+		foreach($data as $key => $value)
+		{
+			$formattedData[$key] = $value->getData();
+		}
+
+		return $formattedData;
+	}
+
+	/**
+	 * Adds redords to the response from a Colection data type.
+	 * Also adds pagination.
+	 *
+	 * @param Collection $collection
+	 */
+	public function addRecordsFromCollection(Collection $collection)
+	{
+		$formattedData = $this->getRecordsFromCollection($collection);
+
+		//count logic
+		$count = count($formattedData);
+
+		$this->addRecordsFromArray($formattedData);
+
+		//TODO: add pagination
+		$this->setPagination($count);
 	}
 
 	/**
@@ -179,7 +352,7 @@ class Api3_EndpointResponse
 	 */
 	public function hasErrors()
 	{
-		if (isset($this->error))
+		if (isset($this->errors))
 		{
 			return TRUE;
 		}
@@ -206,7 +379,7 @@ class Api3_EndpointResponse
 	 *
 	 * @param int $count - the total records possible without pagination
 	 */
-	public function addPagination($count)
+	public function setPagination($count)
 	{
 		//records returned
 		$this->_setRecordsReturned();
@@ -218,6 +391,13 @@ class Api3_EndpointResponse
 		$this->_setResultsPerPage();
 		//total pages
 		$this->_setTotalPages();
+	}
+
+	public function setPaginationBySql($sql)
+	{
+		$db = Zend_Registry::get('db');
+		$count = $db->fetchOne($sql);
+		$this->setPagination($count);
 	}
 
 	/**
@@ -265,4 +445,22 @@ class Api3_EndpointResponse
 	{
 		$this->totalPages = (int)($this->totalRecords / $this->resultsPerPage) + (($this->totalRecords % $this->resultsPerPage) > 0 ? 1 : 0);
 	}
+
+
+
+	public function getRecords()
+	{
+
+	}
+
+	public function addRecord()
+	{
+
+	}
+
+	public function addRecords()
+	{
+
+	}
+
 }

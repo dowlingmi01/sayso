@@ -22,37 +22,19 @@ class Api3_NotificationController extends Api3_GlobalController
 	 */
 	public  function getUserNotifications(Api3_EndpointRequest $request)
 	{
-		$response = new Api3_EndpointResponse($request);
+		$validators = array("starbar_id" => "int_required_notEmpty", "starbar_stowed" => "required_allowEmpty");
+		$filters = array("starbar_stowed" => "bool");
 
-		$request->addValidators(array("starbar_id" => "int_required_notEmpty", "starbar_stowed" => "required_allowEmpty"));
-		$request->addFilters(array("starbar_stowed" => "bool"));
+		$response = new Api3_EndpointResponse($request, $filters, $validators);
 
-		$request->preProcess();
-
-		if ($request->hasErrors())
-			return $response->addError();
+		if ($response->hasErrors())
+			return $response;
 
 		//logic
 		$messages = new Notification_MessageCollection();
 		$messages->loadAllNotificationMessagesForStarbarAndUser($request->validParameters["starbar_id"], $request->validParameters["starbar_stowed"], $request->auth->user_id, NULL);
 
-		$data = $messages->getArray();
-
-		//format the result set and add the _key_idntifier value to the result set so the api can fomrat the response correctly
-		$formattedData = array();
-		foreach($data as $key => $value)
-		{
-			$formattedData[$key] = $value->getData();
-		}
-
-		//count logic
-		$count = count($formattedData);
-
-		$response->addRecordsFromArray($formattedData);
-		$response->addPagination($count);
-
-		if ($response->hasErrors())
-			return $response->addError();
+		$response->addRecordsFromCollection($messages);
 
 		return $response;
 	}
@@ -75,21 +57,19 @@ class Api3_NotificationController extends Api3_GlobalController
 	 */
 	public function updateStatus(Api3_EndpointRequest $request)
 	{
-		$response = new Api3_EndpointResponse($request);
+		$validators = array("message_id" => "int_required_notEmpty", "mark_closed" => "required_allowEmpty", "mark_notified" => "required_allowEmpty");
+		$filters = array("mark_closed" => "bool", "mark_notified" => "bool");
 
-		$request->addValidators(array("message_id" => "int_required_notEmpty", "mark_closed" => "required_allowEmpty", "mark_notified" => "required_allowEmpty"));
-		$request->addFilters(array("mark_closed" => "bool", "mark_notified" => "bool"));
+		$response = new Api3_EndpointResponse($request, $filters, $validators);
 
-		$request->preProcess();
-
-		if ($request->hasErrors())
-			return $response->addError();
+		if ($response->hasErrors())
+			return $response;
 
 		//logic
 		$messageUserMap = new Notification_MessageUserMap();
 		$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($request->validParameters["message_id"], $request->auth->user_id, $request->validParameters["mark_closed"], $request->validParameters["mark_notified"]);
 
-		$response->addContext("success", TRUE);
+		$response->setResultVariable("success", TRUE);
 
 		return $response;
 	}
@@ -115,15 +95,13 @@ class Api3_NotificationController extends Api3_GlobalController
 	 */
 	public function saveStatusByShortNameAndStarbar(Api3_EndpointRequest $request)
 	{
-		$response = new Api3_EndpointResponse($request);
+		$validators = array("short_name" => "alpha_required_allowEmpty", "starbar_id" => "int_required_notEmpty", "mark_notified" => "required_allowEmpty", "mark_closed" => "required_allowEmpty");
+		$filters = array("mark_closed" => "bool", "mark_notified" => "bool");
 
-		$request->addValidators(array("short_name" => "alpha_required_allowEmpty", "starbar_id" => "int_required_notEmpty", "mark_notified" => "required_allowEmpty", "mark_closed" => "required_allowEmpty"));
-		$request->addFilters(array("mark_closed" => "bool", "mark_notified" => "bool"));
+		$response = new Api3_EndpointResponse($request, $filters, $validators);
 
-		$request->preProcess();
-
-		if ($request->hasErrors())
-			return $response->addError();
+		if ($response->hasErrors())
+			return $response;
 
 		//logic
 		$message = new Notification_Message();
@@ -131,15 +109,15 @@ class Api3_NotificationController extends Api3_GlobalController
 
 		//throw api error if no $message->id
 		if (!$message->id)
-			return $response->addError(array("code" => "message_group_id_lookup_failed", "message" => "Failed to find a message group with short name = " . $request->validParameters["short_name"]));
+		{
+			$response->setResponseError(array("code" => "message_group_id_lookup_failed", "message" => "Failed to find a message group with short name = " . $request->validParameters["short_name"]));
+			return $response;
+		}
 
 		//set params for sending to updateStatus endpoint
-		$updateStatusParams = array("message_id" => $message->id, "mark_closed" => $request->validParameters["mark_closed"], "mark_notified" => $request->validParameters["mark_notified"]);
+		$otherEndpointParams = array("message_id" => $message->id, "mark_closed" => $request->validParameters["mark_closed"], "mark_notified" => $request->validParameters["mark_notified"]);
 
-		$response->addFromOtherEndpoint("updateStatus", get_class(), $updateStatusParams, $this->request_name);
-
-		if ($response->hasErrors())
-			return $response->addError();
+		$response->addFromOtherEndpoint("updateStatus", get_class(), $otherEndpointParams, $this->request_name);
 
 		return $response;
 	}

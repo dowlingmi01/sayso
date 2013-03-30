@@ -27,9 +27,9 @@ class Api3_Authentication_UserController  extends Api3_Authentication
 		}
 	}
 
-	/**This needs to be developed
+	/**
+	 * This needs to be developed
 	 * Default placeholder for now
-	 *
 	 *
 	 * @return boolean
 	 */

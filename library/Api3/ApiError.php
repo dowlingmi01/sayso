@@ -77,7 +77,7 @@ class Api3_ApiError
 		} else { //this is a debug to catch all incorrect errors
 			$this->_errors[] = array(
 							"code"			=> "invalid_error",
-							"message"			=> "There was an error throwing the requested error. The error you passed {$error}, is not defined.",
+							"message"			=> "There was an error throwing the requested error. The error you passed '{$error}', is not defined.",
 							"type"			=> "api"
 						);
 		}
@@ -148,14 +148,7 @@ class Api3_ApiError
 
 				//set the error
 				$response->responses->$value["response_name"]->errors_returned = $count;
-
-				//api errors are handled differently (string) than endpoint errors (Api3_EndpointError)
-				if (is_string($value["message"]))
-				{
-					$response->responses->$value["response_name"]->errors->$value["code"] = $value["message"];
-				} else {
-					$response->responses->$value["response_name"]->errors = $value["message"];
-				}
+				$response->responses->$value["response_name"]->errors->$value["code"] = $value["message"];
 			}
 		}
 	}

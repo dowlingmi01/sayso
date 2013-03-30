@@ -53,10 +53,10 @@ class Api3_EndpointValidator
 	 * Stores all possible filter rules and returns an array of
 	 * the rules requested by passing an array of the keys required
 	 *
-	 * @param array $keys
+	 * @param array $rules
 	 * @return array
 	 */
-	public static function getFilters($keys)
+	public static function getFilters($rules)
 	{
 		//this array holds all of the possible filter rules
 		//key is the field name to be validated,
@@ -66,7 +66,7 @@ class Api3_EndpointValidator
 					);
 
 		$response = array();
-		foreach ($keys as $key => $value)
+		foreach ($rules as $key => $value)
 		{
 			if (array_key_exists($value, $filters))
 			{

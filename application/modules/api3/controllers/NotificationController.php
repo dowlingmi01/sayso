@@ -48,7 +48,8 @@ class Api3_NotificationController extends Api3_GlobalController
 	 *	message_id
 	 *	mark_closed
 	 *	mark_notified</p>
-	 *<p> NOTES: using the existing function does not return the id of the field updated
+	 *<p> NOTES: using the existing updateOrInsertMapForNotificationMessageAndUser
+	 *	function does not return the id of the field updated
 	 *	this is what should be the key identifier, but since it's not returned, we just
 	 *	use the notification_message_group.id</p>
 	 *

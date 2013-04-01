@@ -34,6 +34,30 @@ class Api3_GlobalController //extends Zend_Controller_Action
 	}
 
 	/**
+	 * Prepares the limit portion of a SQL statement by taking
+	 * the<code>$results_per_page</code> and
+	 * the <code>$page_number</code> parameters
+	 *
+	 * @param int $page_number
+	 * @param int $results_per_page
+	 * @return string
+	 */
+	protected function _prepareLimitSql($results_per_page, $page_number)
+	{
+		$limit = $this->_calculateLimit((int)$results_per_page);
+		$offset = $this->_calculateOffset((int)$page_number, $limit);
+
+		if (is_int($limit) && $limit > 0)
+		{
+			if ($offset < 0 || !is_int($offset))
+			{
+				$offset = 0;
+			}
+			return " LIMIT {$offset}, {$limit}";
+		}
+	}
+
+	/**
 	 * Calculates the limit based on <code>$results_per_page</code>
 	 *
 	 * @param int $results_per_page
@@ -56,30 +80,6 @@ class Api3_GlobalController //extends Zend_Controller_Action
 	private function _calculateOffset($page_number, $limit)
 	{
 		return isset($page_number) ? ($page_number*$limit)-1 : 0;
-	}
-
-	/**
-	 * Prepares the limit portion of a SQL statement by taking
-	 * the<code>$results_per_page</code> and
-	 * the <code>$page_number</code> parameters
-	 *
-	 * @param int $page_number
-	 * @param int $results_per_page
-	 * @return string
-	 */
-	protected function _prepareLimitSql($results_per_page, $page_number)
-	{
-		$limit = $this->_calculateLimit((int)$results_per_page);
-		$offset = $this->_calculateOffset((int)$page_number, $limit);
-
-		if (is_int($limit) && $limit > 0)
-		{
-			if ($offset < 0 || !is_int($offset))
-			{
-				$offset = 0;
-			}
-			return " LIMIT {$offset}, {$limit}";
-		}
 	}
 
 }

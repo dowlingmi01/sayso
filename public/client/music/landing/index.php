@@ -12,7 +12,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>social.say.so Installation</title>
+<title>music.say.so Installation</title>
 <link rel="stylesheet" href="landing.css" />
 <link rel="chrome-webstore-item"
     href="https://chrome.google.com/webstore/detail/<?= $extid?>" />
@@ -33,7 +33,7 @@ a:hover {
 <body>
 <div id="wrapper">
 	<div id="header">
-		<div id="logo"><img src="images/logo.png" alt="Social Say.So" /></div><!-- #logo -->
+		<div id="logo"><img src="images/logo.png" alt="Music Say.So" /></div><!-- #logo -->
 		<div class="community-link"><!--<a href="#">Other Communities</a>--></div><!-- .community-link -->
 	</div><!-- #header -->
 	<div id="main">
@@ -41,7 +41,7 @@ a:hover {
 	<div id="sections" class="tab-content">
 	  <div class="section tab-pane active" id="section-1">
 	  	<div class="section-head">
-	  		<h2>What is Social Say.So?</h2>
+	  		<h2>What is Music Say.So?</h2>
 	  		<p>Are you a music enthusiast? Do you eagerly await the release <br />
 	  		 of new albums  or music videos? Are you an indie artist looking for exposure? <br />
   		 If so, you're probably a perfect fit for Music Say.So!</p>
@@ -114,7 +114,7 @@ extension.</p>
 	  			<input type="text" id="input-password_txt" value="Enter your desired password. (6-12 characters)" /></p>
 	  			<p><input type="password" id="input-confirmation" class="sso_fld" placeholder="Verify your password" />
 	  			<input type="text" id="input-confirmation_txt" value="Verify your password" /></p>
-	  			<p><input type="checkbox" value="" id="agreeterms" /><label for="agreeterms">I agree to the <a href="http://app.saysollc.com/docs/social/Say.So_App_EULA.pdf" target="_blank">terms and conditions</a>.</label></p>
+	  			<p><input type="checkbox" value="" id="agreeterms" /><label for="agreeterms">I agree to the <a href="http://app.saysollc.com/docs/music/Say.So_App_EULA.pdf" target="_blank">terms and conditions</a>.</label></p>
 	  			<input type="submit" value="Grab It" disabled="" id="btn-submit" class="grab-it" />
 	  		</form>
 	  		<p><small>We don't share your email or password with anyone...period.</small></p>

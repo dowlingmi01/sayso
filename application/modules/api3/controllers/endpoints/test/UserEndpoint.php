@@ -6,7 +6,7 @@
  * @subpackage endpoint
  */
 
-class Api3_UserController extends Api3_GlobalController
+class Api3_UserEndpoint extends Api3_GlobalController
 {
 	/**
 	 * Returns all users with optional pagination

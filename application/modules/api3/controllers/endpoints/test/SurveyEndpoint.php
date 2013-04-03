@@ -6,7 +6,7 @@
  * @subpackage endpoint
  */
 
-class Api3_SurveyController extends Api3_GlobalController
+class Api3_SurveyEndpoint extends Api3_GlobalController
 {
 	/**
 	 * Returns all surveys with optional pagination

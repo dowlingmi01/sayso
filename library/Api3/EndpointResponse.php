@@ -201,8 +201,8 @@ class Api3_EndpointResponse
 	{
 		$otherEndpointResponse = $this->getFromOtherEndpoint($action, $class, $params, $requestName);
 
-		if (isset($otherEndpointResponse->contexts))
-			$this->contexts = $otherEndpointResponse->contexts;
+		if (isset($otherEndpointResponse->variables))
+			$this->variables = $otherEndpointResponse->variables;
 		if (isset($otherEndpointResponse->records))
 			$this->records = $otherEndpointResponse->records;
 	}
@@ -242,8 +242,8 @@ class Api3_EndpointResponse
 
 		$this->addRecordsFromArray($formattedData);
 
-		//TODO: add pagination
-		$this->setPagination($count);
+		if ($count > 0)
+			$this->setPagination($count);
 	}
 
 	/**
@@ -305,7 +305,7 @@ class Api3_EndpointResponse
 	{
 
 	}
-	
+
 	/**
 	 * Provides a tool for getting a count of results.
 	 * May not be applicable to all situations
@@ -427,22 +427,6 @@ class Api3_EndpointResponse
 			}
 		}
 		return $endpointError;
-	}
-
-	/**
-	 * Provides a tool for getting a count of results.
-	 * May not be applicable to all situations
-	 *
-	 * @param array|\stdClass $results
-	 * @return int
-	 */
-	protected function _countResults($results)
-	{
-		$count =0;
-		foreach ($results as $value) {
-			$count++;
-		}
-		return $count;
 	}
 
 	/**

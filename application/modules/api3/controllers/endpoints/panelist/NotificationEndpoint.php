@@ -5,7 +5,7 @@
  * @package Api3
  * @subpackage endpoint
  */
-class Api3_NotificationController extends Api3_GlobalController
+class Api3_NotificationEndpoint extends Api3_GlobalController
 {
 	/**
 	 * Returns all users notifications'.
@@ -32,7 +32,7 @@ class Api3_NotificationController extends Api3_GlobalController
 
 		//logic
 		$messages = new Notification_MessageCollection();
-		$messages->loadAllNotificationMessagesForStarbarAndUser($request->validParameters["starbar_id"], $request->validParameters["starbar_stowed"], $request->auth->user_id, NULL);
+		$messages->loadAllNotificationMessagesForStarbarAndUser($request->validParameters["starbar_id"], $request->validParameters["starbar_stowed"], $request->auth->userData->user_id, NULL);
 
 		$response->addRecordsFromCollection($messages);
 
@@ -68,7 +68,7 @@ class Api3_NotificationController extends Api3_GlobalController
 
 		//logic
 		$messageUserMap = new Notification_MessageUserMap();
-		$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($request->validParameters["message_id"], $request->auth->user_id, $request->validParameters["mark_closed"], $request->validParameters["mark_notified"]);
+		$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($request->validParameters["message_id"], $request->auth->userData->user_id, $request->validParameters["mark_closed"], $request->validParameters["mark_notified"]);
 
 		$response->setResultVariable("success", TRUE);
 

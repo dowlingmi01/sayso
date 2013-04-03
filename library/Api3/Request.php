@@ -72,7 +72,7 @@ class Api3_Request
 										),
 							"api"			=> array(
 											"continue_on_error"	=> TRUE,
-											"user_type"		=> "user",
+											"user_type"		=> "panelist",
 											"response_format"	=> "json"
 										)
 	);

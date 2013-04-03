@@ -3,7 +3,8 @@
  * Application specific authentication functions and
  * overloads for admin type users.
  *
- * @package Api
+ * @package Api3
+ * @subpackage Authentication
  */
 class Api3_Authentication_AdminUserController  extends Api3_Authentication
 {

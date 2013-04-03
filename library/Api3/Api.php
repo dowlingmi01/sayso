@@ -82,9 +82,10 @@ class Api3_Api
 
 		//initialize Auth object
 		$this->_auth = Api3_Authentication::getAuthentication();
-		//authenticate api access
-		$this->_auth->apiAuthentication($this->_request, $this->_error);
-
+		if ($this->_auth !== FALSE)
+			$this->_auth->apiAuthentication($this->_request, $this->_error);
+		else
+			$this->_error->newError("auth_load_fail");
 	}
 
 	/**
@@ -206,7 +207,7 @@ class Api3_Api
 			return;
 
 		//check api auth
-		if ($this->_auth->getAuthStatus() !== TRUE)
+		if (!$this->_auth || $this->_auth->getAuthStatus() !== TRUE)
 			return $this->_error->newError("auth_failed_api");
 
 		//make sure our request object is strucutured properly
@@ -264,20 +265,20 @@ class Api3_Api
 	 */
 	private function _callAction($requestObject, $requestName) {
 		//prepare the class name for loading
-		$actionClass = $this->_moduleName . ucfirst($requestObject->submittedParameters->action_class) . "Controller";
+		$actionClass = $this->_moduleName . ucfirst($requestObject->submittedParameters->action_class) . "Endpoint";
 		//prepare the file name for loading
-		$classFileName = ucfirst($requestObject->submittedParameters->action_class) . "Controller";
+		$classFileName = ucfirst($requestObject->submittedParameters->action_class) . "Endpoint";
 		//assign action name to a variable for dynamic loading
 		$actionName = $requestObject->submittedParameters->action;
 
 		//load the class file so the method can be called
 		//auto load won't work in Zend because we are calling a controller
-		$fileToLoad = APPLICATION_PATH . '/modules/' . $this->_moduleDir . '/controllers/' . $classFileName . '.php';
+		$fileToLoad = APPLICATION_PATH . '/modules/' . $this->_moduleDir . '/controllers/endpoints/' . $this->_request->user_type . "/" . $classFileName . '.php';
 
 		if (!file_exists($fileToLoad))
 			return "invalid_action_class";
 
-		include_once APPLICATION_PATH . '/modules/' . $this->_moduleDir . '/controllers/' . $classFileName . '.php';
+		include_once $fileToLoad;
 
 		//make sure the method exists and run its logic
 		if (!method_exists($actionClass, $actionName))
@@ -334,7 +335,8 @@ class Api3_Api
 		$this->_error = new Api3_ApiError();
 		$this->_request = new Api3_Request();
 		$this->_response = new Api3_Response();
-		$this->_auth->resetActionAuth();
+		if ($this->_auth)
+			$this->_auth->resetActionAuth();
 	}
 
 	/**

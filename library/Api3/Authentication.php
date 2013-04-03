@@ -4,6 +4,7 @@
  * authentication related functions for passing around the api.</p>
  *
  * @package Api3
+ * @subpackage Authentication
  */
 class Api3_Authentication
 {
@@ -22,39 +23,13 @@ class Api3_Authentication
 	protected $_action_auth  = FALSE;
 
 	/**
-	 * User id
+	 * Shared user data
 	 *
-	 * @var int
+	 * @var \stdClass Holds shared data on the user after authentication
 	 */
-	public $user_id ;
+	public $user_data ;
 
 /////////////////////////////////////////////////
-
-	/**
-	 * This needs to be developed
-	 * Default placeholder for now
-	 *
-	 * Overload this in the specific implementation
-	 *
-	 * @return boolean
-	 */
-	public function apiAuthentication()
-	{
-		$this->_api_auth = FALSE;
-	}
-
-	/**
-	 * This needs to be developed
-	 * Default placeholder for now
-	 *
-	 * Overload this in the specific implementation
-	 *
-	 * @return boolean
-	 */
-	public function actionAuthentication()
-	{
-		$this->_action_auth = FALSE;
-	}
 
 	/**
 	 * Status accessor
@@ -100,8 +75,21 @@ class Api3_Authentication
 			//load an instance of it
 			return new $className;
 		} else {
-			$this->_error->newError("auth_load_fail");
 			return FALSE;
 		}
 	}
+
+	protected function _setUserData($data, $nodeName)
+	{
+		if (is_string($data))
+		{
+			$this->userData->$nodeName = $data;
+		} elseif (is_array($data) || is_object($data)) {
+			foreach ($data as $key => $value)
+			{
+				$this->userData->$nodeName->$key = $value;
+			}
+		}
+	}
+
 }

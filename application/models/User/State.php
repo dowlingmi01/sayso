@@ -29,7 +29,7 @@ class User_State extends Record
 		$result = array();
 		$res = Db_Pdo::fetchAll($sql, $user_id);
 		foreach( $res as $sb )
-			if($sb["id"] != $starbar_id && ($sb["id"] != 5 || $sb["active"]) && ($starbar_id != 5 || $sb["active"])) {
+			if($sb["id"] != $starbar_id && ($sb["active"] || ($sb["id"] != 5 && $starbar_id != 5 && $sb["id"] != 6))) {
 				if( $sb["active"] ) {
 					$messages = new Notification_MessageCollection();
 					$messages->loadAllNotificationMessagesForStarbarAndUser($sb["id"], true, $user_id, null);

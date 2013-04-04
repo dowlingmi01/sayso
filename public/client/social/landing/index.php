@@ -42,7 +42,7 @@ a:hover {
 	  <div class="section tab-pane active" id="section-1">
 	  	<div class="section-head">
 	  		<h2>What is Social Say.So?</h2>
-	  		<p>Do you eagerly await new quests in <b>The Sims City Social</b>, new items<br />
+	  		<p>Do you eagerly await new quests in <b>SimCity Social</b>, new items<br />
 	  		  in <b>Farmville</b>, or a sequel to <b>Plants vs. Zombies</b>?<br />
 	  		  If so, you're probably a perfect fit for Social Say.So!</p>
 			</div><!-- .section-head -->

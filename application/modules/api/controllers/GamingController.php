@@ -160,7 +160,7 @@ class Api_GamingController extends Api_GlobalController
 		foreach ($tokens as $good) $results->addItem($good);
 		foreach ($availableGoods as $good) $results->addItem($good);
 		foreach ($purchasedGoods as $good) $results->addItem($good);
-		foreach ($soldOutGoods as $good) $results->addItem($good);
+		//foreach ($soldOutGoods as $good) $results->addItem($good);
 
 		return $results;
 	}

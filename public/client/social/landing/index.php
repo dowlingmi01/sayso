@@ -42,9 +42,11 @@ a:hover {
 	  <div class="section tab-pane active" id="section-1">
 	  	<div class="section-head">
 	  		<h2>What is Social Say.So?</h2>
-	  		<p>Do you eagerly await new quests in <b>SimCity Social</b>, new items<br />
-	  		  in <b>Farmville</b>, or a sequel to <b>Plants vs. Zombies</b>?<br />
-	  		  If so, you're probably a perfect fit for Social Say.So!</p>
+	  		<p>Do you eagerly await new quests in <b>SimCity Social</b>, love building your social <br />
+                           circle in <b> The Sims Social</b>, relentlessly work for new items in <b>Farmville</b>,<br />
+	  		   or can't wait for a sequel to <b>Plants vs. Zombies</b>? <br />
+                           Do you want to give us your thoughts on social gaming and earn great  rewards for doing so?<br />
+	  		   If this sounds like you, then you're probably a perfect fit for Social Say.So!</p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">
@@ -64,9 +66,8 @@ a:hover {
 	  <div class="section tab-pane" id="section-2">
 	  	<div class="section-head">
 	  		<h2>What can I do?</h2>
-	  		<p>Earn Social PaySos by taking polls, answering surveys and giving your
-opinion on social, casual and mobile gaming. Redeem Social PaySos for
-items in our Reward Center.</p>
+	  		<p>Earn redeemable points (Social PaySos) by taking polls, answering surveys and giving your opinion<br />
+                           on social, casual and mobile gaming. Redeem Social PaySos for items in our Rewards Center.</p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">
@@ -84,10 +85,11 @@ items in our Reward Center.</p>
 	  <div class="section tab-pane" id="section-3">
 	  	<div class="section-head">
 	  		<h2>What do I get?</h2>
-	  		<p>Great Prizes - The Reward Center is full of prizes designed
-specifically for social game fanatics.</p>
+	  		<p>Great Prizes - Redeem your points for <b>games</b>, <b> game related goods</b>,<br />
+                        <b>gift cards</b>, and a whole lot more!<br />
+                           The Rewards Center is full of prizes designed specifically for social game fanatics.</p>
 			</div><!-- .section-head -->
-
+
 			<div class="slideshow">
 				<div class="slides">
 					<div class="slide"><img src="images/img_slide_3a.png" alt="" /></div>

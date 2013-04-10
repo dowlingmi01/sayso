@@ -198,8 +198,8 @@ class Game_Transaction {
 		try {
 			if( !Economy::getForId($economy_id)->imported )
 				return;
-			$sql = "INSERT INTO game_asset (economy_id, type, name, bdid) VALUES (?, 'purchasable', ?, ?)";
-			Db_Pdo::execute($sql, $economy_id, $good_data['description'], $good_data['bdid']);
+			$sql = "INSERT INTO game_asset (economy_id, type, name, bdid, img_url, img_url_preview, img_url_preview_bought) VALUES (?, 'purchasable', ?, ?, ?, ?, ?)";
+			Db_Pdo::execute($sql, $economy_id, $good_data['description'], $good_data['bdid'], $good_data['img_url'], $good_data['img_url_preview'], $good_data['img_url_preview_bought']);
 			$asset_id = Db_Pdo::getPdo()->lastInsertId();
 			$sql = "INSERT INTO game_purchasable (game_asset_id, type, price) VALUES (?, ?, ?)";
 			Db_Pdo::execute($sql, $asset_id, $good_data['type'], $good_data['cost']);

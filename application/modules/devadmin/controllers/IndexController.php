@@ -651,7 +651,10 @@ class Devadmin_IndexController extends Api_GlobalController
 					'description' => $productTitle,
 					'bdid' => $namedGoodProductVariantId,
 					'type' => ($type == 'token' ? 'token' : 'physical'),
-					'cost' => $price
+					'cost' => $price,
+					'img_url' => $imageUrlFull,
+					'img_url_preview' => $imageUrlPreview,
+					'img_url_preview_bought' => $imageUrlPreviewBought
 				), $initialInventory);
 
 				exit;

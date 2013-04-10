@@ -42,11 +42,9 @@ a:hover {
 	  <div class="section tab-pane active" id="section-1">
 	  	<div class="section-head">
 	  		<h2>What is Social Say.So?</h2>
-	  		<p>Do you eagerly await new quests in <b>SimCity Social</b>, love building your social <br />
-                           circle in <b> The Sims Social</b>, relentlessly work for new items in <b>Farmville</b>,<br />
-	  		   or can't wait for a sequel to <b>Plants vs. Zombies</b>? <br />
-                           Do you want to give us your thoughts on social gaming and earn great  rewards for doing so?<br />
-	  		   If this sounds like you, then you're probably a perfect fit for Social Say.So!</p>
+	  		<p>Earn redeemable points by taking polls, answering surveys and giving<br />
+                           your opinion on social, casual and mobile gaming.<br />
+                           Review games and give us your thoughs on game related topics.</p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">

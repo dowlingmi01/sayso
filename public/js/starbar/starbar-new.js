@@ -811,7 +811,7 @@ $SQ(function(){
 	* 7. Elements that contain the user's purchased items, e.g. <div class="sb_user_purchases"></div>
 	* 8. Elements that contain a currency title (either redeemable points or experience points)
 	*/
-	function activateGameElements (target, animate) {
+	function activateGameElementsBD (target, animate) {
 
 		var userPurchasesContainerElems = $SQ('.sb_user_purchases', target);
 		var levelIconsContainerElems = $SQ('.sb_user_level_icons_container', target);
@@ -1239,6 +1239,359 @@ $SQ(function(){
 				}
 			}); // each currency
 		}
+
+		// So the next time activateGameElements is called, we don't assume the user just got the points/level-ups
+		sayso.starbar.previous_game = sayso.starbar.game;
+	} // activateGameElementsBD
+
+	function activateGameElements (target, animate) {
+		if( sayso.starbar.game._gamer ) {
+			activateGameElementsBD( target, animate );
+			return;
+		}
+
+		var userPurchasesContainerElems = $SQ('.sb_user_purchases', target);
+		var levelIconsContainerElems = $SQ('.sb_user_level_icons_container', target);
+		var currencyBalanceNextLevelElems = $SQ('.sb_currency_balance_next_level', target);
+		var currencyTitleElems = $SQ('.sb_currency_title', target);
+		var currencyBalanceElems = $SQ('.sb_currency_balance', target);
+		var currencyPercentElems = $SQ('.sb_currency_percent', target);
+		var progressBarElems = $SQ('.sb_progress_bar', target);
+		var userLevelNumberElems = $SQ('.sb_user_level_number', target);
+		var userLevelTitleElems = $SQ('.sb_user_level_title', target);
+		var userCurrentLevelIconElems = $SQ('.sb_user-current-level-icon', target);
+		var animationDuration = 2000; // milliseconds
+		var justInitialized = false;
+
+
+
+		if (target || ! sayso.starbar.previous_game || sayso.starbar.previous_game._gamer) {
+			sayso.starbar.previous_game = sayso.starbar.game;
+			justInitialized = true;
+			animate = false;
+		}
+
+		var game = sayso.starbar.game;
+		var previous_game = sayso.starbar.previous_game;
+
+		if( !game.levels[game.level+1] )
+			game.levels[game.level+1] = { threshold: game.levels[game.level] + 50000 };
+
+		var justLeveledUp = game.level != previous_game.level;
+
+		if (justInitialized || justLeveledUp) {
+			if (userLevelNumberElems.length > 0) {
+				userLevelNumberElems.each(function() {
+					$SQ(this).html(game.level);
+					if (animate) {
+						$SQ(this).effect("pulsate", { times:3 }, parseInt(animationDuration/3));
+					}
+				});
+			}
+
+			if (userLevelTitleElems.length > 0) {
+				userLevelTitleElems.each(function() {
+					$SQ(this).html(game.levels[game.level].name);
+					if (animate) {
+						$SQ(this).effect("pulsate", { times:3 }, parseInt(animationDuration/3));
+					}
+				});
+			}
+		}
+
+		if (currencyBalanceNextLevelElems.length > 0) {
+			currencyBalanceNextLevelElems.each(function() {
+				$SQ(this).html(game.levels[game.level+1].threshold);
+			});
+		}
+
+		if (userPurchasesContainerElems.length > 0) {
+			userPurchasesContainerElems.each(function() {
+				if (!$SQ.isEmptyObject(game.purchasables)) {
+					$SQ(this).html('');
+					$SQ.each(game.purchasables, function (index, good) {
+						var goodDiv = $SQ(document.createElement('div'));
+						var goodHtml;
+						var goodImageSrc = good.img_url_preview;
+						if (good.img_url_preview_bought) goodImageSrc = good.img_url_preview_bought;
+
+						goodDiv.addClass('sb_user_purchase');
+						if (good.type == 'token') {
+							goodHtml = '<img src="'+goodImageSrc+'" class="sb_user_purchase_img sb_tooltip" title="'+good.name+' - '+good.quantity+' Tokens Purchased" />';
+							goodHtml += '<span class="sb_user_puchase_quantity sb_tooltip" title="'+good.name+' - '+good.quantity+' Tokens Purchased">'+good.quantity+'</span>';
+						} else {
+							goodHtml = '<img src="'+goodImageSrc+'" class="sb_user_purchase_img sb_tooltip" title="'+good.name+'" />';
+						}
+						goodDiv.html(goodHtml);
+						userPurchasesContainerElems.append(goodDiv);
+					});
+				} else {
+					$SQ(this).html('<p>Head to the Rewards Center to redeem your '+game.currencies.redeemable.name+' for awesome prizes!</p>');
+				}
+			});
+		}
+
+		if (userCurrentLevelIconElems.length > 0) {
+			userCurrentLevelIconElems.each(function() {
+				var iconElem = $SQ(this);
+				iconElem.css("background-image", "url('"+game.levels[game.level].img_url_small+"')");
+				iconElem.css("background-position", "center bottom");
+			});
+		}
+
+		if (levelIconsContainerElems.length > 0) {
+			levelIconsContainerElems.each(function() {
+				var containerElem = $SQ(this);
+				containerElem.html('');
+				var numberOfVisibleLevels = parseInt(containerElem.attr('rel'));
+				if (isNaN(numberOfVisibleLevels) || numberOfVisibleLevels < 1) numberOfVisibleLevels = 5;
+
+				var levelGroup = null;
+
+				for (var index = 0; index < game.max_level; index++) {
+					var level = game.levels[index+1];
+
+					if (index % numberOfVisibleLevels == 0) {
+						levelGroup = $SQ(document.createElement('div'));
+						levelGroup.addClass('sb_userLevelIcons_group');
+						containerElem.append(levelGroup);
+					}
+
+					var levelIcon = $SQ(document.createElement('div'));
+
+					levelIcon.addClass('sb_userLevelIcons');
+
+					if (level.ordinal == game.level) {
+						/* THIS IS THE CURRENT LEVEL */
+
+						switch (sayso.starbar.shortName) {
+							case "movie":
+								currentlevelText = "L"+(index+1)+'. '+level.name+'</p><p>'+level.threshold+' Stars';
+								break;
+							case "machinima":
+								currentlevelText = level.threshold;
+								break;
+							default:
+								currentlevelText = level.threshold;
+						}
+
+						levelIcon.addClass('sb_userLevel_current');
+						levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+level.img_url+'\')"><div class="sb_theme_textNotifyCurrent"><p>'+currentlevelText+'</p></div></div>');
+
+					} else {
+
+						if (level.ordinal < game.level) {
+
+							switch (sayso.starbar.shortName) {
+								case "movie":
+									earnedlevelText = "L"+(index+1)+". "+level.name+"</p><p>"+level.threshold+" Stars";
+									break;
+								case "machinima":
+									earnedlevelText = level.ordinal;
+									break;
+								default:
+									earnedlevelText = level.ordinal;
+							}
+
+							levelIcon.addClass('sb_userLevel_earned');
+							levelIcon.html('<div class="sb_userLevelImg" style="background-image: url(\''+level.img_url_small+'\')"><p>'+earnedlevelText+'</p></div>');
+
+						} else { // level.ordinal > userCurrentLevel.ordinal
+
+							/* THIS IS A FUTURE LEVEL */
+
+							switch (sayso.starbar.shortName) {
+								case "movie":
+									blankImageUrl = "http://app.saysollc.com/images/movie/img_level_blank.png";
+									nextlevelText = "L"+(index+1)+". "+level.name+"</p><p>"+level.threshold+" Stars";
+									break;
+								case "machinima":
+									blankImageUrl = "http://app.saysollc.com/images/machinima/level_blank.png";
+									nextlevelText = level.threshold;
+									break;
+								default:
+									// Using the Machinima circle as the default image
+									blankImageUrl = "http://app.saysollc.com/images/machinima/level_blank.png";
+									nextlevelText = level.threshold;
+							}
+
+							levelIcon.addClass('sb_userLevel_next');
+							levelIcon.html('<div class="sb_userLevelImg" onmouseover="this.style.backgroundImage=\'url('+level.img_url_small+')\';this.innerHTML=\'<p>'+nextlevelText+'</p>\'" onmouseout="this.style.backgroundImage=\'url('+blankImageUrl+')\';this.innerHTML=\'\'"></div>');
+
+						}
+					}
+					levelGroup.append(levelIcon);
+				};
+
+
+				var emptyLevelsToAdd = numberOfVisibleLevels - ((game.max_level) % numberOfVisibleLevels);
+				if (emptyLevelsToAdd < numberOfVisibleLevels) {
+					while (emptyLevelsToAdd > 0) {
+						levelGroup.append('<div class="sb_userLevelIcons sb_userLevel_next"><div class="sb_userLevelImg sb_userLevel_empty"></div><p><br /></p></div>');
+						emptyLevelsToAdd--;
+					}
+				}
+
+				containerElem.cycle({
+					prev :			'#sb_userLevel_prev',
+					next:			'#sb_userLevel_next',
+					fx: 			'scrollHorz',
+					speed:			500,
+					timeout:		0,
+					nowrap:			true,
+					startingSlide:	parseInt(Math.floor((game.level - 1) / numberOfVisibleLevels))
+				});
+			});
+		}
+
+		if (currencyTitleElems.length > 0) {
+			currencyTitleElems.each(function(){
+				if ($SQ(this).attr('data-currency-type') == "experience") {
+					$SQ(this).html(game.currencies.experience.name);
+				} else if ($SQ(this).attr('data-currency-type') == "redeemable") {
+					$SQ(this).html(game.currencies.redeemable.name);
+				}
+			});
+		}
+
+		if (progressBarElems.length > 0) {
+			progressBarElems.each(function(){
+				if (!$SQ(this).hasClass('sb_ui-progressbar')) {
+					$SQ(this).addClass('sb_ui-progressbar sb_ui-widget sb_ui-widget-content sb_ui-corner-all');
+				}
+			});
+		}
+
+		$SQ.each(game.currencies, function (currencyType, currency) {
+			var currencyNeedsUpdate = false;
+			var previousCurrencyBalance;
+			
+			if( previous_game.currencies[currencyType] ) {
+				previousCurrencyBalance = previous_game.currencies[currencyType].balance
+			} else {
+				currencyNeedsUpdate = true;
+				previousCurrencyBalance = game.currencies[currencyType].balance
+			}
+
+			if (justInitialized || game.currencies[currencyType].balance != previousCurrencyBalance) currencyNeedsUpdate = true;
+
+			if (currencyNeedsUpdate) {
+				if (currencyBalanceElems.length > 0) {
+					currencyBalanceElems.each(function() {
+						var $SQthis = $SQ(this);
+						if ($SQthis.attr('data-currency-type') == currencyType) {
+							if (animate) { // New value, play animation
+								var originalColor = $SQthis.css('color');
+								// total duration is doubled when leveling up
+								var durationMultiplier = 4/5;
+								if (justLeveledUp) {
+									durationMultiplier = 9/5;
+								}
+								// Prepare the element for numeric 'animation' (i.e. tweening the number)
+								$SQthis.animate(
+									{ animationCurrencyBalance: previousCurrencyBalance },
+									{ duration : 0 }
+								).animate(
+									{
+										color : 'red',
+										animationCurrencyBalance : game.currencies[currencyType].balance
+									},
+									{
+										duration : parseInt(animationDuration*durationMultiplier),
+										step : function (now, fx) {
+											$SQthis.html(parseInt(now));
+										},
+										complete : function () {
+											$SQthis.html(game.currencies[currencyType].balance);
+											$SQthis.css('color', originalColor);
+										}
+									}
+								).animate(
+									{ color : originalColor },
+									{ duration : parseInt(animationDuration/5) }
+								);
+							} else {
+								$SQthis.html(currency.balance);
+							}
+						}
+					});
+				}
+
+				if (currencyType == 'experience' && currencyPercentElems.length > 0) {
+					if (currency.balance > game.levels[game.level].threshold) {
+						currencyPercent = Math.round((currency.balance - game.levels[game.level].threshold)/(game.levels[game.level+1].threshold - game.levels[game.level].threshold)*100);
+					} else {
+						currencyPercent = 0;
+					}
+
+					if (currencyPercent > 100) currencyPercent = 100; // technically this should never happen
+
+					currencyPercentElems.each(function() {
+						var $SQthis = $SQ(this);
+						var startingWidth = $SQthis.width();
+						var availableWidth = $SQthis.parent().width();
+						var newWidth = Math.round(availableWidth * currencyPercent/100);
+						if (!$SQthis.hasClass('sb_ui-progressbar-value')) {
+							$SQthis.addClass('sb_ui-progressbar-value sb_ui-widget-header sb_ui-corner-left');
+						}
+						if ($SQthis.attr('data-currency-type') == currencyType) {
+							if (animate && !justLeveledUp) {
+								var animatingBarElem = $SQ(document.createElement('div'));
+								var fadingBarElem = $SQ(document.createElement('div'));
+								var progressBarElem = $SQthis; // so it can be accessed from setTimeout()
+								animatingBarElem.addClass('sb_ui-progressbar-value-animating sb_ui-widget-header sb_ui-corner-left');
+								animatingBarElem.css('width', startingWidth+'px');
+								fadingBarElem.addClass('sb_ui-progressbar-value-fading sb_ui-widget-header sb_ui-corner-left');
+								fadingBarElem.css('width', newWidth+'px');
+
+								animatingBarElem.insertBefore($SQthis);
+								fadingBarElem.insertBefore($SQthis);
+								fadingBarElem.fadeTo(0, 0);
+
+								animatingBarElem.animate(
+									{ width : newWidth+'px' },
+									{ duration : parseInt(animationDuration*2/5) }
+								);
+								setTimeout(function() {
+									fadingBarElem.fadeTo(parseInt(animationDuration*3/5), 1);
+									}, parseInt(animationDuration*2/5));
+
+								setTimeout(function() {
+									progressBarElem.css('width', newWidth+'px');
+									animatingBarElem.annihilate();
+									fadingBarElem.annihilate();
+									}, animationDuration);
+							} else if (animate && justLeveledUp) {
+								var animatingBarElem = $SQ(document.createElement('div'));
+								var progressBarElem = $SQthis; // so it can be accessed from setTimeout()
+								animatingBarElem.addClass('sb_ui-progressbar-value-animating sb_ui-widget-header sb_ui-corner-left');
+								animatingBarElem.css('width', startingWidth+'px');
+
+								animatingBarElem.insertBefore($SQthis);
+
+								animatingBarElem.animate(
+									{ width : availableWidth+'px' },
+									{ duration : parseInt(animationDuration*2/5) }
+								);
+								setTimeout(function() {
+									progressBarElem.fadeTo(parseInt(animationDuration), 0);
+									}, parseInt(animationDuration*2/5));
+								setTimeout(function() {
+									progressBarElem.css('width', newWidth+'px');
+									progressBarElem.fadeTo(parseInt(animationDuration*3/5), 1);
+									animatingBarElem.fadeTo(parseInt(animationDuration*3/5), 0);
+									}, parseInt(animationDuration*7/5));
+								setTimeout(function() {
+									animatingBarElem.annihilate();
+									}, animationDuration*2);
+							} else { // No animation
+								$SQthis.css('width', newWidth+'px');
+							}
+						}
+					});
+				}
+			}
+		}); // each currency
 
 		// So the next time activateGameElements is called, we don't assume the user just got the points/level-ups
 		sayso.starbar.previous_game = sayso.starbar.game;

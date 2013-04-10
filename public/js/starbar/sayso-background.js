@@ -210,12 +210,20 @@ function setIntervals( intervals ) {
 	if( intervals.studies )
 		sayso.state.intervalStudies = intervals.studies;
 }
+var gameReader = {
+	getLevel: function getLevel(game) {
+		return game._gamer ? game._gamer.current_level.ordinal : game.level;
+	},
+	getLevelName: function getLevelName(game) {
+		return game._gamer ? _gamer.current_level.description : game.levels[game.level].description;
+	}
+}
 function updateGame( content ) {
 	if( content ) {
-		var previousLevel = sayso.state.economies[sayso.state.starbars[sayso.state.currentStarbar].economyId].game._gamer.current_level;
+		var previousLevel = gameReader.getLevel(sayso.state.economies[sayso.state.starbars[sayso.state.currentStarbar].economyId].game);
 		sayso.state.economies[sayso.state.starbars[sayso.state.currentStarbar].economyId].game = content;
 		forge.message.broadcast( 'update-game', content );
-		if( previousLevel != content._gamer.current_level )
+		if( previousLevel != gameReader.getLevel(content) )
 			getNotificationsFromServer();
 	} else
 		ajaxWithAuth({
@@ -348,7 +356,7 @@ function processNotifications( newSet, oldSet ) {
 				if (newSet[i].short_name == 'FB Account Connected' || newSet[i].short_name == 'TW Account Connected') {
 					updateProfile();
 				} else if (newSet[i].short_name == 'Level Up') {
-					newSet[i].message = sayso.state.economies[sayso.state.starbars[sayso.state.currentStarbar].economyId].game._gamer.current_level.description;
+					newSet[i].message = gameReader.getLevelName(sayso.state.economies[sayso.state.starbars[sayso.state.currentStarbar].economyId].game);
 				}
 				newSet[i].html = htmlForNotification( newSet[i] );
 			} else {

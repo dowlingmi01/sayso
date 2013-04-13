@@ -45,14 +45,8 @@ class Starbar_RemoteController extends Api_GlobalController
 		$user = new User();
 		$user->loadData($this->user_id);
 		$starbar->setUser($user);
-
-		$gamer = Gamer::create($user->getId(), $starbar->getId());
-
-		$game = Game_Starbar::getInstance();
-		$game->loadGamerProfile();
-		// Hack below, disabled for now
-		// $game->checkin();
-		// $this->_request->setParam(Api_AbstractController::GAME, $game);
+		
+		Game_Transaction::addGameToRequest($this->getRequest());
 
 		return $this->_forward(
 			$starbar->short_name,

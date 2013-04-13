@@ -4,6 +4,7 @@ class Economy extends Record
 {
 	protected $_tableName = 'economy';
 	protected static $_economies = array();
+	protected static $_starbars = array();
 	public $_currencies, $_purchasables, $_levels, $_bdids, $_currency_types, $_transaction_types, $_level_asset_id;
 
 	public function exportData() {
@@ -75,6 +76,9 @@ class Economy extends Record
 			throw new Exception('Unknown Currency Type ID ' . $currency_type_id . ' in economy ' . $this->id);
 		return $this->_currency_types[$currency_type_id];
 	}
+	public function getCurrencyByTypeId( $currency_type_id ) {
+		return $this->_currencies[$this->getCurrencyIdByTypeId($currency_type_id)];
+	}
 	public function getPurchasableByBDId( $bdid ) {
 		if( !array_key_exists($bdid, $this->_bdids) )
 			throw new Exception('Unknown Purchasable BDID ' . $bdid . ' in economy ' . $this->id);
@@ -84,6 +88,15 @@ class Economy extends Record
 		if( !array_key_exists($bdid, $this->_bdids) )
 			throw new Exception('Unknown Purchasable BDID ' . $bdid . ' in economy ' . $this->id);
 		return $this->_bdids[$bdid];
+	}
+	public static function getIdforStarbar( $starbar_id ) {
+		if( !array_key_exists($starbar_id, Economy::$_starbars) ) {
+			$sql = "SELECT id, economy_id FROM starbar";
+			$res = Db_Pdo::fetchAll($sql);
+			foreach( $res as $record )
+				Economy::$_starbars[$record['id']] = $record['economy_id'];
+		}
+		return Economy::$_starbars[$starbar_id];
 	}
 	const CURRENCY_EXPERIENCE = 1;
 	const CURRENCY_REDEEMABLE = 2;

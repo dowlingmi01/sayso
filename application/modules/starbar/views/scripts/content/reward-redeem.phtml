@@ -1,7 +1,5 @@
 <?php
 
-$game = $this->game;
-/* @var $game Game_Starbar */
 $good = $this->good;
 /* @var $good Gaming_BigDoor_Good */
 $user = $this->user;
@@ -10,18 +8,13 @@ $userAddress = $this->user_address;
 /* @var $userAddress User_Address */
 
 
-$gamer = $game->getGamer();
-
-$currentBalance = (int) $gamer->getCurrencyByType('redeemable')->current_balance;
-$itemCost = (int) $good->cost;
-
-$percentUserBalanceToCost = round(($currentBalance / $itemCost) * 100);
-if ($percentUserBalanceToCost > 100) $percentUserBalanceToCost = 100;
+$currentBalance = $this->user_balance;
+$itemCost = $good->price;
 
 $balanceAfter = $currentBalance - $itemCost;
 $percentUserBalanceRemaining = round(($balanceAfter / $currentBalance) * 100);
 
-$goodIsToken = $good->hasAttribute('giveaway_token');
+$goodIsToken = ($good->type == 'token');
 
 if ($goodIsToken) {
 	$maximumQuantity = floor($currentBalance/$itemCost);
@@ -34,19 +27,19 @@ if ($goodIsToken) {
 
 	<div id="sb_reward_step1" class="sb_reward_step" style="background-color: #383838">
 		<!-- BEGIN LANDING -->
-		<div class="sb_rewardHeader"><span><?= $good->title ?></span></div>
+		<div class="sb_rewardHeader"><span><?= $good->name ?></span></div>
 		<div class="sb_rewardImg">
-			<img src="<?= $good->url_full ?>" alt="<?= $good->title ?>" />
+			<img src="<?= $good->img_url ?>" alt="<?= $good->name ?>" />
 		</div><!-- .sb_rewardImg -->
 		<div class="sb_rewardBase">
 			<div class="sb_user-points-box">
 				<span class="sb_imgRedeemable"></span>
-				<div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentUserBalanceToCost ?>%"></span><span class="sb_progressBarValue"><span><?= $itemCost ?></span></span></div>
+				<div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $good->percentage ?>%"></span><span class="sb_progressBarValue"><span><?= $itemCost ?></span></span></div>
 			</div><!-- .user-points-box -->
 			<?php if ($goodIsToken) : ?>
 				<p class="sb_rewardDescription"><?= $this->text('POPUP_REWARD_CENTER_TOKEN_DESCRIPTION') ?></p>
 			<?php else : ?>
-				<p class="sb_rewardDescription"><?= $this->text('POPUP_REWARD_CENTER_PHYSICAL_GOOD_DESCRIPTION') ?><strong><?= $good->description ?></strong></p>
+				<p class="sb_rewardDescription"><?= $this->text('POPUP_REWARD_CENTER_PHYSICAL_GOOD_DESCRIPTION') ?><strong><?= $good->name ?></strong></p>
 			<?php endif ?>
 			<span class="sb_theme_button sb_theme_button_alt">Redeem</span>
 		</div><!-- .sb_rewardBase -->
@@ -56,9 +49,9 @@ if ($goodIsToken) {
 
 	<div id="sb_reward_step2" class="sb_reward_step" style="display: none;">
 		<!-- BEGIN SHIPPING ADDRESS CONFIRM -->
-		<div class="sb_rewardHeader"><span><?= $good->title ?></span></div><!-- .sb_rewardHeader -->
+		<div class="sb_rewardHeader"><span><?= $good->name ?></span></div><!-- .sb_rewardHeader -->
 		<div class="sb_rewardImg">
-			<img src="<?= $good->url_full ?>" alt="<?= $good->title ?>" />
+			<img src="<?= $good->img_url ?>" alt="<?= $good->name ?>" />
 		</div><!-- .sb_rewardImg -->
 		<div class="sb_rewardOrder">
 			<div class="sb_column_5050BG">

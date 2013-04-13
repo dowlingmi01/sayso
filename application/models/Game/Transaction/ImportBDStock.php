@@ -12,6 +12,7 @@ class Game_Transaction_ImportBDStock extends Game_Transaction {
 			$transaction_id = Db_Pdo::getPdo()->lastInsertId();
 			$sql = 'INSERT INTO game_transaction_line (game_transaction_id, game_asset_id, amount) VALUES (?, ?, ?)';
 			Db_Pdo::execute($sql, $transaction_id, $this->_parameters['asset_id'], $balance );
+			return $transaction_id;
 		}
 	}
 }

@@ -26,6 +26,8 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function postDispatch()
 	{
+		parent::postDispatch();
+		
 		$request = $this->getRequest();
 
 		$userActionLog = new User_ActionLog();
@@ -73,14 +75,10 @@ class Starbar_ContentController extends Api_GlobalController
 
 	public function rewardsAction ()
 	{
-		$gamer = Game_Starbar::getInstance()->getGamer();
-		$goods = Api_Adapter::getInstance()->call('Gaming', 'getGoodsFromStore');
-		$sortedGoods = Api_GamingController::prepareGoodsForGamer($goods, $gamer);
+		$this->_validateRequiredParameters(array('user_id', 'starbar_id'));
+		$this->view->chosen_good_id = $this->chosen_good_id;
 
-		$request = $this->getRequest();
-		$this->view->assign('chosen_good_id', $request->getParam('chosen_good_id'));
-
-		$this->view->rewards = $sortedGoods;
+		$this->view->rewards = Game_Transaction::getPurchasablesForUser($this->user_id, $this->starbar_id);
 	}
 
 	/**
@@ -89,10 +87,13 @@ class Starbar_ContentController extends Api_GlobalController
 	 * @throws Api_Exception
 	 */
 	public function rewardRedeemAction () {
-		$good = Api_Adapter::getInstance()->call('Gaming', 'getGoodFromStore');
+		$this->_validateRequiredParameters(array('good_id', 'user_id', 'starbar_id'));
+		$good = Game_Transaction::getPurchasableForUser($this->user_id, $this->starbar_id, $this->good_id);
+		$economy_id = Economy::getIdforStarbar($this->starbar_id);
+		$economy = Economy::getForId($economy_id);
+		$balance = Game_Transaction::getBalance($this->user_id, $economy->getCurrencyIdByTypeId(Economy::CURRENCY_REDEEMABLE));
 
-		$game = Game_Starbar::getInstance();
-		if (!$game->goodCanBePurchased($good)) {
+		if (!$good->can_purchase) {
 			throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'User ' . $this->user_id . ' illegally attempted to purchase good ' . $this->good_id));
 		}
 
@@ -101,32 +102,18 @@ class Starbar_ContentController extends Api_GlobalController
 
 		$userAddress = $user->getPrimaryAddress();
 
-		$this->view->assign(array('good' => $good, 'game' => Game_Starbar::getInstance(), 'user' => $user, 'user_address' => $userAddress));
+		$this->view->assign(array('good' => $good, 'user_balance' => $balance, 'user' => $user, 'user_address' => $userAddress));
 		return $this->_resultType($good);
 	}
 
-		/**
-		 * Redeem a 'Good'
-		 * Redeems a 'Good' via BigDoor's API (basically removes the value of
-		 * the good from the users credit), and sends confirmation emails to
-		 * the client admins and the redeeming user.
-		 *
-		 * @return object - the Good being redeemed
-		 */
 	public function rewardRedeemedAction () {
-
-		$this->_validateRequiredParameters(array('quantity', 'good_id', 'user_key'));
-
-		$good = Api_Adapter::getInstance()->call('Gaming', 'getGoodFromStore');
-		/* @var $good Gaming_BigDoor_Good */
-
-		$game = Game_Starbar::getInstance();
-		$game->purchaseGood($good, $this->quantity);
-
-		/* Strip purchase words from the beginning of the $good->title */
-		$searchArray = array("Purchase ", "Buy ", "Redeem ");
-		$replaceArray   = array("", "", "");
-		$goodTitle = str_ireplace($searchArray, $replaceArray, $good->title);
+		$this->_validateRequiredParameters(array('quantity', 'good_id', 'user_id', 'starbar_id'));
+		$economy_id = Economy::getIdforStarbar($this->starbar_id);
+		$economy = Economy::getForId($economy_id);
+		$transaction_id = Game_Transaction::run( $this->user_id, $economy_id, 'PURCHASE', array('game_asset_id'=>$this->good_id, 'quantity'=>$this->quantity, 'starbar_id'=>$this->starbar_id));
+		Game_Transaction::addGameToRequest($this->getRequest());
+		$purchasable = new Item($economy->_purchasables[$this->good_id]);
+		$goodTitle = $purchasable->name;
 
 		$user = new User();
 		$user->loadData($this->user_id);
@@ -134,24 +121,21 @@ class Starbar_ContentController extends Api_GlobalController
 		$userEmail = new User_Email();
 		$userEmail->loadData($user->primary_email_id);
 
-		$gamer = $game->getGamer(false);
-
 		$logRecord = new GamerOrderHistory();
-		if ($gamer->id) {
-			$logRecord->user_gaming_id = $gamer->id;
-			$logRecord->first_name = $this->order_first_name;
-			$logRecord->last_name = $this->order_last_name;
-			$logRecord->street1 = $this->order_address_1;
-			$logRecord->street2 = $this->order_address_2;
-			$logRecord->locality = $this->order_city;
-			$logRecord->region = $this->order_state;
-			$logRecord->postalCode = $this->order_zip;
-			$logRecord->country = $this->order_country;
-			$logRecord->phone = $this->order_phone;
-			$logRecord->good_id = $good->id;
-			$logRecord->quantity = $this->quantity;
-			$logRecord->save();
-		}
+		$logRecord->user_id = $this->user_id;
+		$logRecord->first_name = $this->order_first_name;
+		$logRecord->last_name = $this->order_last_name;
+		$logRecord->street1 = $this->order_address_1;
+		$logRecord->street2 = $this->order_address_2;
+		$logRecord->locality = $this->order_city;
+		$logRecord->region = $this->order_state;
+		$logRecord->postalCode = $this->order_zip;
+		$logRecord->country = $this->order_country;
+		$logRecord->phone = $this->order_phone;
+		$logRecord->game_asset_id = $this->good_id;
+		$logRecord->quantity = $this->quantity;
+		$logRecord->game_transaction_id = $transaction_id;
+		$logRecord->save();
 
 		if (isset($this->order_first_name)) {
 			// shippable item
@@ -181,7 +165,8 @@ class Starbar_ContentController extends Api_GlobalController
 			$user->last_name = $this->order_last_name;
 			$user->save();
 
-			$starbar = Registry::get('starbar');
+			$starbar = new Starbar();
+			$starbar->loadData($this->starbar_id);
 
 			/* Send a confirmation email to the admins */
 			try {
@@ -224,11 +209,17 @@ class Starbar_ContentController extends Api_GlobalController
 				if (strlen($this->order_address_2) > 0) {
 					$address .= "<br />".$this->order_address_2;
 				}
-				$htmlmessage = "<h1>Say.So redemption made for ".$goodTitle."</h1>";
+				if( $this->starbar_id == 4 )
+					$htmlmessage = "<h1>Machinima | Recon redemption made for ".$goodTitle."</h1>";
+				else
+					$htmlmessage = "<h1>Say.So redemption made for ".$goodTitle."</h1>";
 				$htmlmessage .= sprintf("<p>Nicely done! You have successfully redeemed the item \"%s\" from the Reward Center!<br />We're kinda jealous...</p>",$goodTitle);
 				$htmlmessage .= "<p>Right now, we are diligently processing your redemption so that you can receive your gift as soon as possible.</p>";
 				$htmlmessage .= "<p>Delivery times vary by item type. Please allow 4-6 weeks for delivery of physical items; 5-7 days for virtual codes and items.</p>";
-				$htmlmessage .= "<p>Thank you for being a Say.So community member and we hope you enjoy your gift!<br />- The Say.So Team</p>";
+				if( $this->starbar_id == 4 )
+					$htmlmessage .= "<p>Thank you for being a Machinima | Recon community member and we hope you enjoy your gift!<br />- The Machinima | Recon Team</p>";
+				else
+					$htmlmessage .= "<p>Thank you for being a Say.So community member and we hope you enjoy your gift!<br />- The Say.So Team</p>";
 
 				$message = 'Nicely done! You have successfully redeemed the item "' . $goodTitle . '" from the Reward Center!
 					We\'re kinda jealous...
@@ -237,7 +228,13 @@ class Starbar_ContentController extends Api_GlobalController
 
 					Delivery times vary by item type. Please allow 4-6 weeks for delivery of physical items; 5-7 days for virtual codes and items.
 
-					Thank you for being a Say.So community member and we hope you enjoy your gift!
+				';
+				if( $this->starbar_id == 4 )
+				$message .= 'Thank you for being a Machinima | Recon community member and we hope you enjoy your gift!
+					- The Machinima | Recon Team
+				';
+				else
+				$message .= 'Thank you for being a Say.So community member and we hope you enjoy your gift!
 					- The Say.So Team
 				';
 
@@ -245,7 +242,7 @@ class Starbar_ContentController extends Api_GlobalController
 				$mail = new Mailer();
 				$mail->setFrom('rewards@say.so')
 					 ->addTo($userEmail->email)
-					 ->setSubject('Your Item Redemption');
+					 ->setSubject($this->starbar_id == 4 ? 'Your Machinima | Recon Item Redemption' : 'Your Item Redemption');
 				$mail->setBodyMultilineText($message);
 				$mail->setBodyHtml($htmlmessage);
 				$mail->send(new Zend_Mail_Transport_Smtp());
@@ -256,8 +253,8 @@ class Starbar_ContentController extends Api_GlobalController
 		} else {
 
 		}
-		$this->view->assign(array('game' => $game, 'good' => $good, 'user' => $user, 'user_address' => $userAddress));
-		return $this->_resultType($good);
+		$this->view->assign(array('good' => $purchasable, 'user' => $user, 'user_address' => $userAddress));
+		return $this->_resultType($purchasable);
 	}
 
 	public function aboutSaysoAction ()
@@ -356,7 +353,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$surveyResponse->processing_status = "pending";
 		$surveyResponse->completed_disqualified = new Zend_Db_Expr('now()');
 		$surveyResponse->save();
-		Game_Starbar::getInstance()->disqualifySurvey($survey);
+		Game_Transaction::disqualifySurvey($this->user_id, $this->starbar_id, $survey);
 
 		$user = new User();
 		$user->loadData($this->user_id);
@@ -401,7 +398,7 @@ class Starbar_ContentController extends Api_GlobalController
 		$surveyResponse->processing_status = "pending";
 		$surveyResponse->completed_disqualified = new Zend_Db_Expr('now()');
 		$surveyResponse->save();
-		Game_Starbar::getInstance()->completeSurvey($survey);
+		Game_Transaction::completeSurvey($this->user_id, $this->starbar_id, $survey);
 
 		$user = new User();
 		$user->loadData($this->user_id);
@@ -608,7 +605,7 @@ class Starbar_ContentController extends Api_GlobalController
 				}
 			}
 
-			Game_Starbar::getInstance()->associateSocialNetwork($userSocial);
+			Game_Transaction::associateSocialNetwork( $this->user_id, $this->starbar_id, $userSocial );
 
 			// Show user congrats notification
 			$message = new Notification_Message();
@@ -680,7 +677,7 @@ class Starbar_ContentController extends Api_GlobalController
 					$userSocial->username = $accessToken['screen_name'];
 					$userSocial->save();
 
-					Game_Starbar::getInstance()->associateSocialNetwork($userSocial);
+					Game_Transaction::associateSocialNetwork( $this->user_id, $this->starbar_id, $userSocial );
 
 					// Show user congrats notification
 					$message = new Notification_Message();
@@ -729,7 +726,7 @@ class Starbar_ContentController extends Api_GlobalController
 
 		/* Facebook wall post successful */
 		if ($request->getParam('post_id')) {
-			Game_Starbar::getInstance()->share($this->shared_type, "FB", @$this->shared_id);
+			Game_Transaction::share($this->user_id, $this->starbar_id, $this->shared_type, "FB", @$this->shared_id);
 
 			// Send hidden notification to make the user request an update to game info, and to disable sharing that same item on FB again
 			$message = new Notification_Message();

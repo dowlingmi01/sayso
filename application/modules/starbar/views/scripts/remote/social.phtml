@@ -54,14 +54,14 @@
 					<div class="sb_userImg">
 						<a href="//<?= BASE_DOMAIN ?>/starbar/social/user-profile" class="sb_nav_element" rel="sb_popBox_user-profile">
 							<? if ($this->facebook_social->identifier) { ?>
-								<img class="sb_userImg" src="//graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $user->getTitle() ?>" />
+								<img class="sb_userImg" src="//graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $user->getTitle($starbar->id) ?>" />
 							<? } else { ?>
-								<img class="sb_userImg" src="//<?= BASE_DOMAIN ?>/images/social/img_user.jpg" alt="<?= $user->getTitle() ?>" />
+								<img class="sb_userImg" src="//<?= BASE_DOMAIN ?>/images/social/img_user.jpg" alt="<?= $user->getTitle($starbar->id) ?>" />
 							<? } ?>
 						</a>
 					</div><!-- .userImg -->
 					<div class="sb_content">
-						<h2>Hi <a href="//<?= BASE_DOMAIN ?>/starbar/social/user-profile" class="sb_nav_element sb_user_title <?= ($this->user->username ? "" : "sb_user_level_title") ?>" rel="sb_popBox_user-profile"><?= $user->getTitle() ?></a></h2>
+						<h2>Hi <a href="//<?= BASE_DOMAIN ?>/starbar/social/user-profile" class="sb_nav_element sb_user_title <?= ($this->user->username ? "" : "sb_user_level_title") ?>" rel="sb_popBox_user-profile"><?= $user->getTitle($starbar->id) ?></a></h2>
 						<a href="//<?= BASE_DOMAIN ?>/starbar/social/user-profile" class="sb_nav_element" rel="sb_popBox_user-profile">Edit Profile</a>
 						</div><!-- .sb_content -->
 						<div id="sb_popBox_user-profile" class="sb_popBox sb_triangle-border">

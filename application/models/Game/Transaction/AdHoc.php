@@ -2,7 +2,7 @@
 class Game_Transaction_AdHoc extends Game_Transaction {
 	public function execute() {
 		if( !array_key_exists('custom_amount', $this->_parameters) )
-			parent::execute();
+			return parent::execute();
 		else {
 			$sql = 'SELECT * FROM game_transaction_type_line WHERE game_transaction_type_id = ?';
 			$lines = Db_Pdo::fetchAll($sql, $this->_transaction_type['id']);
@@ -11,6 +11,7 @@ class Game_Transaction_AdHoc extends Game_Transaction {
 			Db_Pdo::execute($sql, $this->_transaction_type['id'], $this->_user_id, $this->_survey_id, json_encode($this->_parameters));
 			$transaction_id = Db_Pdo::getPdo()->lastInsertId();
 			$this->_saveLines($transaction_id, $lines);
+			return $transaction_id;
 		}
 	}	
 }

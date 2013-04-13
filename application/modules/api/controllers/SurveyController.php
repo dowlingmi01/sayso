@@ -45,7 +45,7 @@ class Api_SurveyController extends Api_GlobalController
 		$surveyResponse->save();
 
 		// reward the user
-		Game_Starbar::getInstance()->completeSurvey($survey);
+		Game_Transaction::completeSurvey($this->user_id, $this->starbar_id, $survey);
 
 		// success
 		return $this->_resultType(true);
@@ -90,7 +90,7 @@ class Api_SurveyController extends Api_GlobalController
 		if ($surveyQuestionChoice->correct) {
 			$correctSurveyQuestionChoiceId = $surveyQuestionChoice->id;
 			// reward the user
-			Game_Starbar::getInstance()->completeSurvey($survey);
+			Game_Transaction::completeSurvey($this->user_id, $this->starbar_id, $survey);
 		} else {
 			$correctSurveyQuestionChoiceId = Survey_QuestionChoice::getCorrectChoiceIdForQuestion($surveyQuestion->id);
 		}
@@ -144,7 +144,7 @@ class Api_SurveyController extends Api_GlobalController
 
 		//PTC it came from here
 
-		Game_Starbar::getInstance()->completeSurvey($survey);
+		Game_Transaction::completeSurvey($this->user_id, $this->starbar_id, $survey);
 
 		return $this->_resultType(true);
 	}
@@ -205,7 +205,7 @@ class Api_SurveyController extends Api_GlobalController
 			$survey = new Survey();
 			$survey->loadData($missionInfo->survey_id);
 
-			Game_Starbar::getInstance()->completeSurvey($survey);
+			Game_Transaction::completeSurvey($this->user_id, $this->starbar_id, $survey);
 		}
 		return $this->_resultType(true);
 	}

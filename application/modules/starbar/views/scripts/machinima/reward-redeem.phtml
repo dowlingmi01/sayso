@@ -1,7 +1,5 @@
 <?php
 
-$game = $this->game;
-/* @var $game Game_Starbar */
 $good = $this->good;
 /* @var $good Gaming_BigDoor_Good */
 $user = $this->user;
@@ -10,18 +8,13 @@ $userAddress = $this->user_address;
 /* @var $userAddress User_Address */
 
 
-$gamer = $game->getGamer();
-
-$currentBalance = (int) $gamer->getCurrencyByType('redeemable')->current_balance;
-$itemCost = (int) $good->cost;
-
-$percentUserBalanceToCost = round(($currentBalance / $itemCost) * 100);
-if ($percentUserBalanceToCost > 100) $percentUserBalanceToCost = 100;
+$currentBalance = $this->user_balance;
+$itemCost = $good->price;
 
 $balanceAfter = $currentBalance - $itemCost;
 $percentUserBalanceRemaining = round(($balanceAfter / $currentBalance) * 100);
 
-$goodIsToken = $good->hasAttribute('giveaway_token');
+$goodIsToken = ($good->type == 'token');
 
 if ($goodIsToken) {
 	$maximumQuantity = floor($currentBalance/$itemCost);
@@ -34,23 +27,23 @@ if ($goodIsToken) {
 
 	<div id="sb_reward_step1" class="sb_reward_step">
 		<!-- BEGIN LANDING -->
-		<div class="sb_rewardHeader"><span><?= $good->title ?></span></div>
+		<div class="sb_rewardHeader"><span><?= $good->name ?></span></div>
 
 		<div class="sb_rewardImg">
-			<img src="<?= $good->url_full ?>" alt="<?= $good->title ?>" />
+			<img src="<?= $good->img_url ?>" alt="<?= $good->name ?>" />
 		</div>
 		<!-- .sb_rewardImg -->
 
 		<div class="sb_rewardBase">
 			<div class="sb_user-points-box">
 				<span class="sb_imgRedeemableCurrency"></span>
-				<div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentUserBalanceToCost ?>%"></span><span class="sb_progressBarValue"><span><?= $itemCost ?></span></span></div>
+				<div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $good->percentage ?>%"></span><span class="sb_progressBarValue"><span><?= $itemCost ?></span></span></div>
 			</div>
 
 			<?php if ($goodIsToken) : ?>
 				<p class="sb_rewardDescription">Redeem your Coins for Entry Tokens to win!<br />The more tokens you purchase the better your chance of winning.</p>
 			<?php else : ?>
-				<p class="sb_rewardDescription">Redeem your Coins for<br /><?= $good->description ?></p>
+				<p class="sb_rewardDescription">Redeem your Coins for<br /><?= $good->name ?></p>
 			<?php endif ?>
 			<div class="sb_theme_button_alt sb_redeem_btn_step1"></div>
 
@@ -65,10 +58,10 @@ if ($goodIsToken) {
 
 		<div class="sb_rewardHeader">
 			<h3>Confirm Your Order</h3>
-			<span><?= $good->title ?></span>
+			<span><?= $good->name ?></span>
 		</div><!-- .sb_rewardHeader -->
 		<div class="sb_rewardImg">
-			<img src="<?= $good->url_full ?>" alt="<?= $good->title ?>" />
+			<img src="<?= $good->img_url ?>" alt="<?= $good->name ?>" />
 		</div><!-- .sb_rewardImg -->
 		<div class="sb_rewardOrder">
 			<div class="sb_column_5050BG">

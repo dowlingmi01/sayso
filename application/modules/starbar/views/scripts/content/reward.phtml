@@ -1,41 +1,34 @@
 <?php
 
 $good = $this->model;
-
-
-/* @var $reward Gaming_BigDoor_Good */
-$gamer = $good->getGame()->getGamer();
-$currencyBalance = $gamer->getCurrencyByType('redeemable')->current_balance;
-$percentUserBalanceToCost = round(((int) $currencyBalance / (int) $good->cost) * 100);
-if ($percentUserBalanceToCost > 100) $percentUserBalanceToCost = 100;
 ?>
 
-<div class="sb_rewardItem <?= ($good->isRedeemable() ? '' : 'sb_rewardItem_disabled') ?>" data-id="<?= $good->getId() ?>">
-	<?php if ($good->getNonRedeemReason()) : ?>
+<div class="sb_rewardItem <?= ($good->can_purchase ? '' : 'sb_rewardItem_disabled') ?>" data-id="<?= $good->getId() ?>">
+	<?php if ($good->cant_purchase_message) : ?>
 		<div class="sb_rewardItem_disabledMsg">
 			<h1 class="sb_textError">!</h1>
-			<p><?= $good->getNonRedeemReason()?></p>
+			<p><?= $good->cant_purchase_message ?></p>
 		</div><!-- .sb_rewardItem_disabledMsg -->
 	<?php endif ?>
 	<div class="sb_rewardHeader">
-		<?= $good->title ?>
+		<?= $good->name ?>
 	</div><!-- .sb_rewardHeader -->
 	<div class="sb_rewardImg">
-		<img src="<?= $good->url_preview ?>" alt="Reward" />
+		<img src="<?= $good->img_url_preview ?>" alt="Reward" />
 	</div><!-- .sb_rewardImg -->
 	<div class="sb_rewardBase">
 		<div class="sb_user-points-box">
 			<span class="sb_imgRedeemable"></span>
-			<div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $percentUserBalanceToCost ?>%"></span><span class="sb_progressBarValue"><span><?= $good->cost ?></span></span></div>
+			<div class="sb_progress_bar"><span class="sb_currency_percent" style="width: <?= $good->percentage ?>%"></span><span class="sb_progressBarValue"><span><?= $good->price ?></span></span></div>
 		</div><!-- .user-points-box -->
-		<?php if ($good->getCommentForUser()) : ?>
-			<?php if ($good->isRedeemable()) : ?>
-				<p class="sb_reward_comment"><span><?= $good->getCommentForUser() ?></span></p>
+		<?php if ($good->comment) : ?>
+			<?php if ($good->can_purchase) : ?>
+				<p class="sb_reward_comment"><span><?= $good->comment ?></span></p>
 			<?php else : ?>
-				<p class="sb_reward_levelReq"><span><?= $good->getCommentForUser() ?></span></p>
+				<p class="sb_reward_levelReq"><span><?= $good->comment ?></span></p>
 			<?php endif ?>
 		<?php endif ?>
-		<?php if ($good->isRedeemable()) : ?>
+		<?php if ($good->can_purchase) : ?>
 			<span class="sb_theme_button sb_theme_button_alt">Redeem</span>
 		<?php else : ?>
 			<span class="sb_theme_button sb_theme_button_grey">Redeem</span>

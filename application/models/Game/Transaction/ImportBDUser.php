@@ -42,5 +42,6 @@ class Game_Transaction_ImportBDUser extends Game_Transaction {
 		}
 		$this->_gamer->imported = new Zend_Db_Expr('now()');
 		$this->_gamer->save();
+		return $transaction_id;
 	}
 }

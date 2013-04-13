@@ -11,12 +11,8 @@ class User_State extends Record
 		$starbarUserMap->starbar_id = $starbar->id;
 		$starbarUserMap->active = 1;
 		$starbarUserMap->save();
-
-		$isNewGamer = false;
-		$gamer = Gamer::create($this->user_id, $starbar->id, $isNewGamer);
-		$game = Game_Starbar::create($gamer, $request, $starbar);
-		if( $isNewGamer )
-			$game->install();
+		if($starbarUserMap->wasInserted())
+			Game_Transaction::run($this->user_id, Economy::getIdforStarbar($starbar->id), 'STARBAR_OPT_IN');
 
 		$this->starbar_id = $starbar->id;
 		$this->visibility = "open";

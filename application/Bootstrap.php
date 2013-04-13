@@ -16,8 +16,6 @@ class Bootstrap extends App_Bootstrap
 
 		Record::$defaultModifiedColumn = 'modified';
 
-		Game_Abstract::$_enabled = true;
-
 		// only log if used by a developer
 		if (isset($_SERVER['REMOTE_ADDR'])) {
 			$remoteAddress = $_SERVER['REMOTE_ADDR'];

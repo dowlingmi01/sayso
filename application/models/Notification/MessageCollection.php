@@ -216,8 +216,6 @@ class Notification_MessageCollection extends RecordCollection
 	*/
 	public function processNewQueuedMessagesForStarbarAndUser ($starbarId, $userId, $request) {
 		$messageUserMap = new Notification_MessageUserMap();
-		if( $request )
-			$game = Game_Starbar::getInstance();
 
 		$sql = "
 			SELECT nm.*
@@ -250,7 +248,7 @@ class Notification_MessageCollection extends RecordCollection
 					case 'Checking in':
 						if( $request ) {
 							$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId);
-							$game->checkin();
+							Game_Transaction::run($userId, Economy::getIdforStarbar($starbarId), 'STARBAR_CHECKIN');
 						}
 						break;
 					case 'FB Account Connected':
@@ -264,10 +262,8 @@ class Notification_MessageCollection extends RecordCollection
 			}
 		}
 
-		if ($loadGame && $request) {
-			$game->loadGamerProfile();
-			$request->setParam(Api_AbstractController::GAME, $game);
-		}
+		if ($loadGame && $request)
+			Game_Transaction::addGameToRequest($request);
 	}
 
 }

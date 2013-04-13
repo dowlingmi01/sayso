@@ -1,9 +1,7 @@
 <?php
 
-$game = $this->game;
-/* @var $game Game_Starbar */
 $good = $this->good;
-/* @var $good Gaming_BigDoor_Good */
+
 $user = $this->user;
 /* @var $user User */
 $userAddress = $this->user_address;
@@ -14,32 +12,10 @@ $userAddress = $this->user_address;
 	<!-- ORDER COMPLETE - SHIPPING -->
 	<div class="sb_rewardHeader"><h2>Order Complete!</h2><span/></div>
 	<div class="sb_rewardImg">
-		<img src="<?= $good->url_full ?>" alt="<?= $good->title ?>" />
+		<img src="<?= $good->img_url ?>" alt="<?= $good->name ?>" />
 	</div><!-- .sb_rewardImg -->
 	<div class="sb_rewardOrder">
-		<?php if ($good->hasAttribute('giveaway_token')) : ?>
-			<?
-			switch((int)$good->id) {
-				case 2036:
-					$drawDate = "Dec. 12, 2011";
-					break;
-
-				case 2038:
-					$drawDate = "Dec. 19, 2011";
-					break;
-
-				case 2044:
-					$drawDate = "Dec. 26, 2011";
-					break;
-
-				case 2054:
-					$drawDate = "Jan. 2, 2012";
-					break;
-
-				default:
-					$drawDate = "(Date TBD)";
-			}
-			?>
+		<?php if ($good->type == 'token') : ?>
 			<p align="center"><strong><small><a href="http://bit.ly/MdZJT5">Check here for giveaway information</a></small></strong></p>
 			<p>Remember, you can enter as many times as you want and increase your likelihood of winning.</p>
 		<?php else : ?>

@@ -34,10 +34,11 @@ class User extends Record implements Titled
 	 */
 	protected $_plainTextPassword;
 
-	public function getTitle ()
+	public function getTitle ($starbar_id = null)
 	{
 		if ($this->username) return $this->username;
-		return Game_Starbar::getInstance()->getGamer()->getHighestLevel()->title;
+		else if( $starbar_id ) return Game_Transaction::getUserLevelName($this->id, $starbar_id);
+		else return 'User';
 	}
 
 	public function setEmail (User_Email $email) {

@@ -1,18 +1,18 @@
 <div class="sb_column6040BG">
 	<div class="sb_column60">
 		<div class="sb_header">
-			<h2>Welcome Back, <a href="//<?= BASE_DOMAIN ?>/starbar/<?= $this->text('CONFIG_SHORT_TITLE') ?>/user-level" class="sb_nav_element sb_user_title <?= ($this->user->username ? "" : "sb_user_level_title") ?>" rel="sb_popBox_user-level"><?= $this->user->getTitle() ?></a></h2>
+			<h2>Welcome Back, <a href="//<?= BASE_DOMAIN ?>/starbar/<?= $this->text('CONFIG_SHORT_TITLE') ?>/user-level" class="sb_nav_element sb_user_title <?= ($this->user->username ? "" : "sb_user_level_title") ?>" rel="sb_popBox_user-level"><?= $this->user->getTitle($this->starbar_id) ?></a></h2>
 		</div><!-- .sb_header -->
 		<div>
 			<ul class="sb_lineList">
 				<li>
 					<? if ($this->facebook_social->identifier) { ?>
-						<img class="sb_userImg sb_alignLeft" src="//graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $this->user->getTitle() ?>" />
+						<img class="sb_userImg sb_alignLeft" src="//graph.facebook.com/<?= $this->facebook_social->identifier ?>/picture?type=square" alt="<?= $this->user->getTitle($this->starbar_id) ?>" />
 					<? } else { ?>
-						<img class="sb_userImg sb_alignLeft" src="//<?= BASE_DOMAIN ?>/images/<?= $this->text('CONFIG_SHORT_TITLE') ?>/img_user.jpg" alt="<?= $this->user->getTitle() ?>" />
+						<img class="sb_userImg sb_alignLeft" src="//<?= BASE_DOMAIN ?>/images/<?= $this->text('CONFIG_SHORT_TITLE') ?>/img_user.jpg" alt="<?= $this->user->getTitle($this->starbar_id) ?>" />
 					<? } ?>
 					<p class="sb_nextToUserImage">
-						<strong>Username:</strong> <span id="sb_profile_username" class="sb_user_title sb_jeip<? if (!$this->user->username) { ?> sb_user_level_title<? } ?>"><?= $this->user->getTitle() ?></span><br />
+						<strong>Username:</strong> <span id="sb_profile_username" class="sb_user_title sb_jeip<? if (!$this->user->username) { ?> sb_user_level_title<? } ?>"><?= $this->user->getTitle($this->starbar_id) ?></span><br />
 						<?= $this->user_email->email ?>
 					</p>
 				</li>

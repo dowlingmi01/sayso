@@ -23,7 +23,7 @@ class Api_TestController extends Api_GlobalController
 			$survey = new Survey();
 			$survey->type = $this->survey_type;
 			$survey->reward_category = $this->survey_reward_category;
-			Game_Starbar::getInstance()->completeSurvey($survey);
+			Game_Transaction::completeSurvey($this->user_id, $this->starbar_id, $survey);
 
 			if ($survey->type == "survey" && $survey->reward_category == "profile") {
 				$profileSurvey = new Survey();
@@ -51,8 +51,9 @@ class Api_TestController extends Api_GlobalController
 	* @return Boolean (false) if we are not on the development system
 	*/
 	public function rewardNotesAction() {
+		$this->_validateRequiredParameters(array('user_id', 'starbar_id'));
 		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'demo'))) {
-			Game_Starbar::getInstance()->testRewardNotes($survey);
+			Game_Transaction::run($this->user_id, Economy::getIdforStarbar($this->starbar_id), 'TEST_REWARD_NOTES');
 
 			return $this->_resultType(true);
 		} else {
@@ -84,9 +85,10 @@ class Api_TestController extends Api_GlobalController
 	*/
 	public function resetGamerAction() {
 		if (in_array(APPLICATION_ENV, array('development', 'sandbox', 'testing', 'demo'))) {
+			throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Api_TestController::resetGamerAction not implemented yet.'));
 			$this->_validateRequiredParameters(array('user_id', 'user_key', 'starbar_id'));
-			$newGamer = Gamer::reset($this->user_id, $this->user_key, $this->starbar_id);
-			Game_Starbar::getInstance()->install();
+//			$newGamer = Gamer::reset($this->user_id, $this->user_key, $this->starbar_id);
+//			Game_Starbar::getInstance()->install();
 			return $this->_resultType(true);
 		} else {
 			return $this->_resultType(false);
@@ -142,8 +144,8 @@ class Api_TestController extends Api_GlobalController
 			Db_Pdo::execute("DELETE FROM user_address WHERE user_id = ?", $this->user_id);
 			Db_Pdo::execute("UPDATE user SET created = now(), username = '' WHERE id = ?", $this->user_id);
 
-			$newGamer = Gamer::reset($this->user_id, $this->user_key, $this->starbar_id);
-			Game_Starbar::getInstance()->install();
+//			$newGamer = Gamer::reset($this->user_id, $this->user_key, $this->starbar_id);
+//			Game_Starbar::getInstance()->install();
 
 			$user = new User();
 			$user->loadData($this->user_id);

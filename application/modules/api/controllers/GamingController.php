@@ -22,8 +22,6 @@ class Api_GamingController extends Api_GlobalController
 	{
 	}
 
-	// http://local.sayso.com/api/gaming/user-profile/starbar_id/1/user_id/46/user_key/r3nouttk6om52u18ba154mc4j4
-
 	public function getGameAction () {
 		$this->_validateRequiredParameters(array('user_id', 'starbar_id'));
 		$game = Game_Transaction::getGame($this->user_id, $this->starbar_id);

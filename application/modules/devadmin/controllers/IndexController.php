@@ -188,7 +188,7 @@ class Devadmin_IndexController extends Api_GlobalController
 
 		$sql = "SELECT *
 				FROM starbar
-				WHERE id > 1
+				WHERE id > 2
 				";
 		$starbars = Db_Pdo::fetchAll($sql);
 		$this->view->starbars = $starbars;
@@ -197,78 +197,32 @@ class Devadmin_IndexController extends Api_GlobalController
 			$starbar = new Starbar();
 			$starbar->loadData($starbarId);
 			$request->setParam('user_id', 1);
-			$gameStarbar = Game_Starbar::getInstance();
 
 			$this->view->starbar_id = $starbar->id;
-			$economy = $gameStarbar->getEconomy();
 
-			$client = $economy->getClient();
-			$namedGoodCollectionId = $economy->getGoodId("NAMED_GOOD_COLLECTION");
-
-			$client->getNamedGoodCollection($namedGoodCollectionId);
-			$data = $client->getData();
-			$unfilteredGoods = $data->named_goods;
-			$goods = array();
-
-			// Keep only items for this environment
-			foreach ($unfilteredGoods as $good) {
-				if (strpos($good->end_user_title, ' (Variant)') !== false) {
-					foreach ($good->attributes as $attribute) {
-						if ($attribute->friendly_id == "environment-".APPLICATION_ENV) {
-							$goods[] = $good;
-							continue 2; // Go to next unfiltered good
-						}
-					}
-				}
-			}
-
-			// Filter out tokens
-			foreach ($goods as $goodIndex => $good) {
-				foreach ($good->attributes as $attribute) {
-					if ($attribute->friendly_id == "giveaway-token") {
-						unset($goods[$goodIndex]);
-					}
-				}
-			}
+			$sql = "SELECT id, name
+			          FROM game_purchasable_view
+			         WHERE economy_id = ? AND type <> 'token'";
+			$goods = Db_Pdo::fetchAll($sql, $starbar->economy_id);
 
 			$remainingInventory = "N/A";
 			$soldInventory = "N/A (probably)";
 
 			if ($goodId) {
-				$client->namedGoodCollection($namedGoodCollectionId)->namedGood($goodId)->getInventory();
-				$data = $client->getData();
-				if ($data) {
-					$soldInventory = $data->sold_inventory;
-					$remainingInventory = $data->total_inventory - $soldInventory;
-					if ($newInventory != "") {
-						$newInventory = abs($newInventory);
-						$remainingInventory = $newInventory;
-						$client->setParameterPost('total_inventory', $remainingInventory+$soldInventory);
-						$client->namedGoodCollection($namedGoodCollectionId)->namedGood($goodId)->putInventory();
-
-						$game = Game_Starbar::getInstance();
-						$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $economy->getKey(), Api_Cache::LIFETIME_WEEK);
-						$cache->remove();
-						
-						Game_Transaction::adjustBDStock($starbarId, $goodId, $newInventory);
-						// To avoid reloading the form and setting the inventory again
-						$this->_redirect("/devadmin/index/inventory?starbar_id=".$starbarId."&named_good_id=".$goodId);
-					}
-				} else {
-					if ($newInventory != "") {
-						$newInventory = abs($newInventory);
-						$remainingInventory = $newInventory;
-						$client->setParameterPost('total_inventory', $remainingInventory);
-						$client->namedGoodCollection($namedGoodCollectionId)->namedGood($goodId)->postInventory(); // post CREATES inventory
-
-						$game = Game_Starbar::getInstance();
-						$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $economy->getKey(), Api_Cache::LIFETIME_WEEK);
-						$cache->remove();
-						
-						Game_Transaction::adjustBDStock($starbarId, $goodId, $newInventory);
-						// To avoid reloading the form and setting the inventory again
-						$this->_redirect("/devadmin/index/inventory?starbar_id=".$starbarId."&named_good_id=".$goodId);
-					}
+				$sql = 'SELECT credits, debits FROM game_balance WHERE game_asset_id = ? AND user_id = ?';
+				$result = Db_Pdo::fetchAll($sql, $goodId, Game_Transaction::HOUSE_USER_ID);
+				
+				if (count($result) && ($data = $result[0])) {
+					$soldInventory = $data['debits'];
+					$remainingInventory = $data['credits'] - $data['debits'];
+				}
+				if ($newInventory != "") {
+					$newInventory = abs($newInventory);
+					
+					Game_Transaction::run( Game_Transaction::HOUSE_USER_ID, $starbar->economy_id, 'ADJUST_STOCK'
+						                 , array('asset_id'=>$goodId, 'quantity'=>$newInventory));
+					// To avoid reloading the form and setting the inventory again
+					$this->_redirect("/devadmin/index/inventory?starbar_id=".$starbarId."&named_good_id=".$goodId);
 				}
 			}
 
@@ -287,20 +241,13 @@ class Devadmin_IndexController extends Api_GlobalController
 
 		$sql = "SELECT *
 				FROM starbar
-				WHERE id > 1
+				WHERE id > 2
 				";
 		$starbars = Db_Pdo::fetchAll($sql);
 		$this->view->starbars = $starbars;
 
-		if ($starbarId) {
-			$starbar = new Starbar();
-			$starbar->loadData($starbarId);
-			$request->setParam('user_id', 1);
-			$gameStarbar = Game_Starbar::getInstance();
-
-			$this->view->starbar_id = $starbar->id;
-			$economy = $gameStarbar->getEconomy();
-		}
+		if ($starbarId)
+			$this->view->starbar_id = $starbarId;
 
 		if ($operation == "add") {
 			// User-entered data
@@ -311,354 +258,18 @@ class Devadmin_IndexController extends Api_GlobalController
 			$imageUrlPreviewBought = $request->getParam('image_url_preview_bought');
 			$price = (int) abs($request->getParam('price'));
 			$type = $request->getParam('type');
-
-			// Definitions
-			$client = $economy->getClient();
-				// $client = new Gaming_BigDoor_HttpClient('43bfbce697bd4be99c9bf276f9c6b086', '35eb12f3e87144a0822cf1d18d93d867'); // Snakkle
-				// $client = new Gaming_BigDoor_HttpClient('2107954aa40c46f090b9a562768b1e18', '76adcb0c853f486297933c34816f1cd2'); // Hello Music
-				/*$client->getNamedTransactionGroup(5330003);
-				do_dump($client->getData(), "Transaction Group for Product");
-				$client->getNamedTransactionGroup(5342008);
-				do_dump($client->getData(), "Transaction Group for Product Variant");
-
-				$client->setCustomParameters(array(
-					'attribute_friendly_id' => 'bdm-product-variant',
-					'verbosity' => 9,
-					'max_records' => 100
-				));
-				$client->getNamedTransactionGroup('store');
-				$data = $client->getData();
-				do_dump($data, 'data'); exit;*/
-
-			$attributeFullId = $economy->getAttributeId("FULL_STORE");
-			$attributePreviewId = $economy->getAttributeId("PREVIEW_STORE");
-			$attributePreviewBoughtId = $economy->getAttributeId("PREVIEW_BOUGHT");
-			$attributeTokenId = $economy->getAttributeId("TOKEN");
-
-			$attributeProductId = $economy->getAttributeId("PRODUCT");
-			$attributeProductVariantId = $economy->getAttributeId("PRODUCT_VARIANT");
-
-			$namedGoodCollectionId = $economy->getGoodId("NAMED_GOOD_COLLECTION");
-			$currencyPurchasePointsId = $economy->getCurrencyId("PURCHASE_POINTS");
-			$currencyTokenPointsId = $economy->getCurrencyId("TOKEN_POINTS");
-			$currencyRedeemableId = $economy->getCurrencyIdByType("redeemable");
-
-			$attributeEnvironmentId = $economy->getAttributeId("ENVIRONMENT_" . strtoupper(APPLICATION_ENV));
-
-			if ($operation == "add") {
-				set_time_limit(300);
-
-				// // // // // ADD PRODUCT
-
-				// // // Add Association for Product
-				$client->setParameterPost("end_user_description", $productTitle . " (Product Association)");
-				$client->setParameterPost("pub_title", $productTitle . " (Product Association)");
-				$client->setParameterPost("pub_description", $productTitle . " (Product Association)");
-				$client->setParameterPost("end_user_title", $productTitle . " (Product Association)");
-				$client->postAttribute();
-				$data = $client->getData();
-				$attributeProductAssociationId = $data->id;
-
-				$client->attribute($attributeProductId)->postAttribute($attributeProductAssociationId);
-
-
-				// // // Add Named Good for Product
-				$client->setParameterPost("end_user_description", $productTitle);
-				$client->setParameterPost("pub_title", $productTitle);
-				$client->setParameterPost("pub_description", $productTitle);
-				$client->setParameterPost("end_user_title", $productTitle);
-				$client->setParameterPost("read_only", 0);
-				$client->namedGoodCollection($namedGoodCollectionId)->postNamedGood();
-
-				$data = $client->getData();
-				$namedGoodProductId = $data->id;
-
-				$client->attribute($attributeProductId)->postNamedGood($namedGoodProductId);
-				$client->attribute($attributeProductAssociationId)->postNamedGood($namedGoodProductId);
-
-				// // // Add Named Transactions for Product
-				// Purchasing Points Transaction
-				$client->setParameterPost("end_user_description", "GOOD Product Transaction (Purchasing Points): " . $productTitle);
-				$client->setParameterPost("pub_title", "GOOD Product Transaction (Purchasing Points): " . $productTitle);
-				$client->setParameterPost("pub_description", "GOOD Product Transaction (Purchasing Points): " . $productTitle);
-				$client->setParameterPost("end_user_title", "GOOD Product Transaction (Purchasing Points): " . $productTitle);
-				$client->setParameterPost("read_only", 0);
-				$client->setParameterPost("named_transaction_group_ratio", "-1.00");
-				$client->setParameterPost("is_source", 0);
-				$client->setParameterPost("variable_amount_allowed", 1);
-				$client->setParameterPost("is_multi_user", 0);
-				$client->setParameterPost("named_transaction_is_primary", 0);
-				$client->setParameterPost("notifiable_event", 0);
-				$client->setParameterPost("currency_id", $currencyPurchasePointsId);
-				$client->setParameterPost("default_amount", "1.00");
-				$client->postNamedTransaction();
-
-				$data = $client->getData();
-				$namedTransactionProductPurchasingPointsId = $data->id;
-
-				// Redeemable Points Transaction
-				$client->setParameterPost("end_user_description", $productTitle . " (Full)");
-				$client->setParameterPost("pub_title", $productTitle . " (Full)");
-				$client->setParameterPost("pub_description", $productTitle . " (Full)");
-				$client->setParameterPost("end_user_title", $productTitle . " (Full)");
-				$client->setParameterPost("read_only", 0);
-				$client->setParameterPost("named_transaction_group_ratio", "-1.00");
-				$client->setParameterPost("is_source", 0);
-				$client->setParameterPost("variable_amount_allowed", 1);
-				$client->setParameterPost("is_multi_user", 0);
-				$client->setParameterPost("named_transaction_is_primary", 1);
-				$client->setParameterPost("notifiable_event", 0);
-				$client->setParameterPost("currency_id", $currencyRedeemableId);
-				$client->setParameterPost("default_amount", "-" . $price . ".00");
-				$client->setParameterPost("named_good_id", $namedGoodProductId);
-				$client->postNamedTransaction();
-
-				$data = $client->getData();
-				$namedTransactionProductRedeemablePointsId = $data->id;
-
-				// Token Points Transaction
-				if ($type == "token") {
-					$client->setParameterPost("end_user_description", "GOOD Product Transaction (Token Points): " . $productTitle);
-					$client->setParameterPost("pub_title", "GOOD Product Transaction (Token Points): " . $productTitle);
-					$client->setParameterPost("pub_description", "GOOD Product Transaction (Token Points): " . $productTitle);
-					$client->setParameterPost("end_user_title", "GOOD Product Transaction (Token Points): " . $productTitle);
-					$client->setParameterPost("read_only", 0);
-					$client->setParameterPost("named_transaction_group_ratio", "-1.00");
-					$client->setParameterPost("is_source", 0);
-					$client->setParameterPost("variable_amount_allowed", 1);
-					$client->setParameterPost("is_multi_user", 0);
-					$client->setParameterPost("named_transaction_is_primary", 0);
-					$client->setParameterPost("notifiable_event", 0);
-					$client->setParameterPost("currency_id", $currencyTokenPointsId);
-					$client->setParameterPost("default_amount", "1.00");
-					$client->postNamedTransaction();
-
-					$data = $client->getData();
-					$namedTransactionProductTokenPointsId = $data->id;
-				}
-
-				// // // Add Named Transaction Group for Product
-				$client->setParameterPost("end_user_description", "BUY " . $productTitle);
-				$client->setParameterPost("pub_title", "BUY " . $productTitle);
-				$client->setParameterPost("pub_description", "BUY " . $productTitle);
-				$client->setParameterPost("end_user_title", "BUY " . $productTitle);
-				if ($type == "token") $client->setParameterPost("end_user_cap", -1);
-				else $client->setParameterPost("end_user_cap", 1);
-				$client->setParameterPost("end_user_cap_interval", -1);
-				$client->setParameterPost("read_only", 0);
-				$client->setParameterPost("challenge_response_enabled", 0);
-				$client->setParameterPost("non_secure", 1);
-				$client->setParameterPost("requires_end_user_auth", 0);
-				$client->postNamedTransactionGroup();
-
-				$data = $client->getData();
-				$namedTransactionGroupProductId = $data->id;
-
-				$client->namedTransactionGroup($namedTransactionGroupProductId)->postNamedTransaction($namedTransactionProductPurchasingPointsId);
-				$client->setParameterPost("named_transaction_is_primary", 1);
-				$client->namedTransactionGroup($namedTransactionGroupProductId)->postNamedTransaction($namedTransactionProductRedeemablePointsId);
-				if ($type == "token") {
-					$client->namedTransactionGroup($namedTransactionGroupProductId)->postNamedTransaction($namedTransactionProductTokenPointsId);
-				}
-
-				// // // // // ADD PRODUCT VARIANT
-
-				// // // Add URLs
-				// Full Image
-				$client->setParameterPost("end_user_description", "GOOD Full Image: " . $productTitle);
-				$client->setParameterPost("pub_title", "GOOD Full Image: " . $productTitle);
-				$client->setParameterPost("pub_description", "GOOD Full Image: " . $productTitle);
-				$client->setParameterPost("end_user_title", "GOOD Full Image: " . $productTitle);
-				$client->setParameterPost("url", $imageUrlFull);
-				$client->setParameterPost("read_only", 0);
-				$client->setParameterPost("is_media_url", 0);
-				$client->setParameterPost("is_for_end_user_ui", 0);
-				$client->postUrl();
-
-				$data = $client->getData();
-				$imageUrlFullId = $data->id;
-
-				$client->attribute($attributeFullId)->postUrl($imageUrlFullId);
-
-				// Preview Image
-				$client->setParameterPost("end_user_description", "GOOD Preview Image: " . $productTitle);
-				$client->setParameterPost("pub_title", "GOOD Preview Image: " . $productTitle);
-				$client->setParameterPost("pub_description", "GOOD Preview Image: " . $productTitle);
-				$client->setParameterPost("end_user_title", "GOOD Preview Image: " . $productTitle);
-				$client->setParameterPost("url", $imageUrlPreview);
-				$client->setParameterPost("read_only", 0);
-				$client->setParameterPost("is_media_url", 0);
-				$client->setParameterPost("is_for_end_user_ui", 0);
-				$client->postUrl();
-
-				$data = $client->getData();
-				$imageUrlPreviewId = $data->id;
-
-				$client->attribute($attributePreviewId)->postUrl($imageUrlPreviewId);
-
-				// Preview-Bought Image
-				$client->setParameterPost("end_user_description", "GOOD Preview-Bought Image: " . $productTitle);
-				$client->setParameterPost("pub_title", "GOOD Preview-Bought Image: " . $productTitle);
-				$client->setParameterPost("pub_description", "GOOD Preview-Bought Image: " . $productTitle);
-				$client->setParameterPost("end_user_title", "GOOD Preview-Bought Image: " . $productTitle);
-				$client->setParameterPost("url", $imageUrlPreviewBought);
-				$client->setParameterPost("read_only", 0);
-				$client->setParameterPost("is_media_url", 0);
-				$client->setParameterPost("is_for_end_user_ui", 0);
-				$client->postUrl();
-
-				$data = $client->getData();
-				$imageUrlPreviewBoughtId = $data->id;
-
-				$client->attribute($attributePreviewBoughtId)->postUrl($imageUrlPreviewBoughtId);
-
-				// // // Add Association for Product Variant
-				$client->setParameterPost("end_user_description", $productTitle . " (Product Variant Association)");
-				$client->setParameterPost("pub_title", $productTitle . " (Product Variant Association)");
-				$client->setParameterPost("pub_description", $productTitle . " (Product Variant Association)");
-				$client->setParameterPost("end_user_title", $productTitle . " (Product Variant Association)");
-				$client->postAttribute();
-				$data = $client->getData();
-				$attributeProductVariantAssociationId = $data->id;
-
-				//$client->attribute($attributeProductVariantId)->postAttribute($attributeProductVariantAssociationId);
-				$client->attribute($attributeProductId)->postAttribute($attributeProductVariantAssociationId);
-
-
-				// // // Add Named Good for Product Variant
-				$client->setParameterPost("end_user_description", $productTitle . " (Variant)");
-				$client->setParameterPost("pub_title", $productTitle . " (Variant)");
-				$client->setParameterPost("pub_description", $productTitle . " (Variant)");
-				$client->setParameterPost("end_user_title", $productTitle . " (Variant)");
-				$client->setParameterPost("read_only", 0);
-				$client->namedGoodCollection($namedGoodCollectionId)->postNamedGood();
-
-				$data = $client->getData();
-				$namedGoodProductVariantId = $data->id;
-
-				$client->attribute($attributeProductVariantId)->postNamedGood($namedGoodProductVariantId);
-				$client->attribute($attributeProductVariantAssociationId)->postNamedGood($namedGoodProductVariantId);
-				$client->attribute($attributeEnvironmentId)->postNamedGood($namedGoodProductVariantId);
-				$client->url($imageUrlFullId)->postNamedGood($namedGoodProductVariantId);
-				$client->url($imageUrlPreviewId)->postNamedGood($namedGoodProductVariantId);
-				$client->url($imageUrlPreviewBoughtId)->postNamedGood($namedGoodProductVariantId);
-
-				if ($type == "token") {
-					$client->attribute($attributeTokenId)->postNamedGood($namedGoodProductVariantId);
-				} else {
-					if (!$initialInventory) $initialInventory = 1;
-					$client->setParameterPost('total_inventory', $initialInventory);
-					$client->namedGoodCollection($namedGoodCollectionId)->namedGood($namedGoodProductVariantId)->postInventory();
-				}
-
-				// // // Add Named Transactions for Product Variant
-				// Purchasing Points Transaction
-				$client->setParameterPost("end_user_description", "GOOD Product Variant Transaction (Purchasing Points): " . $productTitle);
-				$client->setParameterPost("pub_title", "GOOD Product Variant Transaction (Purchasing Points): " . $productTitle);
-				$client->setParameterPost("pub_description", "GOOD Product Variant Transaction (Purchasing Points): " . $productTitle);
-				$client->setParameterPost("end_user_title", "GOOD Product Variant Transaction (Purchasing Points): " . $productTitle);
-				$client->setParameterPost("read_only", 0);
-				$client->setParameterPost("named_transaction_group_ratio", "-1.00");
-				$client->setParameterPost("is_source", 0);
-				$client->setParameterPost("variable_amount_allowed", 1);
-				$client->setParameterPost("is_multi_user", 0);
-				$client->setParameterPost("named_transaction_is_primary", 0);
-				$client->setParameterPost("notifiable_event", 0);
-				$client->setParameterPost("currency_id", $currencyPurchasePointsId);
-				$client->setParameterPost("default_amount", "1.00");
-				$client->postNamedTransaction();
-
-				$data = $client->getData();
-				$namedTransactionProductVariantPurchasingPointsId = $data->id;
-
-				// Redeemable Points Transaction
-				$client->setParameterPost("end_user_description", $productTitle . " (Variant)");
-				$client->setParameterPost("pub_title", $productTitle . " (Variant)");
-				$client->setParameterPost("pub_description", $productTitle . " (Variant)");
-				$client->setParameterPost("end_user_title", $productTitle . " (Variant)");
-				$client->setParameterPost("read_only", 0);
-				$client->setParameterPost("named_transaction_group_ratio", "-1.00");
-				$client->setParameterPost("is_source", 0);
-				$client->setParameterPost("variable_amount_allowed", 1);
-				$client->setParameterPost("is_multi_user", 0);
-				$client->setParameterPost("named_transaction_is_primary", 1);
-				$client->setParameterPost("notifiable_event", 0);
-				$client->setParameterPost("currency_id", $currencyRedeemableId);
-				$client->setParameterPost("default_amount", "-" . $price . ".00");
-				$client->setParameterPost("named_good_id", $namedGoodProductVariantId);
-				$client->postNamedTransaction();
-
-				$data = $client->getData();
-				$namedTransactionProductVariantRedeemablePointsId = $data->id;
-
-				$client->attribute($attributeProductVariantId)->postNamedTransaction($namedTransactionProductVariantRedeemablePointsId);
-
-				// Token Points Transaction
-				if ($type == "token") {
-					$client->setParameterPost("end_user_description", "GOOD Product Variant Transaction (Token Points): " . $productTitle);
-					$client->setParameterPost("pub_title", "GOOD Product Variant Transaction (Token Points): " . $productTitle);
-					$client->setParameterPost("pub_description", "GOOD Product Variant Transaction (Token Points): " . $productTitle);
-					$client->setParameterPost("end_user_title", "GOOD Product Variant Transaction (Token Points): " . $productTitle);
-					$client->setParameterPost("read_only", 0);
-					$client->setParameterPost("named_transaction_group_ratio", "-1.00");
-					$client->setParameterPost("is_source", 0);
-					$client->setParameterPost("variable_amount_allowed", 1);
-					$client->setParameterPost("is_multi_user", 0);
-					$client->setParameterPost("named_transaction_is_primary", 0);
-					$client->setParameterPost("notifiable_event", 0);
-					$client->setParameterPost("currency_id", $currencyTokenPointsId);
-					$client->setParameterPost("default_amount", "1.00");
-					$client->postNamedTransaction();
-
-					$data = $client->getData();
-					$namedTransactionProductVariantTokenPointsId = $data->id;
-				}
-
-				// // // Add Named Transaction Group for Product Variant
-				$client->setParameterPost("end_user_description", "BUY " . $productTitle . " (Variant)");
-				$client->setParameterPost("pub_title", "BUY " . $productTitle . " (Variant)");
-				$client->setParameterPost("pub_description", "BUY " . $productTitle . " (Variant)");
-				$client->setParameterPost("end_user_title", "BUY " . $productTitle . " (Variant)");
-				if ($type == "token") $client->setParameterPost("end_user_cap", -1);
-				else $client->setParameterPost("end_user_cap", 1);
-				$client->setParameterPost("end_user_cap_interval", -1);
-				$client->setParameterPost("read_only", 0);
-				$client->setParameterPost("challenge_response_enabled", 0);
-				$client->setParameterPost("non_secure", 1);
-				$client->setParameterPost("requires_end_user_auth", 0);
-				$client->postNamedTransactionGroup();
-
-				$data = $client->getData();
-				$namedTransactionGroupProductVariantId = $data->id;
-
-				$client->namedTransactionGroup($namedTransactionGroupProductVariantId)->postNamedTransaction($namedTransactionProductVariantPurchasingPointsId);
-				$client->setParameterPost("named_transaction_is_primary", 1);
-				$client->namedTransactionGroup($namedTransactionGroupProductVariantId)->postNamedTransaction($namedTransactionProductVariantRedeemablePointsId);
-				if ($type == "token") {
-					$client->namedTransactionGroup($namedTransactionGroupProductVariantId)->postNamedTransaction($namedTransactionProductVariantTokenPointsId);
-				}
-
-				$client->getNamedTransactionGroup($namedTransactionGroupProductId);
-				do_dump($client->getData(), "Transaction Group for Product");
-				$client->getNamedTransactionGroup($namedTransactionGroupProductVariantId);
-				do_dump($client->getData(), "Transaction Group for Product Variant");
-
-				//$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $game->getEconomy()->getKey(), Api_Cache::LIFETIME_WEEK);
-				$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $economy->getKey());
-				$cache->remove();
-				
-				Game_Transaction::addGood($starbarId, array(
-					'description' => $productTitle,
-					'bdid' => $namedGoodProductVariantId,
-					'type' => ($type == 'token' ? 'token' : 'physical'),
-					'cost' => $price,
-					'img_url' => $imageUrlFull,
-					'img_url_preview' => $imageUrlPreview,
-					'img_url_preview_bought' => $imageUrlPreviewBought
-				), $initialInventory);
-
-				exit;
-			}
+			
+			Game_Transaction::addGood($starbarId, array(
+				'description' => $productTitle,
+				'bdid' => null,
+				'type' => ($type == 'token' ? 'token' : 'physical'),
+				'cost' => $price,
+				'img_url' => $imageUrlFull,
+				'img_url_preview' => $imageUrlPreview,
+				'img_url_preview_bought' => $imageUrlPreviewBought
+			), $initialInventory);
+			echo "Good Added.";
+			exit;
 		}
 	}
 

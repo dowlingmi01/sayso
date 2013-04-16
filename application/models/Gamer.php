@@ -20,6 +20,8 @@ class Gamer extends Gaming_User {
 	 * @return Gamer
 	 */
 	public static function create ($userId, $starbarId, &$isNew = false) {
+		throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Call to obsolete Gamer::create() with user id (' . $userId . ') and starbar id (' . $starbarId . ')'));
+		
 		// Quick HACK to get starbar_id from user state. It should be part of the request.
 		if( $userId && !$starbarId ) {
 			$userstate = new User_State();

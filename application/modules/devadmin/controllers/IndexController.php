@@ -295,48 +295,24 @@ class Devadmin_IndexController extends Api_GlobalController
 		$this->view->good_id = $goodId;
 
 		if ($starbarId) {
-			$starbar = new Starbar();
-			$starbar->loadData($starbarId);
-			$request->setParam('user_id', 1);
-			$gameStarbar = Game_Starbar::getInstance();
+			$economyId = Economy::getIdforStarbar($starbarId);
 
-			$this->view->starbar_id = $starbar->id;
-			$economy = $gameStarbar->getEconomy();
+			$this->view->starbar_id = $starbarId;
 
 			$sql = "
-				SELECT ugoh.good_id, SUM(ugoh.quantity) AS total_purchased
-				FROM user_gaming_order_history ugoh
-				INNER JOIN user_gaming ug
-					ON ugoh.user_gaming_id = ug.id
-					AND ug.starbar_id = ?
-				GROUP BY ugoh.good_id
+				SELECT ugoh.game_asset_id, p.name, SUM(ugoh.quantity) AS total_purchased
+				  FROM user_gaming_order_history ugoh, game_purchasable_view p
+				 WHERE ugoh.game_asset_id = p.id
+				   AND p.economy_id = ?
+				   AND p.type = 'token'
+				GROUP BY ugoh.game_asset_id
 				ORDER BY total_purchased DESC
 			";
 
-			$purchasedGoods = Db_Pdo::fetchAll($sql, $starbarId);
-
-			$goodsData = $gameStarbar->getGoodsFromStore();
-
-			$goods = new ItemCollection();
-
-			foreach ($goodsData as $goodData) {
-				$good = new Gaming_BigDoor_Good();
-				$good->setPrimaryCurrencyId($gameStarbar->getPurchaseCurrencyId());
-				$good->build($goodData);
-				$goods[(int) $good->getId()] = $good;
-			}
-
-			foreach ($purchasedGoods as $purchasedGood) {
-				$purchasedGoodId = (int) $purchasedGood['good_id'];
-				$totalQuantityPurchased = (int) $purchasedGood['total_purchased'];
-				if (isset($goods[$purchasedGoodId])) {
-					$good = $goods[$purchasedGoodId];
-					$good->setGame($gameStarbar);
-					if ($good->isToken()) {
-						$tokens[$good->getId()] = array("good" => $good, "total_purchased" => $totalQuantityPurchased);
-					}
-				}
-			}
+			$results = Db_Pdo::fetchAll($sql, $starbarId);
+			$tokens = array();
+			foreach( $results as $token )
+				$tokens[$token['game_asset_id']] = $token;
 		}
 
 		$this->view->tokens = $tokens;
@@ -354,7 +330,7 @@ class Devadmin_IndexController extends Api_GlobalController
 			$sql = "
 				SELECT ugoh.*, (@cumulative_sum := @cumulative_sum + ugoh.quantity) as cumulative_quantity
 				FROM user_gaming_order_history ugoh
-				WHERE good_id = ?
+				WHERE game_asset_id = ?
 				HAVING cumulative_quantity >= ?
 				ORDER BY ugoh.id ASC
 				LIMIT 1;
@@ -364,11 +340,8 @@ class Devadmin_IndexController extends Api_GlobalController
 			if ($winningTransactionResult) {
 				$this->view->winning_transaction = new GamerOrderHistory($winningTransactionResult);
 				$this->view->winning_gamer = new Gamer();
-				$this->view->winning_gamer->loadData($this->view->winning_transaction->user_gaming_id);
 				$this->view->winning_user = new User();
-				if ($this->view->winning_gamer->id && $this->view->winning_gamer->user_id) {
-					$this->view->winning_user->loadData($this->view->winning_gamer->user_id);
-				}
+				$this->view->winning_user->loadData($this->view->winning_transaction->user_id);
 				$this->view->winning_user_email = new User_Email();
 				if ($this->view->winning_user->id && $this->view->winning_user->primary_email_id) {
 					$this->view->winning_user_email->loadData($this->view->winning_user->primary_email_id);

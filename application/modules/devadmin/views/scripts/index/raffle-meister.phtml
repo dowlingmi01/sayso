@@ -33,7 +33,7 @@ div#raffleSettings {
 			<select id="good_id" name="good_id">
 				<option value="">Choose a token</option>
 				<? foreach ($this->tokens as $token) { ?>
-					<option value="<?= $token['good']->getId() ?>" <? if ($this->good_id == $token['good']->getId()) { echo 'selected'; } ?>><?= $token['good']->title ?> (<?= $token['total_purchased'] ?> purchased)</option>
+					<option value="<?= $token['game_asset_id'] ?>" <? if ($this->good_id == $token['game_asset_id']) { echo 'selected'; } ?>><?= $token['name'] ?> (<?= $token['total_purchased'] ?> purchased)</option>
 				<? } ?>
 			</select><br />
 			<br />
@@ -41,7 +41,6 @@ div#raffleSettings {
 			<? if ($this->winning_transaction->id) { ?>
 				<h1>Winner!</h1><br />
 				User ID: <?= $this->winning_user->id ?><br />
-				User Gaming ID: <?= $this->winning_gamer->id ?><br />
 				User First Name: <?= $this->winning_user->first_name ?><br />
 				User Last Name: <?= $this->winning_user->last_name ?><br />
 				User Email: <?= $this->winning_user_email->email ?><br />

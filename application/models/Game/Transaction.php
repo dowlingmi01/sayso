@@ -7,7 +7,8 @@ class Game_Transaction {
 	const ERROR_OUT_OF_STOCK = 3;
 	const ERROR_INVALID_QUANTITY = 4;
 	const ERROR_ASSET_DISABLED = 5;
-	const ERROR_SURVEY_REQUIREMENT = 5;
+	const ERROR_SURVEY_REQUIREMENT = 6;
+	const ERROR_CAP_MET = 7;
 	
 	protected $_economy, $_transaction_type, $_user_id, $_parameters, $_gamer, $_survey_id;
 	
@@ -64,6 +65,10 @@ class Game_Transaction {
 		}
 		
 	}
+	public function saveRejected() {
+		$sql = 'INSERT INTO game_rejected_transaction (game_transaction_type_id, user_id, survey_id, parameters, status_code) VALUES (?, ?, ?, ?, ?)';
+		Db_Pdo::execute($sql, $this->_transaction_type['id'], $this->_user_id, $this->_survey_id, count($this->_parameters) ? json_encode($this->_parameters) : null, $this->_status_code );
+	}
 	public function execute() {
 		$sql = 'SELECT * FROM game_transaction_type_line WHERE game_transaction_type_id = ?';
 		$lines = Db_Pdo::fetchAll($sql, $this->_transaction_type['id']);
@@ -74,13 +79,29 @@ class Game_Transaction {
 		return $transaction_id;
 	}
 	public function canRun() {
-		return self::OK;
+		$this->_status_code = self::OK;
+		if( $this->_transaction_type['min_interval'] ) {
+			$sql = 'SELECT id FROM game_transaction WHERE user_id = ? AND game_transaction_type_id = ?';
+			$args = array('', $this->_user_id, $this->_transaction_type['id']);
+			if( $this->_survey_id ) {
+				$sql .= ' AND survey_id = ?';
+				$args[] = $this->_survey_id;
+			}
+			if( $this->_transaction_type['min_interval'] > 0 ) {
+				$sql .= ' AND ts > now() - INTERVAL ? minute';
+				$args[] = $this->_transaction_type['min_interval'];
+			}
+			$sql .= ' LIMIT 1';
+			$args[0] = $sql;
+			$res = call_user_func_array(array('Db_Pdo','fetch'), $args);
+			if( $res && array_key_exists('id', $res))
+				$this->_status_code = self::ERROR_CAP_MET;
+		}
+		return $this->_status_code;
 	}
 	static public function run($user_id, $economy_id, $short_name, $parameters = array()) {
 		try {
 			$economy = Economy::getForId($economy_id);
-			if( !$economy->imported )
-				return;
 			$transaction_type = $economy->_transaction_types[$short_name];
             if( !$transaction_type )
                 throw new Exception('Unknown transaction_type ' . $short_name . ' in economy ' . $economy_id);
@@ -92,8 +113,10 @@ class Game_Transaction {
 				if( $user_id && $user_id != self::HOUSE_USER_ID && $short_name != 'LEVEL_UP' )
 					self::checkUserLevel($economy, $user_id, $parameters);
 				return $transaction_id;
-			} else
+			} else {
+				$transaction->saveRejected();
 				throw new Exception('Transaction validation error ' . $errorCode);
+			}
 		} catch ( Exception $e ) {
 			self::_handleException( $e );
 		}
@@ -244,10 +267,6 @@ class Game_Transaction {
 		}
 	}
 	protected static function _handleException (Exception $exception) {
-		// because Api_Exception unregisters the renderer, we need to restore it here
-		if ($exception instanceof Api_Exception) {
-			$exception->restoreRenderer();
-		}
 		$message = $exception->__toString();
 		static $logger;
 		if( !$logger ) {
@@ -256,6 +275,7 @@ class Game_Transaction {
 			$logger->addWriter($logWriter);
 		}
 		$logger->log($message, Zend_Log::INFO);
+		throw $exception;
 	}
 	public static function getBalance($user_id, $asset_id) {
 		$sql = 'SELECT credits - debits as balance FROM game_balance WHERE user_id = ? AND game_asset_id = ?';

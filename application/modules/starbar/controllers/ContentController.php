@@ -27,7 +27,7 @@ class Starbar_ContentController extends Api_GlobalController
 	public function postDispatch()
 	{
 		parent::postDispatch();
-		
+
 		$request = $this->getRequest();
 
 		$userActionLog = new User_ActionLog();
@@ -45,11 +45,8 @@ class Starbar_ContentController extends Api_GlobalController
 
 		if ($this->_usingJsonPRenderer) {
 			$this->_enableRenderer(new Api_Plugin_JsonRenderer());
-			if ($this->starbar_id == 4) { // Machinima not unified yet
-				$this->render();
-			} else {
-				$this->render('content/' . $request->getActionName(), null, true);
-			}
+			// render from content directory phtml file
+			$this->render('content/' . $request->getActionName(), null, true);
 			return $this->_resultType(new Object(array('html' => $this->getResponse()->getBody())));
 		} else {
 			// iframe loaded content, hence the need for all JS dependencies
@@ -62,10 +59,9 @@ class Starbar_ContentController extends Api_GlobalController
 			$this->view->headLink()->appendStylesheet('/css/starbar-generic.css');
 			$this->view->headLink()->appendStylesheet('/css/starbar-' . $this->view->starbar->short_name . '.css');
 
-			if ($this->starbar_id != 4) { // Machinima not unified yet
-				$this->_helper->viewRenderer->setNoController();
-				$this->_helper->viewRenderer->setScriptAction('content/' . $request->getActionName());
-			}
+			// render from content directory phtml file
+			$this->_helper->viewRenderer->setNoController();
+			$this->_helper->viewRenderer->setScriptAction('content/' . $request->getActionName());
 		}
 	}
 

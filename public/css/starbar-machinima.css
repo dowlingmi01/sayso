@@ -295,7 +295,7 @@
 	text-decoration: none !important;
 }
 
-#sayso-starbar #starbar-player-console .sb_theme_button .sb_imgRedeemableCurrency{
+#sayso-starbar #starbar-player-console .sb_theme_button .sb_imgRedeemable{
 	position: absolute;
 	top: -8px;
 	left: -14px;
@@ -1057,7 +1057,7 @@
 	margin-left:-4px;
 }
 
-#sayso-starbar #starbar-player-console .sb_imgRedeemableCurrency{
+#sayso-starbar #starbar-player-console .sb_imgRedeemable{
 	background-image: url('../images/machinima/p_icon.png');
 	background-repeat: no-repeat;
 	background-position: center;
@@ -1250,7 +1250,7 @@
 	padding: 10px 0px 0px 0px;
 }
 
-#sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgRedeemableCurrency
+#sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgRedeemable
 {
 	margin-top:-6px;
 }
@@ -1259,7 +1259,7 @@
 	width: 75px;
 }
 
-#sayso-starbar #starbar-player-console .sb_user-level-box .sb_imgExperienceCurrency{
+#sayso-starbar #starbar-player-console .sb_user-level-box .sb_imgExperience{
 
 	position: absolute;
 	z-index: 1000;
@@ -1349,7 +1349,7 @@
 }
 
 
-#sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgRedeemableCurrency{
+#sayso-starbar #starbar-player-console .sb_user-points-box .sb_imgRedeemable{
 
 	position: absolute;
 	z-index: 1000;
@@ -2299,8 +2299,8 @@ margin-top:10px;
 #sayso-starbar #sayso-starbar-ajax-content {margin-top:-7px;}
 #sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box {margin-top:10px !important;}
 #sayso-starbar #sayso-starbar-ajax-content .sb_user-points-box{ padding-top:0px !important; margin-top:10px !important }
-#sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box .sb_imgExperienceCurrency{top:-8px;height:30px !important;}
-#sayso-starbar #sayso-starbar-ajax-content .sb_user-points-box .sb_imgRedeemableCurrency{top:2px;}
+#sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box .sb_imgExperience{top:-8px;height:30px !important;}
+#sayso-starbar #sayso-starbar-ajax-content .sb_user-points-box .sb_imgRedeemable{top:2px;}
 #sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box .sb_progress_bar,#sayso-starbar #sayso-starbar-ajax-content .sb_user-points-box .sb_progress_bar{background-color:#555555;}
 #sayso-starbar #sayso-starbar-ajax-content .sb_user_purchases p {font-size:11px !important;padding-top:5px !important;}
 #sayso-starbar .sb_lineList li { border-bottom: solid 1px #bfbfbf !important; }
@@ -2506,6 +2506,192 @@ margin-top:10px;
 #sayso-starbar #starbar-player-console .sb_starbar-logo:hover {
 	background-position: 10px -34px;
 }
+
+
+
+
+
+
+
+
+
+#sayso-starbar .sb_score_tabs,
+.sb_score_tabs  {
+	float:right;
+	text-align:right;
+	font-size:13px;
+	color: #5E1682;
+	margin-top: 4px;
+	font-family:arial,sans-serif;
+}
+
+#sayso-starbar .sb_score_tabs ul li:first-child,
+.sb_score_tabs ul li:first-child{
+	border: none;
+}
+
+#sayso-starbar .sb_score_tabs ul li,
+.sb_score_tabs ul li {
+	display: inline;
+	border-left: 1px solid #5E1682;
+	font-weight:bold;
+	padding-left: 7px;
+	margin-left: 5px;
+}
+
+.sb_score_tabs ul {
+	margin:0 10px 0 0;
+}
+
+.sb_score_tabs a,
+.sb_score_tabs a:hover,
+.sb_score_tabs a:visited
+{
+	color:#5E1682;
+	text-decoration:none;
+}
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb img
+{
+	width:125px;
+	height:70px;
+}
+
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.first img,
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.last img
+{
+	width:93px;
+	height:70px;
+}
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.first
+{
+	margin-left:4px;
+}
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb.last
+{
+	margin-right:4px;
+}
+
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1
+{
+	margin-left:25px;
+}
+
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1 h2
+{
+	font-size:18px;
+	font-weight:bold;
+}
+
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 #sb_spotlight-q1 p
+{
+	font-size:12px;
+	font-weight:bold;
+	color: #5e1682;
+}
+
+#sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel.autohide
+{
+	margin-top:60px;
+}
+
+/* MISSION RULES */
+/* mission */
+
+#sayso-starbar #sb_popBox_mission.sb_popBox{
+	left: 0px;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox .sb_popBoxInner .sb_popContent{
+	/*width: 656px;
+	height: 582px;*/
+	width: 674px;
+	height: 578px;
+}
+#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox .sb_popBoxInner{
+	padding: 10px;
+}
+#sayso-starbar #starbar-player-console #sb_popBox_mission.sb_popBox .sb_popBoxInner .sb_popContent {
+	padding: 0px !important;
+}
+#sayso-starbar #sb_popBox_mission.sb_triangle-border:before{
+	left: 230px;
+}
+#sayso-starbar #sb_popBox_mission.sb_triangle-border:after{
+	left: 231px;
+}
+#sayso-starbar #sb_popBox_mission .sb_triangle-solid:after{
+	left: 227px;
+}
+
+/* Default settings for all mission popboxes */
+#sayso-starbar #starbar-player-console #sb_popBox_mission .sb_mission_carousel li{
+	float:left;
+	margin: 20px 0 0 50px;
+	display:none;
+	height:232px;
+}
+
+/* Make the first slide visible */
+#sayso-starbar #starbar-player-console #sb_popBox_mission  .sb_mission_carousel li#slide1{
+	display:block;
+}
+
+#sayso-starbar #starbar-player-console #sb_popBox_mission li img {
+	margin-bottom:20px;
+}
+
+#sayso-starbar #starbar-player-console .sb_mission_carousel ul {
+	list-style-type:none;
+}
+
+#sayso-starbar #starbar-player-console .sb_mission_carousel ul li p{
+	width:606px;
+}
+
+#sayso-starbar #starbar-player-console .sb_mission_carousel .arrow_left {
+	width:37px;
+	height:70px;/* The extra height gives us a bigger hitting area on the image */
+	float:left;
+	z-index:100;
+	margin-left:-625px;
+	background: url('../images/machinima/machinima_thumb_arrows.png') no-repeat top;
+	/*IE Specific overrides*/
+	position/*/**/:absolute\9;
+	margin-top/*/**/:-252px\9;
+	margin-left/*/**/:25px\9;
+
+}
+
+#sayso-starbar #starbar-player-console .sb_mission_carousel .arrow_right {
+	width:37px;
+	height:70px;/* The extra height gives us a bigger hitting area on the image */
+	float:right;
+	z-index:100;
+	background: url('../images/machinima/machinima_thumb_arrows.png') no-repeat bottom;
+	margin-top:-252px;
+	margin-right:11px;
+	/*IE Specific overrides*/
+	position/*/**/:absolute\9;
+	margin-left/*/**/:610px\9;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #sayso-starbar-spotlight-frame
 {

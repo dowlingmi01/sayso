@@ -17,6 +17,9 @@ class Game_Transaction_Purchase extends Game_Transaction {
 		$redeemable_id = $this->_economy->getCurrencyIdByTypeId(Economy::CURRENCY_REDEEMABLE);
 		$tracking_purchase_id = $this->_economy->getCurrencyIdByTypeId(Economy::CURRENCY_TRACKING_PURCHASE);
 		$tracking_token_id = $this->_economy->getCurrencyIdByTypeId(Economy::CURRENCY_TRACKING_TOKEN);
+		
+		if( array_key_exists('starbar_id', $this->_parameters) )
+			unset( $this->_parameters['starbar_id'] );
 			
 		$sql = 'INSERT INTO game_transaction (game_transaction_type_id, user_id, parameters) VALUES (?, ?, ?)';
 		Db_Pdo::execute($sql, $this->_transaction_type['id'], $this->_user_id, json_encode($this->_parameters));

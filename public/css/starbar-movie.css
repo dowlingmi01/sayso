@@ -1491,7 +1491,9 @@
 .sb_score_tabs a:visited
 {
 	color: #ae6a02;
+	font-size:13px;
 	text-decoration:none;
+	font-family:arial,sans-serif;
 }
 
 #sayso-starbar .sb_number, .sb_number {

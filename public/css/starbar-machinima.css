@@ -2561,7 +2561,9 @@ margin-top:10px;
 .sb_score_tabs a:visited
 {
 	color: black;
+	font-size:13px;
 	text-decoration:none;
+	font-family:arial,sans-serif;
 }
 
 #sayso-starbar .sb_number, .sb_number {

@@ -1755,7 +1755,9 @@
 .sb_score_tabs a:visited
 {
 	color:#0b2f76;
+	font-size:13px;
 	text-decoration:none;
+	font-family:arial,sans-serif;
 }
 #sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb img
 {

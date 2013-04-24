@@ -782,16 +782,13 @@ class Starbar_ContentController extends Api_GlobalController
 		$trailers->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'trailer', 'new');
 		$this->view->trailers = $trailers;
 
-		if ($this->starbar_id > 4) { // for newer bars, grab the missions and assign them to the view
-			// Get a count of available missions
-			// Also count the trailers for this user, and make that value available to the view
-			Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'mission', 0);
-			$missionCollection = new SurveyCollection();
-			$missionCollection->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'mission', 'new');
+		// Get a count of available missions
+		// Also count the trailers for this user, and make that value available to the view
+		Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($this->starbar_id, $this->user_id, 'mission', 0);
+		$missionCollection = new SurveyCollection();
+		$missionCollection->loadSurveysForStarbarAndUser($this->starbar_id, $this->user_id, 'mission', 'new');
 
-			$this->view->assign('missioncount',count($missionCollection));
-		}
-
+		$this->view->assign('missioncount',count($missionCollection));
 		$this->view->assign('trailercount',count($trailers));
 
 

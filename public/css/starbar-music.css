@@ -1742,10 +1742,14 @@
 	margin-left: 5px;
 }
 
+#sayso-starbar .sb_score_tabs ul,
 .sb_score_tabs ul {
 	margin:0 10px 0 0;
 }
 
+#sayso-starbar .sb_score_tabs a,
+#sayso-starbar .sb_score_tabs a:hover,
+#sayso-starbar .sb_score_tabs a:visited,
 .sb_score_tabs a,
 .sb_score_tabs a:hover,
 .sb_score_tabs a:visited

@@ -2508,12 +2508,28 @@ margin-top:10px;
 
 
 
+#sayso-starbar #starbar-player-console #sb_popBox_onboard .sb_ui-tabs a.sb_surveyLaunch,
+#sayso-starbar #starbar-player-console #sb_popBox_about-saySo #about_tabs_2 .sb_ui-tabs a.sb_surveyLaunch{
+	color: #fff;
+	text-shadow: #000 0px 0px 4px;
+	height: 42px;
+	padding: 0px 0px 0px 15px;
+	text-align: center;
+	line-height: 40px;
+	position: absolute;
+	bottom: 5px;
+	z-index: 9999;
+	left: 300px;
+	font-weight: bold;
+	font-size: 12px;
+}
+
 #sayso-starbar .sb_score_tabs,
 .sb_score_tabs  {
 	float:right;
 	text-align:right;
 	font-size:13px;
-	color: #5E1682;
+	color: black;
 	margin-top: 4px;
 	font-family:arial,sans-serif;
 }
@@ -2526,23 +2542,39 @@ margin-top:10px;
 #sayso-starbar .sb_score_tabs ul li,
 .sb_score_tabs ul li {
 	display: inline;
-	border-left: 1px solid #5E1682;
+	border-left: 1px solid #7d0a0f;
 	font-weight:bold;
 	padding-left: 7px;
 	margin-left: 5px;
 }
 
+#sayso-starbar .sb_score_tabs ul,
 .sb_score_tabs ul {
 	margin:0 10px 0 0;
 }
 
+#sayso-starbar .sb_score_tabs a,
+#sayso-starbar .sb_score_tabs a:hover,
+#sayso-starbar .sb_score_tabs a:visited,
 .sb_score_tabs a,
 .sb_score_tabs a:hover,
 .sb_score_tabs a:visited
 {
-	color:#5E1682;
+	color: black;
 	text-decoration:none;
 }
+
+#sayso-starbar .sb_number, .sb_number {
+padding: 2px 5px 2px 4px;
+background-color: #7d0a0f;
+color: white !important;
+font-weight:bold;
+margin: 2px;
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px;
+}
+
 #sayso-starbar-spotlight-frame .sb_tabs #spotlight_tabs_1 .sb_video_carousel .scroll_content .thumb img
 {
 	width:125px;

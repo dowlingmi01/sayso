@@ -3,7 +3,7 @@
 }
 
 #sayso-starbar #starbar-player-console.sb_starbar-visStowed {
-	width: 32px;
+	width: 34px;
 }
 
 #sayso-starbar #sb_starbar-logoSemiStowed .sb_starbar-logo {
@@ -1879,7 +1879,7 @@ height: 359px;
 }
 */
 #sayso-starbar #starbar-player-console .sb_ui-tabs .sb_ui-tabs-nav{
-	top: -35px;
+	top: 0px;
 }
 
 #sayso-starbar #starbar-player-console .sb_ui-accordion .sb_ui-accordion-header .sb_ui-icon-triangle-1-s {
@@ -2296,7 +2296,6 @@ margin-top:10px;
 #sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_next .sb_userLevelImg{width:60px !important;height:63px !important;margin-left:auto !important;margin-right:auto !important;}
 #sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_current{height:105px !important;}
 #sayso-starbar .sb_lineList .sb_userLevel_cycle .sb_user_level_icons_container .sb_userLevelIcons_group .sb_userLevelIcons.sb_userLevel_current .sb_userLevelImg{width:105px !important;height:104px !important;margin-left:auto !important;margin-right:auto !important;background-image: url('../images/machinima/level_current.png');}
-#sayso-starbar #sayso-starbar-ajax-content {margin-top:-7px;}
 #sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box {margin-top:10px !important;}
 #sayso-starbar #sayso-starbar-ajax-content .sb_user-points-box{ padding-top:0px !important; margin-top:10px !important }
 #sayso-starbar #sayso-starbar-ajax-content .sb_user-level-box .sb_imgExperience{top:-8px;height:30px !important;}
@@ -2503,15 +2502,9 @@ margin-top:10px;
 	left: 0px;
 }
 
-#sayso-starbar #starbar-player-console .sb_starbar-logo:hover {
-	background-position: 10px -34px;
+#sayso-starbar #starbar-player-console.sb_starbar-visStowed .sb_starbar-logo:hover {
+	background-position: 3px -34px;
 }
-
-
-
-
-
-
 
 
 

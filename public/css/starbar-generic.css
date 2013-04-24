@@ -797,6 +797,20 @@ html {
 
 /* surveys */
 
+#sayso-starbar #sb_popBox_surveys .sb_surveyInfo{
+	width: 65%;
+	float: left;
+}
+
+#sayso-starbar #sb_popBox_surveys.sb_popBoxActive {
+	height: 404px;
+}
+#sayso-starbar #sb_popBox_surveys .sb_popBoxInner {
+	height:382px;
+}
+
+
+
 /* about say.so */
 
 #sayso-starbar #starbar-player-console #sb_popBox_about-saySo {
@@ -1594,6 +1608,7 @@ bringing in elements from jquery-ui smoothness theme and overriding.sb_
 #sayso-starbar-ajax-content {
 	min-height: 200px;
 }
+#sayso-starbar #sb_popBox_polls #sayso-starbar-ajax-content {margin-bottom:20px;}
 
 /* Embed Poll */
 

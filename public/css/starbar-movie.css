@@ -777,19 +777,6 @@
 
 /* surveys */
 
-#sayso-starbar #sb_popBox_surveys .sb_surveyInfo{
-	width: 65%;
-	float: left;
-}
-
-#sayso-starbar #sb_popBox_surveys.sb_popBoxActive {
-	height: 404px;
-}
-#sayso-starbar #sb_popBox_surveys .sb_popBoxInner {
-	height:382px;
-}
-
-
 #sayso-starbar #sb_popBox_surveys li .sb_theme_button{
 	position: absolute;
 	top: 35%;
@@ -2223,8 +2210,6 @@
 #sayso-starbar #starbar-player-console .sb_popBox .sb_accordion{
 	width: 490px;
 }
-
-#sayso-starbar #sb_popBox_polls #sayso-starbar-ajax-content {margin-bottom:20px;}
 
 /* Tooltips */
 #sayso-starbar .tooltip,

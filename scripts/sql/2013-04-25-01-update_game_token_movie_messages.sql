@@ -1,0 +1,4 @@
+UPDATE game_purchasable p, game_asset a SET p.available = 0, p.unavailable_message = 'We\'ll be announcing the latest giveaway winners soon!' WHERE p.game_asset_id = a.id AND a.bdid = 5158013;
+UPDATE game_purchasable p, game_asset a SET p.available = 0, p.unavailable_message = 'We\'ll be announcing the latest giveaway winners soon!' WHERE p.game_asset_id = a.id AND a.bdid = 5152012;
+UPDATE game_purchasable p, game_asset a SET p.available = 0, p.unavailable_message = 'Congrats to the winner of the Apple TV Giveaway, Connie A. from Souix Falls, SD!' WHERE p.game_asset_id = a.id AND a.bdid = 5108006;
+UPDATE game_purchasable p, game_asset a SET p.available = 0, p.unavailable_message = 'Congrats to the winner of the Roku 2 XD Giveaway, Michael R. from Mission, TX!' WHERE p.game_asset_id = a.id AND a.bdid = 5106002;

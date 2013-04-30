@@ -445,7 +445,7 @@ class Game_Transaction {
 		return $results;
 	}
 	static public function isProfileSurveyCompleted( $user_id, $starbar_id ) {
-		if( !self::$_profile_survey || $_profile_survey->user_id != $user_id || $_profile_survey->starbar_id != $starbar_id ) {
+		if( !self::$_profile_survey || self::$_profile_survey->user_id != $user_id || self::$_profile_survey->starbar_id != $starbar_id ) {
 			self::$_profile_survey = new Object();
 			self::$_profile_survey->user_id = $user_id;
 			self::$_profile_survey->starbar_id = $starbar_id;

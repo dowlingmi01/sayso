@@ -211,14 +211,14 @@ class Devadmin_IndexController extends Api_GlobalController
 			if ($goodId) {
 				$sql = 'SELECT credits, debits FROM game_balance WHERE game_asset_id = ? AND user_id = ?';
 				$result = Db_Pdo::fetchAll($sql, $goodId, Game_Transaction::HOUSE_USER_ID);
-				
+
 				if (count($result) && ($data = $result[0])) {
 					$soldInventory = $data['debits'];
 					$remainingInventory = $data['credits'] - $data['debits'];
 				}
 				if ($newInventory != "") {
 					$newInventory = abs($newInventory);
-					
+
 					Game_Transaction::run( Game_Transaction::HOUSE_USER_ID, $starbar->economy_id, 'ADJUST_STOCK'
 						                 , array('asset_id'=>$goodId, 'quantity'=>$newInventory));
 					// To avoid reloading the form and setting the inventory again
@@ -258,7 +258,7 @@ class Devadmin_IndexController extends Api_GlobalController
 			$imageUrlPreviewBought = $request->getParam('image_url_preview_bought');
 			$price = (int) abs($request->getParam('price'));
 			$type = $request->getParam('type');
-			
+
 			Game_Transaction::addGood($starbarId, array(
 				'description' => $productTitle,
 				'bdid' => null,
@@ -1246,4 +1246,68 @@ class Devadmin_IndexController extends Api_GlobalController
 		$this->view->messages = array("Nothing to do!");
 	}
 
+
+	public function testAction () {
+		Log_Event::removeAssetCache();
+		$json = trim('
+			{
+				"base_ts": "'.time().'",
+				"events": [
+					{
+						"type": "page_view",
+						"ts": "'.(time() - 25).'",
+						"url": "https://www.gmail.com/?classic=1",
+						"events": [
+							{
+								"type": "social_action",
+								"ts": "'.(time() - 20).'",
+								"social_network": "Twitter",
+								"action": "Share",
+								"message": "I really love moo.com!!!"
+							},
+							{
+								"type": "asset",
+								"ts": "'.(time() - 15).'",
+								"provider": "youtube",
+								"asset_type": "video",
+								"action": "load",
+								"asset_id": "QVs_yLZ3X0g",
+								"props": [
+									{ "title" : "video_url", "url" : "https://www.youtube.com/watch?v=QVs_yLZ3X0g&list=PLZLTS4u9M_2rPFsdbdY7xL8oAApgU0Zar&index=3" },
+									{ "title" : "uploader", "category_id" : "machinima", "category_title" : "Machinima" },
+									{ "title" : "video_length", "value" : "69" },
+									{ "title" : "title", "value" : "Grand Theft Auto 5 -- Trevor Trailer" },
+									{ "title" : "playlist_id", "value" : "PLZLTS4u9M_2rPFsdbdY7xL8oAApgU0Zar" },
+									{ "title" : "playlist_index", "value" : "3" }
+								]
+							},
+							{
+								"type": "social_action",
+								"ts": "'.(time() - 6).'",
+								"target_url": "http://www.moo.com/?cow=yes&h=&r",
+								"social_network": "Facebook",
+								"action": "Like"
+							},
+							{
+								"type": "search",
+								"ts": "'.(time() - 5).'",
+								"query": "Where is waldo?",
+								"engine": "Google"
+							}
+						]
+					},
+					{
+						"type": "search",
+						"ts": "'.(time() - 4).'",
+						"query": "\"That\'s terrible, Waldo!\", shrieked the nice witch.",
+						"engine": "Google"
+					}
+ 				]
+			}
+		');
+
+		$logEvent = new Log_Event(1, 1);
+		$logEvent->insert(json_decode($json, true));
+		exit;
+	}
 }

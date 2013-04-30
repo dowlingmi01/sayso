@@ -1,0 +1,15 @@
+INSERT INTO log_asset_provider (id, lookup, title) VALUES (1, 'youtube', 'Youtube');
+INSERT INTO log_asset_type (id, lookup, title) VALUES (1, 'video', 'Video');
+INSERT INTO log_asset_type_action (id, log_asset_type_id, lookup, title) VALUES (1, 1, 'load', 'Loaded');
+INSERT INTO log_asset_type_property (id, log_asset_type_id, type, lookup, title) VALUES (1, 1, 'url', 'video_url', 'URL');
+INSERT INTO log_asset_type_property (id, log_asset_type_id, type, lookup, title) VALUES (2, 1, 'provider_category', 'uploader', 'Uploader/Channel');
+INSERT INTO log_asset_type_property (id, log_asset_type_id, type, lookup, title) VALUES (3, 1, 'string', 'title', 'Title');
+INSERT INTO log_asset_type_property (id, log_asset_type_id, type, lookup, title) VALUES (4, 1, 'string', 'playlist_id', 'Playlist ID');
+INSERT INTO log_asset_type_property (id, log_asset_type_id, type, lookup, title) VALUES (5, 1, 'integer', 'playlist_index', 'Playlist Position');
+INSERT INTO log_asset_type_property (id, log_asset_type_id, type, lookup, title) VALUES (6, 1, 'integer', 'video_length', 'Length (seconds)');
+INSERT INTO log_asset_type_action_property_map (log_asset_type_action_id, log_asset_type_property_id) VALUES (1, 1);
+INSERT INTO log_asset_type_action_property_map (log_asset_type_action_id, log_asset_type_property_id) VALUES (1, 2);
+INSERT INTO log_asset_type_action_property_map (log_asset_type_action_id, log_asset_type_property_id) VALUES (1, 3);
+INSERT INTO log_asset_type_action_property_map (log_asset_type_action_id, log_asset_type_property_id) VALUES (1, 4);
+INSERT INTO log_asset_type_action_property_map (log_asset_type_action_id, log_asset_type_property_id) VALUES (1, 5);
+INSERT INTO log_asset_type_action_property_map (log_asset_type_action_id, log_asset_type_property_id) VALUES (1, 6);

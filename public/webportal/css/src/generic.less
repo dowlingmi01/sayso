@@ -1,0 +1,58 @@
+@import "elements";
+@color-base: #000000;
+@bg-base: #000000;
+@theme-color-primary: #000000;
+@theme-color-secondary: #000000;
+@header-height: 108px;
+
+.zero {
+  padding: 0px;
+  margin: 0px;
+}
+
+/* Body */
+body {
+  background: @color-base;
+  .zero;
+}
+
+/* Header */
+header {
+  .zero;
+  margin-top: -10px; //WHY!!!! Fix this w/ reset.less or something.
+  background-image: url('images/navbar_gradient.png');
+  background-repeat: repeat-x;
+  height: @header-height;
+}
+
+#banner_logo {
+  padding-top: 20px;
+  padding-left: 40px;
+}
+
+/* Nav */
+nav {
+  float: right;
+  width: 350px;
+}
+
+nav ul {
+  list-style: none;
+}
+
+nav li {
+  display: inline;
+}
+
+nav li:after {
+  /* add the pipe between menu items */
+  content: "|";
+  padding-left: 10px;
+  padding-right: 10px;
+  color: white;
+}
+
+nav li:last-child:after  {
+  /* remove the pipe from the last list item */
+  content: "";
+}

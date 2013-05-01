@@ -36,6 +36,8 @@ class Api3_ApiError
 		"endpoint_parameter_validation_failed"=> array("type" => "action",	"message" => "Endpoint data type validation failed."),
 		"endpoint_failed"				=> array("type" => "action",	"message" => "Endpoint parameter filter and validation failed."),
 
+		"common_data_type_not_found"		=> array("type" => "action",	"message" => "No common data of that type found."),
+
 		"continue_on_errors"				=> array("type" => "api",		"message" => "A sibling request encountered an error with continue_on_errors set to FALSE. No response provided."),
 	);
 

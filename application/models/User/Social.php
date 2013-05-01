@@ -4,7 +4,7 @@
 class User_Social extends Record
 {
 	protected $_tableName = 'user_social';
-	
+
 	/* provider = 'facebook' or 'twitter'
 	* returns true if there is a connection, false otherwise
 	*/
@@ -18,8 +18,77 @@ class User_Social extends Record
 			$this->build($userSocialFetch);
 			return true;
 		}
-		
+
 		return false;
 	}
-}
 
+	/**
+	 * Static function to connect Facebook to a user acct.
+	 *
+	 * <p>Hits the Facebook API to get the user id.</p>
+	 * <p>Saves the FB id to the user_social table</p>
+	 * <p>Atempts to set the say.so first name to the FB first name</p>
+	 * <p>Runs the game transaction to credit the user's account for the action</p>
+	 * <p>Updates the notifications.</p>
+	 *
+	 * @param int $userId
+	 * @param int $starbarId
+	 */
+	public static function connectFacebook($userId, $starbarId)
+	{
+		$config = Api_Registry::getConfig();
+
+		$facebook = new Facebook(array(
+			'appId'  => $config->facebook->app_id,
+			'secret' => $config->facebook->secret
+		));
+
+		$fbUser = $facebook->getUser();
+
+		if ($fbUser) {
+			try {
+				$fbProfile = $facebook->api('/me');
+			} catch (FacebookApiException $e) {
+				error_log($e);
+				$fbUser = null;
+			}
+		}
+
+		if ($fbUser && $userId) {
+			$userSocial = new self;
+			$userSocial->user_id = $userId;
+			$userSocial->provider = "facebook";
+			$userSocial->identifier = $fbUser;
+			$userSocial->save();
+
+			if (isset($fbProfile['first_name'])) {
+				$user = new User();
+				$user->loadData($userId);
+				if (!$user->username) {
+					$user->username = $fbProfile['first_name'];
+					$user->save();
+				}
+			}
+
+			Game_Transaction::associateSocialNetwork($userId, $starbarId, $userSocial );
+
+			// Show user congrats notification
+			$message = new Notification_Message();
+			$message->loadByShortNameAndStarbarId('FB Account Connected', $starbarId);
+
+			if ($message->id) {
+				$messageUserMap = new Notification_MessageUserMap();
+				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId, false);
+			}
+		}
+	}
+
+	/**
+	 * NEEDS TO BE DEELOPED
+	 */
+	public static function connectTwiter($userId, $starbarId)
+	{
+
+	}
+
+}

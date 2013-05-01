@@ -150,6 +150,12 @@ class Survey_ResponseCollection extends RecordCollection
 	}
 
 	public static function checkIfUserHasSurveys ($userId, $starbarId, $type, $status) {
+		$surveyCollection = self::countUserSurveys($userId, $starbarId, $type, $status);
+		return $surveyCollection > 0;
+	}
+
+	public static function countUserSurveys($userId, $starbarId, $type, $status)
+	{
 		if (! in_array($type, array("survey", "poll", "quiz", "trailer", "mission"))) return false;
 
 		// @todo the 0 on the following line should take into consideration the maximum to be displayed for that user for that starbar
@@ -157,6 +163,6 @@ class Survey_ResponseCollection extends RecordCollection
 		if (in_array($type, array("survey", "poll"))) self::markOldSurveysArchivedForStarbarAndUser($starbarId, $userId, $type);
 		$surveyCollection = new SurveyCollection();
 		$surveyCollection->loadSurveysForStarbarAndUser($starbarId, $userId, $type, $status);
-		return $surveyCollection->count() > 0;
+		return $surveyCollection->count();
 	}
 }

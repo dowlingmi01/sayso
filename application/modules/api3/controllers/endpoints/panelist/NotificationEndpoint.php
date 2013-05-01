@@ -22,8 +22,13 @@ class Api3_NotificationEndpoint extends Api3_GlobalController
 	 */
 	public  function getUserNotifications(Api3_EndpointRequest $request)
 	{
-		$validators = array("starbar_id" => "int_required_notEmpty", "starbar_stowed" => "required_allowEmpty");
-		$filters = array("starbar_stowed" => "bool");
+		$validators = array(
+				"starbar_id"			=> "int_required_notEmpty",
+				"starbar_stowed"		=> "required_allowEmpty"
+			);
+		$filters = array(
+				"starbar_stowed"		=> "bool"
+			);
 
 		$response = new Api3_EndpointResponse($request, $filters, $validators);
 
@@ -31,8 +36,12 @@ class Api3_NotificationEndpoint extends Api3_GlobalController
 			return $response;
 
 		//logic
+		$starbarId					= $request->validParameters["starbar_id"];
+		$userId					= $request->auth->userData->user_id;
+		$starbarStowed				= $request->validParameters["starbar_stowed"];
+
 		$messages = new Notification_MessageCollection();
-		$messages->loadAllNotificationMessagesForStarbarAndUser($request->validParameters["starbar_id"], $request->validParameters["starbar_stowed"], $request->auth->userData->user_id, NULL);
+		$messages->loadAllNotificationMessagesForStarbarAndUser($starbarId, $starbarStowed, $userId, NULL);
 
 		$response->addRecordsFromCollection($messages);
 
@@ -58,8 +67,15 @@ class Api3_NotificationEndpoint extends Api3_GlobalController
 	 */
 	public function updateStatus(Api3_EndpointRequest $request)
 	{
-		$validators = array("message_id" => "int_required_notEmpty", "mark_closed" => "required_allowEmpty", "mark_notified" => "required_allowEmpty");
-		$filters = array("mark_closed" => "bool", "mark_notified" => "bool");
+		$validators = array(
+				"message_id"			=> "int_required_notEmpty",
+				"mark_closed"			=> "required_allowEmpty",
+				"mark_notified"			=> "required_allowEmpty"
+			);
+		$filters = array(
+				"mark_closed"			=> "bool",
+				"mark_notified"			=> "bool"
+			);
 
 		$response = new Api3_EndpointResponse($request, $filters, $validators);
 
@@ -67,8 +83,13 @@ class Api3_NotificationEndpoint extends Api3_GlobalController
 			return $response;
 
 		//logic
+		$userId					= $request->auth->userData->user_id;
+		$messageId				= $request->validParameters["message_id"];
+		$markClosed				= $request->validParameters["mark_closed"];
+		$markNotified				= $request->validParameters["mark_notified"];
+
 		$messageUserMap = new Notification_MessageUserMap();
-		$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($request->validParameters["message_id"], $request->auth->userData->user_id, $request->validParameters["mark_closed"], $request->validParameters["mark_notified"]);
+		$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($messageId, $userId, $markClosed, $markNotified);
 
 		$response->setResultVariable("success", TRUE);
 
@@ -96,7 +117,12 @@ class Api3_NotificationEndpoint extends Api3_GlobalController
 	 */
 	public function saveStatusByShortNameAndStarbar(Api3_EndpointRequest $request)
 	{
-		$validators = array("short_name" => "alpha_required_allowEmpty", "starbar_id" => "int_required_notEmpty", "mark_notified" => "required_allowEmpty", "mark_closed" => "required_allowEmpty");
+		$validators = array(
+				"short_name"			=> "alpha_required_allowEmpty",
+				"starbar_id"			=> "int_required_notEmpty",
+				"mark_notified"			=> "required_allowEmpty",
+				"mark_closed"			=> "required_allowEmpty"
+			);
 		$filters = array("mark_closed" => "bool", "mark_notified" => "bool");
 
 		$response = new Api3_EndpointResponse($request, $filters, $validators);
@@ -105,8 +131,13 @@ class Api3_NotificationEndpoint extends Api3_GlobalController
 			return $response;
 
 		//logic
+		$shortName				= $request->validParameters["short_name"];
+		$starbarId					= $request->validParameters["starbar_id"];
+		$markNotified				= $request->validParameters["mark_notified"];
+		$markClosed				= $request->validParameters["mark_closed"];
+
 		$message = new Notification_Message();
-		$message->loadByShortNameAndStarbarId($request->validParameters["short_name"],$request->validParameters["starbar_id"]);
+		$message->loadByShortNameAndStarbarId($shortName, $starbarId);
 
 		//throw api error if no $message->id
 		if (!$message->id)
@@ -116,7 +147,7 @@ class Api3_NotificationEndpoint extends Api3_GlobalController
 		}
 
 		//set params for sending to updateStatus endpoint
-		$otherEndpointParams = array("message_id" => $message->id, "mark_closed" => $request->validParameters["mark_closed"], "mark_notified" => $request->validParameters["mark_notified"]);
+		$otherEndpointParams = array("message_id" => $message->id, "mark_closed" => $markClosed, "mark_notified" => $markNotified);
 
 		$response->addFromOtherEndpoint("updateStatus", get_class(), $otherEndpointParams, $this->request_name);
 

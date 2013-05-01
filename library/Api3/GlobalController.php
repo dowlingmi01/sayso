@@ -57,6 +57,17 @@ class Api3_GlobalController //extends Zend_Controller_Action
 		}
 	}
 
+	protected function checkUserAccessToStarbar($response, $starbarId, $active = NULL)
+	{
+		if (!isset($this->auth->userData->starbars->$starbarId))
+		{
+			$response->setResponseError("user_does_not_have_access_to_starbar");
+		} else {
+			if ($active && (bool)$this->auth->userData->starbars->$starbarId["active"] !== $active)
+				$response->setResponseError("starbar_not_active");
+		}
+	}
+
 	/**
 	 * Calculates the limit based on <code>$results_per_page</code>
 	 *

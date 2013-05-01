@@ -9,15 +9,15 @@ class Game_Transaction {
 	const ERROR_ASSET_DISABLED = 5;
 	const ERROR_SURVEY_REQUIREMENT = 6;
 	const ERROR_CAP_MET = 7;
-	
+
 	protected $_economy, $_transaction_type, $_user_id, $_parameters, $_gamer, $_survey_id;
-	
+
 	protected $_status_code, $_status_msg;
 
 	protected static $_profile_survey = null;
-	
+
 	protected static $_transaction_executed = false;
-	
+
 	public function __construct($transaction_type, $user_id, $parameters) {
 		$this->_transaction_type = $transaction_type;
 		$this->_economy = Economy::getForId($transaction_type['economy_id']);
@@ -47,7 +47,7 @@ class Game_Transaction {
 				$previous_level_bd = NULL;
 			$currencies[$this->_economy->_level_asset_id] = array( 'current' => $current_level_bd, 'previous' => $previous_level_bd );
 		}
-		
+
 		return $currencies;
 	}
 	protected function _saveLines( $transaction_id, $lines ) {
@@ -63,7 +63,7 @@ class Game_Transaction {
 			}
 			Db_Pdo::execute($sql, $transaction_id, $line['game_asset_id'], $line['amount'], $previous_balance_bd, $current_balance_bd );
 		}
-		
+
 	}
 	public function saveRejected() {
 		$sql = 'INSERT INTO game_rejected_transaction (game_transaction_type_id, user_id, survey_id, parameters, status_code) VALUES (?, ?, ?, ?, ?)';
@@ -124,7 +124,7 @@ class Game_Transaction {
 	static public function checkUserLevel( Economy $economy, $user_id, $parameters ) {
 		$level = self::getBalance($user_id, $economy->_level_asset_id);
 		$experience = self::getBalance($user_id, $economy->getCurrencyIdByTypeId(Economy::CURRENCY_EXPERIENCE));
-		
+
 		if( array_key_exists( $level+1, $economy->_levels ) ) {
 			$threshold = $economy->_levels[$level+1]['threshold'];
 			if( $experience >= $threshold ) {
@@ -140,23 +140,23 @@ class Game_Transaction {
 		$economy = new Economy();
 		$economy->loadData($economy_id);
 		$economyName = $economy->name;
-		
+
 		$bigDoorEconomyConfig = APPLICATION_PATH . '/../../library/Gaming/BigDoor/config/' . $economyName . '.xml';
 		if (!is_readable($bigDoorEconomyConfig)) {
 			throw new Exception('BigDoor configuration/economy (' . $economyName . ') file missing from Gaming/BigDoor/config. Unable to create economy.');
 		}
 		$economyMap = simplexml_load_file($bigDoorEconomyConfig);
 
-		// Import Goods Store	
+		// Import Goods Store
 		$goodsData = null;
 		$cache = Api_Cache::getInstance('BigDoor_getNamedTransactionGroup_store_' . $economyMap->key, Api_Cache::LIFETIME_WEEK);
-		
+
 		$stock = array();
 		if ($cache->test())
 			$goodsData = $cache->load();
 		else {
 			$client = Gaming_BigDoor_HttpClient::getInstance($economyMap->key, $economyMap->secret);
-			
+
 			$client->setCustomParameters(array(
 				'attribute_friendly_id' => 'bdm-product-variant',
 				'verbosity' => 9,
@@ -167,11 +167,11 @@ class Game_Transaction {
 			$goodsData = $client->getData();
 			$cache->save($goodsData);
 		}
-		
+
 		$sql = "SELECT * FROM game_currency_view WHERE economy_id = ? AND game_currency_type_id = ?";
 		$res = Db_Pdo::fetchAll($sql, $economy_id, Economy::CURRENCY_REDEEMABLE);
 		$redeemable_bdid = $res[0]['bdid'];
-		
+
 		foreach( $goodsData as $goodData )  {
 			$good = new Gaming_BigDoor_Good();
 			$good->setPrimaryCurrencyId($redeemable_bdid);
@@ -186,15 +186,15 @@ class Game_Transaction {
 				$stock[] = array('asset_id'=>$asset_id, 'sold'=>$good->inventory_sold, 'total'=>$good->inventory_total);
 			}
 		}
-		
-		// Import Levels	
+
+		// Import Levels
 		$levelCollectionId = $economyMap->levels->level->id;
 		$cache = Api_Cache::getInstance('BigDoor_namedLevelCollection_' . $levelCollectionId, Api_Cache::LIFETIME_WEEK);
 		if ($cache->test()) {
 			$levels = $cache->load();
 		} else {
 			$client = Gaming_BigDoor_HttpClient::getInstance($economyMap->key, $economyMap->secret);
-			
+
 			$client->getNamedLevelCollection($levelCollectionId);
 			$data = $client->getData();
 			$levels = new Collection();
@@ -210,9 +210,9 @@ class Game_Transaction {
 			}
 			$cache->save($levels);
 		}
-			
+
 		$levels->orderBy('ordinal');
-		
+
 		$sql = "SELECT * FROM game_asset WHERE economy_id = ? AND type = 'level'";
 		$res = Db_Pdo::fetchAll($sql, $economy_id);
 		$asset_id = $res[0]['id'];
@@ -222,10 +222,10 @@ class Game_Transaction {
 			Db_Pdo::execute($sql, $asset_id, $ord, $level->ordinal, $level->title, $level->description ? $level->description : '');
 			$ord++;
 		}
-		
+
 		$economy->imported = new Zend_Db_Expr('now()');
 		$economy->save();
-		
+
 		foreach( $stock as $stockItem )
 			self::run(self::HOUSE_USER_ID, $economy_id, 'IMPORT_BD_STOCK', $stockItem);
 	}
@@ -363,7 +363,7 @@ class Game_Transaction {
 		if (!in_array($network, array("FB", "TW"))) {
 			throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Cannot award user. No social network specified.'));
 		}
-                
+
 		$shareString = "";
 		$parameters = array();
 
@@ -390,7 +390,7 @@ class Game_Transaction {
 			default :
 				throw new Api_Exception(Api_Error::create(Api_Error::GAMING_ERROR, 'Wrong type (' . $type . ') supplied to Game_Transaction::share().'));
 		}
-		self::run($user_id, $economy_id, $shareString, $parameters);
+		return self::run($user_id, $economy_id, $shareString, $parameters);
 	}
 	static public function getPurchasableForUser($user_id, $starbar_id, $game_asset_id, $quantity = 1) {
 		$economy_id = Economy::getIdforStarbar($starbar_id);
@@ -417,7 +417,7 @@ class Game_Transaction {
 			if( $purchasableItem->show )
 				$purchasablesCollection->addItem($purchasableItem);
 		}
-		
+
 		$tokens = new ItemCollection();
 		$purchased = new ItemCollection();
 		$available = new ItemCollection();
@@ -510,7 +510,7 @@ class Game_Transaction {
 
 		if( $purchasable->type != 'token' && $purchasable->stock > 0 && $purchasable->stock < 4 && !array_key_exists($purchasable->id, $game['purchasables']))
 			$purchasable->comment = 'Only ' . $purchasable->stock . ' left!';
-			
+
 		switch( $purchasable->visible ) {
 		case 'purchasable':
 			$purchasable->show = $purchasable->can_purchase;

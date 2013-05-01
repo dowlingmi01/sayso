@@ -25,6 +25,9 @@ class Api3_EndpointValidator
 													new Zend_Validate_Int(),
 													'presence' => 'required'
 													),
+						"int"						=> array(
+													new Zend_Validate_Int()
+													),
 						"required"					=> array(
 													"presence" => "required"
 													),
@@ -34,7 +37,15 @@ class Api3_EndpointValidator
 													),
 						"alpha_required_allowEmpty"	=> array(
 													new Zend_Validate_Alpha(),
-													"presence" => "required"
+													"presence" => "required",
+													"allowEmpty" => TRUE
+													),
+						"alpha_notEmpty"			=> array(
+													new Zend_Validate_Alpha()
+													),
+						"alpha_required_notEmpty"		=> array(
+													new Zend_Validate_Alpha(),
+													"presence" => "required",
 													),
 
 						);
@@ -60,7 +71,7 @@ class Api3_EndpointValidator
 	{
 		//this array holds all of the possible filter rules
 		//key is the field name to be validated,
-		//value is the rule set in array format
+		//value is the rule set
 		$filters = array(
 						"bool"		=> new Zend_Filter_Boolean(Zend_Filter_Boolean::ALL)
 					);

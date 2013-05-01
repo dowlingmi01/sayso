@@ -28,6 +28,11 @@ class Api3_Authentication_PanelistController  extends Api3_Authentication
 			{
 				$this->_api_auth = TRUE;
 				$this->_setUserData($user_id, "user_id");
+				$this->_setUserData($request->api_key, "user_key");
+
+				//TODO: add current active starbar here perhaps
+				//$this->_setUserData($request->api_key, "active_starbar");
+
 				//get available starbars
 				$this->_setUserData(User_State::getStarbarList($user_id), "starbars");
 			} else {

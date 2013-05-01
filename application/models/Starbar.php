@@ -35,10 +35,9 @@ class Starbar extends Record
     }
 
 	public function init() {
-		if (Registry::isRegistered('starbar')) {
-			throw new Exception('Starbar already created and registered in Registry as \'starbar\'');
+		if (!Registry::isRegistered('starbar')) {
+			Registry::set('starbar', $this);
 		}
-		Registry::set('starbar', $this);
 		parent::init();
 	}
 

@@ -156,7 +156,7 @@
 		sayso.msgHandlers['parent-req'] = handleParentReq;
 	}
 
-	sayso.fn.loadScript('starbar/jquery-1.7.1.min.js', jQueryLoaded);
+	sayso.fn.loadScript('starbar/jquery-1.7.1.min.js', loadApi);
 	sayso.url_match_prepend = '^(?:http|https){1}://(?:[\\w.-]+[.])?';
 	sayso.ie_version = getInternetExplorerVersion();
 
@@ -184,6 +184,10 @@
 		delete ssData.event_name;
 		ssData.event_source = 'handleBeacon';
 		forge.message.broadcastBackground('submit-event', { event_name: eventName, event_data: ssData });
+	}
+
+	function loadApi() {
+		sayso.fn.loadScript('starbar/sayso-api.js', jQueryLoaded);
 	}
 
 	function jQueryLoaded() {

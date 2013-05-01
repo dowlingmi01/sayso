@@ -98,22 +98,29 @@ class Api3_Request
 	/**
 	 * Takes the json request and converts it to a php object.
 	 *
-	 *<p>All requests must be in json format until extended. This converts the request
+	 *<p>This converts the request
 	 * to a format the php scripts can more easily manage and writes
 	 * it to the Request object.</p>
 	 *
-	 * @param string $request_json
+	 * @param string|array $request_json
 	 */
-	private function _processRequest ($requestJson)
+	private function _processRequest ($request)
 	{
-		$requestParams = json_decode($requestJson);
+		if (is_string($request))
+			$requestParams = json_decode($request);
+		elseif (is_array($request))
+			$requestParams = $this->_convertArrayToObject($request);
+
+		//change param names if needed
+		$validatedRequestParams = $this->_convertParamNames($requestParams);
+
 		//proessing required for requests with params
-		if (isset($requestParams->action) || isset($requestParams->requests)) //$data was passed to the construtor and has requests in it.
+		if (isset($validatedRequestParams->action) || isset($validatedRequestParams->requests)) //$data was passed to the construtor and has requests in it.
 		{
 			//apply structure to the request object as needed
-			if (!isset($requestParams->requests)) //single request - needs to be formatted
+			if (!isset($validatedRequestParams->requests)) //single request - needs to be formatted
 			{
-				foreach ($requestParams as $key => $value)
+				foreach ($validatedRequestParams as $key => $value)
 				{
 					if (!in_array($key, $this->_top_level_params)) //write request level nodes to the $this->request->requests->default node
 					{
@@ -127,7 +134,7 @@ class Api3_Request
 					}
 				}
 			} else { //straight move, it's already formatted
-				foreach ($requestParams as $key=>$value)
+				foreach ($validatedRequestParams as $key=>$value)
 				{
 					if ($key == "requests")
 					{
@@ -155,6 +162,69 @@ class Api3_Request
 			}
 		}
 		$this->_applyDefaultApiParameters();
+	}
+
+	/**
+	 * Recursive function to convert arrays to stdClass objects
+	 *
+	 * @param array $array
+	 * @return \stdClass
+	 */
+	private function _convertArrayToObject($array)
+	{
+		$obj= new stdClass();
+		foreach ($array as $k=> $v)
+		{
+			//TODO: may need some more thought for deeper arrays
+			//	array->object->array won't be converted
+			if (is_array($v))
+			{
+				$v = $this->_convertArrayToObject($v);
+			}
+
+			$obj->{strtolower($k)} = $v;
+		}
+		return $obj;
+	}
+
+	/**
+	 * Converts naming conventions
+	 *
+	 * Some naming conventions don't make sense both in and
+	 * out of the api. This converts them so that aip usage can be
+	 * semantically accurate.
+	 *
+	 * @param type $params
+	 * @return \stdClass
+	 */
+	private function _convertParamNames($params)
+	{
+		$obj = new stdClass();
+		foreach ($params as $key => $value)
+		{
+			if (is_array($value) || is_object($value))
+			{
+				$value = $this->_convertParamNames ($value);
+				$obj->{$key} = $value;
+			} else {
+				switch ($key) {
+					case "user_id" :
+						$obj->api_user = $value;
+						break;
+					case "user_key" :
+						$obj->api_key = $value;
+						break;
+					case "class" :
+						$obj->action_class = $value;
+						break;
+
+					default :
+						$obj->{$key} = $value;
+				}
+			}
+		}
+
+		return $obj;
 	}
 
 	/**

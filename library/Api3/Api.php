@@ -105,15 +105,15 @@ class Api3_Api
 	 *		user_key</p>
 	 *	<p><b>option params:</b>
 	 *		user_type</p>
-	 * @param string $request_json (json fomat)
+	 * @param string $requestJson (json fomat)
 	 * @return Api3_Api
 	 */
-	public static function getInstance ($apiLoginCredentials = NULL, $request_json = NULL)
+	public static function getInstance ($apiLoginCredentials = NULL, $requestJson = NULL)
 	{
 		//prepare the request params for consistent handling
-		if ($request_json) //external api request
+		if ($requestJson) //external api request
 		{
-			$request = $request_json;
+			$request = $requestJson;
 		} elseif ($apiLoginCredentials) { //internal program request
 			$validLoginCredentials = self::_proessLoginCredentials($apiLoginCredentials);
 
@@ -232,6 +232,10 @@ class Api3_Api
 				{
 					//deal with logic response
 					$this->_response->responses->$key = $logicResponse;
+
+					//deal with common data
+					if ($logicResponse->hasCommonData())
+						$this->_processCommonData($logicResponse->getCommonData());
 				} else {
 					$errorName = $logicResponse->errors->meta->errorName;
 					unset ($logicResponse->errors->meta);
@@ -246,7 +250,7 @@ class Api3_Api
 				$this->_error->newError($logicResponse, $key);
 			} else { //catch all for unknown errors
 				$this->_error->newError("error_unknown", $key);
-				//TODO: log unknown erros
+				//TODO: log unknown errors
 			}
 		}
 	}
@@ -368,5 +372,14 @@ class Api3_Api
 	public function getModuleName()
 	{
 		return $this->_moduleName;
+	}
+
+
+	private function _processCommonData($commonData)
+	{
+		foreach ($commonData as $key => $value)
+		{
+			$this->_response->common_data[$key] = $value;
+		}
 	}
 }

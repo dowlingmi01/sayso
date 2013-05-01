@@ -44,6 +44,13 @@ class Api3_EndpointResponse
 	 */
 	private $_validators = array();
 
+	/**
+	 * Common data to be passed to the response.
+	 *
+	 * @var array
+	 */
+	private $_commonData = array();
+
 //////////////////////////////////////////////////////
 
 	/**
@@ -94,9 +101,14 @@ class Api3_EndpointResponse
 		$this->variables->$name = $value;
 	}
 
-	public function addContexts()
+	public function setResultVariables($data)
 	{
-
+		if (!is_array($data) && !is_object($data))
+			return;
+		foreach ($data as $key => $value)
+		{
+			$this->setResultVariable($key, $value);
+		}
 	}
 
 	/**
@@ -107,12 +119,6 @@ class Api3_EndpointResponse
 	 * <p>It will be passed as it is structured to the api output.</p>
 	 * <p>If <code>$customError</code> is an array or object, it
 	 * needs a param called "code" and one called "message"</p>
-	 *
-	 * @param mixed $customError The error to display. It can be a string, array, or object.
-	 */
-
-	/**
-	 * Sets an error in the response object.
 	 *
 	 * @param mixed $customError Can be string, array, or object.
 	 * @throws Exception
@@ -138,17 +144,43 @@ class Api3_EndpointResponse
 	 * Add records to the response object from a
 	 * prepared SQL statement.
 	 *
-	 * @param string $sql (valid SQL statement)
+	 * @param string $sql Valid SQL SELECT statement
+	 * @param array $params Data to bind to the select statement
 	 */
-	public function addRecordsFromSql($sql)
+	public function addRecordsFromSql($sql, $params = NULL)
 	{
-		$db = $this->_db();
-		$sqlResponse = $db->fetchAssoc($sql);
+		$sqlResponse = $this->getRecordsFromSql($sql, $params);
 		if (!$sqlResponse)
 			//TODO: test mysql_error() handling.
 			$this->addError("SQL Error", mysql_error());
 		else
 			$this->addRecordsFromArray ($sqlResponse);
+	}
+
+	/**
+	 * Get the records from a SQL SELECT statement.
+	 *
+	 * @param string $sql Valid SQL SELECT statment
+	 * @param array $params Data to bind to the select statement
+	 * @return array
+	 */
+	public function getRecordsFromSql($sql, $params = NULL)
+	{
+		$db = $this->_db();
+		return $db->fetchAssoc($sql, $params);
+	}
+
+	/**
+	 * Get a single record from a SQL SELECT statement
+	 *
+	 * @param string $sql Valid SQL SELECT statment
+	 * @param array $params Data to bind to the select statement
+	 * @return string
+	 */
+	public function getFieldFromSql($sql, $params = NULL)
+	{
+		$db = $this->_db();
+		return $db->fetchOne($sql, $params);
 	}
 
 	/**
@@ -266,16 +298,19 @@ class Api3_EndpointResponse
 	 */
 	public function setPagination($count)
 	{
-		//records returned
-		$this->_setRecordsReturned();
-		//total records
-		$this->totalRecords = $count;
-		//page number
-		$this->_setPageNumber();
-		//results per page
-		$this->_setResultsPerPage();
-		//total pages
-		$this->_setTotalPages();
+		if (isset($this->records))
+		{
+			//records returned
+			$this->_setRecordsReturned();
+			//total records
+			$this->totalRecords = (int)$count;
+			//page number
+			$this->_setPageNumber();
+			//results per page
+			$this->_setResultsPerPage();
+			//total pages
+			$this->_setTotalPages();
+		}
 	}
 
 	/**
@@ -284,11 +319,61 @@ class Api3_EndpointResponse
 	 *
 	 * @param string $sql SQL formatted string
 	 */
-	public function setPaginationBySql($sql)
+	public function setPaginationFromSql($sql, $params = NULL)
 	{
 		$db = Zend_Registry::get('db');
-		$count = $db->fetchOne($sql);
+		$count = $db->fetchOne($sql, $params);
 		$this->setPagination($count);
+	}
+
+	public function paginateArray($array, Api3_EndpointRequest $request)
+	{
+		if (!isset($request->validParameters["results_per_page"]) || !isset($request->validParameters["page_number"]))
+			return $array;
+
+		//set vars and data types
+		$resultPerPage = (int)$request->validParameters["results_per_page"];
+		$pageNumber = (int)$request->validParameters["page_number"];
+
+		$book = array_chunk($array, $resultPerPage, TRUE);
+		if (!array_key_exists($pageNumber - 1, $book))
+			return array();
+		$page = $book[$pageNumber - 1];
+
+		return $page;
+	}
+
+	public function getCommonData()
+	{
+		return $this->_commonData;
+	}
+
+	public function getCommonDataFromModel($dataType, $params)
+	{
+		switch($dataType)
+		{
+			case "game":
+				$commonData = array("game" => Game_Transaction::getGame( $params["user_id"], $params["economy_id"] ));
+				break;
+			default:
+				return new Api3_EndpointError("common_data_type_not_found");
+		}
+
+		return $commonData;
+	}
+
+	public function addCommonData($dataType, $params)
+	{
+		$commonData = $this->getCommonDataFromModel($dataType, $params);
+
+		//add to the response object
+		$this->_commonData = $commonData;
+	}
+
+	public function hasCommonData()
+	{
+		if (!empty($this->_commonData))
+			return TRUE;
 	}
 
 	public function getRecords()
@@ -368,22 +453,25 @@ class Api3_EndpointResponse
 			}
 
 		//validate
-		//note: The filter param is intentionally left NULL as Zend_Filter_Input will convert bool to string. So we handle this separtely.
-		$validatedInput = new Zend_Filter_Input(NULL, $this->_validators, $filteredParams);
+		if ($this->_validators)
+		{
+			//note: The filter param is intentionally left NULL as Zend_Filter_Input will convert bool to string. So we handle this separtely.
+			$validatedInput = new Zend_Filter_Input(NULL, $this->_validators, $filteredParams);
 
-		if ($validatedInput->isValid()) {
-			//get request
-			$this->_request->validParameters = $validatedInput->getEscaped();
+			if ($validatedInput->isValid()) {
+				//get request
+				$this->_request->validParameters = $validatedInput->getEscaped();
 
-			//recast bools
-			foreach ($this->_request->validParameters as $key => $value) {
-				if (is_bool($filteredParams[$key]))
-				{
-					$this->_request->validParameters[$key] = (bool)$value;
+				//recast bools
+				foreach ($this->_request->validParameters as $key => $value) {
+					if (is_bool($filteredParams[$key]))
+					{
+						$this->_request->validParameters[$key] = (bool)$value;
+					}
 				}
+			} else {
+				$this->errors = $this->_prepareFailedParameterResponse($validatedInput);
 			}
-		} else {
-			$this->errors = $this->_prepareFailedParameterResponse($validatedInput);
 		}
 	}
 
@@ -461,9 +549,9 @@ class Api3_EndpointResponse
 	private function _setResultsPerPage()
 	{
 		if (isset($this->_request->submittedParameters->results_per_page) && $this->_request->submittedParameters->results_per_page > 0)
-			$this->resultsPerPage = $this->_request->submittedParameters->results_per_page;
+			$this->resultsPerPage = (int)$this->_request->submittedParameters->results_per_page;
 		else
-			$this->resultsPerPage = $this->_dafaultResultsPerPage;
+			$this->resultsPerPage = (int)$this->_dafaultResultsPerPage;
 	}
 
 	/**
@@ -472,6 +560,13 @@ class Api3_EndpointResponse
 	 */
 	private function _setTotalPages()
 	{
-		$this->totalPages = (int)($this->totalRecords / $this->resultsPerPage) + (($this->totalRecords % $this->resultsPerPage) > 0 ? 1 : 0);
+		$this->totalPages = $this->_getTotalPages($this->totalRecords, $this->resultsPerPage);
+		//$this->totalPages = (int)(($this->totalRecords / $this->resultsPerPage) + (($this->totalRecords % $this->resultsPerPage) > 0 ? 1 : 0));
+	}
+
+	private function _getTotalPages($totalRecords, $resultsPerPage)
+	{
+		if ((int)$resultsPerPage != 0)
+			return (int)($totalRecords/$resultsPerPage + (($totalRecords % $resultsPerPage) > 0 ? 1 : 0));
 	}
 }

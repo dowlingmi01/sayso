@@ -382,4 +382,352 @@ class Survey_Response extends Record
 
 		return $messages;
 	}
+
+	/**
+	 * Processes a survey response.
+	 *
+	 * <p>Validates required params,</p>
+	 * <p>Checks what type of survey it is
+	 *	e.g. (survey, poll, etc)</p>
+	 * <p>Processes logic for whatever type it is</p>
+	 * <p>Updates the status of the survey to complete</p>
+	 * <p>Runs the Game transaction</p>
+	 *
+	 * <p>Required structure for $data:</p>
+	 * <p>	survey_id</p>
+	 * <p>	starbar_id</p>
+	 * <p>	user_key</p>
+	 * <p>	user_id</p>
+	 *
+	 * <p>Survey type specific required structure:</p>
+	 * <p>	<b>survey</b></p>
+	 *
+	 * <p>	<b>poll</b></p>
+	 * <p>		frame_id</p>
+	 *
+	 * <p>	<b>trailer</b></p>
+	 * <p>		first_choice_id</p>
+	 * <p>		second_choice_id</p>
+	 *
+	 * <p>	<b>mission</b></p>
+	 * <p>		mission_short_name</p>
+	 * <p>		mission_data</p>
+	 * <p>			-data</p>
+	 * <p>				--stages</p>
+	 * <p>			-stage</p>
+	 *
+	 * @param array $data
+	 * @return boolean
+	 */
+	public function updateResponse($data)
+	{
+		//validate required params
+		//TODO: do we need to check the integrety of the loaded surveys with the data passed in??
+		if (
+			!isset($data["survey_id"])
+			|| !isset($data["starbar_id"])
+			|| !isset($data["user_key"])
+			|| !isset($this->id)
+			|| $this->user_id != $data["user_id"]
+			|| $this->status == "completed"
+			|| $this->status == "disqualified"
+		)
+		return FALSE;
+
+		//load the survey so we can check the type
+		$this->setSurvey(new Survey());
+		$this->_survey->loadData($this->survey_id);
+
+		//Process each type of survey individually
+		switch($this->_survey->type)
+		{
+			case "survey":
+				/** Returns an array with:
+				 *	facebookCallbackUrl
+				 *	pixel_iframe_url
+				 */
+				return $this->_processSurveyTypeSurvey($data);
+				break;
+
+			case "poll":
+				//validate survey type specific params
+				if (
+					!array_key_exists("external_choice_id", $data)
+				)
+						return FALSE;
+				return $this->_processSurveyTypePoll($data);
+				break;
+
+			case "trailer":
+				//validate survey type specific params
+				if (
+					!array_key_exists("first_choice_id", $data)
+						OR
+					!array_key_exists("second_choice_id", $data)
+				)
+						return FALSE;
+				return $this->_processSurveyTypeTrailer($data);
+				break;
+
+			case "mission":
+				//validate survey type specific params
+				if (
+					!array_key_exists("mission_short_name", $data)
+						OR
+					!array_key_exists("mission_data", $data)
+				)
+				return $this->_processSurveyTypeMission($data);
+				break;
+
+			default :
+				return FALSE;
+		}
+	}
+
+	/**
+	 * Update the status of a survey
+	 *
+	 * @param string $status enum('completed','archived','new','disqualified')
+	 * @param string $processingStatus enum('not required','pending','completed','failed')
+	 * @param Zend_Db_Expr|NULL $downloaded
+	 * @return boolean
+	 */
+	public function updateSurveyStatus($status = "completed", $processingStatus = "completed", $downloaded = NULL)
+	{
+		if (!isset($this->id))
+			return FALSE;
+
+		$this->status = $status;
+		$this->processing_status = $processingStatus;
+		$this->data_download = $downloaded;
+		$this->completed_disqualified = new Zend_Db_Expr('now()');
+		$this->save();
+	}
+
+	/**
+	 * Processes survey of type survey
+	 *
+	 * @param array $data
+	 * @return array
+	 */
+	private function _processSurveyTypeSurvey($data)
+	{
+		//set vars for the _postProcessSurveyAction function
+		$data["status"] = "completed";
+		$data["processing_status"] = "pending";
+		$data["downloaded"] = NULL;
+
+		//set survey type survey response data
+		$response["facebookCallbackUrl"] = "https://".BASE_DOMAIN."/starbar/content/facebook-post-result?shared_type=survey&shared_id=".$data["survey_id"]."&user_id=".$data["user_id"]."&user_key=".$data["user_key"]."&starbar_id=".$data["starbar_id"];
+
+		$response["pixel_iframe_url"] = $this->_getPixelIframeUrl($data["user_id"]);
+
+		//post process survey - set status, run game txn
+		$this->_postProcessSurveyAction($data);
+
+		return $response;
+	}
+
+	/**
+	 * Processes survey of type poll
+	 *
+	 * @param array $data
+	 * @return boolean
+	 */
+	private function _processSurveyTypePoll($data)
+	{
+		// A poll has only one question... load it
+		$surveyQuestion = new Survey_Question();
+		$surveyQuestion->loadDataByUniqueFields(array("survey_id" => $this->_survey->id));
+
+		if (!$surveyQuestion->id)
+			return FALSE;
+
+		// Find the user's choice
+		$surveyQuestionChoice = new Survey_QuestionChoice();
+		$surveyQuestionChoice->loadDataByUniqueFields(array(
+												"survey_question_id"	=> $surveyQuestion->id,
+												"external_choice_id"	=> $data["external_choice_id"]
+												)
+											);
+
+		if (!$surveyQuestionChoice->id)
+			return FALSE;
+
+		$surveyQuestionResponse = new Survey_QuestionResponse();
+		$surveyQuestionResponse->survey_response_id = $this->id;
+		$surveyQuestionResponse->survey_question_id = $surveyQuestion->id;
+		$surveyQuestionResponse->survey_question_choice_id = $surveyQuestionChoice->id;
+		$surveyQuestionResponse->data_type = "choice";
+		$surveyQuestionResponse->save();
+
+		$data["status"] = "completed";
+		$data["processing_status"] = "completed";
+		$data["downloaded"] = new Zend_Db_Expr('now()');
+
+		//post process survey - set status, run game txn
+		$this->_postProcessSurveyAction($data);
+
+		return TRUE;
+	}
+
+	/**
+	 * Processes survey of type trailer
+	 *
+	 * @param array $data
+	 * @return boolean
+	 */
+	private function _processSurveyTypeTrailer($data)
+	{
+		// Delete any existing responses (in case of previous partial response, for whatever reason)
+		$this->deleteQuestionResponses();
+
+		$surveyQuestions = new Survey_QuestionCollection();
+		$surveyQuestions->loadAllQuestionsForSurvey($this->_survey->id);
+
+		foreach ($surveyQuestions as $surveyQuestion) {
+			$choiceId = ($surveyQuestion->ordinal == 1 ? $data["first_choice_id"] : $data["second_choice_id"]);
+			// Verify the choice is valid
+			$surveyQuestionChoice = new Survey_QuestionChoice();
+			$surveyQuestionChoice->loadDataByUniqueFields(array('id' => $choiceId, 'survey_question_id' => $surveyQuestion->id));
+
+			if (!$surveyQuestionChoice->id)
+				return FALSE;
+
+			$surveyQuestionResponse = new Survey_QuestionResponse();
+			$surveyQuestionResponse->survey_response_id = $this->id;
+			$surveyQuestionResponse->survey_question_id = $surveyQuestion->id;
+			$surveyQuestionResponse->survey_question_choice_id = $surveyQuestionChoice->id;
+			$surveyQuestionResponse->data_type = "choice";
+			$surveyQuestionResponse->save();
+		}
+
+		$data["status"] = "completed";
+		$data["processing_status"] = "completed";
+		$data["downloaded"] = new Zend_Db_Expr('now()');
+
+		//post process survey - set status, run game txn
+		$this->_postProcessSurveyAction($data);
+
+		return TRUE;
+	}
+
+	/**
+	 * Processes survey of type mission
+	 *
+	 * NOT TESTED!
+	 *
+	 * @param array $data
+	 * @return boolean
+	 */
+	private function _processSurveyTypeMission($data)
+	{
+		$missionInfo = new Survey_MissionInfo();
+		$missionInfo->loadDataByUniqueFields(array('short_name'=>$data->mission_short_name));
+		if( !$missionInfo->id )
+			return FALSE;
+
+		$surveyResponse = new Survey_Response();
+
+		$missionProgress = new Survey_MissionProgress();
+		$missionProgress->survey_id = $missionInfo->survey_id;
+		$missionProgress->user_id = $data->user_id;
+		$missionProgress->top_frame_id = $data->top_frame_id;
+		$missionProgress->stage = $data->mission_data['stage'];
+		$missionProgress->save();
+
+		if( $data->mission_data['stage'] == $missionInfo->number_of_stages ) {
+			try {
+				$fileLocation = realpath(APPLICATION_PATH . '/../public/client/missions/mission/' . $data->mission_short_name);
+				$filePath = $fileLocation . '/model.json';
+				$fileContents = file_get_contents($filePath);
+				$missionData = Zend_Json::decode($fileContents);
+				$answerStages = $data->mission_data['data']['stages'];
+				$answers = array();
+				foreach( $missionData['stages'] as $stageNum => $stage ) {
+					if( array_key_exists('question', $stage['data']) )
+						$this->_verifyMissionAnswer( $stage['data'], $answerStages[$stageNum]['data'], $answers );
+					else
+						foreach($stage['data']['questions'] as $questNum => $question)
+							$this->_verifyMissionAnswer( $question, $answerStages[$stageNum]['data']['questions'][$questNum], $answers );
+				}
+				foreach( $answers as $answer ) {
+					$surveyQuestionResponse = new Survey_QuestionResponse();
+					$surveyQuestionResponse->data_type = 'choice';
+					$surveyQuestionResponse->survey_response_id = $this->id;
+					$surveyQuestionResponse->survey_question_id = $answer['question_id'];
+					$surveyQuestionResponse->survey_question_choice_id = $answer['answer_id'];
+					$surveyQuestionResponse->save();
+				}
+			} catch( Exception $e ) {
+				return $this->_resultType(false);
+			}
+
+
+			$data["status"] = "completed";
+			$data["processing_status"] = "completed";
+			$data["downloaded"] = new Zend_Db_Expr('now()');
+
+			//post process survey - set status, run game txn
+			$this->_postProcessSurveyAction($data);
+		}
+		return TRUE;
+	}
+
+	/**
+	 * Performs common survey processing functionality.
+	 *
+	 * <p>Update status</p>
+	 * <p>Run Game transaction</p>
+	 *
+	 * @param array $data
+	 */
+	private function _postProcessSurveyAction($data)
+	{
+		//set status of survey response
+		$this->updateSurveyStatus($data["status"], $data["processing_status"], $data["downloaded"]);
+
+		//run game transaction
+		Game_Transaction::completeSurvey($data["user_id"], $data["starbar_id"], $this->_survey);
+	}
+
+	/**
+	 * Right now this just checks for federated, but can be extended
+	 * to get any thrid party call back url based on domain logic.
+	 *
+	 * @param int $userId
+	 */
+	private function _getPixelIframeUrl($userId)
+	{
+		$user = new User();
+		$user->loadData($userId);
+
+		// Set to http://www.samplicio.us/router2/ClientCallBack.aspx?fedResponseStatus=10&fedResponseID=xxxxx
+		// for federated users who have completed a federated survey (note fedResponseStatus = 10)
+		if ($user->federated_id && $this->_survey->is_federated) {
+			return "http://www.samplicio.us/router2/ClientCallBack.aspx?fedResponseStatus=10&fedResponseID=".$user->federated_id;
+		} else {
+			return "";
+		}
+	}
+
+	/**
+	 * Copied from Api_SurveyController
+	 *
+	 * @param type $questionDef
+	 * @param type $userAns
+	 * @param type $answers
+	 * @throws Exception
+	 */
+	private function _verifyMissionAnswer( $questionDef, $userAns, &$answers ) {
+		$answerId = $userAns['selectedAnswerId'];
+		if( !$answerId )
+			throw new Exception('Invalid data.');
+		foreach( $questionDef['answers'] as $answer )
+			if( $answer['id'] == $answerId ) {
+				$answers[] = array( 'question_id' => $questionDef['question']['id'], 'answer_id'=>$answerId);
+				return;
+			}
+		throw new Exception('Invalid data.');
+	}
 }

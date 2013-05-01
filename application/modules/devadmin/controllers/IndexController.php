@@ -1273,12 +1273,13 @@ class Devadmin_IndexController extends Api_GlobalController
 								"action": "load",
 								"asset_id": "QVs_yLZ3X0g",
 								"props": [
-									{ "title" : "video_url", "url" : "https://www.youtube.com/watch?v=QVs_yLZ3X0g&list=PLZLTS4u9M_2rPFsdbdY7xL8oAApgU0Zar&index=3" },
-									{ "title" : "uploader", "category_id" : "machinima", "category_title" : "Machinima" },
+									{ "title" : "video_url", "value" : "https://www.youtube.com/watch?v=QVs_yLZ3X0g&list=PLZLTS4u9M_2rPFsdbdY7xL8oAApgU0Zar&index=3" },
+									{ "title" : "uploader", "value" : "machinima", "category_title" : "Machinima" },
 									{ "title" : "video_length", "value" : "69" },
 									{ "title" : "title", "value" : "Grand Theft Auto 5 -- Trevor Trailer" },
 									{ "title" : "playlist_id", "value" : "PLZLTS4u9M_2rPFsdbdY7xL8oAApgU0Zar" },
-									{ "title" : "playlist_index", "value" : "3" }
+									{ "title" : "playlist_index", "value" : "3" },
+									{ "title" : "some_unknown", "value" : "moo" }
 								]
 							},
 							{
@@ -1307,7 +1308,7 @@ class Devadmin_IndexController extends Api_GlobalController
 		');
 
 		$logEvent = new Log_Event(1, 1);
-		$logEvent->insert(json_decode($json, true));
+		$logEvent->insert(json_decode($json));
 		exit;
 	}
 }

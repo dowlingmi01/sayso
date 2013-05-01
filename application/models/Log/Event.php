@@ -16,12 +16,12 @@ class Log_Event {
 
 
 	public function insert ($eventTree) {
-		if (!isset($eventTree['base_ts']) || !$eventTree['base_ts'] || !isset($eventTree['events']) || !count($eventTree['events'])) return;
+		if (!is_object($eventTree) || !property_exists($eventTree, 'base_ts') || !$eventTree->base_ts || !property_exists($eventTree, 'events') || !count($eventTree->events)) return;
 
 		$this->_lastInsertedIndex = 0;
 		$this->_sql = "SET @base_event_time := now();";
 
-		$this->_baseTimestamp = (int) $eventTree['base_ts']; // base timestamp... this is the timestamp when the event tree is sent on the client javascript
+		$this->_baseTimestamp = (int) $eventTree->base_ts; // base timestamp... this is the timestamp when the event tree is sent on the client javascript
 		if (!$this->_baseTimestamp) return;
 
 		$this->_appendInsertSqlForEventTree($eventTree);
@@ -46,10 +46,10 @@ class Log_Event {
 
 
 	private function _appendInsertSqlForEventTree ($eventTree, $parentPageViewIndex = null, $topPageViewIndex = null) {
-		if (!isset($eventTree['events']) || !count($eventTree['events'])) return;
+		if (!property_exists($eventTree, 'events') || !count($eventTree->events)) return;
 
-		foreach ($eventTree['events'] as $event) {
-			switch ($event['type']) {
+		foreach ($eventTree->events as $event) {
+			switch ($event->type) {
 				case 'page_view':
 					$this->_appendInsertSqlForPageView($event, $parentPageViewIndex, $topPageViewIndex);
 					break;
@@ -79,7 +79,7 @@ class Log_Event {
 		}
 
 		/* INSERT URL */
-		if (!isset($pageView['url']) || !$pageView['url'] || !$this->_appendInsertSqlForUrl($pageView['url'], $myIndex)) {
+		if (!property_exists($pageView, 'url') || !$pageView->url || !$this->_appendInsertSqlForUrl($pageView->url, $myIndex)) {
 			/* no url/page view to insert, or insert failed... try to insert the sub-events anyway */
 			$this->_appendInsertSqlForEventTree($pageView, null, null);
 			return;
@@ -99,19 +99,19 @@ class Log_Event {
 
 
 	private function _appendInsertSqlForSocialAction ($socialAction, $parentPageViewIndex, $topPageViewIndex) {
-		if (!isset($socialAction['social_network']) || !in_array($socialAction['social_network'], array("Facebook", "Twitter", "Google+")) || !isset($socialAction['action']) || !in_array($socialAction['action'], array("Share", "Like"))) return;
+		if (!property_exists($socialAction, 'social_network') || !in_array($socialAction->social_network, array("Facebook", "Twitter", "Google+")) || !property_exists($socialAction, 'action') || !in_array($socialAction->action, array("Share", "Like"))) return;
 
 		$myIndex = ++$this->_lastInsertedIndex;
 
 		/* INSERT TARGET URL */
 		$targetUrlSql = "NULL";
-		if (isset($socialAction['target_url']) && $socialAction['target_url'] && $this->_appendInsertSqlForUrl($socialAction['target_url'], $myIndex))
+		if (property_exists($socialAction, 'target_url') && $socialAction->target_url && $this->_appendInsertSqlForUrl($socialAction->target_url, $myIndex))
 			$targetUrlSql = "@log_url_id_".$myIndex;
 
 		/* INSERT THIS SOCIAL ACTION*/
 		// sql to insert log_event_social_action
 		$this->_sql .= "INSERT INTO log_event_social_action (created, user_id, user_session_id, parent_log_event_page_view_id, top_log_event_page_view_id, target_log_url_id, social_network, action, message) ";
-		$this->_sql .= " VALUES (".$this->_getCreatedSql($socialAction).", ".$this->_userId.", ".$this->_userSession.", ".($parentPageViewIndex ? "@log_event_page_view_id_".$parentPageViewIndex : "NULL").", ".($topPageViewIndex ? "@log_event_page_view_id_".$topPageViewIndex : "NULL").", ".$targetUrlSql.", '".$socialAction['social_network']."', '".$socialAction['action']."', ".sqlString(isset($socialAction['message']) ? $socialAction['message'] : "").");";
+		$this->_sql .= " VALUES (".$this->_getCreatedSql($socialAction).", ".$this->_userId.", ".$this->_userSession.", ".($parentPageViewIndex ? "@log_event_page_view_id_".$parentPageViewIndex : "NULL").", ".($topPageViewIndex ? "@log_event_page_view_id_".$topPageViewIndex : "NULL").", ".$targetUrlSql.", '".$socialAction->social_network."', '".$socialAction->action."', ".sqlString(property_exists($socialAction, 'message') ? $socialAction->message : "").");";
 
 		// don't need its id later, though we can set it if we do
 		// $this->_sql .= "SET @log_event_social_action_id_".$myIndex." := last_insert_id();";
@@ -119,14 +119,14 @@ class Log_Event {
 
 
 	private function _appendInsertSqlForSearch ($search, $parentPageViewIndex, $topPageViewIndex) {
-		if (!$search['query'] || !in_array($search['engine'], array("Google", "Bing", "Yahoo", "Amazon"))) return;
+		if (!$search->query || !in_array($search->engine, array("Google", "Bing", "Yahoo", "Amazon"))) return;
 
 		$myIndex = ++$this->_lastInsertedIndex;
 
 		/* INSERT THIS SEARCH EVENT */
 		// sql to insert log_event_search...
 		$this->_sql .= "INSERT INTO log_event_search (created, user_id, user_session_id, parent_log_event_page_view_id, top_log_event_page_view_id, search_engine) ";
-		$this->_sql .= " VALUES (".$this->_getCreatedSql($search).", ".$this->_userId.", ".$this->_userSession.", ".($parentPageViewIndex ? "@log_event_page_view_id_".$parentPageViewIndex : "NULL").", ".($topPageViewIndex ? "@log_event_page_view_id_".$topPageViewIndex : "NULL").", '".$search['engine']."');";
+		$this->_sql .= " VALUES (".$this->_getCreatedSql($search).", ".$this->_userId.", ".$this->_userSession.", ".($parentPageViewIndex ? "@log_event_page_view_id_".$parentPageViewIndex : "NULL").", ".($topPageViewIndex ? "@log_event_page_view_id_".$topPageViewIndex : "NULL").", '".$search->engine."');";
 
 		// ... and put its id in the mysql session variable @log_event_search_id_$myIndex, e.g. @log_event_search_id_1
 		$this->_sql .= "SET @log_event_search_id_".$myIndex." := last_insert_id();";
@@ -134,9 +134,9 @@ class Log_Event {
 		/* INSERT THIS SEARCH QUERY */
 		// sql to insert log_event_search_query...
 		$this->_sql .= "INSERT INTO log_event_search_query (log_event_search_id, query) ";
-		$this->_sql .= " VALUES (@log_event_search_id_".$myIndex.", ".sqlString($search['query']).");";
+		$this->_sql .= " VALUES (@log_event_search_id_".$myIndex.", ".sqlString($search->query).");";
 
-		$keywords = $this->_splitSearchQueryIntoKeywords($search['query']);
+		$keywords = $this->_splitSearchQueryIntoKeywords($search->query);
 
 		foreach ($keywords as $keyword) {
 			$this->_sql .= "INSERT INTO log_event_search_keyword (log_event_search_id, log_search_keyword_id) VALUES (@log_event_search_id_".$myIndex.", func_get_log_search_keyword_id(".sqlString($keyword)."));";
@@ -145,39 +145,39 @@ class Log_Event {
 
 
 	private function _appendInsertSqlForAsset ($assetEvent, $parentPageViewIndex, $topPageViewIndex) {
-		if (!$assetEvent['provider'] || !$assetEvent['asset_type'] || !$assetEvent['action'] || !$assetEvent['asset_id']) return;
+		if (!$assetEvent->provider || !$assetEvent->asset_type || !$assetEvent->action || !$assetEvent->asset_id) return;
 
 		if (!$this->_assetDataLoaded) {
 			$this->_loadAssetData();
 		}
 
 		if (
-			!isset($this->_assetData['providers'][$assetEvent['provider']])
-			|| !isset($this->_assetData['types'][$assetEvent['asset_type']])
-			|| !isset($this->_assetData['types'][$assetEvent['asset_type']]['actions'][$assetEvent['action']])
+			!isset($this->_assetData['providers'][$assetEvent->provider])
+			|| !isset($this->_assetData['types'][$assetEvent->asset_type])
+			|| !isset($this->_assetData['types'][$assetEvent->asset_type]['actions'][$assetEvent->action])
 		) return;
 
 		/* error checking complete, begin processing */
 
 		$myIndex = ++$this->_lastInsertedIndex;
 
-		$assetType = $this->_assetData['types'][$assetEvent['asset_type']];
+		$assetType = $this->_assetData['types'][$assetEvent->asset_type];
 		$assetTypeId = $assetType['id'];
-		$assetProvider = $this->_assetData['providers'][$assetEvent['provider']];
+		$assetProvider = $this->_assetData['providers'][$assetEvent->provider];
 		$assetProviderId = $assetProvider['id'];
-		$assetAction = $assetType['actions'][$assetEvent['action']];
+		$assetAction = $assetType['actions'][$assetEvent->action];
 		$assetActionId = $assetAction['id'];
 
 		$assetTitle = null;
-		foreach ($assetEvent['props'] as $prop) {
-			if (isset($prop['title']) && $prop['title'] == 'title') {  // this is the property that contains the asset's title
-				$assetTitle = $prop['value'];
+		foreach ($assetEvent->props as $prop) {
+			if (property_exists($prop, 'title') && $prop->title == 'title') {  // this is the property that contains the asset's title
+				$assetTitle = $prop->value;
 			}
 		}
 
 		/* INSERT THIS ASSET */
 		// insert or update log_asset record...
-		$this->_sql .= "CALL proc_get_log_asset_id(".$assetProviderId.", ".$assetTypeId.", ".sqlString($assetEvent['asset_id']).", ".sqlString($assetTitle).", @log_asset_id_".$myIndex.");";
+		$this->_sql .= "CALL proc_get_log_asset_id(".$assetProviderId.", ".$assetTypeId.", ".sqlString($assetEvent->asset_id).", ".sqlString($assetTitle).", @log_asset_id_".$myIndex.");";
 
 		/* INSERT THIS ASSET EVENT */
 		// sql to insert log_event_asset...
@@ -188,40 +188,38 @@ class Log_Event {
 		$this->_sql .= "SET @log_event_asset_id_".$myIndex." := last_insert_id();";
 
 		/* INSERT THIS ASSET EVENT'S PROPERTIES */
-		if (isset($assetEvent['props'])) {
-			foreach ($assetEvent['props'] as $prop) {
-				if (!isset($prop['title']) || !$prop['title']) continue; // skip properties with no title
-				if (isset($assetAction['properties'][$prop['title']])) { // existing properties
-					$propertyId = $assetAction['properties'][$prop['title']]['id'];
-					$propertyType = $assetAction['properties'][$prop['title']]['type'];
+		if (property_exists($assetEvent, 'props')) {
+			foreach ($assetEvent->props as $prop) {
+				if (!property_exists($prop, 'title') || !$prop->title) continue; // skip properties with no title
+				if (isset($assetAction['properties'][$prop->title])) { // existing properties
+					$propertyId = $assetAction['properties'][$prop->title]['id'];
+					$propertyType = $assetAction['properties'][$prop->title]['type'];
 
 					switch ($propertyType) {
 						case "provider_category":
-							if (!isset($prop['category_id']) || $prop['category_id'] || !isset($prop['category_title']) || !$prop['category_title']) continue;
+							if (!$prop->value) continue; // no category id set
+							$title = (property_exists($prop, 'category_title') ? $prop->category_title : null);
 							$this->_sql .= "INSERT INTO log_event_asset_property_provider_category (log_event_asset_id, log_asset_id, log_asset_type_action_id, log_asset_type_property_id, log_asset_provider_category_id) ";
-							$this->_sql .= " VALUES (@log_event_asset_id_".$myIndex.", @log_asset_id_".$myIndex.", ".$assetActionId.", ".$propertyId.", func_get_log_asset_provider_category_id(".$assetProviderId.", ".$assetTypeId.", ".$propertyId.", ".sqlString($prop['category_id']).", ".sqlString($prop['category_title'])."));";
+							$this->_sql .= " VALUES (@log_event_asset_id_".$myIndex.", @log_asset_id_".$myIndex.", ".$assetActionId.", ".$propertyId.", func_get_log_asset_provider_category_id(".$assetProviderId.", ".$assetTypeId.", ".$propertyId.", ".sqlString($prop->value).", ".sqlString($title)."));";
 							break;
 						case "integer":
-							if (!isset($prop['value'])) continue;
 							$this->_sql .= "INSERT INTO log_event_asset_property_integer (log_event_asset_id, log_asset_id, log_asset_type_action_id, log_asset_type_property_id, value) ";
-							$this->_sql .= " VALUES (@log_event_asset_id_".$myIndex.", @log_asset_id_".$myIndex.", ".$assetActionId.", ".$propertyId.", ".((int) $prop['value']).");";
+							$this->_sql .= " VALUES (@log_event_asset_id_".$myIndex.", @log_asset_id_".$myIndex.", ".$assetActionId.", ".$propertyId.", ".((int) $prop->value).");";
 							break;
 						case "decimal":
-							if (!isset($prop['value'])) continue;
 							$this->_sql .= "INSERT INTO log_event_asset_property_decimal (log_event_asset_id, log_asset_id, log_asset_type_action_id, log_asset_type_property_id, value) ";
-							$this->_sql .= " VALUES (@log_event_asset_id_".$myIndex.", @log_asset_id_".$myIndex.", ".$assetActionId.", ".$propertyId.", ".sqlString(floatval($prop['value'])).");";
+							$this->_sql .= " VALUES (@log_event_asset_id_".$myIndex.", @log_asset_id_".$myIndex.", ".$assetActionId.", ".$propertyId.", ".sqlString(floatval($prop->value)).");";
 							break;
 						case "string":
-							if (!isset($prop['value'])) continue;
 							$this->_sql .= "INSERT INTO log_event_asset_property_string (log_event_asset_id, log_asset_id, log_asset_type_action_id, log_asset_type_property_id, value) ";
-							$this->_sql .= " VALUES (@log_event_asset_id_".$myIndex.", @log_asset_id_".$myIndex.", ".$assetActionId.", ".$propertyId.", ".sqlString($prop['value']).");";
+							$this->_sql .= " VALUES (@log_event_asset_id_".$myIndex.", @log_asset_id_".$myIndex.", ".$assetActionId.", ".$propertyId.", ".sqlString($prop->value).");";
 							break;
 						case "url":
-							if (!isset($prop['url']) || !$prop['url']) continue;
+							if (!$prop->value) continue; // no url
 							// insert url
 							$propIndex = ++$this->_lastInsertedIndex;
 
-							if (!$this->_appendInsertSqlForUrl($prop['url'], $propIndex)) continue; // inserting url failed
+							if (!$this->_appendInsertSqlForUrl($prop->value, $propIndex)) continue; // try to insert url... if it fails, don't insert the property (skip to next property)
 
 							// insert property
 							$this->_sql .= "INSERT INTO log_event_asset_property_url (log_event_asset_id, log_asset_id, log_asset_type_action_id, log_asset_type_property_id, log_url_id) ";
@@ -229,9 +227,8 @@ class Log_Event {
 							break;
 					}
 				} else { // unknown properties
-					$value = (isset($prop['value']) ? $prop['value'] : null);
 					$this->_sql .= "INSERT INTO log_event_asset_property_unknown (log_event_asset_id, log_asset_id, log_asset_type_action_id, title, value) ";
-					$this->_sql .= " VALUES (@log_event_asset_id_".$myIndex.", @log_asset_id_".$myIndex.", ".$assetActionId.", ".sqlString($prop['title']).", ".sqlString($value).");";
+					$this->_sql .= " VALUES (@log_event_asset_id_".$myIndex.", @log_asset_id_".$myIndex.", ".$assetActionId.", ".sqlString($prop->title).", ".sqlString($prop->value).");";
 				}
 			}
 		} // done inserting properties
@@ -326,8 +323,8 @@ class Log_Event {
 
 
 	private function _getCreatedSql ($event) {
-		if (!isset($event['ts']) || !$event['ts']) return " NULL ";
-		return " @base_event_time - interval " . (($this->_baseTimestamp - (int) $event['ts']))  . " second ";
+		if (!property_exists($event, 'ts') || !$event->ts) return " NULL ";
+		return " @base_event_time - interval " . (($this->_baseTimestamp - (int) $event->ts))  . " second ";
 	}
 
 
@@ -347,7 +344,7 @@ class Log_Event {
 		foreach ($paramStrings as $paramString) {
 			$splitParamString = explode("=", $paramString, 2);
 			if (count($splitParamString) == 2)
-				$params[$splitParamString[0]] = $splitParamString[1];
+				$params[$splitParamString[0]] = urldecode($splitParamString[1]);
 			else $params[$splitParamString[0]] = "";
 		}
 

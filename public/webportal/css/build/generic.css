@@ -4,29 +4,11 @@
     A set of useful LESS mixins
     More info at: http://lesselements.com
   ---------------------------------------------------*/
+/* Constants */
+/* Custom Mix-in's */
 .zero {
   padding: 0;
   margin: 0;
-}
-.proxima_nova_thin {
-  font-family: "proxima-nova", sans-serif;
-  font-style: normal;
-  font-weight: 100;
-}
-.proxima_nova_light {
-  font-family: "proxima-nova", sans-serif;
-  font-style: normal;
-  font-weight: 300;
-}
-.proxima_nova_regular {
-  font-family: "proxima-nova", sans-serif;
-  font-style: normal;
-  font-weight: 400;
-}
-.proxima_nova_bold {
-  font-family: "proxima-nova", sans-serif;
-  font-style: normal;
-  font-weight: 700;
 }
 /* Body */
 body {
@@ -77,11 +59,11 @@ nav li {
 }
 nav li a {
   color: #7c7a7a;
-  font-size: 14px;
   text-decoration: none;
   font-family: "proxima-nova", sans-serif;
   font-style: normal;
   font-weight: 400;
+  font-size: 14px;
 }
 nav li:after {
   /* add the pipe between menu items */
@@ -119,8 +101,8 @@ nav ul {
   font-family: "proxima-nova", sans-serif;
   font-style: normal;
   font-weight: 300;
-  letter-spacing: 1px;
   font-size: 16px;
+  letter-spacing: 1px;
   width: 60%;
   text-wrap: normal;
 }

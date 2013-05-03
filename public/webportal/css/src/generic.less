@@ -1,4 +1,6 @@
 @import "elements";
+
+/* Constants */
 @color-base: #7C7A7A;
 @bg-base: #000000;
 @theme-color-primary: #FFFFFF;
@@ -11,33 +13,38 @@
 @header-padding-right: 75px;
 @font-size: 14px;
 
+/* Custom Mix-in's */
 .zero {
   padding: 0;
   margin: 0;
 }
 
-.proxima_nova_thin {
+.proxima_nova_thin(@size: @font-size) {
   font-family: "proxima-nova",sans-serif;
   font-style: normal;
   font-weight: 100;
+  font-size: @size;
 }
 
-.proxima_nova_light {
+.proxima_nova_light(@size: @font-size) {
   font-family: "proxima-nova",sans-serif;
   font-style: normal;
   font-weight: 300;
+  font-size: @size;
 }
 
-.proxima_nova_regular {
+.proxima_nova_regular(@size: @font-size) {
   font-family: "proxima-nova",sans-serif;
   font-style: normal;
   font-weight: 400;
+  font-size: @size;
 }
 
-.proxima_nova_bold {
+.proxima_nova_bold(@size: @font-size) {
   font-family: "proxima-nova",sans-serif;
   font-style: normal;
   font-weight: 700;
+  font-size: @size;
 }
 
 /* Body */
@@ -129,24 +136,21 @@ nav {
 }
 
 .welcome_header {
-  .proxima_nova_thin;
-  font-size: @font-size + 56;
+  .proxima_nova_thin(@font-size + 56);
   margin-bottom: 0;
 }
 
 .welcome_content {
   margin-top: 0;
-  .proxima_nova_light;
+  .proxima_nova_light(@font-size + 2);
   letter-spacing: 1px;
-  font-size: @font-size + 2;
   width: 60%;
   text-wrap: normal;
 
 }
 
 .welcome_join_now {
-  .proxima_nova_regular;
-  font-size: @font-size + 6;
+  .proxima_nova_regular(@font-size + 6);
 
   img {
     vertical-align: middle;

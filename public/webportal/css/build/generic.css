@@ -8,6 +8,11 @@
   padding: 0;
   margin: 0;
 }
+.proxima_nova_thin {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 100;
+}
 .proxima_nova_light {
   font-family: "proxima-nova", sans-serif;
   font-style: normal;
@@ -45,7 +50,7 @@ header {
 #login {
   float: right;
   clear: both;
-  padding-right: 72px;
+  padding-right: 75px;
 }
 #login input {
   margin-left: 5px;
@@ -93,4 +98,39 @@ nav li:last-child:after {
 }
 nav ul {
   list-style: none;
+}
+/* Content */
+#content_container {
+  color: #ffffff;
+}
+/* Welcome Page */
+.welcome_container {
+  margin-left: 10%;
+}
+.welcome_header {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 100;
+  font-size: 70px;
+  margin-bottom: 0;
+}
+.welcome_content {
+  margin-top: 0;
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  letter-spacing: 1px;
+  font-size: 16px;
+  width: 60%;
+  text-wrap: normal;
+}
+.welcome_join_now {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+}
+.welcome_join_now img {
+  vertical-align: middle;
+  padding-bottom: 3px;
 }

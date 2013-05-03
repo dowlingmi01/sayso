@@ -8,12 +8,18 @@
 @theme-text-important: #F6AA30;
 @theme-text-link: #7C7A7A;
 @header-height: 108px;
-@header-padding-right: 72px;
+@header-padding-right: 75px;
 @font-size: 14px;
 
 .zero {
   padding: 0;
   margin: 0;
+}
+
+.proxima_nova_thin {
+  font-family: "proxima-nova",sans-serif;
+  font-style: normal;
+  font-weight: 100;
 }
 
 .proxima_nova_light {
@@ -87,7 +93,7 @@ nav {
       color: @theme-text-link;
       font-size: @font-size;
       text-decoration: none;
-      .proxima_nova_regular
+      .proxima_nova_regular;
     }
 
   }
@@ -107,5 +113,43 @@ nav {
 
   ul {
     list-style: none;
+  }
+}
+
+/* Content */
+
+#content_container {
+  color: @theme-text-primary;
+}
+
+/* Welcome Page */
+
+.welcome_container {
+  margin-left: 10%;
+}
+
+.welcome_header {
+  .proxima_nova_thin;
+  font-size: @font-size + 56;
+  margin-bottom: 0;
+}
+
+.welcome_content {
+  margin-top: 0;
+  .proxima_nova_light;
+  letter-spacing: 1px;
+  font-size: @font-size + 2;
+  width: 60%;
+  text-wrap: normal;
+
+}
+
+.welcome_join_now {
+  .proxima_nova_regular;
+  font-size: @font-size + 6;
+
+  img {
+    vertical-align: middle;
+    padding-bottom: 3px;
   }
 }

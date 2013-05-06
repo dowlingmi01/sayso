@@ -61,10 +61,14 @@ body {
 /* Header */
 header {
   .zero;
-  margin-top: -10px; //WHY!!!! Fix this w/ reset.less or something.
   background-image: url('images/navbar_gradient.png');
   background-repeat: repeat-x;
   height: @header-height;
+  position:fixed;
+  top:0px;
+  margin:auto;
+  z-index:100000;
+  width:100%;
 
 /* Nav */
   nav {

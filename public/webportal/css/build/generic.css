@@ -24,6 +24,41 @@ header {
   background-image: url('images/navbar_gradient.png');
   background-repeat: repeat-x;
   height: 108px;
+  /* Nav */
+
+}
+header nav {
+  float: right;
+  margin-top: 5px;
+  width: 350px;
+}
+header nav li {
+  display: inline;
+  color: #7c7a7a;
+}
+header nav li a {
+  color: #7c7a7a;
+  text-decoration: none;
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+}
+header nav li:after {
+  /* add the pipe between menu items */
+
+  content: "|";
+  padding-left: 14px;
+  padding-right: 10px;
+  color: white;
+}
+header nav li:last-child:after {
+  /* remove the pipe from the last list item */
+
+  content: "";
+}
+header nav ul {
+  list-style: none;
 }
 #banner_logo {
   padding-top: 20px;
@@ -47,40 +82,6 @@ header {
   margin-left: 7px;
   vertical-align: middle;
 }
-/* Nav */
-nav {
-  float: right;
-  margin-top: 5px;
-  width: 350px;
-}
-nav li {
-  display: inline;
-  color: #7c7a7a;
-}
-nav li a {
-  color: #7c7a7a;
-  text-decoration: none;
-  font-family: "proxima-nova", sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-}
-nav li:after {
-  /* add the pipe between menu items */
-
-  content: "|";
-  padding-left: 14px;
-  padding-right: 10px;
-  color: white;
-}
-nav li:last-child:after {
-  /* remove the pipe from the last list item */
-
-  content: "";
-}
-nav ul {
-  list-style: none;
-}
 /* Content */
 #content_container {
   color: #ffffff;
@@ -88,6 +89,7 @@ nav ul {
 /* Welcome Page */
 .welcome_container {
   margin-left: 10%;
+  margin-top: 10%;
 }
 .welcome_header {
   font-family: "proxima-nova", sans-serif;
@@ -115,4 +117,48 @@ nav ul {
 .welcome_join_now img {
   vertical-align: middle;
   padding-bottom: 3px;
+}
+/* Lightboxed pages */
+/* Recover Password Page */
+.recover_password_container {
+  margin-left: 10%;
+  margin-top: 10%;
+}
+.recover_password_container input {
+  width: 200px;
+  margin-right: 5px;
+  background-color: #ffffff;
+  border: 1px solid #c02526;
+  -webkit-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.7);
+  -moz-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.7);
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.7);
+}
+.recover_password_container img {
+  vertical-align: middle;
+  padding-bottom: 1px;
+}
+.recover_password_header {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+/* Generic Thank You Page */
+.thank_you_container {
+  margin-left: 10%;
+  margin-top: 10%;
+}
+.thank_you_header {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.thank_you_content {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
 }

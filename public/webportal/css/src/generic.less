@@ -19,6 +19,11 @@
   margin: 0;
 }
 
+.top_left_margin(@top: 10%, @left: 10%) {
+  margin-left: @left;
+  margin-top: @top;
+}
+
 .proxima_nova_thin(@size: @font-size) {
   font-family: "proxima-nova",sans-serif;
   font-style: normal;
@@ -60,6 +65,44 @@ header {
   background-image: url('images/navbar_gradient.png');
   background-repeat: repeat-x;
   height: @header-height;
+
+/* Nav */
+  nav {
+    float: right;
+    margin-top: 5px;
+    width: 350px;
+
+    li {
+      display: inline;
+      color: @color-base;
+
+      a {
+        color: @theme-text-link;
+        font-size: @font-size;
+        text-decoration: none;
+        .proxima_nova_regular;
+      }
+
+    }
+
+    li:after {
+      /* add the pipe between menu items */
+      content: "|";
+      padding-left: 14px;
+      padding-right: 10px;
+      color: white;
+    }
+
+    li:last-child:after  {
+      /* remove the pipe from the last list item */
+      content: "";
+    }
+
+    ul {
+      list-style: none;
+    }
+  }
+
 }
 
 #banner_logo {
@@ -86,43 +129,6 @@ header {
   }
 }
 
-/* Nav */
-nav {
-  float: right;
-  margin-top: 5px;
-  width: 350px;
-
-  li {
-    display: inline;
-    color: @color-base;
-
-    a {
-      color: @theme-text-link;
-      font-size: @font-size;
-      text-decoration: none;
-      .proxima_nova_regular;
-    }
-
-  }
-
-  li:after {
-    /* add the pipe between menu items */
-    content: "|";
-    padding-left: 14px;
-    padding-right: 10px;
-    color: white;
-  }
-
-  li:last-child:after  {
-    /* remove the pipe from the last list item */
-    content: "";
-  }
-
-  ul {
-    list-style: none;
-  }
-}
-
 /* Content */
 
 #content_container {
@@ -132,7 +138,7 @@ nav {
 /* Welcome Page */
 
 .welcome_container {
-  margin-left: 10%;
+  .top_left_margin();
 }
 
 .welcome_header {
@@ -156,4 +162,45 @@ nav {
     vertical-align: middle;
     padding-bottom: 3px;
   }
+}
+
+/* Lightboxed pages */
+
+/* Recover Password Page */
+
+.recover_password_container {
+  .top_left_margin();
+
+  input {
+    width: 200px;
+    margin-right: 5px;
+    background-color: @theme-color-primary;
+    border: 1px solid @theme-color-secondary;
+    .inner-shadow(1px, 1px, 3px, 0.7);
+  }
+
+  img {
+    vertical-align: middle;
+    padding-bottom: 1px;
+  }
+}
+
+.recover_password_header {
+  .proxima_nova_light(@font-size + 6);
+  margin-bottom: 20px;
+}
+
+/* Generic Thank You Page */
+
+.thank_you_container {
+  .top_left_margin();
+}
+
+.thank_you_header {
+  .proxima_nova_regular(@font-size + 6);
+  margin-bottom: 20px;
+}
+
+.thank_you_content {
+  .proxima_nova_light();
 }

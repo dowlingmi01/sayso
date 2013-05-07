@@ -133,7 +133,7 @@ header nav ul {
 #login {
   float: right;
   clear: both;
-  padding-right: 75px;
+  margin-right: 75px;
 }
 #login input {
   margin-left: 5px;

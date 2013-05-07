@@ -55,6 +55,9 @@
 .terms_and_conditions a {
   color: #7c7a7a;
 }
+.terms_and_conditions label {
+  vertical-align: middle;
+}
 /* Body */
 body {
   background: #000000;

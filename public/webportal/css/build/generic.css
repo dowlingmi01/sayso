@@ -123,6 +123,8 @@ header nav li:last-child:after {
 }
 header nav ul {
   list-style: none;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
 }
 #banner_logo {
   padding-top: 20px;
@@ -153,6 +155,21 @@ header nav ul {
 }
 #login .login_button:active {
   background-image: url('images/login_btn_down.png');
+}
+#forgot_password {
+  float: right;
+  margin-right: 75px;
+  position: relative;
+  top: -10px;
+}
+#forgot_password a {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #ffffff;
+  text-decoration: none;
 }
 /* ======= */
 /* Content */

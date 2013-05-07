@@ -1,3 +1,5 @@
+//TODO: Convert all spacing to em's where possible. Do a * { .zero } once we have browser testing.
+
 /* ======== */
 /* Includes */
 /* ======== */
@@ -167,6 +169,8 @@ header {
 
     ul {
       list-style: none;
+      margin-top: 0.5em;
+      margin-bottom: 1em;
     }
   }
 
@@ -202,6 +206,19 @@ header {
 
   .login_button:active {
       background-image: url('images/login_btn_down.png');
+  }
+}
+
+#forgot_password {
+  float: right;
+  margin-right: @header-padding-right;
+  position: relative;
+  top: -10px;
+
+  a {
+    .proxima_nova_regular(12px);
+    color: @theme-text-primary;
+    text-decoration: none;
   }
 }
 

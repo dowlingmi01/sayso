@@ -1,6 +1,13 @@
+/* ======== */
+/* Includes */
+/* ======== */
+
 @import "elements";
 
+/* ========= */
 /* Constants */
+/* ========= */
+
 @color-base: #7C7A7A;
 @bg-base: #000000;
 @theme-color-primary: #FFFFFF;
@@ -14,7 +21,10 @@
 @font-size: 14px;
 @letter-spacing: 1px;
 
+/* =============== */
 /* Custom Mix-in's */
+/* =============== */
+
 .zero {
   padding: 0;
   margin: 0;
@@ -57,7 +67,9 @@
   letter-spacing: @spacing;
 }
 
+/* =============== */
 /* Generic Classes */
+/* =============== */
 
 .submit_button {
   display: inline-block;
@@ -100,6 +112,10 @@
     vertical-align: middle;
   }
 }
+
+/* ============= */
+/* Page Sections */
+/* ============= */
 
 /* Body */
 body {
@@ -189,14 +205,15 @@ header {
   }
 }
 
+/* ======= */
 /* Content */
+/* ======= */
 
 #content_container {
   color: @theme-text-primary;
 }
 
 /* Welcome Page */
-
 .welcome_content {
   margin-top: 0;
   .proxima_nova_light(@font-size + 2);
@@ -215,10 +232,11 @@ header {
   }
 }
 
+/* ================ */
 /* Lightboxed pages */
+/* ================ */
 
 /* Recover Password Page */
-
 .recover_password_container {
   .top_left_margin();
 
@@ -242,13 +260,11 @@ header {
 }
 
 /* Generic Thank You Page */
-
 .thank_you_content {
   .proxima_nova_light();
 }
 
 /* Initial Welcome Page */
-
 .initial_welcome_content {
   margin-top: 0;
   .proxima_nova_light(@font-size + 2);
@@ -284,7 +300,6 @@ header {
 }
 
 /* Get The Browser App */
-
 .get_app_content {
   p {
     .proxima_nova_light(@font-size + 2);

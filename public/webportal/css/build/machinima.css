@@ -1,16 +1,25 @@
+/* ======== */
+/* Includes */
+/* ======== */
 /*---------------------------------------------------
     LESS Elements 0.9
   ---------------------------------------------------
     A set of useful LESS mixins
     More info at: http://lesselements.com
   ---------------------------------------------------*/
+/* ========= */
 /* Constants */
+/* ========= */
+/* =============== */
 /* Custom Mix-in's */
+/* =============== */
 .zero {
   padding: 0;
   margin: 0;
 }
+/* =============== */
 /* Generic Classes */
+/* =============== */
 .submit_button {
   display: inline-block;
   background-image: url('images/submit_btn.png');
@@ -58,6 +67,9 @@
 .terms_and_conditions label {
   vertical-align: middle;
 }
+/* ============= */
+/* Page Sections */
+/* ============= */
 /* Body */
 body {
   background: #000000;
@@ -142,7 +154,9 @@ header nav ul {
 #login .login_button:active {
   background-image: url('images/login_btn_down.png');
 }
+/* ======= */
 /* Content */
+/* ======= */
 #content_container {
   color: #ffffff;
 }
@@ -168,7 +182,9 @@ header nav ul {
   vertical-align: middle;
   padding-bottom: 3px;
 }
+/* ================ */
 /* Lightboxed pages */
+/* ================ */
 /* Recover Password Page */
 .recover_password_container {
   margin-left: 10%;

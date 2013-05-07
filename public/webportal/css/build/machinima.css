@@ -15,8 +15,8 @@
   display: inline-block;
   background-image: url('images/submit_btn.png');
   background-repeat: no-repeat;
-  width: 104px;
-  height: 37px;
+  width: 66px;
+  height: 24px;
   vertical-align: middle;
   margin-left: 7px;
 }
@@ -206,6 +206,19 @@ header nav ul {
   letter-spacing: 1px;
   width: 60%;
   text-wrap: normal;
+}
+.initial_welcome_option1 {
+  display: block;
+  background-image: url('images/get_app_btn.png');
+  background-repeat: no-repeat;
+  width: 252px;
+  height: 40px;
+  vertical-align: middle;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+.initial_welcome_option1:active {
+  background-image: url('images/get_app_btn_down.png');
 }
 .initial_welcome_option2 {
   font-family: "proxima-nova", sans-serif;

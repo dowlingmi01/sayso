@@ -10,6 +10,31 @@
   padding: 0;
   margin: 0;
 }
+/* Generic Classes */
+.submit_button {
+  display: inline-block;
+  background-image: url('images/submit_btn.png');
+  background-repeat: no-repeat;
+  width: 104px;
+  height: 37px;
+  vertical-align: middle;
+  margin-left: 7px;
+}
+.submit_button:active {
+  background-image: url('images/submit_btn_down.png');
+}
+.generic_container {
+  margin-left: 10%;
+  margin-top: 10%;
+}
+.generic_header {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
 /* Body */
 body {
   background: #000000;
@@ -24,8 +49,7 @@ header {
   background-repeat: repeat-x;
   height: 108px;
   position: fixed;
-  top: 0px;
-  margin: auto;
+  top: 0;
   z-index: 100000;
   width: 100%;
   /* Nav */
@@ -34,7 +58,7 @@ header {
 header nav {
   float: right;
   margin-top: 5px;
-  width: 350px;
+  width: 375px;
 }
 header nav li {
   display: inline;
@@ -47,6 +71,7 @@ header nav li a {
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
+  letter-spacing: 1px;
 }
 header nav li:after {
   /* add the pipe between menu items */
@@ -82,24 +107,29 @@ header nav ul {
   -moz-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.7);
   box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
-#login img {
-  margin-left: 7px;
+#login .login_button {
+  display: inline-block;
+  background-image: url('images/login_btn.png');
+  background-repeat: no-repeat;
+  width: 77px;
+  height: 24px;
   vertical-align: middle;
+  margin-left: 7px;
+}
+#login .login_button:active {
+  background-image: url('images/login_btn_down.png');
 }
 /* Content */
 #content_container {
   color: #ffffff;
 }
 /* Welcome Page */
-.welcome_container {
-  margin-left: 10%;
-  margin-top: 10%;
-}
 .welcome_header {
   font-family: "proxima-nova", sans-serif;
   font-style: normal;
   font-weight: 100;
   font-size: 70px;
+  letter-spacing: 1px;
   margin-bottom: 0;
 }
 .welcome_content {
@@ -117,6 +147,7 @@ header nav ul {
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
+  letter-spacing: 1px;
 }
 .welcome_join_now img {
   vertical-align: middle;
@@ -146,23 +177,47 @@ header nav ul {
   font-style: normal;
   font-weight: 300;
   font-size: 20px;
+  letter-spacing: 1px;
   margin-bottom: 20px;
 }
 /* Generic Thank You Page */
-.thank_you_container {
-  margin-left: 10%;
-  margin-top: 10%;
-}
-.thank_you_header {
-  font-family: "proxima-nova", sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  margin-bottom: 20px;
-}
 .thank_you_content {
   font-family: "proxima-nova", sans-serif;
   font-style: normal;
   font-weight: 300;
   font-size: 14px;
+  letter-spacing: 1px;
+}
+/* Initial Welcome Page */
+.initial_welcome_header {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 100;
+  font-size: 70px;
+  letter-spacing: 1px;
+  margin-bottom: 0;
+}
+.initial_welcome_content {
+  margin-top: 0;
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  letter-spacing: 1px;
+  width: 60%;
+  text-wrap: normal;
+}
+.initial_welcome_option2 {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: #ffffff;
+  text-decoration: none;
+}
+.initial_welcome_option2 img {
+  vertical-align: middle;
+  padding-bottom: 3px;
+  margin-left: 7px;
 }

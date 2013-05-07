@@ -12,6 +12,7 @@
 @header-height: 108px;
 @header-padding-right: 75px;
 @font-size: 14px;
+@letter-spacing: 1px;
 
 /* Custom Mix-in's */
 .zero {
@@ -24,32 +25,61 @@
   margin-top: @top;
 }
 
-.proxima_nova_thin(@size: @font-size) {
+.proxima_nova_thin(@size: @font-size, @spacing: @letter-spacing) {
   font-family: "proxima-nova",sans-serif;
   font-style: normal;
   font-weight: 100;
   font-size: @size;
+  letter-spacing: @spacing;
 }
 
-.proxima_nova_light(@size: @font-size) {
+.proxima_nova_light(@size: @font-size, @spacing: @letter-spacing) {
   font-family: "proxima-nova",sans-serif;
   font-style: normal;
   font-weight: 300;
   font-size: @size;
+  letter-spacing: @spacing;
 }
 
-.proxima_nova_regular(@size: @font-size) {
+.proxima_nova_regular(@size: @font-size, @spacing: @letter-spacing) {
   font-family: "proxima-nova",sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: @size;
+  letter-spacing: @spacing;
 }
 
-.proxima_nova_bold(@size: @font-size) {
+.proxima_nova_bold(@size: @font-size, @spacing: @letter-spacing) {
   font-family: "proxima-nova",sans-serif;
   font-style: normal;
   font-weight: 700;
   font-size: @size;
+  letter-spacing: @spacing;
+}
+
+/* Generic Classes */
+
+.submit_button {
+  display: inline-block;
+  background-image: url('images/submit_btn.png');
+  background-repeat: no-repeat;
+  width: 104px;
+  height: 37px;
+  vertical-align: middle;
+  margin-left: 7px;
+}
+
+.submit_button:active {
+  background-image: url('images/submit_btn_down.png');
+}
+
+.generic_container {
+  .top_left_margin();
+}
+
+.generic_header {
+  .proxima_nova_regular(@font-size + 6);
+  margin-bottom: 20px;
 }
 
 /* Body */
@@ -64,17 +94,16 @@ header {
   background-image: url('images/navbar_gradient.png');
   background-repeat: repeat-x;
   height: @header-height;
-  position:fixed;
-  top:0px;
-  margin:auto;
-  z-index:100000;
-  width:100%;
+  position: fixed;
+  top: 0;
+  z-index: 100000;
+  width: 100%;
 
 /* Nav */
   nav {
     float: right;
     margin-top: 5px;
-    width: 350px;
+    width: 375px;
 
     li {
       display: inline;
@@ -82,9 +111,8 @@ header {
 
       a {
         color: @theme-text-link;
-        font-size: @font-size;
         text-decoration: none;
-        .proxima_nova_regular;
+        .proxima_nova_regular();
       }
 
     }
@@ -127,9 +155,18 @@ header {
     .inner-shadow(1px, 1px, 3px, 0.7);
   }
 
-  img {
-    margin-left: 7px;
+  .login_button {
+    display: inline-block;
+    background-image: url('images/login_btn.png');
+    background-repeat: no-repeat;
+    width: 77px;
+    height: 24px;
     vertical-align: middle;
+    margin-left: 7px;
+  }
+
+  .login_button:active {
+      background-image: url('images/login_btn_down.png');
   }
 }
 
@@ -140,10 +177,6 @@ header {
 }
 
 /* Welcome Page */
-
-.welcome_container {
-  .top_left_margin();
-}
 
 .welcome_header {
   .proxima_nova_thin(@font-size + 56);
@@ -196,15 +229,33 @@ header {
 
 /* Generic Thank You Page */
 
-.thank_you_container {
-  .top_left_margin();
-}
-
-.thank_you_header {
-  .proxima_nova_regular(@font-size + 6);
-  margin-bottom: 20px;
-}
-
 .thank_you_content {
   .proxima_nova_light();
+}
+
+/* Initial Welcome Page */
+
+.initial_welcome_header {
+  .proxima_nova_thin(@font-size + 56);
+  margin-bottom: 0;
+}
+
+.initial_welcome_content {
+  margin-top: 0;
+  .proxima_nova_light(@font-size + 2);
+  letter-spacing: 1px;
+  width: 60%;
+  text-wrap: normal;
+}
+
+.initial_welcome_option2 {
+  .proxima_nova_regular(@font-size + 6);
+  color: @theme-text-primary;
+  text-decoration: none;
+
+  img {
+    vertical-align: middle;
+    padding-bottom: 3px;
+    margin-left: 7px;
+  }
 }

@@ -3,10 +3,10 @@
  * <p>Sets up the default structure and default values for the
  * endpoint request object</p>
  *
- * @package Api3
+ * @package Ssmart
  * @subpackage endpoint
  */
-class Api3_EndpointRequest
+class Ssmart_EndpointRequest
 {
 	/**
 	 *The auth object
@@ -15,7 +15,7 @@ class Api3_EndpointRequest
 	 *  one endpoint from another, we have to emulate the request .
 	 * as the api sends it in.</p>
 	 *
-	 * @var Api3_Authentication (or child of)
+	 * @var Ssmart_Authentication (or child of)
 	 */
 	public $auth;
 
@@ -30,10 +30,10 @@ class Api3_EndpointRequest
 	 * Load params into the request object.
 	 *
 	 * </p>This function is used to call one endpoint from aonther endpoint.</p>
-	 * </p>A new Api3_request object must be created to pass into the other endpoint.</p>
+	 * </p>A new Ssmart_request object must be created to pass into the other endpoint.</p>
 	 *
 	 * @param array $params
-	 * @param Api3_Authentication $auth
+	 * @param Ssmart_Authentication $auth
 	 */
 	public function loadParams($params, $auth)
 	{

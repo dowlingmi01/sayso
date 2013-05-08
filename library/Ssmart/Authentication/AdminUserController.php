@@ -3,17 +3,17 @@
  * Application specific authentication functions and
  * overloads for admin type users.
  *
- * @package Api3
+ * @package Ssmart
  * @subpackage Authentication
  */
-class Api3_Authentication_AdminUserController  extends Api3_Authentication
+class Ssmart_Authentication_AdminUserController  extends Ssmart_Authentication
 {
 	/**
 	 * This needs to be developed
 	 * Default placeholder for now
 	 *
-	 *@param Api3_Request
-	 * @param Api3_Error
+	 *@param Ssmart_Request
+	 * @param Ssmart_Error
 	 */
 	public function apiAuthentication($request, $error)
 	{

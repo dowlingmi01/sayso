@@ -3,9 +3,9 @@
  * <p>Sets up the default structure and default values for the
  * response object for passing around the api.</p>
  *
- * @package Api3
+ * @package Ssmart
  */
-class Api3_Response
+class Ssmart_Response
 {
 	/**
 	 * Sets default error code to 0 so no errors are triggered unless
@@ -27,9 +27,9 @@ class Api3_Response
 	/**
 	 * Constructs the response object.
 	 *
-	 * @param Api3_Request $data The processed and formated
+	 * @param Ssmart_Request $data The processed and formated
 	 *	request object
-	 * @param Api3_Error $error The error object
+	 * @param Ssmart_Error $error The error object
 	 */
 	public function __construct($data = NULL) {
 		if ($data && isset($data->requests))

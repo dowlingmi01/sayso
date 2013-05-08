@@ -3,10 +3,10 @@
  * <p>Sets the default structure and provides some common
  * authentication related functions for passing around the api.</p>
  *
- * @package Api3
+ * @package Ssmart
  * @subpackage Authentication
  */
-class Api3_Authentication
+class Ssmart_Authentication
 {
 	/**
 	 * Whether the call is authorized to access the api.
@@ -58,7 +58,7 @@ class Api3_Authentication
 	 * Returns an instance of the authentication class as
 	 * determined by the submitted user type
 	 *
-	 * <p>This must be called from the $Api3_Api context so that
+	 * <p>This must be called from the $Ssmart_Api context so that
 	 * $this-> works as intended.</p>
 	 *
 	 * @return \className|boolean

@@ -3,10 +3,10 @@
  * <p>Sets up the default structure and default values for the
  * EndpointError</p>
  *
- * @package Api3
+ * @package Ssmart
  * @subpackage endpoint
  */
-class Api3_EndpointError
+class Ssmart_EndpointError
 {
 	/**
 	 *Instansiates the meta object.

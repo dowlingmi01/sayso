@@ -2,20 +2,20 @@
 /**
  * <p>User endpoiints</p>
  *
- * @package Api3
+ * @package Ssmart
  * @subpackage endpoint
  */
-class Api3_UserEndpoint extends Api3_GlobalController
+class Ssmart_UserEndpoint extends Ssmart_GlobalController
 {
 	/**
 	 * Gets the user data for the current user.
 	 *
-	 * @param Api3_EndpointRequest $request
-	 * @return \Api3_EndpointResponse
+	 * @param Ssmart_EndpointRequest $request
+	 * @return \Ssmart_EndpointResponse
 	 */
-	public function getUser(Api3_EndpointRequest $request)
+	public function getUser(Ssmart_EndpointRequest $request)
 	{
-		$response = new Api3_EndpointResponse($request);
+		$response = new Ssmart_EndpointResponse($request);
 
 		if ($response->hasErrors())
 			return $response;
@@ -39,12 +39,12 @@ class Api3_UserEndpoint extends Api3_GlobalController
 	/**
 	 * Gets the user state.
 	 *
-	 * @param Api3_EndpointRequest $request
-	 * @return \Api3_EndpointResponse
+	 * @param Ssmart_EndpointRequest $request
+	 * @return \Ssmart_EndpointResponse
 	 */
-	public function getState(Api3_EndpointRequest $request)
+	public function getState(Ssmart_EndpointRequest $request)
 	{
-		$response = new Api3_EndpointResponse($request);
+		$response = new Ssmart_EndpointResponse($request);
 
 		if ($response->hasErrors())
 			return $response;
@@ -56,7 +56,7 @@ class Api3_UserEndpoint extends Api3_GlobalController
 		$userState->loadDataByUniqueFields(array('user_id' => $userId));
 		$userStateData = $userState->getData();
 
-		$response->addRecordsFromArray($userStateData);
+		$response->setResultVariables($userStateData);
 
 		return $response;
 	}
@@ -64,13 +64,13 @@ class Api3_UserEndpoint extends Api3_GlobalController
 	/**
 	 * Updates the User_State
 	 *
-	 * @param Api3_EndpointRequest $request
-	 * @return \Api3_EndpointResponse
+	 * @param Ssmart_EndpointRequest $request
+	 * @return \Ssmart_EndpointResponse
 	 * @throws Exception
 	 */
-	public function updateState(Api3_EndpointRequest $request)
+	public function updateState(Ssmart_EndpointRequest $request)
 	{
-		$response = new Api3_EndpointResponse($request);
+		$response = new Ssmart_EndpointResponse($request);
 
 		if ($response->hasErrors())
 			return $response;
@@ -108,11 +108,11 @@ class Api3_UserEndpoint extends Api3_GlobalController
 	 *	network
 	 *	starbar_id</p>
 	 *
-	 * @param Api3_EndpointRequest $request
-	 * @return \Api3_EndpointResponse
+	 * @param Ssmart_EndpointRequest $request
+	 * @return \Ssmart_EndpointResponse
 	 * @throws Exception
 	 */
-	public function connectSocialNetwork(Api3_EndpointRequest $request)
+	public function connectSocialNetwork(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
 				"network"			=> "alpha_required_notEmpty",
@@ -120,23 +120,25 @@ class Api3_UserEndpoint extends Api3_GlobalController
 			);
 		$filters = array();
 
-		$response = new Api3_EndpointResponse($request, $filters, $validators);
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		if ($response->hasErrors())
 			return $response;
 
 		//logic
 		$userId			= $request->auth->userData->user_id;
-		$network			= $request->validParameters["network"];
+		$network			= strtoupper($request->validParameters["network"]);
 		$starbarId			= $request->validParameters["starbar_id"];
 
 		switch($network)
 		{
-			case "facebook" :
+			case "FB" :
 				User_Social::connectFacebook($userId, $starbarId);
 				break;
-			case "twitter" :
-				User_Social::connectTwitter($userId, $starbarId);
+			case "TW" :
+				if (!$request->submittedParameters->oauth)
+					throw new Exception("Missing Twitter oauth credentials.");
+				User_Social::connectTwitter($userId, $starbarId, $oauth);
 				break;
 			default :
 				throw new Exception('Invalid network.');
@@ -145,6 +147,37 @@ class Api3_UserEndpoint extends Api3_GlobalController
 		$response->setResultVariable("success", TRUE);
 
 		return $response;
+	}
+
+	/**
+	 * Gets the oauth token for a Twitter user.
+	 *
+	 * <p><b>optional params: </b>
+	 *	callback_url</p>
+	 *
+	 * @param Ssmart_EndpointRequest $request
+	 * @return \Ssmart_EndpointResponse
+	 */
+	public function getTwiterOauthToken(Ssmart_EndpointRequest $request)
+	{
+		$response = new Ssmart_EndpointResponse($request);
+
+		if ($response->hasErrors())
+			return $response;
+
+		//logic
+		$callbackUrl		= $$request->submittedParameters->callback_url;
+
+		$token = User_Social::getTwiterOauthToken($callbackUrl);
+		if (token)
+		{
+			$response->setResultVariable("success", TRUE);
+			$response->setResultVariable("token", $token);
+		} else
+			$response->setResultVariable("success", FALSE);
+
+		return $response;
+
 	}
 
 //////////Helper functions/////////////

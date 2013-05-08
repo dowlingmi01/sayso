@@ -5,9 +5,9 @@
  * Then sets to json view.
  * Then processes the request.</p>
  *
- * @package Api3
+ * @package Ssmart
  */
-class Api3_IndexController extends Zend_Controller_Action
+class Ssmart_IndexController extends Zend_Controller_Action
 {
 	/**
 	 * Handles the index request for this controller.
@@ -26,7 +26,7 @@ class Api3_IndexController extends Zend_Controller_Action
 		//only process if a request has been made.
 		if ($requestData)
 		{
-			$api = Api3_Api::getInstance(NULL, $requestData);
+			$api = Ssmart_Api::getInstance(NULL, $requestData);
 			$this->_disableLayout();
 			$this->_helper->viewRenderer->setRender('json');
 			$this->view->api_response = $api->getResponse();

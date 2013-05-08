@@ -2,10 +2,10 @@
 /**
  * <p>Survey endpoiints</p>
  *
- * @package Api3
+ * @package Ssmart
  * @subpackage endpoint
  */
-class Api3_SurveyEndpoint extends Api3_GlobalController
+class Ssmart_SurveyEndpoint extends Ssmart_GlobalController
 {
 	/**
 	 * Gets survey data
@@ -15,10 +15,10 @@ class Api3_SurveyEndpoint extends Api3_GlobalController
 	 *	send_questions
 	 *	send_question_choices</p>
 	 *
-	 * @param Api3_EndpointRequest $request
-	 * @return \Api3_EndpointResponse
+	 * @param Ssmart_EndpointRequest $request
+	 * @return \Ssmart_EndpointResponse
 	 */
-	public function getSurvey(Api3_EndpointRequest $request)
+	public function getSurvey(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
 				"survey_id"			=> "int_required_notEmpty",
@@ -30,7 +30,7 @@ class Api3_SurveyEndpoint extends Api3_GlobalController
 				"send_question_choices"	=> "bool"
 			);
 
-		$response = new Api3_EndpointResponse($request, $filters, $validators);
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		if ($response->hasErrors())
 			return $response;
@@ -96,10 +96,10 @@ class Api3_SurveyEndpoint extends Api3_GlobalController
 	 *	page_number
 	 *	results_per_page</p>
 	 *
-	 * @param Api3_EndpointRequest $request
-	 * @return \Api3_EndpointResponse
+	 * @param Ssmart_EndpointRequest $request
+	 * @return \Ssmart_EndpointResponse
 	 */
-	public function getSurveys(Api3_EndpointRequest $request)
+	public function getSurveys(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
 				"starbar_id"		=> "int_required_notEmpty",
@@ -110,7 +110,7 @@ class Api3_SurveyEndpoint extends Api3_GlobalController
 			);
 		$filters = array();
 
-		$response = new Api3_EndpointResponse($request, $filters, $validators);
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		if ($response->hasErrors())
 			return $response;
@@ -151,10 +151,10 @@ class Api3_SurveyEndpoint extends Api3_GlobalController
 	 * <b>optional params
 	 *	survey_status</p>
 	 *
-	 * @param Api3_EndpointRequest $request
-	 * @return \Api3_EndpointResponse
+	 * @param Ssmart_EndpointRequest $request
+	 * @return \Ssmart_EndpointResponse
 	 */
-	public function getSurveysCounts(Api3_EndpointRequest $request)
+	public function getSurveysCounts(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
 				"starbar_id"		=> "int_required_notEmpty",
@@ -163,13 +163,13 @@ class Api3_SurveyEndpoint extends Api3_GlobalController
 			);
 		$filters = array();
 
-		$response = new Api3_EndpointResponse($request, $filters, $validators);
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		if ($response->hasErrors())
 			return $response;
 
 		//logic
-		$surveyType		= $request->validParameters["survey_type"];
+		$surveyType		= $request->validParameters["survey_type"]; //TODO: make this optional
 		$starbarId			= $request->validParameters["starbar_id"];
 		$userId			= $request->auth->userData->user_id;
 		$status			= isset($request->validParameters["survey_status"]) ? $request->validParameters["survey_status"] : "active";
@@ -189,14 +189,14 @@ class Api3_SurveyEndpoint extends Api3_GlobalController
 	 *	survey_id
 	 *	survey_response_id
 	 *	survey_data</p>
-	 * <p>The ontents of survey_data depend on the type of survey submitted</p>
+	 * <p>The ontents of survey_data are question_id question_choice_id pairs</p>
 	 *
-	 * @param Api3_EndpointRequest $request
-	 * @return \Api3_EndpointResponse
+	 * @param Ssmart_EndpointRequest $request
+	 * @return \Ssmart_EndpointResponse
 	 * @throws Exception
 	 * @see /applications/models/Surey/Response.php updateResponse()
 	 */
-	public function updateSurveyResponse(Api3_EndpointRequest $request)
+	public function updateSurveyResponse(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
 				"starbar_id"			=> "int_required_notEmpty",
@@ -205,7 +205,7 @@ class Api3_SurveyEndpoint extends Api3_GlobalController
 			);
 		$filters = array();
 
-		$response = new Api3_EndpointResponse($request, $filters, $validators);
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		if ($response->hasErrors())
 			return $response;
@@ -241,10 +241,8 @@ class Api3_SurveyEndpoint extends Api3_GlobalController
 				$data[$key] = $value;
 			}
 		}
-		$updateResponse = $surveyResponse->updateResponse($data);
 
-		if (!$updateResponse)
-			throw new Exception('Survey update failed.');
+		$updateResponse = $surveyResponse->updateResponse($data);
 
 		$response->setResultVariables($updateResponse);
 		$response->setResultVariable("success", TRUE);
@@ -266,12 +264,12 @@ class Api3_SurveyEndpoint extends Api3_GlobalController
 	 *	processing_status
 	 *	downloaded</p>
 	 *
-	 * @param Api3_EndpointRequest $request
-	 * @return \Api3_EndpointResponse
+	 * @param Ssmart_EndpointRequest $request
+	 * @return \Ssmart_EndpointResponse
 	 *
 	 * @todo add options for next survey and results
 	 */
-	public function updateSurveyStatus(Api3_EndpointRequest $request)
+	public function updateSurveyStatus(Ssmart_EndpointRequest $request)
 	{
 		//TODO: validate survey_status and processing_status against the enum in the db
 		$validators = array(
@@ -284,7 +282,7 @@ class Api3_SurveyEndpoint extends Api3_GlobalController
 			"downloaded"			=> "bool"
 			);
 
-		$response = new Api3_EndpointResponse($request, $filters, $validators);
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		if ($response->hasErrors())
 			return $response;
@@ -314,10 +312,10 @@ class Api3_SurveyEndpoint extends Api3_GlobalController
 	 *	shared_type
 	 *	network</p>
 	 *
-	 * @param Api3_EndpointRequest $request
-	 * @return \Api3_EndpointResponse
+	 * @param Ssmart_EndpointRequest $request
+	 * @return \Ssmart_EndpointResponse
 	 */
-	public function shareSurvey(Api3_EndpointRequest $request)
+	public function shareSurvey(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
 			"survey_id"			=> "int_required_notEmpty",
@@ -327,7 +325,7 @@ class Api3_SurveyEndpoint extends Api3_GlobalController
 			);
 		$filters = array();
 
-		$response = new Api3_EndpointResponse($request, $filters, $validators);
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		if ($response->hasErrors())
 			return $response;

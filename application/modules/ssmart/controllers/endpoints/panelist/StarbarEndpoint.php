@@ -2,10 +2,10 @@
 /**
  * <p>Starbar endpoiints</p>
  *
- * @package Api3
+ * @package Ssmart
  * @subpackage endpoint
  */
-class Api3_StarbarEndpoint extends Api3_GlobalController
+class Ssmart_StarbarEndpoint extends Ssmart_GlobalController
 {
 	/**
 	 * Gets the starbar data
@@ -13,17 +13,17 @@ class Api3_StarbarEndpoint extends Api3_GlobalController
 	 * <p><b>required params: </b>
 	 *	starbar_id</p>
 	 *
-	 * @param Api3_EndpointRequest $request
-	 * @return \Api3_EndpointResponse
+	 * @param Ssmart_EndpointRequest $request
+	 * @return \Ssmart_EndpointResponse
 	 */
-	public function getStarbar(Api3_EndpointRequest $request)
+	public function getStarbar(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
 				"starbar_id"		=> "int_required_notEmpty"
 			);
 		$filters = array();
 
-		$response = new Api3_EndpointResponse($request, $filters, $validators);
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		//logic
 		$starbarId				= $request->validParameters["starbar_id"];
@@ -57,17 +57,18 @@ class Api3_StarbarEndpoint extends Api3_GlobalController
 	 * <p><b>required params: </b>
 	 *	active_starbar</p>
 	 *
-	 * @param Api3_EndpointRequest $request
-	 * @return \Api3_EndpointResponse
+	 * @param Ssmart_EndpointRequest $request
+	 * @return \Ssmart_EndpointResponse
+	 * @todo add pagination
 	 */
-	public function getAvailableStarbars(Api3_EndpointRequest $request)
+	public function getAvailableStarbars(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
 				"active_starbar"			=> "int_required_notEmpty"
 			);
 		$filters = array();
 
-		$response = new Api3_EndpointResponse($request, $filters, $validators);
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		if ($response->hasErrors())
 			return $response;
@@ -90,17 +91,17 @@ class Api3_StarbarEndpoint extends Api3_GlobalController
 	 * <p><b>required params: </b>
 	 *	starbar_id</p>
 	 *
-	 * @param Api3_EndpointRequest $request
-	 * @return \Api3_EndpointResponse
+	 * @param Ssmart_EndpointRequest $request
+	 * @return \Ssmart_EndpointResponse
 	 */
-	public function subscribeStarbar(Api3_EndpointRequest $request)
+	public function subscribeStarbar(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
 				"starbar_id"			=> "int_required_notEmpty"
 			);
 		$filters = array();
 
-		$response = new Api3_EndpointResponse($request, $filters, $validators);
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		//logic
 		$starbarId					= $request->validParameters["starbar_id"];
@@ -132,10 +133,10 @@ class Api3_StarbarEndpoint extends Api3_GlobalController
 	 *	starbar_id
 	 *	network</p>
 	 *
-	 * @param Api3_EndpointRequest $request
-	 * @return \Api3_EndpointResponse
+	 * @param Ssmart_EndpointRequest $request
+	 * @return \Ssmart_EndpointResponse
 	 */
-	public function shareStarbar(Api3_EndpointRequest $request)
+	public function shareStarbar(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
 				"starbar_id"			=> "int_required_notEmpty",
@@ -143,9 +144,11 @@ class Api3_StarbarEndpoint extends Api3_GlobalController
 			);
 		$filters = array();
 
-		$response = new Api3_EndpointResponse($request, $filters, $validators);
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		//logic
+		$starbarId					= $request->validParameters["starbar_id"];
+
 		$network					= $request->validParameters["network"];
 		$starbarId					= $request->validParameters["starbar_id"];
 		$userId					= $request->auth->userData->user_id;

@@ -2,10 +2,10 @@
 /**
  * <p>Notification endpoiints</p>
  *
- * @package Api3
+ * @package Ssmart
  * @subpackage endpoint
  */
-class Api3_NotificationEndpoint extends Api3_GlobalController
+class Ssmart_NotificationEndpoint extends Ssmart_GlobalController
 {
 	/**
 	 * Returns all users notifications'.
@@ -17,10 +17,11 @@ class Api3_NotificationEndpoint extends Api3_GlobalController
 	 *	results_per_page
 	 *	page_number</p>
 	 *
-	 * @param Api3_EndpointRequest $request
-	 * @return Api3_EndpointResponse
+	 * @param Ssmart_EndpointRequest $request
+	 * @return Ssmart_EndpointResponse
+	 * @todo add pagination
 	 */
-	public  function getUserNotifications(Api3_EndpointRequest $request)
+	public  function getUserNotifications(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
 				"starbar_id"			=> "int_required_notEmpty",
@@ -30,7 +31,7 @@ class Api3_NotificationEndpoint extends Api3_GlobalController
 				"starbar_stowed"		=> "bool"
 			);
 
-		$response = new Api3_EndpointResponse($request, $filters, $validators);
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		if ($response->hasErrors())
 			return $response;
@@ -62,10 +63,10 @@ class Api3_NotificationEndpoint extends Api3_GlobalController
 	 *	this is what should be the key identifier, but since it's not returned, we just
 	 *	use the notification_message_group.id</p>
 	 *
-	 * @param Api3_EndpointRequest $request
-	 * @return Api3_EndpointResponse
+	 * @param Ssmart_EndpointRequest $request
+	 * @return Ssmart_EndpointResponse
 	 */
-	public function updateStatus(Api3_EndpointRequest $request)
+	public function updateStatus(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
 				"message_id"			=> "int_required_notEmpty",
@@ -77,7 +78,7 @@ class Api3_NotificationEndpoint extends Api3_GlobalController
 				"mark_notified"			=> "bool"
 			);
 
-		$response = new Api3_EndpointResponse($request, $filters, $validators);
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		if ($response->hasErrors())
 			return $response;
@@ -112,10 +113,10 @@ class Api3_NotificationEndpoint extends Api3_GlobalController
 	 *	this is what should be the key identifier, but since it's not returned, we just
 	 *	use the notification_message_group.id</p>
 	 *
-	 * @param Api3_EndpointRequest $request
-	 * @return Api3_EndpointResponse
+	 * @param Ssmart_EndpointRequest $request
+	 * @return Ssmart_EndpointResponse
 	 */
-	public function saveStatusByShortNameAndStarbar(Api3_EndpointRequest $request)
+	public function saveStatusByShortNameAndStarbar(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
 				"short_name"			=> "alpha_required_allowEmpty",
@@ -125,7 +126,7 @@ class Api3_NotificationEndpoint extends Api3_GlobalController
 			);
 		$filters = array("mark_closed" => "bool", "mark_notified" => "bool");
 
-		$response = new Api3_EndpointResponse($request, $filters, $validators);
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		if ($response->hasErrors())
 			return $response;

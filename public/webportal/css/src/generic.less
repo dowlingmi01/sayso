@@ -91,6 +91,10 @@
   .top_left_margin();
 }
 
+.portlet_left_margin {
+  margin-left: 1em;
+}
+
 .small_header {
   .proxima_nova_regular(@font-size + 6);
   margin-bottom: 20px;
@@ -101,10 +105,32 @@
   margin-bottom: 0;
 }
 
+.checkbox {
+  .proxima_nova_light(@font-size + 2);
+  width: 60%;
+  text-wrap: normal;
+
+  input[type="checkbox"] {
+    margin-left: 0;
+  }
+
+  a {
+    .red_link;
+  }
+
+  label {
+    vertical-align: middle;
+  }
+}
+
 .terms_and_conditions {
   .proxima_nova_light(@font-size + 2);
   width: 60%;
   text-wrap: normal;
+
+  input[type="checkbox"] {
+    margin-left: 0;
+  }
 
   a {
     color: @theme-text-link;
@@ -113,6 +139,45 @@
   label {
     vertical-align: middle;
   }
+}
+
+.privacy {
+  .proxima_nova_light(@font-size - 5);
+}
+
+.red_link {
+  color: @theme-text-secondary;
+  text-decoration: none;
+}
+
+.large_input {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  padding-right: 0.5em;
+  padding-left: 0.5em;
+  height: 2em;
+  width: 300px;
+  .proxima_nova_thin();
+  color: @theme-text-primary;
+  background-color: @color-base;
+  border: 1px solid #555;
+  .inner-shadow(1px, 1px, 3px, 0.7);
+}
+
+hr {
+  color: @color-base;
+  background-color: @color-base;
+  height: 1px;
+  width: 100%;
+  border: none;
+}
+
+h2 {
+  .proxima_nova_light(@font-size + 5);
+  color: @color-base;
+  margin-left: 0;
+  margin-top: 0.25em;
 }
 
 /* ============= */
@@ -370,4 +435,71 @@ header {
 
 .sign_out_content {
   width: 80%
+}
+
+/* Join Now */
+
+.join_now_header {
+  .proxima_nova_thin(@font-size + 26);
+  margin-bottom: 10px;
+  margin-left: 15px;
+}
+
+.join_now_content {
+  width: 60%;
+
+  p {
+    .proxima_nova_light();
+    width: 60%;
+    text-wrap: normal;
+  }
+}
+
+.join_now_password {
+  .portlet_left_margin;
+}
+
+.join_now_browser_app {
+  .portlet_left_margin;
+}
+
+.join_now_mobile_app {
+  .portlet_left_margin;
+}
+
+.join_now_terms {
+  .portlet_left_margin;
+}
+
+.join_now_button_disabled {
+  .portlet_left_margin;
+  display: block;
+  background-image: url('images/join_now_disabled.png');
+  background-repeat: no-repeat;
+  width: 208px;
+  height: 45px;
+  vertical-align: middle;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
+.join_now_button {
+  .portlet_left_margin;
+  display: block;
+  background-image: url('images/join_now_active.png');
+  background-repeat: no-repeat;
+  width: 208px;
+  height: 45px;
+  vertical-align: middle;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.join_now_button:active {
+  background-image: url('images/join_now_down.png');
+}
+
+.join_now_privacy {
+  .portlet_left_margin;
 }

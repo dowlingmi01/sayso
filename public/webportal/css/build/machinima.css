@@ -36,6 +36,9 @@
   margin-left: 10%;
   margin-top: 10%;
 }
+.portlet_left_margin {
+  margin-left: 1em;
+}
 .small_header {
   font-family: "proxima-nova", sans-serif;
   font-style: normal;
@@ -52,6 +55,25 @@
   letter-spacing: 1px;
   margin-bottom: 0;
 }
+.checkbox {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  letter-spacing: 1px;
+  width: 60%;
+  text-wrap: normal;
+}
+.checkbox input[type="checkbox"] {
+  margin-left: 0;
+}
+.checkbox a {
+  color: #c02526;
+  text-decoration: none;
+}
+.checkbox label {
+  vertical-align: middle;
+}
 .terms_and_conditions {
   font-family: "proxima-nova", sans-serif;
   font-style: normal;
@@ -61,11 +83,62 @@
   width: 60%;
   text-wrap: normal;
 }
+.terms_and_conditions input[type="checkbox"] {
+  margin-left: 0;
+}
 .terms_and_conditions a {
   color: #7c7a7a;
 }
 .terms_and_conditions label {
   vertical-align: middle;
+}
+.privacy {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+.red_link {
+  color: #c02526;
+  text-decoration: none;
+}
+.large_input {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  padding-right: 0.5em;
+  padding-left: 0.5em;
+  height: 2em;
+  width: 300px;
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 100;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #ffffff;
+  background-color: #7c7a7a;
+  border: 1px solid #555;
+  -webkit-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.7);
+  -moz-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.7);
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.7);
+}
+hr {
+  color: #7c7a7a;
+  background-color: #7c7a7a;
+  height: 1px;
+  width: 100%;
+  border: none;
+}
+h2 {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 19px;
+  letter-spacing: 1px;
+  color: #7c7a7a;
+  margin-left: 0;
+  margin-top: 0.25em;
 }
 /* ============= */
 /* Page Sections */
@@ -322,6 +395,68 @@ header nav ul {
 /* Sign Out */
 .sign_out_content {
   width: 80%;
+}
+/* Join Now */
+.join_now_header {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 100;
+  font-size: 40px;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  margin-left: 15px;
+}
+.join_now_content {
+  width: 60%;
+}
+.join_now_content p {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 1px;
+  width: 60%;
+  text-wrap: normal;
+}
+.join_now_password {
+  margin-left: 1em;
+}
+.join_now_browser_app {
+  margin-left: 1em;
+}
+.join_now_mobile_app {
+  margin-left: 1em;
+}
+.join_now_terms {
+  margin-left: 1em;
+}
+.join_now_button_disabled {
+  margin-left: 1em;
+  display: block;
+  background-image: url('images/join_now_disabled.png');
+  background-repeat: no-repeat;
+  width: 208px;
+  height: 45px;
+  vertical-align: middle;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.join_now_button {
+  margin-left: 1em;
+  display: block;
+  background-image: url('images/join_now_active.png');
+  background-repeat: no-repeat;
+  width: 208px;
+  height: 45px;
+  vertical-align: middle;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.join_now_button:active {
+  background-image: url('images/join_now_down.png');
+}
+.join_now_privacy {
+  margin-left: 1em;
 }
 /* Header */
 header {

@@ -37,6 +37,11 @@
   margin-top: @top;
 }
 
+.top_right_margin(@top: 10%, @right: 10%) {
+  margin-right: @right;
+  margin-top: @top;
+}
+
 .proxima_nova_thin(@size: @font-size, @spacing: @letter-spacing) {
   font-family: "proxima-nova",sans-serif;
   font-style: normal;
@@ -455,6 +460,7 @@ header {
   }
 }
 
+//The only reason these next 4 classes exist is so we can manipulate these sections as we move foreward.
 .join_now_password {
   .portlet_left_margin;
 }
@@ -502,4 +508,62 @@ header {
 
 .join_now_privacy {
   .portlet_left_margin;
+}
+
+/* Logged In Landing */
+
+.landing_content_left {
+  float: left;
+  width: 35%;
+  .top_left_margin();
+
+  h2 {
+    display: inline-block;
+  }
+}
+
+.landing_content_right {
+  float: right;
+  width: 35%;
+  .top_right_margin();
+}
+
+.landing_profile_picture {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.landing_welcome_name {
+  color: @theme-color-secondary;
+}
+
+.landing_stats {
+
+  .landing_stats_block {
+    img {
+      display: inline-block;
+    }
+
+    aside {
+      display: inline-block;
+      margin-left: 1em;
+      .proxima_nova_light(@font-size - 2);
+      line-height: 2em;
+    }
+
+    .landing_level_name {
+      color: @theme-color-secondary;
+    }
+  }
+}
+
+.landing_download_banner {
+  display: block;
+  background-image: url('images/download_banner.png');
+  background-repeat: no-repeat;
+  width: 456px;
+  height: 74px;
+  vertical-align: middle;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }

@@ -458,6 +458,55 @@ header nav ul {
 .join_now_privacy {
   margin-left: 1em;
 }
+/* Logged In Landing */
+.landing_content_left {
+  float: left;
+  width: 35%;
+  margin-left: 10%;
+  margin-top: 10%;
+}
+.landing_content_left h2 {
+  display: inline-block;
+}
+.landing_content_right {
+  float: right;
+  width: 35%;
+  margin-right: 10%;
+  margin-top: 10%;
+}
+.landing_profile_picture {
+  display: inline-block;
+  vertical-align: middle;
+}
+.landing_welcome_name {
+  color: #c02526;
+}
+.landing_stats .landing_stats_block img {
+  display: inline-block;
+}
+.landing_stats .landing_stats_block aside {
+  display: inline-block;
+  margin-left: 1em;
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  letter-spacing: 1px;
+  line-height: 2em;
+}
+.landing_stats .landing_stats_block .landing_level_name {
+  color: #c02526;
+}
+.landing_download_banner {
+  display: block;
+  background-image: url('images/download_banner.png');
+  background-repeat: no-repeat;
+  width: 456px;
+  height: 74px;
+  vertical-align: middle;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
 /* Header */
 header {
   background-image: url('images/navbar_gradient.png');

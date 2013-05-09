@@ -461,7 +461,6 @@ header nav ul {
 /* Logged In Landing */
 .landing_content_left {
   float: left;
-  width: 35%;
   margin-left: 10%;
   margin-top: 10%;
 }
@@ -470,7 +469,6 @@ header nav ul {
 }
 .landing_content_right {
   float: right;
-  width: 35%;
   margin-right: 10%;
   margin-top: 10%;
 }

@@ -300,3 +300,26 @@ header nav ul {
 .get_app_button:active {
   background-image: url('images/get_app_btn_down.png');
 }
+/* Contact Us */
+.contact_us_content textarea {
+  width: 400px;
+  height: 150px;
+}
+.contact_us_content p {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 1px;
+  width: 60%;
+  text-wrap: normal;
+}
+.contact_us_content a {
+  display: block;
+  margin-left: 0;
+  margin-top: 1em;
+}
+/* Sign Out */
+.sign_out_content {
+  width: 80%;
+}

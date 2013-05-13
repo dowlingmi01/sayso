@@ -34,12 +34,14 @@
 	  <div class="section tab-pane active" id="section-1">
 	  	<div class="section-head">
 	  		<h2>What is Machinima Recon?</h2>
-	  		<p>Are you a Machinima junkie?  Do you eagerly await new shows and trailers?  Are you interested in making Machinima better for everyone?  If so, you might be a perfect recruit for Machinima | Recon!</p>
+	  		<p>Are you a Machinima junkie? Do you eagerly await new shows and trailers? Are you interested in making <br />
+			Machinima better for everyone? If so, you might be a perfect recruit for Machinima | Recon!</p>
 
 			</div><!-- .section-head -->
 
 			<div class="slideshow">
 				<div class="slides">
+               		 <div class="slide"><img src="images/img_slide_intro.png" alt="" /></div>
 					<div class="slide"><img src="images/img_slide_1a.png" alt="" /></div>
 					<div class="slide"><img src="images/img_slide_1b.png" alt="" /></div>
                     <div class="slide"><img src="images/img_slide_1c.png" alt="" /></div>

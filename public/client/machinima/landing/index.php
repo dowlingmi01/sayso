@@ -57,7 +57,8 @@
 	  <div class="section tab-pane" id="section-2">
 	  	<div class="section-head">
 	  		<h2>What can I do?</h2>
-	  		<p>Earn Coins by taking polls, answering surveys and giving your opinion on Machinima content.  Redeem Coins for items in our Reward Center.</p>
+	  		<p>Earn Coins by taking polls, answering surveys and giving your opinion on Machinima content.<br />  
+                           Redeem your Coins for items in our Reward Center.</p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">

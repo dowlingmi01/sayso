@@ -41,10 +41,10 @@ a:hover {
 	<div id="sections" class="tab-content">
 	  <div class="section tab-pane active" id="section-1">
 	  	<div class="section-head">
-	  		<h2>What is Social Say.So?</h2>
-	  		<p>Earn redeemable points by taking polls, answering surveys and giving<br />
-                           your opinion on social, casual and mobile gaming.<br />
-                           Review games and give us your thoughs on game related topics.</p>
+	  		<h2>What is Say.So?</h2>
+	  		<p>Say.so is a browser app that enables you to earn currency by giving your opinion on pop-culture and<br />
+                           game-related topics. You can also take fun and challenging online missions for even bigger earnings.<br />
+			   Spend your earned currency on awesome rewards and entries in drawings for monthly giveaways!</p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">
@@ -64,8 +64,8 @@ a:hover {
 	  <div class="section tab-pane" id="section-2">
 	  	<div class="section-head">
 	  		<h2>What can I do?</h2>
-	  		<p>Earn redeemable points (Social PaySos) by taking polls, answering surveys and giving your opinion<br />
-                           on social, casual and mobile gaming. Redeem Social PaySos for items in our Rewards Center.</p>
+	  		<p>Redeem your points (called PaySos) for fun prizes such<br />
+                           as a Galaxy Tablet, fun games, or gift cards!</p>
 			</div><!-- .section-head -->
 
 			<div class="slideshow">
@@ -83,11 +83,11 @@ a:hover {
 	  <div class="section tab-pane" id="section-3">
 	  	<div class="section-head">
 	  		<h2>What do I get?</h2>
-	  		<p>Great Prizes - Redeem your points for <b>games</b>, <b> game related goods</b>,<br />
-                        <b>gift cards</b>, and a whole lot more!<br />
-                           The Rewards Center is full of prizes designed specifically for social game fanatics.</p>
+	  		<p>Great Prizes - Redeem your points for fun games, game related goods,<br />
+                           gift cards, and a whole lot more! Get smaller items right away or save<br />
+			   up your points for something really big, like a Galaxy Tablet!</p>
 			</div><!-- .section-head -->
-
+
 			<div class="slideshow">
 				<div class="slides">
 					<div class="slide"><img src="images/img_slide_3a.png" alt="" /></div>
@@ -103,10 +103,10 @@ a:hover {
 	  <div class="section tab-pane" id="section-4">
 	  	<div class="section-head">
 	  	<div id="create-password">
-	  		<h2>Let's get started</h2>
-	  		<p>Start by creating your unique Say.So password so we can make sure your
-points and rewards are saved. "Please allow the browser to install the
-extension.</p>
+	  		<h2>Join Say.So!</h2>
+	  		<p>Get the Say.So app! <br /> 
+			   Start by creating your unique Say.So user account and password, <br /> 
+			   so we can make sure your points and rewards are saved.</p>
 	  		<br />
 	  		<form>
 	  			<p><input type="text" id="input-email" class="sso_fld" placeholder="Enter a valid email address" />
@@ -118,17 +118,19 @@ extension.</p>
 	  			<p><input type="checkbox" value="" id="agreeterms" /><label for="agreeterms">I agree to the <a href="http://app.saysollc.com/docs/social/Say.So_App_EULA.pdf" target="_blank">terms and conditions</a>.</label></p>
 	  			<input type="submit" value="Grab It" disabled="" id="btn-submit" class="grab-it" />
 	  		</form>
-	  		<p><small>We don't share your email or password with anyone...period.</small></p>
+	  		<p><small>We don't share your email or password with anyone...period.</small><br />
+			   <small> Please allow the browser to install the Say.So app.</small></p>
+			
 	  		</div>
 			  <div id="password-created" style="display: none;">
-	  			<p>Your Say.So password was created. You can now install the extension.</p>
+	  			<p>Your Say.So account was created. You can now install the Say.So app.</p>
 	  			<form>
 	  				<input type="submit" value="Install" id="btn-install" class="grab-it" />
 	  			</form>
 
 			  </div>
 			  <div id="after-redirect" style="display: none;">
-	  			<p id="install-instructions">Please allow the browser to install the extension.</p>
+	  			<p id="install-instructions">Please allow the browser to install the app.</p>
 	  			<p>If your download didn't start, please click <a id="download-retry">here</a></p>
 			  </div>
 			  <div id="no-install" style="display: none;">
@@ -138,7 +140,7 @@ extension.</p>
 	  </div><!-- #section-4 -->
 	</div><!-- #sections -->
 
-	<div id="jump"><a href="#section-4" data-class="section-4">I’m ready to start now!</a></div>
+	<div id="jump"><a href="#section-4" data-class="section-4">Install the Say.so app now!</a></div>
 
 	<div id="section-nav">
 		<ul>

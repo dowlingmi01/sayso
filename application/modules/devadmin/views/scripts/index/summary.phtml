@@ -1,0 +1,174 @@
+<style>
+	body {
+		font: 12px sans-serif;
+		background-color: #999999;
+		margin: 0 0 0 10px;
+	}
+
+	h1 {
+		font-size: 16px;
+		font-weight: bold;
+		padding-left: 10px;
+	}
+
+	p {
+		padding-left: 10px;
+	}
+
+	.table {
+		display: table;
+		width: 100%;
+	}
+
+	.row {
+		display: table-row;
+	}
+
+	.row:nth-child(even) {
+		background-color: #cccccc;
+	}
+
+	.cell {
+		width: 20%;
+		display: table-cell;
+		padding: 5px 0 5px 5px;
+		text-align: right;
+	}
+
+	.cell.title {
+		font-weight: bold;
+		padding-right: 5px;
+	}
+
+	.table .table .cell {
+		width: 50%;
+		padding: 2px;
+		background-color: white;
+	}
+
+	.section {
+		display: block;
+		width: 1000px;
+		background-color: white;
+		margin: 10px 0 20px 0;
+		padding: 20px 5px 20px 5px;
+	}
+
+	.singles {
+/*		columns:328px 3;
+		-webkit-columns:328px 3;
+		-moz-columns:328px 3;
+		column-gap: 8px;
+		-webkit-column-gap: 8px;
+		-moz-column-gap: 8px;*/
+	}
+
+	.single {
+		display: inline-block;
+		width: 328px;
+	}
+
+	.single_title {
+		display: inline-block;
+		text-align: right;
+		font-weight: bold;
+		width: 208px;
+		padding: 5px;
+	}
+
+	.single_value {
+		display: inline-block;
+		width: 80px;
+		padding: 5px;
+	}
+
+	.separator {
+		margin: 5px auto 5px auto;
+		width: 80%;
+		height: 1px;
+		background-color: #999999;
+	}
+</style>
+
+<div>
+<? $inTable = false ?>
+<? $inSingles = false ?>
+<? foreach ($this->report_results as $result) { ?>
+	<? if (isset($result['separator'])) { ?>
+		<? if ($inTable) { ?>
+			<? $inTable = false ?>
+			</div>
+		<? } ?>
+		<? if ($inSingles) { ?>
+			<? $inSingles = false ?>
+			</div>
+		<? } ?>
+		<div class="separator"></div>
+	<? } elseif (isset($result['section_title'])) { ?>
+		<? if ($inTable) { ?>
+			<? $inTable = false ?>
+			</div>
+		<? } ?>
+		<? if ($inSingles) { ?>
+			<? $inSingles = false ?>
+			</div>
+		<? } ?>
+		</div>
+		<div class="section">
+			<h1><?= $result['section_title'] ?></h1>
+			<p><?= $result['section_description'] ?></p>
+	<? } elseif (isset($result['single'])) { ?>
+		<? if ($inTable) { ?>
+			<? $inTable = false ?>
+			</div>
+		<? } ?>
+		<? if (!$inSingles) { ?>
+			<? $inSingles = true ?>
+			<div class="singles">
+		<? } ?>
+		<div class="single">
+			<div class="single_title"><?= $result['title'] ?></div>
+			<div class="single_value"><?= $result['single'] ?></div>
+		</div>
+	<? } else { ?>
+		<? if ($inSingles) { ?>
+			<? $inSingles = false ?>
+			</div>
+		<? } ?>
+		<? if (!$inTable) { ?>
+			<? $inTable = true ?>
+			<div class="table">
+				<div class="row">
+					<div class="cell title"></div>
+					<div class="cell title">All Users</div>
+					<div class="cell title">New Users</div>
+					<div class="cell title">Active Users</div>
+					<div class="cell title">Inactive Users</div>
+				</div>
+		<? } ?>
+		<div class="row">
+			<div class="cell title"><?= $result['title'] ?></div>
+			<? foreach (['total', 'new', 'active', 'inactive'] as $column) { ?>
+				<div class="cell">
+					<? if (isset($result[$column])) { ?>
+						<?= $result[$column] ?>
+					<? } elseif (isset($result[$column."_table"])) { ?>
+						<div class="table">
+							<div class="row">
+								<div class="cell title"><?= $result["columns"][0] ?></div>
+								<div class="cell"><?= $result["columns"][1] ?></div>
+							</div>
+							<? foreach ($result[$column."_table"] as $key => $value) {?>
+								<div class="row">
+									<div class="cell title"><?= $key ?></div>
+									<div class="cell"><?= $value ?></div>
+								</div>
+							<? } ?>
+						</div>
+					<? } ?>
+				</div>
+			<? } ?>
+		</div>
+	<? } ?>
+<? } ?>
+</div>

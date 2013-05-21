@@ -7,17 +7,13 @@ class Devadmin_MachinimaController extends Devadmin_IndexController {
 	public function preDispatch() {
 		parent::preDispatch();
 
-		$this->view->headTitle()->set("Recon Reports");
-	}
-
-	public function surveyReportAction () {
 		$this->view->white_logo_url = "/images/machinima/Machinima_Co-Branded_Logo.png";
 		$this->view->black_logo_url = "/images/machinima/Machinima_Report_Header.png";
 
-		parent::surveyReportAction();
+		$this->view->headTitle()->set("Recon Reports");
 
 		$this->_helper->viewRenderer->setNoController();
-		$this->_helper->viewRenderer->setScriptAction('index/survey-report');
+		$this->_helper->viewRenderer->setScriptAction('index/'.$this->getRequest()->getActionName());
 	}
 }
 

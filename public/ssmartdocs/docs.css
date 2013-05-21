@@ -1,0 +1,108 @@
+body {
+	font: 12px Verdana;
+}
+
+h2 {
+	margin-top: 20px;
+}
+
+h2.endpoint, h3.example {
+	cursor: pointer;
+}
+
+h3 {
+	font-variant: small-caps;
+}
+
+div.section {
+	width: 1000px;
+}
+
+div.node {
+	margin-left: 20px;
+}
+
+div.nodecontainer:after, div.variable:after {
+	content: ", ";
+}
+
+div.nodecontainer:last-child:after, div.variable:last-child:after {
+	content: "";
+}
+
+span.variablename, span.nodename {
+	font-weight: bold;
+}
+
+span.variablevalue {
+	font-style: italic;
+	color: #999;
+}
+
+span.variablename, span.variablevalue {
+	display: inline;
+}
+
+div.json {
+	font: 12px Fixed, monospace;
+	padding: 10px;
+	background-color: #F9F9F9;
+	border: 1px solid #DDD;
+}
+
+div.faketable {
+	display: table;
+	width: 100%;
+}
+
+div.fakerow, div.fakeheaderrow {
+	display: table-row;
+}
+
+div.fakerow div, div.fakeheaderrow div {
+	display: table-cell;
+	padding: 5px;
+	border-width: 1px 0 0 1px;
+	border-color: #CCC;
+	border-style: solid;
+}
+
+div.fakeheaderrow div {
+	font-weight: bold;
+}
+
+div.fakerow:last-child div {
+	border-width: 1px 0 1px 1px;
+}
+
+div.fakerow div:last-child, div.fakeheaderrow div:last-child {
+	border-width: 1px 1px 0 1px;
+}
+
+div.fakerow:last-child div:last-child {
+	border-width: 1px 1px 1px 1px;
+}
+
+span.required, div.required span.variablename, div.parameter.required div:first-child {
+	color: red;
+}
+
+.notes {
+	padding: 8px;
+	font-size: 10px;
+	background-color: #EEE;
+	color: #555;
+	margin-top: 5px;
+}
+
+.ui-tooltip {
+	padding: 8px;
+	position: absolute;
+	z-index: 9999;
+	max-width: 300px;
+	background: #333;
+	color: #DDD;
+	-webkit-box-shadow: 0 0 5px #aaa;
+	box-shadow: 0 0 5px #aaa;
+	font-size: 10px;
+}

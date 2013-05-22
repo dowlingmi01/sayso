@@ -301,16 +301,23 @@ class Game_Transaction {
 				$purchasables[$id]['quantity'] = $balances[$id];
 			}
 		}
-		$currencies = array(
-			'redeemable'=>$economy->getCurrencyByTypeId(Economy::CURRENCY_REDEEMABLE),
-			'experience'=>$economy->getCurrencyByTypeId(Economy::CURRENCY_EXPERIENCE)
+		$currency_names = array(
+			'redeemable'=>Economy::CURRENCY_REDEEMABLE,
+			'experience'=>Economy::CURRENCY_EXPERIENCE
 		);
-		$currencies['redeemable']['balance'] = $balances[$currencies['redeemable']['id']];
-		$currencies['experience']['balance'] = $balances[$currencies['experience']['id']];
+		$currencies = array();
+		foreach($currency_names as $currency_name => $currency_type) {
+			$currency = $economy->getCurrencyByTypeId($currency_type);
+			if( array_key_exists($currency['id'], $balances) )
+				$currency['balance'] = $balances[$currency['id']];
+			else
+				$currency['balance'] = 0;
+			$currencies[$currency_name] = $currency;
+		}
 		$res = array(
 			'purchasables'=>$purchasables,
 			'currencies'=>$currencies,
-			'level'=>intval($balances[$economy->_level_asset_id]),
+			'level'=>array_key_exists($economy->_level_asset_id, $balances) ? intval($balances[$economy->_level_asset_id]) : 1,
 			'levels'=>$economy->_levels,
 			'max_level'=>count($economy->_levels)
 		);
@@ -338,8 +345,7 @@ class Game_Transaction {
 		$economy_id = Economy::getIdforStarbar($starbar_id);
 		// POLL_STANDARD_DISQUALIFIED, SURVEY_PROFILE_DISQUALIFIED, QUIZ_PREMIUM_DISQUALIFIED, etc.
 		if (in_array($survey->type, array('survey', 'poll', 'quiz', 'trailer')) && in_array($survey->reward_category, array('standard', 'premium', 'profile'))) {
-			$this->submitAction(strtoupper($survey->type.'_'.$survey->reward_category).'_DISQUALIFIED', 0, $survey->id);
-			self::run($user_id, $economy_id, strtoupper($survey->type.'_'.$survey->reward_category).'_DISQUALIFIED', array('survey_id'=>$survey_id));
+			self::run($user_id, $economy_id, strtoupper($survey->type.'_'.$survey->reward_category).'_DISQUALIFIED', array('survey_id'=>$survey->id));
 		}
 	}
 	public function associateSocialNetwork( $user_id, $starbar_id, User_Social $userSocial ) {

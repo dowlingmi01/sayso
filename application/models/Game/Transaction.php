@@ -348,7 +348,7 @@ class Game_Transaction {
 			self::run($user_id, $economy_id, strtoupper($survey->type.'_'.$survey->reward_category).'_DISQUALIFIED', array('survey_id'=>$survey->id));
 		}
 	}
-	public function associateSocialNetwork( $user_id, $starbar_id, User_Social $userSocial ) {
+	public static function associateSocialNetwork( $user_id, $starbar_id, User_Social $userSocial ) {
 		$economy_id = Economy::getIdforStarbar($starbar_id);
 		switch ($userSocial->provider) {
 			case 'facebook' :

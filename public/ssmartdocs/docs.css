@@ -1,5 +1,27 @@
 body {
 	font: 12px Verdana;
+	margin-bottom: 50px;
+	background-color: #999999;
+}
+
+#container {
+	padding: 1px 10px 50px 10px;
+	width: 1000px;
+	background-color: white;
+}
+
+h1 {
+	margin-top: 30px;
+}
+
+h1.title {
+	color: #0057AE;
+	font-size: 30px;
+}
+
+h1.title span {
+	color: black;
+	font-size: 20px;
 }
 
 h2 {
@@ -7,7 +29,15 @@ h2 {
 }
 
 h2.endpoint, h3.example {
+	display: inline-block;
 	cursor: pointer;
+	border-bottom: 1px solid #777777;
+	color: #0057AE;
+	margin: 10px 0 10px 0;
+}
+
+h3.example {
+	color: #008800;
 }
 
 h3 {

@@ -8,8 +8,9 @@
 </head>
 
 <body>
-	<div ng-app="apidocs">
+	<div id="container" ng-app="apidocs">
 		<div>
+			<h1 class="title">Say.SMART <span>| Say.So's Multipoint API for Research and Tracking</span></h1>
 			<h1>Introduction</h1>
 			<p>Say.SMART is an application programming interface for accessing the Say.So platform.</p>
 			<h1>Authentication</h1>
@@ -1394,7 +1395,7 @@
 					</json>
 				</example>
 			</endpoint>
-			<endpoint name="getTwiterOauthToken">
+			<endpoint name="getTwitterOauthToken">
 				<description>Obtains the oAuth credentials from Twitter.</description>
 				<parameters>
 					<parameter name="callback_url" type="string" default_value="">The URL to assign as the callback in the Twitter Api.</parameter>

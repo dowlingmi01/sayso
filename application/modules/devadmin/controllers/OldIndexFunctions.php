@@ -444,4 +444,35 @@ class OldDevadminIndexFunction {
 	}
 
 
+	public function surveyPdfExportAction () {
+		$this->_validateRequiredParameters(array('html_to_render'));
+		try
+		{
+			// create an API client instance
+			$client = new Pdfcrowd("SaySo", "ce1a34e07ace1bb6d2709068994e3c9f");
+
+			// convert a web page and store the generated PDF into a $pdf variable
+
+			$client->enableJavaScript(false);
+			//$client->usePrintMedia(true);
+			$client->setPageWidth(1042);
+
+			$pdf = $client->convertHtml($this->html_to_render);
+
+			// set HTTP response headers
+			header("Content-Type: application/pdf");
+			header("Cache-Control: no-cache");
+			header("Accept-Ranges: none");
+			header("Content-Disposition: attachment; filename=\"google_com.pdf\"");
+
+			// send the generated PDF
+			echo $pdf;
+			exit;
+		}
+		catch(PdfcrowdException $why)
+		{
+			echo "Pdfcrowd Error: " . $why;
+			exit;
+		}
+	}
 }

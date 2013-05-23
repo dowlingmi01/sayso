@@ -517,38 +517,6 @@ class Devadmin_IndexController extends Api_GlobalController
 	}
 
 
-	/*public function surveyPdfExportAction () {
-		$this->_validateRequiredParameters(array('html_to_render'));
-		try
-		{
-			// create an API client instance
-			$client = new Pdfcrowd("SaySo", "ce1a34e07ace1bb6d2709068994e3c9f");
-
-			// convert a web page and store the generated PDF into a $pdf variable
-
-			$client->enableJavaScript(false);
-			//$client->usePrintMedia(true);
-			$client->setPageWidth(1042);
-
-			$pdf = $client->convertHtml($this->html_to_render);
-
-			// set HTTP response headers
-			header("Content-Type: application/pdf");
-			header("Cache-Control: no-cache");
-			header("Accept-Ranges: none");
-			header("Content-Disposition: attachment; filename=\"google_com.pdf\"");
-
-			// send the generated PDF
-			echo $pdf;
-			exit;
-		}
-		catch(PdfcrowdException $why)
-		{
-			echo "Pdfcrowd Error: " . $why;
-			exit;
-		}
-	}*/
-
 	public function surveyCsvExportAction () {
 		// increase memory limit for this session only
 		ini_set('memory_limit', '512M');
@@ -803,9 +771,9 @@ class Devadmin_IndexController extends Api_GlobalController
 
 		if (!$starbarId) exit;
 
-		$reportResultsCache = Api_Cache::getInstance('summary_reports_'.$starbarId, Api_Cache::LIFETIME_DAY);
+		$reportResultsCache = Api_Cache::getInstance('summary_reports_'.$starbarId, Api_Cache::LIFETIME_HOUR);
 
-		if ($reportResultsCache->test()) {
+		if (APPLICATION_ENV == "production" && $reportResultsCache->test()) { // only cache on production
 			$this->view->report_results = $reportResultsCache->load();
 		} else {
 			$this->view->report_results = SummaryReportHack::getReportResults($starbarId);

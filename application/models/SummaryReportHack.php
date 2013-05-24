@@ -17,12 +17,14 @@ class SummaryReportHack {
 		// if not, increase it
 		if ($curMax < 1000000) Db_Pdo::execute("SET group_concat_max_len = 1000000");
 
+		$filterTestUsers = (APPLICATION_ENV == "production" ? " WHERE u.type != 'test' " : "");
+
 		// set up session variables
 		$sql = "
 			SET @one_week_ago = (CURRENT_DATE - INTERVAL 1 WEEK);
 			SET @three_weeks_ago = (CURRENT_DATE - INTERVAL 3 WEEK);
 			SET @two_months_ago = (CURRENT_DATE - INTERVAL 2 MONTH);
-			SELECT @users_all := group_concat(distinct(u.id)) FROM user u INNER JOIN user_install i ON i.user_id = u.id AND i.starbar_id = $starbarId WHERE u.type != 'test';
+			SELECT @users_all := group_concat(distinct(u.id)) FROM user u INNER JOIN user_install i ON i.user_id = u.id AND i.starbar_id = $starbarId $filterTestUsers;
 			SELECT @users_new := group_concat(distinct(u.id)) FROM user u WHERE u.created > @three_weeks_ago AND FIND_IN_SET(u.id, @users_all);
 			SELECT @mpv_id_three_weeks_ago := id FROM metrics_page_view WHERE created < @three_weeks_ago ORDER BY id DESC LIMIT 1;
 			SELECT @users_active := group_concat(user_id) FROM (SELECT DISTINCT user_id FROM metrics_page_view WHERE id > @mpv_id_three_weeks_ago AND FIND_IN_SET(user_id, @users_all)) AS blahblah;

@@ -63,11 +63,11 @@ class Ssmart_Authentication
 	 *
 	 * @return \className|boolean
 	 */
-	public function getAuthentication()
+	public function getAuthentication($userType, $moduleName)
 	{
-		//_rquest object is private....
-		$user_type = $this->getUserType();
-		$moduleName = $this->getModuleName();
+		//_request object is private....
+		$user_type = $userType;
+		$moduleName = $moduleName;
 		//check if file exists
 		$className = $moduleName . "Authentication_" . ucfirst($user_type) . "Controller";
 		if (class_exists($className))

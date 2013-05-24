@@ -81,7 +81,7 @@ class Ssmart_Api
 		$this->_response = new Ssmart_Response($this->_request);
 
 		//initialize Auth object
-		$this->_auth = Ssmart_Authentication::getAuthentication();
+		$this->_auth = Ssmart_Authentication::getAuthentication($this->getUserType(), $this->getModuleName());
 		if ($this->_auth !== FALSE)
 			$this->_auth->apiAuthentication($this->_request, $this->_error);
 		else

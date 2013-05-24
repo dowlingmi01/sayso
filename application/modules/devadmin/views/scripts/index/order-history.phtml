@@ -28,11 +28,8 @@
 		<? if (count($this->orders)) { ?>
 			<? foreach ($this->orders as $order) { ?>
 				<?
-					$gamer = $this->gamers[$order->user_gaming_id];
-					// Assumes email.id == email.user_id, which is true so far
-					$email = $this->emails[$gamer->user_id];
-					$good = $this->goods[$order->good_id];
-					$isToken = $good->isToken();
+					$good = $this->goods[$order->game_asset_id];
+					$isToken = ($good['type'] == 'token');
 				?>
 				<div class="order <?= ($isToken ? "token" : "physical") ?>">
 					<? if ($isToken) { ?>
@@ -41,11 +38,11 @@
 						<b>PHYSICAL ITEM</b><br />
 					<? } ?>
 					Order ID: <?= $order->id ?><br />
-					User ID: <?= $gamer->user_id ?><br />
-					User Email: <?= $email->email ?><br />
+					User ID: <?= $order->user_id ?><br />
+					User Email: <?= $order->email ?><br />
 					Order Time: <?= date($this->readable_date_format, strtotime($order->created)) ?><br />
-					Good Purchased: <b><?= $good->title ?></b><br />
-					Good Cost: <?= $good->cost ?><br />
+					Good Purchased: <b><?= $good['name'] ?></b><br />
+					Good Cost: <?= $good['price'] ?><br />
 					Quantity Purchased: <?= $order->quantity ?><br />
 					<? if (!$isToken) { ?>
 						<br />

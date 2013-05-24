@@ -2,20 +2,10 @@
 
 class GamerOrderHistoryCollection extends RecordCollection
 {
-	static public function getOrderHistory($starbarId = 0, $game = null, $weeksAgo = 0, $readableDateFormat = "l Y-m-d H:i:s") {
-		if (!$starbarId || !$game) return;
-
-		$goodsData = $game->getGoodsFromStore();
-
-		$allGoods = new ItemCollection();
-
-		foreach ($goodsData as $goodData) {
-			$good = new Gaming_BigDoor_Good();
-			$good->setPrimaryCurrencyId($game->getPurchaseCurrencyId());
-			$good->setGame($game);
-			$good->build($goodData);
-			$allGoods[$good->getId()] = $good;
-		}
+	static public function getOrderHistory($starbarId = 0, $weeksAgo = 0, $readableDateFormat = "l Y-m-d H:i:s") {
+		if (!$starbarId) return;
+		$economyId = Economy::getIdforStarbar($starbarId);
+		$goods = Economy::getForId($economyId)->_purchasables;
 
 		$weeksAgo = (int) abs($weeksAgo);
 
@@ -36,59 +26,26 @@ class GamerOrderHistoryCollection extends RecordCollection
 		$readableEndingDate = date($readableDateFormat, strtotime('-1 second', $endingMonday));
 
 		$orderSql = "
-			SELECT ugoh.*
+			SELECT ugoh.*, ue.email
 			FROM user_gaming_order_history ugoh
-			INNER JOIN user_gaming ug
-				ON ugoh.user_gaming_id = ug.id
-				AND ug.starbar_id = ?
+			INNER JOIN game_asset ga
+				ON ugoh.game_asset_id = ga.id
+				AND ga.economy_id = ?
+			INNER JOIN user u
+			    ON ugoh.user_id = u.id
+			INNER JOIN user_email ue
+			    ON u.primary_email_id = ue.id
 			WHERE ugoh.created >= ?
 				AND ugoh.created < ?
 		";
 
-		$ordersData = Db_Pdo::fetchAll($orderSql, $starbarId, $sqlStartingDate, $sqlEndingDate);
+		$ordersData = Db_Pdo::fetchAll($orderSql, $economyId, $sqlStartingDate, $sqlEndingDate);
 
-		$orders = new GamerOrderHistoryCollection();
-		$orders->build($ordersData, new GamerOrderHistory());
+		$orders = new ItemCollection();
+		$orders->build($ordersData, new Item());
 
 		if (!(sizeof($orders))) return array ($readableStartingDate, $readableEndingDate, null, null, null, null);
 
-
-		$goods = new ItemCollection();
-		$listOfGamerIds = "";
-
-		foreach ($orders as $order) {
-			if (!isset($goods[$order->good_id])) {
-				$goods[$order->good_id] = $allGoods->getItem($order->good_id);
-			}
-
-			if ($listOfGamerIds) $listOfGamerIds .= ",";
-			$listOfGamerIds .= $order->user_gaming_id;
-		}
-
-
-		$gamerSql = "
-			SELECT *
-			FROM user_gaming
-			WHERE id IN (".$listOfGamerIds.")
-		";
-		$gamerData = Db_Pdo::fetchAll($gamerSql);
-
-		$gamers = new RecordCollection();
-		$gamers->build($gamerData, new Gamer());
-
-
-		$emailSql = "
-			SELECT e.*
-			FROM user_email e
-			INNER JOIN user_gaming g
-				ON e.user_id = g.user_id
-				AND g.id IN (".$listOfGamerIds.")
-		";
-		$emailData = Db_Pdo::fetchAll($emailSql);
-
-		$emails = new RecordCollection();
-		$emails->build($emailData, new User_Email());
-
-		return array($readableStartingDate, $readableEndingDate, $orders, $goods, $gamers, $emails);
+		return array($readableStartingDate, $readableEndingDate, $orders, $goods);
 	}
 }

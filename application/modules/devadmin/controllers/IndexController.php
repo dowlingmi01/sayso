@@ -721,11 +721,10 @@ class Devadmin_IndexController extends Api_GlobalController
 			$starbar = new Starbar();
 			$starbar->loadData($starbarId);
 			$request->setParam('user_id', 1);
-			$game = Game_Starbar::getInstance();
 
 			$this->view->starbar_id = $starbar->id;
 
-			list($this->view->start_date, $this->view->end_date, $this->view->orders, $this->view->goods, $this->view->gamers, $this->view->emails) = GamerOrderHistoryCollection::getOrderHistory($starbarId, $game, $weeksAgo, $this->view->readable_date_format);
+			list($this->view->start_date, $this->view->end_date, $this->view->orders, $this->view->goods) = GamerOrderHistoryCollection::getOrderHistory($starbarId, $weeksAgo, $this->view->readable_date_format);
 		}
 
 		$sql = "SELECT *

@@ -770,11 +770,18 @@ class Devadmin_IndexController extends Api_GlobalController
 
 		if (!$starbarId) exit;
 
-		$reportResultsCache = Api_Cache::getInstance('summary_reports_'.$starbarId, Api_Cache::LIFETIME_HOUR);
+		$reportResultsCache = Api_Cache::getInstance('summary_reports_'.$starbarId, Api_Cache::LIFETIME_DAY);
 
 		if (APPLICATION_ENV == "production" && $reportResultsCache->test()) { // only cache on production
 			$this->view->report_results = $reportResultsCache->load();
 		} else {
+			// write loading message to cache in case report is requested again before it is done processing.
+			$reportResultsCache->save(
+				[
+					"section_title" => "Loading",
+					"section_description" => "Your report is currently being processed. Please refresh this page in a few minutes.",
+				]
+			);
 			$this->view->report_results = SummaryReportHack::getReportResults($starbarId);
 			$reportResultsCache->save($this->view->report_results);
 		}

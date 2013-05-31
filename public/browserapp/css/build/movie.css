@@ -1,0 +1,496 @@
+/* brackets used to avoid having those classes in css namespace */
+.sayso-reset a,
+.sayso-reset div,
+.sayso-reset span,
+.sayso-reset object,
+.sayso-reset iframe,
+.sayso-reset h1,
+.sayso-reset h2,
+.sayso-reset h3,
+.sayso-reset h4,
+.sayso-reset h5,
+.sayso-reset h6,
+.sayso-reset p,
+.sayso-reset blockquote,
+.sayso-reset pre,
+.sayso-reset em,
+.sayso-reset img,
+.sayso-reset small,
+.sayso-reset strong,
+.sayso-reset sub,
+.sayso-reset sup,
+.sayso-reset b,
+.sayso-reset i,
+.sayso-reset dl,
+.sayso-reset dt,
+.sayso-reset dd,
+.sayso-reset ol,
+.sayso-reset ul,
+.sayso-reset li,
+.sayso-reset fieldset,
+.sayso-reset form,
+.sayso-reset label,
+.sayso-reset legend,
+.sayso-reset table,
+.sayso-reset tbody,
+.sayso-reset tfoot,
+.sayso-reset thead,
+.sayso-reset tr,
+.sayso-reset th,
+.sayso-reset td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: 13px/1.231 sans-serif;
+  vertical-align: baseline;
+  outline: 0;
+  background-image: none;
+  background-color: transparent;
+  color: #333333;
+  opacity: 1;
+  filter: none !important;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  min-width: 0;
+  max-height: none;
+  max-width: none;
+  text-align: left;
+  position: static;
+  box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  overflow: visible;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+#sayso-app-container {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  background: none;
+  z-index: 2147480011;
+}
+#sayso-app-container a,
+#sayso-app-container a:link,
+#sayso-app-container a:active,
+#sayso-app-container a:visited,
+#sayso-app-container .sayso-section-link,
+#sayso-app-container .sayso-tab-link,
+#sayso-app-container .sayso-nav-box {
+  color: #c02526;
+  text-decoration: none;
+  cursor: pointer;
+}
+#sayso-app-container h1,
+#sayso-app-container h2,
+#sayso-app-container h3,
+#sayso-app-container h4,
+#sayso-app-container .sayso-heading {
+  color: #400c0d;
+}
+#sayso-app-container .sayso-alternate {
+  color: #801919;
+}
+#sayso-app-container .sayso-small {
+  font-size: 11px;
+}
+#sayso-app-container .sayso-scrollable {
+  overflow: hidden;
+  min-height: 100px;
+}
+#sayso-app-container h1,
+#sayso-app-container h2,
+#sayso-app-container h3,
+#sayso-app-container h4,
+#sayso-app-container .sayso-heading,
+#sayso-app-container .sayso-tab-link {
+  font-weight: bold;
+}
+#sayso-app-container #sayso-app-background {
+  width: 100%;
+  height: 53px;
+  position: fixed;
+  bottom: 0;
+  background-image: url('../../images/movie/nav-background.png');
+  background-repeat: repeat-x;
+  background-position: 0px bottom;
+  z-index: 1;
+}
+#sayso-app-container #sayso-app {
+  width: 1000px;
+  height: 53px;
+  margin: 0 auto;
+  bottom: 0;
+  position: relative;
+  z-index: 2;
+}
+#sayso-app-container .sayso-nav-box {
+  position: absolute;
+}
+#sayso-app-container .sayso-loading {
+  /* parent element must have overflow: hidden; */
+
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  background-image: url('../../images/movie/loading-spinner.gif');
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 2;
+}
+#sayso-app-container .sayso-progress-bar-container {
+  border: 2px solid #fff;
+  background-color: #555555;
+  position: relative;
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -webkit-box-shadow: 0px 0px 2px #666666;
+  -moz-box-shadow: 0px 0px 2px #666666;
+  box-shadow: 0px 0px 2px #666666;
+}
+#sayso-app-container .sayso-progress-bar-container .sayso-progress-bar-icon {
+  position: absolute;
+  top: -9px;
+  left: -15px;
+  width: 30px;
+  height: 30px;
+  z-index: 2;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#sayso-app-container .sayso-progress-bar-container .sayso-progress-bar-icon.sayso-progress-bar-icon-redeemable {
+  background-image: url('../../images/movie/icon-redeemable-medium.png');
+}
+#sayso-app-container .sayso-progress-bar-container .sayso-progress-bar-icon.sayso-progress-bar-icon-experience {
+  background-image: url('../../images/movie/icon-experience-medium.png');
+}
+#sayso-app-container .sayso-progress-bar-container .sayso-progress-bar-value {
+  position: absolute;
+  font-weight: bold;
+  font-size: 11px;
+  color: white;
+  text-shadow: 1px 1px 0px #000;
+  width: 100%;
+  top: 0;
+  left: 0;
+  text-align: center;
+}
+#sayso-app-container .sayso-progress-bar-container .sayso-progress-bar {
+  height: 100%;
+  margin-left: -1px;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.22, #c4760c), color-stop(0.61, #fde771));
+  background-image: -moz-linear-gradient(center top, #c4760c 22%, #fde771 61%);
+  background-color: #fde771;
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+}
+#sayso-app-container #sayso-nav-hide-button {
+  top: -14px;
+  height: 14px;
+  width: 44px;
+  background-image: url('../../images/movie/nav-hide-button.png');
+}
+#sayso-app-container #sayso-nav-logo-container {
+  width: 55px;
+  top: 13px;
+}
+#sayso-app-container #sayso-nav-logo-container #sayso-nav-logo {
+  width: 35px;
+  height: 35px;
+  background-image: url('../../images/movie/nav-sayso-logo.png');
+  background-repeat: no-repeat;
+}
+#sayso-app-container #sayso-nav-help-links-container {
+  width: 55px;
+  top: 3px;
+  left: 52px;
+}
+#sayso-app-container #sayso-nav-help-links-container li {
+  display: block;
+  font-size: 11px;
+  line-height: 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  color: rgba(253, 232, 131, 0.8);
+  text-shadow: 0px 0px 2px black;
+}
+#sayso-app-container #sayso-nav-help-links-container li:last-child {
+  border-bottom: none;
+}
+#sayso-app-container #sayso-nav-profile-container {
+  width: 235px;
+  left: 105px;
+  top: -23px;
+  height: 75px;
+  background-image: url('../../images/movie/nav-profile-background.png');
+  background-repeat: no-repeat;
+  z-index: 2;
+  cursor: auto;
+}
+#sayso-app-container #sayso-nav-profile-container #sayso-nav-profile-bubble-top {
+  background-image: url('../../images/movie/nav-profile-bubble-top.png');
+  position: absolute;
+  width: 35px;
+  height: 14px;
+  top: -14px;
+  left: 179px;
+}
+#sayso-app-container #sayso-nav-profile-container #sayso-nav-profile-logo {
+  background-image: url('../../images/movie/nav-profile-logo.png');
+  position: absolute;
+  top: 5px;
+  left: 75px;
+  width: 126px;
+  height: 23px;
+}
+#sayso-app-container #sayso-nav-profile-container #sayso-nav-profile-user-image {
+  background-image: url('../../images/movie/default-user-image.png');
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 12px;
+  left: 15px;
+  width: 52px;
+  height: 60px;
+}
+#sayso-app-container #sayso-nav-profile-container #sayso-nav-profile-text {
+  position: absolute;
+  top: 37px;
+  left: 77px;
+}
+#sayso-app-container #sayso-nav-profile-container #sayso-nav-profile-text p,
+#sayso-app-container #sayso-nav-profile-container #sayso-nav-profile-text span {
+  color: #ffffff;
+  font-weight: bold;
+  line-height: 17px;
+}
+#sayso-app-container #sayso-nav-profile-container #sayso-nav-profile-text p.sayso-small,
+#sayso-app-container #sayso-nav-profile-container #sayso-nav-profile-text span.sayso-small {
+  font-weight: normal;
+}
+#sayso-app-container .sayso-nav-theme-button-container {
+  width: 95px;
+  height: 52px;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.22, #611110), color-stop(0.61, #090102));
+  background-image: -moz-linear-gradient(center top, #611110 22%, #090102 61%);
+  background-color: #611110;
+}
+#sayso-app-container .sayso-nav-theme-button-container .sayso-nav-theme-button {
+  width: 95px;
+  height: 52px;
+}
+#sayso-app-container .sayso-nav-theme-button-container .sayso-nav-theme-button .sayso-nav-theme-button-top {
+  width: 95px;
+  height: 8px;
+  background-color: #2f2f2f;
+}
+#sayso-app-container .sayso-nav-theme-button-container:hover {
+  /* when you hover over the container, change the gradient of the top of the button */
+
+}
+#sayso-app-container .sayso-nav-theme-button-container:hover .sayso-nav-theme-button .sayso-nav-theme-button-top {
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.22, #c4760c), color-stop(0.61, #fde771));
+  background-image: -moz-linear-gradient(center top, #c4760c 22%, #fde771 61%);
+  background-color: #fde771;
+}
+#sayso-app-container #sayso-nav-theme-button-polls {
+  left: 331px;
+}
+#sayso-app-container #sayso-nav-theme-button-polls .sayso-nav-theme-button {
+  background-image: url('../../images/movie/nav-theme-button-polls.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+#sayso-app-container #sayso-nav-theme-button-surveys {
+  left: 427px;
+}
+#sayso-app-container #sayso-nav-theme-button-surveys .sayso-nav-theme-button {
+  background-image: url('../../images/movie/nav-theme-button-surveys.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+#sayso-app-container #sayso-nav-theme-button-spotlight {
+  left: 523px;
+}
+#sayso-app-container #sayso-nav-theme-button-spotlight .sayso-nav-theme-button {
+  background-image: url('../../images/movie/nav-theme-button-spotlight.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+#sayso-app-container .sayso-nav-theme-container {
+  background-image: url('../../images/movie/nav-background-divider.png');
+  background-repeat: repeat-y;
+  text-align: center;
+}
+#sayso-app-container #sayso-nav-promos-container {
+  background-position: -2px;
+  left: 619px;
+}
+#sayso-app-container #sayso-nav-promos-container #sayso-nav-promos-image {
+  width: 122px;
+  height: 53px;
+  background-image: url('../../images/movie/nav-current-promo.png');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#sayso-app-container #sayso-nav-experience-container {
+  left: 745px;
+  width: 160px;
+  height: 53px;
+}
+#sayso-app-container #sayso-nav-experience-container #sayso-nav-experience-level {
+  margin-top: 5px;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: white;
+}
+#sayso-app-container #sayso-nav-experience-container .sayso-progress-bar-container {
+  width: 120px;
+  margin: 5px auto 0 auto;
+  height: 13px;
+}
+#sayso-app-container #sayso-nav-redeemable-container {
+  left: 905px;
+  width: 90px;
+  height: 53px;
+}
+#sayso-app-container #sayso-nav-redeemable-container .sayso-progress-bar-container {
+  width: 60px;
+  margin: 22px 0 0 auto;
+  height: 13px;
+}
+#sayso-section-container {
+  position: relative;
+  display: none;
+}
+#sayso-section-container .sayso-tab {
+  display: none;
+}
+#sayso-section-container .sayso-tab:first-child {
+  /* temporary hack */
+
+  display: block;
+}
+#sayso-section-container #sayso-section {
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: 20px;
+  background-color: #ffffff;
+  border: 6px solid #383838;
+  -webkit-box-shadow: 0px 0px 5px #333333;
+  -moz-box-shadow: 0px 0px 5px #333333;
+  box-shadow: 0px 0px 5px #333333;
+  min-height: 300px;
+  overflow: hidden;
+}
+#sayso-section-container #sayso-section #sayso-section-header,
+#sayso-section-container #sayso-section #sayso-section-body,
+#sayso-section-container #sayso-section #sayso-section-footer {
+  padding: 10px;
+}
+#sayso-section-container #sayso-section #sayso-section-header {
+  height: 20px;
+  background-repeat: no-repeat;
+  background-position: 10px 10px;
+}
+#sayso-section-container #sayso-section #sayso-section-header ul {
+  position: absolute;
+  right: 0px;
+  top: 15px;
+}
+#sayso-section-container #sayso-section #sayso-section-header ul li {
+  float: left;
+  display: block;
+  margin: 0 10px 0 0;
+  padding: 0 10px 0 0;
+  border-right: 1px solid #333333;
+}
+#sayso-section-container #sayso-section #sayso-section-header ul li:last-child {
+  padding: 0;
+  border-right: none;
+}
+#sayso-section-container #sayso-section #sayso-section-footer {
+  display: none;
+}
+#sayso-section-container #sayso-section-triangle-white,
+#sayso-section-container #sayso-section-triangle-grey {
+  display: none;
+  position: absolute;
+  left: 30px;
+  border-width: 7px 7px 0;
+  border-style: solid;
+  width: 0;
+}
+#sayso-section-container #sayso-section-triangle-white {
+  top: -27px;
+  border-color: #ffffff transparent;
+}
+#sayso-section-container #sayso-section-triangle-grey {
+  top: -20px;
+  border-color: #383838 transparent;
+}
+#sayso-section-container.sayso-section-about #sayso-section {
+  left: 224px;
+  width: 540px;
+  height: 400px;
+  bottom: 40px;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-header {
+  background-image: url('../../images/movie/section-heading-theme-logo.png');
+  background-color: #383838;
+  background-position: 5px 5px;
+  height: 26px;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-header ul li {
+  border-right: 1px solid #ffffff;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-header ul li:last-child {
+  border-right: none;
+  margin-right: 5px;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-header ul li.sayso-tab-link {
+  color: #ffffff;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section {
+  left: 100px;
+  width: 500px;
+  height: 400px;
+  bottom: 30px;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-header {
+  background-image: url('../../images/movie/section-heading-user-profile.png');
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section-triangle-white,
+#sayso-section-container.sayso-section-user-profile #sayso-section-triangle-grey {
+  display: block;
+  left: 300px;
+  top: -30px;
+}
+#sayso-section-container.sayso-section-polls #sayso-section {
+  left: 333px;
+  width: 500px;
+  height: 500px;
+}
+#sayso-section-container.sayso-section-polls #sayso-section #sayso-section-header {
+  background-image: url('../../images/movie/section-heading-polls.png');
+}
+#sayso-section-container.sayso-section-polls #sayso-section-triangle-white,
+#sayso-section-container.sayso-section-polls #sayso-section-triangle-grey {
+  display: block;
+  left: 373px;
+}

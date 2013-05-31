@@ -1,0 +1,188 @@
+<!doctype html>
+<html>
+<head>
+    <link id="hack-style-changer" rel="stylesheet" href="/browserapp/css/build/movie.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+</head>
+<body>
+<div id="sayso-app-container" class="sayso-reset">
+    <div id="sayso-app-background"></div>
+    <div id="sayso-app">
+        <!-- SECTION (previously several pop boxes) -->
+        <div id="sayso-section-container" class=""><!-- class changes (e.g. to "sayso-section-polls") when switching sections -->
+            <div id="sayso-section"> <!-- section is emptied when switching section -->
+                <div class="sayso-loading"></div><!-- added by jquery if section takes more than 200ms to load, then faded away in 100ms -->
+                <!-- section html goes here -->
+            </div>
+            <div id="sayso-section-triangle-grey"></div>
+            <div id="sayso-section-triangle-white"></div>
+        </div>
+
+        <!-- NAVIGATION -->
+        <div id="sayso-nav-hide-button" class="sayso-nav-box"></div>
+        <div id="sayso-nav-logo-container" class="sayso-nav-box">
+            <div id="sayso-nav-logo" class="sayso-section-link" data-section="about"></div>
+        </div>
+        <div id="sayso-nav-help-links-container" class="sayso-nav-box sayso-section-link" data-section="about">
+            <ul>
+                <li>About</li>
+                <li>FAQs</li>
+                <li>Help</li>
+            </ul>
+        </div>
+        <div id="sayso-nav-profile-container" class="sayso-nav-box">
+            <div id="sayso-nav-profile-bubble-top"></div>
+            <div id="sayso-nav-profile-logo"></div>
+            <div id="sayso-nav-profile-user-image" class="sayso-user-image sayso-section-link" data-section="user-profile"></div>
+            <div id="sayso-nav-profile-text" class="sayso-section-link" data-section="user-profile">
+                <p>Hi <span class="sayso-user-public-name">Person</span></p>
+                <p class="sayso-small">Edit Profile</p>
+            </div>
+        </div>
+        <div id="sayso-nav-theme-button-polls" class="sayso-nav-box sayso-nav-theme-button-container sayso-section-link" data-section="polls">
+            <div class="sayso-nav-theme-button">
+                <div class="sayso-nav-theme-button-top"></div>
+            </div>
+        </div>
+        <div id="sayso-nav-theme-button-surveys" class="sayso-nav-box sayso-nav-theme-button-container sayso-section-link" data-section="surveys">
+            <div class="sayso-nav-theme-button">
+                <div class="sayso-nav-theme-button-top"></div>
+            </div>
+        </div>
+        <div id="sayso-nav-theme-button-spotlight" class="sayso-nav-box sayso-nav-theme-button-container sayso-section-link" data-section="spotlight">
+            <div class="sayso-nav-theme-button">
+                <div class="sayso-nav-theme-button-top"></div>
+            </div>
+        </div>
+        <div id="sayso-nav-promos-container" class="sayso-nav-box sayso-nav-theme-container sayso-section-link" data-section="promos">
+            <div id="sayso-nav-promos-image"></div>
+        </div>
+        <div id="sayso-nav-experience-container" class="sayso-nav-box sayso-nav-theme-container sayso-section-link" data-section="experience">
+            <div id="sayso-nav-experience-level">L1: FILM BUFF</div>
+            <div class="sayso-progress-bar-container" data-currency-type="experience">
+                <div class="sayso-progress-bar-icon sayso-progress-bar-icon-experience"></div>
+                <div class="sayso-progress-bar" style="width: 70%;"></div>
+                <div class="sayso-progress-bar-value">1600</div>
+            </div>
+        </div>
+        <div id="sayso-nav-redeemable-container" class="sayso-nav-box sayso-nav-theme-container sayso-section-link" data-section="rewards">
+            <div class="sayso-progress-bar-container" data-currency-type="redeemable">
+                <div class="sayso-progress-bar-icon sayso-progress-bar-icon-redeemable"></div>
+                <div class="sayso-progress-bar-value">120</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TEMPORARY 'HACKS' BELOW!! -->
+
+<script type="text/javascript">
+    var $sectionContainer = $('#sayso-section-container');
+    var $section = $('#sayso-section');
+    var section;
+    var timeoutSectionLoading, timeoutSectionLoadingSpinner;
+
+
+    // close if user clicks outside the starbar while in the iframe
+    $(document).click(function(e) {
+        // don't close if they just right-clicked
+        $sectionContainer.removeClass();
+        $sectionContainer.fadeTo(0, 0);
+        $section.html("");
+    });
+
+
+    $('#sayso-app-container').click(function(e) {
+        e.stopPropagation();
+    });
+
+
+    $('#sayso-nav-hide-button').click(function() {
+        if ($('#hack-style-changer').attr('href') == "/browserapp/css/build/movie.css") {
+            $('#hack-style-changer').attr('href', "/browserapp/css/build/machinima.css");
+        } else {
+            $('#hack-style-changer').attr('href', "/browserapp/css/build/movie.css");
+        }
+    });
+
+
+    $('.sayso-section-link').each(function (index) {
+        $(this).click(function() {
+            if (timeoutSectionLoading) clearTimeout(timeoutSectionLoading);
+            var $sectionLink = $(this);
+            var $sectionLoading;
+
+            section = $sectionLink.data('section');
+
+            $sectionContainer.fadeTo(0, 0);
+
+            $section.html("");
+            $sectionContainer.removeClass().addClass('sayso-section-' + section);
+            $sectionContainer.fadeTo(200, 1);
+
+            timeoutSectionLoadingSpinner = setTimeout(function(){
+                $sectionLoading = $('<div class="sayso-loading"></div>');
+                $section.prepend($sectionLoading);
+            }, 200); // don't show loader if content loads in under 200ms
+
+            timeoutSectionLoading = setTimeout(function(){
+                clearTimeout(timeoutSectionLoadingSpinner); // if the loader wasn't shown yet, don't show it
+                $section.append($('#temp-' + section).html()); // clone html from temp element below
+                $sectionContainer.removeClass().addClass('sayso-section-' + section);
+                if ($sectionLoading) {
+                    $sectionLoading.fadeTo(100, 0, function(){
+                        $sectionLoading.remove();
+                    });
+                }
+            }, Math.floor((Math.random()*1000))); // fake load delay, up to 1 second
+        });
+    });
+</script>
+
+<div id="temp-polls" style="display: none;">
+    <div id="sayso-section-header">
+        <ul>
+            <li class="sayso-tab-link" data-tab-container="sayso-section-body" data-tab="new">New!</li>
+            <li class="sayso-tab-link" data-tab-container="sayso-section-body" data-tab="completed">Completed</li>
+            <li class="sayso-tab-link" data-tab-container="sayso-section-body" data-tab="archived">Archived</li>
+        </ul>
+    </div>
+    <div id="sayso-section-body" class="sayso-tab-container" data-default-tab="new">
+        <div class="sayso-tab" data-tab="new">
+            <p class="sayso-heading-text">Polls are a speedy and effective way to find out what you love about Machinima. Each poll completed earns you XP & Coins. Gain bonus Coins & XP by sharing and tweeting your favorite polls, and look for special polls with point magnifiers.</p>
+            <div class="sayso-scrollable"></div>
+        </div>
+        <div class="sayso-tab" data-tab="completed">
+            <p class="sayso-heading-text">Polls are a speedy and effective way to find out what you love about Machinima. Each poll completed earns you XP & Coins. Gain bonus Coins & XP by sharing and tweeting your favorite polls, and look for special polls with point magnifiers.</p>
+            <div class="sayso-scrollable"></div>
+        </div>
+        <div class="sayso-tab" data-tab="archived">
+            <p class="sayso-heading-text">Polls are a speedy and effective way to find out what you love about Machinima. Each poll completed earns you XP & Coins. Gain bonus Coins & XP by sharing and tweeting your favorite polls, and look for special polls with point magnifiers.</p>
+            <div class="sayso-scrollable"></div>
+        </div>
+    </div>
+    <div id="sayso-section-footer"></div>
+</div>
+
+<div id="temp-user-profile" style="display: none;">
+</div>
+
+<div id="temp-about" style="display: none;">
+    <div id="sayso-section-header">
+        <ul>
+            <li class="sayso-tab-link" data-tab-container="sayso-section-body" data-tab="about">About</li>
+            <li class="sayso-tab-link" data-tab-container="sayso-section-body" data-tab="billofrights">Bill Of Rights</li>
+            <li class="sayso-tab-link" data-tab-container="sayso-section-body" data-tab="help">Help</li>
+            <li class="sayso-tab-link" data-tab-container="sayso-section-body" data-tab="faq">FAQs</li>
+            <li class="sayso-tab-link" data-tab-container="sayso-section-body" data-tab="feedback">Feedback</li>
+            <li class="sayso-tab-link" data-tab-container="sayso-section-body" data-tab="testing">Testing</li>
+        </ul>
+    </div>
+    <div id="sayso-section-body" class="sayso-tab-container" data-default-tab="about">
+        <div class="sayso-tab sayso-scrollable" data-tab="about">
+            Blah blah
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -6,11 +6,11 @@ class SummaryReportHack {
 		$reportResults = array();
 		$reportsToRun = array();
 
-		$user_filter_all = " FIND_IN_SET(u.id, @users_all) ";
-		$user_filter_new = " FIND_IN_SET(u.id, @users_new) ";
-		$user_filter_active = " FIND_IN_SET(u.id, @users_active) ";
-		$user_filter_inactive = " FIND_IN_SET(u.id, @users_inactive) ";
-		$user_filter_above_3 = " FIND_IN_SET(u.id, @users_above_3) ";
+		$installers_filter_all = " FIND_IN_SET(u.id, @installers_all) ";
+		$installers_filter_new = " FIND_IN_SET(u.id, @installers_new) ";
+		$installers_filter_active = " FIND_IN_SET(u.id, @installers_active) ";
+		$installers_filter_inactive = " FIND_IN_SET(u.id, @installers_inactive) ";
+		$installers_filter_above_3 = " FIND_IN_SET(u.id, @installers_above_3) ";
 
 		// make sure the group_concat_max_len is long enough
 		$curMax = (int) Db_Pdo::fetch("SHOW VARIABLES LIKE 'group_concat_max_len'")['Value'];
@@ -24,13 +24,13 @@ class SummaryReportHack {
 			SET @one_week_ago = (CURRENT_DATE - INTERVAL 1 WEEK);
 			SET @three_weeks_ago = (CURRENT_DATE - INTERVAL 3 WEEK);
 			SET @two_months_ago = (CURRENT_DATE - INTERVAL 2 MONTH);
-			SELECT @users_all := group_concat(distinct(u.id)) FROM user u INNER JOIN user_install i ON i.user_id = u.id AND i.starbar_id = $starbarId $filterTestUsers;
-			SELECT @users_new := group_concat(distinct(u.id)) FROM user u WHERE u.created > @three_weeks_ago AND FIND_IN_SET(u.id, @users_all);
+			SELECT @installers_all := group_concat(distinct(u.id)) FROM user u INNER JOIN starbar_user_map sum ON sum.user_id = u.id AND sum.starbar_id = $starbarId $filterTestUsers;
+			SELECT @installers_new := group_concat(distinct(u.id)) FROM user u INNER JOIN starbar_user_map sum ON sum.user_id = u.id AND sum.created > @three_weeks_ago AND sum.starbar_id = $starbarId $filterTestUsers;
 			SELECT @mpv_id_three_weeks_ago := id FROM metrics_page_view WHERE created < @three_weeks_ago ORDER BY id DESC LIMIT 1;
-			SELECT @users_active := group_concat(user_id) FROM (SELECT DISTINCT user_id FROM metrics_page_view WHERE id > @mpv_id_three_weeks_ago) AS blahblah WHERE FIND_IN_SET(user_id, @users_all);
-			SELECT @users_inactive := group_concat(distinct(id)) FROM user WHERE NOT FIND_IN_SET(id, @users_active) AND FIND_IN_SET(id, @users_all);
+			SELECT @installers_active := group_concat(user_id) FROM (SELECT DISTINCT user_id FROM metrics_page_view WHERE id > @mpv_id_three_weeks_ago) AS blahblah WHERE FIND_IN_SET(user_id, @installers_all);
+			SELECT @installers_inactive := group_concat(distinct(id)) FROM user WHERE NOT FIND_IN_SET(id, @installers_active) AND FIND_IN_SET(id, @installers_all);
 			SELECT @level_asset := a.id FROM game_asset a INNER JOIN economy e ON e.id = a.economy_id INNER JOIN starbar s ON s.economy_id = e.id AND s.id = $starbarId WHERE a.type = 'level';
-			SELECT @users_above_3 := group_concat(distinct(u.id)) FROM user u INNER JOIN game_balance b ON u.id = b.user_id AND (b.credits - b.debits) > 3 AND b.game_asset_id = @level_asset WHERE FIND_IN_SET(u.id, @users_all);
+			SELECT @installers_above_3 := group_concat(distinct(u.id)) FROM user u INNER JOIN game_balance b ON u.id = b.user_id AND (b.credits - b.debits) > 3 AND b.game_asset_id = @level_asset WHERE FIND_IN_SET(u.id, @installers_all);
 			SELECT @exp_asset := a.id FROM game_asset a INNER JOIN game_currency c ON c.game_asset_id = a.id AND c.game_currency_type_id = 1 INNER JOIN economy e ON e.id = a.economy_id INNER JOIN starbar s ON s.economy_id = e.id AND s.id = $starbarId;
 			SELECT @red_asset := a.id FROM game_asset a INNER JOIN game_currency c ON c.game_asset_id = a.id AND c.game_currency_type_id = 2 INNER JOIN economy e ON e.id = a.economy_id INNER JOIN starbar s ON s.economy_id = e.id AND s.id = $starbarId;
 		";
@@ -41,7 +41,7 @@ class SummaryReportHack {
 		/*
 		$reportsToRun[] = [
 			"title" => "debug",
-			"single" => " SELECT @users_all AS col1 "
+			"single" => " SELECT @installers_all AS col1 "
 		];
 		*/
 
@@ -55,12 +55,19 @@ class SummaryReportHack {
 			"total" => "
 				SELECT @total_emails := count(distinct(u.id)) AS col1
 				FROM user u
-				WHERE $user_filter_all
+				INNER JOIN user_install i
+					ON i.user_id = u.id
+					AND i.starbar_id = $starbarId
+				$filterTestUsers
 			",
 			"new" => "
 				SELECT @new_emails := count(distinct(u.id)) AS col1
 				FROM user u
-				WHERE $user_filter_new
+				INNER JOIN user_install i
+					ON i.user_id = u.id
+					AND i.starbar_id = $starbarId
+				$filterTestUsers
+				".($filterTestUsers ? " AND " : " WHERE ")." u.created > @three_weeks_ago
 			",
 		];
 
@@ -69,29 +76,17 @@ class SummaryReportHack {
 			"total" => "
 				SELECT @total_installs := count(distinct(u.id)) AS col1
 				FROM user u
-				INNER JOIN user_install i
-					ON i.user_id = u.id
-					AND i.first_access_ts IS NOT NULL
-					AND i.starbar_id = $starbarId
-				WHERE $user_filter_all
+				WHERE $installers_filter_all
 			",
 			"new" => "
 				SELECT @new_installs := count(distinct(u.id)) AS col1
 				FROM user u
-				INNER JOIN user_install i
-					ON i.user_id = u.id
-					AND i.first_access_ts IS NOT NULL
-					AND i.starbar_id = $starbarId
-				WHERE $user_filter_new
+				WHERE $installers_filter_new
 			",
 			"active" => "
 				SELECT @active_installs := count(distinct(u.id)) AS col1
 				FROM user u
-				INNER JOIN user_install i
-					ON i.user_id = u.id
-					AND i.first_access_ts IS NOT NULL
-					AND i.starbar_id = $starbarId
-				WHERE $user_filter_active
+				WHERE $installers_filter_active
 			",
 			"inactive" => "SELECT (@total_installs - @active_installs) AS col1",
 		];
@@ -107,17 +102,17 @@ class SummaryReportHack {
 			"total" => "
 				SELECT @total_users_above_3 := count(distinct(u.id)) AS col1
 				FROM user u
-				WHERE $user_filter_above_3
+				WHERE $installers_filter_above_3
 			",
 			"new" => "
 				SELECT count(u.id) AS col1
 				FROM user u
-				WHERE $user_filter_new AND $user_filter_above_3
+				WHERE $installers_filter_new AND $installers_filter_above_3
 			",
 			"active" => "
 				SELECT @active_users_above_3 := count(distinct(u.id)) AS col1
 				FROM user u
-				WHERE $user_filter_active AND $user_filter_above_3
+				WHERE $installers_filter_active AND $installers_filter_above_3
 			",
 			"inactive" => "SELECT @total_users_above_3 - @active_users_above_3 AS col1",
 		];
@@ -131,7 +126,7 @@ class SummaryReportHack {
 				LEFT JOIN game_balance b
 					ON l.ordinal = (b.credits-b.debits)
 					AND b.game_asset_id = @level_asset
-					AND FIND_IN_SET(b.user_id, @users_all)
+					AND FIND_IN_SET(b.user_id, @installers_all)
 				WHERE l.game_asset_id = @level_asset
 				GROUP BY l.ordinal
 				ORDER BY l.ordinal ASC
@@ -142,7 +137,7 @@ class SummaryReportHack {
 				LEFT JOIN game_balance b
 					ON l.ordinal = (b.credits-b.debits)
 					AND b.game_asset_id = @level_asset
-					AND FIND_IN_SET(b.user_id, @users_new)
+					AND FIND_IN_SET(b.user_id, @installers_new)
 				WHERE l.game_asset_id = @level_asset
 				GROUP BY l.ordinal
 				ORDER BY l.ordinal ASC
@@ -153,7 +148,7 @@ class SummaryReportHack {
 				LEFT JOIN game_balance b
 					ON l.ordinal = (b.credits-b.debits)
 					AND b.game_asset_id = @level_asset
-					AND FIND_IN_SET(b.user_id, @users_active)
+					AND FIND_IN_SET(b.user_id, @installers_active)
 				WHERE l.game_asset_id = @level_asset
 				GROUP BY l.ordinal
 				ORDER BY l.ordinal ASC
@@ -164,7 +159,7 @@ class SummaryReportHack {
 				LEFT JOIN game_balance b
 					ON l.ordinal = (b.credits-b.debits)
 					AND b.game_asset_id = @level_asset
-					AND FIND_IN_SET(b.user_id, @users_inactive)
+					AND FIND_IN_SET(b.user_id, @installers_inactive)
 				WHERE l.game_asset_id = @level_asset
 				GROUP BY l.ordinal
 				ORDER BY l.ordinal ASC
@@ -181,12 +176,12 @@ class SummaryReportHack {
 			"single" => "
 				SELECT count(distinct(sr.user_id)) AS col1
 				FROM survey_response sr
-				INNER JOIN survey s
-					ON s.id = sr.survey_id
-					AND s.starbar_id = $starbarId
+				INNER JOIN starbar_survey_map ssm
+					ON ssm.survey_id = sr.survey_id
+					AND ssm.starbar_id = $starbarId
 				WHERE sr.status = 'completed'
 					AND sr.completed_disqualified > @one_week_ago
-					AND FIND_IN_SET(sr.user_id, @users_all)
+					AND FIND_IN_SET(sr.user_id, @installers_all)
 			",
 		];
 
@@ -195,12 +190,12 @@ class SummaryReportHack {
 			"single" => "
 				SELECT count(distinct(sr.user_id)) AS col1
 				FROM survey_response sr
-				INNER JOIN survey s
-					ON s.id = sr.survey_id
-					AND s.starbar_id = $starbarId
+				INNER JOIN starbar_survey_map ssm
+					ON ssm.survey_id = sr.survey_id
+					AND ssm.starbar_id = $starbarId
 				WHERE sr.status = 'completed'
 					AND sr.completed_disqualified > @three_weeks_ago
-					AND FIND_IN_SET(sr.user_id, @users_all)
+					AND FIND_IN_SET(sr.user_id, @installers_all)
 			",
 		];
 
@@ -209,12 +204,12 @@ class SummaryReportHack {
 			"single" => "
 				SELECT count(distinct(sr.user_id)) AS col1
 				FROM survey_response sr
-				INNER JOIN survey s
-					ON s.id = sr.survey_id
-					AND s.starbar_id = $starbarId
+				INNER JOIN starbar_survey_map ssm
+					ON ssm.survey_id = sr.survey_id
+					AND ssm.starbar_id = $starbarId
 				WHERE sr.status = 'completed'
 					AND sr.completed_disqualified > @two_months_ago
-					AND FIND_IN_SET(sr.user_id, @users_all)
+					AND FIND_IN_SET(sr.user_id, @installers_all)
 			",
 		];
 
@@ -224,17 +219,27 @@ class SummaryReportHack {
 
 
 		foreach (['RA', 'survey', 'poll', 'trailer', 'mission'] as $type) {
+			$surveyJoin = "";
+
+			if ($type != 'RA') {
+				$surveyJoin = "
+					INNER JOIN survey s
+						ON s.id = sr.survey_id
+						AND s.type = '$type'
+				";
+			}
+
 			$reportsToRun[] = [
 				"title" => "Total $type completions",
 				"single" => "
 					SELECT @".$type."_completions := count(sr.id) AS col1
 					FROM survey_response sr
-					INNER JOIN survey s
-						ON s.id = sr.survey_id
-						AND s.starbar_id = $starbarId
-						" . ($type != 'RA' ? "AND s.type = '$type'" : "") . "
+					$surveyJoin
+					INNER JOIN starbar_survey_map ssm
+						ON ssm.survey_id = sr.survey_id
+						AND ssm.starbar_id = $starbarId
 					WHERE sr.status = 'completed'
-						AND FIND_IN_SET(sr.user_id, @users_all)
+						AND FIND_IN_SET(sr.user_id, @installers_all)
 				",
 			];
 
@@ -248,13 +253,13 @@ class SummaryReportHack {
 				"single" => "
 					SELECT count(sr.id) AS col1
 					FROM survey_response sr
-					INNER JOIN survey s
-						ON s.id = sr.survey_id
-						AND s.starbar_id = $starbarId
-						" . ($type != 'RA' ? "AND s.type = '$type'" : "") . "
+					$surveyJoin
+					INNER JOIN starbar_survey_map ssm
+						ON ssm.survey_id = sr.survey_id
+						AND ssm.starbar_id = $starbarId
 					WHERE sr.status = 'completed'
 						AND sr.completed_disqualified > @one_week_ago
-						AND FIND_IN_SET(sr.user_id, @users_all)
+						AND FIND_IN_SET(sr.user_id, @installers_all)
 				",
 			];
 
@@ -275,7 +280,7 @@ class SummaryReportHack {
 				SELECT @total_unspent_red := IFNULL(SUM(credits-debits), 0) AS col1
 				FROM game_balance
 				WHERE game_asset_id = @red_asset
-					AND FIND_IN_SET(user_id, @users_all)
+					AND FIND_IN_SET(user_id, @installers_all)
 			",
 		];
 
@@ -294,7 +299,7 @@ class SummaryReportHack {
 				SELECT @active_unspent_red := IFNULL(SUM(credits-debits), 0) AS col1
 				FROM game_balance
 				WHERE game_asset_id = @red_asset
-					AND FIND_IN_SET(user_id, @users_active)
+					AND FIND_IN_SET(user_id, @installers_active)
 			",
 		];
 
@@ -315,7 +320,7 @@ class SummaryReportHack {
 				INNER JOIN game_transaction t
 					ON t.id = l.game_transaction_id
 					AND t.ts > @three_weeks_ago
-					AND FIND_IN_SET(t.user_id, @users_all)
+					AND FIND_IN_SET(t.user_id, @installers_all)
 				WHERE l.amount < 0
 					AND l.game_asset_id = @red_asset
 			",
@@ -329,7 +334,7 @@ class SummaryReportHack {
 				INNER JOIN game_transaction t
 					ON t.id = l.game_transaction_id
 					AND t.ts > @three_weeks_ago
-					AND FIND_IN_SET(t.user_id, @users_all)
+					AND FIND_IN_SET(t.user_id, @installers_all)
 				WHERE l.amount > 0
 					AND l.game_asset_id = @red_asset
 			",
@@ -343,7 +348,7 @@ class SummaryReportHack {
 				INNER JOIN game_transaction t
 					ON t.id = l.game_transaction_id
 					AND t.ts > @one_week_ago
-					AND FIND_IN_SET(t.user_id, @users_all)
+					AND FIND_IN_SET(t.user_id, @installers_all)
 				WHERE l.amount > 0
 					AND l.game_asset_id = @red_asset
 			",
@@ -362,7 +367,7 @@ class SummaryReportHack {
 				INNER JOIN user_gaming_order_history h
 					ON h.user_id = u.id
 					AND h.created > @three_weeks_ago
-				WHERE $user_filter_all
+				WHERE $installers_filter_all
 			",
 		];
 
@@ -373,7 +378,7 @@ class SummaryReportHack {
 				FROM user u
 				INNER JOIN user_gaming_order_history h
 					ON h.user_id = u.id
-				WHERE $user_filter_all
+				WHERE $installers_filter_all
 			",
 		];
 
@@ -398,7 +403,7 @@ class SummaryReportHack {
 					INNER JOIN game_purchasable p
 						ON p.game_asset_id = h.game_asset_id
 						AND p.type = '$type'
-					WHERE $user_filter_all
+					WHERE $installers_filter_all
 				",
 			];
 
@@ -411,7 +416,7 @@ class SummaryReportHack {
 						ON p.game_asset_id = h.game_asset_id
 						AND p.type = '$type'
 					WHERE h.created > @three_weeks_ago
-						AND FIND_IN_SET(h.user_id, @users_all)
+						AND FIND_IN_SET(h.user_id, @installers_all)
 				",
 			];
 
@@ -433,10 +438,20 @@ class SummaryReportHack {
 		foreach(['facebook', 'twitter'] as $network) {
 			$reportsToRun[] = [
 				"title" => "Number of users who have connected their $network account",
-				"single" => " SELECT count(id) AS col1 FROM user_social WHERE provider = '$network' AND FIND_IN_SET(user_id, @users_all) ",
+				"single" => " SELECT count(id) AS col1 FROM user_social WHERE provider = '$network' AND FIND_IN_SET(user_id, @installers_all) ",
 			];
 
 			foreach (['RA', 'survey', 'poll', 'trailer'] as $type) {
+				$surveyJoin = "";
+
+				if ($type != 'RA') {
+					$surveyJoin = "
+					INNER JOIN survey s
+						ON s.id = t.survey_id
+						AND s.type = '$type'
+				";
+				}
+
 				$toSearch = ($network == 'facebook' ? "FB" : "TW") . ($type != 'RA' ? "_" . strtoupper($type) : "") . "_%_SHARE";
 
 				if ($type == 'survey') {
@@ -457,18 +472,18 @@ class SummaryReportHack {
 								ON ug.id = ugth.user_gaming_id
 								AND ugth.action LIKE '$toSearch'
 							WHERE ug.starbar_id = $starbarId
-								AND FIND_IN_SET(ug.user_id, @users_all)
+								AND FIND_IN_SET(ug.user_id, @installers_all)
 						UNION
 							SELECT distinct(t.user_id)
 							FROM game_transaction t
 							INNER JOIN game_transaction_type tt
 								ON t.game_transaction_type_id = tt.id
 								AND tt.short_name LIKE '$toSearch'
-							INNER JOIN survey s
-								ON s.id = t.survey_id
-								AND s.starbar_id = $starbarId
-								" . ($type != 'RA' ? "AND s.type = '$type'" : "") . "
-							WHERE FIND_IN_SET(t.user_id, @users_all)
+							$surveyJoin
+							INNER JOIN starbar_survey_map ssm
+								ON ssm.survey_id = t.survey_id
+								AND ssm.starbar_id = $starbarId
+							WHERE FIND_IN_SET(t.user_id, @installers_all)
 						) AS upupdowndownleftrightleftrightbastart
 					",
 				];

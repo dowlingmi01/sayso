@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<script>window.sayso = { module: {} };</script>
+<script src="js/src/lib/jquery-1.10.1.js"></script>
+<script src="js/src/util.js"></script>
+<script src="js/src/comm-web.js"></script>
+<script src="js/src/state.js"></script>
+<script>
+    $(document).on('sayso:state-game', function() {
+        console.log('sayso:state-game');
+    });
+    $(document).on('sayso:state-ready', function() {
+       sayso.module.state.apiCall({action_class: 'Starbar', action: 'getStarbar', starbar_id: sayso.module.state.state.starbar.id}, function(data) {
+           console.log(data);
+       });
+    });
+</script>
+</body>
+</html>

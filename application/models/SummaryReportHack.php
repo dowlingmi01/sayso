@@ -30,7 +30,7 @@ class SummaryReportHack {
 			SELECT @users_active := group_concat(user_id) FROM (SELECT DISTINCT user_id FROM metrics_page_view WHERE id > @mpv_id_three_weeks_ago AND FIND_IN_SET(user_id, @users_all)) AS blahblah;
 			SELECT @users_inactive := group_concat(distinct(id)) FROM user WHERE NOT FIND_IN_SET(id, @users_active) AND FIND_IN_SET(id, @users_all);
 			SELECT @level_asset := a.id FROM game_asset a INNER JOIN economy e ON e.id = a.economy_id INNER JOIN starbar s ON s.economy_id = e.id AND s.id = $starbarId WHERE a.type = 'level';
-			SELECT @users_above_3 := group_concat(distinct(u.id)) FROM user u INNER JOIN game_balance b ON u.id = b.user_id AND (b.credits - b.debits) >= 3 AND b.game_asset_id = @level_asset WHERE FIND_IN_SET(u.id, @users_all);
+			SELECT @users_above_3 := group_concat(distinct(u.id)) FROM user u INNER JOIN game_balance b ON u.id = b.user_id AND (b.credits - b.debits) > 3 AND b.game_asset_id = @level_asset WHERE FIND_IN_SET(u.id, @users_all);
 			SELECT @exp_asset := a.id FROM game_asset a INNER JOIN game_currency c ON c.game_asset_id = a.id AND c.game_currency_type_id = 1 INNER JOIN economy e ON e.id = a.economy_id INNER JOIN starbar s ON s.economy_id = e.id AND s.id = $starbarId;
 			SELECT @red_asset := a.id FROM game_asset a INNER JOIN game_currency c ON c.game_asset_id = a.id AND c.game_currency_type_id = 2 INNER JOIN economy e ON e.id = a.economy_id INNER JOIN starbar s ON s.economy_id = e.id AND s.id = $starbarId;
 		";

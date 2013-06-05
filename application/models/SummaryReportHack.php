@@ -27,7 +27,7 @@ class SummaryReportHack {
 			SELECT @users_all := group_concat(distinct(u.id)) FROM user u INNER JOIN user_install i ON i.user_id = u.id AND i.starbar_id = $starbarId $filterTestUsers;
 			SELECT @users_new := group_concat(distinct(u.id)) FROM user u WHERE u.created > @three_weeks_ago AND FIND_IN_SET(u.id, @users_all);
 			SELECT @mpv_id_three_weeks_ago := id FROM metrics_page_view WHERE created < @three_weeks_ago ORDER BY id DESC LIMIT 1;
-			SELECT @users_active := group_concat(user_id) FROM (SELECT DISTINCT user_id FROM metrics_page_view WHERE id > @mpv_id_three_weeks_ago AND FIND_IN_SET(user_id, @users_all)) AS blahblah;
+			SELECT @users_active := group_concat(user_id) FROM (SELECT DISTINCT user_id FROM metrics_page_view WHERE id > @mpv_id_three_weeks_ago) AS blahblah WHERE FIND_IN_SET(user_id, @users_all);
 			SELECT @users_inactive := group_concat(distinct(id)) FROM user WHERE NOT FIND_IN_SET(id, @users_active) AND FIND_IN_SET(id, @users_all);
 			SELECT @level_asset := a.id FROM game_asset a INNER JOIN economy e ON e.id = a.economy_id INNER JOIN starbar s ON s.economy_id = e.id AND s.id = $starbarId WHERE a.type = 'level';
 			SELECT @users_above_3 := group_concat(distinct(u.id)) FROM user u INNER JOIN game_balance b ON u.id = b.user_id AND (b.credits - b.debits) > 3 AND b.game_asset_id = @level_asset WHERE FIND_IN_SET(u.id, @users_all);

@@ -86,10 +86,10 @@
   height: 24px;
   vertical-align: middle;
   margin-left: 7px;
-}
 
-.submit_button:active {
-  background-image: url('images/submit_btn_down.png');
+  &:active {
+    background-image: url('images/submit_btn_down.png');
+  }
 }
 
 .generic_container {
@@ -148,6 +148,20 @@
 
 .privacy {
   .proxima_nova_light(@font-size - 5);
+}
+
+.join_now {
+  .proxima_nova_regular(@font-size + 6);
+
+  img {
+    vertical-align: middle;
+    padding-bottom: 3px;
+  }
+
+  a {
+    text-decoration: none;
+    color: @theme-text-primary;
+  }
 }
 
 .red_link {
@@ -272,10 +286,10 @@ header {
     height: 24px;
     vertical-align: middle;
     margin-left: 7px;
-  }
 
-  .login_button:active {
+    &:active {
       background-image: url('images/login_btn_down.png');
+    }
   }
 }
 
@@ -308,15 +322,6 @@ header {
   width: 60%;
   text-wrap: normal;
 
-}
-
-.welcome_join_now {
-  .proxima_nova_regular(@font-size + 6);
-
-  img {
-    vertical-align: middle;
-    padding-bottom: 3px;
-  }
 }
 
 /* ================ */
@@ -368,10 +373,10 @@ header {
   vertical-align: middle;
   margin-top: 40px;
   margin-bottom: 40px;
-}
 
-.initial_welcome_option1:active {
-  background-image: url('images/get_app_btn_down.png');
+  &:active {
+    background-image: url('images/get_app_btn_down.png');
+  }
 }
 
 .initial_welcome_option2 {
@@ -408,10 +413,10 @@ header {
   vertical-align: middle;
   margin-top: 40px;
   margin-bottom: 40px;
-}
 
-.get_app_button:active {
-  background-image: url('images/get_app_btn_down.png'); //TODO: Replace with grab it button
+  &:active {
+    background-image: url('images/get_app_btn_down.png'); //TODO: Replace with grab it button
+  }
 }
 
 /* Contact Us */
@@ -500,10 +505,10 @@ header {
   vertical-align: middle;
   margin-top: 20px;
   margin-bottom: 20px;
-}
 
-.join_now_button:active {
-  background-image: url('images/join_now_down.png');
+  &:active {
+    background-image: url('images/join_now_down.png');
+  }
 }
 
 .join_now_privacy {
@@ -564,4 +569,54 @@ header {
   vertical-align: middle;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+/* Tour Generics */
+
+.tour_content_left {
+  float: left;
+  .top_left_margin();
+  width: 40%;
+
+  h1 {
+    .zero;
+    display: inline-block;
+  }
+
+  p{
+    .proxima_nova_thin();
+    width: 75%;
+    text-wrap: normal;
+    display: inline-block;
+  }
+}
+
+.tour_content_right {
+  float: right;
+  .top_right_margin();
+  width: 40%;
+
+  img {
+    padding-top: 0.75em;
+  }
+}
+
+.tour_step {
+  span {
+    .proxima_nova_light();
+  }
+}
+
+.tour_next {
+    display: inline-block;
+    background-image: url('images/tour/next_arrow.png');
+    background-repeat: no-repeat;
+    width: 70px;
+    height: 73px;
+    vertical-align: middle;
+    margin-top: 1em;
+
+  &:active {
+    background-image: url('images/tour/next_arrow_down.png');
+  }
 }

@@ -99,6 +99,21 @@
   font-size: 9px;
   letter-spacing: 1px;
 }
+.join_now {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+.join_now img {
+  vertical-align: middle;
+  padding-bottom: 3px;
+}
+.join_now a {
+  text-decoration: none;
+  color: #ffffff;
+}
 .red_link {
   color: #c02526;
   text-decoration: none;
@@ -260,17 +275,6 @@ header nav ul {
   letter-spacing: 1px;
   width: 60%;
   text-wrap: normal;
-}
-.welcome_join_now {
-  font-family: "proxima-nova", sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  letter-spacing: 1px;
-}
-.welcome_join_now img {
-  vertical-align: middle;
-  padding-bottom: 3px;
 }
 /* ================ */
 /* Lightboxed pages */
@@ -504,6 +508,56 @@ header nav ul {
   vertical-align: middle;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+/* Tour Generics */
+.tour_content_left {
+  float: left;
+  margin-left: 10%;
+  margin-top: 10%;
+  width: 40%;
+}
+.tour_content_left h1 {
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+}
+.tour_content_left p {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 100;
+  font-size: 14px;
+  letter-spacing: 1px;
+  width: 75%;
+  text-wrap: normal;
+  display: inline-block;
+}
+.tour_content_right {
+  float: right;
+  margin-right: 10%;
+  margin-top: 10%;
+  width: 40%;
+}
+.tour_content_right img {
+  padding-top: 0.75em;
+}
+.tour_step span {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+.tour_next {
+  display: inline-block;
+  background-image: url('images/tour/next_arrow.png');
+  background-repeat: no-repeat;
+  width: 70px;
+  height: 73px;
+  vertical-align: middle;
+  margin-top: 1em;
+}
+.tour_next:active {
+  background-image: url('images/tour/next_arrow_down.png');
 }
 /* Header */
 header {

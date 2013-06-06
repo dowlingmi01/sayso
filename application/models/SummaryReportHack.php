@@ -443,16 +443,16 @@ class SummaryReportHack {
 
 			foreach (['RA', 'survey', 'poll', 'trailer'] as $type) {
 				$surveyJoin = "";
+				$toSearch = ($network == 'facebook' ? "FB" : "TW") . "_%_SHARE"; // e.g. FB_%_SHARE
 
 				if ($type != 'RA') {
 					$surveyJoin = "
 					INNER JOIN survey s
 						ON s.id = t.survey_id
 						AND s.type = '$type'
-				";
+					";
+					$toSearch = ($network == 'facebook' ? "FB" : "TW") . "_" . strtoupper($type) . "_%_SHARE"; // e.g. FB_SURVEY_%_SHARE
 				}
-
-				$toSearch = ($network == 'facebook' ? "FB" : "TW") . ($type != 'RA' ? "_" . strtoupper($type) : "") . "_%_SHARE";
 
 				if ($type == 'survey') {
 					$reportsToRun[] = [

@@ -362,7 +362,7 @@ class SummaryReportHack {
 		$reportsToRun[] = [
 			"title" => "Number of users who have redeemed any items in the past 3 weeks",
 			"single" => "
-				SELECT count(u.id) AS col1
+				SELECT count(distinct u.id) AS col1
 				FROM user u
 				INNER JOIN user_gaming_order_history h
 					ON h.user_id = u.id

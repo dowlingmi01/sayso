@@ -14,7 +14,7 @@ CREATE TABLE `browser` (
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 #browser types
-DROP TABLE IF EXISTS `browser`;
+DROP TABLE IF EXISTS `browser_type`;
 CREATE TABLE `browser_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,

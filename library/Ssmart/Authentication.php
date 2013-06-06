@@ -79,17 +79,22 @@ class Ssmart_Authentication
 		}
 	}
 
+	/**
+	 * Sets authentication parameters
+	 *
+	 * @param string $data
+	 * @param mixed $nodeName
+	 */
 	protected function _setUserData($data, $nodeName)
 	{
-		if (is_string($data))
+		if (is_array($data) || is_object($data))
 		{
-			$this->userData->$nodeName = $data;
-		} elseif (is_array($data) || is_object($data)) {
 			foreach ($data as $key => $value)
 			{
 				$this->userData->$nodeName->$key = $value;
 			}
-		}
+		} else
+			$this->userData->$nodeName = $data;
 	}
 
 }

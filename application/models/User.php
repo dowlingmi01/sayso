@@ -119,7 +119,7 @@ class User extends Record implements Titled
 	 */
 	public function save () {
 
-		if ($this->_plainTextPassword) { // new user password OR password change
+	if ($this->_plainTextPassword) { // new user password OR password change
 
 			// ensure password salt and the password are always generated AND
 			// inserted at the same time, so password can be rebuilt for login
@@ -208,5 +208,16 @@ class User extends Record implements Titled
 		}
 		return $userAddress;
 	}
+
+	/**
+	 * Checks to see if there is an active ban on the ip making the request.
+	 */
+	public static function isIpBanned()
+	{
+		$banRow = Db_Pdo::fetch('SELECT * FROM login_ban_ip WHERE ip = INET_ATON(?)', $_SERVER["REMOTE_ADDR"]);
+		if (empty($banRow))
+			return;
+	}
+
 }
 

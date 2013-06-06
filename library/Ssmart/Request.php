@@ -221,7 +221,13 @@ class Ssmart_Request
 					case "class" :
 						$obj->action_class = $value;
 						break;
-
+					//TODO: find a better way to name these fields - now with authenticating the session id and key, having a field named api_user doesn't make sense here
+					case "session_id" :
+						$obj->api_user = $value;
+						break;
+					case "session_key" :
+						$obj->api_key = $value;
+						break;
 					default :
 						$obj->{$key} = $value;
 				}

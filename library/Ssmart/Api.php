@@ -236,6 +236,10 @@ class Ssmart_Api
 					//deal with common data
 					if ($logicResponse->hasCommonData())
 						$this->_processCommonData($logicResponse->getCommonData());
+
+					//flag new session_key if necessary
+					if (isset($this->_auth->userData->new_session_key))
+						$this->_processCommonData(array("new_session_key" => $this->_auth->userData->new_session_key, "new_session_id" => $this->_auth->userData->new_session_id));
 				} else {
 					$errorName = $logicResponse->errors->meta->errorName;
 					unset ($logicResponse->errors->meta);

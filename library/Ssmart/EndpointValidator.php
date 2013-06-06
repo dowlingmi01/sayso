@@ -47,6 +47,9 @@ class Ssmart_EndpointValidator
 													new Zend_Validate_Alpha(),
 													"presence" => "required",
 													),
+						"email"					=> array(
+													new Zend_Validate_EmailAddress()
+													)
 
 						);
 		$response = array();

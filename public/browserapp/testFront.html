@@ -9,15 +9,25 @@
 <script src="js/src/util.js"></script>
 <script src="js/src/comm-web.js"></script>
 <script src="js/src/state.js"></script>
+<input type="text" id="email">
+<input type="password" id="password">
+<input type="button" id="login" value="Login">
+<input type="button" id="logout" value="Logout">
+<div id="emaildisplay"></div>
 <script>
-    $(document).on('sayso:state-game', function() {
-        console.log('sayso:state-game');
+    function displayEmail() {
+        if( sayso.module.state.state.loggedIn )
+            $("#emaildisplay").text('Logged in as: ' + sayso.module.state.state.profile.email);
+        else
+            $("#emaildisplay").text('Not logged in.');
+    }
+    $("#login").click( function() {
+        sayso.module.state.login($('#email').val(), $('#password').val());
     });
-    $(document).on('sayso:state-ready', function() {
-       sayso.module.state.apiCall({action_class: 'Starbar', action: 'getStarbar', starbar_id: sayso.module.state.state.starbar.id}, function(data) {
-           console.log(data);
-       });
+    $("#logout").click( function() {
+        sayso.module.state.logout();
     });
+    $(document).on('sayso:state-login sayso:state-logout sayso:state-ready', displayEmail);
 </script>
 </body>
 </html>

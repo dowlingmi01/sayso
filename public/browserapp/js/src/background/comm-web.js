@@ -1,7 +1,9 @@
 sayso.module.comm = (function(global, $, util) {
 	var listeners = {};
-	function set( name, value ) {
+	function set( name, value, callback ) {
 		global.localStorage.setItem(name, JSON.stringify(value));
+		if( callback )
+			callback();
 	}
 	function get( name, callback ) {
 		callback( JSON.parse(global.localStorage.getItem(name)) );
@@ -11,7 +13,8 @@ sayso.module.comm = (function(global, $, util) {
 	}
 	function getReplyCallback( id ) {
 		return function( data ) {
-			global.top.postMessage( JSON.stringify(['sayso-background-reply', {id: id, data: data}]), '*');
+			if( id )
+				global.top.postMessage( JSON.stringify(['sayso-background-reply', {id: id, data: data}]), '*');
 		}
 	}
 	function handleMessage( event ) {

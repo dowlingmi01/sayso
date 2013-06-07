@@ -2,16 +2,16 @@ sayso.module.Api = (function(comm) {
 	/**
 	 * Sets a function to create the Api object to the sayso object.
 	 * @param {String} base_domain
-	 * @param {int} user_id
-	 * @param {String} user_key
+	 * @param {int} session_id
+	 * @param {String} session_key
 	 * @param {String} user_type
 	 * @returns {Boolean|void}
 	 */
-	var Api = function (base_domain, user_id, user_key, user_type){
-		if (!user_id || !user_key)
-			return false;
+	var Api = function (base_domain, session_id, session_key, user_type){
+		if ((!session_id || !session_key) && !user_type)
+			user_type = 'public';
 		this.baseDomain = base_domain;
-		this.init(user_id, user_key);
+		this.init(session_id, session_key);
 		if (user_type)
 			this.params.user_type = user_type;
 	};
@@ -19,13 +19,13 @@ sayso.module.Api = (function(comm) {
 	Api.prototype = {
 		/**
 		 * Init for the Api object.
-		 * @param {int} user_id
-		 * @param {String} user_key
+		 * @param {int} session_id
+		 * @param {String} session_key
 		 */
-		init: function(user_id, user_key) {
+		init: function(session_id, session_key) {
 			this.params = {};
-			this.params.user_id = user_id;
-			this.params.user_key = user_key;
+			this.params.session_id = session_id;
+			this.params.session_key = session_key;
 			this.requests = new Request();
 		},
 

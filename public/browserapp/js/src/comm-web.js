@@ -20,8 +20,12 @@ sayso.module.comm = (function(global, $, util) {
 		}
 	}
 	function request( name, data, callback ) {
-		requests[++id] = callback;
-		iframe.contentWindow.postMessage(JSON.stringify(['sayso-frontend-request', {id: id, name: name, data: data}]), '*');
+		var params = {name: name, data: data};
+		if( callback ) {
+			requests[++id] = callback;
+			params.id = id;
+		}
+		iframe.contentWindow.postMessage(JSON.stringify(['sayso-frontend-request', params]), '*');
 	}
 	function listen( name, callback ) {
 		listeners[name] = callback;

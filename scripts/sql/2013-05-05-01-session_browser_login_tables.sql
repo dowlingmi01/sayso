@@ -4,7 +4,7 @@ CREATE TABLE `browser` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `browser_type_id` int(11) NOT NULL,
   `major_version` smallint(6) DEFAULT NULL,
-  `minor_version` varchar(255) DEFAULT NULL,
+  `minor_version` smallint(6) DEFAULT NULL,
   `agent_string` varchar(2000) DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `comment` varchar(45) DEFAULT NULL,

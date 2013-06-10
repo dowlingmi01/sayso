@@ -77,10 +77,9 @@ class User_Login {
 	private function _getLoginStrikes($user)
 	{
 		//remove old ones
-		$expired = time() - 300;
-		Db_Pdo::execute('DELETE FROM login_strikes_user WHERE time <= ? AND username = ?', $expired, $user);
+		Db_Pdo::execute('DELETE FROM login_strikes_user WHERE created < now()-INTERVAL 5 MINUTE AND username = ?', $user);
 		//count whats left
-		$strikes = Db_Pdo::fetch('SELECT count(time) AS count FROM login_strikes_user WHERE username = ?', $user);
+		$strikes = Db_Pdo::fetch('SELECT count(username) AS count FROM login_strikes_user WHERE username = ?', $user);
 		if ($strikes["count"] >= 5)
 			return;
 		else
@@ -95,10 +94,9 @@ class User_Login {
 	private function _getIpStrikes()
 	{
 		//remove old ones
-		$expired = time() - 300;
-		Db_Pdo::execute('DELETE FROM login_strikes_ip WHERE time <= ? AND ip = INET_ATON(?)', $expired, $_SERVER["REMOTE_ADDR"]);
+		Db_Pdo::execute('DELETE FROM login_strikes_ip WHERE created < now()-INTERVAL 5 MINUTE AND ip = INET_ATON(?)', $_SERVER["REMOTE_ADDR"]);
 		//count whats left
-		$strikes = Db_Pdo::fetch('SELECT count(time) AS count FROM login_strikes_ip WHERE ip = INET_ATON(?)', $_SERVER["REMOTE_ADDR"]);
+		$strikes = Db_Pdo::fetch('SELECT count(ip) AS count FROM login_strikes_ip WHERE ip = INET_ATON(?)', $_SERVER["REMOTE_ADDR"]);
 		if ($strikes["count"] >= 5)
 			return;
 		else
@@ -112,8 +110,8 @@ class User_Login {
 	 */
 	private function _addStrikes($user)
 	{
-		Db_Pdo::execute("INSERT INTO login_strikes_user (time, username) VALUES (?,?)", time(), $user);
-		Db_Pdo::execute('INSERT INTO login_strikes_ip (time, ip) VALUES (?,INET_ATON(?))', time(), $_SERVER["REMOTE_ADDR"]);
+		Db_Pdo::execute("INSERT INTO login_strikes_user (username) VALUES (?)", $user);
+		Db_Pdo::execute('INSERT INTO login_strikes_ip (ip) VALUES (INET_ATON(?))', $_SERVER["REMOTE_ADDR"]);
 	}
 }
 ?>

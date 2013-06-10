@@ -136,12 +136,26 @@ class Survey_ResponseCollection extends RecordCollection
 	}
 
 	public function loadAllResponsesPendingProcessing () {
+		// record the number of processing attempts, and stop processing survey_responses that have failed more than 3 times
+		$sql = "
+			UPDATE survey_response
+		 	SET processing_attempts = IFNULL(processing_attempts, 0) + 1
+			WHERE processing_status = 'pending'
+				AND ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(completed_disqualified)) > 1200);
+
+			UPDATE survey_response
+			SET processing_status = 'failed'
+			WHERE processing_attempts >= 4;
+		";
+		Db_Pdo::execute($sql);
+
 		// Only select responses that were completed more than 20 minutes ago, since SG needs some time to process
-		$sql = "SELECT *
-				FROM survey_response
-				WHERE processing_status = 'pending'
-					AND ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(completed_disqualified)) > 1200)
-				";
+		$sql = "
+			SELECT *
+			FROM survey_response
+			WHERE processing_status = 'pending'
+				AND ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(completed_disqualified)) > 1200)
+		";
 		$surveyResponses = Db_Pdo::fetchAll($sql);
 
 		if ($surveyResponses) {

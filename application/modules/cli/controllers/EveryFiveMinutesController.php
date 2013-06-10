@@ -17,9 +17,6 @@ class Cli_EveryFiveMinutesController extends Api_GlobalController
 	 */
 	public function runAction()
 	{
-		// Process survey responses that need it
-		Survey_ResponseCollection::processAllResponsesPendingProcessing();
-
 		// End cli actions with this, otherwise you get a fatal error
 		exit(0);
 	}

@@ -85,13 +85,16 @@ class Ssmart_Authentication
 	 * @param string $data
 	 * @param mixed $nodeName
 	 */
-	protected function _setUserData($data, $nodeName)
+	protected function _setUserData($data, $nodeName = NULL)
 	{
 		if (is_array($data) || is_object($data))
 		{
 			foreach ($data as $key => $value)
 			{
-				$this->userData->$nodeName->$key = $value;
+				if ($nodeName)
+					$this->userData->$nodeName->$key = $value;
+				else
+					$this->userData->$key = $value;
 			}
 		} else
 			$this->userData->$nodeName = $data;

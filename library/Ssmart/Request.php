@@ -23,18 +23,18 @@ class Ssmart_Request
 	public $action;
 
 	/**
-	 * The user id
+	 * The session id
 	 *
 	 * @var int
 	 */
-	public $api_user;
+	public $session_id;
 
 	/**
-	 * The user key
+	 * The session key
 	 *
 	 * @var string
 	 */
-	public $api_key;
+	public $session_key;
 
 	/**
 	 * For single requests, we are going to format it as a multi request
@@ -45,8 +45,8 @@ class Ssmart_Request
 	 * @var array
 	 */
 	private $_top_level_params = array(
-				"api_user",
-				"api_key",
+				"session_id",
+				"session_key",
 				"response_format",
 				"continue_on_error",
 				"user_type"
@@ -195,7 +195,7 @@ class Ssmart_Request
 	 * Converts naming conventions
 	 *
 	 * Some naming conventions don't make sense both in and
-	 * out of the api. This converts them so that aip usage can be
+	 * out of the api. This converts them so that api usage can be
 	 * semantically accurate.
 	 *
 	 * @param type $params
@@ -212,21 +212,8 @@ class Ssmart_Request
 				$obj->{$key} = $value;
 			} else {
 				switch ($key) {
-					case "user_id" :
-						$obj->api_user = $value;
-						break;
-					case "user_key" :
-						$obj->api_key = $value;
-						break;
 					case "class" :
 						$obj->action_class = $value;
-						break;
-					//TODO: find a better way to name these fields - now with authenticating the session id and key, having a field named api_user doesn't make sense here
-					case "session_id" :
-						$obj->api_user = $value;
-						break;
-					case "session_key" :
-						$obj->api_key = $value;
 						break;
 					default :
 						$obj->{$key} = $value;

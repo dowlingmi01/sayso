@@ -38,7 +38,7 @@ class User_Session extends Record
 		$this->browser_id = $browser->id;
 
 		//expire existing sessions for this user and ip
-		Db_Pdo::execute('UPDATE '. $this->_tableName .' SET expired = 1 WHERE user_id = ? AND ip = INET_ATON(?) AND browser_id = ?', $userId, $_SERVER["REMOTE_ADDR"], $browser->id);
+		Db_Pdo::execute('UPDATE '. $this->_tableName .' SET expired = now() WHERE user_id = ? AND ip = INET_ATON(?) AND browser_id = ?', $userId, $_SERVER["REMOTE_ADDR"], $browser->id);
 
 		//add entry to session table
 		$this->user_id = $userId;
@@ -99,31 +99,28 @@ class User_Session extends Record
 		$session =  Db_Pdo::fetch(
 "SELECT
 	user_session.*,
-	IF(CURRENT_TIMESTAMP - created > 86400, 1, 0) AS expired,
-	IF(expired = 1 AND CURRENT_TIMESTAMP - user_session.expired  > 600, 1, 0) AS recently_expired
+	IF(CURRENT_TIMESTAMP - created > 86400 OR expired IS NOT NULL, 1, 0) AS is_expired,
+	IF(user_session.expired IS NOT NULL AND CURRENT_TIMESTAMP - user_session.expired  < 600, 1, 0) AS recently_expired
 FROM user_session
-WHERE id = ?
-	AND expired = 0",
-				$sessionId);
+WHERE id = ?", $sessionId);
 		//check session time
-		if (!empty($session)) //session expired
+		if (!empty($session))
 		{
-			if (!$session["expired"])
+			if ($session["is_expired"] == "0")
 			{
 				return TRUE;
 			}
-			if (!$session["recently_expired"])
+			if ($session["recently_expired"] == "1")
 			{
-				return TRUE;
+				$newSession = new self;
+				$newSession->loadData($session["new_session_id"]);
+				return array("new_session_id" => $session["new_session_id"], "new_session_key" => $newSession->session_key);
+				//TODO: perhaps add a catch for no new session id here
 			} else {
-				if ($session["new_session_id"]) //new session id has already been set, sent it
-					return $session["new_session_id"];
-				else { //session has expired in the last 10 minutes, so set a new session, set its id in this session record, and send it back
-					$newSession = new self;
-					$newSession->setSession($session->user_id);
-					Db_Pdo::execute('UPDATE user_session SET new_session_id = ? WHERE id = ?', $newSession->id, $sessionId);
-					return $newSession->id;
-				}
+				$newSession = new self;
+				$newSession->setSession($session["user_id"]);
+				Db_Pdo::execute('UPDATE user_session SET new_session_id = ? WHERE id = ?', $newSession->id, $sessionId);
+				return $newSession->id;
 			}
 		} else
 			return;

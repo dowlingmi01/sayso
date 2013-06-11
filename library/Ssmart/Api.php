@@ -150,12 +150,12 @@ class Ssmart_Api
 	 */
 	private static function _proessLoginCredentials($apiLoginCredentials)
 	{
-		if (!isset($apiLoginCredentials["user_id"]) || $apiLoginCredentials["user_id"] == "")
+		if (!isset($apiLoginCredentials["session_id"]) || $apiLoginCredentials["session_id"] == "")
 			return FALSE;
-		if (!isset($apiLoginCredentials["user_key"]) || $apiLoginCredentials["user_key"] == "")
+		if (!isset($apiLoginCredentials["session_key"]) || $apiLoginCredentials["session_key"] == "")
 			return FALSE;
-		$userCredentials = array('api_user'=>$apiLoginCredentials["user_id"], 'api_key'=>$apiLoginCredentials["user_key"]);
-		isset($apiLoginCredentials["user_type"]) ? array_push($userCredentials, array("user_type" => $apiLoginCredentials["user_key"])) : "";
+		$userCredentials = array('session_id'=>$apiLoginCredentials["session_id"], 'session_key'=>$apiLoginCredentials["session_key"]);
+		isset($apiLoginCredentials["user_type"]) ? array_push($userCredentials, array("user_type" => $apiLoginCredentials["user_type"])) : "";
 		return $userCredentials;
 	}
 

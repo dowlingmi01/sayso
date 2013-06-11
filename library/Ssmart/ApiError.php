@@ -30,7 +30,7 @@ class Ssmart_ApiError
 
 		"missing_params_api_instance"		=> array("type" => "api",		"message" => "Api user & key or json request are required"),
 		"missing_params_request"			=> array("type" => "api",		"message" => "Required parameters missing"),
-		"missing_params_panelist_auth"		=> array("type" => "api",		"message" => "Missing api_user or api_key parameters"),
+		"missing_params_panelist_auth"		=> array("type" => "api",		"message" => "Missing session_id or session_key parameters"),
 
 		"endpoint_parameter_validation_failed"=> array("type" => "action",	"message" => "Endpoint data type validation failed."),
 		"endpoint_failed"				=> array("type" => "action",	"message" => "Endpoint parameter filter and validation failed."),

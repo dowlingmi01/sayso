@@ -26,7 +26,7 @@ class Browser extends Record
 
 		//check if agent string exists
 
-		$browser = Db_Pdo::fetch('SELECT id FROM ' . $this->_tableName . ' WHERE agent_string = ?', $httpAgentString);
+		$browser = Db_Pdo::fetch('SELECT id FROM ' . $this->_tableName . ' WHERE agent_string = ?', substr($httpAgentString, 0, 255));
 
 		if (isset($browser["id"]))
 			$this->loadData ($browser["id"]);

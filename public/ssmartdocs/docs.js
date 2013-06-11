@@ -63,8 +63,8 @@ var directives = {
 					'<h3>Parameters</h3>' +
 					'<div faketable class="parameters" ng-transclude>' +
 						'<parameterheaders></parameterheaders>' +
-						'<parameter required name="user_id" type="integer" default_value="">The user id.</parameter>' +
-						'<parameter required name="user_key" type="string" default_value="">The user key.</parameter>' +
+						'<parameter required name="session_id" type="integer" default_value="">The session id.</parameter>' +
+						'<parameter required name="session_key" type="string" default_value="">The session key.</parameter>' +
 						'<parameter required name="action_class" type="string" default_value="">The class the action is in.</parameter>' +
 						'<parameter required name="action" type="string" default_value="">The action/endpoint to be called.</parameter>' +
 					'</div>' +
@@ -217,8 +217,8 @@ var directives = {
 					'<div class="json" ng-show="shown">' +
 						'<div>' +
 							'<div class="nodecontainer">{<div class="node" ng-transclude>' +
-								'<variable required name="user_id">20324</variable>' +
-								'<variable required name="user_key">2SVHO2VB997FBWYTARRCPMF4SLA2NQJ6</variable>' +
+								'<variable required name="session_id">20324</variable>' +
+								'<variable required name="session_key">2SVHO2VB997FBWYTARRCPMF4SLA2NQJ6</variable>' +
 								'<variable required name="action_class">{{sectionName}}</variable>' +
 								'<variable required name="action">{{endpointName}}</variable>' +
 							'</div>}</div>' +
@@ -247,8 +247,8 @@ var directives = {
 				name: "@"
 			},
 			template: '<div>' +
-					'<variable required name="user_id">20324</variable>' +
-					'<variable required name="user_key">2SVHO2VB997FBWYTARRCPMF4SLA2NQJ6</variable>' +
+					'<variable required name="session_id">20324</variable>' +
+					'<variable required name="session_key">2SVHO2VB997FBWYTARRCPMF4SLA2NQJ6</variable>' +
 					'<variable required name="action_class">{{sectionName}}</variable>' +
 					'<variable required name="action">{{endpointName}}</variable>' +
 			'</div>',

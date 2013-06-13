@@ -5,7 +5,7 @@
  * @package Ssmart
  * @subpackage endpoint
  */
-class Ssmart_NotificationEndpoint extends Ssmart_GlobalController
+class Ssmart_Panelist_NotificationEndpoint extends Ssmart_GlobalController
 {
 	/**
 	 * Returns all users notifications'.
@@ -37,9 +37,9 @@ class Ssmart_NotificationEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$starbarId					= $request->validParameters["starbar_id"];
-		$userId					= $request->auth->userData->user_id;
-		$starbarStowed				= $request->validParameters["starbar_stowed"];
+		$starbarId					= $request->valid_parameters["starbar_id"];
+		$userId					= $request->auth->user_data->user_id;
+		$starbarStowed				= $request->valid_parameters["starbar_stowed"];
 
 		$messages = new Notification_MessageCollection();
 		$messages->loadAllNotificationMessagesForStarbarAndUser($starbarId, $starbarStowed, $userId, NULL);
@@ -84,10 +84,10 @@ class Ssmart_NotificationEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$userId					= $request->auth->userData->user_id;
-		$messageId				= $request->validParameters["message_id"];
-		$markClosed				= $request->validParameters["mark_closed"];
-		$markNotified				= $request->validParameters["mark_notified"];
+		$userId					= $request->auth->user_data->user_id;
+		$messageId				= $request->valid_parameters["message_id"];
+		$markClosed				= $request->valid_parameters["mark_closed"];
+		$markNotified				= $request->valid_parameters["mark_notified"];
 
 		$messageUserMap = new Notification_MessageUserMap();
 		$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($messageId, $userId, $markClosed, $markNotified);
@@ -132,10 +132,10 @@ class Ssmart_NotificationEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$shortName				= $request->validParameters["short_name"];
-		$starbarId					= $request->validParameters["starbar_id"];
-		$markNotified				= $request->validParameters["mark_notified"];
-		$markClosed				= $request->validParameters["mark_closed"];
+		$shortName				= $request->valid_parameters["short_name"];
+		$starbarId					= $request->valid_parameters["starbar_id"];
+		$markNotified				= $request->valid_parameters["mark_notified"];
+		$markClosed				= $request->valid_parameters["mark_closed"];
 
 		$message = new Notification_Message();
 		$message->loadByShortNameAndStarbarId($shortName, $starbarId);
@@ -143,7 +143,7 @@ class Ssmart_NotificationEndpoint extends Ssmart_GlobalController
 		//throw api error if no $message->id
 		if (!$message->id)
 		{
-			$response->setResponseError(array("code" => "message_group_id_lookup_failed", "message" => "Failed to find a message group with short name = " . $request->validParameters["short_name"]));
+			$response->setResponseError(array("code" => "message_group_id_lookup_failed", "message" => "Failed to find a message group with short name = " . $request->valid_parameters["short_name"]));
 			return $response;
 		}
 

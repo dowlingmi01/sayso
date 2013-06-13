@@ -25,6 +25,15 @@ class Ssmart_Response
 	public $error_message = "";
 
 	/**
+	 * Sets the default error_message to an empty string.
+	 *  This clears out preexisting errors when the response is reset
+	 * after a call has been processed.
+	 *
+	 * @var string
+	 */
+	public $responses = null;
+
+	/**
 	 * Constructs the response object.
 	 *
 	 * @param Ssmart_Request $data The processed and formated
@@ -32,6 +41,8 @@ class Ssmart_Response
 	 * @param Ssmart_Error $error The error object
 	 */
 	public function __construct($data = NULL) {
+		$this->responses = new Object();
+
 		if ($data && isset($data->requests))
 		{
 			//prepare request response

@@ -37,6 +37,13 @@ class Ssmart_Request
 	public $session_key;
 
 	/**
+	 * The requests Object
+	 *
+	 * @var Object()
+	 */
+	public $requests;
+
+	/**
 	 * For single requests, we are going to format it as a multi request
 	 * but we need to leave some nodes at the top level.
 	 * This array defines the nodes to be left alone in such case.
@@ -88,6 +95,7 @@ class Ssmart_Request
 	 * @param string $data (json format)
 	 */
 	public function __construct($data = NULL, $error = NULL) {
+		$this->requests = new Object();
 
 		if ($data)
 			$this->_processRequest($data, $error);
@@ -128,7 +136,7 @@ class Ssmart_Request
 							{
 								$this->requests->default = new Ssmart_EndpointRequest();
 							}
-							$this->requests->default->submittedParameters->$key = $value;
+							$this->requests->default->submitted_parameters->$key = $value;
 						} else { //write top level nodes to the $this->request node
 							$this->$key = $value;
 						}
@@ -140,7 +148,7 @@ class Ssmart_Request
 						{
 							foreach ($value as $name => $content) {
 								$this->requests->$name =  new Ssmart_EndpointRequest();
-								$this->requests->$name->submittedParameters = $content;
+								$this->requests->$name->submitted_parameters = $content;
 							}
 						} else {
 							$this->$key = $value;
@@ -238,9 +246,9 @@ class Ssmart_Request
 	{
 		foreach ($this->_default_parameters["request"] as $key => $value)
 		{
-			if (!isset($this->requests->$requestName->submittedParameters->$key))
+			if (!isset($this->requests->$requestName->submitted_parameters->$key))
 			{
-				$this->requests->$requestName->submittedParameters->$key = $value;
+				$this->requests->$requestName->submitted_parameters->$key = $value;
 			}
 		}
 	}

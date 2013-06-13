@@ -6,7 +6,7 @@
  * @subpackage endpoint
  */
 
-class Ssmart_LoginEndpoint extends Ssmart_GlobalController
+class Ssmart_Public_LoginEndpoint extends Ssmart_GlobalController
 {
 	/**
 	 * Handles logging in a user and returning the session data.
@@ -29,8 +29,8 @@ class Ssmart_LoginEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$username = $request->validParameters["username"];
-		$pw = $request->validParameters["password"];
+		$username = $request->valid_parameters["username"];
+		$pw = $request->valid_parameters["password"];
 
 		$loginData = User_Login::loginWithEmail($username, $pw);
 		if (!$loginData)
@@ -63,7 +63,7 @@ class Ssmart_LoginEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		User_Session::logout($request->validParameters["current_session_id"]);
+		User_Session::logout($request->valid_parameters["current_session_id"]);
 
 		$response->setResultVariable("success", TRUE);
 

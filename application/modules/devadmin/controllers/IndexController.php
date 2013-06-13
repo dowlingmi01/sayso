@@ -770,7 +770,7 @@ class Devadmin_IndexController extends Api_GlobalController
 
 		if (!$starbarId) exit;
 
-		$reportResultsCache = Api_Cache::getInstance('summary_reports_'.$starbarId, Api_Cache::LIFETIME_DAY);
+		$reportResultsCache = Api_Cache::getInstance('summary_reports_'.$starbarId, Api_Cache::LIFETIME_WEEK);
 
 		if (APPLICATION_ENV == "production" && $reportResultsCache->test()) { // only cache on production
 			$this->view->report_results = $reportResultsCache->load();
@@ -849,6 +849,26 @@ class Devadmin_IndexController extends Api_GlobalController
 
 		$logEvent = new Log_Event(1, 1);
 		$logEvent->insert(json_decode($json));
+		exit;
+	}
+
+	public function testApiAction() {
+		echo "This works:<br />";
+		echo Markup::getMarkup("panelist", "webportal", "page", 4);
+		echo "<br /><br />";
+
+		echo "This doesn't seem to:<br />";
+		$request = '
+			{
+				"user_type" : "public",
+				"action_class" : "markup",
+				"action" : "getMarkup",
+				"starbar_id" : "4",
+				"key" : "page"
+			}
+		';
+		$api = Ssmart_Api::getInstance(NULL, $request);
+		var_dump($api->getResponse());
 		exit;
 	}
 

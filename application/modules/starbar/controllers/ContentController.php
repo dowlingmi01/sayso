@@ -391,7 +391,11 @@ class Starbar_ContentController extends Api_GlobalController
 		$nextSurvey = Survey::getNextSurveyForUser($survey, $this->user_id);
 
 		$surveyResponse->status = "completed";
-		$surveyResponse->processing_status = "pending";
+		if ($survey->origin == "SurveyGizmo") {
+			$surveyResponse->processing_status = "pending";
+		} else {
+			$surveyResponse->processing_status = "not required";
+		}
 		$surveyResponse->completed_disqualified = new Zend_Db_Expr('now()');
 		$surveyResponse->save();
 		Game_Transaction::completeSurvey($this->user_id, $this->starbar_id, $survey);

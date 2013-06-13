@@ -5,7 +5,7 @@
  * @package Ssmart
  * @subpackage endpoint
  */
-class Ssmart_UserEndpoint extends Ssmart_GlobalController
+class Ssmart_Panelist_UserEndpoint extends Ssmart_GlobalController
 {
 	/**
 	 * Gets the user data for the current user.
@@ -21,7 +21,7 @@ class Ssmart_UserEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$userId = $request->auth->userData->user_id;
+		$userId = $request->auth->user_data->user_id;
 
 		$user = new User();
 		$user->loadData($userId);
@@ -50,7 +50,7 @@ class Ssmart_UserEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$userId = $request->auth->userData->user_id;
+		$userId = $request->auth->user_data->user_id;
 
 		$userState = new User_State();
 		$userState->loadDataByUniqueFields(array('user_id' => $userId));
@@ -76,14 +76,14 @@ class Ssmart_UserEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$userId = $request->auth->userData->user_id;
+		$userId = $request->auth->user_data->user_id;
 
 		$userState = new User_State();
 		$userState->loadDataByUniqueFields(array('user_id' => $userId));
 
-		if (isset($request->submittedParameters->state_data))
+		if (isset($request->submitted_parameters->state_data))
 		{
-			$stateData = $request->submittedParameters->state_data;
+			$stateData = $request->submitted_parameters->state_data;
 			if (!is_object($stateData) && !is_array($stateData))
 				throw new Exception('Invalid $stateData.');
 			//TODO: valdate visibility enum
@@ -126,9 +126,9 @@ class Ssmart_UserEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$userId			= $request->auth->userData->user_id;
-		$network			= strtoupper($request->validParameters["network"]);
-		$starbarId			= $request->validParameters["starbar_id"];
+		$userId			= $request->auth->user_data->user_id;
+		$network			= strtoupper($request->valid_parameters["network"]);
+		$starbarId			= $request->valid_parameters["starbar_id"];
 
 		switch($network)
 		{
@@ -136,7 +136,7 @@ class Ssmart_UserEndpoint extends Ssmart_GlobalController
 				User_Social::connectFacebook($userId, $starbarId);
 				break;
 			case "TW" :
-				if (!$request->submittedParameters->oauth)
+				if (!$request->submitted_parameters->oauth)
 					throw new Exception("Missing Twitter oauth credentials.");
 				User_Social::connectTwitter($userId, $starbarId, $oauth);
 				break;
@@ -166,7 +166,7 @@ class Ssmart_UserEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$callbackUrl		= $$request->submittedParameters->callback_url;
+		$callbackUrl		= $$request->submitted_parameters->callback_url;
 
 		$token = User_Social::getTwiterOauthToken($callbackUrl);
 		if (token)

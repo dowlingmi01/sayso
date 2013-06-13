@@ -21,14 +21,14 @@ class Ssmart_EndpointResponse
 	 *
 	 * @var int
 	 */
-	private $_dafaultPageNumber = 1;
+	private $_default_page_number = 1;
 
 	/**
 	 * Sets the default results per page for the pagination functions.
 	 *
 	 * @var int
 	 */
-	private $_dafaultResultsPerPage = 50;
+	private $_default_results_per_page = 50;
 
 	/**
 	 *Filters to be applied be to the request params.
@@ -45,11 +45,18 @@ class Ssmart_EndpointResponse
 	private $_validators = array();
 
 	/**
+	 *Validators to be applied to the request params.
+	 *
+	 * @var Object()
+	 */
+	public $variables = null;
+
+	/**
 	 * Common data to be passed to the response.
 	 *
 	 * @var array
 	 */
-	private $_commonData = array();
+	private $_common_data = array();
 
 //////////////////////////////////////////////////////
 
@@ -65,6 +72,7 @@ class Ssmart_EndpointResponse
 		$this->setFilters($filters);
 		$this->setValidators($validators);
 		$this->_validateParams();
+		$this->variables = new Object();
 	}
 
 	/**
@@ -328,12 +336,12 @@ class Ssmart_EndpointResponse
 
 	public function paginateArray($array, Ssmart_EndpointRequest $request)
 	{
-		if (!isset($request->validParameters["results_per_page"]) || !isset($request->validParameters["page_number"]))
+		if (!isset($request->valid_parameters["results_per_page"]) || !isset($request->valid_parameters["page_number"]))
 			return $array;
 
 		//set vars and data types
-		$resultPerPage = (int)$request->validParameters["results_per_page"];
-		$pageNumber = (int)$request->validParameters["page_number"];
+		$resultPerPage = (int)$request->valid_parameters["results_per_page"];
+		$pageNumber = (int)$request->valid_parameters["page_number"];
 
 		$book = array_chunk($array, $resultPerPage, TRUE);
 		if (!array_key_exists($pageNumber - 1, $book))
@@ -345,7 +353,7 @@ class Ssmart_EndpointResponse
 
 	public function getCommonData()
 	{
-		return $this->_commonData;
+		return $this->_common_data;
 	}
 
 	public function getCommonDataFromModel($dataType, $params)
@@ -367,12 +375,12 @@ class Ssmart_EndpointResponse
 		$commonData = $this->getCommonDataFromModel($dataType, $params);
 
 		//add to the response object
-		$this->_commonData = $commonData;
+		$this->_common_data = $commonData;
 	}
 
 	public function hasCommonData()
 	{
-		if (!empty($this->_commonData))
+		if (!empty($this->_common_data))
 			return TRUE;
 	}
 
@@ -426,7 +434,7 @@ class Ssmart_EndpointResponse
 	/**
 	 * Validates the request params.
 	 *
-	 * <p>Runs <code>$this->submittedParameters</code>
+	 * <p>Runs <code>$this->submitted_parameters</code>
 	 * through each of the filters. Then does the same for
 	 * validators. <p>
 	 * <p>To catch empty params as FALSE, it will write FALSE
@@ -434,7 +442,7 @@ class Ssmart_EndpointResponse
 	 * <p>To get a complete list of validated and escaped params,
 	 * all params must be sent through the validator. If a param is
 	 * in the filter arry and not the validator array, it will not be
-	 * accessable through <code>$this->validParameters</code>
+	 * accessable through <code>$this->valid_parameters</code>
 	 * </p>
 	 *
 	 */
@@ -442,11 +450,11 @@ class Ssmart_EndpointResponse
 	private function _validateParams()
 	{
 		//filter - do this separately from Zend_Filter_Input because it doesn't work right - the validator process is converting bool to string, so we have to recast it.
-		$filteredParams = (array)$this->_request->submittedParameters;
+		$filteredParams = (array)$this->_request->submitted_parameters;
 		if ($this->_filters)
 			foreach ($this->_filters as $key => $value) {
-				if (isset($this->_request->submittedParameters->$key))
-					$filteredParams[$key] = $value->filter($this->_request->submittedParameters->$key);
+				if (isset($this->_request->submitted_parameters->$key))
+					$filteredParams[$key] = $value->filter($this->_request->submitted_parameters->$key);
 				else
 					//TODO: see if this will cause problems with other param types that are omited
 					$filteredParams[$key] = FALSE;
@@ -460,13 +468,13 @@ class Ssmart_EndpointResponse
 
 			if ($validatedInput->isValid()) {
 				//get request
-				$this->_request->validParameters = $validatedInput->getEscaped();
+				$this->_request->valid_parameters = $validatedInput->getEscaped();
 
 				//recast bools
-				foreach ($this->_request->validParameters as $key => $value) {
+				foreach ($this->_request->valid_parameters as $key => $value) {
 					if (is_bool($filteredParams[$key]))
 					{
-						$this->_request->validParameters[$key] = (bool)$value;
+						$this->_request->valid_parameters[$key] = (bool)$value;
 					}
 				}
 			} else {
@@ -539,7 +547,7 @@ class Ssmart_EndpointResponse
 	 */
 	private function _setPageNumber()
 	{
-		$this->pageNumber = isset($this->_request->submittedParameters->page_number) ? (int)$this->_request->submittedParameters->page_number : $this->_dafaultPageNumber;
+		$this->pageNumber = isset($this->_request->submitted_parameters->page_number) ? (int)$this->_request->submitted_parameters->page_number : $this->_default_page_number;
 	}
 
 	/**
@@ -548,10 +556,10 @@ class Ssmart_EndpointResponse
 	 */
 	private function _setResultsPerPage()
 	{
-		if (isset($this->_request->submittedParameters->results_per_page) && $this->_request->submittedParameters->results_per_page > 0)
-			$this->resultsPerPage = (int)$this->_request->submittedParameters->results_per_page;
+		if (isset($this->_request->submitted_parameters->results_per_page) && $this->_request->submitted_parameters->results_per_page > 0)
+			$this->resultsPerPage = (int)$this->_request->submitted_parameters->results_per_page;
 		else
-			$this->resultsPerPage = (int)$this->_dafaultResultsPerPage;
+			$this->resultsPerPage = (int)$this->_default_results_per_page;
 	}
 
 	/**

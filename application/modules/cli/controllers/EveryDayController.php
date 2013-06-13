@@ -17,7 +17,18 @@ class Cli_EveryDayController extends Api_GlobalController
 	 */
 	public function runAction()
 	{
-		// Insert functions to be run once a day here
+		$sql = "SELECT *
+				FROM starbar
+				WHERE id > 2
+				";
+		$starbars = Db_Pdo::fetchAll($sql);
+
+		foreach ($starbars as $starbar) {
+			$starbarId = $starbar['id'];
+			$summary = SummaryReportHack::getReportResults($starbarId);
+			$cache = Api_Cache::getInstance('summary_reports_'.$starbarId, Api_Cache::LIFETIME_WEEK);
+			$cache->save($summary);
+		}
 
 		// End cli actions with this, otherwise you get a fatal error
 		exit(0);

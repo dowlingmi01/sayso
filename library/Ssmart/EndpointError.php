@@ -9,7 +9,7 @@
 class Ssmart_EndpointError
 {
 	/**
-	 *Instansiates the meta object.
+	 *Instantiates the meta object.
 	 *
 	 * <p>This is where all of the meta data for an error is written.
 	 * It is deleted before the error is passed back to the api.</p>
@@ -18,18 +18,23 @@ class Ssmart_EndpointError
 	 */
 	public $meta;
 
+	public $errors;
+
 	/**
-	 * Construstor
+	 * Constructor
 	 *
-	 * <p>If <code>@errorName</code> is defined, wirte it to
+	 * <p>If <code>@errorName</code> is defined, write it to
 	 * the object.</p>
 	 *
 	 * @param string $errorName The name of the error being created.
 	 */
 	public function __construct($errorName = NULL) {
+		$this->meta = new Object();
+		$this->errors = new Object();
+
 		if ($errorName)
 		{
-			$this->meta->errorName = $errorName;
+			$this->meta->error_name = $errorName;
 		}
 	}
 

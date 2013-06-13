@@ -27,9 +27,22 @@ class Ssmart_Authentication
 	 *
 	 * @var \stdClass Holds shared data on the user after authentication
 	 */
-	public $user_data ;
+	public $user_data = null;
+
+	/**
+	 * Shared user type
+	 *
+	 * @var \string Holds the user type (automatically filled after authentication)
+	 */
+	public $user_type = "unauthenticated";
 
 /////////////////////////////////////////////////
+
+	public function __construct($userType) {
+		$this->user_data = new Object();
+		$this->user_type = $userType;
+	}
+
 
 	/**
 	 * Status accessor
@@ -63,17 +76,14 @@ class Ssmart_Authentication
 	 *
 	 * @return \className|boolean
 	 */
-	public function getAuthentication($userType, $moduleName)
+	static public function getAuthentication($userType, $moduleName)
 	{
-		//_request object is private....
-		$user_type = $userType;
-		$moduleName = $moduleName;
 		//check if file exists
-		$className = $moduleName . "Authentication_" . ucfirst($user_type) . "Controller";
+		$className = $moduleName . "_Authentication_" . ucfirst($userType) . "Controller";
 		if (class_exists($className))
 		{
 			//load an instance of it
-			return new $className;
+			return new $className($userType);
 		} else {
 			return FALSE;
 		}
@@ -92,12 +102,12 @@ class Ssmart_Authentication
 			foreach ($data as $key => $value)
 			{
 				if ($nodeName)
-					$this->userData->$nodeName->$key = $value;
+					$this->user_data->$nodeName->$key = $value;
 				else
-					$this->userData->$key = $value;
+					$this->user_data->$key = $value;
 			}
 		} else
-			$this->userData->$nodeName = $data;
+			$this->user_data->$nodeName = $data;
 	}
 
 }

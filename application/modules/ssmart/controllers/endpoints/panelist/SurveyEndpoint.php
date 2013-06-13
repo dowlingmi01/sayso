@@ -5,7 +5,7 @@
  * @package Ssmart
  * @subpackage endpoint
  */
-class Ssmart_SurveyEndpoint extends Ssmart_GlobalController
+class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 {
 	/**
 	 * Gets survey data
@@ -36,20 +36,20 @@ class Ssmart_SurveyEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$surveyId			= (int)$request->validParameters["survey_id"];
+		$surveyId			= (int)$request->valid_parameters["survey_id"];
 
 		$surveyObject = new Survey();
 		$surveyObject->loadData($surveyId);
 		$survey = $surveyObject->getData();
 
 		//add questions and answer choices
-		if ($request->validParameters["send_questions"])
+		if ($request->valid_parameters["send_questions"])
 		{
 			$questions = new Survey_QuestionCollection();
 			$questions->loadAllQuestionsForSurvey($surveyId);
 			$questionData = $response->getRecordsFromCollection($questions);
 
-			if ($request->validParameters["send_question_choices"])
+			if ($request->valid_parameters["send_question_choices"])
 				{
 				$choices = new Survey_QuestionChoiceCollection();
 				$choices->loadAllChoicesForSurvey($surveyId);
@@ -116,10 +116,10 @@ class Ssmart_SurveyEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$starbarId			= $request->validParameters["starbar_id"];
-		$userId			= $request->auth->userData->user_id;
-		$type			= $request->validParameters["survey_type"];
-		$surveyUserStatus	= isset($request->validParameters["survey_status"]) ? $request->validParameters["survey_status"] : NULL;
+		$starbarId			= $request->valid_parameters["starbar_id"];
+		$userId			= $request->auth->user_data->user_id;
+		$type			= $request->valid_parameters["survey_type"];
+		$surveyUserStatus	= isset($request->valid_parameters["survey_status"]) ? $request->valid_parameters["survey_status"] : NULL;
 
 		$surveyCollection = new SurveyCollection();
 		//TODO: refactor this function to accept pagination at this level instead of getting the entire result set and parsing it down.
@@ -169,10 +169,10 @@ class Ssmart_SurveyEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$surveyType		= $request->validParameters["survey_type"]; //TODO: make this optional
-		$starbarId			= $request->validParameters["starbar_id"];
-		$userId			= $request->auth->userData->user_id;
-		$status			= isset($request->validParameters["survey_status"]) ? $request->validParameters["survey_status"] : "active";
+		$surveyType		= $request->valid_parameters["survey_type"]; //TODO: make this optional
+		$starbarId			= $request->valid_parameters["starbar_id"];
+		$userId			= $request->auth->user_data->user_id;
+		$status			= isset($request->valid_parameters["survey_status"]) ? $request->valid_parameters["survey_status"] : "active";
 
 		$count = Survey_ResponseCollection::countUserSurveys($userId, $starbarId, $surveyType, $status);
 
@@ -211,11 +211,11 @@ class Ssmart_SurveyEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$surveyId			= $request->validParameters["survey_id"];
-		$starbarId			= $request->validParameters["starbar_id"];
-		$surveyResponseId	= $request->validParameters["survey_response_id"];
-		$userId			= $request->auth->userData->user_id;
-		$userKey			= $request->auth->userData->user_key;
+		$surveyId			= $request->valid_parameters["survey_id"];
+		$starbarId			= $request->valid_parameters["starbar_id"];
+		$surveyResponseId	= $request->valid_parameters["survey_response_id"];
+		$userId			= $request->auth->user_data->user_id;
+		$userKey			= $request->auth->user_data->user_key;
 
 		$surveyResponse = new Survey_Response();
 		$surveyResponse->loadData($surveyResponseId);
@@ -228,10 +228,10 @@ class Ssmart_SurveyEndpoint extends Ssmart_GlobalController
 			"user_id"		=> $userId,
 			"user_key"		=> $userKey
 		);
-		//add to $data based on $response->submittedParameters["survey_data"]
-		if (isset($request->submittedParameters->survey_data))
+		//add to $data based on $response->submitted_parameters["survey_data"]
+		if (isset($request->submitted_parameters->survey_data))
 		{
-			$surveyData = $request->submittedParameters->survey_data;
+			$surveyData = $request->submitted_parameters->survey_data;
 			if (!is_object($surveyData) && !is_array($surveyData))
 				throw new Exception('Invalid $surveyData.');
 			foreach ($surveyData as $key => $value)
@@ -288,10 +288,10 @@ class Ssmart_SurveyEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$surveyResponseId	= $request->validParameters["survey_response_id"];
-		$surveyStatus		= $request->validParameters["survey_status"];
-		$processingStatus	= $request->validParameters["processing_status"];
-		$downloaded		= $request->validParameters["downloaded"] === TRUE ? new Zend_Db_Expr('now()') : NULL;
+		$surveyResponseId	= $request->valid_parameters["survey_response_id"];
+		$surveyStatus		= $request->valid_parameters["survey_status"];
+		$processingStatus	= $request->valid_parameters["processing_status"];
+		$downloaded		= $request->valid_parameters["downloaded"] === TRUE ? new Zend_Db_Expr('now()') : NULL;
 
 		$surveyResponse = new Survey_Response();
 		$surveyResponse->loadData($surveyResponseId);
@@ -331,11 +331,11 @@ class Ssmart_SurveyEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$surveyId			= $request->validParameters["survey_id"];
-		$starbarId			= $request->validParameters["starbar_id"];
-		$userId			= $request->auth->userData->user_id;
-		$sharedType		= $request->validParameters["shared_type"];
-		$network			= $request->validParameters["network"];
+		$surveyId			= $request->valid_parameters["survey_id"];
+		$starbarId			= $request->valid_parameters["starbar_id"];
+		$userId			= $request->auth->user_data->user_id;
+		$sharedType		= $request->valid_parameters["shared_type"];
+		$network			= $request->valid_parameters["network"];
 
 		$transactionId = Game_Transaction::share($userId, $starbarId, $sharedType, $network, $surveyId);
 

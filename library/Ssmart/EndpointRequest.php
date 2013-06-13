@@ -22,9 +22,21 @@ class Ssmart_EndpointRequest
 	/**
 	 *Holds the parameters validated by the validation process.
 	 *
-	 * @var array
+	 * @var Object()
 	 */
-	public $validParameters;
+	public $valid_parameters;
+
+	/**
+	 *Holds the parameters validated by the validation process.
+	 *
+	 * @var Object()
+	 */
+	public $submitted_parameters;
+
+	public function __construct() {
+		$this->valid_parameters = new Object();
+		$this->submitted_parameters = new Object();
+	}
 
 	/**
 	 * Load params into the request object.
@@ -40,7 +52,7 @@ class Ssmart_EndpointRequest
 		if (is_array($params))
 		{
 			foreach ($params as $key => $value) {
-				$this->submittedParameters->$key = $value;
+				$this->submitted_parameters->$key = $value;
 			}
 		}
 		//TODO: add processing for other input types.

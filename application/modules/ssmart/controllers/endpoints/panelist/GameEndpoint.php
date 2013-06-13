@@ -5,7 +5,7 @@
  * @package Ssmart
  * @subpackage endpoint
  */
-class Ssmart_GameEndpoint extends Ssmart_GlobalController
+class Ssmart_Panelist_GameEndpoint extends Ssmart_GlobalController
 {
 	/**
 	 * Gets the game data
@@ -29,8 +29,8 @@ class Ssmart_GameEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$userId			= $request->auth->userData->user_id;
-		$starbarId			= $request->validParameters["starbar_id"];
+		$userId			= $request->auth->user_data->user_id;
+		$starbarId			= $request->valid_parameters["starbar_id"];
 
 		$economyId = Economy::getIdforStarbar($starbarId);
 		$commonDataParams = array("user_id" => $userId, "economy_id" => $economyId);
@@ -68,10 +68,10 @@ class Ssmart_GameEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$userId			= $request->auth->userData->user_id;
-		$starbarId			= $request->validParameters["starbar_id"];
-		$gameAssetId		= $request->validParameters["game_asset_id"];
-		$quantity			= isset($request->validParameters["quantity"]) ? $request->validParameters["quantity"] : 1;
+		$userId			= $request->auth->user_data->user_id;
+		$starbarId			= $request->valid_parameters["starbar_id"];
+		$gameAssetId		= $request->valid_parameters["game_asset_id"];
+		$quantity			= isset($request->valid_parameters["quantity"]) ? $request->valid_parameters["quantity"] : 1;
 		$economyId		= Economy::getIdforStarbar($starbarId);
 
 		try
@@ -122,8 +122,8 @@ class Ssmart_GameEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$userId			= $request->auth->userData->user_id;
-		$starbarId			= $request->validParameters["starbar_id"];
+		$userId			= $request->auth->user_data->user_id;
+		$starbarId			= $request->valid_parameters["starbar_id"];
 
 		$goods = Game_Transaction::getPurchasablesForUser($userId, $starbarId);
 

@@ -7,6 +7,11 @@ class Starbar_Content extends Record
 	public static $allStarbarContent = null;
 	public static $allStarbarContentKeys = null;
 
+	static protected function _init () {
+		if (self::$allStarbarContent === null) self::$allStarbarContent = Starbar_ContentCollection::getAllContent();
+		if (self::$allStarbarContentKeys === null) self::$allStarbarContentKeys = Starbar_ContentKeyCollection::getAllKeys(true);
+	}
+
 	/**
 	 * Don't filter HTML!
 	 */
@@ -15,10 +20,10 @@ class Starbar_Content extends Record
 	}
 
 	static public function getByStarbarAndKey ($key, $starbarId = null, $tree = "^#^") {
+		self::_init();
+
 		$content = ""; // $content is returned when successful
 		$keyId = 0;
-		$subkeyMatches = array();
-		$subkeyContent = array();
 
 		if (!$key) return;
 
@@ -28,9 +33,6 @@ class Starbar_Content extends Record
 		}
 
 		$tree .= $key . "^#^";
-
-		if (self::$allStarbarContent === null) self::$allStarbarContent = Starbar_ContentCollection::getAllContent();
-		if (self::$allStarbarContentKeys === null) self::$allStarbarContentKeys = Starbar_ContentKeyCollection::getAllKeys(true);;
 
 		if (isset(self::$allStarbarContentKeys[$key])) $keyId = self::$allStarbarContentKeys[$key];
 
@@ -42,7 +44,18 @@ class Starbar_Content extends Record
 
 		} // } else { //should probably do something if the key isn't found, such as sending an email to admins to warn that content may be missing
 
-		if (preg_match_all("/%([a-zA-Z0-9_-]+)%/", $content, $subkeyMatches)) {
+		$content = self::getStringWithStarbarContent($content, $starbarId, $tree);
+
+		return $content;
+	}
+
+	static public function getStringWithStarbarContent ($str, $starbarId, $tree = null) {
+		self::_init();
+
+		$subkeyMatches = [];
+		$subkeyContent = [];
+
+		if (preg_match_all("/%([a-zA-Z0-9_-]+)%/", $str, $subkeyMatches)) {
 			foreach ($subkeyMatches[1] as $subkeyMatch) {
 				if (!isset($subkeyContent[$subkeyMatch])) { // we already looked up this subkey
 					$subkeyContent[$subkeyMatch] = self::getByStarbarAndKey($subkeyMatch, $starbarId, $tree);
@@ -50,11 +63,12 @@ class Starbar_Content extends Record
 			}
 
 			foreach ($subkeyContent as $subkey => $value) {
-				$content = str_replace("%" . $subkey . "%", $value, $content);
+				$str = str_replace("%" . $subkey . "%", $value, $str);
 			}
 		}
 
-		return $content;
+		return $str;
 	}
+
 }
 

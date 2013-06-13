@@ -5,7 +5,7 @@
  * @package Ssmart
  * @subpackage endpoint
  */
-class Ssmart_RegistrationEndpoint extends Ssmart_GlobalController
+class Ssmart_Public_RegistrationEndpoint extends Ssmart_GlobalController
 {
 	/**
 	 * Creates a new user
@@ -29,9 +29,9 @@ class Ssmart_RegistrationEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$starbar = $request->validParameters["originating_starbar_id"];
-		$pw = $request->validParameters["password"];
-		$userEmail = $request->validParameters["email"];
+		$starbar = $request->valid_parameters["originating_starbar_id"];
+		$pw = $request->valid_parameters["password"];
+		$userEmail = $request->valid_parameters["email"];
 
 		$email = new User_Email();
 		$email->email = $userEmail;

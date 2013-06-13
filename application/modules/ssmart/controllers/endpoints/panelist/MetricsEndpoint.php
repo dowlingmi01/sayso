@@ -5,7 +5,7 @@
  * @package Ssmart
  * @subpackage endpoint
  */
-class Ssmart_MeticsEndpoint extends Ssmart_GlobalController
+class Ssmart_Panelist_MeticsEndpoint extends Ssmart_GlobalController
 {
 
 }

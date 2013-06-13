@@ -5,7 +5,7 @@
  * @package Ssmart
  * @subpackage endpoint
  */
-class Ssmart_ForgotEndpoint extends Ssmart_GlobalController
+class Ssmart_Public_ForgotEndpoint extends Ssmart_GlobalController
 {
 
 }

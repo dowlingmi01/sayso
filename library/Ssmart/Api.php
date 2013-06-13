@@ -19,14 +19,14 @@ class Ssmart_Api
 	 *
 	 * @var string
 	 */
-	private $_moduleDir = "ssmart";
+	private $_module_dir = "ssmart";
 
 	/**
 	 * Sets the controller class prefix for this module.
 	 *
 	 * @var string
 	 */
-	private $_moduleName = "Ssmart_";
+	private $_module_name = "Ssmart";
 
 	/**
 	 * The error object.
@@ -115,7 +115,7 @@ class Ssmart_Api
 		{
 			$request = $requestJson;
 		} elseif ($apiLoginCredentials) { //internal program request
-			$validLoginCredentials = self::_proessLoginCredentials($apiLoginCredentials);
+			$validLoginCredentials = self::_processLoginCredentials($apiLoginCredentials);
 
 			if ($validLoginCredentials === FALSE)
 				$error = "missing_params_user_auth";
@@ -148,7 +148,7 @@ class Ssmart_Api
 	 * @param array $apiLoginCredentials
 	 * @return boolean|array
 	 */
-	private static function _proessLoginCredentials($apiLoginCredentials)
+	private static function _processLoginCredentials($apiLoginCredentials)
 	{
 		if (!isset($apiLoginCredentials["session_id"]) || $apiLoginCredentials["session_id"] == "")
 			return FALSE;
@@ -218,7 +218,7 @@ class Ssmart_Api
 		foreach ($this->_request->requests as $key=>$value)
 		{
 			//authenticate action access
-			$this->_auth->actionAuthentication($value->submittedParameters->action);
+			$this->_auth->actionAuthentication($value->submitted_parameters->action);
 			if ($this->_auth->getAuthStatus(TRUE) !== TRUE)
 				return $this->_error->newError("auth_failed_action", $key);
 
@@ -238,10 +238,10 @@ class Ssmart_Api
 						$this->_processCommonData($logicResponse->getCommonData());
 
 					//flag new session_key if necessary
-					if (isset($this->_auth->userData->new_session_key))
-						$this->_processCommonData(array("new_session_key" => $this->_auth->userData->new_session_key, "new_session_id" => $this->_auth->userData->new_session_id));
+					if (isset($this->_auth->user_data->new_session_key))
+						$this->_processCommonData(array("new_session_key" => $this->_auth->user_data->new_session_key, "new_session_id" => $this->_auth->user_data->new_session_id));
 				} else {
-					$errorName = $logicResponse->errors->meta->errorName;
+					$errorName = $logicResponse->errors->meta->error_name;
 					unset ($logicResponse->errors->meta);
 					//send it in
 					$this->_error->newError($errorName, $key, $logicResponse->errors->errors);
@@ -273,15 +273,15 @@ class Ssmart_Api
 	 */
 	private function _callAction($requestObject, $requestName) {
 		//prepare the class name for loading
-		$actionClass = $this->_moduleName . ucfirst($requestObject->submittedParameters->action_class) . "Endpoint";
+		$actionClass = $this->_module_name . "_" . ucfirst($this->_auth->user_type) . "_" . ucfirst($requestObject->submitted_parameters->action_class) . "Endpoint";
 		//prepare the file name for loading
-		$classFileName = ucfirst($requestObject->submittedParameters->action_class) . "Endpoint";
+		$classFileName = ucfirst($requestObject->submitted_parameters->action_class) . "Endpoint";
 		//assign action name to a variable for dynamic loading
-		$actionName = $requestObject->submittedParameters->action;
+		$actionName = $requestObject->submitted_parameters->action;
 
 		//load the class file so the method can be called
 		//auto load won't work in Zend because we are calling a controller
-		$fileToLoad = APPLICATION_PATH . '/modules/' . $this->_moduleDir . '/controllers/endpoints/' . $this->_request->user_type . "/" . $classFileName . '.php';
+		$fileToLoad = APPLICATION_PATH . '/modules/' . $this->_module_dir . '/controllers/endpoints/' . $this->_request->user_type . "/" . $classFileName . '.php';
 
 		if (!file_exists($fileToLoad))
 			return "invalid_action_class";
@@ -369,13 +369,13 @@ class Ssmart_Api
 	}
 
 	/**
-	 * Accessor to _moduleName property.
+	 * Accessor to _module_name property.
 	 *
 	 * @return string
 	 */
 	public function getModuleName()
 	{
-		return $this->_moduleName;
+		return $this->_module_name;
 	}
 
 

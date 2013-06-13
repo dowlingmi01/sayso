@@ -74,18 +74,19 @@
 	}
 
 	function safeLog (type, debug) { // <-- closure here allows re-use for log() and warn()
-		return function () {
-			var args = Array.prototype.slice.call(arguments);
-			if( forge.is.chrome() || forge.is.safari()) {
-				args.unshift('SaySo:');
-				window.console[type].apply(window.console, args);
-			} else {
-				if( args.length == 1 )
-					args = args[0];
-				forge.logging.log(args);
-			}
-		};
-	};
+        return function () {
+            var args = Array.prototype.slice.call(arguments);
+            if( forge.is.chrome() || forge.is.safari() || sayso.baseDomain == "app.saysollc.com") { // suppress logging on production
+                args.unshift('SaySo:');
+                window.console[type].apply(window.console, args);
+            } else {
+                if( args.length == 1 )
+                    args = args[0];
+                forge.logging.log(args);
+
+            }
+        };
+    };
 
 	function getInternetExplorerVersion() {
 		var rv = -1; // Return value assumes failure.

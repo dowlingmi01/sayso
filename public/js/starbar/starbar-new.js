@@ -287,8 +287,8 @@ $SQ(function(){
 
 		starbarElem.unbind();
 		starbarElem.bind('frameCommunication', function (event, functionName, functionParameters) {
-			sayso.log(functionName);
-			sayso.log(functionParameters);
+			//sayso.log(functionName);
+			//sayso.log(functionParameters);
 			frameCommunicationFunctions[functionName](functionParameters);
 		});
 
@@ -785,7 +785,7 @@ $SQ(function(){
 		},
 		'alertMessage': function (parameters) {
 			var alertMessage = parameters['alert_message'];
-			sayso.log(alertMessage);
+			//sayso.log(alertMessage);
 		}
 	};
 

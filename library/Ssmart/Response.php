@@ -41,7 +41,7 @@ class Ssmart_Response
 	 * @param Ssmart_Error $error The error object
 	 */
 	public function __construct($data = NULL) {
-		$this->responses = new Object();
+		$this->responses = new stdClass();
 
 		if ($data && isset($data->requests))
 		{

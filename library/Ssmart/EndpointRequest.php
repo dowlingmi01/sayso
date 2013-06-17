@@ -22,20 +22,20 @@ class Ssmart_EndpointRequest
 	/**
 	 *Holds the parameters validated by the validation process.
 	 *
-	 * @var Object()
+	 * @var stdClass()
 	 */
 	public $valid_parameters;
 
 	/**
 	 *Holds the parameters validated by the validation process.
 	 *
-	 * @var Object()
+	 * @var stdClass()
 	 */
 	public $submitted_parameters;
 
 	public function __construct() {
-		$this->valid_parameters = new Object();
-		$this->submitted_parameters = new Object();
+		$this->valid_parameters = new stdClass();
+		$this->submitted_parameters = new stdClass();
 	}
 
 	/**

@@ -39,7 +39,7 @@ class Ssmart_Request
 	/**
 	 * The requests Object
 	 *
-	 * @var Object()
+	 * @var stdClass()
 	 */
 	public $requests;
 
@@ -95,7 +95,7 @@ class Ssmart_Request
 	 * @param string $data (json format)
 	 */
 	public function __construct($data = NULL, $error = NULL) {
-		$this->requests = new Object();
+		$this->requests = new stdClass();
 
 		if ($data)
 			$this->_processRequest($data, $error);

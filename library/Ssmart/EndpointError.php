@@ -29,8 +29,8 @@ class Ssmart_EndpointError
 	 * @param string $errorName The name of the error being created.
 	 */
 	public function __construct($errorName = NULL) {
-		$this->meta = new Object();
-		$this->errors = new Object();
+		$this->meta = new stdClass();
+		$this->errors = new stdClass();
 
 		if ($errorName)
 		{

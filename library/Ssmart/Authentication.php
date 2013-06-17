@@ -39,7 +39,7 @@ class Ssmart_Authentication
 /////////////////////////////////////////////////
 
 	public function __construct($userType) {
-		$this->user_data = new Object();
+		$this->user_data = new stdClass();
 		$this->user_type = $userType;
 	}
 

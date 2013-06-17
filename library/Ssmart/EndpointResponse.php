@@ -47,7 +47,7 @@ class Ssmart_EndpointResponse
 	/**
 	 *Validators to be applied to the request params.
 	 *
-	 * @var Object()
+	 * @var stdClass()
 	 */
 	public $variables = null;
 
@@ -72,7 +72,7 @@ class Ssmart_EndpointResponse
 		$this->setFilters($filters);
 		$this->setValidators($validators);
 		$this->_validateParams();
-		$this->variables = new Object();
+		$this->variables = new stdClass();
 	}
 
 	/**

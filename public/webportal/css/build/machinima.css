@@ -33,7 +33,7 @@
   background-image: url('../../images/submit_btn_down.png');
 }
 .generic_container {
-  margin-left: 10%;
+  margin-left: 0%;
   margin-top: 5%;
 }
 .portlet_left_margin {
@@ -196,8 +196,8 @@ header {
 }
 header nav {
   float: right;
-  margin-top: 5px;
-  width: 375px;
+  position: relative;
+  right: -12px;
 }
 header nav li {
   display: inline;
@@ -224,20 +224,33 @@ header nav li:last-child:after {
   /* remove the pipe from the last list item */
 
   content: "";
+  padding-right: 0px;
 }
 header nav ul {
   list-style: none;
   margin-top: 0.5em;
   margin-bottom: 1em;
 }
+.header_container {
+  width: 1000px;
+  margin: 0px auto;
+}
+.header_left {
+  float: left;
+}
+.header_right {
+  float: right;
+}
 #banner_logo {
-  padding-top: 20px;
-  padding-left: 40px;
+  padding: 0;
+  margin: 0;
+  height: 108px;
+  display: table-cell;
+  vertical-align: middle;
 }
 #login {
   float: right;
   clear: both;
-  margin-right: 75px;
 }
 #login input {
   margin-left: 5px;
@@ -262,9 +275,7 @@ header nav ul {
 }
 #forgot_password {
   float: right;
-  margin-right: 75px;
-  position: relative;
-  top: -10px;
+  clear: both;
 }
 #forgot_password a {
   font-family: "proxima-nova", sans-serif;
@@ -282,9 +293,9 @@ header nav ul {
   color: #ffffff;
   left: 0;
   top: 108px;
-  position: fixed;
-  width: 100%;
-  min-width: 1000px;
+  position: relative;
+  width: 1000px;
+  margin: 0px auto;
 }
 /* Welcome Page */
 .welcome_content {
@@ -302,7 +313,7 @@ header nav ul {
 /* ================ */
 /* Recover Password Page */
 .recover_password_container {
-  margin-left: 10%;
+  margin-left: 0%;
   margin-top: 5%;
 }
 .recover_password_container input {
@@ -486,7 +497,7 @@ header nav ul {
 /* Logged In Landing */
 .landing_content_left {
   float: left;
-  margin-left: 10%;
+  margin-left: 0%;
   margin-top: 5%;
 }
 .landing_content_left h2 {
@@ -494,7 +505,7 @@ header nav ul {
 }
 .landing_content_right {
   float: right;
-  margin-right: 10%;
+  margin-right: 0%;
   margin-top: 5%;
 }
 .landing_profile_picture {
@@ -533,7 +544,7 @@ header nav ul {
 /* Tour Generics */
 .tour_content_left {
   float: left;
-  margin-left: 10%;
+  margin-left: 0%;
   margin-top: 5%;
   width: 40%;
 }
@@ -554,7 +565,7 @@ header nav ul {
 }
 .tour_content_right {
   float: right;
-  margin-right: 10%;
+  margin-right: 0%;
   margin-top: 5%;
   width: 40%;
 }
@@ -563,7 +574,7 @@ header nav ul {
 }
 .tour_final_top {
   clear: both;
-  margin-left: 10%;
+  margin-left: 0%;
   margin-top: 5%;
   margin-bottom: 1em;
 }

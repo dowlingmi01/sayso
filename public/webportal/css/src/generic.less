@@ -33,12 +33,12 @@
   margin: 0;
 }
 
-.top_left_margin(@top: 5%, @left: 10%) {
+.top_left_margin(@top: 5%, @left: 0%) {
   margin-left: @left;
   margin-top: @top;
 }
 
-.top_right_margin(@top: 5%, @right: 10%) {
+.top_right_margin(@top: 5%, @right: 0%) {
   margin-right: @right;
   margin-top: @top;
 }
@@ -239,8 +239,8 @@ header {
 /* Nav */
   nav {
     float: right;
-    margin-top: 5px;
-    width: 375px;
+    position: relative;
+    right: -12px;
 
     li {
       display: inline;
@@ -265,6 +265,7 @@ header {
     li:last-child:after  {
       /* remove the pipe from the last list item */
       content: "";
+      padding-right: 0px
     }
 
     ul {
@@ -276,15 +277,30 @@ header {
 
 }
 
+.header_container {
+  width: 1000px;
+  margin: 0px auto;
+}
+
+.header_left {
+  float: left;
+}
+
+.header_right {
+  float: right;
+}
+
 #banner_logo {
-  padding-top: 20px;
-  padding-left: 40px;
+  .zero;
+  height: @header-height;
+  display: table-cell;
+  vertical-align: middle;
+
 }
 
 #login {
   float: right;
   clear: both;
-  margin-right: @header-margin-right;
 
   input {
     margin-left: 5px;
@@ -311,9 +327,7 @@ header {
 
 #forgot_password {
   float: right;
-  margin-right: @header-margin-right;
-  position: relative;
-  top: -10px;
+  clear: both;
 
   a {
     .proxima_nova_regular(12px);
@@ -330,9 +344,9 @@ header {
   color: @theme-text-primary;
   left: 0;
   top: @header-height;
-  position: fixed;
-  width: 100%;
-  min-width: 1000px;
+  position: relative;
+  width: 1000px;
+  margin: 0px auto;
 }
 
 /* Welcome Page */

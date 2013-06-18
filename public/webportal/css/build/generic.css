@@ -34,7 +34,7 @@
 }
 .generic_container {
   margin-left: 10%;
-  margin-top: 10%;
+  margin-top: 5%;
 }
 .portlet_left_margin {
   margin-left: 1em;
@@ -190,6 +190,7 @@ header {
   top: 0;
   z-index: 100000;
   width: 100%;
+  min-width: 1000px;
   /* Nav */
 
 }
@@ -279,6 +280,11 @@ header nav ul {
 /* ======= */
 #content_container {
   color: #ffffff;
+  left: 0;
+  top: 108px;
+  position: fixed;
+  width: 100%;
+  min-width: 1000px;
 }
 /* Welcome Page */
 .welcome_content {
@@ -297,7 +303,7 @@ header nav ul {
 /* Recover Password Page */
 .recover_password_container {
   margin-left: 10%;
-  margin-top: 10%;
+  margin-top: 5%;
 }
 .recover_password_container input {
   width: 200px;
@@ -481,7 +487,7 @@ header nav ul {
 .landing_content_left {
   float: left;
   margin-left: 10%;
-  margin-top: 10%;
+  margin-top: 5%;
 }
 .landing_content_left h2 {
   display: inline-block;
@@ -489,7 +495,7 @@ header nav ul {
 .landing_content_right {
   float: right;
   margin-right: 10%;
-  margin-top: 10%;
+  margin-top: 5%;
 }
 .landing_profile_picture {
   display: inline-block;
@@ -528,7 +534,7 @@ header nav ul {
 .tour_content_left {
   float: left;
   margin-left: 10%;
-  margin-top: 10%;
+  margin-top: 5%;
   width: 40%;
 }
 .tour_content_left h1 {
@@ -549,7 +555,7 @@ header nav ul {
 .tour_content_right {
   float: right;
   margin-right: 10%;
-  margin-top: 10%;
+  margin-top: 5%;
   width: 40%;
 }
 .tour_content_right img {
@@ -558,7 +564,7 @@ header nav ul {
 .tour_final_top {
   clear: both;
   margin-left: 10%;
-  margin-top: 10%;
+  margin-top: 5%;
   margin-bottom: 1em;
 }
 .tour_final_top h1 {

@@ -33,12 +33,12 @@
   margin: 0;
 }
 
-.top_left_margin(@top: 10%, @left: 10%) {
+.top_left_margin(@top: 5%, @left: 10%) {
   margin-left: @left;
   margin-top: @top;
 }
 
-.top_right_margin(@top: 10%, @right: 10%) {
+.top_right_margin(@top: 5%, @right: 10%) {
   margin-right: @right;
   margin-top: @top;
 }
@@ -234,6 +234,7 @@ header {
   top: 0;
   z-index: 100000;
   width: 100%;
+  min-width: 1000px;
 
 /* Nav */
   nav {
@@ -327,6 +328,11 @@ header {
 
 #content_container {
   color: @theme-text-primary;
+  left: 0;
+  top: @header-height;
+  position: fixed;
+  width: 100%;
+  min-width: 1000px;
 }
 
 /* Welcome Page */

@@ -525,7 +525,7 @@
 				</returnvalues>
 				<requestexample>
 					<variable required name="starbar_id">5</variable>
-					<variable required name="results_per_page">2</variable>
+					<variable name="results_per_page">2</variable>
 					<variable name="page_number">1</variable>
 				</requestexample>
 				<example name="Request Example - json">
@@ -878,7 +878,7 @@
 				<description>Processes actions when a user shares a starbar.</description>
 				<parameters>
 					<parameter required name="starbar_id" type="integer" default_value="">The id of the starbar.</parameter>
-					<parameter required name="network" type="Enumerated" default_value="'FB','TW'">Facebook or Twitter</parameter>
+					<parameter required name="network" type="Enumerated" default_value="'FB','TW'">Facebook or Twitter</parameter><!-- default value doesn't seem to work -->
 				</parameters>
 				<returnvalues>
 					<returnvalue name="transaction_id" type="integer" location="variables" default_value="false">The transaction id if successful</returnvalue>
@@ -955,7 +955,7 @@
 					<returnvalue name="" type="object" location="records" default_value="">Survey data.</returnvalue>
 				</returnvalues>
 				<requestexample>
-					<variable required name="starbar_id">6</variable>
+					<variable required name="survey_id">6</variable>
 					<variable required name="send_questions">true</variable>
 					<variable required name="send_question_choices">true</variable>
 				</requestexample>
@@ -1072,6 +1072,7 @@
 				<description>Retrieves multiple surveys’ data based on the survey type and optionally status. Does not return question or question choice data.</description>
 				<parameters>
 					<parameter required name="survey_type" type="string" default_value="">The type of survey to get.</parameter>
+					<parameter  name="survey_status" type="string" default_value="">The status of surveys to get.</parameter>
 					<parameter required name="starbar_id" type="integer" default_value="">The type of starbar to get get surveys for.</parameter>
 					<parameter name="page_number" type="integer" default_value="">The page number requested.</parameter>
 					<parameter name="results_per_page" type="integer" default_value="">The number of results requested per page.</parameter>
@@ -1080,9 +1081,10 @@
 					<returnvalue name="" type="object" location="records" default_value="">The data for multiple surveys.</returnvalue>
 				</returnvalues>
 				<requestexample>
-					<variable required name="active_starbar">6</variable>
-					<variable required name="page_number">1</variable>
-					<variable required name="results_per_page">2</variable>
+					<variable required name="starbar_id">6</variable>
+					<variable required name="survey_type">poll</variable>
+					<variable name="page_number">1</variable>
+					<variable name="results_per_page">2</variable>
 				</requestexample>
 				<example name="Response Example - json">
 					<json>
@@ -1170,10 +1172,10 @@
 			<endpoint name="updateSurveyResponse">
 				<description>Update the response of a survey.</description>
 				<parameters>
-					<parameter required name="survey_id" default_value="">The id of the survey being responeded to.</parameter>
-					<parameter required name="starbar_id" default_value="">The starbar id.</parameter>
-					<parameter required name="survey_data" default_value="">An object with the question id/question choice id pairs.</parameter>
-					<parameter required name="survey_response_id" default_value="">The survey response id.</parameter>
+					<parameter required name="survey_id" default_value="" type='integer'>The id of the survey being responeded to.</parameter>
+					<parameter required name="starbar_id" default_value="" type='integer'>The starbar id.</parameter>
+					<parameter required name="survey_data" default_value="" type='object'>An object with the question id/question choice id pairs.</parameter>
+					<parameter required name="survey_response_id" default_value="" type='integer'>The survey response id.</parameter>
 				</parameters>
 				<returnvalues>
 					<returnvalue name="success" type="boolean" location="variables" >Set to true if the operation is successful.</returnvalue>
@@ -1181,9 +1183,9 @@
 				</returnvalues>
 				<requestexample>
 					<variable required name="starbar_id">6</variable>
-					<variable required name="survey_id">true</variable>
-					<variable required name="survey_response_id">true</variable>
-					<objectnode name="survey_data" required>
+					<variable required name="survey_id">1234</variable>
+					<variable required name="survey_response_id">4321</variable>
+					<objectnode name="survey_data" required> <!-- required doesn't color objects -->
 						<objectnode name="answers" required>
 							<variable name="7086">38285</variable>
 							<variable name="7087">38287</variable>
@@ -1284,7 +1286,7 @@
 					</json>
 				</example>
 			</endpoint>
-			<endpoint name="shareSurey">
+			<endpoint name="shareSurvey">
 				<description>Share survey functions.</description>
 				<parameters>
 					<parameter required name="survey_id" type="integer" default_value="">The id of the survey that was shared.</parameter>

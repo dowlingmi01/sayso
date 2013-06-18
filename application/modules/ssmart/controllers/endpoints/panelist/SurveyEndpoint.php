@@ -41,6 +41,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		$surveyObject = new Survey();
 		$surveyObject->loadData($surveyId);
 		$survey = $surveyObject->getData();
+		$survey["id"] = $surveyId;
 
 		//add questions and answer choices
 		if ($request->valid_parameters["send_questions"])
@@ -132,7 +133,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		foreach ($surveys as $key => $value) {
 			$params = array("survey_id" => $key);
 			$otherEndpointData = $response->getFromOtherEndpoint("getSurvey", get_class(), $params, $this->request_name);
-			$surveyData[$key] = $otherEndpointData->records->$key;
+			$surveyData[] = $otherEndpointData->records[0];
 		}
 
 		$paginatedSurveyData = $response->paginateArray($surveyData, $request);
@@ -158,7 +159,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 	{
 		$validators = array(
 				"starbar_id"		=> "int_required_notEmpty",
-				"survey_type"		=> "alpha_notEmpty",
+				"survey_type"		=> "alpha_required_notEmpty",
 				"survey_status"		=> "alpha_notEmpty"
 			);
 		$filters = array();

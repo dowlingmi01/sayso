@@ -63,7 +63,7 @@ class Ssmart_Authentication_PanelistController  extends Ssmart_Authentication
 		if (!User::isIpBanned())
 		{
 			//check for active session
-			$sessionCheck = User_Session::checkSession($this->userData->session_id);
+			$sessionCheck = User_Session::checkSession($this->user_data->session_id);
 			if ($sessionCheck)
 			{
 				is_array($sessionCheck) ? $this->_setUserData($sessionCheck) : "";

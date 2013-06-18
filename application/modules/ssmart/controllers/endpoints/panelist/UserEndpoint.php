@@ -158,7 +158,7 @@ class Ssmart_Panelist_UserEndpoint extends Ssmart_GlobalController
 	 * @param Ssmart_EndpointRequest $request
 	 * @return \Ssmart_EndpointResponse
 	 */
-	public function getTwiterOauthToken(Ssmart_EndpointRequest $request)
+	public function getTwitterOauthToken(Ssmart_EndpointRequest $request)
 	{
 		$response = new Ssmart_EndpointResponse($request);
 

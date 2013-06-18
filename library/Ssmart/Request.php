@@ -75,7 +75,7 @@ class Ssmart_Request
 	private $_default_parameters = array(
 							"request"		=> array(
 											"page_number"		=> 1,
-											"results_per_page"	=> 0
+											"results_per_page"	=> 50
 										),
 							"api"			=> array(
 											"continue_on_error"	=> TRUE,

@@ -198,8 +198,9 @@ class Ssmart_EndpointResponse
 	 */
 	public function addRecordsFromArray($array)
 	{
+		$this->records = array();
 		foreach ($array as $key => $value) {
-			$this->records->$key = $value;
+			$this->records[] = $value;
 		}
 	}
 
@@ -534,7 +535,7 @@ class Ssmart_EndpointResponse
 		if ($this->records instanceof stdClass)
 		{
 			$this->recordsReturned = $this->_countResults($this->records);
-		} elseif (is_array($data)) {
+		} elseif (is_array($this->records)) {
 			$this->recordsReturned =  count($this->records);
 		} else {
 			$this->recordsReturned =   1;

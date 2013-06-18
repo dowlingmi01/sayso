@@ -22,7 +22,7 @@
 /* =============== */
 .submit_button {
   display: inline-block;
-  background-image: url('images/submit_btn.png');
+  background-image: url('../../images/submit_btn.png');
   background-repeat: no-repeat;
   width: 66px;
   height: 24px;
@@ -30,7 +30,7 @@
   margin-left: 7px;
 }
 .submit_button:active {
-  background-image: url('images/submit_btn_down.png');
+  background-image: url('../../images/submit_btn_down.png');
 }
 .generic_container {
   margin-left: 10%;
@@ -183,7 +183,7 @@ body {
 header {
   padding: 0;
   margin: 0;
-  background-image: url('images/navbar_gradient.png');
+  background-image: url('../../images/navbar_gradient.png');
   background-repeat: repeat-x;
   height: 108px;
   position: fixed;
@@ -249,7 +249,7 @@ header nav ul {
 }
 #login .login_button {
   display: inline-block;
-  background-image: url('images/login_btn.png');
+  background-image: url('../../images/login_btn.png');
   background-repeat: no-repeat;
   width: 77px;
   height: 24px;
@@ -257,7 +257,7 @@ header nav ul {
   margin-left: 7px;
 }
 #login .login_button:active {
-  background-image: url('images/login_btn_down.png');
+  background-image: url('../../images/login_btn_down.png');
 }
 #forgot_password {
   float: right;
@@ -341,7 +341,7 @@ header nav ul {
 }
 .initial_welcome_option1 {
   display: block;
-  background-image: url('images/get_app_btn.png');
+  background-image: url('../../images/get_app_btn.png');
   background-repeat: no-repeat;
   width: 252px;
   height: 40px;
@@ -350,7 +350,7 @@ header nav ul {
   margin-bottom: 40px;
 }
 .initial_welcome_option1:active {
-  background-image: url('images/get_app_btn_down.png');
+  background-image: url('../../images/get_app_btn_down.png');
 }
 .initial_welcome_option2 {
   font-family: "proxima-nova", sans-serif;
@@ -381,7 +381,7 @@ header nav ul {
 }
 .get_app_button {
   display: block;
-  background-image: url('images/get_app_btn.png');
+  background-image: url('../../images/get_app_btn.png');
   background-repeat: no-repeat;
   width: 252px;
   height: 40px;
@@ -390,7 +390,7 @@ header nav ul {
   margin-bottom: 40px;
 }
 .get_app_button:active {
-  background-image: url('images/get_app_btn_down.png');
+  background-image: url('../../images/get_app_btn_down.png');
 }
 /* Contact Us */
 .contact_us_content textarea {
@@ -452,7 +452,7 @@ header nav ul {
 .join_now_button_disabled {
   margin-left: 1em;
   display: block;
-  background-image: url('images/join_now_disabled.png');
+  background-image: url('../../images/join_now_disabled.png');
   background-repeat: no-repeat;
   width: 208px;
   height: 45px;
@@ -463,7 +463,7 @@ header nav ul {
 .join_now_button {
   margin-left: 1em;
   display: block;
-  background-image: url('images/join_now_active.png');
+  background-image: url('../../images/join_now_active.png');
   background-repeat: no-repeat;
   width: 208px;
   height: 45px;
@@ -472,7 +472,7 @@ header nav ul {
   margin-bottom: 20px;
 }
 .join_now_button:active {
-  background-image: url('images/join_now_down.png');
+  background-image: url('../../images/join_now_down.png');
 }
 .join_now_privacy {
   margin-left: 1em;
@@ -516,7 +516,7 @@ header nav ul {
 }
 .landing_download_banner {
   display: block;
-  background-image: url('images/download_banner.png');
+  background-image: url('../../images/download_banner.png');
   background-repeat: no-repeat;
   width: 456px;
   height: 74px;
@@ -666,7 +666,7 @@ header nav ul {
 }
 .tour_next {
   display: inline-block;
-  background-image: url('images/tour/next_arrow.png');
+  background-image: url('../../images/tour/next_arrow.png');
   background-repeat: no-repeat;
   width: 70px;
   height: 73px;
@@ -674,7 +674,7 @@ header nav ul {
   margin-top: 1em;
 }
 .tour_next:active {
-  background-image: url('images/tour/next_arrow_down.png');
+  background-image: url('../../images/tour/next_arrow_down.png');
 }
 /* Header */
 header {

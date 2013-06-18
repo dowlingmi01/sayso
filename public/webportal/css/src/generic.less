@@ -22,6 +22,7 @@
 @header-margin-right: 75px;
 @font-size: 14px;
 @letter-spacing: 1px;
+@base-image-url: "../../images/";
 
 /* =============== */
 /* Custom Mix-in's */
@@ -80,7 +81,7 @@
 
 .submit_button {
   display: inline-block;
-  background-image: url('images/submit_btn.png');
+  background-image: url('@{base-image-url}submit_btn.png');
   background-repeat: no-repeat;
   width: 66px;
   height: 24px;
@@ -88,7 +89,7 @@
   margin-left: 7px;
 
   &:active {
-    background-image: url('images/submit_btn_down.png');
+    background-image: url('@{base-image-url}submit_btn_down.png');
   }
 }
 
@@ -226,7 +227,7 @@ body {
 /* Header */
 header {
   .zero;
-  background-image: url('images/navbar_gradient.png');
+  background-image: url('@{base-image-url}navbar_gradient.png');
   background-repeat: repeat-x;
   height: @header-height;
   position: fixed;
@@ -294,7 +295,7 @@ header {
 
   .login_button {
     display: inline-block;
-    background-image: url('images/login_btn.png');
+    background-image: url('@{base-image-url}login_btn.png');
     background-repeat: no-repeat;
     width: 77px;
     height: 24px;
@@ -302,7 +303,7 @@ header {
     margin-left: 7px;
 
     &:active {
-      background-image: url('images/login_btn_down.png');
+      background-image: url('@{base-image-url}login_btn_down.png');
     }
   }
 }
@@ -380,7 +381,7 @@ header {
 
 .initial_welcome_option1 {
   display: block;
-  background-image: url('images/get_app_btn.png');
+  background-image: url('@{base-image-url}get_app_btn.png');
   background-repeat: no-repeat;
   width: 252px;
   height: 40px;
@@ -389,7 +390,7 @@ header {
   margin-bottom: 40px;
 
   &:active {
-    background-image: url('images/get_app_btn_down.png');
+    background-image: url('@{base-image-url}get_app_btn_down.png');
   }
 }
 
@@ -420,7 +421,7 @@ header {
 
 .get_app_button {
   display: block;
-  background-image: url('images/get_app_btn.png'); //TODO: Replace with grab it button
+  background-image: url('@{base-image-url}get_app_btn.png'); //TODO: Replace with grab it button
   background-repeat: no-repeat;
   width: 252px;
   height: 40px;
@@ -429,7 +430,7 @@ header {
   margin-bottom: 40px;
 
   &:active {
-    background-image: url('images/get_app_btn_down.png'); //TODO: Replace with grab it button
+    background-image: url('@{base-image-url}get_app_btn_down.png'); //TODO: Replace with grab it button
   }
 }
 
@@ -499,7 +500,7 @@ header {
 .join_now_button_disabled {
   .portlet_left_margin;
   display: block;
-  background-image: url('images/join_now_disabled.png');
+  background-image: url('@{base-image-url}join_now_disabled.png');
   background-repeat: no-repeat;
   width: 208px;
   height: 45px;
@@ -512,7 +513,7 @@ header {
 .join_now_button {
   .portlet_left_margin;
   display: block;
-  background-image: url('images/join_now_active.png');
+  background-image: url('@{base-image-url}join_now_active.png');
   background-repeat: no-repeat;
   width: 208px;
   height: 45px;
@@ -521,7 +522,7 @@ header {
   margin-bottom: 20px;
 
   &:active {
-    background-image: url('images/join_now_down.png');
+    background-image: url('@{base-image-url}join_now_down.png');
   }
 }
 
@@ -576,7 +577,7 @@ header {
 
 .landing_download_banner {
   display: block;
-  background-image: url('images/download_banner.png');
+  background-image: url('@{base-image-url}download_banner.png');
   background-repeat: no-repeat;
   width: 456px;
   height: 74px;
@@ -708,7 +709,7 @@ header {
 
 .tour_next {
     display: inline-block;
-    background-image: url('images/tour/next_arrow.png');
+    background-image: url('@{base-image-url}tour/next_arrow.png');
     background-repeat: no-repeat;
     width: 70px;
     height: 73px;
@@ -716,6 +717,6 @@ header {
     margin-top: 1em;
 
   &:active {
-    background-image: url('images/tour/next_arrow_down.png');
+    background-image: url('@{base-image-url}tour/next_arrow_down.png');
   }
 }

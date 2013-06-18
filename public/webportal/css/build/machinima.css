@@ -229,7 +229,7 @@ header nav li:last-child:after {
 header nav ul {
   list-style: none;
   margin-top: 1em;
-  margin-bottom: 0.5em;
+  margin-bottom: 1em;
 }
 .header_container {
   width: 1000px;

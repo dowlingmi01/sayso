@@ -164,6 +164,20 @@
   }
 }
 
+.get_the_app {
+  .proxima_nova_regular(@font-size + 6);
+
+  img {
+    vertical-align: middle;
+    padding-bottom: 3px;
+  }
+
+  a {
+    text-decoration: none;
+    color: @theme-text-primary;
+  }
+}
+
 .red_link {
   color: @theme-text-secondary;
   text-decoration: none;
@@ -598,6 +612,91 @@ header {
 
   img {
     padding-top: 0.75em;
+  }
+}
+
+.tour_final_top{
+  clear: both;
+  .top_left_margin();
+  margin-bottom: 1em;
+
+  h1 {
+    .zero;
+    display: inline-block;
+  }
+
+  p{
+    .proxima_nova_thin();
+    width: 75%;
+    text-wrap: normal;
+    display: inline-block;
+  }
+}
+
+.tour_final_left{
+  float: left;
+  width: 29%;
+  border-right: 1px solid grey;
+  margin-left: 10%;
+
+  h2 {
+    .proxima_nova_light(@font-size + 10);
+    margin-bottom: 0;
+    color: @theme-text-primary;
+  }
+
+  p{
+    .proxima_nova_thin();
+    width: 75%;
+    text-wrap: normal;
+    display: inline-block;
+  }
+
+}
+
+.tour_final_middle{
+  float: left;
+  width: 29%;
+  border-right: 1px solid grey;
+
+  h2 {
+    .proxima_nova_light(@font-size + 10);
+    margin-bottom: 0;
+    margin-left: 15%;
+    color: @theme-text-primary;
+  }
+
+  p{
+    margin-left: 15%;
+    .proxima_nova_thin();
+    width: 75%;
+    text-wrap: normal;
+    display: inline-block;
+  }
+
+  .join_now, .get_the_app {
+    margin-left: 15%;
+  }
+}
+
+.tour_final_right{
+  float: left;
+  width: 29%;
+
+  h2 {
+    .proxima_nova_light(@font-size + 10);
+    margin-bottom: 0;
+    margin-left: 15%;
+    color: @theme-text-primary;
+  }
+
+  p{
+    .proxima_nova_thin(@font-size + 2);
+    width: 75%;
+    text-wrap: normal;
+    display: inline-block;
+    color: @theme-text-secondary;
+    margin-left: 15%;
   }
 }
 

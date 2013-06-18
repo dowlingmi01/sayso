@@ -114,6 +114,21 @@
   text-decoration: none;
   color: #ffffff;
 }
+.get_the_app {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+.get_the_app img {
+  vertical-align: middle;
+  padding-bottom: 3px;
+}
+.get_the_app a {
+  text-decoration: none;
+  color: #ffffff;
+}
 .red_link {
   color: #c02526;
   text-decoration: none;
@@ -539,6 +554,108 @@ header nav ul {
 }
 .tour_content_right img {
   padding-top: 0.75em;
+}
+.tour_final_top {
+  clear: both;
+  margin-left: 10%;
+  margin-top: 10%;
+  margin-bottom: 1em;
+}
+.tour_final_top h1 {
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+}
+.tour_final_top p {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 100;
+  font-size: 14px;
+  letter-spacing: 1px;
+  width: 75%;
+  text-wrap: normal;
+  display: inline-block;
+}
+.tour_final_left {
+  float: left;
+  width: 29%;
+  border-right: 1px solid grey;
+  margin-left: 10%;
+}
+.tour_final_left h2 {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 24px;
+  letter-spacing: 1px;
+  margin-bottom: 0;
+  color: #ffffff;
+}
+.tour_final_left p {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 100;
+  font-size: 14px;
+  letter-spacing: 1px;
+  width: 75%;
+  text-wrap: normal;
+  display: inline-block;
+}
+.tour_final_middle {
+  float: left;
+  width: 29%;
+  border-right: 1px solid grey;
+}
+.tour_final_middle h2 {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 24px;
+  letter-spacing: 1px;
+  margin-bottom: 0;
+  margin-left: 15%;
+  color: #ffffff;
+}
+.tour_final_middle p {
+  margin-left: 15%;
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 100;
+  font-size: 14px;
+  letter-spacing: 1px;
+  width: 75%;
+  text-wrap: normal;
+  display: inline-block;
+}
+.tour_final_middle .join_now,
+.tour_final_middle .get_the_app {
+  margin-left: 15%;
+}
+.tour_final_right {
+  float: left;
+  width: 29%;
+}
+.tour_final_right h2 {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 24px;
+  letter-spacing: 1px;
+  margin-bottom: 0;
+  margin-left: 15%;
+  color: #ffffff;
+}
+.tour_final_right p {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 100;
+  font-size: 16px;
+  letter-spacing: 1px;
+  width: 75%;
+  text-wrap: normal;
+  display: inline-block;
+  color: #c02526;
+  margin-left: 15%;
 }
 .tour_step span {
   font-family: "proxima-nova", sans-serif;

@@ -18,7 +18,7 @@ CREATE TABLE `browser` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `comment` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX unique_browser USING HASH ON browser (agent_string),
+  CONSTRAINT unique_browser UNIQUE HASH (agent_string),
   CONSTRAINT `b_browser_type_id` FOREIGN KEY (`browser_type_id`) REFERENCES `browser_type` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 

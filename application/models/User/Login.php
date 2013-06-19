@@ -74,7 +74,7 @@ class User_Login {
 	 * @param string $user
 	 * @return bool|int
 	 */
-	private function _getLoginStrikes($user)
+	static private function _getLoginStrikes($user)
 	{
 		//remove old ones
 		Db_Pdo::execute('DELETE FROM login_strikes_user WHERE created < now()-INTERVAL 5 MINUTE AND username = ?', $user);
@@ -91,7 +91,7 @@ class User_Login {
 	 *
 	 * @return bool|int
 	 */
-	private function _getIpStrikes()
+	static private function _getIpStrikes()
 	{
 		//remove old ones
 		Db_Pdo::execute('DELETE FROM login_strikes_ip WHERE created < now()-INTERVAL 5 MINUTE AND ip = INET_ATON(?)', $_SERVER["REMOTE_ADDR"]);
@@ -108,7 +108,7 @@ class User_Login {
 	 *
 	 * @param type $user
 	 */
-	private function _addStrikes($user)
+	static private function _addStrikes($user)
 	{
 		Db_Pdo::execute("INSERT INTO login_strikes_user (username) VALUES (?)", $user);
 		Db_Pdo::execute('INSERT INTO login_strikes_ip (ip) VALUES (INET_ATON(?))', $_SERVER["REMOTE_ADDR"]);

@@ -7,7 +7,9 @@ sayso.module.state = (function(global, $, comm) {
 		ready: false,
 		login: login,
 		logout: logout,
-		apiCall: apiCall
+		apiCall: apiCall,
+		apiAddRequest: apiAddRequest,
+		apiSendRequests: apiSendRequests
 	};
 	var stateListeners = {
 		login: function(data) {
@@ -34,6 +36,17 @@ sayso.module.state = (function(global, $, comm) {
 			}
 		}
 	};
+	function apiAddRequest( requestName, requestData ) {
+		var requests = {};
+		requests[requestName] = requestData;
+		comm.request('api-add-requests', requests );
+	}
+	function apiAddRequests( requests ) {
+		comm.request('api-add-requests', requests );
+	}
+	function apiSendRequests( callback ) {
+		comm.request('api-send-requests', null, callback );
+	}
 	function apiCall( request, callback ) {
 		comm.request('api-call', request, callback );
 	}

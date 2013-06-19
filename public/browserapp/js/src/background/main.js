@@ -1,5 +1,7 @@
 (function(global, Api, comm){
+	var starbarId = 4;
 	var baseDomain = (global.sayso && global.sayso.baseDomain) || global.location.host;
+	var api = new Api(baseDomain);
 	var state = {
 		starbars: {},
 		games: {},
@@ -9,21 +11,23 @@
 	var pendingStarbars = {};
 	var pendingRequests = {};
 	function login( data, callback ) {
-		var api = new Api(baseDomain);
 		api.sendRequest( {action_class: 'Login', action: 'login', username: data.email, password: data.password}, function( data ) {
 			var session = data.responses.default.variables;
-			session = { id: session.session_id, key: session.session_key };
-			comm.set('session', session, function() {
-				state.loggedIn = null;
-				getUserState();
-				comm.broadcast('state.login');
-				if( callback )
-					callback(true);
-			});
+			if (session) {
+				session = { id: session.session_id, key: session.session_key };
+				comm.set('session', session, function() {
+					state.loggedIn = null;
+					getUserState();
+					comm.broadcast('state.login');
+					if( callback )
+						callback(true);
+				});
+
+				api = new Api(baseDomain, session.id, session.key);
+			}
 		});
 	}
 	function logout(unused, callback) {
-		var api = new Api(baseDomain);
 		api.sendRequest( {action_class: 'Login', action: 'logout', current_session_id: state.session.id} );
 		state.starbars = {};
 		state.games = {};
@@ -33,11 +37,14 @@
 		comm.set('session', {});
 		callback();
 		comm.broadcast('state.logout', {loggedIn:false});
+
+		// reset api instance to be logged out
+		api = new Api(baseDomain);
 	}
 	function getUserState() {
 		comm.get('session', function( session ) {
 			if( session && session.id && session.key ) {
-				var api = new Api(baseDomain, session.id, session.key);
+				if (!api.session_id) api = new Api(baseDomain, session.id, session.key);
 				api.setRequest( 'user', {action_class: 'User', action: 'getUser'} );
 				api.setRequest( 'state', {action_class: 'User', action: 'getState'} );
 				api.sendRequests( function(data) {
@@ -70,13 +77,14 @@
 		if( pendingStarbars[starbarId] )
 			return;
 		pendingStarbars[starbarId] = true;
-		var api = new Api( baseDomain, state.session.id, state.session.key);
 		api.setRequest( 'game', {action_class: 'Game', action: 'getGame', starbar_id: starbarId} );
 		api.setRequest( 'notifications', {action_class: 'Notification', action: 'getUserNotifications', starbar_id: starbarId} );
 		api.setRequest( 'starbar', {action_class: 'Starbar', action: 'getStarbar', starbar_id: starbarId} );
+		api.setRequest( 'markup', {action_class: 'Markup', action: 'getMarkup', starbar_id: starbarId, app: 'browserapp', key: 'nav'} );
 		api.sendRequests( function(data) {
-			state.starbars[starbarId] = data.responses.starbar.records[starbarId];
+			state.starbars[starbarId] = data.responses.starbar.records[0];
 			state.starbars[starbarId].id = starbarId;
+            state.starbars[starbarId].markup = data.responses.markup.variables.markup;
 			state.games[starbarId] = data.responses.game.variables.game;
 			state.notifications[starbarId] = data.responses.notifications.records;
 			if( pendingRequests[starbarId] ) {
@@ -112,8 +120,23 @@
 				getStarbarState( starbarId );
 		}
 	}
+	function apiAddRequests( requests, callback ) {
+		if (!requests) return;
+		for (var request in requests) {
+			api.setRequest( request, requests[request] );
+		}
+	}
+	function apiSendRequests( data, callback ) {
+		api.sendRequests( processApiResponse )
+		function processApiResponse( data ) {
+			callback(data);
+			if( starbarId && data.common_data && data.common_data.game ) {
+				state.games[starbarId] = data.common_data.game;
+				comm.broadcast('state.game', { starbar_id: starbarId, game: data.common_data.game });
+			}
+		}
+	}
 	function apiCall( data, callback ) {
-		var api = new Api(baseDomain, state.session.id, state.session.key);
 		var starbarId = data.starbar_id;
 		api.sendRequest( data, processApiResponse );
 		function processApiResponse( data ) {
@@ -126,6 +149,8 @@
 
 	}
 	comm.listen('get-state', getState);
+	comm.listen('api-add-requests', apiAddRequests);
+	comm.listen('api-send-requests', apiSendRequests);
 	comm.listen('api-call', apiCall);
 	comm.listen('login', login);
 	comm.listen('logout', logout);

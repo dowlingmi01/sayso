@@ -1,5 +1,4 @@
 sayso.module.comm = (function(global, $, util) {
-	var baseDomain = 'local.saysollc.com';
 	var iframe = global.document.createElement("iframe");
 	var requests = {};
 	var listeners = {};
@@ -38,7 +37,7 @@ sayso.module.comm = (function(global, $, util) {
 	global.document.body.appendChild(iframe);
 	util.addEventListener(iframe, 'load', backgroundReady);
 	util.addEventListener(global, 'message', handleMessage);
-	iframe.src = 'http://' + baseDomain +  '/browserapp/background.html';
+	iframe.src = 'http://' + global.sayso.base_domain +  '/browserapp/background.html';
 	return {
 		request: request,
 		listen: listen,

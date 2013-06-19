@@ -21,23 +21,27 @@ class Ssmart_Public_MarkupEndpoint extends Ssmart_GlobalController
 	{
 		$validators = [
 			"starbar_id" => "int_required_notEmpty",
-			"key" => "alpha_required_notEmpty"
+			"key" => "required",
+			"app" => "required"
 		];
 		$filters = [];
 
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
+		if ($response->hasErrors())
+			return $response;
+
 		//logic
 		$starbarId = $request->valid_parameters["starbar_id"];
-		$userId	= $request->auth->user_data->user_id;
 
-		//ensure this user has access to this starbar
-		$this->checkUserAccessToStarbar($response, $starbarId, TRUE);
+		if (!in_array($request->valid_parameters["app"], ["browserapp", "webportal"])) {
+			$response->setResponseError("invalid_markup_request");
+		}
 
 		if ($response->hasErrors())
 			return $response;
 
-		$markup = Markup::getMarkup($request->auth->user_type, "webportal", $request->valid_parameters["key"], $starbarId);
+		$markup = Markup::getMarkup($request->auth->user_type, $request->valid_parameters["app"], $request->valid_parameters["key"], $starbarId);
 
 		if ($markup === false) {
 			$response->setResponseError("markup_unavailable");

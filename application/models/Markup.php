@@ -2,17 +2,11 @@
 
 class Markup {
 	static public function getMarkup($userType, $app, $key, $starbarId = null) {
+		// @todo implement some additional security
 		// @todo implement caching?
 
-		if (!$app || !$key) return false;
-
-		// restrict allowed sections for public access
-		if ($userType == "public") {
-			if ($app != "webportal") return false; // currently there are only public endpoints inside the webportal
-			$publicEndpoints = ["page", "header", "tour-start", "tour-polls" /* , etc. */];
-			// if the requested markup isn't in the $publicEndpoints array, the user doesn't have access to this
-			if (!in_array($key, $publicEndpoints)) return false;
-		}
+		if (!$key || strpos($key, "..") !== false) return false;
+		if ($app != "browserapp" && $app != "webportal") return false;
 
 		// if we're here, the user has access to the requested markup (assuming it exists)
 		$markupRootDir = realpath(APPLICATION_PATH . '/../markup');

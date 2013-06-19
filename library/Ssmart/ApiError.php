@@ -41,6 +41,13 @@ class Ssmart_ApiError
 	);
 
 	/**
+	 * Holds the responses
+	 *
+	 * @var array
+	 */
+	public $responses = null;
+
+	/**
 	 * Holds the errors as they are porcessed.
 	 *
 	 * @var array
@@ -48,6 +55,10 @@ class Ssmart_ApiError
 	private $_errors = array();
 
 ////////////////////////////////////////
+
+	public function __construct() {
+		$this->responses = new stdClass();
+	}
 
 	/**
 	 * Sets an error in the Ssmart_Error object.
@@ -148,7 +159,9 @@ class Ssmart_ApiError
 				}
 
 				//set the error
+				$response->responses->$value["response_name"] = new stdClass();
 				$response->responses->$value["response_name"]->errors_returned = $count;
+				$response->responses->$value["response_name"]->errors = new stdClass();
 				$response->responses->$value["response_name"]->errors->$value["code"] = $value["message"];
 			}
 		}

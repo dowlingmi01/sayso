@@ -101,10 +101,15 @@ class Ssmart_Authentication
 		{
 			foreach ($data as $key => $value)
 			{
-				if ($nodeName)
-					$this->user_data->$nodeName->$key = $value;
-				else
+				if ($nodeName) {
+					if (!property_exists($this, 'user_data'))
+						$this->user_data = new stdClass();
+					if (!property_exists($this->user_data, $nodeName))
+						$this->user_data->$nodeName = [];
+					$this->user_data->{$nodeName}[$key] = $value;
+				} else {
 					$this->user_data->$key = $value;
+				}
 			}
 		} else
 			$this->user_data->$nodeName = $data;

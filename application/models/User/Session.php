@@ -113,13 +113,13 @@ WHERE id = ?", $sessionId);
 			if ($session["recently_expired"] == "1")
 			{
 				$newSession = new self;
-				$newSession->loadData($session["new_session_id"]);
-				return array("new_session_id" => $session["new_session_id"], "new_session_key" => $newSession->session_key);
+				$newSession->loadData($session["new_user_session_id"]);
+				return array("new_user_session_id" => $session["new_user_session_id"], "new_session_key" => $newSession->session_key);
 				//TODO: perhaps add a catch for no new session id here
 			} else {
 				$newSession = new self;
 				$newSession->setSession($session["user_id"]);
-				Db_Pdo::execute('UPDATE user_session SET new_session_id = ? WHERE id = ?', $newSession->id, $sessionId);
+				Db_Pdo::execute('UPDATE user_session SET new_user_session_id = ? WHERE id = ?', $newSession->id, $sessionId);
 				return $newSession->id;
 			}
 		} else

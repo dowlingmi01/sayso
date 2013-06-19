@@ -21,8 +21,8 @@ class Ssmart_Panelist_MarkupEndpoint extends Ssmart_GlobalController
 	{
 		$validators = [
 			"starbar_id" => "int_required_notEmpty",
-			"key" => "alpha_required_notEmpty",
-			"app" => "alpha_required_notEmpty"
+			"key" => "required",
+			"app" => "required"
 		];
 		$filters = [];
 
@@ -35,7 +35,7 @@ class Ssmart_Panelist_MarkupEndpoint extends Ssmart_GlobalController
 		//ensure this user has access to this starbar
 		$this->checkUserAccessToStarbar($response, $starbarId, TRUE);
 
-		if (!in_array($request->valid_parameters["app"], "browserapp", "webportal")) {
+		if (!in_array($request->valid_parameters["app"], ["browserapp", "webportal"])) {
 			$response->setResponseError("invalid_markup_request");
 		}
 

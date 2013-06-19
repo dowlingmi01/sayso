@@ -546,7 +546,7 @@ header nav ul {
   float: left;
   margin-left: 0%;
   margin-top: 5%;
-  width: 40%;
+  width: 50%;
 }
 .tour_content_left h1 {
   padding: 0;
@@ -567,7 +567,7 @@ header nav ul {
   float: right;
   margin-right: 0%;
   margin-top: 5%;
-  width: 40%;
+  width: 50%;
 }
 .tour_content_right img {
   padding-top: 0.75em;
@@ -595,9 +595,8 @@ header nav ul {
 }
 .tour_final_left {
   float: left;
-  width: 29%;
+  width: 33%;
   border-right: 1px solid grey;
-  margin-left: 10%;
 }
 .tour_final_left h2 {
   font-family: "proxima-nova", sans-serif;
@@ -620,7 +619,7 @@ header nav ul {
 }
 .tour_final_middle {
   float: left;
-  width: 29%;
+  width: 33%;
   border-right: 1px solid grey;
 }
 .tour_final_middle h2 {
@@ -650,7 +649,7 @@ header nav ul {
 }
 .tour_final_right {
   float: left;
-  width: 29%;
+  width: 33%;
 }
 .tour_final_right h2 {
   font-family: "proxima-nova", sans-serif;

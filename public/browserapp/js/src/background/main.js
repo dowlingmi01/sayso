@@ -50,7 +50,7 @@
 				api.sendRequests( function(data) {
 					state.loggedIn = true;
 					state.session = session;
-					state.profile = data.responses.user.records[data.responses.state.variables.user_id];
+					state.profile = data.responses.user.records[0];
 					state.currentStarbarId = data.responses.state.variables.starbar_id;
 					state.visibility = data.responses.state.variables.visibility;
 					if( pendingRequests[0] ) {

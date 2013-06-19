@@ -90,7 +90,7 @@ class Ssmart_Api
 
 	/**
 	 * Returns an instance of Ssmart_Api with response, request,
-	 *	and auth arrtibutes populated.
+	 *	and auth attributes populated.
 	 *
 	 *<p>Input parameters first looks for <code>$request_json</code>
 	 *	then checks the <code>$apiLoginCredentials</code> array</p>
@@ -105,7 +105,7 @@ class Ssmart_Api
 	 *		user_key</p>
 	 *	<p><b>option params:</b>
 	 *		user_type</p>
-	 * @param string $requestJson (json fomat)
+	 * @param string $requestJson (json format)
 	 * @return Ssmart_Api
 	 */
 	public static function getInstance ($apiLoginCredentials = NULL, $requestJson = NULL)
@@ -184,7 +184,7 @@ class Ssmart_Api
 		//reset all one time use objects and settings
 		$this->_resetObjects();
 
-		//outputs the formattted response
+		//outputs the formatted response
 		return $formattedResponse;
 	}
 
@@ -210,7 +210,7 @@ class Ssmart_Api
 		if (!$this->_auth || $this->_auth->getAuthStatus() !== TRUE)
 			return $this->_error->newError("auth_failed_api");
 
-		//make sure our request object is strucutured properly
+		//make sure our request object is structured properly
 		if (!isset($this->_request->requests))
 			return $this->_error->newError("missing_params_request");
 
@@ -264,10 +264,10 @@ class Ssmart_Api
 	 *
 	 * <p>Based on the action_class and action params of the requestObject
 	 * this function loads the requested class.</p>
-	 * <p>The structure of this API is such that Zend cannont auto load endpoints
+	 * <p>The structure of this API is such that Zend cannot auto load endpoints
 	 * so we have to manually load them.</p>
 	 *
-	 * @param Ssmart_Request $requestObject Formated request parameters.
+	 * @param Ssmart_Request $requestObject Formatted request parameters.
 	 * @param string $requestName The name of the request.
 	 * @return stdClass The return logic may contain an error or the endpoint response.
 	 */
@@ -335,7 +335,7 @@ class Ssmart_Api
 	 *	request,<br />
 	 *	response,<br />
 	 *	and error objects<br />
-	 * while keeping the auth object for reusability without having
+	 * while keeping the auth object for reuse without having
 	 * to re-authenticate</p>
 	 */
 	private function _resetObjects()

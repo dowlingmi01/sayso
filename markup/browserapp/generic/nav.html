@@ -1,69 +1,70 @@
 <link rel="stylesheet" href="/browserapp/css/build/%CONFIG_SHORT_TITLE%.css">
 <div id="sayso-app-container" class="sayso-reset">
-    <div id="sayso-app-background"></div>
-    <div id="sayso-app">
-        <!-- SECTION (previously several pop boxes) -->
-        <div id="sayso-section-container" class=""><!-- class changes (e.g. to "sayso-section-polls") when switching sections -->
-            <div id="sayso-section"> <!-- section is emptied when switching section -->
-                <div class="sayso-loading"></div><!-- added by jquery if section takes more than 200ms to load, then faded away in 100ms -->
-                <!-- section html goes here -->
-            </div>
-            <div id="sayso-section-triangle-grey"></div>
-            <div id="sayso-section-triangle-white"></div>
-        </div>
+	<div id="sayso-app-background"></div>
+	<div id="sayso-app">
+		<!-- SECTION (previously several pop boxes) -->
+		<div id="sayso-section-container" class=""><!-- class changes (e.g. to "sayso-section-polls") when switching sections -->
+			<div id="sayso-section"> <!-- section is emptied when switching section -->
+				<!-- section html goes here -->
+			</div>
+			<div id="sayso-section-triangle-grey"></div>
+			<div id="sayso-section-triangle-white"></div>
+		</div>
 
-        <!-- NAVIGATION -->
-        <div id="sayso-nav-hide-button" class="sayso-nav-box"></div>
-        <div id="sayso-nav-logo-container" class="sayso-nav-box">
-            <div id="sayso-nav-logo" class="sayso-element sayso-section-link" data-section="about"></div>
-        </div>
-        <div id="sayso-nav-help-links-container" class="sayso-element sayso-nav-box sayso-section-link" data-section="about">
-            <ul>
-                <li>About</li>
-                <li>FAQs</li>
-                <li>Help</li>
-            </ul>
-        </div>
-        <div id="sayso-nav-profile-container" class="sayso-nav-box">
-            <div id="sayso-nav-profile-bubble-top"></div>
-            <div id="sayso-nav-profile-logo"></div>
-            <div id="sayso-nav-profile-user-image" class="sayso-element sayso-user-image sayso-section-link" data-section="user-profile"></div>
-            <div id="sayso-nav-profile-text" class="sayso-element sayso-section-link" data-section="user-profile">
-                <p>Hi <span class="sayso-user-public-name">Person</span></p>
-                <p class="sayso-small">Edit Profile</p>
-            </div>
-        </div>
-        <div id="sayso-nav-theme-button-polls" class="sayso-element sayso-nav-box sayso-nav-theme-button-container sayso-section-link" data-section="polls">
-            <div class="sayso-nav-theme-button">
-                <div class="sayso-nav-theme-button-top"></div>
-            </div>
-        </div>
-        <div id="sayso-nav-theme-button-surveys" class="sayso-element sayso-nav-box sayso-nav-theme-button-container sayso-section-link" data-section="surveys">
-            <div class="sayso-nav-theme-button">
-                <div class="sayso-nav-theme-button-top"></div>
-            </div>
-        </div>
-        <div id="sayso-nav-theme-button-spotlight" class="sayso-element sayso-nav-box sayso-nav-theme-button-container sayso-section-link" data-section="spotlight">
-            <div class="sayso-nav-theme-button">
-                <div class="sayso-nav-theme-button-top"></div>
-            </div>
-        </div>
-        <div id="sayso-nav-promos-container" class="sayso-element sayso-nav-box sayso-nav-theme-container sayso-section-link" data-section="promos">
-            <div id="sayso-nav-promos-image"></div>
-        </div>
-        <div id="sayso-nav-experience-container" class="sayso-element sayso-nav-box sayso-nav-theme-container sayso-section-link" data-section="experience">
-            <div id="sayso-nav-experience-level">L1: FILM BUFF</div>
-            <div class="sayso-element sayso-progress-bar-container" data-currency-type="experience">
-                <div class="sayso-progress-bar-icon sayso-progress-bar-icon-experience"></div>
-                <div class="sayso-progress-bar" style="width: 70%;"></div>
-                <div class="sayso-progress-bar-value">1600</div>
-            </div>
-        </div>
-        <div id="sayso-nav-redeemable-container" class="sayso-element sayso-nav-box sayso-nav-theme-container sayso-section-link" data-section="rewards">
-            <div class="sayso-element sayso-progress-bar-container" data-currency-type="redeemable">
-                <div class="sayso-progress-bar-icon sayso-progress-bar-icon-redeemable"></div>
-                <div class="sayso-progress-bar-value">120</div>
-            </div>
-        </div>
-    </div>
+		<!-- NAVIGATION -->
+		<div id="sayso-nav-hide-button" class="sayso-nav-box"></div>
+		<div id="sayso-nav-logo-container" class="sayso-nav-box">
+			<div id="sayso-nav-logo" class="sayso-element sayso-section-link" data-section="about"></div>
+		</div>
+		<div id="sayso-nav-help-links-container" class="sayso-element sayso-nav-box sayso-section-link" data-section="about">
+			<ul>
+				<li>About</li>
+				<li>FAQs</li>
+				<li>Help</li>
+			</ul>
+		</div>
+		<div id="sayso-nav-profile-container" class="sayso-nav-box">
+			<div id="sayso-nav-profile-bubble-top"></div>
+			<div id="sayso-nav-profile-logo"></div>
+			<div id="sayso-nav-profile-user-image" class="sayso-element sayso-user-image sayso-section-link" data-section="user-profile"></div>
+			<div id="sayso-nav-profile-text" class="sayso-element sayso-section-link" data-section="user-profile">
+				<p>Hi <span class="sayso-element sayso-user-public-name">Person</span></p>
+				<p class="sayso-small">Edit Profile</p>
+			</div>
+		</div>
+		<div id="sayso-nav-theme-button-polls" class="sayso-element sayso-nav-box sayso-nav-theme-button-container sayso-section-link" data-section="polls">
+			<div class="sayso-nav-theme-button">
+				<div class="sayso-nav-theme-button-top"></div>
+			</div>
+		</div>
+		<div id="sayso-nav-theme-button-surveys" class="sayso-element sayso-nav-box sayso-nav-theme-button-container sayso-section-link" data-section="surveys">
+			<div class="sayso-nav-theme-button">
+				<div class="sayso-nav-theme-button-top"></div>
+			</div>
+		</div>
+		<div id="sayso-nav-theme-button-spotlight" class="sayso-element sayso-nav-box sayso-nav-theme-button-container sayso-section-link" data-section="spotlight">
+			<div class="sayso-nav-theme-button">
+				<div class="sayso-nav-theme-button-top"></div>
+			</div>
+		</div>
+		<div id="sayso-nav-promos-container" class="sayso-element sayso-nav-box sayso-nav-theme-container sayso-section-link" data-section="promos">
+			<div id="sayso-nav-promos-image"></div>
+		</div>
+		<div id="sayso-nav-experience-container" class="sayso-element sayso-nav-box sayso-nav-theme-container sayso-section-link" data-section="experience">
+			<div id="sayso-nav-experience-level">L1: FILM BUFF</div>
+			<div class="sayso-element sayso-progress-bar-container" data-display="currency" data-currency-type="experience">
+				<!-- the following elements should be placed here by javascript -->
+				<div class="sayso-progress-bar-icon sayso-progress-bar-icon-experience"></div>
+				<div class="sayso-progress-bar" style="width: 70%;"></div>
+				<div class="sayso-progress-bar-value">1600</div>
+			</div>
+		</div>
+		<div id="sayso-nav-redeemable-container" class="sayso-element sayso-nav-box sayso-nav-theme-container sayso-section-link" data-section="rewards">
+			<div class="sayso-element sayso-progress-bar-container" data-progress-bar-for="currency" data-currency-type="redeemable">
+				<!-- the following elements should be placed here by javascript -->
+				<div class="sayso-progress-bar-icon sayso-progress-bar-icon-redeemable"></div>
+				<div class="sayso-progress-bar-value">120</div>
+			</div>
+		</div>
+	</div>
 </div>

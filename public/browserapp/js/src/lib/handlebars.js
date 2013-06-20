@@ -47,24 +47,20 @@ sayso.module.Handlebars = {};
 		objectType = '[object Object]';
 
 	Handlebars.registerHelper = function(name, fn, inverse) {
-		if (!(name in this.helpers)) { // added by Hamza to avoid re-registering helpers since we may dynamically register them
-			if (toString.call(name) === objectType) {
-				if (inverse || fn) { throw new Handlebars.Exception('Arg not supported with multiple helpers'); }
-				Handlebars.Utils.extend(this.helpers, name);
-			} else {
-				if (inverse) { fn.not = inverse; }
-				this.helpers[name] = fn;
-			}
+		if (toString.call(name) === objectType) {
+			if (inverse || fn) { throw new Handlebars.Exception('Arg not supported with multiple helpers'); }
+			Handlebars.Utils.extend(this.helpers, name);
+		} else {
+			if (inverse) { fn.not = inverse; }
+			this.helpers[name] = fn;
 		}
 	};
 
 	Handlebars.registerPartial = function(name, str) {
-		if (!(name in this.partials)) { // added by Hamza to avoid re-registering partials since we may dynamically register them
-			if (toString.call(name) === objectType) {
-				Handlebars.Utils.extend(this.partials,  name);
-			} else {
-				this.partials[name] = str;
-			}
+		if (toString.call(name) === objectType) {
+			Handlebars.Utils.extend(this.partials,  name);
+		} else {
+			this.partials[name] = str;
 		}
 	};
 

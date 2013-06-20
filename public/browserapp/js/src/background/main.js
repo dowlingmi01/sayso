@@ -84,7 +84,7 @@
 		api.sendRequests( function(data) {
 			state.starbars[starbarId] = data.responses.starbar.records[0];
 			state.starbars[starbarId].id = starbarId;
-            state.starbars[starbarId].markup = data.responses.markup.variables.markup;
+			state.starbars[starbarId].markup = data.responses.markup.variables.markup;
 			state.games[starbarId] = data.responses.game.variables.game;
 			state.notifications[starbarId] = data.responses.notifications.records;
 			if( pendingRequests[starbarId] ) {

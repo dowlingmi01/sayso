@@ -44,8 +44,8 @@ sayso.module.Api = (function(comm) {
 		 * Sends the request(s) to the api
 		 * @param {function} cb Success callback function
 		 * @param {function} fb Fail callback function
-         * @param {boolean} keepRequests Whether or not to reset the requests after the callback is done, or not.
-         *                               Set to true to keep the requests, otherwise they are reset by default
+		 * @param {boolean} keepRequests Whether or not to reset the requests after the callback is done, or not.
+		 *                               Set to true to keep the requests, otherwise they are reset by default
 		 */
 		sendRequests: function (cb, fb, keepRequests) {
 			var data = {};
@@ -54,7 +54,7 @@ sayso.module.Api = (function(comm) {
 			data.requests = this.requests.params;
 
 			var protocol = "http://";
-            var requestsToReset = (keepRequests ? false : this.requests);
+			var requestsToReset = (keepRequests ? false : this.requests);
 
 			if (typeof fb == "undefined") {
 				fb = function(e) {
@@ -69,21 +69,21 @@ sayso.module.Api = (function(comm) {
 				url : protocol + this.baseDomain + "/ssmart",
 				success : cb,
 				error: fb,
-                complete: function() { if (requestsToReset) requestsToReset.reset(); } // this happens after success or error
+				complete: function() { if (requestsToReset) requestsToReset.reset(); } // this happens after success or error
 			});
 		},
 
 		/**
 		 *Formats a 'quick' request. This function always resets the requests before being called,
-         *   and optionally resets the request after as well, based on the keepRequests parameter
+		 *   and optionally resets the request after as well, based on the keepRequests parameter
 		 * @param {Object} params
 		 * @param {function} cb
 		 * @param {function} fb
-         * @param {boolean} keepRequests Whether or not to reset the requests object after the callback is done, or not.
-         *                               Set to true to keep the requests, otherwise they are reset by default
+		 * @param {boolean} keepRequests Whether or not to reset the requests object after the callback is done, or not.
+		 *                               Set to true to keep the requests, otherwise they are reset by default
 		 */
 		sendRequest: function (params, cb, fb, keepRequests) {
-            this.requests.reset();
+			this.requests.reset();
 			this.setRequest('default', params);
 			this.sendRequests(cb, fb, keepRequests);
 		}
@@ -108,7 +108,7 @@ sayso.module.Api = (function(comm) {
 
 		/**
 		 * Sets an additional param in the request object.
-         * @param {String} requestName
+		 * @param {String} requestName
 		 * @param {String} name
 		 * @param {String} value
 		 */

@@ -380,11 +380,6 @@
 #sayso-section-container .sayso-tab {
   display: none;
 }
-#sayso-section-container .sayso-tab:first-child {
-  /* temporary hack */
-
-  display: block;
-}
 #sayso-section-container #sayso-section {
   display: block;
   position: absolute;

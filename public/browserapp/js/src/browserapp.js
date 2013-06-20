@@ -276,7 +276,7 @@ sayso.module.browserapp = (function(global, $, state, Handlebars) {
 			prepareElements($tempContainer, "pre-template");
 
 			// compile the markup into a handlebars template
-			template = Handlebars.compile($tempContainer.html());
+			template = Handlebars.compile($tempContainer.html().replace("{{&gt;", "{{>"));
 		} else {
 			template = Handlebars.compile(markup);
 		}
@@ -421,7 +421,7 @@ sayso.module.browserapp = (function(global, $, state, Handlebars) {
         },
         "rewards": function (data) {
             return {
-                "reward": {
+                "rewards": {
                     starbar_id : starbarId,
                     action_class : "game",
                     action : "getStarbarGoods"

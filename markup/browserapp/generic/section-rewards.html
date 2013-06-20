@@ -1,21 +1,36 @@
 <div id="sayso-section-header">
     <p class="sayso-highlight">Select an item below</p>
 </div>
-<div id="sayso-section-body" class="sayso-element sayso-tab-container" data-default-tab="rewards">
-
-
+<div id="sayso-section-body">
+    {{#each rewards.records}}
+    {{>reward_partial}}
+    {{else}}
+    No rewards for you!<br />
+    {{/each}}
 </div>
 <div id="sayso-section-footer">
     Footer text
 </div>
 
-<div class="sayso-element sayso-partial" data-partial-id="rewards-new">
-	<div class="sayso-element sayso-scrollable">
-		{{#each reward.records}}
-			New reward: {{title}}<br />
-		{{else}}
-			No rewards for you!<br />
-		{{/each}}
-	</div>
+<div class="sayso-element sayso-partial" data-partial-id="reward_partial">
+    {{available}}
+    {{bdid}}
+    {{can_purchase}}
+    {{cant_purchase_message}}
+    {{comment}}
+    {{economy_id}}
+    {{id}}
+    {{img_url}}
+    {{img_url_preview}}
+    {{img_url_preview_bought}}
+    {{name}}
+    {{percentage}}
+    {{price}}
+    {{show}}
+    {{status_code}}
+    {{stock}}
+    {{type}}
+    {{unavailable_message}}
+    {{visible}}
+    <hr />
 </div>
-

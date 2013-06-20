@@ -200,6 +200,8 @@ class Ssmart_EndpointResponse
 	{
 		$this->records = array();
 		foreach ($array as $key => $value) {
+            if (!array_key_exists("id", $value))
+                $value["id"] = $key;
 			$this->records[] = $value;
 		}
 	}

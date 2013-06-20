@@ -48,6 +48,11 @@
 		color: @theme-color-text-secondary;
 	}
 
+    .sayso-highlight {
+      color: @theme-color-links;
+      font-weight: bold;
+    }
+
 	.sayso-small {
 		font-size: 11px;
 	}
@@ -483,5 +488,40 @@
 		}
 
 	}
+
+    &.sayso-section-rewards {
+      #sayso-section {
+        left: auto;
+        right: 0;
+        width: auto;
+        height: 438px;
+        background-color: @theme-color-section-border;
+
+        #sayso-section-header {
+          background-image: url('@{base-image-url}/section-heading-rewards.png');
+          background-color: @theme-color-section-background;
+
+        }
+        #sayso-section-header p.sayso-highlight {
+          margin-top: 32px;
+          height: 60px;
+        }
+        #sayso-section-body {
+          background-color: @theme-color-section-background;
+          height: 338px;
+          width:500px
+        }
+        #sayso-section-footer {
+
+        }
+      }
+
+      #sayso-section-triangle-white, #sayso-section-triangle-grey {
+        display: block;
+        left: 950px;
+      }
+
+    }
+
 }
 

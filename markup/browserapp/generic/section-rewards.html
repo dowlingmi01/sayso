@@ -1,0 +1,21 @@
+<div id="sayso-section-header">
+    <p class="sayso-highlight">Select an item below</p>
+</div>
+<div id="sayso-section-body" class="sayso-element sayso-tab-container" data-default-tab="rewards">
+
+
+</div>
+<div id="sayso-section-footer">
+    Footer text
+</div>
+
+<div class="sayso-element sayso-partial" data-partial-id="rewards-new">
+	<div class="sayso-element sayso-scrollable">
+		{{#each reward.records}}
+			New reward: {{title}}<br />
+		{{else}}
+			No rewards for you!<br />
+		{{/each}}
+	</div>
+</div>
+

@@ -409,16 +409,25 @@ sayso.module.browserapp = (function(global, $, state, Handlebars) {
 				}
 			}
 		},
-		"poll": function (data) {
-			return {
-				"poll": {
-					starbar_id : starbarId,
-					action_class : "survey",
-					action : "getSurvey",
-					survey_id : data['surveyId']
-				}
-			}
-		}
+        "poll": function (data) {
+            return {
+                "poll": {
+                    starbar_id : starbarId,
+                    action_class : "survey",
+                    action : "getSurvey",
+                    survey_id : data['surveyId']
+                }
+            }
+        },
+        "rewards": function (data) {
+            return {
+                "reward": {
+                    starbar_id : starbarId,
+                    action_class : "game",
+                    action : "getStarbarGoods"
+                }
+            };
+        }
 	}
 
 })(this, jQuery, sayso.module.state, sayso.module.Handlebars)

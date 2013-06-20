@@ -310,6 +310,9 @@ header nav ul {
   width: 60%;
   text-wrap: normal;
 }
+.take_tour {
+  margin-left: 250px;
+}
 /* ================ */
 /* Lightboxed pages */
 /* ================ */

@@ -589,7 +589,10 @@
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar .sayso-reward-item-progress-bar-value {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar-value {
+  position: absolute;
+  top: 13px;
+  left: 0;
   font-weight: bold;
   font-size: 11px;
   color: white;

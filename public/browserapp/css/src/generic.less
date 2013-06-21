@@ -585,16 +585,18 @@
                             height: 100%;
                             .vertical-gradient(@theme-color-progress-bar-gradient-start, @theme-color-progress-bar-gradient-end, @theme-color-progress-bar-gradient-fallback);
                             .border-radius(4px);
+                        }
 
-                            .sayso-reward-item-progress-bar-value {
-                                font-weight: bold;
-                                font-size: 11px;
-                                color: white;
-                                text-shadow: 1px 1px 0px #000;
-                                width: 100%;
-                                text-align: center;
-                            }
-
+                        .sayso-reward-item-progress-bar-value {
+                            position: absolute;
+                            top: 13px;
+                            left: 0;
+                            font-weight: bold;
+                            font-size: 11px;
+                            color: white;
+                            text-shadow: 1px 1px 0px #000;
+                            width: 100%;
+                            text-align: center;
                         }
                     }
                 }

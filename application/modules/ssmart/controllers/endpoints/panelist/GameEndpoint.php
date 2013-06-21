@@ -41,17 +41,19 @@ class Ssmart_Panelist_GameEndpoint extends Ssmart_GlobalController
 		return $response;
 	}
 
-	/**
-	 * Processes a purchase transaction on the game object.
-	 *
-	 * <p><b>required params: </b>
-	 *	quantity
-	 *	game_asset_id
-	 *	starbar_id</p>
-	 *
-	 * @param Ssmart_EndpointRequest $request
-	 * @return \Ssmart_EndpointResponse
-	 */
+    /**
+     * Processes a purchase transaction on the game object.
+     *
+     * <p><b>required params: </b>
+     *    quantity
+     *    game_asset_id
+     *    starbar_id</p>
+     *
+     * @param Ssmart_EndpointRequest $request
+     *
+     * @throws Exception
+     * @return \Ssmart_EndpointResponse
+     */
 	public function redeemReward(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
@@ -68,20 +70,36 @@ class Ssmart_Panelist_GameEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$userId			= $request->auth->user_data->user_id;
+		$userId			    = $request->auth->user_data->user_id;
 		$starbarId			= $request->valid_parameters["starbar_id"];
 		$gameAssetId		= $request->valid_parameters["game_asset_id"];
 		$quantity			= isset($request->valid_parameters["quantity"]) ? $request->valid_parameters["quantity"] : 1;
-		$economyId		= Economy::getIdforStarbar($starbarId);
+		$economyId		    = Economy::getIdforStarbar($starbarId);
 
 		try
 		{
 			$transactionId = Game_Transaction::run( $userId, $economyId, 'PURCHASE', array('game_asset_id'=>$gameAssetId, 'quantity'=>$quantity, 'starbar_id'=>$starbarId));
 		} catch(Exception $e) {
-			throw new Exception('Game transaction failed.');
+			throw new Exception('Game transaction failed - ' . $e->getMessage());
 		}
 		if ($transactionId)
 		{
+            //do the order processing now
+            $orderData = array(
+                "quantity"     => $quantity,
+                "good_id"      => $gameAssetId,
+                "user_id"      => $userId,
+                "starbar_id"   => $starbarId,
+                "game_txn_id"  => $transactionId,
+                "shipping"     => array(),
+
+            );
+            isset($request->submitted_parameters->shipping) ? $orderData["shipping"] =
+                $request->submitted_parameters->shipping : "";
+            $order = new Game_Transaction_Order();
+            //maybe a check to see if it succeeded?
+            $order->processOrder($orderData);
+
 			$response->setResultVariable("success", TRUE);
 			$response->setResultVariable("transaction_id", $transactionId);
 		} else {
@@ -123,7 +141,7 @@ class Ssmart_Panelist_GameEndpoint extends Ssmart_GlobalController
 
 		//logic
 		$userId			= $request->auth->user_data->user_id;
-		$starbarId			= $request->valid_parameters["starbar_id"];
+		$starbarId		= $request->valid_parameters["starbar_id"];
 
 		$goods = Game_Transaction::getPurchasablesForUser($userId, $starbarId);
 

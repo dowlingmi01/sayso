@@ -520,7 +520,7 @@
   overflow: hidden;
 }
 #sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item {
-  width: 150px;
+  width: auto;
   height: 230px;
   float: left;
   border: 1px solid #ababab;
@@ -540,6 +540,7 @@
   font-size: 11px;
   font-weight: bold;
   position: relative;
+  width: 130px;
 }
 #sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-img {
   text-align: center;

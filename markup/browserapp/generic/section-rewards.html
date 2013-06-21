@@ -1,19 +1,28 @@
-<div id="sayso-section-header">
-    <p class="sayso-highlight">Select an item below</p>
-</div>
-<div id="sayso-section-body">
-    {{#each rewards.records}}
-    {{>reward_partial}}
-    {{else}}
-    No rewards for you!<br />
-    {{/each}}
-</div>
-<div id="sayso-section-footer">
-    Footer text
+<div id="sayso-section-reward-center">
+    <div id="sayso-section-reward-redeem">
+        <div id="sayso-reward-item-redeem-step">
+
+        </div>
+    </div>
+    <div id="sayso-section-header">
+        <p class="sayso-highlight">Select an item below</p>
+    </div>
+    <div id="sayso-section-body">
+       {{#each rewards.records}}
+        {{>reward_partial}}
+        {{else}}
+        No rewards for you!<br />
+        {{/each}}
+    </div>
+    <div id="sayso-section-footer">
+        Footer text
+    </div>
 </div>
 
 <div class="sayso-element sayso-partial" data-partial-id="reward_partial">
-    <div class="sayso-reward-item">
+    <div class="sayso-element sayso-reward-item" data-game-asset-id="{{id}}"
+         data-reward-name="{{name}}" data-reward-price="{{price}}" data-reward-comment="{{comment}}"
+         data-reward-img-src="{{img_url_preview}}">
         <div class="sayso-reward-item-header">
             {{name}}
         </div>
@@ -51,5 +60,28 @@
     <!--{{type}}-->
     <!--{{unavailable_message}}-->
     <!--{{visible}}-->
+    </div>
+</div>
+
+<div id="sayso-reward-step-one">
+    <div class="sayso-reward-item-header" id="reward-name">
+
+    </div>
+    <div class="sayso-reward-item-img">
+        <img alt="Reward" src="" id="reward-img"/>
+    </div>
+    <div class="sayso-reward-item-bottom">
+        <!-- the following elements should be placed here by javascript -->
+        <div class="sayso-reward-item-points-box">
+            <span class="sayso-reward-item-points-logo"></span>
+            <div class="sayso-reward-item-progress-bar-container">
+                <div class="sayso-reward-item-progress-bar" style="width: {{percentage}}%;"></div>
+                <div class="sayso-reward-item-progress-bar-value" id="rward-price"></div>
+            </div>
+        </div>
+        <p class="sayso-reward-item-comment" id="reward-comment">
+
+        </p>
+        <div class="sayso-reward-item-redeem">REDEEM</div>
     </div>
 </div>

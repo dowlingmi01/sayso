@@ -338,7 +338,32 @@ sayso.module.browserapp = (function(global, $, state, Handlebars) {
 			},
 			"scrollable": function ($elem, data) {
 				// @todo make $elem have a custom JS scrollbar!
-			}
+			},
+            "reward-redeem": function ($elem, data) {
+                $elem.click(function() {
+                    //hit the game endpoint redeemReward
+                    state.apiCall({
+                        action_class : "game",
+                        action : "redeemReward",
+                        starbar_id : starbarId,
+                        game_asset_id: data['id']
+                    }, function(response){
+                        //do something
+                    }); // update game
+                });
+            },
+            "reward-item": function ($elem, data) {
+                $elem.click(function() {
+                    //black out the div and display the {{cant_purchase_message}}
+                    $("#sayso-section-reward-redeem").show();
+                    $("#sayso-reward-item-redeem-step").html($("#sayso-reward-step-one").html());
+
+                    $("#reward-name").html(data['rewardName']);
+                    $("#reward-price").html(data['rewardPrice']);
+                    $("#reward-img-src").html(data['rewardImgSrc']);
+                    $("#reward-comment").html(data['rewardComment']);
+                });
+            }
 		}
 	};
 

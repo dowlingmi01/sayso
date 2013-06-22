@@ -778,10 +778,27 @@
   line-height: 30px;
   color: white;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section-triangle-white,
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-section-reward-redeem {
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: 20;
+  display: none;
+}
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step {
+  margin: 20px auto;
+  width: 250px;
+  height: 290px;
+  background-color: white;
+}
 #sayso-section-container.sayso-section-rewards #sayso-section-triangle-grey {
   display: block;
   left: 950px;
+}
+#sayso-section-container.sayso-section-rewards #sayso-section-triangle-white {
+  display: none;
 }
 #sayso-app-container #sayso-nav-logo-container div#sayso-nav-logo:hover {
   background-position: 0px -34px;

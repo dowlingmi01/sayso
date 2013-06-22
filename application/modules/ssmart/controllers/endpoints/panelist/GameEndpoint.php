@@ -90,12 +90,10 @@ class Ssmart_Panelist_GameEndpoint extends Ssmart_GlobalController
                 "good_id"      => $gameAssetId,
                 "user_id"      => $userId,
                 "starbar_id"   => $starbarId,
-                "game_txn_id"  => $transactionId,
-                "shipping"     => array(),
-
+                "game_txn_id"  => $transactionId
             );
-            isset($request->submitted_parameters->shipping) ? $orderData["shipping"] =
-                $request->submitted_parameters->shipping : "";
+            isset($request->submitted_parameters->shipping) && $request->submitted_parameters->shipping != '' ?
+                $orderData["shipping"] = $request->submitted_parameters->shipping : "";
             $order = new Game_Transaction_Order();
             //maybe a check to see if it succeeded?
             $order->processOrder($orderData);

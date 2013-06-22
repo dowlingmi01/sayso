@@ -791,7 +791,7 @@
   margin: 20px auto;
   width: 250px;
   height: 290px;
-  background-color: #333333;
+  background-color: #555555;
 }
 #sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-header {
   padding: 5px 10px;
@@ -888,6 +888,7 @@
   vertical-align: middle;
   line-height: 30px;
   color: white;
+  cursor: pointer;
 }
 #sayso-section-container.sayso-section-rewards #sayso-section-triangle-grey {
   display: block;

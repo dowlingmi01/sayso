@@ -339,19 +339,6 @@ sayso.module.browserapp = (function(global, $, state, Handlebars) {
 			"scrollable": function ($elem, data) {
 				// @todo make $elem have a custom JS scrollbar!
 			},
-            "reward-redeem": function ($elem, data) {
-                $elem.click(function() {
-                    //hit the game endpoint redeemReward
-                    state.apiCall({
-                        action_class : "game",
-                        action : "redeemReward",
-                        starbar_id : starbarId,
-                        game_asset_id: data['id']
-                    }, function(response){
-                        //do something
-                    }); // update game
-                });
-            },
             "reward-item": function ($elem, data) {
                 $elem.click(function() {
                     //black out the div and display the {{cant_purchase_message}}
@@ -360,8 +347,41 @@ sayso.module.browserapp = (function(global, $, state, Handlebars) {
 
                     $("#reward-name").html(data['rewardName']);
                     $("#reward-price").html(data['rewardPrice']);
-                    $("#reward-img-src").html(data['rewardImgSrc']);
+                    $("#reward-img").attr("src", data['rewardImgSrc']);
                     $("#reward-comment").html(data['rewardComment']);
+                    $("#sayso-reward-item-redeem-submit").click(function(){
+                        if (data['rewardType'] == "token")
+                        {
+                            $("#sayso-reward-item-redeem-step").html($("#sayso-reward-step-two-token").html());
+                            var qty = $('input[name="sayso-reward-item-order-quantity-select"]').val()
+                        } else {
+                            $("#sayso-reward-item-redeem-step").html($("#sayso-reward-step-two-shipping").html());
+                            //prepare shippingData
+                            var shippingData = array();
+                            shippingData["order_first_name"] = $('input[name="order_first_name"]').val();
+                            shippingData["order_last_name"] = $('input[name="order_last_name"]').val();
+                            shippingData["order_address_1"] = $('input[name="order_address_1"]').val();
+                            shippingData["order_address_2"] = $('input[name="order_address_2"]').val();
+                            shippingData["order_city"] = $('input[name="order_city"]').val();
+                            shippingData["order_state"] =$('input[name="order_state"]').val();
+                            shippingData["order_zip"] = $('input[name="order_zip"]').val();
+                            shippingData["order_country"] = $('input[name="order_country"]').val();
+                            shippingData["order_phone"] = $('input[name="order_phone"]').val();
+                        }
+                        $("#sayso-reward-redeem-submit").click(function(){
+                            state.apiCall({
+                                action_class : "game",
+                                action : "redeemReward",
+                                starbar_id : starbarId,
+                                game_asset_id: data['gameAssetId'],
+                                shipping: shippingData,
+                                quantity: qty
+                            }, function(response){
+                                //do something
+                            }); // update game
+
+                        });
+                    });
                 });
             }
 		}

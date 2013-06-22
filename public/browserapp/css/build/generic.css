@@ -791,7 +791,103 @@
   margin: 20px auto;
   width: 250px;
   height: 290px;
-  background-color: white;
+  background-color: #333333;
+}
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-header {
+  padding: 5px 10px;
+  text-align: center;
+  overflow: hidden;
+  background-color: #ffffff;
+  height: 30px;
+  color: #c02526;
+  font-size: 13px;
+  font-weight: bold;
+  position: relative;
+  margin: 0 auto;
+}
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-img {
+  text-align: center;
+  padding: 5px 0px;
+  background-color: #ffffff;
+  height: 85px;
+  overflow: hidden;
+}
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom {
+  text-align: center;
+  padding: 0px 5px 10px;
+  bottom: 0px;
+}
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box {
+  height: 30px;
+  position: relative;
+  display: block;
+  padding: 10px 0px 0px;
+}
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-points-logo {
+  position: absolute;
+  z-index: 2;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 25px;
+  height: 25px;
+  left: 40px;
+  display: inline-block;
+  margin-top: -3px;
+  background-image: url('../../images/generic/icon-redeemable-medium.png');
+}
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container {
+  background-color: black;
+  border: 2px solid #ffffff;
+  margin: 0px auto;
+  width: 130px;
+  height: 14px;
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+}
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar {
+  height: 100%;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.22, #c4760c), color-stop(0.61, #fde771));
+  background-image: -moz-linear-gradient(center top, #c4760c 22%, #fde771 61%);
+  background-color: #fde771;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+}
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar-value {
+  position: absolute;
+  top: 13px;
+  left: 0;
+  font-weight: bold;
+  font-size: 11px;
+  color: white;
+  text-shadow: 1px 1px 0px #000;
+  width: 100%;
+  text-align: center;
+}
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-comment {
+  color: black;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 0 10px;
+  height: 70px;
+}
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-redeem-submit {
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.22, #dc1a22), color-stop(0.61, #70080c));
+  background-image: -moz-linear-gradient(center top, #dc1a22 22%, #70080c 61%);
+  background-color: #70080c;
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border: 1px white;
+  height: 30px;
+  box-shadow: 0px 0px 3px #666666;
+  margin: 0 auto;
+  width: 60%;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 30px;
+  color: white;
 }
 #sayso-section-container.sayso-section-rewards #sayso-section-triangle-grey {
   display: block;

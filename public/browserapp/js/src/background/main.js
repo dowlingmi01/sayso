@@ -6,7 +6,8 @@
 		starbars: {},
 		games: {},
 		notifications: {},
-		loggedIn: null
+		loggedIn: null,
+		baseDomain: baseDomain
 	};
 	var pendingStarbars = {};
 	var pendingRequests = {};
@@ -102,7 +103,8 @@
 			profile: state.profile,
 			starbar: state.starbars[starbarId],
 			notifications: state.notifications[starbarId],
-			game: state.games[starbarId]
+			game: state.games[starbarId],
+			baseDomain: state.baseDomain
 		}
 	}
 	function addPendingRequest( starbarId, callback ) {

@@ -1,19 +1,26 @@
-sayso.module.browserapp = (function(global, $, state, Handlebars) {
+sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
 	$(global.document).on('sayso:state-login sayso:state-logout sayso:state-ready', initApp);
 
-	var starbarId = 4;
+	var starbarId;
+	var tabId = "abc"; // @todo set this to unique tab ID id using browser extension
 	var userMode = "logged-out";
 	var $nav, $sectionContainer, $section;
 	var currentSection, currentTabContainers, timeoutIdSectionLoadingSpinner;
 
 
 	function initApp() {
+		// @todo fix line below... doesn't work on portal
+		// starbarId = state.state.currentStarbarId;
+		starbarId = 4;
+
+		if ($nav && $nav.length) {
+			$nav.remove();
+		}
 
 		if (state.state.loggedIn) {
 			userMode = "logged-in";
 
-			render();
-
+			loadApp();
 		} else if (global.sayso.webportal) {
 			userMode = "tour";
 
@@ -23,36 +30,41 @@ sayso.module.browserapp = (function(global, $, state, Handlebars) {
 				starbar_id : starbarId,
 				app: "browserapp",
 				key : "nav"
-			}, renderForTour); // renderForTour receives the response
+			}, loadApp); // render receives the response
 		} else {
 			// @todo do something for logged out mode, e.g. redirect to portal for login, or take them to tour page,
 			// @todo  or render bar/icon and show login dialog if they click something
+			// potentially call render() here
 		}
 	}
 
+	function loadApp(response) {
+		// render nav and initNav() if we're not in an iframe
+		if (!state.in_iframe) {
+			if (userMode == "logged-in") {
+				$('body').append(state.state.starbar.markup);
+			} else if (userMode == "tour") {
+				if (
+					!response
+						|| !response.responses
+						|| !response.responses.default
+						|| !response.responses.default.variables
+						|| !response.responses.default.variables.markup
+					) {
+					alert("Error loading tour, please try again later.");
+				}
 
-	function render() {
-		$('body').append(state.state.starbar.markup);
-		initNav();
-	}
+				$('body').append(response.responses.default.variables.markup);
 
-
-	function renderForTour(response) {
-		if (
-			!response
-				|| !response.responses
-				|| !response.responses.default
-				|| !response.responses.default.variables
-				|| !response.responses.default.variables.markup
-			) {
-			alert("Error loading files, please try again later.");
+				// hide the hide button, since we're on the portal
+				$('#sayso-nav-hide-button').hide();
+			} // else {}  potentially we can handle logged out mode here
+			initNav();
 		}
 
-		$('body').append(response.responses.default.variables.markup);
-
-		// hide the hide button, since we're on the portal
-		$('#sayso-nav-hide-button').hide();
-		initNav();
+		if (userMode == "logged-in") {
+			//initListeners();
+		}
 	}
 
 
@@ -111,6 +123,10 @@ sayso.module.browserapp = (function(global, $, state, Handlebars) {
 			// (not sure user profile data will ever animate anyway)
 			if ($container === $nav)
 				updateElements($container, "notifications", true);
+		}
+
+		for (var helper in handlebarsHelpers) {
+			Handlebars.registerHelper(helper, handlebarsHelpers[helper]);
 		}
 	}
 
@@ -265,6 +281,100 @@ sayso.module.browserapp = (function(global, $, state, Handlebars) {
 		}
 	}
 
+	function openPoll($container, data, $loadingElement, doneLoading) {
+		// check if any polls are currently open (could possibly be the current container)
+		var $pollContainerToClose = $container.parent().children('.sayso-poll-container-current');
+
+		// if none are in the currently-open state, check if any polls are currently loading
+		if (!$pollContainerToClose.length) {
+			// if we just finished loading our container, we don't want to close the current container, so we should only check if siblings are loading
+			if (doneLoading)
+				$pollContainerToClose = $container.siblings('.sayso-poll-container-loading');
+			// if we didn't just come from loadPoll(), the user may be closing the poll while it is loading (e.g. if the poll timed out from SG)
+			else
+				$pollContainerToClose = $container.parent().children('.sayso-poll-container-loading');
+		}
+
+		if ($pollContainerToClose.length) {
+			// there should only be one, close it!
+			closePoll($pollContainerToClose.first());
+
+			if (data.surveyId == $pollContainerToClose.data('surveyId')) { // user clicked the currently open poll... just close it and do nothing
+				return;
+			}
+		}
+
+		var $poll = $('.sayso-poll', $container).first();
+
+		// first click this session, or if the poll didn't load the last time
+		if (!data.iframeLoadCompleted) {
+			$loadingElement = $('<div class="sayso-loading"></div>');
+			$poll.html('').append($loadingElement);
+
+			$container.addClass("sayso-poll-container-loading");
+			// set the width, otherwise animation is choppy: http://stackoverflow.com/questions/10471202/jquery-slidedown-is-not-smooth
+			var estimatedPollHeight = 62 + parseInt(Math.ceil(data.surveyNumberOfAnswers / 2.0) * 32); // 62 base height + 32 per row of answers -- Note that this height estimate is updated after the iframe loads
+			if (!$poll.css('height') || $poll.css('height') == "0px" || $poll.css('height') == "auto") $poll.css('height', estimatedPollHeight);
+
+			$poll.slideDown(500);
+
+			// loadPoll calls openPoll again when the iframe is done loading
+			loadPoll($poll, $container, $loadingElement, data);
+
+			return;
+		} else {
+			$container.addClass("sayso-poll-container-current");
+
+			if ($container.hasClass("sayso-poll-container-loading")) { // we already did a slideDown to show the loading element
+				$container.removeClass("sayso-poll-container-loading");
+				$poll.animate({'height': data.pollHeight}, 250, function() {
+
+				});
+				$loadingElement.fadeTo(250, 0, function() {
+					$loadingElement.remove();
+				});
+			} else { // poll was already loaded and proper height was set, so just slide the existing poll back down
+				$poll.slideDown(500);
+			}
+		}
+	}
+
+	function loadPoll($poll, $container, $loadingElement, data) {
+		// set up iframe listeners
+		// set up iframe
+		$iframe = $('<iframe class="sayso-poll-iframe" id="sayso-poll-iframe-'+data.surveyId+'"></iframe>');
+		$iframe.css('height', '100%');
+		$iframe.css('width', '100%');
+
+		$poll.append($iframe);
+
+		// wait for iframe to load
+		// @todo replace setTimeout with iframe:ready bind/trigger or equivalent
+		setTimeout(function() {
+			$container.data('iframeLoadCompleted', true);
+			data.iframeLoadCompleted = true;
+
+			// receive (and set) poll height from iframe when it's done rendering
+			data.pollHeight = 100 + Math.floor((Math.random()*200)); // @todo temporary random amount -- replace with amount returned from iframe
+			$iframe.css('height', data.pollHeight);
+
+			openPoll($container, data, $loadingElement, true);
+		}, Math.floor((Math.random()*1000))); // fake load delay, up to 1 second
+	}
+
+	function closePoll($container) {
+		var $poll = $('.sayso-poll', $container).first();
+		$poll.slideUp(500);
+		$container.removeClass("sayso-poll-container-loading sayso-poll-container-current");
+	}
+
+	function completePoll($container) {
+		//@todo!
+
+		// show the completed tab link in case this is the first poll this user has completed
+		$('#sayso-completed-tab-link').show();
+	}
+
 	function processMarkupIntoContainer($container, markup, templateData, runPreTemplateHandlers) {
 		var template;
 
@@ -288,6 +398,16 @@ sayso.module.browserapp = (function(global, $, state, Handlebars) {
 		prepareElements($container, "post-template", templateData);
 	}
 
+	var handlebarsHelpers = {
+		"currency-name-highlighted": function(currency) {
+			// @todo add description to game.currencies
+			return new Handlebars.SafeString('<span class="sayso-element sayso-highlight sayso-tooltip" data-tooltip-title="'+state.state.game.currencies[currency].description+'">'+state.state.game.currencies[currency].name+'</span>');
+		},
+		"currency-name": function(currency) {
+			return state.state.game.currencies[currency].name;
+		}
+	};
+
 	// "section-link" corresponds to elements that have the class "sayso-section-link" (as well as "sayso-element")
 	// the "data" variable is, by default, simply $elem.data();
 	var prepareHandlers = {
@@ -296,7 +416,7 @@ sayso.module.browserapp = (function(global, $, state, Handlebars) {
 		"pre-template": {
 			"partial": function ($elem, data) {
 				// partial found, register the
-				Handlebars.registerPartial(data['partialId'], $elem.html());
+				Handlebars.registerPartial(data['partialId'], $elem.html().replace("{{&gt;", "{{>"));
 
 				// remove it from the markup so it doesn't go through the template processing (except as a partial)
 				$elem.remove();
@@ -338,6 +458,16 @@ sayso.module.browserapp = (function(global, $, state, Handlebars) {
 			},
 			"scrollable": function ($elem, data) {
 				// @todo make $elem have a custom JS scrollbar!
+			},
+			"tooltip": function ($elem, data) {
+				// @todo show data['tooltipTitle'] 'neatly' when you roll over this element
+				$elem.attr('title', data['tooltipTitle']); // hack
+			},
+			"poll-container": function ($elem, data) {
+				var $pollHeader = $('.sayso-poll-header', $elem);
+				$pollHeader.click(function() {
+					openPoll($elem, data); // note that openPoll takes the container ($elem) as a parameter, not $pollHeader
+				});
 			},
             "reward-item": function ($elem, data) {
                 $elem.click(function() {
@@ -412,6 +542,9 @@ sayso.module.browserapp = (function(global, $, state, Handlebars) {
 		},
 		"notification": {
 			// notification handlers here
+		},
+		"visibility": {
+			// visibility handlers here
 		}
 	};
 
@@ -419,7 +552,24 @@ sayso.module.browserapp = (function(global, $, state, Handlebars) {
 	// e.g. "polls" is a section and "polls-new" is a tab
 	var extraRequests = {
 		"polls": function (data) {
-			return this["polls-new"](data);
+			// new polls
+			var request = this["polls-new"](data);
+			// count of completed polls
+			request['countPollsCompleted'] = {
+				action_class : "survey",
+				action : "getSurveyCounts",
+				starbar_id : starbarId,
+				survey_type : "poll",
+				survey_status : "completed"
+			};
+			request['countPollsArchived'] = {
+				action_class : "survey",
+				action : "getSurveyCounts",
+				starbar_id : starbarId,
+				survey_type : "poll",
+				survey_status : "archived"
+			};
+			return request;
 		},
 		"polls-new": function (data) {
 			return {
@@ -454,16 +604,6 @@ sayso.module.browserapp = (function(global, $, state, Handlebars) {
 				}
 			}
 		},
-        "poll": function (data) {
-            return {
-                "poll": {
-                    starbar_id : starbarId,
-                    action_class : "survey",
-                    action : "getSurvey",
-                    survey_id : data['surveyId']
-                }
-            }
-        },
         "rewards": function (data) {
             return {
                 "rewards": {
@@ -475,5 +615,5 @@ sayso.module.browserapp = (function(global, $, state, Handlebars) {
         }
 	}
 
-})(this, jQuery, sayso.module.state, sayso.module.Handlebars)
+})(this, jQuery, sayso.module.state, sayso.module.comm, sayso.module.Handlebars)
 ;

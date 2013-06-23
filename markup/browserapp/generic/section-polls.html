@@ -1,23 +1,33 @@
 <div id="sayso-section-header">
 	<ul>
 		<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="polls-new">
-			{{#if polls.recordsReturned}}{{polls.recordsReturned}}{{/if}} New!
+			{{#if polls.recordsReturned}}
+				{{polls.recordsReturned}} New!
+			{{else}}
+				New
+			{{/if}}
 		</li>
-		<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="polls-completed">Completed</li>
-		<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="polls-archived">Archived</li>
+		{{#if countPollsCompleted.variables.count}}
+			<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="polls-completed">Completed</li>
+		{{/if}}
+		{{#if countPollsArchived.variables.count}}
+			<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="polls-archived">Archived</li>
+		{{/if}}
 	</ul>
 </div>
 <div id="sayso-section-body" class="sayso-element sayso-tab-container" data-default-tab="polls-new">
 	<div class="sayso-element sayso-tab" data-tab="polls-new">
-		<p class="sayso-heading-text">Polls are a speedy and effective way to find out what you love about Machinima. Each poll completed earns you XP & Coins. Gain bonus Coins & XP by sharing and tweeting your favorite polls, and look for special polls with point magnifiers.</p>
+		<p class="sayso-heading-text">Polls are a speedy and effective way to find out what you love about Machinima. Each poll completed earns you {{currency-name-highlighted "experience"}} & {{currency-name-highlighted "redeemable"}}. Gain bonus {{currency-name "redeemable"}} &amp; {{currency-name "experience"}} by sharing and tweeting your favorite polls, and look for special polls with point magnifiers.</p>
 		{{>polls-new}}
 	</div>
 	<div class="sayso-element sayso-tab" data-tab="polls-completed">
-		<p class="sayso-heading-text">Polls are a speedy and effective way to find out what you love about Machinima. Each poll completed earns you XP & Coins. Gain bonus Coins & XP by sharing and tweeting your favorite polls, and look for special polls with point magnifiers.</p>
+		<p class="sayso-heading-text">All of your completed surveys are listed below. Keep it up!</p>
 		{{>polls-completed}}
 	</div>
 	<div class="sayso-element sayso-tab" data-tab="polls-archived">
-		<p class="sayso-heading-text">Polls are a speedy and effective way to find out what you love about Machinima. Each poll completed earns you XP & Coins. Gain bonus Coins & XP by sharing and tweeting your favorite polls, and look for special polls with point magnifiers.</p>
+		<p class="sayso-heading-text">
+			We'd still love your opinion on these archived polls, and you can still earn by completing them! Same deal &em; earn {{currency-name-highlighted "redeemable"}} &amp; {{currency-name-highlighted "experience"}} for each one you complete.
+		</p>
 		{{>polls-archived}}
 		<!--<div class="sayso-element sayso-scrollable sayso-partial-container" data-partial-container-for="polls-archived"></div>-->
 	</div>
@@ -27,9 +37,9 @@
 <div class="sayso-element sayso-partial" data-partial-id="polls-new">
 	<div class="sayso-element sayso-scrollable">
 		{{#each polls.records}}
-			New poll: {{title}}<br />
+			{{>poll-new-archived}}
 		{{else}}
-			No new polls for you!<br />
+			Looks like you've completed all your polls!<br />
 		{{/each}}
 	</div>
 </div>
@@ -37,13 +47,36 @@
 <div class="sayso-element sayso-partial" data-partial-id="polls-completed">
 	<div class="sayso-element sayso-scrollable">
 		{{#each polls.records}}
-			Completed poll: {{title}}<br />
-		{{else}}
-			No completed or disqualified polls for you!<br />
+			{{>poll-completed-disqualified}}
 		{{/each}}
 	</div>
 </div>
 
 <div class="sayso-element sayso-partial" data-partial-id="polls-archived">
-	Templates are for suckas!<br />
+	<div class="sayso-element sayso-scrollable">
+		{{#each polls.records}}
+			{{>poll-new-archived}}
+		{{/each}}
+	</div>
 </div>
+
+<div class="sayso-element sayso-partial" data-partial-id="poll-new-archived">
+	<div class="sayso-element sayso-poll-container" data-survey-id="{{id}}" data-survey-external-id="{{external_id}}" data-survey-external-key="{{external_key}}" data-survey-number-of-answers="{{number_of_answers}}">
+		<div class="sayso-element sayso-poll-header">
+			<div class="sayso-poll-header-triangle"></div>
+			{{title}}
+		</div>
+		<div class="sayso-element sayso-poll"></div>
+	</div>
+</div>
+
+<div class="sayso-element sayso-partial" data-partial-id="poll-completed-disqualified">
+	<div class="sayso-completed-container">
+		<div class="sayso-completed-title"><div>{{title}}</div></div>
+		<div class="sayso-completed-points-earned">
+			<div class="sayso-completed-points-earned-experience"><div>+250{{points_earned_experience}}</div></div>
+			<div class="sayso-completed-points-earned-redeemable"><div>+19{{points_earned_redeemable}}</div></div>
+		</div>
+	</div>
+</div>
+

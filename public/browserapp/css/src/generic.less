@@ -399,6 +399,10 @@
 			}
 		}
 
+		.sayso-heading-text {
+			margin-bottom: 10px;
+		}
+
 		#sayso-section-footer {
 			display: none;
 		}
@@ -482,6 +486,53 @@
 			#sayso-section-header {
 				background-image: url('@{base-image-url}/section-heading-polls.png');
 			}
+
+			.sayso-poll-container {
+				margin-top: 5px;
+				border: 1px solid #c7c7c7;
+
+				.sayso-poll-header {
+					padding: 6px 8px;
+					font-size: 15px;
+					font-weight: bold;
+					cursor: pointer;
+
+					.sayso-poll-header-triangle {
+						float: right;
+						width: 17px;
+						height: 18px;
+						background-image: url('@{base-image-url}/arrow-right.png');
+						.transition-duration();
+					}
+
+					&:hover {
+						background-color: #f2e4ba;
+					}
+				}
+
+				.sayso-poll {
+					position: relative;
+					display: none;
+				}
+			}
+
+			.sayso-poll-container-loading, .sayso-poll-container-current {
+				.sayso-poll-header {
+					.sayso-poll-header-triangle {
+						.transform(rotate(90deg));
+					}
+
+					&:hover {
+						background-color: transparent;
+					}
+				}
+			}
+
+			.sayso-poll-iframe {
+				height: 100%;
+				width: 100%;
+				overfloat: hidden;
+			}
 		}
 
 		#sayso-section-triangle-white, #sayso-section-triangle-grey {
@@ -491,7 +542,68 @@
 
 	}
 
-    &.sayso-section-rewards {
+	&.sayso-section-surveys, &.sayso-section-tour-surveys {
+
+	}
+
+	.sayso-completed-container {
+		position: relative;
+		height: 57px;
+		border: 1px solid #c2c2c2;
+
+		.sayso-completed-title {
+			float: left;
+			padding-left: 45px;
+			margin: 10px 0 10px 5px;
+			background-image: url('@{base-image-url}/icon-completed.png');
+			background-repeat: no-repeat;
+			vertical-align: middle;
+
+			div {
+				width: 362px;
+				height: 37px;
+				line-height: 37px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				font-weight: bold;
+				font-size: 11px;
+			}
+		}
+
+		.sayso-completed-points-earned {
+			width: 65px;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			position: absolute;
+			border-left: 1px solid #c2c2c2;
+			background-color: #e4e4e4;
+
+			.sayso-completed-points-earned-experience, .sayso-completed-points-earned-redeemable {
+				background-repeat: no-repeat;
+				background-position: 2px 3px;
+				div {
+					height: 28px;
+					line-height: 28px;
+					padding-left: 28px;
+					font-size: 11px;
+					color: @theme-color-links;
+				}
+			}
+
+			.sayso-completed-points-earned-experience {
+				background-image: url('@{base-image-url}/icon-experience-small.png');
+				border-bottom: 1px solid #c2c2c2;
+			}
+
+			.sayso-completed-points-earned-redeemable {
+				background-image: url('@{base-image-url}/icon-redeemable-small.png');
+			}
+		}
+	}
+
+    &.sayso-section-rewards, &.sayso-section-tour-rewards {
       #sayso-section {
         left: auto;
         right: 0;
@@ -610,7 +722,7 @@
                     span {
                         color: white;
                         font-size: 10px;
-                        background-image: url("@{base-image-url}/icon_lock.png");
+                        background-image: url("@{base-image-url}/icon-lock.png");
                         background-repeat: no-repeat;
                         background-position: 2px 3px;
                         padding: 2px 0px 0px 15px;

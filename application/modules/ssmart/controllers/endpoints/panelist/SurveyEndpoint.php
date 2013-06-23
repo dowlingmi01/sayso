@@ -122,6 +122,16 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		$type			= $request->valid_parameters["survey_type"];
 		$surveyUserStatus	= isset($request->valid_parameters["survey_status"]) ? $request->valid_parameters["survey_status"] : NULL;
 
+		$type = str_replace("surveys", "survey", $type);
+		$type = str_replace("polls", "poll", $type);
+		$type = str_replace("trailers", "trailer", $type);
+		$type = str_replace("quizzes", "quiz", $type);
+
+		if (in_array($type, ["poll", "survey"]) && in_array($surveyUserStatus, ["new", "archived"])) {
+			Survey_ResponseCollection::markOldSurveysArchivedForStarbarAndUser($starbarId, $userId, $type);
+			Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($starbarId, $userId, $type);
+		}
+
 		$surveyCollection = new SurveyCollection();
 		//TODO: refactor this function to accept pagination at this level instead of getting the entire result set and parsing it down.
 		$surveyCollection->loadSurveysForStarbarAndUser ($starbarId, $userId, $type, $surveyUserStatus);
@@ -155,7 +165,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 	 * @param Ssmart_EndpointRequest $request
 	 * @return \Ssmart_EndpointResponse
 	 */
-	public function getSurveysCounts(Ssmart_EndpointRequest $request)
+	public function getSurveyCounts(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
 				"starbar_id"		=> "int_required_notEmpty",
@@ -170,7 +180,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$surveyType		= $request->valid_parameters["survey_type"]; //TODO: make this optional
+		$surveyType		= $request->valid_parameters["survey_type"]; //TODO: make this optional [Why? -- Hamza]
 		$starbarId			= $request->valid_parameters["starbar_id"];
 		$userId			= $request->auth->user_data->user_id;
 		$status			= isset($request->valid_parameters["survey_status"]) ? $request->valid_parameters["survey_status"] : "active";

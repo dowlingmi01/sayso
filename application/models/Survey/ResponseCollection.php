@@ -2,7 +2,7 @@
 
 class Survey_ResponseCollection extends RecordCollection
 {
-	static public function markUnseenSurveysNewForStarbarAndUser ($starbarId, $userId, $type, $maximumToDisplay) {
+	static public function markUnseenSurveysNewForStarbarAndUser ($starbarId, $userId, $type, $maximumToDisplay = null) {
 		$limitClause = "";
 
 		$userId = intval($userId);

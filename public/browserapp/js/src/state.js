@@ -9,6 +9,8 @@ sayso.module.state = (function(global, $, comm) {
 		logout: logout,
 		apiCall: apiCall,
 		apiAddRequest: apiAddRequest,
+		apiAddRequests: apiAddRequests,
+		apiSendRequest: apiSendRequest,
 		apiSendRequests: apiSendRequests
 	};
 	var stateListeners = {
@@ -36,6 +38,7 @@ sayso.module.state = (function(global, $, comm) {
 			}
 		}
 	};
+	// resets api requests before sending
 	function apiAddRequest( requestName, requestData ) {
 		var requests = {};
 		requests[requestName] = requestData;
@@ -43,6 +46,11 @@ sayso.module.state = (function(global, $, comm) {
 	}
 	function apiAddRequests( requests ) {
 		comm.request('api-add-requests', requests );
+	}
+	// resets api requests before sending
+	function apiSendRequest( requestName, requestData, callback ) {
+		apiAddRequest( requestName, requestData );
+		apiSendRequests( callback );
 	}
 	function apiSendRequests( callback ) {
 		comm.request('api-send-requests', null, callback );
@@ -60,6 +68,7 @@ sayso.module.state = (function(global, $, comm) {
 		return function(data) {
 			publicVar.state = data;
 			publicVar.ready = true;
+			publicVar.in_iframe = (window.top != window); // @todo needs fix for firefox?
 			$(global.document).trigger('sayso:state-' + eventName);
 		}
 	}

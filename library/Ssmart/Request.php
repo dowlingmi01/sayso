@@ -194,7 +194,7 @@ class Ssmart_Request
 				$v = $this->_convertArrayToObject($v);
 			}
 
-			$obj->{strtolower($k)} = $v;
+			$obj->{$k} = $v;
 		}
 		return $obj;
 	}

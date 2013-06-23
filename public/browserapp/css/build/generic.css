@@ -423,6 +423,9 @@
   padding: 0;
   border-right: none;
 }
+#sayso-section-container #sayso-section .sayso-heading-text {
+  margin-bottom: 10px;
+}
 #sayso-section-container #sayso-section #sayso-section-footer {
   display: none;
 }
@@ -490,6 +493,60 @@
 #sayso-section-container.sayso-section-tour-polls #sayso-section #sayso-section-header {
   background-image: url('../../images/generic/section-heading-polls.png');
 }
+#sayso-section-container.sayso-section-polls #sayso-section .sayso-poll-container,
+#sayso-section-container.sayso-section-tour-polls #sayso-section .sayso-poll-container {
+  margin-top: 5px;
+  border: 1px solid #c7c7c7;
+}
+#sayso-section-container.sayso-section-polls #sayso-section .sayso-poll-container .sayso-poll-header,
+#sayso-section-container.sayso-section-tour-polls #sayso-section .sayso-poll-container .sayso-poll-header {
+  padding: 6px 8px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+#sayso-section-container.sayso-section-polls #sayso-section .sayso-poll-container .sayso-poll-header .sayso-poll-header-triangle,
+#sayso-section-container.sayso-section-tour-polls #sayso-section .sayso-poll-container .sayso-poll-header .sayso-poll-header-triangle {
+  float: right;
+  width: 17px;
+  height: 18px;
+  background-image: url('../../images/generic/arrow-right.png');
+  -moz-transition-duration: 0.2s;
+  -webkit-transition-duration: 0.2s;
+  -o-transition-duration: 0.2s;
+  transition-duration: 0.2s;
+}
+#sayso-section-container.sayso-section-polls #sayso-section .sayso-poll-container .sayso-poll-header:hover,
+#sayso-section-container.sayso-section-tour-polls #sayso-section .sayso-poll-container .sayso-poll-header:hover {
+  background-color: #f2e4ba;
+}
+#sayso-section-container.sayso-section-polls #sayso-section .sayso-poll-container .sayso-poll,
+#sayso-section-container.sayso-section-tour-polls #sayso-section .sayso-poll-container .sayso-poll {
+  position: relative;
+  display: none;
+}
+#sayso-section-container.sayso-section-polls #sayso-section .sayso-poll-container-loading .sayso-poll-header .sayso-poll-header-triangle,
+#sayso-section-container.sayso-section-tour-polls #sayso-section .sayso-poll-container-loading .sayso-poll-header .sayso-poll-header-triangle,
+#sayso-section-container.sayso-section-polls #sayso-section .sayso-poll-container-current .sayso-poll-header .sayso-poll-header-triangle,
+#sayso-section-container.sayso-section-tour-polls #sayso-section .sayso-poll-container-current .sayso-poll-header .sayso-poll-header-triangle {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+#sayso-section-container.sayso-section-polls #sayso-section .sayso-poll-container-loading .sayso-poll-header:hover,
+#sayso-section-container.sayso-section-tour-polls #sayso-section .sayso-poll-container-loading .sayso-poll-header:hover,
+#sayso-section-container.sayso-section-polls #sayso-section .sayso-poll-container-current .sayso-poll-header:hover,
+#sayso-section-container.sayso-section-tour-polls #sayso-section .sayso-poll-container-current .sayso-poll-header:hover {
+  background-color: transparent;
+}
+#sayso-section-container.sayso-section-polls #sayso-section .sayso-poll-iframe,
+#sayso-section-container.sayso-section-tour-polls #sayso-section .sayso-poll-iframe {
+  height: 100%;
+  width: 100%;
+  overfloat: hidden;
+}
 #sayso-section-container.sayso-section-polls #sayso-section-triangle-white,
 #sayso-section-container.sayso-section-tour-polls #sayso-section-triangle-white,
 #sayso-section-container.sayso-section-polls #sayso-section-triangle-grey,
@@ -497,29 +554,86 @@
   display: block;
   left: 373px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section {
+#sayso-section-container .sayso-completed-container {
+  position: relative;
+  height: 57px;
+  border: 1px solid #c2c2c2;
+}
+#sayso-section-container .sayso-completed-container .sayso-completed-title {
+  float: left;
+  padding-left: 45px;
+  margin: 10px 0 10px 5px;
+  background-image: url('../../images/generic/icon-completed.png');
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+#sayso-section-container .sayso-completed-container .sayso-completed-title div {
+  width: 362px;
+  height: 37px;
+  line-height: 37px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: bold;
+  font-size: 11px;
+}
+#sayso-section-container .sayso-completed-container .sayso-completed-points-earned {
+  width: 65px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  border-left: 1px solid #c2c2c2;
+  background-color: #e4e4e4;
+}
+#sayso-section-container .sayso-completed-container .sayso-completed-points-earned .sayso-completed-points-earned-experience,
+#sayso-section-container .sayso-completed-container .sayso-completed-points-earned .sayso-completed-points-earned-redeemable {
+  background-repeat: no-repeat;
+  background-position: 2px 3px;
+}
+#sayso-section-container .sayso-completed-container .sayso-completed-points-earned .sayso-completed-points-earned-experience div,
+#sayso-section-container .sayso-completed-container .sayso-completed-points-earned .sayso-completed-points-earned-redeemable div {
+  height: 28px;
+  line-height: 28px;
+  padding-left: 28px;
+  font-size: 11px;
+  color: #c02526;
+}
+#sayso-section-container .sayso-completed-container .sayso-completed-points-earned .sayso-completed-points-earned-experience {
+  background-image: url('../../images/generic/icon-experience-small.png');
+  border-bottom: 1px solid #c2c2c2;
+}
+#sayso-section-container .sayso-completed-container .sayso-completed-points-earned .sayso-completed-points-earned-redeemable {
+  background-image: url('../../images/generic/icon-redeemable-small.png');
+}
+#sayso-section-container.sayso-section-rewards #sayso-section,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section {
   left: auto;
   right: 0;
   width: auto;
   height: 438px;
   background-color: #383838;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section #sayso-section-header {
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-section-header,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-section-header {
   background-image: url('../../images/generic/section-heading-rewards.png');
   background-color: #ffffff;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section #sayso-section-header p.sayso-highlight {
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-section-header p.sayso-highlight,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-section-header p.sayso-highlight {
   margin-top: 32px;
   height: 60px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section #sayso-section-body {
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-section-body,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-section-body {
   background-color: #ffffff;
   height: 338px;
   width: 500px;
   padding-top: 20px;
   overflow: hidden;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item {
   width: auto;
   height: 230px;
   float: left;
@@ -530,7 +644,8 @@
   position: relative;
   z-index: 1;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-header {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-header,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-header {
   padding: 5px 10px;
   text-align: center;
   overflow: hidden;
@@ -542,25 +657,29 @@
   position: relative;
   width: 130px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-img {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-img,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-img {
   text-align: center;
   padding: 5px 0px;
   background-color: #ffffff;
   height: 85px;
   overflow: hidden;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom {
   text-align: center;
   padding: 0px 5px 10px;
   bottom: 0px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-points-box {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-points-box,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-points-box {
   height: 30px;
   position: relative;
   display: block;
   padding: 10px 0px 0px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-points-logo {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-points-logo,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-points-logo {
   position: absolute;
   z-index: 2;
   background-repeat: no-repeat;
@@ -571,7 +690,8 @@
   margin-top: -3px;
   background-image: url('../../images/generic/icon-redeemable-medium.png');
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container {
   background-color: black;
   border: 2px solid #ffffff;
   margin: 0px auto;
@@ -581,7 +701,8 @@
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar {
   height: 100%;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.22, #c4760c), color-stop(0.61, #fde771));
   background-image: -moz-linear-gradient(center top, #c4760c 22%, #fde771 61%);
@@ -590,7 +711,8 @@
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar-value {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar-value,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar-value {
   position: absolute;
   top: 13px;
   left: 0;
@@ -601,19 +723,22 @@
   width: 100%;
   text-align: center;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-lvl-req {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-lvl-req,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-lvl-req {
   height: 14px;
   margin: -10px 0px 10px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-lvl-req span {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-lvl-req span,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-lvl-req span {
   color: white;
   font-size: 10px;
-  background-image: url("../../images/generic/icon_lock.png");
+  background-image: url("../../images/generic/icon-lock.png");
   background-repeat: no-repeat;
   background-position: 2px 3px;
   padding: 2px 0px 0px 15px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-redeem {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-redeem,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-redeem {
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.22, #555555), color-stop(0.61, #333333));
   background-image: -moz-linear-gradient(center top, #555555 22%, #333333 61%);
   background-color: #333333;
@@ -630,11 +755,13 @@
   line-height: 30px;
   color: white;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container {
   background-color: white;
   width: 250px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-header {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-header,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-header {
   padding: 5px 10px;
   text-align: center;
   overflow: hidden;
@@ -646,24 +773,28 @@
   position: relative;
   width: 130px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-img {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-img,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-img {
   text-align: center;
   padding: 5px 0px;
   background-color: #ffffff;
   height: 85px;
   overflow: hidden;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left {
   float: left;
   width: 50%;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left .sayso-reward-item-points-box {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left .sayso-reward-item-points-box,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left .sayso-reward-item-points-box {
   height: 30px;
   position: relative;
   display: block;
   padding: 10px 0px 0px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left .sayso-reward-item-points-box .sayso-reward-item-points-logo {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left .sayso-reward-item-points-box .sayso-reward-item-points-logo,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left .sayso-reward-item-points-box .sayso-reward-item-points-logo {
   position: absolute;
   z-index: 2;
   background-repeat: no-repeat;
@@ -674,7 +805,8 @@
   margin-top: -3px;
   background-image: url('../../images/generic/icon-redeemable-medium.png');
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container {
   background-color: black;
   border: 2px solid #ffffff;
   margin: 0px auto;
@@ -684,7 +816,8 @@
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar {
   height: 100%;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.22, #c4760c), color-stop(0.61, #fde771));
   background-image: -moz-linear-gradient(center top, #c4760c 22%, #fde771 61%);
@@ -693,7 +826,8 @@
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar-value {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar-value,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-left .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar-value {
   position: absolute;
   top: 13px;
   left: 0;
@@ -704,17 +838,20 @@
   width: 100%;
   text-align: center;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right {
   float: right;
   width: 50%;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right .sayso-reward-item-points-box {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right .sayso-reward-item-points-box,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right .sayso-reward-item-points-box {
   height: 30px;
   position: relative;
   display: block;
   padding: 10px 0px 0px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right .sayso-reward-item-points-box .sayso-reward-item-points-logo {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right .sayso-reward-item-points-box .sayso-reward-item-points-logo,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right .sayso-reward-item-points-box .sayso-reward-item-points-logo {
   position: absolute;
   z-index: 2;
   background-repeat: no-repeat;
@@ -725,7 +862,8 @@
   margin-top: -3px;
   background-image: url('../../images/generic/icon-redeemable-medium.png');
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container {
   background-color: black;
   border: 2px solid #ffffff;
   margin: 0px auto;
@@ -735,7 +873,8 @@
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar {
   height: 100%;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.22, #c4760c), color-stop(0.61, #fde771));
   background-image: -moz-linear-gradient(center top, #c4760c 22%, #fde771 61%);
@@ -744,7 +883,8 @@
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar-value {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar-value,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-redeem-order-bottom-right .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar-value {
   position: absolute;
   top: 13px;
   left: 0;
@@ -755,13 +895,16 @@
   width: 100%;
   text-align: center;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-quantity select {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-quantity select,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-quantity select {
   width: 100%;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-information p {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-information p,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-information p {
   text-wrap: normal;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-submit {
+#sayso-section-container.sayso-section-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-submit,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section .sayso-reward-item .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-submit {
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.22, #dc1a22), color-stop(0.61, #70080c));
   background-image: -moz-linear-gradient(center top, #dc1a22 22%, #70080c 61%);
   background-color: #70080c;
@@ -778,7 +921,8 @@
   line-height: 30px;
   color: white;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section #sayso-section-reward-redeem {
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-section-reward-redeem,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-section-reward-redeem {
   height: 100%;
   width: 100%;
   margin: 0 auto;
@@ -787,13 +931,15 @@
   z-index: 20;
   display: none;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step {
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step {
   margin: 20px auto;
   width: 250px;
   height: 290px;
   background-color: #555555;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-header {
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-header,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-header {
   padding: 5px 10px;
   text-align: center;
   overflow: hidden;
@@ -805,25 +951,29 @@
   position: relative;
   margin: 0 auto;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-img {
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-img,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-img {
   text-align: center;
   padding: 5px 0px;
   background-color: #ffffff;
   height: 85px;
   overflow: hidden;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom {
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom {
   text-align: center;
   padding: 0px 5px 10px;
   bottom: 0px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box {
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box {
   height: 30px;
   position: relative;
   display: block;
   padding: 10px 0px 0px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-points-logo {
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-points-logo,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-points-logo {
   position: absolute;
   z-index: 2;
   background-repeat: no-repeat;
@@ -835,7 +985,8 @@
   margin-top: -3px;
   background-image: url('../../images/generic/icon-redeemable-medium.png');
 }
-#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container {
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container {
   background-color: black;
   border: 2px solid #ffffff;
   margin: 0px auto;
@@ -845,7 +996,8 @@
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar {
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar {
   height: 100%;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.22, #c4760c), color-stop(0.61, #fde771));
   background-image: -moz-linear-gradient(center top, #c4760c 22%, #fde771 61%);
@@ -854,7 +1006,8 @@
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar-value {
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar-value,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container .sayso-reward-item-progress-bar-value {
   position: absolute;
   top: 13px;
   left: 0;
@@ -865,14 +1018,16 @@
   width: 100%;
   text-align: center;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-comment {
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-comment,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-comment {
   color: black;
   font-size: 12px;
   font-weight: bold;
   margin: 0 10px;
   height: 70px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-redeem-submit {
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-redeem-submit,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-redeem-submit {
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.22, #dc1a22), color-stop(0.61, #70080c));
   background-image: -moz-linear-gradient(center top, #dc1a22 22%, #70080c 61%);
   background-color: #70080c;
@@ -890,10 +1045,12 @@
   color: white;
   cursor: pointer;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section-triangle-grey {
+#sayso-section-container.sayso-section-rewards #sayso-section-triangle-grey,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section-triangle-grey {
   display: block;
   left: 950px;
 }
-#sayso-section-container.sayso-section-rewards #sayso-section-triangle-white {
+#sayso-section-container.sayso-section-rewards #sayso-section-triangle-white,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section-triangle-white {
   display: none;
 }

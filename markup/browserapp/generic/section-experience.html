@@ -1,27 +1,25 @@
-<div id="sayso-section-header">
-</div>
+<div id="sayso-section-header"></div>
 <div id="sayso-section-body">
     <p>Levels</p>
-    {{#each game.variables.game.levels}}
-    {{>level_partial}}
+    {{#each game.levels}}
+    	{{>level_partial}}
     {{/each}}
     <hr />
-    <p>XP</p>
-    {{game.variables.currencies.experience.balance}}
-    <p>Coins</p>
-    {{game.variables.currencies.redeemable.balance}}
+
+    <p>{{currency-name "experience"}}</p>
+    {{game.currencies.experience.balance}}
+    <p>{{currency-name "redeemable"}}</p>
+    {{game.currencies.redeemable.balance}}
     <hr />
+
     <p>My Purchases</p>
-    {{#each game.variables.game.purchasables}}
-    {{>purchasables_partial}}
+    {{#each game.purchasables}}
+    	{{>purchasables_partial}}
     {{/each}}
     <hr />
-
-
 </div>
-<div id="sayso-section-footer">
-    experience section footer
-</div>
+<div id="sayso-section-footer"></div>
+
 
 <div class="sayso-element sayso-partial" data-partial-id="level_partial">
     <div class="sayso-element sayso-experience-level-item" data-level-id="{{id}}"

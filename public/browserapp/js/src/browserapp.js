@@ -391,6 +391,9 @@ sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
 			template = Handlebars.compile(markup);
 		}
 
+		// always attach the game to the template
+		templateData.game = state.state.game;
+
 		// pass the api response (templateData) to the template as data, and render
 		$container.append(template(templateData));
 
@@ -610,15 +613,6 @@ sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
                     starbar_id : starbarId,
                     action_class : "game",
                     action : "getStarbarGoods"
-                }
-            };
-        },
-        "experience": function (data) {
-            return {
-                "game": {
-                    starbar_id : starbarId,
-                    action_class : "game",
-                    action : "getGame"
                 }
             };
         }

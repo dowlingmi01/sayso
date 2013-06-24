@@ -7,12 +7,12 @@ sayso.module.comm = (function(global, $, util) {
 	function handleMessage( event ) {
 		try {
 			var data = JSON.parse(event.data);
-			if( typeof data == 'string' )
+			if( typeof data === 'string' )
 				data = JSON.parse(data);
-			if( data[0] && data[0] == 'sayso-background-reply' && data[1] && data[1].id && requests[data[1].id]) {
+			if( data[0] && data[0] === 'sayso-background-reply' && data[1] && data[1].id && requests[data[1].id]) {
 				requests[data[1].id](data[1].data);
 				delete requests[data[1].id];
-			} else if( data[0] && data[0] == 'sayso-broadcast' && data[1] && data[1].name && listeners[data[1].name]) {
+			} else if( data[0] && data[0] === 'sayso-broadcast' && data[1] && data[1].name && listeners[data[1].name]) {
 				listeners[data[1].name](data[1].data);
 			}
 		} catch( e ) {

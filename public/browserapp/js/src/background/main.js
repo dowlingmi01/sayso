@@ -13,7 +13,7 @@
 	var pendingRequests = {};
 	function login( data, callback ) {
 		api.sendRequest( {action_class: 'Login', action: 'login', username: data.email, password: data.password}, function( data ) {
-			var session = data.responses.default.variables;
+			var session = data.responses['default'].variables;
 			if (session) {
 				session = { id: session.session_id, key: session.session_key };
 				comm.set('session', session, function() {
@@ -105,7 +105,7 @@
 			notifications: state.notifications[starbarId],
 			game: state.games[starbarId],
 			baseDomain: state.baseDomain
-		}
+		};
 	}
 	function addPendingRequest( starbarId, callback ) {
 		if( !pendingRequests[starbarId] )
@@ -129,7 +129,7 @@
 		}
 	}
 	function apiSendRequests( data, callback ) {
-		api.sendRequests( processApiResponse )
+		api.sendRequests( processApiResponse );
 		function processApiResponse( data ) {
 			callback(data);
 			if( starbarId && data.common_data && data.common_data.game ) {

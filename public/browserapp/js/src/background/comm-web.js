@@ -15,14 +15,14 @@ sayso.module.comm = (function(global, $, util) {
 		return function( data ) {
 			if( id )
 				global.top.postMessage( JSON.stringify(['sayso-background-reply', {id: id, data: data}]), '*');
-		}
+		};
 	}
 	function handleMessage( event ) {
 		try {
 			var data = JSON.parse(event.data);
-			if( typeof data == 'string' )
+			if( typeof data === 'string' )
 				data = JSON.parse(data);
-			if( data[0] && data[0] == 'sayso-frontend-request' && data[1] && data[1].name && listeners[data[1].name])
+			if( data[0] && data[0] === 'sayso-frontend-request' && data[1] && data[1].name && listeners[data[1].name])
 				listeners[data[1].name](data[1].data, getReplyCallback(data[1].id));
 		} catch( e ) {
 			console.log(e.stack);

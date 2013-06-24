@@ -56,11 +56,11 @@ sayso.module.Api = (function(comm) {
 			var protocol = "http://";
 			var requestsToReset = (keepRequests ? false : this.requests);
 
-			if (typeof fb == "undefined") {
+			if (typeof fb === "undefined") {
 				fb = function(e) {
 					console.log('API Error(s):');
 					console.log(e);
-				}
+				};
 			}
 
 			comm.ajax({
@@ -96,7 +96,7 @@ sayso.module.Api = (function(comm) {
 		/**
 		 * Holds the request params so they are separate from the functions
 		 */
-		this.params = {}
+		this.params = {};
 
 	};
 
@@ -113,7 +113,7 @@ sayso.module.Api = (function(comm) {
 		 * @param {String} value
 		 */
 		setParam: function(requestName, name, value) {
-			if (!requestName in this.params)
+			if (!this.params[requestName])
 				this.params[requestName] = {};
 			this.params[requestName][name] = value;
 		},

@@ -506,7 +506,7 @@ $SQ(function(){
 			var surveyId = (starbar.id == 3 ? 1865 : 1864); // app-qa survey ids -- movie : social
 			var surveySrc = '//'+sayso.baseDomain+'/starbar/' + sayso.starbar.shortName + '/embed-survey?survey_id=' + surveyId;
 			if (src != surveySrc)
-				return openPopBox($SQ('#sb_popBox_surveys_hg'), surveySrc, true);
+				return openPopBox($SQ('#sb_popBox_surveys_ug'), surveySrc, true);
 		}
 
 		var ajaxContentContainer = null;

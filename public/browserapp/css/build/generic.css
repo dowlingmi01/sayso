@@ -481,7 +481,6 @@
 #sayso-section-container.sayso-section-user-profile #sayso-section-triangle-grey {
   display: block;
   left: 300px;
-  top: -30px;
 }
 #sayso-section-container.sayso-section-polls #sayso-section,
 #sayso-section-container.sayso-section-tour-polls #sayso-section {
@@ -1055,23 +1054,15 @@
   display: none;
 }
 #sayso-section-container.sayso-section-experience #sayso-section {
-  left: -380;
-  width: auto;
-  height: 406px;
-  background-color: #383838;
+  left: 412px;
+  width: 570px;
+  height: 400px;
 }
 #sayso-section-container.sayso-section-experience #sayso-section #sayso-section-header {
   background-image: url('../../images/generic/section-heading-experience.png');
-  background-color: #ffffff;
 }
-#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-header p.sayso-highlight {
-  margin-top: 32px;
-  height: 60px;
-}
-#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body {
-  background-color: #ffffff;
-  height: 338px;
-  width: 600px;
-  padding-top: 20px;
-  overflow: hidden;
+#sayso-section-container.sayso-section-experience #sayso-section-triangle-white,
+#sayso-section-container.sayso-section-experience #sayso-section-triangle-grey {
+  display: block;
+  left: 820px;
 }

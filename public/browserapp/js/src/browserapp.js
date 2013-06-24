@@ -386,7 +386,7 @@ sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
 			prepareElements($tempContainer, "pre-template");
 
 			// compile the markup into a handlebars template
-			template = Handlebars.compile($tempContainer.html().replace("{{&gt;", "{{>"));
+			template = Handlebars.compile($tempContainer.html().replace(/{{&gt;/g, "{{>"));
 		} else {
 			template = Handlebars.compile(markup);
 		}
@@ -416,7 +416,7 @@ sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
 		"pre-template": {
 			"partial": function ($elem, data) {
 				// partial found, register the
-				Handlebars.registerPartial(data['partialId'], $elem.html().replace("{{&gt;", "{{>"));
+				Handlebars.registerPartial(data['partialId'], $elem.html().replace(/{{&gt;/g, "{{>"));
 
 				// remove it from the markup so it doesn't go through the template processing (except as a partial)
 				$elem.remove();
@@ -431,7 +431,7 @@ sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
 					$tab = $(this);
 
 					// need to replace "{{&gt;" with "{{>" because jQuery is a big jerk
-					tabs[$tab.data('tab')] = $tab.html().replace("{{&gt;", "{{>");
+					tabs[$tab.data('tab')] = $tab.html().replace(/{{&gt;/g, "{{>");
 
 					// empty the tab, so it isn't processed by handlebars
 					$tab.html("");

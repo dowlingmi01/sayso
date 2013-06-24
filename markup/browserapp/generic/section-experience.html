@@ -1,0 +1,64 @@
+<div id="sayso-section-header">
+</div>
+<div id="sayso-section-body">
+    <p>Levels</p>
+    {{#each game.variables.game.levels}}
+    {{>level_partial}}
+    {{/each}}
+    <hr />
+    <p>XP</p>
+    {{game.variables.currencies.experience.balance}}
+    <p>Coins</p>
+    {{game.variables.currencies.redeemable.balance}}
+    <hr />
+    <p>My Purchases</p>
+    {{#each game.variables.game.purchasables}}
+    {{>purchasables_partial}}
+    {{/each}}
+    <hr />
+
+
+</div>
+<div id="sayso-section-footer">
+    experience section footer
+</div>
+
+<div class="sayso-element sayso-partial" data-partial-id="level_partial">
+    <div class="sayso-element sayso-experience-level-item" data-level-id="{{id}}"
+         data-level-name="{{name}}" data-level-description="{{description}}" data-level-game-asset-id="{{game-asset_id}}"
+         data-level-img-src="{{img_url_small}}" data-level-ordinal="{{ordinal}}" data-level-threshold="{{threshold}}">
+        {{name}}{{threshold}}
+        <!--AVAILABLE PARAMS-->
+        <!--{{created}}-->
+        <!--{{description}}-->
+        <!--{{game-asset_id}}-->
+        <!--{{id}}-->
+        <!--{{img_url}}-->
+        <!--{{img_url_small}}-->
+        <!--{{modified}}-->
+        <!--{{name}}-->
+        <!--{{ordinal}}-->
+        <!--{{threshold}}-->
+    </div>
+</div>
+
+<div class="sayso-element sayso-partial" data-partial-id="purchasables_partial">
+    <div class="sayso-element sayso-experience-purchases-item" data-level-id="{{id}}"
+         data-level-name="{{name}}" data-level-threshold="{{price}}" data-level-threshold="{{img_url_preview_bought}}">
+        {{name}}{{price}}
+        <!--AVAILABLE PARAMS-->
+        <!--{{available}}-->
+        <!--{{bdid}}-->
+        <!--{{economy_id}}-->
+        <!--{{id}}-->
+        <!--{{img_url}}-->
+        <!--{{img_url_preview}}-->
+        <!--{{img_url_preview_bought}}-->
+        <!--{{name}}-->
+        <!--{{price}}-->
+        <!--{{quantity}}-->
+        <!--{{type}}-->
+        <!--{{unavailable_message}}-->
+        <!--{{visible}}-->
+    </div>
+</div>

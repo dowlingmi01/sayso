@@ -612,6 +612,15 @@ sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
                     action : "getStarbarGoods"
                 }
             };
+        },
+        "experience": function (data) {
+            return {
+                "game": {
+                    starbar_id : starbarId,
+                    action_class : "game",
+                    action : "getGame"
+                }
+            };
         }
 	}
 

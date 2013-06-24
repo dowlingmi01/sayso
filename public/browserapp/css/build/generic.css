@@ -1054,3 +1054,24 @@
 #sayso-section-container.sayso-section-tour-rewards #sayso-section-triangle-white {
   display: none;
 }
+#sayso-section-container.sayso-section-experience #sayso-section {
+  left: -380;
+  width: auto;
+  height: 406px;
+  background-color: #383838;
+}
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-header {
+  background-image: url('../../images/generic/section-heading-experience.png');
+  background-color: #ffffff;
+}
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-header p.sayso-highlight {
+  margin-top: 32px;
+  height: 60px;
+}
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body {
+  background-color: #ffffff;
+  height: 338px;
+  width: 600px;
+  padding-top: 20px;
+  overflow: hidden;
+}

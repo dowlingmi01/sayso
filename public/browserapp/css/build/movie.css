@@ -1061,8 +1061,27 @@
 #sayso-section-container.sayso-section-experience #sayso-section #sayso-section-header {
   background-image: url('../../images/movie/section-heading-experience.png');
 }
-#sayso-section-container.sayso-section-experience #sayso-section-triangle-white,
 #sayso-section-container.sayso-section-experience #sayso-section-triangle-grey {
+  display: block;
+  left: 820px;
+}
+#sayso-section-container.sayso-section-experience #sayso-section-triangle-white {
+  display: none;
+}
+#sayso-section-container.sayso-section-promos #sayso-section {
+  left: 470px;
+  width: 520px;
+  height: 296px;
+}
+#sayso-section-container.sayso-section-promos #sayso-section #sayso-section-triangle-grey {
+  display: block;
+  left: 820px;
+}
+#sayso-section-container.sayso-section-promos #sayso-section #sayso-section-triangle-white {
+  display: none;
+}
+#sayso-section-container.sayso-section-promos #sayso-section #sayso-promo-image-2,
+#sayso-section-container.sayso-section-promos #sayso-section #sayso-promo-image-3 {
   display: block;
   left: 820px;
 }

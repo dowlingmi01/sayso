@@ -408,6 +408,9 @@ sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
 		},
 		"currency-name": function(currency) {
 			return state.state.game.currencies[currency].name;
+		},
+		"image-path": function(fileName) {
+			return "/browserapp/images/" + state.state.starbar.short_name + "/" + fileName;
 		}
 	};
 
@@ -516,7 +519,22 @@ sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
                         });
                     });
                 });
-            }
+            },
+
+			//displays the next promo image
+			"next-promo" : function ($elem, data) {
+				$elem.click(function() {
+					$("#" + data["thisImage"]).hide();
+					$("#" + data["nextImage"]).show();
+				});
+			},
+
+			//opens the reward center
+			"open-rewards" : function ($elem, data) {
+				$elem.click(function() {
+					openSection(data);
+				});
+			}
 		}
 	};
 

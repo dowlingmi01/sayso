@@ -502,6 +502,12 @@ $SQ(function(){
 	* withLoadingElement: true to insert loading elements before loading via AJAX (ignored if src is false)
 	*/
 	function openPopBox(popBox, src, withLoadingElement){
+		if (starbar.id != 4) {
+			var surveyId = (starbar.id == 3 ? 1865 : 1864); // app-qa survey ids -- movie : social
+			var surveySrc = '//'+sayso.baseDomain+'/starbar/' + sayso.starbar.shortName + '/embed-survey?survey_id=' + surveyId;
+			if (src != surveySrc)
+				return openPopBox($SQ('#sb_popBox_surveys_hg'), surveySrc, true);
+		}
 
 		var ajaxContentContainer = null;
 		var loadingElement = null;

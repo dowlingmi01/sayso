@@ -391,8 +391,8 @@ sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
 			template = Handlebars.compile(markup);
 		}
 
-		// always attach the game to the template
-		templateData.game = state.state.game;
+		// always attach the state to the template
+		templateData.state = state.state;
 
 		// pass the api response (templateData) to the template as data, and render
 		$container.append(template(templateData));

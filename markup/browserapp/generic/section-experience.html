@@ -4,20 +4,20 @@
 <div id="sayso-section-body">
     <p class="sayso-section-label">Levels</p>
 	<div id="sayso-levels">
-		{{#each game.levels}}
+		{{#each state.game.levels}}
 			{{>level_partial}}
 		{{/each}}
 	</div>
     <hr />
 
 		<p>{{currency-name "experience"}}</p>
-		{{game.currencies.experience.balance}}
+		{{state.game.currencies.experience.balance}}
 		<p>{{currency-name "redeemable"}}</p>
-		{{game.currencies.redeemable.balance}}
+		{{state.game.currencies.redeemable.balance}}
     <hr />
 
     <p>My Purchases</p>
-    {{#each game.purchasables}}
+    {{#each state.game.purchasables}}
     	{{>purchasables_partial}}
     {{/each}}
     <hr />

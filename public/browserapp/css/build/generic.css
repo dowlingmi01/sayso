@@ -1061,6 +1061,22 @@
 #sayso-section-container.sayso-section-experience #sayso-section #sayso-section-header {
   background-image: url('../../images/generic/section-heading-experience.png');
 }
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-header hr {
+  margin-top: 25px;
+  border: 1px solid #bfbfbf;
+}
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body .sayso-section-label {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-levels {
+  height: 122px;
+  width: 500px;
+  overflow: hidden;
+}
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-levels .sayso-experience-level-item {
+  float: left;
+}
 #sayso-section-container.sayso-section-experience #sayso-section-triangle-grey {
   display: block;
   left: 820px;

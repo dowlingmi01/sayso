@@ -520,7 +520,6 @@ sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
                     });
                 });
             },
-
 			//displays the next promo image
 			"next-promo" : function ($elem, data) {
 				$elem.click(function() {

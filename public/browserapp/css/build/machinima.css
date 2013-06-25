@@ -650,7 +650,7 @@
 #sayso-section-container.sayso-section-tour-rewards #sayso-section {
   left: auto;
   right: 0;
-  width: auto;
+  width: 510px;
   height: 438px;
   background-color: #383838;
 }
@@ -668,8 +668,7 @@
 #sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-section-body {
   background-color: #ffffff;
   height: 338px;
-  width: 500px;
-  padding-top: 20px;
+  padding: 20px 0 0 0;
   overflow: auto;
 }
 #sayso-section-container.sayso-section-rewards #sayso-section #sayso-section-body .sayso-reward-item,
@@ -772,7 +771,7 @@
 #sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-section-body .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-lvl-req span {
   color: #fff;
   font-size: 10px;
-  background-image: url("../../images/machinima/icon-lock.png");
+  background-image: url('../../images/machinima/icon-lock.png');
   background-repeat: no-repeat;
   background-position: 2px 3px;
   padding: 2px 0px 0px 15px;
@@ -960,6 +959,16 @@
   vertical-align: middle;
   line-height: 30px;
   color: #fff;
+}
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-section-footer,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-section-footer {
+  display: block;
+  padding: 5px;
+}
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-section-footer p,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-section-footer p {
+  font-size: 9px;
+  color: white;
 }
 #sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-redeem-overlay,
 #sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-redeem-overlay {

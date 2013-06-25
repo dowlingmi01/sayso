@@ -637,7 +637,7 @@
       #sayso-section {
         left: auto;
         right: 0;
-        width: auto;
+        width: 510px;
         height: 438px;
         background-color: @theme-color-section-border;
 
@@ -653,8 +653,9 @@
         #sayso-section-body {
           background-color: @theme-color-section-background;
           height: 338px;
-          width: 500px;
-          padding-top: 20px;
+//          width: 100%;
+          padding: 20px 0 0 0;
+          //If we set this to hidden and use JS scroll it fits 3 reward-items wide.
           overflow: auto;
 
             .sayso-reward-item {
@@ -748,7 +749,7 @@
                         span {
                             color: #fff;
                             font-size: 10px;
-                            background-image: url("@{base-image-url}/icon-lock.png");
+                            background-image: url('@{base-image-url}/icon-lock.png');
                             background-repeat: no-repeat;
                             background-position: 2px 3px;
                             padding: 2px 0px 0px 15px;
@@ -938,7 +939,12 @@
 
         }
         #sayso-section-footer {
-
+            display: block;
+            padding: 5px;
+            p {
+                font-size: 9px;
+                color: white;
+            }
         }
 
         #sayso-reward-redeem-overlay {

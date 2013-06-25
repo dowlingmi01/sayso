@@ -789,17 +789,17 @@
 #sayso-section-container.sayso-section-rewards #sayso-section #sayso-section-body .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-comment,
 #sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-section-body .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-comment {
   height: 14px;
-  margin: -10px 0px 10px;
+  margin: -6px 0px 10px;
   color: #fff;
   font-size: 10px;
-  padding: 2px 0px 0px 15px;
   text-transform: uppercase;
+  text-align: center;
 }
 #sayso-section-container.sayso-section-rewards #sayso-section #sayso-section-body .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-comment.disabled,
 #sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-section-body .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-comment.disabled {
   background-image: url('../../images/movie/icon-lock.png');
   background-repeat: no-repeat;
-  background-position: 2px 3px;
+  background-position: 6px 1px;
 }
 #sayso-section-container.sayso-section-rewards #sayso-section #sayso-section-body .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-redeem,
 #sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-section-body .sayso-reward-item .sayso-reward-item-bottom .sayso-reward-item-redeem {

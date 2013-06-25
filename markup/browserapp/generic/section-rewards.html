@@ -25,6 +25,10 @@
 
 <div class="sayso-element sayso-partial" data-partial-id="reward_partial">
     <div class="sayso-element sayso-reward-item" data-reward-id="{{id}}">
+        <div class="sayso-reward-item-disabled">
+            <p class="sayso-reward-item-disabled-heading">!</p>
+            <p>{{{cant_purchase_message}}}</p>
+        </div>
         <div class="sayso-reward-item-header">
             {{name}}
         </div>
@@ -40,10 +44,8 @@
                     <div class="sayso-reward-item-progress-bar-value">{{price}}</div>
                 </div>
             </div>
-            <p class="sayso-reward-item-lvl-req">
-                <span>
-                    SURVEY REQUIREMENT
-                </span>
+            <p class="sayso-reward-item-comment">
+                {{comment}}
             </p>
             <div class="sayso-reward-item-redeem">REDEEM</div>
         </div>

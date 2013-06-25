@@ -474,13 +474,29 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 				});
 			},
             "reward-item": function ($elem, data, templateData) {
-                $elem.click(function() {
-                    //TODO: black out the div and display the {{cant_purchase_message}}
+                var rewardRecord = $.grep(templateData.rewards.records, function (r){ return r.id === data.rewardId; });
+                if (rewardRecord) {
                     // Use rewardRecord[0] since .grep can return multiple results so it returns an array.
-                    $("#sayso-reward-redeem-overlay").show();
-                    var rewardRecord = $.grep(templateData.rewards.records, function (r){ return r.id === data.rewardId; });
-                    processMarkupIntoContainer($("#sayso-reward-item-redeem-step"), "{{>redeem_step_1}}", rewardRecord[0]);
-                });
+                    rewardRecord = rewardRecord[0];
+
+                    if (rewardRecord.can_purchase) {
+                        $elem.click(function() {
+                            $("#sayso-reward-redeem-overlay").show();
+                            processMarkupIntoContainer($("#sayso-reward-item-redeem-step"), "{{>redeem_step_1}}", rewardRecord);
+                        });
+                    }
+                    else {
+                        $elem.mouseover(function() {
+                            $(this).children(".sayso-reward-item-disabled").show();
+                        });
+                        $elem.mouseout(function() {
+                            $(this).children(".sayso-reward-item-disabled").hide();
+                        });
+                        //Disable the appropriate elements.
+                        $elem.find(".sayso-reward-item-redeem").addClass("disabled");
+                        $elem.find(".sayso-reward-item-comment").addClass("disabled");
+                    }
+                }
             },
             "reward-item-redeem-submit" : function ($elem, data, templateData) {
                 $elem.click(function() {

@@ -1073,16 +1073,13 @@
   width: 520px;
   height: 296px;
 }
-#sayso-section-container.sayso-section-promos #sayso-section #sayso-section-triangle-grey {
-  display: block;
-  left: 820px;
-}
-#sayso-section-container.sayso-section-promos #sayso-section #sayso-section-triangle-white {
-  display: none;
-}
 #sayso-section-container.sayso-section-promos #sayso-section #sayso-promo-image-2,
 #sayso-section-container.sayso-section-promos #sayso-section #sayso-promo-image-3 {
   display: none;
+}
+#sayso-section-container.sayso-section-promos #sayso-section-triangle-grey {
+  display: block;
+  left: 695px;
 }
 #sayso-section-container.sayso-section-promos .sayso-promo-image {
   position: absolute;

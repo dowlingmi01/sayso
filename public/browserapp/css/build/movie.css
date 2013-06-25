@@ -1025,7 +1025,7 @@
 #sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container,
 #sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-points-box .sayso-reward-item-progress-bar-container {
   background-color: #000;
-  border: 2px solid #fff);
+  border: 2px solid #fff;
   margin: 0px auto;
   width: 130px;
   height: 14px;
@@ -1079,6 +1079,7 @@
   vertical-align: middle;
   line-height: 30px;
   color: #fff;
+  cursor: pointer;
 }
 #sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-redeem-order-container,
 #sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-redeem-order-container {

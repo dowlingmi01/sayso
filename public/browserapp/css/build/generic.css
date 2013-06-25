@@ -1082,6 +1082,9 @@
 }
 #sayso-section-container.sayso-section-promos #sayso-section #sayso-promo-image-2,
 #sayso-section-container.sayso-section-promos #sayso-section #sayso-promo-image-3 {
-  display: block;
-  left: 820px;
+  display: none;
+}
+#sayso-section-container.sayso-section-promos .sayso-promo-image {
+  position: absolute;
+  top: 0;
 }

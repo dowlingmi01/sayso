@@ -6,7 +6,7 @@ sayso.module.state = (function(global, $, comm) {
 		state: null,
 		ready: false,
 		login: login,
-		logout: logout,
+		logout: logout
 	};
 	var stateListeners = {
 		login: function(data) {

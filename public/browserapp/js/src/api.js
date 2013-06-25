@@ -1,5 +1,4 @@
 sayso.module.api = (function(comm) {
-	// resets api requests before sending
 	function doRequest( request, callback ) {
 		doRequests( { 'default': request }, callback);
 	}

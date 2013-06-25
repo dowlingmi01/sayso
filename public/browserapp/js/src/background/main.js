@@ -98,14 +98,13 @@
 		} );
 	}
 	function buildStateForStarbar( starbarId ) {
-		return {
+		return state.loggedIn ? {
 			loggedIn: state.loggedIn,
 			profile: state.profile,
 			starbar: state.starbars[starbarId],
 			notifications: state.notifications[starbarId],
-			game: state.games[state.starbars[starbarId].economy_id],
-			baseDomain: state.baseDomain
-		};
+			game: state.games[state.starbars[starbarId].economy_id]
+		} : { loggedIn: false };
 	}
 	function addPendingRequest( starbarId, callback ) {
 		if( !pendingRequests[starbarId] )

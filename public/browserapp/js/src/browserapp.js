@@ -484,8 +484,19 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
             },
             "reward-item-redeem-submit" : function ($elem, data, templateData) {
                 $elem.click(function() {
+                    var currentBalance,
+                        balanceAfterPurchase,
+                        balancePercentAfterPurchase;
+                    currentBalance = templateData.state.game.currencies.redeemable.balance;
+
+                    balanceAfterPurchase = currentBalance - templateData.price;
+                    balancePercentAfterPurchase = Math.round((balanceAfterPurchase/currentBalance)*100);
+
+                    templateData.balance_after_purchase = balanceAfterPurchase;
+                    templateData.balance_percent_after_purchase = balancePercentAfterPurchase;
+
                     $("#sayso-reward-item-redeem-step").html('');
-                    console.log(templateData);
+
                     //Dot notation not used due to reserved keyword 'type'
                     if (templateData['type'] === "token") {
                         processMarkupIntoContainer($("#sayso-reward-item-redeem-step"), "{{>redeem_step_2_token}}", templateData);
@@ -526,9 +537,17 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
                         shipping: shippingData,
                         quantity: quantity
                     }, function(response){
-                        //TODO: Show order success template
+                        //TODO: Show order success template and update state.game?
                     }); // update game
                 });
+            },
+            "reward-redeem-overlay" : function ($elem) {
+                $elem.click(function(e){
+                    if (e.target === this) {
+                        $(this).hide();
+                        $(this).children().html('');
+                    }
+                })
             },
 			//displays the next promo image
 			"next-promo" : function ($elem, data) {

@@ -471,49 +471,61 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 					openPoll($elem, data); // note that openPoll takes the container ($elem) as a parameter, not $pollHeader
 				});
 			},
-            "reward-item": function ($elem, data) {
+            "reward-item": function ($elem, data, templateData) {
                 $elem.click(function() {
-                    //black out the div and display the {{cant_purchase_message}}
-                    $("#sayso-section-reward-redeem").show();
-                    $("#sayso-reward-item-redeem-step").html($("#sayso-reward-step-one").html());
-
-                    $("#reward-name").html(data['rewardName']);
-                    $("#reward-price").html(data['rewardPrice']);
-                    $("#reward-img").attr("src", data['rewardImgSrc']);
-                    $("#reward-comment").html(data['rewardComment']);
-                    $("#sayso-reward-item-redeem-submit").click(function(){
-                        if (data['rewardType'] == "token")
-                        {
-                            $("#sayso-reward-item-redeem-step").html($("#sayso-reward-step-two-token").html());
-                            var qty = $('input[name="sayso-reward-item-order-quantity-select"]').val()
-                        } else {
-                            $("#sayso-reward-item-redeem-step").html($("#sayso-reward-step-two-shipping").html());
-                            //prepare shippingData
-                            var shippingData = array();
-                            shippingData["order_first_name"] = $('input[name="order_first_name"]').val();
-                            shippingData["order_last_name"] = $('input[name="order_last_name"]').val();
-                            shippingData["order_address_1"] = $('input[name="order_address_1"]').val();
-                            shippingData["order_address_2"] = $('input[name="order_address_2"]').val();
-                            shippingData["order_city"] = $('input[name="order_city"]').val();
-                            shippingData["order_state"] =$('input[name="order_state"]').val();
-                            shippingData["order_zip"] = $('input[name="order_zip"]').val();
-                            shippingData["order_country"] = $('input[name="order_country"]').val();
-                            shippingData["order_phone"] = $('input[name="order_phone"]').val();
-                        }
-                        $("#sayso-reward-redeem-submit").click(function(){
-                            api.doRequest({
-                                action_class : "game",
-                                action : "redeemReward",
-                                starbar_id : starbarId,
-                                game_asset_id: data['gameAssetId'],
-                                shipping: shippingData,
-                                quantity: qty
-                            }, function(response){
-                                //do something
-                            }); // update game
-
-                        });
-                    });
+                    //TODO: black out the div and display the {{cant_purchase_message}}
+                    // Use rewardRecord[0] since .grep can return multiple results so it returns an array.
+                    $("#sayso-reward-redeem-overlay").show();
+                    var rewardRecord = $.grep(templateData.rewards.records, function (r){ return r.id === data.rewardId; });
+                    processMarkupIntoContainer($("#sayso-reward-item-redeem-step"), "{{>redeem_step_1}}", rewardRecord[0]);
+                });
+            },
+            "reward-item-redeem-submit" : function ($elem, data, templateData) {
+                $elem.click(function() {
+                    $("#sayso-reward-item-redeem-step").html('');
+                    console.log(templateData);
+                    //Dot notation not used due to reserved keyword 'type'
+                    if (templateData['type'] === "token") {
+                        processMarkupIntoContainer($("#sayso-reward-item-redeem-step"), "{{>redeem_step_2_token}}", templateData);
+                    }
+                    else {
+                        processMarkupIntoContainer($("#sayso-reward-item-redeem-step"), "{{>redeem_step_2_shipping}}", templateData);
+                    }
+                });
+            },
+            "reward-item-order-submit" : function ($elem, data, templateData) {
+                $elem.click(function() {
+                    //For now clear everything out and close stuff.
+                    $("#sayso-reward-item-redeem-step").html('');
+                    $("#sayso-reward-redeem-overlay").hide();
+                    var shippingData = Array();
+                    var quantity = 0;
+                    //Dot notation not used due to reserved keyword 'type'
+                    if (templateData['type'] === "token") {
+                        quantity = $('input[name="sayso-reward-item-order-quantity-select"]', $nav).val()
+                    } else {
+                        //prepare shippingData
+                        shippingData["order_first_name"] = $('input[name="order_first_name"]', $nav).val();
+                        shippingData["order_last_name"] = $('input[name="order_last_name"]', $nav).val();
+                        shippingData["order_address_1"] = $('input[name="order_address_1"]', $nav).val();
+                        shippingData["order_address_2"] = $('input[name="order_address_2"]', $nav).val();
+                        shippingData["order_city"] = $('input[name="order_city"]', $nav).val();
+                        shippingData["order_state"] =$('input[name="order_state"]', $nav).val();
+                        shippingData["order_zip"] = $('input[name="order_zip"]', $nav).val();
+                        shippingData["order_country"] = $('input[name="order_country"]', $nav).val();
+                        shippingData["order_phone"] = $('input[name="order_phone"]', $nav).val();
+                        quantity = 1;
+                    }
+                    api.doRequest({
+                        action_class : "game",
+                        action : "redeemReward",
+                        starbar_id : starbarId,
+                        game_asset_id: templateData.id,
+                        shipping: shippingData,
+                        quantity: quantity
+                    }, function(response){
+                        //TODO: Show order success template
+                    }); // update game
                 });
             },
 			//displays the next promo image

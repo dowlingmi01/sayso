@@ -1,5 +1,5 @@
 <div id="sayso-section-reward-center">
-    <div id="sayso-section-reward-redeem">
+    <div class="sayso-element sayso-reward-redeem-overlay" id="sayso-reward-redeem-overlay">
         <div id="sayso-reward-item-redeem-step">
 
         </div>
@@ -20,9 +20,7 @@
 </div>
 
 <div class="sayso-element sayso-partial" data-partial-id="reward_partial">
-    <div class="sayso-element sayso-reward-item" data-game-asset-id="{{id}}"
-         data-reward-name="{{name}}" data-reward-price="{{price}}" data-reward-comment="{{comment}}"
-         data-reward-img-src="{{img_url_preview}}" data-reward-type="{{type}}">
+    <div class="sayso-element sayso-reward-item" data-reward-id="{{id}}">
         <div class="sayso-reward-item-header">
             {{name}}
         </div>
@@ -64,86 +62,134 @@
 </div>
 
 <!-- redeem step one -->
-<div id="sayso-reward-step-one">
-    <div class="sayso-reward-item-header" id="reward-name">
-
-    </div>
-    <div class="sayso-reward-item-img">
-        <img alt="Reward" src="" id="reward-img"/>
-    </div>
-    <div class="sayso-reward-item-bottom">
-        <!-- the following elements should be placed here by javascript -->
-        <div class="sayso-reward-item-points-box">
-            <span class="sayso-reward-item-points-logo"></span>
-            <div class="sayso-reward-item-progress-bar-container">
-                <div class="sayso-reward-item-progress-bar" style="width: {{percentage}}%;"></div>
-                <div class="sayso-reward-item-progress-bar-value" id="reward-price"></div>
+<div class="sayso-element sayso-partial" data-partial-id="redeem_step_1">
+    <div id="sayso-reward-step-one">
+        <div class="sayso-reward-item">
+            <div class="sayso-reward-item-header">
+                {{name}}
             </div>
-        </div>
-        <p class="sayso-reward-item-comment" id="reward-comment">
-
-        </p>
-        <div class="sayso-reward-item-redeem-submit" id="sayso-reward-item-redeem-submit">REDEEM</div>
-    </div>
-</div>
-
-<!-- redeem step two - TOKEN-->
-<!-- todo: make percent before and after -->
-<div id="sayso-reward-step-two-token">
-    <div class="sayso-reward-item">
-        <div class="sayso-reward-item-header" id="reward-name">
-
-        </div>
-        <div class="sayso-reward-item-img">
-            <img alt="Reward" src="" id="reward-img" />
-        </div>
-        <div class="sayso-reward-item-redeem-order-bottom">
-            <div class="sayso-reward-item-redeem-order-bottom-left">
+            <div class="sayso-reward-item-img">
+                <img alt="Reward" src="{{img_url}}"/>
+            </div>
+            <div class="sayso-reward-item-bottom">
+                <!-- the following elements should be placed here by javascript -->
                 <div class="sayso-reward-item-points-box">
                     <span class="sayso-reward-item-points-logo"></span>
                     <div class="sayso-reward-item-progress-bar-container">
                         <div class="sayso-reward-item-progress-bar" style="width: {{percentage}}%;"></div>
-                        <div class="sayso-reward-item-progress-bar-value reward-price"></div>
+                        <div class="sayso-reward-item-progress-bar-value">{{price}}</div>
                     </div>
                 </div>
+                <p class="sayso-reward-item-comment">
+                    {{comment}}
+                </p>
+                <div class="sayso-element sayso-reward-item-redeem-submit">REDEEM</div>
             </div>
-            <div class="sayso-reward-item-redeem-order-bottom-right">
-                <div class="sayso-reward-item-redeem-order-bottom-left">
-                    <div class="sayso-reward-item-points-box">
-                        <span class="sayso-reward-item-points-logo"></span>
-                        <div class="sayso-reward-item-progress-bar-container">
-                            <div class="sayso-reward-item-progress-bar" style="width: {{percentage}}%;"></div>
-                            <div class="sayso-reward-item-progress-bar-value reward-price"></div>
+        </div>
+    </div>
+</div>
+
+<div class="sayso-element sayso-partial" data-partial-id="redeem_step_2_token">
+    <div id="sayso-reward-step-two-token">
+        <div class="sayso-reward-item-redeem-order-container">
+            <div class="sayso-reward-item">
+                <div class="sayso-reward-item-header">
+                    {{name}}
+                </div>
+                <div class="sayso-reward-item-img">
+                    <img alt="Reward" src="{{img_url}}" />
+                </div>
+                <div class="sayso-reward-item-redeem-order-bottom">
+                    <div class="sayso-reward-item-redeem-order-bottom-left">
+                        <span>Current Balance:</span>
+                        <div class="sayso-reward-item-points-box">
+                            <span class="sayso-reward-item-points-logo"></span>
+                            <div class="sayso-reward-item-progress-bar-container">
+                                <div class="sayso-reward-item-progress-bar" style="width: 100%;"></div>
+                                <div class="sayso-reward-item-progress-bar-value">{{state.game.currencies.redeemable.balance}}</div>
+                            </div>
                         </div>
                     </div>
+                    <div class="sayso-reward-item-redeem-order-bottom-right">
+                        <span>Balance After:</span>
+                        <div class="sayso-reward-item-points-box">
+                            <span class="sayso-reward-item-points-logo"></span>
+                            <div class="sayso-reward-item-progress-bar-container">
+                                <div class="sayso-reward-item-progress-bar" style="width: {{percentage}}%;"></div>
+                                <!--TODO: Add balance-price and balance-price/balance to endpoint-->
+                                <div class="sayso-reward-item-progress-bar-value"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sayso-reward-item-order-quantity">
+                        <span>Quantity:</span>
+                        <select name="sayso-reward-item-order-quantity-select">
+                            <!-- options should be templated via handlebars -->
+                            <option>1</option>
+                            <option>2</option>
+                        </select>
+                    </div>
+                    <div class="sayso-reward-item-order-information">
+                        <p>Tokens will appear in your account and you will be automatically entered into this giveaway drawing.</p>
+                    </div>
+                    <div class="sayso-element sayso-reward-item-order-submit">ORDER</div>
                 </div>
             </div>
         </div>
-        <div class="sayso-reward-item-order-quantity">
-            <select name="sayso-reward-item-order-quantity-select">
-                <!-- options should be templated via handlebars -->
-                <option>1</option>
-                <option>2</option>
-            </select>
+    </div>
+</div>
+
+<div class="sayso-element sayso-partial" data-partial-id="redeem_step_2_shipping">
+    <div id="sayso-reward-step-two-shipping">
+        <div class="sayso-reward-item-redeem-order-container">
+            <div class="sayso-reward-item">
+                <div class="sayso-reward-item-header">
+                    {{name}}
+                </div>
+                <div class="sayso-reward-item-img">
+                    <img alt="Reward" src="{{img_url}}" />
+                </div>
+                <div class="sayso-reward-item-redeem-order-bottom">
+                    <div class="sayso-reward-item-redeem-order-bottom-left">
+                        <span>Current Balance:</span>
+                        <div class="sayso-reward-item-points-box">
+                            <span class="sayso-reward-item-points-logo"></span>
+                            <div class="sayso-reward-item-progress-bar-container">
+                                <div class="sayso-reward-item-progress-bar" style="width: 100%;"></div>
+                                <div class="sayso-reward-item-progress-bar-value">{{state.game.currencies.redeemable.balance}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sayso-reward-item-redeem-order-bottom-right">
+                        <span>Balance After:</span>
+                        <div class="sayso-reward-item-points-box">
+                            <span class="sayso-reward-item-points-logo"></span>
+                            <div class="sayso-reward-item-progress-bar-container">
+                                <div class="sayso-reward-item-progress-bar" style="width: {{percentage}}%;"></div>
+                                <!--TODO: Add balance-price and balance-price/balance to endpoint-->
+                                <div class="sayso-reward-item-progress-bar-value"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sayso-reward-item-order-information">
+                        <p id="sayso-reward-item-order-shipping-information">
+                            <input name="order_first_name" type="text" placeholder="First Name" value=""><input name="order_last_name" type="text" placeholder="Last Name" value=""><br>
+                            <input name="order_address_1"  type="text" placeholder="Address" value=""><br>
+                            <input name="order_address_2"  type="text" value=""><br>
+                            <input name="order_city" type="text" placeholder="City" value=""><input name="order_state" type="text" placeholder="State/Region" value="">
+                            <input name="order_country" type="text" value="USA" placeholder="Country"><input name="order_zip" type="text" placeholder="Zip/Postal Code" value=""><br>
+                            <input name="order_phone" type="text" placeholder="Phone" value="">
+                        </p>
+                    </div>
+                    <div class="sayso-element sayso-reward-item-order-submit">ORDER</div>
+                </div>
+            </div>
         </div>
-        <div class="sayso-reward-item-order-comments">
-            <p>SOME INFORMATION</p>
-        </div>
-        <div id="sayso-reward-redeem-submit">Order</div>
     </div>
 </div>
 
 
-<!-- redeem step two - shipping-->
-<p id="sb_personalInfo">
-    <input name="order_first_name" type="text" placeholder="First Name" value=""><input name="order_last_name" type="text" placeholder="Last Name" value=""><br>
-    <input name="order_address_1" class="sb_wide_input" type="text" placeholder="Address" value=""><br>
-    <input name="order_address_2" class="sb_wide_input" type="text" value=""><br>
-    <input name="order_city" type="text" placeholder="City" value=""><input name="order_state" type="text" placeholder="State/Region" value="">
-    <input name="order_country" type="text" value="USA" placeholder="Country"><input name="order_zip" type="text" placeholder="Zip/Postal Code" value=""><br>
-    <input name="order_phone" class="sb_wide_input" type="text" placeholder="Phone" value="">
-    <div id="sayso-reward-redeem-submit">Order</div>
-</p>
+
 
 
 

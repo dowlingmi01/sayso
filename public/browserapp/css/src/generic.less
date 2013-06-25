@@ -624,131 +624,18 @@
           height: 338px;
           width: 500px;
           padding-top: 20px;
-          overflow: hidden;
-        }
-        #sayso-section-footer {
+          overflow: auto;
 
-        }
-        .sayso-reward-item {
-            width: auto;
-            height: 230px;
-            float: left;
-            border: 1px solid rgb(171, 171, 171);
-            background-color: rgb(56, 56, 56);
-            margin: 0px 0px 20px 10px;
-            cursor: pointer;
-            position: relative;
-            z-index: 1;
-
-            .sayso-reward-item-header {
-                padding: 5px 10px;
-                text-align: center;
-                overflow: hidden;
-                background-color: rgb(255, 255, 255);
-                height: 30px;
-                //Is this a mixin or predefined?
-                color: rgb(192, 37, 38);
-                font-size: 11px;
-                font-weight: bold;
+            .sayso-reward-item {
+                width: auto;
+                height: 230px;
+                float: left;
+                border: 1px solid rgb(171, 171, 171);
+                background-color: rgb(56, 56, 56);
+                margin: 0px 0px 20px 10px;
+                cursor: pointer;
                 position: relative;
-                width: 130px;
-            }
-
-            .sayso-reward-item-img {
-                text-align: center;
-                padding: 5px 0px;
-                background-color: rgb(255, 255, 255);
-                height: 85px;
-                overflow: hidden;
-            }
-
-            .sayso-reward-item-bottom {
-                text-align: center;
-                padding: 0px 5px 10px;
-                bottom: 0px;
-
-                .sayso-reward-item-points-box {
-                    height: 30px;
-                    position: relative;
-                    display: block;
-                    padding: 10px 0px 0px;
-
-                    .sayso-reward-item-points-logo {
-                        position: absolute;
-                        z-index: 2;
-                        background-repeat: no-repeat;
-                        background-position: center;
-                        width: 25px;
-                        height: 25px;
-                        display: inline-block;
-                        margin-top: -3px;
-                        background-image: url('@{base-image-url}/icon-redeemable-medium.png');
-                    }
-
-                    .sayso-reward-item-progress-bar-container {
-                        background-color: black;
-                        border: 2px solid rgb(255, 255, 255);
-                        margin: 0px auto;
-                        width: 130px;
-                        height: 14px;
-                        .border-radius(6px);
-
-                        .sayso-reward-item-progress-bar {
-                            height: 100%;
-                            .vertical-gradient(@theme-color-progress-bar-gradient-start, @theme-color-progress-bar-gradient-end, @theme-color-progress-bar-gradient-fallback);
-                            .border-radius(4px);
-                        }
-
-                        .sayso-reward-item-progress-bar-value {
-                            position: absolute;
-                            top: 13px;
-                            left: 0;
-                            font-weight: bold;
-                            font-size: 11px;
-                            color: white;
-                            text-shadow: 1px 1px 0px #000;
-                            width: 100%;
-                            text-align: center;
-                        }
-                    }
-                }
-
-                .sayso-reward-item-lvl-req {
-                    height: 14px;
-                    margin: -10px 0px 10px;
-
-                    //Survey requirement locked.
-                    span {
-                        color: white;
-                        font-size: 10px;
-                        background-image: url("@{base-image-url}/icon-lock.png");
-                        background-repeat: no-repeat;
-                        background-position: 2px 3px;
-                        padding: 2px 0px 0px 15px;
-                    }
-                }
-
-                .sayso-reward-item-redeem {
-                    .vertical-gradient(@theme-color-rewards-gray-button-gradient-start, @theme-color-rewards-gray-button-gradient-end, @theme-color-rewards-gray-button-gradient-end);
-                    // Enabled state
-                    //                    .vertical-gradient(@theme-color-nav-button-gradient-start, @theme-color-nav-button-gradient-end, @theme-color-nav-button-gradient-end);
-                    .border-radius(6px);
-                    border: 1px white;
-                    height: 30px;
-                    //Can be done so much better.
-                    box-shadow: 0px 0px 3px rgb(102, 102, 102);
-                    margin: 0 auto;
-                    width: 60%;
-                    text-align: center;
-                    vertical-align: middle;
-                    line-height: 30px;
-                    color: white;
-                }
-            }
-
-            .sayso-reward-item-redeem-order-container {
-                background-color: white;
-                width: 250px;
+                z-index: 1;
 
                 .sayso-reward-item-header {
                     padding: 5px 10px;
@@ -772,126 +659,76 @@
                     overflow: hidden;
                 }
 
-                .sayso-reward-item-redeem-order-bottom {
+                .sayso-reward-item-bottom {
+                    text-align: center;
+                    padding: 0px 5px 10px;
+                    bottom: 0px;
 
-                    //TODO: Make sizes correct if they aren't once we can see this.
-                    .sayso-reward-item-redeem-order-bottom-left {
-                        float: left;
-                        width: 50%;
-                        .sayso-reward-item-points-box {
-                            height: 30px;
-                            position: relative;
-                            display: block;
-                            padding: 10px 0px 0px;
+                    .sayso-reward-item-points-box {
+                        height: 30px;
+                        position: relative;
+                        display: block;
+                        padding: 10px 0px 0px;
 
-                            .sayso-reward-item-points-logo {
+                        .sayso-reward-item-points-logo {
+                            position: absolute;
+                            z-index: 2;
+                            background-repeat: no-repeat;
+                            background-position: center;
+                            width: 25px;
+                            height: 25px;
+                            display: inline-block;
+                            margin-top: -3px;
+                            background-image: url('@{base-image-url}/icon-redeemable-medium.png');
+                        }
+
+                        .sayso-reward-item-progress-bar-container {
+                            background-color: black;
+                            border: 2px solid rgb(255, 255, 255);
+                            margin: 0px auto;
+                            width: 130px;
+                            height: 14px;
+                            .border-radius(6px);
+
+                            .sayso-reward-item-progress-bar {
+                                height: 100%;
+                                .vertical-gradient(@theme-color-progress-bar-gradient-start, @theme-color-progress-bar-gradient-end, @theme-color-progress-bar-gradient-fallback);
+                                .border-radius(4px);
+                            }
+
+                            .sayso-reward-item-progress-bar-value {
                                 position: absolute;
-                                z-index: 2;
-                                background-repeat: no-repeat;
-                                background-position: center;
-                                width: 25px;
-                                height: 25px;
-                                display: inline-block;
-                                margin-top: -3px;
-                                background-image: url('@{base-image-url}/icon-redeemable-medium.png');
-                            }
-
-                            .sayso-reward-item-progress-bar-container {
-                                background-color: black;
-                                border: 2px solid rgb(255, 255, 255);
-                                margin: 0px auto;
-                                width: 130px;
-                                height: 14px;
-                                .border-radius(6px);
-
-                                .sayso-reward-item-progress-bar {
-                                    height: 100%;
-                                    .vertical-gradient(@theme-color-progress-bar-gradient-start, @theme-color-progress-bar-gradient-end, @theme-color-progress-bar-gradient-fallback);
-                                    .border-radius(4px);
-                                }
-
-                                .sayso-reward-item-progress-bar-value {
-                                    position: absolute;
-                                    top: 13px;
-                                    left: 0;
-                                    font-weight: bold;
-                                    font-size: 11px;
-                                    color: white;
-                                    text-shadow: 1px 1px 0px #000;
-                                    width: 100%;
-                                    text-align: center;
-                                }
+                                top: 13px;
+                                left: 0;
+                                font-weight: bold;
+                                font-size: 11px;
+                                color: white;
+                                text-shadow: 1px 1px 0px #000;
+                                width: 100%;
+                                text-align: center;
                             }
                         }
                     }
 
-                    .sayso-reward-item-redeem-order-bottom-right {
-                        float: right;
-                        width: 50%;
+                    .sayso-reward-item-lvl-req {
+                        height: 14px;
+                        margin: -10px 0px 10px;
 
-                        .sayso-reward-item-points-box {
-                            height: 30px;
-                            position: relative;
-                            display: block;
-                            padding: 10px 0px 0px;
-
-                            .sayso-reward-item-points-logo {
-                                position: absolute;
-                                z-index: 2;
-                                background-repeat: no-repeat;
-                                background-position: center;
-                                width: 25px;
-                                height: 25px;
-                                display: inline-block;
-                                margin-top: -3px;
-                                background-image: url('@{base-image-url}/icon-redeemable-medium.png');
-                            }
-
-                            .sayso-reward-item-progress-bar-container {
-                                background-color: black;
-                                border: 2px solid rgb(255, 255, 255);
-                                margin: 0px auto;
-                                width: 130px;
-                                height: 14px;
-                                .border-radius(6px);
-
-                                .sayso-reward-item-progress-bar {
-                                    height: 100%;
-                                    .vertical-gradient(@theme-color-progress-bar-gradient-start, @theme-color-progress-bar-gradient-end, @theme-color-progress-bar-gradient-fallback);
-                                    .border-radius(4px);
-                                }
-
-                                .sayso-reward-item-progress-bar-value {
-                                    position: absolute;
-                                    top: 13px;
-                                    left: 0;
-                                    font-weight: bold;
-                                    font-size: 11px;
-                                    color: white;
-                                    text-shadow: 1px 1px 0px #000;
-                                    width: 100%;
-                                    text-align: center;
-                                }
-                            }
+                        //Survey requirement locked.
+                        span {
+                            color: white;
+                            font-size: 10px;
+                            background-image: url("@{base-image-url}/icon-lock.png");
+                            background-repeat: no-repeat;
+                            background-position: 2px 3px;
+                            padding: 2px 0px 0px 15px;
                         }
                     }
 
-                    //TODO: Alter the select once we can see this page.
-                    .sayso-reward-item-order-quantity {
-                        select {
-                            width: 100%;
-                        }
-                    }
-
-                    .sayso-reward-item-order-information {
-                        p {
-                            text-wrap: normal;
-                        }
-                    }
-
-                    .sayso-reward-item-order-submit {
-                        //TODO: Make these buttons a top level mixin, this is getting out of hand.
-                        .vertical-gradient(@theme-color-nav-button-gradient-start, @theme-color-nav-button-gradient-end, @theme-color-nav-button-gradient-end);
+                    .sayso-reward-item-redeem {
+                        .vertical-gradient(@theme-color-rewards-gray-button-gradient-start, @theme-color-rewards-gray-button-gradient-end, @theme-color-rewards-gray-button-gradient-end);
+                        // Enabled state
+                        //                    .vertical-gradient(@theme-color-nav-button-gradient-start, @theme-color-nav-button-gradient-end, @theme-color-nav-button-gradient-end);
                         .border-radius(6px);
                         border: 1px white;
                         height: 30px;
@@ -904,12 +741,178 @@
                         line-height: 30px;
                         color: white;
                     }
+                }
+
+                .sayso-reward-item-redeem-order-container {
+                    background-color: white;
+                    width: 250px;
+
+                    .sayso-reward-item-header {
+                        padding: 5px 10px;
+                        text-align: center;
+                        overflow: hidden;
+                        background-color: rgb(255, 255, 255);
+                        height: 30px;
+                        //Is this a mixin or predefined?
+                        color: rgb(192, 37, 38);
+                        font-size: 11px;
+                        font-weight: bold;
+                        position: relative;
+                        width: 130px;
+                    }
+
+                    .sayso-reward-item-img {
+                        text-align: center;
+                        padding: 5px 0px;
+                        background-color: rgb(255, 255, 255);
+                        height: 85px;
+                        overflow: hidden;
+                    }
+
+                    .sayso-reward-item-redeem-order-bottom {
+
+                        //TODO: Make sizes correct if they aren't once we can see this.
+                        .sayso-reward-item-redeem-order-bottom-left {
+                            float: left;
+                            width: 50%;
+                            .sayso-reward-item-points-box {
+                                height: 30px;
+                                position: relative;
+                                display: block;
+                                padding: 10px 0px 0px;
+
+                                .sayso-reward-item-points-logo {
+                                    position: absolute;
+                                    z-index: 2;
+                                    background-repeat: no-repeat;
+                                    background-position: center;
+                                    width: 25px;
+                                    height: 25px;
+                                    display: inline-block;
+                                    margin-top: -3px;
+                                    background-image: url('@{base-image-url}/icon-redeemable-medium.png');
+                                }
+
+                                .sayso-reward-item-progress-bar-container {
+                                    background-color: black;
+                                    border: 2px solid rgb(255, 255, 255);
+                                    margin: 0px auto;
+                                    width: 130px;
+                                    height: 14px;
+                                    .border-radius(6px);
+
+                                    .sayso-reward-item-progress-bar {
+                                        height: 100%;
+                                        .vertical-gradient(@theme-color-progress-bar-gradient-start, @theme-color-progress-bar-gradient-end, @theme-color-progress-bar-gradient-fallback);
+                                        .border-radius(4px);
+                                    }
+
+                                    .sayso-reward-item-progress-bar-value {
+                                        position: absolute;
+                                        top: 13px;
+                                        left: 0;
+                                        font-weight: bold;
+                                        font-size: 11px;
+                                        color: white;
+                                        text-shadow: 1px 1px 0px #000;
+                                        width: 100%;
+                                        text-align: center;
+                                    }
+                                }
+                            }
+                        }
+
+                        .sayso-reward-item-redeem-order-bottom-right {
+                            float: right;
+                            width: 50%;
+
+                            .sayso-reward-item-points-box {
+                                height: 30px;
+                                position: relative;
+                                display: block;
+                                padding: 10px 0px 0px;
+
+                                .sayso-reward-item-points-logo {
+                                    position: absolute;
+                                    z-index: 2;
+                                    background-repeat: no-repeat;
+                                    background-position: center;
+                                    width: 25px;
+                                    height: 25px;
+                                    display: inline-block;
+                                    margin-top: -3px;
+                                    background-image: url('@{base-image-url}/icon-redeemable-medium.png');
+                                }
+
+                                .sayso-reward-item-progress-bar-container {
+                                    background-color: black;
+                                    border: 2px solid rgb(255, 255, 255);
+                                    margin: 0px auto;
+                                    width: 130px;
+                                    height: 14px;
+                                    .border-radius(6px);
+
+                                    .sayso-reward-item-progress-bar {
+                                        height: 100%;
+                                        .vertical-gradient(@theme-color-progress-bar-gradient-start, @theme-color-progress-bar-gradient-end, @theme-color-progress-bar-gradient-fallback);
+                                        .border-radius(4px);
+                                    }
+
+                                    .sayso-reward-item-progress-bar-value {
+                                        position: absolute;
+                                        top: 13px;
+                                        left: 0;
+                                        font-weight: bold;
+                                        font-size: 11px;
+                                        color: white;
+                                        text-shadow: 1px 1px 0px #000;
+                                        width: 100%;
+                                        text-align: center;
+                                    }
+                                }
+                            }
+                        }
+
+                        //TODO: Alter the select once we can see this page.
+                        .sayso-reward-item-order-quantity {
+                            select {
+                                width: 100%;
+                            }
+                        }
+
+                        .sayso-reward-item-order-information {
+                            p {
+                                text-wrap: normal;
+                            }
+                        }
+
+                        .sayso-reward-item-order-submit {
+                            //TODO: Make these buttons a top level mixin, this is getting out of hand.
+                            .vertical-gradient(@theme-color-nav-button-gradient-start, @theme-color-nav-button-gradient-end, @theme-color-nav-button-gradient-end);
+                            .border-radius(6px);
+                            border: 1px white;
+                            height: 30px;
+                            //Can be done so much better.
+                            box-shadow: 0px 0px 3px rgb(102, 102, 102);
+                            margin: 0 auto;
+                            width: 60%;
+                            text-align: center;
+                            vertical-align: middle;
+                            line-height: 30px;
+                            color: white;
+                        }
 
 
+                    }
                 }
             }
+
         }
-        #sayso-section-reward-redeem {
+        #sayso-section-footer {
+
+        }
+
+        #sayso-reward-redeem-overlay {
           height: 100%;
           width: 100%;
           margin: 0 auto;
@@ -922,7 +925,7 @@
         #sayso-reward-item-redeem-step {
           margin: 20px auto;
           width: 250px;
-          height: 290px;
+//          height: 290px;
           background-color: #555555;
 
             .sayso-reward-item-header {
@@ -943,8 +946,6 @@
                 text-align: center;
                 padding: 5px 0px;
                 background-color: rgb(255, 255, 255);
-                height: 85px;
-                overflow: hidden;
             }
 
             .sayso-reward-item-bottom {
@@ -1003,8 +1004,7 @@
                     color: black;
                     font-size: 12px;
                     font-weight: bold;
-                    margin: 0 10px;
-                    height: 70px;
+                    margin: 0 10px 10px 0;
                 }
                 .sayso-reward-item-redeem-submit {
                     .vertical-gradient(@theme-color-nav-button-gradient-start, @theme-color-nav-button-gradient-end, @theme-color-nav-button-gradient-end);
@@ -1020,6 +1020,207 @@
                     line-height: 30px;
                     color: white;
                     cursor: pointer;
+                }
+            }
+
+            .sayso-reward-item-redeem-order-container {
+                background-color: white;
+                width: 250px;
+
+                .sayso-reward-item-header {
+                    padding: 5px 10px;
+                    text-align: center;
+                    overflow: hidden;
+                    background-color: rgb(255, 255, 255);
+                    height: 30px;
+                    //Is this a mixin or predefined?
+                    color: rgb(63, 160, 211);
+                    font-size: 13px;
+                    font-weight: bold;
+                    position: relative;
+//                    width: 130px;
+                }
+
+                .sayso-reward-item-img {
+                    text-align: center;
+                    padding: 5px 0px;
+                    background-color: rgb(255, 255, 255);
+                    overflow: hidden;
+
+                    img {
+                        width: 100px;
+                        height: 75px;
+                    }
+                }
+
+                .sayso-reward-item-redeem-order-bottom {
+                    padding-bottom: 10px;
+
+                    //TODO: Make sizes correct if they aren't once we can see this.
+                    .sayso-reward-item-redeem-order-bottom-left {
+                        float: left;
+                        width: 40%;
+                        margin-left: 30px;
+
+                        span {
+                            font-size: 9px;
+                            text-transform: uppercase;
+                            font-weight: bold;
+                            text-align: center;
+                        }
+
+                        .sayso-reward-item-points-box {
+                            height: 30px;
+                            position: relative;
+                            display: block;
+                            padding: 10px 0px 0px;
+
+                            .sayso-reward-item-points-logo {
+                                position: absolute;
+                                z-index: 2;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                width: 25px;
+                                height: 25px;
+                                display: inline-block;
+                                margin-top: -4px;
+                                background-image: url('@{base-image-url}/icon-redeemable-medium.png');
+                            }
+
+                            .sayso-reward-item-progress-bar-container {
+                                background-color: black;
+                                border: 2px solid rgb(255, 255, 255);
+                                margin: 0px auto;
+                                width: 66%;
+                                height: 14px;
+                                .border-radius(6px);
+                                box-shadow: 0px 0px 2px rgb(102, 102, 102);
+
+                                .sayso-reward-item-progress-bar {
+                                    height: 100%;
+                                    .vertical-gradient(@theme-color-progress-bar-gradient-start, @theme-color-progress-bar-gradient-end, @theme-color-progress-bar-gradient-fallback);
+                                    .border-radius(4px);
+                                }
+
+                                .sayso-reward-item-progress-bar-value {
+                                    position: absolute;
+                                    top: 13px;
+                                    left: 0;
+                                    font-weight: bold;
+                                    font-size: 11px;
+                                    color: white;
+                                    text-shadow: 1px 1px 0px #000;
+                                    width: 100%;
+                                    text-align: center;
+                                }
+                            }
+                        }
+                    }
+
+                    .sayso-reward-item-redeem-order-bottom-right {
+                        float: left;
+                        width: 40%;
+
+                        span {
+                            font-size: 9px;
+                            text-transform: uppercase;
+                            font-weight: bold;
+                            text-align: center;
+                        }
+
+                        .sayso-reward-item-points-box {
+                            height: 30px;
+                            position: relative;
+                            display: block;
+                            padding: 10px 0px 0px;
+
+                            .sayso-reward-item-points-logo {
+                                position: absolute;
+                                z-index: 2;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                width: 25px;
+                                height: 25px;
+                                display: inline-block;
+                                margin-top: -4px;
+                                background-image: url('@{base-image-url}/icon-redeemable-medium.png');
+                            }
+
+                            .sayso-reward-item-progress-bar-container {
+                                background-color: black;
+                                border: 2px solid rgb(255, 255, 255);
+                                margin: 0px auto;
+                                width: 66%;
+                                height: 14px;
+                                .border-radius(6px);
+                                box-shadow: 0px 0px 2px rgb(102, 102, 102);
+
+                                .sayso-reward-item-progress-bar {
+                                    height: 100%;
+                                    .vertical-gradient(@theme-color-progress-bar-gradient-start, @theme-color-progress-bar-gradient-end, @theme-color-progress-bar-gradient-fallback);
+                                    .border-radius(4px);
+                                }
+
+                                .sayso-reward-item-progress-bar-value {
+                                    position: absolute;
+                                    top: 13px;
+                                    left: 0;
+                                    font-weight: bold;
+                                    font-size: 11px;
+                                    color: white;
+                                    text-shadow: 1px 1px 0px #000;
+                                    width: 100%;
+                                    text-align: center;
+                                }
+                            }
+                        }
+                    }
+
+                    //TODO: Alter the select once we can see this page.
+                    .sayso-reward-item-order-quantity {
+                        margin: 0 30px;
+
+                        span {
+                            font-size: 13px;
+                            font-weight: bold;
+                        }
+                        select {
+                            width: 100%;
+                            vertical-align: middle;
+                        }
+                    }
+
+                    .sayso-reward-item-order-information {
+                        margin: 10px 30px;
+
+                        p {
+                            text-wrap: normal;
+                            font-size: 11px;
+
+                            input {
+                                width: 60px;
+                            }
+                        }
+                    }
+
+                    .sayso-reward-item-order-submit {
+                        //TODO: Make these buttons a top level mixin, this is getting out of hand.
+                        .vertical-gradient(@theme-color-nav-button-gradient-start, @theme-color-nav-button-gradient-end, @theme-color-nav-button-gradient-end);
+                        .border-radius(6px);
+                        border: 1px white;
+                        height: 30px;
+                        //Can be done so much better.
+                        box-shadow: 0px 0px 3px rgb(102, 102, 102);
+                        margin: 0 auto;
+                        width: 60%;
+                        text-align: center;
+                        vertical-align: middle;
+                        line-height: 30px;
+                        color: white;
+                        cursor: pointer;
+                    }
+
+
                 }
             }
         }

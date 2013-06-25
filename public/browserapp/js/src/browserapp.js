@@ -527,13 +527,6 @@ sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
 					$("#" + data["thisImage"]).hide();
 					$("#" + data["nextImage"]).show();
 				});
-			},
-
-			//opens the reward center
-			"open-rewards" : function ($elem, data) {
-				$elem.click(function() {
-					openSection(data);
-				});
 			}
 		}
 	};

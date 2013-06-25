@@ -1,21 +1,18 @@
-sayso.module.comm = (function(global, $, util) {
+sayso.module.comm = (function(global, $, util, dommsg) {
 	var iframe = global.document.createElement("iframe");
 	var requests = {};
 	var listeners = {};
 	var id = 0;
 	var ready = false;
-	function handleMessage( event ) {
-		try {
-			var data = JSON.parse(event.data);
-			if( typeof data === 'string' )
-				data = JSON.parse(data);
-			if( data[0] && data[0] === 'sayso-background-reply' && data[1] && data[1].id && requests[data[1].id]) {
-				requests[data[1].id](data[1].data);
-				delete requests[data[1].id];
-			} else if( data[0] && data[0] === 'sayso-broadcast' && data[1] && data[1].name && listeners[data[1].name]) {
-				listeners[data[1].name](data[1].data);
-			}
-		} catch( e ) {
+	function handleBackgroundReply( data ) {
+		if( data.id && requests[data.id] ) {
+			requests[data.id](data.data);
+			delete requests[data.id];
+		}
+	}
+	function handleBroadcast( data ) {
+		if( data.name && listeners[data.name] ) {
+			listeners[data.name](data.data);
 		}
 	}
 	function request( name, data, callback ) {
@@ -36,12 +33,13 @@ sayso.module.comm = (function(global, $, util) {
 	iframe.style.cssText = "position:absolute;width:1px;height:1px;left:-9999px;";
 	global.document.body.appendChild(iframe);
 	util.addEventListener(iframe, 'load', backgroundReady);
-	util.addEventListener(global, 'message', handleMessage);
+	dommsg.addHandler('background-reply', handleBackgroundReply);
+	dommsg.addHandler('broadcast', handleBroadcast);
 	iframe.src = 'http://' + global.sayso.base_domain +  '/browserapp/background.html';
 	return {
 		request: request,
 		listen: listen,
 		ready: ready
 	};
-})(this, jQuery, sayso.module.util)
+})(this, jQuery, sayso.module.util, sayso.module.dommsg)
 ;

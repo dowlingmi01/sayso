@@ -1,4 +1,4 @@
-sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
+sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 	$(global.document).on('sayso:state-login sayso:state-logout sayso:state-ready', initApp);
 
 	var starbarId;
@@ -24,7 +24,7 @@ sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
 		} else if (global.sayso.webportal) {
 			userMode = "tour";
 
-			state.apiCall({
+			api.doRequest({
 				action_class : "markup",
 				action : "getMarkup",
 				starbar_id : starbarId,
@@ -206,24 +206,25 @@ sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
 			$section.prepend($sectionLoading);
 		}, 200); // don't show loader if content loads in under 200ms
 
-		state.apiAddRequest('markup', {
-			action_class : "markup",
-			action : "getMarkup",
-			starbar_id : starbarId,
-			app: "browserapp",
-			key : "section-" + section
-		});
+		var requests = {
+			'markup': {
+				action_class : "markup",
+				action : "getMarkup",
+				starbar_id : starbarId,
+				app: "browserapp",
+				key : "section-" + section
+			}
+		};
 
 		// grab any extra requests associated with this section
 		if (userMode == "logged-in" && section in extraRequests) {
 			var extraRequestsForThisSection = extraRequests[section](clickedElementData); // extraRequests[section] is a function
 
-			for (var request in extraRequestsForThisSection) {
-				state.apiAddRequest(request, extraRequestsForThisSection[request]);
-			}
+			$.extend(requests, extraRequestsForThisSection);
+
 		}
 
-		state.apiSendRequests(function(response){
+		api.doRequests(requests, function(response){
 			// if the loader wasn't shown yet, don't show it
 			clearTimeout(timeoutIdSectionLoadingSpinner);
 
@@ -264,12 +265,7 @@ sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
 		} else {
 			// no templateData passed, perform extra requests, if any
 			if (tabName in extraRequests) {
-				var extraRequestsForThisTab = extraRequests[tabName](clickedElementData); // extraRequests[section] is a function
-
-				for (var request in extraRequestsForThisTab) {
-					state.apiAddRequest(request, extraRequestsForThisTab[request]);
-				}
-				state.apiSendRequests(function(response){
+				api.doRequests(extraRequestsForThisTab, function(response){
 					// if the loader wasn't shown yet, don't show it
 					processMarkupIntoContainer($tab, markup, response.responses);
 					$tab.show();
@@ -505,7 +501,7 @@ sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
                             shippingData["order_phone"] = $('input[name="order_phone"]').val();
                         }
                         $("#sayso-reward-redeem-submit").click(function(){
-                            state.apiCall({
+                            api.doRequest({
                                 action_class : "game",
                                 action : "redeemReward",
                                 starbar_id : starbarId,
@@ -628,5 +624,5 @@ sayso.module.browserapp = (function(global, $, state, comm, Handlebars) {
         }
 	}
 
-})(this, jQuery, sayso.module.state, sayso.module.comm, sayso.module.Handlebars)
+})(this, jQuery, sayso.module.state, sayso.module.api, sayso.module.Handlebars)
 ;

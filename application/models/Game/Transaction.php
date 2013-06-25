@@ -315,6 +315,7 @@ class Game_Transaction {
 			$currencies[$currency_name] = $currency;
 		}
 		$res = array(
+			'economy_id'=>$economy_id,
 			'purchasables'=>$purchasables,
 			'currencies'=>$currencies,
 			'level'=>array_key_exists($economy->_level_asset_id, $balances) ? intval($balances[$economy->_level_asset_id]) : 1,

@@ -7,11 +7,6 @@ sayso.module.state = (function(global, $, comm) {
 		ready: false,
 		login: login,
 		logout: logout,
-		apiCall: apiCall,
-		apiAddRequest: apiAddRequest,
-		apiAddRequests: apiAddRequests,
-		apiSendRequest: apiSendRequest,
-		apiSendRequests: apiSendRequests
 	};
 	var stateListeners = {
 		login: function(data) {
@@ -26,8 +21,8 @@ sayso.module.state = (function(global, $, comm) {
 			$(global.document).trigger('sayso:state-profile');
 		},
 		game: function(data) {
-			if( data.starbar_id === publicVar.state.starbar.id ) {
-				publicVar.state.game = data.game;
+			if( data.economy_id === publicVar.state.starbar.economy_id ) {
+				publicVar.state.game = data;
 				$(global.document).trigger('sayso:state-game');
 			}
 		},
@@ -38,26 +33,6 @@ sayso.module.state = (function(global, $, comm) {
 			}
 		}
 	};
-	// resets api requests before sending
-	function apiAddRequest( requestName, requestData ) {
-		var requests = {};
-		requests[requestName] = requestData;
-		comm.request('api-add-requests', requests );
-	}
-	function apiAddRequests( requests ) {
-		comm.request('api-add-requests', requests );
-	}
-	// resets api requests before sending
-	function apiSendRequest( requestName, requestData, callback ) {
-		apiAddRequest( requestName, requestData );
-		apiSendRequests( callback );
-	}
-	function apiSendRequests( callback ) {
-		comm.request('api-send-requests', null, callback );
-	}
-	function apiCall( request, callback ) {
-		comm.request('api-call', request, callback );
-	}
 	function login( email, password, callback ) {
 		comm.request('login', { email: email, password: password}, callback);
 	}

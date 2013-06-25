@@ -86,7 +86,7 @@
 			state.starbars[starbarId] = data.responses.starbar.records[0];
 			state.starbars[starbarId].id = starbarId;
 			state.starbars[starbarId].markup = data.responses.markup.variables.markup;
-			state.games[starbarId] = data.responses.game.variables.game;
+			state.games[state.starbars[starbarId].economy_id] = data.responses.game.variables.game;
 			state.notifications[starbarId] = data.responses.notifications.records;
 			if( pendingRequests[starbarId] ) {
 				var stateForStarbar = buildStateForStarbar(starbarId);
@@ -103,7 +103,7 @@
 			profile: state.profile,
 			starbar: state.starbars[starbarId],
 			notifications: state.notifications[starbarId],
-			game: state.games[starbarId],
+			game: state.games[state.starbars[starbarId].economy_id],
 			baseDomain: state.baseDomain
 		};
 	}
@@ -122,38 +122,22 @@
 				getStarbarState( starbarId );
 		}
 	}
-	function apiAddRequests( requests, callback ) {
+	function apiDoRequests( requests, callback ) {
 		if (!requests) return;
 		for (var request in requests) {
 			api.setRequest( request, requests[request] );
 		}
-	}
-	function apiSendRequests( data, callback ) {
 		api.sendRequests( processApiResponse );
 		function processApiResponse( data ) {
 			callback(data);
-			if( starbarId && data.common_data && data.common_data.game ) {
-				state.games[starbarId] = data.common_data.game;
-				comm.broadcast('state.game', { starbar_id: starbarId, game: data.common_data.game });
+			if( data.common_data && data.common_data.game ) {
+				state.games[data.common_data.game.economy_id] = data.common_data.game;
+				comm.broadcast('state.game', data.common_data.game);
 			}
 		}
-	}
-	function apiCall( data, callback ) {
-		var starbarId = data.starbar_id;
-		api.sendRequest( data, processApiResponse );
-		function processApiResponse( data ) {
-			callback(data);
-			if( starbarId && data.common_data && data.common_data.game ) {
-				state.games[starbarId] = data.common_data.game;
-				comm.broadcast('state.game', { starbar_id: starbarId, game: data.common_data.game });
-			}
-		}
-
 	}
 	comm.listen('get-state', getState);
-	comm.listen('api-add-requests', apiAddRequests);
-	comm.listen('api-send-requests', apiSendRequests);
-	comm.listen('api-call', apiCall);
+	comm.listen('api-do-requests', apiDoRequests);
 	comm.listen('login', login);
 	comm.listen('logout', logout);
 	getUserState();

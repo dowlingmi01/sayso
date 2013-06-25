@@ -1,5 +1,5 @@
 //noinspection ThisExpressionReferencesGlobalObjectJS
-sayso.module.webutils = (function(global, $, state, Handlebars) {
+sayso.module.webutils = (function(global, $, api, Handlebars) {
     'use strict';
 
     var shared = {},
@@ -7,16 +7,14 @@ sayso.module.webutils = (function(global, $, state, Handlebars) {
         contentContainer = $('#content_container');
 
     function requestMarkup(key, starbarId, callback) {
-        state.apiAddRequest('markup', {
+        api.doRequest({
             action_class : 'markup',
             action : 'getMarkup',
             starbar_id : starbarId,
             app: app,
             key : key
-        });
-
-        state.apiSendRequests(function(response){
-            contentContainer.html(response.responses.markup.variables.markup);
+        }, function(response){
+            contentContainer.html(response.responses['default'].variables.markup);
             if (callback && typeof(callback) === 'function') {
                 callback();
             }
@@ -27,4 +25,4 @@ sayso.module.webutils = (function(global, $, state, Handlebars) {
 
     return shared;
 
-})(this, jQuery, sayso.module.state, sayso.module.Handlebars);
+})(this, jQuery, sayso.module.api, sayso.module.Handlebars);

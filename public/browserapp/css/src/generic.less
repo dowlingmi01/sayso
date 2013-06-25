@@ -1,11 +1,11 @@
 @import "mixins";
 
-@theme-color-text: #333333;
+@theme-color-text: #333;
 @theme-color-links: #c02526;
 @theme-color-text-secondary: darken(@theme-color-links, 15%);
 @theme-color-text-headings: darken(@theme-color-links, 30%);
-@theme-color-text-inverse: white;
-@theme-color-progress-bar-background: #555555;
+@theme-color-text-inverse: #fff;
+@theme-color-progress-bar-background: #555;
 @theme-color-progress-bar-gradient-start: #c4760c;
 @theme-color-progress-bar-gradient-end: #fde771;
 @theme-color-progress-bar-gradient-fallback: #fde771;
@@ -15,9 +15,9 @@
 @theme-color-nav-button-gradient-end: #70080c;
 @theme-color-nav-button-top-gradient-start: #c4760c;
 @theme-color-nav-button-top-gradient-end: #fde771;
-@theme-color-rewards-gray-button-gradient-start: #555555;
-@theme-color-rewards-gray-button-gradient-end: #333333;
-@theme-color-section-background: #ffffff;
+@theme-color-rewards-gray-button-gradient-start: #555;
+@theme-color-rewards-gray-button-gradient-end: #333;
+@theme-color-section-background: #fff;
 @theme-color-section-border: #383838;
 @base-image-url: "../../images/generic";
 
@@ -136,7 +136,7 @@
 			position: absolute;
 			font-weight: bold;
 			font-size: 11px;
-			color: white;
+			color: #fff;
 			text-shadow: 1px 1px 0px #000;
 			width: 100%;
 			top: 0;
@@ -182,7 +182,7 @@
 			line-height: 15px;
 			border-bottom: 1px solid @theme-color-nav-help-links-separator;
 			color: @theme-color-nav-help-links;
-			text-shadow: 0px 0px 2px black;
+			text-shadow: 0px 0px 2px #000;
 
 			&:last-child {
 				border-bottom: none;
@@ -247,8 +247,8 @@
 	.sayso-nav-theme-button-container {
 		width: 95px;
 		height: 52px;
-		border-top: 1px solid black;
-		border-right: 1px solid black;
+		border-top: 1px solid #000;
+		border-right: 1px solid #000;
 		.vertical-gradient(@theme-color-nav-button-gradient-start, @theme-color-nav-button-gradient-end, @theme-color-nav-button-gradient-start);
 
 		.sayso-nav-theme-button {
@@ -328,7 +328,7 @@
 			font-weight: bold;
 			text-transform: uppercase;
 			font-size: 10px;
-			color: white;
+			color: #fff;
 		}
 
 		.sayso-progress-bar-container {
@@ -366,7 +366,7 @@
 		bottom: 20px;
 		background-color: @theme-color-section-background;
 		border: 6px solid @theme-color-section-border;
-		.box-shadow(0px 0px 5px #333333);
+		.box-shadow(0px 0px 5px #333);
 		min-height: 300px;
 		overflow: hidden;
 
@@ -427,7 +427,7 @@
 		border-color: @theme-color-section-border transparent;
 	}
 
-	&.sayso-section-about {
+	&.sayso-section-about, &.sayso-section-tour-about {
 		#sayso-section {
 			left: 224px;
 			width: 540px;
@@ -458,21 +458,15 @@
 		}
 	}
 
-	&.sayso-section-user-profile {
+	&.sayso-section-user-profile, &.sayso-section-tour-user-profile {
 		#sayso-section {
-			left: 100px;
-			width: 500px;
-			height: 400px;
-			bottom: 30px;
-
-			#sayso-section-header {
-				background-image: url('@{base-image-url}/section-heading-user-profile.png');
-			}
+			width: 570px;
+			height: 300px;
 		}
 
 		#sayso-section-triangle-white, #sayso-section-triangle-grey {
 			display: block;
-			left: 300px;
+			left: 222px;
 		}
 	}
 
@@ -500,7 +494,7 @@
 						float: right;
 						width: 17px;
 						height: 18px;
-						background-image: url('@{base-image-url}/arrow-right.png');
+						background-image: url('@{base-image-url}/polls-arrow-right.png');
 						.transition-duration();
 					}
 
@@ -542,7 +536,44 @@
 	}
 
 	&.sayso-section-surveys, &.sayso-section-tour-surveys {
+		#sayso-section {
+			left: 333px;
+			width: 500px;
+			height: 500px;
 
+			#sayso-section-header {
+				background-image: url('@{base-image-url}/section-heading-surveys.png');
+			}
+
+			.sayso-survey-container {
+				margin-top: 5px;
+				border: 1px solid #c7c7c7;
+
+				.sayso-survey-header {
+					padding: 6px 8px 15px 8px;
+					font-size: 15px;
+					font-weight: bold;
+					cursor: pointer;
+
+					font-size: 14px;
+					font-weight: bold;
+					border-bottom: solid 1px #bfbfbf;
+				}
+
+				.sayso-survey-triangle {
+					float: right;
+					width: 17px;
+					height: 18px;
+					background-image: url('@{base-image-url}/surveys-arrow-right.png');
+				}
+			}
+
+		}
+
+		#sayso-section-triangle-white, #sayso-section-triangle-grey {
+			display: block;
+			left: 465px;
+		}
 	}
 
 	.sayso-completed-container {
@@ -630,8 +661,8 @@
                 width: auto;
                 height: 230px;
                 float: left;
-                border: 1px solid rgb(171, 171, 171);
-                background-color: rgb(56, 56, 56);
+                border: 1px solid #ababab;
+                background-color: @theme-color-section-border;
                 margin: 0px 0px 20px 10px;
                 cursor: pointer;
                 position: relative;
@@ -641,10 +672,9 @@
                     padding: 5px 10px;
                     text-align: center;
                     overflow: hidden;
-                    background-color: rgb(255, 255, 255);
+                    background-color: #fff;
                     height: 30px;
-                    //Is this a mixin or predefined?
-                    color: rgb(192, 37, 38);
+                    color: @theme-color-links;
                     font-size: 11px;
                     font-weight: bold;
                     position: relative;
@@ -654,7 +684,7 @@
                 .sayso-reward-item-img {
                     text-align: center;
                     padding: 5px 0px;
-                    background-color: rgb(255, 255, 255);
+                    background-color: #fff;
                     height: 85px;
                     overflow: hidden;
                 }
@@ -683,8 +713,8 @@
                         }
 
                         .sayso-reward-item-progress-bar-container {
-                            background-color: black;
-                            border: 2px solid rgb(255, 255, 255);
+                            background-color: #000;
+                            border: 2px solid #fff;
                             margin: 0px auto;
                             width: 130px;
                             height: 14px;
@@ -702,7 +732,7 @@
                                 left: 0;
                                 font-weight: bold;
                                 font-size: 11px;
-                                color: white;
+                                color: #fff;
                                 text-shadow: 1px 1px 0px #000;
                                 width: 100%;
                                 text-align: center;
@@ -716,7 +746,7 @@
 
                         //Survey requirement locked.
                         span {
-                            color: white;
+                            color: #fff;
                             font-size: 10px;
                             background-image: url("@{base-image-url}/icon-lock.png");
                             background-repeat: no-repeat;
@@ -730,31 +760,30 @@
                         // Enabled state
                         //                    .vertical-gradient(@theme-color-nav-button-gradient-start, @theme-color-nav-button-gradient-end, @theme-color-nav-button-gradient-end);
                         .border-radius(6px);
-                        border: 1px white;
+                        border: 1px #fff;
                         height: 30px;
                         //Can be done so much better.
-                        box-shadow: 0px 0px 3px rgb(102, 102, 102);
+                        box-shadow: 0px 0px 3px #666;
                         margin: 0 auto;
                         width: 60%;
                         text-align: center;
                         vertical-align: middle;
                         line-height: 30px;
-                        color: white;
+                        color: #fff;
                     }
                 }
 
                 .sayso-reward-item-redeem-order-container {
-                    background-color: white;
+                    background-color: #fff;
                     width: 250px;
 
                     .sayso-reward-item-header {
                         padding: 5px 10px;
                         text-align: center;
                         overflow: hidden;
-                        background-color: rgb(255, 255, 255);
+                        background-color: #fff;
                         height: 30px;
-                        //Is this a mixin or predefined?
-                        color: rgb(192, 37, 38);
+                        color: @theme-color-links;
                         font-size: 11px;
                         font-weight: bold;
                         position: relative;
@@ -764,7 +793,7 @@
                     .sayso-reward-item-img {
                         text-align: center;
                         padding: 5px 0px;
-                        background-color: rgb(255, 255, 255);
+                        background-color: #fff;
                         height: 85px;
                         overflow: hidden;
                     }
@@ -794,8 +823,8 @@
                                 }
 
                                 .sayso-reward-item-progress-bar-container {
-                                    background-color: black;
-                                    border: 2px solid rgb(255, 255, 255);
+                                    background-color: #000;
+                                    border: 2px solid #fff;
                                     margin: 0px auto;
                                     width: 130px;
                                     height: 14px;
@@ -813,7 +842,7 @@
                                         left: 0;
                                         font-weight: bold;
                                         font-size: 11px;
-                                        color: white;
+                                        color: #fff;
                                         text-shadow: 1px 1px 0px #000;
                                         width: 100%;
                                         text-align: center;
@@ -845,8 +874,8 @@
                                 }
 
                                 .sayso-reward-item-progress-bar-container {
-                                    background-color: black;
-                                    border: 2px solid rgb(255, 255, 255);
+                                    background-color: #000;
+                                    border: 2px solid #fff;
                                     margin: 0px auto;
                                     width: 130px;
                                     height: 14px;
@@ -864,7 +893,7 @@
                                         left: 0;
                                         font-weight: bold;
                                         font-size: 11px;
-                                        color: white;
+                                        color: #fff;
                                         text-shadow: 1px 1px 0px #000;
                                         width: 100%;
                                         text-align: center;
@@ -890,16 +919,16 @@
                             //TODO: Make these buttons a top level mixin, this is getting out of hand.
                             .vertical-gradient(@theme-color-nav-button-gradient-start, @theme-color-nav-button-gradient-end, @theme-color-nav-button-gradient-end);
                             .border-radius(6px);
-                            border: 1px white;
+                            border: 1px #fff;
                             height: 30px;
                             //Can be done so much better.
-                            box-shadow: 0px 0px 3px rgb(102, 102, 102);
+                            box-shadow: 0px 0px 3px #666;
                             margin: 0 auto;
                             width: 60%;
                             text-align: center;
                             vertical-align: middle;
                             line-height: 30px;
-                            color: white;
+                            color: #fff;
                         }
 
 
@@ -926,16 +955,15 @@
           margin: 20px auto;
           width: 250px;
 //          height: 290px;
-          background-color: #555555;
+          background-color: #555;
 
             .sayso-reward-item-header {
                 padding: 5px 10px;
                 text-align: center;
                 overflow: hidden;
-                background-color: rgb(255, 255, 255);
+                background-color: @theme-color-section-background;
                 height: 30px;
-                //Is this a mixin or predefined?
-                color: rgb(192, 37, 38);
+                color: @theme-color-links;
                 font-size: 13px;
                 font-weight: bold;
                 position: relative;
@@ -945,7 +973,7 @@
             .sayso-reward-item-img {
                 text-align: center;
                 padding: 5px 0px;
-                background-color: rgb(255, 255, 255);
+                background-color: #fff;
             }
 
             .sayso-reward-item-bottom {
@@ -973,8 +1001,8 @@
                     }
 
                     .sayso-reward-item-progress-bar-container {
-                        background-color: black;
-                        border: 2px solid rgb(255, 255, 255);
+                        background-color: #000;
+                        border: 2px solid #fff);
                         margin: 0px auto;
                         width: 130px;
                         height: 14px;
@@ -992,7 +1020,7 @@
                             left: 0;
                             font-weight: bold;
                             font-size: 11px;
-                            color: white;
+                            color: #fff;
                             text-shadow: 1px 1px 0px #000;
                             width: 100%;
                             text-align: center;
@@ -1001,7 +1029,7 @@
                 }
 
                 .sayso-reward-item-comment {
-                    color: black;
+                    color: #000;
                     font-size: 12px;
                     font-weight: bold;
                     margin: 0 10px 10px 0;
@@ -1009,32 +1037,29 @@
                 .sayso-reward-item-redeem-submit {
                     .vertical-gradient(@theme-color-nav-button-gradient-start, @theme-color-nav-button-gradient-end, @theme-color-nav-button-gradient-end);
                     .border-radius(6px);
-                    border: 1px white;
+                    border: 1px #fff;
                     height: 30px;
                     //Can be done so much better.
-                    box-shadow: 0px 0px 3px rgb(102, 102, 102);
+                    box-shadow: 0px 0px 3px #666;
                     margin: 0 auto;
                     width: 60%;
                     text-align: center;
                     vertical-align: middle;
                     line-height: 30px;
-                    color: white;
-                    cursor: pointer;
+                    color: #fff;
                 }
             }
 
             .sayso-reward-item-redeem-order-container {
-                background-color: white;
+                background-color: #fff;
                 width: 250px;
 
                 .sayso-reward-item-header {
                     padding: 5px 10px;
                     text-align: center;
                     overflow: hidden;
-                    background-color: rgb(255, 255, 255);
+                    background-color: #fff;
                     height: 30px;
-                    //Is this a mixin or predefined?
-                    color: rgb(63, 160, 211);
                     font-size: 13px;
                     font-weight: bold;
                     position: relative;
@@ -1044,7 +1069,8 @@
                 .sayso-reward-item-img {
                     text-align: center;
                     padding: 5px 0px;
-                    background-color: rgb(255, 255, 255);
+                    background-color: #fff;
+                    height: 85px;
                     overflow: hidden;
 
                     img {
@@ -1088,13 +1114,13 @@
                             }
 
                             .sayso-reward-item-progress-bar-container {
-                                background-color: black;
-                                border: 2px solid rgb(255, 255, 255);
+                                background-color: #000;
+                                border: 2px solid #fff;
                                 margin: 0px auto;
                                 width: 66%;
                                 height: 14px;
                                 .border-radius(6px);
-                                box-shadow: 0px 0px 2px rgb(102, 102, 102);
+                                box-shadow: 0px 0px 2px #666;
 
                                 .sayso-reward-item-progress-bar {
                                     height: 100%;
@@ -1108,7 +1134,7 @@
                                     left: 0;
                                     font-weight: bold;
                                     font-size: 11px;
-                                    color: white;
+                                    color: #fff;
                                     text-shadow: 1px 1px 0px #000;
                                     width: 100%;
                                     text-align: center;
@@ -1147,13 +1173,13 @@
                             }
 
                             .sayso-reward-item-progress-bar-container {
-                                background-color: black;
-                                border: 2px solid rgb(255, 255, 255);
+                                background-color: #000;
+                                border: 2px solid #fff;
                                 margin: 0px auto;
                                 width: 66%;
                                 height: 14px;
                                 .border-radius(6px);
-                                box-shadow: 0px 0px 2px rgb(102, 102, 102);
+                                box-shadow: 0px 0px 2px #666;
 
                                 .sayso-reward-item-progress-bar {
                                     height: 100%;
@@ -1167,7 +1193,7 @@
                                     left: 0;
                                     font-weight: bold;
                                     font-size: 11px;
-                                    color: white;
+                                    color: #fff;
                                     text-shadow: 1px 1px 0px #000;
                                     width: 100%;
                                     text-align: center;
@@ -1207,24 +1233,23 @@
                         //TODO: Make these buttons a top level mixin, this is getting out of hand.
                         .vertical-gradient(@theme-color-nav-button-gradient-start, @theme-color-nav-button-gradient-end, @theme-color-nav-button-gradient-end);
                         .border-radius(6px);
-                        border: 1px white;
+                        border: 1px #fff;
                         height: 30px;
                         //Can be done so much better.
-                        box-shadow: 0px 0px 3px rgb(102, 102, 102);
+                        box-shadow: 0px 0px 3px #666;
                         margin: 0 auto;
                         width: 60%;
                         text-align: center;
                         vertical-align: middle;
                         line-height: 30px;
-                        color: white;
-                        cursor: pointer;
+                        color: #fff;
+						cursor: pointer;
                     }
 
 
                 }
             }
         }
-
       }
 
         #sayso-section-triangle-grey {
@@ -1237,7 +1262,7 @@
 
     }
 
-    &.sayso-section-experience {
+    &.sayso-section-experience, &.sayso-section-tour-experience {
 		#sayso-section {
 			left: 412px;
 			width: 570px;
@@ -1268,20 +1293,21 @@
 			}
 		}
 
-		#sayso-section-triangle-grey {
+		#sayso-section-triangle-grey, #sayso-section-triangle-white {
 			display: block;
 			left: 820px;
 		}
-		#sayso-section-triangle-white {
-			display:none;
-		}
     }
 
-	&.sayso-section-promos {
+	&.sayso-section-promos, &.sayso-section-tour-promos {
 		#sayso-section {
 			left: 470px;
 			width: 520px;
 			height: 296px;
+
+			#sayso-section-body {
+				padding: 0;
+			}
 
 			#sayso-promo-image-2, #sayso-promo-image-3 {
 				display: none;
@@ -1289,11 +1315,7 @@
 		}
 		#sayso-section-triangle-grey {
 			display: block;
-			left: 695px;
-		}
-		.sayso-promo-image {
-			position: absolute;
-			top: 0;
+			left: 675px;
 		}
 	}
 }

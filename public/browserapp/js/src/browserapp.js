@@ -265,6 +265,8 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 		} else {
 			// no templateData passed, perform extra requests, if any
 			if (tabName in extraRequests) {
+				var extraRequestsForThisTab = extraRequests[tabName](clickedElementData);
+
 				api.doRequests(extraRequestsForThisTab, function(response){
 					// if the loader wasn't shown yet, don't show it
 					processMarkupIntoContainer($tab, markup, response.responses);
@@ -382,7 +384,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 			prepareElements($tempContainer, "pre-template");
 
 			// compile the markup into a handlebars template
-			template = Handlebars.compile($tempContainer.html().replace(/{{&gt;/g, "{{>"));
+			template = Handlebars.compile($tempContainer.htmlForTemplate());
 		} else {
 			template = Handlebars.compile(markup);
 		}
@@ -391,7 +393,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 		templateData.state = state.state;
 
 		// pass the api response (templateData) to the template as data, and render
-		$container.append(template(templateData));
+		$container.append(template(templateData), {noEscape: true});
 
 		// prepare sayso elements (passing on templateData to anything that may need it... tabs within tabs?)
 		prepareElements($container, "post-template", templateData);
@@ -418,7 +420,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 		"pre-template": {
 			"partial": function ($elem, data) {
 				// partial found, register the
-				Handlebars.registerPartial(data['partialId'], $elem.html().replace(/{{&gt;/g, "{{>"));
+				Handlebars.registerPartial(data['partialId'], $elem.htmlForTemplate());
 
 				// remove it from the markup so it doesn't go through the template processing (except as a partial)
 				$elem.remove();
@@ -432,8 +434,8 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 				$tabs.each(function() {
 					$tab = $(this);
 
-					// need to replace "{{&gt;" with "{{>" because jQuery is a big jerk
-					tabs[$tab.data('tab')] = $tab.html().replace(/{{&gt;/g, "{{>");
+					// need to use .htmlForTemplate() (see util.js) instead of html() to replace "{{&gt;" with "{{>" because jQuery is a big jerk
+					tabs[$tab.data('tab')] = $tab.htmlForTemplate();
 
 					// empty the tab, so it isn't processed by handlebars
 					$tab.html("");
@@ -621,6 +623,59 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 					action : "getSurveys",
 					starbar_id : starbarId,
 					survey_type : "poll",
+					survey_status : "archived"
+				}
+			}
+		},
+		"surveys": function (data) {
+			// new surveys
+			var request = this["surveys-new"](data);
+			// count of completed surveys
+			request['countSurveysCompleted'] = {
+				action_class : "survey",
+				action : "getSurveyCounts",
+				starbar_id : starbarId,
+				survey_type : "survey",
+				survey_status : "completed"
+			};
+			request['countSurveysArchived'] = {
+				action_class : "survey",
+				action : "getSurveyCounts",
+				starbar_id : starbarId,
+				survey_type : "survey",
+				survey_status : "archived"
+			};
+			return request;
+		},
+		"surveys-new": function (data) {
+			return {
+				"surveys": {
+					action_class : "survey",
+					action : "getSurveys",
+					starbar_id : starbarId,
+					survey_type : "survey",
+					survey_status : "new"
+				}
+			}
+		},
+		"surveys-completed": function (data) {
+			return {
+				"surveys": {
+					action_class : "survey",
+					action : "getSurveys",
+					starbar_id : starbarId,
+					survey_type : "survey",
+					survey_status : "completed"
+				}
+			}
+		},
+		"surveys-archived": function (data) {
+			return {
+				"surveys": {
+					action_class : "survey",
+					action : "getSurveys",
+					starbar_id : starbarId,
+					survey_type : "survey",
 					survey_status : "archived"
 				}
 			}

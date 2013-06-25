@@ -1,0 +1,84 @@
+<div id="sayso-section-header">
+	<ul>
+		<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="surveys-new">
+			{{#if surveys.recordsReturned}}
+				{{surveys.recordsReturned}} New!
+			{{else}}
+				New
+			{{/if}}
+		</li>
+		{{#if countSurveysCompleted.variables.count}}
+			<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="surveys-completed">Completed</li>
+		{{/if}}
+		{{#if countSurveysArchived.variables.count}}
+			<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="surveys-archived">Archived</li>
+		{{/if}}
+	</ul>
+</div>
+<div id="sayso-section-body" class="sayso-element sayso-tab-container" data-default-tab="surveys-new">
+	<div class="sayso-element sayso-tab" data-tab="surveys-new">
+		<p class="sayso-heading-text">
+			<p class="sayso-heading-text">Earn {{currency-name-highlighted "experience"}} &amp; {{currency-name-highlighted "redeemable"}} for each Survey you complete. Share with your friends to earn extra points and you'll be that much closer to winning the big giveaway.</p>
+			<p class="sayso-heading-text">Don't forget to complete the <span class="sayso-element sayso-highlight sayso-section-link" data-section="survey" data-survey-id="%CONFIG_PROFILE_SURVEY_ID%">Profile Survey</span> to unlock the goodies in the reward center.</p>
+		</p>
+		{{>surveys-new}}
+	</div>
+	<div class="sayso-element sayso-tab" data-tab="surveys-completed">
+		<p class="sayso-heading-text">All of your completed surveys are listed below. Nice work!</p>
+		{{>surveys-completed}}
+	</div>
+	<div class="sayso-element sayso-tab" data-tab="surveys-archived">
+		<p class="sayso-heading-text">
+			We'd still love your opinion on these archived surveys, and you can still earn by completing them! Same deal &ndash; earn {{currency-name-highlighted "redeemable"}} &amp; {{currency-name-highlighted "experience"}} for each one you complete.
+		</p>
+		{{>surveys-archived}}
+	</div>
+</div>
+<div id="sayso-section-footer"></div>
+
+<div class="sayso-element sayso-partial" data-partial-id="surveys-new">
+	<div class="sayso-element sayso-scrollable">
+		{{#each surveys.records}}
+			{{>survey-new-archived}}
+		{{else}}
+			Sweet! Looks like you've completed all your surveys! Check back soon for more new surveys!<br />
+		{{/each}}
+	</div>
+</div>
+
+<div class="sayso-element sayso-partial" data-partial-id="surveys-completed">
+	<div class="sayso-element sayso-scrollable">
+		{{#each surveys.records}}
+			{{>survey-completed-disqualified}}
+		{{/each}}
+	</div>
+</div>
+
+<div class="sayso-element sayso-partial" data-partial-id="surveys-archived">
+	<div class="sayso-element sayso-scrollable">
+		{{#each surveys.records}}
+			{{>survey-new-archived}}
+		{{/each}}
+	</div>
+</div>
+
+<div class="sayso-element sayso-partial" data-partial-id="survey-new-archived">
+	<div class="sayso-element sayso-survey-container" data-survey-id="{{id}}" data-survey-external-id="{{external_id}}" data-survey-external-key="{{external_key}}" data-survey-number-of-answers="{{number_of_answers}}">
+		<div class="sayso-element sayso-survey-header">
+			<div class="sayso-survey-header-triangle"></div>
+			{{title}}
+		</div>
+		<div class="sayso-element sayso-survey"></div>
+	</div>
+</div>
+
+<div class="sayso-element sayso-partial" data-partial-id="survey-completed-disqualified">
+	<div class="sayso-completed-container">
+		<div class="sayso-completed-title"><div>{{title}}</div></div>
+		<div class="sayso-completed-points-earned">
+			<div class="sayso-completed-points-earned-experience"><div>+{{points_experience}}</div></div>
+			<div class="sayso-completed-points-earned-redeemable"><div>+{{points_redeemable}}</div></div>
+		</div>
+	</div>
+</div>
+

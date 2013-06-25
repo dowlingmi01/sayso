@@ -38,6 +38,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		//logic
 		$surveyId			= (int)$request->valid_parameters["survey_id"];
 
+		// @TODO IMPORTANT! this should use getSurveys() or equivalent to ensure that the user is allowed to get this survey!
 		$surveyObject = new Survey();
 		$surveyObject->loadData($surveyId);
 		$survey = $surveyObject->getData();
@@ -105,7 +106,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		$validators = array(
 				"starbar_id"		=> "int_required_notEmpty",
 				"survey_type"		=> "alpha_required_notEmpty",
-				"survey_status"		=> "alpha_notEmpty",
+				"survey_status"		=> "alpha_required_notEmpty",
 				"page_number"		=> "int_required_notEmpty",
 				"results_per_page"	=> "int_required_notEmpty"
 			);
@@ -136,19 +137,68 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		//TODO: refactor this function to accept pagination at this level instead of getting the entire result set and parsing it down.
 		$surveyCollection->loadSurveysForStarbarAndUser ($starbarId, $userId, $type, $surveyUserStatus);
 
-		$surveys = $response->getRecordsFromCollection($surveyCollection);
+		// @todo move this somewhere better! Also, make it read those values from the economy (game) transaction tables
+		$defaultReward = [
+			"survey" => [
+				"new" => [
+					"experience" => [
+						"premium" => 5000,
+						"profile" => 2000,
+						"standard" => 500,
+					],
+					"redeemable" => [
+						"premium" => 375,
+						"profile" => 150,
+						"standard" => 38,
+					]
+				],
+				"disqualified" => [
+					"experience" => [
+						"premium" => 1000,
+						"profile" => 1000,
+						"standard" => 250,
+					],
+					"redeemable" => [
+						"premium" => 75,
+						"profile" => 75,
+						"standard" => 25,
+					]
+				],
+			],
+			"poll" => [
+				"new" => [
+					"experience" => [
+						"premium" => 500,
+						"standard" => 250,
+					],
+					"redeemable" => [
+						"premium" => 38,
+						"standard" => 19,
+					]
+				],
+			],
+		];
 
-		$surveyData = array();
-		$otherEndpointData = array();
-		foreach ($surveys as $key => $value) {
-			$params = array("survey_id" => $key);
-			$otherEndpointData = $response->getFromOtherEndpoint("getSurvey", get_class(), $params, $this->request_name);
-			$surveyData[] = $otherEndpointData->records[0];
+		$defaultReward["survey"]["completed"] = $defaultReward["survey"]["new"];
+		$defaultReward["survey"]["archived"] = $defaultReward["survey"]["new"];
+
+		$defaultReward["poll"]["completed"] = $defaultReward["poll"]["new"];
+		$defaultReward["poll"]["archived"] = $defaultReward["poll"]["new"];
+
+		foreach (["experience", "redeemable"] as $currency) {
+			foreach ($surveyCollection as $survey) {
+				// avoid many issets
+				$default = (
+					isset($defaultReward[$survey->type][$surveyUserStatus][$currency][$survey->reward_category])
+						? $defaultReward[$survey->type][$surveyUserStatus][$currency][$survey->reward_category]
+						: "N/A"
+				);
+
+				$survey->{"points_" . $currency} = ( $survey->{"custom_reward_" . $currency} ? $survey->{"custom_reward_" . $currency} : $default );
+			}
 		}
 
-		$paginatedSurveyData = $response->paginateArray($surveyData, $request);
-		$response->addRecordsFromArray($paginatedSurveyData);
-		$response->setPagination(count($surveyData));
+		$response->addRecordsFromCollection($surveyCollection);
 
 		return $response;
 	}

@@ -1143,10 +1143,11 @@
   margin: 5px 5px 0 0;
   font-size: 10px;
   line-height: 13px;
+  border: 1px solid #CCC;
 }
 #sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-information p input.long,
 #sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-information p input.long {
-  width: 211px;
+  width: 209px;
 }
 #sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-submit,
 #sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-submit {

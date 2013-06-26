@@ -564,7 +564,6 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
                         var required_fields = ['first_name', 'last_name', 'address_1', 'city', 'country', 'zip'];
                         var $personalInfo = $step2.find('#sayso-reward-item-order-shipping-information');
 
-                        console.log($.support.placeholder);
                         if ($.support.placeholder) {
                             $("input[placeholder]", $step2).each(function(){
                                 var inputElem = $(this);

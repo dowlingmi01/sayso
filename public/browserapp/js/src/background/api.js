@@ -42,9 +42,9 @@ sayso.module.Api = (function(comm) {
 
 		/**
 		 * Sends the request(s) to the api
-		 * @param {function} cb Success callback function
-		 * @param {function} fb Fail callback function
-		 * @param {boolean} keepRequests Whether or not to reset the requests after the callback is done, or not.
+		 * @param {function} [cb] Success callback function
+		 * @param {function} [fb] Fail callback function
+		 * @param {boolean} [keepRequests] Whether or not to reset the requests after the callback is done, or not.
 		 *                               Set to true to keep the requests, otherwise they are reset by default
 		 */
 		sendRequests: function (cb, fb, keepRequests) {
@@ -77,9 +77,9 @@ sayso.module.Api = (function(comm) {
 		 *Formats a 'quick' request. This function always resets the requests before being called,
 		 *   and optionally resets the request after as well, based on the keepRequests parameter
 		 * @param {Object} params
-		 * @param {function} cb
-		 * @param {function} fb
-		 * @param {boolean} keepRequests Whether or not to reset the requests object after the callback is done, or not.
+		 * @param {function} [cb]
+		 * @param {function} [fb]
+		 * @param {boolean} [keepRequests] Whether or not to reset the requests object after the callback is done, or not.
 		 *                               Set to true to keep the requests, otherwise they are reset by default
 		 */
 		sendRequest: function (params, cb, fb, keepRequests) {
@@ -101,11 +101,6 @@ sayso.module.Api = (function(comm) {
 	};
 
 	Request.prototype = {
-		/**
-		 * Holds the request params so they are separate from the functions
-		 */
-		params: {},
-
 		/**
 		 * Sets an additional param in the request object.
 		 * @param {String} requestName

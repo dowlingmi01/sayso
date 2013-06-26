@@ -7,7 +7,6 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 	var $nav, $sectionContainer, $section;
 	var currentSection, currentTabContainers, timeoutIdSectionLoadingSpinner;
 
-
 	function initApp() {
 		// @todo fix line below... doesn't work on portal
 		// starbarId = state.state.currentStarbarId;
@@ -528,38 +527,81 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
             },
             "reward-item-order-submit" : function ($elem, data, templateData) {
                 $elem.click(function() {
-                    //For now clear everything out and close stuff.
-                    $("#sayso-reward-item-redeem-step", $nav).html('');
-                    $("#sayso-reward-redeem-overlay", $nav).hide();
-                    var shippingData = Array();
+                    var shippingData = new Array();
                     var quantity = 0;
+
                     //Dot notation not used due to reserved keyword 'type'
                     if (templateData['type'] === "token") {
-                        quantity = $('input[name="sayso-reward-item-order-quantity-select"]', $nav).val()
+                        quantity = $('input[name="sayso-reward-item-order-quantity-select"]', $nav).val();
+                        api.doRequest({
+                            action_class : "game",
+                            action : "redeemReward",
+                            starbar_id : starbarId,
+                            game_asset_id: templateData.id,
+                            shipping: shippingData,
+                            quantity: quantity
+                        }, function(response){
+                            updateElements($nav, "game");
+                            $("#sayso-reward-item-redeem-step", $nav).html('');
+                            $("#sayso-reward-redeem-overlay", $nav).hide();
+                            //TODO: Show order success template and update state.game?
+                        });
                     } else {
                         //prepare shippingData
-                        shippingData["order_first_name"] = $('input[name="order_first_name"]', $nav).val();
-                        shippingData["order_last_name"] = $('input[name="order_last_name"]', $nav).val();
-                        shippingData["order_address_1"] = $('input[name="order_address_1"]', $nav).val();
-                        shippingData["order_address_2"] = $('input[name="order_address_2"]', $nav).val();
-                        shippingData["order_city"] = $('input[name="order_city"]', $nav).val();
-                        shippingData["order_state"] =$('input[name="order_state"]', $nav).val();
-                        shippingData["order_zip"] = $('input[name="order_zip"]', $nav).val();
-                        shippingData["order_country"] = $('input[name="order_country"]', $nav).val();
-                        shippingData["order_phone"] = $('input[name="order_phone"]', $nav).val();
+                        //Stolen from OLD StarBar for form validation
+                        var $step2 = $('.sayso-reward-step-two-shipping', $nav);
+                        var formErrors = false;
+
+                        //TODO: Fix validation to be legit
+                        var inputElems = new Array();
+                        var fields = ['first_name', 'last_name', 'address_1', 'address_2', 'city', 'state', 'country', 'zip', 'phone'];
+                        var required_fields = ['first_name', 'last_name', 'address_1', 'city', 'country', 'zip'];
+                        var $personalInfo = $step2.find('#sayso-reward-item-order-shipping-information');
+
+                        console.log($.support.placeholder);
+                        if ($.support.placeholder) {
+                            $("input[placeholder]", $step2).each(function(){
+                                var inputElem = $(this);
+                                var placeholder = inputElem.attr('placeholder');
+                                if (inputElem.val() === placeholder) {
+                                    inputElem.val('');
+                                }
+                            });
+                        }
+
+                        if ($personalInfo.length) {
+                            for (i = 0; i < fields.length; i++) {
+                                inputElems[fields[i]] = $('input[name="order_'+fields[i]+'"]', $personalInfo);
+                                shippingData['order_'+fields[i]] = inputElems[fields[i]].val();
+                            }
+
+                            for (i = 0; i < required_fields.length; i++) {
+                                if (shippingData['order_'+required_fields[i]] == "") {
+                                    formErrors = true;
+                                    inputElems[required_fields[i]].css('border', '1px solid #F00');
+                                } else {
+                                    inputElems[required_fields[i]].css('border', '1px solid #CCC');
+                                }
+                            }
+                        }
                         quantity = 1;
+
+                        if(!formErrors) {
+                            api.doRequest({
+                                action_class : "game",
+                                action : "redeemReward",
+                                starbar_id : starbarId,
+                                game_asset_id: templateData.id,
+                                shipping: shippingData,
+                                quantity: quantity
+                            }, function(response){
+                                updateElements($nav, "game");
+                                $("#sayso-reward-item-redeem-step", $nav).html('');
+                                $("#sayso-reward-redeem-overlay", $nav).hide();
+                                //TODO: Show order success template and update state.game?
+                            });
+                        }
                     }
-                    api.doRequest({
-                        action_class : "game",
-                        action : "redeemReward",
-                        starbar_id : starbarId,
-                        game_asset_id: templateData.id,
-                        shipping: shippingData,
-                        quantity: quantity
-                    }, function(response){
-                        updateElements($nav, "game");
-                        //TODO: Show order success template and update state.game?
-                    });
                 });
             },
             "reward-redeem-overlay" : function ($elem) {

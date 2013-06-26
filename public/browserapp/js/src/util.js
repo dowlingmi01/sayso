@@ -14,6 +14,11 @@ sayso.module.util = (function($) {
 
 	});
 
+    $.support.placeholder = (function(){
+        var i = document.createElement('input');
+        return 'placeholder' in i;
+    })();
+
 	return {
 		addEventListener: addEventListener
 	};

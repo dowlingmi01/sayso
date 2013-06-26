@@ -485,8 +485,8 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 
                     if (rewardRecord.can_purchase) {
                         $elem.click(function() {
-                            $("#sayso-reward-redeem-overlay").show();
-                            processMarkupIntoContainer($("#sayso-reward-item-redeem-step"), "{{>redeem_step_1}}", rewardRecord);
+                            $("#sayso-reward-redeem-overlay", $nav).show();
+                            processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_1}}", rewardRecord);
                         });
                     }
                     else {
@@ -515,22 +515,22 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
                     templateData.balance_after_purchase = balanceAfterPurchase;
                     templateData.balance_percent_after_purchase = balancePercentAfterPurchase;
 
-                    $("#sayso-reward-item-redeem-step").html('');
+                    $("#sayso-reward-item-redeem-step", $nav).html('');
 
                     //Dot notation not used due to reserved keyword 'type'
                     if (templateData['type'] === "token") {
-                        processMarkupIntoContainer($("#sayso-reward-item-redeem-step"), "{{>redeem_step_2_token}}", templateData);
+                        processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_2_token}}", templateData);
                     }
                     else {
-                        processMarkupIntoContainer($("#sayso-reward-item-redeem-step"), "{{>redeem_step_2_shipping}}", templateData);
+                        processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_2_shipping}}", templateData);
                     }
                 });
             },
             "reward-item-order-submit" : function ($elem, data, templateData) {
                 $elem.click(function() {
                     //For now clear everything out and close stuff.
-                    $("#sayso-reward-item-redeem-step").html('');
-                    $("#sayso-reward-redeem-overlay").hide();
+                    $("#sayso-reward-item-redeem-step", $nav).html('');
+                    $("#sayso-reward-redeem-overlay", $nav).hide();
                     var shippingData = Array();
                     var quantity = 0;
                     //Dot notation not used due to reserved keyword 'type'
@@ -557,8 +557,9 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
                         shipping: shippingData,
                         quantity: quantity
                     }, function(response){
+                        updateElements($nav, "game");
                         //TODO: Show order success template and update state.game?
-                    }); // update game
+                    });
                 });
             },
             "reward-redeem-overlay" : function ($elem) {
@@ -568,6 +569,50 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
                         $(this).children().html('');
                     }
                 })
+            },
+            "reward-step-two-token" : function ($elem, data, templateData) {
+                //Setup our handlers for options and balance changing.
+                var $select,
+                    $balanceBarPercent,
+                    $balanceBarValue,
+                    canPurchaseCount,
+                    currentBalance,
+                    itemPrice,
+                    options = {},
+                    purchaseCap = 10; //Max tokens we are currently allowing.
+
+                //Dirty, we should rename these elements
+                $balanceBarPercent = $elem.find('.sayso-reward-item-redeem-order-bottom-right').find('.sayso-reward-item-progress-bar');
+                $balanceBarValue = $elem.find('.sayso-reward-item-redeem-order-bottom-right').find('.sayso-reward-item-progress-bar-value');
+                $select = $elem.find('select[name=sayso-reward-item-order-quantity-select]');
+                itemPrice = templateData.price;
+                currentBalance = templateData.state.game.currencies.redeemable.balance;
+                canPurchaseCount = Math.min(Math.floor(currentBalance/itemPrice), purchaseCap);
+
+                //Setup how many options they can buy
+                for (var i=1;i<=canPurchaseCount;i++) {
+                    options[i] = i;
+                }
+                //Append options
+                $.each(options, function(key, value) {
+                    $select.append($("<option></option>")
+                        .attr("value", value).text(key));
+                });
+                //Update the UI to reflect changes
+                $select.change(function(e) {
+                    var pointsAfterPurchase,
+                        percentAfterPurchase,
+                        purchaseAmount,
+                        purchaseCost;
+
+                    purchaseAmount = $(this).val();
+                    purchaseCost = itemPrice * purchaseAmount;
+                    pointsAfterPurchase = currentBalance - purchaseCost;
+                    percentAfterPurchase = Math.round((pointsAfterPurchase/currentBalance)*100);
+
+                    $balanceBarPercent.css('width', percentAfterPurchase + '%');
+                    $balanceBarValue.text(pointsAfterPurchase);
+                });
             },
 			//displays the next promo image
 			"next-promo" : function ($elem, data) {

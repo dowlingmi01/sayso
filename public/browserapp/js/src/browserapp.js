@@ -575,8 +575,8 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
                             if(response.error_code === 0) {
                                 //TODO: Implement order success template.
                                 updateElements($nav, "game");
-                                $("#sayso-reward-item-redeem-step", $nav).html('');
-                                $("#sayso-reward-redeem-overlay", $nav).hide();
+                                $("#sayso-reward-item-redeem-step", $nav).html(''); //Clear the step container one last time.
+                                processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_3_success}}", templateData);
                             }
                             else {
                                 //TODO: Fix error alert to be more useful.
@@ -634,8 +634,9 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
                                 if(response.error_code === 0) {
                                     //TODO: Implement order success template.
                                     updateElements($nav, "game");
-                                    $("#sayso-reward-item-redeem-step", $nav).html('');
-                                    $("#sayso-reward-redeem-overlay", $nav).hide();
+                                    $("#sayso-reward-item-redeem-step", $nav).html(''); //Clear the step container one last time.
+                                    templateData.shipping_data = shippingData;
+                                    processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_3_success}}", templateData);
                                 }
                                 else {
                                     //TODO: Fix error alert to be more useful.
@@ -644,6 +645,12 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
                             });
                         }
                     }
+                });
+            },
+            "reward-item-finished-submit": function ($elem) {
+                $elem.click(function(e){
+                    $("#sayso-reward-item-redeem-step", $nav).html('');
+                    $("#sayso-reward-redeem-overlay", $nav).hide();
                 });
             },
             "reward-redeem-overlay" : function ($elem) {
@@ -897,5 +904,4 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 			return request;
 		}
 	}
-})(this, jQuery, sayso.module.state, sayso.module.api, sayso.module.Handlebars)
-;
+})(this, jQuery, sayso.module.state, sayso.module.api, sayso.module.Handlebars);

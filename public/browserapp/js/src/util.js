@@ -22,5 +22,4 @@ sayso.module.util = (function($) {
 	return {
 		addEventListener: addEventListener
 	};
-})(jQuery)
-;
+})(jQuery);

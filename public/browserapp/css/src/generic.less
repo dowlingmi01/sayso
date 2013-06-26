@@ -828,7 +828,7 @@
           margin: 20px auto;
           width: 250px;
 //          height: 290px;
-          background-color: #555;
+          background-color: #333;
 
             .sayso-reward-item-header {
                 padding: 5px 10px;
@@ -901,6 +901,14 @@
                     }
                 }
 
+                .step-reward-item-success-info {
+                    color: #fff;
+                    margin: 5px 0px;
+                    font-size: 11px;
+                    line-height: 18px;
+                    margin: 10px;
+                }
+
                 .sayso-reward-item-comment {
                     color: #fff;
                     margin: 5px 0px;
@@ -909,6 +917,22 @@
                     margin: 0 10px 10px 10px;
                 }
                 .sayso-reward-item-redeem-submit {
+                    .vertical-gradient(@theme-color-nav-button-gradient-start, @theme-color-nav-button-gradient-end, @theme-color-nav-button-gradient-end);
+                    .border-radius(6px);
+                    border: 1px #fff;
+                    height: 30px;
+                    //Can be done so much better.
+                    box-shadow: 0px 0px 3px #666;
+                    margin: 0 auto;
+                    width: 60%;
+                    text-align: center;
+                    vertical-align: middle;
+                    line-height: 30px;
+                    color: #fff;
+                    cursor: pointer;
+                }
+
+                .sayso-reward-item-finished-submit {
                     .vertical-gradient(@theme-color-nav-button-gradient-start, @theme-color-nav-button-gradient-end, @theme-color-nav-button-gradient-end);
                     .border-radius(6px);
                     border: 1px #fff;

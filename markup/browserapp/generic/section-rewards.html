@@ -196,7 +196,36 @@
 
 
 
+<div class="sayso-element sayso-partial" data-partial-id="redeem_step_3_success">
+    <div class="sayso-reward-step-three">
+        <div class="sayso-reward-item">
+            <div class="sayso-reward-item-header">
+                ORDER SUCCESS!
+            </div>
+            <div class="sayso-reward-item-img">
+                <img alt="Reward" src="{{img_url}}" />
+            </div>
+            <div class="sayso-reward-item-bottom">
+                <div class="step-reward-item-success-info">
+                    {{#compare type "===" "token"}}
+                        <a href="http://bit.ly/MdZJT5">Check here for giveaway information</a><br/>
+                        Remember, you can enter as many times as you want and increase your likelihood of winning.
+                    {{else}}
+                        Your order will arrive via USPS in 4-6 weeks<br/>
 
+                        Shipping Address:<br/>
+                        {{shipping_data.order_first_name}} {{shipping_data.order_last_name}}<br/>
+                        {{shipping_data.order_address_1}}<br/>
+                        {{shipping_data.order_address_2}}<br/>
+                        {{shipping_data.order_city}}, {{shipping_data.order_state}} {{shipping_data.order_zip}}<br/>
+                        {{shipping_data.order_phone}}
+                    {{/compare}}
+                </div>
+                <div class="sayso-element sayso-reward-item-finished-submit">RETURN</div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 

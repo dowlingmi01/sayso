@@ -2,7 +2,7 @@
 	"platform_version": "v1.4",
 	"name": "Say.So",
 	"author": "Say.So LLC",
-	"version": "2.0.6",
+	"version": "2.0.7",
 	"config_version": "3",
 	"homepage": "http://www.say.so/",
 	"description": "A fun way to have your influence recognized, and your opinions rewarded!",
@@ -44,10 +44,6 @@
 				"64": "img/icon64.png"
 			}
 		},
-		"contact": true,
-		"event": true,
-		"file": true,
-		"geolocation": true,
 		"is": true,
 		"logging": {
 			"level": "INFO"
@@ -58,7 +54,6 @@
 		"request": {
 			"permissions": []
 		},
-		"sms": true,
 		"tabs": true,
 		"tools": true
 	}

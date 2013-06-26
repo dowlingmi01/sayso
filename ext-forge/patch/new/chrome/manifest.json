@@ -1,0 +1,20 @@
+{
+	"name": "Say.So",
+	"version": "2.0.7",
+	"description": "A fun way to have your influence recognized, and your opinions rewarded!",
+	"permissions": ["http://*/*", "https://*/*", "tabs", "notifications", "webRequest"],
+	"background": {"page": "forge.html"},
+	"homepage_url": "http://www.say.so/",
+	"content_security_policy": "script-src 'self' https://app.saysollc.com; object-src 'self'",
+	"content_scripts": [
+		{
+			"matches": ["http://*/*", "https://*/*"]
+			, "js": ["forge/app_config.js", "forge/all.js", "src/js/config.js", "src/js/content.js"]
+			, "css": []
+			, "run_at": "document_start"
+			, "all_frames": true
+		}
+	],
+	"icons": {"128": "src/img/icon128.png", "48": "src/img/icon48.png", "16": "src/img/icon16.png"},
+	"manifest_version": 2
+}

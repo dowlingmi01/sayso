@@ -1,0 +1,6 @@
+chrome\forge.html
+chrome\manifest.json
+firefox\harness-options.json
+firefox\resources\f\data\forge\all.js
+firefox\resources\f\lib\main.js
+ie\dist\setup-x86.nsi

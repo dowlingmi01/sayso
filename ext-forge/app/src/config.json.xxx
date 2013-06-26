@@ -25,8 +25,8 @@
 			"safari": "com.saysollc.app"
 		},
 		"update_url": {
-			"firefox": "https://app.saysollc.com/xml/firefox-extension-updates.xml",
-			"safari": "http://app.saysollc.com/xml/safari-extension-updates.plist"
+			"firefox": "https://##BaseDomain##/xml/firefox-extension-updates.xml",
+			"safari": "http://##BaseDomain##/xml/safari-extension-updates.plist"
 		},
 		"icons": {
 			"chrome": {
@@ -44,10 +44,6 @@
 				"64": "img/icon64.png"
 			}
 		},
-		"contact": true,
-		"event": true,
-		"file": true,
-		"geolocation": true,
 		"is": true,
 		"logging": {
 			"level": "INFO"
@@ -58,7 +54,6 @@
 		"request": {
 			"permissions": []
 		},
-		"sms": true,
 		"tabs": true,
 		"tools": true
 	}

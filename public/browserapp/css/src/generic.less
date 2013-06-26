@@ -1192,26 +1192,188 @@
 				}
 			}
 			#sayso-section-body {
-				.sayso-section-label {
+				h3 {
 					text-transform: uppercase;
-					font-weight: bold;
+                    font-size: 11px;
+                    color: #c02526 !important;
+                    font-weight: bold !important;
+                    margin: 10px auto;
 				}
-				#sayso-levels {
-					height: 122px;
-					width: 500px;
+				#sayso-experience-levels-container {
+					height: 107px;
 					overflow: hidden;
-					
-					.sayso-experience-level-item {
-						float: left;
-					}
+
+                    .sayso-experience-levels-nav {
+                        width: 20px;
+                        height: 102px;
+                        background-repeat: no-repeat;
+                        background-position: 0px 0px;
+                        cursor: pointer;
+
+                        &.left {
+                            float: left;
+                            background-image: url('@{base-image-url}/experience-nav-levels-prev.png');
+                        }
+
+                        &.right {
+                            background-image: url('@{base-image-url}/experience-nav-levels-next.png');
+                            float: left;
+                        }
+                    }
+
+                    .sayso-experience-levels-carousel {
+                        width: 470px;
+                        margin: 0 20px;
+                        float: left;
+                        overflow: hidden;
+//                        .sayso-experience-levels-carousel-group{
+                        .sayso-experience-level-item {
+                            float: left;
+                            width: 100px;
+                            height: 102px;
+                            background-position: center;
+                            background-repeat: no-repeat;
+                            background-image: url('@{base-image-url}/experience-level-blank.png');
+                        }
+//                        }
+                    }
 				}
+
+                #sayso-experience-currencies-container {
+                    height: 88px;
+
+                    .sayso-experience-currencies-container-left {
+                        float: left;
+                        width: 50%;
+                        .sayso-experience-currencies-experience-box {
+                            height: 30px;
+                            width: 250px;
+                            position: relative;
+                            display: block;
+                            padding: 10px 0px 0px;
+                            float: left;
+
+                            .sayso-experience-currencies-experience-logo {
+                                position: absolute;
+                                z-index: 2;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                width: 30px;
+                                height: 30px;
+                                margin-top: -7px;
+                                background-image: url('@{base-image-url}/icon-experience-medium.png');
+                            }
+
+                            .sayso-experience-currencies-experience-progress-bar-container {
+                                background-color: #000;
+                                border: 2px solid #fff;
+                                margin: 0px auto;
+                                width: 225px;
+                                height: 14px;
+                                .border-radius(6px);
+                                box-shadow: 0px 0px 2px #666;
+
+                                .sayso-experience-currencies-experience-progress-bar {
+                                    height: 100%;
+                                    .vertical-gradient(@theme-color-progress-bar-gradient-start, @theme-color-progress-bar-gradient-end, @theme-color-progress-bar-gradient-fallback);
+                                    .border-radius(4px);
+                                }
+
+                                .sayso-experience-currencies-experience-progress-bar-value {
+                                    position: absolute;
+                                    top: 13px;
+                                    left: 0;
+                                    font-weight: bold;
+                                    font-size: 11px;
+                                    color: #fff;
+                                    text-shadow: 1px 1px 0px #000;
+                                    width: 100%;
+                                    text-align: center;
+                                }
+                            }
+                        }
+                    }
+                    .sayso-experience-currencies-container-right {
+                        float: left;
+                        width: 50%;
+                        .sayso-experience-currencies-redeemable-box {
+                            height: 30px;
+                            width: 120px;
+                            position: relative;
+                            display: block;
+                            padding: 10px 0px 0px;
+                            float: left;
+
+                            .sayso-experience-currencies-redeemable-logo {
+                                position: absolute;
+                                z-index: 2;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                width: 25px;
+                                height: 25px;
+                                margin-top: -4px;
+                                background-image: url('@{base-image-url}/icon-redeemable-medium.png');
+                            }
+
+                            .sayso-experience-currencies-redeemable-progress-bar-container {
+                                background-color: #000;
+                                border: 2px solid #fff;
+                                margin: 0px auto;
+                                width: 100px;
+                                height: 14px;
+                                .border-radius(6px);
+                                box-shadow: 0px 0px 2px #666;
+
+                                .sayso-experience-currencies-redeemable-progress-bar-value {
+                                    position: absolute;
+                                    top: 13px;
+                                    left: 0;
+                                    font-weight: bold;
+                                    font-size: 11px;
+                                    color: #fff;
+                                    text-shadow: 1px 1px 0px #000;
+                                    width: 100%;
+                                    text-align: center;
+                                }
+                            }
+                        }
+
+                        .sayso-experience-currencies-rewards-link {
+                            line-height: 38px;
+                            float: left;
+                            margin-left: 20px;
+                            a {
+                                font-size: 12px;
+                                font-weight: bold;
+                                color: black;
+                            }
+                        }
+                    }
+                }
+
+                #sayso-experience-purchases-container {
+
+                    .sayso-experience-purchases-item {
+                        float: left;
+                        margin: 0 10px 10px 10px;
+
+                        img {
+                            width: 80px;
+                            height: 52px;
+                        }
+                    }
+                }
 			}
 		}
 
-		#sayso-section-triangle-grey, #sayso-section-triangle-white {
+		#sayso-section-triangle-grey {
 			display: block;
 			left: 820px;
 		}
+
+        #sayso-section-triangle-white {
+            display: none;
+        }
     }
 
 	&.sayso-section-promos, &.sayso-section-tour-promos {

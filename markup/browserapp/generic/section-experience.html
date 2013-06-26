@@ -2,35 +2,58 @@
 	<hr />
 </div>
 <div id="sayso-section-body">
-    <p class="sayso-section-label">Levels</p>
-	<div id="sayso-levels">
-		{{#each state.game.levels}}
-			{{>level_partial}}
-		{{/each}}
-	</div>
+    <h3>Levels</h3>
+	<div id="sayso-experience-levels-container">
+        <div class="sayso-experience-levels-nav left"></div>
+	    <div class="sayso-experience-levels-carousel">
+            {{#each state.game.levels}}
+            {{>level_partial}}
+            {{/each}}
+        </div>
+        <div class="sayso-experience-levels-nav right"></div>
+    </div>
     <hr />
-
-		<p>{{currency-name "experience"}}</p>
-		{{state.game.currencies.experience.balance}}
-		<p>{{currency-name "redeemable"}}</p>
-		{{state.game.currencies.redeemable.balance}}
+    <div id="sayso-experience-currencies-container">
+        <div class="sayso-experience-currencies-container-left">
+            <h3>{{currency-name "experience"}}</h3>
+            <div class="sayso-experience-currencies-experience-box">
+                <span class="sayso-experience-currencies-experience-logo"></span>
+                <div class="sayso-experience-currencies-experience-progress-bar-container">
+                    <!--TODO: Make percentage work.-->
+                    <div class="sayso-experience-currencies-experience-progress-bar" style="width: 100%;"></div>
+                    <div class="sayso-experience-currencies-experience-progress-bar-value">{{state.game.currencies.experience.balance}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="sayso-experience-currencies-container-right">
+            <h3>{{currency-name "redeemable"}}</h3>
+            <div class="sayso-experience-currencies-redeemable-box">
+                <span class="sayso-experience-currencies-redeemable-logo"></span>
+                <div class="sayso-experience-currencies-redeemable-progress-bar-container">
+                    <div class="sayso-experience-currencies-redeemable-progress-bar-value">{{state.game.currencies.redeemable.balance}}</div>
+                </div>
+            </div>
+            <div class="sayso-experience-currencies-rewards-link">
+                <!--TODO: Fix rewards link-->
+                <a href="#">Rewards Center</a>
+            </div>
+        </div>
+    </div>
     <hr />
-
-    <p>My Purchases</p>
-    {{#each state.game.purchasables}}
-    	{{>purchasables_partial}}
-    {{/each}}
-    <hr />
-
+    <div id="sayso-experience-purchases-container">
+        <h3>My Purchases</h3>
+        {{#each state.game.purchasables}}
+            {{>purchasables_partial}}
+        {{/each}}
+    </div>
 </div>
 <div id="sayso-section-footer"></div>
 
 
 <div class="sayso-element sayso-partial" data-partial-id="level_partial">
-    <div class="sayso-element sayso-experience-level-item" data-level-id="{{id}}"
-         data-level-name="{{name}}" data-level-description="{{description}}" data-level-game-asset-id="{{game-asset_id}}"
-         data-level-img-src="{{img_url_small}}" data-level-ordinal="{{ordinal}}" data-level-threshold="{{threshold}}">
-        {{name}}{{threshold}}
+    <div class="sayso-element sayso-experience-level-item" data-level-id="{{id}}" style="background-image: url('{{img_url_small}}')">
+         <!--data-level-name="{{name}}" data-level-description="{{description}}" data-level-game-asset-id="{{game-asset_id}}"-->
+         <!--data-level-img-src="{{img_url_small}}" data-level-ordinal="{{ordinal}}" data-level-threshold="{{threshold}}">-->
         <!--AVAILABLE PARAMS-->
         <!--{{created}}-->
         <!--{{description}}-->
@@ -48,7 +71,7 @@
 <div class="sayso-element sayso-partial" data-partial-id="purchasables_partial">
     <div class="sayso-element sayso-experience-purchases-item" data-level-id="{{id}}"
          data-level-name="{{name}}" data-level-threshold="{{price}}" data-level-img="{{img_url_preview_bought}}">
-        {{name}}{{price}}
+        <img src="{{img_url_preview_bought}}" alt="{{name}}"/>
         <!--AVAILABLE PARAMS-->
         <!--{{available}}-->
         <!--{{bdid}}-->

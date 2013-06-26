@@ -412,7 +412,13 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 		"get-record-field" : function(recordSet, recordId, fieldName) {
 			//dot notation (recordSet.recordId.fieldName) fails
 			return recordSet[recordId][fieldName];
-		}
+		},
+        "ifEqual": function(v1, v2, options) {
+            if(v1 === v2) {
+                return options.fn(this);
+            }
+            return options.inverse(this);
+        }
 	};
 
 	// "section-link" corresponds to elements that have the class "sayso-section-link" (as well as "sayso-element")

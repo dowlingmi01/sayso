@@ -931,10 +931,11 @@
 }
 #sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-comment,
 #sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-comment {
-  color: #000;
-  font-size: 12px;
-  font-weight: bold;
-  margin: 0 10px 10px 0;
+  color: #fff;
+  margin: 5px 0px;
+  font-size: 11px;
+  line-height: 18px;
+  margin: 0 10px 10px 10px;
 }
 #sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-redeem-submit,
 #sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-bottom .sayso-reward-item-redeem-submit {

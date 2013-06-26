@@ -7,7 +7,8 @@ sayso.module.webportal = (function(global, $, state, Handlebars, utils) {
         app = 'webportal',
         version = '1.0',
         starbarId = 4,
-        $loginButton = $('#login'),
+        $loginButton = $('#login_button'),
+        $loginDiv = $('#login'),
         $signOutButton = $('#sign_out'),
         $emailField = $('#email_field'),
         $passwordField = $('#password_field'),
@@ -42,7 +43,7 @@ sayso.module.webportal = (function(global, $, state, Handlebars, utils) {
             utils.requestMarkup('profile', starbarId);
             $emailField.val('');
             $passwordField.val('');
-            $loginButton.hide();
+            $loginDiv.hide();
             $forgotPassword.hide();
         }
         else
@@ -55,7 +56,7 @@ sayso.module.webportal = (function(global, $, state, Handlebars, utils) {
 
     function logout() {
         utils.requestMarkup('log-out', starbarId);
-        $loginButton.show();
+        $loginDiv.show();
         $forgotPassword.show();
     }
 

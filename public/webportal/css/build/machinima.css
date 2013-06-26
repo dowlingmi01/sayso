@@ -481,7 +481,7 @@ header nav ul {
   height: 45px;
   vertical-align: middle;
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 .join_now_button {
   margin-left: 1em;
@@ -492,7 +492,7 @@ header nav ul {
   height: 45px;
   vertical-align: middle;
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 .join_now_button:active {
   background-image: url('../../images/join_now_down.png');

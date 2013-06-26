@@ -1138,6 +1138,12 @@
 #sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-information {
   margin: 10px 0px 10px 15px;
 }
+#sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-information p,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-information p {
+  font-size: 11px;
+  margin: 0 10px 10px 0;
+  line-height: 18px;
+}
 #sayso-section-container.sayso-section-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-information p input,
 #sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-reward-item-redeem-step .sayso-reward-item-redeem-order-container .sayso-reward-item-redeem-order-bottom .sayso-reward-item-order-information p input {
   width: 100px;

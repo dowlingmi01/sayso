@@ -19,7 +19,10 @@
         app: "browserapp",
         key : "nav"
     }, function(data) {
-        console.log('Received data in iframe:', data);
+        console.log('Received api result in iframe:', data);
+    });
+    sayso.module.frameComm.listen('my-event', function(data) {
+        console.log('Received event data in iframe:', data);
     });
 </script>
 </body>

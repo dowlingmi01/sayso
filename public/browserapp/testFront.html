@@ -33,12 +33,16 @@
     $(document).on('sayso:state-login sayso:state-logout sayso:state-ready', displayEmail);
     $(document).on('sayso:state-login sayso:state-ready', function() {
         if( sayso.module.state.state.loggedIn ) {
-            $iframe = $('<iframe class="sayso-poll-iframe" id="sayso-poll-iframe" src="testIframe.html"></iframe>');
+            $iframe = $('<iframe class="sayso-poll-iframe" id="sayso-poll-iframe"></iframe>');
             $iframe.css('height', '100%');
             $iframe.css('width', '100%');
+            var frameId = sayso.module.frameComm.setURL($iframe, 'testIframe.html');
 
-            $(document).on('sayso:iframe-ready', function() {
-                console.log('Iframe Ready');
+            $(document).on('sayso:iframe-ready', function(unused, data) {
+                if( data.frame_id === frameId ) {
+                    console.log('Iframe Ready');
+                    sayso.module.frameComm.fireEvent(frameId, 'my-event', 123456);
+                }
             });
 
             $(document.body).append($iframe);

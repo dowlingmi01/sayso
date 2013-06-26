@@ -541,10 +541,16 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
                             shipping: shippingData,
                             quantity: quantity
                         }, function(response){
-                            updateElements($nav, "game");
-                            $("#sayso-reward-item-redeem-step", $nav).html('');
-                            $("#sayso-reward-redeem-overlay", $nav).hide();
-                            //TODO: Show order success template and update state.game?
+                            if(response.error_code === 0) {
+                                //TODO: Implement order success template.
+                                updateElements($nav, "game");
+                                $("#sayso-reward-item-redeem-step", $nav).html('');
+                                $("#sayso-reward-redeem-overlay", $nav).hide();
+                            }
+                            else {
+                                //TODO: Fix error alert to be more useful.
+                                alert('There was an error processing your order, please try again later. Error: ' + response.error_message);
+                            }
                         });
                     } else {
                         //prepare shippingData
@@ -595,10 +601,16 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
                                 shipping: shippingData,
                                 quantity: quantity
                             }, function(response){
-                                updateElements($nav, "game");
-                                $("#sayso-reward-item-redeem-step", $nav).html('');
-                                $("#sayso-reward-redeem-overlay", $nav).hide();
-                                //TODO: Show order success template and update state.game?
+                                if(response.error_code === 0) {
+                                    //TODO: Implement order success template.
+                                    updateElements($nav, "game");
+                                    $("#sayso-reward-item-redeem-step", $nav).html('');
+                                    $("#sayso-reward-redeem-overlay", $nav).hide();
+                                }
+                                else {
+                                    //TODO: Fix error alert to be more useful.
+                                    alert('There was an error processing your order, please try again later. Error: ' + response.error_message);
+                                }
                             });
                         }
                     }

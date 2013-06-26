@@ -2,7 +2,27 @@
 	Public name - {{state.profile.public_name}}<br />
 	Email - {{state.profile.email}}<br />
 	Level - {{state.game.level}}<br />
-	XP - {{state.game.currencies.experience.balance}}<br />
-	Coins - {{state.game.currencies.redeemable.balance}}<br />
+	{{currency-name "experience"}} - {{state.game.currencies.experience.balance}}<br />
+	{{currency-name "redeemable"}} - {{state.game.currencies.redeemable.balance}}<br />
+	Connect FB - <a href="#" class="sayso-element sayso-social-connect" data-network="FB">Connect</a></a><br />
+	Connect TW - <a href="#" class="sayso-element sayso-social-connect" data-network="TW" data-oauth="need_to_get_oauth">Connect</a></a><br />
+	New Polls - {{countPolls.variables.count}}<br />
+	New Surveys -  {{countSurveys.variables.count}}<br />
 </div>
 <div id="sayso-section-footer"></div>
+
+<!-- Style Notes
+
+helper added to get the img path for the current level
+{{get-record-field state.game.levels state.game.level "img_url"}}
+
+facebook like box code
+<iframe src="//www.facebook.com/plugins/like.php?locale=en_US&amp;href=<?= $this->text('CONFIG_FACEBOOK_PAGE_FOR_LIKE_BUTTON') ?>&amp;layout=standard&amp;show_faces=false&amp;width=240&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:290px; height:35px;" allowTransparency="true"></iframe>
+
+facebook share button
+<a class="sb_externalShare sb_externalShare_facebook" rel="sb_mini-redeemable-currency-reward_facebook" href="//www.facebook.com/dialog/feed?app_id=294589067222667&amp;link=http%3A%2F%2FRecon.Say.So&amp;caption=&amp;picture=https%3A%2F%2Fs3.amazonaws.com%2Fsay.so%2Fmedia%2Fmisc%2Fma_FB_Share_Icon_100px.jpg&amp;redirect_uri=https%3A%2F%2Fapp.saysollc.com%2Fstarbar%2Fcontent%2Ffacebook-post-result%3Fshared_type%3Dstarbar%26shared_id%3D4%26user_id%3D18388%26user_key%3DBIHVFF9AOX2DNKE2UP3ZQ4B8GURIXIWY%26starbar_id%3D4&amp;name=Checking+out+Machinima+%7C+Recon...&amp;description=Say.So+is+your+way+of+making+a+lasting+impact+on+the+communities+you+love.+Participating+in+Machinima+%7C+Recon+is+easy+-+by+giving+your+opinion%2C+answering+polls+and+rating+Machinima+content%2C+you+gain+points+to+redeem+awesome+prizes+from+Machinima." style="background-position: 0px 0px;">
+				Facebook Share
+			</a>
+tweet button
+<iframe allowtransparency="true" frameborder="0" scrolling="no" src="https://platform.twitter.com/widgets/tweet_button.1371247185.html#_=1372206675424&amp;count=none&amp;id=twitter-widget-2&amp;lang=en&amp;original_referer=https%3A%2F%2Fwww.google.com%2F&amp;size=m&amp;text=Checking%20out%20Machinima%20%7C%20Recon...%20Get%20the%20Machinima%20Recon%20app%20%40&amp;url=http%3A%2F%2FRecon.Say.So&amp;via=saysoapp" class="twitter-share-button twitter-count-none" title="Twitter Tweet Button" data-twttr-rendered="true" style="width: 56px; height: 20px;"></iframe>
+-->

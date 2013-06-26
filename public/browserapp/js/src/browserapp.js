@@ -409,6 +409,10 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 		},
 		"image-path": function(fileName) {
 			return "/browserapp/images/" + state.state.starbar.short_name + "/" + fileName;
+		},
+		"get-record-field" : function(recordSet, recordId, fieldName) {
+			//dot notation (recordSet.recordId.fieldName) fails
+			return recordSet[recordId][fieldName];
 		}
 	};
 
@@ -571,6 +575,27 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 					$("#" + data["thisImage"]).hide();
 					$("#" + data["nextImage"]).show();
 				});
+			},
+			//calls the user.connectSocialNetwork endpoint
+			"social-connect" : function ($elem, data) {
+				$elem.click(function() {
+					api.doRequest({
+						action_class : "user",
+						action : "connectSocialNetwork",
+						starbar_id : starbarId,
+						network : data["network"],
+						oauth : data["oauth"]
+					}, function(response){
+						if (response.responses.default.variables.success == true) {
+							//it worked
+						} else {
+							//it failed
+						}
+					});
+				});
+			},
+			"user-profile" : function ($elem, data) {
+				var test;
 			}
 		}
 	};
@@ -723,8 +748,25 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
                     action : "getStarbarGoods"
                 }
             };
-        }
+        },
+		"user-profile" : function (data) {
+			var request = [];
+			request['countPolls'] = {
+				action_class : "survey",
+				action : "getSurveyCounts",
+				starbar_id : starbarId,
+				survey_type : "poll",
+				survey_status : "new"
+			};
+			request['countSurveys'] = {
+				action_class : "survey",
+				action : "getSurveyCounts",
+				starbar_id : starbarId,
+				survey_type : "survey",
+				survey_status : "new"
+			};
+			return request;
+		}
 	}
-
 })(this, jQuery, sayso.module.state, sayso.module.api, sayso.module.Handlebars)
 ;

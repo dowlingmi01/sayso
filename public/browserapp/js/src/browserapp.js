@@ -413,11 +413,30 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 			//dot notation (recordSet.recordId.fieldName) fails
 			return recordSet[recordId][fieldName];
 		},
-        "ifEqual": function(v1, v2, options) {
-            if(v1 === v2) {
-                return options.fn(this);
+        "compare": function(v1, operator, v2, options) {
+            switch (operator) {
+                case '==':
+                    return (v1 == v2) ? options.fn(this) : options.inverse(this);
+                    break;
+                case '===':
+                    return (v1 === v2) ? options.fn(this) : options.inverse(this);
+                    break;
+                case '<':
+                    return (v1 < v2) ? options.fn(this) : options.inverse(this);
+                    break;
+                case '<=':
+                    return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+                    break;
+                case '>':
+                    return (v1 > v2) ? options.fn(this) : options.inverse(this);
+                    break;
+                case '>=':
+                    return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+                    break;
+                default:
+                    return options.inverse(this);
+                    break;
             }
-            return options.inverse(this);
         }
 	};
 

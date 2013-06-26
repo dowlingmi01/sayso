@@ -87,12 +87,12 @@
             </div>
             <p class="sayso-reward-item-comment">
                 Redeem your Coins for
-                {{#ifEqual type "token"}}
+                {{#compare type "===" "token"}}
                     Entry Tokens to win!
                     The more tokens you purchase the better your chance of winning.
                 {{else}}
                     {{name}}
-                {{/ifEqual}}
+                {{/compare}}
                 <br/>{{comment}}
             </p>
             <div class="sayso-element sayso-reward-item-redeem-submit">REDEEM</div>

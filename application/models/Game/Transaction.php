@@ -2,7 +2,7 @@
 class Game_Transaction {
 	const HOUSE_USER_ID = 0;
 	const OK = 0;
-	const ERROR_INSUFICIENT_CREDIT = 1;
+	const ERROR_INSUFFICIENT_CREDIT = 1;
 	const ERROR_ALREADY_PURCHASED = 2;
 	const ERROR_OUT_OF_STOCK = 3;
 	const ERROR_INVALID_QUANTITY = 4;
@@ -503,7 +503,7 @@ class Game_Transaction {
 				$purchasable->cant_purchase_message = 'Must complete<br />Profile Survey';
 			$purchasable->comment = 'Survey Requirement';
 		} else if( $game['currencies']['redeemable']['balance'] < $purchasable->price * $quantity ) {
-			$purchasable->status_code = self::ERROR_INSUFICIENT_CREDIT;
+			$purchasable->status_code = self::ERROR_INSUFFICIENT_CREDIT;
 			$purchasable->cant_purchase_message = 'Earn more ' . $game['currencies']['redeemable']['name'] . ' by<br />completing polls and surveys!';
 			$purchasable->comment = 'Insufficient ' . $game['currencies']['redeemable']['name'];
 		} else if( $purchasable->type != 'token' && array_key_exists($purchasable->id, $game['purchasables'])) {

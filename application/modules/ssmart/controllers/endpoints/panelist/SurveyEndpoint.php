@@ -42,12 +42,15 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		// @TODO IMPORTANT! this should use getSurveys() or equivalent to ensure that the user is allowed to get this survey!
 		$survey = new Survey();
 		$survey->loadData($surveyId);
-		$surveyData = $survey->getData();
-		$surveyData["id"] = $surveyId;
 
 		//add surveyResponseId
 		$surveyResponse = new Survey_Response();
 		$surveyResponse->loadDataByUniqueFields(["survey_id" => $surveyId, "user_id" => $userId]);
+
+		$survey->setRewardPoints($surveyResponse->status);
+
+		$surveyData = $survey->getData();
+		$surveyData["id"] = $surveyId;
 		$surveyData['survey_response_id'] = $surveyResponse->id;
 
 		//add questions and answer choices

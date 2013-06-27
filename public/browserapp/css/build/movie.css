@@ -633,6 +633,7 @@
 }
 #sayso-section-container.sayso-section-polls #sayso-section .sayso-poll-container .sayso-poll .sayso-poll-footer,
 #sayso-section-container.sayso-section-tour-polls #sayso-section .sayso-poll-container .sayso-poll .sayso-poll-footer {
+  padding: 0 0 6px 8px;
   font-weight: bold;
   font-size: 12px;
 }
@@ -701,7 +702,7 @@
   position: relative;
   height: 57px;
   border: 1px solid #c2c2c2;
-  border-bottom: none;
+  margin-bottom: 5px;
 }
 #sayso-section-container .sayso-completed-container .sayso-completed-title {
   float: left;
@@ -749,9 +750,6 @@
 }
 #sayso-section-container .sayso-completed-container .sayso-completed-points-earned .sayso-completed-points-earned-redeemable {
   background-image: url('../../images/movie/icon-redeemable-small.png');
-}
-#sayso-section-container .sayso-completed-container:last-child {
-  border-bottom: 1px solid #c2c2c2;
 }
 #sayso-section-container.sayso-section-rewards #sayso-section,
 #sayso-section-container.sayso-section-tour-rewards #sayso-section {

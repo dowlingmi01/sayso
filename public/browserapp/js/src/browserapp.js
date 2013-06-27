@@ -376,8 +376,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			});
 
 			$(global.document).on('sayso:iframe-poll-completed', function(unused, dataFromIframe) {
-				processMarkupIntoContainer($poll, "{{>poll-completed-footer}}", poll);
-				updateElements(null, "game", true);
+				completePoll($poll, poll);
 			});
 
 			$poll.append(iframe.$element);
@@ -404,11 +403,13 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		$container.removeClass("sayso-poll-container-loading sayso-poll-container-current");
 	}
 
-	function completePoll($container) {
-		//@todo!
+	function completePoll($poll, poll) {
+		processMarkupIntoContainer($poll, "{{>poll-completed-footer}}", poll);
+		$poll.children('.sayso-poll-footer').hide().fadeTo(1000, 1);
+		updateElements(null, "game", true);
 
 		// show the completed tab *link* in case this is the first poll this user has completed
-		$('#sayso-completed-tab-link').show();
+		$('#sayso-completed-tab-link', $section).show();
 	}
 
 	function processMarkupIntoContainer($container, markup, templateData, runPreTemplateHandlers) {

@@ -21,9 +21,11 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
             if (window.location.hash) {
                 window.location.hash = '';
             }
+            loadMarkup('landing');
         }
         //Bind our hashchange event.
         window.onhashchange = hashChanged;
+
         $loginButton.click(function() {
             state.login($emailField.val(), $passwordField.val());
         });

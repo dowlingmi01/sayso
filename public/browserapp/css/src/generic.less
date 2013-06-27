@@ -462,6 +462,115 @@
 		#sayso-section {
 			width: 570px;
 			height: 300px;
+
+			#sayso-section-body {
+				padding: 0;
+
+				.sayso-user-profile-section {
+					border-bottom: 1px solid #929292;
+					padding: 5px;
+
+					strong {
+						font-weight: bold;
+					}
+				}
+
+				.sayso-user-profile-left {
+					float: left;
+					margin : 5px 5px 0 0;
+				}
+
+				p {
+					line-height: 18px;
+				}
+
+				#sayso-user-profile-column-left {
+					float: left;
+					width: 58%;
+					border-right: 1px solid #929292;
+					padding: 0 5px;
+
+					#sayso-user-profile-user {
+						height: 60px;
+					}
+
+					#sayso-user-profile-facebook {
+						margin-top : 10px;
+					}
+
+					#sayso-user-profile-link-accounts {
+						clear : both;
+						height: 89px;
+						padding: 5px 0;
+
+						.sayso-user-profile-social-link {
+							background-repeat: no-repeat;
+							background-position: 0px 0px;
+							width: 49px;
+							height: 66px;
+						}
+
+						#sayso-user-profile-social-link-facebook {
+							background-image: url('@{base-image-url}/social-connect-facebook.png');
+							margin-right :10px;
+						}
+
+						#sayso-user-profile-social-link-twitter {
+							background-image: url('@{base-image-url}/social-connect-twitter.png');
+						}
+					}
+
+					#sayso-user-profile-documents {
+						border: none;
+
+						a.sayso-small {
+							font-weight: bold;
+						}
+					}
+				}
+
+				#sayso-user-profile-column-right {
+					float: right;
+					width: 37%;
+					height: 100%;
+					margin: 0 5px 0 0;
+
+					#sayso-user-profile-level {
+						height: 68px;
+
+						.sayso-user-profile-link-number {
+							font-size: 12px;
+							color : @theme-color-links;
+							font-weight : bold;
+						}
+
+						.sayso-user-profile-link-word {
+							font-size: 12px;
+							color : @theme-color-links;
+						}
+					}
+
+					#sayso-user-profile-new {
+						a {
+							font-size: 11px;
+							font-weight: bold;
+						}
+					}
+
+					#sayso-user-profile-share {
+						border: none;
+
+						.sayso-user-profile-headline {
+							margin-bottom: 5px;
+							font-size: 13px;
+						}
+
+						p {
+							font-size: 12px;
+						}
+					}
+				}
+			}
 		}
 
 		#sayso-section-triangle-white, #sayso-section-triangle-grey {

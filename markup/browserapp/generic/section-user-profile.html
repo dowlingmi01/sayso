@@ -1,20 +1,71 @@
 <div id="sayso-section-body">
-	Public name - {{state.profile.public_name}}<br />
-	Email - {{state.profile.email}}<br />
-	Level - {{state.game.level}}<br />
-	{{currency-name "experience"}} - {{state.game.currencies.experience.balance}}<br />
-	{{currency-name "redeemable"}} - {{state.game.currencies.redeemable.balance}}<br />
-	Connect FB - <a href="#" class="sayso-element sayso-social-connect" data-network="FB">Connect</a></a><br />
-	Connect TW - <a href="#" class="sayso-element sayso-social-connect" data-network="TW" data-oauth="need_to_get_oauth">Connect</a></a><br />
-	New Polls - {{countPolls.variables.count}}<br />
-	New Surveys -  {{countSurveys.variables.count}}<br />
+	<div id="sayso-user-profile-column-left">
+		<div id="sayso-user-profile-header" class="sayso-user-profile-section">
+			Welcome Back, <span class="sayso-highlight">{{#compare state.profile.public_name "==" ""}}
+			{{state.profile.public_name}}
+			{{else}}
+			Level {{state.game.level}}
+			{{/compare}}</span>
+		</div>
+		<div id="sayso-user-profile-user" class="sayso-user-profile-section">
+			<img src="%CONFIG_IMAGE_PATH%/section-user-profile-avatar.jpg" class="sayso-user-profile-left" id="sayso-user-profile-avatar" />
+			<p><strong>User Name</strong>: {{#compare state.profile.public_name "==" ""}}
+			{{state.profile.public_name}}
+			{{else}}
+			Level {{state.game.level}}
+			{{/compare}}</p>
+			<p>
+				{{state.profile.email}}
+			</p>
+		</div>
+		<div id="sayso-user-profile-facebook" class="sayso-user-profile-section">
+			<iframe src="//www.facebook.com/plugins/like.php?locale=en_US&amp;href=%CONFIG_FACEBOOK_PAGE_FOR_LIKE_BUTTON%') ?>&amp;layout=standard&amp;show_faces=false&amp;width=240&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:290px; height:35px;" allowTransparency="true"></iframe>
+		</div>
+		<div id="sayso-user-profile-link-accounts" class="sayso-user-profile-section">
+			<p>Link Your Acounts</p>
+			<div class="sayso-element sayso-social-connect sayso-user-profile-social-link sayso-user-profile-left" id="sayso-user-profile-social-link-facebook" data-network="FB"></div>
+			<div class="sayso-element sayso-social-connect sayso-user-profile-social-link sayso-user-profile-left" id="sayso-user-profile-social-link-twitter" data-network="TW"></div>
+		</div>
+		<div id="sayso-user-profile-documents" class="sayso-user-profile-section">
+			<p>Documents</p>
+			<a href="" class="sayso-small">Privacy Policy</a>
+			|
+			<a href="" class="sayso-small">Rewards Rules </a>
+			|
+			<a href="" class="sayso-small">Giveaway Rules </a>
+			|
+			<a href="" class="sayso-small">EULA</a>
+		</div>
+	</div>
+	<div id="sayso-user-profile-column-right">
+		<div class="sayso-user-profile-section">
+			My Stats
+		</div>
+		<div id="sayso-user-profile-level" class="sayso-user-profile-section">
+			<img src="{{get-record-field state.game.levels state.game.level 'img_url_small'}}" class="sayso-user-profile-left" />
+			<p><srong>Level {{state.game.level}}</srong></p>
+			<hr />
+			<a href=""><span class="sayso-user-profile-link-number">{{state.game.currencies.redeemable.balance}}</span> <span class="sayso-user-profile-link-word">{{currency-name "redeemable"}}</span></a>
+			<br />
+			<a href=""><span class="sayso-user-profile-link-number">{{state.game.currencies.experience.balance}}</span> <span class="sayso-user-profile-link-word">{{currency-name "experience"}}</span></a>
+		</div>
+		<div id="sayso-user-profile-new" class="sayso-user-profile-section">
+			<p>What's New Ttoday</p>
+			<a href="">{{countPolls.variables.count}} New Polls</a>
+			<br />
+			<a href="">{{countSurveys.variables.count}} New Surveys</a>
+		</div>
+		<div id="sayso-user-profile-share" class="sayso-user-profile-section">
+			<p class="sayso-user-profile-headline">Share {{state.starbar.label}}</p>
+			<p>Earn {{currency-name "redeemable"}} for sharing!</p>
+			<img src="%CONFIG_IMAGE_PATH%/button-share-facebook.png" class="sayso-user-profile-left" />
+			<img src="%CONFIG_IMAGE_PATH%/button-share-twitter.png" class="sayso-user-profile-left" />
+		</div>
+	</div>
 </div>
 <div id="sayso-section-footer"></div>
 
 <!-- Style Notes
-
-helper added to get the img path for the current level
-{{get-record-field state.game.levels state.game.level "img_url"}}
 
 facebook like box code
 <iframe src="//www.facebook.com/plugins/like.php?locale=en_US&amp;href=<?= $this->text('CONFIG_FACEBOOK_PAGE_FOR_LIKE_BUTTON') ?>&amp;layout=standard&amp;show_faces=false&amp;width=240&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:290px; height:35px;" allowTransparency="true"></iframe>

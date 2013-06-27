@@ -478,6 +478,113 @@
   width: 570px;
   height: 300px;
 }
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body {
+  padding: 0;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body .sayso-user-profile-section,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body .sayso-user-profile-section {
+  border-bottom: 1px solid #929292;
+  padding: 5px;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body .sayso-user-profile-section strong,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body .sayso-user-profile-section strong {
+  font-weight: bold;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body .sayso-user-profile-left,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body .sayso-user-profile-left {
+  float: left;
+  margin: 5px 5px 0 0;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body p,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body p {
+  line-height: 18px;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left {
+  float: left;
+  width: 58%;
+  border-right: 1px solid #929292;
+  padding: 0 5px;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-user,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-user {
+  height: 60px;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-facebook,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-facebook {
+  margin-top: 10px;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts {
+  clear: both;
+  height: 89px;
+  padding: 5px 0;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts .sayso-user-profile-social-link,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts .sayso-user-profile-social-link {
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+  width: 49px;
+  height: 66px;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts #sayso-user-profile-social-link-facebook,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts #sayso-user-profile-social-link-facebook {
+  background-image: url('../../images/machinima/social-connect-facebook.png');
+  margin-right: 10px;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts #sayso-user-profile-social-link-twitter,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts #sayso-user-profile-social-link-twitter {
+  background-image: url('../../images/machinima/social-connect-twitter.png');
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-documents,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-documents {
+  border: none;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-documents a.sayso-small,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-documents a.sayso-small {
+  font-weight: bold;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right {
+  float: right;
+  width: 37%;
+  height: 100%;
+  margin: 0 5px 0 0;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-level,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-level {
+  height: 68px;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-level .sayso-user-profile-link-number,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-level .sayso-user-profile-link-number {
+  font-size: 12px;
+  color: #c02526;
+  font-weight: bold;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-level .sayso-user-profile-link-word,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-level .sayso-user-profile-link-word {
+  font-size: 12px;
+  color: #c02526;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-new a,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-new a {
+  font-size: 11px;
+  font-weight: bold;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-share,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-share {
+  border: none;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-share .sayso-user-profile-headline,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-share .sayso-user-profile-headline {
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-share p,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-share p {
+  font-size: 12px;
+}
 #sayso-section-container.sayso-section-user-profile #sayso-section-triangle-white,
 #sayso-section-container.sayso-section-tour-user-profile #sayso-section-triangle-white,
 #sayso-section-container.sayso-section-user-profile #sayso-section-triangle-grey,

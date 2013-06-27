@@ -1370,15 +1370,52 @@
   background-image: url('../../images/movie/experience-nav-levels-next.png');
   float: left;
 }
-#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-levels-container .sayso-experience-levels-carousel,
-#sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-levels-container .sayso-experience-levels-carousel {
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel,
+#sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel {
   width: 470px;
+  height: 100%;
   margin: 0 20px;
   float: left;
   overflow: hidden;
+  position: relative;
 }
-#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-levels-container .sayso-experience-levels-carousel .sayso-experience-level-item,
-#sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-levels-container .sayso-experience-levels-carousel .sayso-experience-level-item {
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group,
+#sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: none;
+  opacity: 1;
+}
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-earned,
+#sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-earned {
+  float: left;
+  width: 100px;
+  height: 102px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('../../images/movie/experience-level-blank.png');
+}
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-earned .sayso-experience-level-item-earned-img,
+#sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-earned .sayso-experience-level-item-earned-img {
+  background-image: url('../../images/movie/icon-experience-medium.png');
+  background-repeat: no-repeat;
+}
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-earned .sayso-experience-level-item-earned-img p,
+#sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-earned .sayso-experience-level-item-earned-img p {
+  text-align: center;
+}
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-current,
+#sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-current {
+  float: left;
+  width: 100px;
+  height: 102px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('../../images/movie/experience-level-blank.png');
+}
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-next,
+#sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-next {
   float: left;
   width: 100px;
   height: 102px;

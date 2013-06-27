@@ -5,10 +5,8 @@
     <h3>Levels</h3>
 	<div id="sayso-experience-levels-container">
         <div class="sayso-experience-levels-nav left"></div>
-	    <div class="sayso-experience-levels-carousel">
-            {{#each state.game.levels}}
-            {{>level_partial}}
-            {{/each}}
+        <div class="sayso-element sayso-experience-levels-carousel" id="sayso-experience-levels-carousel">
+            {{{create-level-carousel state.game}}}
         </div>
         <div class="sayso-experience-levels-nav right"></div>
     </div>
@@ -50,23 +48,7 @@
 <div id="sayso-section-footer"></div>
 
 
-<div class="sayso-element sayso-partial" data-partial-id="level_partial">
-    <div class="sayso-element sayso-experience-level-item" data-level-id="{{id}}" style="background-image: url('{{img_url_small}}')">
-         <!--data-level-name="{{name}}" data-level-description="{{description}}" data-level-game-asset-id="{{game-asset_id}}"-->
-         <!--data-level-img-src="{{img_url_small}}" data-level-ordinal="{{ordinal}}" data-level-threshold="{{threshold}}">-->
-        <!--AVAILABLE PARAMS-->
-        <!--{{created}}-->
-        <!--{{description}}-->
-        <!--{{game-asset_id}}-->
-        <!--{{id}}-->
-        <!--{{img_url}}-->
-        <!--{{img_url_small}}-->
-        <!--{{modified}}-->
-        <!--{{name}}-->
-        <!--{{ordinal}}-->
-        <!--{{threshold}}-->
-    </div>
-</div>
+
 
 <div class="sayso-element sayso-partial" data-partial-id="purchasables_partial">
     <div class="sayso-element sayso-experience-purchases-item" data-level-id="{{id}}"

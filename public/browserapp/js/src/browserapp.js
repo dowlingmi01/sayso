@@ -459,6 +459,44 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
                     return options.inverse(this);
                     break;
             }
+        },
+        "create-level-carousel": function(game) {
+            var $row, $level;
+            var $carouselContainer = $('<div></div>');
+            var counter = 0;
+            var topIndex = 7;
+//            var blankImageUrl = '../../images/machinima/experience-level-blank.png';
+            $row = $('<div class="sayso-experience-levels-carousel-group" style="display: block; z-index: ' + topIndex + ';"></div>');
+            for(var i=1;i<=Object.keys(game.levels).length;i++) {
+                if(((counter % 4) === 0 && counter !== 0)) {
+                    $carouselContainer.append($row);
+                    topIndex--;
+                    $row = $('<div class="sayso-experience-levels-carousel-group" style="z-index: ' + topIndex + ';"></div>');
+                }
+                if(i<game.level){
+                    $level = $('<div class="sayso-experience-level-item-earned" style="background-image: url(\'' + game.levels[i].img_url_small + '\')"></div>');
+                    //ASSIGN LEVEL A VERY SPECIFIC ID OR THIS WILL BE HELL.
+                    //Use $(document).on("mouseover", "#id", ...
+                    //This doesn't work. At all.
+                    $level.on("mouseover", function() {
+                        console.log("Mouseover");
+                    });
+                }
+                else if(i>game.level){
+                    $level = $('<div class="sayso-experience-level-item-next"></div>');
+                }
+                else {
+                    $level = $('<div class="sayso-experience-level-item-current" style="background-image: url(\'' + game.levels[i].img_url + '\')"></div>');
+                }
+
+                //Use partials and a post-template handler for the carousel. Otherwise this is gonna be hellacious.
+                $row.append($level);
+                if(i === Object.keys(game.levels).length) {
+                    $carouselContainer.append($row);
+                }
+                counter++;
+            }
+            return $carouselContainer.html();
         }
 	};
 
@@ -523,6 +561,9 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 					openPoll($elem, data); // note that openPoll takes the container ($elem) as a parameter, not $pollHeader
 				});
 			},
+            "experience-levels-carousel": function ($elem, data) {
+
+            },
             "reward-item": function ($elem, data, templateData) {
                 var rewardRecord = $.grep(templateData.rewards.records, function (r){ return r.id === data.rewardId; });
                 if (rewardRecord) {

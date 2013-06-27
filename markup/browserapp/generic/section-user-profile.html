@@ -43,14 +43,13 @@
 		</div>
 		<div id="sayso-user-profile-level" class="sayso-user-profile-section">
 			<img src="{{get-record-field state.game.levels state.game.level 'img_url_small'}}" class="sayso-user-profile-left" />
-			<p><srong>Level {{state.game.level}}</srong></p>
-			<hr />
+			<p><strong>Level {{state.game.level}}</strong></p>
 			<a href=""><span class="sayso-user-profile-link-number">{{state.game.currencies.redeemable.balance}}</span> <span class="sayso-user-profile-link-word">{{currency-name "redeemable"}}</span></a>
 			<br />
 			<a href=""><span class="sayso-user-profile-link-number">{{state.game.currencies.experience.balance}}</span> <span class="sayso-user-profile-link-word">{{currency-name "experience"}}</span></a>
 		</div>
 		<div id="sayso-user-profile-new" class="sayso-user-profile-section">
-			<p>What's New Ttoday</p>
+			<p>What's New Today</p>
 			<a href="">{{countPolls.variables.count}} New Polls</a>
 			<br />
 			<a href="">{{countSurveys.variables.count}} New Surveys</a>

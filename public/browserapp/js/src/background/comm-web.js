@@ -25,7 +25,7 @@ sayso.module.comm = (function(global, $, util) {
 			if( data[0] && data[0] === 'sayso-frontend-request' && data[1] && data[1].name && listeners[data[1].name])
 				listeners[data[1].name](data[1].data, getReplyCallback(data[1].id));
 		} catch( e ) {
-			console.log(e.stack);
+			global.console.log(e.stack);
 		}
 	}
 	function listen( name, callback ) {

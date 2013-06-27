@@ -1,6 +1,5 @@
-(function(global, Api, comm){
-	var starbarId = 4;
-	var baseDomain = (global.sayso && global.sayso.baseDomain) || global.location.host;
+(function(global, Api, comm, config, getSession){
+	var baseDomain = config.baseDomain;
 	var api = new Api(baseDomain);
 	var state = {
 		starbars: {},
@@ -43,7 +42,7 @@
 		api = new Api(baseDomain);
 	}
 	function getUserState() {
-		comm.get('session', function( session ) {
+		getSession( function( session ) {
 			if( session && session.id && session.key ) {
 				if (!api.session_id) api = new Api(baseDomain, session.id, session.key);
 				api.setRequest( 'user', {action_class: 'User', action: 'getUser'} );
@@ -140,4 +139,4 @@
 	comm.listen('login', login);
 	comm.listen('logout', logout);
 	getUserState();
-})(this, sayso.module.Api, sayso.module.comm);
+})(this, sayso.module.Api, sayso.module.comm, sayso.module.config, sayso.module.getSession);

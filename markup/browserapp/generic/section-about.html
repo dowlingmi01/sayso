@@ -1,31 +1,448 @@
 <div id="sayso-section-header">
 	<ul>
 		<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="about">About</li>
-		<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="billofrights">Bill Of Rights</li>
+		<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="billofrights">Bill Of
+			Rights
+		</li>
 		<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="help">Help</li>
 		<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="faq">FAQs</li>
-		<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="feedback">Feedback</li>
+		<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="feedback">Feedback
+		</li>
 		<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="testing">Testing</li>
 	</ul>
 </div>
 <div id="sayso-section-body" class="sayso-element sayso-tab-container" data-default-tab="about">
 	<div class="sayso-element sayso-tab" data-tab="about">
-		About
+		{{>about}}
 	</div>
-	<div class="sayso-element sayso-tab" data-tab="billofrights">
-		billofrights
+	<div class="sayso-element sayso-tab sayso-scrollable" data-tab="billofrights">
+		{{>billofrights}}
 	</div>
 	<div class="sayso-element sayso-tab" data-tab="help">
-		help
+		<h2>Need Help?</h2>
+
+		<p>We designed the steps below to help you get oriented with Machinima | Recon. If you find you need additional
+			help, feel free to <a href="mailto:machinima@say.so">contact us</a>.
+		</p>
+
+		<div id="sayso-help-tabs" class="sayso-element sayso-tab-container" data-default-tab="help-tab-one">
+			<div class="sayso-element sayso-tab" data-tab="help-tab-one">
+				{{>help-tab-one}}
+			</div>
+			<div class="sayso-element sayso-tab" data-tab="help-tab-two">
+				{{>help-tab-two}}
+			</div>
+			<div class="sayso-element sayso-tab" data-tab="help-tab-three">
+				<p>three</p>
+			</div>
+			<div class="sayso-element sayso-tab" data-tab="help-tab-four">
+				four
+			</div>
+		</div>
+		<ul id="sayso-about-help-links">
+			<li class="sayso-element sayso-tab-link" data-tab-container="sayso-help-tabs" data-tab="help-tab-one"><a
+					href="#">Welcome!</a></li>
+			<li class="sayso-element sayso-tab-link" data-tab-container="sayso-help-tabs" data-tab="help-tab-two"><a
+					href="#">What Can I Do?</a></li>
+			<li class="sayso-element sayso-tab-link" data-tab-container="sayso-help-tabs" data-tab="help-tab-three"><a
+					href="#">What Do I Get?</a></li>
+			<li class="sayso-element sayso-tab-link" data-tab-container="sayso-help-tabs" data-tab="help-tab-four"><a
+					href="#">Get Started</a></li>
+		</ul>
+
 	</div>
-	<div class="sayso-element sayso-tab" data-tab="faq">
-		faq
+
+	<div class="sayso-element sayso-tab sayso-scrollable" data-tab="faq">
+		{{>faqs}}
 	</div>
 	<div class="sayso-element sayso-tab" data-tab="feedback">
 		feedback
 	</div>
-	<div class="sayso-element sayso-tab" data-tab="testing">
-		testing
-	</div>
+	{{#compare "%CONFIG_BASE_DOMAIN%" "==" "app.saysollc.com"}}
+		<div class="sayso-element sayso-tab" data-tab="testing">
+			<h2>Top Secret Testing Functions</h2>
+			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/reset-surveys-and-polls">Reset surveys and polls</a></p>
+			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/reset-external">Reset Facebook and Twitter External accounts and username</a></p>
+			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/reset-notifications">Reset Notifications and User Creation Time</a></p>
+			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/reset-gamer">Reset Game info to just after install (1000 chops, 100 notes)</a></p>
+			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/reset-all" style="color: red;">Reset this user to 'just created, just installed' state (i.e. All of the Above)</a></p>
+			<br />
+			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/complete-survey?survey_type=survey&survey_reward_category=profile">Simulate completing *the* profile survey</a></p>
+			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/complete-survey?survey_type=survey&survey_reward_category=premium">Simulate completing the primary survey (points only)</a></p>
+			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/complete-survey?survey_type=survey&survey_reward_category=standard">Simulate completing a regular survey (points only)</a></p><br />
+			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/complete-survey?survey_type=poll&survey_reward_category=standard">Simulate completing a regular poll (points only)</a></p>
+			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/complete-survey?survey_type=poll&survey_reward_category=premium">Simulate completing a premium poll (points only)</a></p><br />
+			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/reward-notes" style="color: green;">Receive 5000 notes</a></p>
+		</div>
+	{{/compare}}
 </div>
 <div id="sayso-section-footer"></div>
+
+<div class="sayso-element sayso-partial" data-partial-id="help-tab-one">
+	<div class="sayso-element">
+		content from the partial
+	</div>
+</div>
+<div class="sayso-element sayso-partial" data-partial-id="help-tab-two">
+	<div class="sayso-element">
+		content from the partial - two
+	</div>
+</div>
+
+<!-- About partial -->
+<div class="sayso-element sayso-partial" data-partial-id="about">
+	<h2>About Machinima|Recon</h2>
+
+	<p>Our mission is to give you -- our audience, fans, acolytes, pundits -- a better way to connect with Machinima. In
+		return, we learn how best to serve you, our fans. But, for this to truly mean something, the experience needs to
+		be worthwhile.
+	</p>
+
+	<p>The Recon experience is unique in that it is a browser application, not a web page, so interacting with it
+		doesn't require you to leave what you are doing. It's there when you are ready and keeps you notified of new
+		surveys, content and rewards. The app offers a variety of surveys and polls, but is also full of fun stuff like
+		- trivia, trailers, contests and content exclusive to Recon members. Some are available to you out of the gate,
+		but others need to be earned by leveling up or demonstrating your unique knowledge.
+	</p>
+
+	<p>The more you participate, the more you gain, earning both experience points (xp) and redeemable currency (coins).
+		Experience points will get you more influence and are earned by sharing your experience, expertise and opinion.
+		These determine your status in the community - reaching higher levels separates you from the crowd as someone to
+		be heard.
+	</p>
+
+	<p>Redeemable currency points are almost as good as cash and can be redeemed for all sorts of schwag, including
+		Machinima gear.
+	</p>
+
+	<p>We need you to take point in our mission to ever improve Machinima and our content offerings.</p>
+
+	<p>Recon!</p>
+	<br/>
+
+	<p style="margin: 0; float: right;">
+		<small>
+			<a href="//%CONFIG_BASE_DOMAIN%/docs/machinima/Say.So_Privacy_Policy.pdf" target="_new">Privacy Policy</a>&nbsp;|&nbsp;
+			<a href="//%CONFIG_BASE_DOMAIN%/docs/machinima/Say.So_Rewards_Rules.pdf" target="_new">Rewards Rules</a>&nbsp;|&nbsp;
+			<a href="//%CONFIG_BASE_DOMAIN%/docs/machinima/Say.So_App_EULA.pdf" target="_new">EULA</a>
+		</small>
+	</p>
+</div>
+
+<!-- Bill of rights partial -->
+<div class="sayso-element sayso-partial" data-partial-id="billofrights">
+	<h2>Say.So Member Bill of Rights</h2>
+	<div>
+		<p>In order to ensure members are openly and unequivocally made aware of the core values embodied by Say.So with which we imbue our member relations and product roadmap, we provide this Say.So Member Bill of Rights.
+		</p></div>
+
+	<h3>(1) Say.So</h3>
+	<div><p>Above all else, members' say-so will be honored and exalted. Your influence, opinion and personal authority are the core reason for the existence of Say.So.
+	</p></div>
+
+	<h3>(2) Consent - Unambiguous Opt-In</h3>
+	<div><p>By agreeing to participate in a Say.So community you accept that from time to time anonymous usage, behavioral, and poll/survey data will be collected, but we will never collect personally identifiable or sensitive information without your explicit permission.
+	</p></div>
+
+	<h3>(3) Anonymity</h3>
+	<div><p>
+		No personally identifiable information will be associated to your member account – ever. You will remain anonymous – what we know about you is what you agree to provide us. Period.
+	</p></div>
+
+	<h3>(4) Transparency</h3>
+	<div><p>
+		You have the right to know how Say.So uses your anonymous information and not see details buried deep in the "terms and conditions". Hence, this Bill of Rights, which will be posted in multiple, easily accessible places. We will also provide you several ways to provide feedback and input on how we're doing and hope you don’t hesitate to share your thoughts, concerns, opinions, suggestions.</p></div>
+
+	<h3>(5) Privacy</h3>
+	<div><p>
+		Say.So will keep all data you provide to us private – your email address, or personally identifiable info we may need to collect to send you rewards (e.g. name, physical
+		address, phone number). This information will not be sold or given to third-parties. Not gonna happen.
+	</p></div>
+
+	<h3>(6) Fun</h3>
+	<div><p>
+		It is a member's right to enjoy themselves, and to let Say.So know what is fun, relevant and interesting, and what is lame and boring (please be kind). Though Say.So will sometimes need to ask you to do a few boring things so we can pay the bills, Say.So will always ensure the product roadmap reflects more fun stuff than boring stuff. We're listening!
+	</p></div>
+
+	<h3>(7) Reward</h3>
+	<div><p>
+		Say.So members have a right to be rewarded for their Say.So. That will be provided in the form of exclusive access and privileges, as well as through explicit rewards like redeemable points or simple cash.
+	</p></div>
+</div>
+
+
+<!-- FAQ partial -->
+<div class="sayso-element sayso-partial" data-partial-id="faqs">
+	<h2>FAQ</h2>
+
+	<h3>What is Machinima | Recon?</h3>
+	<div>
+		<p>
+			Machinima | Recon is a way to directly influence the content seen on machinima.com. Members are rewarded by
+			answering polls, participating in surveys, and giving their opinion about Machinima | Recon content. Members
+			gain XP and Coins. Coins can be redeemed for Machinima | Recon rewards and "Entry Tokens" into Machinima |
+			Recon giveaways.
+			<a href="http://bit.ly/NKSDba" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>Do I have to pay for anything? Is there any shipping & handling fees for prizes obtained or won?</h3>
+	<div>
+		<p>
+			No, this is completely free to you. The only thing we want you to do is participate.
+			<a href="http://bit.ly/MBxNc9" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>What are Experience points (XP) used for?</h3>
+	<div>
+		<p>
+			XP are experience points and determine your level of influence and involvement. Gaining XP will increase
+			your Machinima | Recon level.
+			<a href="http://bit.ly/PdLcri" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>What are Coins used for?</h3>
+	<div>
+		<p>
+			Coins are the currency you earn by participating in polls, answering surveys, and sharing your ideas. In
+			fact, virtually everything you do in Machinima | Recon will earn you Coins. Coins can be exchanged for
+			various prizes and Entry Tokens in the Reward Center.
+			<a href="http://bit.ly/NHLj1c" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>What are Entry Tokens?</h3>
+	<div>
+		<p>
+			Entry Tokens are your way of entering prize giveaways. Users that have purchased an Entry Token with their
+			Coins will be entered to win the giveaway. To view current giveaways. At the end of each giveaway period a
+			prize will be given away to a user that has purchased an Entry Token for the giveaway. You can buy as many
+			Entry Tokens as you want to increase your chance of winning.
+			<a href="http://bit.ly/KHQltP" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>Do you really give away the prizes?</h3>
+	<div>
+		<p>
+			YES! Every prize that is won will be shipped within 4-6 weeks. Users and fans of Machinima | Recon will get
+			the prizes for playing, not the CEO's nephew or cousin. At the end of each giveaway we will send out an
+			email to all the Machinima | Recon users, letting you know who the lucky player is.
+			<a href="http://bit.ly/MiWbPM" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>How do I get my prize?</h3>
+	<div>
+		<p>
+			When you win a prize we will contact you by email to get the information and mailing address needed to send
+			the prize to you.
+			<a href="http://bit.ly/NHMeyM" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>Do I have to play every day?</h3>
+	<div>
+		<p>
+			No, you do not have to play every day, but the more you play and participate, the more XP and Coins you can
+			earn to exchange for Entry Tokens and other prizes.
+			<a href="http://bit.ly/PdMJh4" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>Can I stop playing at any time?</h3>
+	<div>
+		<p>
+			Yes, particpate as much (or as little) as you want, but remember, the more you play the better your chances
+			of winning cool prizes.
+			<a href="http://bit.ly/MopXP2" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>How long do the surveys / games take to complete?</h3>
+	<div>
+		<p>
+			Usually between 5 and 15 minutes. Generally, the longer the survey is, the more XP and Coins you can earn.
+			<a href="http://bit.ly/M1HXUR" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>What if I stop a survey in the middle of taking it? Do I still get credit? Do I have to restart it?</h3>
+	<div>
+		<p>
+			Once you start a survey you must complete it in order to earn your Machinima | Recon XP and Coins.
+			<a href="http://bit.ly/NKThWf" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>How often can I get XP/Coins for sharing??</h3>
+	<div>
+		<p>
+			For details on sharing, click here
+			<a href="http://bit.ly/NbaQ08" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>What are you doing with the information you are collecting?</h3>
+	<div>
+		<p>
+			We are using it to help make Machinima | Recon better for everyone.
+			<a href="http://bit.ly/M6zxe4" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>How do I disable the Machinima Recon bar?</h3>
+	<div>
+		<p>
+			You can temporarily disable the Machinima Recon bar by following
+			<a href="https://getsatisfaction.com/machinimarecon/topics/how_do_i_disable_the_machinima_recon_bar?rfm=1"
+			   target="_blank">these instructions.</a>
+		</p>
+	</div>
+
+	<h3>Can I invite other people to play?</h3>
+	<div>
+		<p>
+			Yes, you can invite friends through Facebook or Twitter. You can also invite friends using our Send To A
+			Friend feature found in the settings section of the bar. You can earn additional Coins by getting your friends
+			to play.
+			<a href="http://bit.ly/MiWCJX" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>Can I trade my prize for another prize?</h3>
+	<div>
+		<p>
+			No, the prize you win, or redeem for, is the prize you get.
+			<a href="http://bit.ly/Kw9pcY" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>Can I track the status of the orders I have redeemed/won?</h3>
+	<div>
+
+		<p>
+			You will be sent a confirmation of your redemption or win. The delivery time of your item depends on the
+			type of item you have redeemed or won. If you feel like there is a problem with your order, please contact us at
+			machinima@say.so.
+			<a href="http://bit.ly/MiWMRE" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>What is the promotional period?</h3>
+	<div>
+		<p>
+			<a href="http://bit.ly/NbaaYH" target="_blank">CLICK HERE</a> for detailed information on current, planned
+			and previous giveaway information.
+		</p>
+	</div>
+
+	<h3>How do you select the winner(s)s for drawings?</h3>
+
+	<div>
+		<p>
+			You must redeem your Coins for Entry Tokens to be entered in the giveaways. Winners will be chosen at random
+			from all entrants.
+			<a href="http://bit.ly/PdNTsO" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>I am missing Xp or Coins!</h3>
+
+	<div>
+		<p>
+			For missing XP or Coins
+			<a href="http://bit.ly/KHRcdS" target="_blank">(more...)</a>
+		</p>
+	</div>
+	<h3>I have a question that is not included in this FAQ!</h3>
+
+	<div>
+		<p>
+			You can check <a href="http://bit.ly/N15hhj" target="_blank">HERE</a> to see if there is an answer to a
+			question that is not included in this FAQ. If you don't see your question or answer, please feel free to send
+			your question using the feedback section.
+		</p>
+	</div>
+
+	<h3>How do I contact someone?</h3>
+
+	<div>
+		<p>
+			We value our users feedback, concerns, and suggestions and want to hear from you. You can contact us by
+			sending us feedback section of the bar, or by emailing us directly at machinima@say.so. You can also use
+			http://www.twitter.com/saysoapp or http://www.facebook.com/machinimarecon to get in touch or send feedback.
+			<a href="http://bit.ly/Lt1UUU" target="_blank">(more...)</a>
+		</p>
+	</div>
+
+	<h3>Where can I find the official Reward and Giveaway rules?</h3>
+
+	<div>
+		<p>
+			Links to the current Rules, Terms and Conditions, and Privacy Policies are all located at the bottom of the
+			'Edit Profile' tab on the bar. You can also see them
+			<a href="http://bit.ly/MoqXTq" target="_blank">here.</a>
+		</p>
+	</div>
+
+	<h3>How do I remove the Machinima | Recon browser extension?</h3>
+	<div>
+		<p>
+			If you want to remove the app from your browser, here are instructions for each major browser type. If you
+			decide later to reinstall, use your original registration email and your coinage, level progress and earning
+			will be there where you left off! For removal instructions
+			<a href="http://bit.ly/LxmjFm" target="_blank">click here</a>.
+		</p>
+	</div>
+
+	<h3>How do I temporarily disable, or uninstall the Machinima | Recon browser extension?</h3>
+	<div>
+		<p>
+			Once registered, your account, Coins and content are always waiting for you, whether you have the app
+			installed or not; but modern browsers are pretty slick now in letting us turn apps on and off without
+			uninstalling them. You can leave Machinima | Recon installed, and only activate it when you need it, or want to
+			take advantage of a Recon offer, then deactivate it after you’re done. No more uninstalling and reinstalling!
+		</p>
+	</div>
+
+	<h3>How do I link my Facebook or Twitter account?</h3>
+	<div>
+		<p>
+			You can check <a href="http://bit.ly/MmGbdL" target="_blank">HERE</a> for instructions on how to link your
+			Facebook / Twitter account, or see below.
+		<ol>
+			<li>Click .Edit Profile.</li>
+			<li>Click to link your Twitter or Facebook account.</li>
+			<li>Allow access in order for the accounts to be linked.</li>
+		</ol>
+		</p>
+	</div>
+
+	<h3>How do I disconnect my Facebook / Twitter account from the Say.So bar?</h3>
+	<div>
+		<p>
+			You can check <a href="http://bit.ly/KOBN6V" target="_blank">HERE</a> for instructions on how to unlink your
+			Facebook / Twitter account, or see below.
+		</p>
+		<p>
+			<strong>Facebook:</strong><br/>
+		</p>
+		<ol>
+			<li>Log into Facebook.</li>
+			<li>Click on <em>Home</em> &gt; <em>Account Settings.</em></li>
+			<li>Click on <em>Apps</em>. You will see <em>Say.So Bar</em> listed here.</li>
+		</ol>
+		<p>
+			<strong>Twitter:</strong><br/>
+		</p>
+		<ol>
+			<li>Log into Twitter.</li>
+			<li>Click on your name &gt; <em>Settings</em>.</li>
+			<li>Open the <em>Applications</em> tab and you will see the <em>Say.So Bar</em> listed here.</li>
+		</ol>
+	</div>
+</div>
+

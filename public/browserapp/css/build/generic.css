@@ -455,7 +455,7 @@
 #sayso-section-container.sayso-section-tour-about #sayso-section {
   left: 224px;
   width: 540px;
-  height: 400px;
+  height: 540px;
   bottom: 40px;
 }
 #sayso-section-container.sayso-section-about #sayso-section #sayso-section-header,
@@ -477,6 +477,44 @@
 #sayso-section-container.sayso-section-about #sayso-section #sayso-section-header ul li.sayso-tab-link,
 #sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-header ul li.sayso-tab-link {
   color: #ffffff;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body p,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body p {
+  margin: 6px 0;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body h2,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body h2 {
+  color: #c02526;
+  font-size: 18px;
+  font-weight: normal;
+  margin-top: -10px;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-help-tabs,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-help-tabs {
+  height: 320px;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-links,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-links {
+  bottom: 0;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-links li,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-links li {
+  float: left;
+  color: #fff;
+  width: 120px;
+  text-align: center;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-links li a,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-links li a {
+  color: #fff;
+  text-shadow: #000 0px 0px 4px;
+  font-size: 13px;
+  height: 40px;
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+  line-height: 38px;
+  margin-left: 2px;
 }
 #sayso-section-container.sayso-section-user-profile #sayso-section,
 #sayso-section-container.sayso-section-tour-user-profile #sayso-section {

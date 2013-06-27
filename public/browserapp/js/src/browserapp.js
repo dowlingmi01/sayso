@@ -415,6 +415,8 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 	function processMarkupIntoContainer($container, markup, templateData, runPreTemplateHandlers) {
 		var template;
 
+		if (typeof templateData !== "object") templateData = {};
+
 		if (runPreTemplateHandlers) {
 			var $tempContainer = $('<div></div>');
 

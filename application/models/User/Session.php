@@ -133,6 +133,6 @@ WHERE id = ?", $sessionId);
 	 */
 	public static function logout($sessionId)
 	{
-		Db_Pdo::execute('UPDATE user_session SET expired = 1 WHERE id = ?', $sessionId);
+		Db_Pdo::execute('UPDATE user_session SET expired = now() WHERE id = ?', $sessionId);
 	}
 }

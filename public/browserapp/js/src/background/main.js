@@ -33,6 +33,7 @@
 		});
 	}
 	function logout(unused, callback) {
+		api = new Api(baseDomain);
 		api.sendRequest( {action_class: 'Login', action: 'logout', current_session_id: state.session.id} );
 		state.starbars = {};
 		state.games = {};

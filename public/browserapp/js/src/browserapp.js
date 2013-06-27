@@ -262,7 +262,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		$("div.sayso-tab", $tabContainer).hide();
 
 		if (templateData) {
-			processMarkupIntoContainer($tab, markup, templateData);
+			processMarkupIntoContainer($tab, markup, templateData, true);
 			$tab.show();
 		} else {
 			// no templateData passed, perform extra requests, if any
@@ -271,11 +271,11 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 
 				api.doRequests(extraRequestsForThisTab, function(response){
 					// if the loader wasn't shown yet, don't show it
-					processMarkupIntoContainer($tab, markup, response.responses);
+					processMarkupIntoContainer($tab, markup, response.responses, true);
 					$tab.show();
 				});
 			} else { // no templateData!
-				processMarkupIntoContainer($tab, markup);
+				processMarkupIntoContainer($tab, markup, {}, true);
 				$tab.show();
 			}
 		}

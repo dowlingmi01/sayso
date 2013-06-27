@@ -26,7 +26,6 @@
 				api = new Api(baseDomain, session.id, session.key);
 			}
             else {
-                result.result = false;
                 result.response = data.responses['default'];
             }
             if( callback ) {

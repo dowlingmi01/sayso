@@ -16,10 +16,15 @@ sayso.module.dommsg = (function(global, util) {
 	function addHandler( name, fn ) {
 		handlers[name] = fn;
 	}
+	function resetHandleMessage() {
+		util.removeEventListener(global, 'message', handleMessage);
+		util.addEventListener(global, 'message', handleMessage);
+	}
 
 	util.addEventListener(global, 'message', handleMessage);
 	return {
-		addHandler: addHandler
+		addHandler: addHandler,
+		resetHandleMessage: resetHandleMessage
 	};
 })(this, sayso.module.util)
 ;

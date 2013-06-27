@@ -1,4 +1,4 @@
-sayso.module.frameApp = (function(global, $, api, comm) {
+sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 	function runAction(data) {
 		if ('action' in data && data['action'] in actions) {
 			actions[data['action']](data);
@@ -17,6 +17,8 @@ sayso.module.frameApp = (function(global, $, api, comm) {
 					var domain = $('#sg_SubmitButton').data("domain");
 					var survey = null;
 					var starbarId = data['starbarId'];
+					
+					dommsg.resetHandleMessage();
 
 					// SG_init_page still fails sometimes, if poll.js is partially loaded
 					try
@@ -96,5 +98,5 @@ sayso.module.frameApp = (function(global, $, api, comm) {
 
 	comm.listen('init-action', runAction);
 	comm.fireEvent('ready');
-})(this, jQuery, sayso.module.api, sayso.module.frameComm)
+})(this, jQuery, sayso.module.api, sayso.module.frameComm, sayso.module.dommsg)
 ;

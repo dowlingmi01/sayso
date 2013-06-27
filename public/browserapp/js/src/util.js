@@ -5,6 +5,12 @@ sayso.module.util = (function($) {
 		else
 			element.attachEvent( 'on' + eventName, callback );
 	}
+	function removeEventListener( element, eventName, callback ) {
+		if( element.removeEventListener )
+			element.removeEventListener( eventName, callback, false );
+		else
+			element.detachEvent( 'on' + eventName, callback );
+	}
 	function urlParams(query) {
 		var match,
 			pl     = /\+/g,  // Regex for replacing addition symbol with a space
@@ -33,6 +39,7 @@ sayso.module.util = (function($) {
 
 	return {
 		addEventListener: addEventListener,
+		removeEventListener: removeEventListener,
 		urlParams: urlParams
 	};
 })(jQuery);

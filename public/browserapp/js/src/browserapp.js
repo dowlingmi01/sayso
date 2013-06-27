@@ -419,6 +419,9 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 
             return Math.round(((currentExp-currentLevelExp)/(nextLevelExp-currentLevelExp))*100);
         },
+        "next-exp-threshold": function(game) {
+            return game.levels[game.level+1].threshold;
+        },
 		"image-path": function(fileName) {
 			return "/browserapp/images/" + state.state.starbar.short_name + "/" + fileName;
 		},

@@ -19,11 +19,11 @@
             <div class="sayso-experience-currencies-experience-box">
                 <span class="sayso-experience-currencies-experience-logo"></span>
                 <div class="sayso-experience-currencies-experience-progress-bar-container">
-                    <!--TODO: Make percentage work.-->
                     <div class="sayso-experience-currencies-experience-progress-bar" style="width: {{experience-percent state.game}}%;"></div>
                     <div class="sayso-experience-currencies-experience-progress-bar-value">{{state.game.currencies.experience.balance}}</div>
                 </div>
             </div>
+            <div class="sayso-experience-currencies-next-level">Level up at {{next-exp-threshold state.game}} {{currency-name "experience"}}</div>
         </div>
         <div class="sayso-experience-currencies-container-right">
             <h3>{{currency-name "redeemable"}}</h3>

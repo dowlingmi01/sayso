@@ -1342,6 +1342,12 @@
   width: 100%;
   text-align: center;
 }
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-currencies-container .sayso-experience-currencies-container-left .sayso-experience-currencies-next-level,
+#sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-currencies-container .sayso-experience-currencies-container-left .sayso-experience-currencies-next-level {
+  font-size: 10px;
+  clear: both;
+  margin-left: 10px;
+}
 #sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-currencies-container .sayso-experience-currencies-container-right,
 #sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-currencies-container .sayso-experience-currencies-container-right {
   float: left;

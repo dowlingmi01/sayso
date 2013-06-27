@@ -311,8 +311,9 @@ header nav ul {
   text-wrap: normal;
 }
 .take_tour {
+  position: fixed;
+  bottom: 80px;
   margin-left: 250px;
-  margin-top: 300px;
 }
 /* ================ */
 /* Lightboxed pages */

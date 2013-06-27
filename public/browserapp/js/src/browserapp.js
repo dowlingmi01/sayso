@@ -784,8 +784,16 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
             "experience-level-item": function($elem, data) {
                 var oldStyle = $elem.css('background-image');
                 var game = state.state.game;
+                if(game.level===data.levelId)
+                {
+                    $elem.html("<p>" + game.levels[data.levelId].threshold + "</p>");
+                }
+
                 $elem.mouseover(function(){
-                    $(this).html("<p>" + game.levels[data.levelId].threshold + "</p>");
+                    if(game.level!==data.levelId)
+                    {
+                        $(this).html("<p>" + game.levels[data.levelId].threshold + "</p>");
+                    }
                     if(data.levelId>game.level)
                     {
                         $(this).css('background-image', 'url(' + game.levels[data.levelId].img_url_small + ')');

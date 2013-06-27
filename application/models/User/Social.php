@@ -33,6 +33,7 @@ class User_Social extends Record
 	 *
 	 * @param int $userId
 	 * @param int $starbarId
+	 * @return bool
 	 */
 	public static function connectFacebook($userId, $starbarId)
 	{
@@ -78,15 +79,16 @@ class User_Social extends Record
 
 			if ($message->id) {
 				$messageUserMap = new Notification_MessageUserMap();
-				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId, false);
+				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId, FALSE);
 			}
-		}
+		} else
+			return FALSE;
 	}
 
 	/**
-	 * NEEDS TO BE DEELOPED
+	 * NEEDS TO BE DEVELOPED
 	 */
-	public static function connectTwiter($userId, $starbarId)
+	public static function connectTwitter($userId, $starbarId)
 	{
 
 	}

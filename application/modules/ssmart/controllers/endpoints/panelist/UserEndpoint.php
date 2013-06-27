@@ -133,19 +133,21 @@ class Ssmart_Panelist_UserEndpoint extends Ssmart_GlobalController
 		switch($network)
 		{
 			case "FB" :
-				User_Social::connectFacebook($userId, $starbarId);
+				$connected = User_Social::connectFacebook($userId, $starbarId);
 				break;
 			case "TW" :
 				if (!$request->submitted_parameters->oauth)
 					throw new Exception("Missing Twitter oauth credentials.");
-				User_Social::connectTwitter($userId, $starbarId, $oauth);
+				$connected = User_Social::connectTwitter($userId, $starbarId, $oauth);
 				break;
 			default :
 				throw new Exception('Invalid network.');
 		}
 
-		$response->setResultVariable("success", TRUE);
-
+		if ($connected)
+			$response->setResultVariable("success", TRUE);
+		else
+			$response->setResultVariable("success", FALSE);
 		return $response;
 	}
 

@@ -32,8 +32,22 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
                 state.logout();
             }
         });
+        $passwordField.keyup(function(event){
+            if(event.keyCode === 13){
+                $loginButton.click();
+            }
+        });
+        $emailField.keyup(function(event){
+            if(event.keyCode === 13){
+                $loginButton.click();
+            }
+        });
         if (state.state.loggedIn) {
 			loadMarkup('profile');
+        }
+        else {
+            $loginDiv.show();
+            $forgotPassword.show();
         }
         initialized = true;
 
@@ -156,7 +170,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
     shared.version = version;
 
     $(document).on('sayso:state-ready', initialize);
-    $(document).on('sayso:state-login sayso:state-ready', login);
+    $(document).on('sayso:state-login', login);
     $(document).on('sayso:state-logout', logout);
 
 	var handlebarsHelpers = {

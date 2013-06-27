@@ -251,7 +251,7 @@ header nav ul {
 #login {
   float: right;
   clear: both;
-  display: hidden;
+  display: none;
 }
 #login input {
   margin-left: 5px;
@@ -277,7 +277,7 @@ header nav ul {
 #forgot_password {
   float: right;
   clear: both;
-  display: hidden;
+  display: none;
 }
 #forgot_password a {
   font-family: "proxima-nova", sans-serif;

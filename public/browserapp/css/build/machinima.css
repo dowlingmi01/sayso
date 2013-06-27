@@ -108,6 +108,11 @@
   overflow: hidden;
   min-height: 100px;
 }
+#sayso-app-container .sayso-iframe {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
 #sayso-app-container h1,
 #sayso-app-container h2,
 #sayso-app-container h3,
@@ -634,6 +639,16 @@
   position: relative;
   display: none;
 }
+#sayso-section-container.sayso-section-polls #sayso-section .sayso-poll-container .sayso-poll .sayso-poll-iframe,
+#sayso-section-container.sayso-section-tour-polls #sayso-section .sayso-poll-container .sayso-poll .sayso-poll-iframe {
+  width: 100%;
+  height: 100%;
+}
+#sayso-section-container.sayso-section-polls #sayso-section .sayso-poll-container .sayso-poll .sayso-poll-footer,
+#sayso-section-container.sayso-section-tour-polls #sayso-section .sayso-poll-container .sayso-poll .sayso-poll-footer {
+  font-weight: bold;
+  font-size: 12px;
+}
 #sayso-section-container.sayso-section-polls #sayso-section .sayso-poll-container-loading .sayso-poll-header .sayso-poll-header-triangle,
 #sayso-section-container.sayso-section-tour-polls #sayso-section .sayso-poll-container-loading .sayso-poll-header .sayso-poll-header-triangle,
 #sayso-section-container.sayso-section-polls #sayso-section .sayso-poll-container-current .sayso-poll-header .sayso-poll-header-triangle,
@@ -649,12 +664,6 @@
 #sayso-section-container.sayso-section-polls #sayso-section .sayso-poll-container-current .sayso-poll-header:hover,
 #sayso-section-container.sayso-section-tour-polls #sayso-section .sayso-poll-container-current .sayso-poll-header:hover {
   background-color: transparent;
-}
-#sayso-section-container.sayso-section-polls #sayso-section .sayso-poll-iframe,
-#sayso-section-container.sayso-section-tour-polls #sayso-section .sayso-poll-iframe {
-  height: 100%;
-  width: 100%;
-  overfloat: hidden;
 }
 #sayso-section-container.sayso-section-polls #sayso-section-triangle-white,
 #sayso-section-container.sayso-section-tour-polls #sayso-section-triangle-white,

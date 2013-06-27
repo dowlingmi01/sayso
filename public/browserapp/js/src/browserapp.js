@@ -1,4 +1,4 @@
-sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
+sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm) {
 	$(global.document).on('sayso:state-login sayso:state-logout sayso:state-ready', initApp);
 
 	var starbarId;
@@ -310,7 +310,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 
 			$container.addClass("sayso-poll-container-loading");
 			// set the width, otherwise animation is choppy: http://stackoverflow.com/questions/10471202/jquery-slidedown-is-not-smooth
-			var estimatedPollHeight = 62 + parseInt(Math.ceil(data.surveyNumberOfAnswers / 2.0) * 32); // 62 base height + 32 per row of answers -- Note that this height estimate is updated after the iframe loads
+			var estimatedPollHeight = 62 + parseInt(Math.ceil(data['surveyNumberOfAnswers'] / 2.0) * 32); // 62 base height + 32 per row of answers -- Note that this height estimate is updated after the iframe loads
 			if (!$poll.css('height') || $poll.css('height') == "0px" || $poll.css('height') == "auto") $poll.css('height', estimatedPollHeight);
 
 			$poll.slideDown(500);
@@ -319,35 +319,74 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 			loadPoll($poll, $container, $loadingElement, data);
 
 			return;
-		} else {
-			$container.addClass("sayso-poll-container-current");
+		} // else -- iframe is already loaded
 
-			if ($container.hasClass("sayso-poll-container-loading")) { // we already did a slideDown to show the loading element
-				$container.removeClass("sayso-poll-container-loading");
-				$poll.animate({'height': data.pollHeight}, 250, function() {
+		$container.addClass("sayso-poll-container-current");
 
-				});
-				$loadingElement.fadeTo(250, 0, function() {
-					$loadingElement.remove();
-				});
-			} else { // poll was already loaded and proper height was set, so just slide the existing poll back down
-				$poll.slideDown(500);
-			}
+		if ($container.hasClass("sayso-poll-container-loading")) { // we already did a slideDown to show the loading element, and we just finished loading
+			$container.removeClass("sayso-poll-container-loading");
+			$poll.animate({'height': data.pollHeight}, 250, function() {
+
+			});
+			$loadingElement.fadeTo(250, 0, function() {
+				$loadingElement.remove();
+			});
+		} else { // poll was already loaded and proper height was set, so just slide the existing poll back down
+			$poll.slideDown(500);
 		}
+	}
+
+	function createIframe(url, callback) {
+		var $iframe = $('<iframe class="sayso-iframe" scrolling="no"></iframe>');
+		var frameId = frameComm.setURL($iframe, url);
+		$(global.document).on('sayso:iframe-ready', function(unused, dataFromIframe) {
+			if( dataFromIframe.frame_id === frameId ) {
+				callback(unused, dataFromIframe)
+			}
+		});
+		return { $element: $iframe, frame_id: frameId }
 	}
 
 	function loadPoll($poll, $container, $loadingElement, data) {
 		// set up iframe listeners
 		// set up iframe
-		$iframe = $('<iframe class="sayso-poll-iframe" id="sayso-poll-iframe-'+data.surveyId+'"></iframe>');
-		$iframe.css('height', '100%');
-		$iframe.css('width', '100%');
+		api.doRequest({
+			action_class : "survey",
+			action : "getSurvey",
+			starbar_id : starbarId,
+			survey_id : data['surveyId'],
+			send_questions : true,
+			send_question_choices : true
+		}, function(response) {
+			var poll = response['responses'].default.variables.survey;
+			var iframe = createIframe('//' + global.sayso.base_domain + '/browserapp/iframe.html', function(unused, dataFromIframe) {
+				frameComm.fireEvent(iframe.frame_id, 'init-action', {action: 'display-poll', starbarId: starbarId, starbar_short_name: state.state.starbar['short_name'], poll: poll});
+			});
 
-		$poll.append($iframe);
+			$(global.document).on('sayso:iframe-poll-loaded', function(unused, dataFromIframe) {
+				if( dataFromIframe.frame_id === iframe.frame_id ) {
+					// receive (and set) poll height from iframe when it's done rendering
+					if (dataFromIframe.data.height) {
+						data.pollHeight = 50 + dataFromIframe.data.height;
+						iframe.$element.css('height', dataFromIframe.data.height); // note that $poll is still the old height, and that is animated in openPoll
+						data.iframeLoadCompleted = true;
+						openPoll($container, data, $loadingElement, true);
+					}
+				}
+			});
+
+			$(global.document).on('sayso:iframe-poll-completed', function(unused, dataFromIframe) {
+				processMarkupIntoContainer($poll, "{{>poll-completed-footer}}", poll);
+				updateElements(null, "game", true);
+			});
+
+			$poll.append(iframe.$element);
+		});
+
 
 		// wait for iframe to load
 		// @todo replace setTimeout with iframe:ready bind/trigger or equivalent
-		setTimeout(function() {
+		/*setTimeout(function() {
 			$container.data('iframeLoadCompleted', true);
 			data.iframeLoadCompleted = true;
 
@@ -356,7 +395,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 			$iframe.css('height', data.pollHeight);
 
 			openPoll($container, data, $loadingElement, true);
-		}, Math.floor((Math.random()*1000))); // fake load delay, up to 1 second
+		}, Math.floor((Math.random()*1000))); // fake load delay, up to 1 second*/
 	}
 
 	function closePoll($container) {
@@ -368,7 +407,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 	function completePoll($container) {
 		//@todo!
 
-		// show the completed tab link in case this is the first poll this user has completed
+		// show the completed tab *link* in case this is the first poll this user has completed
 		$('#sayso-completed-tab-link').show();
 	}
 
@@ -401,10 +440,25 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 	var handlebarsHelpers = {
 		"currency-name-highlighted": function(currency) {
 			// @todo add description to game.currencies
-			return new Handlebars.SafeString('<span class="sayso-element sayso-highlight sayso-tooltip" data-tooltip-title="'+state.state.game.currencies[currency].description+'">'+state.state.game.currencies[currency].name+'</span>');
+			return new Handlebars.SafeString('' +
+				'<span class="sayso-element sayso-highlight sayso-tooltip" ' +
+					'data-tooltip-title="'+state.state.game.currencies[currency].description+'">' +
+						state.state.game.currencies[currency].name +
+				'</span>');
 		},
 		"currency-name": function(currency) {
 			return state.state.game.currencies[currency].name;
+		},
+		"currency-name-highlighted-with-value": function(currency, value) {
+			// @todo add description to game.currencies
+			return new Handlebars.SafeString('' +
+				'<span class="sayso-element sayso-highlight sayso-tooltip" ' +
+					'data-tooltip-title="'+state.state.game.currencies[currency].description+'">' +
+						(value ? value + " " : "") + state.state.game.currencies[currency].name +
+				'</span>');
+		},
+		"currency-name-with-value": function(currency, value) {
+			return (value ? value + " " : "") + state.state.game.currencies[currency].name;
 		},
         "experience-percent": function(game) {
             var currentExp,
@@ -892,7 +946,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 				// the animate variable on the previous line is passed to these handlers, and dictates whether the element should animate or not when showing the update
 
 				// 1. read data['progressBarFor']
-				// 2. if value from 1 is "currency", read data from state.games[starbarId].currencies[data['currencyType']]
+				// 2. if value from 1 is "currency", read data from state.games[starbarId].currencies[data['progressBarFor']]
 				// 3. ???
 				// 4. profit
 			}
@@ -926,13 +980,6 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 				survey_type : "poll",
 				survey_status : "completed"
 			};
-			request['countPollsArchived'] = {
-				action_class : "survey",
-				action : "getSurveyCounts",
-				starbar_id : starbarId,
-				survey_type : "poll",
-				survey_status : "archived"
-			};
 			return request;
 		},
 		"polls-new": function (data) {
@@ -943,6 +990,13 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 					starbar_id : starbarId,
 					survey_type : "poll",
 					survey_status : "new"
+				},
+				"countPollsArchived": {
+					action_class : "survey",
+					action : "getSurveyCounts",
+					starbar_id : starbarId,
+					survey_type : "poll",
+					survey_status : "archived"
 				}
 			}
 		},
@@ -979,13 +1033,6 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 				survey_type : "survey",
 				survey_status : "completed"
 			};
-			request['countSurveysArchived'] = {
-				action_class : "survey",
-				action : "getSurveyCounts",
-				starbar_id : starbarId,
-				survey_type : "survey",
-				survey_status : "archived"
-			};
 			return request;
 		},
 		"surveys-new": function (data) {
@@ -996,6 +1043,13 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 					starbar_id : starbarId,
 					survey_type : "survey",
 					survey_status : "new"
+				},
+				"countSurveysArchived": {
+					action_class : "survey",
+					action : "getSurveyCounts",
+					starbar_id : starbarId,
+					survey_type : "survey",
+					survey_status : "archived"
 				}
 			}
 		},
@@ -1049,4 +1103,4 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 			return request;
 		}
 	}
-})(this, jQuery, sayso.module.state, sayso.module.api, sayso.module.Handlebars);
+})(this, jQuery, sayso.module.state, sayso.module.api, sayso.module.Handlebars, sayso.module.frameComm);

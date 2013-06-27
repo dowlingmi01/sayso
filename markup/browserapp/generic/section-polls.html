@@ -38,7 +38,11 @@
 		{{#each polls.records}}
 			{{>poll-new-archived}}
 		{{else}}
-			Looks like you've completed all your polls!<br />
+			{{#if countPollsArchived.variables.count}}
+				No new polls, but check	you still have some in the <a class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="polls-archived">archives</a>.
+			{{else}}
+				Looks like you've completed all your polls! Nice work!<br />
+			{{/if}}
 		{{/each}}
 	</div>
 </div>
@@ -60,7 +64,7 @@
 </div>
 
 <div class="sayso-element sayso-partial" data-partial-id="poll-new-archived">
-	<div class="sayso-element sayso-poll-container" data-survey-id="{{id}}" data-survey-external-id="{{external_id}}" data-survey-external-key="{{external_key}}" data-survey-number-of-answers="{{number_of_answers}}">
+	<div class="sayso-element sayso-poll-container" data-survey-id="{{id}}" data-survey-response-id="{{survey_response_id}}" data-survey-external-id="{{external_id}}" data-survey-external-key="{{external_key}}" data-survey-number-of-answers="{{number_of_answers}}">
 		<div class="sayso-element sayso-poll-header">
 			<div class="sayso-poll-header-triangle"></div>
 			{{title}}
@@ -79,3 +83,8 @@
 	</div>
 </div>
 
+<div class="sayso-element sayso-partial" data-partial-id="poll-completed-footer">
+	<div class="sayso-poll-footer">
+		Excellent! You earned {{currency-name-highlighted-with-value "experience" points_experience}} &amp; {{currency-name-highlighted-with-value "redeemable" points_redeemable}}
+	</div>
+</div>

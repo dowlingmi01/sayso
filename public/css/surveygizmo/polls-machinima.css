@@ -283,15 +283,15 @@ h1.sg-title {
 	background-color: #feffaf !important;
 	}
 
-/* Do not change the next rule! It is used to check if this file is fully loaded */
-#sayso-starbar-external {
-	display: inline-table;
-}
-
 #sb-survey-completed p,
 #sb-survey-completed p .sb_theme_textHighlight,
 #sb-survey-completed .sb_externalShares {
 	font-weight:bold;
 	font-size:12px;
+}
+
+/* Do not change the next rule! It is used to check if this file is fully loaded */
+.sg-wrapper {
+	display: inline-table;
 }
 

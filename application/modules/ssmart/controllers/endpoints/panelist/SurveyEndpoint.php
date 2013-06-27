@@ -37,53 +37,73 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 
 		//logic
 		$surveyId			= (int)$request->valid_parameters["survey_id"];
+		$userId				= $request->auth->user_data->user_id;
 
 		// @TODO IMPORTANT! this should use getSurveys() or equivalent to ensure that the user is allowed to get this survey!
-		$surveyObject = new Survey();
-		$surveyObject->loadData($surveyId);
-		$survey = $surveyObject->getData();
-		$survey["id"] = $surveyId;
+		$survey = new Survey();
+		$survey->loadData($surveyId);
+		$surveyData = $survey->getData();
+		$surveyData["id"] = $surveyId;
+
+		//add surveyResponseId
+		$surveyResponse = new Survey_Response();
+		$surveyResponse->loadDataByUniqueFields(["survey_id" => $surveyId, "user_id" => $userId]);
+		$surveyData['survey_response_id'] = $surveyResponse->id;
 
 		//add questions and answer choices
 		if ($request->valid_parameters["send_questions"])
 		{
+			$i = 0;
 			$questions = new Survey_QuestionCollection();
 			$questions->loadAllQuestionsForSurvey($surveyId);
-			$questionData = $response->getRecordsFromCollection($questions);
 
-			if ($request->valid_parameters["send_question_choices"])
-				{
-				$choices = new Survey_QuestionChoiceCollection();
-				$choices->loadAllChoicesForSurvey($surveyId);
-				$choiceData = $response->getRecordsFromCollection($choices);
+			$questionData = [];
+			/** @var $question Survey_Question  */
+			foreach ($questions as $question) {
+				$questionData[$i] = $question->toArray();
+				$questionData[$i]['id'] = $question->id;
 
-				//merge questions and choices
-				foreach ($choiceData as $key => $value) {
-					$questionData[$value["survey_question_id"]]["choices"][$key] = $value;
+				if ($request->valid_parameters["send_question_choices"]) {
+					$choices = new Survey_QuestionChoiceCollection();
+					$choices->loadAllChoicesForSurvey($surveyId);
+					$choiceData = [];
+					$j = 0;
+					/** @var $choice Survey_QuestionChoice  */
+					foreach ($choices as $choice) {
+						if ($questionData[$i]['id'] == $choice->survey_question_id) {
+							$choiceData[$j] = $choice->toArray();
+							$choiceData[$j]['id'] = $choice->id;
+						}
+						$j++;
+					}
+					$questionData[$i]['choices'] = $choiceData;
+
+					$i++;
 				}
 			}
-			$survey["questions"] = $questionData;
+			$surveyData["questions"] = $questionData;
 		}
 		//check for mission or trailer data
-		switch ($survey["type"])
+		switch ($surveyData["type"])
 		{
 			case "mission":
 				$mission = new Survey_MissionInfo();
 				$mission->loadDataBySurveyId($surveyId);
 				$missionData = $mission->getData();
-				$survey["mission_data"] = $missionData;
+				$surveyData["mission_data"] = $missionData;
 				break;
 			case "trailer":
 				$trailer = new Survey_TrailerInfo();
 				$trailer->loadDataBySurveyId($surveyId);
 				$trailerData = $trailer->getData();
-				$survey["trailer_data"] = $trailerData;
+				$surveyData["trailer_data"] = $trailerData;
 				break;
 			default:
 		}
 
-		$cleanSurvey = array($surveyId => $this->_cleanSurveyResponse($survey, $surveyId));
-		$response->addRecordsFromArray($cleanSurvey);
+		$cleanSurveyData = $this->_cleanSurveyResponse($surveyData, $surveyId);
+		$response->setResultVariable('survey', $cleanSurveyData);
+
 
 		return $response;
 	}
@@ -137,65 +157,8 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		//TODO: refactor this function to accept pagination at this level instead of getting the entire result set and parsing it down.
 		$surveyCollection->loadSurveysForStarbarAndUser ($starbarId, $userId, $type, $surveyUserStatus);
 
-		// @todo move this somewhere better! Also, make it read those values from the economy (game) transaction tables
-		$defaultReward = [
-			"survey" => [
-				"new" => [
-					"experience" => [
-						"premium" => 5000,
-						"profile" => 2000,
-						"standard" => 500,
-					],
-					"redeemable" => [
-						"premium" => 375,
-						"profile" => 150,
-						"standard" => 38,
-					]
-				],
-				"disqualified" => [
-					"experience" => [
-						"premium" => 1000,
-						"profile" => 1000,
-						"standard" => 250,
-					],
-					"redeemable" => [
-						"premium" => 75,
-						"profile" => 75,
-						"standard" => 25,
-					]
-				],
-			],
-			"poll" => [
-				"new" => [
-					"experience" => [
-						"premium" => 500,
-						"standard" => 250,
-					],
-					"redeemable" => [
-						"premium" => 38,
-						"standard" => 19,
-					]
-				],
-			],
-		];
-
-		$defaultReward["survey"]["completed"] = $defaultReward["survey"]["new"];
-		$defaultReward["survey"]["archived"] = $defaultReward["survey"]["new"];
-
-		$defaultReward["poll"]["completed"] = $defaultReward["poll"]["new"];
-		$defaultReward["poll"]["archived"] = $defaultReward["poll"]["new"];
-
-		foreach (["experience", "redeemable"] as $currency) {
-			foreach ($surveyCollection as $survey) {
-				// avoid many issets
-				$default = (
-					isset($defaultReward[$survey->type][$surveyUserStatus][$currency][$survey->reward_category])
-						? $defaultReward[$survey->type][$surveyUserStatus][$currency][$survey->reward_category]
-						: "N/A"
-				);
-
-				$survey->{"points_" . $currency} = ( $survey->{"custom_reward_" . $currency} ? $survey->{"custom_reward_" . $currency} : $default );
-			}
+		foreach ($surveyCollection as $survey) {
+			$survey->setRewardPoints($surveyUserStatus);
 		}
 
 		$response->addRecordsFromCollection($surveyCollection);
@@ -220,7 +183,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		$validators = array(
 				"starbar_id"		=> "int_required_notEmpty",
 				"survey_type"		=> "alpha_required_notEmpty",
-				"survey_status"		=> "alpha_notEmpty"
+				"survey_status"		=> "alpha_required_notEmpty"
 			);
 		$filters = array();
 
@@ -233,7 +196,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		$surveyType		= $request->valid_parameters["survey_type"]; //TODO: make this optional [Why? -- Hamza]
 		$starbarId			= $request->valid_parameters["starbar_id"];
 		$userId			= $request->auth->user_data->user_id;
-		$status			= isset($request->valid_parameters["survey_status"]) ? $request->valid_parameters["survey_status"] : "active";
+		$status			= $request->valid_parameters["survey_status"];
 
 		$count = Survey_ResponseCollection::countUserSurveys($userId, $starbarId, $surveyType, $status);
 
@@ -276,18 +239,19 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		$starbarId			= $request->valid_parameters["starbar_id"];
 		$surveyResponseId	= $request->valid_parameters["survey_response_id"];
 		$userId			= $request->auth->user_data->user_id;
-		$userKey			= $request->auth->user_data->user_key;
 
 		$surveyResponse = new Survey_Response();
 		$surveyResponse->loadData($surveyResponseId);
+
+		if (!$surveyResponse->id || $surveyResponse->user_id != $userId || ($surveyResponse->status != "new" && $surveyResponse->status != "archived"))
+			throw new Exception('Invalid survey (already completed?).');
 
 		//build $data - common attributes
 		$data = array(
 			"user_id"		=> $userId,
 			"survey_id"	=> $surveyId,
 			"starbar_id"	=> $starbarId,
-			"user_id"		=> $userId,
-			"user_key"		=> $userKey
+			"user_id"		=> $userId
 		);
 		//add to $data based on $response->submitted_parameters["survey_data"]
 		if (isset($request->submitted_parameters->survey_data))
@@ -446,11 +410,9 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 
 		$questionFieldsToRemove = array(
 			"survey_id"			=> "",
-			"external_question_id"	=> ""
 		);
 
 		$questionChoiceFieldsToRemove = array(
-			"external_choice_id"		=> "",
 			"survey_question_id"		=> ""
 		);
 
@@ -459,24 +421,23 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		//step through each of the possible layers of the survey array
 		if (isset($survey["questions"]))
 		{
-			foreach ($survey["questions"] as $key => $value)
+			$i = 0;
+			foreach ($survey["questions"] as $value)
 			{
-				$newSurvey["questions"][$key] = array_diff_key($value, $questionFieldsToRemove);
+				$newSurvey["questions"][$i] = array_diff_key($value, $questionFieldsToRemove);
 
 				if (isset($value["choices"]))
 				{
-					foreach ($value["choices"] as $choiceKey => $choiceValue)
+					$newSurvey["questions"][$i]["choices"] = [];
+					foreach ($value["choices"] as $choiceValue)
 					{
-						$newSurvey["questions"][$key]["choices"][$choiceKey] = array_diff_key($choiceValue, $questionChoiceFieldsToRemove);
+						$newSurvey["questions"][$i]["choices"][] = array_diff_key($choiceValue, $questionChoiceFieldsToRemove);
 					}
 				}
+
+				$i++;
 			}
 		}
-
-		//add surveyResponseId
-		$surveyResponse = new Survey_Response();
-		$surveyResponse->loadDataByUniqueFields(array("survey_id"=> $surveyId));
-		$newSurvey["survey_response_id"] = $surveyResponse->id;
 
 		return $newSurvey;
 	}

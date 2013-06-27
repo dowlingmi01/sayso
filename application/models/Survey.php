@@ -90,6 +90,65 @@ class Survey extends Record
 		}
 	}
 
+	public function setRewardPoints($surveyUserStatus) {
+		$defaultReward = [
+			"survey" => [
+				"new" => [
+					"experience" => [
+						"premium" => 5000,
+						"profile" => 2000,
+						"standard" => 500,
+					],
+					"redeemable" => [
+						"premium" => 375,
+						"profile" => 150,
+						"standard" => 38,
+					]
+				],
+				"disqualified" => [
+					"experience" => [
+						"premium" => 1000,
+						"profile" => 1000,
+						"standard" => 250,
+					],
+					"redeemable" => [
+						"premium" => 75,
+						"profile" => 75,
+						"standard" => 25,
+					]
+				],
+			],
+			"poll" => [
+				"new" => [
+					"experience" => [
+						"premium" => 500,
+						"standard" => 250,
+					],
+					"redeemable" => [
+						"premium" => 38,
+						"standard" => 19,
+					]
+				],
+			],
+		];
+
+		$defaultReward["survey"]["completed"] = $defaultReward["survey"]["new"];
+		$defaultReward["survey"]["archived"] = $defaultReward["survey"]["new"];
+
+		$defaultReward["poll"]["completed"] = $defaultReward["poll"]["new"];
+		$defaultReward["poll"]["archived"] = $defaultReward["poll"]["new"];
+
+		foreach (["experience", "redeemable"] as $currency) {
+			$default = (
+			isset($defaultReward[$this->type][$surveyUserStatus][$currency][$this->reward_category])
+				? $defaultReward[$this->type][$surveyUserStatus][$currency][$this->reward_category]
+				: "N/A"
+			);
+
+			$this->{"points_" . $currency} = ( $this->{"custom_reward_" . $currency} ? $this->{"custom_reward_" . $currency} : $default );
+		}
+	}
+
 	public function retrieveQuestionsAndChoicesFromSurveyGizmo() {
 		$config = Api_Registry::getConfig();
 

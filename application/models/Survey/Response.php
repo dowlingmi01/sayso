@@ -18,6 +18,12 @@ class Survey_Response extends Record
 	 * @return Survey
 	 */
 	public function getSurvey() {
+		if (!$this->_survey || !$this->_survey->id) {
+			if ($this->survey_id) {
+				$this->_survey = new Survey();
+				$this->_survey->loadData($this->survey_id);
+			}
+		}
 		return $this->_survey;
 	}
 
@@ -395,25 +401,22 @@ class Survey_Response extends Record
 	public function updateResponse($data)
 	{
 		//validate required params
-		//TODO: do we need to check the integrety of the loaded surveys with the data passed in??
+		//TODO: do we need to check the integrety of the loaded surveys with the data passed in?? [YES!! Hamza]
 		if (	!isset($data["survey_id"])
 			|| !isset($data["starbar_id"])
-			|| !isset($data["user_key"])
 			|| !isset($this->id)
 			|| $this->user_id != $data["user_id"]
 			|| $this->status == "completed"
 			|| $this->status == "disqualified")
-			return;
+			throw new Exception("Cannot update response, missing parameters!");
 
 		// Delete any existing responses (in case of previous partial response, for whatever reason)
 		// only if it's not a mission.
 		$this->deleteQuestionResponses();
 
-		$this->setSurvey(new Survey());
-		$this->_survey->loadData($this->survey_id);
-
 		$surveyQuestions = new Survey_QuestionCollection();
 		$surveyQuestions->loadAllQuestionsForSurvey($this->survey_id);
+
 
 		$surveyQuestionChoiceData = $data["answers"];
 
@@ -437,21 +440,21 @@ class Survey_Response extends Record
 					$surveyQuestionResponse->survey_question_choice_id = $choiceId;
 					$surveyQuestionResponse->data_type = "choice";
 					$surveyQuestionResponse->save();
-					//TODO: find a way to test for success on save
+					//TODO: find a way to test for success on save [check for $surveyQuestionResponse->id after saving -- Hamza]
 
 				} else
 					throw new Exception("Question choice not found.");
 			}
+
 			$data["status"] = "completed";
 			$data["processing_status"] = "completed";
 			$data["downloaded"] = new Zend_Db_Expr('now()');
 
-			//post process survey - set status, run game txn
-			$this->_postProcessSurveyAction($data);
-
+			//post process survey response - set status, run game txn
+			$this->_postProcessSurveyResponse($data);
 			return TRUE;
 		} catch (Exception $e) {
-			return;
+			throw $e;
 		}
 	}
 
@@ -481,6 +484,7 @@ class Survey_Response extends Record
 	 * @param array $data
 	 * @return array
 	 */
+/* Function not in use? -- Hamza
 	private function _processSurveyTypeSurvey($data)
 	{
 		//set vars for the _postProcessSurveyAction function
@@ -494,11 +498,11 @@ class Survey_Response extends Record
 		$response["pixel_iframe_url"] = $this->_getPixelIframeUrl($data["user_id"]);
 
 		//post process survey - set status, run game txn
-		$this->_postProcessSurveyAction($data);
+		$this->_postProcessSurveyResponse($data);
 
 		return $response;
 	}
-
+*/
 	/**
 	 * Performs common survey processing functionality.
 	 *
@@ -507,21 +511,22 @@ class Survey_Response extends Record
 	 *
 	 * @param array $data
 	 */
-	private function _postProcessSurveyAction($data)
-	{
-		//set status of survey response
-		$this->updateSurveyStatus($data["status"], $data["processing_status"], $data["downloaded"]);
+		private function _postProcessSurveyResponse($data)
+		{
+			//set status of survey response
+			$this->updateSurveyStatus($data["status"], $data["processing_status"], $data["downloaded"]);
 
-		//run game transaction
-		Game_Transaction::completeSurvey($data["user_id"], $data["starbar_id"], $this->_survey);
-	}
+			//run game transaction [What if they disqualified, or are in the middle of a mission?? -- Hamza]
+			Game_Transaction::completeSurvey($data["user_id"], $data["starbar_id"], $this->_survey);
+		}
 
-	/**
-	 * Right now this just checks for federated, but can be extended
-	 * to get any thrid party call back url based on domain logic.
-	 *
-	 * @param int $userId
-	 */
+
+/**
+ * Right now this just checks for federated, but can be extended
+ * to get any thrid party call back url based on domain logic.
+ *
+ * @param int $userId
+ */
 	private function _getPixelIframeUrl($userId)
 	{
 		$user = new User();
@@ -529,7 +534,7 @@ class Survey_Response extends Record
 
 		// Set to http://www.samplicio.us/router2/ClientCallBack.aspx?fedResponseStatus=10&fedResponseID=xxxxx
 		// for federated users who have completed a federated survey (note fedResponseStatus = 10)
-		if ($user->federated_id && $this->_survey->is_federated) {
+		if ($user->federated_id && $this->getSurvey()->is_federated) {
 			return "http://www.samplicio.us/router2/ClientCallBack.aspx?fedResponseStatus=10&fedResponseID=".$user->federated_id;
 		} else {
 			return "";

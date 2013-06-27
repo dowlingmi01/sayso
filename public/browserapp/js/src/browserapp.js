@@ -473,6 +473,12 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 
             return Math.round(((currentExp-currentLevelExp)/(nextLevelExp-currentLevelExp))*100);
         },
+		"user-public-name": function() {
+			if (state.state.profile.public_name)
+				return state.state.profile.public_name;
+			else
+				return state.state.game.level;
+		},
         "next-exp-threshold": function(game) {
             return game.levels[game.level+1].threshold;
         },
@@ -581,7 +587,8 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		},
 		"post-template": {
 			"section-link": function ($elem, data) {
-				$elem.click(function() {
+				$elem.click(function(e) {
+					e.preventDefault();
 					openSection(data);
 				});
 			},
@@ -592,12 +599,14 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			"tab-link": function ($elem, data) {
 				// note that there is no templateData passed in this case, since any needed data is requested via the api, from extraRequests
 				// this includes re-opening the default tab, for example
-				$elem.click(function() {
+				$elem.click(function(e) {
+					e.preventDefault();
 					openTab($('#' + data['tabContainer']), data['tab'], null, $elem.data());
 				});
 			},
 			"scrollable": function ($elem, data) {
 				// @todo make $elem have a custom JS scrollbar!
+				$elem.css('overflow', 'auto');
 			},
 			"tooltip": function ($elem, data) {
 				// @todo show data['tooltipTitle'] 'neatly' when you roll over this element

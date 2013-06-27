@@ -1,6 +1,6 @@
 (function() {
 	var scripts = [
-//		'config.js',
+		'config.js',
 		'lib/jquery-1.10.1.js',
 		'lib/handlebars.js',
 		'util.js',

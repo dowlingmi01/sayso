@@ -10,7 +10,7 @@ class User_Login {
 
 	/**
 	 * Performs login actions when an email and password are
-	 *  subbmitted
+	 *  submitted
 	 *  - Checks if ip is banned
 	 *  - Checks for failed login attempts
 	 *  - Cheks to see if email and password match
@@ -49,7 +49,7 @@ class User_Login {
 		if (empty($userRow))
 			return self::_addStrikes($email);
 
-		// calculate the password hash using the retreived password salt
+		// calculate the password hash using the retrieved password salt
 		$passwordHash = md5(md5($password) . $userRow['password_salt']);
 
 		// compare provided password to saved password
@@ -62,6 +62,43 @@ class User_Login {
 		// all is good
 		$session = new User_Session();
 		$session->setSession($userRow["id"]);
+
+		$result = array("session" => $session);
+
+		return $result;
+	}
+
+	/**
+	 * Performs login actions with legacy user_key for transition period
+	 *  - Checks if ip is banned
+	 *  - Checks if the user_key exists
+	 *  - Adds strike to the ip if it doesn't
+	 *  - Creates a new session
+	 *  - Returns User and Session objects wrapped in an array
+	 *
+	 *
+	 * @param string $user_key
+	 * @return array Contains \User_Session object
+	 */
+	public static function loginWithLegacyKey($user_key)
+	{
+		//check ip ban
+		if (User::isIpBanned())
+			return;
+
+		//check ip attempts
+		$ipStrikes = self::_getIpStrikes();
+		if (!isset($ipStrikes))
+			return;
+
+		$user_id = User_Key::validate($user_key);
+
+		if (!$user_id)
+			return self::_addStrikes();
+
+		// all is good
+		$session = new User_Session();
+		$session->setSession($user_id);
 
 		$result = array("session" => $session);
 
@@ -106,11 +143,12 @@ class User_Login {
 	/**
 	 * Adds strikes if a login attempt failed.
 	 *
-	 * @param type $user
+	 * @param type $username
 	 */
-	static private function _addStrikes($user)
+	static private function _addStrikes($username = NULL)
 	{
-		Db_Pdo::execute("INSERT INTO login_strikes_user (username) VALUES (?)", $user);
+		if( $username )
+			Db_Pdo::execute("INSERT INTO login_strikes_user (username) VALUES (?)", $username);
 		Db_Pdo::execute('INSERT INTO login_strikes_ip (ip) VALUES (INET_ATON(?))', $_SERVER["REMOTE_ADDR"]);
 	}
 }

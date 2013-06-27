@@ -71,5 +71,38 @@ class Ssmart_Public_LoginEndpoint extends Ssmart_GlobalController
 		return $response;
 	}
 
+	/**
+	 * Logs in a user using a legacy user_key and returns the session data.
+	 *
+	 * @param Ssmart_EndpointRequest $request
+	 * @return \Ssmart_EndpointResponse
+	 * @throws Exception
+	 */
+	public function migrateKey(Ssmart_EndpointRequest $request)
+	{
+		$validators = array(
+			"user_key"				=> "required"
+		);
+		$filters = array();
+
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
+
+		if ($response->hasErrors())
+			return $response;
+
+		//logic
+		$user_key = $request->valid_parameters["user_key"];
+
+		$loginData = User_Login::loginWithLegacyKey($user_key);
+		if (!$loginData)
+			throw new Exception("Login failed");
+
+		$response->setResultVariable("session_id", $loginData["session"]->id);
+		$response->setResultVariable("session_key", $loginData["session"]->session_key);
+
+		// success
+		return $response;
+	}
+
 
 }

@@ -5,12 +5,12 @@ sayso.module.getSession = (function(global, Api, comm, dommsg, util, config, $){
 				callback(session);
 			else
 				comm.get('userKey', function(userKey) {
-					//TODO: remove false when Login::migrateKey endpoint is implemented
-					if( false && userKey ) {
+					if( userKey ) {
 						var api = new Api(config.baseDomain);
 						api.sendRequest({action_class: 'Login', action: 'migrateKey', user_key: userKey}, function(data) {
 							var session = data.responses['default'].variables;
 							if( session ) {
+								session = {id: session.session_id, key: session.session_key};
 								comm.set('session', session, function() {
 									comm.set('userKey', null);
 								});

@@ -800,7 +800,10 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
                     }
                 });
                 $elem.mouseout(function(){
-                    $(this).html('');
+                    if(game.level!==data.levelId)
+                    {
+                        $(this).html('');
+                    }
                     if(data.levelId>game.level)
                     {
                         $(this).css('background-image', oldStyle);

@@ -566,9 +566,7 @@ header nav ul {
   font-weight: 100;
   font-size: 14px;
   letter-spacing: 1px;
-  width: 75%;
-  text-wrap: normal;
-  display: inline-block;
+  width: 60%;
 }
 .tour_content_right {
   float: right;
@@ -576,8 +574,20 @@ header nav ul {
   margin-top: 5%;
   width: 50%;
 }
-.tour_content_right img {
-  padding-top: 0.75em;
+.tour_content_right h1 {
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+}
+.tour_content_right p {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 100;
+  font-size: 14px;
+  letter-spacing: 1px;
+  width: 75%;
+  text-wrap: normal;
+  display: inline-block;
 }
 .tour_final_top {
   clear: both;

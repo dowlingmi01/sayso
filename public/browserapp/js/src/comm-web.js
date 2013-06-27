@@ -1,6 +1,4 @@
-sayso.module.comm = (function(global, $, util, dommsg) {
-	var baseDomain = global.sayso.base_domain;
-
+sayso.module.comm = (function(global, $, util, dommsg, config) {
 	var iframe = global.document.createElement("iframe");
 	var requests = {};
 	var listeners = {};
@@ -37,11 +35,11 @@ sayso.module.comm = (function(global, $, util, dommsg) {
 	util.addEventListener(iframe, 'load', backgroundReady);
 	dommsg.addHandler('background-reply', handleBackgroundReply);
 	dommsg.addHandler('broadcast', handleBroadcast);
-	iframe.src = 'http://' + baseDomain + '/browserapp/background.html';
+	iframe.src = 'http://' + config.baseDomain + '/browserapp/background.html';
 	return {
 		request: request,
 		listen: listen,
 		ready: ready
 	};
-})(this, jQuery, sayso.module.util, sayso.module.dommsg)
+})(this, jQuery, sayso.module.util, sayso.module.dommsg, sayso.module.config)
 ;

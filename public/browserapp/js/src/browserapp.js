@@ -1,5 +1,9 @@
-sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm) {
-	$(global.document).on('sayso:state-login sayso:state-logout sayso:state-ready', initApp);
+sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm, config) {
+	$(function(){
+		$(global.document).on('sayso:state-login sayso:state-logout sayso:state-ready', initApp);
+		if( state.ready )
+			initApp();
+	});
 
 	var starbarId;
 	var tabId = "abc"; // @todo set this to unique tab ID id using browser extension
@@ -8,10 +12,6 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 	var currentSection, currentTabContainers, timeoutIdSectionLoadingSpinner;
 
 	function initApp() {
-		// @todo fix line below... doesn't work on portal
-		// starbarId = state.state.currentStarbarId;
-		starbarId = 4;
-
 		if ($nav && $nav.length) {
 			$nav.remove();
 		}
@@ -19,9 +19,12 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		if (state.state.loggedIn) {
 			userMode = "logged-in";
 
+			starbarId = state.state.starbar.id;
+
 			loadApp();
-		} else if (global.sayso.webportal) {
+		} else if (config.webportal) {
 			userMode = "tour";
+			starbarId = config.defaultStarbarId;
 
 			api.doRequest({
 				action_class : "markup",
@@ -359,7 +362,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			send_question_choices : true
 		}, function(response) {
 			var poll = response['responses'].default.variables.survey;
-			var iframe = createIframe('//' + global.sayso.base_domain + '/browserapp/iframe.html', function(unused, dataFromIframe) {
+			var iframe = createIframe('//' + config.baseDomain + '/browserapp/iframe.html', function(unused, dataFromIframe) {
 				frameComm.fireEvent(iframe.frame_id, 'init-action', {action: 'display-poll', starbarId: starbarId, starbar_short_name: state.state.starbar['short_name'], poll: poll});
 			});
 
@@ -1115,4 +1118,4 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			return request;
 		}
 	}
-})(this, jQuery, sayso.module.state, sayso.module.api, sayso.module.Handlebars, sayso.module.frameComm);
+})(this, jQuery, sayso.module.state, sayso.module.api, sayso.module.Handlebars, sayso.module.frameComm, sayso.module.config);

@@ -1,7 +1,4 @@
-sayso.module.state = (function(global, $, comm) {
-	//TODO: this should come from a config module
-	var starbarId = 4;
-
+sayso.module.state = (function(global, $, comm, config) {
 	var publicVar = {
 		state: null,
 		ready: false,
@@ -48,7 +45,7 @@ sayso.module.state = (function(global, $, comm) {
 		};
 	}
 	function requestState( eventName ) {
-		comm.request('get-state', {starbar_id: starbarId}, gotState( eventName ));
+		comm.request('get-state', {starbar_id: config.defaultStarbarId}, gotState( eventName ));
 	}
 
 	for( var name in stateListeners )
@@ -60,5 +57,5 @@ sayso.module.state = (function(global, $, comm) {
 		$(global.document).on('sayso:comm-ready', function() { requestState('ready'); });
 
 	return publicVar;
-})(this, jQuery, sayso.module.comm)
+})(this, jQuery, sayso.module.comm, sayso.module.config)
 ;

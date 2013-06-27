@@ -13,7 +13,7 @@ sayso.module.config = (function(global) {
 	}
 	return {
 		defaultStarbarId: extVersion ? 0 : 4,
-		webportal: !!extVersion,
+		webportal: !extVersion,
 		location: location,
 		baseDomain: baseDomain,
 		extVersion: extVersion

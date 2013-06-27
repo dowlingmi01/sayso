@@ -5,6 +5,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
     var shared = {},
         initialized = false,
         app = 'webportal',
+        title = 'Machinima | Recon - Powered by Say.So',
         version = '1.0',
         starbarId = 4,
         $loginButton = $('#login_button'),
@@ -26,10 +27,14 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
         //Bind our hashchange event.
         window.onhashchange = hashChanged;
 
+        //Setup title
+        $(document).attr('title', title);
+
         $loginButton.click(function() {
-            state.login($emailField.val(), $passwordField.val(), function(successful, errors) {
+            state.login($emailField.val(), $passwordField.val(), function(response) {
                 //Do nothing with errors right now.
-                if(!successful) {
+                console.log(response);
+                if(response.result !== true) {
                     loadMarkup('recover-password');
                     $passwordField.val('');
                     $emailField.focus();

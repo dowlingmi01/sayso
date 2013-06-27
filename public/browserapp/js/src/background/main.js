@@ -13,22 +13,24 @@
 	function login( data, callback ) {
 		api.sendRequest( {action_class: 'Login', action: 'login', username: data.email, password: data.password}, function( data ) {
             var session = data.responses['default'].variables;
+            var result = {result: false, response: {}};
 			if (session) {
 				session = { id: session.session_id, key: session.session_key };
 				comm.set('session', session, function() {
 					state.loggedIn = null;
 					getUserState();
 					comm.broadcast('state.login');
-					if( callback )
-						callback(true);
 				});
-
+                result.result = true;
+                result.response = session;
 				api = new Api(baseDomain, session.id, session.key);
 			}
             else {
-                if(callback){
-                    callback(false, data.responses['default']);
-                }
+                result.result = false;
+                result.response = data.responses['default'];
+            }
+            if( callback ) {
+                callback(result);
             }
 		});
 	}

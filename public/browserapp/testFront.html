@@ -36,7 +36,7 @@
             $iframe = $('<iframe class="sayso-poll-iframe" id="sayso-poll-iframe"></iframe>');
             $iframe.css('height', '100%');
             $iframe.css('width', '100%');
-            var frameId = sayso.module.frameComm.setURL($iframe, 'testIframe.html');
+            var frameId = sayso.module.frameComm.setURL($iframe, 'testIframe.html', true);
 
             $(document).on('sayso:iframe-ready', function(unused, data) {
                 if( data.frame_id === frameId ) {

@@ -406,6 +406,19 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 		"currency-name": function(currency) {
 			return state.state.game.currencies[currency].name;
 		},
+        "experience-percent": function(game) {
+            var currentExp,
+                currentLevel,
+                currentLevelExp,
+                nextLevelExp;
+
+            currentExp = game.currencies.experience.balance;
+            currentLevel = game.level;
+            currentLevelExp = game.levels[currentLevel].threshold;
+            nextLevelExp = game.levels[currentLevel+1].threshold;
+
+            return Math.round(((currentExp-currentLevelExp)/(nextLevelExp-currentLevelExp))*100);
+        },
 		"image-path": function(fileName) {
 			return "/browserapp/images/" + state.state.starbar.short_name + "/" + fileName;
 		},

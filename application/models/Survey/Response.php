@@ -517,7 +517,7 @@ class Survey_Response extends Record
 			$this->updateSurveyStatus($data["status"], $data["processing_status"], $data["downloaded"]);
 
 			//run game transaction [What if they disqualified, or are in the middle of a mission?? -- Hamza]
-			Game_Transaction::completeSurvey($data["user_id"], $data["starbar_id"], $this->_survey);
+			Game_Transaction::completeSurvey($data["user_id"], $data["starbar_id"], $this->getSurvey());
 		}
 
 

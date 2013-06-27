@@ -1372,9 +1372,9 @@
 }
 #sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel,
 #sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel {
-  width: 470px;
+  width: 500px;
   height: 100%;
-  margin: 0 20px;
+  margin: 0;
   float: left;
   overflow: hidden;
   position: relative;
@@ -1392,27 +1392,34 @@
   float: left;
   width: 100px;
   height: 102px;
+  position: relative;
   background-position: center;
   background-repeat: no-repeat;
   background-image: url('../../images/machinima/experience-level-blank.png');
 }
-#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-earned .sayso-experience-level-item-earned-img,
-#sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-earned .sayso-experience-level-item-earned-img {
-  background-image: url('../../images/machinima/icon-experience-medium.png');
-  background-repeat: no-repeat;
-}
-#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-earned .sayso-experience-level-item-earned-img p,
-#sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-earned .sayso-experience-level-item-earned-img p {
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-earned p,
+#sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-earned p {
   text-align: center;
+  margin-top: 80px;
+  font-size: 11px;
+  font-weight: bold;
 }
 #sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-current,
 #sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-current {
   float: left;
   width: 100px;
   height: 102px;
+  position: relative;
   background-position: center;
   background-repeat: no-repeat;
   background-image: url('../../images/machinima/experience-level-blank.png');
+}
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-current p,
+#sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-current p {
+  text-align: center;
+  margin-top: 90px;
+  font-size: 11px;
+  font-weight: bold;
 }
 #sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-next,
 #sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-next {
@@ -1422,6 +1429,13 @@
   background-position: center;
   background-repeat: no-repeat;
   background-image: url('../../images/machinima/experience-level-blank.png');
+}
+#sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-next p,
+#sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-levels-container #sayso-experience-levels-carousel .sayso-experience-levels-carousel-group .sayso-experience-level-item-next p {
+  text-align: center;
+  margin-top: 80px;
+  font-size: 11px;
+  font-weight: bold;
 }
 #sayso-section-container.sayso-section-experience #sayso-section #sayso-section-body #sayso-experience-currencies-container,
 #sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body #sayso-experience-currencies-container {

@@ -1331,14 +1331,14 @@
                     }
 
                     #sayso-experience-levels-carousel {
-                        width: 470px;
+                        width: 500px;
                         height: 100%;
-                        margin: 0 20px;
+                        margin: 0;
                         float: left;
                         overflow: hidden;
                         position: relative;
 
-                        .sayso-experience-levels-carousel-group{
+                        .sayso-experience-levels-carousel-group {
                             position: absolute;
                             top: 0px;
                             left: 0px;
@@ -1349,27 +1349,35 @@
                                 float: left;
                                 width: 100px;
                                 height: 102px;
+                                position: relative;
                                 background-position: center;
                                 background-repeat: no-repeat;
                                 background-image: url('@{base-image-url}/experience-level-blank.png');
 
-                                .sayso-experience-level-item-earned-img {
-                                    background-image: url('@{base-image-url}/icon-experience-medium.png');
-                                    background-repeat: no-repeat;
-                                    p{
-                                        text-align: center;
-                                    }
+                                p{
+                                    text-align: center;
+                                    margin-top: 80px;
+                                    font-size: 11px;
+                                    font-weight: bold;
                                 }
-
                             }
 
                             .sayso-experience-level-item-current {
                                 float: left;
                                 width: 100px;
                                 height: 102px;
+                                position: relative;
                                 background-position: center;
                                 background-repeat: no-repeat;
                                 background-image: url('@{base-image-url}/experience-level-blank.png');
+
+                                p{
+                                    text-align: center;
+                                    margin-top: 90px;
+                                    font-size: 11px;
+                                    font-weight: bold;
+                                }
+
                             }
 
                             .sayso-experience-level-item-next {
@@ -1379,6 +1387,13 @@
                                 background-position: center;
                                 background-repeat: no-repeat;
                                 background-image: url('@{base-image-url}/experience-level-blank.png');
+
+                                p{
+                                    text-align: center;
+                                    margin-top: 80px;
+                                    font-size: 11px;
+                                    font-weight: bold;
+                                }
                             }
                         }
                     }

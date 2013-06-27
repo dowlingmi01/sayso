@@ -465,28 +465,22 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
             var $carouselContainer = $('<div></div>');
             var counter = 0;
             var topIndex = 7;
-//            var blankImageUrl = '../../images/machinima/experience-level-blank.png';
             $row = $('<div class="sayso-experience-levels-carousel-group" style="display: block; z-index: ' + topIndex + ';"></div>');
             for(var i=1;i<=Object.keys(game.levels).length;i++) {
-                if(((counter % 4) === 0 && counter !== 0)) {
+                if(((counter % 5) === 0 && counter !== 0)) {
                     $carouselContainer.append($row);
                     topIndex--;
                     $row = $('<div class="sayso-experience-levels-carousel-group" style="z-index: ' + topIndex + ';"></div>');
                 }
                 if(i<game.level){
-                    $level = $('<div class="sayso-experience-level-item-earned" style="background-image: url(\'' + game.levels[i].img_url_small + '\')"></div>');
-                    //ASSIGN LEVEL A VERY SPECIFIC ID OR THIS WILL BE HELL.
-                    //Use $(document).on("mouseover", "#id", ...
-                    //This doesn't work. At all.
-                    $level.on("mouseover", function() {
-                        console.log("Mouseover");
-                    });
+                    $level = $('<div class="sayso-element sayso-experience-level-item sayso-experience-level-item-earned" data-level-id="' + i + '" style="background-image: url(\'' + game.levels[i].img_url_small + '\')"></div>');
                 }
                 else if(i>game.level){
-                    $level = $('<div class="sayso-experience-level-item-next"></div>');
+                    $level = $('<div class="sayso-element sayso-experience-level-item sayso-experience-level-item-next" data-level-id="' + i + '"></div>');
                 }
                 else {
-                    $level = $('<div class="sayso-experience-level-item-current" style="background-image: url(\'' + game.levels[i].img_url + '\')"></div>');
+                    $level = $('<div class="sayso-element sayso-experience-level-item sayso-experience-level-item-current" data-level-id="' + i + '" style="background-image: url(\'' + game.levels[i].img_url + '\')"></div>');
+                    $level.html('<span class="sayso-experience-level-icon-current"></span>');
                 }
 
                 //Use partials and a post-template handler for the carousel. Otherwise this is gonna be hellacious.
@@ -561,9 +555,6 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 					openPoll($elem, data); // note that openPoll takes the container ($elem) as a parameter, not $pollHeader
 				});
 			},
-            "experience-levels-carousel": function ($elem, data) {
-
-            },
             "reward-item": function ($elem, data, templateData) {
                 var rewardRecord = $.grep(templateData.rewards.records, function (r){ return r.id === data.rewardId; });
                 if (rewardRecord) {
@@ -789,7 +780,93 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars) {
 			},
 			"user-profile" : function ($elem, data) {
 				var test;
-			}
+			},
+            "experience-level-item": function($elem, data) {
+                var oldStyle = $elem.css('background-image');
+                var game = state.state.game;
+                $elem.mouseover(function(){
+                    $(this).html("<p>" + game.levels[data.levelId].threshold + "</p>");
+                    if(data.levelId>game.level)
+                    {
+                        $(this).css('background-image', 'url(' + game.levels[data.levelId].img_url_small + ')');
+                    }
+                });
+                $elem.mouseout(function(){
+                    $(this).html('');
+                    if(data.levelId>game.level)
+                    {
+                        $(this).css('background-image', oldStyle);
+                    }
+                });
+            },
+            "experience-levels-container": function ($elem) {
+                var left = new Array();
+                var right = new Array();
+                var $current, $next;
+
+                function initCarousel() {
+                    var i = 0;
+                    $('.sayso-experience-levels-carousel-group', $elem).each(function() {
+                        right.push($(this));
+                        if(i>0){
+                            $(this).css('left', '500px')
+                        }
+                        i++;
+                    });
+                    $current = right.shift();
+                    $('#sayso-experience-levels-nav-right', $elem).click(function(){
+                        showRightElement();
+                    });
+
+                    $('#sayso-experience-levels-nav-left', $elem).click(function(){
+                        showLeftElement();
+                    });
+                }
+
+                function showRightElement() {
+                    if(right.length>=1){
+                        left.unshift($current);
+                        $next = right.shift();
+                        slideLeft($current, $next);
+                        $current = $next;
+                    }
+                }
+
+                function showLeftElement() {
+                    if(left.length>=1){
+                        right.unshift($current);
+                        $next = left.shift();
+                        slideRight($current, $next);
+                        $current = $next;
+                    }
+                }
+
+                function slideRight($shown, $toBeShown) {
+                    $(function () {
+                        $toBeShown.show();
+                        $shown.animate({
+                            left: '+=500'
+                        }, { duration: 500, queue: false });
+                        $toBeShown.animate({
+                            left: '+=500'
+                        }, { duration: 500, queue: false });
+                    });
+                }
+
+                function slideLeft($shown, $toBeShown) {
+                    $(function () {
+                        $toBeShown.show();
+                        $shown.animate({
+                            left: '-=500'
+                        }, { duration: 500, queue: false });
+                        $toBeShown.animate({
+                            left: '-=500'
+                        }, { duration: 500, queue: false });
+                    });
+                }
+
+                initCarousel();
+            }
 		}
 	};
 

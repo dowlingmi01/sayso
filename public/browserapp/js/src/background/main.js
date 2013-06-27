@@ -12,7 +12,7 @@
 	var pendingRequests = {};
 	function login( data, callback ) {
 		api.sendRequest( {action_class: 'Login', action: 'login', username: data.email, password: data.password}, function( data ) {
-			var session = data.responses['default'].variables;
+            var session = data.responses['default'].variables;
 			if (session) {
 				session = { id: session.session_id, key: session.session_key };
 				comm.set('session', session, function() {
@@ -25,6 +25,11 @@
 
 				api = new Api(baseDomain, session.id, session.key);
 			}
+            else {
+                if(callback){
+                    callback(false, data.responses['default']);
+                }
+            }
 		});
 	}
 	function logout(unused, callback) {

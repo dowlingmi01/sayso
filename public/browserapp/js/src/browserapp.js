@@ -618,6 +618,12 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 				// @todo show data['tooltipTitle'] 'neatly' when you roll over this element
 				$elem.attr('title', data['tooltipTitle']); // hack
 			},
+            "placeholder": function ($elem) {
+                if (!$.support.placeholder) {
+                    var placeholder = $elem.attr('placeholder');
+                    $elem.val(placeholder);
+                }
+            },
 			"poll-container": function ($elem, data) {
 				var $pollHeader = $('.sayso-poll-header', $elem);
 				$pollHeader.click(function() {
@@ -711,16 +717,6 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
                         var fields = ['first_name', 'last_name', 'address_1', 'address_2', 'city', 'state', 'country', 'zip', 'phone'];
                         var required_fields = ['first_name', 'last_name', 'address_1', 'city', 'country', 'zip'];
                         var $personalInfo = $step2.find('#sayso-reward-item-order-shipping-information');
-
-                        if ($.support.placeholder) {
-                            $("input[placeholder]", $step2).each(function(){
-                                var inputElem = $(this);
-                                var placeholder = inputElem.attr('placeholder');
-                                if (inputElem.val() === placeholder) {
-                                    inputElem.val('');
-                                }
-                            });
-                        }
 
                         if ($personalInfo.length) {
                             for (i = 0; i < fields.length; i++) {

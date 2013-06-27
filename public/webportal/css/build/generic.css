@@ -323,6 +323,21 @@ header nav ul {
   margin-left: 0%;
   margin-top: 5%;
 }
+.recover_password_container .recover_password_header {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 20px;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+.recover_password_container p {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
 .recover_password_container input {
   width: 200px;
   margin-right: 5px;
@@ -335,14 +350,6 @@ header nav ul {
 .recover_password_container img {
   vertical-align: middle;
   padding-bottom: 1px;
-}
-.recover_password_header {
-  font-family: "proxima-nova", sans-serif;
-  font-style: normal;
-  font-weight: 300;
-  font-size: 20px;
-  letter-spacing: 1px;
-  margin-bottom: 20px;
 }
 /* Generic Thank You Page */
 .thank_you_content {

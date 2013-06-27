@@ -373,24 +373,29 @@ header {
 .recover_password_container {
   .top_left_margin();
 
-  input {
-    width: 200px;
-    margin-right: 5px;
-    background-color: @theme-color-primary;
-    border: 1px solid @theme-color-secondary;
-    .inner-shadow(1px, 1px, 3px, 0.7);
-  }
+    .recover_password_header {
+        .proxima_nova_light(@font-size + 6);
+        margin-bottom: 20px;
+    }
 
-  img {
-    vertical-align: middle;
-    padding-bottom: 1px;
-  }
+    p {
+        .proxima_nova_light(@font-size);
+    }
+    input {
+        width: 200px;
+        margin-right: 5px;
+        background-color: @theme-color-primary;
+        border: 1px solid @theme-color-secondary;
+        .inner-shadow(1px, 1px, 3px, 0.7);
+    }
+
+    img {
+        vertical-align: middle;
+        padding-bottom: 1px;
+    }
 }
 
-.recover_password_header {
-  .proxima_nova_light(@font-size + 6);
-  margin-bottom: 20px;
-}
+
 
 /* Generic Thank You Page */
 .thank_you_content {

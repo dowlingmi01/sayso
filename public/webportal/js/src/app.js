@@ -27,7 +27,14 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
         window.onhashchange = hashChanged;
 
         $loginButton.click(function() {
-            state.login($emailField.val(), $passwordField.val());
+            state.login($emailField.val(), $passwordField.val(), function(successful, errors) {
+                //Do nothing with errors right now.
+                if(!successful) {
+                    loadMarkup('recover-password');
+                    $passwordField.val('');
+                    $emailField.focus();
+                }
+            });
         });
         $signOutButton.click(function() {
             if (state.state.loggedIn) {
@@ -163,7 +170,6 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
                 loadMarkup(values[1]);
             }
             //TODO: Cs - Handle failure elegantly.
-            //TODO: Cs - implement handlers for 'action' and 'lightbox'
             //TODO: Cs - should we split this out into hash_manager if it gets large enough?
         }
     }
@@ -275,7 +281,13 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 			"tooltip": function ($elem, data) {
 				// @todo show data['tooltipTitle'] 'neatly' when you roll over this element
 				$elem.attr('title', data['tooltipTitle']); // hack
-			}
+			},
+            "placeholder": function ($elem) {
+                if (!$.support.placeholder) {
+                    var placeholder = $elem.attr('placeholder');
+                    $elem.val(placeholder);
+                }
+            }
 		}
 	};
 

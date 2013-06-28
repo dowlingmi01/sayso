@@ -8,7 +8,7 @@
         },
         shim: function(opts) {
             var config = {
-                color: '#888',
+                color: '#000',
                 cls: 'placeholder',
                 selector: 'input[placeholder], textarea[placeholder]'
             };

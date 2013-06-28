@@ -696,11 +696,8 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 				// @todo show data['tooltipTitle'] 'neatly' when you roll over this element
 				$elem.attr('title', data['tooltipTitle']); // hack
 			},
-            "placeholder": function ($elem) {
-                if (!$.support.placeholder) {
-                    var placeholder = $elem.attr('placeholder');
-                    $elem.val(placeholder);
-                }
+            "placeholder": function () {
+                $.placeholder.shim();
             },
 			"poll-container": function ($elem, data) {
 				var $pollHeader = $('.sayso-poll-header', $elem);

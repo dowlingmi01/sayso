@@ -302,8 +302,12 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
                 $("#agreeterms", $elem).change(function(){
                     if($(this).is(':checked')){
                         $('#grab_it', $elem).addClass('enabled');
+                        $('#grab_it', $elem).on('click', function(){
+                            location.hash = 'content/get-app-confirmation';
+                        });
                     } else {
                         $('#grab_it', $elem).removeClass('enabled');
+                        $('#grab_it', $elem).off('click');
                     }
                 });
             },

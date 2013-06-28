@@ -455,7 +455,7 @@
 #sayso-section-container.sayso-section-tour-about #sayso-section {
   left: 224px;
   width: 540px;
-  height: 540px;
+  height: 560px;
   bottom: 40px;
 }
 #sayso-section-container.sayso-section-about #sayso-section #sayso-section-header,
@@ -478,6 +478,11 @@
 #sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-header ul li.sayso-tab-link {
   color: #ffffff;
 }
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body {
+  height: 475px;
+  padding-top: 3px;
+}
 #sayso-section-container.sayso-section-about #sayso-section #sayso-section-body p,
 #sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body p {
   margin: 6px 0;
@@ -487,34 +492,91 @@
   color: #c02526;
   font-size: 18px;
   font-weight: normal;
-  margin-top: -10px;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body .sayso-tab,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body .sayso-tab {
+  height: 100%;
 }
 #sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-help-tabs,
 #sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-help-tabs {
-  height: 320px;
+  height: 350px;
 }
 #sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-links,
 #sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-links {
+  height: 100%;
   bottom: 0;
+  background-image: url('../../images/machinima/section-about-help-tab-nav.png');
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+  height: 40px;
 }
 #sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-links li,
 #sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-links li {
   float: left;
   color: #fff;
   width: 120px;
+  height: 40px;
   text-align: center;
-}
-#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-links li a,
-#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-links li a {
-  color: #fff;
   text-shadow: #000 0px 0px 4px;
   font-size: 13px;
-  height: 40px;
-  width: 100%;
   display: inline-block;
-  text-align: center;
   line-height: 38px;
   margin-left: 2px;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body .sayso-tab-help h2,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body .sayso-tab-help h2 {
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 0;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body .sayso-tab-help p,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body .sayso-tab-help p {
+  font-size: 14px;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body .sayso-tab-help ul,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body .sayso-tab-help ul {
+  border-top: 2px dotted #ccc;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body .sayso-tab-help ul li,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body .sayso-tab-help ul li {
+  padding: 10px 45px 10px 55px;
+  background-repeat: no-repeat;
+  background-position: 0px 10px;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-tab-one li#sayso-about-help-experience,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-tab-one li#sayso-about-help-experience {
+  background-image: url('../../images/machinima/section-about-help-star.png');
+  border-bottom: solid 1px #bfbfbf !important;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-tab-one li#sayso-about-help-redeemable,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-tab-one li#sayso-about-help-redeemable {
+  background-image: url('../../images/machinima/section-about-help-redeemable.png');
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-tab-two li#sayso-about-help-polls,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-tab-two li#sayso-about-help-polls {
+  background-image: url('../../images/machinima/section-about-help-polls.png');
+  border-bottom: solid 1px #bfbfbf !important;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-tab-two li#sayso-about-help-surveys,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-tab-two li#sayso-about-help-surveys {
+  background-image: url('../../images/machinima/section-about-help-surveys.png');
+  border-bottom: solid 1px #bfbfbf !important;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-tab-two li#sayso-about-help-spotlight,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-tab-two li#sayso-about-help-spotlight {
+  background-image: url('../../images/machinima/section-about-help-spotlight.png');
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-tab-three li#sayso-about-help-prizes,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-tab-three li#sayso-about-help-prizes {
+  background-image: url('../../images/machinima/section-about-help-prizes.png');
+  border-bottom: solid 1px #bfbfbf !important;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-tab-three li#sayso-about-help-giveaways,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-tab-three li#sayso-about-help-giveaways {
+  background-image: url('../../images/machinima/section-about-help-giveaways.png');
 }
 #sayso-section-container.sayso-section-user-profile #sayso-section,
 #sayso-section-container.sayso-section-tour-user-profile #sayso-section {

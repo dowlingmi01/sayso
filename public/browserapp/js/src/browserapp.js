@@ -843,9 +843,6 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 					});
 				});
 			},
-			"user-profile" : function ($elem, data) {
-				var test;
-			},
             "experience-level-item": function($elem, data) {
                 var oldStyle = $elem.css('background-image');
                 var game = state.state.game;
@@ -942,7 +939,15 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
                 }
 
                 initCarousel();
-            }
+            },
+			"about-help-link" : function ($elem, data) {
+				$elem.click(function() {
+					var value = "0 -" + data['backgroundTop'] + "px";
+					$("#sayso-about-help-links").css("background-position", value);
+				});
+
+			}
+
 		}
 	};
 

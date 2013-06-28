@@ -434,10 +434,11 @@
 	}
 
 	&.sayso-section-about, &.sayso-section-tour-about {
+
 		#sayso-section {
 			left: 224px;
 			width: 540px;
-			height: 540px;
+			height: 560px;
 			bottom: 40px;
 
 			#sayso-section-header {
@@ -462,6 +463,9 @@
 				}
 			}
 			#sayso-section-body {
+				height: 475px;
+				padding-top : 3px;
+
 				p {
 					margin : 6px 0;
 				}
@@ -469,34 +473,96 @@
 					color: @theme-color-links;
 					font-size: 18px;
 					font-weight: normal;
-					margin-top: -10px;
+				}
+				.sayso-tab {
+					height: 100%;
 				}
 				#sayso-help-tabs {
-					height: 320px;
+					height: 350px;
 				}
 				#sayso-about-help-links {
+					height: 100%;
 					bottom: 0;
+					background-image: url('@{base-image-url}/section-about-help-tab-nav.png');
+					background-repeat: no-repeat;
+					background-position: 0px 0px;
+					height: 40px;
 
 					li {
 						float: left;
 						width: 120px;
 						color: #fff;
 						width: 120px;
+						height: 40px;
 						text-align: center;
-
-						a {
-							color: #fff;
-							text-shadow: #000 0px 0px 4px;
-							font-size: 13px;
-							height: 40px;
-							width: 100%;
-							display: inline-block;
-							text-align: center;
-							line-height: 38px;
-							margin-left: 2px;
-						}
+						text-shadow: #000 0px 0px 4px;
+						font-size: 13px;
+						display: inline-block;
+						line-height: 38px;
+						margin-left: 2px;
 					}
 				}
+				.sayso-tab-help {
+					h2 {
+						text-align: center;
+						font-weight: bold;
+						font-size: 14px;
+						letter-spacing: 0;
+						border-top: 1px solid #ccc;
+						padding-top: 10px;
+					}
+
+					p {
+						font-size: 14px;
+					}
+
+					ul {
+						border-top: 2px dotted #ccc;
+
+						li {
+							padding: 10px 45px 10px 55px;
+							background-repeat: no-repeat;
+							background-position: 0px 10px;
+						}
+
+					}
+				}
+
+				#sayso-about-help-tab-one {
+
+					li#sayso-about-help-experience {
+						background-image: url('@{base-image-url}/section-about-help-star.png');
+						border-bottom: solid 1px #bfbfbf !important;
+					}
+					li#sayso-about-help-redeemable {
+						background-image: url('@{base-image-url}/section-about-help-redeemable.png');
+					}
+				}
+				#sayso-about-help-tab-two {
+
+					li#sayso-about-help-polls {
+						background-image: url('@{base-image-url}/section-about-help-polls.png');
+						border-bottom: solid 1px #bfbfbf !important;
+					}
+					li#sayso-about-help-surveys {
+						background-image: url('@{base-image-url}/section-about-help-surveys.png');
+						border-bottom: solid 1px #bfbfbf !important;
+					}
+					li#sayso-about-help-spotlight {
+						background-image: url('@{base-image-url}/section-about-help-spotlight.png');
+					}
+				}
+				#sayso-about-help-tab-three {
+
+					li#sayso-about-help-prizes {
+						background-image: url('@{base-image-url}/section-about-help-prizes.png');
+						border-bottom: solid 1px #bfbfbf !important;
+					}
+					li#sayso-about-help-giveaways {
+						background-image: url('@{base-image-url}/section-about-help-giveaways.png');
+					}
+				}
+
 			}
 		}
 	}

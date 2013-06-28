@@ -8,7 +8,6 @@
 		<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="faq">FAQs</li>
 		<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="feedback">Feedback
 		</li>
-		<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="testing">Testing</li>
 	</ul>
 </div>
 <div id="sayso-section-body" class="sayso-element sayso-tab-container" data-default-tab="about">
@@ -33,17 +32,17 @@
 				{{>help-tab-two}}
 			</div>
 			<div class="sayso-element sayso-tab" data-tab="help-tab-three">
-				<p>three</p>
+				{{>help-tab-three}}
 			</div>
 			<div class="sayso-element sayso-tab" data-tab="help-tab-four">
-				four
+				{{>help-tab-four}}
 			</div>
 		</div>
 		<ul id="sayso-about-help-links">
-			<li class="sayso-element sayso-tab-link" data-tab-container="sayso-help-tabs" data-tab="help-tab-one">Welcome!</li>
-			<li class="sayso-element sayso-tab-link" data-tab-container="sayso-help-tabs" data-tab="help-tab-two">What Can I Do?</li>
-			<li class="sayso-element sayso-tab-link" data-tab-container="sayso-help-tabs" data-tab="help-tab-three">What Do I Get?</li>
-			<li class="sayso-element sayso-tab-link" data-tab-container="sayso-help-tabs" data-tab="help-tab-four">Get Started</li>
+			<li class="sayso-element sayso-tab-link sayso-about-help-link" data-tab-container="sayso-help-tabs" data-tab="help-tab-one" data-background-top="0">Welcome!</li>
+			<li class="sayso-element sayso-tab-link sayso-about-help-link" data-tab-container="sayso-help-tabs" data-tab="help-tab-two" data-background-top="40">What Can I Do?</li>
+			<li class="sayso-element sayso-tab-link sayso-about-help-link" data-tab-container="sayso-help-tabs" data-tab="help-tab-three" data-background-top="80">What Do I Get?</li>
+			<li class="sayso-element sayso-tab-link sayso-about-help-link" data-tab-container="sayso-help-tabs" data-tab="help-tab-four" data-background-top="120">Get Started</li>
 		</ul>
 
 	</div>
@@ -54,34 +53,48 @@
 	<div class="sayso-element sayso-tab" data-tab="feedback">
 		feedback
 	</div>
-	{{#compare "%CONFIG_BASE_DOMAIN%" "==" "app.saysollc.com"}}
-		<div class="sayso-element sayso-tab" data-tab="testing">
-			<h2>Top Secret Testing Functions</h2>
-			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/reset-surveys-and-polls">Reset surveys and polls</a></p>
-			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/reset-external">Reset Facebook and Twitter External accounts and username</a></p>
-			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/reset-notifications">Reset Notifications and User Creation Time</a></p>
-			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/reset-gamer">Reset Game info to just after install (1000 chops, 100 notes)</a></p>
-			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/reset-all" style="color: red;">Reset this user to 'just created, just installed' state (i.e. All of the Above)</a></p>
-			<br />
-			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/complete-survey?survey_type=survey&survey_reward_category=profile">Simulate completing *the* profile survey</a></p>
-			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/complete-survey?survey_type=survey&survey_reward_category=premium">Simulate completing the primary survey (points only)</a></p>
-			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/complete-survey?survey_type=survey&survey_reward_category=standard">Simulate completing a regular survey (points only)</a></p><br />
-			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/complete-survey?survey_type=poll&survey_reward_category=standard">Simulate completing a regular poll (points only)</a></p>
-			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/complete-survey?survey_type=poll&survey_reward_category=premium">Simulate completing a premium poll (points only)</a></p><br />
-			<p><a href="//%CONFIG_BASE_DOMAIN%/api/test/reward-notes" style="color: green;">Receive 5000 notes</a></p>
-		</div>
-	{{/compare}}
 </div>
 <div id="sayso-section-footer"></div>
 
 <div class="sayso-element sayso-partial" data-partial-id="help-tab-one">
-	<div class="sayso-element">
-		content from the partial
+	<div id="sayso-about-help-tab-one" class="sayso-tab-help">
+		<h2>Congratulations and Thank You!</h2>
+		<p>By becoming a member of Machinima | Recon, you’ve achieved level 1, and earned 1000 Experience and 75 Coins.</p>
+		<br />
+		<ul>
+			<li id="sayso-about-help-experience">
+				<span class="sayso-highlight">"Experience"</span> Experience points (XP) is the currency of influence. You earn experience points for sharing your expertise, experience and opinion, and your XP determines your access to increasingly important levels of access and influence.
+			</li>
+			<li id="sayso-about-help-redeemable">
+				<span class="sayso-highlight">"Coins"</span> are almost as good as cash. Virtually everything you do earns you Coins, which can be redeemed for all manner of goodies from Machinima | Recon. (<a href="//%CONFIG_BASE_DOMAIN%/starbar/machinima/rewards">see the Rewards Center</a>)
+			</li>
+		</ul>
 	</div>
 </div>
 <div class="sayso-element sayso-partial" data-partial-id="help-tab-two">
-	<div class="sayso-element">
-		content from the partial - two
+	<div id="sayso-about-help-tab-two" class="sayso-tab-help">
+		<h2>Give Your Opinion, Share It and Earn!</h2>
+		<p>Your point of view and opinion are invaluable. Express yourself through fun polls and surveys, and earn XP and Coins by watching fun videos.</p>
+		<ul>
+			<li id="sayso-about-help-polls"><span class="sayso-highlight">Polls</span> are quick hits of opinion we’d like you to share. Answer as many or as few as you’d like, and for each one we’ll drop a little something in your Machinima | Recon wallet.</li>
+			<li id="sayso-about-help-surveys"><span class="sayso-highlight">Surveys</span> are the big money opportunities. These are important efforts to gauge how we are doing, and we’ll make sure you are compensated accordingly.</li>
+			<li id="sayso-about-help-spotlight"><span class="sayso-highlight">Spotlight - </span> Rate game trailers and watch the newest video content. Share them on Facebook or Twitter, we'll compensate you with XP and Coins. No purchase necessary. The more you participate the more you earn and the more you earn the bigger the rewards and discounts you get!</li>
+		</ul>
+	</div>
+</div>
+<div class="sayso-element sayso-partial" data-partial-id="help-tab-three">
+	<div id="sayso-about-help-tab-three" class="sayso-tab-help">
+		<h3>Here's What You Get.</h3>
+		<p>Help us better serve your Machinima | Recon needs and you’ll earn Coins, virtual currency redeemable for prizes and opportunities.</p>
+		<ul>
+			<li id="sayso-about-help-prizes"><span class="sayso-highlight">Great Prizes.</span> Almost everything you do as a Machinima | Recon member earns you Coins. Use your Coins to redeem prizes from the Rewards Center.</li>
+			<li id="sayso-about-help-giveaways"><span class="sayso-highlight">A Chance To Win A Prize Giveaways. </span> Redeem your Coins for entry tokens for our giveaways. Buy as many entry tokens for each giveaway as you want and increase your odds of winning.</li>
+		</ul>
+	</div>
+</div>
+<div class="sayso-element sayso-partial" data-partial-id="help-tab-four">
+	<div id="sayso-about-help-tab-four">
+		content from the partial - four
 	</div>
 </div>
 

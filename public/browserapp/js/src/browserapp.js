@@ -1,6 +1,5 @@
 sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm, config) {
 	var starbarId;
-	var tabId = "abc"; // @todo set this to unique tab ID id using browser extension
 	var userMode = "logged-out";
 	var $nav, $sectionContainer, $section;
 	var currentSection, currentTabContainers, timeoutIdSectionLoadingSpinner;
@@ -51,11 +50,11 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			}
 
 			$('body').append(response.responses.default.variables.markup);
-
-			// hide the hide button, since we're on the portal
-			$('#sayso-nav-hide-button').hide();
 		} // else {}  potentially we can handle logged out mode here
+
 		initNav();
+
+		initStateListeners();
 
 		if (userMode == "tour") {
 			initPortalListeners();
@@ -68,18 +67,26 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		$sectionContainer = $('#sayso-section-container');
 		$section = $('#sayso-section');
 
-		// close the section box if user clicks anywhere on the document...
-		$(global.document).click(function(event) {
-			// don't close if they just right-clicked
-			if (event.button === 0){
-				closeSection();
-			}
-		});
+		if (config.webportal) {
+			// hide the hide button, since we're on the portal
+			$('#sayso-nav-hide-button', $nav).hide();
+		} else if (state.state.visibility == "stowed")
+			hideNav(false);
 
-		// ... but don't close section box if the user clicks on the nav or inside it (note that the section box is inside $nav)
-		$nav.click(function(event) {
-			event.stopPropagation();
-		});
+		if (!config.webportal || userMode != "tour") {
+			// close the section box if user clicks anywhere on the document...
+			$(global.document).click(function(event) {
+				// don't close if they just right-clicked
+				if (event.button === 0){
+					closeSection();
+				}
+			});
+
+			// ... but don't close section box if the user clicks on the nav or inside it (note that the section box is inside $nav)
+			$nav.click(function(event) {
+				event.stopPropagation();
+			});
+		}
 
 		prepareElements();
 	}
@@ -111,13 +118,16 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 
 		// update all updateTypes when doing post-template processing, i.e. "game", "user", "notifications"
 		if (handlerCollection == "post-template") {
+			updateElements($container);
+			/*
 			updateElements($container, "game");
-			updateElements($container, "user");
+			updateElements($container, "profile");
 
 			// only notifications should animate on initial load... game and user data shouldn't animate initially
 			// (not sure user profile data will ever animate anyway)
 			if ($container === $nav)
 				updateElements($container, "notifications", true);
+			*/
 		}
 
 		for (var helper in handlebarsHelpers) {
@@ -142,19 +152,47 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		var $elements = $('.sayso-element', $container);
 		var $element;
 
-		$elements.each(function() {
-			$element = $(this);
-			for (var handlerCollection in updateHandlers) {
-				// if no updateType is specified, update all handlerCollections (i.e. "game", "user", "notifications", ...)
-				if (!updateType || updateType == handlerCollection) {
-					for (var elementType in updateHandlers[handlerCollection]) {
-						if ($element.hasClass('sayso-' + elementType)) {
-							updateHandlers[handlerCollection][elementType]($element, $element.data(), animate);
+		if (updateType != "visibility") {
+			$elements.each(function() {
+				$element = $(this);
+				for (var handlerCollection in updateHandlers) {
+					// if no updateType is specified, update all handlerCollections (i.e. "game", "profile", "notifications", ...)
+					if (!updateType || updateType == handlerCollection) {
+						for (var elementType in updateHandlers[handlerCollection]) {
+							if ($element.hasClass('sayso-' + elementType)) {
+								updateHandlers[handlerCollection][elementType]($element, $element.data(), animate);
+							}
 						}
 					}
 				}
+			});
+		}
+
+		// handle visibility separately
+		if ($container === $nav && (!updateType || updateType == "visibility")) {
+			if (state.state.visibility == 'stowed' && !config.webportal) { // don't hide on portal
+				hideNav(false);
+			} else {
+				showNav(false);
 			}
-		});
+		}
+	}
+
+	function hideNav(updateState) {
+		if (updateState) { // user initiated visibility change here, trigger it and do nothing (listener will trigger animation)
+			//@todo state.updateVisibility("stowed");
+		} else {
+			closeSection();
+			$nav.addClass("sayso-app-container-stowed");
+		}
+	}
+
+	function showNav(updateState) {
+		if (updateState) { // user initiated visibility change here, trigger it and do nothing (listener will trigger animation)
+			//@todo state.updateVisibility("visible");
+		} else {
+			$nav.removeClass("sayso-app-container-stowed");
+		}
 	}
 
 
@@ -166,6 +204,12 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		updateElements();
 	}
 
+
+	function initStateListeners() {
+		for (var state in stateListeners) {
+			$(global.document).on('sayso:state-' + state, stateListeners[state]);
+		}
+	}
 
 	function initPortalListeners() {
 		var oldHashChangeFunction = global.onhashchange;
@@ -236,6 +280,11 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			return;
 		} else if (currentSection) {
 			closeSection();
+		}
+
+		if (state.state.visibility == "stowed") {
+			showNav(true);
+			return;
 		}
 
 		if (userMode == "tour" && !clickedElementData['skipHashChange']) {
@@ -521,6 +570,29 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		prepareElements($container, "post-template", templateData);
 	}
 
+	var stateListeners = {
+		"game": function() {
+			updateElements(null, "game");
+		},
+		"login": function() {
+			initApp();
+		},
+		"logout": function() {
+			initApp();
+		},
+		"profile": function() {
+			updateElements(null, "profile");
+		},
+		"visibility": function() {
+			if (!config.webportal) {
+				updateElements(null, "visibility");
+			}
+		},
+		"notifications": function() {
+			updateElements(null, "notifications");
+		}
+	}
+
 	var handlebarsHelpers = {
 		"currency-name-highlighted": function(currency) {
 			// @todo add description to game.currencies
@@ -699,6 +771,11 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
             "placeholder": function () {
                 $.placeholder.shim();
             },
+			"hide-button": function ($elem) {
+				$elem.click(function() {
+					hideNav(true);
+				});
+			},
 			"poll-container": function ($elem, data) {
 				var $pollHeader = $('.sayso-poll-header', $elem);
 				$pollHeader.click(function() {
@@ -1093,27 +1170,26 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		"game": {
 			// below handler corresponds to elements like <div class="sayso-element sayso-progress-bar-container"></div>
 			"progress-bar-container": function ($elem, data, animate) {
-				// do something to the element when updateElements(X, "game", animate) or updateElements(X, null, animate) or updateElements(X) is called
-				// the animate variable on the previous line is passed to these handlers, and dictates whether the element should animate or not when showing the update
-
-				// 1. read data['progressBarFor']
-				// 2. if value from 1 is "currency", read data from state.games[starbarId].currencies[data['progressBarFor']]
-				// 3. ???
-				// 4. profit
+				if (data['display'] == "currency" && data['currencyType']) {
+					$('.sayso-progress-bar-value', $elem).html(state.state.game.currencies[data['currencyType']].balance);
+					if (data['currencyType'] == "experience")
+						$('.sayso-progress-bar', $elem).css('width', Math.floor(state.state.game.currencies[data['currencyType']].balance * 100 / state.state.game.levels[state.state.game.level+1].threshold) + "%");
+				}
 			}
 		},
-		"user": {
+		"profile": {
 			// user profile handlers here
 			"user-public-name": function ($elem, data, animate) {
+				if (state.state.profile.public_name)
+					$elem.html(state.state.profile.public_name);
+				else
+					$elem.html(state.state.game.level);
 				// this $elem should contain a user's name
 			},
 			"user-image": function ($elem, data, animate) {}
 		},
-		"notification": {
+		"notifications": {
 			// notification handlers here
-		},
-		"visibility": {
-			// visibility handlers here
 		}
 	};
 

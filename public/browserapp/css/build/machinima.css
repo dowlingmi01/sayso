@@ -383,6 +383,23 @@
   margin: 22px 0 0 auto;
   height: 13px;
 }
+#sayso-app-container.sayso-app-container-stowed {
+  width: 40px;
+}
+#sayso-app-container.sayso-app-container-stowed #sayso-app-background {
+  display: none;
+}
+#sayso-app-container.sayso-app-container-stowed #sayso-app {
+  width: 35px;
+  margin: 0 0 0 5px;
+}
+#sayso-app-container.sayso-app-container-stowed .sayso-nav-box {
+  display: none;
+}
+#sayso-app-container.sayso-app-container-stowed .sayso-nav-box#sayso-nav-logo-container {
+  display: block;
+  width: 35px;
+}
 #sayso-section-container {
   position: relative;
   display: none;

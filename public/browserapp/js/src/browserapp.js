@@ -4,6 +4,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 	var userMode = "logged-out";
 	var $nav, $sectionContainer, $section;
 	var currentSection, currentTabContainers, timeoutIdSectionLoadingSpinner;
+	var portalListenersPaused = false;
 
 	function initApp() {
 		if ($nav && $nav.length) {
@@ -56,8 +57,8 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		} // else {}  potentially we can handle logged out mode here
 		initNav();
 
-		if (userMode == "logged-in") {
-			//initListeners();
+		if (userMode == "tour") {
+			initPortalListeners();
 		}
 	}
 
@@ -166,6 +167,54 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 	}
 
 
+	function initPortalListeners() {
+		var oldHashChangeFunction = global.onhashchange;
+
+		global.onhashchange = function() {
+			var section;
+
+			oldHashChangeFunction(); // call old function (i.e. the portal's hashChanged function)
+
+			if (!portalListenersPaused) {
+				closeSection();
+
+				switch (global.location.hash) {
+					case "#content/tour-polls":
+						section = "polls";
+						break;
+					case "#content/tour-surveys":
+						section = "surveys";
+						break;
+					case "#content/tour-spotlight":
+						section = "spotlight";
+						break;
+					case "#content/tour-giveaways":
+						section = "promos";
+						break;
+					case "#content/tour-profile":
+						section = "user-profile";
+						break;
+					case "#content/tour-account":
+						section = "experience";
+						break;
+					case "#content/tour-rewards-center":
+						section = "rewards";
+						break;
+					default:
+						return;
+				}
+
+				openSection({
+					section: section,
+					skipHashChange: true
+				});
+			}
+
+			portalListenersPaused = false; // listen next time
+		}
+	}
+
+
 	// data is $(clicked element).data();
 	// e.g. running $().data() on <div data-foo="bar" data-moo="car"> gives { foo: "bar", moo: "car" }
 	function openSection(clickedElementData) {
@@ -189,7 +238,8 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			closeSection();
 		}
 
-		if (userMode == "tour") {
+		if (userMode == "tour" && !clickedElementData['skipHashChange']) {
+			portalListenersPaused = true;
 			switch(section) {
 				case "tour-about":
 					global.location.hash = "#content/tour-intro";

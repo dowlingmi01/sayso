@@ -368,6 +368,35 @@ header nav ul {
   font-size: 14px;
   letter-spacing: 1px;
 }
+/* Temporary Email Us Page */
+.email_us_container {
+  margin-left: 0%;
+  margin-top: 5%;
+}
+.email_us_container .email_us_header {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 20px;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+.email_us_container p {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+.email_us_container a {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #c02526;
+  text-decoration: none;
+}
 /* Initial Welcome Page */
 .initial_welcome_content {
   margin-top: 0;

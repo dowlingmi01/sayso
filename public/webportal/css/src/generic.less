@@ -401,11 +401,28 @@ header {
     }
 }
 
-
-
 /* Generic Thank You Page */
 .thank_you_content {
   .proxima_nova_light();
+}
+
+/* Temporary Email Us Page */
+.email_us_container {
+    .top_left_margin();
+
+    .email_us_header {
+        .proxima_nova_light(@font-size + 6);
+        margin-bottom: 20px;
+    }
+
+    p {
+        .proxima_nova_light(@font-size);
+    }
+
+    a {
+        .proxima_nova_light(@font-size);
+        .red_link;
+    }
 }
 
 /* Initial Welcome Page */

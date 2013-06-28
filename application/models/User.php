@@ -182,7 +182,8 @@ class User extends Record implements Titled
 			'first_name',
 			'last_name',
 			'birthdate',
-			'timezone'
+			'timezone',
+			'type'
 		);
 		return array_intersect_key($this->getData(), array_flip($fields));
 	}

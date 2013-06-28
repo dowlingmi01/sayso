@@ -446,36 +446,19 @@ class Survey_Response extends Record
 					throw new Exception("Question choice not found.");
 			}
 
-			$data["status"] = "completed";
-			$data["processing_status"] = "completed";
-			$data["downloaded"] = new Zend_Db_Expr('now()');
-
 			//post process survey response - set status, run game txn
-			$this->_postProcessSurveyResponse($data);
-			return TRUE;
+			//set status of survey response
+			//@todo for trailers and missions, this should check that the status is complete and not a partial response!
+			$this->status = "completed";
+			$this->processing_status = "completed";
+			$this->completed_disqualified = new Zend_Db_Expr('now()');
+			$this->downloaded = new Zend_Db_Expr('now()');
+			$this->save();
+
+			return $this->status;
 		} catch (Exception $e) {
 			throw $e;
 		}
-	}
-
-	/**
-	 * Update the status of a survey
-	 *
-	 * @param string $status enum('completed','archived','new','disqualified')
-	 * @param string $processingStatus enum('not required','pending','completed','failed')
-	 * @param Zend_Db_Expr|NULL $downloaded
-	 * @return boolean
-	 */
-	public function updateSurveyStatus($status = "completed", $processingStatus = "completed", $downloaded = NULL)
-	{
-		if (!isset($this->id))
-			return;
-
-		$this->status = $status;
-		$this->processing_status = $processingStatus;
-		$this->data_download = $downloaded;
-		$this->completed_disqualified = new Zend_Db_Expr('now()');
-		$this->save();
 	}
 
 	/**
@@ -513,11 +496,6 @@ class Survey_Response extends Record
 	 */
 		private function _postProcessSurveyResponse($data)
 		{
-			//set status of survey response
-			$this->updateSurveyStatus($data["status"], $data["processing_status"], $data["downloaded"]);
-
-			//run game transaction [What if they disqualified, or are in the middle of a mission?? -- Hamza]
-			Game_Transaction::completeSurvey($data["user_id"], $data["starbar_id"], $this->getSurvey());
 		}
 
 

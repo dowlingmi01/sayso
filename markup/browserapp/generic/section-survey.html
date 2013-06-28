@@ -1,0 +1,29 @@
+<div id="sayso-section-header"></div>
+<div id="sayso-section-body">
+	{{#with survey.variables.survey}}
+		<div class="sayso-survey-title sayso-highlight">{{title}}</div>
+		<div class="sayso-element sayso-survey-iframe-container"></div>
+	{{else}}
+		You have already completed this survey.
+	{{/with}}
+</div>
+
+<div class="sayso-element sayso-partial" data-partial-id="survey-completed">
+	<p>Thank you for completing the &quot;<span class="sayso-highlight">{{survey.title}}</span>&quot; survey!</p>
+
+	<p>Excellent! You earned {{currency-name-highlighted-with-value "redeemable" survey.completed_points_redeemable}} &amp; {{currency-name-highlighted-with-value "experience" survey.completed_points_experience}}</p>
+
+	{{#if default.variables.next_survey.id}}
+		<p>Try the next survey: &quot;<span class="sayso-element sayso-survey-link" data-survey-id="{{default.variables.next_survey.id}}" data-survey-size="{{default.variables.next_survey.size}}">{{default.variables.next_survey.title}}</span>&quot;</p>
+	{{/if}}
+</div>
+
+<div class="sayso-element sayso-partial" data-partial-id="survey-disqualified">
+	<p>Sorry, it appears that you do not qualify for the &quot;<span class="sayso-highlight">{{survey.title}}</span>&quot; survey.</p>
+
+	<p>Nice! You still banked {{currency-name-highlighted-with-value "redeemable" survey.disqualified_points_redeemable}} &amp; {{currency-name-highlighted-with-value "experience" survey.disqualified_points_experience}}. Remember to check out the <span class="sayso-element sayso-section-link" data-section="rewards">Rewards Center</span> to redeem your {{currency-name-highlighted "redeemable"}} for stuff!</p>
+
+	{{#if default.variables.next_survey.id}}
+		<p>Try the next survey: &quot;<span class="sayso-element sayso-survey-link" data-survey-id="{{default.variables.next_survey.id}}" data-survey-size="{{default.variables.next_survey.size}}">{{default.variables.next_survey.title}}</span>&quot;</p>
+	{{/if}}
+</div>

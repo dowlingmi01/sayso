@@ -90,10 +90,10 @@ class Survey extends Record
 		}
 	}
 
-	public function setRewardPoints($surveyUserStatus) {
+	public function setRewardPoints() {
 		$defaultReward = [
 			"survey" => [
-				"new" => [
+				"completed" => [
 					"experience" => [
 						"premium" => 5000,
 						"profile" => 2000,
@@ -119,7 +119,7 @@ class Survey extends Record
 				],
 			],
 			"poll" => [
-				"new" => [
+				"completed" => [
 					"experience" => [
 						"premium" => 500,
 						"standard" => 250,
@@ -132,20 +132,23 @@ class Survey extends Record
 			],
 		];
 
-		$defaultReward["survey"]["completed"] = $defaultReward["survey"]["new"];
-		$defaultReward["survey"]["archived"] = $defaultReward["survey"]["new"];
-
-		$defaultReward["poll"]["completed"] = $defaultReward["poll"]["new"];
-		$defaultReward["poll"]["archived"] = $defaultReward["poll"]["new"];
+		$defaultReward["poll"]["disqualified"] = $defaultReward["poll"]["completed"];
 
 		foreach (["experience", "redeemable"] as $currency) {
-			$default = (
-			isset($defaultReward[$this->type][$surveyUserStatus][$currency][$this->reward_category])
-				? $defaultReward[$this->type][$surveyUserStatus][$currency][$this->reward_category]
+			$defaultCompleted = (
+			isset($defaultReward[$this->type]["completed"][$currency][$this->reward_category])
+				? $defaultReward[$this->type]["completed"][$currency][$this->reward_category]
 				: "N/A"
 			);
 
-			$this->{"points_" . $currency} = ( $this->{"custom_reward_" . $currency} ? $this->{"custom_reward_" . $currency} : $default );
+			$defaultDisqualified = (
+			isset($defaultReward[$this->type]["disqualified"][$currency][$this->reward_category])
+				? $defaultReward[$this->type]["disqualified"][$currency][$this->reward_category]
+				: "N/A"
+			);
+
+			$this->{"completed_points_" . $currency} = ( $this->{"custom_reward_" . $currency} ? $this->{"custom_reward_" . $currency} : $defaultCompleted );
+			$this->{"disqualified_points_" . $currency} = $defaultDisqualified;
 		}
 	}
 

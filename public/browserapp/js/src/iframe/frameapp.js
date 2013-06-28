@@ -6,6 +6,58 @@ sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 	}
 
 	var actions = {
+		'display-survey': function(data) {
+			var $SGQ = global.$SGQ;
+
+			var $body = $('body');
+			var $cssSGQ = $('<link rel="stylesheet" href="//' + $SGQ.base_domain + '/css/surveygizmo/surveys-' + $SGQ.starbar_short_name + '.css">');
+
+			$body.append($cssSGQ);
+
+			if ($SGQ.size == "large" || $SGQ.size == "huge") {
+				var $cssLargeSGQ = $('<link rel="stylesheet" href="//' + $SGQ.base_domain + '/css/surveygizmo/surveys-' + $SGQ.size + '-' + $SGQ.starbar_short_name + '.css">');
+				$body.append($cssLargeSGQ);
+			}
+
+			var maximumTimeToWait = 8000; // 8 seconds
+			var timeBetweenChecks = 150;
+
+			function everythingIsLoaded() {
+				return ( $('.sg-footer-hook-2').css('text-align') == "right" ); // indicates that css is done loading
+			}
+
+			afterSQloads();
+
+			function afterSQloads () {
+				var totalTimeWaitedSoFar = 0;
+				$.doTimeout('waitForEverything', timeBetweenChecks, function() {
+					if (everythingIsLoaded()) {
+						if ($('.sg-disqualify').length == 1) {
+							comm.fireEvent('survey-done', {survey_status: 'disqualified'});
+							return false;
+						} else if ($('.sg-progress-bar-full').length == 1) {
+							comm.fireEvent('survey-done', {survey_status: 'completed'});
+							return false;
+						}
+
+						// Loading complete!
+						$('.sg-wrapper').show();
+						$('.sayso_loading_container').hide();
+						return false; // exit doTimeout loop
+					}
+
+					totalTimeWaitedSoFar += timeBetweenChecks;
+
+					if (totalTimeWaitedSoFar > maximumTimeToWait) {
+						alert("An error has occured while loading this survey. Please try again later.");
+						return false; // exit doTimeout loop
+					}
+
+					return true; // loop doTimeout
+				});
+			}
+
+		},
 		'display-poll': function(data) {
 			// sadly, inserting SG's JS doesn't work with $('head').append() because their script uses document.write(). Fail.
 			document.write('<scr'+'ipt type="text/javascript" src="//www.surveygizmo.com/s3/polljs/'+data['poll']['external_id']+'-'+data['poll']['external_key']+'/"></scr'+'ipt>');

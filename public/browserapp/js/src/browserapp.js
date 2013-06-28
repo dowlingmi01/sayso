@@ -242,7 +242,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 	}
 
 	function closeSection() {
-		$sectionContainer.fadeTo(0, 0);
+		$sectionContainer.fadeTo(0, 0).hide();
 		$sectionContainer.removeClass();
 		$section.html("");
 		currentSection = null;
@@ -279,6 +279,21 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 				$tab.show();
 			}
 		}
+	}
+
+	function openSurvey(data) {
+		if (!data['surveyId']) return;
+		if ('surveySize' in data || !data['surveySize']) data['surveySize'] = "large"; // default to profile survey size
+		data['section'] = 'survey';
+
+		// closeSection() allows a survey link on the survey section itself
+		// otherwise, in that situation, the link would just close the survey section (because clicking a section twice closes it)
+		closeSection();
+
+		// add a class for the survey size for the css rules -- note that closeSection() removes all $sectionContainer's classes
+		$sectionContainer.addClass('sayso-section-survey-' + data['surveySize']);
+
+		openSection(data);
 	}
 
 	function openPoll($container, data, $loadingElement, doneLoading) {
@@ -339,9 +354,9 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		}
 	}
 
-	function createIframe(url, callback) {
+	function createIframe(url, callback, useParam) {
 		var $iframe = $('<iframe class="sayso-iframe" scrolling="no"></iframe>');
-		var frameId = frameComm.setURL($iframe, url);
+		var frameId = frameComm.setURL($iframe, url, useParam);
 		$(global.document).on('sayso:iframe-ready', function(unused, dataFromIframe) {
 			if( dataFromIframe.frame_id === frameId ) {
 				callback(unused, dataFromIframe)
@@ -379,25 +394,13 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			});
 
 			$(global.document).on('sayso:iframe-poll-completed', function(unused, dataFromIframe) {
-				completePoll($poll, poll);
+				if( dataFromIframe.frame_id === iframe.frame_id ) {
+					completePoll($poll, poll);
+				}
 			});
 
 			$poll.append(iframe.$element);
 		});
-
-
-		// wait for iframe to load
-		// @todo replace setTimeout with iframe:ready bind/trigger or equivalent
-		/*setTimeout(function() {
-			$container.data('iframeLoadCompleted', true);
-			data.iframeLoadCompleted = true;
-
-			// receive (and set) poll height from iframe when it's done rendering
-			data.pollHeight = 100 + Math.floor((Math.random()*200)); // @todo temporary random amount -- replace with amount returned from iframe
-			$iframe.css('height', data.pollHeight);
-
-			openPoll($container, data, $loadingElement, true);
-		}, Math.floor((Math.random()*1000))); // fake load delay, up to 1 second*/
 	}
 
 	function closePoll($container) {
@@ -629,6 +632,49 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 				$pollHeader.click(function() {
 					openPoll($elem, data); // note that openPoll takes the container ($elem) as a parameter, not $pollHeader
 				});
+			},
+			"survey-link": function ($elem, data) {
+				$elem.click(function() {
+					openSurvey(data);
+				});
+			},
+			"survey-iframe-container": function ($elem, data, templateData) {
+				var survey = templateData['survey'].variables.survey;
+				var surveyLink = "//www.surveygizmo.com/s3/" + survey['external_id'] + "/" + survey['external_key'] +
+					"?starbar_short_name=" + state.state.starbar['short_name'] +
+					"&srid=" + survey['survey_response_id'] +
+					"&size=" + survey['size'];
+				if (state.state.profile.type === "test" || config.baseDomain !== "app.saysollc.com") {
+					surveyLink += "&testing=true"
+					if (config.baseDomain !== "app.saysollc.com")
+						surveyLink += "&base_domain=" + config.baseDomain;
+				} else {
+					surveyLink += "&testing=false"
+				}
+
+				var iframe = createIframe(surveyLink, function(unused, dataFromIframe) {
+					frameComm.fireEvent(iframe.frame_id, 'init-action', {action: 'display-survey', starbarId: starbarId, starbar_short_name: state.state.starbar['short_name'], survey: survey});
+				}, true);
+
+				$(global.document).on('sayso:iframe-survey-done', function(unused, dataFromIframe) {
+					if( dataFromIframe.frame_id === iframe.frame_id ) {
+						api.doRequest({
+							action_class : "survey",
+							action : "updateSurveyStatus",
+							starbar_id : starbarId,
+							survey_id : survey['id'],
+							survey_response_id : survey['survey_response_id'],
+							survey_status : dataFromIframe.data.survey_status
+						}, function(response) {
+							var finalTemplateData = response.responses;
+							finalTemplateData.survey = survey;
+							$elem.html('');
+							processMarkupIntoContainer($elem, "{{>survey-"+dataFromIframe.data.survey_status+"}}", finalTemplateData);
+						});
+					}
+				});
+
+				$elem.append(iframe.$element);
 			},
             "reward-item": function ($elem, data, templateData) {
                 var rewardRecord = $.grep(templateData.rewards.records, function (r){ return r.id === data.rewardId; });
@@ -1088,6 +1134,18 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 					starbar_id : starbarId,
 					survey_type : "survey",
 					survey_status : "archived"
+				}
+			}
+		},
+		"survey": function (data) {
+			return {
+				"survey": {
+					action_class : "survey",
+					action : "getSurvey",
+					starbar_id : starbarId,
+					survey_id : data['surveyId'],
+					send_questions : false,
+					send_question_choices : false
 				}
 			}
 		},

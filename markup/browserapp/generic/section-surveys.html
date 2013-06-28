@@ -19,7 +19,7 @@
 	<div class="sayso-element sayso-tab" data-tab="surveys-new">
 		<p class="sayso-heading-text">
 			<p class="sayso-heading-text">Earn {{currency-name-highlighted "experience"}} &amp; {{currency-name-highlighted "redeemable"}} for each Survey you complete. Share with your friends to earn extra points and you'll be that much closer to winning the big giveaway.</p>
-			<p class="sayso-heading-text">Don't forget to complete the <span class="sayso-element sayso-highlight sayso-section-link" data-section="survey" data-survey-id="%CONFIG_PROFILE_SURVEY_ID%">Profile Survey</span> to unlock the goodies in the reward center.</p>
+			<p class="sayso-heading-text">Don't forget to complete the <span class="sayso-element sayso-highlight sayso-survey-link" data-survey-id="%CONFIG_PROFILE_SURVEY_ID%">Profile Survey</span> to unlock the goodies in the reward center.</p>
 		</p>
 		{{>surveys-new}}
 	</div>
@@ -63,12 +63,12 @@
 </div>
 
 <div class="sayso-element sayso-partial" data-partial-id="survey-new-archived">
-	<div class="sayso-element sayso-survey-container" data-survey-id="{{id}}" data-survey-external-id="{{external_id}}" data-survey-external-key="{{external_key}}" data-survey-number-of-answers="{{number_of_answers}}">
-		<div class="sayso-element sayso-survey-header">
-			<div class="sayso-survey-header-triangle"></div>
-			{{title}}
+	<div class="sayso-element sayso-survey-link sayso-survey-container sayso-survey-container-{{reward_category}}" data-survey-id="{{id}}" data-survey-size="{{size}}">
+		<div class="sayso-survey-triangle"></div>
+		<div class="sayso-element sayso-survey-header">{{title}}</div>
+		<div class="sayso-element sayso-survey-footer">
+			{{number_of_questions}} Questions - Earn {{currency-name-highlighted-with-value "redeemable" completed_points_redeemable}} and {{currency-name-highlighted-with-value "experience" completed_points_experience}}
 		</div>
-		<div class="sayso-element sayso-survey"></div>
 	</div>
 </div>
 
@@ -76,8 +76,8 @@
 	<div class="sayso-completed-container">
 		<div class="sayso-completed-title"><div>{{title}}</div></div>
 		<div class="sayso-completed-points-earned">
-			<div class="sayso-completed-points-earned-experience"><div>+{{points_experience}}</div></div>
-			<div class="sayso-completed-points-earned-redeemable"><div>+{{points_redeemable}}</div></div>
+			<div class="sayso-completed-points-earned-experience"><div>+{{completed_points_experience}}</div></div>
+			<div class="sayso-completed-points-earned-redeemable"><div>+{{completed_points_redeemable}}</div></div>
 		</div>
 	</div>
 </div>

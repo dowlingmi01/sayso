@@ -243,6 +243,9 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		$surveyResponseId	= $request->valid_parameters["survey_response_id"];
 		$userId			= $request->auth->user_data->user_id;
 
+		$survey = new Survey();
+		$survey->loadData($surveyId);
+
 		$surveyResponse = new Survey_Response();
 		$surveyResponse->loadData($surveyResponseId);
 
@@ -270,9 +273,14 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 			}
 		}
 
-		$updateResponse = $surveyResponse->updateResponse($data);
+		$updatedStatus = $surveyResponse->updateResponse($data);
 
-		$response->setResultVariables($updateResponse);
+		// run the right transaction
+		if ($updatedStatus == "completed")
+			Game_Transaction::completeSurvey($userId, $starbarId, $survey);
+		else if ($updatedStatus == "disqualified")
+			Game_Transaction::disqualifySurvey($userId, $starbarId, $survey);
+
 		$response->setResultVariable("success", TRUE);
 
 		//add game data to the response
@@ -301,10 +309,10 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 	{
 		//TODO: validate survey_status and processing_status against the enum in the db
 		$validators = array(
-			"survey_response_id"		=> "int_required_notEmpty",
+			"starbar_id"			=> "int_required_notEmpty",
+			"survey_id"				=> "int_required_notEmpty",
+			"survey_response_id"	=> "int_required_notEmpty",
 			"survey_status"			=> "alpha_required_notEmpty",
-			"processing_status"		=> "alpha_required_notEmpty",
-			"downloaded"			=> "required_allowEmpty"
 			);
 		$filters = array(
 			"downloaded"			=> "bool"
@@ -316,17 +324,54 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
+		$surveyId			= $request->valid_parameters["survey_id"];
 		$surveyResponseId	= $request->valid_parameters["survey_response_id"];
 		$surveyStatus		= $request->valid_parameters["survey_status"];
-		$processingStatus	= $request->valid_parameters["processing_status"];
-		$downloaded		= $request->valid_parameters["downloaded"] === TRUE ? new Zend_Db_Expr('now()') : NULL;
+		$starbarId			= $request->valid_parameters["starbar_id"];
+		$userId				= $request->auth->user_data->user_id;
+
+		$survey = new Survey();
+		$survey->loadData($surveyId);
 
 		$surveyResponse = new Survey_Response();
 		$surveyResponse->loadData($surveyResponseId);
-		$updateResponse = $surveyResponse->updateSurveyStatus($surveyStatus, $processingStatus, $downloaded);
 
-		$successMessage = $updateResponse === FALSE ? FALSE : TRUE;
-		$response->setResultVariable("success", $successMessage);
+		if (
+			!$survey->id
+			|| !$surveyResponse->id
+			|| ($surveyResponse->status != "new" && $surveyResponse->status != "archived") // survey should currently be new or archived
+			|| ($surveyStatus != "completed" && $surveyStatus != "disqualified") // and should change to completed or disqualified
+			|| $surveyResponse->survey_id != $survey->id // someone is guessing survey response id?
+			|| $surveyResponse->user_id != $userId
+		) {
+			throw new Exception('Access denied to update survey status');
+		}
+
+		// before saving the new status, get the next survey
+		$nextSurvey = Survey::getNextSurveyForUser($survey, $userId);
+		$nextSurveyData = new stdClass();
+		$nextSurveyData->id = $nextSurvey->id;
+		$nextSurveyData->title = $nextSurvey->title;
+		$nextSurveyData->size = $nextSurvey->size;
+
+		$surveyResponse->status = $surveyStatus;
+
+		if ($survey->origin == "SurveyGizmo")
+			$surveyResponse->processing_status = "pending";
+		else
+			$surveyResponse->processing_status = "not required";
+
+		$surveyResponse->completed_disqualified = new Zend_Db_Expr('now()');
+		$surveyResponse->save();
+
+		// run the right transaction
+		if ($surveyStatus == "completed")
+			Game_Transaction::completeSurvey($userId, $starbarId, $survey);
+		else
+			Game_Transaction::disqualifySurvey($userId, $starbarId, $survey);
+
+		$response->setResultVariable("success", true);
+		$response->setResultVariable("next_survey", $nextSurveyData);
 
 		return $response;
 	}

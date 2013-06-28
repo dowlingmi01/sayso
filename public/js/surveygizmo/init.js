@@ -1,17 +1,8 @@
-setTimeout(function () {
-	if (!window.$SGQ) return;
-	$SGQ.loaded = true;
-	var el = document.createElement('div');
-	el.id = 'sayso-sgq';
-	el.setAttribute('value', JSON.stringify(window.$SGQ));
-	document.body.appendChild(el);
-	if( document.createEvent ) {
-		var ev = document.createEvent('Event');
-		ev.initEvent('saysoSGQ', false, false);
-		document.dispatchEvent(ev);
-	} else if( document.createEventObject ) {
-		var evObj = document.createEventObject();
-		// We use an arbitrary rare event on IE8
-		document.fireEvent( 'onafterupdate', evObj );
-	}
-}, 100);
+window.location.hash = "frame_id=" + $SGQ.frame_id;
+loadFile('//' + $SGQ.base_domain + '/browserapp/js/src/config.js', 'js');
+loadFile('//' + $SGQ.base_domain + '/browserapp/js/src/lib/jquery-1.10.1.js', 'js');
+loadFile('//' + $SGQ.base_domain + '/browserapp/js/src/util.js', 'js');
+loadFile('//' + $SGQ.base_domain + '/browserapp/js/src/dommsg.js', 'js');
+loadFile('//' + $SGQ.base_domain + '/browserapp/js/src/iframe/api.js', 'js');
+loadFile('//' + $SGQ.base_domain + '/browserapp/js/src/iframe/framecomm.js', 'js');
+loadFile('//' + $SGQ.base_domain + '/browserapp/js/src/iframe/frameapp.js', 'js');

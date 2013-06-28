@@ -189,6 +189,33 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			closeSection();
 		}
 
+		if (userMode == "tour") {
+			switch(section) {
+				case "tour-about":
+					global.location.hash = "#content/tour-intro";
+					return; // Note the *return* and not a break. This is because we do not open a
+				case "tour-polls":
+				case "tour-surveys":
+				case "tour-spotlight":
+					global.location.hash = "#content/" + section;
+					break;
+				case "tour-promos":
+					global.location.hash = "#content/tour-giveaways";
+					break;
+				case "tour-user-profile":
+					global.location.hash = "#content/tour-profile";
+					break;
+				case "tour-experience":
+					global.location.hash = "#content/tour-account";
+					break;
+				case "tour-rewards":
+					global.location.hash = "#content/tour-rewards-center";
+					break;
+				default:
+					return; // no access
+			}
+		}
+
 		currentSection = section;
 		currentTabContainers = {};
 
@@ -215,14 +242,18 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			var extraRequestsForThisSection = extraRequests[section](clickedElementData); // extraRequests[section] is a function
 
 			$.extend(requests, extraRequestsForThisSection);
-
 		}
 
 		api.doRequests(requests, function(response){
 			// if the loader wasn't shown yet, don't show it
 			clearTimeout(timeoutIdSectionLoadingSpinner);
 
-			processMarkupIntoContainer($section, response.responses.markup.variables.markup, response.responses, true);
+			if (userMode == "logged-in") {
+				processMarkupIntoContainer($section, response.responses.markup.variables.markup, response.responses, true);
+			} else { // no template stuff on tour
+				$section.append(response.responses.markup.variables.markup);
+			}
+
 			// hide the loading element if we added it
 			if ($sectionLoading) {
 				$sectionLoading.fadeTo(100, 0, function(){

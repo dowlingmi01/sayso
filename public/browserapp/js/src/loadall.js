@@ -9,7 +9,9 @@
 		'framecomm.js',
 		'state.js',
 		'api.js',
-		'browserapp.js'
+		'browserapp.js',
+		'commrelay.js',
+		'main-forge.js'
 	];
 	sayso.module = {};
 	var i = 0;

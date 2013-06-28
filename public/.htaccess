@@ -3,6 +3,7 @@ RewriteEngine On
 RewriteRule ^client/([^/]+)/landing/mission/([^/]+)/starbar/(.*)$ client/missions/starbar/$1/$3 [PT,L]
 RewriteRule ^client/([^/]+)/landing/mission/([^/]+)/mission/(.*)$ client/missions/mission/$2/$3 [PT,L]
 RewriteRule ^client/([^/]+)/landing/mission/([^/]+)/(.*)$ client/missions/$3 [PT,L]
+RewriteRule ^js/starbar/sayso-background.js$ browserapp/js/src/background/loadall.js
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d

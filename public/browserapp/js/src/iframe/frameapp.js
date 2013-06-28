@@ -138,8 +138,6 @@ sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 									request.survey_data.answers[questionId] = choice['id'];
 
 									api.doRequest(request, function (response) {
-										// @todo Sergio -- sayso-iframe-api-response never fires, even though the transaction was successful
-
 										// @todo handle failure
 										$.ajax({
 											url:link,

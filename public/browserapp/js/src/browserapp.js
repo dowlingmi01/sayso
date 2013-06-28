@@ -1,10 +1,4 @@
 sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm, config) {
-	$(function(){
-		$(global.document).on('sayso:state-login sayso:state-logout sayso:state-ready', initApp);
-		if( state.ready )
-			initApp();
-	});
-
 	var starbarId;
 	var tabId = "abc"; // @todo set this to unique tab ID id using browser extension
 	var userMode = "logged-out";
@@ -41,28 +35,26 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 	}
 
 	function loadApp(response) {
-		// render nav and initNav() if we're not in an iframe
-		if (!state.in_iframe) {
-			if (userMode == "logged-in") {
-				$('body').append(state.state.starbar.markup);
-			} else if (userMode == "tour") {
-				if (
-					!response
-						|| !response.responses
-						|| !response.responses.default
-						|| !response.responses.default.variables
-						|| !response.responses.default.variables.markup
-					) {
-					alert("Error loading tour, please try again later.");
-				}
+		// render nav and initNav()
+		if (userMode == "logged-in") {
+			$('body').append(state.state.starbar.markup);
+		} else if (userMode == "tour") {
+			if (
+				!response
+					|| !response.responses
+					|| !response.responses.default
+					|| !response.responses.default.variables
+					|| !response.responses.default.variables.markup
+				) {
+				alert("Error loading tour, please try again later.");
+			}
 
-				$('body').append(response.responses.default.variables.markup);
+			$('body').append(response.responses.default.variables.markup);
 
-				// hide the hide button, since we're on the portal
-				$('#sayso-nav-hide-button').hide();
-			} // else {}  potentially we can handle logged out mode here
-			initNav();
-		}
+			// hide the hide button, since we're on the portal
+			$('#sayso-nav-hide-button').hide();
+		} // else {}  potentially we can handle logged out mode here
+		initNav();
 
 		if (userMode == "logged-in") {
 			//initListeners();
@@ -1186,4 +1178,8 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			return request;
 		}
 	}
+
+	return {
+		initApp: initApp
+	};
 })(this, jQuery, sayso.module.state, sayso.module.api, sayso.module.Handlebars, sayso.module.frameComm, sayso.module.config);

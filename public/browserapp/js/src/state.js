@@ -40,7 +40,6 @@ sayso.module.state = (function(global, $, comm, config) {
 		return function(data) {
 			publicVar.state = data;
 			publicVar.ready = true;
-			publicVar.in_iframe = (window.top !== window); // @todo needs fix for firefox?
 			$(global.document).trigger('sayso:state-' + eventName);
 		};
 	}

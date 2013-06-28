@@ -642,6 +642,10 @@
 #sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-user,
 #sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-user {
   height: 60px;
+  background-image: url("../../images/machinima/section-user-profile-avatar.jpg");
+  background-position: 0px 10px;
+  background-repeat: no-repeat;
+  padding-left: 60px;
 }
 #sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-facebook,
 #sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-facebook {
@@ -697,6 +701,10 @@
 #sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-level,
 #sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-level {
   height: 68px;
+}
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-level #sayso-user-profile-level-image,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-level #sayso-user-profile-level-image {
+  width: 50px;
 }
 #sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-new,
 #sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-right #sayso-user-profile-new {

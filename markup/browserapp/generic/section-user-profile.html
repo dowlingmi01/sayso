@@ -4,7 +4,7 @@
 			Welcome Back, <span class="sayso-highlight">{{user-public-name}}</span>
 		</div>
 		<div id="sayso-user-profile-user" class="sayso-user-profile-section">
-			<img src="//%CONFIG_IMAGE_PATH%/section-user-profile-avatar.jpg" class="sayso-user-profile-left" id="sayso-user-profile-avatar" />
+
 			<p><strong>User Name</strong>: {{user-public-name}}</p>
 			<p>
 				{{state.profile.email}}
@@ -32,7 +32,7 @@
 			My Stats
 		</div>
 		<div id="sayso-user-profile-level" class="sayso-user-profile-section">
-			<img src="{{get-record-field state.game.levels state.game.level 'img_url_small'}}" class="sayso-user-profile-left" />
+			<img src="{{get-record-field state.game.levels state.game.level 'img_url_small'}}" id="sayso-user-profile-level-image" class="sayso-user-profile-left" />
 			<a class="sayso-element sayso-section-link" data-section="experience">Level {{state.game.level}}</a><br />
 			<a class="sayso-element sayso-small sayso-section-link" data-section="rewards">{{currency-name-with-value "redeemable" state.game.currencies.redeemable.balance}}</a><br />
 			<a class="sayso-element sayso-small sayso-section-link" data-section="experience">{{currency-name-with-value "experience" state.game.currencies.experience.balance}}</a><br />

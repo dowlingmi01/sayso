@@ -186,6 +186,43 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
             //TODO: Cs - should we split this out into hash_manager if it gets large enough?
         }
     }
+	function getBrowserNameVersion() {
+		var bn = {};
+		var ua = navigator.userAgent;
+		if( !ua ) {
+			bn.browser = "unknown";
+			bn.isSupported = false;
+			return bn;
+		}
+		var mobileStrs = ["Android", "webOS", "iPhone", "iPod", "iPad"];
+		var identStrs = ["Chrome", "Safari", "Firefox", "MSIE"];
+		var versionStrs = ["Chrome", "Version", "Firefox", "MSIE"];
+		var minVer = [1.0, 5.01, 10.0, 8.0];
+		var i, j;
+		for( i = 0; i < mobileStrs.length; i++ )
+			if( ua.indexOf(mobileStrs[i]) >= 0 ) {
+				bn.isMobile = true;
+				bn.isSupported = false;
+				return bn;
+			}
+		bn.isMac = (ua.indexOf('Mac OS X') >= 0);
+		for( i = 0; i < identStrs.length; i++ )
+			if( (j = ua.indexOf(identStrs[i])) >= 0 ) {
+				bn.browser = identStrs[i].toLowerCase();
+				var ver = 0;
+				if( (j = ua.indexOf(versionStrs[i])) > 0 ) {
+					ver = parseFloat(ua.substring(j + versionStrs[i].length + 1));
+					if( ver )
+						bn.version = ver;
+				}
+
+				bn.isSupported = ver >= minVer[i];
+				return bn;
+			}
+		bn.browser = "unknown";
+		bn.isSupported = false;
+		return bn;
+	}
 
     shared.app = app;
     shared.version = version;
@@ -396,7 +433,44 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
                         }
                     });
                 }
-            }
+            },
+			"install-app" : function ($elem, data) {
+				if( !document.location.href.match('content/get-app-confirmation') )
+					document.location.hash = 'content/get-app-confirmation';
+
+				var downloadLocation = "//" + sayso.module.config.baseDomain + '/starbar/install/extension';
+				var browser = getBrowserNameVersion();
+
+				if (browser.browser === "chrome") {
+					var extId;
+					switch (sayso.module.config.baseDomain) {
+						case "app.saysollc.com" :
+							extId = 'lpkeinfeenilbldefedbfcdhllhjnblc';
+							break;
+						case "app-qa.saysollc.com" :
+							extId = 'dachmhjcknkhjkjpknneienbiolpoein';
+							break;
+						case "local.saysollc.com" :
+							extId = 'kcgjipkjdgakogjmbekhghlhdgacajbh';
+							break;
+						case "app-dev.saysollc.com" :
+							extId = 'fjgbjoknbfjhofpcdpfepjaicipncpob';
+							break;
+						case "app-demo.saysollc.com" :
+							extId = 'poipmplbjibkncgkiaomennpegokfjom';
+							break;
+						case "staging.saysollc.com" :
+							extId = 'dcdkmcnaenolmjcoijjggegpcbehgfkn';
+							break;
+					}
+					downloadLocation = "https://chrome.google.com/webstore/detail/" + extId;
+				} else {
+					if (browser.browser === "safari") {
+						$('#browser_install_instructions').html('Please click on the Say.So package in the Safari downloads window to complete the instalation');
+					}
+				}
+				location.href = downloadLocation;
+			}
 		}
 	};
 

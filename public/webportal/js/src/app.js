@@ -34,17 +34,19 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 
         //TODO: Move all of these into portal-element.
         $loginButton.click(function() {
-            state.login($emailField.val(), $passwordField.val(), function(response) {
-                //Do nothing with errors right now.
-                if(response.result !== true) {
-                    $('#login_failed').show();
-                    setTimeout(function(){
-                        $('#login_failed').fadeOut('slow');
-                    }, 3000);
-                    $passwordField.val('');
-                    $passwordField.focus();
-                }
-            });
+            if($emailField.val() && $passwordField.val()) {
+                state.login($emailField.val(), $passwordField.val(), function(response) {
+                    //Do nothing with errors right now.
+                    if(response.result !== true) {
+                        $('#login_failed').show();
+                        setTimeout(function(){
+                            $('#login_failed').fadeOut('slow');
+                        }, 3000);
+                        $passwordField.val('');
+                        $passwordField.focus();
+                    }
+                });
+            }
         });
         $signOutButton.click(function() {
             if (state.state.loggedIn) {

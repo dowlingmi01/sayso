@@ -25,13 +25,6 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
             if(!state.state.loggedIn) {
                 loadMarkup('landing');
             }
-
-            //Hack for i.e. 9 not shimming placeholders correctly.
-            if(!$.support.placeholder) {
-                //I.E. 9 strikes again!
-                $emailField.val($emailField.attr('placeholder'));
-                $passwordField.val($emailField.attr('placeholder'));
-            }
         }
         //Bind our hashchange event.
         window.onhashchange = hashChanged;
@@ -76,6 +69,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
         else {
             $loginDiv.show();
             $forgotPassword.show();
+			$.placeholder.shim();
         }
         initialized = true;
 

@@ -25,7 +25,6 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
             if(!state.state.loggedIn) {
                 loadMarkup('landing');
             }
-            $.placeholder.shim();
         }
         //Bind our hashchange event.
         window.onhashchange = hashChanged;
@@ -399,6 +398,8 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
             }
 		}
 	};
+
+    $.placeholder.shim();
 
     return shared;
 

@@ -6,6 +6,22 @@ sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 	}
 
 	var actions = {
+		'display-get-satisfaction': function(data) {
+			var $container = $('<div id="gs_container" style="height: 100%; width: 100%;"></div>')
+			$('body').append($container);
+			$.getScript("//s3.amazonaws.com/getsatisfaction.com/javascripts/feedback-v2.js", function() {
+				new global.GSFN.feedback_widget({
+					display : "inline",
+					container : "gs_container",
+					company : "machinimarecon",
+					style : "question",
+					product : "machinimarecon_machinima_recon",
+					limit : "5",
+					width : "560px",
+					height : "494px"
+				});
+			});
+		},
 		'display-survey': function(data) {
 			var $SGQ = global.$SGQ;
 

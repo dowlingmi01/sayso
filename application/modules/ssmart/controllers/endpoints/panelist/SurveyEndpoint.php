@@ -373,6 +373,11 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		$response->setResultVariable("success", true);
 		$response->setResultVariable("next_survey", $nextSurveyData);
 
+		//add game data to the response
+		$economyId = Economy::getIdforStarbar($starbarId);
+		$commonDataParams = array("user_id" => $userId, "economy_id" => $economyId);
+		$response->addCommonData("game", $commonDataParams);
+
 		return $response;
 	}
 

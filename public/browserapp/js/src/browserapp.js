@@ -355,6 +355,8 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 	}
 
 	function createIframe(url, callback, useParam) {
+		if (!url) url = '//' + config.baseDomain + '/browserapp/iframe.html';
+
 		var $iframe = $('<iframe class="sayso-iframe" scrolling="no"></iframe>');
 		var frameId = frameComm.setURL($iframe, url, useParam);
 		$(global.document).on('sayso:iframe-ready', function(unused, dataFromIframe) {
@@ -377,7 +379,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			send_question_choices : true
 		}, function(response) {
 			var poll = response['responses'].default.variables.survey;
-			var iframe = createIframe('//' + config.baseDomain + '/browserapp/iframe.html', function(unused, dataFromIframe) {
+			var iframe = createIframe(null, function(unused, dataFromIframe) {
 				frameComm.fireEvent(iframe.frame_id, 'init-action', {action: 'display-poll', starbarId: starbarId, starbar_short_name: state.state.starbar['short_name'], poll: poll});
 			});
 
@@ -672,6 +674,13 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 							processMarkupIntoContainer($elem, "{{>survey-"+dataFromIframe.data.survey_status+"}}", finalTemplateData);
 						});
 					}
+				});
+
+				$elem.append(iframe.$element);
+			},
+			"get-satisfaction-iframe-container": function ($elem, data) {
+				var iframe = createIframe(null, function(unused, dataFromIframe) {
+					frameComm.fireEvent(iframe.frame_id, 'init-action', {action: 'display-get-satisfaction'});
 				});
 
 				$elem.append(iframe.$element);

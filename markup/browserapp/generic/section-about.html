@@ -50,29 +50,8 @@
 	<div class="sayso-element sayso-tab sayso-scrollable" data-tab="faq">
 		{{>faqs}}
 	</div>
-	<div class="sayso-element sayso-tab" data-tab="feedback">
-		feedback
-		<!--
-			GS Code from .phtml file
-
-			<script type="text/javascript" charset="utf-8">
-				$SQ.getScript("//s3.amazonaws.com/getsatisfaction.com/javascripts/feedback-v2.js", function() {
-					sayso.evalInPageContext(function() {
-						new GSFN.feedback_widget({
-							display : "inline",
-							container : "sb_feedback_container",
-							company : "machinimarecon",
-							style : "question",
-							product : "machinimarecon_machinima_recon",
-							limit : "5",
-							width : "520px",
-							height : "450px"
-						});
-					});
-				});
-			</script>
-
-		-->
+	<div class="sayso-element sayso-tab sayso-tab-about-feedback" data-tab="feedback">
+		<div class="sayso-element sayso-get-satisfaction-iframe-container"></div>
 	</div>
 </div>
 <div id="sayso-section-footer"></div>

@@ -452,7 +452,7 @@ class Survey_Response extends Record
 			$this->status = "completed";
 			$this->processing_status = "completed";
 			$this->completed_disqualified = new Zend_Db_Expr('now()');
-			$this->downloaded = new Zend_Db_Expr('now()');
+			$this->data_download = new Zend_Db_Expr('now()');
 			$this->save();
 
 			return $this->status;

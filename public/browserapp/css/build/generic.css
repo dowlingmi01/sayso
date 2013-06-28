@@ -1821,3 +1821,13 @@
   display: block;
   left: 465px;
 }
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body,
+#sayso-section-container.sayso-section-tour-polls #sayso-section #sayso-section-body,
+#sayso-section-container.sayso-section-tour-surveys #sayso-section #sayso-section-body,
+#sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-section-body,
+#sayso-section-container.sayso-section-tour-experience #sayso-section #sayso-section-body,
+#sayso-section-container.sayso-section-tour-promos #sayso-section #sayso-section-body,
+#sayso-section-container.sayso-section-tour-spotlight #sayso-section #sayso-section-body {
+  padding: 0px;
+}

@@ -32,13 +32,17 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
         //Setup title
         $(document).attr('title', title);
 
+        //TODO: Move all of these into portal-element.
         $loginButton.click(function() {
             state.login($emailField.val(), $passwordField.val(), function(response) {
                 //Do nothing with errors right now.
                 if(response.result !== true) {
-                    loadMarkup('recover-password');
+                    $('#login_failed').show();
+                    setTimeout(function(){
+                        $('#login_failed').fadeOut('slow');
+                    }, 3000);
                     $passwordField.val('');
-                    $emailField.focus();
+                    $passwordField.focus();
                 }
             });
         });
@@ -304,13 +308,90 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
                 });
             },
             "join-now": function ($elem) {
-                $("#agreeterms", $elem).change(function(){
-                    if($(this).is(':checked')){
-                        $('#portal_join_now_button', $elem).removeClass('join_now_button_disabled').addClass('join_now_button');
-                    } else {
-                        $('#portal_join_now_button', $elem).removeClass('join_now_button').addClass('join_now_button_disabled');
+                var $emailField = $('#emailAddress_field', $elem),
+                    $passwordField = $('#passwordOne_field', $elem),
+                    $confirmationField = $('#passwordTwo_field', $elem),
+                    $registerButton = $('#portal_join_now_button', $elem),
+                    $getBrowserAppCheckbox = $("#install_browser_app", $elem),
+                    $agreeTermsCheckbox = $("#agreeterms", $elem),
+                    buttonActive = false;
+
+                $agreeTermsCheckbox.on('click', activateSubmit);
+                $emailField.on('keyup change', activateSubmit);
+                $passwordField.on('keyup change', activateSubmit);
+                $confirmationField.on('keyup change', activateSubmit);
+
+                function activateSubmit() {
+                    if(!validateFields()) {
+                        if(!buttonActive) {
+                            $registerButton.removeClass('join_now_button_disabled').addClass('join_now_button');
+                            $registerButton.on('click', function(){
+                                createAccount($emailField.val(), $passwordField.val(), $getBrowserAppCheckbox.is(':checked'));
+                            });
+                            buttonActive = true;
+                        }
                     }
-                });
+                    else {
+                        if(buttonActive){
+                            $registerButton.removeClass('join_now_button').addClass('join_now_button_disabled');
+                            $registerButton.off('click');
+                            buttonActive = false;
+                        }
+                    }
+                }
+
+                function validateFields() {
+                    //TODO: Show the end user what is wrong.
+                    var emailAddress = $emailField.val();
+                    if( emailAddress.length < 1 ) {
+                        return "Woops - Please enter your email address";
+                    }
+
+                    var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                    if (!emailPattern.test(emailAddress)){
+                        return "Woops - Please enter a valid email address";
+                    }
+
+                    var passwordOne = $passwordField.val();
+                    if(passwordOne.length < 1) {
+                        return "Woops - Please enter your password";
+                    }
+
+                    var passwordTwo = $confirmationField.val();
+                    if(passwordOne !== passwordTwo ) {
+                        return "Woops - Your passwords do not match.<br>Please reenter your password";
+                    }
+                    if(passwordOne.length < 6 || passwordOne.length > 12) {
+                        return "Woops - Your password needs to have between 6 and 12 characters.<br>Please reenter your password";
+                    }
+
+                    if(!$agreeTermsCheckbox.is(':checked')) {
+                        return "Woops - Please accept the terms and conditions";
+                    }
+
+                    return false;
+                }
+
+                function createAccount(emailAddress, password, getBrowserApp) {
+                    api.doRequest({
+                        action_class : 'registration',
+                        action : 'createUser',
+                        email : emailAddress,
+                        password : password,
+                        originating_starbar_id : starbarId
+                    }, function(response){
+                        var success = response.responses['default'].variables.user_id;
+                        if (success) {
+                            if (getBrowserApp) {
+                                //Change hash so navigation works, if we just call loadMarkup here, it breaks UX
+                                location.hash = 'content/get-app-confirmation';
+                            }
+                            else {
+                                location.hash = 'content/thank-you-registration';
+                            }
+                        }
+                    });
+                }
             }
 		}
 	};

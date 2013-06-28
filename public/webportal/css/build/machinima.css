@@ -253,6 +253,15 @@ header nav ul {
   clear: both;
   display: none;
 }
+#login #login_failed {
+  font-family: "proxima-nova", sans-serif;
+  font-style: normal;
+  font-weight: 100;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #c02526;
+  display: none;
+}
 #login input {
   margin-left: 5px;
   margin-right: 5px;

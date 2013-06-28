@@ -29,7 +29,7 @@ class Ssmart_Public_RegistrationEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$starbar = $request->valid_parameters["originating_starbar_id"];
+		$starbarId = $request->valid_parameters["originating_starbar_id"];
 		$pw = $request->valid_parameters["password"];
 		$userEmail = $request->valid_parameters["email"];
 
@@ -40,7 +40,7 @@ class Ssmart_Public_RegistrationEndpoint extends Ssmart_GlobalController
 		// (before resetting the validator)
 		$user = new User();
 		$user->setPlainTextPassword($pw);
-		$user->originating_starbar_id = $starbar;
+		$user->originating_starbar_id = $starbarId;
 
 		$user->setEmail($email);
 
@@ -52,7 +52,7 @@ class Ssmart_Public_RegistrationEndpoint extends Ssmart_GlobalController
 
 		$starbarUserMap = new Starbar_UserMap();
 		$starbarUserMap->user_id = $user->id;
-		$starbarUserMap->starbar_id = $starbar;
+		$starbarUserMap->starbar_id = $starbarId;
 		$starbarUserMap->active = 1;
 		$starbarUserMap->onboarded = 1;
 		$starbarUserMap->save();

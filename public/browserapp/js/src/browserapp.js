@@ -1172,9 +1172,13 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			"progress-bar-container": function ($elem, data, animate) {
 				if (data['display'] == "currency" && data['currencyType']) {
 					$('.sayso-progress-bar-value', $elem).html(state.state.game.currencies[data['currencyType']].balance);
-					if (data['currencyType'] == "experience")
+					if (data['currencyType'] == "experience") {
 						$('.sayso-progress-bar', $elem).css('width', Math.floor(state.state.game.currencies[data['currencyType']].balance * 100 / state.state.game.levels[state.state.game.level+1].threshold) + "%");
+					}
 				}
+			},
+			"current-level": function ($elem, data, animate) {
+				$elem.html("L" + state.state.game.level + ": " + state.state.game.levels[state.state.game.level].name);
 			}
 		},
 		"profile": {

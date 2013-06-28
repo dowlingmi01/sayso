@@ -987,13 +987,23 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 
                 initCarousel();
             },
+
 			"about-help-link" : function ($elem, data) {
 				$elem.click(function() {
 					var value = "0 -" + data['backgroundTop'] + "px";
 					$("#sayso-about-help-links").css("background-position", value);
 				});
+			},
 
-			}
+			"user-profile-social-link" : function ($elem, data) {
+				var id = $elem[0].id;
+				$elem.mouseenter(function() {
+					$("#" + id).css("background-position", "0 -66px");
+				});
+				$elem.mouseleave(function() {
+					$("#" + id).css("background-position", "0 0px");
+				});
+			},
 
 		}
 	};

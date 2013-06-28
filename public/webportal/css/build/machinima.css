@@ -412,16 +412,16 @@ header nav ul {
 }
 .get_app_button {
   display: block;
-  background-image: url('../../images/get_app_btn.png');
+  background-image: url('../../images/grabit_btn_disabled.png');
   background-repeat: no-repeat;
-  width: 252px;
+  width: 144px;
   height: 40px;
   vertical-align: middle;
   margin-top: 40px;
   margin-bottom: 40px;
 }
-.get_app_button:active {
-  background-image: url('../../images/get_app_btn_down.png');
+.get_app_button.enabled {
+  background-image: url('../../images/grabit_btn_enabled.png');
 }
 /* Contact Us */
 .contact_us_content textarea {
@@ -501,9 +501,6 @@ header nav ul {
   vertical-align: middle;
   margin-top: 20px;
   margin-bottom: 5px;
-}
-.join_now_button:active {
-  background-image: url('../../images/join_now_down.png');
 }
 .join_now_privacy {
   margin-left: 1em;

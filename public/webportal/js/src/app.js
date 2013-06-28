@@ -22,7 +22,9 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
             if (window.location.hash) {
                 window.location.hash = '';
             }
-            loadMarkup('landing');
+            if(!state.state.loggedIn) {
+                loadMarkup('landing');
+            }
         }
         //Bind our hashchange event.
         window.onhashchange = hashChanged;
@@ -33,7 +35,6 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
         $loginButton.click(function() {
             state.login($emailField.val(), $passwordField.val(), function(response) {
                 //Do nothing with errors right now.
-                console.log(response);
                 if(response.result !== true) {
                     loadMarkup('recover-password');
                     $passwordField.val('');
@@ -292,6 +293,24 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
                     var placeholder = $elem.attr('placeholder');
                     $elem.val(placeholder);
                 }
+            },
+            "get-app-install": function ($elem) {
+                $("#agreeterms", $elem).change(function(){
+                    if($(this).is(':checked')){
+                        $('#grab_it', $elem).addClass('enabled');
+                    } else {
+                        $('#grab_it', $elem).removeClass('enabled');
+                    }
+                });
+            },
+            "join-now": function ($elem) {
+                $("#agreeterms", $elem).change(function(){
+                    if($(this).is(':checked')){
+                        $('#portal_join_now_button', $elem).removeClass('join_now_button_disabled').addClass('join_now_button');
+                    } else {
+                        $('#portal_join_now_button', $elem).removeClass('join_now_button').addClass('join_now_button_disabled');
+                    }
+                });
             }
 		}
 	};

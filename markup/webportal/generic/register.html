@@ -1,5 +1,5 @@
 <h1 class="join_now_header">Join Now!</h1>
-<div class="join_now_content">
+<div class="portal-element portal-join-now join_now_content">
     <div class="join_now_password">
         <p>
             Three ways to participate: Join our web portal, get the mobile app, or grab the browser app for additional content and rewards.
@@ -7,9 +7,9 @@
         <p>
             Start by creating your unique Say.So Login.
         </p>
-        <input id="emailAddress_field" class="sayso-element sayso-placeholder large_input" placeholder="Enter a valid email address."/><!-- use JS placeholders -->
-        <input id="passwordOne_field" class="sayso-element sayso-placeholder large_input" placeholder="Enter your desired password. (6-12 characters)"/><!-- use JS placeholders -->
-        <input id="passwordTwo_field" class="sayso-element sayso-placeholder large_input" placeholder="Verify password."/><!-- use JS placeholders -->
+        <input id="emailAddress_field" class="portal-element portal-placeholder large_input" placeholder="Enter a valid email address."/><!-- use JS placeholders -->
+        <input id="passwordOne_field" class="portal-element portal-placeholder large_input" placeholder="Enter your desired password. (6-12 characters)"/><!-- use JS placeholders -->
+        <input id="passwordTwo_field" class="portal-element portal-placeholder large_input" placeholder="Verify password."/><!-- use JS placeholders -->
     </div>
     <hr/>
     <div class="join_now_browser_app">
@@ -47,10 +47,10 @@
                 </label>
             </span>
     </div>
-</div>
-<a href="#action/join" class="join_now_button_disabled"></a>
-<div class="join_now_privacy">
-    <span class="privacy">We don't share your email or password with anyone... period.</span>
+    <div class="join_now_button_disabled" id="portal_join_now_button"></div>
+    <div class="join_now_privacy">
+        <span class="privacy">We don't share your email or password with anyone... period.</span>
+    </div>
 </div>
 <!-- TODO: do javascript to remove disabled state when form is valid -->
 <!-- TODO: class needed for active is called join_now_button -->

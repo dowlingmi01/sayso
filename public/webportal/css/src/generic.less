@@ -452,17 +452,21 @@ header {
 
 .get_app_button {
   display: block;
-  background-image: url('@{base-image-url}get_app_btn.png'); //TODO: Replace with grab it button
+  background-image: url('@{base-image-url}grabit_btn_disabled.png');
   background-repeat: no-repeat;
-  width: 252px;
+  width: 144px;
   height: 40px;
   vertical-align: middle;
   margin-top: 40px;
   margin-bottom: 40px;
 
-  &:active {
-    background-image: url('@{base-image-url}get_app_btn_down.png'); //TODO: Replace with grab it button
+  &.enabled {
+      background-image: url('@{base-image-url}grabit_btn_enabled.png');
   }
+
+//  &:active {
+//    background-image: url('@{base-image-url}get_app_btn_down.png');
+//  }
 }
 
 /* Contact Us */
@@ -540,7 +544,6 @@ header {
   margin-bottom: 5px;
 }
 
-
 .join_now_button {
   .portlet_left_margin;
   display: block;
@@ -552,9 +555,9 @@ header {
   margin-top: 20px;
   margin-bottom: 5px;
 
-  &:active {
-    background-image: url('@{base-image-url}join_now_down.png');
-  }
+//  &:active {
+//    background-image: url('@{base-image-url}join_now_down.png');
+//  }
 }
 
 .join_now_privacy {

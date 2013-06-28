@@ -463,13 +463,15 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 							extId = 'dcdkmcnaenolmjcoijjggegpcbehgfkn';
 							break;
 					}
-					downloadLocation = "https://chrome.google.com/webstore/detail/" + extId;
+					$('#browser_install_instructions').html('<link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/' +extId+ '" />');
+					chrome.webstore.install(undefined, undefined, function(s) {console.log(s);});
+
 				} else {
 					if (browser.browser === "safari") {
 						$('#browser_install_instructions').html('Please click on the Say.So package in the Safari downloads window to complete the instalation');
 					}
+					location.href = downloadLocation;
 				}
-				location.href = downloadLocation;
 			}
 		}
 	};

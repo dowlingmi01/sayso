@@ -117,7 +117,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		});
 
 		// update all updateTypes when doing post-template processing, i.e. "game", "user", "notifications"
-		if (handlerCollection == "post-template") {
+		if (handlerCollection == "post-template" && userMode == "logged-in") {
 			updateElements($container);
 			/*
 			updateElements($container, "game");

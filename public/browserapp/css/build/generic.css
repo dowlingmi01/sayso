@@ -578,6 +578,31 @@
 #sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-tab-three li#sayso-about-help-giveaways {
   background-image: url('../../images/generic/section-about-help-giveaways.png');
 }
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-tab-four h2,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-tab-four h2 {
+  text-align: left;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-tab-four #sayso-about-help-profile-survey-link,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-tab-four #sayso-about-help-profile-survey-link {
+  text-align: center;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-tab-four p,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-tab-four p {
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-tab-four #sayso-about-help-badge-container,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-tab-four #sayso-about-help-badge-container {
+  margin: auto;
+  width: 300px;
+}
+#sayso-section-container.sayso-section-about #sayso-section #sayso-section-body #sayso-about-help-tab-four #sayso-about-help-badge-container .sayso-quick-link,
+#sayso-section-container.sayso-section-tour-about #sayso-section #sayso-section-body #sayso-about-help-tab-four #sayso-about-help-badge-container .sayso-quick-link {
+  float: left;
+  border: none;
+  margin: 0 10px;
+}
 #sayso-section-container.sayso-section-user-profile #sayso-section,
 #sayso-section-container.sayso-section-tour-user-profile #sayso-section {
   width: 570px;

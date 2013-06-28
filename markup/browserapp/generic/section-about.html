@@ -52,6 +52,27 @@
 	</div>
 	<div class="sayso-element sayso-tab" data-tab="feedback">
 		feedback
+		<!--
+			GS Code from .phtml file
+
+			<script type="text/javascript" charset="utf-8">
+				$SQ.getScript("//s3.amazonaws.com/getsatisfaction.com/javascripts/feedback-v2.js", function() {
+					sayso.evalInPageContext(function() {
+						new GSFN.feedback_widget({
+							display : "inline",
+							container : "sb_feedback_container",
+							company : "machinimarecon",
+							style : "question",
+							product : "machinimarecon_machinima_recon",
+							limit : "5",
+							width : "520px",
+							height : "450px"
+						});
+					});
+				});
+			</script>
+
+		-->
 	</div>
 </div>
 <div id="sayso-section-footer"></div>
@@ -93,8 +114,27 @@
 	</div>
 </div>
 <div class="sayso-element sayso-partial" data-partial-id="help-tab-four">
-	<div id="sayso-about-help-tab-four">
-		content from the partial - four
+	<div id="sayso-about-help-tab-four" class="sayso-tab-help">
+		<h2>Okay, Let’s Get Started!</h2>
+		<div id="sayso-about-help-profile-survey-link" class="sayso-element sayso-survey-link" data-survey-id="%CONFIG_PROFILE_SURVEY_ID%">
+			<img src="%CONFIG_IMAGE_PATH%/section-about-help-profile_survey.png" />
+		</div>
+		<p>Completing the Profile Survey takes a minute, but we will reward you with a hefty number of Coins, and grant you automatic access to our giveaways.</p>
+		<br />
+		<br />
+		<p>Already taken the Profile Survey?</p>
+		<p>Check out some quick-hit activities.</p>
+		<div id="sayso-about-help-badge-container">
+			<div class="sayso-element sayso-section-link sayso-quick-link" data-section="polls">
+				<img src="%CONFIG_IMAGE_PATH%/section-about-help-badge-polls.png" />
+			</div>
+			<div class="sayso-element sayso-section-link sayso-quick-link" data-section="surveys">
+				<img src="%CONFIG_IMAGE_PATH%/section-about-help-badge-surveys.png" />
+			</div>
+			<div class="sayso-element sayso-section-link sayso-quick-link" data-section="spotlight">
+				<img src="%CONFIG_IMAGE_PATH%/section-about-help-badge-spotlight.png" />
+			</div>
+		</div>
 	</div>
 </div>
 

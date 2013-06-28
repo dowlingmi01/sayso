@@ -1804,3 +1804,20 @@
   display: block;
   left: 675px;
 }
+#sayso-section-container.sayso-section-spotlight #sayso-section,
+#sayso-section-container.sayso-section-tour-spotlight #sayso-section {
+  left: 800px;
+  width: 560px;
+  height: 500px;
+}
+#sayso-section-container.sayso-section-spotlight #sayso-section #sayso-section-body,
+#sayso-section-container.sayso-section-tour-spotlight #sayso-section #sayso-section-body {
+  padding: 0;
+}
+#sayso-section-container.sayso-section-spotlight #sayso-section-triangle-white,
+#sayso-section-container.sayso-section-tour-spotlight #sayso-section-triangle-white,
+#sayso-section-container.sayso-section-spotlight #sayso-section-triangle-grey,
+#sayso-section-container.sayso-section-tour-spotlight #sayso-section-triangle-grey {
+  display: block;
+  left: 465px;
+}

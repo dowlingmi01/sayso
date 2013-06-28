@@ -287,7 +287,7 @@
 			<endpoint name="login">
 				<description>Effectively sets a session and returns the relevant data.</description>
 				<parameters>
-					<parameter required name="username" type="string" default_value="">The users email address.</parameter>
+					<parameter required name="email" type="string" default_value="">The users email address.</parameter>
 					<parameter required name="password" type="string" default_value="">The users password.</parameter>
 				</parameters>
 				<returnvalues>
@@ -295,7 +295,7 @@
 					<returnvalue name="session_key" type="object" location="variables" default_value="">The id of the session.</returnvalue>
 				</returnvalues>
 				<requestexample>
-					<variable required name="username">noreply@say.so</variable>
+					<variable required name="email">noreply@say.so</variable>
 					<variable required name="password">password</variable>
 				</requestexample>
 				<example name="Response Example">

@@ -50,6 +50,13 @@ class Ssmart_Public_RegistrationEndpoint extends Ssmart_GlobalController
 		if (!$user->id)
 			throw new Exception('Failed to save user.');
 
+		$starbarUserMap = new Starbar_UserMap();
+		$starbarUserMap->user_id = $user->id;
+		$starbarUserMap->starbar_id = $starbar;
+		$starbarUserMap->active = 1;
+		$starbarUserMap->onboarded = 1;
+		$starbarUserMap->save();
+
 		$response->setResultVariable("user_id", $user->id);
 
 		// success

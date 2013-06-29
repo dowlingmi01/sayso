@@ -3,10 +3,11 @@ sayso.module.state = (function(global, $, comm, config) {
 		state: null,
 		ready: false,
 		login: login,
-		logout: logout
+		logout: logout,
+		setVisibility: setVisibility
 	};
 	var stateListeners = {
-		login: function(data) {
+		login: function() {
 			requestState('login');
 		},
 		logout: function(data) {
@@ -16,6 +17,10 @@ sayso.module.state = (function(global, $, comm, config) {
 		profile: function(data) {
 			publicVar.state.profile = data;
 			$(global.document).trigger('sayso:state-profile');
+		},
+		visibility: function(data) {
+			publicVar.state.visibility = data;
+			$(global.document).trigger('sayso:state-visibility');
 		},
 		game: function(data) {
 			if( data.economy_id === publicVar.state.starbar.economy_id ) {
@@ -45,6 +50,9 @@ sayso.module.state = (function(global, $, comm, config) {
 	}
 	function requestState( eventName ) {
 		comm.request('get-state', {starbar_id: config.defaultStarbarId}, gotState( eventName ));
+	}
+	function setVisibility( visibility ) {
+		comm.request('set-visibility', visibility);
 	}
 
 	for( var name in stateListeners )

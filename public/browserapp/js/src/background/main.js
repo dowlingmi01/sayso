@@ -107,6 +107,7 @@
 		return state.loggedIn ? {
 			loggedIn: state.loggedIn,
 			profile: state.profile,
+			visibility: state.visibility,
 			starbar: state.starbars[starbarId],
 			notifications: state.notifications[starbarId],
 			game: state.games[state.starbars[starbarId].economy_id]
@@ -127,6 +128,11 @@
 				getStarbarState( starbarId );
 		}
 	}
+	function setVisibility( data ) {
+		state.visibility = data;
+		comm.broadcast('state.visibility', state.visibility);
+		api.sendRequest({action_class: 'User', action: 'updateState', state_data: {visibility: data}});
+	}
 	function apiDoRequests( requests, callback ) {
 		if (!requests) return;
 		for (var request in requests) {
@@ -145,5 +151,6 @@
 	comm.listen('api-do-requests', apiDoRequests);
 	comm.listen('login', login);
 	comm.listen('logout', logout);
+	comm.listen('set-visibility', setVisibility);
 	getUserState();
 })(this, sayso.module.Api, sayso.module.comm, sayso.module.config, sayso.module.getSession);

@@ -180,7 +180,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 
 	function hideNav(updateState) {
 		if (updateState) { // user initiated visibility change here, trigger it and do nothing (listener will trigger animation)
-			//@todo state.updateVisibility("stowed");
+			state.setVisibility("stowed");
 		} else {
 			closeSection();
 			$nav.addClass("sayso-app-container-stowed");
@@ -189,7 +189,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 
 	function showNav(updateState) {
 		if (updateState) { // user initiated visibility change here, trigger it and do nothing (listener will trigger animation)
-			//@todo state.updateVisibility("visible");
+			state.setVisibility("open");
 		} else {
 			$nav.removeClass("sayso-app-container-stowed");
 		}

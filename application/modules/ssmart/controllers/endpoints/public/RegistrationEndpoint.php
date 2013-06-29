@@ -56,6 +56,15 @@ class Ssmart_Public_RegistrationEndpoint extends Ssmart_GlobalController
 		$starbarUserMap->active = 1;
 		$starbarUserMap->onboarded = 1;
 		$starbarUserMap->save();
+		$insertStatus = $starbarUserMap->wasInserted();
+		if($insertStatus)
+			Game_Transaction::run($user->id, Economy::getIdforStarbar($starbarId), 'STARBAR_OPT_IN');
+
+		$userState = new User_State();
+		$userState->user_id = $user->id;
+		$userState->starbar_id = $starbarId;
+		$userState->visibility = "open";
+		$userState->save();
 
 		$response->setResultVariable("user_id", $user->id);
 

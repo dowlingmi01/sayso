@@ -34,19 +34,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 
         //TODO: Move all of these into portal-element.
         $loginButton.click(function() {
-            if($emailField.val() && $passwordField.val()) {
-                state.login($emailField.val(), $passwordField.val(), function(response) {
-                    //Do nothing with errors right now.
-                    if(response.result !== true) {
-                        $('#login_failed').show();
-                        setTimeout(function(){
-                            $('#login_failed').fadeOut('slow');
-                        }, 3000);
-                        $passwordField.val('');
-                        $passwordField.focus();
-                    }
-                });
-            }
+            doLogin();
         });
         $signOutButton.click(function() {
             if (state.state.loggedIn) {
@@ -140,7 +128,38 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 		prepareElements($container, "post-template", templateData);
 	}
 
-    function login() {
+    function doLogin(email, password) {
+        if (email || password) {
+            state.login(email, password, function(response) {
+                //Do nothing with errors right now.
+                if(response.result !== true) {
+                    $('#login_failed').show();
+                    setTimeout(function(){
+                        $('#login_failed').fadeOut('slow');
+                    }, 3000);
+                    $passwordField.val('');
+                    $passwordField.focus();
+                }
+            });
+        }
+        else {
+            if($emailField.val() && $passwordField.val()) {
+                state.login($emailField.val(), $passwordField.val(), function(response) {
+                    //Do nothing with errors right now.
+                    if(response.result !== true) {
+                        $('#login_failed').show();
+                        setTimeout(function(){
+                            $('#login_failed').fadeOut('slow');
+                        }, 3000);
+                        $passwordField.val('');
+                        $passwordField.focus();
+                    }
+                });
+            }
+        }
+    }
+
+    function stateLogin() {
         if(state.state.loggedIn)
         {
             loadMarkup('profile');
@@ -157,7 +176,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
         }
     }
 
-    function logout() {
+    function stateLogout() {
         loadMarkup('log-out');
         $loginDiv.show();
         $forgotPassword.show();
@@ -229,8 +248,8 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
     shared.version = version;
 
     $(document).on('sayso:state-ready', initialize);
-    $(document).on('sayso:state-login', login);
-    $(document).on('sayso:state-logout', logout);
+    $(document).on('sayso:state-login', stateLogin);
+    $(document).on('sayso:state-logout', stateLogout);
 
 	var handlebarsHelpers = {
 		"currency-name-highlighted": function(currency) {
@@ -424,6 +443,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
                     }, function(response){
                         var success = response.responses['default'].variables.user_id;
                         if (success) {
+                            doLogin($emailField.val(), $passwordField.val());
                             if (getBrowserApp) {
                                 //Change hash so navigation works, if we just call loadMarkup here, it breaks UX
                                 location.hash = 'content/get-app-confirmation';

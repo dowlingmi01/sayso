@@ -1020,6 +1020,7 @@
   position: absolute;
   z-index: 20;
   display: none;
+  cursor: auto;
 }
 #sayso-section-container.sayso-section-rewards #sayso-section #sayso-section-body .sayso-reward-item .sayso-reward-item-disabled .sayso-reward-item-disabled-heading,
 #sayso-section-container.sayso-section-tour-rewards #sayso-section #sayso-section-body .sayso-reward-item .sayso-reward-item-disabled .sayso-reward-item-disabled-heading {

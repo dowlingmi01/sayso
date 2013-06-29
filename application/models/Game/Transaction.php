@@ -498,7 +498,7 @@ class Game_Transaction {
 		} else if( !self::isProfileSurveyCompleted($user_id, $starbar_id) ) {
 			$purchasable->status_code = self::ERROR_SURVEY_REQUIREMENT;
 			if (self::getProfileSurveyId($user_id, $starbar_id))
-				$purchasable->cant_purchase_message = 'Must complete<br /><a href="//'.BASE_DOMAIN.'/starbar/' . '/embed-survey?survey_id='.self::getProfileSurveyId($user_id, $starbar_id).'" class="sb_nav_element" rel="sb_popBox_surveys_hg" title="Take profile survey now!" style="position: relative; top: -5px;">Profile Survey</a>';
+				$purchasable->cant_purchase_message = 'Must complete<br /><a class="sayso-element sayso-survey-link" data-survey-id="'.self::getProfileSurveyId($user_id, $starbar_id).'" title="Take profile survey now!">Profile Survey</a>';
 			else
 				$purchasable->cant_purchase_message = 'Must complete<br />Profile Survey';
 			$purchasable->comment = 'Survey Requirement';

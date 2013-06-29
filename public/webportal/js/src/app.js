@@ -186,6 +186,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
             //TODO: Cs - should we split this out into hash_manager if it gets large enough?
         }
     }
+
 	function getBrowserNameVersion() {
 		var bn = {};
 		var ua = navigator.userAgent;
@@ -434,6 +435,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
                     });
                 }
             },
+
 			"install-app" : function ($elem, data) {
 				if( !document.location.href.match('content/get-app-confirmation') )
 					document.location.hash = 'content/get-app-confirmation';
@@ -441,8 +443,13 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 				var downloadLocation = "//" + sayso.module.config.baseDomain + '/starbar/install/extension';
 				var browser = getBrowserNameVersion();
 
+				function installChrome(){
+					chrome.webstore.install(undefined, undefined, function(s) {console.log(s);});
+				}
+
 				if (browser.browser === "chrome") {
 					var extId;
+
 					switch (sayso.module.config.baseDomain) {
 						case "app.saysollc.com" :
 							extId = 'lpkeinfeenilbldefedbfcdhllhjnblc';
@@ -463,13 +470,17 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 							extId = 'dcdkmcnaenolmjcoijjggegpcbehgfkn';
 							break;
 					}
-					$('#browser_install_instructions').html('<link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/' +extId+ '" />');
-					chrome.webstore.install(undefined, undefined, function(s) {console.log(s);});
+					downloadLocation = "https://chrome.google.com/webstore/detail/" +extId;
+					$('head').append('<link rel="chrome-webstore-item" href="' + downloadLocation + '" />');
+					$('#browser_install_instructions').html('Please click <a href="#action/chrome-install" id="chrome-download">here</a> to begin installation.');
+					$("#chrome-download").bind("click", installChrome);
+					$("#force-download").attr("href", downloadLocation);
 
 				} else {
 					if (browser.browser === "safari") {
 						$('#browser_install_instructions').html('Please click on the Say.So package in the Safari downloads window to complete the instalation');
 					}
+					$("#force-download").attr("href", downloadLocation);
 					location.href = downloadLocation;
 				}
 			}

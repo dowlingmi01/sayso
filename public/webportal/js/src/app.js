@@ -472,9 +472,9 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 					}
 					downloadLocation = "https://chrome.google.com/webstore/detail/" +extId;
 					$('head').append('<link rel="chrome-webstore-item" href="' + downloadLocation + '" />');
-					$('#browser_install_instructions').html('Please click <a href="#action/chrome-install" id="chrome-download">here</a> to begin installation.');
+					$('#browser_install_instructions').html('<a href="#action/chrome-install" id="chrome-download">Click here to begin installation.</a> ');
 					$("#chrome-download").bind("click", installChrome);
-					$("#force-download").attr("href", downloadLocation);
+					$("#force-download").attr({"href": downloadLocation, "target": "_blank"});
 
 				} else {
 					if (browser.browser === "safari") {

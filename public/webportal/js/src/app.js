@@ -443,7 +443,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
                     }, function(response){
                         var success = response.responses['default'].variables.user_id;
                         if (success) {
-                            doLogin($emailField.val(), $passwordField.val());
+                            doLogin(emailAddress, password);
                             if (getBrowserApp) {
                                 //Change hash so navigation works, if we just call loadMarkup here, it breaks UX
                                 location.hash = 'content/get-app-confirmation';

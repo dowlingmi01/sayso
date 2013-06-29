@@ -1836,9 +1836,9 @@
   width: 495px;
   height: 500px;
 }
-#sayso-section-container.sayso-section-spotlight #sayso-section #sayso-section-body,
-#sayso-section-container.sayso-section-tour-spotlight #sayso-section #sayso-section-body {
-  padding: 0;
+#sayso-section-container.sayso-section-spotlight #sayso-section #sayso-section-header,
+#sayso-section-container.sayso-section-tour-spotlight #sayso-section #sayso-section-header {
+  background-image: url('../../images/generic/section-heading-spotlight.png');
 }
 #sayso-section-container.sayso-section-spotlight #sayso-section-triangle-white,
 #sayso-section-container.sayso-section-tour-spotlight #sayso-section-triangle-white,

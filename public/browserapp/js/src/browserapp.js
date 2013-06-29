@@ -1144,12 +1144,6 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		"game": function() {
 			updateElements(null, "game");
 		},
-		"login": function() {
-			initApp();
-		},
-		"logout": function() {
-			initApp();
-		},
 		"profile": function() {
 			updateElements(null, "profile");
 		},

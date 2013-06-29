@@ -1,24 +1,37 @@
 sayso.module.getSession = (function(global, Api, comm, dommsg, util, config, $){
 	function getSession(callback) {
-		comm.get('session', function(session) {
-			if( session || !config.extVersion )
-				callback(session);
-			else
-				comm.get('userKey', function(userKey) {
-					if( userKey ) {
-						var api = new Api(config.baseDomain);
-						api.sendRequest({action_class: 'Login', action: 'migrateKey', user_key: userKey}, function(data) {
-							var session = data.responses['default'].variables;
-							if( session ) {
-								session = {id: session.session_id, key: session.session_key};
-								comm.set('session', session, function() {
-									comm.set('userKey', null);
-								});
+		if( !config.extVersion )
+			comm.get('session', callback );
+		else
+			comm.get('session', function(session) {
+				$(function(){
+					readStorage( function( storageSession ) {
+						if( storageSession ) {
+							if( !session || (!session.timestamp && storageSession.timestamp) || (session.timestamp < storageSession.timestamp)) {
+								comm.set('session', storageSession);
+								callback(storageSession);
+							} else
 								callback(session);
-							}
-						});
-					} else
-						$(function(){readStorage(callback);});
+						} else if( !session )
+							comm.get('userKey', function(userKey) {
+								if( userKey ) {
+									var api = new Api(config.baseDomain);
+									api.sendRequest({action_class: 'Login', action: 'migrateKey', user_key: userKey}, function(data) {
+										session = data.responses['default'].variables;
+										if( session ) {
+											session = {id: session.session_id, key: session.session_key, timestamp: (new Date()).getTime()};
+											comm.set('session', session, function() {
+												comm.set('userKey', null);
+											});
+										}
+										callback(session);
+									});
+								} else
+									callback(session);
+							});
+						else
+							callback(session);
+					});
 				});
 		});
 	}
@@ -29,12 +42,7 @@ sayso.module.getSession = (function(global, Api, comm, dommsg, util, config, $){
 		util.addEventListener(iframe, 'load', function () {
 			iframe.contentWindow.postMessage(JSON.stringify(['sayso-frontend-request', {name:'get-session', id: 1}]), '*');
 		});
-		dommsg.addHandler('background-reply', function (data) {
-			if( data.data ) {
-				comm.set('session', data.data);
-				callback(data.data);
-			}
-		});
+		dommsg.addHandler('background-reply', function(data) { callback(data.data); });
 		iframe.src = 'http://' + config.baseDomain + '/browserapp/readStorage.html';
 	}
 	return getSession;

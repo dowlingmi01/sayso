@@ -15,7 +15,7 @@
             var session = data.responses['default'].variables;
             var result = {result: false, response: {}};
 			if (session) {
-				session = { id: session.session_id, key: session.session_key };
+				session = { id: session.session_id, key: session.session_key, timestamp: (new Date()).getTime() };
 				comm.set('session', session, function() {
 					state.loggedIn = null;
 					getUserState();

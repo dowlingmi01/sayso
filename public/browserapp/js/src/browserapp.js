@@ -570,29 +570,6 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		prepareElements($container, "post-template", templateData);
 	}
 
-	var stateListeners = {
-		"game": function() {
-			updateElements(null, "game");
-		},
-		"login": function() {
-			initApp();
-		},
-		"logout": function() {
-			initApp();
-		},
-		"profile": function() {
-			updateElements(null, "profile");
-		},
-		"visibility": function() {
-			if (!config.webportal) {
-				updateElements(null, "visibility");
-			}
-		},
-		"notifications": function() {
-			updateElements(null, "notifications");
-		}
-	}
-
 	var handlebarsHelpers = {
 		"currency-name-highlighted": function(currency) {
 			// @todo add description to game.currencies
@@ -633,7 +610,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			if (state.state.profile.public_name)
 				return state.state.profile.public_name;
 			else
-				return state.state.game.level;
+				return state.state.game.levels[state.state.game.level].name;
 		},
         "next-exp-threshold": function(game) {
             return game.levels[game.level+1].threshold;
@@ -1163,6 +1140,29 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		}
 	};
 
+	var stateListeners = {
+		"game": function() {
+			updateElements(null, "game");
+		},
+		"login": function() {
+			initApp();
+		},
+		"logout": function() {
+			initApp();
+		},
+		"profile": function() {
+			updateElements(null, "profile");
+		},
+		"visibility": function() {
+			if (!config.webportal) {
+				updateElements(null, "visibility");
+			}
+		},
+		"notifications": function() {
+			updateElements(null, "notifications");
+		}
+	};
+
 	// these handlers are called when something in the state is updated. All these handlers receive the jquery element that has matched the update pattern,
 	// and an animate boolean that determines whether the element should animate or not when showing the update
 	// (e.g. when you switch to a tab in your browser, it shouldn't re-animate an increase in points from another tab)
@@ -1187,7 +1187,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 				if (state.state.profile.public_name)
 					$elem.html(state.state.profile.public_name);
 				else
-					$elem.html(state.state.game.level);
+					$elem.html(state.state.game.levels[state.state.game.level].name);
 				// this $elem should contain a user's name
 			},
 			"user-image": function ($elem, data, animate) {}

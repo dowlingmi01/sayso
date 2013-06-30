@@ -185,7 +185,8 @@ class Starbar_InstallController extends Api_GlobalController {
 			}
 		}
 		if( ! $url ) {
-			$url = "http://say.so/welcome";
+			$env = Registry::getPseudoEnvironmentName();
+			$url = ($env === 'PROD' ? 'http://recon.say.so' : 'http://' . Registry::getConfig()->baseDomain . '/webportal');
 		}
 		$this->_redirect($url);
 	}

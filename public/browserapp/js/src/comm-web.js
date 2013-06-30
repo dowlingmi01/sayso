@@ -11,7 +11,7 @@ sayso.module.comm = (function(global, $, util, dommsg, config) {
 	var id = 0;
 	function isExtPresent( callback ) {
 		var interval = 10;
-		var maxTime = 100;
+		var maxTime = 200;
 		var start = (new Date()).getTime();
 		function isPresent() {
 			if( global.$SaySoExtension )

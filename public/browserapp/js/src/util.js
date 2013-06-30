@@ -1,4 +1,4 @@
-sayso.module.util = (function($) {
+sayso.module.util = (function(global, $, config) {
 	function addEventListener( element, eventName, callback ) {
 		if( element.addEventListener )
 			element.addEventListener( eventName, callback, false );
@@ -23,6 +23,24 @@ sayso.module.util = (function($) {
 
 		return result;
 	}
+	function log() {
+		if( config && config.baseDomain === 'app.saysollc.com' ) // suppress logging on production
+			return;
+		var args = Array.prototype.slice.call(arguments);
+		if( global.forge ) {
+			if( global.forge.is.chrome() || global.forge.is.safari() ) {
+				args.unshift('SaySo:');
+				global.console.log.apply(global.console, args);
+			} else {
+				if( args.length === 1 )
+					args = args[0];
+				forge.logging.log(args);
+			}
+		} else if( global.console ) {
+			global.console.log.apply(global.console, args);
+		} else
+			global.alert(args[0]);
+	}
 
 	$.fn.extend({
 
@@ -40,6 +58,7 @@ sayso.module.util = (function($) {
 	return {
 		addEventListener: addEventListener,
 		removeEventListener: removeEventListener,
+		log: log,
 		urlParams: urlParams
 	};
-})(jQuery);
+})(this, jQuery, sayso.module.config);

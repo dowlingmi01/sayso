@@ -1,4 +1,4 @@
-sayso.module.Api = (function(comm) {
+sayso.module.Api = (function(comm, util) {
 	/**
 	 * Sets a function to create the Api object to the sayso object.
 	 * @param {String} base_domain
@@ -58,18 +58,24 @@ sayso.module.Api = (function(comm) {
 
 			if (typeof fb === "undefined") {
 				fb = function(e) {
-					console.log('API Error(s):');
-					console.log(e);
+					util.log('API Error(s):');
+					util.log(e);
+				};
+			}
+
+			function getCallback(callback) {
+				return function(data) {
+					callback(data);
+					if (requestsToReset) requestsToReset.reset();
 				};
 			}
 
 			comm.ajax({
 				dataType: 'json',
-				data : {data: data},
+				data : {data: data, "_": (new Date()).getTime()},
 				url : protocol + this.baseDomain + "/ssmart",
-				success : cb,
-				error: fb,
-				complete: function() { if (requestsToReset) requestsToReset.reset(); } // this happens after success or error
+				success : getCallback(cb),
+				error: getCallback(fb)
 			});
 		},
 
@@ -118,5 +124,5 @@ sayso.module.Api = (function(comm) {
 		}
 	};
 	return Api;
-})(sayso.module.comm)
+})(sayso.module.comm, sayso.module.util)
 ;

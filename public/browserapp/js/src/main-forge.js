@@ -27,15 +27,15 @@
 			try {
 				ssData = JSON.parse( ssData );
 			} catch( e ) {
-				global.console.log('Invalid Beacon', ssData);
+				util.log('Invalid Beacon', ssData);
 				return;
 			}
 		}
 		if( !ssData.event_name ) {
-			global.console.log('Invalid Beacon', ssData);
+			util.log('Invalid Beacon', ssData);
 			return;
 		}
-		global.console.log( 'Received Beacon data: ', ssData );
+		util.log( 'Received Beacon data: ', ssData );
 		var eventName = ssData.event_name;
 		delete ssData.event_name;
 		ssData.event_source = 'handleBeacon';
@@ -59,7 +59,7 @@
 			}
 			if( popup ) {
 				// do not load starbar for this page
-				global.console.log('Popup detected');
+				util.log('Popup detected');
 				return false;
 			}
 		}
@@ -76,7 +76,7 @@
 		for (var bi = 0; bi < blackList.length; bi++) {
 			if (config.location.href.match(url_match_prepend + blackList[bi])) {
 				// do not load starbar for this page
-				global.console.log('Blacklisted: ' + blackList[bi] + ' - Not loading Starbar');
+				util.log('Blacklisted: ' + blackList[bi] + ' - Not loading Starbar');
 				return false;
 			}
 		}

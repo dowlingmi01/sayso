@@ -491,7 +491,7 @@ class Game_Transaction {
 			$purchasable->status_code = self::ERROR_INVALID_QUANTITY;
 			$purchasable->cant_purchase_message = 'Can\'t buy more than one of this item.';
 			$purchasable->comment = 'Invalid';
-		} else if( $quantity > 5 || $quantity < 1 ) {
+		} else if( $quantity > 10 || $quantity < 1 ) {
 			$purchasable->status_code = self::ERROR_INVALID_QUANTITY;
 			$purchasable->cant_purchase_message = 'Invalid quantity.';
 			$purchasable->comment = 'Invalid';

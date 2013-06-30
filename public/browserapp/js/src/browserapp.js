@@ -913,7 +913,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
             },
             "reward-item-order-submit" : function ($elem, data, templateData) {
                 $elem.click(function() {
-                    var shippingData = new Array();
+                    var shippingData = {};
                     var quantity = 0;
 
                     //Dot notation not used due to reserved keyword 'type'
@@ -924,7 +924,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
                             action : "redeemReward",
                             starbar_id : starbarId,
                             game_asset_id: templateData.id,
-                            shipping: shippingData,
+							shipping: shippingData,
                             quantity: quantity
                         }, function(response){
                             if(response.error_code === 0) {
@@ -974,7 +974,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
                                 starbar_id : starbarId,
                                 game_asset_id: templateData.id,
                                 shipping: shippingData,
-                                quantity: quantity
+								quantity: quantity
                             }, function(response){
                                 if(response.error_code === 0) {
                                     //TODO: Implement order success template.

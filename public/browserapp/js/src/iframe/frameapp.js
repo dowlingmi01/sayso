@@ -26,13 +26,16 @@ sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 			var $SGQ = global.$SGQ;
 
 			var $body = $('body');
-			var $cssSGQ = $('<link rel="stylesheet" href="//' + $SGQ.base_domain + '/css/surveygizmo/surveys-' + $SGQ.starbar_short_name + '.css">');
-
-			$body.append($cssSGQ);
+			var cssSGQ = document.createElement('link');
+			cssSGQ.rel = 'stylesheet';
+			cssSGQ.href = '//' + $SGQ.base_domain + '/css/surveygizmo/surveys-' + $SGQ.starbar_short_name + '.css';
+			document.body.appendChild(cssSGQ);
 
 			if ($SGQ.size == "large" || $SGQ.size == "huge") {
-				var $cssLargeSGQ = $('<link rel="stylesheet" href="//' + $SGQ.base_domain + '/css/surveygizmo/surveys-' + $SGQ.size + '-' + $SGQ.starbar_short_name + '.css">');
-				$body.append($cssLargeSGQ);
+				var cssLargeSGQ = document.createElement('link');
+				cssLargeSGQ.rel = 'stylesheet';
+				cssLargeSGQ.href = '//' + $SGQ.base_domain + '/css/surveygizmo/surveys-' + $SGQ.size + '-' + $SGQ.starbar_short_name + '.css';
+				document.body.appendChild(cssLargeSGQ);
 			}
 
 			var maximumTimeToWait = 8000; // 8 seconds
@@ -75,10 +78,15 @@ sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 
 		},
 		'display-poll': function(data) {
-			// sadly, inserting SG's JS doesn't work with $('head').append() because their script uses document.write(). Fail.
-			document.write('<scr'+'ipt type="text/javascript" src="//www.surveygizmo.com/s3/polljs/'+data['poll']['external_id']+'-'+data['poll']['external_key']+'/"></scr'+'ipt>');
-			document.write('<link href="/css/surveygizmo/polls-'+data['starbar_short_name']+'.css" rel="stylesheet" media="all" type="text/css" />');
+			var oldDocumentWrite = document.write;
 
+			// SurveyGizmo's poll JS uses document.write
+			document.write = function(s) {
+				$('body').append(s);
+			}
+
+			// sadly, inserting SG's JS doesn't work with $('head').append() because their script uses document.write(). Fail.
+			$('head').append('<scr'+'ipt type="text/javascript" src="//www.surveygizmo.com/s3/polljs/'+data['poll']['external_id']+'-'+data['poll']['external_key']+'/"></scr'+'ipt>');
 			var afterCssLoadMaxChecks = 15; // after the CSS loads, check up to 15 times (3000 ms) for changes in height
 
 			var previousHeight;
@@ -115,11 +123,17 @@ sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 						// If we've made it this far, everything has loaded properly.
 						clearInterval(repeatUntilEmbedLoads);
 
+						var cssTag = document.createElement('link');
+						cssTag.rel = 'stylesheet';
+						cssTag.href = '/css/surveygizmo/polls-' + data['starbar_short_name'] + '.css';
+						document.body.appendChild(cssTag);
+
 						var i = 15; // Check if CSS has loaded a maximum of 15 times, i.e. for 3000 ms, or 3 seconds
 						// After that assume it has (or give up regardless) and show the poll
 						var cssCheckInterval = setInterval(function(){
 							if (externalContentElem.css('display') == 'inline-table') { // Our css is loaded!
 								clearInterval(cssCheckInterval);
+								// document.write = oldDocumentWrite; // not sure it's necessary
 								externalContentElem.css('display', 'block');
 								afterPollLoaded();
 							}
@@ -132,6 +146,8 @@ sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 						elemRadios.each(function(){
 							$(this).bind({
 								click: function(event){
+									afterCssLoadMaxChecks = 0; // stop updating the poll size, otherwise it will resize after completion
+
 									var $radio = $(this);
 									$radio.attr('checked', 'checked');
 

@@ -542,6 +542,56 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		$('#sayso-completed-tab-link', $section).show();
 	}
 
+	function elementOverflow ($elem) {
+		return $elem[0].scrollHeight - $elem.height();
+	}
+
+	function elementTooBigBy($elem, $originalElem) {
+		if (!$originalElem) $originalElem = $elem; // only happens the first time
+
+		var $parent = $elem.parent();
+		var heightDifference, fixedHeightDifference;
+
+		heightDifference = elementOverflow($elem);
+
+		if (heightDifference > 0) {
+			// $elem has overflow, but will resizing the original element even fix it?
+			$originalElem.hide();
+			fixedHeightDifference = elementOverflow($elem);
+
+			if (!fixedHeightDifference) { // resizing our original element by this much WILL fix this issue, so this is reliable heightDifference to use
+				$originalElem.show();
+				return heightDifference;
+			}
+
+			$originalElem.show();
+		} // return the parent that is smaller than its child element
+
+		// go no further than sayso-section
+		if ($parent.attr('id') === $sectionContainer.attr('id')) return 0;
+
+		return elementTooBigBy($parent, $originalElem); // check the parent
+	}
+
+	function makeScrollable($elem, data, attempts) {
+		if (!attempts) attempts = 0;
+
+		// @todo make $elem have a custom JS scrollbar!
+		if (!$elem.height()) {
+			if (attempts < 40) {
+				setTimeout(function() {
+					makeScrollable($elem, data, attempts + 1);
+				}, 50);
+			}
+
+			return;
+		};
+
+		// element has a height, find out how much bigger than it should be it is, and set its height
+		$elem.height($elem.height() - elementTooBigBy($elem));
+	}
+
+
 	function processMarkupIntoContainer($container, markup, templateData, runPreTemplateHandlers) {
 		var template;
 
@@ -719,6 +769,10 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			}
 		},
 		"post-template": {
+			"template-image": function ($elem, data) {
+				if (data['templateImageSrc'])
+					$elem.attr('src', data['templateImageSrc']);
+			},
 			"section-link": function ($elem, data) {
 				$elem.click(function(e) {
 					e.preventDefault();
@@ -738,8 +792,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 				});
 			},
 			"scrollable": function ($elem, data) {
-				// @todo make $elem have a custom JS scrollbar!
-				$elem.css('overflow', 'auto');
+				makeScrollable($elem, data);
 			},
 			"tooltip": function ($elem, data) {
 				// @todo show data['tooltipTitle'] 'neatly' when you roll over this element

@@ -32,7 +32,7 @@
 			My Stats
 		</div>
 		<div id="sayso-user-profile-level" class="sayso-user-profile-section">
-			<img src="{{get-record-field state.game.levels state.game.level 'img_url_small'}}" id="sayso-user-profile-level-image" class="sayso-user-profile-left" />
+			<img id="sayso-user-profile-level-image" class="sayso-element sayso-template-image sayso-user-profile-left" data-template-image-src="{{get-record-field state.game.levels state.game.level 'img_url_small'}}" />
 			<a class="sayso-element sayso-section-link" data-section="experience">Level {{state.game.level}}</a><br />
 			<a class="sayso-element sayso-small sayso-section-link" data-section="rewards">{{currency-name-with-value "redeemable" state.game.currencies.redeemable.balance}}</a><br />
 			<a class="sayso-element sayso-small sayso-section-link" data-section="experience">{{currency-name-with-value "experience" state.game.currencies.experience.balance}}</a><br />

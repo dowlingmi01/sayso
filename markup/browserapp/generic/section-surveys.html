@@ -37,7 +37,7 @@
 <div id="sayso-section-footer"></div>
 
 <div class="sayso-element sayso-partial" data-partial-id="surveys-new">
-	<div class="sayso-element sayso-scrollable">
+	<div class="sayso-element sayso-scrollable" style="height: 356px">
 		{{#each surveys.records}}
 			{{>survey-new-archived}}
 		{{else}}
@@ -47,7 +47,7 @@
 </div>
 
 <div class="sayso-element sayso-partial" data-partial-id="surveys-completed">
-	<div class="sayso-element sayso-scrollable">
+	<div class="sayso-element sayso-scrollable" style="height: 411px">
 		{{#each surveys.records}}
 			{{>survey-completed-disqualified}}
 		{{/each}}
@@ -55,7 +55,7 @@
 </div>
 
 <div class="sayso-element sayso-partial" data-partial-id="surveys-archived">
-	<div class="sayso-element sayso-scrollable">
+	<div class="sayso-element sayso-scrollable" style="height: 374px">
 		{{#each surveys.records}}
 			{{>survey-new-archived}}
 		{{/each}}

@@ -79,7 +79,21 @@ sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 			document.write('<scr'+'ipt type="text/javascript" src="//www.surveygizmo.com/s3/polljs/'+data['poll']['external_id']+'-'+data['poll']['external_key']+'/"></scr'+'ipt>');
 			document.write('<link href="/css/surveygizmo/polls-'+data['starbar_short_name']+'.css" rel="stylesheet" media="all" type="text/css" />');
 
-			var documentLoaded =
+			var afterCssLoadMaxChecks = 15; // after the CSS loads, check up to 15 times (3000 ms) for changes in height
+
+			var previousHeight;
+
+			function afterPollLoaded() {
+				var height = 27+$('.sg-survey-form').outerHeight();
+				if (afterCssLoadMaxChecks > 0) {
+					if (previousHeight != height) {
+						comm.fireEvent('poll-loaded', {height: height});
+						previousHeight = height;
+
+						setTimeout(afterPollLoaded, 200); // repeat
+					}
+				}
+			}
 
 			function enableClickableRadios() {
 				if ((typeof global.SG_init_page) != 'undefined' && (typeof global.SGSurvey) != 'undefined') {
@@ -104,9 +118,9 @@ sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 						// After that assume it has (or give up regardless) and show the poll
 						var cssCheckInterval = setInterval(function(){
 							if (externalContentElem.css('display') == 'inline-table') { // Our css is loaded!
-								// clearInterval(cssCheckInterval); commented out to keep fixing the height for 3 seconds, since images or videos take some time to get their size
+								clearInterval(cssCheckInterval);
 								externalContentElem.css('display', 'block');
-								comm.fireEvent('poll-loaded', {height: 27+$('.sg-survey-form').outerHeight()});
+								afterPollLoaded();
 							}
 							i--;
 							if (i < 1) externalContentElem.css('display', 'inline-table');

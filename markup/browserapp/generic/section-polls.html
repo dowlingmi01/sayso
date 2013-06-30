@@ -34,12 +34,12 @@
 <div id="sayso-section-footer"></div>
 
 <div class="sayso-element sayso-partial" data-partial-id="polls-new">
-	<div class="sayso-element sayso-scrollable">
+	<div class="sayso-element sayso-scrollable" style="height: 376px;">
 		{{#each polls.records}}
 			{{>poll-new-archived}}
 		{{else}}
 			{{#if countPollsArchived.variables.count}}
-				No new polls, but check	you still have some in the <a class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="polls-archived">archives</a>.
+				No new polls, but you still have some in the <a class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="polls-archived">archives</a>.
 			{{else}}
 				Looks like you've completed all your polls! Nice work!<br />
 			{{/if}}
@@ -48,7 +48,7 @@
 </div>
 
 <div class="sayso-element sayso-partial" data-partial-id="polls-completed">
-	<div class="sayso-element sayso-scrollable">
+	<div class="sayso-element sayso-scrollable" style="height: 412px;">
 		{{#each polls.records}}
 			{{>poll-completed-disqualified}}
 		{{/each}}
@@ -56,7 +56,7 @@
 </div>
 
 <div class="sayso-element sayso-partial" data-partial-id="polls-archived">
-	<div class="sayso-element sayso-scrollable">
+	<div class="sayso-element sayso-scrollable"  style="height: 394px;">
 		{{#each polls.records}}
 			{{>poll-new-archived}}
 		{{/each}}

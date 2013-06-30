@@ -509,10 +509,13 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 				if( dataFromIframe.frame_id === iframe.frame_id ) {
 					// receive (and set) poll height from iframe when it's done rendering
 					if (dataFromIframe.data.height) {
-						data.pollHeight = 50 + dataFromIframe.data.height;
+						data.pollHeight = 40 + dataFromIframe.data.height;
 						iframe.$element.css('height', dataFromIframe.data.height); // note that $poll is still the old height, and that is animated in openPoll
-						data.iframeLoadCompleted = true;
-						openPoll($container, data, $loadingElement, true);
+
+						if (!data.iframeLoadCompleted) { // if the iframe was already loaded, we are just resizing
+							data.iframeLoadCompleted = true;
+							openPoll($container, data, $loadingElement, true);
+						}
 					}
 				}
 			});
@@ -540,55 +543,6 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 
 		// show the completed tab *link* in case this is the first poll this user has completed
 		$('#sayso-completed-tab-link', $section).show();
-	}
-
-	function elementOverflow ($elem) {
-		return $elem[0].scrollHeight - $elem.height();
-	}
-
-	function elementTooBigBy($elem, $originalElem) {
-		if (!$originalElem) $originalElem = $elem; // only happens the first time
-
-		var $parent = $elem.parent();
-		var heightDifference, fixedHeightDifference;
-
-		heightDifference = elementOverflow($elem);
-
-		if (heightDifference > 0) {
-			// $elem has overflow, but will resizing the original element even fix it?
-			$originalElem.hide();
-			fixedHeightDifference = elementOverflow($elem);
-
-			if (!fixedHeightDifference) { // resizing our original element by this much WILL fix this issue, so this is reliable heightDifference to use
-				$originalElem.show();
-				return heightDifference;
-			}
-
-			$originalElem.show();
-		} // return the parent that is smaller than its child element
-
-		// go no further than sayso-section
-		if ($parent.attr('id') === $sectionContainer.attr('id')) return 0;
-
-		return elementTooBigBy($parent, $originalElem); // check the parent
-	}
-
-	function makeScrollable($elem, data, attempts) {
-		if (!attempts) attempts = 0;
-
-		// @todo make $elem have a custom JS scrollbar!
-		if (!$elem.height()) {
-			if (attempts < 40) {
-				setTimeout(function() {
-					makeScrollable($elem, data, attempts + 1);
-				}, 50);
-			}
-
-			return;
-		};
-
-		// element has a height, find out how much bigger than it should be it is, and set its height
-		$elem.height($elem.height() - elementTooBigBy($elem));
 	}
 
 
@@ -792,7 +746,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 				});
 			},
 			"scrollable": function ($elem, data) {
-				makeScrollable($elem, data);
+				// @todo
 			},
 			"tooltip": function ($elem, data) {
 				// @todo show data['tooltipTitle'] 'neatly' when you roll over this element

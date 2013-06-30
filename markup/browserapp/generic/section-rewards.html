@@ -1,27 +1,25 @@
-<div id="sayso-section-reward-center">
-    <div class="sayso-element sayso-reward-redeem-overlay" id="sayso-reward-redeem-overlay">
-        <div id="sayso-reward-item-redeem-step">
-
-        </div>
-    </div>
-    <div id="sayso-section-header">
-        <p class="sayso-highlight">Select an item below</p>
-    </div>
-    <div class="sayso-element sayso-scrollable" id="sayso-section-body">
-       {{#each rewards.records}}
-        {{>reward_partial}}
-        {{else}}
-        No rewards for you!<br />
-        {{/each}}
-    </div>
-    <div id="sayso-section-footer">
-        <p>Machinima | Recon does not guarantee prizes for participation.
-           Prizes are limited and are redeemed on a first come, first serve basis.
-           Once an item is "Sold Out" it is not guaranteed to be replaced or restocked.
-           Say.So does not take responsibility for Coins not redeemed by the end of the program.
-        </p>
-    </div>
+<div id="sayso-section-header"></div>
+<div id="sayso-section-body">
+	<p class="sayso-heading-text">Select an item below</p>
+	<div class="sayso-element sayso-scrollable" style="height: 375px;">
+		{{#each rewards.records}}
+			{{>reward_partial}}
+		{{else}}
+			No rewards found, please check again soon!<br />
+		{{/each}}
+	</div>
 </div>
+<div id="sayso-section-footer">
+	<p>Machinima | Recon does not guarantee prizes for participation.
+	   Prizes are limited and are redeemed on a first come, first serve basis.
+	   Once an item is "Sold Out" it is not guaranteed to be replaced or restocked.
+	   Say.So does not take responsibility for Coins not redeemed by the end of the program.
+	</p>
+</div>
+<div class="sayso-element sayso-reward-redeem-overlay" id="sayso-reward-redeem-overlay">
+	<div id="sayso-reward-item-redeem-step"></div>
+</div>
+
 
 <div class="sayso-element sayso-partial" data-partial-id="reward_partial">
     <div class="sayso-element sayso-reward-item" data-reward-id="{{id}}">

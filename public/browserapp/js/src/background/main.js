@@ -141,9 +141,13 @@
 		api.sendRequests( processApiResponse );
 		function processApiResponse( data ) {
 			callback(data);
-			if( data.common_data && data.common_data.game ) {
+			if( state.games && data.common_data && data.common_data.game ) {
 				state.games[data.common_data.game.economy_id] = data.common_data.game;
 				comm.broadcast('state.game', data.common_data.game);
+			}
+			if( state.profile && data.common_data && data.common_data.user && data.common_data.user.id === state.profile.id ) {
+				state.profile = data.common_data.user;
+				comm.broadcast('state.profile', data.common_data.user);
 			}
 		}
 	}

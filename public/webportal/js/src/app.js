@@ -65,7 +65,9 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 	}
 
 	function loadMarkup(key, $container) {
-		if (!$container) $container = $contentContainer;
+		if (!$container) {
+            $container = $contentContainer;
+        }
 
 		api.doRequest({
 			action_class : 'markup',
@@ -103,7 +105,9 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 	function processMarkupIntoContainer($container, markup, templateData, runPreTemplateHandlers) {
 		var template;
 
-		if (typeof templateData !== "object") templateData = {};
+		if (typeof templateData !== "object") {
+            templateData = {};
+        }
 
 		if (runPreTemplateHandlers) {
 			var $tempContainer = $('<div></div>');
@@ -288,10 +292,12 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 			return Math.round(((currentExp-currentLevelExp)/(nextLevelExp-currentLevelExp))*100);
 		},
 		"user-public-name": function() {
-			if (state.state.profile.public_name)
-				return state.state.profile.public_name;
-			else
-				return state.state.game.level;
+			if (state.state.profile.public_name) {
+                return state.state.profile.public_name;
+            }
+			else {
+                return state.state.game.level;
+            }
 		},
 		"image-path": function(fileName) {
 			return "/browserapp/images/" + state.state.starbar.short_name + "/" + fileName;
@@ -304,31 +310,22 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 			switch (operator) {
 				case '==':
 					return (v1 == v2) ? options.fn(this) : options.inverse(this);
-					break;
 				case '===':
 					return (v1 === v2) ? options.fn(this) : options.inverse(this);
-					break;
 				case '<':
 					return (v1 < v2) ? options.fn(this) : options.inverse(this);
-					break;
 				case '<=':
 					return (v1 <= v2) ? options.fn(this) : options.inverse(this);
-					break;
 				case '>':
 					return (v1 > v2) ? options.fn(this) : options.inverse(this);
-					break;
 				case '>=':
 					return (v1 >= v2) ? options.fn(this) : options.inverse(this);
-					break;
 				case '||':
 					return (v1 || v2) ? options.fn(this) : options.inverse(this);
-					break;
 				case '&&':
 					return (v1 && v2) ? options.fn(this) : options.inverse(this);
-					break;
 				default:
 					return options.inverse(this);
-					break;
 			}
 		}
 	};
@@ -341,7 +338,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 		"pre-template": {
 			"partial": function ($elem, data) {
 				// partial found, register the
-				Handlebars.registerPartial(data['partialId'], $elem.htmlForTemplate());
+				Handlebars.registerPartial(data.partialId, $elem.htmlForTemplate());
 
 				// remove it from the markup so it doesn't go through the template processing (except as a partial)
 				$elem.remove();
@@ -350,7 +347,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 		"post-template": {
 			"tooltip": function ($elem, data) {
 				// @todo show data['tooltipTitle'] 'neatly' when you roll over this element
-				$elem.attr('title', data['tooltipTitle']); // hack
+				$elem.attr('title', data.tooltipTitle); // hack
 			},
             "placeholder": function () {
                 $.placeholder.shim();
@@ -460,8 +457,11 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 				if( !document.location.href.match('content/get-app-confirmation') )
 					document.location.hash = 'content/get-app-confirmation';
 
-				var downloadLocation = "//" + sayso.module.config.baseDomain + '/starbar/install/extension';
-				var browser = getBrowserNameVersion();
+                var downloadLocation,
+                    browser;
+
+                downloadLocation = "//" + sayso.module.config.baseDomain + '/starbar/install/extension';
+				browser = getBrowserNameVersion();
 
 				function installChrome(){
 					chrome.webstore.install(undefined, undefined, function(s) {console.log(s);});

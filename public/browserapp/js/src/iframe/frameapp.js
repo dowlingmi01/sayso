@@ -79,6 +79,8 @@ sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 			document.write('<scr'+'ipt type="text/javascript" src="//www.surveygizmo.com/s3/polljs/'+data['poll']['external_id']+'-'+data['poll']['external_key']+'/"></scr'+'ipt>');
 			document.write('<link href="/css/surveygizmo/polls-'+data['starbar_short_name']+'.css" rel="stylesheet" media="all" type="text/css" />');
 
+			var documentLoaded =
+
 			function enableClickableRadios() {
 				if ((typeof global.SG_init_page) != 'undefined' && (typeof global.SGSurvey) != 'undefined') {
 					var externalContentElem = $('.sg-wrapper');
@@ -101,7 +103,7 @@ sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 						var i = 15; // Check if CSS has loaded a maximum of 15 times, i.e. for 3000 ms, or 3 seconds
 						// After that assume it has (or give up regardless) and show the poll
 						var cssCheckInterval = setInterval(function(){
-							if (externalContentElem.css('display') == 'inline-table') { // Our css is loaded!
+							if (externalContentElem.css('display') == 'inline-table' && global.document.readyState === "complete") { // Our css is loaded!
 								clearInterval(cssCheckInterval);
 								externalContentElem.css('display', 'block');
 								comm.fireEvent('poll-loaded', {height: 27+$('.sg-survey-form').outerHeight()});

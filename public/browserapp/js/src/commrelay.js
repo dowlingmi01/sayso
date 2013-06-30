@@ -1,13 +1,14 @@
 sayso.module.commrelay = (function(global, forge, dommsg) {
+	var target = forge.is.firefox() ? global.unsafeWindow : global;
 	var names = ['state.game', 'state.logout', 'state.login', 'state.profile', 'state.notifications'];
 	function handleFrontEndRequest(data) {
 		forge.message.broadcastBackground(data.name, data.data, function(response) {
-			global.postMessage(JSON.stringify(['sayso-background-reply', {id: data.id, data: response}]), '*');
+			target.postMessage(JSON.stringify(['sayso-background-reply', {id: data.id, data: response}]), '*');
 		});
 	}
 	function getListener(name) {
 		return function(data) {
-			global.postMessage(JSON.stringify(['sayso-broadcast', {name: name, data: data}]), '*');
+			target.postMessage(JSON.stringify(['sayso-broadcast', {name: name, data: data}]), '*');
 		};
 	}
 	function install() {

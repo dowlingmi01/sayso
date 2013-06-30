@@ -465,9 +465,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 
 		if ($container.hasClass("sayso-poll-container-loading")) { // we already did a slideDown to show the loading element, and we just finished loading
 			$container.removeClass("sayso-poll-container-loading");
-			$poll.animate({'height': data.pollHeight}, 250, function() {
-
-			});
+			$poll.animate({'height': data.pollHeight}, 250);
 			$loadingElement.fadeTo(250, 0, function() {
 				$loadingElement.remove();
 			});
@@ -512,7 +510,9 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 						data.pollHeight = 40 + dataFromIframe.data.height;
 						iframe.$element.css('height', dataFromIframe.data.height); // note that $poll is still the old height, and that is animated in openPoll
 
-						if (!data.iframeLoadCompleted) { // if the iframe was already loaded, we are just resizing
+						if (data.iframeLoadCompleted) { // if the iframe was already loaded, we are just resizing
+							$poll.animate({'height': dataFromIframe.data.height}, 100);
+						} else {
 							data.iframeLoadCompleted = true;
 							openPoll($container, data, $loadingElement, true);
 						}

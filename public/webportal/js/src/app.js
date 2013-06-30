@@ -83,7 +83,9 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 
 	function prepareElements($container, handlerCollection, templateData) {
 		if (!$container) $container = $contentContainer;
-		if (!handlerCollection) handlerCollection = "post-template";
+		if (!handlerCollection) {
+            handlerCollection = "post-template";
+        }
 
 		var $elements = $('.portal-element', $container);
 		var $element;

@@ -6,9 +6,9 @@
 		'util.js',
 		'dommsg.js',
 		'comm-forge.js',
+		'api.js',
 		'framecomm.js',
 		'state.js',
-		'api.js',
 		'browserapp.js',
 		'commrelay.js',
 		'main-forge.js'

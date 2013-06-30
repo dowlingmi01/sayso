@@ -15,7 +15,7 @@
     <div class="landing_stats">
         <h2>My Stats</h2>
         <div class="landing_stats_block">
-            <img class="landing_level_image" id="landing_level_image" src="{{get-record-field state.game.levels state.game.level 'img_url_small'}}"/>
+            <img class="portal-element portal-template-image landing_level_image" id="landing_level_image" data-template-image-src="{{get-record-field state.game.levels state.game.level 'img_url_small'}}"/>
             <aside>
                 <span id="landing_level_text">Level {{state.game.level}},</span>&nbsp;
                 <span id="landing_level_name" class="landing_level_name">{{state.starbar.user_pseudonym}}</span>

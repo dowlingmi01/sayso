@@ -347,6 +347,10 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 			}
 		},
 		"post-template": {
+			"template-image": function ($elem, data) {
+				if (data['templateImageSrc'])
+					$elem.attr('src', data['templateImageSrc']);
+			},
 			"tooltip": function ($elem, data) {
 				// @todo show data['tooltipTitle'] 'neatly' when you roll over this element
 				$elem.attr('title', data.tooltipTitle); // hack

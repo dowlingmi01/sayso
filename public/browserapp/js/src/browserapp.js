@@ -918,7 +918,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 
                     //Dot notation not used due to reserved keyword 'type'
                     if (templateData['type'] === "token") {
-                        quantity = $('input[name="sayso-reward-item-order-quantity-select"]', $nav).val();
+                        quantity = $('select[name="sayso-reward-item-order-quantity-select"]', $nav).val();
                         api.doRequest({
                             action_class : "game",
                             action : "redeemReward",

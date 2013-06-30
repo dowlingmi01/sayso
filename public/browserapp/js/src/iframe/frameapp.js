@@ -103,8 +103,8 @@ sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 						var i = 15; // Check if CSS has loaded a maximum of 15 times, i.e. for 3000 ms, or 3 seconds
 						// After that assume it has (or give up regardless) and show the poll
 						var cssCheckInterval = setInterval(function(){
-							if (externalContentElem.css('display') == 'inline-table' && $(document)[0].readyState === "complete") { // Our css is loaded!
-								clearInterval(cssCheckInterval);
+							if (externalContentElem.css('display') == 'inline-table') { // Our css is loaded!
+								// clearInterval(cssCheckInterval); commented out to keep fixing the height for 3 seconds, since images or videos take some time to get their size
 								externalContentElem.css('display', 'block');
 								comm.fireEvent('poll-loaded', {height: 27+$('.sg-survey-form').outerHeight()});
 							}

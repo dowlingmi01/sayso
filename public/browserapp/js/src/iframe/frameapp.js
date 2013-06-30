@@ -89,9 +89,10 @@ sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 					if (previousHeight != height) {
 						comm.fireEvent('poll-loaded', {height: height});
 						previousHeight = height;
-
-						setTimeout(afterPollLoaded, 200); // repeat
 					}
+
+					afterCssLoadMaxChecks--;
+					setTimeout(afterPollLoaded, 200); // repeat
 				}
 			}
 

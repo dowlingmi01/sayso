@@ -10,10 +10,11 @@
             var config = {
                 color: '#000',
                 cls: 'placeholder',
+				context: null,
                 selector: 'input[placeholder], textarea[placeholder]'
             };
             $.extend(config,opts);
-            return !this.browser_supported() && $(config.selector)._placeholder_shim(config);
+            return !this.browser_supported() && $(config.selector, config.context)._placeholder_shim(config);
         }
     }});
 
@@ -96,9 +97,3 @@
         }
     });
 })(jQuery);
-
-jQuery(document).add(window).bind('ready load', function() {
-    if (jQuery.placeholder) {
-        jQuery.placeholder.shim();
-    }
-});

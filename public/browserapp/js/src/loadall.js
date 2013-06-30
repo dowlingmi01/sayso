@@ -2,6 +2,7 @@
 	var scripts = [
 		'config.js',
 		'lib/jquery-1.10.1.js',
+		'lib/jquery.html5-placeholder-shim.js',
 		'lib/handlebars.js',
 		'util.js',
 		'dommsg.js',

@@ -753,7 +753,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 				$elem.attr('title', data['tooltipTitle']); // hack
 			},
             "placeholder": function () {
-                $.placeholder.shim();
+                $.placeholder.shim({context: $nav});
             },
 			"hide-button": function ($elem) {
 				$elem.click(function() {

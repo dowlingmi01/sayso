@@ -309,7 +309,7 @@ header nav ul {
   top: 108px;
   position: relative;
   width: 1000px;
-  margin: 0px auto;
+  margin: 0px auto 200px auto;
 }
 /* Welcome Page */
 .welcome_content {

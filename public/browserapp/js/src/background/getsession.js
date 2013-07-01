@@ -12,7 +12,7 @@ sayso.module.getSession = (function(global, Api, comm, dommsg, util, config, $){
 								callback(storageSession);
 							} else
 								callback(session);
-						} else if( !session )
+						} else if( !session || !session.id || !session.key )
 							comm.get('userKey', function(userKey) {
 								if( userKey ) {
 									var api = new Api(config.baseDomain);
@@ -21,8 +21,9 @@ sayso.module.getSession = (function(global, Api, comm, dommsg, util, config, $){
 										if( session && session.session_id && session.session_key ) {
 											session = {id: session.session_id, key: session.session_key, timestamp: (new Date()).getTime()};
 											comm.set('session', session, function() {
-												comm.set('oldUserKey', userKey);
-												comm.set('userKey', null);
+												//Don't move the old key for now...
+												//comm.set('oldUserKey', userKey);
+												//comm.set('userKey', null);
 											});
 										}
 										callback(session);

@@ -467,7 +467,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
                                 location.hash = 'content/get-app-confirmation';
                             }
                             else {
-                                location.hash = 'content/thank-you-registration';
+                                location.hash = '';
                             }
                         }
                     });

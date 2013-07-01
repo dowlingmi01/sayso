@@ -310,7 +310,13 @@ header nav ul {
   top: 108px;
   position: relative;
   width: 1000px;
-  margin: 0px auto 200px auto;
+  margin: 0px auto;
+}
+#app_shim {
+  position: relative;
+  top: 108px;
+  height: 100px;
+  clear: both;
 }
 /* Welcome Page */
 .welcome_content {
@@ -617,9 +623,7 @@ header nav ul {
   margin-right: 0%;
   margin-top: 5%;
   width: 50%;
-  right: 0px;
-  top: -200px;
-  position: absolute;
+  float: right;
 }
 .tour_content_right h1 {
   padding: 0;

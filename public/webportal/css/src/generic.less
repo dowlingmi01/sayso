@@ -358,7 +358,14 @@ header {
   top: @header-height;
   position: relative;
   width: 1000px;
-  margin: 0px auto 200px auto;
+  margin: 0px auto;
+}
+
+#app_shim {
+    position: relative;
+    top: @header-height;
+    height: 100px;
+    clear: both;
 }
 
 /* Welcome Page */
@@ -667,11 +674,8 @@ header {
 
 .tour_content_right {
   .top_right_margin();
-    //Temporary fix for issues with content div having 200px padding.
     width: 50%;
-    right: 0px;
-    top: -200px;
-    position: absolute;
+    float: right;
 
     h1 {
         .zero;

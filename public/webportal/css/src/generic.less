@@ -595,8 +595,8 @@ header {
 /* Logged In Landing */
 
 .landing_content_left {
-  float: left;
   .top_left_margin();
+  width: 50%;
 
   h2 {
     display: inline-block;
@@ -651,7 +651,6 @@ header {
 /* Tour Generics */
 
 .tour_content_left {
-  float: left;
   .top_left_margin();
   width: 50%;
 
@@ -667,9 +666,12 @@ header {
 }
 
 .tour_content_right {
-  float: right;
   .top_right_margin();
-  width: 50%;
+    //Temporary fix for issues with content div having 200px padding.
+    width: 50%;
+    right: 0px;
+    top: -200px;
+    position: absolute;
 
     h1 {
         .zero;

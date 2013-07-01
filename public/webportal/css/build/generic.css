@@ -549,9 +549,9 @@ header nav ul {
 }
 /* Logged In Landing */
 .landing_content_left {
-  float: left;
   margin-left: 0%;
   margin-top: 5%;
+  width: 50%;
 }
 .landing_content_left h2 {
   display: inline-block;
@@ -596,7 +596,6 @@ header nav ul {
 }
 /* Tour Generics */
 .tour_content_left {
-  float: left;
   margin-left: 0%;
   margin-top: 5%;
   width: 50%;
@@ -615,10 +614,12 @@ header nav ul {
   width: 60%;
 }
 .tour_content_right {
-  float: right;
   margin-right: 0%;
   margin-top: 5%;
   width: 50%;
+  right: 0px;
+  top: -200px;
+  position: absolute;
 }
 .tour_content_right h1 {
   padding: 0;

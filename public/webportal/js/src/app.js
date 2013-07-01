@@ -528,7 +528,17 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 					$("#force-download").attr("href", downloadLocation);
 					location.href = downloadLocation;
 				}
-			}
+			},
+            "landing_currency_count": function($elem, data) {
+                $(document).on('sayso:state-game', function () {
+                    $elem.html(state.state.game.currencies.redeemable.balance);
+                });
+            },
+            "landing_experience_count": function($elem, data) {
+                $(document).on('sayso:state-game', function () {
+                    $elem.html(state.state.game.currencies.experience.balance);
+                });
+            }
 		}
 	};
 

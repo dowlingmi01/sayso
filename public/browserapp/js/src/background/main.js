@@ -1,21 +1,26 @@
 (function(global, Api, comm, config, getSession){
-	var baseDomain = config.baseDomain;
-	var api = new Api(baseDomain);
 	var state = {
 		starbars: {},
 		games: {},
 		notifications: {},
 		loggedIn: null,
-		baseDomain: baseDomain
+		session: {}
 	};
 	var pendingStarbars = {};
 	var pendingRequests = {};
+	function getPublicApi() {
+		return new Api(config.baseDomain);
+	}
+	function getSessionApi() {
+		return new Api(config.baseDomain, state.session.id, state.session.key);
+	}
 	function login( data, callback ) {
-		api.sendRequest( {action_class: 'Login', action: 'login', username: data.email, password: data.password}, function( data ) {
+		getPublicApi().sendRequest( {action_class: 'Login', action: 'login', username: data.email, password: data.password}, function( data ) {
             var session = data.responses['default'].variables;
             var result = {result: false, response: {}};
 			if (session) {
 				session = { id: session.session_id, key: session.session_key, timestamp: (new Date()).getTime() };
+				state.session = session;
 				comm.set('session', session, function() {
 					state.loggedIn = null;
 					getUserState();
@@ -23,7 +28,6 @@
 				});
                 result.result = true;
                 result.response = session;
-				api = new Api(baseDomain, session.id, session.key);
 			}
             else {
                 result.response = data.responses['default'];
@@ -34,8 +38,7 @@
 		});
 	}
 	function logout(unused, callback) {
-		api = new Api(baseDomain);
-		api.sendRequest( {action_class: 'Login', action: 'logout', current_session_id: state.session.id} );
+		getPublicApi().sendRequest( {action_class: 'Login', action: 'logout', current_session_id: state.session.id} );
 		state.starbars = {};
 		state.games = {};
 		state.notifications = {};
@@ -44,14 +47,12 @@
 		comm.set('session', {});
 		callback();
 		comm.broadcast('state.logout', {loggedIn:false});
-
-		// reset api instance to be logged out
-		api = new Api(baseDomain);
 	}
 	function getUserState() {
 		getSession( function( session ) {
-			if( session && session.id && session.key ) {
-				if (!api.session_id) api = new Api(baseDomain, session.id, session.key);
+			state.session = session || {};
+			if( session.id && session.key ) {
+				var api = getSessionApi();
 				api.setRequest( 'user', {action_class: 'User', action: 'getUser'} );
 				api.setRequest( 'state', {action_class: 'User', action: 'getState'} );
 				api.sendRequests( function(data) {
@@ -84,6 +85,7 @@
 		if( pendingStarbars[starbarId] )
 			return;
 		pendingStarbars[starbarId] = true;
+		var api = getSessionApi();
 		api.setRequest( 'game', {action_class: 'Game', action: 'getGame', starbar_id: starbarId} );
 		api.setRequest( 'notifications', {action_class: 'Notification', action: 'getUserNotifications', starbar_id: starbarId} );
 		api.setRequest( 'starbar', {action_class: 'Starbar', action: 'getStarbar', starbar_id: starbarId} );
@@ -131,10 +133,11 @@
 	function setVisibility( data ) {
 		state.visibility = data;
 		comm.broadcast('state.visibility', state.visibility);
-		api.sendRequest({action_class: 'User', action: 'updateState', state_data: {visibility: data}});
+		getSessionApi().sendRequest({action_class: 'User', action: 'updateState', state_data: {visibility: data}});
 	}
 	function apiDoRequests( requests, callback ) {
 		if (!requests) return;
+		var api = getSessionApi();
 		for (var request in requests) {
 			api.setRequest( request, requests[request] );
 		}

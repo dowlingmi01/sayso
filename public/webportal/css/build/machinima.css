@@ -651,7 +651,8 @@ header nav ul {
   display: inline-block;
 }
 .tour_final_left {
-  float: left;
+  display: inline-block;
+  vertical-align: top;
   width: 33%;
   border-right: 1px solid grey;
   height: 190px;
@@ -676,10 +677,11 @@ header nav ul {
   display: inline-block;
 }
 .tour_final_middle {
-  float: left;
   width: 33%;
   border-right: 1px solid grey;
   height: 190px;
+  display: inline-block;
+  vertical-align: top;
 }
 .tour_final_middle h2 {
   font-family: "proxima-nova", sans-serif;
@@ -707,7 +709,8 @@ header nav ul {
   margin-left: 15%;
 }
 .tour_final_right {
-  float: left;
+  display: inline-block;
+  vertical-align: top;
   width: 33%;
   height: 190px;
 }

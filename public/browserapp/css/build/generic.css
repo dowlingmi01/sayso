@@ -388,7 +388,8 @@
 #sayso-app-container.sayso-app-container-stowed {
   width: 40px;
 }
-#sayso-app-container.sayso-app-container-stowed #sayso-app-background {
+#sayso-app-container.sayso-app-container-stowed #sayso-app-background,
+#sayso-app-container.sayso-app-container-stowed #sayso-close-section-confirmation-overlay {
   display: none;
 }
 #sayso-app-container.sayso-app-container-stowed #sayso-app {

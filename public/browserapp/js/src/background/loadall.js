@@ -33,9 +33,9 @@
 			function(content) {
 				content = content + (forge.is.ie() ? '' : '\n//@ sourceURL=' + url);
 				if( window.execScript )
-					window.execScript(content)
+					window.execScript(content);
 				else
-					eval(content);
+					(1,eval)(content);
 				advance();
 			}
 		);

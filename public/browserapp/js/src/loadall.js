@@ -21,7 +21,7 @@
 			if( window.execScript )
 				window.execScript(content);
 			else
-				eval(content);
+				(1,eval)(content);
 			i++;
 			if( i < scripts.length )
 				loadNextScript();

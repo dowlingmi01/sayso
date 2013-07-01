@@ -171,7 +171,6 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
     }
 
     function stateLogin() {
-        console.log(location.hash);
         if(location.hash!==getBrowserAppHash){
             if(state.state.loggedIn)
             {

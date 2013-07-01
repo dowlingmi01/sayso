@@ -93,6 +93,27 @@
 		z-index: 2;
 	}
 
+	#sayso-close-section-confirmation-overlay {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background-color: #000;
+		display: none;
+		z-index: 10; // only #sayso-section-container (and descendents) and the theme logo are above
+	}
+
+	#sayso-nav-theme-logo {
+		background-image: url('@{base-image-url}/nav-theme-logo.png');
+		position: absolute;
+		bottom: 46px;
+		left: 118px;
+		width: 147px;
+		height: 33px;
+		z-index: 14; // above #sayso-close-section-confirmation-overlay
+	}
+
 	.sayso-nav-box {
 		position: absolute;
 	}
@@ -204,24 +225,6 @@
 		background-repeat: no-repeat;
 		z-index: 2;
 		cursor: auto;
-
-		#sayso-nav-profile-bubble-top {
-			background-image: url('@{base-image-url}/nav-profile-bubble-top.png');
-			position: absolute;
-			width: 35px;
-			height: 14px;
-			top: -14px;
-			left: 179px;
-		}
-
-		#sayso-nav-profile-logo {
-			background-image: url('@{base-image-url}/nav-profile-logo.png');
-			position: absolute;
-			top: 5px;
-			left: 75px;
-			width: 126px;
-			height: 23px;
-		}
 
 		#sayso-nav-profile-user-image {
 			background-image: url('@{base-image-url}/default-user-image.png');
@@ -381,6 +384,7 @@
 #sayso-section-container {
 	position: relative;
 	display: none;
+	z-index: 15; // above #sayso-close-section-confirmation-overlay
 
 	.sayso-tab {
 		display: none;
@@ -879,6 +883,23 @@
 		#sayso-section {
 			#sayso-section-header {
 				background-image: url('@{base-image-url}/section-heading-surveys.png');
+
+				.sayso-section-link {
+					color: #666;
+					font-weight: bold;
+				}
+
+				ul {
+					li {
+						&:last-child {
+							background-image: url('@{base-image-url}/icon-switch-survey.png');
+							background-repeat: no-repeat;
+							background-position: right 0px;
+							height: 16px;
+							padding-right: 20px
+						}
+					}
+				}
 			}
 
 			#sayso-section-body {

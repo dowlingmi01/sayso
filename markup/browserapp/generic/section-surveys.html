@@ -19,7 +19,9 @@
 	<div class="sayso-element sayso-tab" data-tab="surveys-new">
 		<p class="sayso-heading-text">
 			<p class="sayso-heading-text">Earn {{currency-name-highlighted "experience"}} &amp; {{currency-name-highlighted "redeemable"}} for each Survey you complete. Share with your friends to earn extra points and you'll be that much closer to winning the big giveaway.</p>
-			<p class="sayso-heading-text">Don't forget to complete the <span class="sayso-element sayso-highlight sayso-survey-link" data-survey-id="%CONFIG_PROFILE_SURVEY_ID%">Profile Survey</span> to unlock the goodies in the reward center.</p>
+			{{#compare surveys.records.0.id "==" "71"}}
+				<p class="sayso-heading-text">Don't forget to complete the <span class="sayso-element sayso-highlight sayso-survey-link" data-survey-id="%CONFIG_PROFILE_SURVEY_ID%">Profile Survey</span> to unlock the goodies in the reward center.</p>
+			{{/compare}}
 		</p>
 		{{>surveys-new}}
 	</div>
@@ -37,7 +39,7 @@
 <div id="sayso-section-footer"></div>
 
 <div class="sayso-element sayso-partial" data-partial-id="surveys-new">
-	<div class="sayso-element sayso-scrollable" style="height: 356px">
+	<div class="sayso-element sayso-scrollable" style="height: {{#compare surveys.records.0.id '==' '71'}}356{{else}}384{{/compare}}px">
 		{{#each surveys.records}}
 			{{>survey-new-archived}}
 		{{else}}

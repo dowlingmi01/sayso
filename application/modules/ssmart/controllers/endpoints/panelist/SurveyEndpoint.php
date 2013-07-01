@@ -21,6 +21,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 	public function getSurvey(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
+				"starbar_id"			=> "int_required_notEmpty",
 				"survey_id"			=> "int_required_notEmpty",
 				"send_questions"		=> "required_allowEmpty",
 				"send_question_choices"	=> "required_allowEmpty"
@@ -36,10 +37,28 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
+		$starbarId			= (int)$request->valid_parameters["starbar_id"];
 		$surveyId			= (int)$request->valid_parameters["survey_id"];
 		$userId				= $request->auth->user_data->user_id;
 
-		// @TODO IMPORTANT! this should use getSurveys() or equivalent to ensure that the user is allowed to get this survey!
+		$surveyResponse = new Survey_Response();
+		$surveyResponse->loadDataByUniqueFields(array("user_id" => $userId, "survey_id" => $surveyId));
+
+		if (!$surveyResponse->id) {
+			// Failed... might be because it's a new user. Try again after marking unseen surveys new
+			Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($starbarId, $userId, 'surveys');
+
+			$surveyResponse->loadDataByUniqueFields(array("user_id" => $userId, "survey_id" => $surveyId));
+		}
+
+		if (!$surveyResponse->id) {
+			throw new Exception("SURVEY_UNAVAILABLE");
+		}
+
+		if ($surveyResponse->status == "completed" || $surveyResponse->status == "disqualified") {
+			throw new Exception("SURVEY_COMPLETED");
+		}
+
 		$survey = new Survey();
 		$survey->loadData($surveyId);
 

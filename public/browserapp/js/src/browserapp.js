@@ -3,6 +3,8 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 	var userMode = "logged-out";
 	var $nav, $sectionContainer, $section;
 	var currentSection, currentTabContainers, timeoutIdSectionLoadingSpinner;
+	var confirmBeforeClosingSection, $closeSectionConfirmationOverlay;
+	var functionBackup = {};
 	var portalListenersPaused = false;
 
 	function initApp() {
@@ -66,6 +68,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		$nav = $('#sayso-app-container');
 		$sectionContainer = $('#sayso-section-container');
 		$section = $('#sayso-section');
+		$closeSectionConfirmationOverlay = $('#sayso-close-section-confirmation-overlay');
 
 		if (config.webportal) {
 			// hide the hide button, since we're on the portal
@@ -182,7 +185,11 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		if (updateState) { // user initiated visibility change here, trigger it and do nothing (listener will trigger animation)
 			state.setVisibility("stowed");
 		} else {
-			closeSection();
+
+			// note that closeSection() returns false if a confirmation dialog appears to the user,
+			// and the user chooses not to close the section, so we should stop here if that happens
+			if (!closeSection()) return;
+
 			$nav.addClass("sayso-app-container-stowed");
 		}
 	}
@@ -276,12 +283,19 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		}
 
 		if (section == currentSection) {
-			closeSection();
+			// note that closeSection() returns false if a confirmation dialog appears to the user,
+			// and the user chooses not to close the section, so we should stop here if that happens
+			if (!closeSection()) return;
 			return;
 		} else if (currentSection) {
-			closeSection();
+			if (!closeSection()) return;
 		}
 
+		if (section == "survey") {
+			enableConfirmationBeforeClosingSection("survey");
+		}
+
+		// user tried to open about section while the nav is stowed, so show the nav
 		if (state.state.visibility == "stowed") {
 			showNav(true);
 			return;
@@ -370,6 +384,9 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		currentSection = null;
 
 		// @todo we probably should reset the Handlebars partials here?
+
+		// important to return true. In enableConfirmationBeforeClosingSection(), closeSection is overwritten with a function that returns false if the user cancels the close operation
+		return true;
 	}
 
 	function openTab($tabContainer, tabName, templateData, clickedElementData) {
@@ -408,9 +425,11 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		if ('surveySize' in data || !data['surveySize']) data['surveySize'] = "large"; // default to profile survey size
 		data['section'] = 'survey';
 
-		// closeSection() allows a survey link on the survey section itself
-		// otherwise, in that situation, the link would just close the survey section (because clicking a section twice closes it)
-		closeSection();
+		// using closeSection() to allow a survey link on the survey section itself
+		// otherwise, in that situation, the link would just close the survey section (because opening the same section twice closes it)
+		// note that closeSection() returns false if a confirmation dialog appears to the user,
+		// and the user chooses not to close the section, so we should stop here if that happens
+		if (!closeSection()) return;
 
 		// add a class for the survey size for the css rules -- note that closeSection() removes all $sectionContainer's classes
 		$sectionContainer.addClass('sayso-section-survey-' + data['surveySize']);
@@ -543,6 +562,63 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 
 		// show the completed tab *link* in case this is the first poll this user has completed
 		$('#sayso-completed-tab-link', $section).show();
+	}
+
+
+	function enableConfirmationBeforeClosingSection (str) {
+		if (!confirmBeforeClosingSection) {
+			confirmBeforeClosingSection = true;
+
+			var confirmBeforeClosingSectionMessage = "If you leave this " + str + ", you will lose any unsaved progress. Are you sure you want to leave this " + str + "?";
+
+			if (global.onbeforeunload) {
+				functionBackup.windowOnBeforeUnload = global.onbeforeunload;
+			}
+
+			global.onbeforeunload = function() { return confirmBeforeClosingSectionMessage };
+
+			$closeSectionConfirmationOverlay.fadeTo(0, 0);
+			$closeSectionConfirmationOverlay.show();
+			$closeSectionConfirmationOverlay.fadeTo(200, 0.6);
+
+			functionBackup.closeSection = closeSection;
+			closeSection = function() {
+				if (!confirm(confirmBeforeClosingSectionMessage)) // make sure user wants to leave
+					return;
+
+				disableConfirmationBeforeClosingSection();
+
+				// return true to confirm that closeSection() succeeded
+				return true;
+			}
+
+			$closeSectionConfirmationOverlay.click(function(event){
+				event.stopPropagation();
+
+				closeSection(); // closeSection (the new one, above) does the confirming
+			});
+		}
+	}
+
+	function disableConfirmationBeforeClosingSection () {
+		if (confirmBeforeClosingSection) {
+			confirmBeforeClosingSection = false;
+
+			if (functionBackup.windowOnBeforeUnload) {
+				global.onbeforeunload = functionBackup.windowOnBeforeUnload;
+				delete functionBackup.windowOnBeforeUnload;
+			} else {
+				global.onbeforeunload = null;
+			}
+
+			$closeSectionConfirmationOverlay.unbind('click');
+			$closeSectionConfirmationOverlay.fadeTo(200, 0, function() {
+				$closeSectionConfirmationOverlay.hide();
+			});
+
+			closeSection = functionBackup.closeSection;
+			closeSection();
+		}
 	}
 
 
@@ -803,11 +879,15 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 							finalTemplateData.survey = survey;
 							$elem.html('');
 							processMarkupIntoContainer($elem, "{{>survey-"+dataFromIframe.data.survey_status+"}}", finalTemplateData);
+							disableConfirmationBeforeClosingSection();
 						});
 					}
 				});
 
 				$elem.append(iframe.$element);
+			},
+			"disable-confirmation-before-closing-section": function($elem, data) {
+				disableConfirmationBeforeClosingSection();
 			},
 			"get-satisfaction-iframe-container": function ($elem, data) {
 				var iframe = createIframe(null, function(unused, dataFromIframe) {

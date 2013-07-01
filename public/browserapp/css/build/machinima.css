@@ -139,6 +139,25 @@
   position: relative;
   z-index: 2;
 }
+#sayso-app-container #sayso-close-section-confirmation-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #000;
+  display: none;
+  z-index: 10;
+}
+#sayso-app-container #sayso-nav-theme-logo {
+  background-image: url('../../images/machinima/nav-theme-logo.png');
+  position: absolute;
+  bottom: 46px;
+  left: 118px;
+  width: 147px;
+  height: 33px;
+  z-index: 14;
+}
 #sayso-app-container .sayso-nav-box {
   position: absolute;
 }
@@ -246,22 +265,6 @@
   background-repeat: no-repeat;
   z-index: 2;
   cursor: auto;
-}
-#sayso-app-container #sayso-nav-profile-container #sayso-nav-profile-bubble-top {
-  background-image: url('../../images/machinima/nav-profile-bubble-top.png');
-  position: absolute;
-  width: 35px;
-  height: 14px;
-  top: -14px;
-  left: 179px;
-}
-#sayso-app-container #sayso-nav-profile-container #sayso-nav-profile-logo {
-  background-image: url('../../images/machinima/nav-profile-logo.png');
-  position: absolute;
-  top: 5px;
-  left: 75px;
-  width: 126px;
-  height: 23px;
 }
 #sayso-app-container #sayso-nav-profile-container #sayso-nav-profile-user-image {
   background-image: url('../../images/machinima/default-user-image.png');
@@ -402,6 +405,7 @@
 #sayso-section-container {
   position: relative;
   display: none;
+  z-index: 15;
 }
 #sayso-section-container .sayso-tab {
   display: none;
@@ -879,6 +883,17 @@
 }
 #sayso-section-container.sayso-section-survey #sayso-section #sayso-section-header {
   background-image: url('../../images/machinima/section-heading-surveys.png');
+}
+#sayso-section-container.sayso-section-survey #sayso-section #sayso-section-header .sayso-section-link {
+  color: #666;
+  font-weight: bold;
+}
+#sayso-section-container.sayso-section-survey #sayso-section #sayso-section-header ul li:last-child {
+  background-image: url('../../images/machinima/icon-switch-survey.png');
+  background-repeat: no-repeat;
+  background-position: right 0px;
+  height: 16px;
+  padding-right: 20px;
 }
 #sayso-section-container.sayso-section-survey #sayso-section #sayso-section-body .sayso-survey-title {
   height: 13px;

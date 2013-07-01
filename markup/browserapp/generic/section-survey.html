@@ -1,11 +1,22 @@
-<div id="sayso-section-header"></div>
+<div id="sayso-section-header">
+	<ul>
+		<li class="sayso-element sayso-section-link" data-section="surveys">Switch Survey</li>
+	</ul>
+</div>
 <div id="sayso-section-body">
-	{{#with survey.variables.survey}}
-		<div class="sayso-survey-title sayso-highlight">{{title}}</div>
-		<div class="sayso-element sayso-survey-iframe-container"></div>
+	{{#if survey.errors.endpoint_exception}}
+		<div class="sayso-element sayso-disable-confirmation-before-closing-section"></div>
+		{{#compare survey.errors.endpoint_exception "==" "SURVEY_COMPLETED"}}
+			You have already completed this survey.
+		{{else}}
+			This survey is currently unavailable.
+		{{/compare}}
 	{{else}}
-		You have already completed this survey.
-	{{/with}}
+		{{#with survey.variables.survey}}
+			<div class="sayso-survey-title sayso-highlight">{{title}}</div>
+			<div class="sayso-element sayso-survey-iframe-container"></div>
+		{{/with}}
+	{{/if}}
 </div>
 
 <div class="sayso-element sayso-partial" data-partial-id="survey-completed">

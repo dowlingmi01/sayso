@@ -24,6 +24,15 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
             }
             if(!state.state.loggedIn) {
                 loadMarkup('landing');
+                $signOutButton.attr('href', '#content/register');
+            }
+            else {
+                $signOutButton.html('Sign Out');
+                $signOutButton.on('click', function() {
+                    if (state.state.loggedIn) {
+                        state.logout();
+                    }
+                });
             }
         }
         //Bind our hashchange event.
@@ -35,11 +44,6 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
         //TODO: Move all of these into portal-element.
         $loginButton.click(function() {
             doLogin();
-        });
-        $signOutButton.click(function() {
-            if (state.state.loggedIn) {
-                state.logout();
-            }
         });
         $passwordField.keyup(function(event){
             if(event.keyCode === 13){
@@ -173,9 +177,17 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
             $passwordField.val('');
             $loginDiv.hide();
             $forgotPassword.hide();
+            $signOutButton.html('Sign Out');
+
+            $signOutButton.on('click', function() {
+                if (state.state.loggedIn) {
+                    state.logout();
+                }
+            });
         }
         else
         {
+            $signOutButton.off('click');
             loadMarkup('landing');
             $loginButton.show();
             $forgotPassword.show();
@@ -186,6 +198,9 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
         loadMarkup('log-out');
         $loginDiv.show();
         $forgotPassword.show();
+        $signOutButton.off('click');
+        $signOutButton.html('Sign Up');
+        $signOutButton.attr('href', '#content/register');
     }
 
     function hashChanged() {

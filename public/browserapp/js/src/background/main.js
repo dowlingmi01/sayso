@@ -50,7 +50,8 @@
 	}
 	function getUserState() {
 		getSession( function( session ) {
-			state.session = session || {};
+			session = session || {};
+			state.session = session;
 			if( session.id && session.key ) {
 				var api = getSessionApi();
 				api.setRequest( 'user', {action_class: 'User', action: 'getUser'} );

@@ -18,9 +18,10 @@ sayso.module.getSession = (function(global, Api, comm, dommsg, util, config, $){
 									var api = new Api(config.baseDomain);
 									api.sendRequest({action_class: 'Login', action: 'migrateKey', user_key: userKey}, function(data) {
 										session = data.responses['default'].variables;
-										if( session ) {
+										if( session && session.session_id && session.session_key ) {
 											session = {id: session.session_id, key: session.session_key, timestamp: (new Date()).getTime()};
 											comm.set('session', session, function() {
+												comm.set('oldUserKey', userKey);
 												comm.set('userKey', null);
 											});
 										}

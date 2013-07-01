@@ -1013,7 +1013,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			},
 			//calls the user.connectSocialNetwork endpoint
 			"social-connect" : function ($elem, data) {
-				$elem.click(function() {
+				$elem.on("click", (function() {
 					api.doRequest({
 						action_class : "user",
 						action : "connectSocialNetwork",
@@ -1021,13 +1021,58 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 						network : data["network"],
 						oauth : data["oauth"]
 					}, function(response){
-						if (response.responses.default.variables.success == true) {
-							//it worked
+						if (response.responses.default.errors_returned === undefined) {
+							if (response.responses.default.variables.success === true) {
+								updateElements();
+								$("#sayso-user-profile-social-link-" + data["network"]).css("background-position", "0 -66px");
+								$("#sayso-user-profile-social-link-" + data["network"]).off("mouseenter");
+								$("#sayso-user-profile-social-link-" + data["network"]).off("mouseleave");
+								$("#sayso-user-profile-social-link-" + data["network"]).off("click");
+							} else {
+								var loginUrl = response.responses.default.variables.login_url;
+								window.open(loginUrl);
+							}
 						} else {
-							//it failed
+							//notify of error
 						}
+
 					});
-				});
+				}));
+
+				switch (data["network"]) {
+					case ("FB") :
+						$("#sayso-user-profile-social-link-FB").on("mouseenter", (function() {
+							$("#sayso-user-profile-social-link-FB").css("background-position", "0 -66px");
+						}));
+						$("#sayso-user-profile-social-link-FB").on("mouseleave", (function() {
+							$("#sayso-user-profile-social-link-FB").css("background-position", "0 0px");
+						}));
+
+						if (state.state.profile.user_socials.facebook !== undefined)
+						{
+							$("#sayso-user-profile-social-link-FB").css("background-position", "0 -66px");
+							$("#sayso-user-profile-social-link-FB").off("mouseenter");
+							$("#sayso-user-profile-social-link-FB").off("mouseleave");
+							$("#sayso-user-profile-social-link-FB").off("click");
+						}
+						break;
+					case ("TW") :
+						$("#sayso-user-profile-social-link-TW").on("mouseenter", (function() {
+							$("#sayso-user-profile-social-link-TW").css("background-position", "0 -66px");
+						}));
+						$("#sayso-user-profile-social-link-TW").on("mouseleave", (function() {
+							$("#sayso-user-profile-social-link-TW").css("background-position", "0 0px");
+						}));
+
+						if (state.state.profile.user_socials.twitter !== undefined)
+						{
+							$("#sayso-user-profile-social-link-TW").css("background-position", "0 -66px");
+							$("#sayso-user-profile-social-link-TW").off("mouseenter");
+							$("#sayso-user-profile-social-link-TW").off("mouseleave");
+							$("#sayso-user-profile-social-link-TW").off("click");
+						}
+						break;
+				}
 			},
             "experience-level-item": function($elem, data) {
                 var oldStyle = $elem.css('background-image');
@@ -1132,18 +1177,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 					var value = "0 -" + data['backgroundTop'] + "px";
 					$("#sayso-about-help-links").css("background-position", value);
 				});
-			},
-
-			"user-profile-social-link" : function ($elem, data) {
-				var id = $elem[0].id;
-				$elem.mouseenter(function() {
-					$("#" + id).css("background-position", "0 -66px");
-				});
-				$elem.mouseleave(function() {
-					$("#" + id).css("background-position", "0 0px");
-				});
-			},
-
+			}
 		}
 	};
 

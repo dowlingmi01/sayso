@@ -223,6 +223,7 @@ class Ssmart_EndpointResponse
 		$request = new Ssmart_EndpointRequest();
 		$request->loadParams($params, $this->_request->auth);
 
+		//TODO: check if class exists
 		$otherClass = new $class($requestName, $this->_request->auth);
 		$otherEndpointResponse = $otherClass->$action($request);
 		if ($otherEndpointResponse)
@@ -359,12 +360,20 @@ class Ssmart_EndpointResponse
 		return $this->_common_data;
 	}
 
+	//TODO: common data is not handled very well for extensibility purposes.
+	//For one, multiple common data elements will overwrite each other.
+	//For two, adding common deata elements is not easy or semantically correct.
 	public function getCommonDataFromModel($dataType, $params)
 	{
 		switch($dataType)
 		{
 			case "game":
 				$commonData = array("game" => Game_Transaction::getGame( $params["user_id"], $params["economy_id"] ));
+				break;
+			case "user":
+				$userData = $this->getFromOtherEndpoint("getUser", $params["class"], array(), $params["request_name"]);
+				$userDataRecord = $userData->records[0];
+				$commonData = array("user" => $userDataRecord);
 				break;
 			default:
 				return new Ssmart_EndpointError("common_data_type_not_found");

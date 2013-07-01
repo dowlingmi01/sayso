@@ -25,8 +25,22 @@ class Ssmart_Panelist_UserEndpoint extends Ssmart_GlobalController
 
 		$user = new User();
 		$user->loadData($userId);
+		$user->getUserSocials();
 		$userExportData = $user->exportData();
 		$userPropertiesData = $user->exportProperties();
+
+		//hack to convert _user_socials to be usable
+		$userSocials = $response->getRecordsFromCollection($userPropertiesData["_user_socials"]);
+		if (is_array($userSocials))
+		{
+			$formattedUserSocials = array();
+			foreach ($userSocials as $key => $value)
+			{
+				$formattedUserSocials[$value["provider"]] = $value;
+			}
+		}
+		$userPropertiesData["_user_socials"] = $formattedUserSocials;
+
 		$userData = array_merge($userExportData, $userPropertiesData);
 
 		$cleanUser = array($userId => $this->_cleanUserResponse($userData));
@@ -133,21 +147,39 @@ class Ssmart_Panelist_UserEndpoint extends Ssmart_GlobalController
 		switch($network)
 		{
 			case "FB" :
-				$connected = User_Social::connectFacebook($userId, $starbarId);
+				if (!$this->_hasSocial($userId, "facebook"))
+					$connected = User_Social::connectFacebook($userId, $starbarId);
+				else
+					throw new Exception("Already connected.");
 				break;
 			case "TW" :
-				if (!$request->submitted_parameters->oauth)
-					throw new Exception("Missing Twitter oauth credentials.");
-				$connected = User_Social::connectTwitter($userId, $starbarId, $oauth);
+				if (!$this->_hasSocial($userId, "twitter"))
+				{
+					if (!property_exists($request->submitted_parameters, "oauth"))
+						throw new Exception("Missing Twitter oauth credentials.");
+					$oauth = $request->submitted_parameters->oauth;
+					$connected = User_Social::connectTwitter($userId, $starbarId, $oauth);
+				} else
+					throw new Exception("Already connected.");
 				break;
 			default :
 				throw new Exception('Invalid network.');
 		}
 
-		if ($connected)
+		if ($connected === TRUE) {
 			$response->setResultVariable("success", TRUE);
-		else
+
+			//update user as commondata.user
+			//set params for sending to updateStatus endpoint
+			$response->addCommonData("user", array("class" => get_class(), "request_name" => $this->request_name));
+		} elseif (is_string($connected)) {
 			$response->setResultVariable("success", FALSE);
+			$response->setResultVariable("login_url", $connected);
+		} elseif ($connected instanceof Exception) {
+			throw new Exception($connected->getMessage());
+		} else {
+			throw new Exception("Unknown error.");
+		}
 		return $response;
 	}
 
@@ -220,5 +252,12 @@ class Ssmart_Panelist_UserEndpoint extends Ssmart_GlobalController
 		}
 
 		return $newUser;
+	}
+
+	private function _hasSocial($userId, $network)
+	{
+		//check for existing social connection
+		$social = new User_Social();
+		return $social->loadByUserIdAndProvider($userId, $network);
 	}
 }

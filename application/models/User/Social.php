@@ -33,7 +33,7 @@ class User_Social extends Record
 	 *
 	 * @param int $userId
 	 * @param int $starbarId
-	 * @return bool
+	 * @return bool|string|\Exception
 	 */
 	public static function connectFacebook($userId, $starbarId)
 	{
@@ -62,6 +62,8 @@ class User_Social extends Record
 			$userSocial->identifier = $fbUser;
 			$userSocial->save();
 
+			/*
+			//removed until username edit feature is active
 			if (isset($fbProfile['first_name'])) {
 				$user = new User();
 				$user->loadData($userId);
@@ -70,8 +72,13 @@ class User_Social extends Record
 					$user->save();
 				}
 			}
+			*/
 
-			Game_Transaction::associateSocialNetwork($userId, $starbarId, $userSocial );
+			try {
+				Game_Transaction::associateSocialNetwork($userId, $starbarId, $userSocial );
+			} catch (Exception $e) {
+				return $e;
+			}
 
 			// Show user congrats notification
 			$message = new Notification_Message();
@@ -82,7 +89,8 @@ class User_Social extends Record
 				$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId, FALSE);
 			}
 		} else
-			return FALSE;
+			return $facebook->getLoginUrl();
+		return TRUE;
 	}
 
 	/**

@@ -673,20 +673,20 @@
   height: 89px;
   padding: 5px 0;
 }
-#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts .sayso-user-profile-social-link,
-#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts .sayso-user-profile-social-link {
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts .sayso-social-connect,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts .sayso-social-connect {
   background-repeat: no-repeat;
   background-position: 0px 0px;
   width: 49px;
   height: 66px;
 }
-#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts #sayso-user-profile-social-link-facebook,
-#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts #sayso-user-profile-social-link-facebook {
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts #sayso-user-profile-social-link-FB,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts #sayso-user-profile-social-link-FB {
   background-image: url('../../images/movie/social-connect-facebook.png');
   margin-right: 10px;
 }
-#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts #sayso-user-profile-social-link-twitter,
-#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts #sayso-user-profile-social-link-twitter {
+#sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts #sayso-user-profile-social-link-TW,
+#sayso-section-container.sayso-section-tour-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-link-accounts #sayso-user-profile-social-link-TW {
   background-image: url('../../images/movie/social-connect-twitter.png');
 }
 #sayso-section-container.sayso-section-user-profile #sayso-section #sayso-section-body #sayso-user-profile-column-left #sayso-user-profile-documents,

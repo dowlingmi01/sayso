@@ -1013,34 +1013,33 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			},
 			//calls the user.connectSocialNetwork endpoint
 			"social-connect" : function ($elem, data) {
-				$elem.on("click", (function() {
-					api.doRequest({
-						action_class : "user",
-						action : "connectSocialNetwork",
-						starbar_id : starbarId,
-						network : data["network"],
-						oauth : data["oauth"]
-					}, function(response){
-						if (response.responses.default.errors_returned === undefined) {
-							if (response.responses.default.variables.success === true) {
-								updateElements();
-								$("#sayso-user-profile-social-link-" + data["network"]).css("background-position", "0 -66px");
-								$("#sayso-user-profile-social-link-" + data["network"]).off("mouseenter");
-								$("#sayso-user-profile-social-link-" + data["network"]).off("mouseleave");
-								$("#sayso-user-profile-social-link-" + data["network"]).off("click");
-							} else {
-								var loginUrl = response.responses.default.variables.login_url;
-								window.open(loginUrl);
-							}
-						} else {
-							//notify of error
-						}
-
-					});
-				}));
-
+				//TODO: the twitter connect will need a two sstep process. one to hit the endpoint that gets the oauth, then the one to hit the connectSocialNetwork endpoiont
 				switch (data["network"]) {
 					case ("FB") :
+						$elem.on("click", (function() {
+							api.doRequest({
+								action_class : "user",
+								action : "connectSocialNetwork",
+								starbar_id : starbarId,
+								network : data["network"],
+							}, function(response){
+								if (response.responses.default.errors_returned === undefined) {
+									if (response.responses.default.variables.success === true) {
+										updateElements();
+										$("#sayso-user-profile-social-link-" + data["network"]).css("background-position", "0 -66px");
+										$("#sayso-user-profile-social-link-" + data["network"]).off("mouseenter");
+										$("#sayso-user-profile-social-link-" + data["network"]).off("mouseleave");
+										$("#sayso-user-profile-social-link-" + data["network"]).off("click");
+									} else {
+										var loginUrl = response.responses.default.variables.login_url;
+										window.open(loginUrl);
+									}
+								} else {
+									//notify of error
+								}
+							});
+						}));
+
 						$("#sayso-user-profile-social-link-FB").on("mouseenter", (function() {
 							$("#sayso-user-profile-social-link-FB").css("background-position", "0 -66px");
 						}));
@@ -1057,6 +1056,39 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 						}
 						break;
 					case ("TW") :
+						$elem.on("click", (function() {
+							api.doRequest({
+								action_class : "user",
+								action : "getTwitterOauthToken",
+							}, function(response){
+								if (response.responses.default.errors_returned === undefined) {
+									if (response.responses.default.variables.success === true) {
+										api.doRequest({
+											action_class : "user",
+											action : "connectSocialNetwork",
+											starbar_id : starbarId,
+											network : data["network"],
+											oauth : {"oauth_token": response.responses.default.variables.oauth_token, "oauth_token_secret": response.responses.default.variables.oauth_token_secret}
+										}, function(oauthResponse){
+											if (oauthResponse.responses.default.errors_returned === undefined) {
+												if (oauthResponse.responses.default.variables.success === true) {
+													updateElements();
+													$("#sayso-user-profile-social-link-" + data["network"]).css("background-position", "0 -66px");
+													$("#sayso-user-profile-social-link-" + data["network"]).off("mouseenter");
+													$("#sayso-user-profile-social-link-" + data["network"]).off("mouseleave");
+													$("#sayso-user-profile-social-link-" + data["network"]).off("click");
+												}
+											}
+										});
+									} else {
+										//notify error
+									}
+								}
+							});
+						}));
+
+
+
 						$("#sayso-user-profile-social-link-TW").on("mouseenter", (function() {
 							$("#sayso-user-profile-social-link-TW").css("background-position", "0 -66px");
 						}));

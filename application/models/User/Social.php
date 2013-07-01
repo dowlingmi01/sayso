@@ -96,9 +96,63 @@ class User_Social extends Record
 	/**
 	 * NEEDS TO BE DEVELOPED
 	 */
-	public static function connectTwitter($userId, $starbarId)
+	public static function connectTwitter($userId, $starbarId, $oauth)
 	{
+		$config = Api_Registry::getConfig();
 
+		try {
+			/* Create TwitterOAuth object with app key/secret and token key/secret from default phase */
+			$connection = new TwitterOAuth($config->twitter->consumer_key, $config->twitter->consumer_secret, $oauth->oauth_token, $oauth->oauth_token_secret);
+
+			/* Request access tokens from twitter */
+			$accessToken = $connection->getAccessToken();
+
+			if ($userId) {
+				$userSocial = new User_Social();
+				$userSocial->user_id = $userId;
+				$userSocial->provider = "twitter";
+				$userSocial->identifier = $accessToken['user_id'];
+				$userSocial->username = $accessToken['screen_name'];
+				$userSocial->save();
+
+				Game_Transaction::associateSocialNetwork( $userId, $starbarId, $userSocial );
+
+				// Show user congrats notification
+				$message = new Notification_Message();
+				$message->loadByShortNameAndStarbarId('TW Account Connected', $starbarId);
+
+				if ($message->id) {
+					$messageUserMap = new Notification_MessageUserMap();
+					$messageUserMap->updateOrInsertMapForNotificationMessageAndUser($message->id, $userId, false);
+				}
+			}
+			return;
+		} catch (Exception $e) {
+			return $e;
+		}
+	}
+
+	public static function getTwiterOauthToken($callbackUrl)
+	{
+		$config = Api_Registry::getConfig();
+
+		try {
+			/* Build TwitterOAuth object with client credentials. */
+			$connection = new TwitterOAuth($config->twitter->consumer_key, $config->twitter->consumer_secret);
+
+			$callbackUrl = $callbackUrl;
+
+			/* Get temporary credentials and set the callback URL. */
+			$twitterRequestToken = $connection->getRequestToken($callbackUrl);
+
+			/* Save temporary credentials to cache. */
+			$oauth['token'] = $twitterRequestToken['oauth_token'];
+			$oauth['token_secret'] = $twitterRequestToken['oauth_token_secret'];
+			return $oauth;
+
+		} catch (Exception $e) {
+			return $e;
+		}
 	}
 
 }

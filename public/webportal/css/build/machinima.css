@@ -306,17 +306,8 @@ header nav ul {
 /* ======= */
 #content_container {
   color: #ffffff;
-  left: 0;
-  top: 108px;
-  position: relative;
   width: 1000px;
-  margin: 0px auto;
-}
-#app_shim {
-  position: relative;
-  top: 108px;
-  height: 100px;
-  clear: both;
+  margin: 140px auto 120px auto;
 }
 /* Welcome Page */
 .welcome_content {
@@ -555,17 +546,15 @@ header nav ul {
 }
 /* Logged In Landing */
 .landing_content_left {
-  margin-left: 0%;
-  margin-top: 5%;
-  width: 50%;
+  width: 455px;
+  float: left;
 }
 .landing_content_left h2 {
   display: inline-block;
 }
 .landing_content_right {
-  float: right;
-  margin-right: 0%;
-  margin-top: 5%;
+  display: inline-block;
+  margin-left: 30px;
 }
 .landing_profile_picture {
   display: inline-block;
@@ -623,7 +612,7 @@ header nav ul {
   margin-right: 0%;
   margin-top: 5%;
   width: 50%;
-  float: right;
+  margin-left: 600px;
 }
 .tour_content_right h1 {
   padding: 0;

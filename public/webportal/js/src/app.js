@@ -8,6 +8,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
         title = 'Machinima | Recon - Powered by Say.So',
         version = '1.0',
         starbarId = 4,
+        getBrowserAppHash = '#content/get-app-confirmation',
         $loginButton = $('#login_button'),
         $loginDiv = $('#login'),
         $signOutButton = $('#sign_out'),
@@ -170,27 +171,30 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
     }
 
     function stateLogin() {
-        if(state.state.loggedIn)
-        {
-            loadMarkup('profile');
-            $emailField.val('');
-            $passwordField.val('');
-            $loginDiv.hide();
-            $forgotPassword.hide();
-            $signOutButton.html('Sign Out');
+        console.log(location.hash);
+        if(location.hash!==getBrowserAppHash){
+            if(state.state.loggedIn)
+            {
+                loadMarkup('profile');
+                $emailField.val('');
+                $passwordField.val('');
+                $loginDiv.hide();
+                $forgotPassword.hide();
+                $signOutButton.html('Sign Out');
 
-            $signOutButton.on('click', function() {
-                if (state.state.loggedIn) {
-                    state.logout();
-                }
-            });
-        }
-        else
-        {
-            $signOutButton.off('click');
-            loadMarkup('landing');
-            $loginButton.show();
-            $forgotPassword.show();
+                $signOutButton.on('click', function() {
+                    if (state.state.loggedIn) {
+                        state.logout();
+                    }
+                });
+            }
+            else
+            {
+                $signOutButton.off('click');
+                loadMarkup('landing');
+                $loginButton.show();
+                $forgotPassword.show();
+            }
         }
     }
 

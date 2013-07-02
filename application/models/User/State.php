@@ -4,6 +4,7 @@
 class User_State extends Record
 {
 	protected $_tableName = 'user_state';
+	protected $_uniqueFields = array('user_id' => 0);
 
 	/**
 	 * Activates a starbar for a user.

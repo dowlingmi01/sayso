@@ -31,25 +31,23 @@ class Ssmart_Public_RegistrationEndpoint extends Ssmart_GlobalController
 		//logic
 		$starbarId = $request->valid_parameters["originating_starbar_id"];
 		$pw = $request->valid_parameters["password"];
-		$userEmail = $request->valid_parameters["email"];
+		$userEmail = strtolower($request->valid_parameters["email"]);
 
 		$email = new User_Email();
 
 		$email->loadDataByUniqueFields(array('email'=>$userEmail));
-		if ($email->id)
-			throw new Exception("EMAIL_ADDRESS_ALREADY_REGISTERED");
-
-		$email->email = $userEmail;
-
-		// create user object with filtered data
-		// (before resetting the validator)
 		$user = new User();
+		if ($email->id) {
+			$user->loadData( $email->user_id );
+			if( $user->password )
+				throw new Exception("EMAIL_ADDRESS_ALREADY_REGISTERED");
+		} else {
+			$user->originating_starbar_id = $starbarId;
+			$email->email = $userEmail;
+			$user->setEmail($email);
+		}
+
 		$user->setPlainTextPassword($pw);
-		$user->originating_starbar_id = $starbarId;
-
-		$user->setEmail($email);
-
-		// save
 		$user->save();
 
 		if (!$user->id)

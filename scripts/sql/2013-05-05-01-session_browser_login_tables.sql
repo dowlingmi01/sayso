@@ -43,18 +43,18 @@ CREATE TABLE `login_ban_ip` (
   `reason` varchar(45) DEFAULT NULL,
   `timestamp` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #records failed login attempts. use the code to remove time expired strikes
 DROP TABLE IF EXISTS `login_strikes_ip`;
 CREATE TABLE `login_strikes_ip` (
   `ip` int(10) unsigned NOT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #records failed login attempt strikes against a username. use the code to remove expired strikes
 DROP TABLE IF EXISTS `login_strikes_user`;
 CREATE TABLE `login_strikes_user` (
   `username` varchar(45) NOT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

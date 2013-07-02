@@ -4,10 +4,13 @@
 		games: {},
 		notifications: {},
 		loggedIn: null,
-		session: {}
+		session: {},
+		studies: [],
+		adTargets: []
 	};
 	var pendingStarbars = {};
 	var pendingRequests = {};
+	var brandBoostSessions = {};
 	function getPublicApi() {
 		return new Api(config.baseDomain);
 	}
@@ -56,12 +59,17 @@
 				var api = getSessionApi();
 				api.setRequest( 'user', {action_class: 'User', action: 'getUser'} );
 				api.setRequest( 'state', {action_class: 'User', action: 'getState'} );
+				if( config.extVersion )
+					api.setRequest( 'studies', {action_class: 'LegacyApi', action: 'call',
+						legacy_class: 'Study', legacy_action: 'getAll'} );
 				api.sendRequests( function(data) {
 					state.loggedIn = true;
 					state.session = session;
 					state.profile = data.responses.user.records[0];
 					state.currentStarbarId = data.responses.state.variables.starbar_id;
 					state.visibility = data.responses.state.variables.visibility;
+					if( config.extVersion )
+						state.studies = data.responses.studies.records;
 					if( pendingRequests[0] ) {
 						if( pendingRequests[state.currentStarbarId] )
 							pendingRequests[state.currentStarbarId].concat(pendingRequests[0]);
@@ -69,6 +77,8 @@
 							pendingRequests[state.currentStarbarId] = pendingRequests[0];
 						delete pendingRequests[0];
 					}
+					if( !pendingRequests[state.currentStarbarId] )
+						pendingRequests[state.currentStarbarId] = [];
 					for( var starbarId in pendingRequests )
 						getStarbarState( starbarId );
 				} );
@@ -113,7 +123,9 @@
 			visibility: state.visibility,
 			starbar: state.starbars[starbarId],
 			notifications: state.notifications[starbarId],
-			game: state.games[state.starbars[starbarId].economy_id]
+			game: state.games[state.starbars[starbarId].economy_id],
+			studies: state.studies,
+			adTargets: state.adTargets
 		} : { loggedIn: false };
 	}
 	function addPendingRequest( starbarId, callback ) {
@@ -155,10 +167,62 @@
 			}
 		}
 	}
+	function addAdTarget( adTarget ) {
+		state.adTargets[adTarget.type + adTarget.typeId] = adTarget;
+	}
+	function deleteAdTargets( studyAdIdArray ) {
+		for (var key in state.adTargets) {
+			for (var i = 0; i < studyAdIdArray.length; i++) {
+				if (state.adTargets[key].id === studyAdIdArray[i]) {
+					delete state.adTargets[key];
+				}
+			}
+		}
+	}
+	function brandBoostEvent( data ) {
+		var sessionId;
+		var eventNames = { Begin: 'launch_screen', Interstitial: 'interstitial_screen', End: 'end_screen' };
+		var fields = {a: 'campaign_id', pn: 'partner_name', gn: 'game_name', i: 'item_id', sponsorName: 'sponsor_name', uid: 'uid'};
+		var eventData = { event_source: 'brandBoostEvent' };
+
+		if(!eventNames[data.stage])
+			return;
+
+		var eventName = 'brandboost_' + eventNames[data.stage];
+
+		if( data.stage === 'Begin' ) {
+			sessionId = Math.floor(Math.random()*2e9) + 1;
+			brandBoostSessions[data.topFrameId] = sessionId;
+		} else
+			sessionId = brandBoostSessions[data.topFrameId];
+
+		if( sessionId )
+			eventData.brandboost_session_id = sessionId;
+
+		for( var field in fields )
+			if( data.urlParams[field] )
+				eventData['brandboost_' + fields[field]] = data.urlParams[field];
+		getSessionApi().sendRequest({action_class: 'LegacyApi', action: 'call',
+			legacy_class: 'Metrics', legacy_action: 'eventSubmit',
+			parameters: { event_name: eventName, event_data: eventData }});
+	}
+	function submitEvent( data ) {
+		if( !(data instanceof Object) )
+			data = JSON.parse(JSON.stringify(data));
+		getSessionApi().sendRequest({action_class: 'LegacyApi', action: 'call',
+			legacy_class: 'Metrics', legacy_action: 'eventSubmit',
+			parameters: data});
+	}
+
 	comm.listen('get-state', getState);
 	comm.listen('api-do-requests', apiDoRequests);
 	comm.listen('login', login);
 	comm.listen('logout', logout);
 	comm.listen('set-visibility', setVisibility);
+	comm.listen('add-ad-target', deleteAdTargets);
+	comm.listen('delete-ad-targets', deleteAdTargets);
+	comm.listen('brandboost-event', brandBoostEvent);
+	comm.listen('submit-event', submitEvent);
+
 	getUserState();
 })(this, sayso.module.Api, sayso.module.comm, sayso.module.config, sayso.module.getSession);

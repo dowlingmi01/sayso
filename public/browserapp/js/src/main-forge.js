@@ -1,8 +1,8 @@
-(function(global, $, forge, state, browserapp, config, dommsg, util, commrelay) {
+(function(global, $, forge, state, browserapp, config, dommsg, util, commrelay, track, comm) {
 	var in_iframe = forge.is.firefox() ? (global.unsafeWindow.window !== global.unsafeWindow.top) : (global.top !== global);
 	var frameId = Math.floor(Math.random()*2e9) + 1;
 	var url_match_prepend = '^(?:http|https){1}://(?:[\\w.-]+[.])?';
-	var parentLocation, topFrameId;
+	var parentLocation, topLocation;
 	var webportal = false;
 
 	function evalInPageContext( arg ) {
@@ -39,7 +39,7 @@
 		var eventName = ssData.event_name;
 		delete ssData.event_name;
 		ssData.event_source = 'handleBeacon';
-		forge.message.broadcastBackground('submit-event', { event_name: eventName, event_data: ssData });
+		comm.request('submit-event', { event_name: eventName, event_data: ssData });
 	}
 
 	function shouldLoadStarbar() {
@@ -86,6 +86,7 @@
 
 		return true;
 	}
+
 	if( !in_iframe && config.location.href.match(/say.so|saysollc.com\/webportal/) ) {
 		webportal = true;
 		commrelay.install();
@@ -94,7 +95,8 @@
 	dommsg.addHandler('beacon', handleBeacon);
 	evalInPageContext(injectBeacon);
 	if( !in_iframe ) {
-		topFrameId = frameId;
+		topLocation = config.location;
+		$(startTrackingWhenReady);
 		function handleParentReq( childFrameId ) {
 			forge.message.broadcast('parent-location-' + childFrameId,
 				{ location: config.location, frameId: frameId });
@@ -102,15 +104,15 @@
 		dommsg.addHandler('parent-req', handleParentReq);
 	} else {
 		forge.message.listen('parent-location-' + frameId, function( m ) {
-			if( !parentLocation ) {
-				parentLocation = m.location;
-				topFrameId = m.frameId;
-				//sayso.fn.loadScript('starbar/sayso.js');
+			if( !topLocation ) {
+				topLocation = m.location;
+				var topFrameId = m.frameId;
+				$(startTrackingWhenReady);
 				if( config.location.host === 'vex.wildtangent.com') {
 					var brandBoostStage = config.location.pathname.match(/\/(?:Vex\/)?(\w+)(?:.aspx)?/);
 					if( brandBoostStage ) {
 						var par = util.urlParams(config.location.search.substring(1));
-						forge.message.broadcastBackground( 'brandboost-event', { stage: brandBoostStage[1], urlParams: par, topFrameId: topFrameId } );
+						comm.request( 'brandboost-event', { stage: brandBoostStage[1], urlParams: par, topFrameId: topFrameId } );
 					}
 				}
 				/*
@@ -139,6 +141,16 @@
 		}
 		requestParentLocation();
 	}
+	function startTrackingWhenReady() {
+		function startTracking() {
+			track(in_iframe, topLocation, state.adTargets);
+		}
+		if( state.ready )
+			startTracking();
+		else
+			$(global.document).on('sayso:state-ready', startTracking);
+	}
+
 	if( shouldLoadStarbar() )
 		$(function(){
 			$(global.document).on('sayso:state-login sayso:state-logout sayso:state-ready sayso:state-starbar', browserapp.initApp);
@@ -146,5 +158,5 @@
 				browserapp.initApp();
 		});
 }(this, jQuery, forge, sayso.module.state, sayso.module.browserapp, sayso.module.config, sayso.module.dommsg,
-		sayso.module.util, sayso.module.commrelay))
+		sayso.module.util, sayso.module.commrelay, sayso.module.track, sayso.module.comm))
 ;

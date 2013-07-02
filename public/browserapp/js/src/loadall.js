@@ -12,6 +12,7 @@
 		'state.js',
 		'browserapp.js',
 		'commrelay.js',
+		'track.js',
 		'main-forge.js'
 	];
 	sayso.module = {};

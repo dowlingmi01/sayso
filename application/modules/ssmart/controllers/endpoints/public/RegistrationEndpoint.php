@@ -34,6 +34,11 @@ class Ssmart_Public_RegistrationEndpoint extends Ssmart_GlobalController
 		$userEmail = $request->valid_parameters["email"];
 
 		$email = new User_Email();
+
+		$email->loadDataByUniqueFields(array('email'=>$userEmail));
+		if ($email.id)
+			throw new Exception("EMAIL_ADDRESS_ALREADY_REGISTERED");
+
 		$email->email = $userEmail;
 
 		// create user object with filtered data

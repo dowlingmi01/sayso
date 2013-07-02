@@ -86,6 +86,60 @@
 
 		return true;
 	}
+	function fixFlashElements() {
+		// fix <embed> FLASH elements!
+		$('embed[src*=".swf"], embed[type*="flash"]').not('.saysofixed').each(function() {
+			var $SQembed = $(this);
+
+			if ($SQembed.attr('id') === 'sm2movie') return true; // no fix needed, go to next <embed>
+
+			$SQembed.css('z-index', '9998 !important');
+			if ($SQembed.attr('wmode') !== 'transparent' && $SQembed.attr('wmode') !== 'opaque') {
+				$SQembed.attr('wmode', 'transparent');
+				var newElem = $SQembed.clone(true, true);
+				newElem.addClass('saysofixed');
+				$SQembed.replaceWith(newElem);
+			}
+		});
+
+		// fix <object> FLASH elements!
+		$('object').not('.saysofixed').each(function() {
+			var $SQobject = $(this);
+			if ($SQobject.attr('id') === 'sm2movie' || $SQobject.attr('id') === 'FS') return true; // no fix needed, go to next <object>
+			var $SQwmodeParam = $('param[name="wmode"]', $SQobject);
+			if ($SQwmodeParam.length === 1) {
+				if ($SQwmodeParam.attr('value') === 'transparent' || $SQwmodeParam.attr('value') === 'opaque') {
+					return true; // no fix needed, go to next <object>
+				} else {
+					$SQwmodeParam.attr('value', 'transparent');
+				}
+			} else {
+				// Check if this <object> is flash, if so add the wmode parameter
+				var $SQmovieParam = $('param[name="movie"]', $SQobject);
+				var $SQobjectType = $SQobject.attr('type');
+				if (($SQmovieParam.length === 1 && $SQmovieParam.attr('value').match(/.swf/)) || ($SQobjectType && $SQobjectType.match(/flash/))) {
+					var newParam = document.createElement('param');
+					newParam.setAttribute('name', 'wmode');
+					newParam.setAttribute('value', 'transparent');
+					$SQobject.append(newParam);
+				} else {
+					return true; // not flash, go to next <object>
+				}
+			}
+			$SQobject.css('z-index', '9998 !important');
+
+			var container = $SQobject.parent();
+			var newElem = $SQobject.clone(true);
+			newElem.addClass('saysofixed');
+			var elemBeforeObject = $SQobject.prev();
+			$SQobject.remove();
+			if (elemBeforeObject.length !== 0) {
+				newElem.insertAfter(elemBeforeObject);
+			} else {
+				container.prepend(newElem);
+			}
+		});
+	}
 
 	if( !in_iframe && config.location.href.match(/say.so|saysollc.com\/webportal/) ) {
 		webportal = true;
@@ -153,6 +207,18 @@
 
 	if( shouldLoadStarbar() )
 		$(function(){
+			fixFlashElements();
+			var timeSpentFixingFlashSoFar = 0;
+			var timeBetweenFlashFixes = 500;
+			var maximumTimeToWaitForFlashToLoad = 5000; // 5 seconds
+			$.doTimeout('flashFixer', timeBetweenFlashFixes, function () {
+				if (timeSpentFixingFlashSoFar > maximumTimeToWaitForFlashToLoad) {
+					return false; // stop the loop
+				}
+				timeSpentFixingFlashSoFar += timeBetweenFlashFixes;
+				fixFlashElements();
+				return true; // keep doTimeout schedule going
+			});
 			$(global.document).on('sayso:state-login sayso:state-logout sayso:state-ready sayso:state-starbar', browserapp.initApp);
 			if( state.ready )
 				browserapp.initApp();

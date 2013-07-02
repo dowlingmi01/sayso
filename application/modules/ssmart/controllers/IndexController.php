@@ -28,8 +28,9 @@ class Ssmart_IndexController extends Zend_Controller_Action
 		{
 			$api = Ssmart_Api::getInstance(NULL, $requestData);
 			$this->_disableLayout();
+			$response = $api->getResponse();
 			$this->_helper->viewRenderer->setRender('json');
-			$this->view->api_response = $api->getResponse();
+			$this->view->api_response = $response;
 		}
 	}
 

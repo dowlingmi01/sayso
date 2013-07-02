@@ -5,7 +5,7 @@
 </div>
 <div id="sayso-section-body">
 	{{#if survey.errors.endpoint_exception}}
-		<div class="sayso-element sayso-disable-confirmation-before-closing-section"></div>
+		<div class="sayso-element sayso-disable-confirmation-before-closing-section" data-keep-section-open="true"></div>
 		{{#compare survey.errors.endpoint_exception "==" "SURVEY_COMPLETED"}}
 			You have already completed this survey.
 		{{else}}

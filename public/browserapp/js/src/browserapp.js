@@ -600,7 +600,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 		}
 	}
 
-	function disableConfirmationBeforeClosingSection () {
+	function disableConfirmationBeforeClosingSection (keepSectionOpen) {
 		if (confirmBeforeClosingSection) {
 			confirmBeforeClosingSection = false;
 
@@ -617,7 +617,8 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			});
 
 			closeSection = functionBackup.closeSection;
-			closeSection();
+			if (!keepSectionOpen)
+				closeSection();
 		}
 	}
 
@@ -879,7 +880,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 							finalTemplateData.survey = survey;
 							$elem.html('');
 							processMarkupIntoContainer($elem, "{{>survey-"+dataFromIframe.data.survey_status+"}}", finalTemplateData);
-							disableConfirmationBeforeClosingSection();
+							disableConfirmationBeforeClosingSection(true);
 						});
 					}
 				});
@@ -887,7 +888,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 				$elem.append(iframe.$element);
 			},
 			"disable-confirmation-before-closing-section": function($elem, data) {
-				disableConfirmationBeforeClosingSection();
+				disableConfirmationBeforeClosingSection(data['keepSectionOpen']);
 			},
 			"get-satisfaction-iframe-container": function ($elem, data) {
 				var iframe = createIframe(null, function(unused, dataFromIframe) {

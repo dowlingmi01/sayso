@@ -19,8 +19,8 @@
 	}
 	function loadNextScriptChrome() {
 		var scriptEl = document.createElement('script');
-		scriptEl.src = 'https://' + sayso.baseDomain + '/browserapp/js/src/' + scripts[i] /* +
-			'?_=' + ( new Date() ).getTime() */;
+		scriptEl.src = 'https://' + sayso.baseDomain + '/browserapp/js/src/' + scripts[i]  +
+			'?_=' + ( new Date() ).getTime();
 		if(scriptEl.addEventListener)
 			scriptEl.addEventListener('load', advance, false);
 		else

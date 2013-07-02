@@ -1,4 +1,5 @@
 #browser types
+DROP TABLE IF EXISTS `browser_type`;
 CREATE TABLE `browser_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
@@ -7,6 +8,7 @@ CREATE TABLE `browser_type` (
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
 #browsers (unique)
+DROP TABLE IF EXISTS browser;
 CREATE TABLE `browser` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `browser_type_id` int(11) NOT NULL,
@@ -21,6 +23,7 @@ CREATE TABLE `browser` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 #user_session
+DROP TABLE IF EXISTS user_session;
 CREATE TABLE `user_session` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,

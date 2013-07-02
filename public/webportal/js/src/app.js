@@ -274,7 +274,10 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
     shared.app = app;
     shared.version = version;
 
-    $(document).on('sayso:state-ready', initialize);
+	if( state.ready )
+		initialize();
+	else
+		$(document).on('sayso:state-ready', initialize);
     $(document).on('sayso:state-login', stateLogin);
     $(document).on('sayso:state-logout', stateLogout);
 

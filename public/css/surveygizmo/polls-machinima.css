@@ -4,7 +4,6 @@
 */
 
 .sg-poll-result {
-	width: 232px;
 	padding: 0 8px 10px 0;
 	margin-bottom: 0px;
 	float: left;
@@ -197,7 +196,6 @@
 
 
 .sg-question-options {
-	padding: 0;
 }
 
 .sg-question-options ul li label

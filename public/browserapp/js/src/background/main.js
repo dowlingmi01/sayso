@@ -17,6 +17,14 @@
 	function getSessionApi() {
 		return new Api(config.baseDomain, state.session.id, state.session.key);
 	}
+	function checkForNewSession(response) {
+		if( response && response.common_data &&
+			response.common_data.new_session_id && response.common_data.new_session_key ) {
+			state.session = { id: response.common_data.new_session_id, key: response.common_data.new_session_key,
+				timestamp: (new Date()).getTime() };
+			comm.set('session', state.session);
+		}
+	}
 	function login( data, callback ) {
 		getPublicApi().sendRequest( {action_class: 'Login', action: 'login', username: data.email, password: data.password}, function( data ) {
             var session = data.responses['default'].variables;
@@ -63,8 +71,8 @@
 					api.setRequest( 'studies', {action_class: 'LegacyApi', action: 'call',
 						legacy_class: 'Study', legacy_action: 'getAll'} );
 				api.sendRequests( function(data) {
+					checkForNewSession(data);
 					state.loggedIn = true;
-					state.session = session;
 					state.profile = data.responses.user.records[0];
 					state.currentStarbarId = data.responses.state.variables.starbar_id;
 					state.visibility = data.responses.state.variables.visibility;
@@ -102,6 +110,7 @@
 		api.setRequest( 'starbar', {action_class: 'Starbar', action: 'getStarbar', starbar_id: starbarId} );
 		api.setRequest( 'markup', {action_class: 'Markup', action: 'getMarkup', starbar_id: starbarId, app: 'browserapp', key: 'nav'} );
 		api.sendRequests( function(data) {
+			checkForNewSession(data);
 			state.starbars[starbarId] = data.responses.starbar.records[0];
 			state.starbars[starbarId].id = starbarId;
 			state.starbars[starbarId].markup = data.responses.markup.variables.markup;
@@ -146,7 +155,8 @@
 	function setVisibility( data ) {
 		state.visibility = data;
 		comm.broadcast('state.visibility', state.visibility);
-		getSessionApi().sendRequest({action_class: 'User', action: 'updateState', state_data: {visibility: data}});
+		getSessionApi().sendRequest({action_class: 'User', action: 'updateState', state_data: {visibility: data}},
+			checkForNewSession);
 	}
 	function apiDoRequests( requests, callback ) {
 		if (!requests) return;
@@ -165,6 +175,7 @@
 				state.profile = data.common_data.user;
 				comm.broadcast('state.profile', data.common_data.user);
 			}
+			checkForNewSession(data);
 		}
 	}
 	function addAdTarget( adTarget ) {
@@ -204,20 +215,21 @@
 				eventData['brandboost_' + fields[field]] = data.urlParams[field];
 		getSessionApi().sendRequest({action_class: 'LegacyApi', action: 'call',
 			legacy_class: 'Metrics', legacy_action: 'eventSubmit',
-			parameters: { event_name: eventName, event_data: eventData }});
+			parameters: { event_name: eventName, event_data: eventData }}, checkForNewSession);
 	}
 	function submitEvent( data ) {
 		if( !(data instanceof Object) )
 			data = JSON.parse(JSON.stringify(data));
 		getSessionApi().sendRequest({action_class: 'LegacyApi', action: 'call',
 			legacy_class: 'Metrics', legacy_action: 'eventSubmit',
-			parameters: data});
+			parameters: data}, checkForNewSession);
 	}
 
 	comm.listen('get-state', getState);
 	comm.listen('api-do-requests', apiDoRequests);
 	comm.listen('login', login);
-	comm.listen('logout', logout);
+	if( !config.extVersion )
+		comm.listen('logout', logout);
 	comm.listen('set-visibility', setVisibility);
 	comm.listen('add-ad-target', deleteAdTargets);
 	comm.listen('delete-ad-targets', deleteAdTargets);

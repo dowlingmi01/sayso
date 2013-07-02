@@ -389,7 +389,8 @@
   width: 40px;
 }
 #sayso-app-container.sayso-app-container-stowed #sayso-app-background,
-#sayso-app-container.sayso-app-container-stowed #sayso-close-section-confirmation-overlay {
+#sayso-app-container.sayso-app-container-stowed #sayso-close-section-confirmation-overlay,
+#sayso-app-container.sayso-app-container-stowed #sayso-nav-theme-logo {
   display: none;
 }
 #sayso-app-container.sayso-app-container-stowed #sayso-app {

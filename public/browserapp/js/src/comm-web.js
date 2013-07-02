@@ -14,9 +14,13 @@ sayso.module.comm = (function(global, $, util, dommsg, config) {
 		var maxTime = 200;
 		var start = (new Date()).getTime();
 		function isPresent() {
-			if( global.$SaySoExtension )
+			if( global.$SaySoExtension && global.$SaySoExtension.commRelay )
 				callback(true);
-			else if( (new Date()).getTime() - start < maxTime )
+			else if( global.$SaySoExtension ) {
+				// Extension is present but running old code
+				publicVar.extensionPresent = true;
+				callback(false);
+			} else if( (new Date()).getTime() - start < maxTime )
 				setTimeout(isPresent, interval);
 			else
 				callback(false);

@@ -16,7 +16,7 @@
 	}
 
 	function injectBeacon() {
-		window.$SaySoExtension = {};
+		window.$SaySoExtension = { commRelay: true };
 		$SaySoExtension.ssBeacon = function ssBeacon( ssData ) {
 			window.postMessage(JSON.stringify(['sayso-beacon', ssData]), '*');
 		};

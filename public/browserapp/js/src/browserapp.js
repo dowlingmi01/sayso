@@ -962,7 +962,6 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
                             quantity: quantity
                         }, function(response){
                             if(response.error_code === 0) {
-                                //TODO: Implement order success template.
                                 updateElements($nav, "game");
                                 $("#sayso-reward-item-redeem-step", $nav).html(''); //Clear the step container one last time.
                                 processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_3_success}}", templateData);
@@ -978,7 +977,6 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
                         var $step2 = $('.sayso-reward-step-two-shipping', $nav);
                         var formErrors = false;
 
-                        //TODO: Fix validation to be legit
                         var inputElems = new Array();
                         var fields = ['first_name', 'last_name', 'address_1', 'address_2', 'city', 'state', 'country', 'zip', 'phone'];
                         var required_fields = ['first_name', 'last_name', 'address_1', 'city', 'country', 'zip'];
@@ -1011,7 +1009,6 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 								quantity: quantity
                             }, function(response){
                                 if(response.error_code === 0) {
-                                    //TODO: Implement order success template.
                                     updateElements($nav, "game");
                                     $("#sayso-reward-item-redeem-step", $nav).html(''); //Clear the step container one last time.
                                     templateData.shipping_data = shippingData;
@@ -1093,7 +1090,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 			},
 			//calls the user.connectSocialNetwork endpoint
 			"social-connect" : function ($elem, data) {
-				//TODO: the twitter connect will need a two sstep process. one to hit the endpoint that gets the oauth, then the one to hit the connectSocialNetwork endpoiont
+				//TODO: the twitter connect will need a two step process. one to hit the endpoint that gets the oauth, then the one to hit the connectSocialNetwork endpoiont
 				switch (data["network"]) {
 					case ("FB") :
 						$elem.on("click", (function() {

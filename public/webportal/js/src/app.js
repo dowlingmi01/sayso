@@ -35,6 +35,9 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
                     }
                 });
             }
+            if(sayso.module.comm.extensionPresent) {
+                $('#sign_out_li').remove();
+            }
         }
         //Bind our hashchange event.
         window.onhashchange = hashChanged;

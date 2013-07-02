@@ -5,7 +5,6 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
     var shared = {},
         initialized = false,
         app = 'webportal',
-        title = 'Machinima | Recon - Powered by Say.So',
         version = '1.0',
         starbarId = 4,
         getBrowserAppHash = '#content/get-app-confirmation',
@@ -41,9 +40,6 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
         }
         //Bind our hashchange event.
         window.onhashchange = hashChanged;
-
-        //Setup title
-        $(document).attr('title', title);
 
         //TODO: Move all of these into portal-element.
         $loginButton.click(function() {

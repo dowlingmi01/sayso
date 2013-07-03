@@ -569,7 +569,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
                             starbar_id : starbarId,
                             email: emailAddress
                         }, function(response){
-                            if (response.responses['default'].variables) {
+                            if (typeof(response.responses['default'].variables.success) !== undefined) {
                                 var success = response.responses['default'].variables.success;
 
                                 if (success === true){
@@ -658,7 +658,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
                         verification_code : resetCode,
                         new_password: newPassword
                     }, function(response){
-                        if (response.responses['default'].variables) {
+                        if (typeof(response.responses['default'].variables.success) !== undefined) {
                             var success = response.responses['default'].variables.success;
 
                             if (success === true){

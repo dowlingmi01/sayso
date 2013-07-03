@@ -1022,7 +1022,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
                             });
                         }
                     }
-                    $(this).off('click');
+                    $elem.off('click');
                 });
             },
             "reward-item-finished-submit": function ($elem) {

@@ -44,8 +44,8 @@ class Ssmart_Public_ForgotPasswordEndpoint extends Ssmart_GlobalController
 	public function changePassword(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
-			"verification_code" => "alpha_required_notEmpty",
-			"new_password" => "alpha_required_notEmpty",
+			"verification_code" => "required",
+			"new_password" => "required",
 		);
 		$filters = array();
 

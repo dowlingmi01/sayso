@@ -655,7 +655,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
                         if (success === true){
                             $resetCodeField.val('');
                             $passwordField.val('');
-                            $passwordConfimField.val('');
+                            $passwordConfirmField.val('');
                             $errorContainer.css('display', 'inline');
                             $errorContainer.html('Success! Please login above with your newly created credentials.');
                         }

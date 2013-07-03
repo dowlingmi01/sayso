@@ -569,7 +569,9 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
                             starbar_id : starbarId,
                             email: emailAddress
                         }, function(response){
-                            if (response === true){
+                            var success = response.responses['default'].variables.success;
+
+                            if (success === true){
                                 location.hash = nextStep;
                             }
                             else {
@@ -648,7 +650,9 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
                         verification_code : resetCode,
                         new_password: newPassword
                     }, function(response){
-                        if (response === true){
+                        var success = response.responses['default'].variables.success;
+
+                        if (success === true){
                             $resetCodeField.val('');
                             $passwordField.val('');
                             $passwordConfimField.val('');

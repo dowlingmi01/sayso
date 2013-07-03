@@ -31,7 +31,7 @@ class User_PasswordChangeRequest extends Record
 				$mail = new Mailer();
 				$mail->setFrom('support@say.so')
 					->addTo($userEmail->email)
-					->setSubject( . ' | Password Change Request';
+					->setSubject($productName . ' | Password Change Request';
 				$mail->setBodyMultilineText($message);
 				$mail->setBodyHtml($htmlmessage);
 				$mail->send(new Zend_Mail_Transport_Smtp());

@@ -387,8 +387,20 @@ header {
     .recover_password_submit_errors {
         .red_link;
         .proxima_nova_light(@font-size);
-        display: inline;
+        display: none;
         margin-left: 10px;
+    }
+
+    .recover_password_step_2{
+        .red_link;
+        .proxima_nova_light(@font-size);
+        margin-top: 20px;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
+
     }
 
     p {
@@ -422,7 +434,7 @@ header {
     .recover_password_reset_errors {
         .red_link;
         .proxima_nova_light(@font-size);
-        display: inline;
+        display: none;
         margin-left: 10px;
     }
 

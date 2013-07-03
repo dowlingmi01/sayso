@@ -429,29 +429,29 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
                     //TODO: Show the end user what is wrong.
                     var emailAddress = $emailField.val();
                     if( emailAddress.length < 1 ) {
-                        return "Woops - Please enter your email address";
+                        return "Whoops - Please enter your email address";
                     }
 
                     var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
                     if (!emailPattern.test(emailAddress)){
-                        return "Woops - Please enter a valid email address";
+                        return "Whoops - Please enter a valid email address";
                     }
 
                     var passwordOne = $passwordField.val();
                     if(passwordOne.length < 1) {
-                        return "Woops - Please enter your password";
+                        return "Whoops - Please enter your password";
                     }
 
                     var passwordTwo = $confirmationField.val();
                     if(passwordOne !== passwordTwo ) {
-                        return "Woops - Your passwords do not match.<br>Please reenter your password";
+                        return "Whoops - Your passwords do not match.<br>Please reenter your password";
                     }
                     if(passwordOne.length < 6 || passwordOne.length > 12) {
-                        return "Woops - Your password needs to have between 6 and 12 characters.<br>Please reenter your password";
+                        return "Whoops - Your password needs to have between 6 and 12 characters.<br>Please reenter your password";
                     }
 
                     if(!$agreeTermsCheckbox.is(':checked')) {
-                        return "Woops - Please accept the terms and conditions";
+                        return "Whoops - Please accept the terms and conditions";
                     }
 
                     return false;
@@ -540,6 +540,131 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
                 $(document).on('sayso:state-game', function () {
                     $elem.html(state.state.game.currencies.experience.balance);
                 });
+            },
+            "recover_password_container": function($elem) {
+                var emailAddress = '',
+                    nextStep,
+                    $requestReset,
+                    $emailField,
+                    $errorContainer,
+                    $stepTwo;
+
+                nextStep = 'content/recover-password-reset';
+                $requestReset = $('#recover_password_button', $elem);
+                $emailField = $('#password_reset_email_field', $elem);
+                $errorContainer = $('#recover_password_submit_errors', $elem);
+                $stepTwo = $('#recover_password_step_2', $elem);
+
+                $stepTwo.on('click', function() {
+                    location.hash = nextStep;
+                });
+
+                $requestReset.on('click', function() {
+                    emailAddress = $emailField.val();
+
+                    if(emailAddress !== '') {
+                        api.doRequest({
+                            action_class : 'forgotpassword',
+                            action : 'createRequest',
+                            starbar_id : starbarId,
+                            email: emailAddress
+                        }, function(response){
+                            if (response === true){
+                                location.hash = nextStep;
+                            }
+                            else {
+                                $errorContainer.css('display', 'inline');
+                                setTimeout(function(){
+                                    $errorContainer.fadeOut('slow');
+                                }, 3000);
+                            }
+                        });
+                    }
+                });
+            },
+            "recover_password_reset_container": function($elem) {
+                var buttonActive = false,
+                    $confirmReset,
+                    $resetCodeField,
+                    $passwordField,
+                    $passwordConfirmField,
+                    $errorContainer;
+
+                $confirmReset = $('#recover_password_reset_button', $elem);
+                $resetCodeField = $('#reset_code', $elem);
+                $passwordField = $('#password_reset', $elem);
+                $passwordConfirmField = $('#password_reset_confirmation', $elem);
+                $errorContainer = $('#recover_password_reset_errors', $elem);
+
+                $resetCodeField.on('keyup change', activateSubmit);
+                $passwordField.on('keyup change', activateSubmit);
+                $passwordConfirmField.on('keyup change', activateSubmit);
+
+                function validateFields() {
+                    //TODO: Show the end user what is wrong.
+                    var code = $resetCodeField.val();
+                    if( code.length !== 6 ) {
+                        return "Please enter a valid confirmation code.";
+                    }
+
+                    var passwordOne = $passwordField.val();
+                    if(passwordOne.length < 1) {
+                        return "Whoops - Please enter your password";
+                    }
+
+                    var passwordTwo = $passwordConfirmField.val();
+                    if(passwordOne !== passwordTwo ) {
+                        return "Whoops - Your passwords do not match.<br>Please reenter your password";
+                    }
+                    if(passwordOne.length < 6 || passwordOne.length > 12) {
+                        return "Whoops - Your password needs to have between 6 and 12 characters.<br>Please reenter your password";
+                    }
+
+                    return false;
+                }
+
+                function activateSubmit() {
+
+                    if(!validateFields()) {
+                        if(!buttonActive) {
+                            $confirmReset.on('click', function(){
+                                submitRequest($resetCodeField.val(), $passwordField.val());
+                            });
+                            buttonActive = true;
+                        }
+                    }
+                    else {
+                        if(buttonActive){
+                            $confirmReset.off('click');
+                            buttonActive = false;
+                        }
+                    }
+                }
+
+                function submitRequest(resetCode, newPassword) {
+                    api.doRequest({
+                        action_class : 'forgotpassword',
+                        action : 'changePassword',
+                        verification_code : resetCode,
+                        new_password: newPassword
+                    }, function(response){
+                        if (response === true){
+                            $resetCodeField.val('');
+                            $passwordField.val('');
+                            $passwordConfimField.val('');
+                            $errorContainer.css('display', 'inline');
+                            $errorContainer.html('Success! Please login above with your newly created credentials.');
+                        }
+                        else {
+                            $errorContainer.css('display', 'inline');
+                            $resetCodeField.val('');
+                            $resetCodeField.focus();
+                            setTimeout(function(){
+                                $errorContainer.fadeOut('slow');
+                            }, 3000);
+                        }
+                    });
+                }
             }
 		}
 	};

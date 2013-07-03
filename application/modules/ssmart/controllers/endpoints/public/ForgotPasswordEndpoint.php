@@ -72,7 +72,11 @@ class Ssmart_Public_ForgotPasswordEndpoint extends Ssmart_GlobalController
 		$passwordRequest->has_been_fulfilled = 1;
 		$passwordRequest->save();
 
+		$email = new User_Email();
+		$email->loadData($user->primary_email_id);
+
 		$response->setResultVariable("success", true);
+		$response->setResultVariable("email", $email->email);
 
 		// success
 		return $response;

@@ -569,10 +569,18 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
                             starbar_id : starbarId,
                             email: emailAddress
                         }, function(response){
-                            var success = response.responses['default'].variables.success;
+                            if (response.responses['default'].variables) {
+                                var success = response.responses['default'].variables.success;
 
-                            if (success === true){
-                                location.hash = nextStep;
+                                if (success === true){
+                                    location.hash = nextStep;
+                                }
+                                else {
+                                    $errorContainer.css('display', 'inline');
+                                    setTimeout(function(){
+                                        $errorContainer.fadeOut('slow');
+                                    }, 3000);
+                                }
                             }
                             else {
                                 $errorContainer.css('display', 'inline');
@@ -650,14 +658,20 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
                         verification_code : resetCode,
                         new_password: newPassword
                     }, function(response){
-                        var success = response.responses['default'].variables.success;
+                        if (response.responses['default'].variables) {
+                            var success = response.responses['default'].variables.success;
 
-                        if (success === true){
-                            $resetCodeField.val('');
-                            $passwordField.val('');
-                            $passwordConfirmField.val('');
-                            $errorContainer.css('display', 'inline');
-                            $errorContainer.html('Success! Please login above with your newly created credentials.');
+                            if (success === true){
+                                doLogin(response.responses['default'].variables.email, newPassword);
+                            }
+                            else {
+                                $errorContainer.css('display', 'inline');
+                                $resetCodeField.val('');
+                                $resetCodeField.focus();
+                                setTimeout(function(){
+                                    $errorContainer.fadeOut('slow');
+                                }, 3000);
+                            }
                         }
                         else {
                             $errorContainer.css('display', 'inline');

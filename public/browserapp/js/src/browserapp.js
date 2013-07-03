@@ -947,7 +947,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
                 });
             },
             "reward-item-order-submit" : function ($elem, data, templateData) {
-                $elem.click(function() {
+                $elem.on('click', function() {
                     var shippingData = {};
                     var quantity = 0;
 
@@ -1022,6 +1022,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
                             });
                         }
                     }
+                    $(this).off('click');
                 });
             },
             "reward-item-finished-submit": function ($elem) {

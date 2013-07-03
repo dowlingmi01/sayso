@@ -564,7 +564,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
 
                     if(emailAddress !== '') {
                         api.doRequest({
-                            action_class : 'forgotpassword',
+                            action_class : 'forgotPassword',
                             action : 'createRequest',
                             starbar_id : starbarId,
                             email: emailAddress
@@ -643,7 +643,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
 
                 function submitRequest(resetCode, newPassword) {
                     api.doRequest({
-                        action_class : 'forgotpassword',
+                        action_class : 'forgotPassword',
                         action : 'changePassword',
                         verification_code : resetCode,
                         new_password: newPassword

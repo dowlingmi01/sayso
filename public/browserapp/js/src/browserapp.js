@@ -1,4 +1,4 @@
-sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm, config) {
+sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, frameComm, config) {
 	var starbarId;
 	var userMode = "logged-out";
 	var $nav, $sectionContainer, $section;
@@ -643,6 +643,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 
 		// always attach the state to the template
 		templateData.state = state.state;
+		templateData.extensionPresent = comm.extensionPresent;
 
 		// pass the api response (templateData) to the template as data, and render
 		$container.append(template(templateData), {noEscape: true});
@@ -1496,4 +1497,4 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, frameComm
 	return {
 		initApp: initApp
 	};
-})(this, jQuery, sayso.module.state, sayso.module.api, sayso.module.Handlebars, sayso.module.frameComm, sayso.module.config);
+})(this, jQuery, sayso.module.state, sayso.module.api, sayso.module.Handlebars, sayso.module.comm, sayso.module.frameComm, sayso.module.config);

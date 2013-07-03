@@ -1,5 +1,5 @@
 //noinspection ThisExpressionReferencesGlobalObjectJS
-sayso.module.webportal = (function(global, $, state, api, Handlebars) {
+sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
     'use strict';
 
     var shared = {},
@@ -130,6 +130,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 
 		// always attach the state to the template
 		templateData.state = state.state;
+		templateData.extensionPresent = comm.extensionPresent
 
 		// pass the api response (templateData) to the template as data, and render
 		$container.append(template(templateData), {noEscape: true});
@@ -545,4 +546,4 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars) {
 
     return shared;
 
-})(this, jQuery, sayso.module.state, sayso.module.api, sayso.module.Handlebars);
+})(this, jQuery, sayso.module.state, sayso.module.api, sayso.module.Handlebars, sayso.module.comm);

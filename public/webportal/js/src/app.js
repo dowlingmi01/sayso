@@ -559,6 +559,12 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
                     location.hash = nextStep;
                 });
 
+                $emailField.keyup(function(event){
+                    if(event.keyCode === 13){
+                        $requestReset.click();
+                    }
+                });
+
                 $requestReset.on('click', function() {
                     emailAddress = $emailField.val();
 

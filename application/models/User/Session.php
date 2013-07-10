@@ -43,7 +43,7 @@ class User_Session extends Record
 		//add entry to session table
 		$this->user_id = $userId;
 
-		$this->ip = new Zend_Db_Expr("INET_ATON('"+$_SERVER["REMOTE_ADDR"]+"')");
+		$this->ip = new Zend_Db_Expr("INET_ATON('" . $_SERVER["REMOTE_ADDR"] . "')");
 
 		$sessionKey = $this->_getRandomSessionKey();
 		$this->session_key = $sessionKey;

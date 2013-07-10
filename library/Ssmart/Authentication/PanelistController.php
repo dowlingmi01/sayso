@@ -66,7 +66,8 @@ class Ssmart_Authentication_PanelistController  extends Ssmart_Authentication
 			$sessionCheck = User_Session::checkSession($this->user_data->session_id);
 			if ($sessionCheck)
 			{
-				is_array($sessionCheck) ? $this->_setUserData($sessionCheck) : "";
+				if (is_array($sessionCheck))
+					$this->_setUserData($sessionCheck);
 				$this->_action_auth = TRUE;
 			} else {
 				$this->_action_auth = FALSE;

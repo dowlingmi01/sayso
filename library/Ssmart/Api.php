@@ -239,7 +239,7 @@ class Ssmart_Api
 
 					//flag new session_key if necessary
 					if (isset($this->_auth->user_data->new_session_key))
-						$this->_processCommonData(array("new_session_key" => $this->_auth->user_data->new_session_key, "new_session_id" => $this->_auth->user_data->new_user_session_id));
+						$this->_processCommonData(array("new_session_key" => $this->_auth->user_data->new_session_key, "new_session_id" => $this->_auth->user_data->new_session_id));
 				} else {
 					$errorName = $logicResponse->errors->meta->error_name;
 					unset ($logicResponse->errors->meta);

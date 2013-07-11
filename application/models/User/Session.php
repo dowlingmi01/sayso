@@ -120,7 +120,7 @@ WHERE id = ?", $sessionId);
 				Db_Pdo::execute('UPDATE user_session SET new_user_session_id = ? WHERE id = ?', $newSession->id, $sessionId);
 			}
 			if ($newSession->id)
-				return array("new_user_session_id" => $newSession->session_id, "new_session_key" => $newSession->session_key);
+				return array("new_user_session_id" => $newSession->id, "new_session_key" => $newSession->session_key);
 		}
 		return false;
 	}

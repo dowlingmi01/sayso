@@ -45,10 +45,16 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		$surveyResponse->loadDataByUniqueFields(array("user_id" => $userId, "survey_id" => $surveyId));
 
 		if (!$surveyResponse->id) {
-			// Failed... might be because it's a new user. Try again after marking unseen surveys new
-			Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($starbarId, $userId, 'surveys');
+			// Failed... might be because it's a new user. Try to find new surveys of the same type for that user
+			$survey = new Survey();
+			$survey->loadData($surveyId);
 
-			$surveyResponse->loadDataByUniqueFields(array("user_id" => $userId, "survey_id" => $surveyId));
+			if ($survey->id) {
+				Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($starbarId, $userId, $survey->type);
+
+				// try again
+				$surveyResponse->loadDataByUniqueFields(array("user_id" => $userId, "survey_id" => $surveyId));
+			}
 		}
 
 		if (!$surveyResponse->id) {
@@ -71,6 +77,24 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		$surveyData = $survey->getData();
 		$surveyData["id"] = $surveyId;
 		$surveyData['survey_response_id'] = $surveyResponse->id;
+
+		//check for mission or trailer data
+		switch ($survey->type)
+		{
+			case "mission":
+				$missionInfo = new Survey_MissionInfo();
+				$missionInfo->loadDataBySurveyId($surveyId);
+				$missionInfoData = $missionInfo->getData();
+				$surveyData["mission_info"] = $missionInfoData;
+				break;
+			case "trailer":
+				$trailerInfo = new Survey_TrailerInfo();
+				$trailerInfo->loadDataBySurveyId($surveyId);
+				$trailerInfoData = $trailerInfo->getData();
+				$surveyData["trailer_info"] = $trailerInfoData;
+				break;
+			default:
+		}
 
 		//add questions and answer choices
 		if ($request->valid_parameters["send_questions"])
@@ -104,23 +128,6 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 				}
 			}
 			$surveyData["questions"] = $questionData;
-		}
-		//check for mission or trailer data
-		switch ($surveyData["type"])
-		{
-			case "mission":
-				$mission = new Survey_MissionInfo();
-				$mission->loadDataBySurveyId($surveyId);
-				$missionData = $mission->getData();
-				$surveyData["mission_data"] = $missionData;
-				break;
-			case "trailer":
-				$trailer = new Survey_TrailerInfo();
-				$trailer->loadDataBySurveyId($surveyId);
-				$trailerData = $trailer->getData();
-				$surveyData["trailer_data"] = $trailerData;
-				break;
-			default:
 		}
 
 		$cleanSurveyData = $this->_cleanSurveyResponse($surveyData, $surveyId);
@@ -158,20 +165,26 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 
 		if ($response->hasErrors())
 			return $response;
-
 		//logic
-		$starbarId			= $request->valid_parameters["starbar_id"];
-		$userId			= $request->auth->user_data->user_id;
-		$type			= $request->valid_parameters["survey_type"];
-		$surveyUserStatus	= isset($request->valid_parameters["survey_status"]) ? $request->valid_parameters["survey_status"] : NULL;
+		$starbarId = $request->valid_parameters["starbar_id"];
+		$userId	= $request->auth->user_data->user_id;
+		$type = $request->valid_parameters["survey_type"];
+		$surveyUserStatus = isset($request->submitted_parameters->survey_status) ? $request->submitted_parameters->survey_status : NULL;
+		$chosenSurveyId	= isset($request->submitted_parameters->chosen_survey_id) ? (int) $request->submitted_parameters->chosen_survey_id : NULL;
+		$alwaysChoose	= isset($request->submitted_parameters->always_choose) ? $request->submitted_parameters->always_choose : NULL;
 
 		$type = str_replace("surveys", "survey", $type);
 		$type = str_replace("polls", "poll", $type);
 		$type = str_replace("trailers", "trailer", $type);
 		$type = str_replace("quizzes", "quiz", $type);
 
-		if (in_array($type, ["poll", "survey"]) && in_array($surveyUserStatus, ["new", "archived"])) {
-			Survey_ResponseCollection::markOldSurveysArchivedForStarbarAndUser($starbarId, $userId, $type);
+		if ($type == "trailer")
+			$surveyUserStatus = "new";
+
+		if (in_array($surveyUserStatus, ["new", "archived"])) {
+			if (in_array($type, ["poll", "survey"])) {
+				Survey_ResponseCollection::markOldSurveysArchivedForStarbarAndUser($starbarId, $userId, $type);
+			}
 			Survey_ResponseCollection::markUnseenSurveysNewForStarbarAndUser($starbarId, $userId, $type);
 		}
 
@@ -179,8 +192,31 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		//TODO: refactor this function to accept pagination at this level instead of getting the entire result set and parsing it down.
 		$surveyCollection->loadSurveysForStarbarAndUser ($starbarId, $userId, $type, $surveyUserStatus);
 
+		$surveyIds = "";
+
 		foreach ($surveyCollection as $survey) {
+			if ($alwaysChoose && !$chosenSurveyId)
+				$chosenSurveyId = $survey->id;
+
+			if ($surveyIds) $surveyIds .= ",";
+			$surveyIds .= $survey->id;
+
 			$survey->setRewardPoints($surveyUserStatus);
+
+			if ($survey->id === $chosenSurveyId) {
+				$otherEndpointParams = array("survey_id" => $chosenSurveyId, "send_question_choices" => true, "send_questions" => true, "starbar_id" => $starbarId);
+				$response->addFromOtherEndpoint("getSurvey", get_class(), $otherEndpointParams, $this->request_name);
+			}
+		}
+
+		if ($type == "trailer") {
+			$sql = "SELECT survey_id, video_key FROM survey_trailer_info WHERE survey_id IN ($surveyIds)";
+			$results = Db_Pdo::fetchAll($sql);
+			$trailerInfo = [];
+			foreach ($results as $result) {
+				$trailerInfo[$result['survey_id']] = $result;
+			}
+			$response->setResultVariable("trailer_info", $trailerInfo);
 		}
 
 		$response->addRecordsFromCollection($surveyCollection);
@@ -271,28 +307,15 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		if (!$surveyResponse->id || $surveyResponse->user_id != $userId || ($surveyResponse->status != "new" && $surveyResponse->status != "archived"))
 			throw new Exception('Invalid survey (already completed?).');
 
-		//build $data - common attributes
-		$data = array(
-			"user_id"		=> $userId,
-			"survey_id"	=> $surveyId,
-			"starbar_id"	=> $starbarId,
-			"user_id"		=> $userId
-		);
 		//add to $data based on $response->submitted_parameters["survey_data"]
 		if (isset($request->submitted_parameters->survey_data))
 		{
 			$surveyData = $request->submitted_parameters->survey_data;
 			if (!is_object($surveyData) && !is_array($surveyData))
 				throw new Exception('Invalid $surveyData.');
-			foreach ($surveyData as $key => $value)
-			{
-				if (array_key_exists($key, $data))
-					throw new Exception('Invalid $surveyData. Trying to overwrite data.');
-				$data[$key] = $value;
-			}
 		}
 
-		$updatedStatus = $surveyResponse->updateResponse($data);
+		$updatedStatus = $surveyResponse->updateResponse($surveyData);
 
 		// run the right transaction
 		if ($updatedStatus == "completed")

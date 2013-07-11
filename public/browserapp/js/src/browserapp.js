@@ -237,7 +237,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 						section = "surveys";
 						break;
 					case "#content/tour-spotlight":
-						section = "spotlight";
+						section = "trailer";
 						break;
 					case "#content/tour-giveaways":
 						section = "promos";
@@ -309,8 +309,10 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 					return; // Note the *return* and not a break. This is because we do not open a
 				case "tour-polls":
 				case "tour-surveys":
-				case "tour-spotlight":
 					global.location.hash = "#content/" + section;
+					break;
+				case "tour-trailer":
+					global.location.hash = "#content/tour-spotlight";
 					break;
 				case "tour-promos":
 					global.location.hash = "#content/tour-giveaways";
@@ -433,6 +435,18 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 
 		// add a class for the survey size for the css rules -- note that closeSection() removes all $sectionContainer's classes
 		$sectionContainer.addClass('sayso-section-survey-' + data['surveySize']);
+
+		openSection(data);
+	}
+
+	function openTrailer(data) {
+		data['section'] = 'trailer';
+
+		// using closeSection() to allow a survey link on the survey section itself
+		// otherwise, in that situation, the link would just close the survey section (because opening the same section twice closes it)
+		// note that closeSection() returns false if a confirmation dialog appears to the user,
+		// and the user chooses not to close the section, so we should stop here if that happens
+		if (!closeSection()) return;
 
 		openSection(data);
 	}
@@ -653,6 +667,9 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 	}
 
 	var handlebarsHelpers = {
+		"console-log": function () {
+			console.log(arguments);
+		},
 		"currency-name-highlighted": function(currency) {
 			// @todo add description to game.currencies
 			return new Handlebars.SafeString('' +
@@ -700,9 +717,26 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 		"image-path": function(fileName) {
 			return "/browserapp/images/" + state.state.starbar.short_name + "/" + fileName;
 		},
-		"get-record-field" : function(recordSet, recordId, fieldName) {
-			//dot notation (recordSet.recordId.fieldName) fails
-			return recordSet[recordId][fieldName];
+		"record-field" : function(recordSet, recordId, fieldName) {
+			var record = $.grep(recordSet, function (r){ return r.id === recordId; });
+			if (record && fieldName in record)
+				return record[fieldName];
+		},
+		"object-field" : function() {
+			if (arguments.length < 3)
+				return "";
+
+			var someObject = arguments[0];
+
+			for (var i = 1; i < arguments.length - 1; i++) {
+				if (arguments[i] in someObject) {
+					someObject = someObject[arguments[i]];
+				} else {
+					return "";
+				}
+			}
+
+			return someObject; // no longer an object, in theory
 		},
         "compare": function(v1, operator, v2, options) {
             switch (operator) {
@@ -766,7 +800,24 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
                 counter++;
             }
             return $carouselContainer.html();
-        }
+        },
+		'every-nth': function(context, every, options) { // adapted from http://jaketrent.com/post/every-nth-item-in-handlebars-loop/
+			var fn = options.fn, inverse = options.inverse;
+			var ret = "";
+			if(context && context.length > 0) {
+				for(var i=0, j=context.length; i<j; i++) {
+					var modZero = i % every === 0;
+					ret = ret + fn($.extend({}, context[i], {
+						isModZero: modZero,
+						isModZeroNotFirst: modZero && i > 0,
+						isLast: i === context.length - 1
+					}));
+				}
+			} else {
+				ret = inverse(this);
+			}
+			return ret;
+		}
 	};
 
 	// "section-link" corresponds to elements that have the class "sayso-section-link" (as well as "sayso-element")
@@ -804,6 +855,10 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 			"template-image": function ($elem, data) {
 				if (data['templateImageSrc'])
 					$elem.attr('src', data['templateImageSrc']);
+			},
+			"template-background-image": function ($elem, data) {
+				if (data['templateBackgroundImageSrc'])
+					$elem.css('background-image', "url(" + data['templateBackgroundImageSrc'] + ")");
 			},
 			"section-link": function ($elem, data) {
 				$elem.click(function(e) {
@@ -843,6 +898,82 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 				$pollHeader.click(function() {
 					openPoll($elem, data); // note that openPoll takes the container ($elem) as a parameter, not $pollHeader
 				});
+			},
+			"trailer-link": function ($elem, data) {
+				$elem.click(function() {
+					openTrailer(data);
+				});
+			},
+			"trailer-video-container": function ($elem, data, templateData) {
+				var trailer = templateData['trailers'].variables.survey;
+				var $firstQuestionContainer = $('#sayso-trailer-first-question', $section);
+				var $secondQuestionContainer = $('#sayso-trailer-second-question', $section);
+				var $videoCarousel = $('#sayso-trailer-carousel-container', $section);
+
+				var iframe = createIframe(null, function(unused, dataFromIframe) {
+					frameComm.fireEvent(iframe.frame_id, 'init-action', {action: 'display-video', video_provider: "youtube", video_key: trailer['trailer_info']['video_key']});
+				}, true);
+
+				var firstQuestionId = trailer['questions'][0]['id'];
+				var secondQuestionId = trailer['questions'][1]['id'];
+
+				var firstChoiceId, secondChoiceId;
+
+				$(global.document).on('sayso:iframe-video-start', function(unused, dataFromIframe) {
+					if( dataFromIframe.frame_id === iframe.frame_id ) {
+						$videoCarousel.addClass('sayso-trailer-carousel-container-lowered');
+						$firstQuestionContainer.fadeTo(0, 0).show().fadeTo(200, 1);
+					}
+				});
+
+				$(global.document).on('sayso:iframe-video-done', function(unused, dataFromIframe) {
+					if( dataFromIframe.frame_id === iframe.frame_id ) {
+						$('input', $firstQuestionContainer).change(function() {
+							firstChoiceId = $(this).val();
+							$('h2', $sectionContainer).hide();
+							$firstQuestionContainer.hide();
+							$secondQuestionContainer.show();
+						});
+
+						$('input', $secondQuestionContainer).change(function() {
+							secondChoiceId = $(this).val();
+							submitResponses(function() {
+
+							})
+						});
+
+						$('.sayso-trailer-question-disabler', $sectionContainer).hide();
+						$('input', $sectionContainer).removeAttr('disabled');
+						$videoCarousel.fadeTo(0, 0).hide().removeClass('sayso-trailer-carousel-container-lowered');
+					}
+				});
+
+				function submitResponses() {
+					var request = {
+						action_class : "survey",
+						action : "updateSurveyResponse",
+						starbar_id : starbarId,
+						survey_id : trailer['id'],
+						survey_response_id : trailer['survey_response_id'],
+						survey_data: {
+							answers: {}
+						}
+					};
+
+					request.survey_data.answers[firstQuestionId] = firstChoiceId;
+					request.survey_data.answers[secondQuestionId] = secondChoiceId;
+
+					api.doRequest(request, function(response) {
+						if (response.responses.default.variables.success) {
+							var $textAndQuestionsContainer = $('#sayso-trailer-title-and-questions', $sectionContainer);
+							$textAndQuestionsContainer.html('');
+							processMarkupIntoContainer($textAndQuestionsContainer, "{{>trailer-completed}}", trailer);
+							$videoCarousel.show().fadeTo(200, 1);
+						}
+					});
+				}
+
+				$elem.append(iframe.$element);
 			},
 			"survey-link": function ($elem, data) {
 				$elem.click(function() {
@@ -1462,6 +1593,19 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 					survey_id : data['surveyId'],
 					send_questions : false,
 					send_question_choices : false
+				}
+			}
+		},
+		"trailer": function (data) {
+			return {
+				"trailers": {
+					action_class : "survey",
+					action : "getSurveys",
+					starbar_id : starbarId,
+					survey_type : "trailer",
+					survey_status : "new",
+					always_choose : true,
+					chosen_survey_id : ('surveyId' in data ? data['surveyId'] : null)
 				}
 			}
 		},

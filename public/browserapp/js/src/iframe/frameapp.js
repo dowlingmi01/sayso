@@ -192,6 +192,65 @@ sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 			}
 
 			var repeatUntilEmbedLoads = setInterval(enableClickableRadios, 100);
+		},
+		"display-video": function(data) {
+			var player;
+			var $videoContainer = $('<div id="sayso-video-container"></div>');
+			$('body').append($videoContainer);
+
+			switch (data['video_provider']) {
+				case "youtube":
+					function onPlayerError(errorCode) {
+						// do nothing
+					}
+
+					function onPlayerReady(event) {
+						player.addEventListener('onStateChange', onPlayerStateChange);
+						player.addEventListener('onError', onPlayerError);
+						// event.target.playVideo(); // to autoplay
+					}
+
+					function onPlayerStateChange(event) {
+						if (event.data == global.YT.PlayerState.PLAYING)
+							comm.fireEvent('video-start');
+						else if(event.data == global.YT.PlayerState.ENDED)
+							comm.fireEvent('video-done');
+					}
+
+					global.onYouTubeIframeAPIReady = function() {
+
+						player = new global.YT.Player('sayso-video-container', {
+							height: '390',
+							width: '635',
+							videoId: data['video_key'],
+							events: {
+								'onReady': onPlayerReady
+							},
+							playerVars : {
+								'iv_load_policy' : 3,
+								'controls' : 0,
+								'disablekb' : 1,
+								'rel' : 0,
+								'showinfo' : 0
+							}
+
+						});
+					}
+
+					//Load player api asynchronously.
+					var newTag = document.createElement('script');
+					newTag.src = "//www.youtube.com/iframe_api";
+					var firstScriptTag = document.getElementsByTagName('script')[0];
+					firstScriptTag.parentNode.insertBefore(newTag, firstScriptTag);
+
+					break;
+
+				// case "vimeo":
+					//break;
+
+				default:
+					return;
+			}
 		}
 	}
 

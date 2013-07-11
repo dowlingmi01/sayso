@@ -401,11 +401,8 @@ class Survey_Response extends Record
 	public function updateResponse($data)
 	{
 		//validate required params
-		//TODO: do we need to check the integrety of the loaded surveys with the data passed in?? [YES!! Hamza]
-		if (	!isset($data["survey_id"])
-			|| !isset($data["starbar_id"])
-			|| !isset($this->id)
-			|| $this->user_id != $data["user_id"]
+		if (!isset($this->id)
+			|| !$this->id
 			|| $this->status == "completed"
 			|| $this->status == "disqualified")
 			throw new Exception("Cannot update response, missing parameters!");
@@ -417,8 +414,7 @@ class Survey_Response extends Record
 		$surveyQuestions = new Survey_QuestionCollection();
 		$surveyQuestions->loadAllQuestionsForSurvey($this->survey_id);
 
-
-		$surveyQuestionChoiceData = $data["answers"];
+		$surveyQuestionChoiceData = $data->answers;
 
 		try
 		{

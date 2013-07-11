@@ -130,9 +130,22 @@ class Survey extends Record
 					]
 				],
 			],
+			"trailer" => [
+				"completed" => [
+					"experience" => [
+						"premium" => 250, // should be 500 or other, need to fix game_transaction_type_lines
+						"standard" => 250,
+					],
+					"redeemable" => [
+						"premium" => 19, // should be 38 or other, need to fix game_transaction_type_lines
+						"standard" => 19,
+					]
+				],
+			],
 		];
 
 		$defaultReward["poll"]["disqualified"] = $defaultReward["poll"]["completed"];
+		$defaultReward["trailer"]["disqualified"] = $defaultReward["trailer"]["completed"];
 
 		foreach (["experience", "redeemable"] as $currency) {
 			$defaultCompleted = (

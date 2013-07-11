@@ -325,9 +325,26 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
 		"image-path": function(fileName) {
 			return "/browserapp/images/" + state.state.starbar.short_name + "/" + fileName;
 		},
-		"get-record-field" : function(recordSet, recordId, fieldName) {
-			//dot notation (recordSet.recordId.fieldName) fails
-			return recordSet[recordId][fieldName];
+		"record-field" : function(recordSet, recordId, fieldName) {
+			var record = $.grep(recordSet, function (r){ return r.id === recordId; });
+			if (record && fieldName in record)
+				return record[fieldName];
+		},
+		"object-field" : function() {
+			if (arguments.length < 3)
+				return "";
+
+			var someObject = arguments[0];
+
+			for (var i = 1; i < arguments.length - 1; i++) {
+				if (arguments[i] in someObject) {
+					someObject = someObject[arguments[i]];
+				} else {
+					return "";
+				}
+			}
+
+			return someObject; // no longer an object, in theory
 		},
 		"compare": function(v1, operator, v2, options) {
 			switch (operator) {

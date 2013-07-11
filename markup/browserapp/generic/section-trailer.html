@@ -1,0 +1,75 @@
+<div id="sayso-section-header"></div>
+<div id="sayso-section-body">
+	{{#with trailers.variables.survey}}
+		{{>trailer}}
+	{{else}}
+		Looks like you've already watched all the spotlight videos! Check back again tomorrow for fresh content.
+	{{/with}}
+	<div id="sayso-trailer-carousel-container" class="sayso-carousel-container">
+		{{#every-nth trailers.records 5}}
+			{{#if isModZeroNotFirst}}
+				</div>
+			{{/if}}
+			{{#if isModZero}}
+				<div class="sayso-carousel-group">
+			{{/if}}
+
+				{{#compare id "==" ../trailers.variables.survey.id}} <!-- current trailer -->
+					<div class="sayso-element sayso-template-background-image sayso-trailer-thumbnail" data-template-background-image-src="//img.youtube.com/vi/{{object-field ../../trailers.variables.trailer_info id 'video_key'}}/1.jpg"></div>
+				{{else}} <!-- clickable trailer -->
+					<div class="sayso-element sayso-template-background-image sayso-trailer-thumbnail sayso-trailer-link" data-survey-id="{{id}}" data-template-background-image-src="//img.youtube.com/vi/{{object-field ../../trailers.variables.trailer_info id 'video_key'}}/1.jpg"></div>
+				{{/compare}}
+
+			{{#if isLast}}
+				</div>
+			{{/if}}
+		{{/every-nth}}
+	</div>
+</div>
+
+<div class="sayso-element sayso-partial" data-partial-id="trailer">
+	<div class="sayso-element sayso-trailer-video-container"></div>
+	<div id="sayso-trailer-title-and-questions">
+		<h2>{{title}}</h2>
+		{{#every-nth questions 2}}
+			{{#if isModZero}} <!-- first question only -->
+				{{>trailer-first-question}}
+			{{/if}}
+			{{#if isLast}} <!-- second question only -->
+				{{>trailer-second-question}}
+			{{/if}}
+		{{/every-nth}}
+	</div>
+</div>
+
+<div class="sayso-element sayso-partial" data-partial-id="trailer-first-question">
+	<div class="sayso-trailer-question" id="sayso-trailer-first-question">
+		<div class="sayso-element sayso-tooltip sayso-trailer-question-disabler" data-tooltip-title="Rating will be unlocked at the end of the video."></div>
+		<p>{{title}}</p>
+		{{#each choices}}
+			<input type="radio" name="first_choice_id" id="sayso-choice-{{id}}" value="{{id}}" disabled>
+			<label for="sayso-choice-{{id}}">
+				<div class="sayso-rating-thumbs sayso-rating-thumbs-{{value}}"></div>
+			</label>
+		{{/each}}
+	</div>
+</div>
+
+<div class="sayso-element sayso-partial" data-partial-id="trailer-second-question">
+	<div class="sayso-trailer-question" id="sayso-trailer-second-question">
+		<div class="sayso-trailer-question-disabler"></div>
+		<p>{{title}}</p>
+		{{#each choices}}
+			<div class="sayso-trailer-second-question-choice">
+				<input type="radio" name="second_choice_id" id="sayso-choice-{{id}}" value="{{id}}" disabled>
+				<label for="sayso-choice-{{id}}">
+					{{title}}
+				</label>
+			</div>
+		{{/each}}
+	</div>
+</div>
+
+<div class="sayso-element sayso-partial" data-partial-id="trailer-completed">
+	Excellent! You earned {{currency-name-highlighted-with-value "experience" completed_points_experience}} &amp; {{currency-name-highlighted-with-value "redeemable" completed_points_redeemable}}
+</div>

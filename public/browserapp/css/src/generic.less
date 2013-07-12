@@ -1812,11 +1812,24 @@
                     .sayso-experience-purchases-item {
                         float: left;
                         margin: 0 10px 10px 10px;
+						position: relative;
 
                         img {
                             width: 80px;
                             height: 52px;
                         }
+						.sayso-experience-purchase-quantity {
+							background-image: url('@{base-image-url}/section-experience-quantity-bg.png');
+							background-repeat: no-repeat;
+							color: @theme-color-text-inverse;
+							position: absolute;
+							top: -5px;
+							right: -5px;
+							height: 26px;
+							width: 26px;
+							text-align: center;
+							padding-top: 6px;
+						}
                     }
                 }
 			}

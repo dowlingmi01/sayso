@@ -196,6 +196,8 @@
 
 
 .sg-question-options {
+	padding: 0 0 0 9px;
+	overflow: visible;
 }
 
 .sg-question-options ul li label

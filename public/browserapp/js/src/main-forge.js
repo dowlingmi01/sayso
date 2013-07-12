@@ -140,6 +140,9 @@
 			}
 		});
 	}
+	
+	if( in_iframe && config.location.href.match(/saysollc.com\/browserapp\/readStorage.html/))
+		return;
 
 	if( !in_iframe && config.location.href.match(/say.so|saysollc.com\/webportal/) ) {
 		webportal = true;

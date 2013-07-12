@@ -99,7 +99,7 @@ class User_Session extends Record
 		$session =  Db_Pdo::fetch(
 "SELECT
 	user_session.*,
-	IF(CURRENT_TIMESTAMP - created > 86400 OR expired IS NOT NULL, 1, 0) AS is_expired,
+	IF(TIMESTAMPDIFF(SECOND, created, CURRENT_TIMESTAMP) > 86400 OR expired IS NOT NULL, 1, 0) AS is_expired,
 	IF(user_session.expired IS NOT NULL AND CURRENT_TIMESTAMP - user_session.expired  < 600, 1, 0) AS recently_expired
 FROM user_session
 WHERE id = ?", $sessionId);

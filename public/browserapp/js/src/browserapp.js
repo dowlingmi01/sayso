@@ -1393,10 +1393,10 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
                         $toBeShown.show();
                         $shown.animate({
                             left: '+=500'
-                        }, { duration: 500, queue: false });
+                        }, { duration: 500, queue: true });
                         $toBeShown.animate({
                             left: '+=500'
-                        }, { duration: 500, queue: false });
+                        }, { duration: 500, queue: true });
                     });
                 }
 
@@ -1405,10 +1405,10 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
                         $toBeShown.show();
                         $shown.animate({
                             left: '-=500'
-                        }, { duration: 500, queue: false });
+                        }, { duration: 500, queue: true });
                         $toBeShown.animate({
                             left: '-=500'
-                        }, { duration: 500, queue: false });
+                        }, { duration: 500, queue: true });
                     });
                 }
 

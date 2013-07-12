@@ -2,7 +2,7 @@
 	var in_iframe = forge.is.firefox() ? (global.unsafeWindow.window !== global.unsafeWindow.top) : (global.top !== global);
 	var frameId = Math.floor(Math.random()*2e9) + 1;
 	var url_match_prepend = '^(?:http|https){1}://(?:[\\w.-]+[.])?';
-	var parentLocation, topLocation;
+	var topLocation;
 	var webportal = false;
 
 	function evalInPageContext( arg ) {
@@ -188,7 +188,7 @@
 			}
 		});
 		function requestParentLocation() {
-			if( !parentLocation ) {
+			if( !topLocation ) {
 				evalInPageContext( "top.postMessage( '[\"sayso-parent-req\", " + frameId + "]', '*' );");
 				setTimeout(requestParentLocation, 200);
 			}

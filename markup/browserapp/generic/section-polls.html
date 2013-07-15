@@ -1,39 +1,31 @@
-<div id="sayso-section-header">
-	<ul>
-		<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="polls-new">
-			{{#if polls.recordsReturned}}
-				{{polls.recordsReturned}} New!
-			{{else}}
-				New
+<script data-partial-id="main" type="text/x-handlebars-template">
+	<div id="sayso-section-header">
+		<ul>
+			<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="polls-new">
+				{{#if polls.recordsReturned}}
+					{{polls.recordsReturned}} New!
+				{{else}}
+					New
+				{{/if}}
+			</li>
+			{{#if countPollsCompleted.variables.count}}
+				<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="polls-completed">Completed</li>
 			{{/if}}
-		</li>
-		{{#if countPollsCompleted.variables.count}}
-			<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="polls-completed">Completed</li>
-		{{/if}}
-		{{#if countPollsArchived.variables.count}}
-			<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="polls-archived">Archived</li>
-		{{/if}}
-	</ul>
-</div>
-<div id="sayso-section-body" class="sayso-element sayso-tab-container" data-default-tab="polls-new">
-	<div class="sayso-element sayso-tab" data-tab="polls-new">
-		<p class="sayso-heading-text">Polls are a speedy and effective way to find out what you love about Machinima. Each poll completed earns you {{currency-name-highlighted "experience"}} & {{currency-name-highlighted "redeemable"}}. Gain bonus {{currency-name "redeemable"}} &amp; {{currency-name "experience"}} by sharing and tweeting your favorite polls, and look for special polls with point magnifiers.</p>
-		{{>polls-new}}
+			{{#if countPollsArchived.variables.count}}
+				<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="polls-archived">Archived</li>
+			{{/if}}
+		</ul>
 	</div>
-	<div class="sayso-element sayso-tab" data-tab="polls-completed">
-		<p class="sayso-heading-text">All of your completed polls are listed below. Keep it up!</p>
-		{{>polls-completed}}
+	<div id="sayso-section-body" class="sayso-element sayso-tab-container" data-default-tab="polls-new">
+		<div class="sayso-element sayso-tab" data-tab="polls-new"></div>
+		<div class="sayso-element sayso-tab" data-tab="polls-completed"></div>
+		<div class="sayso-element sayso-tab" data-tab="polls-archived"></div>
 	</div>
-	<div class="sayso-element sayso-tab" data-tab="polls-archived">
-		<p class="sayso-heading-text">
-			We'd still love your opinion on these archived polls, and you can still earn by completing them! Same deal &ndash; earn {{currency-name-highlighted "redeemable"}} &amp; {{currency-name-highlighted "experience"}} for each one you complete.
-		</p>
-		{{>polls-archived}}
-	</div>
-</div>
-<div id="sayso-section-footer"></div>
+	<div id="sayso-section-footer"></div>
+</script>
 
-<div class="sayso-element sayso-partial" data-partial-id="polls-new">
+<script data-partial-id="polls-new" type="text/x-handlebars-template">
+	<p class="sayso-heading-text">Polls are a speedy and effective way to find out what you love about Machinima. Each poll completed earns you {{currency-name-highlighted "experience"}} & {{currency-name-highlighted "redeemable"}}. Gain bonus {{currency-name "redeemable"}} &amp; {{currency-name "experience"}} by sharing and tweeting your favorite polls, and look for special polls with point magnifiers.</p>
 	<div class="sayso-element sayso-scrollable" style="height: 376px;">
 		{{#each polls.records}}
 			{{>poll-new-archived}}
@@ -45,25 +37,29 @@
 			{{/if}}
 		{{/each}}
 	</div>
-</div>
+</script>
 
-<div class="sayso-element sayso-partial" data-partial-id="polls-completed">
+<script data-partial-id="polls-completed" type="text/x-handlebars-template">
+	<p class="sayso-heading-text">All of your completed polls are listed below. Keep it up!</p>
 	<div class="sayso-element sayso-scrollable" style="height: 412px;">
 		{{#each polls.records}}
 			{{>poll-completed-disqualified}}
 		{{/each}}
 	</div>
-</div>
+</script>
 
-<div class="sayso-element sayso-partial" data-partial-id="polls-archived">
+<script data-partial-id="polls-archived" type="text/x-handlebars-template">
+	<p class="sayso-heading-text">
+		We'd still love your opinion on these archived polls, and you can still earn by completing them! Same deal &ndash; earn {{currency-name-highlighted "redeemable"}} &amp; {{currency-name-highlighted "experience"}} for each one you complete.
+	</p>
 	<div class="sayso-element sayso-scrollable"  style="height: 394px;">
 		{{#each polls.records}}
 			{{>poll-new-archived}}
 		{{/each}}
 	</div>
-</div>
+</script>
 
-<div class="sayso-element sayso-partial" data-partial-id="poll-new-archived">
+<script data-partial-id="poll-new-archived" type="text/x-handlebars-template">
 	<div class="sayso-element sayso-poll-container" data-survey-id="{{id}}" data-survey-response-id="{{survey_response_id}}" data-survey-external-id="{{external_id}}" data-survey-external-key="{{external_key}}" data-survey-number-of-answers="{{number_of_answers}}">
 		<div class="sayso-element sayso-poll-header">
 			<div class="sayso-poll-header-triangle"></div>
@@ -71,9 +67,9 @@
 		</div>
 		<div class="sayso-element sayso-poll"></div>
 	</div>
-</div>
+</script>
 
-<div class="sayso-element sayso-partial" data-partial-id="poll-completed-disqualified">
+<script data-partial-id="poll-completed-disqualified" type="text/x-handlebars-template">
 	<div class="sayso-completed-container">
 		<div class="sayso-completed-title"><div>{{title}}</div></div>
 		<div class="sayso-completed-points-earned">
@@ -81,10 +77,10 @@
 			<div class="sayso-completed-points-earned-redeemable"><div>+{{completed_points_redeemable}}</div></div>
 		</div>
 	</div>
-</div>
+</script>
 
-<div class="sayso-element sayso-partial" data-partial-id="poll-completed-footer">
+<script data-partial-id="poll-completed-footer" type="text/x-handlebars-template">
 	<div class="sayso-poll-footer">
 		Excellent! You earned {{currency-name-highlighted-with-value "experience" completed_points_experience}} &amp; {{currency-name-highlighted-with-value "redeemable" completed_points_redeemable}}
 	</div>
-</div>
+</script>

@@ -1,58 +1,57 @@
-<div id="sayso-section-header">
-	<hr />
-</div>
-<div id="sayso-section-body">
-    <h3>Levels</h3>
-	<div class="sayso-element sayso-experience-levels-container" id="sayso-experience-levels-container">
-        <div class="sayso-experience-levels-nav left" id="sayso-experience-levels-nav-left"></div>
-        <div class="sayso-element sayso-experience-levels-carousel" id="sayso-experience-levels-carousel">
-            {{{create-level-carousel state.game}}}
-        </div>
-        <div class="sayso-experience-levels-nav right" id="sayso-experience-levels-nav-right"></div>
-    </div>
-    <hr />
-    <div id="sayso-experience-currencies-container">
-        <div class="sayso-experience-currencies-container-left">
-            <h3>{{currency-name "experience"}}</h3>
-            <div class="sayso-experience-currencies-experience-box">
-                <span class="sayso-experience-currencies-experience-logo"></span>
-                <div class="sayso-experience-currencies-experience-progress-bar-container">
-                    <div class="sayso-experience-currencies-experience-progress-bar" style="width: {{experience-percent state.game}}%;"></div>
-                    <div class="sayso-experience-currencies-experience-progress-bar-value">{{state.game.currencies.experience.balance}}</div>
-                </div>
-            </div>
-            <div class="sayso-experience-currencies-next-level">Level up at {{next-exp-threshold state.game}} {{currency-name "experience"}}</div>
-        </div>
-        <div class="sayso-experience-currencies-container-right">
-            <h3>{{currency-name "redeemable"}}</h3>
-            <div class="sayso-experience-currencies-redeemable-box">
-                <span class="sayso-experience-currencies-redeemable-logo"></span>
-                <div class="sayso-experience-currencies-redeemable-progress-bar-container">
-                    <div class="sayso-experience-currencies-redeemable-progress-bar-value">{{state.game.currencies.redeemable.balance}}</div>
-                </div>
-            </div>
-            <div class="sayso-experience-currencies-rewards-link">
-				<a class="sayso-element sayso-section-link" data-section="rewards">Rewards Center</a>
-            </div>
-        </div>
-    </div>
-    <hr />
-    <div id="sayso-experience-purchases-container">
-        <h3>My Purchases</h3>
-        {{#each state.game.purchasables}}
-            {{>purchasables_partial}}
-        {{/each}}
-    </div>
-</div>
-<div id="sayso-section-footer"></div>
+<script data-partial-id="main" type="text/x-handlebars-template">
+	<div id="sayso-section-header">
+		<hr />
+	</div>
+	<div id="sayso-section-body">
+		<h3>Levels</h3>
+		<div class="sayso-element sayso-experience-levels-container" id="sayso-experience-levels-container">
+			<div class="sayso-experience-levels-nav left" id="sayso-experience-levels-nav-left"></div>
+			<div class="sayso-element sayso-experience-levels-carousel" id="sayso-experience-levels-carousel">
+				{{{create-level-carousel state.game}}}
+			</div>
+			<div class="sayso-experience-levels-nav right" id="sayso-experience-levels-nav-right"></div>
+		</div>
+		<hr />
+		<div id="sayso-experience-currencies-container">
+			<div class="sayso-experience-currencies-container-left">
+				<h3>{{currency-name "experience"}}</h3>
+				<div class="sayso-experience-currencies-experience-box">
+					<span class="sayso-experience-currencies-experience-logo"></span>
+					<div class="sayso-experience-currencies-experience-progress-bar-container">
+						<div class="sayso-experience-currencies-experience-progress-bar" style="width: {{experience-percent state.game}}%;"></div>
+						<div class="sayso-experience-currencies-experience-progress-bar-value">{{state.game.currencies.experience.balance}}</div>
+					</div>
+				</div>
+				<div class="sayso-experience-currencies-next-level">Level up at {{next-exp-threshold state.game}} {{currency-name "experience"}}</div>
+			</div>
+			<div class="sayso-experience-currencies-container-right">
+				<h3>{{currency-name "redeemable"}}</h3>
+				<div class="sayso-experience-currencies-redeemable-box">
+					<span class="sayso-experience-currencies-redeemable-logo"></span>
+					<div class="sayso-experience-currencies-redeemable-progress-bar-container">
+						<div class="sayso-experience-currencies-redeemable-progress-bar-value">{{state.game.currencies.redeemable.balance}}</div>
+					</div>
+				</div>
+				<div class="sayso-experience-currencies-rewards-link">
+					<a class="sayso-element sayso-section-link" data-section="rewards">Rewards Center</a>
+				</div>
+			</div>
+		</div>
+		<hr />
+		<div id="sayso-experience-purchases-container">
+			<h3>My Purchases</h3>
+			{{#each state.game.purchasables}}
+				{{>purchasable}}
+			{{/each}}
+		</div>
+	</div>
+	<div id="sayso-section-footer"></div>
+</script>
 
-
-
-
-<div class="sayso-element sayso-partial" data-partial-id="purchasables_partial">
+<script data-partial-id="purchasable" type="text/x-handlebars-template">
     <div class="sayso-element sayso-experience-purchases-item" data-level-id="{{id}}"
          data-level-name="{{name}}" data-level-threshold="{{price}}" data-level-img="{{img_url_preview_bought}}">
-		<img class="sayso-element sayso-template-image" data-template-image-src="{{img_url_preview_bought}}" alt="{{name}}"/>
+		<img src="{{img_url_preview_bought}}" alt="{{name}}"/>
 		<div class="sayso-element sayso-experience-purchase-quantity">{{quantity}}</div>
     </div>
-</div>
+</script>

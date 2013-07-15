@@ -91,6 +91,10 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 			});
 		}
 
+		for (var helper in handlebarsHelpers) {
+			Handlebars.registerHelper(helper, handlebarsHelpers[helper]);
+		}
+
 		prepareElements();
 	}
 
@@ -103,39 +107,34 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 	 $container is the element we look for elements in
 	 handlerCollection is "pre-template" or "post-template" (default)
 	 */
-	function prepareElements($container, handlerCollection, templateData) {
+	function prepareElements($container, templateData) {
 		if (!$container) $container = $nav;
-		if (!handlerCollection) handlerCollection = "post-template";
 
 		var $elements = $('.sayso-element', $container);
 		var $element;
 
 		$elements.each(function() {
 			$element = $(this);
-			for (var elementType in prepareHandlers[handlerCollection]) {
+			for (var elementType in elementHandlers) {
 				if ($element.hasClass('sayso-' + elementType)) {
-					prepareHandlers[handlerCollection][elementType]($element, $element.data(), templateData);
+					elementHandlers[elementType]($element, $element.data(), templateData);
 				}
 			}
 		});
 
-		// update all updateTypes when doing post-template processing, i.e. "game", "user", "notifications"
-		if (handlerCollection == "post-template" && userMode == "logged-in") {
-			updateElements($container);
-			/*
-			updateElements($container, "game");
-			updateElements($container, "profile");
+		if (userMode != "logged-in") return;
 
-			// only notifications should animate on initial load... game and user data shouldn't animate initially
-			// (not sure user profile data will ever animate anyway)
-			if ($container === $nav)
-				updateElements($container, "notifications", true);
-			*/
-		}
+		// update all updateTypes i.e. "game", "user", "notifications"
+		updateElements($container);
+		/*
+		updateElements($container, "game");
+		updateElements($container, "profile");
 
-		for (var helper in handlebarsHelpers) {
-			Handlebars.registerHelper(helper, handlebarsHelpers[helper]);
-		}
+		// only notifications should animate on initial load... game and user data shouldn't animate initially
+		// (not sure user profile data will ever animate anyway)
+		if ($container === $nav)
+			updateElements($container, "notifications", true);
+		*/
 	}
 
 
@@ -364,7 +363,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 			clearTimeout(timeoutIdSectionLoadingSpinner);
 
 			if (userMode == "logged-in") {
-				processMarkupIntoContainer($section, response.responses.markup.variables.markup, response.responses, true);
+				processMarkupIntoContainer($section, response.responses.markup.variables.markup, response.responses, "main");
 			} else { // no template stuff on tour
 				$section.append(response.responses.markup.variables.markup);
 			}
@@ -385,25 +384,26 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 		$section.html("");
 		currentSection = null;
 
-		// @todo we probably should reset the Handlebars partials here?
+		// reset the partials
+		Handlebars.partials = {};
 
 		// important to return true. In enableConfirmationBeforeClosingSection(), closeSection is overwritten with a function that returns false if the user cancels the close operation
 		return true;
 	}
 
 	function openTab($tabContainer, tabName, templateData, clickedElementData) {
-		var tabs = currentTabContainers[$tabContainer.attr('id')];
+		var markup = "{{>"+tabName+"}}";
 
-		// tabs[tab] should exist, since it's added by the pre-template handler for tab-container
-		if (!(tabName in tabs)) return;
+		if (!clickedElementData) clickedElementData = {};
 
-		var markup = tabs[tabName];
-		var $tab = $("div.sayso-tab[data-tab="+tabName+"]", $tabContainer).first().html('');;
+		if ('partialId' in clickedElementData) markup = "{{>"+clickedElementData['partialId']+"}}";
+
+		var $tab = $("div.sayso-tab[data-tab="+tabName+"]", $tabContainer).first().html('');
 
 		$("div.sayso-tab", $tabContainer).hide();
 
 		if (templateData) {
-			processMarkupIntoContainer($tab, markup, templateData, true);
+			processMarkupIntoContainer($tab, markup, templateData);
 			$tab.show();
 		} else {
 			// no templateData passed, perform extra requests, if any
@@ -412,11 +412,11 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 
 				api.doRequests(extraRequestsForThisTab, function(response){
 					// if the loader wasn't shown yet, don't show it
-					processMarkupIntoContainer($tab, markup, response.responses, true);
+					processMarkupIntoContainer($tab, markup, response.responses);
 					$tab.show();
 				});
 			} else { // no templateData!
-				processMarkupIntoContainer($tab, markup, {}, true);
+				processMarkupIntoContainer($tab, markup);
 				$tab.show();
 			}
 		}
@@ -637,33 +637,39 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 	}
 
 
-	function processMarkupIntoContainer($container, markup, templateData, runPreTemplateHandlers) {
-		var template;
+	function processMarkupIntoContainer($container, markup, templateData, initialPartial) {
+		if (initialPartial) { // if specified, all the content must be contained in partials (i.e. script tags) inside the markup
+			var $temp = $('<div></div>');
+			$temp.html(markup);
 
-		if (typeof templateData !== "object") templateData = {};
+			var $partials = $('script', $temp);
+			var $partial;
 
-		if (runPreTemplateHandlers) {
-			var $tempContainer = $('<div></div>');
+			Handlebars.partials = {};
 
-			$tempContainer.html(markup);
+			$partials.each(function() {
+				$partial = $(this);
+				Handlebars.registerPartial($partial.data('partialId'), $partial.html())
+			});
 
-			prepareElements($tempContainer, "pre-template");
+			$temp.remove();
 
-			// compile the markup into a handlebars template
-			template = Handlebars.compile($tempContainer.htmlForTemplate());
-		} else {
-			template = Handlebars.compile(markup);
+			markup = "{{>"+initialPartial+"}}";
 		}
+
+		var template = Handlebars.compile(markup);
+
+		if (typeof templateData !== "object" || !templateData) templateData = {};
 
 		// always attach the state to the template
 		templateData.state = state.state;
 		templateData.extensionPresent = comm.extensionPresent;
 
 		// pass the api response (templateData) to the template as data, and render
-		$container.append(template(templateData), {noEscape: true});
+		$container.append(template(templateData));
 
-		// prepare sayso elements (passing on templateData to anything that may need it... tabs within tabs?)
-		prepareElements($container, "post-template", templateData);
+		// prepare sayso elements (passing on templateData to anything that may need it...)
+		prepareElements($container, templateData);
 	}
 
 	var handlebarsHelpers = {
@@ -822,605 +828,567 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 
 	// "section-link" corresponds to elements that have the class "sayso-section-link" (as well as "sayso-element")
 	// the "data" variable is, by default, simply $elem.data();
-	var prepareHandlers = {
-		// note that pre-template handlers are NOT run on markup/elements inside tabs
-		// therefore, partials needed for tabs should be outside the tab context
-		"pre-template": {
-			"partial": function ($elem, data) {
-				// partial found, register the
-				Handlebars.registerPartial(data['partialId'], $elem.htmlForTemplate());
-
-				// remove it from the markup so it doesn't go through the template processing (except as a partial)
-				$elem.remove();
-			},
-			// go through each tab inside the tab container, moving its contents to the tab container's $().data('tabs') field
-			// this is so we don't run it through the template system until we are render the tab
-			"tab-container": function ($elem) {
-				var $tab, $tabs;
-				var tabs = {};
-				$tabs = $('.sayso-tab', $elem);
-				$tabs.each(function() {
-					$tab = $(this);
-
-					// need to use .htmlForTemplate() (see util.js) instead of html() to replace "{{&gt;" with "{{>" because jQuery is a big jerk
-					tabs[$tab.data('tab')] = $tab.htmlForTemplate();
-
-					// empty the tab, so it isn't processed by handlebars
-					$tab.html("");
-				});
-				currentTabContainers[$elem.attr('id')] = tabs;
-			}
+	var elementHandlers = {
+		"section-link": function ($elem, data) {
+			$elem.click(function(e) {
+				e.preventDefault();
+				openSection(data);
+			});
 		},
-		"post-template": {
-			"template-image": function ($elem, data) {
-				if (data['templateImageSrc'])
-					$elem.attr('src', data['templateImageSrc']);
-			},
-			"template-background-image": function ($elem, data) {
-				if (data['templateBackgroundImageSrc'])
-					$elem.css('background-image', "url(" + data['templateBackgroundImageSrc'] + ")");
-			},
-			"section-link": function ($elem, data) {
-				$elem.click(function(e) {
-					e.preventDefault();
-					openSection(data);
-				});
-			},
-			"tab-container": function ($elem, data, templateData) {
-				// templateData is passed through from openSection to the default tab, so that we don't have to do another API request for the default (initial) tab
-				openTab($elem, data['defaultTab'], templateData);
-			},
-			"tab-link": function ($elem, data) {
-				// note that there is no templateData passed in this case, since any needed data is requested via the api, from extraRequests
-				// this includes re-opening the default tab, for example
-				$elem.click(function(e) {
-					e.preventDefault();
-					openTab($('#' + data['tabContainer']), data['tab'], null, $elem.data());
-				});
-			},
-			"scrollable": function ($elem, data) {
-				// @todo
-			},
-			"tooltip": function ($elem, data) {
-				// @todo show data['tooltipTitle'] 'neatly' when you roll over this element
-				$elem.attr('title', data['tooltipTitle']); // hack
-			},
-            "placeholder": function () {
-                $.placeholder.shim({context: $nav});
-            },
-			"hide-button": function ($elem) {
-				$elem.click(function() {
-					hideNav(true);
-				});
-			},
-			"poll-container": function ($elem, data) {
-				var $pollHeader = $('.sayso-poll-header', $elem);
-				$pollHeader.click(function() {
-					openPoll($elem, data); // note that openPoll takes the container ($elem) as a parameter, not $pollHeader
-				});
-			},
-			"trailer-link": function ($elem, data) {
-				$elem.click(function() {
-					openTrailer(data);
-				});
-			},
-			"trailer-video-container": function ($elem, data, templateData) {
-				var trailer = templateData['trailers'].variables.survey;
-				var $firstQuestionContainer = $('#sayso-trailer-first-question', $section);
-				var $secondQuestionContainer = $('#sayso-trailer-second-question', $section);
-				var $videoCarousel = $('#sayso-trailer-carousel-container', $section);
+		"tab-container": function ($elem, data, templateData) {
+			// templateData is passed through from openSection to the default tab, so that we don't have to do another API request for the default (initial) tab
+			openTab($elem, data['defaultTab'], templateData);
+		},
+		"tab-link": function ($elem, data) {
+			// note that there is no templateData passed in this case, since any needed data is requested via the api, from extraRequests
+			// this includes re-opening the default tab, for example
+			$elem.click(function(e) {
+				e.preventDefault();
+				openTab($('#' + data['tabContainer']), data['tab'], null, $elem.data());
+			});
+		},
+		"scrollable": function ($elem, data) {
+			// @todo
+		},
+		"tooltip": function ($elem, data) {
+			// @todo show data['tooltipTitle'] 'neatly' when you roll over this element
+			$elem.attr('title', data['tooltipTitle']); // hack
+		},
+		"placeholder": function () {
+			$.placeholder.shim({context: $nav});
+		},
+		"hide-button": function ($elem) {
+			$elem.click(function() {
+				hideNav(true);
+			});
+		},
+		"poll-container": function ($elem, data) {
+			var $pollHeader = $('.sayso-poll-header', $elem);
+			$pollHeader.click(function() {
+				openPoll($elem, data); // note that openPoll takes the container ($elem) as a parameter, not $pollHeader
+			});
+		},
+		"trailer-link": function ($elem, data) {
+			$elem.click(function() {
+				openTrailer(data);
+			});
+		},
+		"trailer-video-container": function ($elem, data, templateData) {
+			var trailer = templateData['trailers'].variables.survey;
+			var $firstQuestionContainer = $('#sayso-trailer-first-question', $section);
+			var $secondQuestionContainer = $('#sayso-trailer-second-question', $section);
+			var $videoCarousel = $('#sayso-trailer-carousel-container', $section);
 
-				var iframe = createIframe(null, function(unused, dataFromIframe) {
-					frameComm.fireEvent(iframe.frame_id, 'init-action', {action: 'display-video', video_provider: "youtube", video_key: trailer['trailer_info']['video_key']});
-				}, true);
+			var iframe = createIframe(null, function(unused, dataFromIframe) {
+				frameComm.fireEvent(iframe.frame_id, 'init-action', {action: 'display-video', video_provider: "youtube", video_key: trailer['trailer_info']['video_key']});
+			}, true);
 
-				var firstQuestionId = trailer['questions'][0]['id'];
-				var secondQuestionId = trailer['questions'][1]['id'];
+			var firstQuestionId = trailer['questions'][0]['id'];
+			var secondQuestionId = trailer['questions'][1]['id'];
 
-				var firstChoiceId, secondChoiceId;
+			var firstChoiceId, secondChoiceId;
 
-				$(global.document).on('sayso:iframe-video-start', function(unused, dataFromIframe) {
-					if( dataFromIframe.frame_id === iframe.frame_id ) {
-						$videoCarousel.addClass('sayso-trailer-carousel-container-lowered');
-						$firstQuestionContainer.fadeTo(0, 0).show().fadeTo(200, 1);
+			$(global.document).on('sayso:iframe-video-start', function(unused, dataFromIframe) {
+				if( dataFromIframe.frame_id === iframe.frame_id ) {
+					$videoCarousel.addClass('sayso-trailer-carousel-container-lowered');
+					$firstQuestionContainer.fadeTo(0, 0).show().fadeTo(200, 1);
+				}
+			});
+
+			$(global.document).on('sayso:iframe-video-done', function(unused, dataFromIframe) {
+				if( dataFromIframe.frame_id === iframe.frame_id ) {
+					$('input', $firstQuestionContainer).change(function() {
+						firstChoiceId = $(this).val();
+						$('h2', $sectionContainer).hide();
+						$firstQuestionContainer.hide();
+						$secondQuestionContainer.show();
+					});
+
+					$('input', $secondQuestionContainer).change(function() {
+						secondChoiceId = $(this).val();
+						submitResponses(function() {
+
+						})
+					});
+
+					$('.sayso-trailer-question-disabler', $sectionContainer).hide();
+					$('input', $sectionContainer).removeAttr('disabled');
+					$videoCarousel.fadeTo(0, 0).hide().removeClass('sayso-trailer-carousel-container-lowered');
+				}
+			});
+
+			function submitResponses() {
+				var request = {
+					action_class : "survey",
+					action : "updateSurveyResponse",
+					starbar_id : starbarId,
+					survey_id : trailer['id'],
+					survey_response_id : trailer['survey_response_id'],
+					survey_data: {
+						answers: {}
+					}
+				};
+
+				request.survey_data.answers[firstQuestionId] = firstChoiceId;
+				request.survey_data.answers[secondQuestionId] = secondChoiceId;
+
+				api.doRequest(request, function(response) {
+					if (response.responses.default.variables.success) {
+						var $textAndQuestionsContainer = $('#sayso-trailer-title-and-questions', $sectionContainer);
+						$textAndQuestionsContainer.html('');
+						processMarkupIntoContainer($textAndQuestionsContainer, "{{>trailer-completed}}", trailer);
+						$videoCarousel.show().fadeTo(200, 1);
 					}
 				});
+			}
 
-				$(global.document).on('sayso:iframe-video-done', function(unused, dataFromIframe) {
-					if( dataFromIframe.frame_id === iframe.frame_id ) {
-						$('input', $firstQuestionContainer).change(function() {
-							firstChoiceId = $(this).val();
-							$('h2', $sectionContainer).hide();
-							$firstQuestionContainer.hide();
-							$secondQuestionContainer.show();
-						});
+			$elem.append(iframe.$element);
+		},
+		"survey-link": function ($elem, data) {
+			$elem.click(function() {
+				openSurvey(data);
+			});
+		},
+		"survey-iframe-container": function ($elem, data, templateData) {
+			var survey = templateData['survey'].variables.survey;
+			var surveyLink = "//www.surveygizmo.com/s3/" + survey['external_id'] + "/" + survey['external_key'] +
+				"?starbar_short_name=" + state.state.starbar['short_name'] +
+				"&srid=" + survey['survey_response_id'] +
+				"&size=" + survey['size'];
+			if (state.state.profile.type === "test" || config.baseDomain !== "app.saysollc.com") {
+				surveyLink += "&testing=true"
+				if (config.baseDomain !== "app.saysollc.com")
+					surveyLink += "&base_domain=" + config.baseDomain;
+			} else {
+				surveyLink += "&testing=false"
+			}
 
-						$('input', $secondQuestionContainer).change(function() {
-							secondChoiceId = $(this).val();
-							submitResponses(function() {
+			var iframe = createIframe(surveyLink, function(unused, dataFromIframe) {
+				frameComm.fireEvent(iframe.frame_id, 'init-action', {action: 'display-survey', starbarId: starbarId, starbar_short_name: state.state.starbar['short_name'], survey: survey});
+			}, true);
 
-							})
-						});
-
-						$('.sayso-trailer-question-disabler', $sectionContainer).hide();
-						$('input', $sectionContainer).removeAttr('disabled');
-						$videoCarousel.fadeTo(0, 0).hide().removeClass('sayso-trailer-carousel-container-lowered');
-					}
-				});
-
-				function submitResponses() {
-					var request = {
+			$(global.document).on('sayso:iframe-survey-done', function(unused, dataFromIframe) {
+				if( dataFromIframe.frame_id === iframe.frame_id ) {
+					api.doRequest({
 						action_class : "survey",
-						action : "updateSurveyResponse",
+						action : "updateSurveyStatus",
 						starbar_id : starbarId,
-						survey_id : trailer['id'],
-						survey_response_id : trailer['survey_response_id'],
-						survey_data: {
-							answers: {}
-						}
-					};
-
-					request.survey_data.answers[firstQuestionId] = firstChoiceId;
-					request.survey_data.answers[secondQuestionId] = secondChoiceId;
-
-					api.doRequest(request, function(response) {
-						if (response.responses.default.variables.success) {
-							var $textAndQuestionsContainer = $('#sayso-trailer-title-and-questions', $sectionContainer);
-							$textAndQuestionsContainer.html('');
-							processMarkupIntoContainer($textAndQuestionsContainer, "{{>trailer-completed}}", trailer);
-							$videoCarousel.show().fadeTo(200, 1);
-						}
+						survey_id : survey['id'],
+						survey_response_id : survey['survey_response_id'],
+						survey_status : dataFromIframe.data.survey_status
+					}, function(response) {
+						var finalTemplateData = response.responses;
+						finalTemplateData.survey = survey;
+						$elem.html('');
+						processMarkupIntoContainer($elem, "{{>survey-"+dataFromIframe.data.survey_status+"}}", finalTemplateData);
+						disableConfirmationBeforeClosingSection(true);
 					});
 				}
+			});
 
-				$elem.append(iframe.$element);
-			},
-			"survey-link": function ($elem, data) {
-				$elem.click(function() {
-					openSurvey(data);
-				});
-			},
-			"survey-iframe-container": function ($elem, data, templateData) {
-				var survey = templateData['survey'].variables.survey;
-				var surveyLink = "//www.surveygizmo.com/s3/" + survey['external_id'] + "/" + survey['external_key'] +
-					"?starbar_short_name=" + state.state.starbar['short_name'] +
-					"&srid=" + survey['survey_response_id'] +
-					"&size=" + survey['size'];
-				if (state.state.profile.type === "test" || config.baseDomain !== "app.saysollc.com") {
-					surveyLink += "&testing=true"
-					if (config.baseDomain !== "app.saysollc.com")
-						surveyLink += "&base_domain=" + config.baseDomain;
-				} else {
-					surveyLink += "&testing=false"
+			$elem.append(iframe.$element);
+		},
+		"disable-confirmation-before-closing-section": function($elem, data) {
+			disableConfirmationBeforeClosingSection(data['keepSectionOpen']);
+		},
+		"get-satisfaction-iframe-container": function ($elem, data) {
+			var iframe = createIframe(null, function(unused, dataFromIframe) {
+				frameComm.fireEvent(iframe.frame_id, 'init-action', {action: 'display-get-satisfaction'});
+			});
+
+			$elem.append(iframe.$element);
+		},
+		"reward-item": function ($elem, data, templateData) {
+			var rewardRecord = $.grep(templateData.rewards.records, function (r){ return r.id === data.rewardId; });
+			if (rewardRecord) {
+				// Use rewardRecord[0] since .grep can return multiple results so it returns an array.
+				rewardRecord = rewardRecord[0];
+
+				if (rewardRecord.can_purchase) {
+					$elem.click(function() {
+						$("#sayso-reward-redeem-overlay", $nav).show();
+						processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_1}}", rewardRecord);
+					});
 				}
+				else {
+					$elem.mouseover(function() {
+						$(this).children(".sayso-reward-item-disabled").show();
+					});
+					$elem.mouseout(function() {
+						$(this).children(".sayso-reward-item-disabled").hide();
+					});
+					//Disable the appropriate elements.
+					$elem.find(".sayso-reward-item-redeem").addClass("disabled");
+					$elem.find(".sayso-reward-item-comment").addClass("disabled");
+				}
+			}
+		},
+		"reward-item-redeem-submit" : function ($elem, data, templateData) {
+			$elem.click(function() {
+				var currentBalance,
+					balanceAfterPurchase,
+					balancePercentAfterPurchase;
+				currentBalance = templateData.state.game.currencies.redeemable.balance;
 
-				var iframe = createIframe(surveyLink, function(unused, dataFromIframe) {
-					frameComm.fireEvent(iframe.frame_id, 'init-action', {action: 'display-survey', starbarId: starbarId, starbar_short_name: state.state.starbar['short_name'], survey: survey});
-				}, true);
+				balanceAfterPurchase = currentBalance - templateData.price;
+				balancePercentAfterPurchase = Math.round((balanceAfterPurchase/currentBalance)*100);
 
-				$(global.document).on('sayso:iframe-survey-done', function(unused, dataFromIframe) {
-					if( dataFromIframe.frame_id === iframe.frame_id ) {
+				templateData.balance_after_purchase = balanceAfterPurchase;
+				templateData.balance_percent_after_purchase = balancePercentAfterPurchase;
+
+				$("#sayso-reward-item-redeem-step", $nav).html('');
+
+				//Dot notation not used due to reserved keyword 'type'
+				if (templateData['type'] === "token") {
+					processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_2_token}}", templateData);
+				}
+				else {
+					processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_2_shipping}}", templateData);
+				}
+			});
+		},
+		"reward-item-order-submit" : function ($elem, data, templateData) {
+			$elem.on('click', function() {
+				var shippingData = {};
+				var quantity = 0;
+
+				//Dot notation not used due to reserved keyword 'type'
+				if (templateData['type'] === "token") {
+					quantity = $('select[name="sayso-reward-item-order-quantity-select"]', $nav).val();
+					api.doRequest({
+						action_class : "game",
+						action : "redeemReward",
+						starbar_id : starbarId,
+						game_asset_id: templateData.id,
+						shipping: shippingData,
+						quantity: quantity
+					}, function(response){
+						if(response.error_code === 0) {
+							updateElements($nav, "game");
+							$("#sayso-reward-item-redeem-step", $nav).html(''); //Clear the step container one last time.
+							processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_3_success}}", templateData);
+						}
+						else {
+							//TODO: Fix error alert to be more useful.
+							alert('There was an error processing your order, please try again later. Error: ' + response.error_message);
+						}
+					});
+				} else {
+					//prepare shippingData
+					//Stolen from OLD StarBar for form validation
+					var $step2 = $('.sayso-reward-step-two-shipping', $nav);
+					var formErrors = false;
+
+					var inputElems = new Array();
+					var fields = ['first_name', 'last_name', 'address_1', 'address_2', 'city', 'state', 'country', 'zip', 'phone'];
+					var required_fields = ['first_name', 'last_name', 'address_1', 'city', 'country', 'zip'];
+					var $personalInfo = $step2.find('#sayso-reward-item-order-shipping-information');
+
+					if ($personalInfo.length) {
+						for (i = 0; i < fields.length; i++) {
+							inputElems[fields[i]] = $('input[name="order_'+fields[i]+'"]', $personalInfo);
+							shippingData['order_'+fields[i]] = inputElems[fields[i]].val();
+						}
+
+						for (i = 0; i < required_fields.length; i++) {
+							if (shippingData['order_'+required_fields[i]] == "") {
+								formErrors = true;
+								inputElems[required_fields[i]].css('border', '1px solid #F00');
+							} else {
+								inputElems[required_fields[i]].css('border', '1px solid #CCC');
+							}
+						}
+					}
+					quantity = 1;
+
+					if(!formErrors) {
 						api.doRequest({
-							action_class : "survey",
-							action : "updateSurveyStatus",
+							action_class : "game",
+							action : "redeemReward",
 							starbar_id : starbarId,
-							survey_id : survey['id'],
-							survey_response_id : survey['survey_response_id'],
-							survey_status : dataFromIframe.data.survey_status
-						}, function(response) {
-							var finalTemplateData = response.responses;
-							finalTemplateData.survey = survey;
-							$elem.html('');
-							processMarkupIntoContainer($elem, "{{>survey-"+dataFromIframe.data.survey_status+"}}", finalTemplateData);
-							disableConfirmationBeforeClosingSection(true);
+							game_asset_id: templateData.id,
+							shipping: shippingData,
+							quantity: quantity
+						}, function(response){
+							if(response.error_code === 0) {
+								updateElements($nav, "game");
+								$("#sayso-reward-item-redeem-step", $nav).html(''); //Clear the step container one last time.
+								templateData.shipping_data = shippingData;
+								processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_3_success}}", templateData);
+							}
+							else {
+								//TODO: Fix error alert to be more useful.
+								alert('There was an error processing your order, please try again later. Error: ' + response.error_message);
+							}
 						});
 					}
-				});
-
-				$elem.append(iframe.$element);
-			},
-			"disable-confirmation-before-closing-section": function($elem, data) {
-				disableConfirmationBeforeClosingSection(data['keepSectionOpen']);
-			},
-			"get-satisfaction-iframe-container": function ($elem, data) {
-				var iframe = createIframe(null, function(unused, dataFromIframe) {
-					frameComm.fireEvent(iframe.frame_id, 'init-action', {action: 'display-get-satisfaction'});
-				});
-
-				$elem.append(iframe.$element);
-			},
-            "reward-item": function ($elem, data, templateData) {
-                var rewardRecord = $.grep(templateData.rewards.records, function (r){ return r.id === data.rewardId; });
-                if (rewardRecord) {
-                    // Use rewardRecord[0] since .grep can return multiple results so it returns an array.
-                    rewardRecord = rewardRecord[0];
-
-                    if (rewardRecord.can_purchase) {
-                        $elem.click(function() {
-                            $("#sayso-reward-redeem-overlay", $nav).show();
-                            processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_1}}", rewardRecord);
-                        });
-                    }
-                    else {
-                        $elem.mouseover(function() {
-                            $(this).children(".sayso-reward-item-disabled").show();
-                        });
-                        $elem.mouseout(function() {
-                            $(this).children(".sayso-reward-item-disabled").hide();
-                        });
-                        //Disable the appropriate elements.
-                        $elem.find(".sayso-reward-item-redeem").addClass("disabled");
-                        $elem.find(".sayso-reward-item-comment").addClass("disabled");
-                    }
-                }
-            },
-            "reward-item-redeem-submit" : function ($elem, data, templateData) {
-                $elem.click(function() {
-                    var currentBalance,
-                        balanceAfterPurchase,
-                        balancePercentAfterPurchase;
-                    currentBalance = templateData.state.game.currencies.redeemable.balance;
-
-                    balanceAfterPurchase = currentBalance - templateData.price;
-                    balancePercentAfterPurchase = Math.round((balanceAfterPurchase/currentBalance)*100);
-
-                    templateData.balance_after_purchase = balanceAfterPurchase;
-                    templateData.balance_percent_after_purchase = balancePercentAfterPurchase;
-
-                    $("#sayso-reward-item-redeem-step", $nav).html('');
-
-                    //Dot notation not used due to reserved keyword 'type'
-                    if (templateData['type'] === "token") {
-                        processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_2_token}}", templateData);
-                    }
-                    else {
-                        processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_2_shipping}}", templateData);
-                    }
-                });
-            },
-            "reward-item-order-submit" : function ($elem, data, templateData) {
-                $elem.on('click', function() {
-                    var shippingData = {};
-                    var quantity = 0;
-
-                    //Dot notation not used due to reserved keyword 'type'
-                    if (templateData['type'] === "token") {
-                        quantity = $('select[name="sayso-reward-item-order-quantity-select"]', $nav).val();
-                        api.doRequest({
-                            action_class : "game",
-                            action : "redeemReward",
-                            starbar_id : starbarId,
-                            game_asset_id: templateData.id,
-							shipping: shippingData,
-                            quantity: quantity
-                        }, function(response){
-                            if(response.error_code === 0) {
-                                updateElements($nav, "game");
-                                $("#sayso-reward-item-redeem-step", $nav).html(''); //Clear the step container one last time.
-                                processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_3_success}}", templateData);
-                            }
-                            else {
-                                //TODO: Fix error alert to be more useful.
-                                alert('There was an error processing your order, please try again later. Error: ' + response.error_message);
-                            }
-                        });
-                    } else {
-                        //prepare shippingData
-                        //Stolen from OLD StarBar for form validation
-                        var $step2 = $('.sayso-reward-step-two-shipping', $nav);
-                        var formErrors = false;
-
-                        var inputElems = new Array();
-                        var fields = ['first_name', 'last_name', 'address_1', 'address_2', 'city', 'state', 'country', 'zip', 'phone'];
-                        var required_fields = ['first_name', 'last_name', 'address_1', 'city', 'country', 'zip'];
-                        var $personalInfo = $step2.find('#sayso-reward-item-order-shipping-information');
-
-                        if ($personalInfo.length) {
-                            for (i = 0; i < fields.length; i++) {
-                                inputElems[fields[i]] = $('input[name="order_'+fields[i]+'"]', $personalInfo);
-                                shippingData['order_'+fields[i]] = inputElems[fields[i]].val();
-                            }
-
-                            for (i = 0; i < required_fields.length; i++) {
-                                if (shippingData['order_'+required_fields[i]] == "") {
-                                    formErrors = true;
-                                    inputElems[required_fields[i]].css('border', '1px solid #F00');
-                                } else {
-                                    inputElems[required_fields[i]].css('border', '1px solid #CCC');
-                                }
-                            }
-                        }
-                        quantity = 1;
-
-                        if(!formErrors) {
-                            api.doRequest({
-                                action_class : "game",
-                                action : "redeemReward",
-                                starbar_id : starbarId,
-                                game_asset_id: templateData.id,
-                                shipping: shippingData,
-								quantity: quantity
-                            }, function(response){
-                                if(response.error_code === 0) {
-                                    updateElements($nav, "game");
-                                    $("#sayso-reward-item-redeem-step", $nav).html(''); //Clear the step container one last time.
-                                    templateData.shipping_data = shippingData;
-                                    processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_3_success}}", templateData);
-                                }
-                                else {
-                                    //TODO: Fix error alert to be more useful.
-                                    alert('There was an error processing your order, please try again later. Error: ' + response.error_message);
-                                }
-                            });
-                        }
-                    }
-                    $elem.off('click');
-                });
-            },
-            "reward-item-finished-submit": function ($elem) {
-                $elem.click(function(e){
-                    $("#sayso-reward-item-redeem-step", $nav).html('');
-                    $("#sayso-reward-redeem-overlay", $nav).hide();
-                });
-            },
-            "reward-redeem-overlay" : function ($elem) {
-                $elem.click(function(e){
-                    if (e.target === this) {
-                        $(this).hide();
-                        $(this).children().html('');
-                    }
-                })
-            },
-            "reward-step-two-token" : function ($elem, data, templateData) {
-                //Setup our handlers for options and balance changing.
-                var $select,
-                    $balanceBarPercent,
-                    $balanceBarValue,
-                    canPurchaseCount,
-                    currentBalance,
-                    itemPrice,
-                    options = {},
-                    purchaseCap = 10; //Max tokens we are currently allowing.
-
-                //Dirty, we should rename these elements
-                $balanceBarPercent = $elem.find('.sayso-reward-item-redeem-order-bottom-right').find('.sayso-reward-item-progress-bar');
-                $balanceBarValue = $elem.find('.sayso-reward-item-redeem-order-bottom-right').find('.sayso-reward-item-progress-bar-value');
-                $select = $elem.find('select[name=sayso-reward-item-order-quantity-select]');
-                itemPrice = templateData.price;
-                currentBalance = templateData.state.game.currencies.redeemable.balance;
-                canPurchaseCount = Math.min(Math.floor(currentBalance/itemPrice), purchaseCap);
-
-                //Setup how many options they can buy
-                for (var i=1;i<=canPurchaseCount;i++) {
-                    options[i] = i;
-                }
-                //Append options
-                $.each(options, function(key, value) {
-                    $select.append($("<option></option>")
-                        .attr("value", value).text(key));
-                });
-                //Update the UI to reflect changes
-                $select.change(function(e) {
-                    var pointsAfterPurchase,
-                        percentAfterPurchase,
-                        purchaseAmount,
-                        purchaseCost;
-
-                    purchaseAmount = $(this).val();
-                    purchaseCost = itemPrice * purchaseAmount;
-                    pointsAfterPurchase = currentBalance - purchaseCost;
-                    percentAfterPurchase = Math.round((pointsAfterPurchase/currentBalance)*100);
-
-                    $balanceBarPercent.css('width', percentAfterPurchase + '%');
-                    $balanceBarValue.text(pointsAfterPurchase);
-                });
-            },
-			//displays the next promo image
-			"next-promo" : function ($elem, data) {
-				$elem.click(function() {
-					$("#" + data["thisImage"]).hide();
-					$("#" + data["nextImage"]).show();
-				});
-			},
-			//calls the user.connectSocialNetwork endpoint
-			"social-connect" : function ($elem, data) {
-				//TODO: the twitter connect will need a two step process. one to hit the endpoint that gets the oauth, then the one to hit the connectSocialNetwork endpoiont
-				switch (data["network"]) {
-					case ("FB") :
-						$elem.on("click", (function() {
-							api.doRequest({
-								action_class : "user",
-								action : "connectSocialNetwork",
-								starbar_id : starbarId,
-								network : data["network"],
-							}, function(response){
-								if (response.responses.default.errors_returned === undefined) {
-									if (response.responses.default.variables.success === true) {
-										updateElements();
-										$("#sayso-user-profile-social-link-" + data["network"]).css("background-position", "0 -66px");
-										$("#sayso-user-profile-social-link-" + data["network"]).off("mouseenter");
-										$("#sayso-user-profile-social-link-" + data["network"]).off("mouseleave");
-										$("#sayso-user-profile-social-link-" + data["network"]).off("click");
-									} else {
-										var loginUrl = response.responses.default.variables.login_url;
-										window.open(loginUrl);
-									}
-								} else {
-									//notify of error
-								}
-							});
-						}));
-
-						$("#sayso-user-profile-social-link-FB").on("mouseenter", (function() {
-							$("#sayso-user-profile-social-link-FB").css("background-position", "0 -66px");
-						}));
-						$("#sayso-user-profile-social-link-FB").on("mouseleave", (function() {
-							$("#sayso-user-profile-social-link-FB").css("background-position", "0 0px");
-						}));
-
-						if (state.state.profile.user_socials.facebook !== undefined)
-						{
-							$("#sayso-user-profile-social-link-FB").css("background-position", "0 -66px");
-							$("#sayso-user-profile-social-link-FB").off("mouseenter");
-							$("#sayso-user-profile-social-link-FB").off("mouseleave");
-							$("#sayso-user-profile-social-link-FB").off("click");
-						}
-						break;
-					case ("TW") :
-						$elem.on("click", (function() {
-							api.doRequest({
-								action_class : "user",
-								action : "getTwitterOauthToken",
-							}, function(response){
-								if (response.responses.default.errors_returned === undefined) {
-									if (response.responses.default.variables.success === true) {
-										api.doRequest({
-											action_class : "user",
-											action : "connectSocialNetwork",
-											starbar_id : starbarId,
-											network : data["network"],
-											oauth : {"oauth_token": response.responses.default.variables.oauth_token, "oauth_token_secret": response.responses.default.variables.oauth_token_secret}
-										}, function(oauthResponse){
-											if (oauthResponse.responses.default.errors_returned === undefined) {
-												if (oauthResponse.responses.default.variables.success === true) {
-													updateElements();
-													$("#sayso-user-profile-social-link-" + data["network"]).css("background-position", "0 -66px");
-													$("#sayso-user-profile-social-link-" + data["network"]).off("mouseenter");
-													$("#sayso-user-profile-social-link-" + data["network"]).off("mouseleave");
-													$("#sayso-user-profile-social-link-" + data["network"]).off("click");
-												}
-											}
-										});
-									} else {
-										//notify error
-									}
-								}
-							});
-						}));
-
-
-
-						$("#sayso-user-profile-social-link-TW").on("mouseenter", (function() {
-							$("#sayso-user-profile-social-link-TW").css("background-position", "0 -66px");
-						}));
-						$("#sayso-user-profile-social-link-TW").on("mouseleave", (function() {
-							$("#sayso-user-profile-social-link-TW").css("background-position", "0 0px");
-						}));
-
-						if (state.state.profile.user_socials.twitter !== undefined)
-						{
-							$("#sayso-user-profile-social-link-TW").css("background-position", "0 -66px");
-							$("#sayso-user-profile-social-link-TW").off("mouseenter");
-							$("#sayso-user-profile-social-link-TW").off("mouseleave");
-							$("#sayso-user-profile-social-link-TW").off("click");
-						}
-						break;
 				}
-			},
-            "experience-level-item": function($elem, data) {
-                var oldStyle = $elem.css('background-image');
-                var game = state.state.game;
-                if(game.level===data.levelId)
-                {
-                    $elem.html("<p>" + game.levels[data.levelId].threshold + "</p>");
-                }
+				$elem.off('click');
+			});
+		},
+		"reward-item-finished-submit": function ($elem) {
+			$elem.click(function(e){
+				$("#sayso-reward-item-redeem-step", $nav).html('');
+				$("#sayso-reward-redeem-overlay", $nav).hide();
+			});
+		},
+		"reward-redeem-overlay" : function ($elem) {
+			$elem.click(function(e){
+				if (e.target === this) {
+					$(this).hide();
+					$(this).children().html('');
+				}
+			})
+		},
+		"reward-step-two-token" : function ($elem, data, templateData) {
+			//Setup our handlers for options and balance changing.
+			var $select,
+				$balanceBarPercent,
+				$balanceBarValue,
+				canPurchaseCount,
+				currentBalance,
+				itemPrice,
+				options = {},
+				purchaseCap = 10; //Max tokens we are currently allowing.
 
-                $elem.mouseover(function(){
-                    if(game.level!==data.levelId)
-                    {
-                        $(this).html("<p>" + game.levels[data.levelId].threshold + "</p>");
-                    }
-                    if(data.levelId>game.level)
-                    {
-                        $(this).css('background-image', 'url(' + game.levels[data.levelId].img_url_small + ')');
-                    }
-                });
-                $elem.mouseout(function(){
-                    if(game.level!==data.levelId)
-                    {
-                        $(this).html('');
-                    }
-                    if(data.levelId>game.level)
-                    {
-                        $(this).css('background-image', oldStyle);
-                    }
-                });
-            },
-            "experience-levels-container": function ($elem) {
-                var left = new Array();
-                var right = new Array();
-                var $current, $next;
+			//Dirty, we should rename these elements
+			$balanceBarPercent = $elem.find('.sayso-reward-item-redeem-order-bottom-right').find('.sayso-reward-item-progress-bar');
+			$balanceBarValue = $elem.find('.sayso-reward-item-redeem-order-bottom-right').find('.sayso-reward-item-progress-bar-value');
+			$select = $elem.find('select[name=sayso-reward-item-order-quantity-select]');
+			itemPrice = templateData.price;
+			currentBalance = templateData.state.game.currencies.redeemable.balance;
+			canPurchaseCount = Math.min(Math.floor(currentBalance/itemPrice), purchaseCap);
 
-                function initCarousel() {
-                    var i = 0;
-                    $('.sayso-experience-levels-carousel-group', $elem).each(function() {
-                        right.push($(this));
-                        if(i>0){
-                            $(this).css('left', '500px')
-                        }
-                        i++;
-                    });
-                    $current = right.shift();
-                    $('#sayso-experience-levels-nav-right', $elem).click(function(){
-                        showRightElement();
-                    });
+			//Setup how many options they can buy
+			for (var i=1;i<=canPurchaseCount;i++) {
+				options[i] = i;
+			}
+			//Append options
+			$.each(options, function(key, value) {
+				$select.append($("<option></option>")
+					.attr("value", value).text(key));
+			});
+			//Update the UI to reflect changes
+			$select.change(function(e) {
+				var pointsAfterPurchase,
+					percentAfterPurchase,
+					purchaseAmount,
+					purchaseCost;
 
-                    $('#sayso-experience-levels-nav-left', $elem).click(function(){
-                        showLeftElement();
-                    });
-                }
+				purchaseAmount = $(this).val();
+				purchaseCost = itemPrice * purchaseAmount;
+				pointsAfterPurchase = currentBalance - purchaseCost;
+				percentAfterPurchase = Math.round((pointsAfterPurchase/currentBalance)*100);
 
-                function showRightElement() {
-                    if(right.length>=1){
-                        left.unshift($current);
-                        $next = right.shift();
-                        slideLeft($current, $next);
-                        $current = $next;
-                    }
-                }
+				$balanceBarPercent.css('width', percentAfterPurchase + '%');
+				$balanceBarValue.text(pointsAfterPurchase);
+			});
+		},
+		//displays the next promo image
+		"next-promo" : function ($elem, data) {
+			$elem.click(function() {
+				$("#" + data["thisImage"]).hide();
+				$("#" + data["nextImage"]).show();
+			});
+		},
+		//calls the user.connectSocialNetwork endpoint
+		"social-connect" : function ($elem, data) {
+			//TODO: the twitter connect will need a two step process. one to hit the endpoint that gets the oauth, then the one to hit the connectSocialNetwork endpoiont
+			switch (data["network"]) {
+				case ("FB") :
+					$elem.on("click", (function() {
+						api.doRequest({
+							action_class : "user",
+							action : "connectSocialNetwork",
+							starbar_id : starbarId,
+							network : data["network"],
+						}, function(response){
+							if (response.responses.default.errors_returned === undefined) {
+								if (response.responses.default.variables.success === true) {
+									updateElements();
+									$("#sayso-user-profile-social-link-" + data["network"]).css("background-position", "0 -66px");
+									$("#sayso-user-profile-social-link-" + data["network"]).off("mouseenter");
+									$("#sayso-user-profile-social-link-" + data["network"]).off("mouseleave");
+									$("#sayso-user-profile-social-link-" + data["network"]).off("click");
+								} else {
+									var loginUrl = response.responses.default.variables.login_url;
+									window.open(loginUrl);
+								}
+							} else {
+								//notify of error
+							}
+						});
+					}));
 
-                function showLeftElement() {
-                    if(left.length>=1){
-                        right.unshift($current);
-                        $next = left.shift();
-                        slideRight($current, $next);
-                        $current = $next;
-                    }
-                }
+					$("#sayso-user-profile-social-link-FB").on("mouseenter", (function() {
+						$("#sayso-user-profile-social-link-FB").css("background-position", "0 -66px");
+					}));
+					$("#sayso-user-profile-social-link-FB").on("mouseleave", (function() {
+						$("#sayso-user-profile-social-link-FB").css("background-position", "0 0px");
+					}));
 
-                function slideRight($shown, $toBeShown) {
-                    $(function () {
-                        $toBeShown.show();
-                        $shown.animate({
-                            left: '+=500'
-                        }, { duration: 500, queue: true });
-                        $toBeShown.animate({
-                            left: '+=500'
-                        }, { duration: 500, queue: true });
-                    });
-                }
+					if (state.state.profile.user_socials.facebook !== undefined)
+					{
+						$("#sayso-user-profile-social-link-FB").css("background-position", "0 -66px");
+						$("#sayso-user-profile-social-link-FB").off("mouseenter");
+						$("#sayso-user-profile-social-link-FB").off("mouseleave");
+						$("#sayso-user-profile-social-link-FB").off("click");
+					}
+					break;
+				case ("TW") :
+					$elem.on("click", (function() {
+						api.doRequest({
+							action_class : "user",
+							action : "getTwitterOauthToken",
+						}, function(response){
+							if (response.responses.default.errors_returned === undefined) {
+								if (response.responses.default.variables.success === true) {
+									api.doRequest({
+										action_class : "user",
+										action : "connectSocialNetwork",
+										starbar_id : starbarId,
+										network : data["network"],
+										oauth : {"oauth_token": response.responses.default.variables.oauth_token, "oauth_token_secret": response.responses.default.variables.oauth_token_secret}
+									}, function(oauthResponse){
+										if (oauthResponse.responses.default.errors_returned === undefined) {
+											if (oauthResponse.responses.default.variables.success === true) {
+												updateElements();
+												$("#sayso-user-profile-social-link-" + data["network"]).css("background-position", "0 -66px");
+												$("#sayso-user-profile-social-link-" + data["network"]).off("mouseenter");
+												$("#sayso-user-profile-social-link-" + data["network"]).off("mouseleave");
+												$("#sayso-user-profile-social-link-" + data["network"]).off("click");
+											}
+										}
+									});
+								} else {
+									//notify error
+								}
+							}
+						});
+					}));
 
-                function slideLeft($shown, $toBeShown) {
-                    $(function () {
-                        $toBeShown.show();
-                        $shown.animate({
-                            left: '-=500'
-                        }, { duration: 500, queue: true });
-                        $toBeShown.animate({
-                            left: '-=500'
-                        }, { duration: 500, queue: true });
-                    });
-                }
 
-                initCarousel();
-            },
 
-			"about-help-link" : function ($elem, data) {
-				$elem.click(function() {
-					var value = "0 -" + data['backgroundTop'] + "px";
-					$("#sayso-about-help-links").css("background-position", value);
+					$("#sayso-user-profile-social-link-TW").on("mouseenter", (function() {
+						$("#sayso-user-profile-social-link-TW").css("background-position", "0 -66px");
+					}));
+					$("#sayso-user-profile-social-link-TW").on("mouseleave", (function() {
+						$("#sayso-user-profile-social-link-TW").css("background-position", "0 0px");
+					}));
+
+					if (state.state.profile.user_socials.twitter !== undefined)
+					{
+						$("#sayso-user-profile-social-link-TW").css("background-position", "0 -66px");
+						$("#sayso-user-profile-social-link-TW").off("mouseenter");
+						$("#sayso-user-profile-social-link-TW").off("mouseleave");
+						$("#sayso-user-profile-social-link-TW").off("click");
+					}
+					break;
+			}
+		},
+		"experience-level-item": function($elem, data) {
+			var oldStyle = $elem.css('background-image');
+			var game = state.state.game;
+			if(game.level===data.levelId)
+			{
+				$elem.html("<p>" + game.levels[data.levelId].threshold + "</p>");
+			}
+
+			$elem.mouseover(function(){
+				if(game.level!==data.levelId)
+				{
+					$(this).html("<p>" + game.levels[data.levelId].threshold + "</p>");
+				}
+				if(data.levelId>game.level)
+				{
+					$(this).css('background-image', 'url(' + game.levels[data.levelId].img_url_small + ')');
+				}
+			});
+			$elem.mouseout(function(){
+				if(game.level!==data.levelId)
+				{
+					$(this).html('');
+				}
+				if(data.levelId>game.level)
+				{
+					$(this).css('background-image', oldStyle);
+				}
+			});
+		},
+		"experience-levels-container": function ($elem) {
+			var left = new Array();
+			var right = new Array();
+			var $current, $next;
+
+			function initCarousel() {
+				var i = 0;
+				$('.sayso-experience-levels-carousel-group', $elem).each(function() {
+					right.push($(this));
+					if(i>0){
+						$(this).css('left', '500px')
+					}
+					i++;
+				});
+				$current = right.shift();
+				$('#sayso-experience-levels-nav-right', $elem).click(function(){
+					showRightElement();
+				});
+
+				$('#sayso-experience-levels-nav-left', $elem).click(function(){
+					showLeftElement();
 				});
 			}
+
+			function showRightElement() {
+				if(right.length>=1){
+					left.unshift($current);
+					$next = right.shift();
+					slideLeft($current, $next);
+					$current = $next;
+				}
+			}
+
+			function showLeftElement() {
+				if(left.length>=1){
+					right.unshift($current);
+					$next = left.shift();
+					slideRight($current, $next);
+					$current = $next;
+				}
+			}
+
+			function slideRight($shown, $toBeShown) {
+				$(function () {
+					$toBeShown.show();
+					$shown.animate({
+						left: '+=500'
+					}, { duration: 500, queue: true });
+					$toBeShown.animate({
+						left: '+=500'
+					}, { duration: 500, queue: true });
+				});
+			}
+
+			function slideLeft($shown, $toBeShown) {
+				$(function () {
+					$toBeShown.show();
+					$shown.animate({
+						left: '-=500'
+					}, { duration: 500, queue: true });
+					$toBeShown.animate({
+						left: '-=500'
+					}, { duration: 500, queue: true });
+				});
+			}
+
+			initCarousel();
+		},
+
+		"about-help-link" : function ($elem, data) {
+			$elem.click(function() {
+				var value = "0 -" + data['backgroundTop'] + "px";
+				$("#sayso-about-help-links").css("background-position", value);
+			});
 		}
 	};
 

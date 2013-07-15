@@ -1,33 +1,37 @@
-<div id="sayso-section-header"></div>
-<div id="sayso-section-body">
-	{{#with trailers.variables.survey}}
-		{{>trailer}}
-	{{else}}
-		Looks like you've already watched all the spotlight videos! Check back again tomorrow for fresh content.
-	{{/with}}
-	<div id="sayso-trailer-carousel-container" class="sayso-carousel-container">
-		{{#every-nth trailers.records 5}}
-			{{#if isModZeroNotFirst}}
-				</div>
-			{{/if}}
-			{{#if isModZero}}
-				<div class="sayso-carousel-group">
-			{{/if}}
+<script data-partial-id="main" type="text/x-handlebars-template">
+	<div id="sayso-section-header"></div>
+	<div id="sayso-section-body">
+		{{#if trailers.records.length}}
+			{{#with trailers.variables.survey}}
+				{{>trailer}}
+			{{/with}}
+		{{else}}
+			Looks like you've already watched all the spotlight videos! Check back again tomorrow for fresh content.
+		{{/if}}
+		<div id="sayso-trailer-carousel-container" class="sayso-carousel-container">
+			{{#every-nth trailers.records 5}}
+				{{#if isModZeroNotFirst}}
+					</div>
+				{{/if}}
+				{{#if isModZero}}
+					<div class="sayso-carousel-group">
+				{{/if}}
 
-				{{#compare id "==" ../trailers.variables.survey.id}} <!-- current trailer -->
-					<div class="sayso-element sayso-template-background-image sayso-trailer-thumbnail" data-template-background-image-src="//img.youtube.com/vi/{{object-field ../../trailers.variables.trailer_info id 'video_key'}}/1.jpg"></div>
-				{{else}} <!-- clickable trailer -->
-					<div class="sayso-element sayso-template-background-image sayso-trailer-thumbnail sayso-trailer-link" data-survey-id="{{id}}" data-template-background-image-src="//img.youtube.com/vi/{{object-field ../../trailers.variables.trailer_info id 'video_key'}}/1.jpg"></div>
-				{{/compare}}
+					{{#compare id "==" ../trailers.variables.survey.id}} <!-- current trailer -->
+						<div class="sayso-element sayso-trailer-thumbnail" style="background-image: url('//img.youtube.com/vi/{{object-field ../../trailers.variables.trailer_info id 'video_key'}}/1.jpg');"></div>
+					{{else}} <!-- clickable trailer -->
+						<div class="sayso-element sayso-trailer-thumbnail sayso-trailer-link" data-survey-id="{{id}}" style="background-image: url('//img.youtube.com/vi/{{object-field ../../trailers.variables.trailer_info id 'video_key'}}/1.jpg');"></div>
+					{{/compare}}
 
-			{{#if isLast}}
-				</div>
-			{{/if}}
-		{{/every-nth}}
+				{{#if isLast}}
+					</div>
+				{{/if}}
+			{{/every-nth}}
+		</div>
 	</div>
-</div>
+</script>
 
-<div class="sayso-element sayso-partial" data-partial-id="trailer">
+<script data-partial-id="trailer" type="text/x-handlebars-template">
 	<div class="sayso-element sayso-trailer-video-container"></div>
 	<div id="sayso-trailer-title-and-questions">
 		<h2>{{title}}</h2>
@@ -40,9 +44,9 @@
 			{{/if}}
 		{{/every-nth}}
 	</div>
-</div>
+</script>
 
-<div class="sayso-element sayso-partial" data-partial-id="trailer-first-question">
+<script data-partial-id="trailer-first-question" type="text/x-handlebars-template">
 	<div class="sayso-trailer-question" id="sayso-trailer-first-question">
 		<div class="sayso-element sayso-tooltip sayso-trailer-question-disabler" data-tooltip-title="Rating will be unlocked at the end of the video."></div>
 		<p>{{title}}</p>
@@ -53,9 +57,9 @@
 			</label>
 		{{/each}}
 	</div>
-</div>
+</script>
 
-<div class="sayso-element sayso-partial" data-partial-id="trailer-second-question">
+<script data-partial-id="trailer-second-question" type="text/x-handlebars-template">
 	<div class="sayso-trailer-question" id="sayso-trailer-second-question">
 		<div class="sayso-trailer-question-disabler"></div>
 		<p>{{title}}</p>
@@ -68,8 +72,8 @@
 			</div>
 		{{/each}}
 	</div>
-</div>
+</script>
 
-<div class="sayso-element sayso-partial" data-partial-id="trailer-completed">
+<script data-partial-id="trailer-completed" type="text/x-handlebars-template">
 	Excellent! You earned {{currency-name-highlighted-with-value "experience" completed_points_experience}} &amp; {{currency-name-highlighted-with-value "redeemable" completed_points_redeemable}}
-</div>
+</script>

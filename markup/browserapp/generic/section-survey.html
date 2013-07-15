@@ -1,25 +1,27 @@
-<div id="sayso-section-header">
-	<ul>
-		<li class="sayso-element sayso-section-link" data-section="surveys">Switch Survey</li>
-	</ul>
-</div>
-<div id="sayso-section-body">
-	{{#if survey.errors.endpoint_exception}}
-		<div class="sayso-element sayso-disable-confirmation-before-closing-section" data-keep-section-open="true"></div>
-		{{#compare survey.errors.endpoint_exception "==" "SURVEY_COMPLETED"}}
-			You have already completed this survey.
+<script data-partial-id="main" type="text/x-handlebars-template">
+	<div id="sayso-section-header">
+		<ul>
+			<li class="sayso-element sayso-section-link" data-section="surveys">Switch Survey</li>
+		</ul>
+	</div>
+	<div id="sayso-section-body">
+		{{#if survey.errors.endpoint_exception}}
+			<div class="sayso-element sayso-disable-confirmation-before-closing-section" data-keep-section-open="true"></div>
+			{{#compare survey.errors.endpoint_exception "==" "SURVEY_COMPLETED"}}
+				You have already completed this survey.
+			{{else}}
+				This survey is currently unavailable.
+			{{/compare}}
 		{{else}}
-			This survey is currently unavailable.
-		{{/compare}}
-	{{else}}
-		{{#with survey.variables.survey}}
-			<div class="sayso-survey-title sayso-highlight">{{title}}</div>
-			<div class="sayso-element sayso-survey-iframe-container"></div>
-		{{/with}}
-	{{/if}}
-</div>
+			{{#with survey.variables.survey}}
+				<div class="sayso-survey-title sayso-highlight">{{title}}</div>
+				<div class="sayso-element sayso-survey-iframe-container"></div>
+			{{/with}}
+		{{/if}}
+	</div>
+</script>
 
-<div class="sayso-element sayso-partial" data-partial-id="survey-completed">
+<script data-partial-id="survey-completed" type="text/x-handlebars-template">
 	<p>Thank you for completing the &quot;<span class="sayso-highlight">{{survey.title}}</span>&quot; survey!</p>
 
 	<p>Excellent! You earned {{currency-name-highlighted-with-value "redeemable" survey.completed_points_redeemable}} &amp; {{currency-name-highlighted-with-value "experience" survey.completed_points_experience}}</p>
@@ -27,9 +29,9 @@
 	{{#if default.variables.next_survey.id}}
 		<p>Try the next survey: &quot;<span class="sayso-element sayso-survey-link" data-survey-id="{{default.variables.next_survey.id}}" data-survey-size="{{default.variables.next_survey.size}}">{{default.variables.next_survey.title}}</span>&quot;</p>
 	{{/if}}
-</div>
+</script>
 
-<div class="sayso-element sayso-partial" data-partial-id="survey-disqualified">
+<script data-partial-id="survey-disqualified" type="text/x-handlebars-template">
 	<p>Sorry, it appears that you do not qualify for the &quot;<span class="sayso-highlight">{{survey.title}}</span>&quot; survey.</p>
 
 	<p>Nice! You still banked {{currency-name-highlighted-with-value "redeemable" survey.disqualified_points_redeemable}} &amp; {{currency-name-highlighted-with-value "experience" survey.disqualified_points_experience}}. Remember to check out the <span class="sayso-element sayso-section-link" data-section="rewards">Rewards Center</span> to redeem your {{currency-name-highlighted "redeemable"}} for stuff!</p>
@@ -37,4 +39,4 @@
 	{{#if default.variables.next_survey.id}}
 		<p>Try the next survey: &quot;<span class="sayso-element sayso-survey-link" data-survey-id="{{default.variables.next_survey.id}}" data-survey-size="{{default.variables.next_survey.size}}">{{default.variables.next_survey.title}}</span>&quot;</p>
 	{{/if}}
-</div>
+</script>

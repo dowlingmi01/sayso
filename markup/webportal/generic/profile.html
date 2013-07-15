@@ -1,44 +1,46 @@
-<div class="landing_content_left">
-    <div class="landing_profile">
-        <img class="landing_profile_picture" id="landing_profile_picture" src="images/profile_pic_default.png"/>
-        <h2>Welcome Back,
-            <span id="landing_welcome_name" class="landing_welcome_name">
-                {{#if state.profile.public_name}}
-                    {{state.profile.public_name}}
-                {{else}}
-                    {{state.profile.email}}
-                {{/if}}
-            </span>
-        </h2>
-    </div>
-    <hr/>
-    <div class="landing_stats">
-        <h2>My Stats</h2>
-        <div class="landing_stats_block">
-            <img class="portal-element portal-template-image landing_level_image" id="landing_level_image" data-template-image-src="{{object-field state.game.levels state.game.level 'img_url_small'}}"/>
-            <aside>
-                <span id="landing_level_text">Level {{state.game.level}},</span>&nbsp;
-                <span id="landing_level_name" class="landing_level_name">{{state.starbar.user_pseudonym}}</span>
-                <br/>
-                <span class="portal-element portal-landing_currency_count" id="landing_currency_count">{{state.game.currencies.redeemable.balance}}</span>&nbsp;
-                <span id="landing_currency_name">{{currency-name "redeemable"}}</span>
-                <br/>
-                <span class="portal-element portal-landing_experience_count" id="landing_experience_count">{{state.game.currencies.experience.balance}}</span>&nbsp;
-                <span id="landing_experience_name">{{currency-name "experience"}}</span>
-            </aside>
-        </div>
-    </div>
-    <hr/>
-    <div class="landing_left_banner">
-        <a href="#content/get-app-install" class="landing_download_banner"></a>
-    </div>
+<script data-partial-id="main" type="text/x-handlebars-template">
+	<div class="landing_content_left">
+		<div class="landing_profile">
+			<img class="landing_profile_picture" id="landing_profile_picture" src="images/profile_pic_default.png"/>
+			<h2>Welcome Back,
+				<span id="landing_welcome_name" class="landing_welcome_name">
+					{{#if state.profile.public_name}}
+						{{state.profile.public_name}}
+					{{else}}
+						{{state.profile.email}}
+					{{/if}}
+				</span>
+			</h2>
+		</div>
+		<hr/>
+		<div class="landing_stats">
+			<h2>My Stats</h2>
+			<div class="landing_stats_block">
+				<img class="landing_level_image" id="landing_level_image" src="{{object-field state.game.levels state.game.level 'img_url_small'}}"/>
+				<aside>
+					<span id="landing_level_text">Level {{state.game.level}},</span>&nbsp;
+					<span id="landing_level_name" class="landing_level_name">{{state.starbar.user_pseudonym}}</span>
+					<br/>
+					<span class="portal-element portal-landing_currency_count" id="landing_currency_count">{{state.game.currencies.redeemable.balance}}</span>&nbsp;
+					<span id="landing_currency_name">{{currency-name "redeemable"}}</span>
+					<br/>
+					<span class="portal-element portal-landing_experience_count" id="landing_experience_count">{{state.game.currencies.experience.balance}}</span>&nbsp;
+					<span id="landing_experience_name">{{currency-name "experience"}}</span>
+				</aside>
+			</div>
+		</div>
+		<hr/>
+		<div class="landing_left_banner">
+			<a href="#content/get-app-install" class="landing_download_banner"></a>
+		</div>
 
-</div>
-<div class="landing_content_right">
-    <div class="landing_content_right_banner">
-        <img src="images/welcome_message.png" alt="Welcome to Machinima | Recon!"/>
-    </div>
-    <div class="landing_content_right_video">
-        <iframe width="500" height="315" src="//www.youtube.com/embed/E5IBEt3VyyI?&wmode=transparent" frameborder="0" allowfullscreen></iframe>
-    </div>
-</div>
+	</div>
+	<div class="landing_content_right">
+		<div class="landing_content_right_banner">
+			<img src="images/welcome_message.png" alt="Welcome to Machinima | Recon!"/>
+		</div>
+		<div class="landing_content_right_video">
+			<iframe width="500" height="315" src="//www.youtube.com/embed/E5IBEt3VyyI?&wmode=transparent" frameborder="0" allowfullscreen></iframe>
+		</div>
+	</div>
+</script>

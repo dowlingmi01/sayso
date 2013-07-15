@@ -209,7 +209,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 			}
 		}
 
-		if ($type == "trailer") {
+		if ($type == "trailer" && $surveyIds) {
 			$sql = "SELECT survey_id, video_key FROM survey_trailer_info WHERE survey_id IN ($surveyIds)";
 			$results = Db_Pdo::fetchAll($sql);
 			$trailerInfo = [];

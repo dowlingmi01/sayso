@@ -42,14 +42,6 @@ sayso.module.util = (function(global, $, config) {
 			global.alert(args[0]);
 	}
 
-	$.fn.extend({
-
-		htmlForTemplate: function() {
-			return this.html().replace(/{{&gt;/g, "{{>");
-		}
-
-	});
-
     $.support.placeholder = (function(){
         var i = document.createElement('input');
         return 'placeholder' in i;

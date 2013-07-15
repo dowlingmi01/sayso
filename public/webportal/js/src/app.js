@@ -65,6 +65,10 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
         }
         initialized = true;
 
+		for (var helper in handlebarsHelpers) {
+			Handlebars.registerHelper(helper, handlebarsHelpers[helper]);
+		}
+
 		prepareElements();
 	}
 
@@ -81,62 +85,60 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
 			key : key
 		}, function(response){
 			$container.html('');
-			processMarkupIntoContainer($container, response.responses['default'].variables.markup, {}, true);
+			processMarkupIntoContainer($container, response.responses['default'].variables.markup, null, "main");
 		});
 	}
 
-	function prepareElements($container, handlerCollection, templateData) {
+	function prepareElements($container, templateData) {
 		if (!$container) $container = $contentContainer;
-		if (!handlerCollection) {
-            handlerCollection = "post-template";
-        }
 
 		var $elements = $('.portal-element', $container);
 		var $element;
 
 		$elements.each(function() {
 			$element = $(this);
-			for (var elementType in prepareHandlers[handlerCollection]) {
+			for (var elementType in elementHandlers) {
 				if ($element.hasClass('portal-' + elementType)) {
-					prepareHandlers[handlerCollection][elementType]($element, $element.data(), templateData);
+					elementHandlers[elementType]($element, $element.data(), templateData);
 				}
 			}
 		});
-
-		for (var helper in handlebarsHelpers) {
-			Handlebars.registerHelper(helper, handlebarsHelpers[helper]);
-		}
 	}
 
-	function processMarkupIntoContainer($container, markup, templateData, runPreTemplateHandlers) {
-		var template;
+	function processMarkupIntoContainer($container, markup, templateData, initialPartial) {
+		if (initialPartial) { // if specified, all the content must be contained in partials (i.e. script tags) inside the markup
+			var $temp = $('<div></div>');
+			$temp.html(markup);
 
-		if (typeof templateData !== "object") {
-            templateData = {};
-        }
+			var $partials = $('script', $temp);
+			var $partial;
 
-		if (runPreTemplateHandlers) {
-			var $tempContainer = $('<div></div>');
+			Handlebars.partials = {};
 
-			$tempContainer.html(markup);
+			$partials.each(function() {
+				$partial = $(this);
+				Handlebars.registerPartial($partial.data('partialId'), $partial.html())
+			});
 
-			prepareElements($tempContainer, "pre-template");
+			$temp.remove();
 
-			// compile the markup into a handlebars template
-			template = Handlebars.compile($tempContainer.htmlForTemplate());
-		} else {
-			template = Handlebars.compile(markup);
+			markup = "{{>"+initialPartial+"}}";
 		}
+
+
+		var template = Handlebars.compile(markup);
+
+		if (typeof templateData != "object" || !templateData) templateData = {};
 
 		// always attach the state to the template
 		templateData.state = state.state;
-		templateData.extensionPresent = comm.extensionPresent
+		templateData.extensionPresent = comm.extensionPresent;
 
 		// pass the api response (templateData) to the template as data, and render
-		$container.append(template(templateData), {noEscape: true});
+		$container.append(template(templateData));
 
 		// prepare sayso elements (passing on templateData to anything that may need it... tabs within tabs?)
-		prepareElements($container, "post-template", templateData);
+		prepareElements($container, templateData);
 	}
 
     function doLogin(email, password) {
@@ -372,341 +374,324 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
 
 	// "section-link" corresponds to elements that have the class "sayso-section-link" (as well as "sayso-element")
 	// the "data" variable is, by default, simply $elem.data();
-	var prepareHandlers = {
-		// note that pre-template handlers are NOT run on markup/elements inside tabs
-		// therefore, partials needed for tabs should be outside the tab context
-		"pre-template": {
-			"partial": function ($elem, data) {
-				// partial found, register the
-				Handlebars.registerPartial(data.partialId, $elem.htmlForTemplate());
+	var elementHandlers = {
+		"tooltip": function ($elem, data) {
+			// @todo show data['tooltipTitle'] 'neatly' when you roll over this element
+			$elem.attr('title', data.tooltipTitle); // hack
+		},
+		"placeholder": function () {
+			$.placeholder.shim();
+		},
+		"get-app-install": function ($elem) {
+			$("#agreeterms", $elem).change(function(){
+				if($(this).is(':checked')){
+					$('#grab_it', $elem).addClass('enabled');
+					$('#grab_it', $elem).on('click', function(){
+						location.hash = 'content/get-app-confirmation';
+					});
+				} else {
+					$('#grab_it', $elem).removeClass('enabled');
+					$('#grab_it', $elem).off('click');
+				}
+			});
+		},
+		"join-now": function ($elem) {
+			var $emailField = $('#emailAddress_field', $elem),
+				$passwordField = $('#passwordOne_field', $elem),
+				$confirmationField = $('#passwordTwo_field', $elem),
+				$registerButton = $('#portal_join_now_button', $elem),
+				$getBrowserAppCheckbox = $("#install_browser_app", $elem),
+				$agreeTermsCheckbox = $("#agreeterms", $elem),
+				buttonActive = false;
 
-				// remove it from the markup so it doesn't go through the template processing (except as a partial)
-				$elem.remove();
+			$agreeTermsCheckbox.on('click', activateSubmit);
+			$emailField.on('keyup change', activateSubmit);
+			$passwordField.on('keyup change', activateSubmit);
+			$confirmationField.on('keyup change', activateSubmit);
+
+			function activateSubmit() {
+				if(!validateFields()) {
+					if(!buttonActive) {
+						$registerButton.removeClass('join_now_button_disabled').addClass('join_now_button');
+						$registerButton.on('click', function(){
+							createAccount($emailField.val(), $passwordField.val(), $getBrowserAppCheckbox.is(':checked'));
+						});
+						buttonActive = true;
+					}
+				}
+				else {
+					if(buttonActive){
+						$registerButton.removeClass('join_now_button').addClass('join_now_button_disabled');
+						$registerButton.off('click');
+						buttonActive = false;
+					}
+				}
+			}
+
+			function validateFields() {
+				//TODO: Show the end user what is wrong.
+				var emailAddress = $emailField.val();
+				if( emailAddress.length < 1 ) {
+					return "Whoops - Please enter your email address";
+				}
+
+				var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+				if (!emailPattern.test(emailAddress)){
+					return "Whoops - Please enter a valid email address";
+				}
+
+				var passwordOne = $passwordField.val();
+				if(passwordOne.length < 1) {
+					return "Whoops - Please enter your password";
+				}
+
+				var passwordTwo = $confirmationField.val();
+				if(passwordOne !== passwordTwo ) {
+					return "Whoops - Your passwords do not match.<br>Please reenter your password";
+				}
+				if(passwordOne.length < 6 || passwordOne.length > 12) {
+					return "Whoops - Your password needs to have between 6 and 12 characters.<br>Please reenter your password";
+				}
+
+				if(!$agreeTermsCheckbox.is(':checked')) {
+					return "Whoops - Please accept the terms and conditions";
+				}
+
+				return false;
+			}
+
+			function createAccount(emailAddress, password, getBrowserApp) {
+				api.doRequest({
+					action_class : 'registration',
+					action : 'createUser',
+					email : emailAddress,
+					password : password,
+					originating_starbar_id : starbarId
+				}, function(response){
+					var success = response.responses['default'].variables.user_id;
+					if (success) {
+						doLogin(emailAddress, password);
+						if (getBrowserApp) {
+							//Change hash so navigation works, if we just call loadMarkup here, it breaks UX
+							location.hash = 'content/get-app-confirmation';
+						}
+						else {
+							location.hash = '';
+						}
+					}
+				});
 			}
 		},
-		"post-template": {
-			"template-image": function ($elem, data) {
-				if (data['templateImageSrc'])
-					$elem.attr('src', data['templateImageSrc']);
-			},
-			"tooltip": function ($elem, data) {
-				// @todo show data['tooltipTitle'] 'neatly' when you roll over this element
-				$elem.attr('title', data.tooltipTitle); // hack
-			},
-            "placeholder": function () {
-                $.placeholder.shim();
-            },
-            "get-app-install": function ($elem) {
-                $("#agreeterms", $elem).change(function(){
-                    if($(this).is(':checked')){
-                        $('#grab_it', $elem).addClass('enabled');
-                        $('#grab_it', $elem).on('click', function(){
-                            location.hash = 'content/get-app-confirmation';
-                        });
-                    } else {
-                        $('#grab_it', $elem).removeClass('enabled');
-                        $('#grab_it', $elem).off('click');
-                    }
-                });
-            },
-            "join-now": function ($elem) {
-                var $emailField = $('#emailAddress_field', $elem),
-                    $passwordField = $('#passwordOne_field', $elem),
-                    $confirmationField = $('#passwordTwo_field', $elem),
-                    $registerButton = $('#portal_join_now_button', $elem),
-                    $getBrowserAppCheckbox = $("#install_browser_app", $elem),
-                    $agreeTermsCheckbox = $("#agreeterms", $elem),
-                    buttonActive = false;
 
-                $agreeTermsCheckbox.on('click', activateSubmit);
-                $emailField.on('keyup change', activateSubmit);
-                $passwordField.on('keyup change', activateSubmit);
-                $confirmationField.on('keyup change', activateSubmit);
+		"install-app" : function ($elem, data) {
+			if( !document.location.href.match('content/get-app-confirmation') )
+				document.location.hash = 'content/get-app-confirmation';
 
-                function activateSubmit() {
-                    if(!validateFields()) {
-                        if(!buttonActive) {
-                            $registerButton.removeClass('join_now_button_disabled').addClass('join_now_button');
-                            $registerButton.on('click', function(){
-                                createAccount($emailField.val(), $passwordField.val(), $getBrowserAppCheckbox.is(':checked'));
-                            });
-                            buttonActive = true;
-                        }
-                    }
-                    else {
-                        if(buttonActive){
-                            $registerButton.removeClass('join_now_button').addClass('join_now_button_disabled');
-                            $registerButton.off('click');
-                            buttonActive = false;
-                        }
-                    }
-                }
+			var downloadLocation,
+				browser;
 
-                function validateFields() {
-                    //TODO: Show the end user what is wrong.
-                    var emailAddress = $emailField.val();
-                    if( emailAddress.length < 1 ) {
-                        return "Whoops - Please enter your email address";
-                    }
+			downloadLocation = "//" + sayso.module.config.baseDomain + '/starbar/install/extension';
+			browser = getBrowserNameVersion();
 
-                    var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-                    if (!emailPattern.test(emailAddress)){
-                        return "Whoops - Please enter a valid email address";
-                    }
+			function installChrome(){
+				chrome.webstore.install(undefined, undefined, function(s) {console.log(s);});
+			}
 
-                    var passwordOne = $passwordField.val();
-                    if(passwordOne.length < 1) {
-                        return "Whoops - Please enter your password";
-                    }
+			if (browser.browser === "chrome") {
+				var extId;
 
-                    var passwordTwo = $confirmationField.val();
-                    if(passwordOne !== passwordTwo ) {
-                        return "Whoops - Your passwords do not match.<br>Please reenter your password";
-                    }
-                    if(passwordOne.length < 6 || passwordOne.length > 12) {
-                        return "Whoops - Your password needs to have between 6 and 12 characters.<br>Please reenter your password";
-                    }
+				switch (sayso.module.config.baseDomain) {
+					case "app.saysollc.com" :
+						extId = 'lpkeinfeenilbldefedbfcdhllhjnblc';
+						break;
+					case "app-qa.saysollc.com" :
+						extId = 'dachmhjcknkhjkjpknneienbiolpoein';
+						break;
+					case "local.saysollc.com" :
+						extId = 'kcgjipkjdgakogjmbekhghlhdgacajbh';
+						break;
+					case "app-dev.saysollc.com" :
+						extId = 'fjgbjoknbfjhofpcdpfepjaicipncpob';
+						break;
+					case "app-demo.saysollc.com" :
+						extId = 'poipmplbjibkncgkiaomennpegokfjom';
+						break;
+					case "staging.saysollc.com" :
+						extId = 'dcdkmcnaenolmjcoijjggegpcbehgfkn';
+						break;
+				}
+				downloadLocation = "https://chrome.google.com/webstore/detail/" +extId;
+				$('head').append('<link rel="chrome-webstore-item" href="' + downloadLocation + '" />');
+				$('#browser_install_instructions').html('<a href="#action/chrome-install" id="chrome-download">Click here to begin installation.</a> ');
+				$("#chrome-download").bind("click", installChrome);
+				$("#force-download").attr({"href": downloadLocation, "target": "_blank"});
 
-                    if(!$agreeTermsCheckbox.is(':checked')) {
-                        return "Whoops - Please accept the terms and conditions";
-                    }
+			} else {
+				if (browser.browser === "safari") {
+					$('#browser_install_instructions').html('Please click on the Say.So package in the Safari downloads window to complete the instalation');
+				}
+				$("#force-download").attr("href", downloadLocation);
+				location.href = downloadLocation;
+			}
+		},
+		"landing_currency_count": function($elem, data) {
+			$(document).on('sayso:state-game', function () {
+				$elem.html(state.state.game.currencies.redeemable.balance);
+			});
+		},
+		"landing_experience_count": function($elem, data) {
+			$(document).on('sayso:state-game', function () {
+				$elem.html(state.state.game.currencies.experience.balance);
+			});
+		},
+		"recover_password_container": function($elem) {
+			var emailAddress = '',
+				nextStep,
+				$requestReset,
+				$emailField,
+				$errorContainer,
+				$stepTwo;
 
-                    return false;
-                }
+			nextStep = 'content/recover-password-reset';
+			$requestReset = $('#recover_password_button', $elem);
+			$emailField = $('#password_reset_email_field', $elem);
+			$errorContainer = $('#recover_password_submit_errors', $elem);
+			$stepTwo = $('#recover_password_step_2', $elem);
 
-                function createAccount(emailAddress, password, getBrowserApp) {
-                    api.doRequest({
-                        action_class : 'registration',
-                        action : 'createUser',
-                        email : emailAddress,
-                        password : password,
-                        originating_starbar_id : starbarId
-                    }, function(response){
-                        var success = response.responses['default'].variables.user_id;
-                        if (success) {
-                            doLogin(emailAddress, password);
-                            if (getBrowserApp) {
-                                //Change hash so navigation works, if we just call loadMarkup here, it breaks UX
-                                location.hash = 'content/get-app-confirmation';
-                            }
-                            else {
-                                location.hash = '';
-                            }
-                        }
-                    });
-                }
-            },
+			$stepTwo.on('click', function() {
+				location.hash = nextStep;
+			});
 
-			"install-app" : function ($elem, data) {
-				if( !document.location.href.match('content/get-app-confirmation') )
-					document.location.hash = 'content/get-app-confirmation';
+			$emailField.keyup(function(event){
+				if(event.keyCode === 13){
+					$requestReset.click();
+				}
+			});
 
-                var downloadLocation,
-                    browser;
+			$requestReset.on('click', function() {
+				emailAddress = $emailField.val();
 
-                downloadLocation = "//" + sayso.module.config.baseDomain + '/starbar/install/extension';
-				browser = getBrowserNameVersion();
+				if(emailAddress !== '') {
+					api.doRequest({
+						action_class : 'forgotPassword',
+						action : 'createRequest',
+						starbar_id : starbarId,
+						email: emailAddress
+					}, function(response){
+						if (typeof response.responses['default'] !== "undefined"  && typeof response.responses['default'].variables  !== "undefined") {
+							var success = response.responses['default'].variables.success;
 
-				function installChrome(){
-					chrome.webstore.install(undefined, undefined, function(s) {console.log(s);});
+							if (success === true){
+								location.hash = nextStep;
+							}
+							else {
+								$errorContainer.css('display', 'inline');
+								setTimeout(function(){
+									$errorContainer.fadeOut('slow');
+								}, 3000);
+							}
+						}
+						else {
+							$errorContainer.css('display', 'inline');
+							setTimeout(function(){
+								$errorContainer.fadeOut('slow');
+							}, 3000);
+						}
+					});
+				}
+			});
+		},
+		"recover_password_reset_container": function($elem) {
+			var buttonActive = false,
+				$confirmReset,
+				$resetCodeField,
+				$passwordField,
+				$passwordConfirmField,
+				$errorContainer;
+
+			$confirmReset = $('#recover_password_reset_button', $elem);
+			$resetCodeField = $('#reset_code', $elem);
+			$passwordField = $('#password_reset', $elem);
+			$passwordConfirmField = $('#password_reset_confirmation', $elem);
+			$errorContainer = $('#recover_password_reset_errors', $elem);
+
+			$resetCodeField.on('keyup change', activateSubmit);
+			$passwordField.on('keyup change', activateSubmit);
+			$passwordConfirmField.on('keyup change', activateSubmit);
+
+			function validateFields() {
+				//TODO: Show the end user what is wrong.
+				var code = $resetCodeField.val();
+				if( code.length !== 6 ) {
+					return "Please enter a valid confirmation code.";
 				}
 
-				if (browser.browser === "chrome") {
-					var extId;
-
-					switch (sayso.module.config.baseDomain) {
-						case "app.saysollc.com" :
-							extId = 'lpkeinfeenilbldefedbfcdhllhjnblc';
-							break;
-						case "app-qa.saysollc.com" :
-							extId = 'dachmhjcknkhjkjpknneienbiolpoein';
-							break;
-						case "local.saysollc.com" :
-							extId = 'kcgjipkjdgakogjmbekhghlhdgacajbh';
-							break;
-						case "app-dev.saysollc.com" :
-							extId = 'fjgbjoknbfjhofpcdpfepjaicipncpob';
-							break;
-						case "app-demo.saysollc.com" :
-							extId = 'poipmplbjibkncgkiaomennpegokfjom';
-							break;
-						case "staging.saysollc.com" :
-							extId = 'dcdkmcnaenolmjcoijjggegpcbehgfkn';
-							break;
-					}
-					downloadLocation = "https://chrome.google.com/webstore/detail/" +extId;
-					$('head').append('<link rel="chrome-webstore-item" href="' + downloadLocation + '" />');
-					$('#browser_install_instructions').html('<a href="#action/chrome-install" id="chrome-download">Click here to begin installation.</a> ');
-					$("#chrome-download").bind("click", installChrome);
-					$("#force-download").attr({"href": downloadLocation, "target": "_blank"});
-
-				} else {
-					if (browser.browser === "safari") {
-						$('#browser_install_instructions').html('Please click on the Say.So package in the Safari downloads window to complete the instalation');
-					}
-					$("#force-download").attr("href", downloadLocation);
-					location.href = downloadLocation;
+				var passwordOne = $passwordField.val();
+				if(passwordOne.length < 1) {
+					return "Whoops - Please enter your password";
 				}
-			},
-            "landing_currency_count": function($elem, data) {
-                $(document).on('sayso:state-game', function () {
-                    $elem.html(state.state.game.currencies.redeemable.balance);
-                });
-            },
-            "landing_experience_count": function($elem, data) {
-                $(document).on('sayso:state-game', function () {
-                    $elem.html(state.state.game.currencies.experience.balance);
-                });
-            },
-            "recover_password_container": function($elem) {
-                var emailAddress = '',
-                    nextStep,
-                    $requestReset,
-                    $emailField,
-                    $errorContainer,
-                    $stepTwo;
 
-                nextStep = 'content/recover-password-reset';
-                $requestReset = $('#recover_password_button', $elem);
-                $emailField = $('#password_reset_email_field', $elem);
-                $errorContainer = $('#recover_password_submit_errors', $elem);
-                $stepTwo = $('#recover_password_step_2', $elem);
+				var passwordTwo = $passwordConfirmField.val();
+				if(passwordOne !== passwordTwo ) {
+					return "Whoops - Your passwords do not match.<br>Please reenter your password";
+				}
+				if(passwordOne.length < 6 || passwordOne.length > 12) {
+					return "Whoops - Your password needs to have between 6 and 12 characters.<br>Please reenter your password";
+				}
 
-                $stepTwo.on('click', function() {
-                    location.hash = nextStep;
-                });
+				return false;
+			}
 
-                $emailField.keyup(function(event){
-                    if(event.keyCode === 13){
-                        $requestReset.click();
-                    }
-                });
+			function activateSubmit() {
 
-                $requestReset.on('click', function() {
-                    emailAddress = $emailField.val();
+				if(!validateFields()) {
+					if(!buttonActive) {
+						$confirmReset.on('click', function(){
+							submitRequest($resetCodeField.val(), $passwordField.val());
+						});
+						buttonActive = true;
+					}
+				}
+				else {
+					if(buttonActive){
+						$confirmReset.off('click');
+						buttonActive = false;
+					}
+				}
+			}
 
-                    if(emailAddress !== '') {
-                        api.doRequest({
-                            action_class : 'forgotPassword',
-                            action : 'createRequest',
-                            starbar_id : starbarId,
-                            email: emailAddress
-                        }, function(response){
-                            if (typeof response.responses['default'] !== "undefined"  && typeof response.responses['default'].variables  !== "undefined") {
-                                var success = response.responses['default'].variables.success;
+			function submitRequest(resetCode, newPassword) {
+				api.doRequest({
+					action_class : 'forgotPassword',
+					action : 'changePassword',
+					verification_code : resetCode,
+					new_password: newPassword
+				}, function(response){
+					if (typeof response.responses['default'] !== "undefined"  && typeof response.responses['default'].variables  !== typeof "undefined") {
+						var success = response.responses['default'].variables.success;
 
-                                if (success === true){
-                                    location.hash = nextStep;
-                                }
-                                else {
-                                    $errorContainer.css('display', 'inline');
-                                    setTimeout(function(){
-                                        $errorContainer.fadeOut('slow');
-                                    }, 3000);
-                                }
-                            }
-                            else {
-                                $errorContainer.css('display', 'inline');
-                                setTimeout(function(){
-                                    $errorContainer.fadeOut('slow');
-                                }, 3000);
-                            }
-                        });
-                    }
-                });
-            },
-            "recover_password_reset_container": function($elem) {
-                var buttonActive = false,
-                    $confirmReset,
-                    $resetCodeField,
-                    $passwordField,
-                    $passwordConfirmField,
-                    $errorContainer;
-
-                $confirmReset = $('#recover_password_reset_button', $elem);
-                $resetCodeField = $('#reset_code', $elem);
-                $passwordField = $('#password_reset', $elem);
-                $passwordConfirmField = $('#password_reset_confirmation', $elem);
-                $errorContainer = $('#recover_password_reset_errors', $elem);
-
-                $resetCodeField.on('keyup change', activateSubmit);
-                $passwordField.on('keyup change', activateSubmit);
-                $passwordConfirmField.on('keyup change', activateSubmit);
-
-                function validateFields() {
-                    //TODO: Show the end user what is wrong.
-                    var code = $resetCodeField.val();
-                    if( code.length !== 6 ) {
-                        return "Please enter a valid confirmation code.";
-                    }
-
-                    var passwordOne = $passwordField.val();
-                    if(passwordOne.length < 1) {
-                        return "Whoops - Please enter your password";
-                    }
-
-                    var passwordTwo = $passwordConfirmField.val();
-                    if(passwordOne !== passwordTwo ) {
-                        return "Whoops - Your passwords do not match.<br>Please reenter your password";
-                    }
-                    if(passwordOne.length < 6 || passwordOne.length > 12) {
-                        return "Whoops - Your password needs to have between 6 and 12 characters.<br>Please reenter your password";
-                    }
-
-                    return false;
-                }
-
-                function activateSubmit() {
-
-                    if(!validateFields()) {
-                        if(!buttonActive) {
-                            $confirmReset.on('click', function(){
-                                submitRequest($resetCodeField.val(), $passwordField.val());
-                            });
-                            buttonActive = true;
-                        }
-                    }
-                    else {
-                        if(buttonActive){
-                            $confirmReset.off('click');
-                            buttonActive = false;
-                        }
-                    }
-                }
-
-                function submitRequest(resetCode, newPassword) {
-                    api.doRequest({
-                        action_class : 'forgotPassword',
-                        action : 'changePassword',
-                        verification_code : resetCode,
-                        new_password: newPassword
-                    }, function(response){
-                        if (typeof response.responses['default'] !== "undefined"  && typeof response.responses['default'].variables  !== typeof "undefined") {
-                            var success = response.responses['default'].variables.success;
-
-                            if (success === true){
-                                doLogin(response.responses['default'].variables.email, newPassword);
-                            }
-                            else {
-                                $errorContainer.css('display', 'inline');
-                                $resetCodeField.val('');
-                                $resetCodeField.focus();
-                                setTimeout(function(){
-                                    $errorContainer.fadeOut('slow');
-                                }, 3000);
-                            }
-                        }
-                        else {
-                            $errorContainer.css('display', 'inline');
-                            $resetCodeField.val('');
-                            $resetCodeField.focus();
-                            setTimeout(function(){
-                                $errorContainer.fadeOut('slow');
-                            }, 3000);
-                        }
-                    });
-                }
-            }
+						if (success === true){
+							doLogin(response.responses['default'].variables.email, newPassword);
+						}
+						else {
+							$errorContainer.css('display', 'inline');
+							$resetCodeField.val('');
+							$resetCodeField.focus();
+							setTimeout(function(){
+								$errorContainer.fadeOut('slow');
+							}, 3000);
+						}
+					}
+					else {
+						$errorContainer.css('display', 'inline');
+						$resetCodeField.val('');
+						$resetCodeField.focus();
+						setTimeout(function(){
+							$errorContainer.fadeOut('slow');
+						}, 3000);
+					}
+				});
+			}
 		}
 	};
 

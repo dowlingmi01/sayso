@@ -1,27 +1,28 @@
-<div class="sayso-element sayso-reward-redeem-overlay" id="sayso-reward-redeem-overlay">
-	<div id="sayso-reward-item-redeem-step"></div>
-</div>
-<div id="sayso-section-header"></div>
-<div id="sayso-section-body">
-	<p class="sayso-heading-text">Select an item below</p>
-	<div class="sayso-element sayso-scrollable" style="height: 375px;">
-		{{#each rewards.records}}
-			{{>reward_partial}}
-		{{else}}
-			No rewards found, please check again soon!<br />
-		{{/each}}
+<script data-partial-id="main" type="text/x-handlebars-template">
+	<div class="sayso-element sayso-reward-redeem-overlay" id="sayso-reward-redeem-overlay">
+		<div id="sayso-reward-item-redeem-step"></div>
 	</div>
-</div>
-<div id="sayso-section-footer">
-	<p>Machinima | Recon does not guarantee prizes for participation.
-	   Prizes are limited and are redeemed on a first come, first serve basis.
-	   Once an item is "Sold Out" it is not guaranteed to be replaced or restocked.
-	   Say.So does not take responsibility for Coins not redeemed by the end of the program.
-	</p>
-</div>
+	<div id="sayso-section-header"></div>
+	<div id="sayso-section-body">
+		<p class="sayso-heading-text">Select an item below</p>
+		<div class="sayso-element sayso-scrollable" style="height: 375px;">
+			{{#each rewards.records}}
+				{{>reward_partial}}
+			{{else}}
+				No rewards found, please check again soon!<br />
+			{{/each}}
+		</div>
+	</div>
+	<div id="sayso-section-footer">
+		<p>Machinima | Recon does not guarantee prizes for participation.
+		   Prizes are limited and are redeemed on a first come, first serve basis.
+		   Once an item is "Sold Out" it is not guaranteed to be replaced or restocked.
+		   Say.So does not take responsibility for Coins not redeemed by the end of the program.
+		</p>
+	</div>
+</script>
 
-
-<div class="sayso-element sayso-partial" data-partial-id="reward_partial">
+<script data-partial-id="reward_partial" type="text/x-handlebars-template">
     <div class="sayso-element sayso-reward-item" data-reward-id="{{id}}">
         <div class="sayso-reward-item-disabled">
             <p class="sayso-reward-item-disabled-heading">!</p>
@@ -31,7 +32,7 @@
             {{name}}
         </div>
         <div class="sayso-reward-item-img">
-            <img alt="Reward" class="sayso-element sayso-template-image" data-template-image-class="sayso-element sayso-template-image" data-template-image-src="{{img_url_preview}}"/>
+            <img alt="Reward" src="{{img_url_preview}}"/>
         </div>
         <div class="sayso-reward-item-bottom">
             <div class="sayso-reward-item-points-box">
@@ -47,15 +48,15 @@
             <div class="sayso-reward-item-redeem">Redeem</div>
         </div>
     </div>
-</div>
+</script>
 
-<div class="sayso-element sayso-partial" data-partial-id="redeem_step_1">
+<script data-partial-id="redeem_step_1" type="text/x-handlebars-template">
     <div class="sayso-reward-item">
         <div class="sayso-reward-item-header">
             {{name}}
         </div>
         <div class="sayso-reward-item-img">
-            <img alt="Reward" class="sayso-element sayso-template-image" data-template-image-class="sayso-element sayso-template-image" data-template-image-src="{{img_url}}"/>
+            <img alt="Reward" src="{{img_url}}"/>
         </div>
         <div class="sayso-reward-item-bottom">
             <div class="sayso-reward-item-points-box">
@@ -78,9 +79,9 @@
             <div class="sayso-element sayso-reward-item-redeem-submit">Redeem</div>
         </div>
     </div>
-</div>
+</script>
 
-<div class="sayso-element sayso-partial" data-partial-id="redeem_step_2_token">
+<script data-partial-id="redeem_step_2_token" type="text/x-handlebars-template">
     <div class="sayso-element sayso-reward-step-two-token">
         <div class="sayso-reward-item-redeem-order-container">
             <div class="sayso-reward-item">
@@ -88,7 +89,7 @@
                     {{name}}
                 </div>
                 <div class="sayso-reward-item-img">
-                    <img alt="Reward" class="sayso-element sayso-template-image" data-template-image-src="{{img_url}}" />
+                    <img alt="Reward" src="{{img_url}}" />
                 </div>
                 <div class="sayso-reward-item-redeem-order-bottom">
                     <div class="sayso-reward-item-redeem-order-bottom-left">
@@ -124,9 +125,9 @@
             </div>
         </div>
     </div>
-</div>
+</script>
 
-<div class="sayso-element sayso-partial" data-partial-id="redeem_step_2_shipping">
+<script data-partial-id="redeem_step_2_shipping" type="text/x-handlebars-template">
     <div class="sayso-reward-step-two-shipping">
         <div class="sayso-reward-item-redeem-order-container">
             <div class="sayso-reward-item">
@@ -134,7 +135,7 @@
                     {{name}}
                 </div>
                 <div class="sayso-reward-item-img">
-                    <img alt="Reward" class="sayso-element sayso-template-image" data-template-image-src="{{img_url}}" />
+                    <img alt="Reward" src="{{img_url}}" />
                 </div>
                 <div class="sayso-reward-item-redeem-order-bottom">
                     <div class="sayso-reward-item-redeem-order-bottom-left">
@@ -172,18 +173,18 @@
             </div>
         </div>
     </div>
-</div>
+</script>
 
 
 
-<div class="sayso-element sayso-partial" data-partial-id="redeem_step_3_success">
+<script data-partial-id="redeem_step_3_success" type="text/x-handlebars-template">
     <div class="sayso-reward-step-three">
         <div class="sayso-reward-item">
             <div class="sayso-reward-item-header">
                 ORDER SUCCESS!
             </div>
             <div class="sayso-reward-item-img">
-                <img alt="Reward" class="sayso-element sayso-template-image" data-template-image-src="{{img_url}}" />
+                <img alt="Reward" src="{{img_url}}" />
             </div>
             <div class="sayso-reward-item-bottom">
                 <div class="step-reward-item-success-info">
@@ -205,7 +206,7 @@
             </div>
         </div>
     </div>
-</div>
+</script>
 
 
 

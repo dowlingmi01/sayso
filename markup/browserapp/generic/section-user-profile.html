@@ -1,56 +1,58 @@
-<div id="sayso-section-body">
-	<div id="sayso-user-profile-column-left">
-		<div id="sayso-user-profile-header" class="sayso-user-profile-section">
-			Welcome Back, <span class="sayso-highlight">{{user-public-name}}</span>
-		</div>
-		<div id="sayso-user-profile-user" class="sayso-user-profile-section">
+<script data-partial-id="main" type="text/x-handlebars-template">
+	<div id="sayso-section-body">
+		<div id="sayso-user-profile-column-left">
+			<div id="sayso-user-profile-header" class="sayso-user-profile-section">
+				Welcome Back, <span class="sayso-highlight">{{user-public-name}}</span>
+			</div>
+			<div id="sayso-user-profile-user" class="sayso-user-profile-section">
 
-			<p><strong>User Name</strong>: {{user-public-name}}</p>
-			<p>
-				{{state.profile.email}}
-			</p>
+				<p><strong>User Name</strong>: {{user-public-name}}</p>
+				<p>
+					{{state.profile.email}}
+				</p>
+			</div>
+			<div id="sayso-user-profile-facebook" class="sayso-user-profile-section">
+				<iframe src="//www.facebook.com/plugins/like.php?locale=en_US&amp;href=%CONFIG_FACEBOOK_PAGE_FOR_LIKE_BUTTON%&amp;layout=standard&amp;show_faces=false&amp;width=240&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:290px; height:35px;" allowTransparency="true"></iframe>
+			</div>
+			<div id="sayso-user-profile-link-accounts" class="sayso-user-profile-section">
+				<p>Link Your Acounts</p>
+				<div class="sayso-element sayso-link sayso-social-connect sayso-user-profile-left" id="sayso-user-profile-social-link-FB" data-network="FB"></div>
+				<div class="sayso-element sayso-link sayso-social-connect sayso-user-profile-left" id="sayso-user-profile-social-link-TW" data-network="TW"></div>
+			</div>
+			<div id="sayso-user-profile-documents" class="sayso-user-profile-section">
+				<p>Documents</p>
+				<a href="//%CONFIG_BASE_DOMAIN%/docs/machinima/Say.So_Privacy_Policy.pdf" class="sayso-small" target="_new">Privacy Policy</a>
+				|
+				<a href="//%CONFIG_BASE_DOMAIN%/docs/machinima/Say.So_Rewards_Rules.pdf" class="sayso-small" target="_new">Rewards Rules </a>
+				|
+				<a href="//%CONFIG_BASE_DOMAIN%/docs/machinima/Say.So_App_EULA.pdf" class="sayso-small" target="_new">EULA</a>
+			</div>
 		</div>
-		<div id="sayso-user-profile-facebook" class="sayso-user-profile-section">
-			<iframe src="//www.facebook.com/plugins/like.php?locale=en_US&amp;href=%CONFIG_FACEBOOK_PAGE_FOR_LIKE_BUTTON%&amp;layout=standard&amp;show_faces=false&amp;width=240&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:290px; height:35px;" allowTransparency="true"></iframe>
-		</div>
-		<div id="sayso-user-profile-link-accounts" class="sayso-user-profile-section">
-			<p>Link Your Acounts</p>
-			<div class="sayso-element sayso-link sayso-social-connect sayso-user-profile-left" id="sayso-user-profile-social-link-FB" data-network="FB"></div>
-			<div class="sayso-element sayso-link sayso-social-connect sayso-user-profile-left" id="sayso-user-profile-social-link-TW" data-network="TW"></div>
-		</div>
-		<div id="sayso-user-profile-documents" class="sayso-user-profile-section">
-			<p>Documents</p>
-			<a href="//%CONFIG_BASE_DOMAIN%/docs/machinima/Say.So_Privacy_Policy.pdf" class="sayso-small" target="_new">Privacy Policy</a>
-			|
-			<a href="//%CONFIG_BASE_DOMAIN%/docs/machinima/Say.So_Rewards_Rules.pdf" class="sayso-small" target="_new">Rewards Rules </a>
-			|
-			<a href="//%CONFIG_BASE_DOMAIN%/docs/machinima/Say.So_App_EULA.pdf" class="sayso-small" target="_new">EULA</a>
+		<div id="sayso-user-profile-column-right">
+			<div class="sayso-user-profile-section">
+				My Stats
+			</div>
+			<div id="sayso-user-profile-level" class="sayso-user-profile-section">
+				<img id="sayso-user-profile-level-image" class="sayso-user-profile-left" src="{{object-field state.game.levels state.game.level 'img_url_small'}}" />
+				<a class="sayso-element sayso-section-link" data-section="experience">Level {{state.game.level}}</a><br />
+				<a class="sayso-element sayso-small sayso-section-link" data-section="rewards">{{currency-name-with-value "redeemable" state.game.currencies.redeemable.balance}}</a><br />
+				<a class="sayso-element sayso-small sayso-section-link" data-section="experience">{{currency-name-with-value "experience" state.game.currencies.experience.balance}}</a><br />
+			</div>
+			<div id="sayso-user-profile-new" class="sayso-user-profile-section">
+				<p>What's New Today</p>
+				<a class="sayso-element sayso-small sayso-section-link" data-section="polls">{{countPolls.variables.count}} New Polls</a>
+				<br />
+				<a class="sayso-element sayso-small sayso-section-link" data-section="surveys">{{countSurveys.variables.count}} New Surveys</a>
+			</div>
+			<!--
+			<div id="sayso-user-profile-share" class="sayso-user-profile-section">
+				<p class="sayso-user-profile-headline">Share %CONFIG_TITLE%</p>
+				<p>Earn {{currency-name "redeemable"}} for sharing!</p>
+				<img src="%CONFIG_IMAGE_PATH%/button-share-facebook.png" class="sayso-user-profile-left" />
+				<img src="%CONFIG_IMAGE_PATH%/button-share-twitter.png" class="sayso-user-profile-left" />
+			</div>
+			-->
 		</div>
 	</div>
-	<div id="sayso-user-profile-column-right">
-		<div class="sayso-user-profile-section">
-			My Stats
-		</div>
-		<div id="sayso-user-profile-level" class="sayso-user-profile-section">
-			<img id="sayso-user-profile-level-image" class="sayso-element sayso-template-image sayso-user-profile-left" data-template-image-src="{{object-field state.game.levels state.game.level 'img_url_small'}}" />
-			<a class="sayso-element sayso-section-link" data-section="experience">Level {{state.game.level}}</a><br />
-			<a class="sayso-element sayso-small sayso-section-link" data-section="rewards">{{currency-name-with-value "redeemable" state.game.currencies.redeemable.balance}}</a><br />
-			<a class="sayso-element sayso-small sayso-section-link" data-section="experience">{{currency-name-with-value "experience" state.game.currencies.experience.balance}}</a><br />
-		</div>
-		<div id="sayso-user-profile-new" class="sayso-user-profile-section">
-			<p>What's New Today</p>
-			<a class="sayso-element sayso-small sayso-section-link" data-section="polls">{{countPolls.variables.count}} New Polls</a>
-			<br />
-			<a class="sayso-element sayso-small sayso-section-link" data-section="surveys">{{countSurveys.variables.count}} New Surveys</a>
-		</div>
-		<!--
-		<div id="sayso-user-profile-share" class="sayso-user-profile-section">
-			<p class="sayso-user-profile-headline">Share %CONFIG_TITLE%</p>
-			<p>Earn {{currency-name "redeemable"}} for sharing!</p>
-			<img src="%CONFIG_IMAGE_PATH%/button-share-facebook.png" class="sayso-user-profile-left" />
-			<img src="%CONFIG_IMAGE_PATH%/button-share-twitter.png" class="sayso-user-profile-left" />
-		</div>
-		-->
-	</div>
-</div>
-<div id="sayso-section-footer"></div>
+	<div id="sayso-section-footer"></div>
+</script>

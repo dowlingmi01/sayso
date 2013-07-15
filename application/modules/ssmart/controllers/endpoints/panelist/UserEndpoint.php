@@ -200,13 +200,14 @@ class Ssmart_Panelist_UserEndpoint extends Ssmart_GlobalController
 			return $response;
 
 		//logic
-		$callbackUrl		= $$request->submitted_parameters->callback_url;
+		$callbackUrl = property_exists($request->submitted_parameters, "callback_url") ? $request->submitted_parameters->callback_url : NULL;
 
 		$token = User_Social::getTwiterOauthToken($callbackUrl);
-		if (token)
+		if ($token)
 		{
 			$response->setResultVariable("success", TRUE);
-			$response->setResultVariable("token", $token);
+			$response->setResultVariable("oauth_token", $token["token"]);
+			$response->setResultVariable("oauth_token_secret", $token["token_secret"]);
 		} else
 			$response->setResultVariable("success", FALSE);
 

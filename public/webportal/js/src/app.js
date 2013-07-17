@@ -692,7 +692,59 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
 					}
 				});
 			}
-		}
+		},
+        "contact-submit": function($elem) {
+            var buttonActive = true,
+                messageLength = 1000,
+                subjectLength = 200,
+                $errorContainer,
+                $submitButton,
+                $subjectField,
+                $messageField;
+
+            $errorContainer = $('#contact_error', $elem);
+            $submitButton = $('#contact_submit_button', $elem);
+            $subjectField = $('#contact_subject', $elem);
+            $messageField = $('#contact_message', $elem);
+
+            $submitButton.on('click', submitForm);
+
+            function submitForm() {
+                if (buttonActive && $subjectField.val().length > 1 && $messageField.val().length > 1) {
+                    buttonActive = false;
+                    api.doRequest({
+                        action_class : 'contactEndpoint',
+                        action : 'send',
+                        from_address : state.state.profile.email,
+                        subject: $subjectField.val().substring(0,subjectLength),
+                        message: $messageField.val().substring(0,messageLength),
+                        message_meta: location.href
+                    }, function(response){
+                        if (typeof response.responses['default'] !== "undefined"  && typeof response.responses['default'].variables  !== typeof "undefined") {
+                            var success = response.responses['default'].variables.success;
+
+                            if (success === true){
+                                location.hash = 'content/thank-you-contact';
+                            }
+                            else {
+                                buttonActive = true;
+                                $errorContainer.css('display', 'block');
+                                setTimeout(function(){
+                                    $errorContainer.fadeOut('slow');
+                                }, 7000);
+                            }
+                        }
+                        else {
+                            buttonActive = true;
+                            $errorContainer.css('display', 'block');
+                            setTimeout(function(){
+                                $errorContainer.fadeOut('slow');
+                            }, 7000);
+                        }
+                    });
+                }
+            }
+        }
 	};
 
     return shared;

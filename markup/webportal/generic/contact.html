@@ -1,10 +1,14 @@
 <script data-partial-id="main" type="text/x-handlebars-template">
-	<div class="generic_container">
+	<div class="portal-element portal-contact-submit generic_container">
 		<h1 class="small_header">Contact Us</h1>
 		<div class="contact_us_content">
 			<p>Drop us a line and we'll get back to you within 24 hours.</p>
-			<textarea rows="1" cols="1" tabindex="0"></textarea>
-			<a href="#main/contact-us" class="submit_button"></a> <!-- DEAL WITH SUBMITTING THIS FORM... -->
+            <div class="contact_errors" id="contact_errors">
+                Something went wrong! Please try again or send an email to support@say.so
+            </div>
+            <input id="contact_subject" class="portal-element portal-placeholder" name="contact_subject" placeholder="Subject"/>
+			<textarea id="contact_message" rows="10" class="portal-element portal-placeholder" tabindex="0" placeholder="Message"/>
+			<div id="contact_submit_button" class="submit_button"></div>
 		</div>
 	</div>
 </script>

@@ -371,9 +371,9 @@ header {
     margin-left: 250px;
 }
 
-/* ================ */
-/* Lightboxed pages */
-/* ================ */
+/* ========== */
+/* Ajax pages */
+/* ========== */
 
 /* Recover Password Page */
 .recover_password_container {
@@ -461,7 +461,7 @@ header {
   .proxima_nova_light();
 }
 
-/* Temporary Email Us Page */
+/* Email Us Page */
 .email_us_container {
     .top_left_margin();
 
@@ -550,9 +550,19 @@ header {
 /* Contact Us */
 
 .contact_us_content {
+
+  input {
+      display: block;
+      .proxima_nova_light();
+      margin-left: 0;
+      margin-bottom: 1em;
+      width: 465px;
+  }
+
   textarea {
-    width: 400px;
-    height: 150px;
+      .proxima_nova_light();
+      margin: auto 0;
+      width: 465px;
   }
 
   p {
@@ -562,11 +572,19 @@ header {
   }
 
   //Override the submit-button class.
-  a {
+  .submit_button {
     display: block;
     margin-left: 0;
     margin-top: 1em;
   }
+
+  .contact_errors {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    .red_link;
+    .proxima_nova_light(@font-size);
+    display: none;
+    }
 }
 
 /* Sign Out */

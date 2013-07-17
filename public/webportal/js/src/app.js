@@ -1,5 +1,5 @@
 //noinspection ThisExpressionReferencesGlobalObjectJS
-sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
+sayso.module.webportal = (function(global, $, config, state, api, Handlebars, comm) {
     'use strict';
 
     var shared = {},
@@ -744,9 +744,9 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
                 if (buttonActive && validateForm()) {
                     buttonActive = false;
                     api.doRequest({
-                        action_class : 'contactEndpoint',
+                        action_class : 'contact',
                         action : 'send',
-                        starbar_id: sayso.module.config.defaultStarbarId,
+                        starbar_id: config.defaultStarbarId,
                         subject: $subjectField.val().substring(0,subjectLength),
                         message: 'FROM: ' + $fromField.val() + '\r\n\r\n' + $messageField.val().substring(0,messageLength),
                         message_meta: location.href
@@ -780,4 +780,4 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
 
     return shared;
 
-})(this, jQuery, sayso.module.state, sayso.module.api, sayso.module.Handlebars, sayso.module.comm);
+})(this, jQuery, sayso.module.config, sayso.module.state, sayso.module.api, sayso.module.Handlebars, sayso.module.comm);

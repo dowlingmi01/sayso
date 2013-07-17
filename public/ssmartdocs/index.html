@@ -383,6 +383,7 @@
 			<endpoint name="send">
 				<description>Sends and email.</description>
 				<parameters>
+					<parameter required name="starbar_id" type="integer" default_value="">The id of the starbar.</parameter>
 					<parameter required name="from_address" type="string" default_value="">The address to mark the email from.</parameter>
 					<parameter required name="subject" type="string" default_value="">The subject of the email.</parameter>
 					<parameter required name="message" type="string" default_value="">The message of the email.</parameter>
@@ -392,6 +393,7 @@
 					<returnvalue name="success" type="variable" location="variables" default_value="">Whether the email was sent.</returnvalue>
 				</returnvalues>
 				<requestexample>
+					<variable required name="starbar_id">4</variable>
 					<variable required name="from_address">noreply@say.so</variable>
 					<variable required name="subject">Contact request.</variable>
 					<variable required name="message"><p>I would like some more info on Say.So.</p></variable>

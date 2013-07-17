@@ -20,7 +20,8 @@ class Ssmart_Public_ContactEndpoint {
 			"from_address"			=> "email",
 			"subject"				=> "required",
 			"message"				=> "required",
-			"message_meta"			=> "required_allowEmpty"
+			"message_meta"			=> "required_allowEmpty",
+			"starbar_id"			=> "int_required_notEmpty"
 		);
 		$filters = array();
 
@@ -30,9 +31,13 @@ class Ssmart_Public_ContactEndpoint {
 			return $response;
 
 		//logic
+		$starbar_id = $request->valid_parameters["starbar_id"];
+		$starbar = new Starbar();
+		$starbar->loadData($starbar_id);
+		$starbarShortName = "[" . ucfirst($starbar->short_name) . "] ";
 		$toAddress = "contact@say.so";
 		$fromAddress = "contact@say.so";
-		$subject = $request->valid_parameters["subject"];
+		$subject = $starbarShortName . $request->valid_parameters["subject"];
 		$message = $request->valid_parameters["message"];
 		$messageMeta = $request->valid_parameters["message_meta"] == "" ? NULL : $request->valid_parameters["message_meta"];
 

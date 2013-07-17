@@ -18,6 +18,8 @@ class Game_Transaction {
 
 	protected static $_transaction_executed = false;
 
+	static $lock_level = 0;
+
 	public function __construct($transaction_type, $user_id, $parameters) {
 		$this->_transaction_type = $transaction_type;
 		$this->_economy = Economy::getForId($transaction_type['economy_id']);
@@ -107,16 +109,26 @@ class Game_Transaction {
                 throw new Exception('Unknown transaction_type ' . $short_name . ' in economy ' . $economy_id);
 			$transactionClass = 'Game_Transaction' . ($transaction_type['class'] ? '_' . $transaction_type['class'] : '');
 			$transaction = new $transactionClass($transaction_type, $user_id, $parameters);
+			self::getLock();
 			if( ($errorCode = $transaction->canRun()) == self::OK ) {
-				$transaction_id = $transaction->execute();
-				self::$_transaction_executed = true;
-				if( $user_id && $user_id != self::HOUSE_USER_ID && $short_name != 'LEVEL_UP' )
-					self::checkUserLevel($economy, $user_id, $parameters);
-				return $transaction_id;
-			} else {
+				Record::beginTransaction();
+				try {
+					$transaction_id = $transaction->execute();
+					self::$_transaction_executed = true;
+					if( $user_id && $user_id != self::HOUSE_USER_ID && $short_name != 'LEVEL_UP' )
+						self::checkUserLevel($economy, $user_id, $parameters);
+				} catch ( Exception $e ) {
+					Record::rollbackTransaction();
+					self::releaseLock();
+					throw $e;
+				}
+				Record::commitTransaction();
+			} else
 				$transaction->saveRejected();
+			self::releaseLock();
+			if( $errorCode )
 				throw new Exception('Transaction validation error ' . $errorCode);
-			}
+			return $transaction_id;
 		} catch ( Exception $e ) {
 			self::_handleException( $e );
 		}
@@ -243,6 +255,7 @@ class Game_Transaction {
 		try {
 			if( !Economy::getForId($economy_id)->imported )
 				return;
+			Record::beginTransaction();
 			$sql = "INSERT INTO game_asset (economy_id, type, name, bdid, img_url, img_url_preview, img_url_preview_bought) VALUES (?, 'purchasable', ?, ?, ?, ?, ?)";
 			Db_Pdo::execute($sql, $economy_id, $good_data['description'], $good_data['bdid'], $good_data['img_url'], $good_data['img_url_preview'], $good_data['img_url_preview_bought']);
 			$asset_id = Db_Pdo::getPdo()->lastInsertId();
@@ -252,6 +265,7 @@ class Game_Transaction {
 				$stock = array('asset_id'=>$asset_id, 'quantity'=>$initial_stock);
 				self::run(self::HOUSE_USER_ID, $economy_id, 'INITIAL_STOCK', $stock);
 			}
+			Record::commitTransaction();
 		} catch ( Exception $e ) {
 			self::_handleException( $e );
 		}
@@ -532,5 +546,21 @@ class Game_Transaction {
 	}
 	static public function wasTransactionExecuted() {
 		return self::$_transaction_executed;
+	}
+	static public function getLock() {
+		if( self::$lock_level == 0 ) {
+			$res = Db_Pdo::fetch("SELECT GET_LOCK('sayso.transaction', 5) as res");
+			if(!$res || !array_key_exists('res', $res) || $res['res'] != 1)
+				throw new Exception('Get transaction lock failed');
+		}
+
+		self::$lock_level++;
+	}
+	static public function releaseLock() {
+		if( self::$lock_level == 1 ) {
+			$res = Db_Pdo::fetch("SELECT RELEASE_LOCK('sayso.transaction') as res");
+		}
+		if( self::$lock_level > 0 )
+			self::$lock_level--;
 	}
 }

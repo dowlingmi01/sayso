@@ -741,13 +741,6 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
             }
 
             function submitForm() {
-                var barType;
-                if (state.state.loggedIn){
-                    barType = state.state.starbar.label;
-                }
-                else {
-                    barType = 'Public';
-                }
                 if (buttonActive && validateForm()) {
                     buttonActive = false;
                     api.doRequest({

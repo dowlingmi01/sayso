@@ -516,7 +516,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
 					case "app-demo.saysollc.com" :
 						extId = 'poipmplbjibkncgkiaomennpegokfjom';
 						break;
-					case "staging.saysollc.com" :
+					case "app-staging.saysollc.com" :
 						extId = 'dcdkmcnaenolmjcoijjggegpcbehgfkn';
 						break;
 				}

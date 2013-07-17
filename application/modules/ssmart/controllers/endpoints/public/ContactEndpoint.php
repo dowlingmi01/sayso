@@ -30,7 +30,7 @@ class Ssmart_Public_ContactEndpoint {
 			return $response;
 
 		//logic
-		$toAddress = "support@say.so";
+		$toAddress = "contact@say.so";
 		$fromAddress = $request->valid_parameters["from_address"];
 		$subject = $request->valid_parameters["subject"];
 		$message = $request->valid_parameters["message"];

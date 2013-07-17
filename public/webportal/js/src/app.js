@@ -716,7 +716,7 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
                         action_class : 'contactEndpoint',
                         action : 'send',
                         from_address : state.state.profile.email,
-                        subject: $subjectField.val().substring(0,subjectLength),
+                        subject: '[' + state.state.starbar.label + ' Contact] ' + $subjectField.val().substring(0,subjectLength),
                         message: $messageField.val().substring(0,messageLength),
                         message_meta: location.href
                     }, function(response){

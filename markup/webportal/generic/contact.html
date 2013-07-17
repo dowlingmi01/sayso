@@ -7,6 +7,11 @@
                 Something went wrong! Please try again or send an email to support@say.so
             </div>
             <input id="contact_subject" class="portal-element portal-placeholder" name="contact_subject" placeholder="Subject"/>
+            {{#if state.profile.email}}
+            <input id="contact_from" class="portal-element portal-placeholder" name="contact_from" placeholder="From" value="{{state.profile.email}}"/>
+            {{else}}
+            <input id="contact_from" class="portal-element portal-placeholder" name="contact_from" placeholder="From"/>
+            {{/if}}
 			<textarea id="contact_message" rows="10" class="portal-element portal-placeholder" tabindex="0" placeholder="Message"/>
 			<div id="contact_submit_button" class="submit_button"></div>
 		</div>

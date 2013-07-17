@@ -695,29 +695,67 @@ sayso.module.webportal = (function(global, $, state, api, Handlebars, comm) {
 		},
         "contact-submit": function($elem) {
             var buttonActive = true,
+                emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                 messageLength = 1000,
+                origErrorHtml,
                 subjectLength = 200,
                 $errorContainer,
+                $fromField,
                 $submitButton,
                 $subjectField,
                 $messageField;
 
-            $errorContainer = $('#contact_error', $elem);
+            $errorContainer = $('#contact_errors', $elem);
+            $fromField = $('#contact_from', $elem);
             $submitButton = $('#contact_submit_button', $elem);
             $subjectField = $('#contact_subject', $elem);
             $messageField = $('#contact_message', $elem);
 
             $submitButton.on('click', submitForm);
+            origErrorHtml = $errorContainer.html();
+
+            function validateForm() {
+                if ($subjectField.val().length > 1 && $messageField.val().length > 1 && $fromField.val().length > 1){
+                    if (!emailPattern.test($fromField.val())){
+                        $errorContainer.html('Please enter a valid From email address. If you don\'t we won\'t know how to get back to you!');
+                        $errorContainer.css('display', 'block');
+                        setTimeout(function(){
+                            $errorContainer.fadeOut('slow', function(){
+                                $errorContainer.html(origErrorHtml);
+                            });
+                        }, 5000);
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                }
+                $errorContainer.html('One or more of the fields are blank. Please fill them out before submitting again.');
+                $errorContainer.css('display', 'block');
+                setTimeout(function(){
+                    $errorContainer.fadeOut('slow', function(){
+                        $errorContainer.html(origErrorHtml);
+                    });
+                }, 5000);
+                return false;
+            }
 
             function submitForm() {
-                if (buttonActive && $subjectField.val().length > 1 && $messageField.val().length > 1) {
+                var barType;
+                if (state.state.loggedIn){
+                    barType = state.state.starbar.label;
+                }
+                else {
+                    barType = 'Public';
+                }
+                if (buttonActive && validateForm()) {
                     buttonActive = false;
                     api.doRequest({
                         action_class : 'contactEndpoint',
                         action : 'send',
-                        from_address : state.state.profile.email,
-                        subject: '[' + state.state.starbar.label + ' Contact] ' + $subjectField.val().substring(0,subjectLength),
-                        message: $messageField.val().substring(0,messageLength),
+                        starbar_id: sayso.module.config.defaultStarbarId,
+                        subject: $subjectField.val().substring(0,subjectLength),
+                        message: 'FROM: ' + $fromField.val() + '\r\n\r\n' + $messageField.val().substring(0,messageLength),
                         message_meta: location.href
                     }, function(response){
                         if (typeof response.responses['default'] !== "undefined"  && typeof response.responses['default'].variables  !== typeof "undefined") {

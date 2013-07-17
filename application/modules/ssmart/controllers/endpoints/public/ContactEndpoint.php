@@ -31,7 +31,7 @@ class Ssmart_Public_ContactEndpoint {
 
 		//logic
 		$toAddress = "contact@say.so";
-		$fromAddress = $request->valid_parameters["from_address"];
+		$fromAddress = "contact@say.so";
 		$subject = $request->valid_parameters["subject"];
 		$message = $request->valid_parameters["message"];
 		$messageMeta = $request->valid_parameters["message_meta"] == "" ? NULL : $request->valid_parameters["message_meta"];

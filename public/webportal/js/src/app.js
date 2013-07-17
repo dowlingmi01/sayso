@@ -34,7 +34,7 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
                     }
                 });
             }
-            if(sayso.module.comm.extensionPresent) {
+            if(comm.extensionPresent) {
                 $('#sign_out_li').remove();
             }
         }
@@ -490,7 +490,7 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
 			var downloadLocation,
 				browser;
 
-			downloadLocation = "//" + sayso.module.config.baseDomain + '/starbar/install/extension';
+			downloadLocation = "//" + config.baseDomain + '/starbar/install/extension';
 			browser = getBrowserNameVersion();
 
 			function installChrome(){
@@ -500,7 +500,7 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
 			if (browser.browser === "chrome") {
 				var extId;
 
-				switch (sayso.module.config.baseDomain) {
+				switch (config.baseDomain) {
 					case "app.saysollc.com" :
 						extId = 'lpkeinfeenilbldefedbfcdhllhjnblc';
 						break;

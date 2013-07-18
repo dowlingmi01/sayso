@@ -1,6 +1,6 @@
 <?php
 
-class Starbar_Content extends Record
+class Starbar_Content // note, this is model does not extend Record
 {
 	protected $_tableName = 'starbar_content';
 
@@ -8,8 +8,8 @@ class Starbar_Content extends Record
 	public static $allStarbarContentKeys = null;
 
 	static protected function _init () {
-		if (self::$allStarbarContent === null) self::$allStarbarContent = Starbar_ContentCollection::getAllContent();
-		if (self::$allStarbarContentKeys === null) self::$allStarbarContentKeys = Starbar_ContentKeyCollection::getAllKeys(true);
+		if (self::$allStarbarContent === null) self::$allStarbarContent = Starbar_Content::getAllContent();
+		if (self::$allStarbarContentKeys === null) self::$allStarbarContentKeys = array_keys(self::$allStarbarContent['0']);
 	}
 
 	/**
@@ -23,8 +23,7 @@ class Starbar_Content extends Record
 		self::_init();
 
 		$content = ""; // $content is returned when successful
-		$keyId = 0;
-
+		$starbarId = "" . $starbarId; // convert to string
 		if (!$key) return;
 
 		// to ensure we don't infinitely recurse when we have sub-keys, track where we are.
@@ -34,13 +33,12 @@ class Starbar_Content extends Record
 
 		$tree .= $key . "^#^";
 
-		if (isset(self::$allStarbarContentKeys[$key])) $keyId = self::$allStarbarContentKeys[$key];
+		if (in_array($key, self::$allStarbarContentKeys)) {
+			if ($starbarId && isset(self::$allStarbarContent[$starbarId][$key]) && self::$allStarbarContent[$starbarId][$key])
+				$content = self::$allStarbarContent[$starbarId][$key];
 
-		if ($keyId) {
-			if ($starbarId && isset(self::$allStarbarContent[$keyId][$starbarId]) && self::$allStarbarContent[$keyId][$starbarId]) $content = self::$allStarbarContent[$keyId][$starbarId];
-
-			// if key can't be find in the starbar's content (or if no starbar is specified), look for the key in the default content
-			else if (isset(self::$allStarbarContent[$keyId][0])) $content = self::$allStarbarContent[$keyId][0];
+			// if key can't be find in the starbar's content (or if no starbar is specified), use the default content
+			else $content = self::$allStarbarContent['0'][$key];
 
 		} // } else { //should probably do something if the key isn't found, such as sending an email to admins to warn that content may be missing
 
@@ -70,5 +68,39 @@ class Starbar_Content extends Record
 		return $str;
 	}
 
+	/*
+		Returns all starbar content in the format
+		returned_array[STARBAR_ID][KEY] = "content"
+		STARBAR_ID is a starbar_id (or 0 for the default content), and is always a string
+		KEY is a content key
+
+		[
+			"0": [
+				"CONFIG_BASE_DOMAIN": "local.saysollc.com"
+				...
+			],
+			"3": [
+				...
+			],
+			...
+		]
+	*/
+	static public function getAllContent() {
+		$cache = Api_Cache::getInstance('Starbar_Content', Api_Cache::LIFETIME_WEEK);
+
+		if ($cache->test()) {
+
+			$data = $cache->load();
+
+		} else {
+
+			$markupRootDir = realpath(APPLICATION_PATH . '/../markup');
+			$data = json_decode(file_get_contents($markupRootDir . '/content.json'), true);
+
+			$cache->save($data);
+		}
+
+		return $data;
+	}
 }
 

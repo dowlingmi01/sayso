@@ -8,21 +8,17 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 	</div>
 	<div id="sayso-section-header"></div>
 	<div id="sayso-section-body">
-		<p class="sayso-heading-text">Select an item below</p>
+		<p class="sayso-heading-text">%SECTION_REWARDS_HEADER%</p>
 		<div class="sayso-element sayso-scrollable" style="height: 375px;">
 			{{#each rewards.records}}
 				{{>reward_partial}}
 			{{else}}
-				No rewards found, please check again soon!<br />
+				No rewards found, please check again soon!
 			{{/each}}
 		</div>
 	</div>
 	<div id="sayso-section-footer">
-		<p>Machinima | Recon does not guarantee prizes for participation.
-		   Prizes are limited and are redeemed on a first come, first serve basis.
-		   Once an item is "Sold Out" it is not guaranteed to be replaced or restocked.
-		   Say.So does not take responsibility for Coins not redeemed by the end of the program.
-		</p>
+		<p>%SECTION_REWARDS_FOOTER%</p>
 	</div>
 </script>
 
@@ -71,10 +67,9 @@ Machinima | Recon will be automatically updated after you restart your browser.<
                 </div>
             </div>
             <p class="sayso-reward-item-comment">
-                Redeem your Coins for
+                %SECTION_REWARDS_PURCHASE_HEADER_START%
                 {{#compare type "===" "token"}}
-                    Entry Tokens to win!
-                    The more tokens you purchase the better your chance of winning.
+					%SECTION_REWARDS_PURCHASE_HEADER_TOKEN%
                 {{else}}
                     {{name}}
                 {{/compare}}
@@ -122,7 +117,7 @@ Machinima | Recon will be automatically updated after you restart your browser.<
                         </select>
                     </div>
                     <div class="sayso-reward-item-order-information">
-                        <p>Tokens will appear in your account and you will be automatically entered into this giveaway drawing.</p>
+                        <p>%SECTION_REWARDS_PURCHASE_CONFIRMATION_TOKEN%</p>
                     </div>
                     <div class="sayso-element sayso-reward-item-order-submit">Order</div>
                 </div>

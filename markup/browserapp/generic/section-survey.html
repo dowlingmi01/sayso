@@ -12,9 +12,9 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 		{{#if survey.errors.endpoint_exception}}
 			<div class="sayso-element sayso-disable-confirmation-before-closing-section" data-keep-section-open="true"></div>
 			{{#compare survey.errors.endpoint_exception "==" "SURVEY_COMPLETED"}}
-				You have already completed this survey.
+				%SECTION_SURVEYS_SURVEY_ALREADY_COMPLETED%
 			{{else}}
-				This survey is currently unavailable.
+				%SECTION_SURVEYS_SURVEY_UNAVAILABLE%
 			{{/compare}}
 		{{else}}
 			{{#with survey.variables.survey}}
@@ -26,22 +26,21 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 </script>
 
 <script data-partial-id="survey-completed" type="text/x-handlebars-template">
-	<p>Thank you for completing the &quot;<span class="sayso-highlight">{{survey.title}}</span>&quot; survey!</p>
+	%SECTION_SURVEYS_SURVEY_COMPLETED%
 
-	<p>Excellent! You earned {{currency-name-highlighted-with-value "redeemable" survey.completed_points_redeemable}} &amp; {{currency-name-highlighted-with-value "experience" survey.completed_points_experience}}</p>
-
-	{{#if default.variables.next_survey.id}}
-		<p>Try the next survey: &quot;<span class="sayso-element sayso-survey-link" data-survey-id="{{default.variables.next_survey.id}}" data-survey-size="{{default.variables.next_survey.size}}">{{default.variables.next_survey.title}}</span>&quot;</p>
-	{{/if}}
+	{{>survey-next}}
 </script>
 
 <script data-partial-id="survey-disqualified" type="text/x-handlebars-template">
-	<p>Sorry, it appears that you do not qualify for the &quot;<span class="sayso-highlight">{{survey.title}}</span>&quot; survey.</p>
+	%SECTION_SURVEYS_SURVEY_DISQUALIFIED%
 
-	<p>Nice! You still banked {{currency-name-highlighted-with-value "redeemable" survey.disqualified_points_redeemable}} &amp; {{currency-name-highlighted-with-value "experience" survey.disqualified_points_experience}}. Remember to check out the <span class="sayso-element sayso-section-link" data-section="rewards">Rewards Center</span> to redeem your {{currency-name-highlighted "redeemable"}} for stuff!</p>
+	{{>survey-next}}
+</script>
 
+<script data-partial-id="survey-next" type="text/x-handlebars-template">
 	{{#if default.variables.next_survey.id}}
-		<p>Try the next survey: &quot;<span class="sayso-element sayso-survey-link" data-survey-id="{{default.variables.next_survey.id}}" data-survey-size="{{default.variables.next_survey.size}}">{{default.variables.next_survey.title}}</span>&quot;</p>
+		<p>%SECTION_SURVEYS_TRY_NEXT_SURVEY%</p>
 	{{/if}}
 </script>
+
 {{/if}}

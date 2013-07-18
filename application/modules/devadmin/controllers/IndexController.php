@@ -744,18 +744,18 @@ class Devadmin_IndexController extends Api_GlobalController
 		$this->view->headScript()->appendFile('/js/devadmin/content-editor.js');
 		$this->view->headLink()->appendStylesheet('/css/devadmin/content-editor.css');
 
-		Api_Cache::quickRemove('Starbar_Content_Starbar_Id_Index');
-		Api_Cache::quickRemove('Starbar_Content_Content_Key_Index');
-		Api_Cache::quickRemove('Starbar_Content_Keys');
-		$this->view->starbar_content = Starbar_ContentCollection::getAllContent();
-		$this->view->keys = Starbar_ContentKeyCollection::getAllKeys();
+		Api_Cache::quickRemove('Starbar_Content');
+		$this->view->starbar_content = Starbar_Content::getAllContent();
+		$this->view->keys = array_keys($this->view->starbar_content['0']);
+
+		asort($this->view->keys); // sort alphabetically
 
 		$sql = "SELECT *
 				FROM starbar
 				WHERE id > 2
 				";
 		$starbars = Db_Pdo::fetchAll($sql);
-		array_unshift($starbars, array('id' => '-1', 'label' => 'Default'));
+		array_unshift($starbars, array('id' => '0', 'label' => 'Default'));
 		$this->view->starbars = $starbars;
 	}
 
@@ -853,18 +853,17 @@ class Devadmin_IndexController extends Api_GlobalController
 	}
 
 	public function testApiAction() {
-		echo "This works:<br />";
-		echo Markup::getMarkup("panelist", "webportal", "page", 4);
-		echo "<br /><br />";
-
-		echo "This doesn't seem to:<br />";
 		$request = '
 			{
-				"user_type" : "public",
-				"action_class" : "markup",
-				"action" : "getMarkup",
+				"user_type" : "panelist",
+				"session_id" : "567",
+				"session_key" : "LWL3LRWAN56DZ1TJRJP2SEDB2CXPFZQZ",
+				"action_class" : "survey",
+				"action" : "updateSurveyStatus",
 				"starbar_id" : "4",
-				"key" : "page"
+				"survey_id" : "1630",
+				"survey_response_id" : "257675",
+				"survey_status" : "completed"
 			}
 		';
 		$api = Ssmart_Api::getInstance(NULL, $request);

@@ -10,50 +10,54 @@ class Api_ContentController extends Api_GlobalController
 	}
 
 	public function saveStarbarContentAction() {
-		$result = array();
-
 		$request = $this->getRequest();
-		$keyId = (int) $request->getParam("key_id", 0);
-		$keyTitle = $request->getParam("key_title");
+		$key = $request->getParam("key");
 
-		if (!$keyId && !$keyTitle) return $this->_resultType(false);
+		if (!$key) return $this->_resultType(false);
 
-		$starbarContentKey = new Starbar_ContentKey();
-		if ($keyId) $starbarContentKey->loadData($keyId);
-		$starbarContentKey->title = $keyTitle;
-		$starbarContentKey->save();
+		$allContent = Starbar_Content::getAllContent();
 
-		if (!$starbarContentKey->id) return $this->_resultType(false);
+		$newKey = $request->getParam("new_key");
 
-		$result['key_id'] = $starbarContentKey->id;
-		$result['key_title'] = $starbarContentKey->title;
-
-		$sql = "SELECT *
+		$sql = "SELECT id
 				FROM starbar
 				WHERE id > 2
 				";
-		$starbars = Db_Pdo::fetchAll($sql);
+		$starbarIds = Db_Pdo::fetchColumn($sql);
+		array_unshift($starbarIds, '0');
 
-		array_unshift($starbars, array('id' => '-1', 'label' => 'Default'));
-
-		foreach ($starbars as $starbar) {
-			$starbarId = $starbar['id'];
-
-			$starbarContent = new Starbar_Content();
-			$starbarContent->loadDataByUniqueFields(array("starbar_id" => ($starbarId > 0 ? $starbarId : null), "starbar_content_key_id" => $starbarContentKey->id));
-			$starbarContent->content = $request->getParam('content_' . $starbarId);
-			$starbarContent->save();
-
-			$result["content_" . $starbarId] = $starbarContent->content;
+		foreach($starbarIds as $starbarId) {
+			unset($allContent[(int) $starbarId][$key]);
 		}
 
-		Api_Cache::quickRemove('Starbar_Content_Starbar_Id_Index');
-		Api_Cache::quickRemove('Starbar_Content_Content_Key_Index');
-		Api_Cache::quickRemove('Starbar_Content_Keys_Id_Index');
-		Api_Cache::quickRemove('Starbar_Content_Keys_Key_Index');
+		if ($key != $newKey && $newKey) {
+			$key = $newKey;
+		}
+
+		if ($key == "new") return $this->_resultType(false); // when user leaves key blank
+
+		$resultData = [ "key" => $key ];
+
+		foreach($starbarIds as $starbarId) {
+			$content = $request->getParam('content_' . $starbarId, "");
+			if ($starbarId === '0' || $content) // starbar '0' contains all the keys
+				$allContent[(int) $starbarId][$key] = $content;
+
+			$resultData["content_" . $starbarId] = $content;
+		}
+
+		foreach($allContent as &$subArray) {
+			ksort($subArray);
+		}
+
+		$jsonedContent = json_encode($allContent, JSON_PRETTY_PRINT);
+		$markupRootDir = realpath(APPLICATION_PATH . '/../markup');
+		file_put_contents($markupRootDir . '/content.json', $jsonedContent);
+
+		Api_Cache::quickRemove('Starbar_Content');
 
 		// hack
-		$result = array("status" => "success", "data" => $result);
+		$result = [ "status" => "success", "data" => $resultData ];
 		echo json_encode($result);
 		exit;
 	}

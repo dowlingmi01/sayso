@@ -29,22 +29,22 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 </script>
 
 <script data-partial-id="polls-new" type="text/x-handlebars-template">
-	<p class="sayso-heading-text">Polls are a speedy and effective way to find out what you love about Machinima. Each poll completed earns you {{currency-name-highlighted "experience"}} & {{currency-name-highlighted "redeemable"}}. Gain bonus {{currency-name "redeemable"}} &amp; {{currency-name "experience"}} by sharing and tweeting your favorite polls, and look for special polls with point magnifiers.</p>
+	<p class="sayso-heading-text">%SECTION_POLLS_NEW_HEADER%</p>
 	<div class="sayso-element sayso-scrollable" style="height: 376px;">
 		{{#each polls.records}}
 			{{>poll-new-archived}}
 		{{else}}
 			{{#if countPollsArchived.variables.count}}
-				No new polls, but you still have some in the <a class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="polls-archived">archives</a>.
+				%SECTION_POLLS_NEW_NO_NEW_HAVE_ARCHIVED%
 			{{else}}
-				Looks like you've completed all your polls! Nice work!<br />
+				%SECTION_POLLS_NEW_NO_NEW_NO_ARCHIVED%
 			{{/if}}
 		{{/each}}
 	</div>
 </script>
 
 <script data-partial-id="polls-completed" type="text/x-handlebars-template">
-	<p class="sayso-heading-text">All of your completed polls are listed below. Keep it up!</p>
+	<p class="sayso-heading-text">%SECTION_POLLS_COMPLETED_HEADER%</p>
 	<div class="sayso-element sayso-scrollable" style="height: 412px;">
 		{{#each polls.records}}
 			{{>poll-completed-disqualified}}
@@ -54,7 +54,7 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 
 <script data-partial-id="polls-archived" type="text/x-handlebars-template">
 	<p class="sayso-heading-text">
-		We'd still love your opinion on these archived polls, and you can still earn by completing them! Same deal &ndash; earn {{currency-name-highlighted "redeemable"}} &amp; {{currency-name-highlighted "experience"}} for each one you complete.
+		%SECTION_POLLS_ARCHIVED_HEADER%
 	</p>
 	<div class="sayso-element sayso-scrollable"  style="height: 394px;">
 		{{#each polls.records}}
@@ -85,7 +85,7 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 
 <script data-partial-id="poll-completed-footer" type="text/x-handlebars-template">
 	<div class="sayso-poll-footer">
-		Excellent! You earned {{currency-name-highlighted-with-value "experience" completed_points_experience}} &amp; {{currency-name-highlighted-with-value "redeemable" completed_points_redeemable}}
+		%SECTION_POLLS_POLL_COMPLETED%
 	</div>
 </script>
 {{/if}}

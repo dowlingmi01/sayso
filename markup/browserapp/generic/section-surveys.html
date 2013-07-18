@@ -23,21 +23,19 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 	<div id="sayso-section-body" class="sayso-element sayso-tab-container" data-default-tab="surveys-new">
 		<div class="sayso-element sayso-tab" data-tab="surveys-new">
 			<p class="sayso-heading-text">
-				<p class="sayso-heading-text">Earn {{currency-name-highlighted "experience"}} &amp; {{currency-name-highlighted "redeemable"}} for each Survey you complete. Share with your friends to earn extra points and you'll be that much closer to winning the big giveaway.</p>
+				<p class="sayso-heading-text">%SECTION_SURVEYS_NEW_HEADER%</p>
 				{{#compare surveys.records.0.id "==" "71"}}
-					<p class="sayso-heading-text">Don't forget to complete the <span class="sayso-element sayso-highlight sayso-survey-link" data-survey-id="%CONFIG_PROFILE_SURVEY_ID%">Profile Survey</span> to unlock the goodies in the reward center.</p>
+					<p class="sayso-heading-text">%SECTION_SURVEYS_NEW_PROFILE_SURVEY_REMINDER%</p>
 				{{/compare}}
 			</p>
 			{{>surveys-new}}
 		</div>
 		<div class="sayso-element sayso-tab" data-tab="surveys-completed">
-			<p class="sayso-heading-text">All of your completed surveys are listed below. Nice work!</p>
+			<p class="sayso-heading-text">%SECTION_SURVEYS_COMPLETED_HEADER%</p>
 			{{>surveys-completed}}
 		</div>
 		<div class="sayso-element sayso-tab" data-tab="surveys-archived">
-			<p class="sayso-heading-text">
-				We'd still love your opinion on these archived surveys, and you can still earn by completing them! Same deal &ndash; earn {{currency-name-highlighted "redeemable"}} &amp; {{currency-name-highlighted "experience"}} for each one you complete.
-			</p>
+			<p class="sayso-heading-text">%SECTION_SURVEYS_ARCHIVED_HEADER%</p>
 			{{>surveys-archived}}
 		</div>
 	</div>
@@ -49,7 +47,11 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 		{{#each surveys.records}}
 			{{>survey-new-archived}}
 		{{else}}
-			Sweet! Looks like you've completed all your surveys! Check back soon for more new surveys!<br />
+			{{#if countSurveysArchived.variables.count}}
+				%SECTION_SURVEYS_NEW_NO_NEW_HAVE_ARCHIVED%
+			{{else}}
+				%SECTION_SURVEYS_NEW_NO_NEW_NO_ARCHIVED%
+			{{/if}}
 		{{/each}}
 	</div>
 </script>
@@ -75,7 +77,7 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 		<div class="sayso-survey-triangle"></div>
 		<div class="sayso-element sayso-survey-header">{{title}}</div>
 		<div class="sayso-element sayso-survey-footer">
-			{{number_of_questions}} Questions - Earn {{currency-name-highlighted-with-value "redeemable" completed_points_redeemable}} and {{currency-name-highlighted-with-value "experience" completed_points_experience}}
+			%SECTION_SURVEYS_SURVEY_LISTING_TEXT%
 		</div>
 	</div>
 </script>

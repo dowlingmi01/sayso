@@ -10,7 +10,7 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 				{{>trailer}}
 			{{/with}}
 		{{else}}
-			Looks like you've already watched all the spotlight videos! Check back again tomorrow for fresh content.
+			%SECTION_TRAILER_NO_NEW%
 		{{/if}}
 		<div id="sayso-trailer-carousel-container" class="sayso-carousel-container">
 			{{#every-nth trailers.records 5}}
@@ -52,7 +52,7 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 
 <script data-partial-id="trailer-first-question" type="text/x-handlebars-template">
 	<div class="sayso-trailer-question" id="sayso-trailer-first-question">
-		<div class="sayso-element sayso-tooltip sayso-trailer-question-disabler" data-tooltip-title="Rating will be unlocked at the end of the video."></div>
+		<div class="sayso-element sayso-tooltip sayso-trailer-question-disabler" data-tooltip-title=""></div>
 		<p>{{title}}</p>
 		{{#each choices}}
 			<input type="radio" name="first_choice_id" id="sayso-choice-{{id}}" value="{{id}}" disabled>
@@ -79,6 +79,6 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 </script>
 
 <script data-partial-id="trailer-completed" type="text/x-handlebars-template">
-	Excellent! You earned {{currency-name-highlighted-with-value "experience" completed_points_experience}} &amp; {{currency-name-highlighted-with-value "redeemable" completed_points_redeemable}}
+	%SECTION_TRAILER_COMPLETED%
 </script>
 {{/if}}

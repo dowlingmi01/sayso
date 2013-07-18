@@ -7,14 +7,12 @@
 			<th width="<?= $columnWidth ?>%"><?= $starbar['label'] ?></th>
 		<? } ?>
 	</tr>
-	<? foreach ($this->starbar_content as $keyId => $content) { ?>
-		<tr class="data" data-key_id="<?= $keyId ?>">
-			<td class="key" data-original_content="<?= $this->keys[$keyId] ?>"></td>
+	<? foreach ($this->keys as $key) { ?>
+		<tr class="data" data-key_id="<?= $key ?>">
+			<td class="key" data-original_content="<?= $key ?>"></td>
 			<? foreach ($this->starbars as $starbar) { ?>
 				<?
-				$starbarId = (int) $starbar['id'];
-				if ($starbarId == -1) $starbarId = 0;
-				$starbarContent = (isset($content[$starbarId]) ? $content[$starbarId] : '');
+				$starbarContent = (isset($this->starbar_content[$starbar['id']][$key]) ? $this->starbar_content[$starbar['id']][$key] : '');
 				$starbarContent = str_replace("\"", "&quot;", $starbarContent);
 				$starbarContent = str_replace("<", "&lt;", $starbarContent);
 				$starbarContent = str_replace(">", "&gt;", $starbarContent);

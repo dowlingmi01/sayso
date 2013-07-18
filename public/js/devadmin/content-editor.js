@@ -4,7 +4,7 @@ function addNewRow(n) {
 	if (typeof n != "number" || n < 1 || n > 50) n = 1;
 
 	for (var i = 0; i < n; i++) {
-		newRow = $('<tr class="data"></tr>');
+		newRow = $('<tr class="data" data-key_id="new"></tr>');
 		newRow.append($('<td class="key" data-original_content=""></td>'));
 		for (var starbarId in starbars) {
 			newRow.append($('<td class="content content_' + starbars[starbarId].id + '" data-original_content=""></td>'));
@@ -47,9 +47,9 @@ function saveRowToServer(event) {
 	var inputElement;
 
 
-	data.key_id = row.data('key_id');
+	data.key = row.data('key_id');
 	inputElement = $('.key input', row);
-	data.key_title = inputElement.val();
+	data.new_key = inputElement.val();
 
 	for (var i in starbars) {
 		inputElement = $('.content_' + starbars[i].id + ' textarea', row);
@@ -163,11 +163,11 @@ $.fn.extend({
 		var newRow = $('<tr class="data"></tr>');
 		var newCell, newDiv;
 
-		newRow.data('key_id', newData.key_id);
+		newRow.data('key_id', newData.key);
 
 		newCell = $('<td class="key"></td>');
-		newCell.data('original_content', newData.key_title);
-		newCell.text(newData.key_title);
+		newCell.data('original_content', newData.key);
+		newCell.text(newData.key);
 		newRow.append(newCell);
 
 		for (var i in starbars) {

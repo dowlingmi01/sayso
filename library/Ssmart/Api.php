@@ -7,6 +7,9 @@
  */
 class Ssmart_Api
 {
+	const ENDPOINT_DIRECTORY_PANELIST = "panelist";
+	const ENDPOINT_DIRECTORY_PUBLIC = "public";
+
 	/**
 	 * The api instance.
 	 *
@@ -284,7 +287,19 @@ class Ssmart_Api
 		$fileToLoad = APPLICATION_PATH . '/modules/' . $this->_module_dir . '/controllers/endpoints/' . $this->_request->user_type . "/" . $classFileName . '.php';
 
 		if (!file_exists($fileToLoad))
-			return "invalid_action_class";
+		{
+			//check to see if it is a public ep called as a panelist ep and load it anyway.
+			if ($this->_request->user_type == self::ENDPOINT_DIRECTORY_PANELIST)
+			{
+				$fileToLoad = str_replace(self::ENDPOINT_DIRECTORY_PANELIST, self::ENDPOINT_DIRECTORY_PUBLIC, $fileToLoad);
+				if (file_exists($fileToLoad))
+				{
+					$actionClass = str_replace(ucfirst(self::ENDPOINT_DIRECTORY_PANELIST), ucfirst(self::ENDPOINT_DIRECTORY_PUBLIC), $actionClass);
+				} else {
+					return "invalid_action_class";
+				}
+			}
+		}
 
 		include_once $fileToLoad;
 

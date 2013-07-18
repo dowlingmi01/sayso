@@ -45,7 +45,7 @@ class Ssmart_EndpointResponse
 	private $_validators = array();
 
 	/**
-	 *Validators to be applied to the request params.
+	 *TODO:find out what this is for
 	 *
 	 * @var stdClass()
 	 */
@@ -66,12 +66,17 @@ class Ssmart_EndpointResponse
 	 * <p>Sets the request object to be available in the response object.</p>
 	 *
 	 * @param Ssmart_EndpointRequest $request
+	 * @param Ssmart_EndpointRequest $filters
+	 * @param Ssmart_EndpointRequest $validators
 	 */
 	public function __construct($request, $filters = NULL, $validators = NULL) {
 		$this->_request = $request;
 		$this->setFilters($filters);
 		$this->setValidators($validators);
 		$this->_validateParams();
+		if ($this->hasErrors())
+			throw $this->errors;
+
 		$this->variables = new stdClass();
 	}
 
@@ -106,7 +111,7 @@ class Ssmart_EndpointResponse
 	 */
 	public function setResultVariable($name, $value)
 	{
-		$this->variables->$name = $value;
+		@$this->variables->$name = $value;
 	}
 
 	public function setResultVariables($data)
@@ -376,7 +381,7 @@ class Ssmart_EndpointResponse
 				$commonData = array("user" => $userDataRecord);
 				break;
 			default:
-				return new Ssmart_EndpointError("common_data_type_not_found");
+				throw new Ssmart_EndpointError("common_data_type_not_found");
 		}
 
 		return $commonData;
@@ -394,21 +399,6 @@ class Ssmart_EndpointResponse
 	{
 		if (!empty($this->_common_data))
 			return TRUE;
-	}
-
-	public function getRecords()
-	{
-
-	}
-
-	public function addRecord()
-	{
-
-	}
-
-	public function addRecords()
-	{
-
 	}
 
 	/**

@@ -24,7 +24,7 @@ class Ssmart_EndpointRequest
 	 *
 	 * @var stdClass()
 	 */
-	public $valid_parameters;
+	public $valid_parameters = array();
 
 	/**
 	 *Holds the parameters validated by the validation process.
@@ -34,7 +34,6 @@ class Ssmart_EndpointRequest
 	public $submitted_parameters;
 
 	public function __construct() {
-		$this->valid_parameters = new stdClass();
 		$this->submitted_parameters = new stdClass();
 	}
 
@@ -59,4 +58,26 @@ class Ssmart_EndpointRequest
 
 		$this->auth = $auth;
 	}
+
+	public function getParam($paramName, $default = NULL)
+	{
+		if (array_key_exists($paramName, $this->valid_parameters))
+		{
+			return $this->valid_parameters[$paramName];
+		} elseif (property_exists($this->submitted_parameters, $paramName)) {
+			return $this->submitted_parameters->$paramName;
+		} else
+			return $default;
+	}
+
+	public function getUserId()
+	{
+		return $this->auth->user_data->user_id;
+	}
+
+	public function getUserType()
+	{
+		return $this->auth->user_type;
+	}
+
 }

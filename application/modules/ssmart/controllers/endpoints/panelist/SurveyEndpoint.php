@@ -22,7 +22,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 	{
 		$validators = array(
 				"starbar_id"			=> "int_required_notEmpty",
-				"survey_id"			=> "int_required_notEmpty",
+				"survey_id"				=> "int_required_notEmpty",
 				"send_questions"		=> "required_allowEmpty",
 				"send_question_choices"	=> "required_allowEmpty"
 			);
@@ -33,13 +33,12 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
-		if ($response->hasErrors())
-			return $response;
-
 		//logic
-		$starbarId			= (int)$request->valid_parameters["starbar_id"];
-		$surveyId			= (int)$request->valid_parameters["survey_id"];
-		$userId				= $request->auth->user_data->user_id;
+		$starbarId			= (int)$request->getParam("starbar_id");
+		$surveyId			= (int)$request->getParam("survey_id");
+		$sendQuestions		= $request->getParam("send_questions");
+		$sendQuestionChoces	= $request->getParam("send_question_choices");
+		$userId				= $request->getUserId();
 
 		$surveyResponse = new Survey_Response();
 		$surveyResponse->loadDataByUniqueFields(array("user_id" => $userId, "survey_id" => $surveyId));
@@ -97,7 +96,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		}
 
 		//add questions and answer choices
-		if ($request->valid_parameters["send_questions"])
+		if ($sendQuestions)
 		{
 			$i = 0;
 			$questions = new Survey_QuestionCollection();
@@ -109,7 +108,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 				$questionData[$i] = $question->toArray();
 				$questionData[$i]['id'] = $question->id;
 
-				if ($request->valid_parameters["send_question_choices"]) {
+				if ($sendQuestionChoces) {
 					$choices = new Survey_QuestionChoiceCollection();
 					$choices->loadAllChoicesForSurvey($surveyId);
 					$choiceData = [];
@@ -163,15 +162,13 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
-		if ($response->hasErrors())
-			return $response;
 		//logic
-		$starbarId = $request->valid_parameters["starbar_id"];
-		$userId	= $request->auth->user_data->user_id;
-		$type = $request->valid_parameters["survey_type"];
-		$surveyUserStatus = isset($request->submitted_parameters->survey_status) ? $request->submitted_parameters->survey_status : NULL;
-		$chosenSurveyId	= isset($request->submitted_parameters->chosen_survey_id) ? (int) $request->submitted_parameters->chosen_survey_id : NULL;
-		$alwaysChoose	= isset($request->submitted_parameters->always_choose) ? $request->submitted_parameters->always_choose : NULL;
+		$starbarId 			= $request->getParam("starbar_id");
+		$userId				= $request->getUserId();
+		$type 				= $request->getParam("survey_type");
+		$surveyUserStatus 	= $request->getParam("survey_status");
+		$chosenSurveyId		= $request->getParam("chosen_survey_id");
+		$alwaysChoose		= $request->getParam("always_choose");
 
 		$type = str_replace("surveys", "survey", $type);
 		$type = str_replace("polls", "poll", $type);
@@ -255,14 +252,11 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
-		if ($response->hasErrors())
-			return $response;
-
 		//logic
-		$surveyType		= $request->valid_parameters["survey_type"]; //TODO: make this optional [Why? -- Hamza]
-		$starbarId			= $request->valid_parameters["starbar_id"];
-		$userId			= $request->auth->user_data->user_id;
-		$status			= $request->valid_parameters["survey_status"];
+		$surveyType		= $request->getParam("survey_type"); //TODO: make this optional [Why? -- Hamza]
+		$starbarId		= $request->getParam("starbar_id");
+		$userId			= $request->getUserId();
+		$status			= $request->getParam("survey_status");
 
 		$count = Survey_ResponseCollection::countUserSurveys($userId, $starbarId, $surveyType, $status);
 
@@ -297,14 +291,11 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
-		if ($response->hasErrors())
-			return $response;
-
 		//logic
-		$surveyId			= $request->valid_parameters["survey_id"];
-		$starbarId			= $request->valid_parameters["starbar_id"];
-		$surveyResponseId	= $request->valid_parameters["survey_response_id"];
-		$userId			= $request->auth->user_data->user_id;
+		$surveyId			= $request->getParam("survey_id");
+		$starbarId			= $request->getParam("starbar_id");
+		$surveyResponseId	= $request->getParam("survey_response_id");
+		$userId				= $request->getUserId();
 
 		$survey = new Survey();
 		$survey->loadData($surveyId);
@@ -316,9 +307,8 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 			throw new Exception('Invalid survey (already completed?).');
 
 		//add to $data based on $response->submitted_parameters["survey_data"]
-		if (isset($request->submitted_parameters->survey_data))
+		if ($surveyData = $request->getParam("survey_data"))
 		{
-			$surveyData = $request->submitted_parameters->survey_data;
 			if (!is_object($surveyData) && !is_array($surveyData))
 				throw new Exception('Invalid $surveyData.');
 		}
@@ -352,6 +342,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 	 *
 	 * @param Ssmart_EndpointRequest $request
 	 * @return \Ssmart_EndpointResponse
+	 * @throws \Ssmart_EndpointError | Exception
 	 *
 	 * @todo add options for next survey and results
 	 */
@@ -370,15 +361,12 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
-		if ($response->hasErrors())
-			return $response;
-
 		//logic
-		$surveyId			= $request->valid_parameters["survey_id"];
-		$surveyResponseId	= $request->valid_parameters["survey_response_id"];
-		$surveyStatus		= $request->valid_parameters["survey_status"];
-		$starbarId			= $request->valid_parameters["starbar_id"];
-		$userId				= $request->auth->user_data->user_id;
+		$surveyId			= $request->getParams("survey_id");
+		$surveyResponseId	= $request->getParams("survey_response_id");
+		$surveyStatus		= $request->getParams("survey_status");
+		$starbarId			= $request->getParams("starbar_id");
+		$userId				= $request->getUserId();
 
 		$survey = new Survey();
 		$survey->loadData($surveyId);
@@ -446,7 +434,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 	public function shareSurvey(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
-			"survey_id"			=> "int_required_notEmpty",
+			"survey_id"				=> "int_required_notEmpty",
 			"starbar_id"			=> "int_required_notEmpty",
 			"shared_type"			=> "alpha_required_notEmpty",
 			"network"				=> "alpha_required_notEmpty"
@@ -455,15 +443,12 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
-		if ($response->hasErrors())
-			return $response;
-
 		//logic
-		$surveyId			= $request->valid_parameters["survey_id"];
-		$starbarId			= $request->valid_parameters["starbar_id"];
-		$userId			= $request->auth->user_data->user_id;
-		$sharedType		= $request->valid_parameters["shared_type"];
-		$network			= $request->valid_parameters["network"];
+		$surveyId			= $request->getParam("survey_id");
+		$starbarId			= $request->getParam("starbar_id");
+		$userId				= $request->getUserId();
+		$sharedType			= $request->getParam("shared_type");
+		$network			= $request->getParam("network");
 
 		$transactionId = Game_Transaction::share($userId, $starbarId, $sharedType, $network, $surveyId);
 

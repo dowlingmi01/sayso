@@ -73,7 +73,7 @@ class Ssmart_ApiError
 		{
 			$this->_errors[] = array(
 							"code"			=> $error,
-							"message"			=> $this->_error_codes[$error]["message"],
+							"message"		=> $this->_error_codes[$error]["message"],
 							"type"			=> $this->_error_codes[$error]["type"],
 							"response_name"	=> $responseName
 						);
@@ -82,14 +82,14 @@ class Ssmart_ApiError
 			//message param can accept a string, array, or object. it will be converted to json later
 			$this->_errors[] = array(
 							"code"			=> $error,
-							"message"			=> $custom_error,
+							"message"		=> $custom_error,
 							"type"			=> "action",
 							"response_name"	=> $responseName
 						);
 		} else { //this is a debug to catch all incorrect errors
 			$this->_errors[] = array(
 							"code"			=> "invalid_error",
-							"message"			=> "There was an error throwing the requested error. The error you passed '{$error}', is not defined.",
+							"message"		=> "There was an error throwing the requested error. The error you passed '{$error}', is not defined.",
 							"type"			=> "api"
 						);
 		}

@@ -25,12 +25,9 @@ class Ssmart_Panelist_GameEndpoint extends Ssmart_GlobalController
 
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
-		if ($response->hasErrors())
-			return $response;
-
 		//logic
-		$userId			= $request->auth->user_data->user_id;
-		$starbarId			= $request->valid_parameters["starbar_id"];
+		$userId			= $request->getUserId();
+		$starbarId		= $request->getParam("starbar_id");
 
 		$economyId = Economy::getIdforStarbar($starbarId);
 		$commonDataParams = array("user_id" => $userId, "economy_id" => $economyId);
@@ -65,22 +62,18 @@ class Ssmart_Panelist_GameEndpoint extends Ssmart_GlobalController
 
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
-
-		if ($response->hasErrors())
-			return $response;
-
 		//logic
-		$userId			    = $request->auth->user_data->user_id;
-		$starbarId			= $request->valid_parameters["starbar_id"];
-		$gameAssetId		= $request->valid_parameters["game_asset_id"];
-		$quantity			= isset($request->valid_parameters["quantity"]) ? $request->valid_parameters["quantity"] : 1;
+		$userId			    = $request->getUserId();
+		$starbarId			= $request->getParam("starbar_id");
+		$gameAssetId		= $request->getParam("game_asset_id");
+		$quantity			= $request->getParam("game_asset_id", 1);
 		$economyId		    = Economy::getIdforStarbar($starbarId);
 
 		try
 		{
 			$transactionId = Game_Transaction::run( $userId, $economyId, 'PURCHASE', array('game_asset_id'=>$gameAssetId, 'quantity'=>$quantity, 'starbar_id'=>$starbarId));
 		} catch(Exception $e) {
-			throw new Exception('Game transaction failed - ' . $e->getMessage());
+			throw new Ssmart_EndpointError("Endpoint error", 'Game transaction failed - ' . $e->getMessage());
 		}
 		if ($transactionId)
 		{
@@ -92,10 +85,10 @@ class Ssmart_Panelist_GameEndpoint extends Ssmart_GlobalController
                 "starbar_id"   => $starbarId,
                 "game_txn_id"  => $transactionId
             );
-            isset($request->submitted_parameters->shipping) && $request->submitted_parameters->shipping != '' ?
-                $orderData["shipping"] = $request->submitted_parameters->shipping : "";
+			$orderData["shipping"] = $request->getParam("shipping");
+
             $order = new Game_Transaction_Order();
-            //maybe a check to see if it succeeded?
+            //TODO: maybe a check to see if it succeeded?
             $order->processOrder($orderData);
 
 			$response->setResultVariable("success", TRUE);
@@ -133,13 +126,9 @@ class Ssmart_Panelist_GameEndpoint extends Ssmart_GlobalController
 
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
-
-		if ($response->hasErrors())
-			return $response;
-
 		//logic
-		$userId			= $request->auth->user_data->user_id;
-		$starbarId		= $request->valid_parameters["starbar_id"];
+		$userId			= $request->getUserId();
+		$starbarId		= $request->getParam("starbar_id");
 
 		$goods = Game_Transaction::getPurchasablesForUser($userId, $starbarId);
 

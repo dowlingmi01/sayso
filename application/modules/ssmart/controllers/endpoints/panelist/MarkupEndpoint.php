@@ -29,20 +29,20 @@ class Ssmart_Panelist_MarkupEndpoint extends Ssmart_GlobalController
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		//logic
-		$starbarId = $request->valid_parameters["starbar_id"];
-		$userId	= $request->auth->user_data->user_id;
+		$starbarId = $request->getparam("starbar_id");
+		$app = $request->getParam("app");
+		$key = $request->getParam("key");
+		$userType = $request->getUserType();
 
 		//ensure this user has access to this starbar
 		$this->checkUserAccessToStarbar($response, $starbarId, TRUE);
 
-		if (!in_array($request->valid_parameters["app"], ["browserapp", "webportal"])) {
+		if (!in_array($app, ["browserapp", "webportal"])) {
 			$response->setResponseError("invalid_markup_request");
+			return $response;
 		}
 
-		if ($response->hasErrors())
-			return $response;
-
-		$markup = Markup::getMarkup($request->auth->user_type, $request->valid_parameters["app"], $request->valid_parameters["key"], $starbarId);
+		$markup = Markup::getMarkup($userType, $app, $key, $starbarId);
 
 		if ($markup === false) {
 			$response->setResponseError("markup_unavailable");

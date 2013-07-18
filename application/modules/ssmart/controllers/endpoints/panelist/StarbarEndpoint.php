@@ -26,14 +26,11 @@ class Ssmart_Panelist_StarbarEndpoint extends Ssmart_GlobalController
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		//logic
-		$starbarId				= $request->valid_parameters["starbar_id"];
-		$userId				= $request->auth->user_data->user_id;
+		$starbarId				= $request->getParam("starbar_id");
+		$userId					= $request->getUserId();
 
 		//ensure this user has access to this starbar
 		$this->checkUserAccessToStarbar($response, $starbarId, TRUE);
-
-		if ($response->hasErrors())
-			return $response;
 
 		$starbarObject = new Starbar();
 		$starbarObject->loadData($starbarId);
@@ -70,15 +67,12 @@ class Ssmart_Panelist_StarbarEndpoint extends Ssmart_GlobalController
 
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
-		if ($response->hasErrors())
-			return $response;
-
 		//logic
-		$activeSarbarId				= $request->valid_parameters["active_starbar"];
+		$activeSarbarId				= $request->getParam("active_starbar");
 
 		$starbars = $this->auth->user_data->starbars;
-		if ($starbars->{$activeSarbarId})
-			unset($starbars->{$activeSarbarId});
+		if ($starbars[$activeSarbarId])
+			unset($starbars[$activeSarbarId]);
 
 		$response->addRecordsFromArray($starbars);
 
@@ -104,14 +98,11 @@ class Ssmart_Panelist_StarbarEndpoint extends Ssmart_GlobalController
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		//logic
-		$starbarId					= $request->valid_parameters["starbar_id"];
-		$userId					= $request->auth->user_data->user_id;
+		$starbarId				= $request->getparam("starbar_id");
+		$userId					= $request->getUserId();
 
 		//ensure this user has access to this starbar
 		$this->checkUserAccessToStarbar($response, $starbarId);
-
-		if ($response->hasErrors())
-			return $response;
 
 		//get starbar object
 		$newStarbar = new Starbar();
@@ -147,11 +138,9 @@ class Ssmart_Panelist_StarbarEndpoint extends Ssmart_GlobalController
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		//logic
-		$starbarId					= $request->valid_parameters["starbar_id"];
-
-		$network					= $request->valid_parameters["network"];
-		$starbarId					= $request->valid_parameters["starbar_id"];
-		$userId					= $request->auth->user_data->user_id;
+		$network				= $request->getParam("network");
+		$starbarId				= $request->getParam("starbar_id");
+		$userId					= $request->getUserId();
 		$economyId				= Economy::getIdforStarbar($starbarId);
 
 		$shareResult = Game_Transaction::share($userId, $starbarId, "starbar", $network);

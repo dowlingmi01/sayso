@@ -17,15 +17,15 @@ class Ssmart_Panelist_LegacyApiEndpoint extends Ssmart_GlobalController
 
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
-		if ($response->hasErrors())
-			return $response;
+		$legacyClass = $request->getParam("legacy_class");
+		$legacyAction = $request->getParam("legacy_action");
 
-		$parameters = ['user_id'=>$request->auth->user_data->user_id, 'user_key'=>'unused'];
-		if( isset($request->submitted_parameters->parameters) )
-			foreach( $request->submitted_parameters->parameters as $key=>$value )
+		$parameters = ['user_id'=>$request->getUserId(), 'user_key'=>'unused'];
+		if( $input = $request->getParam("parameters") )
+			foreach( $input as $key=>$value )
 				$parameters[$key] = $value;
-		$result = Api_Adapter::getInstance()->call($request->submitted_parameters->legacy_class,
-			$request->submitted_parameters->legacy_action, $parameters);
+		$result = Api_Adapter::getInstance()->call($legacyClass,
+			$legacyAction, $parameters);
 		if($result instanceof Collection)
 			$response->addRecordsFromCollection($result);
 

@@ -6,7 +6,7 @@
  * @package Ssmart
  * @subpackage endpoint
  */
-class Ssmart_EndpointError
+class Ssmart_EndpointError extends Exception
 {
 	/**
 	 *Instantiates the meta object.
@@ -27,15 +27,16 @@ class Ssmart_EndpointError
 	 * the object.</p>
 	 *
 	 * @param string $errorName The name of the error being created.
+	 * @param string $error The content of the error.
 	 */
-	public function __construct($errorName = NULL) {
+	public function __construct($errorName = NULL, $error = NULL) {
 		$this->meta = new stdClass();
 		$this->errors = new stdClass();
 
 		if ($errorName)
-		{
 			$this->meta->error_name = $errorName;
-		}
+		if ($error)
+			$this->addError($error);
 	}
 
 	/**

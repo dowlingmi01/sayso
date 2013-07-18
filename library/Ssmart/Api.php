@@ -231,27 +231,22 @@ class Ssmart_Api
 			//check response from _callAction for an errors or process logic
 			if (isset($logicResponse) && $logicResponse instanceof Ssmart_EndpointResponse)
 			{
-				if (!isset($logicResponse->errors))
-				{
-					//deal with logic response
-					$this->_response->responses->$key = $logicResponse;
+				//deal with logic response
+				$this->_response->responses->$key = $logicResponse;
 
-					//deal with common data
-					if ($logicResponse->hasCommonData())
-						$this->_processCommonData($logicResponse->getCommonData());
+				//deal with common data
+				if ($logicResponse->hasCommonData())
+					$this->_processCommonData($logicResponse->getCommonData());
 
-					//flag new session_key if necessary
-					if (isset($this->_auth->user_data->new_session_key))
-						$this->_processCommonData(array("new_session_key" => $this->_auth->user_data->new_session_key, "new_session_id" => $this->_auth->user_data->new_user_session_id));
-				} else {
-					$errorName = $logicResponse->errors->meta->error_name;
-					unset ($logicResponse->errors->meta);
-					//send it in
-					$this->_error->newError($errorName, $key, $logicResponse->errors->errors);
-				}
+				//flag new session_key if necessary
+				if (isset($this->_auth->user_data->new_session_key))
+					$this->_processCommonData(array("new_session_key" => $this->_auth->user_data->new_session_key, "new_session_id" => $this->_auth->user_data->new_user_session_id));
 			} elseif (isset($logicResponse) && $logicResponse instanceof Exception) { //exceptions thrown by the endpoint
 				//deal with error
-				$this->_error->newError("endpoint_exception", $key, $logicResponse->getMessage());
+				if ($logicResponse instanceof Ssmart_EndpointError)
+					$this->_error->newError($logicResponse->meta->error_name, $key, $logicResponse->errors);
+				else
+					$this->_error->newError("endpoint_exception", $key, $logicResponse->getMessage());
 			} elseif (isset($logicResponse) && is_string($logicResponse)) { //handle errors thrown by the api
 				//deal with error
 				$this->_error->newError($logicResponse, $key);

@@ -9,7 +9,7 @@ class SurveyCollection extends RecordCollection
 		* $surveyUserStatus = 'new', 'completed' or 'archived', i.e. has this user completed the survey, etc.
 		* if $surveyUserStatus is null, it returns all Surveys for that user (i.e. all statuses)
 	*/
-	public function loadSurveysForStarbarAndUser ($starbarId, $userId, $type, $surveyUserStatus = null)
+	public function loadSurveysForStarbarAndUser ($starbarId, $userId, $type, $surveyUserStatus = null, $limit = 50, $offset = 0)
 	{
 		$orderSql = "FIELD (user_status, 'completed', 'disqualified', 'archived', 'new'), FIELD (reward_category, 'profile', 'premium', 'standard'), ssm.ordinal ASC";
 		$userStatusSql = "";
@@ -58,8 +58,9 @@ class SurveyCollection extends RecordCollection
 			WHERE s.type = ?
 				AND s.status = 'active'
 			ORDER BY ".$orderSql."
+			LIMIT ? OFFSET ?
 		";
-		$surveys = Db_Pdo::fetchAll($sql, $userId, $starbarId, ReportCell::ALL_USERS_REPORT_CELL, ReportCell::ALL_USERS_REPORT_CELL, $userId, $type);
+		$surveys = Db_Pdo::fetchAll($sql, $userId, $starbarId, ReportCell::ALL_USERS_REPORT_CELL, ReportCell::ALL_USERS_REPORT_CELL, $userId, $type, $limit, $offset);
 
 		if ($surveys) {
 			$this->build($surveys, new Survey());

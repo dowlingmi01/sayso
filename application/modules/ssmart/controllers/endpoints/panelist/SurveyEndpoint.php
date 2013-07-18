@@ -189,8 +189,16 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		}
 
 		$surveyCollection = new SurveyCollection();
-		//TODO: refactor this function to accept pagination at this level instead of getting the entire result set and parsing it down.
-		$surveyCollection->loadSurveysForStarbarAndUser ($starbarId, $userId, $type, $surveyUserStatus);
+
+		// @todo get those from request
+		//$pageNumber = $request->getParam("page_number", 1);
+		//$resultsPerPage = $request->getParam("results_per_page", 50);
+
+		$pageNumber = 1;
+		$resultsPerPage = 50;
+
+		$offset = $this->_calculateOffset($pageNumber, $resultsPerPage);
+		$surveyCollection->loadSurveysForStarbarAndUser ($starbarId, $userId, $type, $surveyUserStatus, $resultsPerPage, $offset);
 
 		$surveyIds = "";
 

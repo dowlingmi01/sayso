@@ -38,22 +38,21 @@ class Ssmart_GlobalController //extends Zend_Controller_Action
 	 * the<code>$results_per_page</code> and
 	 * the <code>$page_number</code> parameters
 	 *
-	 * @param int $page_number
-	 * @param int $results_per_page
+	 * @param int $pageNumber
+	 * @param int $resultsPerPage
 	 * @return string
 	 */
-	protected function _prepareLimitSql($results_per_page, $page_number)
+	protected function _prepareLimitSql($resultsPerPage, $pageNumber)
 	{
-		$limit = $this->_calculateLimit((int)$results_per_page);
-		$offset = $this->_calculateOffset((int)$page_number, $limit);
+		$offset = $this->_calculateOffset((int)$pageNumber, (int)$resultsPerPage);
 
-		if (is_int($limit) && $limit > 0)
+		if ($resultsPerPage)
 		{
 			if ($offset < 0 || !is_int($offset))
 			{
 				$offset = 0;
 			}
-			return " LIMIT {$offset}, {$limit}";
+			return " LIMIT {$offset}, {$resultsPerPage}";
 		}
 	}
 
@@ -69,28 +68,15 @@ class Ssmart_GlobalController //extends Zend_Controller_Action
 	}
 
 	/**
-	 * Calculates the limit based on <code>$results_per_page</code>
+	 * Calculate offset based on $pageNumber and $resultsPerPage
 	 *
-	 * @param int $results_per_page
-	 * @return int|string
-	 */
-	private function _calculateLimit($results_per_page)
-	{
-		//TODO: evaluate the use of "all" here
-		return isset($results_per_page) && $results_per_page != 0 ? (int)$results_per_page : "all";
-	}
-
-	/**
-	 * Calculate offset based on the
-	 * <code>$page_number</code> and <code>$limit</code>
-	 *
-	 * @param int $page_number
-	 * @param int $limit
+	 * @param int $pageNumber
+	 * @param int $resultsPerPage
 	 * @return int
 	 */
-	private function _calculateOffset($page_number, $limit)
+	protected function _calculateOffset($pageNumber = 1, $resultsPerPage = 50)
 	{
-		return isset($page_number) ? ($page_number*$limit)-1 : 0;
+		return ($pageNumber-1)*$resultsPerPage;
 	}
 
 }

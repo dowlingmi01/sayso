@@ -21,28 +21,18 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 		</ul>
 	</div>
 	<div id="sayso-section-body" class="sayso-element sayso-tab-container" data-default-tab="surveys-new">
-		<div class="sayso-element sayso-tab" data-tab="surveys-new">
-			<p class="sayso-heading-text">
-				<p class="sayso-heading-text">%SECTION_SURVEYS_NEW_HEADER%</p>
-				{{#compare surveys.records.0.id "==" "71"}}
-					<p class="sayso-heading-text">%SECTION_SURVEYS_NEW_PROFILE_SURVEY_REMINDER%</p>
-				{{/compare}}
-			</p>
-			{{>surveys-new}}
-		</div>
-		<div class="sayso-element sayso-tab" data-tab="surveys-completed">
-			<p class="sayso-heading-text">%SECTION_SURVEYS_COMPLETED_HEADER%</p>
-			{{>surveys-completed}}
-		</div>
-		<div class="sayso-element sayso-tab" data-tab="surveys-archived">
-			<p class="sayso-heading-text">%SECTION_SURVEYS_ARCHIVED_HEADER%</p>
-			{{>surveys-archived}}
-		</div>
+		<div class="sayso-element sayso-tab" data-tab="surveys-new"></div>
+		<div class="sayso-element sayso-tab" data-tab="surveys-completed"></div>
+		<div class="sayso-element sayso-tab" data-tab="surveys-archived"></div>
 	</div>
 	<div id="sayso-section-footer"></div>
 </script>
 
 <script data-partial-id="surveys-new" type="text/x-handlebars-template">
+	<p class="sayso-heading-text">%SECTION_SURVEYS_NEW_HEADER%</p>
+	{{#compare surveys.records.0.id "==" "71"}}
+		<p class="sayso-heading-text">%SECTION_SURVEYS_NEW_PROFILE_SURVEY_REMINDER%</p>
+	{{/compare}}
 	<div class="sayso-element sayso-scrollable" style="height: {{#compare surveys.records.0.id '==' '71'}}356{{else}}384{{/compare}}px">
 		{{#each surveys.records}}
 			{{>survey-new-archived}}
@@ -57,6 +47,7 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 </script>
 
 <script data-partial-id="surveys-completed" type="text/x-handlebars-template">
+	<p class="sayso-heading-text">%SECTION_SURVEYS_COMPLETED_HEADER%</p>
 	<div class="sayso-element sayso-scrollable" style="height: 411px">
 		{{#each surveys.records}}
 			{{>survey-completed-disqualified}}
@@ -65,6 +56,7 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 </script>
 
 <script data-partial-id="surveys-archived" type="text/x-handlebars-template">
+	<p class="sayso-heading-text">%SECTION_SURVEYS_ARCHIVED_HEADER%</p>
 	<div class="sayso-element sayso-scrollable" style="height: 374px">
 		{{#each surveys.records}}
 			{{>survey-new-archived}}

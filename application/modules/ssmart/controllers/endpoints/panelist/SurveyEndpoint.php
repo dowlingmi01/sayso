@@ -154,9 +154,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		$validators = array(
 				"starbar_id"		=> "int_required_notEmpty",
 				"survey_type"		=> "alpha_required_notEmpty",
-				"survey_status"		=> "alpha_required_notEmpty",
-				"page_number"		=> "int_required_notEmpty",
-				"results_per_page"	=> "int_required_notEmpty"
+				"survey_status"		=> "alpha_required_notEmpty"
 			);
 		$filters = array();
 
@@ -167,8 +165,12 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		$userId				= $request->getUserId();
 		$type 				= $request->getParam("survey_type");
 		$surveyUserStatus 	= $request->getParam("survey_status");
-		$chosenSurveyId		= $request->getParam("chosen_survey_id");
-		$alwaysChoose		= $request->getParam("always_choose");
+		$pageNumber 		= (int) $request->getParam("page_number", 1);
+		$resultsPerPage 	= (int) $request->getParam("results_per_page", 50);
+
+		// used by trailers (though can be used by any type)
+		$chosenSurveyId		= (int) $request->getParam("chosen_survey_id");
+		$alwaysChoose		= (int) $request->getParam("always_choose");
 
 		$type = str_replace("surveys", "survey", $type);
 		$type = str_replace("polls", "poll", $type);
@@ -186,13 +188,6 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		}
 
 		$surveyCollection = new SurveyCollection();
-
-		// @todo get those from request
-		//$pageNumber = $request->getParam("page_number", 1);
-		//$resultsPerPage = $request->getParam("results_per_page", 50);
-
-		$pageNumber = 1;
-		$resultsPerPage = 50;
 
 		$offset = $this->_calculateOffset($pageNumber, $resultsPerPage);
 		$surveyCollection->loadSurveysForStarbarAndUser ($starbarId, $userId, $type, $surveyUserStatus, $resultsPerPage, $offset);

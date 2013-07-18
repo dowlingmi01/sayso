@@ -298,7 +298,8 @@ class Ssmart_Api
 				} else {
 					return "invalid_action_class";
 				}
-			}
+			} else
+				return "invalid_action_class";
 		}
 
 		include_once $fileToLoad;

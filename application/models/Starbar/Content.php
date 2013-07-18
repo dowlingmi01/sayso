@@ -26,6 +26,10 @@ class Starbar_Content // note, this is model does not extend Record
 		$starbarId = "" . $starbarId; // convert to string
 		if (!$key) return;
 
+		if ($key == "CONFIG_BASE_DOMAIN") {
+			return BASE_DOMAIN;
+		}
+
 		// to ensure we don't infinitely recurse when we have sub-keys, track where we are.
 		if (strpos($tree, "^#^" . $key . "^#^") !== false) {
 			return "";

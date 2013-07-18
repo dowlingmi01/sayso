@@ -31,9 +31,10 @@ class Email {
 			$mail->setBodyMultilineText($textMessage);
 			$mail->setBodyHtml($htmlMessage);
 			$mail->send(new Zend_Mail_Transport_Smtp());
+			return TRUE;
 		} catch (Exception $e) {
 			quickLog($textMessage);
-			return false;
+			return FALSE;
 		}
 	}
 }

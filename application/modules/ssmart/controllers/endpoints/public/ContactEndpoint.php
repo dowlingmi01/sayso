@@ -48,10 +48,10 @@ class Ssmart_Public_ContactEndpoint {
 			throw new Exception("Message failed to send. " . $e->getMessage());
 		}
 
-		if ($sent == FALSE)
-			$response->setResultVariable("success", FALSE);
-		else
+		if ($sent === TRUE)
 			$response->setResultVariable("success", TRUE);
+		else
+			$response->setResultVariable("success", FALSE);
 		return $response;
 	}
 

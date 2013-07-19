@@ -357,10 +357,10 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		//logic
-		$surveyId			= $request->getParams("survey_id");
-		$surveyResponseId	= $request->getParams("survey_response_id");
-		$surveyStatus		= $request->getParams("survey_status");
-		$starbarId			= $request->getParams("starbar_id");
+		$surveyId			= $request->getParam("survey_id");
+		$surveyResponseId	= $request->getParam("survey_response_id");
+		$surveyStatus		= $request->getParam("survey_status");
+		$starbarId			= $request->getParam("starbar_id");
 		$userId				= $request->getUserId();
 
 		$survey = new Survey();

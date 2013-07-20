@@ -66,7 +66,7 @@ class Ssmart_Panelist_GameEndpoint extends Ssmart_GlobalController
 		$userId			    = $request->getUserId();
 		$starbarId			= $request->getParam("starbar_id");
 		$gameAssetId		= $request->getParam("game_asset_id");
-		$quantity			= $request->getParam("game_asset_id", 1);
+		$quantity			= $request->getParam("quantity", 1);
 		$economyId		    = Economy::getIdforStarbar($starbarId);
 
 		try

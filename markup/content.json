@@ -93,5 +93,11 @@
         "CONFIG_FACEBOOK_PAGE_FOR_LIKE_BUTTON": "http:\/\/www.facebook.com\/MusicSaySo",
         "CONFIG_SHORT_TITLE": "music",
         "CONFIG_TITLE": "Music Say.So"
+	},
+	"7": {
+		"CONFIG_CURRENCY_EXPERIENCE": "XP",
+		"CONFIG_CURRENCY_REDEEMABLE": "Coins",
+		"CONFIG_SHORT_TITLE": "machinimareload",
+		"CONFIG_TITLE": "Machinima | Reload"
     }
 }

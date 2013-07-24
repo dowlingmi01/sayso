@@ -1,0 +1,102 @@
+@import "generic";
+
+@theme-color-text: #000000;
+@theme-color-links: #c02526;
+@theme-color-text-secondary: darken(@theme-color-links, 15%);
+@theme-color-text-headings: darken(@theme-color-links, 30%);
+@theme-color-text-inverse: white;
+@theme-color-progress-bar-background: black;
+@theme-color-progress-bar-gradient-start: #dc1a22;
+@theme-color-progress-bar-gradient-end: #70080c;
+@theme-color-progress-bar-gradient-fallback: #dc1a22;
+@theme-color-nav-help-links: white;
+@theme-color-nav-help-links-separator: rgba(255, 255, 255, .25);
+@theme-color-nav-button-gradient-start: #dc1a22;
+@theme-color-nav-button-gradient-end: #70080c;
+@theme-color-nav-button-top-gradient-start: #5e6467;
+@theme-color-nav-button-top-gradient-end: #e8ebed;
+@theme-color-section-background: #ffffff;
+@theme-color-section-border: #383838;
+@base-image-url: "../../images/machinima";
+
+#sayso-app-container {
+	#sayso-nav-logo-container {
+		div#sayso-nav-logo {
+			&:hover {
+				background-position: 0px -34px;
+			}
+		}
+	}
+
+	#sayso-nav-profile-container {
+		top: -33px;
+		height: 86px;
+
+		#sayso-nav-profile-bubble-top {
+			background-image: none;
+			display: none;
+		}
+
+		#sayso-nav-profile-logo {
+			left: 13px;
+			top: 7px;
+			width: 147px;
+			height: 33px;
+		}
+
+		#sayso-nav-profile-user-image {
+			width: 50px;
+			height: 48px;
+			left: 16px;
+			top: 35px;
+		}
+
+		#sayso-nav-profile-text {
+			top: 47px;
+			left: 82px;
+		}
+	}
+}
+
+#sayso-section-container {
+
+	#sayso-section {
+
+		.sayso-heading-text {
+			font-weight: bold;
+			font-size: 12px;
+			line-height: 18px;
+		}
+	}
+
+	&.sayso-section-user-profile, &.sayso-section-tour-user-profile {
+		#sayso-section {
+			bottom: 48px;
+		}
+
+		#sayso-section-triangle-white {
+			top: -55px;
+		}
+
+		#sayso-section-triangle-grey {
+			top: -48px;
+		}
+	}
+
+	&.sayso-section-survey {
+		&.sayso-section-survey-huge {
+			#sayso-section {
+				bottom: 30px;
+			}
+
+			#sayso-section-triangle-white {
+				top: -37px;
+			}
+
+			#sayso-section-triangle-grey {
+				top: -30px;
+			}
+		}
+	}
+}
+

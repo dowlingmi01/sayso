@@ -14,14 +14,15 @@ sayso.module.config = (function(global) {
 	var extVersion = global.sayso.version;
 	var baseDomain = global.sayso.baseDomain;
 	if( !baseDomain ) {
-		if( location.host.indexOf("saysollc.com") !== -1 ) { // testing server
-			baseDomain = location.host;
+		var m = location.host.match(/(?:.+\.)?(.*\.saysollc.com)/);
+		if( m ) { // testing server
+			baseDomain = m[1];
 		} else {
 			baseDomain = "app.saysollc.com";
 		}
 	}
 	return {
-		defaultStarbarId: extVersion ? 0 : 4,
+		defaultStarbarId: 0,
 		webportal: !extVersion,
 		location: location,
 		baseDomain: baseDomain,

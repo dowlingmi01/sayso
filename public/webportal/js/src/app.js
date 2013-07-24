@@ -6,7 +6,7 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
         initialized = false,
         app = 'webportal',
         version = '1.0',
-        starbarId = 4,
+        starbarId = config.defaultStarbarId,
         getBrowserAppHash = '#content/get-app-confirmation',
         $loginButton = $('#login_button'),
         $loginDiv = $('#login'),
@@ -746,7 +746,7 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
                     api.doRequest({
                         action_class : 'contact',
                         action : 'send',
-                        starbar_id: config.defaultStarbarId,
+                        starbar_id: starbarId,
                         subject: $subjectField.val().substring(0,subjectLength),
                         message: 'FROM: ' + $fromField.val() + '\r\n\r\n' + $messageField.val().substring(0,messageLength),
                         message_meta: location.href

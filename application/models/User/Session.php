@@ -71,7 +71,7 @@ class User_Session extends Record
 	}
 
 	static public function validate($session_id, $session_key) {
-		$session = Db_Pdo::fetch('SELECT * FROM user_session WHERE id = ?', $session_id);
+		$session = Db_Pdo::fetch('SELECT * FROM user_session s, user u WHERE s.id = ? AND s.user_id = u.id AND u.status = \'active\'', $session_id);
 		if (!empty($session))
 			return $session_key == $session["session_key"] ? $session["user_id"] : FALSE;
 		else

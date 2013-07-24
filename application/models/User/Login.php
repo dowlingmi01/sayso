@@ -49,6 +49,9 @@ class User_Login {
 		if (empty($userRow))
 			return self::_addStrikes($email);
 
+		if( $userRow['status'] != 'active' )
+			return;
+
 		// calculate the password hash using the retrieved password salt
 		$passwordHash = md5(md5($password) . $userRow['password_salt']);
 

@@ -90,7 +90,9 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
 	}
 
 	function prepareElements($container, templateData) {
-		if (!$container) $container = $contentContainer;
+		if (!$container) {
+            $container = $contentContainer;
+        }
 
 		var $elements = $('.portal-element', $container);
 		var $element;
@@ -273,10 +275,13 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
     shared.app = app;
     shared.version = version;
 
-	if( state.ready )
-		initialize();
-	else
-		$(document).on('sayso:state-ready', initialize);
+	if( state.ready ) {
+        initialize();
+    }
+	else {
+        $(document).on('sayso:state-ready', initialize);
+    }
+
     $(document).on('sayso:state-login', stateLogin);
     $(document).on('sayso:state-logout', stateLogout);
 

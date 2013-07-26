@@ -17,7 +17,7 @@
 @theme-color-nav-button-top-gradient-end: #e8ebed;
 @theme-color-section-background: #ffffff;
 @theme-color-section-border: #383838;
-@base-image-url: "../../images/machinima";
+@base-image-url: "../../images/machinimareload";
 
 #sayso-app-container {
 	#sayso-nav-logo-container {
@@ -56,6 +56,97 @@
 			left: 82px;
 		}
 	}
+
+    #sayso-nav-promos-container {
+        display: none;
+    }
+
+    .sayso-nav-theme-button-container {
+        background-image: url('@{base-image-url}/nav-background.png');
+
+        .sayso-nav-theme-button {
+            background-color: rgba(0, 0, 0, .35);
+
+            .sayso-nav-theme-button-top {
+                background-image: url('@{base-image-url}/nav-background.png');
+            }
+        }
+
+        &:hover { /* when you hover over the container, change the gradient of the top of the button */
+            .vertical-gradient(@theme-color-nav-button-gradient-start, @theme-color-nav-button-gradient-start, @theme-color-nav-button-gradient-start);
+            .sayso-nav-theme-button {
+                background-color: transparent;
+                .sayso-nav-theme-button-top {
+                    .box-shadow(0px 2px 5px 1px);
+                    border-top: 1px solid white;
+                    .vertical-gradient(@theme-color-nav-button-gradient-start, @theme-color-nav-button-gradient-start, @theme-color-nav-button-gradient-start);
+                }
+            }
+        }
+    }
+
+    #sayso-nav-experience-container {
+        .sayso-progress-bar-container {
+            display: table-cell;
+            vertical-align: middle;
+            border: none;
+            background-color: transparent;
+            .border-radius(0px);
+            background-image: url('@{base-image-url}/meter-main-xp.png');
+            width: 139px;
+            height: 31px;
+            top: -5px;
+            background-repeat: no-repeat;
+            left: 10px;
+            padding-left: 22px;
+            padding-right: 25px;
+            .box-shadow();
+
+
+            .sayso-progress-bar-icon-experience {
+                top: 0px;
+                left: 2px;
+            }
+
+            .sayso-progress-bar {
+                height: 29%;
+            }
+
+            .sayso-progress-bar-value {
+                top: 9px;
+            }
+        }
+    }
+
+    #sayso-nav-redeemable-container {
+        .sayso-progress-bar-container {
+            border: none;
+            background-color: transparent;
+            .border-radius(0px);
+            background-image: url('@{base-image-url}/meter-main-coins.png');
+            width: 78px;
+            height: 30px;
+            top: -9px;
+            background-repeat: no-repeat;
+            .box-shadow();
+
+
+            .sayso-progress-bar-icon-redeemable {
+                top: -1px;
+                left: 0px;
+            }
+
+            .sayso-progress-bar {
+                height: 29%;
+            }
+
+            .sayso-progress-bar-value {
+                top: 9px;
+                margin-left: 10px;
+            }
+        }
+    }
+
 }
 
 #sayso-section-container {

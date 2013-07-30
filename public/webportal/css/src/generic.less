@@ -867,3 +867,38 @@ header {
     background-image: url('@{base-image-url}tour/next_arrow_down.png');
   }
 }
+
+/* One Year */
+
+.one_year_header {
+    .red_link;
+    .proxima_nova_thin(@font-size + 40);
+    margin-bottom: 0;
+}
+
+.one_year_content {
+
+    .one_year_leader_image {
+        background-image: url('@{base-image-url}/one_year_leader.png');
+        float: right;
+        width: 148px;
+        height: 144px;
+    }
+
+    p{
+        .proxima_nova_light();
+
+        a{
+            .red_link;
+        }
+
+        span {
+            color: @color-base;
+            .proxima_nova_bold();
+        }
+
+        .one_year_infographic {
+            .proxima_nova_light(@font-size + 10);
+        }
+    }
+}

@@ -1,6 +1,7 @@
 sayso.module.commrelay = (function(global, forge, dommsg) {
 	var target = forge.is.firefox() ? global.unsafeWindow : global;
-	var names = ['state.game', 'state.logout', 'state.login', 'state.profile', 'state.notifications'];
+	var names = ['state.game', 'state.logout', 'state.login', 'state.profile', 'state.notifications',
+		'state.surveyCounts'];
 	function handleFrontEndRequest(data) {
 		forge.message.broadcastBackground(data.name, data.data, function(response) {
 			target.postMessage(JSON.stringify(['sayso-background-reply', {id: data.id, data: response}]), '*');

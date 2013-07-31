@@ -414,6 +414,28 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		return $response;
 	}
 
+	public function updateMissionProgress(Ssmart_EndpointRequest $request) {
+		$validators = array(
+			"starbar_id"			=> "int_required_notEmpty",
+			"top_frame_id"			=> "int_required_notEmpty",
+			"mission_short_name"	=> "alnum_required_notEmpty",
+			"mission_data"			=> "required_notEmpty",
+		);
+		$filters = array();
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
+		$result = Survey_MissionProgress::update($request->getUserId(), $request->getParam("starbar_id")
+			, $request->getParam("top_frame_id"), $request->getParam("mission_short_name")
+			, $request->getParam("mission_data"));
+
+		if( Game_Transaction::wasTransactionExecuted() ) {
+			//add game data to the response
+			$economyId = Economy::getIdforStarbar($request->getParam("starbar_id"));
+			$commonDataParams = array("user_id" => $request->getUserId(), "economy_id" => $economyId);
+			$response->addCommonData("game", $commonDataParams);
+		}
+		$response->setResultVariable("success", $result);
+		return $response;
+	}
 	/**
 	 * Performs actions for when a user shares a survey.
 	 *

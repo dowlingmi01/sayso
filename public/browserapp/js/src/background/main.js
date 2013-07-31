@@ -3,6 +3,7 @@
 		starbars: {},
 		games: {},
 		notifications: {},
+		surveyCounts: {},
 		loggedIn: null,
 		session: {},
 		studies: [],
@@ -109,6 +110,10 @@
 		api.setRequest( 'notifications', {action_class: 'Notification', action: 'getUserNotifications', starbar_id: starbarId} );
 		api.setRequest( 'starbar', {action_class: 'Starbar', action: 'getStarbar', starbar_id: starbarId} );
 		api.setRequest( 'markup', {action_class: 'Markup', action: 'getMarkup', starbar_id: starbarId, app: 'browserapp', key: 'nav'} );
+		if( config.extVersion )
+			api.setRequest( 'missionCount', {action_class: 'Survey', action: 'getSurveyCounts',
+				starbar_id: starbarId, survey_type: 'mission', survey_status: 'new'});
+
 		api.sendRequests( function(data) {
 			checkForNewSession(data);
 			state.starbars[starbarId] = data.responses.starbar.records[0];
@@ -116,6 +121,8 @@
 			state.starbars[starbarId].markup = data.responses.markup.variables.markup;
 			state.games[state.starbars[starbarId].economy_id] = data.responses.game.variables.game;
 			state.notifications[starbarId] = data.responses.notifications.records;
+			if( config.extVersion )
+				state.surveyCounts[starbarId] = {mission: data.responses.missionCount.variables.count};
 			if( pendingRequests[starbarId] ) {
 				var stateForStarbar = buildStateForStarbar(starbarId);
 				for( var i in pendingRequests[starbarId] )
@@ -132,6 +139,7 @@
 			visibility: state.visibility,
 			starbar: state.starbars[starbarId],
 			notifications: state.notifications[starbarId],
+			surveyCounts: state.surveyCounts[starbarId],
 			game: state.games[state.starbars[starbarId].economy_id],
 			studies: state.studies,
 			adTargets: state.adTargets
@@ -224,6 +232,13 @@
 			legacy_class: 'Metrics', legacy_action: 'eventSubmit',
 			parameters: data}, checkForNewSession);
 	}
+	function missionComplete() {
+		if( state.surveyCounts[state.currentStarbarId].mission > 0 ) {
+			state.surveyCounts[state.currentStarbarId].mission--;
+			comm.broadcast('state.surveyCounts', {starbar_id: state.currentStarbarId,
+				surveyCounts: state.surveyCounts[state.currentStarbarId]});
+		}
+	}
 
 	comm.listen('get-state', getState);
 	comm.listen('api-do-requests', apiDoRequests);
@@ -235,6 +250,7 @@
 	comm.listen('delete-ad-targets', deleteAdTargets);
 	comm.listen('brandboost-event', brandBoostEvent);
 	comm.listen('submit-event', submitEvent);
+	comm.listen('mission-complete', missionComplete);
 
 	getUserState();
 })(this, sayso.module.Api, sayso.module.comm, sayso.module.config, sayso.module.getSession);

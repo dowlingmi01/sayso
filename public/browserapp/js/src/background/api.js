@@ -65,8 +65,9 @@ sayso.module.Api = (function(comm, util) {
 
 			function getCallback(callback) {
 				return function(data) {
-					callback(data);
 					if (requestsToReset) requestsToReset.reset();
+					if (callback)
+						callback(data);
 				};
 			}
 
@@ -74,6 +75,7 @@ sayso.module.Api = (function(comm, util) {
 				dataType: 'json',
 				data : {data: data, "_": (new Date()).getTime()},
 				url : protocol + this.baseDomain + "/ssmart",
+				type : 'POST',
 				success : getCallback(cb),
 				error: getCallback(fb)
 			});

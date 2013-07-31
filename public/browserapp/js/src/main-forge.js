@@ -1,4 +1,4 @@
-(function(global, $, forge, state, browserapp, config, dommsg, util, commrelay, track, comm) {
+(function(global, $, forge, state, browserapp, config, dommsg, util, commrelay, track, comm, api) {
 	var in_iframe = forge.is.firefox() ? (global.unsafeWindow.window !== global.unsafeWindow.top) : (global.top !== global);
 	var frameId = Math.floor(Math.random()*2e9) + 1;
 	var url_match_prepend = '^(?:http|https){1}://(?:[\\w.-]+[.])?';
@@ -144,7 +144,7 @@
 	if( in_iframe && config.location.href.match(/saysollc.com\/browserapp\/readStorage.html/))
 		return;
 
-	if( !in_iframe && config.location.href.match(/say.so|saysollc.com\/webportal/) ) {
+	if( !in_iframe && config.location.host.match(/say.so|saysollc.com/) ) {
 		webportal = true;
 		commrelay.install();
 	}
@@ -159,6 +159,26 @@
 				{ location: config.location, frameId: frameId });
 		}
 		dommsg.addHandler('parent-req', handleParentReq);
+
+		var missionShortName = config.location.href.match(/(?:.say.so|.saysollc.com\/.*)\/mission\/(.*)\//);
+		if( missionShortName ) {
+			missionShortName = missionShortName[1];
+			function handleMissionProgress( data ) {
+				api.doRequest( {
+					action_class: 'Survey',
+					action: 'updateMissionProgress',
+					starbar_id: state.state.starbar.id,
+					top_frame_id: frameId,
+					mission_short_name: missionShortName,
+					mission_data: data
+				}, function() {
+					if( data.stage === data.data.stages.length )
+						forge.message.broadcastBackground('mission-complete');
+				});
+			}
+			dommsg.addHandler('mission-progress', handleMissionProgress);
+			return; // DO NOT LOAD STARBAR
+		}
 	} else {
 		forge.message.listen('parent-location-' + frameId, function( m ) {
 			if( !topLocation ) {
@@ -227,5 +247,5 @@
 				browserapp.initApp();
 		});
 }(this, jQuery, forge, sayso.module.state, sayso.module.browserapp, sayso.module.config, sayso.module.dommsg,
-		sayso.module.util, sayso.module.commrelay, sayso.module.track, sayso.module.comm))
+		sayso.module.util, sayso.module.commrelay, sayso.module.track, sayso.module.comm, sayso.module.api))
 ;

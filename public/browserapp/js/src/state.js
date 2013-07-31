@@ -33,6 +33,12 @@ sayso.module.state = (function(global, $, comm, config) {
 				publicVar.state.notifications = data.notifications;
 				$(global.document).trigger('sayso:state-notifications');
 			}
+		},
+		surveyCounts: function(data) {
+			if( data.starbar_id === publicVar.state.starbar.id ) {
+				publicVar.state.surveyCounts = data.surveyCounts;
+				$(global.document).trigger('sayso:state-surveyCounts');
+			}
 		}
 	};
 	function login( email, password, callback ) {

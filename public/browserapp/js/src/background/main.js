@@ -246,7 +246,7 @@
 	if( !config.extVersion )
 		comm.listen('logout', logout);
 	comm.listen('set-visibility', setVisibility);
-	comm.listen('add-ad-target', deleteAdTargets);
+	comm.listen('add-ad-target', addAdTarget);
 	comm.listen('delete-ad-targets', deleteAdTargets);
 	comm.listen('brandboost-event', brandBoostEvent);
 	comm.listen('submit-event', submitEvent);

@@ -218,7 +218,15 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 			}
 			$response->setResultVariable("trailer_info", $trailerInfo);
 		}
-
+		if ($type == "mission" && $surveyIds) {
+			$sql = "SELECT survey_id, short_name, number_of_stages, preview_image FROM survey_mission_info WHERE survey_id IN ($surveyIds)";
+			$results = Db_Pdo::fetchAll($sql);
+			$missionInfo = [];
+			foreach ($results as $result) {
+				$missionInfo[$result['survey_id']] = $result;
+			}
+			$response->setResultVariable("mission_info", $missionInfo);
+		}
 		$response->addRecordsFromCollection($surveyCollection);
 
 		return $response;

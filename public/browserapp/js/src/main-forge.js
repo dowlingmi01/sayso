@@ -43,6 +43,9 @@
 	}
 
 	function shouldLoadStarbar() {
+		if( state.state.starbar.id != 4 && state.state.starbar.id != 7 )
+			return false;
+
 		if( webportal || in_iframe )
 			return false;
 
@@ -140,7 +143,35 @@
 			}
 		});
 	}
-	
+	function whenStateReady( callback ) {
+		if( state.ready )
+			callback();
+		else
+			$(global.document).on('sayso:state-ready', callback);
+	}
+	function startTracking() {
+		track(in_iframe, topLocation, state.adTargets);
+	}
+	function loadStarbarIfNeeded() {
+		if( shouldLoadStarbar() )
+			$(function(){
+				fixFlashElements();
+				var timeSpentFixingFlashSoFar = 0;
+				var timeBetweenFlashFixes = 500;
+				var maximumTimeToWaitForFlashToLoad = 5000; // 5 seconds
+				$.doTimeout('flashFixer', timeBetweenFlashFixes, function () {
+					if (timeSpentFixingFlashSoFar > maximumTimeToWaitForFlashToLoad) {
+						return false; // stop the loop
+					}
+					timeSpentFixingFlashSoFar += timeBetweenFlashFixes;
+					fixFlashElements();
+					return true; // keep doTimeout schedule going
+				});
+				$(global.document).on('sayso:state-login sayso:state-logout sayso:state-starbar', browserapp.initApp);
+				browserapp.initApp();
+			});
+	}
+
 	if( in_iframe && config.location.href.match(/saysollc.com\/browserapp\/readStorage.html/))
 		return;
 
@@ -153,7 +184,7 @@
 	evalInPageContext(injectBeacon);
 	if( !in_iframe ) {
 		topLocation = config.location;
-		$(startTrackingWhenReady);
+		$(whenStateReady(startTracking));
 		function handleParentReq( childFrameId ) {
 			forge.message.broadcast('parent-location-' + childFrameId,
 				{ location: config.location, frameId: frameId });
@@ -184,7 +215,7 @@
 			if( !topLocation ) {
 				topLocation = m.location;
 				var topFrameId = m.frameId;
-				$(startTrackingWhenReady);
+				$(whenStateReady(startTracking));
 				if( config.location.host === 'vex.wildtangent.com') {
 					var brandBoostStage = config.location.pathname.match(/\/(?:Vex\/)?(\w+)(?:.aspx)?/);
 					if( brandBoostStage ) {
@@ -218,34 +249,9 @@
 		}
 		requestParentLocation();
 	}
-	function startTrackingWhenReady() {
-		function startTracking() {
-			track(in_iframe, topLocation, state.adTargets);
-		}
-		if( state.ready )
-			startTracking();
-		else
-			$(global.document).on('sayso:state-ready', startTracking);
-	}
 
-	if( shouldLoadStarbar() )
-		$(function(){
-			fixFlashElements();
-			var timeSpentFixingFlashSoFar = 0;
-			var timeBetweenFlashFixes = 500;
-			var maximumTimeToWaitForFlashToLoad = 5000; // 5 seconds
-			$.doTimeout('flashFixer', timeBetweenFlashFixes, function () {
-				if (timeSpentFixingFlashSoFar > maximumTimeToWaitForFlashToLoad) {
-					return false; // stop the loop
-				}
-				timeSpentFixingFlashSoFar += timeBetweenFlashFixes;
-				fixFlashElements();
-				return true; // keep doTimeout schedule going
-			});
-			$(global.document).on('sayso:state-login sayso:state-logout sayso:state-ready sayso:state-starbar', browserapp.initApp);
-			if( state.ready )
-				browserapp.initApp();
-		});
+	whenStateReady(loadStarbarIfNeeded);
+
 }(this, jQuery, forge, sayso.module.state, sayso.module.browserapp, sayso.module.config, sayso.module.dommsg,
 		sayso.module.util, sayso.module.commrelay, sayso.module.track, sayso.module.comm, sayso.module.api))
 ;

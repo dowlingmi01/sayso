@@ -2,9 +2,9 @@
 	<div class="portal-element portal-contact-submit generic_container">
 		<h1 class="small_header">Contact Us</h1>
 		<div class="contact_us_content">
-			<p>Drop us a line and we'll get back to you within 24 hours.</p>
+			<p>%PORTAL_CONTACT_HEADER_TEXT%</p>
             <div class="contact_errors" id="contact_errors">
-                Something went wrong! Please try again or send an email to support@say.so
+                %PORTAL_CONTACT_ERROR%
             </div>
             <input id="contact_subject" class="portal-element portal-placeholder" name="contact_subject" placeholder="Subject"/>
             {{#if state.profile.email}}

@@ -59,10 +59,8 @@ class Economy extends Record
 		else {
 			$economy = new Economy();
 			$economy->loadData($economy_id);
-			if($economy->imported) {
-				$economy->readData();
-				Economy::$_economies[$economy_id] = $economy;
-			}
+			$economy->readData();
+			Economy::$_economies[$economy_id] = $economy;
 			return $economy;
 		}
 	}

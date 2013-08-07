@@ -6,19 +6,46 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 	<div class="sayso-element sayso-reward-redeem-overlay" id="sayso-reward-redeem-overlay">
 		<div id="sayso-reward-item-redeem-step"></div>
 	</div>
-	<div id="sayso-section-header"></div>
-	<div id="sayso-section-body">
-		<p class="sayso-heading-text">%SECTION_REWARDS_HEADER%</p>
-		<div class="sayso-element sayso-scrollable" style="height: 375px;">
-			{{#each rewards.records}}
-				{{>reward_partial}}
-			{{else}}
-				No rewards found, please check again soon!
-			{{/each}}
-		</div>
+	<div id="sayso-section-header">
+		{{#if state.game.purchasables.length}}
+			<ul>
+				<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="tab-rewards" data-pass-template-data-to-tab="true">Reward Center</li>
+				<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="tab-my-purchases" data-pass-template-data-to-tab="true">My Purchases</li>
+			</ul>
+		{{/if}}
+	</div>
+	<div id="sayso-section-body" class="sayso-element sayso-tab-container" data-default-tab="tab-rewards">
+		<div class="sayso-element sayso-tab" data-tab="tab-rewards"></div>
+		<div class="sayso-element sayso-tab" data-tab="tab-my-purchases"></div>
 	</div>
 	<div id="sayso-section-footer">
 		<p>%SECTION_REWARDS_FOOTER%</p>
+	</div>
+</script>
+
+<script data-partial-id="tab-rewards" type="text/x-handlebars-template">
+	<p class="sayso-heading-text">%SECTION_REWARDS_HEADER%</p>
+	<div class="sayso-element sayso-scrollable" style="height: 375px;">
+		{{#each rewards.records}}
+			{{>reward_partial}}
+		{{else}}
+			No rewards found, please check again soon!
+		{{/each}}
+	</div>
+</script>
+
+<script data-partial-id="tab-my-purchases" type="text/x-handlebars-template">
+	<p class="sayso-heading-text">My Purchases</p>
+	{{#each state.game.purchasables}}
+		{{>purchasable}}
+	{{/each}}
+</script>
+
+<script data-partial-id="purchasable" type="text/x-handlebars-template">
+	<div class="sayso-element sayso-my-purchases-item" data-level-id="{{id}}"
+		 data-level-name="{{name}}" data-level-threshold="{{price}}" data-level-img="{{img_url_preview_bought}}">
+		<img src="{{img_url_preview_bought}}" alt="{{name}}"/>
+		<div class="sayso-element sayso-my-purchase-quantity">{{quantity}}</div>
 	</div>
 </script>
 

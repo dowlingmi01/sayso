@@ -839,12 +839,17 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 			// templateData is passed through from openSection to the default tab, so that we don't have to do another API request for the default (initial) tab
 			openTab($elem, data['defaultTab'], templateData);
 		},
-		"tab-link": function ($elem, data) {
+		"tab-link": function ($elem, data, templateData) {
+			var templateDataToPass = null;
+
+			if ('passTemplateDataToTab' in data && data['passTemplateDataToTab'] == "true")
+				templateDataToPass = templateData;
+
 			// note that there is no templateData passed in this case, since any needed data is requested via the api, from extraRequests
 			// this includes re-opening the default tab, for example
 			$elem.click(function(e) {
 				e.preventDefault();
-				openTab($('#' + data['tabContainer']), data['tab'], null, $elem.data());
+				openTab($('#' + data['tabContainer']), data['tab'], templateDataToPass, $elem.data());
 			});
 		},
 		"scrollable": function ($elem, data) {

@@ -41,22 +41,8 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 				</div>
 			</div>
 		</div>
-		<hr />
-		<div id="sayso-experience-purchases-container">
-			<h3>My Purchases</h3>
-			{{#each state.game.purchasables}}
-				{{>purchasable}}
-			{{/each}}
-		</div>
 	</div>
 	<div id="sayso-section-footer"></div>
 </script>
 
-<script data-partial-id="purchasable" type="text/x-handlebars-template">
-    <div class="sayso-element sayso-experience-purchases-item" data-level-id="{{id}}"
-         data-level-name="{{name}}" data-level-threshold="{{price}}" data-level-img="{{img_url_preview_bought}}">
-		<img src="{{img_url_preview_bought}}" alt="{{name}}"/>
-		<div class="sayso-element sayso-experience-purchase-quantity">{{quantity}}</div>
-    </div>
-</script>
 {{/if}}

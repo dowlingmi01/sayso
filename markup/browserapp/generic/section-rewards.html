@@ -7,12 +7,10 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 		<div id="sayso-reward-item-redeem-step"></div>
 	</div>
 	<div id="sayso-section-header">
-		{{#if state.game.purchasables.length}}
-			<ul>
-				<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="tab-rewards" data-pass-template-data-to-tab="true">Reward Center</li>
-				<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="tab-my-purchases" data-pass-template-data-to-tab="true">My Purchases</li>
-			</ul>
-		{{/if}}
+		<ul>
+			<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="tab-rewards" data-pass-template-data-to-tab="true">Reward Center</li>
+			<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="tab-my-purchases" data-pass-template-data-to-tab="true">My Purchases</li>
+		</ul>
 	</div>
 	<div id="sayso-section-body" class="sayso-element sayso-tab-container" data-default-tab="tab-rewards">
 		<div class="sayso-element sayso-tab" data-tab="tab-rewards"></div>
@@ -38,6 +36,8 @@ Machinima | Recon will be automatically updated after you restart your browser.<
 	<p class="sayso-heading-text">My Purchases</p>
 	{{#each state.game.purchasables}}
 		{{>purchasable}}
+	{{else}}
+		%SECTION_REWARDS_NO_PURCHASES_YET%
 	{{/each}}
 </script>
 

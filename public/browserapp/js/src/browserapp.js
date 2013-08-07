@@ -574,6 +574,10 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 		$poll.children('.sayso-poll-footer').hide().fadeTo(1000, 1);
 		updateElements(null, "game", true);
 
+		if (!$('#sayso-section-header ul li[data-tab="polls-completed"]').length) {
+			$('#sayso-section-header ul').append('<li class="sayso-element sayso-tab-link" data-tab-container="sayso-section-body" data-tab="polls-completed">Completed</li>');
+		}
+
 		// show the completed tab *link* in case this is the first poll this user has completed
 		$('#sayso-completed-tab-link', $section).show();
 	}
@@ -842,7 +846,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 		"tab-link": function ($elem, data, templateData) {
 			var templateDataToPass = null;
 
-			if ('passTemplateDataToTab' in data && data['passTemplateDataToTab'] == "true")
+			if ('passTemplateDataToTab' in data && data['passTemplateDataToTab'])
 				templateDataToPass = templateData;
 
 			// note that there is no templateData passed in this case, since any needed data is requested via the api, from extraRequests

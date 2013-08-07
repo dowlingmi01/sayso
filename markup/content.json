@@ -75,6 +75,7 @@
         "SECTION_PROMOS": "",
         "SECTION_REWARDS_FOOTER": "",
         "SECTION_REWARDS_HEADER": "Select an item below",
+        "SECTION_REWARDS_NO_PURCHASES_YET": "You haven't purchased any items or tokens yet... head back to the <a href=\"#\" class=\"sayso-element sayso-section-link\" data-section=\"rewards\">reward center<\/a> to see all the goodies!",
         "SECTION_REWARDS_ORDER_BUTTON": "<div class=\"sayso-element sayso-reward-item-order-submit\">Order<\/div>",
         "SECTION_REWARDS_PURCHASE_CONFIRMATION_TOKEN": "Tokens will appear in your account and you will be automatically entered into this giveaway drawing.",
         "SECTION_REWARDS_PURCHASE_HEADER_START": "Redeem your %CONFIG_CURRENCY_REDEEMABLE% for",

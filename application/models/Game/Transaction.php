@@ -251,8 +251,9 @@ class Game_Transaction {
 			self::_handleException( $e );
 		}
 	}
-	public static function addGood( $economy_id, $good_data, $initial_stock ) {
+	public static function addGood( $starbar_id, $good_data, $initial_stock ) {
 		try {
+			$economy_id = Economy::getIdforStarbar($starbar_id);
 			Record::beginTransaction();
 			$sql = "INSERT INTO game_asset (economy_id, type, name, bdid, img_url, img_url_preview, img_url_preview_bought) VALUES (?, 'purchasable', ?, ?, ?, ?, ?)";
 			Db_Pdo::execute($sql, $economy_id, $good_data['description'], $good_data['bdid'], $good_data['img_url'], $good_data['img_url_preview'], $good_data['img_url_preview_bought']);

@@ -1,0 +1,21 @@
+<script data-partial-id="main" type="text/x-handlebars-template">
+	<div id="sayso-section-header">
+		<ul>
+			<li class="sayso-element sayso-section-link" data-section="missions">Missions</li>
+			<li class="sayso-element sayso-section-link" data-section="trailer">Trailers</li>
+		</ul>
+	</div>
+	<div id="sayso-section-body">
+		<div id="sayso-mission-carousel-container" class="sayso-element sayso-carousel-container">
+			<div class="sayso-carousel-prev"></div>
+			{{#each missions.records}}
+				<div class="sayso-carousel-group">
+					<a href="%CONFIG_DEFAULT_SHARE_LINK%client/%CONFIG_SHORT_TITLE%/landing/mission/{{object-field ../missions.variables.mission_info id 'short_name'}}/" target="_new">
+						<img src="//%CONFIG_BASE_DOMAIN%/images/%CONFIG_SHORT_TITLE%/{{object-field ../missions.variables.mission_info id 'preview_image'}}" border="0" />
+					</a>
+				</div>
+			{{/each}}
+			<div class="sayso-carousel-next"></div>
+		</div>
+	</div>
+</script>

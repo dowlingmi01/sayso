@@ -221,7 +221,7 @@ sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 
 						player = new global.YT.Player('sayso-video-container', {
 							height: '390',
-							width: '635',
+							width: '642',
 							videoId: data['video_key'],
 							events: {
 								'onReady': onPlayerReady

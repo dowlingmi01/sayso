@@ -170,7 +170,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 
 		// used by trailers (though can be used by any type)
 		$chosenSurveyId		= (int) $request->getParam("chosen_survey_id");
-		$alwaysChoose		= (int) $request->getParam("always_choose");
+		$alwaysChoose		= $request->getParam("always_choose");
 
 		$type = str_replace("surveys", "survey", $type);
 		$type = str_replace("polls", "poll", $type);
@@ -195,7 +195,7 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 		$surveyIds = "";
 
 		foreach ($surveyCollection as $survey) {
-			if ($alwaysChoose && !$chosenSurveyId)
+			if ($alwaysChoose === "true" && !$chosenSurveyId)
 				$chosenSurveyId = $survey->id;
 
 			if ($surveyIds) $surveyIds .= ",";

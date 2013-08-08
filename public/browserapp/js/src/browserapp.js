@@ -95,6 +95,16 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 			Handlebars.registerHelper(helper, handlebarsHelpers[helper]);
 		}
 
+		// Currently nav isn't run through the templating system... this should probably be done there
+		if ('surveyCounts' in state.state
+			&& 'mission' in state.state.surveyCounts
+			&& state.state.surveyCounts.mission > 0
+		) {
+			var $spotlightButton = $('div.sayso-nav-theme-button-container[data-section=trailer]', $nav);
+			$spotlightButton.data('section', 'missions');
+			$spotlightButton.prepend('<div class="sayso-nav-theme-button-overlay-missions"></div>');
+		}
+
 		prepareElements();
 	}
 
@@ -871,6 +881,56 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 				hideNav(true);
 			});
 		},
+		"carousel-container": function ($elem) {
+			var $groups = $('.sayso-carousel-group', $elem);
+			var $prevButton = $('.sayso-carousel-prev', $elem);
+			var $nextButton = $('.sayso-carousel-next', $elem);
+			var currentIndex = 0;
+
+			$groups.hide();
+
+			$groups.each(function(index) {
+				var $group = $(this);
+				if ($group.hasClass('sayso-carousel-active') || $('.sayso-carousel-active', $group).length > 0) {
+					currentIndex = index;
+					$group.show();
+					return false;
+				}
+			});
+
+			function goNext(amount) {
+				if (typeof amount != "number") {
+					amount = 1;
+				}
+
+				currentIndex += amount;
+				currentIndex = currentIndex % $groups.length;
+
+				$groups.hide();
+				$groups.eq(currentIndex).show();
+			}
+
+			function goPrev(amount) {
+				if (typeof amount != "number") {
+					amount = 1;
+				}
+
+				currentIndex -= amount;
+				if (currentIndex < 0)
+					currentIndex += $groups.length;
+
+				$groups.hide();
+				$groups.eq(currentIndex).show();
+			}
+
+			if ($groups.length < 2) {
+				$prevButton.addClass('sayso-disabled');
+				$nextButton.addClass('sayso-disabled');
+			} else {
+				$prevButton.click(goPrev);
+				$nextButton.click(goNext);
+			}
+		},
 		"poll-container": function ($elem, data) {
 			var $pollHeader = $('.sayso-poll-header', $elem);
 			$pollHeader.click(function() {
@@ -1583,6 +1643,17 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 					survey_status : "new",
 					always_choose : true,
 					chosen_survey_id : ('surveyId' in data ? data['surveyId'] : null)
+				}
+			}
+		},
+		"missions": function (data) {
+			return {
+				"missions": {
+					action_class : "survey",
+					action : "getSurveys",
+					starbar_id : starbarId,
+					survey_type : "mission",
+					survey_status : "new"
 				}
 			}
 		},

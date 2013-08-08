@@ -253,8 +253,6 @@ class Game_Transaction {
 	}
 	public static function addGood( $economy_id, $good_data, $initial_stock ) {
 		try {
-			if( !Economy::getForId($economy_id)->imported )
-				return;
 			Record::beginTransaction();
 			$sql = "INSERT INTO game_asset (economy_id, type, name, bdid, img_url, img_url_preview, img_url_preview_bought) VALUES (?, 'purchasable', ?, ?, ?, ?, ?)";
 			Db_Pdo::execute($sql, $economy_id, $good_data['description'], $good_data['bdid'], $good_data['img_url'], $good_data['img_url_preview'], $good_data['img_url_preview_bought']);

@@ -33,43 +33,9 @@ class Ssmart_Public_RegistrationEndpoint extends Ssmart_GlobalController
 		$pw = $request->valid_parameters["password"];
 		$userEmail = strtolower($request->valid_parameters["email"]);
 
-		$email = new User_Email();
+		$userId = User::create($userEmail, $pw, $starbarId);
 
-		$email->loadDataByUniqueFields(array('email'=>$userEmail));
-		$user = new User();
-		if ($email->id) {
-			$user->loadData( $email->user_id );
-			if( $user->password )
-				throw new Exception("EMAIL_ADDRESS_ALREADY_REGISTERED");
-		} else {
-			$user->originating_starbar_id = $starbarId;
-			$email->email = $userEmail;
-			$user->setEmail($email);
-		}
-
-		$user->setPlainTextPassword($pw);
-		$user->save();
-
-		if (!$user->id)
-			throw new Exception('Failed to save user.');
-
-		$starbarUserMap = new Starbar_UserMap();
-		$starbarUserMap->user_id = $user->id;
-		$starbarUserMap->starbar_id = $starbarId;
-		$starbarUserMap->active = 1;
-		$starbarUserMap->onboarded = 1;
-		$starbarUserMap->save();
-		$insertStatus = $starbarUserMap->wasInserted();
-		if($insertStatus)
-			Game_Transaction::run($user->id, Economy::getIdforStarbar($starbarId), 'STARBAR_OPT_IN');
-
-		$userState = new User_State();
-		$userState->user_id = $user->id;
-		$userState->starbar_id = $starbarId;
-		$userState->visibility = "open";
-		$userState->save();
-
-		$response->setResultVariable("user_id", $user->id);
+		$response->setResultVariable("user_id", $userId);
 
 		// success
 		return $response;

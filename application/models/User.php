@@ -220,5 +220,44 @@ class User extends Record implements Titled
 			return;
 	}
 
+	public static function create( $email, $pw, $starbarId) {
+		$userEmail = new User_Email();
+
+		$userEmail->loadDataByUniqueFields(array('email'=>$email));
+		$user = new User();
+		if ($userEmail->id) {
+			$user->loadData( $userEmail->user_id );
+			if( $user->password )
+				throw new Exception("EMAIL_ADDRESS_ALREADY_REGISTERED");
+		} else {
+			$user->originating_starbar_id = $starbarId;
+			$userEmail->email = $email;
+			$user->setEmail($userEmail);
+		}
+
+		$user->setPlainTextPassword($pw);
+		$user->save();
+
+		if (!$user->id)
+			throw new Exception('Failed to save user.');
+
+		$starbarUserMap = new Starbar_UserMap();
+		$starbarUserMap->user_id = $user->id;
+		$starbarUserMap->starbar_id = $starbarId;
+		$starbarUserMap->active = 1;
+		$starbarUserMap->onboarded = 1;
+		$starbarUserMap->save();
+		$insertStatus = $starbarUserMap->wasInserted();
+		if($insertStatus)
+			Game_Transaction::run($user->id, Economy::getIdforStarbar($starbarId), 'STARBAR_OPT_IN');
+
+		$userState = new User_State();
+		$userState->user_id = $user->id;
+		$userState->starbar_id = $starbarId;
+		$userState->visibility = "open";
+		$userState->save();
+
+		return $user->id;
+	}
 }
 

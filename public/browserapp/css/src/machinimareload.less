@@ -250,22 +250,6 @@
 		}
 	}
 
-//	&.sayso-section-survey {
-//		&.sayso-section-survey-huge {
-//			#sayso-section {
-//				bottom: 30px;
-//			}
-//
-//			#sayso-section-triangle-white {
-//				top: -37px;
-//			}
-//
-//			#sayso-section-triangle-grey {
-//				top: -30px;
-//			}
-//		}
-//	}
-
     &.sayso-section-surveys, &.sayso-section-tour-surveys {
         #sayso-section {
             background-image: url('@{base-image-url}/section-surveys-background.png');
@@ -312,6 +296,43 @@
                 #sayso-experience-levels-container {
                     .sayso-experience-levels-nav {
                         background-position: center;
+                    }
+                }
+            }
+
+        }
+
+        #sayso-section-triangle-white {
+            display: none;
+        }
+
+        #sayso-section-triangle-grey {
+            border-color: rgba(255, 255, 255, .175) transparent;
+        }
+    }
+
+    &.sayso-section-rewards, &.sayso-section-tour-rewards {
+        #sayso-section {
+            background-image: url('@{base-image-url}/section-rewards-background.png');
+            background-repeat: no-repeat;
+            background-color: transparent;
+
+            #sayso-section-header {
+                background-color: transparent;
+            }
+
+            #sayso-section-body {
+                background-color: transparent;
+
+                .sayso-reward-item {
+                    background-color: transparent;
+
+                    .sayso-reward-item-header {
+                        background-color: transparent;
+                    }
+
+                    .sayso-reward-item-img {
+                        background-color: transparent;
                     }
                 }
             }

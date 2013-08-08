@@ -304,8 +304,18 @@
 
     &.sayso-section-experience, &.sayso-section-tour-experience {
         #sayso-section {
+            width: 570px;
+            height: 320px;
             background-image: url('@{base-image-url}/section-profile-background.png');
             background-repeat: no-repeat;
+            #sayso-section-body {
+                #sayso-experience-levels-container {
+                    .sayso-experience-levels-nav {
+                        background-position: center;
+                    }
+                }
+            }
+
         }
 
         #sayso-section-triangle-white {

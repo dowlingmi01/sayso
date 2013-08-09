@@ -29,7 +29,7 @@ class Starbar_Content // note, this is model does not extend Record
 		if ($key == "CONFIG_BASE_DOMAIN") {
 			return BASE_DOMAIN;
 		} else if ($key == "CONFIG_DEFAULT_SHARE_LINK" && APPLICATION_ENV != "production") {
-			return "http://" + BASE_DOMAIN + "/";
+			return "http://" . BASE_DOMAIN . "/";
 		}
 
 		// to ensure we don't infinitely recurse when we have sub-keys, track where we are.

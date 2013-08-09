@@ -1479,6 +1479,23 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 		},
 		"notifications": function() {
 			updateElements(null, "notifications");
+		},
+		"surveyCounts": function() {
+			if ('surveyCounts' in state.state
+				&& 'mission' in state.state.surveyCounts
+				&& state.state.surveyCounts.mission > 0
+			) {
+				if (! $('.sayso-nav-theme-button-overlay-missions', $nav).length) {
+					var $spotlightButton = $('div.sayso-nav-theme-button-container[data-section=trailer]', $nav);
+					$spotlightButton.data('section', 'missions');
+					$spotlightButton.prepend('<div class="sayso-nav-theme-button-overlay-missions"></div>');
+				}
+			} else {
+				if ($('.sayso-nav-theme-button-overlay-missions', $nav).length) {
+					$('.sayso-nav-theme-button-overlay-missions', $nav).remove();
+					$('div.sayso-nav-theme-button-container[data-section=missions]', $nav).data('section', 'trailer');
+				}
+			}
 		}
 	};
 

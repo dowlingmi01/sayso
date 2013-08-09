@@ -885,7 +885,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 			var $groups = $('.sayso-carousel-group', $elem);
 			var $prevButton = $('.sayso-carousel-prev', $elem);
 			var $nextButton = $('.sayso-carousel-next', $elem);
-			var currentIndex = 0;
+			var currentIndex = -1;
 
 			$groups.hide();
 
@@ -897,6 +897,10 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 					return false;
 				}
 			});
+
+			if (currentIndex == -1 && $groups.length) {
+				goNext(); // show the first one
+			}
 
 			function goNext(amount) {
 				if (typeof amount != "number") {

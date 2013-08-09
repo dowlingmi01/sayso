@@ -7,20 +7,10 @@ sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 
 	var actions = {
 		'display-get-satisfaction': function(data) {
-			var $container = $('<div id="gs_container" style="height: 100%; width: 100%;"></div>')
+            (function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/ZWJLw5Ynjj8uEXSqi9RHBA.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
+
+			var $container = $('<div data-uv-inline="classic_widget" data-uv-mode="full" data-uv-primary-color="#00ccc9" data-uv-link-color="#8ebd00" data-uv-default-mode="feedback" data-uv-forum-id="218239" data-uv-support-tab_name="Ping Recon" data-uv-feedback-tab_name="Give Feedback" data-uv-width="560px" data-uv-height="494px"></div>');
 			$('body').append($container);
-			$.getScript("//s3.amazonaws.com/getsatisfaction.com/javascripts/feedback-v2.js", function() {
-				new global.GSFN.feedback_widget({
-					display : "inline",
-					container : "gs_container",
-					company : "machinimarecon",
-					style : "question",
-					product : "machinimarecon_machinima_recon",
-					limit : "5",
-					width : "560px",
-					height : "494px"
-				});
-			});
 		},
 		'display-survey': function(data) {
 			var $SGQ = global.$SGQ;

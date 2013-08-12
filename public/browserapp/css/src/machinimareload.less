@@ -164,10 +164,6 @@
                 left: 0px;
             }
 
-            .sayso-progress-bar {
-                height: 29%;
-            }
-
             .sayso-progress-bar-value {
                 top: 9px;
                 margin-left: 10px;
@@ -337,6 +333,8 @@
 
                 .sayso-reward-item {
                     background-color: transparent;
+                    background-image: url('@{base-image-url}/section-rewards-item-background.png');
+                    background-repeat: no-repeat;
 
                     .sayso-reward-item-header {
                         background-color: transparent;
@@ -346,6 +344,54 @@
 
                     .sayso-reward-item-img {
                         background-color: transparent;
+                    }
+
+                    .sayso-reward-item-bottom {
+
+                        .sayso-reward-item-points-box {
+                            background-color: transparent;
+                            background-image: url('@{base-image-url}/meter-rewards.png');
+                            background-repeat: no-repeat;
+                            background-position: center;
+
+                            .sayso-reward-item-points-logo {
+                                left: 22px;
+                            }
+
+                            .sayso-reward-item-progress-bar-container {
+                                background-color: transparent;
+                                border: none;
+                                .border-radius(0px);
+                                .box-shadow();
+
+                                .sayso-reward-item-progress-bar {
+                                    display: none;
+                                }
+
+                                .sayso-reward-item-progress-bar-value {
+                                    top: 15px;
+                                    margin-left: 5px;
+                                }
+                            }
+                        }
+
+                        .sayso-reward-item-comment {
+                            margin-top: -4px;
+                        }
+
+                        .sayso-reward-item-redeem {
+                            border: none;
+                            .border-radius(0px);
+                            background-color: transparent;
+                            background-image: url('@{base-image-url}/section-rewards-redeem-button.png');
+                            background-position: center;
+                            background-repeat: no-repeat;
+                            .box-shadow();
+
+                            &.disabled {
+                                background-image: url('@{base-image-url}/section-rewards-redeem-button-disabled.png');
+                            }
+                        }
                     }
                 }
             }

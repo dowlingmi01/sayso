@@ -1,1 +1,1 @@
-sayso.module.config.defaultStarbarId = 7;
+sayso.module.config.defaultStarbarId = 4;

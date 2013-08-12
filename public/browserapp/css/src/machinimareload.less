@@ -299,15 +299,27 @@
         }
     }
 
+    &.sayso-section-survey-large {
+        #sayso-section {
+            background-image: url('@{base-image-url}/section-surveys-background.png');
+            background-repeat: no-repeat;
+        }
+
+        #sayso-section-triangle-white {
+            display: none;
+        }
+
+        #sayso-section-triangle-grey {
+            border-color: rgba(255, 255, 255, .175) transparent;
+        }
+    }
+
     &.sayso-section-trailer, &.sayso-section-tour-spotlight {
         #sayso-section {
-            width: 560px;
-            height: 500px;
             background-image: url('@{base-image-url}/section-spotlight-background.png');
             background-repeat: no-repeat;
 
             #sayso-section-body {
-                height: 456px;
             }
         }
 
@@ -482,7 +494,14 @@
                         }
 
                         .sayso-reward-item-comment {
-                            margin-top: -4px;
+                            height: 16px;
+                            line-height: 16px;
+                            margin: 0;
+                            font-weight: bold;
+
+                            &.disabled {
+                                background-position: 2px 3px;
+                            }
                         }
 
                         .sayso-reward-item-redeem {
@@ -493,6 +512,7 @@
                             background-position: center;
                             background-repeat: no-repeat;
                             .box-shadow();
+                            height: 36px;
 
                             &.disabled {
                                 background-image: url('@{base-image-url}/section-rewards-redeem-button-disabled.png');
@@ -503,6 +523,146 @@
                 }
             }
 
+            #sayso-reward-item-redeem-step {
+                .sayso-reward-item {
+                    .sayso-reward-item-bottom {
+
+                        .sayso-reward-item-points-box {
+                            background-color: transparent;
+                            background-image: url('@{base-image-url}/meter-rewards.png');
+                            background-repeat: no-repeat;
+                            background-position: center;
+
+                            .sayso-reward-item-points-logo {
+                                background-image: url('@{base-image-url}/icon-redeemable-small.png');
+                                left: 72px;
+                            }
+
+                            .sayso-reward-item-progress-bar-container {
+                                background-color: transparent;
+                                border: none;
+                                .border-radius(0px);
+                                .box-shadow();
+
+                                .sayso-reward-item-progress-bar {
+                                    display: none;
+                                }
+
+                                .sayso-reward-item-progress-bar-value {
+                                    top: 15px;
+                                    margin-left: 5px;
+                                }
+                            }
+                        }
+
+                        .sayso-reward-item-redeem-submit {
+                            border: none;
+                            .border-radius(0px);
+                            background-color: transparent;
+                            background-image: url('@{base-image-url}/section-rewards-redeem-button.png');
+                            background-position: center;
+                            background-repeat: no-repeat;
+                            .box-shadow();
+                            height: 36px;
+
+                            &.disabled {
+                                background-image: url('@{base-image-url}/section-rewards-redeem-button-disabled.png');
+                                background-color: transparent;
+                            }
+                        }
+
+                        .sayso-reward-item-finished-submit {
+                            border: none;
+                            .border-radius(0px);
+                            background-color: transparent;
+                            background-image: url('@{base-image-url}/section-rewards-return-button.png');
+                            background-position: center;
+                            background-repeat: no-repeat;
+                            .box-shadow();
+                            height: 36px;
+                        }
+                    }
+                }
+
+                .sayso-reward-item-redeem-order-container {
+                    .sayso-reward-item-redeem-order-bottom {
+                        background-color: #333;
+
+                        .sayso-reward-item-redeem-order-bottom-left {
+                            margin-left: 20px;
+                            .sayso-reward-item-points-box {
+                                background-color: transparent;
+                                background-image: url('@{base-image-url}/meter-rewards.png');
+                                background-repeat: no-repeat;
+                                background-position: center;
+
+                                .sayso-reward-item-points-logo {
+                                    background-image: url('@{base-image-url}/icon-redeemable-small.png');
+                                    left: 1px;
+                                    top: 11px;
+                                }
+
+                                .sayso-reward-item-progress-bar-container {
+                                    background-color: transparent;
+                                    border: none;
+                                    .border-radius(0px);
+                                    .box-shadow();
+
+                                    .sayso-reward-item-progress-bar {
+                                        display: none;
+                                    }
+
+                                    .sayso-reward-item-progress-bar-value {
+                                        top: 15px;
+                                        margin-left: 5px;
+                                    }
+                                }
+                            }
+                        }
+                        .sayso-reward-item-redeem-order-bottom-right {
+                            margin-left: 10px;
+                            .sayso-reward-item-points-box {
+                                background-color: transparent;
+                                background-image: url('@{base-image-url}/meter-rewards.png');
+                                background-repeat: no-repeat;
+                                background-position: center;
+
+                                .sayso-reward-item-points-logo {
+                                    background-image: url('@{base-image-url}/icon-redeemable-small.png');
+                                    left: 1px;
+                                    top: 11px;
+                                }
+
+                                .sayso-reward-item-progress-bar-container {
+                                    background-color: transparent;
+                                    border: none;
+                                    .border-radius(0px);
+                                    .box-shadow();
+
+                                    .sayso-reward-item-progress-bar {
+                                        display: none;
+                                    }
+
+                                    .sayso-reward-item-progress-bar-value {
+                                        top: 15px;
+                                        margin-left: 5px;
+                                    }
+                                }
+                            }
+                        }
+                        .sayso-reward-item-order-submit {
+                            border: none;
+                            .border-radius(0px);
+                            background-color: transparent;
+                            background-image: url('@{base-image-url}/section-rewards-order-button.png');
+                            background-position: center;
+                            background-repeat: no-repeat;
+                            .box-shadow();
+                            height: 36px;
+                        }
+                    }
+                }
+            }
         }
 
         #sayso-section-triangle-white {

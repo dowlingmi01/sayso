@@ -160,8 +160,8 @@
 
 
             .sayso-progress-bar-icon-redeemable {
-                top: -1px;
-                left: 0px;
+                top: 0;
+                left: 0;
             }
 
             .sayso-progress-bar-value {
@@ -177,7 +177,8 @@
 #sayso-section-container {
 
 	#sayso-section {
-        background-color: transparent;
+        background-color: #555;
+        background-clip: content-box;
         border: 8px solid rgba(255, 255, 255, .3);
         .box-shadow(0 3px 4px #333);
 
@@ -213,6 +214,28 @@
         #sayso-section {
             background-image: url('@{base-image-url}/section-polls-background.png');
             background-repeat: no-repeat;
+
+            .sayso-poll-container {
+
+                .sayso-poll-header {
+
+                    .sayso-poll-header-triangle {
+                        float: right;
+                        width: 17px;
+                        height: 18px;
+                        background-image: url('@{base-image-url}/polls-arrow-right.png');
+                        .transition-duration();
+                    }
+
+                    &:hover {
+                        background-color: #bbb;
+                    }
+                }
+
+                .sayso-poll {
+                    background-color: white;
+                }
+            }
         }
 
         #sayso-section-triangle-white {
@@ -299,10 +322,82 @@
             height: 320px;
             background-image: url('@{base-image-url}/section-profile-background.png');
             background-repeat: no-repeat;
+
             #sayso-section-body {
+
                 #sayso-experience-levels-container {
+
                     .sayso-experience-levels-nav {
                         background-position: center;
+                    }
+                }
+
+                #sayso-experience-currencies-container {
+
+                    .sayso-experience-currencies-container-left {
+
+                        .sayso-experience-currencies-experience-box {
+                            background-color: transparent;
+                            background-image: url('@{base-image-url}/meter-account-xp.png');
+                            background-repeat: no-repeat;
+                            background-position: center;
+
+                            .sayso-experience-currencies-experience-logo {
+                                top: 12px;
+                            }
+
+                            .sayso-experience-currencies-experience-progress-bar-container {
+                                position: relative;
+                                top: 7px;
+                                background-color: transparent;
+                                border: none;
+                                .border-radius(0px);
+                                .box-shadow();
+
+                                .sayso-experience-currencies-experience-progress-bar {
+                                    height: 60%;
+                                    margin-left: 5px;
+                                }
+
+                                .sayso-experience-currencies-experience-progress-bar-value {
+                                    top: -2px;
+                                    margin-left: 5px;
+                                }
+                            }
+                        }
+
+                        .sayso-experience-currencies-next-level {
+                            margin-left: 2px;
+                        }
+                    }
+
+                    .sayso-experience-currencies-container-right {
+
+                        .sayso-experience-currencies-redeemable-box {
+                            background-color: transparent;
+                            background-image: url('@{base-image-url}/meter-account-coins.png');
+                            background-repeat: no-repeat;
+                            background-position: center;
+
+                            .sayso-experience-currencies-redeemable-logo {
+                                left: 4px;
+                                top: 12px;
+                            }
+
+                            .sayso-experience-currencies-redeemable-progress-bar-container {
+                                position: relative;
+                                top: 7px;
+                                background-color: transparent;
+                                border: none;
+                                .border-radius(0px);
+                                .box-shadow();
+
+                                .sayso-experience-currencies-redeemable-progress-bar-value {
+                                    top: -2px;
+                                    margin-left: 5px;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -335,6 +430,7 @@
                     background-color: transparent;
                     background-image: url('@{base-image-url}/section-rewards-item-background.png');
                     background-repeat: no-repeat;
+                    .box-shadow(0px 2px 5px 1px black);
 
                     .sayso-reward-item-header {
                         background-color: transparent;

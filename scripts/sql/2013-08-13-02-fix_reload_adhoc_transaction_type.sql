@@ -1,0 +1,1 @@
+UPDATE game_transaction_type SET class = 'AdHoc' WHERE id IN (178, 179);

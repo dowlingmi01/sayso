@@ -731,6 +731,9 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 			else
 				return state.state.game.levels[state.state.game.level].name;
 		},
+        "user-level-name": function () {
+            return state.state.game.levels[state.state.game.level].name;
+        },
         "next-exp-threshold": function(game) {
             return game.levels[game.level+1].threshold;
         },
@@ -1520,12 +1523,13 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 		"profile": {
 			// user profile handlers here
 			"user-public-name": function ($elem, data, animate) {
-				if (state.state.profile.public_name)
-					$elem.html(state.state.profile.public_name);
-				else
-					$elem.html(state.state.game.levels[state.state.game.level].name);
-				// this $elem should contain a user's name
-			},
+                if (state.state.profile.public_name)
+                    $elem.html(state.state.profile.public_name);
+                else
+                    $elem.html(state.state.game.levels[state.state.game.level].name);
+                // this $elem should contain a user's name
+            },
+            "user-level-name": function ($elem, data, animate) { $elem.html(state.state.game.levels[state.state.game.level].name); },
 			"user-image": function ($elem, data, animate) {}
 		},
 		"notifications": {

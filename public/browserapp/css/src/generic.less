@@ -1882,14 +1882,17 @@
     &.sayso-section-missions {
 		#sayso-section {
 			left: 333px;
-			width: 674px;
-			height: 578px;
+            width: 655px;
+            height: 560px;
 
 			#sayso-section-header {
 				background-image: url('@{base-image-url}/section-heading-spotlight.png');
 			}
 
 			#sayso-mission-carousel-container {
+                height: 100%;
+                margin-top: 5px;
+
 				.sayso-carousel-prev, .sayso-carousel-next {
 					width: 20px;
 					height: 100%;
@@ -1909,12 +1912,17 @@
 
 				.sayso-carousel-group {
 					display: inline-block;
-					width: 624px;
+					width: 575px;
 					height: 100%;
 					margin: 0 5px;
 				}
 			}
 		}
+
+        #sayso-section-triangle-white, #sayso-section-triangle-grey {
+            display: block;
+            left: 560px;
+        }
 	}
 
     &.sayso-section-trailer, &.sayso-section-tour-trailer {

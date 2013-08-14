@@ -1881,16 +1881,22 @@
 
     &.sayso-section-missions {
 		#sayso-section {
-			left: 163px;
-			width: 674px;
-			height: 578px;
-			bottom: 40px;
+            left: 333px;
+            width: 655px;
+            height: 560px;
 
 			#sayso-section-header {
 				background-image: url('@{base-image-url}/section-heading-spotlight.png');
 			}
 
 			#sayso-mission-carousel-container {
+                position: absolute;
+                overflow: hidden;
+                width: 642px;
+                height: 72px;
+                margin-top: 5px;
+                bottom: 10px;
+
 				.sayso-carousel-prev, .sayso-carousel-next {
 					width: 20px;
 					height: 100%;
@@ -1901,7 +1907,7 @@
 
 				.sayso-carousel-prev {
 					background-image: url('@{base-image-url}/big-arrow-right.png');
-					.transform(rotate(180deg));
+                    .flip-horizontal;
 				}
 
 				.sayso-carousel-next {
@@ -2013,7 +2019,7 @@
 
 					.sayso-carousel-prev {
 						background-image: url('@{base-image-url}/big-arrow-right.png');
-						.transform(rotate(180deg));
+                        .flip-horizontal;
 					}
 
 					.sayso-carousel-next {

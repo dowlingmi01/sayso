@@ -892,6 +892,11 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 
 			$groups.hide();
 
+            if ($groups.length === 0) {
+                $prevButton.hide();
+                $nextButton.hide();
+            }
+
 			$groups.each(function(index) {
 				var $group = $(this);
 				if ($group.hasClass('sayso-carousel-active') || $('.sayso-carousel-active', $group).length > 0) {

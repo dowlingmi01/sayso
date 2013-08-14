@@ -349,6 +349,29 @@
         }
     }
 
+    &.sayso-section-missions, &.sayso-section-tour-missions {
+        #sayso-section {
+            background-image: url('@{base-image-url}/section-spotlight-background.png');
+            background-repeat: no-repeat;
+
+            #sayso-section-body {
+                #sayso-trailer-carousel-container{
+                    .sayso-carousel-group {
+                        background-color: transparent;
+                    }
+                }
+            }
+        }
+
+        #sayso-section-triangle-white {
+            display: none;
+        }
+
+        #sayso-section-triangle-grey {
+            border-color: rgba(255, 255, 255, .175) transparent;
+        }
+    }
+
     &.sayso-section-experience, &.sayso-section-tour-experience {
         #sayso-section {
             width: 570px;

@@ -38,7 +38,7 @@ class User_Session extends Record
 		$this->browser_id = $browser->id;
 
 		//expire existing sessions for this user and ip
-		Db_Pdo::execute('UPDATE '. $this->_tableName .' SET expired = now() WHERE user_id = ? AND ip = INET_ATON(?) AND browser_id = ?', $userId, $_SERVER["REMOTE_ADDR"], $browser->id);
+		Db_Pdo::execute('UPDATE '. $this->_tableName .' SET expired = now() WHERE user_id = ? AND expired IS NULL AND ip = INET_ATON(?) AND browser_id = ?', $userId, $_SERVER["REMOTE_ADDR"], $browser->id);
 
 		//add entry to session table
 		$this->user_id = $userId;

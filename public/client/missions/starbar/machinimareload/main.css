@@ -403,3 +403,6 @@ input[type="radio"] {
 	padding: 0 10px;
 	text-align: center;
 }
+.mission-image-poll-answers {
+    overflow-x: hidden;
+}

@@ -1,0 +1,206 @@
+{
+	"title": "Social Media",
+	"background": "mission/images/Intro_frame.jpg",
+	"preview_image": "/client/missions/mission/socialmedia/images/Mission_Billboard_001.jpg",
+	"description": "<div style=\"height: 50px;\"></div>",
+	"progress_token": "mission/images/Token_For_ProgressBar.png",
+	"validation": "<h3>Congratulations, you completed the mission!</h3><img src='mission/images/Final_Frame.png' alt='' /><p>You earned 75 PaySo and 750 SaySo.</p><p>You may close this tab at any time.</p>",
+	"reward_experience": 750,
+	"reward_redeemable": 75,
+	"stages": [
+		{
+			"id": 1,
+			"short_title": "Question",
+			"type": "poll",
+			"background": "mission/images/Stage1_bg.png",
+			"data": {
+				"question": {
+					"id": 1,
+					"text": "How important do you think using social media to help grow and connect to your audience is?"
+				},
+				"answers": [
+					{
+						"id": 1,
+						"text": "Not very important"
+					},
+					{
+						"id": 2,
+						"text": "Somewhat important"
+					},
+					{
+						"id": 3,
+						"text": "Definitely important"
+					},
+					{
+						"id": 4,
+						"text": "What is social media?"
+					}
+				]
+			}
+		},
+		{
+			"id": 2,
+			"short_title": "Watch",
+			"type": "video",
+			"background": "",
+			"data": {
+				"title": "Grow your audience with social media",
+				"caption": "Please watch the video and answer the question that will follow.",
+				"url": "gYvgWztm_00",
+				"enableControls" : 1,
+				"question": {
+					"id": 1,
+					"text": "Did this video provide new and useful information to you?"
+				},
+				"answers": [
+					{
+						"id": 1,
+						"text": "No, I am already knowledgeable about this topic."
+					},
+					{
+						"id": 2,
+						"text": "No, I didn't understand what the video was trying to cover."
+					},
+					{
+						"id": 3,
+						"text": "Yes, although I am familiar with this topic, this video included some information I did not already know."
+					},
+					{
+						"id": 4,
+						"text": "Yes, this information was very helpful and all new to me."
+					}
+				]
+			}
+		},
+		{
+			"id": 3,
+			"short_title": "Question",
+			"type": "poll",
+			"background": "mission/images/Stage2_bg.png",
+			"data": {
+				"question": {
+					"id": 1,
+					"text": "When it comes to blogging, what does the video recommend?"
+				},
+				"answers": [
+					{
+						"id": 1,
+						"text": "Pay for a new blog template/theme."
+					},
+					{
+						"id": 2,
+						"text": "Comment on a lot of blogs to get noticed."
+					},
+					{
+						"id": 3,
+						"text": "Create a Blog Roll."
+					},
+					{
+						"id": 4,
+						"text": "Always use WordPress."
+					}
+				]
+			}
+		},
+		{
+			"id": 4,
+			"short_title": "Question",
+			"type": "poll",
+			"background": "mission/images/Stage3_bg.png",
+			"data": {
+				"question": {
+					"id": 1,
+					"text": "Which of the following was not mentioned as a \"Tip to help build your audience\"?"
+				},
+				"answers": [
+					{
+						"id": 1,
+						"text": "Track engagement and referral traffic."
+					},
+					{
+						"id": 2,
+						"text": "Create a weekly newsletter."
+					},
+					{
+						"id": 3,
+						"text": "Create and maintain a Blog Roll."
+					},
+					{
+						"id": 4,
+						"text": "Perform outreach to relevant blogs."
+					}
+				]
+			}
+		},
+		{
+			"id": 5,
+			"short_title": "Poll",
+			"type": "image-poll",
+			"background": "mission/images/Stage5_bg.png",
+			"data": {
+				"question": {
+					"id": 1,
+					"text": "Which of these social media sites do you use most to connect with your audience?"
+				},
+				"answers": [
+					{
+						"id": 1,
+						"image": "mission/images/facebook.png",
+						"label": "Facebook",
+						"text": "Facebook"
+					},
+					{
+						"id": 2,
+						"image": "mission/images/twitter.png",
+						"label": "Twitter",
+						"text": "Twitter"
+					},
+					{
+						"id": 3,
+						"image": "mission/images/reddit.png",
+						"label": "Reddit",
+						"text": "Reddit"
+					},
+					{
+						"id": 4,
+						"image": "mission/images/google.png",
+						"label": "Google+",
+						"text": "Google+"
+					},
+					{
+						"id": 5,
+						"image": "mission/images/instagram.png",
+						"label": "Instagram",
+						"text": "Instagram"
+					}
+				]
+			}
+		},
+		{
+			"id": 6,
+			"short_title": "Question",
+			"type": "poll",
+			"background": "mission/images/Stage3_bg.png",
+			"data": {
+				"question": {
+					"id": 1,
+					"text": "What did you think about this Mission?"
+				},
+				"answers": [
+					{
+						"id": 1,
+						"text": "Waste of time"
+					},
+					{
+						"id": 2,
+						"text": "Interesting, but I already knew this stuff"
+					},
+					{
+						"id": 3,
+						"text": "This was really helpful "
+					}
+				]
+			}
+		}
+	]
+}

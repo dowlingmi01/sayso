@@ -49,6 +49,27 @@
             }
 		});
 	}
+	function loginMachinimaReload( data ) {
+		getPublicApi().sendRequest( {action_class: 'Login', action: 'machinimaReloadLogin',
+			email: data.email, digest: data.digest}, function( data ) {
+			var session = data.responses['default'].variables;
+			if (session) {
+				session = { id: session.session_id, key: session.session_key, timestamp: (new Date()).getTime() };
+				state.session = session;
+				comm.set('session', session, function() {
+					state.loggedIn = null;
+					getUserState();
+				});
+			} else {
+				state.loggedIn = false;
+				for( var starbarId in pendingRequests )
+					for( var i in pendingRequests[starbarId] )
+						pendingRequests[starbarId][i]( {loggedIn:false} );
+				pendingRequests = {};
+				pendingStarbars = {};
+			}
+		});
+	}
 	function logout(unused, callback) {
 		getPublicApi().sendRequest( {action_class: 'Login', action: 'logout', current_session_id: state.session.id} );
 		state.starbars = {};
@@ -152,7 +173,10 @@
 	}
 	function getState( data, callback ) {
 		var starbarId = (data && data.starbar_id) || state.currentStarbarId || 0;
-		if( state.loggedIn === false || (state.loggedIn && state.starbars[starbarId]) )
+		if( state.loggedIn === false && data.machinimareload ) {
+			addPendingRequest( starbarId, callback );
+			loginMachinimaReload(data.machinimareload);
+		} else if( state.loggedIn === false || (state.loggedIn && state.starbars[starbarId]) )
 			callback( buildStateForStarbar(starbarId) );
 		else {
 			addPendingRequest( starbarId, callback );

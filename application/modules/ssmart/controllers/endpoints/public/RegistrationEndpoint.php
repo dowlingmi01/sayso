@@ -40,5 +40,31 @@ class Ssmart_Public_RegistrationEndpoint extends Ssmart_GlobalController
 		// success
 		return $response;
 	}
+	public function createMachinimaReloadUser(Ssmart_EndpointRequest $request)
+	{
+		$validators = array(
+			"digest"			=> "required",
+			"email"				=> "email"
+		);
+		$filters = array();
 
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
+
+		if ($response->hasErrors())
+			return $response;
+
+		//logic
+		$starbarId = 7;
+		$digest = $request->valid_parameters["digest"];
+		$email = strtolower($request->valid_parameters["email"]);
+
+		//TODO: validate user against Machinima endpoint
+
+		$userId = User::create($email, '', $starbarId);
+
+		$response->setResultVariable("user_id", $userId);
+
+		// success
+		return $response;
+	}
 }

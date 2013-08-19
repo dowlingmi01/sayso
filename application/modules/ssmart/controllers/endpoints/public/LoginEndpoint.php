@@ -103,6 +103,32 @@ class Ssmart_Public_LoginEndpoint extends Ssmart_GlobalController
 		// success
 		return $response;
 	}
+	public function machinimaReloadLogin(Ssmart_EndpointRequest $request)
+	{
+		$validators = array(
+			"email"			=> "email",
+			"digest"		=> "required"
+		);
+		$filters = array();
+
+		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
+
+		if ($response->hasErrors())
+			return $response;
+
+		//logic
+		$email = $request->valid_parameters["email"];
+		$digest = $request->valid_parameters["digest"];
+
+		$loginData = User_Login::loginMachinimaReload($email, $digest);
+		if (!$loginData)
+			throw new Exception("Login failed");
+
+		$response->setResultVariable("session_id", $loginData["session"]->id);
+		$response->setResultVariable("session_key", $loginData["session"]->session_key);
+
+		return $response;
+	}
 
 
 }

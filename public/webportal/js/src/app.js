@@ -488,6 +488,45 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
 			}
 		},
 
+		"join-machinimareload": function ($elem) {
+			var $registerButton = $('#portal_join_now_button', $elem),
+				$agreeTermsCheckbox = $("#agreeterms", $elem),
+				buttonActive = false;
+
+			$agreeTermsCheckbox.on('click', activateSubmit);
+
+			function activateSubmit() {
+				if($agreeTermsCheckbox.is(':checked')) {
+					if(!buttonActive) {
+						$registerButton.removeClass('join_now_button_disabled').addClass('join_now_button');
+						$registerButton.on('click', createAccount);
+						buttonActive = true;
+					}
+				}
+				else {
+					if(buttonActive){
+						$registerButton.removeClass('join_now_button').addClass('join_now_button_disabled');
+						$registerButton.off('click');
+						buttonActive = false;
+					}
+				}
+			}
+
+			function createAccount() {
+				api.doRequest({
+					action_class : 'registration',
+					action : 'createMachinimaReloadUser',
+					email : state.machinimareload.email,
+					digest : state.machinimareload.digest
+				}, function(response){
+					var success = response.responses['default'].variables.user_id;
+					if (success) {
+						state.loginMachinimaReload();
+					}
+				});
+			}
+		},
+
 		"install-app" : function ($elem, data) {
 			if( !document.location.href.match('content/get-app-confirmation') )
 				document.location.hash = 'content/get-app-confirmation';

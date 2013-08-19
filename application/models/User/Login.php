@@ -71,6 +71,32 @@ class User_Login {
 		return $result;
 	}
 
+	public static function loginMachinimaReload($email, $digest)
+	{
+		//TODO: validate user against Machinima endpoint
+
+		// attempt getting the user
+		$userEmail = Db_Pdo::fetch('SELECT id FROM user_email WHERE email = ?', $email);
+		if (empty($userEmail))
+			return;
+
+		$userRow = Db_Pdo::fetch('SELECT * FROM user WHERE id = ?', $userEmail["id"]);
+		// no user found
+		if (empty($userRow))
+			return;
+
+		if( $userRow['status'] != 'active' )
+			return;
+
+		// all is good
+		$session = new User_Session();
+		$session->setSession($userRow["id"]);
+
+		$result = array("session" => $session);
+
+		return $result;
+	}
+
 	/**
 	 * Performs login actions with legacy user_key for transition period
 	 *  - Checks if ip is banned

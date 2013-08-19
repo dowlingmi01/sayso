@@ -1,9 +1,10 @@
-sayso.module.state = (function(global, $, comm, config) {
+sayso.module.state = (function(global, $, comm, config, util) {
 	var publicVar = {
 		state: null,
 		ready: false,
 		login: login,
 		logout: logout,
+		loginMachinimaReload: loginMachinimaReload,
 		setVisibility: setVisibility
 	};
 	var stateListeners = {
@@ -47,6 +48,9 @@ sayso.module.state = (function(global, $, comm, config) {
 	function logout( callback ) {
 		comm.request('logout', null, callback);
 	}
+	function loginMachinimaReload() {
+		requestState('login');
+	}
 	function gotState(eventName) {
 		return function(data) {
 			publicVar.state = data;
@@ -55,7 +59,16 @@ sayso.module.state = (function(global, $, comm, config) {
 		};
 	}
 	function requestState( eventName ) {
-		comm.request('get-state', {starbar_id: config.defaultStarbarId}, gotState( eventName ));
+		var urlParams = util.urlParams(config.location.search.slice(1));
+		var params = {starbar_id: config.defaultStarbarId};
+		if( urlParams.machinimareload_email && urlParams.machinimareload_digest ) {
+			publicVar.machinimareload = {
+				email: urlParams.machinimareload_email,
+				digest: urlParams.machinimareload_digest
+			};
+			params.machinimareload = publicVar.machinimareload;
+		}
+		comm.request('get-state', params, gotState( eventName ));
 	}
 	function setVisibility( visibility ) {
 		comm.request('set-visibility', visibility);
@@ -70,5 +83,5 @@ sayso.module.state = (function(global, $, comm, config) {
 		$(global.document).on('sayso:comm-ready', function() { requestState('ready'); });
 
 	return publicVar;
-})(this, jQuery, sayso.module.comm, sayso.module.config)
+})(this, jQuery, sayso.module.comm, sayso.module.config, sayso.module.util)
 ;

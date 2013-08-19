@@ -16,8 +16,8 @@ class Task_Router_Cli extends Zend_Controller_Router_Abstract
 	 */
 	public function route(Zend_Controller_Request_Abstract $dispatcher)
 	{
-		$getopt = new Zend_Console_Getopt(array());
-		$arguments = $getopt->getRemainingArgs();
+		$arguments = $_SERVER['argv'];
+		array_shift($arguments);
 		if ($arguments)
 		{
 			$command = array_shift($arguments);

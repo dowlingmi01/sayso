@@ -175,7 +175,8 @@
 	if( in_iframe && config.location.href.match(/saysollc.com\/browserapp\/readStorage.html/))
 		return;
 
-	if( !in_iframe && config.location.host.match(/say.so|saysollc.com/) ) {
+	if( (!in_iframe || config.location.pathname.match(/\/machinimareload.html/)) &&
+		config.location.host.match(/say.so|saysollc.com/) ) {
 		webportal = true;
 		commrelay.install();
 	}

@@ -9,12 +9,12 @@ sayso.module.comm = (function(global, $, util) {
 		callback( JSON.parse(global.localStorage.getItem(name)) );
 	}
 	function broadcast( name, data ) {
-		global.top.postMessage( JSON.stringify(['sayso-broadcast', {name: name, data: data}]), '*');
+		global.parent.postMessage( JSON.stringify(['sayso-broadcast', {name: name, data: data}]), '*');
 	}
 	function getReplyCallback( id ) {
 		return function( data ) {
 			if( id )
-				global.top.postMessage( JSON.stringify(['sayso-background-reply', {id: id, data: data}]), '*');
+				global.parent.postMessage( JSON.stringify(['sayso-background-reply', {id: id, data: data}]), '*');
 		};
 	}
 	function handleMessage( event ) {
@@ -25,7 +25,7 @@ sayso.module.comm = (function(global, $, util) {
 			if( data[0] && data[0] === 'sayso-frontend-request' && data[1] && data[1].name && listeners[data[1].name])
 				listeners[data[1].name](data[1].data, getReplyCallback(data[1].id));
 		} catch( e ) {
-			global.console.log(e.stack);
+			util.log(e.stack);
 		}
 	}
 	function listen( name, callback ) {

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="/browserapp/js/src/lib/jquery-1.10.1.js"></script>
+    <script src="js/machinima-reload-init.js"></script>
+    <script>
+        $(function() {
+            $('#form').submit(function(e) {
+                var email = $('#email').val();
+                var signature = "signature";
+                initializeSaySoPortal(email, signature);
+                $(':input').prop('disabled','disabled');
+                e.preventDefault();
+            });
+        })
+    </script>
+
+</head>
+<body>
+<form id="form">email: <input id="email"><input type="submit" id="submit" value="Load"></form>
+</body>
+</html>

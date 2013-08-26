@@ -4,7 +4,7 @@
 	"preview_image": "/client/missions/mission/socialmedia/images/Mission_Billboard_001.jpg",
 	"description": "<div style=\"height: 50px;\"></div>",
 	"progress_token": "mission/images/Token_For_ProgressBar.png",
-	"validation": "<h3>Congratulations, you completed the mission!</h3><img src='mission/images/Final_Frame.png' alt='' /><p>You earned 75 PaySo and 750 SaySo.</p><p>You may close this tab at any time.</p>",
+	"validation": "<h3>Congratulations, you completed the mission!</h3><img src='mission/images/Final_Frame.png' alt='' /><p>You earned 75 Credits and 750 Rank.</p><p>You may close this tab at any time.</p>",
 	"reward_experience": 750,
 	"reward_redeemable": 75,
 	"stages": [
@@ -47,7 +47,7 @@
 				"title": "Grow your audience with social media",
 				"caption": "Please watch the video and answer the question that will follow.",
 				"url": "gYvgWztm_00",
-				"enableControls" : 1,
+				"enableControls" : 0,
 				"question": {
 					"id": 1,
 					"text": "Did this video provide new and useful information to you?"

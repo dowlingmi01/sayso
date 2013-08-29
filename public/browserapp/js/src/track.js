@@ -12,7 +12,7 @@ sayso.module.track = (function(config, util, $, comm, api, state) { return funct
 	var trackerBlackList = [/saysollc\.com/];
 	for (var i = 0, ln = trackerBlackList.length; i < ln; i++)
 	{
-		if (trackerBlackList[i].test(config.location.href))
+		if (trackerBlackList[i].test(config.location.hostname))
 		{
 			return;
 		}

@@ -98,7 +98,7 @@ class Ssmart_Panelist_StarbarEndpoint extends Ssmart_GlobalController
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		//logic
-		$starbarId				= $request->getparam("starbar_id");
+		$starbarId				= $request->getParam("starbar_id");
 		$userId					= $request->getUserId();
 
 		//ensure this user has access to this starbar

@@ -17,9 +17,6 @@ class Ssmart_Panelist_UserEndpoint extends Ssmart_GlobalController
 	{
 		$response = new Ssmart_EndpointResponse($request);
 
-		if ($response->hasErrors())
-			return $response;
-
 		//logic
 		$userId = $request->getUserId();
 

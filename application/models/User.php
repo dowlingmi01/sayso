@@ -133,15 +133,8 @@ class User extends Record implements Titled
 			$this->_email->save();
 
 			// check if this is a test email address, if so, mark the user as such (unless they already are)
-			if ($this->type != 'test') {
-				$testEmailPatterns = User_Email::getTestEmailPatterns();
-				foreach ($testEmailPatterns as $testEmailPattern) {
-					if (preg_match($testEmailPattern, $this->_email->email) == 1) {
-						$this->type = 'test';
-						break; // exit the loop
-					}
-				}
-			}
+			if ($this->type != 'test' && User_Email::isTestEmail($this->_email->email))
+				$this->type = 'test';
 
 			// update primary email address & re-save the User
 			$this->primary_email_id = $this->_email->getId();
@@ -221,6 +214,8 @@ class User extends Record implements Titled
 	}
 
 	public static function create( $email, $pw, $starbarId) {
+		$names = self::validateEmailForStarbar($email, $starbarId);
+
 		$userEmail = new User_Email();
 
 		$userEmail->loadDataByUniqueFields(array('email'=>$email));
@@ -234,6 +229,10 @@ class User extends Record implements Titled
 			$userEmail->email = $email;
 			$user->setEmail($userEmail);
 		}
+		if(array_key_exists('last_name', $names))
+			$user->last_name = $names['last_name'];
+		if(array_key_exists('first_name', $names))
+			$user->first_name = $names['first_name'];
 
 		$user->setPlainTextPassword($pw);
 		$user->save();
@@ -259,5 +258,25 @@ class User extends Record implements Titled
 
 		return $user->id;
 	}
+
+	public static function validateEmailForStarbar($email, $starbarId) {
+		if( $starbarId != 7 || User_Email::isTestEmail($email) )
+			return array();
+		$sql = 'SELECT first_name, last_name FROM starbar_valid_email WHERE starbar_id = ? AND email = ?';
+		$result = Db_Pdo::fetch($sql, $starbarId, $email);
+		if(!$result)
+			throw new Exception('user_does_not_have_access_to_starbar');
+		return $result;
+	}
+	public static function validateUserIdForStarbar($userId, $starbarId) {
+		if( $starbarId != 7 )
+			return;
+		$user = new User();
+		$user->loadData($userId);
+		if($user->type == 'test')
+			return;
+		self::validateEmailForStarbar($user->getEmail(), $starbarId);
+	}
+
 }
 

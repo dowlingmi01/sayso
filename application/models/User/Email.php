@@ -28,8 +28,12 @@ class User_Email extends Record implements Titled
 		}
 	}
 
-	static public function getTestEmailPatterns() {
-		return array("/.*@say.so/", "/.*@saysollc.com/", "/.*@interpretllc.com/");
+	static public function isTestEmail($email) {
+		$testEmailPatterns = ["/.*@say.so/", "/.*@saysollc.com/", "/.*@interpretllc.com/"];
+		foreach ($testEmailPatterns as $testEmailPattern)
+			if (preg_match($testEmailPattern, $email) == 1)
+				return true;
+		return false;
 	}
 }
 

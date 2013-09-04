@@ -275,7 +275,7 @@ class User extends Record implements Titled
 		$user->loadData($userId);
 		if($user->type == 'test')
 			return;
-		self::validateEmailForStarbar($user->getEmail(), $starbarId);
+		self::validateEmailForStarbar($user->getEmail()->email, $starbarId);
 	}
 
 }

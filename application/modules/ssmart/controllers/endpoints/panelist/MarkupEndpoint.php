@@ -34,9 +34,6 @@ class Ssmart_Panelist_MarkupEndpoint extends Ssmart_GlobalController
 		$key = $request->getParam("key");
 		$userType = $request->getUserType();
 
-		//ensure this user has access to this starbar
-		$this->checkUserAccessToStarbar($response, $starbarId, TRUE);
-
 		if (!in_array($app, ["browserapp", "webportal"])) {
 			$response->setResponseError("invalid_markup_request");
 			return $response;

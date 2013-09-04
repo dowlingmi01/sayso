@@ -12,7 +12,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 			$nav.remove();
 		}
 
-		if (state.state.loggedIn) {
+		if (state.state.loggedIn && state.state.starbar) {
 			userMode = "logged-in";
 
 			starbarId = state.state.starbar.id;

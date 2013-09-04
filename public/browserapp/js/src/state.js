@@ -5,6 +5,7 @@ sayso.module.state = (function(global, $, comm, config, util) {
 		login: login,
 		logout: logout,
 		loginMachinimaReload: loginMachinimaReload,
+		refresh: refresh,
 		setVisibility: setVisibility
 	};
 	var stateListeners = {
@@ -72,6 +73,9 @@ sayso.module.state = (function(global, $, comm, config, util) {
 	}
 	function setVisibility( visibility ) {
 		comm.request('set-visibility', visibility);
+	}
+	function refresh() {
+		requestState('starbar');
 	}
 
 	for( var name in stateListeners )

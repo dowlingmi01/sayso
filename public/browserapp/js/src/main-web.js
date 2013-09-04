@@ -1,6 +1,6 @@
 (function(global, state, browserapp) {
 	$(function(){
-		$(global.document).on('sayso:state-login sayso:state-logout sayso:state-ready', browserapp.initApp);
+		$(global.document).on('sayso:state-login sayso:state-logout sayso:state-ready sayso:state-starbar', browserapp.initApp);
 		if( state.ready )
 			browserapp.initApp();
 	});

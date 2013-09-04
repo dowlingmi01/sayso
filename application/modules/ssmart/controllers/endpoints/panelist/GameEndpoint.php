@@ -29,6 +29,9 @@ class Ssmart_Panelist_GameEndpoint extends Ssmart_GlobalController
 		$userId			= $request->getUserId();
 		$starbarId		= $request->getParam("starbar_id");
 
+		//ensure this user has access to this starbar
+		$this->checkUserAccessToStarbar($response, $starbarId, TRUE);
+
 		$economyId = Economy::getIdforStarbar($starbarId);
 		$commonDataParams = array("user_id" => $userId, "economy_id" => $economyId);
 		$game = $response->getCommonDataFromModel("game", $commonDataParams);

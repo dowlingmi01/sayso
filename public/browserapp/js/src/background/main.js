@@ -107,7 +107,7 @@
 							pendingRequests[state.currentStarbarId] = pendingRequests[0];
 						delete pendingRequests[0];
 					}
-					if( !pendingRequests[state.currentStarbarId] )
+					if( config.extVersion && !pendingRequests[state.currentStarbarId] )
 						pendingRequests[state.currentStarbarId] = [];
 					for( var starbarId in pendingRequests )
 						getStarbarState( starbarId );
@@ -137,13 +137,15 @@
 
 		api.sendRequests( function(data) {
 			checkForNewSession(data);
-			state.starbars[starbarId] = data.responses.starbar.records[0];
-			state.starbars[starbarId].id = starbarId;
-			state.starbars[starbarId].markup = data.responses.markup.variables.markup;
-			state.games[state.starbars[starbarId].economy_id] = data.responses.game.variables.game;
-			state.notifications[starbarId] = data.responses.notifications.records;
-			if( config.extVersion )
-				state.surveyCounts[starbarId] = {mission: data.responses.missionCount.variables.count};
+			if( !data.responses.starbar.errors ) {
+				state.starbars[starbarId] = data.responses.starbar.records[0];
+				state.starbars[starbarId].id = starbarId;
+				state.starbars[starbarId].markup = data.responses.markup.variables.markup;
+				state.games[state.starbars[starbarId].economy_id] = data.responses.game.variables.game;
+				state.notifications[starbarId] = data.responses.notifications.records;
+				if( config.extVersion )
+					state.surveyCounts[starbarId] = {mission: data.responses.missionCount.variables.count};
+			}
 			if( pendingRequests[starbarId] ) {
 				var stateForStarbar = buildStateForStarbar(starbarId);
 				for( var i in pendingRequests[starbarId] )
@@ -154,17 +156,24 @@
 		} );
 	}
 	function buildStateForStarbar( starbarId ) {
-		return state.loggedIn ? {
-			loggedIn: state.loggedIn,
-			profile: state.profile,
-			visibility: state.visibility,
-			starbar: state.starbars[starbarId],
-			notifications: state.notifications[starbarId],
-			surveyCounts: state.surveyCounts[starbarId],
-			game: state.games[state.starbars[starbarId].economy_id],
-			studies: state.studies,
-			adTargets: state.adTargets
-		} : { loggedIn: false };
+		var result;
+		if( state.loggedIn ) {
+			result = {
+				loggedIn: state.loggedIn,
+				profile: state.profile,
+				visibility: state.visibility,
+				studies: state.studies,
+				adTargets: state.adTargets
+			};
+			if( state.starbars[starbarId] ) {
+				result.starbar = state.starbars[starbarId];
+				result.notifications = state.notifications[starbarId];
+				result.surveyCounts = state.surveyCounts[starbarId];
+				result.game = state.games[state.starbars[starbarId].economy_id];
+			}
+		} else
+			result = { loggedIn: false };
+		return result;
 	}
 	function addPendingRequest( starbarId, callback ) {
 		if( !pendingRequests[starbarId] )

@@ -175,6 +175,7 @@ div.sectiontriangle {
 	position: absolute;
 	top: 2px;
 	left: 0px;
+	cursor: pointer;
 }
 
 div.endpointtriangle {
@@ -186,6 +187,7 @@ div.endpointtriangle {
 	position: absolute;
 	top: 9px;
 	left: 10px;
+	cursor: pointer;
 }
 
 .shown div.sectiontriangle, .endpoint.shown div.endpointtriangle {

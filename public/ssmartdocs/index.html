@@ -3,1098 +3,1021 @@
 <head>
 	<meta charset="utf-8">
 	<title>Say.So API Docs</title>
+	<script type="text/javascript" src="//use.typekit.net/ikk6swm.js"></script>
+	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 	<link rel="stylesheet" href="docs.css">
 </head>
 
 <body>
 	<div id="container" ng-app="apidocs">
-		<div>
-			<h1 class="title">Say.SMART <span>| Say.So's Multipoint API for Research and Tracking</span></h1>
-
-			<h1>Introduction</h1>
-			<p>Say.SMART is an application programming interface for accessing the Say.So platform.</p>
-
-			<h1>Authentication</h1>
-			<p>Authentication takes place on two levels.</p>
-			<p><b>Api level authentication</b> – Verifies that the session id and session key match and the user is authorized to access the Api.</p>
-			<p><b>Endpoint level authentication</b> – The Api has the ability to restrict an individual user’s access to specific endpoints.<p>
-
-			<h1>Making a call to Say.SMART</h1>
-			<p>Using Say.SMART to make a call is simple: send a POST request to <i>https://app.saysollc.com/ssmart</i> with the variable called "data" holding a json string with your parameters.</p>
-			<p>
-				<example name="Example">
-					$user = 20324;<br/>
-					$key = "sdf2345245sgf";<br/>
-					$data_format = json_encode(array("session_id"=>$user, "session_key"=>$key, "user_type" => "test", "action_class"=>"survey", "action"=>"getAllSurveys"));<br/>
-					$url = “https://app.saysollc.com/ssmart”;<br/>
-					$ch = curl_init($url); <br/>
-					curl_setopt($ch, CURLOPT_HEADER, 0); <br/>
-					curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); <br/>
-					curl_setopt($ch, CURLOPT_POSTFIELDS, array(“data” => $data_format)); <br/>
-					curl_setopt($ch, CURLOPT_HTTPHEADER, Array("Content-Type: application/json"));<br/>
-					$resp = curl_exec($ch); //execute post and get results<br/>
-					curl_close ($ch);<br/>
-				</example>
-			</p>
-			<p>The Api will accept multiple endpoint calls in a single request when utilizing the json via POST method. When making multiple calls in a single request, all requests are wrapped in a top level node called “requests”. Then each request data set is wrapped in an arbitrarily named node which will be returned with the response.</p>
-			<p>
-				<example name="Example">
-					<json>
-						<objectnode>
-							<variable name="session_id">25789</variable>
-							<variable name="session_key">F69ne8yUUhJcvPklpS7HjQfS</variable>
-							<variable name="response_format">json</variable>
-							<objectnode  name="requests">
-								<objectnode  name="surveys">
-									<variable name="action_class">survey</variable>
-									<variable name="action">getAllSurveys</variable>
-								</objectnode>
-								<objectnode  name="users">
-									<variable name="action_class">user</variable>
-									<variable name="action">getAllUsers</variable>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</p>
-
-			<p>In order to obtain the session_id and session_key, you will make a call to a special endpoints with the user_type of "public". These endpoints do not require a session_id and session_key. They are designed to allow for such functions as logging in, retrieving lost passwords and other actions that would take place pre-authentication.</p>
-			<p>Pubic endpoints accept various parameters such as email and password for logging in and obtaining the session_id and session_key.</p>
-
-
-			<h2>
-				Say.SMART request components
-			</h2>
-			<p><b>Session id (panelist endpoints) – </b>The session id.</p>
-			<p>Field name : session_id or api_user</p>
-			<p>Data type : Integer (10)</p>
-			<p>Required : Yes (except on public endpoints)</p>
-			<p>Value :</p>
-			<p>Default :</p>
-
-			<p><b>Session key – </b>The session key associated with the session. </p>
-			<p>Field name : session_key</p>
-			<p>Data type : String (32)</p>
-			<p>Required : Yes (except on public endpoints)</p>
-			<p>Value :</p>
-			<p>Default :</p>
-
-			<p><b>User type – </b>This designates the type of authentication performed and endpoints available. </p>
-			<p>Field name : user_type</p>
-			<p>Data type : Enumerated</p>
-			<p>Required : No</p>
-			<p>Value : “panelist”, “admin”,"public"</p>
-			<p>Default : panelist</p>
-
-			<p><b>Continue on error – </b>This setting dictates whether the Api will send response data back when one or more requests encounter an error. If set to FALSE and one or more requests passed in the same call fail with an error, none of the requests will return data.</p>
-			<p>Field name : continue_on_error_format</p>
-			<p>Data type : Boolean</p>
-			<p>Required : No</p>
-			<p>Value : TRUE, FALSE</p>
-			<p>Default : TRUE</p>
-
-			<p><b>Api class name – </b>The name of the class that the endpoint is in. </p>
-			<p>Field name : class or action_class</p>
-			<p>Data type : String</p>
-			<p>Required : Yes</p>
-			<p>Value :</p>
-			<p>Default : </p>
-
-			<p><b>Api action name – </b>The name of the endpoint.</p>
-			<p>Field name : action</p>
-			<p>Data type : String</p>
-			<p>Required : Yes</p>
-			<p>Value :</p>
-			<p>Default : </p>
-
-			<p><b>Required endpoint specific data parameters – </b>The parameters to be passed to the endpoint. </p>
-			<p>Varies by endpoint. View specific endpoint section for details. This is passed as a json encoded string . </p>
-
-			<p><b>Optional endpoint parameters – </b>These parameters are passed along with the required endpoint specific data parameters. Most of the time, these consist of pagination parameters or requests for supplemental data to be passed with the response.</p>
-
-			<h1>Handling responses from Say.SMART</h1>
-			<p>Response data will be in the format of a json encoded string with the following data structure.</p>
-
-			<ul>
-				<li><p><b>Error code (error_code)</b> – The code for the error. Empty if no error. This corresponds to Api level errors. Endpoint level errors are passed in the individual response node. If multiple errors are encountered, the first error is returned. If an Api level error is encountered, no data is returned.</p>
-
-				</li>
-				<li><p><b>Error message (error_message)</b> – The message that corresponds to the error code above.</p>
-
-				</li>
-				<li><p><b>Responses (responses)</b>- The wrapper for the response data.</p>
-
-				</li>
-				<ul>
-					<li><p><b>Request name</b> – For single request calls that do not pass a request name, “default” is assigned. For multi request calls, this will be the name of the request as passed. This is used for referencing easily the proper node in multi request responses. There may be multiple instances of this node.</p>
-
-					</li>
-					<ul>
-						<li><p><b>Records (records)</b> – Some endpoints return record sets. This could be a list of users for instance. There may be multiple instances of this node.</p>
-
-						</li>
-						<ul>
-							<li><p><b>Record key </b>– The key for the record data. This is determined individually for each endpoint. Typically, this is the id of the database row returned. When an id is not available, arbitrary values may be assigned. There may be multiple instances of this node.</p>
-
-							</li>
-							<ul>
-								<li><p><b>Record field name</b> – The name of the record field. There may be multiple instances of this node.</p>
-
-								</li>
-								<ul>
-									<li><p><b>Record value</b> – The value of the record field.</p>
-
-									</li>
-								</ul>
-
-							</ul>
-
-						</ul>
-
-						<li><p><b>Pagination data name</b> – The name of the pagination field. There may be multiple instances of this node.</p>
-
-						</li>
-						<ul>
-							<li><p><b>Pagination data value</b> – The value of the pagination field.</p>
-
-							</li>
-						</ul>
-
-						<li><p><b>Errors returned (errors_returned)</b> – The number of error the endpoint encountered.</p>
-
-						</li>
-						<li><p><b>Errors (errors)</b> – Wrapper for the error messages.</p>
-
-						</li>
-						<ul>
-							<li><p><b>Error field name</b> – The name of the error</p>
-
-							</li>
-							<ul>
-								<li><p><b>Error value</b> – The value of the error. This may be a multi dimensional array or varying depth.</p>
-
-								</li>
-							</ul>
-
-						</ul>
-
-						<li><p><b>Variables (variables)</b> – Some endpoints may return variables. Variables can consist of a success message for instance.</p>
-
-						</li>
-						<ul>
-							<li><p><b>Variable name</b> – The name of the variable. There may be multiple instances of this node.</p>
-
-							</li>
-							<ul>
-								<li><p><b>Variable value</b> – The value of the variable.</p>
-
-								</li>
-							</ul>
-
-						</ul>
-
-					</ul>
-
-				</ul>
-
-				<li><p><b>Common data (common_data)</b> – Some endpoints pass data that is not directly related to the endpoint but is necessary due to changes resulting from the endpoint.</p>
-
-				</li>
-				<ul>
-					<li><p><b>Common data type</b> – The name of the common data.</p>
-
-					</li>
-					<ul>
-						<li><p><b>Common data field name</b> - The name of the common data field. There may be multiple instances of this node. </p>
-
-						</li>
-						<ul>
-							<li><p><b>Common data value</b> – The value of the common data field. This may a string or multi dimensional array of varying depth.</p>
-
-							</li>
-						</ul>
-
-					</ul>
-
-				</ul>
-
-			</ul>
-			<h2>Response errors</h2>
-			<p>There are two types of errors:</p>
-			<p><b>Api level errors</b> – These prevent the Api from continuing. It can be a failed authentication, poorly formatted request data, or other “serious” errors. No response data is provided beyond the first error code encountered and corresponding error message when an Api level error is encountered.</p>
-			<p><b>Endpoint error </b> – These errors may consist of poorly formatted request data, parameter data type validation, inability to retrieve requested data, or other errors that affect only the specific request. If multiple requests are made in the same call, the successful requests are processed and their response is returned unless the continue_on_error setting is set to FALSE.</p>
-			<p>
-				<example name="Api Level Error Response Example:">
-					<json>
-						<objectnode>
-							<variable name="error_code">201</variable>
-							<variable name="error_message">Failed authentication</variable>
-						</objectnode>
-					</json>
-				</example>
-			</p>
-			<p>
-				<example name="Endpoint Level Error Response Example:">
-					<json>
-						<objectnode>
-							<variable name="error_code">201</variable>
-							<variable name="error_message">Failed authentication</variable>
-							<objectnode name="responses">
-								<objectnode name="firstCustomReqeustName">
-									<variable name="errors_returned">2</variable>
-									<objectnode name="errors">
-										<objectnode name="endpoint_parameter_validation_failed">
-											<objectnode name="results_per_page">
-												<variable name="noint">'abc' does not appear to be an integer</variable>
-											</objectnode>
-											<objectnode name="page_number">
-												<variable name="noint">''15asdf'' does not appear to be an integer</variable>
-											</objectnode>
-										</objectnode>
-										<variable name="invalid_action_class">Invalid api class"</variable>
-									</objectnode>
-								</objectnode>
-								<objectnode name="secondCustomReqeustName">
-									<variable name="records_returned">1</variable>
-									<variable name="total_records">232</variable>
-									<variable name="page_number">2</variable>
-									<variable name="total_pages">232</variable>
-									<variable name="results_per_page">1</variable>
-									<variable name="errors_returned">0</variable>
-									<objectnode name="records">
-										<objectnode name="47">
-											<variable name="id">44</variable>
-											<variable name="user_id">1</variable>
-											<variable name="type">poll</variable>
-											<variable name="origin">SurveyGizmo</variable>
-											<variable name="is_federated">NULL</variable>
-											<variable name="starbar_id">4</variable>
-										</objectnode>
-									</objectnode>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</p>
+		<div id="header">
+			<div id="logo"></div>
 		</div>
 
-		<h1>Public Endpoints</h1>
-		<section name="login">
-			<description>The endpoints used to manipulate the session. </description>
-			<endpoint name="login">
-				<description>Effectively sets a session and returns the relevant data.</description>
-				<parameters>
-					<parameter required name="email" type="string" default_value="">The users email address.</parameter>
-					<parameter required name="password" type="string" default_value="">The users password.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="session_id" type="object" location="variables" default_value="">The id of the session.</returnvalue>
-					<returnvalue name="session_key" type="object" location="variables" default_value="">The id of the session.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="email">noreply@say.so</variable>
-					<variable required name="password">password</variable>
-				</requestexample>
-				<example name="Response Example">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="variables">
-										<variable name="session_id">21</variable>
-										<variable name="session_key">QUI3HE16V5GUV2P08UNDQ58A5RNDMO8Z</variable>
-									</objectnode>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-			<endpoint name="logout">
-				<description>Renders a session expired.</description>
-				<parameters>
-					<parameter required name="session_id" type="int" default_value="">The session id to expire.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="success" type="object" location="variables" default_value="">True when the endpoint is successful.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="session_id">1234</variable>
-				</requestexample>
-				<example name="Response Example">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="variables">
-										<variable name="success">true</variable>
-									</objectnode>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-		</section>
-		<section name="registration">
-			<description>Creates a new user.</description>
-			<endpoint name="createUser">
-				<description>Creates a new user.</description>
-				<parameters>
-					<parameter required name="email" type="string" default_value="">The users email address.</parameter>
-					<parameter required name="password" type="string" default_value="">The users password.</parameter>
-					<parameter required name="originating_starbar_id" type="string" default_value="">The id of the starbar that the user subscribed from.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="user_id" type="object" location="variables" default_value="">The id of the new user.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="username">noreply@say.so</variable>
-					<variable required name="password">password</variable>
-					<variable required name="originating_starbar_id">5</variable>
-				</requestexample>
-				<example name="Response Example">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="variables">
-										<variable name="user_id">345345</variable>
-									</objectnode>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-		</section>
+		<div id="content">
+			<section shown="true" name="Introduction and Getting Started">
+				<p>Say.SMART is the primary API for the Say.So platform. By default, it utilizes JSON-encoded data to represent requests and responses.</p>
+				<p>One of the main reasons why Say.SMART was developed was to allow for multiple endpoint calls per api call, to reduce communication overhead and to allow for more elegant front-end code.</p>
+				<p>Making a Say.SMART request is straightforward: simply send a HTTP POST request to <b><i>https://app.saysollc.com/ssmart</i></b> with a variable called <b><i>data</i></b> containing the json representation of your request.</p>
+				<p>
+					<example name="Sample PHP Code">
 
-		<section name="contact">
-			<description>Handles contact forms.</description>
-			<endpoint name="send">
-				<description>Sends and email.</description>
-				<parameters>
-					<parameter required name="starbar_id" type="integer" default_value="">The id of the starbar.</parameter>
-					<parameter required name="from_address" type="string" default_value="">The address to mark the email from.</parameter>
-					<parameter required name="subject" type="string" default_value="">The subject of the email.</parameter>
-					<parameter required name="message" type="string" default_value="">The message of the email.</parameter>
-					<parameter required name="message_meta" type="string" default_value="">Additional information to append to the email. This usually would be generated by the script and supplement what may have been user submitted.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="success" type="variable" location="variables" default_value="">Whether the email was sent.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="starbar_id">4</variable>
-					<variable required name="from_address">noreply@say.so</variable>
-					<variable required name="subject">Contact request.</variable>
-					<variable required name="message"><p>I would like some more info on Say.So.</p></variable>
-					<variable required name="message_meta"><p>Sent from the contact us page by user 1234 at 2013-07-12 12:34:56</p></variable>
-				</requestexample>
-				<example name="Response Example">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="variables">
-										<variable name="success">TRUE</variable>
-									</objectnode>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-		</section>
+						<json>
+							$request = '
+							<objectnode>
+								<variable help="" name="session_id">12345</variable>
+								<variable help="" name="session_key">abcdef1234567890</variable>
+								<variable help="" name="action_class">survey</variable>
+								<variable help="" name="action">getAllSurveys</variable>
+							</objectnode>';<br/>
 
-		<h1>Panelist Endpoints</h1>
-		<section name="game">
-			<description>This class holds gamification related endpoints.</description>
-			<endpoint name="getGame">
-				<description>Retrieves the user's game data for the passed starbar_id.</description>
-				<parameters>
-					<parameter required name="starbar_id" type="integer" default_value="">The id of the starbar for the game data requested.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="game" type="object" location="records" default_value="">The game data.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="starbar_id">4</variable>
-				</requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="variables">
-										<objectnode name="game">
-											<arraynode name="purchasables"></arraynode>
-											<objectnode name="currencies">
-												<objectnode name="redeemable">
-													<variable name="id">21</variable>
-													<variable name="name">Coins</variable>
-													<variable name="game_currency_type_id">2</variable>
-													<variable name="short_name">REDEEMABLE</variable>
-													<variable name="balance">491</variable>
-												</objectnode>
-												<objectnode name="experience">
-													<variable name="id">20</variable>
-													<variable name="name">XP</variable>
-													<variable name="game_currency_type_id">1</variable>
-													<variable name="short_name">REDEEMABLE</variable>
-													<variable name="balance">6500</variable>
-												</objectnode>
-											</objectnode>
-											<variable name="level">2</variable>
-											<objectnode name="levels">
-												<objectnode name="1">
-													<variable name="id">21</variable>
-													<variable name="game_asset_id">57</variable>
-													<variable name="ordinal">1</variable>
-													<variable name="name">Level 1</variable>
-													<variable name="description"></variable>
-													<variable name="img_url">http://media.saysollc.com/media/machinima/Level1_B.png</variable>
-													<variable name="img_url_small">http://media.saysollc.com/media/machinima/Level1_S.png</variable>
-												</objectnode>
-												<objectnode>
-													... // levels 2-22 removed
-												</objectnode>
-											</objectnode>
-											<variable name="max_level">22</variable>
-										</objectnode>
-									</objectnode>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
+							$url = “https://app.saysollc.com/ssmart”;<br/>
+							$ch = curl_init($url); <br/>
+							curl_setopt($ch, CURLOPT_HEADER, 0); <br/>
+							curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); <br/>
+							curl_setopt($ch, CURLOPT_POSTFIELDS, array(“data” => $request)); <br/>
+							curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));<br/>
+							$resp = curl_exec($ch); //execute post and get results<br/>
+							curl_close ($ch);<br/>
+						</json>
 
-			<endpoint name="redeemReward">
-				<description>Processes a purchase transaction on the game object for the current user.</description>
-				<description>If the user is not able to purchase the requested game asset, an error is returned.</description>
-				<parameters>
-					<parameter required name="starbar_id" type="integer" default_value="">The id of the starbar for the game data requested.</parameter>
-					<parameter required name="game_asset_id" type="integer" default_value="">The id of the game asset being purchased.</parameter>
-					<parameter name="quantity" type="integer" default_value="1">The quantity of the game asset to be purchased.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="success" type="boolean" location="variables">Set to true if the operation is successful.</returnvalue>
-					<returnvalue name="transaction_id" type="integer" location="variables" default_value="">The id of the transaction &mdash; only returned if the transaction is successful.</returnvalue>
-					<returnvalue name="game" type="object" location="common_data" default_value="">The user's game data after the transaction &mdash; only returned if the transaction is successful.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="starbar_id">4</variable>
-					<variable required name="game_asset_id">123</variable>
-					<variable name="quantity">1</variable>
-				</requestexample>
-				<example name="Request Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="variables">
-										<objectnode name="game">
-											<arraynode name="purchasables"></arraynode>
-											<objectnode name="currencies">
-												<objectnode name="redeemable">
-													<variable name="id">21</variable>
-													<variable name="name">Coins</variable>
-													<variable name="game_currency_type_id">2</variable>
-													<variable name="short_name">REDEEMABLE</variable>
-													<variable name="balance">491</variable>
-												</objectnode>
-												<objectnode name="experience">
-													<variable name="id">20</variable>
-													<variable name="name">XP</variable>
-													<variable name="game_currency_type_id">1</variable>
-													<variable name="short_name">REDEEMABLE</variable>
-													<variable name="balance">6500</variable>
-												</objectnode>
-											</objectnode>
-											<variable name="level">2</variable>
-											<objectnode name="levels">
-												<objectnode name="1">
-													<variable name="id">21</variable>
-													<variable name="game_asset_id">57</variable>
-													<variable name="ordinal">1</variable>
-													<variable name="name">Level 1</variable>
-													<variable name="description"></variable>
-													<variable name="img_url">http://media.saysollc.com/media/machinima/Level1_B.png</variable>
-													<variable name="img_url_small">http://media.saysollc.com/media/machinima/Level1_S.png</variable>
-												</objectnode>
-												<objectnode>
-													... // levels 2-22 removed
-												</objectnode>
-											</objectnode>
-											<variable name="max_level">22</variable>
-										</objectnode>
-									</objectnode>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
+					</example>
+				</p>
+				<p>Under <b>Request and Response Data Structures</b>, you can find an overview of the structure for Say.SMART requests and responses. In addition, you can find a sample request and response for each endpoint under the <b>Endpoint</b> sections below.</p>
+			</section>
 
-			<endpoint name="getStarbarGoods">
-				<description>Retrieves all of the items for the reward center for the current user and submitted starbar.
-</description>
-				<parameters>
-					<parameter required name="starbar_id" type="integer" default_value="">The id of the starbar for the game data requested.</parameter>
-					<parameter name="page_number" type="integer" default_value="1">The page number requested.</parameter>
-					<parameter name="results_per_page" type="integer" default_value="50">The number of pages to return.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="" type="object" location="records" default_value="">The starbar goods.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="starbar_id">5</variable>
-					<variable name="results_per_page">2</variable>
-					<variable name="page_number">1</variable>
-				</requestexample>
-				<example name="Request Example - json">
+			<section name="Request and Response Data Structures">
+				<h3>Typical API Calls</h3>
+				<p>To reach multiple endpoints, requests contain <b>API</b> and <b>Authentication</b> parameters at the top level, along with a <b><i>requests</i></b> node. The <b><i>requests</i></b> node should contain all the endpoint calls, with each endpoint call given a unique name by the developer (e.g. on the front end code). The same unique names are then referenced in the response, under the <b><i>responses</i></b> node. Endpoint calls are processed serially, and by default endpoint processing continues if an error occurs on a prior endpoint (this behavior can be modified). See the <b>Common Request Parameters</b> section below for more details, and note that the <b>Authentication</b> parameters are dictated by user_type (see <b>Panelist Endpoints</b> and <b>Administrator Endpoints</b> for more details).</p>
+				<example name="Request Structure">
 					<json>
 						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="records">
-										<objectnode name="100001">
-											<variable name="economy_id">5</variable>
-											<variable name="name">Item name</variable>
-											<variable name="bdid">1234</variable>
-											<variable name="img_url">http://media.saysollc.com/media/socialbar/rewards_icons/image.png</variable>
-											<variable name="img_url_preview">http://media.saysollc.com/media/socialbar/rewards_icons/image.png</variable>
-											<variable name="img_url_preview_bought">http://media.saysollc.com/media/socialbar/rewards_icons/image.png</variable>
-											<variable name="type">physical</variable>
-											<variable name="price">11998</variable>
-											<variable name="visible">instock</variable>
-											<variable name="available">1</variable>
-											<variable name="unavailable_message">null</variable>
-											<variable name="stock">5</variable>
-											<variable name="percentage">1</variable>
-											<variable name="can_purchase">false</variable>
-											<variable name="status_code">6</variable>
-											<variable name="cant_purchase_message">Must complete<br /><a href=\"//local.saysollc.com/starbar//embed-survey?survey_id=71\" class=\"sb_nav_element\" rel=\"sb_popBox_surveys_hg\" title=\"Take profile survey now!\" style=\"position: relative; top: -5px;\">Profile Survey</a></variable>
-											<variable name="comment">Only 3 left!</variable>
-											<variable name="show">true</variable>
-										</objectnode>
-										<objectnode name="100002">
-											<variable name="economy_id">5</variable>
-											<variable name="name">Item name</variable>
-											<variable name="bdid">1235</variable>
-											<variable name="img_url">http://media.saysollc.com/media/socialbar/rewards_icons/image.png</variable>
-											<variable name="img_url_preview">http://media.saysollc.com/media/socialbar/rewards_icons/image.png</variable>
-											<variable name="img_url_preview_bought">http://media.saysollc.com/media/socialbar/rewards_icons/image.png</variable>
-											<variable name="type">physical</variable>
-											<variable name="price">11558</variable>
-											<variable name="visible">instock</variable>
-											<variable name="available">1</variable>
-											<variable name="unavailable_message">null</variable>
-											<variable name="stock">5</variable>
-											<variable name="percentage">1</variable>
-											<variable name="can_purchase">false</variable>
-											<variable name="status_code">6</variable>
-											<variable name="cant_purchase_message">Must complete<br /><a href=\"//local.saysollc.com/starbar//embed-survey?survey_id=71\" class=\"sb_nav_element\" rel=\"sb_popBox_surveys_hg\" title=\"Take profile survey now!\" style=\"position: relative; top: -5px;\">Profile Survey</a><pre></variable>
-											<variable name="comment">Only 3 left!</variable>
-											<variable name="show">true</variable>
-										</objectnode>
-									</objectnode>
+							<variable help="" name="[api parameters (if any)]"></variable>
+							<variable help="" name="[authentication parameters (if any)]"></variable>
+							<objectnode name="requests"><br/>
+								// the first endpoint request in this call
+								<objectnode name="[custom name 1]">
+									<variable name="action_class">[endpoint class]</variable>
+									<variable name="action">[endpoint name]</variable>
+									<variable help="" name="[endpoint parameters]"></variable>
+								</objectnode><br/>
+								// the second endpoint request in this call
+								<objectnode name="[custom name 2]">
+									<variable name="action_class">[endpoint class]</variable>
+									<variable name="action">[endpoint name]</variable>
+									<variable help="" name="[endpoint parameters]"></variable>
 								</objectnode>
 							</objectnode>
 						</objectnode>
 					</json>
 				</example>
-			</endpoint>
-		</section>
-		<section name="notification">
-			<description>This class holds notification related endpoints. </description>
-			<endpoint name="getUserNotifications">
-				<description>Retrieves all notifications for the current user.</description>
-				<parameters>
-					<parameter required name="starbar_stowed" type="boolean" default_value="">Whether or not the currently active starbar is stowed.</parameter>
-					<parameter required name="starbar_id" default_value="">5</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="success" type="boolean" location="variables" >Set to true if the operation is successful.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="starbar_id">4</variable>
-					<variable required name="starbar_stowed">false</variable>
-				</requestexample>
-				<example name="Response Example - json">
+				<example name="Response Structure">
 					<json>
 						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="records">
-										<objectnode name="61">
-											<variable name="short_name">Checking in</variable>
-											<variable name="user_id">1</variable>
-											<variable name="notification_message_group_id">502</variable>
-											<variable name="ordinal">10</variable>
-											<variable name="message">The notification message.</variable>
-											<variable name="notification_area">alerts</variable>
-											<variable name="color">Green</variable>
-										</objectnode>
-										<objectnode name="62">
-											<variable name="short_name">Checking in</variable>
-											<variable name="user_id">1</variable>
-											<variable name="notification_message_group_id">503</variable>
-											<variable name="ordinal">10</variable>
-											<variable name="message">The notification message.</variable>
-											<variable name="notification_area">alerts</variable>
-											<variable name="color">Green</variable>
-										</objectnode>
+							// "error_code" is non-zero if an API or authentication error has occurred
+							<variable help="" name="error_code">0</variable><br />
+							// "error_message" is non-empty if an API or authentication error has occurred
+							<variable help="" name="error_message"></variable><br />
+							// if no API or authentication errors occurred
+							<objectnode name="responses"><br/>
+								<br/>
+								// the first endpoint response
+								<objectnode name="[custom name 1]">
+									// non-zero if an endpoint error has occurred
+									<variable help="" name="errors_returned">0</variable>
+									<br/>
+									// the "errors" node only exists if there are errors
+									<objectnode name="errors">
+										<variable help="" name="[error code 1]">[error message 1]</variable>
+										<variable help="" name="[error code 2]">[error message 2]</variable>
 									</objectnode>
-									<variable name="recordsReturned">2</variable>
-									<variable name="totalRecords">2</variable>
-									<variable name="pageNumber">1</variable>
-									<variable name="resultsPerPage">2</variable>
-									<variable name="totalPages">1</variable>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-			<endpoint name="updateStatus">
-				<description>Updates the notification_message_user_map table adds date to the closed and modified columns based on a notification_message_id and user_id.</description>
-				<parameters>
-					<parameter required name="message_id" type="integer" default_value="">The id of the message that caused the update.</parameter>
-					<parameter required name="mark_notified" type="boolean" default_value="false">Whether or not to mark the notification as seen.</parameter>
-					<parameter required name="mark_closed" type="boolean" default_value="false">Whether or not to mark the notification as closed.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="success" type="boolean" location="variables" >Set to true if the operation is successful.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="message_id">123</variable>
-					<variable required name="mark_closed">true</variable>
-					<variable required name="mark_notified">true</variable>
-				</requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
+									<br/>
+									// if no errors, for endpoints that return variables
 									<objectnode name="variables">
-										<variable name="success">true</variable>
+										<variable help="" name="[variable name 1]">[variable value 1 (value be a node)]</variable>
+										<variable help="" name="[variable name 2]">[variable value 2 (value be a node)]</variable>
 									</objectnode>
+									<br/>
+									// if no errors, for endpoints that return records (note that "records" is an array)
+									<arraynode name="records">
+										<objectnode>
+											<variable help="" name="id">1</variable>
+											...
+										</objectnode>
+										<objectnode>
+											<variable help="" name="id">2</variable>
+											...
+										</objectnode>
+									</arraynode><br/>
+
+									// pagination info for endpoints that return records
+									<variable help="" name="recordsReturned">10</variable>
+									<variable help="" name="totalRecords">54</variable>
+									<variable help="" name="pageNumber">1</variable>
+									<variable help="" name="resultsPerPage">10</variable>
+									<variable help="" name="totalPages">6</variable>
+								</objectnode><br/>
+								<br/>
+								// the second endpoint response
+								<objectnode name="[custom name 2]">
+									// non-zero if an endpoint error has occurred
+									<variable help="" name="errors_returned">0</variable>
+									<br/>
+									...<br/>
+									// (see above)
+								</objectnode>
+							</objectnode>
+							<br/>
+
+							// some endpoints write variables to the top-level common_data object, such as "game" and "notifications".<br/>
+							// For example, if two endpoints are called together, and they both affect the panelist's economy,<br/>
+							// only the second (and most up-to-date) "game" node will be returned in "common_data".
+							<objectnode name="common_data">
+								<variable help="" name="[variable name 1]">[variable value 1 (value be a node)]</variable>
+								<variable help="" name="[variable name 2]">[variable value 2 (value be a node)]</variable>
+							</objectnode>
+							<br/>
+						</objectnode>
+					</json>
+				</example>
+
+				<h3>Single-Endpoint API Calls</h3>
+				<p>Although Say.SMART is designed to allow for multiple endpoint calls per API call, it also provides for a shorthand way to call a single endpoint. When used this way, the Say.SMART <b><i>responses</i></b> node is still returned, with a single response within that is always called <b><i>default</i></b>. This is equivalent to calling Say.SMART using the above method, with the <b><i>requests</i></b> node containing a single request named <b><i>default</i></b>.</p>
+				<example name="Request Structure">
+					<json>
+						<objectnode>
+							<variable help="" name="[api parameters]"></variable>
+							<variable help="" name="[authentication parameters (if any)]"></variable>
+							<variable name="action_class">[endpoint class]</variable>
+							<variable name="action">[endpoint name]</variable>
+							<variable help="" name="[endpoint parameters]"></variable>
+						</objectnode>
+					</json>
+				</example>
+				<example name="Response Structure">
+					<json>
+						<objectnode>
+							<variable help="" name="[api errors (if any)]"></variable>
+							<variable help="" name="[authentication errors (if any)]"></variable>
+							<objectnode name="responses">
+								<objectnode name="default">
+									// non-zero if an endpoint error has occurred
+									<variable help="" name="errors_returned">0</variable>
+									<br/>
+
+									// other endpoint results are here, see the <b>Response Structure</b> section under <b>Typical API Calls</b> for details.
 								</objectnode>
 							</objectnode>
 						</objectnode>
 					</json>
 				</example>
-			</endpoint>
-			<endpoint name="saveStatusByShortNameAndStarbar">
-				<description>Update or insert new notification_message_user_map record,  input a notification_message.short_name and starbar id to resolve the notification_message_group.id, then pass that to the updateStatus endpoint.</description>
-				<parameters>
-					<parameter required name="short_name" type="string" default_value="">The short name of the notification message to update.</parameter>
-					<parameter required name="starbar_id" type="integer" default_value="">The id of the starbar.</parameter>
-					<parameter required name="mark_notified" type="boolean" default_value="false">Whether or not to mark the notification as seen.</parameter>
-					<parameter required name="mark_closed" type="boolean" default_value="false">Whether or not to mark the notification as closed.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="success" type="boolean" location="variables">Set to true if the operation is successful.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="short_name">message_short_name</variable>
-					<variable required name="starbar_id">5</variable>
-					<variable required name="mark_closed">true</variable>
-					<variable required name="mark_notified">true</variable>
-				</requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="variables">
-										<variable name="success">true</variable>
-									</objectnode>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-		</section>
-		<section name="starbar">
-			<description>This class holds starbar related endpoints.</description>
-			<endpoint name="getStarbar">
-				<description>Retrieves starbar data.</description>
-				<parameters>
-					<parameter required name="starbar_id" default_value="">The id of the starbar.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="" type="object" location="records" default_value="">Starbar data.</returnvalue>
-					<returnvalue name="" type="object" location="common_data" default_value="">Game data.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="starbar_id">6</variable>
-				</requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="records">
-										<objectnode name="6">
-											<variable name="short_name">music</variable>
-											<variable name="label">Starbar Name</variable>
-											<variable name="description">null</variable>
-											<variable name="user_pseudonym">Starbar Pseudonym</variable>
-											<variable name="domain">say.so</variable>
-											<variable name="auth_key">309e234hjkh234yu32db</variable>
-											<variable name="flags">flag</variable>
-											<variable name="launched">203 013-04-13:25:47</variable>
-											<variable name="economy_id">6</variable>
-											<variable name="info"></variable>
+			</section>
+
+			<section name="Common Request Parameters">
+				<h3>API Parameters</h3>
+				<p>Below are the top-level <b>API</b> parameters. Authentication parameters are also top-level parameters (i.e. common to all endpoints in the call). Authentication parameters are different for each user_type, and are as such specified under the <b>Panelist Endpoints</b> and <b>Administrator Endpoints</b> sections (public endpoints have no authentication parameters).</p>
+				<parametersnodefault>
+					<parameter name="user_type" type="string" default="&quot;panelist&quot;">Dictates the type of authentication performed and endpoint classes available. Possible values are "public", "administrator" and "panelist" (default).</parameter>
+					<parameter name="continue_on_error" type="boolean" default="true">Specifies whether or not processing should continue (to endpoints in the same call that follow) if an endpoint error is encountered.</parameter>
+				</parametersnodefault>
+
+				<h3>Common Endpoint Parameters</h3>
+				<p>Most endpoints take one or more parameters specific to them. However, all endpoints require the first two of the following parameters, to specify the endpoint to be called:</p>
+				<parametersnodefault>
+					<parameter required name="action_class" type="string" default="">Specifies the class the endpoint to be called is in (e.g. 'survey').</parameter>
+					<parameter required name="action" type="string" default="">Specifies the endpoint to be called (e.g. 'getSurveys').</parameter>
+					<parameter name="results_per_page" type="integer" default="10">Specifies the number of records to return per page (for endpoints that return records).</parameter>
+					<parameter name="page_number" type="integer" default="1">Specifies the page of records to return (for endpoints that return records). Page 1 returns the first <i>results_per_page</i> (default: 10) records.</parameter>
+				</parametersnodefault>
+			</section>
+
+			<section name="Public Endpoints">
+				<actionclass name="login">
+					<description>The endpoints used to manipulate the session. </description>
+					<endpoint name="login">
+						<description>Logs in the user and creates a panelist session for them, which they (or their client code) can use to access the <b>Panelist Endpoints</b>.</description>
+						<parameterspublic>
+							<parameter required name="email" type="string" default="">The user's email address.</parameter>
+							<parameter required name="password" type="string" default="">The user's password.</parameter>
+						</parameterspublic>
+						<returnvalues>
+							<returnvalue name="session_id" type="object" location="variables" default="">The session's id.</returnvalue>
+							<returnvalue name="session_key" type="object" location="variables" default="">The key for the session.</returnvalue>
+						</returnvalues>
+						<requestexamplepublic>
+							<variable required name="email">noreply@say.so</variable>
+							<variable required name="password">password</variable>
+						</requestexamplepublic>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+												<variable name="session_id">21</variable>
+												<variable name="session_key">QUI3HE16V5GUV2P08UNDQ58A5RNDMO8Z</variable>
+											</objectnode>
 										</objectnode>
 									</objectnode>
-									<objectnode name="common_data">
-										<objectnode name="game">
-											<arraynode name="purchasables"></arraynode>
-											<objectnode name="currencies">
-												<objectnode name="redeemable">
-													<variable name="id">21</variable>
-													<variable name="name">Coins</variable>
-													<variable name="game_currency_type_id">2</variable>
-													<variable name="short_name">REDEEMABLE</variable>
-													<variable name="balance">491</variable>
-												</objectnode>
-												<objectnode name="experience">
-													<variable name="id">20</variable>
-													<variable name="name">XP</variable>
-													<variable name="game_currency_type_id">1</variable>
-													<variable name="short_name">REDEEMABLE</variable>
-													<variable name="balance">6500</variable>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+					<endpoint name="logout">
+						<description>Renders a session expired.</description>
+						<parameterspublic>
+							<parameter required name="session_id" type="int" default="">The session id to expire.</parameter>
+						</parameterspublic>
+						<returnvalues>
+							<returnvalue name="success" type="object" location="variables" default="">True when the endpoint is successful.</returnvalue>
+						</returnvalues>
+						<requestexamplepublic>
+							<variable required name="session_id">1234</variable>
+						</requestexamplepublic>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+												<variable name="success">true</variable>
+											</objectnode>
+										</objectnode>
+									</objectnode>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+				</actionclass>
+				<actionclass name="registration">
+					<description>Creates a new user.</description>
+					<endpoint name="createUser">
+						<description>Creates a new user.</description>
+						<parameterspublic>
+							<parameter required name="email" type="string" default="">The users email address.</parameter>
+							<parameter required name="password" type="string" default="">The users password.</parameter>
+							<parameter required name="originating_starbar_id" type="string" default="">The id of the starbar that the user subscribed from.</parameter>
+						</parameterspublic>
+						<returnvalues>
+							<returnvalue name="user_id" type="object" location="variables" default="">The id of the new user.</returnvalue>
+						</returnvalues>
+						<requestexamplepublic>
+							<variable required name="username">noreply@say.so</variable>
+							<variable required name="password">password</variable>
+							<variable required name="originating_starbar_id">5</variable>
+						</requestexamplepublic>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+												<variable name="user_id">345345</variable>
+											</objectnode>
+										</objectnode>
+									</objectnode>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+				</actionclass>
+
+				<actionclass name="contact">
+					<description>Handles contact forms.</description>
+					<endpoint name="send">
+						<description>Sends and email.</description>
+						<parameterspublic>
+							<parameter required name="starbar_id" type="integer" default="">The id of the starbar.</parameter>
+							<parameter required name="from_address" type="string" default="">The address to mark the email from.</parameter>
+							<parameter required name="subject" type="string" default="">The subject of the email.</parameter>
+							<parameter required name="message" type="string" default="">The message of the email.</parameter>
+							<parameter required name="message_meta" type="string" default="">Additional information to append to the email. This usually would be generated by the script and supplement what may have been user submitted.</parameter>
+						</parameterspublic>
+						<returnvalues>
+							<returnvalue name="success" type="variable" location="variables" default="">Whether the email was sent.</returnvalue>
+						</returnvalues>
+						<requestexamplepublic>
+							<variable required name="starbar_id">4</variable>
+							<variable required name="from_address">noreply@say.so</variable>
+							<variable required name="subject">Contact request.</variable>
+							<variable required name="message"><p>I would like some more info on Say.So.</p></variable>
+							<variable required name="message_meta"><p>Sent from the contact us page by user 1234 at 2013-07-12 12:34:56</p></variable>
+						</requestexamplepublic>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+												<variable name="success">TRUE</variable>
+											</objectnode>
+										</objectnode>
+									</objectnode>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+				</actionclass>
+			</section>
+
+			<section name="Panelist Endpoints">
+				<h2>Authentication Parameters</h2>
+				<parametersnodefault>
+					<parameter required name="session_id" type="integer" default="">The panelist's currently active session id, provided by the Public endpoint <b>login.login</b>.</parameter>
+					<parameter required name="session_key" type="string" default="">The panelist's currently active session key (also provided by login.login).</parameter>
+				</parametersnodefault>
+				<p>When the public endpoint <b>login.login</b> is called with a valid email and password combination, it returns a session_id and session_key. Those are then used to authenticate calls to panelist endpoints.</p>
+				<p>Additionally, any call to a panelist endpoint may return two variables in the common_data node: new_session_id and new_session_key. If those are received, it means that the current session is expiring, and that the newly received session_id and session_key should be used by the client-side code instead. The expiring session becomes fully expired after 15 minutes.</p>
+
+				<actionclass name="game">
+					<description>This class holds gamification related endpoints.</description>
+					<endpoint name="getGame">
+						<description>Retrieves the user's game data for the passed starbar_id.</description>
+						<parameters>
+							<parameter required name="starbar_id" type="integer" default="">The id of the starbar for the game data requested.</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="game" type="object" location="records" default="">The game data.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="starbar_id">4</variable>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+												<objectnode name="game">
+													<arraynode name="purchasables"></arraynode>
+													<objectnode name="currencies">
+														<objectnode name="redeemable">
+															<variable name="id">21</variable>
+															<variable name="name">Coins</variable>
+															<variable name="game_currency_type_id">2</variable>
+															<variable name="short_name">REDEEMABLE</variable>
+															<variable name="balance">491</variable>
+														</objectnode>
+														<objectnode name="experience">
+															<variable name="id">20</variable>
+															<variable name="name">XP</variable>
+															<variable name="game_currency_type_id">1</variable>
+															<variable name="short_name">REDEEMABLE</variable>
+															<variable name="balance">6500</variable>
+														</objectnode>
+													</objectnode>
+													<variable name="level">2</variable>
+													<objectnode name="levels">
+														<objectnode name="1">
+															<variable name="id">21</variable>
+															<variable name="game_asset_id">57</variable>
+															<variable name="ordinal">1</variable>
+															<variable name="name">Level 1</variable>
+															<variable name="description"></variable>
+															<variable name="img_url">http://media.saysollc.com/media/machinima/Level1_B.png</variable>
+															<variable name="img_url_small">http://media.saysollc.com/media/machinima/Level1_S.png</variable>
+														</objectnode>
+														<objectnode>
+															... // levels 2-22 removed
+														</objectnode>
+													</objectnode>
+													<variable name="max_level">22</variable>
 												</objectnode>
 											</objectnode>
-											<variable name="level">2</variable>
-											<objectnode name="levels">
-												<objectnode name="1">
-													<variable name="id">21</variable>
-													<variable name="game_asset_id">57</variable>
-													<variable name="ordinal">1</variable>
-													<variable name="name">Level 1</variable>
-													<variable name="description"></variable>
-													<variable name="img_url">http://media.saysollc.com/media/machinima/Level1_B.png</variable>
-													<variable name="img_url_small">http://media.saysollc.com/media/machinima/Level1_S.png</variable>
-												</objectnode>
-												<objectnode>
-													... // levels 2-22 removed
+										</objectnode>
+									</objectnode>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+
+					<endpoint name="redeemReward">
+						<description>Processes a purchase transaction on the game object for the current user.</description>
+						<description>If the user is not able to purchase the requested game asset, an error is returned.</description>
+						<parameters>
+							<parameter required name="starbar_id" type="integer" default="">The id of the starbar for the game data requested.</parameter>
+							<parameter required name="game_asset_id" type="integer" default="">The id of the game asset being purchased.</parameter>
+							<parameter name="quantity" type="integer" default="1">The quantity of the game asset to be purchased.</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="success" type="boolean" location="variables">Set to true if the operation is successful.</returnvalue>
+							<returnvalue name="transaction_id" type="integer" location="variables" default="">The id of the transaction &mdash; only returned if the transaction is successful.</returnvalue>
+							<returnvalue name="game" type="object" location="common_data" default="">The user's game data after the transaction &mdash; only returned if the transaction is successful.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="starbar_id">4</variable>
+							<variable required name="game_asset_id">123</variable>
+							<variable name="quantity">1</variable>
+						</requestexample>
+						<example name="Request Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+												<objectnode name="game">
+													<arraynode name="purchasables"></arraynode>
+													<objectnode name="currencies">
+														<objectnode name="redeemable">
+															<variable name="id">21</variable>
+															<variable name="name">Coins</variable>
+															<variable name="game_currency_type_id">2</variable>
+															<variable name="short_name">REDEEMABLE</variable>
+															<variable name="balance">491</variable>
+														</objectnode>
+														<objectnode name="experience">
+															<variable name="id">20</variable>
+															<variable name="name">XP</variable>
+															<variable name="game_currency_type_id">1</variable>
+															<variable name="short_name">REDEEMABLE</variable>
+															<variable name="balance">6500</variable>
+														</objectnode>
+													</objectnode>
+													<variable name="level">2</variable>
+													<objectnode name="levels">
+														<objectnode name="1">
+															<variable name="id">21</variable>
+															<variable name="game_asset_id">57</variable>
+															<variable name="ordinal">1</variable>
+															<variable name="name">Level 1</variable>
+															<variable name="description"></variable>
+															<variable name="img_url">http://media.saysollc.com/media/machinima/Level1_B.png</variable>
+															<variable name="img_url_small">http://media.saysollc.com/media/machinima/Level1_S.png</variable>
+														</objectnode>
+														<objectnode>
+															... // levels 2-22 removed
+														</objectnode>
+													</objectnode>
+													<variable name="max_level">22</variable>
 												</objectnode>
 											</objectnode>
-											<variable name="max_level">22</variable>
 										</objectnode>
 									</objectnode>
 								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-			<endpoint name="getAvailableStarbars">
-				<description>Retrieves starbars that are available to the current user.</description>
-				<parameters>
-					<parameter required name="active_starbar" type="integer" default_value="">The id of the starbar that is currently active for the current user.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="" type="object" location="records" default_value="">The starbar data.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="active_starbar">6</variable>
-				</requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="records">
-										<objectnode name="1">
-											<variable name="short_name">music</variable>
-											<variable name="label">Starbar Name</variable>
-											<variable name="description">null</variable>
-											<variable name="user_pseudonym">Starbar Pseudonym</variable>
-											<variable name="domain">say.so</variable>
-											<variable name="auth_key">309e234hjkh234yu32db</variable>
-											<variable name="flags">flag</variable>
-											<variable name="launched">203 013-04-13:25:47</variable>
-											<variable name="economy_id">6</variable>
-											<variable name="info"></variable>
-										</objectnode>
-										<objectnode name="2">
-											<variable name="short_name">music</variable>
-											<variable name="label">Starbar Name</variable>
-											<variable name="description">null</variable>
-											<variable name="user_pseudonym">Starbar Pseudonym</variable>
-											<variable name="domain">say.so</variable>
-											<variable name="auth_key">309e234hjkh234yu32db</variable>
-											<variable name="flags">flag</variable>
-											<variable name="launched">203 013-04-13:25:47</variable>
-											<variable name="economy_id">6</variable>
-											<variable name="info"></variable>
-										</objectnode>
-										<objectnode name="3">
-											<variable name="short_name">music</variable>
-											<variable name="label">Starbar Name</variable>
-											<variable name="description">null</variable>
-											<variable name="user_pseudonym">Starbar Pseudonym</variable>
-											<variable name="domain">say.so</variable>
-											<variable name="auth_key">309e234hjkh234yu32db</variable>
-											<variable name="flags">flag</variable>
-											<variable name="launched">203 013-04-13:25:47</variable>
-											<variable name="economy_id">6</variable>
-											<variable name="info"></variable>
-										</objectnode>
-									</objectnode>
-									<variable name="recordsReturned">3</variable>
-									<variable name="totalRecords">3</variable>
-									<variable name="pageNumber">1</variable>
-									<variable name="resultsPerPage">3</variable>
-									<variable name="totalPages">1</variable>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-			<endpoint name="subscribeStarbar">
-				<description>Subscribes a user to a starbar.</description>
-				<parameters>
-					<parameter required name="starbar_id" type="integer" default_value="">The id of the starbar.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="success" type="boolean" location="variables" >Set to true if the operation is successful.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="starbar_id">5</variable>
-				</requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="variables">
-										<variable name="success">true</variable>
-									</objectnode>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-			<endpoint name="shareStarbar">
-				<description>Processes actions when a user shares a starbar.</description>
-				<parameters>
-					<parameter required name="starbar_id" type="integer" default_value="">The id of the starbar.</parameter>
-					<parameter required name="network" type="Enumerated" default_value="'FB','TW'">Facebook or Twitter</parameter><!-- default value doesn't seem to work -->
-				</parameters>
-				<returnvalues>
-					<returnvalue name="transaction_id" type="integer" location="variables" default_value="false">The transaction id if successful</returnvalue>
-					<returnvalue name="game" type="object" location="common_data" default_value="">The game data.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="starbar_id">5</variable>
-					<variable required name="network">FB</variable>
-				</requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="variables">
-										<variable name="transaction_id">1123</variable>
-									</objectnode>
-									<objectnode name="common_data">
-										<objectnode name="game">
-											<arraynode name="purchasables"></arraynode>
-											<objectnode name="currencies">
-												<objectnode name="redeemable">
-													<variable name="id">21</variable>
-													<variable name="name">Coins</variable>
-													<variable name="game_currency_type_id">2</variable>
-													<variable name="short_name">REDEEMABLE</variable>
-													<variable name="balance">491</variable>
+							</json>
+						</example>
+					</endpoint>
+
+					<endpoint name="getStarbarGoods">
+						<description>Retrieves all of the items for the reward center for the current user and submitted starbar.</description>
+						<parameters>
+							<parameter required name="starbar_id" type="integer" default="">The id of the starbar for the game data requested.</parameter>
+							<parameter name="page_number" type="integer" default="1">The page number requested.</parameter>
+							<parameter name="results_per_page" type="integer" default="50">The number of pages to return.</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="" type="object" location="records" default="">The starbar goods.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="starbar_id">5</variable>
+							<variable name="results_per_page">2</variable>
+							<variable name="page_number">1</variable>
+						</requestexample>
+						<example name="Request Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="records">
+												<objectnode name="100001">
+													<variable name="economy_id">5</variable>
+													<variable name="name">Item name</variable>
+													<variable name="bdid">1234</variable>
+													<variable name="img_url">http://media.saysollc.com/media/socialbar/rewards_icons/image.png</variable>
+													<variable name="img_url_preview">http://media.saysollc.com/media/socialbar/rewards_icons/image.png</variable>
+													<variable name="img_url_preview_bought">http://media.saysollc.com/media/socialbar/rewards_icons/image.png</variable>
+													<variable name="type">physical</variable>
+													<variable name="price">11998</variable>
+													<variable name="visible">instock</variable>
+													<variable name="available">1</variable>
+													<variable name="unavailable_message">null</variable>
+													<variable name="stock">5</variable>
+													<variable name="percentage">1</variable>
+													<variable name="can_purchase">false</variable>
+													<variable name="status_code">6</variable>
+													<variable name="cant_purchase_message">Must complete<br /><a href=\"//local.saysollc.com/starbar//embed-survey?survey_id=71\" class=\"sb_nav_element\" rel=\"sb_popBox_surveys_hg\" title=\"Take profile survey now!\" style=\"position: relative; top: -5px;\">Profile Survey</a></variable>
+													<variable name="comment">Only 3 left!</variable>
+													<variable name="show">true</variable>
 												</objectnode>
-												<objectnode name="experience">
-													<variable name="id">20</variable>
-													<variable name="name">XP</variable>
-													<variable name="game_currency_type_id">1</variable>
-													<variable name="short_name">REDEEMABLE</variable>
-													<variable name="balance">6500</variable>
+												<objectnode name="100002">
+													<variable name="economy_id">5</variable>
+													<variable name="name">Item name</variable>
+													<variable name="bdid">1235</variable>
+													<variable name="img_url">http://media.saysollc.com/media/socialbar/rewards_icons/image.png</variable>
+													<variable name="img_url_preview">http://media.saysollc.com/media/socialbar/rewards_icons/image.png</variable>
+													<variable name="img_url_preview_bought">http://media.saysollc.com/media/socialbar/rewards_icons/image.png</variable>
+													<variable name="type">physical</variable>
+													<variable name="price">11558</variable>
+													<variable name="visible">instock</variable>
+													<variable name="available">1</variable>
+													<variable name="unavailable_message">null</variable>
+													<variable name="stock">5</variable>
+													<variable name="percentage">1</variable>
+													<variable name="can_purchase">false</variable>
+													<variable name="status_code">6</variable>
+													<variable name="cant_purchase_message">Must complete<br /><a href=\"//local.saysollc.com/starbar//embed-survey?survey_id=71\" class=\"sb_nav_element\" rel=\"sb_popBox_surveys_hg\" title=\"Take profile survey now!\" style=\"position: relative; top: -5px;\">Profile Survey</a></variable>
+													<variable name="comment">Only 3 left!</variable>
+													<variable name="show">true</variable>
 												</objectnode>
 											</objectnode>
-											<variable name="level">2</variable>
-											<objectnode name="levels">
-												<objectnode name="1">
-													<variable name="id">21</variable>
-													<variable name="game_asset_id">57</variable>
-													<variable name="ordinal">1</variable>
-													<variable name="name">Level 1</variable>
-													<variable name="description"></variable>
-													<variable name="img_url">http://media.saysollc.com/media/machinima/Level1_B.png</variable>
-													<variable name="img_url_small">http://media.saysollc.com/media/machinima/Level1_S.png</variable>
-												</objectnode>
-												<objectnode>
-													... // levels 2-22 removed
-												</objectnode>
-											</objectnode>
-											<variable name="max_level">22</variable>
 										</objectnode>
 									</objectnode>
 								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-		</section>
-		<section name="survey">
-			<description>This class holds survey related endpoints. </description>
-			<endpoint name="getSurvey">
-				<description>Retrieves survey data.</description>
-				<parameters>
-					<parameter required name="survey_id" default_value="">The id of the survey to get.</parameter>
-					<parameter required name="send_questions" default_value="false">Whether or not to include the survey questions in the response.</parameter>
-					<parameter required name="send_question_choices" default_value="false">Whether or not to include the survey question choices in the response.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="" type="object" location="records" default_value="">Survey data.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="survey_id">6</variable>
-					<variable required name="send_questions">true</variable>
-					<variable required name="send_question_choices">true</variable>
-				</requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="records">
-										<objectnode name="123">
-											<variable name="type">survey</variable>
-											<variable name="origin">SurveyGizmo</variable>
-											<variable name="is_federated">null</variable>
-											<variable name="title">TV - Defiance</variable>
-											<variable name="external_id">11111</variable>
-											<variable name="external_key">KeyName</variable>
-											<variable name="number_of_answers">null</variable>
-											<variable name="number_of_questions">4</variable>
-											<variable name="display_number_of_questions">4</variable>
-											<variable name="size">large</variable>
-											<variable name="reward_category">standard</variable>
-											<variable name="custom_reward_experience">null</variable>
-											<variable name="custom_reward_redeemable">null</variable>
-											<variable name="survey_response_id">123454</variable>
-											<objectnode name="questions">
-												<objectnode name="1234">
-													<variable name="data_type">none</variable>
-													<variable name="choice_type">single</variable>
-													<variable name="title">Question title</variable>
-													<variable name="number_of_choices">2</variable>
+							</json>
+						</example>
+					</endpoint>
+				</actionclass>
+
+				<actionclass name="notification">
+					<description>This class holds notification related endpoints. </description>
+					<endpoint name="getUserNotifications">
+						<description>Retrieves all notifications for the current panelist.</description>
+						<parameters>
+							<parameter required name="starbar_stowed" type="boolean" default="">Whether or not the currently active starbar is stowed.</parameter>
+							<parameter required name="starbar_id" default="">5</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="success" type="boolean" location="variables" >Set to true if the operation is successful.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="starbar_id">4</variable>
+							<variable required name="starbar_stowed">false</variable>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="records">
+												<objectnode name="61">
+													<variable name="short_name">Checking in</variable>
+													<variable name="user_id">1</variable>
+													<variable name="notification_message_group_id">502</variable>
 													<variable name="ordinal">10</variable>
-													<objectnode name="choices">
+													<variable name="message">The notification message.</variable>
+													<variable name="notification_area">alerts</variable>
+													<variable name="color">Green</variable>
+												</objectnode>
+												<objectnode name="62">
+													<variable name="short_name">Checking in</variable>
+													<variable name="user_id">1</variable>
+													<variable name="notification_message_group_id">503</variable>
+													<variable name="ordinal">10</variable>
+													<variable name="message">The notification message.</variable>
+													<variable name="notification_area">alerts</variable>
+													<variable name="color">Green</variable>
+												</objectnode>
+											</objectnode>
+											<variable name="recordsReturned">2</variable>
+											<variable name="totalRecords">2</variable>
+											<variable name="pageNumber">1</variable>
+											<variable name="resultsPerPage">10</variable>
+											<variable name="totalPages">1</variable>
+										</objectnode>
+									</objectnode>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+					<endpoint name="updateStatus">
+						<description>Updates the notification_message_user_map table adds date to the closed and modified columns based on a notification_message_id and user_id.</description>
+						<parameters>
+							<parameter required name="message_id" type="integer" default="">The id of the message that caused the update.</parameter>
+							<parameter required name="mark_notified" type="boolean" default="false">Whether or not to mark the notification as seen.</parameter>
+							<parameter required name="mark_closed" type="boolean" default="false">Whether or not to mark the notification as closed.</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="success" type="boolean" location="variables" >Set to true if the operation is successful.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="message_id">123</variable>
+							<variable required name="mark_closed">true</variable>
+							<variable required name="mark_notified">true</variable>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+												<variable name="success">true</variable>
+											</objectnode>
+										</objectnode>
+									</objectnode>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+					<endpoint name="saveStatusByShortNameAndStarbar">
+						<description>Update or insert new notification_message_user_map record,  input a notification_message.short_name and starbar id to resolve the notification_message_group.id, then pass that to the updateStatus endpoint.</description>
+						<parameters>
+							<parameter required name="short_name" type="string" default="">The short name of the notification message to update.</parameter>
+							<parameter required name="starbar_id" type="integer" default="">The id of the starbar.</parameter>
+							<parameter required name="mark_notified" type="boolean" default="false">Whether or not to mark the notification as seen.</parameter>
+							<parameter required name="mark_closed" type="boolean" default="false">Whether or not to mark the notification as closed.</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="success" type="boolean" location="variables">Set to true if the operation is successful.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="short_name">message_short_name</variable>
+							<variable required name="starbar_id">5</variable>
+							<variable required name="mark_closed">true</variable>
+							<variable required name="mark_notified">true</variable>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+												<variable name="success">true</variable>
+											</objectnode>
+										</objectnode>
+									</objectnode>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+				</actionclass>
+
+				<actionclass name="starbar">
+					<description>This class holds starbar related endpoints.</description>
+					<endpoint name="getStarbar">
+						<description>Retrieves starbar data.</description>
+						<parameters>
+							<parameter required name="starbar_id" default="">The id of the starbar.</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="" type="object" location="records" default="">Starbar data.</returnvalue>
+							<returnvalue name="" type="object" location="common_data" default="">Game data.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="starbar_id">6</variable>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="records">
+												<objectnode name="6">
+													<variable name="short_name">music</variable>
+													<variable name="label">Starbar Name</variable>
+													<variable name="description">null</variable>
+													<variable name="user_pseudonym">Starbar Pseudonym</variable>
+													<variable name="domain">say.so</variable>
+													<variable name="auth_key">309e234hjkh134yu32db</variable>
+													<variable name="flags">flag</variable>
+													<variable name="launched">203 013-04-13:25:47</variable>
+													<variable name="economy_id">6</variable>
+													<variable name="info"></variable>
+												</objectnode>
+											</objectnode>
+											<objectnode name="common_data">
+												<objectnode name="game">
+													<arraynode name="purchasables"></arraynode>
+													<objectnode name="currencies">
+														<objectnode name="redeemable">
+															<variable name="id">21</variable>
+															<variable name="name">Coins</variable>
+															<variable name="game_currency_type_id">2</variable>
+															<variable name="short_name">REDEEMABLE</variable>
+															<variable name="balance">491</variable>
+														</objectnode>
+														<objectnode name="experience">
+															<variable name="id">20</variable>
+															<variable name="name">XP</variable>
+															<variable name="game_currency_type_id">1</variable>
+															<variable name="short_name">REDEEMABLE</variable>
+															<variable name="balance">6500</variable>
+														</objectnode>
+													</objectnode>
+													<variable name="level">2</variable>
+													<objectnode name="levels">
+														<objectnode name="1">
+															<variable name="id">21</variable>
+															<variable name="game_asset_id">57</variable>
+															<variable name="ordinal">1</variable>
+															<variable name="name">Level 1</variable>
+															<variable name="description"></variable>
+															<variable name="img_url">http://media.saysollc.com/media/machinima/Level1_B.png</variable>
+															<variable name="img_url_small">http://media.saysollc.com/media/machinima/Level1_S.png</variable>
+														</objectnode>
+														<objectnode>
+															... // levels 2-22 removed
+														</objectnode>
+													</objectnode>
+													<variable name="max_level">22</variable>
+												</objectnode>
+											</objectnode>
+										</objectnode>
+									</objectnode>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+					<endpoint name="getAvailableStarbars">
+						<description>Retrieves starbars that are available to the current user.</description>
+						<parameters>
+							<parameter required name="active_starbar" type="integer" default="">The id of the starbar that is currently active for the current user.</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="" type="object" location="records" default="">The starbar data.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="active_starbar">6</variable>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="records">
+												<objectnode name="1">
+													<variable name="short_name">music</variable>
+													<variable name="label">Starbar Name</variable>
+													<variable name="description">null</variable>
+													<variable name="user_pseudonym">Starbar Pseudonym</variable>
+													<variable name="domain">say.so</variable>
+													<variable name="auth_key">309e234hjkh134yu32db</variable>
+													<variable name="flags">flag</variable>
+													<variable name="launched">203 013-04-13:25:47</variable>
+													<variable name="economy_id">6</variable>
+													<variable name="info"></variable>
+												</objectnode>
+												<objectnode name="2">
+													<variable name="short_name">music</variable>
+													<variable name="label">Starbar Name</variable>
+													<variable name="description">null</variable>
+													<variable name="user_pseudonym">Starbar Pseudonym</variable>
+													<variable name="domain">say.so</variable>
+													<variable name="auth_key">309e234hjkh134yu32db</variable>
+													<variable name="flags">flag</variable>
+													<variable name="launched">203 013-04-13:25:47</variable>
+													<variable name="economy_id">6</variable>
+													<variable name="info"></variable>
+												</objectnode>
+												<objectnode name="3">
+													<variable name="short_name">music</variable>
+													<variable name="label">Starbar Name</variable>
+													<variable name="description">null</variable>
+													<variable name="user_pseudonym">Starbar Pseudonym</variable>
+													<variable name="domain">say.so</variable>
+													<variable name="auth_key">309e234hjkh134yu32db</variable>
+													<variable name="flags">flag</variable>
+													<variable name="launched">203 013-04-13:25:47</variable>
+													<variable name="economy_id">6</variable>
+													<variable name="info"></variable>
+												</objectnode>
+											</objectnode>
+											<variable name="recordsReturned">3</variable>
+											<variable name="totalRecords">3</variable>
+											<variable name="pageNumber">1</variable>
+											<variable name="resultsPerPage">3</variable>
+											<variable name="totalPages">1</variable>
+										</objectnode>
+									</objectnode>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+					<endpoint name="subscribeStarbar">
+						<description>Subscribes a user to a starbar.</description>
+						<parameters>
+							<parameter required name="starbar_id" type="integer" default="">The id of the starbar.</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="success" type="boolean" location="variables" >Set to true if the operation is successful.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="starbar_id">5</variable>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+												<variable name="success">true</variable>
+											</objectnode>
+										</objectnode>
+									</objectnode>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+					<endpoint name="shareStarbar">
+						<description>Processes actions when a user shares a starbar.</description>
+						<parameters>
+							<parameter required name="starbar_id" type="integer" default="">The id of the starbar.</parameter>
+							<parameter required name="network" type="Enumerated" default="'FB','TW'">Facebook or Twitter</parameter><!-- default value doesn't seem to work -->
+						</parameters>
+						<returnvalues>
+							<returnvalue name="transaction_id" type="integer" location="variables" default="false">The transaction id if successful</returnvalue>
+							<returnvalue name="game" type="object" location="common_data" default="">The game data.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="starbar_id">5</variable>
+							<variable required name="network">FB</variable>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+												<variable name="transaction_id">1123</variable>
+											</objectnode>
+											<objectnode name="common_data">
+												<objectnode name="game">
+													<arraynode name="purchasables"></arraynode>
+													<objectnode name="currencies">
+														<objectnode name="redeemable">
+															<variable name="id">21</variable>
+															<variable name="name">Coins</variable>
+															<variable name="game_currency_type_id">2</variable>
+															<variable name="short_name">REDEEMABLE</variable>
+															<variable name="balance">491</variable>
+														</objectnode>
+														<objectnode name="experience">
+															<variable name="id">20</variable>
+															<variable name="name">XP</variable>
+															<variable name="game_currency_type_id">1</variable>
+															<variable name="short_name">REDEEMABLE</variable>
+															<variable name="balance">6500</variable>
+														</objectnode>
+													</objectnode>
+													<variable name="level">2</variable>
+													<objectnode name="levels">
+														<objectnode name="1">
+															<variable name="id">21</variable>
+															<variable name="game_asset_id">57</variable>
+															<variable name="ordinal">1</variable>
+															<variable name="name">Level 1</variable>
+															<variable name="description"></variable>
+															<variable name="img_url">http://media.saysollc.com/media/machinima/Level1_B.png</variable>
+															<variable name="img_url_small">http://media.saysollc.com/media/machinima/Level1_S.png</variable>
+														</objectnode>
+														<objectnode>
+															... // levels 2-22 removed
+														</objectnode>
+													</objectnode>
+													<variable name="max_level">22</variable>
+												</objectnode>
+											</objectnode>
+										</objectnode>
+									</objectnode>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+				</actionclass>
+				<actionclass name="survey">
+					<description>This class holds survey related endpoints. </description>
+					<endpoint name="getSurvey">
+						<description>Retrieves survey data.</description>
+						<parameters>
+							<parameter required name="survey_id" default="">The id of the survey to get.</parameter>
+							<parameter required name="send_questions" default="false">Whether or not to include the survey questions in the response.</parameter>
+							<parameter required name="send_question_choices" default="false">Whether or not to include the survey question choices in the response.</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="" type="object" location="records" default="">Survey data.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="survey_id">6</variable>
+							<variable required name="send_questions">true</variable>
+							<variable required name="send_question_choices">true</variable>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="records">
+												<objectnode name="123">
+													<variable name="type">survey</variable>
+													<variable name="origin">SurveyGizmo</variable>
+													<variable name="is_federated">null</variable>
+													<variable name="title">TV - Defiance</variable>
+													<variable name="external_id">11111</variable>
+													<variable name="external_key">KeyName</variable>
+													<variable name="number_of_answers">null</variable>
+													<variable name="number_of_questions">4</variable>
+													<variable name="display_number_of_questions">4</variable>
+													<variable name="size">large</variable>
+													<variable name="reward_category">standard</variable>
+													<variable name="custom_reward_experience">null</variable>
+													<variable name="custom_reward_redeemable">null</variable>
+													<variable name="survey_response_id">123454</variable>
+													<objectnode name="questions">
 														<objectnode name="1234">
-															<variable name="title">Yes</variable>
-															<variable name="value">Yes</variable>
+															<variable name="data_type">none</variable>
+															<variable name="choice_type">single</variable>
+															<variable name="title">Question title</variable>
+															<variable name="number_of_choices">2</variable>
 															<variable name="ordinal">10</variable>
+															<objectnode name="choices">
+																<objectnode name="1234">
+																	<variable name="title">Yes</variable>
+																	<variable name="value">Yes</variable>
+																	<variable name="ordinal">10</variable>
+																</objectnode>
+																<objectnode name="1235">
+																	<variable name="title">No</variable>
+																	<variable name="value">No</variable>
+																	<variable name="ordinal">10</variable>
+																</objectnode>
+															</objectnode>
 														</objectnode>
 														<objectnode name="1235">
-															<variable name="title">No</variable>
-															<variable name="value">No</variable>
+															<variable name="data_type">none</variable>
+															<variable name="choice_type">single</variable>
+															<variable name="title">Question title</variable>
+															<variable name="number_of_choices">2</variable>
 															<variable name="ordinal">10</variable>
+															<objectnode name="choices">
+																<objectnode name="1236">
+																	<variable name="title">Yes</variable>
+																	<variable name="value">Yes</variable>
+																	<variable name="ordinal">10</variable>
+																</objectnode>
+																<objectnode name="1237">
+																	<variable name="title">No</variable>
+																	<variable name="value">No</variable>
+																	<variable name="ordinal">10</variable>
+																</objectnode>
+															</objectnode>
 														</objectnode>
-													</objectnode>
-												</objectnode>
-												<objectnode name="1235">
-													<variable name="data_type">none</variable>
-													<variable name="choice_type">single</variable>
-													<variable name="title">Question title</variable>
-													<variable name="number_of_choices">2</variable>
-													<variable name="ordinal">10</variable>
-													<objectnode name="choices">
 														<objectnode name="1236">
-															<variable name="title">Yes</variable>
-															<variable name="value">Yes</variable>
+															<variable name="data_type">none</variable>
+															<variable name="choice_type">single</variable>
+															<variable name="title">Question title</variable>
+															<variable name="number_of_choices">2</variable>
 															<variable name="ordinal">10</variable>
+															<objectnode name="choices">
+																<objectnode name="1238">
+																	<variable name="title">Yes</variable>
+																	<variable name="value">Yes</variable>
+																	<variable name="ordinal">10</variable>
+																</objectnode>
+																<objectnode name="1239">
+																	<variable name="title">No</variable>
+																	<variable name="value">No</variable>
+																	<variable name="ordinal">10</variable>
+																</objectnode>
+															</objectnode>
 														</objectnode>
 														<objectnode name="1237">
-															<variable name="title">No</variable>
-															<variable name="value">No</variable>
+															<variable name="data_type">none</variable>
+															<variable name="choice_type">single</variable>
+															<variable name="title">Question title</variable>
+															<variable name="number_of_choices">2</variable>
 															<variable name="ordinal">10</variable>
-														</objectnode>
-													</objectnode>
-												</objectnode>
-												<objectnode name="1236">
-													<variable name="data_type">none</variable>
-													<variable name="choice_type">single</variable>
-													<variable name="title">Question title</variable>
-													<variable name="number_of_choices">2</variable>
-													<variable name="ordinal">10</variable>
-													<objectnode name="choices">
-														<objectnode name="1238">
-															<variable name="title">Yes</variable>
-															<variable name="value">Yes</variable>
-															<variable name="ordinal">10</variable>
-														</objectnode>
-														<objectnode name="1239">
-															<variable name="title">No</variable>
-															<variable name="value">No</variable>
-															<variable name="ordinal">10</variable>
-														</objectnode>
-													</objectnode>
-												</objectnode>
-												<objectnode name="1237">
-													<variable name="data_type">none</variable>
-													<variable name="choice_type">single</variable>
-													<variable name="title">Question title</variable>
-													<variable name="number_of_choices">2</variable>
-													<variable name="ordinal">10</variable>
-													<objectnode name="choices">
-														<objectnode name="1240">
-															<variable name="title">Yes</variable>
-															<variable name="value">Yes</variable>
-															<variable name="ordinal">10</variable>
-														</objectnode>
-														<objectnode name="1240">
-															<variable name="title">No</variable>
-															<variable name="value">No</variable>
-															<variable name="ordinal">10</variable>
+															<objectnode name="choices">
+																<objectnode name="1240">
+																	<variable name="title">Yes</variable>
+																	<variable name="value">Yes</variable>
+																	<variable name="ordinal">10</variable>
+																</objectnode>
+																<objectnode name="1240">
+																	<variable name="title">No</variable>
+																	<variable name="value">No</variable>
+																	<variable name="ordinal">10</variable>
+																</objectnode>
+															</objectnode>
 														</objectnode>
 													</objectnode>
 												</objectnode>
@@ -1102,473 +1025,452 @@
 										</objectnode>
 									</objectnode>
 								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-			<endpoint name="getSurveys">
-				<description>Retrieves multiple surveys’ data based on the survey type and optionally status. Does not return question or question choice data.</description>
-				<parameters>
-					<parameter required name="survey_type" type="string" default_value="">The type of survey to get.</parameter>
-					<parameter  name="survey_status" type="string" default_value="">The status of surveys to get.</parameter>
-					<parameter required name="starbar_id" type="integer" default_value="">The type of starbar to get get surveys for.</parameter>
-					<parameter name="page_number" type="integer" default_value="">The page number requested.</parameter>
-					<parameter name="results_per_page" type="integer" default_value="">The number of results requested per page.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="" type="object" location="records" default_value="">The data for multiple surveys.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="starbar_id">6</variable>
-					<variable required name="survey_type">poll</variable>
-					<variable name="page_number">1</variable>
-					<variable name="results_per_page">2</variable>
-				</requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="records">
-										<objectnode name="123">
-											<variable name="type">survey</variable>
-											<variable name="origin">SurveyGizmo</variable>
-											<variable name="is_federated">null</variable>
-											<variable name="title">TV - Defiance</variable>
-											<variable name="external_id">11111</variable>
-											<variable name="external_key">KeyName</variable>
-											<variable name="number_of_answers">null</variable>
-											<variable name="number_of_questions">4</variable>
-											<variable name="display_number_of_questions">4</variable>
-											<variable name="size">large</variable>
-											<variable name="reward_category">standard</variable>
-											<variable name="custom_reward_experience">null</variable>
-											<variable name="custom_reward_redeemable">null</variable>
-											<variable name="survey_response_id">123454</variable>
-										</objectnode>
-										<objectnode name="124">
-											<variable name="type">survey</variable>
-											<variable name="origin">SurveyGizmo</variable>
-											<variable name="is_federated">null</variable>
-											<variable name="title">TV - Defiance</variable>
-											<variable name="external_id">11112</variable>
-											<variable name="external_key">KeyName</variable>
-											<variable name="number_of_answers">null</variable>
-											<variable name="number_of_questions">4</variable>
-											<variable name="display_number_of_questions">4</variable>
-											<variable name="size">large</variable>
-											<variable name="reward_category">standard</variable>
-											<variable name="custom_reward_experience">null</variable>
-											<variable name="custom_reward_redeemable">null</variable>
-											<variable name="survey_response_id">123455</variable>
-										</objectnode>
-									</objectnode>
-									<variable name="recordsReturned">1</variable>
-									<variable name="totalRecords">16</variable>
-									<variable name="pageNumber">1</variable>
-									<variable name="resultsPerPage">2</variable>
-									<variable name="totalPages">8</variable>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-			<endpoint name="getSurveyCounts">
-				<description>Gets the count of how many surveys the current user has.</description>
-				<parameters>
-					<parameter required name="starbar_id" type="integer" default_value="">The id of the starbar.</parameter>
-					<parameter name="survey_type" type="enumerated" default_value="'survey','poll','quiz','mission','trailer','trailer template'">The type of survey to get.</parameter>
-					<parameter name="survey_status" type="enumerated" default_value="'active','inactive'">The status of the surveys to get.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="count" type="integer" location="variables" default_value="">The number of matching surveysl.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="starbar_id">5</variable>
-					<variable required name="survey_type">survey</variable>
-					<variable required name="survey_status">active</variable>
-				</requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="variables">
-										<variable name="count">12</variable>
-									</objectnode>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-			<endpoint name="updateSurveyResponse">
-				<description>Update the response of a survey.</description>
-				<parameters>
-					<parameter required name="survey_id" default_value="" type='integer'>The id of the survey being responeded to.</parameter>
-					<parameter required name="starbar_id" default_value="" type='integer'>The starbar id.</parameter>
-					<parameter required name="survey_data" default_value="" type='object'>An object with the question id/question choice id pairs.</parameter>
-					<parameter required name="survey_response_id" default_value="" type='integer'>The survey response id.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="success" type="boolean" location="variables" >Set to true if the operation is successful.</returnvalue>
-					<returnvalue name="game" type="object" location="common_data" default_value="">The game data.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="starbar_id">6</variable>
-					<variable required name="survey_id">1234</variable>
-					<variable required name="survey_response_id">4321</variable>
-					<objectnode name="survey_data" required> <!-- required doesn't color objects -->
-						<objectnode name="answers" required>
-							<variable name="7086">38285</variable>
-							<variable name="7087">38287</variable>
-						</objectnode>
-					</objectnode>
-				</requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="variables">
-										<variable name="success">true</variable>
-									</objectnode>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-
-
-
-
-
-
-
-
-			<endpoint name="updateSurveyStatus">
-				<description>Update the status of a survey.</description>
-				<parameters>
-					<parameter required name="downloaded" type="boolean" default_value="false">Whether or not to mark the survey as downloaded. Typically, surveys of type survey would be set to FALSE, others set to TRUE.</parameter>
-					<parameter required name="processing_status" type="enumerated" default_value="'not required','pending','completed','failed’">The processing status of the survey.</parameter>
-					<parameter required name="survey_status" type="enumerated" default_value="'completed','archived','new','disqualified'">The processing status of the survey.</parameter>
-					<parameter required name="survey_response_id" type="integer" default_value="">The id of the survey response.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="success" type="boolean" location="variables">Set to true if the operation is successful.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="survey_response_id">12345</variable>
-					<variable required name="survey_status">completed</variable>
-					<variable required name="processing_status">completed</variable>
-					<variable required name="downloaded">true</variable>
-				</requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="variables">
-										<variable name="success">true</variable>
-									</objectnode>
-									<objectnode name="common_data">
-										<objectnode name="game">
-											<arraynode name="purchasables"></arraynode>
-											<objectnode name="currencies">
-												<objectnode name="redeemable">
-													<variable name="id">21</variable>
-													<variable name="name">Coins</variable>
-													<variable name="game_currency_type_id">2</variable>
-													<variable name="short_name">REDEEMABLE</variable>
-													<variable name="balance">491</variable>
+							</json>
+						</example>
+					</endpoint>
+					<endpoint name="getSurveys">
+						<description>Retrieves multiple surveys’ data based on the survey type and optionally status. Does not return question or question choice data.</description>
+						<parameters>
+							<parameter required name="survey_type" type="string" default="">The type of survey to get.</parameter>
+							<parameter  name="survey_status" type="string" default="">The status of surveys to get.</parameter>
+							<parameter required name="starbar_id" type="integer" default="">The type of starbar to get get surveys for.</parameter>
+							<parameter name="page_number" type="integer" default="">The page number requested.</parameter>
+							<parameter name="results_per_page" type="integer" default="">The number of results requested per page.</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="" type="object" location="records" default="">The data for multiple surveys.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="starbar_id">6</variable>
+							<variable required name="survey_type">poll</variable>
+							<variable name="page_number">1</variable>
+							<variable name="results_per_page">2</variable>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="records">
+												<objectnode name="123">
+													<variable name="type">survey</variable>
+													<variable name="origin">SurveyGizmo</variable>
+													<variable name="is_federated">null</variable>
+													<variable name="title">TV - Defiance</variable>
+													<variable name="external_id">11111</variable>
+													<variable name="external_key">KeyName</variable>
+													<variable name="number_of_answers">null</variable>
+													<variable name="number_of_questions">4</variable>
+													<variable name="display_number_of_questions">4</variable>
+													<variable name="size">large</variable>
+													<variable name="reward_category">standard</variable>
+													<variable name="custom_reward_experience">null</variable>
+													<variable name="custom_reward_redeemable">null</variable>
+													<variable name="survey_response_id">123454</variable>
 												</objectnode>
-												<objectnode name="experience">
-													<variable name="id">20</variable>
-													<variable name="name">XP</variable>
-													<variable name="game_currency_type_id">1</variable>
-													<variable name="short_name">REDEEMABLE</variable>
-													<variable name="balance">6500</variable>
+												<objectnode name="124">
+													<variable name="type">survey</variable>
+													<variable name="origin">SurveyGizmo</variable>
+													<variable name="is_federated">null</variable>
+													<variable name="title">TV - Defiance</variable>
+													<variable name="external_id">11112</variable>
+													<variable name="external_key">KeyName</variable>
+													<variable name="number_of_answers">null</variable>
+													<variable name="number_of_questions">4</variable>
+													<variable name="display_number_of_questions">4</variable>
+													<variable name="size">large</variable>
+													<variable name="reward_category">standard</variable>
+													<variable name="custom_reward_experience">null</variable>
+													<variable name="custom_reward_redeemable">null</variable>
+													<variable name="survey_response_id">123455</variable>
 												</objectnode>
 											</objectnode>
-											<variable name="level">2</variable>
-											<objectnode name="levels">
-												<objectnode name="1">
-													<variable name="id">21</variable>
-													<variable name="game_asset_id">57</variable>
-													<variable name="ordinal">1</variable>
-													<variable name="name">Level 1</variable>
-													<variable name="description"></variable>
-													<variable name="img_url">http://media.saysollc.com/media/machinima/Level1_B.png</variable>
-													<variable name="img_url_small">http://media.saysollc.com/media/machinima/Level1_S.png</variable>
-												</objectnode>
-												<objectnode>
-													... // levels 2-22 removed
-												</objectnode>
-											</objectnode>
-											<variable name="max_level">22</variable>
+											<variable name="recordsReturned">1</variable>
+											<variable name="totalRecords">16</variable>
+											<variable name="pageNumber">1</variable>
+											<variable name="resultsPerPage">2</variable>
+											<variable name="totalPages">8</variable>
 										</objectnode>
 									</objectnode>
 								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-			<endpoint name="shareSurvey">
-				<description>Share survey functions.</description>
-				<parameters>
-					<parameter required name="survey_id" type="integer" default_value="">The id of the survey that was shared.</parameter>
-					<parameter required name="starbar_id" type="integer" default_value="'not required','pending','completed','failed’">The id of the starbar.</parameter>
-					<parameter required name="shared_type" type="enumerated" default_value="'survey','poll','quiz','mission','trailer','trailer template'">The type of survey.</parameter>
-					<parameter required name="network" type="Enumerated" default_value="‘FB’, ‘TW’">Facebook or Twitter</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="success" type="boolean" location="variables">Set to true if the operation is successful.</returnvalue>
-					<returnvalue name="game" type="object" location="common_data">The updated game data.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="survey_id">1234</variable>
-					<variable required name="starbar_id">4</variable>
-					<variable required name="shared_type">survey</variable>
-					<variable required name="network">FB</variable>
-				</requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="variables">
-										<variable name="success">true</variable>
-									</objectnode>
-									<objectnode name="common_data">
-										<objectnode name="game">
-											<arraynode name="purchasables"></arraynode>
-											<objectnode name="currencies">
-												<objectnode name="redeemable">
-													<variable name="id">21</variable>
-													<variable name="name">Coins</variable>
-													<variable name="game_currency_type_id">2</variable>
-													<variable name="short_name">REDEEMABLE</variable>
-													<variable name="balance">491</variable>
-												</objectnode>
-												<objectnode name="experience">
-													<variable name="id">20</variable>
-													<variable name="name">XP</variable>
-													<variable name="game_currency_type_id">1</variable>
-													<variable name="short_name">REDEEMABLE</variable>
-													<variable name="balance">6500</variable>
-												</objectnode>
+							</json>
+						</example>
+					</endpoint>
+					<endpoint name="getSurveyCounts">
+						<description>Gets the count of how many surveys the current user has.</description>
+						<parameters>
+							<parameter required name="starbar_id" type="integer" default="">The id of the starbar.</parameter>
+							<parameter name="survey_type" type="enumerated" default="'survey','poll','quiz','mission','trailer','trailer template'">The type of survey to get.</parameter>
+							<parameter name="survey_status" type="enumerated" default="'active','inactive'">The status of the surveys to get.</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="count" type="integer" location="variables" default="">The number of matching surveysl.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="starbar_id">5</variable>
+							<variable required name="survey_type">survey</variable>
+							<variable required name="survey_status">active</variable>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+												<variable name="count">12</variable>
 											</objectnode>
-											<variable name="level">2</variable>
-											<objectnode name="levels">
-												<objectnode name="1">
-													<variable name="id">21</variable>
-													<variable name="game_asset_id">57</variable>
-													<variable name="ordinal">1</variable>
-													<variable name="name">Level 1</variable>
-													<variable name="description"></variable>
-													<variable name="img_url">http://media.saysollc.com/media/machinima/Level1_B.png</variable>
-													<variable name="img_url_small">http://media.saysollc.com/media/machinima/Level1_S.png</variable>
-												</objectnode>
-												<objectnode>
-													... // levels 2-22 removed
-												</objectnode>
-											</objectnode>
-											<variable name="max_level">22</variable>
 										</objectnode>
 									</objectnode>
 								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+					<endpoint name="updateSurveyResponse">
+						<description>Update the response of a survey.</description>
+						<parameters>
+							<parameter required name="survey_id" default="" type='integer'>The id of the survey being responeded to.</parameter>
+							<parameter required name="starbar_id" default="" type='integer'>The starbar id.</parameter>
+							<parameter required name="survey_data" default="" type='object'>An object with the question id/question choice id pairs.</parameter>
+							<parameter required name="survey_response_id" default="" type='integer'>The survey response id.</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="success" type="boolean" location="variables" >Set to true if the operation is successful.</returnvalue>
+							<returnvalue name="game" type="object" location="common_data" default="">The game data.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="starbar_id">6</variable>
+							<variable required name="survey_id">1234</variable>
+							<variable required name="survey_response_id">4321</variable>
+							<objectnode name="survey_data" required> <!-- required doesn't color objects -->
+								<objectnode name="answers" required>
+									<variable name="7086">38285</variable>
+									<variable name="7087">38287</variable>
+								</objectnode>
 							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-		</section>
-		<section name="user">
-			<description>This class holds user related endpoints.</description>
-			<endpoint name="getUser">
-				<description>Retrieves user data for the current user.</description>
-				<parameters> </parameters>
-				<returnvalues>
-					<returnvalue name="" type="object" location="records" default_value="">User data.</returnvalue>
-				</returnvalues>
-				<requestexample></requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="records">
-										<objectnode name="123">
-											<variable name="public_name">null</variable>
-											<variable name="email">test@example.com</variable>
-											<variable name="user_socials">null</variable>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+												<variable name="success">true</variable>
+											</objectnode>
 										</objectnode>
 									</objectnode>
 								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-			<endpoint name="getState">
-				<description>Retrieves state data for the current user.</description>
-				<parameters>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="" type="object" location="variables" default_value="">The state data for the user.</returnvalue>
-				</returnvalues>
-				<requestexample>
-				</requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="variables">
-											<variable name="user_id">123</variable>
-											<variable name="user_key">null</variable>
-											<variable name="auth_key">null</variable>
-											<variable name="starbar_id">3</variable>
-											<variable name="visibility">open</variable>
-											<variable name="last_update_profile">null</variable>
-											<variable name="last_update_game">null</variable>
-											<variable name="last_update_studies">null</variable>
-											<variable name="studies">null</variable>
-											<variable name="ad_targets">null</variable>
-											<variable name="flags">null</variable>
-											<variable name="most_recent_fb_share">null</variable>
-											<variable name="most_recent_tw_share">null</variable>
-									</objectnode>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-			<endpoint name="updateState">
-				<description>Update the user state.</description>
-				<parameters>
-					<parameter required name="state_data" type="object" default_value="">This endpoint consists of an array of parameters.
-																		Potential fields in this array are:
-																		starbar_id 			- Integer (10)
-																		visibility 			- Enumerated ('open','stowed')
-																		last_update_profile		- Integer (10)
-																		last_update_game		- Integer (10)
-																		last_update_studies		- Integer (10)
-																		studies				- String (5000)
-																		ad_targets			- String (5000)
-																		flags				- String (200)
-																		most_recent_fb_share	- String (255)
-																		most_recent_tw_share	- String (255)
-					</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="success" type="boolean" location="variables">Set to true if the operation is successful.</returnvalue>
-				</returnvalues>
-				<requestexample>
-						<objectnode name='state_data'>
-							<variable name="starbar_id">4</variable>
-							<variable name="visibility">open</variable>
-						</objectnode>
-				</requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="variables">
-										<variable name="success">true</variable>
-									</objectnode>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-			<endpoint name="connectSocialNetwork">
-				<description>Connect a user to a social network.</description>
-				<parameters>
-					<parameter required name="starbar_id" type="integer" default_value="">The id of the starbar.</parameter>
-					<parameter required name="network" type="enumerated" default_value="‘FB’, ‘TW’">Facebook or Twitter</parameter>
-					<parameter name="oauth" type="array" default_value="">If you are connecting to Twitter, you will need to supply an array containing the oauth_token and oauth_token_secret and optionally a callback_url.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="success" type="boolean" location="variables">Set to true if the operation is successful.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="network">FB</variable>
-					<variable required name="starbar_id">4</variable>
-				</requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="variables">
-										<variable name="success">true</variable>
-									</objectnode>
-								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-			<endpoint name="getTwitterOauthToken">
-				<description>Obtains the oAuth credentials from Twitter.</description>
-				<parameters>
-					<parameter name="callback_url" type="string" default_value="">The URL to assign as the callback in the Twitter Api.</parameter>
-				</parameters>
-				<returnvalues>
-					<returnvalue name="success" type="boolean" location="variables">Set to true if the operation is successful.</returnvalue>
-					<returnvalue name="token" type="object" location="variables">The Twitter oauth token, key, and optionally the callback url.</returnvalue>
-				</returnvalues>
-				<requestexample>
-					<variable required name="callback_url">http://www.example.com</variable>
-				</requestexample>
-				<example name="Response Example - json">
-					<json>
-						<objectnode>
-							<variable help="This is the description for the error_code field" name="error_code">0</variable>
-							<variable help="This is the description for the error_message field" name="error_message"></variable>
-							<objectnode help="This is the description for the responses object" name="responses">
-								<objectnode name="default">
-									<objectnode name="variables">
-										<variable name="success">true</variable>
-											<objectnode name="token">
-												<variable name="oauth_token">XXX</variable>
-												<variable name="oauth_token_secret">XXX</variable>
-												<variable name="callback_url">http://www.example.com</variable>
+							</json>
+						</example>
+					</endpoint>
+
+					<endpoint name="updateSurveyStatus">
+						<description>Update the status of a survey.</description>
+						<parameters>
+							<parameter required name="downloaded" type="boolean" default="false">Whether or not to mark the survey as downloaded. Typically, surveys of type survey would be set to FALSE, others set to TRUE.</parameter>
+							<parameter required name="processing_status" type="enumerated" default="'not required','pending','completed','failed’">The processing status of the survey.</parameter>
+							<parameter required name="survey_status" type="enumerated" default="'completed','archived','new','disqualified'">The processing status of the survey.</parameter>
+							<parameter required name="survey_response_id" type="integer" default="">The id of the survey response.</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="success" type="boolean" location="variables">Set to true if the operation is successful.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="survey_response_id">12345</variable>
+							<variable required name="survey_status">completed</variable>
+							<variable required name="processing_status">completed</variable>
+							<variable required name="downloaded">true</variable>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+												<variable name="success">true</variable>
 											</objectnode>
+											<objectnode name="common_data">
+												<objectnode name="game">
+													<arraynode name="purchasables"></arraynode>
+													<objectnode name="currencies">
+														<objectnode name="redeemable">
+															<variable name="id">21</variable>
+															<variable name="name">Coins</variable>
+															<variable name="game_currency_type_id">2</variable>
+															<variable name="short_name">REDEEMABLE</variable>
+															<variable name="balance">491</variable>
+														</objectnode>
+														<objectnode name="experience">
+															<variable name="id">20</variable>
+															<variable name="name">XP</variable>
+															<variable name="game_currency_type_id">1</variable>
+															<variable name="short_name">REDEEMABLE</variable>
+															<variable name="balance">6500</variable>
+														</objectnode>
+													</objectnode>
+													<variable name="level">2</variable>
+													<objectnode name="levels">
+														<objectnode name="1">
+															<variable name="id">21</variable>
+															<variable name="game_asset_id">57</variable>
+															<variable name="ordinal">1</variable>
+															<variable name="name">Level 1</variable>
+															<variable name="description"></variable>
+															<variable name="img_url">http://media.saysollc.com/media/machinima/Level1_B.png</variable>
+															<variable name="img_url_small">http://media.saysollc.com/media/machinima/Level1_S.png</variable>
+														</objectnode>
+														<objectnode>
+															... // levels 2-22 removed
+														</objectnode>
+													</objectnode>
+													<variable name="max_level">22</variable>
+												</objectnode>
+											</objectnode>
+										</objectnode>
 									</objectnode>
 								</objectnode>
-							</objectnode>
-						</objectnode>
-					</json>
-				</example>
-			</endpoint>
-		</section>
+							</json>
+						</example>
+					</endpoint>
+					<endpoint name="shareSurvey">
+						<description>Share survey functions.</description>
+						<parameters>
+							<parameter required name="survey_id" type="integer" default="">The id of the survey that was shared.</parameter>
+							<parameter required name="starbar_id" type="integer" default="'not required','pending','completed','failed’">The id of the starbar.</parameter>
+							<parameter required name="shared_type" type="enumerated" default="'survey','poll','quiz','mission','trailer','trailer template'">The type of survey.</parameter>
+							<parameter required name="network" type="Enumerated" default="‘FB’, ‘TW’">Facebook or Twitter</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="success" type="boolean" location="variables">Set to true if the operation is successful.</returnvalue>
+							<returnvalue name="game" type="object" location="common_data">The updated game data.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="survey_id">1234</variable>
+							<variable required name="starbar_id">4</variable>
+							<variable required name="shared_type">survey</variable>
+							<variable required name="network">FB</variable>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+												<variable name="success">true</variable>
+											</objectnode>
+											<objectnode name="common_data">
+												<objectnode name="game">
+													<arraynode name="purchasables"></arraynode>
+													<objectnode name="currencies">
+														<objectnode name="redeemable">
+															<variable name="id">21</variable>
+															<variable name="name">Coins</variable>
+															<variable name="game_currency_type_id">2</variable>
+															<variable name="short_name">REDEEMABLE</variable>
+															<variable name="balance">491</variable>
+														</objectnode>
+														<objectnode name="experience">
+															<variable name="id">20</variable>
+															<variable name="name">XP</variable>
+															<variable name="game_currency_type_id">1</variable>
+															<variable name="short_name">REDEEMABLE</variable>
+															<variable name="balance">6500</variable>
+														</objectnode>
+													</objectnode>
+													<variable name="level">2</variable>
+													<objectnode name="levels">
+														<objectnode name="1">
+															<variable name="id">21</variable>
+															<variable name="game_asset_id">57</variable>
+															<variable name="ordinal">1</variable>
+															<variable name="name">Level 1</variable>
+															<variable name="description"></variable>
+															<variable name="img_url">http://media.saysollc.com/media/machinima/Level1_B.png</variable>
+															<variable name="img_url_small">http://media.saysollc.com/media/machinima/Level1_S.png</variable>
+														</objectnode>
+														<objectnode>
+															... // levels 2-22 removed
+														</objectnode>
+													</objectnode>
+													<variable name="max_level">22</variable>
+												</objectnode>
+											</objectnode>
+										</objectnode>
+									</objectnode>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+				</actionclass>
+				<actionclass name="user">
+					<description>This class holds panelist-related endpoints.</description>
+					<endpoint name="getUser">
+						<description>Retrieves user data for the current panelist.</description>
+						<parameters> </parameters>
+						<requestexample></requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="records">
+												<objectnode name="123">
+													<variable name="public_name">null</variable>
+													<variable name="email">test@example.com</variable>
+													<variable name="user_socials">null</variable>
+												</objectnode>
+											</objectnode>
+										</objectnode>
+									</objectnode>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+					<endpoint name="getState">
+						<description>Retrieves state data for the current panelist.</description>
+						<parameters>
+						</parameters>
+						<requestexample>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+													<variable name="user_id">123</variable>
+													<variable name="user_key">null</variable>
+													<variable name="auth_key">null</variable>
+													<variable name="starbar_id">3</variable>
+													<variable name="visibility">open</variable>
+													<variable name="last_update_profile">null</variable>
+													<variable name="last_update_game">null</variable>
+													<variable name="last_update_studies">null</variable>
+													<variable name="studies">null</variable>
+													<variable name="ad_targets">null</variable>
+													<variable name="flags">null</variable>
+													<variable name="most_recent_fb_share">null</variable>
+													<variable name="most_recent_tw_share">null</variable>
+											</objectnode>
+										</objectnode>
+									</objectnode>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+					<endpoint name="updateState">
+						<description>Update the user state.</description>
+						<parameters>
+							<parameter required name="state_data" type="object" default="">This is the node containing the user's current state (e.g. what starbar they are currently on)</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="success" type="boolean" location="variables">Set to true if the operation is successful.</returnvalue>
+						</returnvalues>
+						<requestexample>
+								<objectnode name='state_data'>
+									<variable name="starbar_id">4</variable>
+									<variable name="visibility">open</variable>
+								</objectnode>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+												<variable name="success">true</variable>
+											</objectnode>
+										</objectnode>
+									</objectnode>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+					<endpoint name="connectSocialNetwork">
+						<description>Connect a user to a social network.</description>
+						<parameters>
+							<parameter required name="starbar_id" type="integer" default="">The id of the starbar.</parameter>
+							<parameter required name="network" type="enumerated" default="‘FB’, ‘TW’">Facebook or Twitter</parameter>
+							<parameter name="oauth" type="array" default="">If you are connecting to Twitter, you will need to supply an array containing the oauth_token and oauth_token_secret and optionally a callback_url.</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="success" type="boolean" location="variables">Set to true if the operation is successful.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="network">FB</variable>
+							<variable required name="starbar_id">4</variable>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+												<variable name="success">true</variable>
+											</objectnode>
+										</objectnode>
+									</objectnode>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+					<endpoint name="getTwitterOauthToken">
+						<description>Obtains the oAuth credentials from Twitter.</description>
+						<parameters>
+							<parameter name="callback_url" type="string" default="">The URL to assign as the callback in the Twitter Api.</parameter>
+						</parameters>
+						<returnvalues>
+							<returnvalue name="success" type="boolean" location="variables">Set to true if the operation is successful.</returnvalue>
+							<returnvalue name="token" type="object" location="variables">The Twitter oauth token, key, and optionally the callback url.</returnvalue>
+						</returnvalues>
+						<requestexample>
+							<variable required name="callback_url">http://www.example.com</variable>
+						</requestexample>
+						<example name="Response Example">
+							<json>
+								<objectnode>
+									<variable help="" name="error_code">0</variable>
+									<variable help="" name="error_message"></variable>
+									<objectnode help="" name="responses">
+										<objectnode name="default">
+											<objectnode name="variables">
+												<variable name="success">true</variable>
+												<objectnode name="token">
+													<variable name="oauth_token">XXX</variable>
+													<variable name="oauth_token_secret">XXX</variable>
+													<variable name="callback_url">http://www.example.com</variable>
+												</objectnode>
+											</objectnode>
+										</objectnode>
+									</objectnode>
+								</objectnode>
+							</json>
+						</example>
+					</endpoint>
+				</actionclass>
+			</section>
+
+			<section name="Administrator Endpoints">
+				Documentation for the Administrator endpoints is coming soon.
+			</section>
+		</div>
 	</div>
 
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>

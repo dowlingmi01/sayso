@@ -1,22 +1,50 @@
 body {
-	font: 12px Verdana;
-	margin-bottom: 50px;
-	background-color: #999999;
+	font-family: "proxima-nova";;
+	font-size: 15px;
+	background-image: url('images/page-background.jpg');
+	background-repeat: repeat;
 }
 
 #container {
-	padding: 1px 10px 50px 10px;
+	width: 1040px;
+	background-color: #fff;
+	box-shadow: 8px 8px 5px -5px #7f7f7f, -8px 8px 5px -5px #7f7f7f;
+	margin: 0 auto 20px auto;
+}
+
+#header {
+	background-image: url('images/header-background.jpg');
+	background-repeat: repeat-x;
+	padding: 38px 0 0 40px;
+	margin: -8px 0 0 0;
 	width: 1000px;
-	background-color: white;
+	height: 107px;
+}
+
+#logo {
+	width: 476px;
+	height: 90px;
+	background-image: url('images/logo.png');
+}
+
+#content {
+	width: 960px;
+	padding: 25px 40px 40px 40px;
+	background-color: #fff;
+}
+
+h1, h2, h3, b, strong {
+	font-weight: 600;
 }
 
 h1 {
 	margin-top: 30px;
+	font-size: 20px;
+	color: #1c718f;
 }
 
-h1.title {
-	color: #0057AE;
-	font-size: 30px;
+h1.sectionname {
+	cursor: pointer;
 }
 
 h1.title span {
@@ -25,27 +53,32 @@ h1.title span {
 }
 
 h2 {
+	font-size: 15px;
 	margin-top: 20px;
 }
 
-h2.endpoint, h3.example {
+h2.endpointname, h3.example {
 	display: inline-block;
 	cursor: pointer;
-	border-bottom: 1px solid #777777;
-	color: #0057AE;
-	margin: 10px 0 10px 0;
+	color: #f66837;
+	margin: 10px 0;
 }
 
 h3.example {
-	color: #008800;
+	margin: 5px 0;
+	color: #0fb8f3;
+}
+
+.endpoint h3.example {
+	margin: 20px 0 0 0;
 }
 
 h3 {
-	font-variant: small-caps;
+	font-size: 15px;
 }
 
-div.section {
-	width: 1000px;
+div.actionclass {
+	width: 940px;
 }
 
 div.node {
@@ -56,12 +89,12 @@ div.nodecontainer:after, div.variable:after {
 	content: ", ";
 }
 
-div.nodecontainer:last-child:after, div.variable:last-child:after {
+div.nodecontainer:last-of-type:after, div.variable:last-of-type:after {
 	content: "";
 }
 
 span.variablename, span.nodename {
-	font-weight: bold;
+	font-weight: 600;
 }
 
 span.variablevalue {
@@ -76,6 +109,7 @@ span.variablename, span.variablevalue {
 div.json {
 	font: 12px Fixed, monospace;
 	padding: 10px;
+	margin: 10px 0 20px 0;
 	background-color: #F9F9F9;
 	border: 1px solid #DDD;
 }
@@ -98,7 +132,7 @@ div.fakerow div, div.fakeheaderrow div {
 }
 
 div.fakeheaderrow div {
-	font-weight: bold;
+	font-weight: 600;
 }
 
 div.fakerow:last-child div {
@@ -114,7 +148,56 @@ div.fakerow:last-child div:last-child {
 }
 
 span.required, div.required span.variablename, div.parameter.required div:first-child {
-	color: red;
+	color: #f66837;
+}
+
+div.sectioncontents, div.endpointcontents {
+	display: none;
+	margin-bottom: 30px;
+}
+
+div.section {
+	padding-left: 30px;
+	position: relative;
+}
+
+div.endpoint {
+	padding-left: 35px;
+	position: relative;
+}
+
+div.sectiontriangle {
+	background-image: url('images/blue-arrow-right.png');
+	background-repeat: no-repeat;
+	transition: all 0.5s ease;
+	width: 17px;
+	height: 19px;
+	position: absolute;
+	top: 2px;
+	left: 0px;
+}
+
+div.endpointtriangle {
+	background-image: url('images/orange-arrow-right.png');
+	background-repeat: no-repeat;
+	transition: all 0.2s ease-out;
+	width: 17px;
+	height: 19px;
+	position: absolute;
+	top: 9px;
+	left: 10px;
+}
+
+.shown div.sectiontriangle, .endpoint.shown div.endpointtriangle {
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+
+.shown div.sectioncontents, .endpoint.shown div.endpointcontents {
+	display: block;
 }
 
 .notes {

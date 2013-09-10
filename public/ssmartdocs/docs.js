@@ -15,7 +15,7 @@ var directives = {
 				name: "@",
 				shown: "@"
 			},
-			template: '<div class="section" ng-class="{\'shown\': shown}"><div class="sectiontriangle"></div><h1 ng-click="shown = !shown" class="sectionname">{{name}}</h1><div class="sectioncontents" ng-transclude></div></div>',
+			template: '<div class="section" ng-class="{\'shown\': shown}"><div ng-click="shown = !shown" class="sectiontriangle"></div><h1 ng-click="shown = !shown" class="sectionname">{{name}}</h1><div class="sectioncontents" ng-transclude></div></div>',
 			link: function (scope, element, attrs, actionClassController) {
 				scope.shown = false;
 				scope.toggleShow = function() {
@@ -62,7 +62,7 @@ var directives = {
 			scope: {
 				name: "@"
 			},
-			template: '<div class="endpoint" ng-class="{\'shown\': shown}"><div class="endpointtriangle"></div><h2 ng-click="shown = !shown" class="endpointname">{{actionClassName}}.{{name}}</h2><div class="endpointcontents" ng-transclude></div></div>',
+			template: '<div class="endpoint" ng-class="{\'shown\': shown}"><div ng-click="shown = !shown" class="endpointtriangle"></div><h2 ng-click="shown = !shown" class="endpointname">{{actionClassName}}.{{name}}</h2><div class="endpointcontents" ng-transclude></div></div>',
 			link: function (scope, element, attrs, actionClassController) {
 				scope.actionClassName = actionClassController.actionClassName;
 			},

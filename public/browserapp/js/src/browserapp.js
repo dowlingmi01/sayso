@@ -434,7 +434,7 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 
 	function openSurvey(data) {
 		if (!data['surveyId']) return;
-		if ('surveySize' in data || !data['surveySize']) data['surveySize'] = "large"; // default to profile survey size
+		if (!('surveySize' in data) || !data['surveySize']) data['surveySize'] = "large"; // default to profile survey size
 		data['section'] = 'survey';
 
 		// using closeSection() to allow a survey link on the survey section itself

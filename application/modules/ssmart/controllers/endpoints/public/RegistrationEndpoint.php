@@ -58,9 +58,7 @@ class Ssmart_Public_RegistrationEndpoint extends Ssmart_GlobalController
 		$digest = $request->valid_parameters["digest"];
 		$email = strtolower($request->valid_parameters["email"]);
 
-		//TODO: validate user against Machinima endpoint
-
-		$userId = User::create($email, '', $starbarId);
+		$userId = User::create($email, '', $starbarId, array('digest'=>$digest));
 
 		$response->setResultVariable("user_id", $userId);
 

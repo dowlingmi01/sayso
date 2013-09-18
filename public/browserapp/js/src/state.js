@@ -1,13 +1,15 @@
-sayso.module.state = (function(global, $, comm, config, util) {
+sayso.module.state = (function(global, $, comm, config, util, api) {
 	var publicVar = {
 		state: null,
 		ready: false,
 		login: login,
 		logout: logout,
 		loginMachinimaReload: loginMachinimaReload,
+		subscribeStarbar: subscribeStarbar,
 		refresh: refresh,
 		setVisibility: setVisibility
 	};
+	var urlParams = util.urlParams(config.location.search.slice(1));
 	var stateListeners = {
 		login: function() {
 			requestState('login');
@@ -60,15 +62,9 @@ sayso.module.state = (function(global, $, comm, config, util) {
 		};
 	}
 	function requestState( eventName ) {
-		var urlParams = util.urlParams(config.location.search.slice(1));
 		var params = {starbar_id: config.defaultStarbarId};
-		if( urlParams.machinimareload_email && urlParams.machinimareload_digest ) {
-			publicVar.machinimareload = {
-				email: urlParams.machinimareload_email,
-				digest: urlParams.machinimareload_digest
-			};
+		if( publicVar.machinimareload )
 			params.machinimareload = publicVar.machinimareload;
-		}
 		comm.request('get-state', params, gotState( eventName ));
 	}
 	function setVisibility( visibility ) {
@@ -77,7 +73,29 @@ sayso.module.state = (function(global, $, comm, config, util) {
 	function refresh() {
 		requestState('starbar');
 	}
+	function subscribeStarbar(starbarId, callback) {
+		var params = {
+			action_class : 'starbar',
+			action : 'subscribeStarbar',
+			starbar_id: starbarId
+		};
+		if( publicVar.machinimareload )
+			params.data = { digest: publicVar.machinimareload.digest };
+		api.doRequest( params, function( response ) {
+			if( response.responses['default'].variables.status )
+				refresh();
+			if( callback )
+				callback( response );
+		});
 
+	}
+
+	if( urlParams.machinimareload_email && urlParams.machinimareload_digest ) {
+		publicVar.machinimareload = {
+			email: urlParams.machinimareload_email,
+			digest: urlParams.machinimareload_digest
+		};
+	}
 	for( var name in stateListeners )
 		comm.listen('state.' + name, stateListeners[name]);
 
@@ -87,5 +105,5 @@ sayso.module.state = (function(global, $, comm, config, util) {
 		$(global.document).on('sayso:comm-ready', function() { requestState('ready'); });
 
 	return publicVar;
-})(this, jQuery, sayso.module.comm, sayso.module.config, sayso.module.util)
+})(this, jQuery, sayso.module.comm, sayso.module.config, sayso.module.util, sayso.module.api)
 ;

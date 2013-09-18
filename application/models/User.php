@@ -213,8 +213,8 @@ class User extends Record implements Titled
 			return;
 	}
 
-	public static function create( $email, $pw, $starbarId) {
-		$names = self::validateEmailForStarbar($email, $starbarId);
+	public static function create( $email, $pw, $starbarId, $data=array()) {
+		$names = self::validateEmailForStarbar($email, $starbarId, $data);
 
 		$userEmail = new User_Email();
 
@@ -233,6 +233,12 @@ class User extends Record implements Titled
 			$user->last_name = $names['last_name'];
 		if(array_key_exists('first_name', $names))
 			$user->first_name = $names['first_name'];
+		if(array_key_exists('username', $names))
+			$user->username = $names['username'];
+		if(array_key_exists('birthday', $names))
+			$user->birthdate = $names['birthday'];
+		if(array_key_exists('digest', $data))
+			$user->machinimareload_digest = $data['digest'];
 
 		$user->setPlainTextPassword($pw);
 		$user->save();
@@ -259,23 +265,25 @@ class User extends Record implements Titled
 		return $user->id;
 	}
 
-	public static function validateEmailForStarbar($email, $starbarId) {
+	public static function validateEmailForStarbar($email, $starbarId, $data=array()) {
 		if( $starbarId != 7 || User_Email::isTestEmail($email) )
 			return array();
+		if( $starbarId == 7 )
+			return MachinimaReload::verifyEmail($email, $data['digest']);
 		$sql = 'SELECT first_name, last_name FROM starbar_valid_email WHERE starbar_id = ? AND email = ?';
 		$result = Db_Pdo::fetch($sql, $starbarId, $email);
 		if(!$result)
 			throw new Exception('user_does_not_have_access_to_starbar');
 		return $result;
 	}
-	public static function validateUserIdForStarbar($userId, $starbarId) {
+	public static function validateUserIdForStarbar($userId, $starbarId, $data = array()) {
 		if( $starbarId != 7 )
 			return;
 		$user = new User();
 		$user->loadData($userId);
 		if($user->type == 'test')
 			return;
-		self::validateEmailForStarbar($user->getEmail()->email, $starbarId);
+		self::validateEmailForStarbar($user->getEmail()->email, $starbarId, $data);
 	}
 
 }

@@ -1,0 +1,1 @@
+ALTER TABLE user ADD machinimareload_digest varchar(255) DEFAULT NULL;

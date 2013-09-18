@@ -73,8 +73,6 @@ class User_Login {
 
 	public static function loginMachinimaReload($email, $digest)
 	{
-		//TODO: validate user against Machinima endpoint
-
 		// attempt getting the user
 		$userEmail = Db_Pdo::fetch('SELECT id FROM user_email WHERE email = ?', $email);
 		if (empty($userEmail))
@@ -87,6 +85,8 @@ class User_Login {
 
 		if( $userRow['status'] != 'active' )
 			return;
+
+		MachinimaReload::verifyEmail($email, $digest);
 
 		// all is good
 		$session = new User_Session();

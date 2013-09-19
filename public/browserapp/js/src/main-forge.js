@@ -73,6 +73,8 @@
 			'stumbleupon.com/badge', 'reddit.com/static', 'static.addtoany.com/menu',
 			'plusone.google.com', 'intensedebate/empty',
 			'mail.google.com',
+			'ec2-23-22-172-108.compute-1.amazonaws.com', 'ec2-54-214-233-27.us-west-2.compute.amazonaws.com',
+			'affiliates.machinima.com',
 			'saysollc.com/html/communicator', 'saysollc.com/starbar'
 		];
 

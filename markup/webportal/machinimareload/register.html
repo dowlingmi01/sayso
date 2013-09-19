@@ -1,15 +1,9 @@
 <script data-partial-id="main" type="text/x-handlebars-template">
 	<h1 class="join_now_header">%PORTAL_REGISTER_HEADER%</h1>
-	<div class="portal-element portal-join-now join_now_content">
-		<div class="join_now_password">
-			%PORTAL_REGISTER_TEXT%
-			<input id="emailAddress_field" class="portal-element portal-placeholder large_input" placeholder="Enter a valid email address."/>
-			<input id="passwordOne_field" class="portal-element portal-placeholder large_input" type="password" placeholder="Enter your desired password. (6-12 chars)"/>
-			<input id="passwordTwo_field" class="portal-element portal-placeholder large_input" type="password" placeholder="Verify password."/>
-		</div>
-		<hr/>
+	<div class="portal-element portal-join-machinimareload join_now_content">
 		<div class="join_now_terms">
 				<span class="terms_and_conditions">
+                    %PORTAL_REGISTER_TEXT%
 					<input type="checkbox" value="" id="agreeterms">
 					<label for="agreeterms">
 						%PORTAL_I_AGREE_TERMS%
@@ -18,7 +12,7 @@
 		</div>
 		<div class="join_now_button_disabled" id="portal_join_now_button"></div>
         <div class="join_now_error" id="join_now_error">There was an error creating your account. Please try again.</div>
-        <div class="join_now_privacy">
+		<div class="join_now_privacy">
 			<span class="privacy">%PORTAL_REGISTER_PRIVACY%</span>
 		</div>
 	</div>

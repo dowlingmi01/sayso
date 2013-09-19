@@ -56,7 +56,13 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
             }
         });
         if (state.state.loggedIn) {
-			loadMarkup('profile');
+            //Logged in but is not associated with this starbar.
+            if (!state.state.starbar) {
+                loadMarkup('landing');
+            }
+            else {
+                loadMarkup('profile');
+            }
         }
         else {
             $loginDiv.show();
@@ -407,6 +413,7 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
 				$registerButton = $('#portal_join_now_button', $elem),
 				$getBrowserAppCheckbox = $("#install_browser_app", $elem),
 				$agreeTermsCheckbox = $("#agreeterms", $elem),
+				$errorField = $("#join_now_error", $elem),
 				buttonActive = false;
 
 			$agreeTermsCheckbox.on('click', activateSubmit);
@@ -473,17 +480,24 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
 					password : password,
 					originating_starbar_id : starbarId
 				}, function(response){
-					var success = response.responses['default'].variables.user_id;
-					if (success) {
-						doLogin(emailAddress, password);
-						if (getBrowserApp) {
-							//Change hash so navigation works, if we just call loadMarkup here, it breaks UX
-							location.hash = 'content/get-app-confirmation';
-						}
-						else {
-							location.hash = '';
-						}
-					}
+                    if (typeof response.responses['default'] !== "undefined"  && typeof response.responses['default'].variables  !== "undefined" && typeof response.responses['default'].variables.user_id  !== "undefined")
+                    {
+                        doLogin(emailAddress, password);
+                        if (getBrowserApp) {
+                            //Change hash so navigation works, if we just call loadMarkup here, it breaks UX
+                            location.hash = 'content/get-app-confirmation';
+                        }
+                        else {
+                            location.hash = '';
+                        }
+                    }
+                    else {
+                        //Perhaps give use more specific info here at later date.
+                        $errorField.show();
+                        setTimeout(function(){
+                            $errorField.fadeOut('slow');
+                        }, 3000);
+                    }
 				});
 			}
 		},
@@ -491,6 +505,7 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
 		"join-machinimareload": function ($elem) {
 			var $registerButton = $('#portal_join_now_button', $elem),
 				$agreeTermsCheckbox = $("#agreeterms", $elem),
+                $errorField = $("#join_now_error", $elem),
 				buttonActive = false;
 
 			$agreeTermsCheckbox.on('click', activateSubmit);
@@ -499,7 +514,13 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
 				if($agreeTermsCheckbox.is(':checked')) {
 					if(!buttonActive) {
 						$registerButton.removeClass('join_now_button_disabled').addClass('join_now_button');
-						$registerButton.on('click', createAccount);
+                        //User exists, hasn't joined reload
+                        if (!state.state.starbar && state.state.loggedIn) {
+                            $registerButton.on('click', linkAccount);
+                        }
+                        else {
+                            $registerButton.on('click', createAccount);
+                        }
 						buttonActive = true;
 					}
 				}
@@ -512,6 +533,22 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
 				}
 			}
 
+            function linkAccount() {
+                state.subscribeStarbar(starbarId, function(response) {
+                    if (typeof response.responses['default'] !== "undefined"  && typeof response.responses['default'].variables  !== "undefined" && typeof response.responses['default'].variables.status  !== "undefined")
+                    {
+                        loadMarkup('profile');
+                    }
+                    else {
+                        //Perhaps give use more specific info here at later date.
+                        $errorField.show();
+                        setTimeout(function(){
+                            $errorField.fadeOut('slow');
+                        }, 3000);
+                    }
+                });
+            }
+
 			function createAccount() {
 				api.doRequest({
 					action_class : 'registration',
@@ -519,10 +556,17 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
 					email : state.machinimareload.email,
 					digest : state.machinimareload.digest
 				}, function(response){
-					var success = response.responses['default'].variables.user_id;
-					if (success) {
+                    if (typeof response.responses['default'] !== "undefined"  && typeof response.responses['default'].variables  !== "undefined" && typeof response.responses['default'].variables.user_id  !== "undefined")
+                    {
 						state.loginMachinimaReload();
 					}
+                    else {
+                        //Perhaps give use more specific info here at later date.
+                        $errorField.show();
+                        setTimeout(function(){
+                            $errorField.fadeOut('slow');
+                        }, 3000);
+                    }
 				});
 			}
 		},

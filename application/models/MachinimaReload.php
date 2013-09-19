@@ -9,8 +9,11 @@ class MachinimaReload {
 		if($response->isSuccessful()) {
 			$body = $response->getBody();
 			$value = json_decode($body, true);
-			if( is_array($value) && array_key_exists('username', $value) )
+			if( is_array($value) && array_key_exists('username', $value) ) {
+				$value['machinimareload_digest'] = $digest;
+				$value['birthdate'] = $value['birthday'];
 				return($value);
+			}
 		}
 		throw new Exception('Invalid machinimareload user');
 	}

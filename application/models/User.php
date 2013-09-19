@@ -229,16 +229,8 @@ class User extends Record implements Titled
 			$userEmail->email = $email;
 			$user->setEmail($userEmail);
 		}
-		if(array_key_exists('last_name', $names))
-			$user->last_name = $names['last_name'];
-		if(array_key_exists('first_name', $names))
-			$user->first_name = $names['first_name'];
-		if(array_key_exists('username', $names))
-			$user->username = $names['username'];
-		if(array_key_exists('birthday', $names))
-			$user->birthdate = $names['birthday'];
-		if(array_key_exists('digest', $data))
-			$user->machinimareload_digest = $data['digest'];
+
+		$user->setFieldsFromArray($names);
 
 		$user->setPlainTextPassword($pw);
 		$user->save();
@@ -276,6 +268,7 @@ class User extends Record implements Titled
 			throw new Exception('user_does_not_have_access_to_starbar');
 		return $result;
 	}
+
 	public static function validateUserIdForStarbar($userId, $starbarId, $data = array()) {
 		if( $starbarId != 7 )
 			return;
@@ -283,8 +276,21 @@ class User extends Record implements Titled
 		$user->loadData($userId);
 		if($user->type == 'test')
 			return;
-		self::validateEmailForStarbar($user->getEmail()->email, $starbarId, $data);
+		$names = self::validateEmailForStarbar($user->getEmail()->email, $starbarId, $data);
+		if( $user->setFieldsFromArray($names))
+			$user->save();
 	}
 
+	public function setFieldsFromArray( $data ) {
+		if( empty($data) )
+			return false;
+		$changed = false;
+		$fieldNames = array('last_name', 'first_name', 'username', 'birthdate', 'machinimareload_digest');
+		foreach( $fieldNames as $fieldName )
+			if( array_key_exists($fieldName, $data) && $data[$fieldName] && !$this->{$fieldName} ) {
+				$this->{$fieldName} = $data[$fieldName];
+				$changed = true;
+			}
+		return $changed;
+	}
 }
-

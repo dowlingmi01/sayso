@@ -56,14 +56,14 @@ class Ssmart_GlobalController //extends Zend_Controller_Action
 		}
 	}
 
-	protected function checkUserAccessToStarbar($response, $starbarId, $active = NULL)
+	protected function checkUserAccessToStarbar($response, $starbarId, $active = NULL, $data = array())
 	{
 		if (!isset($this->auth->user_data->starbars[$starbarId]))
 			throw new Ssmart_EndpointError("user_does_not_have_access_to_starbar");
 		else if ($active && (bool)$this->auth->user_data->starbars[$starbarId]['active'] !== $active)
 			throw new Ssmart_EndpointError("starbar_not_active");
 		else if (!$active)
-			User::validateUserIdForStarbar($this->auth->user_data->user_id, $starbarId);
+			User::validateUserIdForStarbar($this->auth->user_data->user_id, $starbarId, $data);
 	}
 
 	/**

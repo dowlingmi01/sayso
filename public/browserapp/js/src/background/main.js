@@ -19,19 +19,20 @@
 		return new Api(config.baseDomain, state.session.id, state.session.key);
 	}
 	function checkForNewSession(response) {
+		var email = state.session.email || (state.profile && state.profile.email);
 		if( response && response.common_data &&
 			response.common_data.new_session_id && response.common_data.new_session_key ) {
 			state.session = { id: response.common_data.new_session_id, key: response.common_data.new_session_key,
-				timestamp: (new Date()).getTime() };
+				email: email, timestamp: (new Date()).getTime() };
 			comm.set('session', state.session);
 		}
 	}
-	function login( data, callback ) {
-		getPublicApi().sendRequest( {action_class: 'Login', action: 'login', username: data.email, password: data.password}, function( data ) {
+	function login( dataL, callback ) {
+		getPublicApi().sendRequest( {action_class: 'Login', action: 'login', username: dataL.email, password: dataL.password}, function( data ) {
             var session = data.responses['default'].variables;
             var result = {result: false, response: {}};
 			if (session) {
-				session = { id: session.session_id, key: session.session_key, timestamp: (new Date()).getTime() };
+				session = { id: session.session_id, key: session.session_key, email: dataL.email, timestamp: (new Date()).getTime() };
 				state.session = session;
 				comm.set('session', session, function() {
 					state.loggedIn = null;
@@ -49,12 +50,12 @@
             }
 		});
 	}
-	function loginMachinimaReload( data ) {
+	function loginMachinimaReload( dataL ) {
 		getPublicApi().sendRequest( {action_class: 'Login', action: 'machinimaReloadLogin',
-			email: data.email, digest: data.digest}, function( data ) {
+			email: dataL.email, digest: dataL.digest}, function( data ) {
 			var session = data.responses['default'].variables;
 			if (session) {
-				session = { id: session.session_id, key: session.session_key, timestamp: (new Date()).getTime() };
+				session = { id: session.session_id, key: session.session_key, email: dataL.email, timestamp: (new Date()).getTime() };
 				state.session = session;
 				comm.set('session', session, function() {
 					state.loggedIn = null;
@@ -77,13 +78,22 @@
 		state.notifications = {};
 		state.loggedIn = false;
 		state.session = {};
+		state.surveyCounts = {};
+		state.studies = [];
+		state.adTargets = [];
 		comm.set('session', {});
 		callback();
 		comm.broadcast('state.logout', {loggedIn:false});
 	}
-	function getUserState() {
+	function getUserState(data) {
+		data = data || {};
+		state.requested = true;
 		getSession( function( session ) {
 			session = session || {};
+			if( data.email && data.email !== session.email ) {
+				loginMachinimaReload(data);
+				return;
+			}
 			state.session = session;
 			if( session.id && session.key ) {
 				var api = getSessionApi();
@@ -111,6 +121,10 @@
 						pendingRequests[state.currentStarbarId] = [];
 					for( var starbarId in pendingRequests )
 						getStarbarState( starbarId );
+					if( !state.session.email && state.profile.email ) {
+						state.session.email = state.profile.email;
+						comm.set('session', state.session);
+					}
 				} );
 			} else {
 				state.loggedIn = false;
@@ -181,10 +195,17 @@
 		pendingRequests[starbarId].push( callback );
 	}
 	function getState( data, callback ) {
+		if( !state.requested )
+			getUserState( data && data.machinimareload );
+
 		var starbarId = (data && data.starbar_id) || state.currentStarbarId || 0;
 		if( state.loggedIn === false && data.machinimareload ) {
 			addPendingRequest( starbarId, callback );
 			loginMachinimaReload(data.machinimareload);
+		} else if( state.loggedIn && data.machinimareload && state.profile.email !== data.machinimareload.email ) {
+			logout(null, function() {
+				getState(data, callback);
+			});
 		} else if( state.loggedIn === false || (state.loggedIn && state.starbars[starbarId]) )
 			callback( buildStateForStarbar(starbarId) );
 		else {
@@ -285,5 +306,5 @@
 	comm.listen('submit-event', submitEvent);
 	comm.listen('mission-complete', missionComplete);
 
-	getUserState();
+//	getUserState();
 })(this, sayso.module.Api, sayso.module.comm, sayso.module.config, sayso.module.getSession);

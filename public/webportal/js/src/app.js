@@ -58,7 +58,7 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
         if (state.state.loggedIn) {
             //Logged in but is not associated with this starbar.
             if (!state.state.starbar) {
-                loadMarkup('landing');
+                loadMarkup('link-app');
             }
             else {
                 loadMarkup('profile');
@@ -425,9 +425,13 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
 				if(!validateFields()) {
 					if(!buttonActive) {
 						$registerButton.removeClass('join_now_button_disabled').addClass('join_now_button');
-						$registerButton.on('click', function(){
-							createAccount($emailField.val(), $passwordField.val(), $getBrowserAppCheckbox.is(':checked'));
-						});
+                        //User exists, hasn't joined current bar
+                        if (!state.state.starbar && state.state.loggedIn) {
+                            $registerButton.on('click', linkAccount);
+                        }
+                        else {
+                            $registerButton.on('click', createAccount);
+                        }
 						buttonActive = true;
 					}
 				}
@@ -472,6 +476,22 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
 				return false;
 			}
 
+            function linkAccount() {
+                state.subscribeStarbar(starbarId, function(response) {
+                    if (typeof response.responses['default'] !== "undefined"  && typeof response.responses['default'].variables  !== "undefined" && typeof response.responses['default'].variables.status  !== "undefined")
+                    {
+                        loadMarkup('profile');
+                    }
+                    else {
+                        //Perhaps give use more specific info here at later date.
+                        $errorField.show();
+                        setTimeout(function(){
+                            $errorField.fadeOut('slow');
+                        }, 3000);
+                    }
+                });
+            }
+
 			function createAccount(emailAddress, password, getBrowserApp) {
 				api.doRequest({
 					action_class : 'registration',
@@ -502,6 +522,7 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
 			}
 		},
 
+        //TODO: cs - Make this work in join-now with branching logic on action and starbarId. No need for extra handler.
 		"join-machinimareload": function ($elem) {
 			var $registerButton = $('#portal_join_now_button', $elem),
 				$agreeTermsCheckbox = $("#agreeterms", $elem),

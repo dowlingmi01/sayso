@@ -430,7 +430,9 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
                             $registerButton.on('click', linkAccount);
                         }
                         else {
-                            $registerButton.on('click', createAccount);
+                            $registerButton.on('click', function(){
+                                createAccount($emailField.val(), $passwordField.val(), $getBrowserAppCheckbox.is(':checked'));
+                            });
                         }
 						buttonActive = true;
 					}

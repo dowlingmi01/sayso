@@ -10,7 +10,7 @@ sayso.module.api = (function(global, dommsg) {
 			requests[++id] = callback;
 			params.id = id;
 		}
-		global.top.postMessage(JSON.stringify(['sayso-iframe-api-requests', params]), '*');
+		global.parent.postMessage(JSON.stringify(['sayso-iframe-api-requests', params]), '*');
 	}
 	function handleApiResponse( data ) {
 		if( data.id && requests[data.id] ) {

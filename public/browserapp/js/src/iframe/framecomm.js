@@ -3,7 +3,7 @@ sayso.module.frameComm = (function(global, dommsg, util) {
 	var paramName = 'frame_id';
 	var listeners = {};
 	function fireEvent( name, data ) {
-		global.top.postMessage( JSON.stringify(['sayso-iframe-event', {name: name, frame_id: frameId, data: data}]), '*');
+		global.parent.postMessage( JSON.stringify(['sayso-iframe-event', {name: name, frame_id: frameId, data: data}]), '*');
 	}
 	function listen( name, callback ) {
 		listeners[name] = callback;

@@ -37,7 +37,11 @@
 		private $_restrictedEndpoints = array(
 											"login",
 											"createUser",
-											"changePassword"
+											"changePassword",
+											"machinimaReloadLogin",
+											"createMachinimaReloadUser",
+											"getTwitterOauthToken",
+											"connectSocialNetwork"
 										);
 
 	////////////////////////////////////////

@@ -421,7 +421,7 @@ class Ssmart_EndpointResponse
 	 * Sets a database connection
 	 *
 	 * <p>Using Zend_Db_Adapter_Pdo_Mysql allows for more
-	 *  database opperations than Db_Pdo library.</p>
+	 *  database operations than Db_Pdo library.</p>
 	 *
 	 * @return Zend_Db_Adapter_Pdo_Mysql
 	 */

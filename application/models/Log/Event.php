@@ -26,9 +26,6 @@ class Log_Event {
 
 		$this->_appendInsertSqlForEventTree($eventTree);
 
-		echo str_replace(";", ";<br /><br />", $this->_sql);
-		//exit;
-
 		try {
 			Db_Pdo::execute($this->_sql);
 		} catch(PDOException $e) {

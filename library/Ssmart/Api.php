@@ -10,6 +10,12 @@ class Ssmart_Api
 	const ENDPOINT_DIRECTORY_PANELIST = "panelist";
 	const ENDPOINT_DIRECTORY_PUBLIC = "public";
 
+	//Endpoint response statuses for logging
+	const ENDPOINT_RESPONSE_STATUS_SUCCESS = 1;
+	const ENDPOINT_RESPONSE_STATUS_ENDPOINT_ERROR = 2;
+	const ENDPOINT_RESPONSE_STATUS_API_ERROR = 3;
+	const ENDPOINT_RESPONSE_STATUS_UNKNOWN_ERROR = 4;
+
 	/**
 	 * The api instance.
 	 *
@@ -227,6 +233,7 @@ class Ssmart_Api
 
 			//send to the proper model for processing
 			$logicResponse = $this->_callAction($value, $key);
+			$logicResponseStatus = "";
 
 			//check response from _callAction for an errors or process logic
 			if (isset($logicResponse) && $logicResponse instanceof Ssmart_EndpointResponse)
@@ -241,19 +248,30 @@ class Ssmart_Api
 				//flag new session_key if necessary
 				if (isset($this->_auth->user_data->new_session_key))
 					$this->_processCommonData(array("new_session_key" => $this->_auth->user_data->new_session_key, "new_session_id" => $this->_auth->user_data->new_user_session_id));
+				$logicResponseStatus = self::ENDPOINT_RESPONSE_STATUS_SUCCESS;
 			} elseif (isset($logicResponse) && $logicResponse instanceof Exception) { //exceptions thrown by the endpoint
 				//deal with error
 				if ($logicResponse instanceof Ssmart_EndpointError)
 					$this->_error->newError($logicResponse->meta->error_name, $key, $logicResponse->errors);
 				else
 					$this->_error->newError("endpoint_exception", $key, $logicResponse->getMessage());
+
+				$logicResponseStatus = self::ENDPOINT_RESPONSE_STATUS_ENDPOINT_ERROR;
 			} elseif (isset($logicResponse) && is_string($logicResponse)) { //handle errors thrown by the api
 				//deal with error
 				$this->_error->newError($logicResponse, $key);
+
+				$logicResponseStatus = self::ENDPOINT_RESPONSE_STATUS_API_ERROR;
 			} else { //catch all for unknown errors
 				$this->_error->newError("error_unknown", $key);
 				//TODO: log unknown errors
+
+				$logicResponseStatus = self::ENDPOINT_RESPONSE_STATUS_UNKNOWN_ERROR;
 			}
+
+			//log api call
+			$logApiCall = new Ssmart_ApiLog();
+			$logApiCall->log((int)$logicResponseStatus, $value);
 		}
 	}
 

@@ -338,9 +338,9 @@ class Log_Event {
 		$url['protocol'] = $parsed['scheme'];
 		$url['hostname'] = $parsed['host'];
 		$url['path'] = substr($parsed['path'], 1);
-		$url['query'] = $parsed['query'];
+		$url['query'] = array_key_exists('query', $parsed) ? $parsed['query'] : '';
 
-		$paramStrings = explode("&", $url['query']);
+		$paramStrings = $url['query'] ? explode("&", $url['query']) : array();
 		foreach ($paramStrings as $paramString) {
 			$splitParamString = explode("=", $paramString, 2);
 			if (count($splitParamString) == 2)

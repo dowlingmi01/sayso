@@ -28,6 +28,18 @@
 		 */
 		private $_db;
 
+		/**
+		 * Add the name of any endpoint that could contain
+		 * username/unencrypted password combos to this array
+		 *
+		 * @var array
+		 */
+		private $_restrictedEndpoints = array(
+											"login",
+											"createUser",
+											"changePassword"
+										);
+
 	////////////////////////////////////////
 
 		/**
@@ -36,7 +48,7 @@
 		 * recognized failed attempts are not - ie failed authentication
 		 *
 		 * @param int $status Use the constants as defined in Api.php
-		 * @param Ssmart_EndpointRequest $request an individual reqquest object
+		 * @param Ssmart_EndpointRequest $request an individual request object
 		 */
 		public function log($status, Ssmart_EndpointRequest $request)
 		{
@@ -47,7 +59,14 @@
 			$this->ssmart_user_type_id = $this->getUserTypeId($request->auth->user_type);
 			$this->ssmart_endpoint_class_id = $this->getEndpointClassId($request->submitted_parameters->action_class, $this->ssmart_user_type_id);
 			$this->ssmart_endpoint_id = $this->getEndpointId($request->submitted_parameters->action, $this->ssmart_endpoint_class_id);
-			$this->parameters = json_encode($request->submitted_parameters);
+
+			//to not store username/unencrypted password combos
+			if (in_array($request->submitted_parameters->action, $this->_restrictedEndpoints))
+			{
+				$this->parameters = NULL;
+			} else {
+				$this->parameters = json_encode($request->submitted_parameters);
+			}
 			$this->status = $status;
 			$this->save();
 		}

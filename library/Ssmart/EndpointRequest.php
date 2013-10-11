@@ -75,6 +75,11 @@ class Ssmart_EndpointRequest
 		return $this->auth->user_data->user_id;
 	}
 
+	public function getSessionId()
+	{
+		return $this->auth->user_data->session_id;
+	}
+
 	public function getUserType()
 	{
 		return $this->auth->user_type;

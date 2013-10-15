@@ -74,7 +74,10 @@ class Ssmart_Authentication
 	 * <p>This must be called from the $Ssmart_Api context so that
 	 * $this-> works as intended.</p>
 	 *
-	 * @return \className|boolean
+	 * @param string userType
+	 * @param string moduleName
+	 *
+	 * @return className|boolean
 	 */
 	static public function getAuthentication($userType, $moduleName)
 	{

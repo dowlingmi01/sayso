@@ -6,27 +6,11 @@
  */
 	class Ssmart_ApiLog extends Record
 	{
-		protected $_tableName = 'ssmart_log';
-
-		// Other table names - I didn't think these really needed their own classes....
-		const SSMART_USER_TYPE_TABLE_NAME = "ssmart_user_types";
-		const SSMART_ENDPOINT_TABLE_NAME = "ssmart_endpoints";
-		const SSMART_ENDPOINT_CLASS_TABLE_NAME = "ssmart_endpoint_classes";
-
-		/* Not sure why save() won't work if these are declared.
-		public $user_id;
-		public $session_id;
-		public $ssmart_user_type_id;
-		public $ssmart_endpoint_id;
-		public $ssmart_endpoint_class_id;
-		public $parameters;
-		public $status;
-		*/
 
 		/**
 		 * @var _db Because the Db_Pdo class isn't complete enough
 		 */
-		private $_db;
+		protected $_db;
 
 		/**
 		 * Add the name of any endpoint that could contain
@@ -34,46 +18,22 @@
 		 *
 		 * @var array
 		 */
-		private $_restrictedEndpoints = array(
-											"login",
-											"createUser",
-											"changePassword",
-											"machinimaReloadLogin",
-											"createMachinimaReloadUser",
-											"getTwitterOauthToken",
-											"connectSocialNetwork"
-										);
+		private $_restrictedEndpointParameterTerms = array(
+			"password",
+			"login",
+			"oauth",
+			"token",
+			"secret",
+			"digest"
+		);
+
+		// Other table names - I didn't think these really needed their own classes....
+		const SSMART_USER_TYPE_TABLE_NAME = "ssmart_user_type";
+		const SSMART_ENDPOINT_TABLE_NAME = "ssmart_endpoint";
+		const SSMART_ENDPOINT_CLASS_TABLE_NAME = "ssmart_endpoint_class";
 
 	////////////////////////////////////////
 
-		/**
-		 * Logs any successful call to the api. Calls that encounter an error
-		 * from the api code, endpoint, or other unknown errors are still logged.
-		 * recognized failed attempts are not - ie failed authentication
-		 *
-		 * @param int $status Use the constants as defined in Api.php
-		 * @param Ssmart_EndpointRequest $request an individual request object
-		 */
-		public function log($status, Ssmart_EndpointRequest $request)
-		{
-			$this->_db = $this->_db();
-
-			$this->user_id = property_exists($request->auth->user_data, "user_id") ? $request->auth->user_data->user_id : NULL;
-			$this->session_id = property_exists($request->auth->user_data, "session_id") ? $request->auth->user_data->session_id : NULL;
-			$this->ssmart_user_type_id = $this->getUserTypeId($request->auth->user_type);
-			$this->ssmart_endpoint_class_id = $this->getEndpointClassId($request->submitted_parameters->action_class, $this->ssmart_user_type_id);
-			$this->ssmart_endpoint_id = $this->getEndpointId($request->submitted_parameters->action, $this->ssmart_endpoint_class_id);
-
-			//to not store username/unencrypted password combos
-			if (in_array($request->submitted_parameters->action, $this->_restrictedEndpoints))
-			{
-				$this->parameters = NULL;
-			} else {
-				$this->parameters = json_encode($request->submitted_parameters);
-			}
-			$this->status = $status;
-			$this->save();
-		}
 
 		/**
 		 * Sets a database connection
@@ -84,12 +44,33 @@
 		 * @return Zend_Db_Adapter_Pdo_Mysql
 		 * @todo this was copy/pasted from elsewhere. could use a reusable home
 		 */
-		private function _db()
+		protected function _db()
 		{
 			if (Zend_Registry::isRegistered('db') && Zend_Registry::get('db') instanceof Zend_Db_Adapter_Pdo_Abstract) {
-				$db = Zend_Registry::get('db');
-				return $db;
+				$this->_db = Zend_Registry::get('db');
 			}
+		}
+
+		/**
+		 * Removes the password from stored parameters
+		 * Only checks the first level of the param object.
+		 *
+		 * @param $parameters
+		 * @return mixed
+		 */
+		protected function _scrub($parameters)
+		{
+			foreach ($parameters as $key => $value)
+			{
+				foreach ($this->_restrictedEndpointParameterTerms as $term)
+				{
+					if (strpos($key, $term) !== FALSE)
+					{
+						$parameters->$key = "xxx";
+					}
+				}
+			}
+			return $parameters;
 		}
 
 		/**
@@ -97,13 +78,14 @@
 		 * If one isn't found, adds a new one.
 		 *
 		 * @param string $userType the name of the user type
+		 * @param bool $create Whether or not to create a record if it doesn't exist
 		 * @return int
 		 */
-		private function getUserTypeId($userType)
+		protected function getUserTypeId($userType, $create = TRUE)
 		{
 			$userTypeId = $this->_db->fetchOne('SELECT id FROM ' . self::SSMART_USER_TYPE_TABLE_NAME . ' WHERE name = ?', $userType);
 
-			if (!$userTypeId)
+			if (!$userTypeId && $create)
 			{
 				$sql = $this->_db->prepare('INSERT INTO ' . self::SSMART_USER_TYPE_TABLE_NAME . ' (name) VALUES (?)');
 				$sql->execute(array($userType));
@@ -118,13 +100,14 @@
 		 *
 		 * @param string $endpointClass
 		 * @param int $userTypeId
+		 * @param bool $create Whether or not to create a record if it doesn't exist
 		 * @return int
 		 */
-		private function getEndpointClassId($endpointClass, $userTypeId)
+		protected function getEndpointClassId($endpointClass, $userTypeId, $create = TRUE)
 		{
 			$endpointClassId = $this->_db->fetchOne('SELECT id FROM ' . self::SSMART_ENDPOINT_CLASS_TABLE_NAME . ' WHERE name = ?', $endpointClass);
 
-			if (!$endpointClassId)
+			if (!$endpointClassId && $create)
 			{
 				$sql = $this->_db->prepare('INSERT INTO ' . self::SSMART_ENDPOINT_CLASS_TABLE_NAME . ' (ssmart_user_type_id, name) VALUES (?, ?)');
 				$sql->execute(array($userTypeId, $endpointClass));
@@ -140,12 +123,13 @@
 		 *
 		 * @param string $endpoint
 		 * @param int $endpointClassId
+		 * @param bool $create Whether or not to create a record if it doesn't exist
 		 * @return int
 		 */
-		private function getEndpointId($endpoint, $endpointClassId)
+		protected function getEndpointId($endpoint, $endpointClassId, $create = TRUE)
 		{
 			$endpointId = $this->_db->fetchOne('SELECT id FROM ' . self::SSMART_ENDPOINT_TABLE_NAME . ' WHERE name = ?', $endpoint);
-			if (!$endpointId)
+			if (!$endpointId && $create)
 			{
 				$sql = $this->_db->prepare('INSERT INTO ' . self::SSMART_ENDPOINT_TABLE_NAME . ' (ssmart_endpoint_class_id, name) VALUES (?,?)', $endpointClassId, $endpoint);
 				$sql->execute(array($endpointClassId, $endpoint));
@@ -153,5 +137,4 @@
 			} else
 				return $endpointId;
 		}
-
 	}

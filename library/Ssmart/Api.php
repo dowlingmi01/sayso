@@ -10,12 +10,6 @@ class Ssmart_Api
 	const ENDPOINT_DIRECTORY_PANELIST = "panelist";
 	const ENDPOINT_DIRECTORY_PUBLIC = "public";
 
-	//Endpoint response statuses for logging
-	const ENDPOINT_RESPONSE_STATUS_SUCCESS = 1;
-	const ENDPOINT_RESPONSE_STATUS_ENDPOINT_ERROR = 2;
-	const ENDPOINT_RESPONSE_STATUS_API_ERROR = 3;
-	const ENDPOINT_RESPONSE_STATUS_UNKNOWN_ERROR = 4;
-
 	/**
 	 * The api instance.
 	 *
@@ -40,7 +34,7 @@ class Ssmart_Api
 	/**
 	 * The error object.
 	 *
-	 * @var Ssmart_Error
+	 * @var Ssmart_ApiError
 	 */
 	private $_error;
 
@@ -61,12 +55,11 @@ class Ssmart_Api
 	/**
 	 * The auth object.
 	 *
-	 * @var Ssmart_Autentication
+	 * @var Ssmart_Authentication
 	 */
 	private $_auth;
 
 ////////////////////////////////////////////////////
-
 	/**
 	 * Private constructor
 	 *
@@ -94,7 +87,7 @@ class Ssmart_Api
 		if ($this->_auth !== FALSE)
 			$this->_auth->apiAuthentication($this->_request, $this->_error);
 		else
-			$this->_error->newError("auth_load_fail");
+			$this->_error->newError("auth_load_fail", $this->_request);
 	}
 
 	/**
@@ -127,7 +120,7 @@ class Ssmart_Api
 			$validLoginCredentials = self::_processLoginCredentials($apiLoginCredentials);
 
 			if ($validLoginCredentials === FALSE)
-				$error = "missing_params_user_auth";
+				$error = "missing_params_panelist_auth";
 			else
 				$request = json_encode($validLoginCredentials);
 		} else {
@@ -144,7 +137,7 @@ class Ssmart_Api
 		//set error if triggered above
 		if (isset($error))
 		{
-			self::$_instance->_error->newError($error);
+			self::$_instance->_error->newError($error, $request);
 		}
 
 		return self::$_instance;
@@ -217,23 +210,25 @@ class Ssmart_Api
 
 		//check api auth
 		if (!$this->_auth || $this->_auth->getAuthStatus() !== TRUE)
-			return $this->_error->newError("auth_failed_api");
+			return $this->_error->newError("auth_failed_api", $this->_request);
 
 		//make sure our request object is structured properly
-		if (!isset($this->_request->requests))
-			return $this->_error->newError("missing_params_request");
+		if (!isset($this->_request->requests) || !get_object_vars($this->_request->requests))
+			return $this->_error->newError("missing_params_request", $this->_request);
 
 		//iterate through each request for individual processing and error handling
 		foreach ($this->_request->requests as $key=>$value)
 		{
+			//set request auth
+			$value->auth = $this->_auth;
+
 			//authenticate action access
 			$this->_auth->actionAuthentication($value->submitted_parameters->action);
 			if ($this->_auth->getAuthStatus(TRUE) !== TRUE)
-				return $this->_error->newError("auth_failed_action", $key);
+				return $this->_error->newError("auth_failed_action", $value, $key);
 
 			//send to the proper model for processing
 			$logicResponse = $this->_callAction($value, $key);
-			$logicResponseStatus = "";
 
 			//check response from _callAction for an errors or process logic
 			if (isset($logicResponse) && $logicResponse instanceof Ssmart_EndpointResponse)
@@ -248,30 +243,22 @@ class Ssmart_Api
 				//flag new session_key if necessary
 				if (isset($this->_auth->user_data->new_session_key))
 					$this->_processCommonData(array("new_session_key" => $this->_auth->user_data->new_session_key, "new_session_id" => $this->_auth->user_data->new_user_session_id));
-				$logicResponseStatus = self::ENDPOINT_RESPONSE_STATUS_SUCCESS;
+
+				//log api call
+				$logApiCall = new Ssmart_ApiLog_Request();
+				$logApiCall->logApiRequest($value);
 			} elseif (isset($logicResponse) && $logicResponse instanceof Exception) { //exceptions thrown by the endpoint
 				//deal with error
 				if ($logicResponse instanceof Ssmart_EndpointError)
-					$this->_error->newError($logicResponse->meta->error_name, $key, $logicResponse->errors);
+					$this->_error->newError($logicResponse->meta->error_name, $value, $key, $logicResponse->errors, $logicResponse);
 				else
-					$this->_error->newError("endpoint_exception", $key, $logicResponse->getMessage());
-
-				$logicResponseStatus = self::ENDPOINT_RESPONSE_STATUS_ENDPOINT_ERROR;
+					$this->_error->newError("endpoint_exception", $value, $key, $logicResponse->getMessage(), $logicResponse);
 			} elseif (isset($logicResponse) && is_string($logicResponse)) { //handle errors thrown by the api
 				//deal with error
-				$this->_error->newError($logicResponse, $key);
-
-				$logicResponseStatus = self::ENDPOINT_RESPONSE_STATUS_API_ERROR;
+				$this->_error->newError($logicResponse, $value, $key);
 			} else { //catch all for unknown errors
-				$this->_error->newError("error_unknown", $key);
-				//TODO: log unknown errors
-
-				$logicResponseStatus = self::ENDPOINT_RESPONSE_STATUS_UNKNOWN_ERROR;
+				$this->_error->newError("error_unknown", $value, $key);
 			}
-
-			//log api call
-			$logApiCall = new Ssmart_ApiLog();
-			$logApiCall->log((int)$logicResponseStatus, $value);
 		}
 	}
 
@@ -320,8 +307,6 @@ class Ssmart_Api
 		//make sure the method exists and run its logic
 		if (!method_exists($actionClass, $actionName))
 			return "invalid_action";
-
-		$requestObject->auth = $this->_auth;
 
 		//load the endpoint
 		$logicResultClass = new $actionClass($requestName, $this->_auth);
@@ -407,7 +392,9 @@ class Ssmart_Api
 		return $this->_module_name;
 	}
 
-
+	/**
+	 * @param $commonData
+	 */
 	private function _processCommonData($commonData)
 	{
 		foreach ($commonData as $key => $value)

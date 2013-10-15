@@ -109,6 +109,7 @@ class Ssmart_Panelist_NotificationEndpoint extends Ssmart_GlobalController
 	 *
 	 * @param Ssmart_EndpointRequest $request
 	 * @return Ssmart_EndpointResponse
+	 * @throws Exception
 	 */
 	public function saveStatusByShortNameAndStarbar(Ssmart_EndpointRequest $request)
 	{
@@ -135,8 +136,7 @@ class Ssmart_Panelist_NotificationEndpoint extends Ssmart_GlobalController
 		//throw api error if no $message->id
 		if (!$message->id)
 		{
-			$response->setResponseError(array("code" => "message_group_id_lookup_failed", "message" => "Failed to find a message group with short name = " . $shortName));
-			return $response;
+			throw new Exception("Failed to find a message group with short name = " . $shortName);
 		}
 
 		//set params for sending to updateStatus endpoint

@@ -64,10 +64,13 @@ class Ssmart_ApiError
 	 * Sets an error in the Ssmart_Error object.
 	 *
 	 * @param string $error			The name of the error
+	 * @param mixed request The request object
 	 * @param string $responseName	The name of the response node the error gets applied to
+	 * @param mixed custom_error
+	 * @param Exception $exception
 	 * @param bool|mixed $custom_error	The custom error message that can be passed
 	 */
-	public function newError($error, $responseName = "default", $custom_error = FALSE)
+	public function newError($error, $request, $responseName = "default", $custom_error = FALSE, $exception = NULL)
 	{
 		if (array_key_exists($error, $this->_error_codes))
 		{
@@ -93,6 +96,10 @@ class Ssmart_ApiError
 							"type"			=> "api"
 						);
 		}
+
+		//log api error
+		$logApiError = new Ssmart_ApiLog_Error();
+		$logApiError->logApiError($this->_errors, $request, $exception);
 	}
 
 	/**

@@ -2,18 +2,7 @@
 	var in_iframe = forge.is.firefox() ? (global.unsafeWindow.window !== global.unsafeWindow.top) : (global.top !== global);
 	var frameId = Math.floor(Math.random()*2e9) + 1;
 	var url_match_prepend = '^(?:http|https){1}://(?:[\\w.-]+[.])?';
-	var topLocation;
 	var webportal = false;
-
-	function evalInPageContext( arg ) {
-		var scriptEl = document.createElement('script');
-		if( typeof arg === "function" )
-			scriptEl.text = '(' + arg + ')();';
-		else
-			scriptEl.text = arg;
-		document.head.appendChild(scriptEl);
-		document.head.removeChild(scriptEl);
-	}
 
 	function injectBeacon() {
 		window.$SaySoExtension = { commRelay: true };
@@ -151,9 +140,6 @@
 		else
 			$(global.document).on('sayso:state-ready', callback);
 	}
-	function startTracking() {
-		track(in_iframe, topLocation, state.adTargets);
-	}
 	function loadStarbarIfNeeded() {
 		if( shouldLoadStarbar() )
 			$(function(){
@@ -177,6 +163,8 @@
 	if( in_iframe && config.location.href.match(/saysollc.com\/browserapp\/readStorage.html/))
 		return;
 
+	track(in_iframe, frameId);
+
 	if( (!in_iframe || config.location.pathname.match(/\/machinimareload.html/)) &&
 		config.location.host.match(/say.so|saysollc.com/) ) {
 		webportal = true;
@@ -184,16 +172,9 @@
 	}
 
 	dommsg.addHandler('beacon', handleBeacon);
-	evalInPageContext(injectBeacon);
-	if( !in_iframe ) {
-		topLocation = config.location;
-		$(whenStateReady(startTracking));
-		function handleParentReq( childFrameId ) {
-			forge.message.broadcast('parent-location-' + childFrameId,
-				{ location: config.location, frameId: frameId });
-		}
-		dommsg.addHandler('parent-req', handleParentReq);
+	util.evalInPageContext(injectBeacon);
 
+	if( !in_iframe ) {
 		var missionShortName = config.location.href.match(/(?:.say.so|.saysollc.com\/.*)\/mission\/(.*)\//);
 		if( missionShortName ) {
 			missionShortName = missionShortName[1];
@@ -213,44 +194,6 @@
 			dommsg.addHandler('mission-progress', handleMissionProgress);
 			return; // DO NOT LOAD STARBAR
 		}
-	} else {
-		forge.message.listen('parent-location-' + frameId, function( m ) {
-			if( !topLocation ) {
-				topLocation = m.location;
-				var topFrameId = m.frameId;
-				$(whenStateReady(startTracking));
-				if( config.location.host === 'vex.wildtangent.com') {
-					var brandBoostStage = config.location.pathname.match(/\/(?:Vex\/)?(\w+)(?:.aspx)?/);
-					if( brandBoostStage ) {
-						var par = util.urlParams(config.location.search.substring(1));
-						comm.request( 'brandboost-event', { stage: brandBoostStage[1], urlParams: par, topFrameId: topFrameId } );
-					}
-				}
-				/*
-				if( config.location.href.match(/:\/\/simssoc.game.playfish.com\/g\/fb\/simssoc\//) ) {
-					var elementFound = false;
-					function monitorElement() {
-						if( $('div#overlay div#bank').length ) {
-							if( !elementFound ) {
-								elementFound = true;
-								forge.message.broadcastBackground('submit-event', { event_name: 'add_cash', event_data: { event_source: 'monitorElement', game_name: 'simssocial', game_source: 'facebook', add_cash_stage: 'open'} } );
-							}
-						} else if( elementFound )
-							elementFound = false;
-						setTimeout( monitorElement, 1000 );
-					}
-					monitorElement();
-				}
-				*/
-			}
-		});
-		function requestParentLocation() {
-			if( !topLocation ) {
-				evalInPageContext( "top.postMessage( '[\"sayso-parent-req\", " + frameId + "]', '*' );");
-				setTimeout(requestParentLocation, 200);
-			}
-		}
-		requestParentLocation();
 	}
 
 	whenStateReady(loadStarbarIfNeeded);

@@ -34,7 +34,7 @@ sayso.module.util = (function(global, $, config) {
 			} else {
 				if( args.length === 1 )
 					args = args[0];
-				forge.logging.log(args);
+				global.forge.logging.log(args);
 			}
 		} else if( global.console ) {
 			global.console.log.apply(global.console, args);
@@ -47,10 +47,25 @@ sayso.module.util = (function(global, $, config) {
         return 'placeholder' in i;
     })();
 
+	function evalInPageContext( arg ) {
+		var scriptEl = document.createElement('script');
+		if( typeof arg === "function" )
+			scriptEl.text = '(' + arg + ')();';
+		else
+			scriptEl.text = arg;
+		document.head.appendChild(scriptEl);
+		document.head.removeChild(scriptEl);
+	}
+
+	function getTime() {
+		return (new Date()).getTime();
+	}
 	return {
 		addEventListener: addEventListener,
 		removeEventListener: removeEventListener,
 		log: log,
-		urlParams: urlParams
+		urlParams: urlParams,
+		evalInPageContext: evalInPageContext,
+		getTime: getTime
 	};
 })(this, jQuery, sayso.module.config);

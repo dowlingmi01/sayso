@@ -1,4 +1,4 @@
-(function(global, Api, comm, config, getSession){
+(function(global, Api, comm, config, getSession, metrics, util){
 	var state = {
 		starbars: {},
 		games: {},
@@ -23,7 +23,7 @@
 		if( response && response.common_data &&
 			response.common_data.new_session_id && response.common_data.new_session_key ) {
 			state.session = { id: response.common_data.new_session_id, key: response.common_data.new_session_key,
-				email: email, timestamp: (new Date()).getTime() };
+				email: email, timestamp: util.getTime() };
 			comm.set('session', state.session);
 		}
 	}
@@ -32,7 +32,7 @@
             var session = data.responses['default'].variables;
             var result = {result: false, response: {}};
 			if (session) {
-				session = { id: session.session_id, key: session.session_key, email: dataL.email, timestamp: (new Date()).getTime() };
+				session = { id: session.session_id, key: session.session_key, email: dataL.email, timestamp: util.getTime() };
 				state.session = session;
 				comm.set('session', session, function() {
 					state.loggedIn = null;
@@ -55,7 +55,7 @@
 			email: dataL.email, digest: dataL.digest}, function( data ) {
 			var session = data.responses['default'].variables;
 			if (session) {
-				session = { id: session.session_id, key: session.session_key, email: dataL.email, timestamp: (new Date()).getTime() };
+				session = { id: session.session_id, key: session.session_key, email: dataL.email, timestamp: util.getTime() };
 				state.session = session;
 				comm.set('session', session, function() {
 					state.loggedIn = null;
@@ -299,12 +299,17 @@
 	comm.listen('login', login);
 	if( !config.extVersion )
 		comm.listen('logout', logout);
-	comm.listen('set-visibility', setVisibility);
-	comm.listen('add-ad-target', addAdTarget);
-	comm.listen('delete-ad-targets', deleteAdTargets);
-	comm.listen('brandboost-event', brandBoostEvent);
-	comm.listen('submit-event', submitEvent);
-	comm.listen('mission-complete', missionComplete);
+	else {
+		comm.listen('set-visibility', setVisibility);
+		comm.listen('add-ad-target', addAdTarget);
+		comm.listen('delete-ad-targets', deleteAdTargets);
+		comm.listen('brandboost-event', brandBoostEvent);
+		comm.listen('submit-event', submitEvent);
+		comm.listen('mission-complete', missionComplete);
+		comm.listen('metrics-event', metrics.processEvent);
+		metrics.startup(getSessionApi);
+	}
 
 //	getUserState();
-})(this, sayso.module.Api, sayso.module.comm, sayso.module.config, sayso.module.getSession);
+})(this, sayso.module.Api, sayso.module.comm, sayso.module.config, sayso.module.getSession,
+	sayso.module.metrics, sayso.module.util);

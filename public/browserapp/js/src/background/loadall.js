@@ -6,6 +6,7 @@
 		'background/comm-forge.js',
 		'background/api.js',
 		'dommsg.js',
+		'background/metrics.js',
 		'background/getsession.js',
 		'background/main.js',
 		'background/getscript.js'

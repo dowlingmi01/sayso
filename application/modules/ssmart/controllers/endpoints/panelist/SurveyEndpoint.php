@@ -21,24 +21,24 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 	public function getSurvey(Ssmart_EndpointRequest $request)
 	{
 		$validators = array(
-				"starbar_id"			=> "int_required_notEmpty",
-				"survey_id"				=> "int_required_notEmpty",
-				"send_questions"		=> "required_allowEmpty",
-				"send_question_choices"	=> "required_allowEmpty"
-			);
+			"starbar_id"			=> "int_required_notEmpty",
+			"survey_id"				=> "int_required_notEmpty",
+			"send_questions"		=> "required_allowEmpty",
+			"send_question_choices"	=> "required_allowEmpty"
+		);
 		$filters = array(
-				"send_questions"		=> "bool",
-				"send_question_choices"	=> "bool"
-			);
+			"send_questions"		=> "bool",
+			"send_question_choices"	=> "bool"
+		);
 
 		$response = new Ssmart_EndpointResponse($request, $filters, $validators);
 
 		//logic
-		$starbarId			= (int)$request->getParam("starbar_id");
-		$surveyId			= (int)$request->getParam("survey_id");
-		$sendQuestions		= $request->getParam("send_questions");
-		$sendQuestionChoces	= $request->getParam("send_question_choices");
-		$userId				= $request->getUserId();
+		$starbarId				= (int)$request->getParam("starbar_id");
+		$surveyId				= (int)$request->getParam("survey_id");
+		$sendQuestions			= $request->getParam("send_questions");
+		$sendQuestionChoices	= $request->getParam("send_question_choices");
+		$userId					= $request->getUserId();
 
 		$surveyResponse = new Survey_Response();
 		$surveyResponse->loadDataByUniqueFields(array("user_id" => $userId, "survey_id" => $surveyId));
@@ -95,12 +95,20 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 			default:
 		}
 
+		if ($sendQuestionChoices) {
+			$choices = new Survey_QuestionChoiceCollection();
+			$choices->loadAllChoicesForSurvey($surveyId);
+		} else {
+			$choices = null;
+		}
+
+
 		//add questions and answer choices
 		if ($sendQuestions)
 		{
 			$i = 0;
 			$questions = new Survey_QuestionCollection();
-			$questions->loadAllQuestionsForSurvey($surveyId);
+			$questions->loadAvailableQuestionsForSurvey($surveyId);
 
 			$questionData = [];
 			/** @var $question Survey_Question  */
@@ -108,18 +116,16 @@ class Ssmart_Panelist_SurveyEndpoint extends Ssmart_GlobalController
 				$questionData[$i] = $question->toArray();
 				$questionData[$i]['id'] = $question->id;
 
-				if ($sendQuestionChoces) {
-					$choices = new Survey_QuestionChoiceCollection();
-					$choices->loadAllChoicesForSurvey($surveyId);
+				if ($sendQuestionChoices) {
 					$choiceData = [];
 					$j = 0;
 					/** @var $choice Survey_QuestionChoice  */
 					foreach ($choices as $choice) {
-						if ($questionData[$i]['id'] == $choice->survey_question_id) {
+						if ($choice->survey_question_id == $question->id) {
 							$choiceData[$j] = $choice->toArray();
 							$choiceData[$j]['id'] = $choice->id;
+							$j++;
 						}
-						$j++;
 					}
 					$questionData[$i]['choices'] = $choiceData;
 

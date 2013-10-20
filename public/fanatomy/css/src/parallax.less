@@ -1,0 +1,234 @@
+@import "mixins";
+
+@base-image-url: "../../images/";
+
+a, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, em, img, small, strong, sub, sup, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, tbody, tfoot, thead, tr, th, td {
+    .reset;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.fixed {
+    position: fixed;
+}
+
+.relative {
+    position: relative;
+}
+
+#loading {
+    display: none;
+}
+
+#content {
+//    position: fixed;
+//    display: block;
+//    top: 0;
+//    right: 0;
+//    bottom: 0;
+//    left: 0;
+//    min-width: 1024px;
+//    min-height: 720px;
+
+    .scenes {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        list-style: none;
+
+        li {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            overflow: hidden;
+        }
+
+        .scene_01 {
+
+            .celeb {
+                position: fixed;
+                background-image: url('@{base-image-url}bg/celeb_splash.png');
+                width: 100%;
+                height: 100%;
+                background-color: black;
+                overflow: hidden;
+
+                .amy {
+                    position: absolute;
+                    background-image: url('@{base-image-url}celebs/Amy.png');
+                    top: 75px;
+                    left: 470px;
+                    width: 464px;
+                    height: 677px;
+                    z-index: 3;
+                }
+
+                .brett {
+                    position: absolute;
+                    background-image: url('@{base-image-url}celebs/Brett.png');
+                    top: 400px;
+                    left: 300px;
+                    width: 372px;
+                    height: 402px;
+                    z-index: 7;
+                }
+
+                .bruno {
+                    position: absolute;
+                    background-image: url('@{base-image-url}celebs/Bruno.png');
+                    top: 75px;
+                    left: 1100px;
+                    width: 173px;
+                    height: 288px;
+                    z-index: 1;
+                }
+
+                .david {
+                    position: absolute;
+                    background-image: url('@{base-image-url}celebs/David.png');
+                    top: 300px;
+                    left: 50px;
+                    width: 188px;
+                    height: 314px;
+                    z-index: 6;
+                }
+
+                .justin {
+                    position: absolute;
+                    background-image: url('@{base-image-url}celebs/Justin.png');
+                    top: 10px;
+                    left: 100px;
+                    width: 238px;
+                    height: 460px;
+                    z-index: 2;
+                }
+
+                .kobe {
+                    position: absolute;
+                    background-image: url('@{base-image-url}celebs/Kobe.png');
+                    top: 300px;
+                    left: 800px;
+                    width: 385px;
+                    height: 591px;
+                    z-index: 5;
+                }
+
+                .rihanna {
+                    position: absolute;
+                    background-image: url('@{base-image-url}celebs/Rihanna.png');
+                    top: 75px;
+                    left: 800px;
+                    width: 237px;
+                    height: 433px;
+                    z-index: 4;
+                }
+
+                .selena {
+                    position: absolute;
+                    background-image: url('@{base-image-url}celebs/Selena.png');
+                    top: 400px;
+                    left: 1000px;
+                    width: 320px;
+                    height: 461px;
+                    z-index: 10;
+                }
+
+                .serena {
+                    position: absolute;
+                    background-image: url('@{base-image-url}celebs/Serena.png');
+                    top: 475px;
+                    left: 50px;
+                    width: 381px;
+                    height: 557px;
+                    z-index: 9;
+                }
+
+                .tiger {
+                    position: absolute;
+                    background-image: url('@{base-image-url}celebs/Tiger.png');
+                    top: 10px;
+                    left: 20px;
+                    width: 689px;
+                    height: 510px;
+                    z-index: 1;
+                }
+
+                .tina {
+                    position: absolute;
+                    background-image: url('@{base-image-url}celebs/Tina.png');
+                    top: 400px;
+                    left: 700px;
+                    width: 360px;
+                    height: 491px;
+                    z-index: 6;
+                }
+            }
+
+            .celeb_banner {
+                position: absolute;
+                width: 100%;
+                top: 50%;
+                height: 300px;
+                margin-top: -150px;
+                z-index: 8;
+
+                .celeb_msg_one {
+                    margin: 20px auto 0 auto;
+                    width: 700px;
+
+                    div {
+                        font-family: "sorts-mill-goudy",serif;
+                        font-style: normal;
+                        font-weight: 500;
+                        opacity: 0;
+                        color: white;
+                        text-align: center;
+                        font-size: 40px;
+                    }
+                }
+
+                .celeb_msg_two {
+                    margin: -140px auto 0 auto;
+                    width: 800px;
+
+                    div {
+                        font-family: "sorts-mill-goudy",serif;
+                        font-style: normal;
+                        font-weight: 500;
+                        opacity: 0;
+                        color: white;
+                        text-align: center;
+                        font-size: 40px;
+                    }
+                }
+
+                .celeb_msg_three {
+                    margin: -180px auto 0 auto;
+                    width: 900px;
+
+                    div {
+                        font-family: "sorts-mill-goudy",serif;
+                        font-style: normal;
+                        font-weight: 500;
+                        opacity: 0;
+                        color: white;
+                        text-align: center;
+                        font-size: 40px;
+                    }
+                }
+
+                .next_message {
+                    background-image: url('@{base-image-url}Next_Arrow.png');
+                    width: 72px;
+                    height: 71px;
+                    margin: 15px auto 0 auto;
+                }
+            }
+        }
+    }
+}

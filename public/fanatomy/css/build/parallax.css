@@ -1,0 +1,257 @@
+/* brackets used to avoid having those classes in css namespace */
+a,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+em,
+img,
+small,
+strong,
+sub,
+sup,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: 13px/1.231 sans-serif;
+  vertical-align: baseline;
+  outline: 0;
+  background-image: none;
+  background-color: transparent;
+  color: #000000;
+  opacity: 1;
+  filter: none !important;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  min-width: 0;
+  max-height: none;
+  max-width: none;
+  text-align: left;
+  position: static;
+  box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  overflow: visible;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+.absolute {
+  position: absolute;
+}
+.fixed {
+  position: fixed;
+}
+.relative {
+  position: relative;
+}
+#loading {
+  display: none;
+}
+#content .scenes {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  list-style: none;
+}
+#content .scenes li {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+}
+#content .scenes .scene_01 .celeb {
+  position: fixed;
+  background-image: url('../../images/bg/celeb_splash.png');
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  overflow: hidden;
+}
+#content .scenes .scene_01 .celeb .amy {
+  position: absolute;
+  background-image: url('../../images/celebs/Amy.png');
+  top: 75px;
+  left: 470px;
+  width: 464px;
+  height: 677px;
+  z-index: 3;
+}
+#content .scenes .scene_01 .celeb .brett {
+  position: absolute;
+  background-image: url('../../images/celebs/Brett.png');
+  top: 400px;
+  left: 300px;
+  width: 372px;
+  height: 402px;
+  z-index: 7;
+}
+#content .scenes .scene_01 .celeb .bruno {
+  position: absolute;
+  background-image: url('../../images/celebs/Bruno.png');
+  top: 75px;
+  left: 1100px;
+  width: 173px;
+  height: 288px;
+  z-index: 1;
+}
+#content .scenes .scene_01 .celeb .david {
+  position: absolute;
+  background-image: url('../../images/celebs/David.png');
+  top: 300px;
+  left: 50px;
+  width: 188px;
+  height: 314px;
+  z-index: 6;
+}
+#content .scenes .scene_01 .celeb .justin {
+  position: absolute;
+  background-image: url('../../images/celebs/Justin.png');
+  top: 10px;
+  left: 100px;
+  width: 238px;
+  height: 460px;
+  z-index: 2;
+}
+#content .scenes .scene_01 .celeb .kobe {
+  position: absolute;
+  background-image: url('../../images/celebs/Kobe.png');
+  top: 300px;
+  left: 800px;
+  width: 385px;
+  height: 591px;
+  z-index: 5;
+}
+#content .scenes .scene_01 .celeb .rihanna {
+  position: absolute;
+  background-image: url('../../images/celebs/Rihanna.png');
+  top: 75px;
+  left: 800px;
+  width: 237px;
+  height: 433px;
+  z-index: 4;
+}
+#content .scenes .scene_01 .celeb .selena {
+  position: absolute;
+  background-image: url('../../images/celebs/Selena.png');
+  top: 400px;
+  left: 1000px;
+  width: 320px;
+  height: 461px;
+  z-index: 10;
+}
+#content .scenes .scene_01 .celeb .serena {
+  position: absolute;
+  background-image: url('../../images/celebs/Serena.png');
+  top: 475px;
+  left: 50px;
+  width: 381px;
+  height: 557px;
+  z-index: 9;
+}
+#content .scenes .scene_01 .celeb .tiger {
+  position: absolute;
+  background-image: url('../../images/celebs/Tiger.png');
+  top: 10px;
+  left: 20px;
+  width: 689px;
+  height: 510px;
+  z-index: 1;
+}
+#content .scenes .scene_01 .celeb .tina {
+  position: absolute;
+  background-image: url('../../images/celebs/Tina.png');
+  top: 400px;
+  left: 700px;
+  width: 360px;
+  height: 491px;
+  z-index: 6;
+}
+#content .scenes .scene_01 .celeb_banner {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  height: 300px;
+  margin-top: -150px;
+  z-index: 8;
+}
+#content .scenes .scene_01 .celeb_banner .celeb_msg_one {
+  margin: 20px auto 0 auto;
+  width: 700px;
+}
+#content .scenes .scene_01 .celeb_banner .celeb_msg_one div {
+  font-family: "sorts-mill-goudy", serif;
+  font-style: normal;
+  font-weight: 500;
+  opacity: 0;
+  color: white;
+  text-align: center;
+  font-size: 40px;
+}
+#content .scenes .scene_01 .celeb_banner .celeb_msg_two {
+  margin: -140px auto 0 auto;
+  width: 800px;
+}
+#content .scenes .scene_01 .celeb_banner .celeb_msg_two div {
+  font-family: "sorts-mill-goudy", serif;
+  font-style: normal;
+  font-weight: 500;
+  opacity: 0;
+  color: white;
+  text-align: center;
+  font-size: 40px;
+}
+#content .scenes .scene_01 .celeb_banner .celeb_msg_three {
+  margin: -180px auto 0 auto;
+  width: 900px;
+}
+#content .scenes .scene_01 .celeb_banner .celeb_msg_three div {
+  font-family: "sorts-mill-goudy", serif;
+  font-style: normal;
+  font-weight: 500;
+  opacity: 0;
+  color: white;
+  text-align: center;
+  font-size: 40px;
+}
+#content .scenes .scene_01 .celeb_banner .next_message {
+  background-image: url('../../images/Next_Arrow.png');
+  width: 72px;
+  height: 71px;
+  margin: 15px auto 0 auto;
+}

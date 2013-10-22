@@ -1,0 +1,9 @@
+CREATE TABLE `aggregate_last_id` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `last_id` int(11) NOT NULL,
+  `source_table_name` varchar(45) NOT NULL,
+  `frequency` varchar(45) NOT NULL,
+  `created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `ali_unique` (`source_table_name`,`frequency`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;

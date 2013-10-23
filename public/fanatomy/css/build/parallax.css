@@ -80,6 +80,56 @@ td {
 #loading {
   display: none;
 }
+#content .nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  min-width: 1024px;
+  z-index: 100;
+  background-color: rgba(228, 234, 233, 0.85);
+}
+#content .nav .nav_active {
+  position: absolute;
+  top: 0;
+  left: 405px;
+  width: 56px;
+  height: 28px;
+  background-image: url('../../images/nav_arrow.png');
+}
+#content .nav .links {
+  width: 1024px;
+  margin: 0 auto;
+  padding-left: 350px;
+}
+#content .nav .links a {
+  display: block;
+  text-decoration: none;
+  float: left;
+  width: auto;
+  margin: 50px 30px 0px 30px;
+  height: 100%;
+}
+#content .nav .links a span {
+  font-family: "sorts-mill-goudy", serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: #2a2a2a;
+}
+#content .nav .links a span:hover {
+  color: #60acaf;
+}
+#content .badge {
+  position: fixed;
+  top: 0;
+  left: 100px;
+  width: 165px;
+  height: 201px;
+  background-image: url('../../images/logo_flag.png');
+  z-index: 100;
+}
 #content .scenes {
   margin: 0;
   padding: 0;
@@ -108,8 +158,8 @@ td {
   background-image: url('../../images/celebs/Amy.png');
   top: 75px;
   left: 400px;
-  width: 464px;
-  height: 677px;
+  width: 588px;
+  height: 779px;
   z-index: 3;
 }
 #content .scenes .scene_01 .celeb .brett {
@@ -117,8 +167,8 @@ td {
   background-image: url('../../images/celebs/Brett.png');
   top: 400px;
   left: 250px;
-  width: 372px;
-  height: 402px;
+  width: 406px;
+  height: 445px;
   z-index: 7;
 }
 #content .scenes .scene_01 .celeb .bruno {
@@ -126,8 +176,8 @@ td {
   background-image: url('../../images/celebs/Bruno.png');
   top: 75px;
   left: 1100px;
-  width: 173px;
-  height: 288px;
+  width: 228px;
+  height: 339px;
   z-index: 1;
 }
 #content .scenes .scene_01 .celeb .david {
@@ -135,7 +185,7 @@ td {
   background-image: url('../../images/celebs/David.png');
   top: 300px;
   left: 20px;
-  width: 188px;
+  width: 228px;
   height: 314px;
   z-index: 6;
 }
@@ -144,8 +194,8 @@ td {
   background-image: url('../../images/celebs/Justin.png');
   top: 10px;
   left: 80px;
-  width: 238px;
-  height: 460px;
+  width: 268px;
+  height: 495px;
   z-index: 2;
 }
 #content .scenes .scene_01 .celeb .kobe {
@@ -153,8 +203,8 @@ td {
   background-image: url('../../images/celebs/Kobe.png');
   top: 300px;
   left: 800px;
-  width: 385px;
-  height: 591px;
+  width: 448px;
+  height: 619px;
   z-index: 5;
 }
 #content .scenes .scene_01 .celeb .rihanna {
@@ -162,8 +212,8 @@ td {
   background-image: url('../../images/celebs/Rihanna.png');
   top: 75px;
   left: 800px;
-  width: 237px;
-  height: 433px;
+  width: 299px;
+  height: 486px;
   z-index: 4;
 }
 #content .scenes .scene_01 .celeb .selena {
@@ -171,8 +221,8 @@ td {
   background-image: url('../../images/celebs/Selena.png');
   top: 400px;
   left: 1000px;
-  width: 320px;
-  height: 461px;
+  width: 369px;
+  height: 525px;
   z-index: 10;
 }
 #content .scenes .scene_01 .celeb .serena {
@@ -180,8 +230,8 @@ td {
   background-image: url('../../images/celebs/Serena.png');
   top: 475px;
   left: 50px;
-  width: 381px;
-  height: 557px;
+  width: 441px;
+  height: 587px;
   z-index: 9;
 }
 #content .scenes .scene_01 .celeb .tiger {
@@ -189,8 +239,8 @@ td {
   background-image: url('../../images/celebs/Tiger.png');
   top: 10px;
   left: 20px;
-  width: 689px;
-  height: 510px;
+  width: 740px;
+  height: 567px;
   z-index: 1;
 }
 #content .scenes .scene_01 .celeb .tina {
@@ -258,8 +308,11 @@ td {
   margin-top: -200px;
 }
 #content .scenes .scene_01 .celeb_banner .next_message {
-  background-image: url('../../images/Next_Arrow.png');
+  background-image: url('../../images/scroll_button.png');
   width: 72px;
   height: 71px;
   margin: 65px auto 0 auto;
+}
+#content .scenes .scene_01 .celeb_banner .next_message:hover {
+  background-image: url('../../images/next_arrow.png');
 }

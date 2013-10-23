@@ -107,7 +107,7 @@ td {
   position: absolute;
   background-image: url('../../images/celebs/Amy.png');
   top: 75px;
-  left: 470px;
+  left: 400px;
   width: 464px;
   height: 677px;
   z-index: 3;
@@ -116,7 +116,7 @@ td {
   position: absolute;
   background-image: url('../../images/celebs/Brett.png');
   top: 400px;
-  left: 300px;
+  left: 250px;
   width: 372px;
   height: 402px;
   z-index: 7;
@@ -134,7 +134,7 @@ td {
   position: absolute;
   background-image: url('../../images/celebs/David.png');
   top: 300px;
-  left: 50px;
+  left: 20px;
   width: 188px;
   height: 314px;
   z-index: 6;
@@ -143,7 +143,7 @@ td {
   position: absolute;
   background-image: url('../../images/celebs/Justin.png');
   top: 10px;
-  left: 100px;
+  left: 80px;
   width: 238px;
   height: 460px;
   z-index: 2;
@@ -249,9 +249,17 @@ td {
   text-align: center;
   font-size: 40px;
 }
+#content .scenes .scene_01 .celeb_banner .fanatomy_logo_main {
+  background-image: url('../../images/logo_with_tag.png');
+  width: 602px;
+  height: 149px;
+  margin: 0 auto;
+  opacity: 0;
+  margin-top: -200px;
+}
 #content .scenes .scene_01 .celeb_banner .next_message {
   background-image: url('../../images/Next_Arrow.png');
   width: 72px;
   height: 71px;
-  margin: 15px auto 0 auto;
+  margin: 65px auto 0 auto;
 }

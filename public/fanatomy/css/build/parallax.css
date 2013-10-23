@@ -314,5 +314,5 @@ td {
   margin: 65px auto 0 auto;
 }
 #content .scenes .scene_01 .celeb_banner .next_message:hover {
-  background-image: url('../../images/Next_Arrow.png');
+  background-image: url('../../images/scroll_button_active.png');
 }

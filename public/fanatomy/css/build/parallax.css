@@ -272,10 +272,10 @@ td {
 }
 #content .scenes .scene_01 .celeb_banner {
   position: absolute;
-  width: 100%;
   top: 50%;
-  height: 300px;
-  margin-top: -150px;
+  height: 2px;
+  margin-top: -1px;
+  width: 0%;
   z-index: 8;
 }
 #content .scenes .scene_01 .celeb_banner .celeb_msg_one {
@@ -325,12 +325,18 @@ td {
   opacity: 0;
   margin-top: -200px;
 }
-#content .scenes .scene_01 .celeb_banner .next_message {
+#content .scenes .scene_01 .lower_nav {
+  position: fixed;
+  bottom: 28%;
+  width: 100%;
+  z-index: 100;
+}
+#content .scenes .scene_01 .lower_nav .next_message {
   background-image: url('../../images/scroll_button.png');
   width: 72px;
   height: 71px;
-  margin: 65px auto 0 auto;
+  margin: 0 auto;
 }
-#content .scenes .scene_01 .celeb_banner .next_message:hover {
+#content .scenes .scene_01 .lower_nav .next_message:hover {
   background-image: url('../../images/scroll_button_active.png');
 }

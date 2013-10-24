@@ -248,10 +248,10 @@ a, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, 
 
             .celeb_banner {
                 position: absolute;
-                width: 100%;
                 top: 50%;
-                height: 300px;
-                margin-top: -150px;
+                height: 2px;
+                margin-top: -1px;
+                width: 0%;
                 z-index: 8;
 
                 .celeb_msg_one {
@@ -307,12 +307,19 @@ a, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, 
                     opacity: 0;
                     margin-top: -200px;
                 }
+            }
+
+            .lower_nav {
+                position: fixed;
+                bottom: 28%;
+                width: 100%;
+                z-index: 100;
 
                 .next_message {
                     background-image: url('@{base-image-url}scroll_button.png');
                     width: 72px;
                     height: 71px;
-                    margin: 65px auto 0 auto;
+                    margin: 0 auto;
 
                     &:hover {
                         background-image: url('@{base-image-url}scroll_button_active.png');

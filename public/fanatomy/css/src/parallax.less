@@ -32,6 +32,25 @@ a, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, 
 //    min-width: 1024px;
 //    min-height: 720px;
 
+    .preloader {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1024px; //FIX THIS
+        background-color: black;
+        z-index: 1000;
+        text-align: center;
+
+        span {
+            font-family: "brandon-grotesque",sans-serif;
+            font-style: normal;
+            font-weight: 300;
+            font-size: 100px;
+            color: white;
+        }
+    }
+
     .nav {
         position: fixed;
         top: 0;
@@ -199,7 +218,7 @@ a, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, 
                     position: absolute;
                     background-image: url('@{base-image-url}celebs/Serena.png');
                     top: 475px;
-                    left: 50px;
+                    left: 20px;
                     width: 441px;
                     height: 587px;
                     z-index: 9;

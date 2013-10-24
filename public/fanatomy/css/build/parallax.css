@@ -91,6 +91,7 @@ td {
   text-align: center;
 }
 #content .preloader span {
+  line-height: 800px;
   font-family: "brandon-grotesque", sans-serif;
   font-style: normal;
   font-weight: 300;

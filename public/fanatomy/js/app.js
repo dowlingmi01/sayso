@@ -1,3 +1,5 @@
+var currentBreak = 1;
+
 function preloadCssImages() {
 
     var allImgs = [];//new array for all the image urls
@@ -27,7 +29,6 @@ function preloadCssImages() {
         if(imgUrls != null && imgUrls.length>0 && imgUrls != ''){//loop array\
             var arr = jQuery.makeArray(imgUrls);//create array from regex obj
             jQuery(arr).each(function(){
-                console.log("fetching");
                 allImgs[k] = new Image(); //new img obj
                 allImgs[k].src = (this.charAt(0) == '/' || this.match('http://')) ? this : baseURL + this;	//set src either absolute or rel to css dir
 
@@ -50,4 +51,13 @@ function updateProgress(a) {
 
 $(document).ready(function(){
     preloadCssImages();
+    $(".next_message").on('click', function() {
+        var destinationBreak = $(".break_" + currentBreak++),
+            duration = 1000;
+
+        if(destinationBreak.data("duration")) {
+            duration = destinationBreak.data("duration");
+        }
+        $("html, body").animate({ scrollTop: destinationBreak.data("top") }, duration);
+    });
 })

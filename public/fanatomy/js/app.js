@@ -13,7 +13,7 @@ function preloadCssImages() {
         baseURLarr.pop();//remove file path from baseURL array
         var baseURL = baseURLarr.join('/');//create base url for the images in this sheet (css file's dir)
         if(baseURL!="") baseURL+='/'; //tack on a / if needed
-        if(document.styleSheets[i].cssRules){//w3
+        if(document.styleSheets[i].title === "parallax" && document.styleSheets[i].cssRules){//w3 and firefox, we only want our style sheet
             var thisSheetRules = document.styleSheets[i].cssRules; //w3
             for(var j = 0; j<thisSheetRules.length; j++){
                 cssPile+= thisSheetRules[j].cssText;

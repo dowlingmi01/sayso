@@ -30,7 +30,8 @@ function preloadCssImages() {
             var arr = jQuery.makeArray(imgUrls);//create array from regex obj
             jQuery(arr).each(function(){
                 allImgs[k] = new Image(); //new img obj
-                allImgs[k].src = (this.charAt(0) == '/' || this.match('http://')) ? this : baseURL + this;	//set src either absolute or rel to css dir
+                allImgs[k].src = (this.charAt(0) == '/' || this.match('http://')) ? this : baseURL + this;
+                allImgs[k].src = allImgs[k].src.replace("/css/build", ""); //Strip our build directories
 
                 $(allImgs[k]).load(function(){
                     loaded++;

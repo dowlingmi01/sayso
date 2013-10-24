@@ -192,7 +192,7 @@ td {
 #content .scenes .scene_01 .celeb .bruno {
   position: absolute;
   background-image: url('../../images/celebs/Bruno.png');
-  top: 5000px;
+  top: -1500px;
   left: 1100px;
   width: 228px;
   height: 339px;
@@ -201,7 +201,7 @@ td {
 #content .scenes .scene_01 .celeb .david {
   position: absolute;
   background-image: url('../../images/celebs/David.png');
-  top: -3500px;
+  top: -1000px;
   left: 20px;
   width: 228px;
   height: 314px;
@@ -228,7 +228,7 @@ td {
 #content .scenes .scene_01 .celeb .rihanna {
   position: absolute;
   background-image: url('../../images/celebs/Rihanna.png');
-  top: 5000px;
+  top: 2000px;
   left: 800px;
   width: 299px;
   height: 486px;

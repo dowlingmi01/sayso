@@ -414,6 +414,7 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
 				$getBrowserAppCheckbox = $("#install_browser_app", $elem),
 				$agreeTermsCheckbox = $("#agreeterms", $elem),
 				$errorField = $("#join_now_error", $elem),
+				subscribe = !state.state.starbar && state.state.loggedIn,
 				buttonActive = false;
 
 			$agreeTermsCheckbox.on('click', activateSubmit);
@@ -426,7 +427,7 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
 					if(!buttonActive) {
 						$registerButton.removeClass('join_now_button_disabled').addClass('join_now_button');
                         //User exists, hasn't joined current bar
-                        if (!state.state.starbar && state.state.loggedIn) {
+                        if (subscribe) {
                             $registerButton.on('click', linkAccount);
                         }
                         else {
@@ -448,29 +449,30 @@ sayso.module.webportal = (function(global, $, config, state, api, Handlebars, co
 
 			function validateFields() {
 				//TODO: Show the end user what is wrong.
-				var emailAddress = $emailField.val();
-				if( emailAddress.length < 1 ) {
-					return "Whoops - Please enter your email address";
-				}
+				if( !subscribe ) {
+					var emailAddress = $emailField.val();
+					if( emailAddress.length < 1 ) {
+						return "Whoops - Please enter your email address";
+					}
 
-				var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-				if (!emailPattern.test(emailAddress)){
-					return "Whoops - Please enter a valid email address";
-				}
+					var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+					if (!emailPattern.test(emailAddress)){
+						return "Whoops - Please enter a valid email address";
+					}
 
-				var passwordOne = $passwordField.val();
-				if(passwordOne.length < 1) {
-					return "Whoops - Please enter your password";
-				}
+					var passwordOne = $passwordField.val();
+					if(passwordOne.length < 1) {
+						return "Whoops - Please enter your password";
+					}
 
-				var passwordTwo = $confirmationField.val();
-				if(passwordOne !== passwordTwo ) {
-					return "Whoops - Your passwords do not match.<br>Please reenter your password";
+					var passwordTwo = $confirmationField.val();
+					if(passwordOne !== passwordTwo ) {
+						return "Whoops - Your passwords do not match.<br>Please reenter your password";
+					}
+					if(passwordOne.length < 6 || passwordOne.length > 12) {
+						return "Whoops - Your password needs to have between 6 and 12 characters.<br>Please reenter your password";
+					}
 				}
-				if(passwordOne.length < 6 || passwordOne.length > 12) {
-					return "Whoops - Your password needs to have between 6 and 12 characters.<br>Please reenter your password";
-				}
-
 				if(!$agreeTermsCheckbox.is(':checked')) {
 					return "Whoops - Please accept the terms and conditions";
 				}

@@ -310,6 +310,6 @@
 		metrics.startup(getSessionApi);
 	}
 
-//	getUserState();
+	getUserState();
 })(this, sayso.module.Api, sayso.module.comm, sayso.module.config, sayso.module.getSession,
 	sayso.module.metrics, sayso.module.util);

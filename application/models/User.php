@@ -260,8 +260,8 @@ class User extends Record implements Titled
 	public static function validateEmailForStarbar($email, $starbarId, $data=array()) {
 		if( $starbarId != 7 || User_Email::isTestEmail($email) )
 			return array();
-		if( $starbarId == 7 )
-			return MachinimaReload::verifyEmail($email, $data['digest']);
+//		if( $starbarId == 7 )
+//			return MachinimaReload::verifyEmail($email, $data['digest']);
 		$sql = 'SELECT first_name, last_name FROM starbar_valid_email WHERE starbar_id = ? AND email = ?';
 		$result = Db_Pdo::fetch($sql, $starbarId, $email);
 		if(!$result)

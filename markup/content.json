@@ -44,6 +44,7 @@
         "PORTAL_TOUR_FINAL_STEP_WEB_PORTAL_TEXT": "",
         "PORTAL_TOUR_GIVEAWAYS_HEADER": "Giveaways",
         "PORTAL_TOUR_GIVEAWAYS_TEXT": "",
+        "PORTAL_TOUR_JOIN_HREF": "{{#if state.loggedIn}}\"#content/link-app\"{{else}}\"#content/register\"{{/if}}",
         "PORTAL_TOUR_POLLS_HEADER": "Polls",
         "PORTAL_TOUR_POLLS_TEXT": "<p>\n\tPolls are quick hits of opinion we'd like you to share. Answer as many or as few as you'd like, and we'll drop a little something in your %CONFIG_TITLE% wallet for each one.\n<\/p>\n",
         "PORTAL_TOUR_PROFILE_HEADER": "Profile",

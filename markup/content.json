@@ -172,7 +172,7 @@
         "CONFIG_SHORT_TITLE": "machinimareload",
         "CONFIG_TITLE": "Machinima | Reload",
         "PORTAL_GET_APP_INSTALL_TEXT": "<p>\n\tReady for more rewards? More exclusive content and opportunities? More Machinima? Download the app and get even more Reload.\n<\/p>\n",
-        "PORTAL_LANDING_CONTENT_RIGHT": "<div class=\"landing_content_right_banner\">\n\t<img src=\"images\/machinimareload\/logo.png\" alt=\"Welcome to Machinima | Reload!\"\/>\n<\/div>\n<div class=\"landing_content_right_video\">\n\t<iframe width=\"500\" height=\"315\" src=\"\/\/www.youtube.com\/embed\/E5IBEt3VyyI?&wmode=transparent\" frameborder=\"0\" allowfullscreen><\/iframe>\n<\/div>\n",
+        "PORTAL_LANDING_CONTENT_RIGHT": "<div class=\"landing_content_right_banner\">\n\t<img src=\"images\/machinimareload\/logo.png\" alt=\"Welcome to Machinima | Reload!\"\/>\n<\/div>\n",
         "PORTAL_REGISTER_TEXT": "<p>\n\tTwo ways to participate: Join our web portal or grab the browser app for additional content and rewards.\n<\/p>\n<p>\n\tStart by entering your Machinima AMS log-in email address, and then creating a unique password below.\n<\/p>\n",
         "PORTAL_TOUR_FINAL_STEP_BROWSER_APP_TEXT": "<p>\n\tGet invited to special seminars and missions. The browser app includes exclusive content and rewards directly from Machinima. Get Reload to go and get even more exclusive content, rewards and access.\n<\/p>\n",
         "PORTAL_TOUR_FINAL_STEP_WEB_PORTAL_TEXT": "<p>\n\tGive us your opinion and get official gear and exclusive Machinima access. Reload giveaway winners have walked away with Minecraft merch, game consoles, Steam games and much more.\n<\/p>",

@@ -133,47 +133,43 @@ sayso.module.frameApp = (function(global, $, api, comm, dommsg) {
 
 						// Make the radio buttons clickable
 						var elemRadios = $('input:radio');
-						elemRadios.each(function(){
-							$(this).bind({
-								click: function(event){
-									afterCssLoadMaxChecks = 0; // stop updating the poll size, otherwise it will resize after completion
+						elemRadios.on('click', function(event){
+							elemRadios.off('click');
+							afterCssLoadMaxChecks = 0; // stop updating the poll size, otherwise it will resize after completion
 
-									var $radio = $(this);
-									$radio.attr('checked', 'checked');
+							var $radio = $(this);
+							$radio.attr('checked', 'checked');
 
-									// Simulate what survey.Vote(domain) does... which is submit the vote via ajax
-									var vote=$("#sg_FormFor"+data['poll']['external_id']).serialize();
-									var link=["//",domain,"/s3/polljs/"+data['poll']['external_id']+"-"+data['poll']['external_key']+"?_vote=",encodeURIComponent(vote)].join("");
+							// Simulate what survey.Vote(domain) does... which is submit the vote via ajax
+							var vote=$("#sg_FormFor"+data['poll']['external_id']).serialize();
+							var link=["//",domain,"/s3/polljs/"+data['poll']['external_id']+"-"+data['poll']['external_key']+"?_vote=",encodeURIComponent(vote)].join("");
 
-									var questionId = "" + data['poll']['questions'][0]['id'];
-									var choice = $.grep(data['poll']['questions'][0]['choices'], function (c){ return parseInt(c['external_choice_id']) === parseInt($radio.attr('value')); })[0];
+							var questionId = "" + data['poll']['questions'][0]['id'];
+							var choice = $.grep(data['poll']['questions'][0]['choices'], function (c){ return parseInt(c['external_choice_id']) === parseInt($radio.attr('value')); })[0];
 
-									var request = {
-										action_class : "survey",
-										action : "updateSurveyResponse",
-										starbar_id : starbarId,
-										survey_id : data['poll']['id'],
-										survey_response_id : data['poll']['survey_response_id'],
-										survey_data: {
-											answers: {}
-										}
-									};
-									request.survey_data.answers[questionId] = choice['id'];
-
-									api.doRequest(request, function (response) {
-										// @todo handle failure
-										$.ajax({
-											url:link,
-											dataType:"jsonp",
-											complete: function() {
-												comm.fireEvent('poll-completed');
-												survey.ShowResults(domain);
-											}
-										});
-
-									});
-
+							var request = {
+								action_class : "survey",
+								action : "updateSurveyResponse",
+								starbar_id : starbarId,
+								survey_id : data['poll']['id'],
+								survey_response_id : data['poll']['survey_response_id'],
+								survey_data: {
+									answers: {}
 								}
+							};
+							request.survey_data.answers[questionId] = choice['id'];
+
+							api.doRequest(request, function (response) {
+								// @todo handle failure
+								$.ajax({
+									url:link,
+									dataType:"jsonp",
+									complete: function() {
+										comm.fireEvent('poll-completed');
+										survey.ShowResults(domain);
+									}
+								});
+
 							});
 						});
 					}

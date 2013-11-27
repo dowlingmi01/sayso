@@ -412,7 +412,7 @@ class Survey_Response extends Record
 		$this->deleteQuestionResponses();
 
 		$surveyQuestions = new Survey_QuestionCollection();
-		$surveyQuestions->loadAllQuestionsForSurvey($this->survey_id);
+		$surveyQuestions->loadAvailableQuestionsForSurvey($this->survey_id);
 
 		$surveyQuestionChoiceData = $data->answers;
 

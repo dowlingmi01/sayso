@@ -1175,15 +1175,15 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 					shipping: shippingData,
 					quantity: quantity
 				}, function(response){
-					if(response.error_code === 0) {
+					if(response.responses && response.responses['default'] && response.responses['default'].variables &&
+						response.responses['default'].variables.success ) {
 						updateElements($nav, "game");
 						$("#sayso-reward-item-redeem-step", $nav).html(''); //Clear the step container one last time.
 						templateData.shipping_data = shippingData;
 						processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_3_success}}", templateData);
-					}
-					else {
+					} else {
 						//TODO: Fix error alert to be more useful.
-						alert('There was an error processing your order, please try again later. Error: ' + response.error_message);
+						alert('There was an error processing your order, please try again later.');
 					}
 				});
 				$elem.off('click');

@@ -1136,24 +1136,6 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 				//Dot notation not used due to reserved keyword 'type'
 				if (templateData['type'] === "token") {
 					quantity = $('select[name="sayso-reward-item-order-quantity-select"]', $nav).val();
-					api.doRequest({
-						action_class : "game",
-						action : "redeemReward",
-						starbar_id : starbarId,
-						game_asset_id: templateData.id,
-						shipping: shippingData,
-						quantity: quantity
-					}, function(response){
-						if(response.error_code === 0) {
-							updateElements($nav, "game");
-							$("#sayso-reward-item-redeem-step", $nav).html(''); //Clear the step container one last time.
-							processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_3_success}}", templateData);
-						}
-						else {
-							//TODO: Fix error alert to be more useful.
-							alert('There was an error processing your order, please try again later. Error: ' + response.error_message);
-						}
-					});
 				} else {
 					//prepare shippingData
 					//Stolen from OLD StarBar for form validation
@@ -1182,28 +1164,28 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 					}
 					quantity = 1;
 
-					if(!formErrors) {
-						api.doRequest({
-							action_class : "game",
-							action : "redeemReward",
-							starbar_id : starbarId,
-							game_asset_id: templateData.id,
-							shipping: shippingData,
-							quantity: quantity
-						}, function(response){
-							if(response.error_code === 0) {
-								updateElements($nav, "game");
-								$("#sayso-reward-item-redeem-step", $nav).html(''); //Clear the step container one last time.
-								templateData.shipping_data = shippingData;
-								processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_3_success}}", templateData);
-							}
-							else {
-								//TODO: Fix error alert to be more useful.
-								alert('There was an error processing your order, please try again later. Error: ' + response.error_message);
-							}
-						});
-					}
+					if(formErrors)
+						return;
 				}
+				api.doRequest({
+					action_class : "game",
+					action : "redeemReward",
+					starbar_id : starbarId,
+					game_asset_id: templateData.id,
+					shipping: shippingData,
+					quantity: quantity
+				}, function(response){
+					if(response.error_code === 0) {
+						updateElements($nav, "game");
+						$("#sayso-reward-item-redeem-step", $nav).html(''); //Clear the step container one last time.
+						templateData.shipping_data = shippingData;
+						processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_3_success}}", templateData);
+					}
+					else {
+						//TODO: Fix error alert to be more useful.
+						alert('There was an error processing your order, please try again later. Error: ' + response.error_message);
+					}
+				});
 				$elem.off('click');
 			});
 		},

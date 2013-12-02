@@ -1167,20 +1167,31 @@ sayso.module.browserapp = (function(global, $, state, api, Handlebars, comm, fra
 					if(formErrors)
 						return;
 				}
-				api.doRequest({
-					action_class : "game",
-					action : "redeemReward",
-					starbar_id : starbarId,
-					game_asset_id: templateData.id,
-					shipping: shippingData,
-					quantity: quantity
+				api.doRequests( {
+					redeem: {
+						action_class : "game",
+						action : "redeemReward",
+						starbar_id : starbarId,
+						game_asset_id: templateData.id,
+						shipping: shippingData,
+						quantity: quantity
+					},
+					rewards: {
+						starbar_id : starbarId,
+						action_class : "game",
+						action : "getStarbarGoods"
+					}
 				}, function(response){
-					if(response.responses && response.responses['default'] && response.responses['default'].variables &&
-						response.responses['default'].variables.success ) {
+					if(response.responses && response.responses.redeem && response.responses.redeem.variables &&
+						response.responses.redeem.variables.success ) {
 						updateElements($nav, "game");
-						$("#sayso-reward-item-redeem-step", $nav).html(''); //Clear the step container one last time.
+						// Refresh Rewards Center to update available goods after purchase
+						templateData.rewards = response.responses.rewards;
 						templateData.shipping_data = shippingData;
+						$section.html("");
+						processMarkupIntoContainer($section, "{{>main}}", templateData);
 						processMarkupIntoContainer($("#sayso-reward-item-redeem-step", $nav), "{{>redeem_step_3_success}}", templateData);
+						$("#sayso-reward-redeem-overlay", $nav).show();
 					} else {
 						//TODO: Fix error alert to be more useful.
 						alert('There was an error processing your order, please try again later.');

@@ -1,4 +1,4 @@
-(function(global, $, forge, state, browserapp, config, dommsg, util, commrelay, track, comm, api) {
+(function(global, $, forge, state, browserapp, config, dommsg, util, commrelay, track, comm, api, frameComm) {
 	var in_iframe = forge.is.firefox() ? (global.unsafeWindow.window !== global.unsafeWindow.top) : (global.top !== global);
 	var frameId = Math.floor(Math.random()*2e9) + 1;
 	var url_match_prepend = '^(?:http|https){1}://(?:[\\w.-]+[.])?';
@@ -141,6 +141,7 @@
 	function loadStarbarIfNeeded() {
 		if( shouldLoadStarbar() )
 			$(function(){
+				frameComm.install();
 				fixFlashElements();
 				var timeSpentFixingFlashSoFar = 0;
 				var timeBetweenFlashFixes = 500;
@@ -197,5 +198,6 @@
 	whenStateReady(loadStarbarIfNeeded);
 
 }(this, jQuery, forge, sayso.module.state, sayso.module.browserapp, sayso.module.config, sayso.module.dommsg,
-		sayso.module.util, sayso.module.commrelay, sayso.module.track, sayso.module.comm, sayso.module.api))
+		sayso.module.util, sayso.module.commrelay, sayso.module.track, sayso.module.comm, sayso.module.api,
+		sayso.module.frameComm))
 ;

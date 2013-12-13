@@ -21,9 +21,12 @@ sayso.module.frameComm = (function(global, $, dommsg, api) {
 	function fireEvent( frameId, name, data ) {
 		frames[frameId].contentWindow.postMessage(JSON.stringify(['sayso-iframe-event', {name: name, data: data}]), '*');
 	}
-	dommsg.addHandler('iframe-api-requests', handleApiRequests);
-	dommsg.addHandler('iframe-event', handleEvent);
+	function install() {
+		dommsg.addHandler('iframe-api-requests', handleApiRequests);
+		dommsg.addHandler('iframe-event', handleEvent);
+	}
 	return {
+		install: install,
 		setURL: setURL,
 		fireEvent: fireEvent
 	};

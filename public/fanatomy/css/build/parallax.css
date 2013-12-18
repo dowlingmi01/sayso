@@ -170,6 +170,7 @@ td {
   height: 100%;
   background-color: black;
   overflow: hidden;
+  box-shadow: -2px 5px 5px #888888;
 }
 #content .scenes .scene_01 .celeb .amy {
   position: absolute;
@@ -339,4 +340,111 @@ td {
 }
 #content .scenes .scene_01 .lower_nav .next_message:hover {
   background-image: url('../../images/scroll_button_active.png');
+}
+#content .scenes .transition_01 .transition {
+  opacity: 0;
+  position: fixed;
+  top: 100%;
+  background-image: url('../../images/transitions/Transition_Texture.png');
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  overflow: hidden;
+  z-index: -50;
+}
+#content .scenes .transition_01 .transition div {
+  font-family: "sorts-mill-goudy", serif;
+  font-style: normal;
+  font-weight: 500;
+}
+#content .scenes .transition_01 .transition .transition_famous {
+  position: absolute;
+  top: 0%;
+  left: 40%;
+  font-size: 200px;
+  color: #888;
+  opacity: 0.35;
+  z-index: -1;
+}
+#content .scenes .transition_01 .transition .transition_brand {
+  position: absolute;
+  top: 0%;
+  left: 10%;
+  font-size: 200px;
+  color: #888;
+  opacity: 0.2;
+  z-index: -3;
+}
+#content .scenes .transition_01 .transition .transition_star {
+  position: absolute;
+  top: 0%;
+  left: 30%;
+  font-size: 300px;
+  color: #888;
+  opacity: 0.5;
+  z-index: -2;
+}
+#content .scenes .transition_01 .transition .transition_celeb {
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  font-size: 250px;
+  color: #888;
+  opacity: 0.5;
+  z-index: -4;
+}
+#content .scenes .scene_02 .about_us {
+  opacity: 0;
+  position: fixed;
+  top: 110%;
+  background-image: url('../../images/bg/Section_2_bg_repeat.png');
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  overflow: hidden;
+  box-shadow: -2px 5px 5px #888888, -2px -5px 5px #888888;
+}
+#content .scenes .scene_02 .about_us div {
+  font-family: "sorts-mill-goudy", serif;
+  font-style: normal;
+  font-weight: 500;
+  color: #39180f;
+}
+#content .scenes .scene_02 .about_us .brain {
+  position: absolute;
+  background-image: url('../../images/Brain.png');
+  top: 0%;
+  left: 10%;
+  width: 380px;
+  height: 426px;
+  z-index: 1;
+}
+#content .scenes .scene_02 .about_us .introducing {
+  position: absolute;
+  font-size: 50px;
+  top: 200px;
+  left: 1700px;
+  opacity: 0;
+}
+#content .scenes .scene_02 .about_us .logo {
+  position: absolute;
+  background-image: url('../../images/Fanatomy_text_logo.png');
+  top: 250px;
+  left: 690px;
+  width: 602px;
+  height: 102px;
+}
+#content .scenes .scene_02 .about_us .information {
+  position: absolute;
+  font-size: 30px;
+  top: 400px;
+  left: 700px;
+}
+#content .scenes .scene_02 .about_us .learn_more {
+  position: absolute;
+  background-image: url('../../images/LearnMore_Btn.png');
+  top: 575px;
+  left: 695px;
+  width: 156px;
+  height: 33px;
 }

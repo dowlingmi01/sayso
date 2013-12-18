@@ -134,6 +134,7 @@ a, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, 
                 height: 100%;
                 background-color: black;
                 overflow: hidden;
+                box-shadow: -2px 5px 5px #888888;
 
                 .amy {
                     position: absolute;
@@ -324,6 +325,133 @@ a, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, 
                     &:hover {
                         background-image: url('@{base-image-url}scroll_button_active.png');
                     }
+                }
+            }
+        }
+
+        .transition_01 {
+
+            .transition {
+                opacity: 0;
+                position: fixed;
+                top: 100%;
+                background-image: url('@{base-image-url}transitions/Transition_Texture.png');
+                width: 100%;
+                height: 100%;
+                background-color: black;
+                overflow: hidden;
+                z-index: -50;
+
+                div {
+                    font-family: "sorts-mill-goudy",serif;
+                    font-style: normal;
+                    font-weight: 500;
+                }
+
+                .transition_famous {
+                    position: absolute;
+                    top: 0%;
+                    left: 40%;
+                    font-size: 200px;
+                    color: #888;
+                    opacity: 0.35;
+                    z-index: -1;
+                }
+
+                .transition_brand {
+                    position: absolute;
+                    top: 0%;
+                    left: 10%;
+                    font-size: 200px;
+                    color: #888;
+                    opacity: 0.2;
+                    z-index: -3;
+                }
+
+                .transition_star {
+                    position: absolute;
+                    top: 0%;
+                    left: 30%;
+                    font-size: 300px;
+                    color: #888;
+                    opacity: 0.5;
+                    z-index: -2;
+                }
+
+                .transition_celeb {
+                    position: absolute;
+                    top: 0%;
+                    left: 50%;
+                    font-size: 250px;
+                    color: #888;
+                    opacity: 0.5;
+                    z-index: -4;
+                }
+
+            }
+        }
+
+        .scene_02 {
+
+            .about_us {
+                opacity: 0;
+                position: fixed;
+                top: 110%;
+                background-image: url('@{base-image-url}bg/Section_2_bg_repeat.png');
+                width: 100%;
+                height: 100%;
+                background-color: black;
+                overflow: hidden;
+                box-shadow: -2px 5px 5px #888, -2px -5px 5px #888;
+
+                div {
+                    font-family: "sorts-mill-goudy",serif;
+                    font-style: normal;
+                    font-weight: 500;
+                    color: rgb(57,24,15);
+                }
+
+                .brain {
+                    position: absolute;
+                    background-image: url('@{base-image-url}Brain.png');
+                    top: 0%;
+                    left: 10%;
+                    width: 380px;
+                    height: 426px;
+                    z-index: 1;
+                }
+
+                .introducing {
+                    position: absolute;
+                    font-size: 50px;
+                    top: 200px;
+                    left: 1700px;
+                    opacity: 0;
+                }
+
+                .logo {
+                    position: absolute;
+                    background-image: url('@{base-image-url}Fanatomy_text_logo.png');
+                    top: 250px;
+                    left: 690px;
+                    width: 602px;
+                    height: 102px;
+                }
+
+                .information {
+                    position: absolute;
+                    font-size: 30px;
+                    top: 400px;
+                    left: 700px;
+                }
+
+                .learn_more {
+                    position: absolute;
+                    background-image: url('@{base-image-url}LearnMore_Btn.png');
+                    top: 575px;
+                    left: 695px;
+                    width: 156px;
+                    height: 33px;
                 }
             }
         }
